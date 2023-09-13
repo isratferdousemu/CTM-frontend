@@ -1,16 +1,26 @@
-import "./assets/css/main.css"
+import "./assets/css/main.css";
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import Vuetify from "vuetify";
 import "vuetify/dist/vuetify.min.css";
+import "@mdi/font/css/materialdesignicons.css";
+import { useApiRequest } from "@/hooks/apiRequestHook"; 
 Vue.use(Vuetify);
-import '@mdi/font/css/materialdesignicons.css'
-const vuetify = new Vuetify({
-
-});
+const vuetify = new Vuetify({});
 Vue.config.productionTip = false;
+
+// Register the ApiRequestPlugin globally
+const apiRequest = useApiRequest();
+
+Vue.mixin({
+  data() {
+    return {
+      apiRequest,
+    };
+  },
+});
 
 new Vue({
   router,

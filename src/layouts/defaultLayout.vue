@@ -7,6 +7,7 @@
     <!-- MAIN VIEW COMPONENT  -->
     <v-main>
       <v-container fluid class="page-wrapper">
+        {{}}
         <router-view />
       </v-container>
     </v-main>
@@ -22,6 +23,23 @@ import FooterBar from "@/components/Common/FooterBar.vue";
 
 export default {
   components: { sidebarView, TopBar, FooterBar },
+  data() {
+    return {
+      data: "",
+    };
+  },
+  methods: {
+    async getdata() {
+      const response = await this.apiRequest.fetchData(
+        "https://jsonplaceholder.typicode.com/users"
+      );
+
+      this.data = response;
+    },
+  },
+  created() {
+    this.getdata();
+  },
   computed: {
     str() {
       return this.$store.state;
