@@ -7,7 +7,7 @@
     <!-- MAIN VIEW COMPONENT  -->
     <v-main>
       <v-container fluid class="page-wrapper">
-        {{}}
+        <!-- <h1 v-tooltip="hello">OK</h1> -->
         <router-view />
       </v-container>
     </v-main>
@@ -26,6 +26,7 @@ export default {
   data() {
     return {
       data: "",
+      hello:"okk"
     };
   },
   methods: {
