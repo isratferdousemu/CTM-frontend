@@ -1,11 +1,9 @@
-import ForgotPassword from "../pages/Common/ForgotPassword.vue";
-
 const CommonRoutes = [
-  {
-    path: "/forgotPassword",
-    name: "ForgotPassword",
-    component: ForgotPassword,
-  },
+  //   {
+  //     path: '/login',
+  //     name: 'Login',
+  //     component: Login,
+  //   },
 ];
 
 export default CommonRoutes;
