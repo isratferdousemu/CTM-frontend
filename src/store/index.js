@@ -28,6 +28,12 @@ export default new Vuex.Store({
     notification: [],
     notificationUnseen: 0,
     notificationTime: 0,
+    token: null,
+    roles: [],
+    rolesAll: [],
+    permissions: [],
+    userPermissions: [],
+    userData: null,
   },
   /* -------------------------------------------------------------------------- */
   /*                               Getters Define                               */
@@ -35,6 +41,9 @@ export default new Vuex.Store({
   getters: {
     data: (state) => state.data,
   },
+   GetToken: function (state) {
+      return state.token;
+    },
   /* -------------------------------------------------------------------------- */
   /*                               Actions Define                               */
   /* -------------------------------------------------------------------------- */
@@ -43,11 +52,22 @@ export default new Vuex.Store({
       const data = await fetch("http://api.icndb.com/jokes/random/15");
       commit("SET_DATA", await data.json());
     },
+    login({ commit }, data) {
+      commit('setToken', data.token);
+      console.log('state permission', data.permissions);
+      commit('setUserPermissions', data.permissions);
+      commit('setUser', data.user);
+    },
+    logout({ commit }) {
+      commit('setToken', null);
+      commit('setUser', []);
+    },
   },
   /* -------------------------------------------------------------------------- */
   /*                              Mutations Define                              */
   /* -------------------------------------------------------------------------- */
   mutations: {
+  
     setDrawer(state, payload) {
       state.Drawer = payload;
     },
@@ -65,6 +85,25 @@ export default new Vuex.Store({
     },
     setNotificationTime(state, payload) {
       state.notificationTime = payload;
+    },
+    //Authentication
+        setToken(state, token) {
+      state.token = token;
+    },
+    setRoles(state, data) {
+      state.roles = data;
+    },
+    GetAllRole(state, data) {
+      state.rolesAll = data;
+    },
+    setPermissions(state, data) {
+      state.permissions = data;
+    },
+    setUserPermissions(state, data) {
+      state.userPermissions = data;
+    },
+    setUser(state, userData) {
+      state.userData = userData;
     },
   },
   // use modules
