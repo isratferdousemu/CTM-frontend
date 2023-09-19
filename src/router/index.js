@@ -18,6 +18,7 @@ import SystemConfigurationRoutes from "./SystemConfiguration";
 import TrainingManagementRoutes from "./TrainingManagement";
 import CommonRoutes from "./Common";
 
+
 // import components
 import DefaultLayout from "../layouts/defaultLayout.vue";
 
