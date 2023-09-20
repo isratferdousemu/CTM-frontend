@@ -20,6 +20,7 @@
         <!-- <Logo class="ml-7" /> -->
       </div>
       <v-divider></v-divider>
+
       <v-list class="left-sidebar">
         <template v-for="(item, i) in items">
           <v-list-item
@@ -36,6 +37,7 @@
             <v-list-item-action>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-action>
+
             <v-list-item-content>
               <v-list-item-title class="list_size">
                 {{ item.title }}
@@ -51,7 +53,9 @@
                 ></v-badge>
               </v-list-item-title>
             </v-list-item-content>
+
           </v-list-item>
+
           <v-list-item
             v-else-if="!item.subTtems"
             :key="i"
@@ -79,6 +83,7 @@
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+
           <v-list-group
             v-else
             :key="i"
@@ -87,9 +92,7 @@
             v-can="item.permission"
           >
             <template v-slot:activator>
-              <v-list-item-title class="list_size">{{
-                item.title
-              }}</v-list-item-title>
+              <v-list-item-title class="list_size">{{item.title }}</v-list-item-title>
             </template>
 
             <template v-for="subitem in item.subTtems">
@@ -107,7 +110,10 @@
                   <v-icon>{{ subitem.icon }}</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
-                  <v-list-item-title class="list_size" v-text="subitem.title" />
+                  <v-list-item-title
+                    class="sub_list_size"
+                    v-text="subitem.title"
+                  />
                 </v-list-item-content>
               </v-list-item>
             </template>
@@ -130,6 +136,18 @@ export default {
           title: "Dashboard",
           to: "/",
           permission: "view-dashboard",
+        },
+        {
+          icon: "mdi mdi-cogs",
+          title: "System Configuration",
+          subTtems: [
+            {
+              title: "Division",
+              icon: "mdi mdi-plus",
+              to: "/system-configuration/division",
+            },
+          ],
+          permission: "",
         },
         {
           icon: "mdi-cog-outline",
@@ -167,4 +185,9 @@ export default {
   },
 };
 </script>
-<style lang=""></style>
+
+<style lang="css">
+.list_size {
+  color: #000000;
+}
+</style>

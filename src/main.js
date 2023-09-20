@@ -10,6 +10,11 @@ import { useApiRequest } from "@/hooks/apiRequestHook";
 import "@/Directives/v-tooltip";
 Vue.use(Vuetify);
 const vuetify = new Vuetify({});
+
+//mixins import
+import HeaderMixins from "./mixins/HeaderMixins";
+Vue.mixin(HeaderMixins);
+
 Vue.config.productionTip = false;
 
 // Register the ApiRequestPlugin globally
