@@ -13,6 +13,7 @@ import MEReporting from "./MEReporting";
 import PayrollManagement from "./PayrollManagement";
 import SystemConfiguration from "./SystemConfiguration";
 import TrainingManagement from "./TrainingManagement";
+import Division from "@/store/modules/system_configuration/division";
 // Import other modules as needed
 
 Vue.use(Vuex);
@@ -78,6 +79,7 @@ export default new Vuex.Store({
     PayrollManagement,
     SystemConfiguration,
     TrainingManagement,
+    Division,
   },
   plugins: [
     createPersistedState({
