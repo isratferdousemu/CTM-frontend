@@ -51,6 +51,9 @@ export default {
       }
     },
   },
+  beforeMount() {
+    this.$store.commit("setHeaderTitle", "Division Edit");
+  },
 };
 </script>
 
