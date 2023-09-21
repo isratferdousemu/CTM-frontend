@@ -20,7 +20,7 @@
 
             <v-card-text>
                 Please Enter Your Phone Number
-                <v-text-field type="number" label="Phone" v-model="phone" :error="errors && errors.phone"
+                <v-text-field type="number" label="Phone" v-model="form.phone" :error="errors && errors.phone"
                     :error-messages="errors ? errors.phone : []" />
             </v-card-text>
 
@@ -39,7 +39,7 @@
                 <v-divider></v-divider>
                 <v-card-text>
                     <p>You will get a verification code to your register number.</p>
-                    <v-otp-input v-model="otp" :loading="loading" @finish="onFinish"></v-otp-input>
+                    <v-otp-input v-model="form.otp" :loading="loading" @finish="onFinish"></v-otp-input>
                     <p>Remaining time: {{ remainingTime }} sec</p>
                 </v-card-text>
 
@@ -50,25 +50,32 @@
 </template>
 
 <script>
+import Form from 'vform'
 import axios from 'axios';
-// import { getFingerprint } from '../../plugins/fingerprint.js';
+import { getFingerprint } from '../../plugins/fingerprint.js';
 
 export default {
     data: () => ({
         loading: false,
         selection: 1,
-        phone: '',
-        otp: '',
+        form: new Form({
+            device_token: 'admin@ctm.com',
+            phone: '',
+            otp: '',
+            password: '',
+            confirm_password: '',
+        }),
         otpDialog: false,
         remainingTime: 60,
         apiUrl: 'http://127.0.0.1:8000/api/v1/admin/forgot-password',
         bearerToken: '4|1QjdA8vjG15B4ImbcOI5Kr0r7uuRAjJKpwoU2s5f40c5d6bc',
         errors: [],
     }),
-    // async created() {
-    //     const fingerprint = await getFingerprint();
-    //     this.form.device_token = fingerprint;
-    // },
+    async created() {
+        const fingerprint = await getFingerprint();
+        this.form.device_token = fingerprint;
+        console.log(this.form.device_token);
+    },
     methods: {
         sendOtp() {
             this.loading = true
@@ -79,7 +86,7 @@ export default {
             };
 
             const data = {
-                phone: this.phone,
+                phone: this.form.phone,
             };
 
             axios({
