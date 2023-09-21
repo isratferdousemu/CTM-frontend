@@ -51,11 +51,11 @@ export default new Vuex.Store({
         .post("admin/forgot-password", data)
         .then((result) => {
           commit("setStep", 2);
-          console.log(state.step);
-          console.log(result);
+          // console.log(state.step);
+          // console.log(result);
         })
         .catch((err) => {
-          console.log(err);
+          // console.log(err);
           commit("setforgotPasswordErrors", err.response.data.errors);
         })
     },
@@ -63,7 +63,7 @@ export default new Vuex.Store({
       return http()
         .post("admin/forgot-password/submit", data)
         .then((result) => {
-          console.log(result);
+          // console.log(result);
           this.$router.push({
             path: "/login",
           })
