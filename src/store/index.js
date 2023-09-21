@@ -1,7 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
-import { http } from "@/hooks/httpService";
 // import axios from 'axios'
 
 import ApplicationSelection from "./ApplicationSelection";
@@ -14,6 +13,7 @@ import MEReporting from "./MEReporting";
 import PayrollManagement from "./PayrollManagement";
 import SystemConfiguration from "./SystemConfiguration";
 import TrainingManagement from "./TrainingManagement";
+import Division from "@/store/modules/system_configuration/division";
 // Import other modules as needed
 
 Vue.use(Vuex);
@@ -28,9 +28,12 @@ export default new Vuex.Store({
     notification: [],
     notificationUnseen: 0,
     notificationTime: 0,
-    forgotPasswordErrors: [],
-    forgotPasswordErrorMessageOtp: null,
-    step: 1,
+    token: null,
+    roles: [],
+    rolesAll: [],
+    permissions: [],
+    userPermissions: [],
+    userData: null,
   },
   /* -------------------------------------------------------------------------- */
   /*                               Getters Define                               */
@@ -38,6 +41,9 @@ export default new Vuex.Store({
   getters: {
     data: (state) => state.data,
   },
+   GetToken: function (state) {
+      return state.token;
+    },
   /* -------------------------------------------------------------------------- */
   /*                               Actions Define                               */
   /* -------------------------------------------------------------------------- */
@@ -46,45 +52,22 @@ export default new Vuex.Store({
       const data = await fetch("http://api.icndb.com/jokes/random/15");
       commit("SET_DATA", await data.json());
     },
-    sendOtp: ({ commit, state }, data) => {
-      return http()
-        .post("admin/forgot-password", data)
-        .then((result) => {
-          commit("setStep", 2);
-          // console.log(state.step);
-          // console.log(result);
-        })
-        .catch((err) => {
-          // console.log(err);
-          commit("setforgotPasswordErrors", err.response.data.errors);
-        })
+    login({ commit }, data) {
+      commit('setToken', data.token);
+      console.log('state permission', data.permissions);
+      commit('setUserPermissions', data.permissions);
+      commit('setUser', data.user);
     },
-    forgotPasswordSubmit: ({ commit, state }, data) => {
-      return http()
-        .post("admin/forgot-password/submit", data)
-        .then((result) => {
-          // console.log(result);
-          this.$router.push({
-            path: "/login",
-          })
-
-        })
-        .catch((err) => {
-          console.log(err);
-          if (err.response.data.success == false) {
-            // this.error_message_otp = err.response.data.message;
-            commit("setforgotPasswordErrorMessageOtp", err.response.data.message);
-          } else {
-            // this.errors = err.response.data.errors;
-            commit("setforgotPasswordErrors", err.response.data.errors);
-          }
-        })
-    }
+    logout({ commit }) {
+      commit('setToken', null);
+      commit('setUser', []);
+    },
   },
   /* -------------------------------------------------------------------------- */
   /*                              Mutations Define                              */
   /* -------------------------------------------------------------------------- */
   mutations: {
+  
     setDrawer(state, payload) {
       state.Drawer = payload;
     },
@@ -103,14 +86,24 @@ export default new Vuex.Store({
     setNotificationTime(state, payload) {
       state.notificationTime = payload;
     },
-    setforgotPasswordErrors(state, payload) {
-      state.forgotPasswordErrors = payload;
+    //Authentication
+        setToken(state, token) {
+      state.token = token;
     },
-    setforgotPasswordErrorMessageOtp(state, payload) {
-      state.forgotPasswordErrorMessageOtp = payload;
+    setRoles(state, data) {
+      state.roles = data;
     },
-    setStep(state, payload) {
-      state.step = payload;
+    GetAllRole(state, data) {
+      state.rolesAll = data;
+    },
+    setPermissions(state, data) {
+      state.permissions = data;
+    },
+    setUserPermissions(state, data) {
+      state.userPermissions = data;
+    },
+    setUser(state, userData) {
+      state.userData = userData;
     },
   },
   // use modules
@@ -125,10 +118,7 @@ export default new Vuex.Store({
     PayrollManagement,
     SystemConfiguration,
     TrainingManagement,
-
-
-
-
+    Division,
   },
   plugins: [
     createPersistedState({
