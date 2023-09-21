@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@fingerprintjs/fingerprintjs-pro-vue-v2": "^1.1.1",
+    "fingerprintjs2": "^2.1.4",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vuetify": "^2.7.1",
