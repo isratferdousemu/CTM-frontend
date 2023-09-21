@@ -13,11 +13,8 @@ import MEReporting from "./MEReporting";
 import PayrollManagement from "./PayrollManagement";
 import SystemConfiguration from "./SystemConfiguration";
 import TrainingManagement from "./TrainingManagement";
-import Division from "@/store/modules/system_configuration/division";
+import ForgotPassword from "./ForgotPassword";
 // Import other modules as needed
-import axios from "axios";
-
-axios.defaults.baseURL = `http://127.0.0.1:8000/api/v1`;
 
 Vue.use(Vuex);
 export default new Vuex.Store({
@@ -46,27 +43,6 @@ export default new Vuex.Store({
       const data = await fetch("http://api.icndb.com/jokes/random/15");
       commit("SET_DATA", await data.json());
     },
-    // submitPassword() {
-    //   this.loading = true
-    //   this.axios.post("/admin/forgot-password/submit", this.form)
-    //     .then((response) => {
-    //       this.loading = false;
-    //       console.log(response, 'final')
-    //       // console.log(response.data.permissions)
-    //       if (response.data.success) {
-    //         // this.otpDialog = true
-    //         // this.startCountdown();
-    //         this.$router.push({
-    //           path: "/",
-    //         })
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       this.loading = false;
-    //       console.log(err.response.data)
-    //       this.errors = err.response.data.errors
-    //     })
-    // },
   },
   /* -------------------------------------------------------------------------- */
   /*                              Mutations Define                              */
@@ -103,7 +79,11 @@ export default new Vuex.Store({
     PayrollManagement,
     SystemConfiguration,
     TrainingManagement,
-    Division,
+    ForgotPassword,
+
+
+
+
   },
   plugins: [
     createPersistedState({
