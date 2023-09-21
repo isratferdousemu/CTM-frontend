@@ -18,8 +18,10 @@
 
             <v-card-text>
                 Please Enter Your Phone Number
-                <v-text-field type="number" label="Phone" v-model="form.phone" :error="errors && errors.phone"
-                    :error-messages="errors ? errors.phone : []" />
+                <!-- {{ forgotPasswordErrors }} -->
+                <v-text-field type="number" label="Phone" v-model="form.phone"
+                    :error="forgotPasswordErrors && forgotPasswordErrors.phone"
+                    :error-messages="forgotPasswordErrors ? forgotPasswordErrors.phone : []" />
             </v-card-text>
 
             <v-card-actions>
@@ -30,7 +32,7 @@
         </v-card>
 
         <!-- submit OTP  -->
-        <form @submit.prevent="submitPassword" v-if="step == 2" style="padding-top: 25px; margin: auto; width: 350px">
+        <form @submit.prevent="forgotPasswordSubmit" v-if="step == 2" style="padding-top: 25px; margin: auto; width: 350px">
             <!-- <v-otp-input
                         class="px-0"
                         variant="filled"
@@ -40,14 +42,15 @@
                         @finish="onFinish"
                       ></v-otp-input> -->
 
-            <v-text-field outlined type="number" v-model="form.otp" placeholder="OTP" required :error="error_message_otp"
-                :error-messages="error_message_otp"></v-text-field>
+            <v-text-field outlined type="number" v-model="form.otp" placeholder="OTP" required :error="forgotPasswordErrorMessageOtp"
+                :error-messages="forgotPasswordErrorMessageOtp"></v-text-field>
             <v-text-field outlined type="password" v-model="form.password" prepend-inner-icon="mdi-lock-open"
-                placeholder="Password" required :error="errors && errors.password"
-                :error-messages="errors ? errors.password : []"></v-text-field>
+                placeholder="Password" required :error="forgotPasswordErrors && forgotPasswordErrors.password"
+                :error-messages="forgotPasswordErrors ? forgotPasswordErrors.password : []"></v-text-field>
             <v-text-field outlined type="password" v-model="form.confirm_password" prepend-inner-icon="mdi-lock-open"
-                placeholder="Confirm Password" required :error="errors && errors.confirm_password"
-                :error-messages="errors ? errors.confirm_password : []"></v-text-field>
+                placeholder="Confirm Password" required
+                :error="forgotPasswordErrors && forgotPasswordErrors.confirm_password"
+                :error-messages="forgotPasswordErrors ? forgotPasswordErrors.confirm_password : []"></v-text-field>
 
             <v-btn type="submit" class="mr-4 py-3 mb-5 btn" color="info" block x-large :disabled="form.busy">
                 Reset
@@ -78,12 +81,13 @@
 import Form from "vform";
 import axios from "axios";
 import { getFingerprint } from "../../plugins/fingerprint.js";
+import { mapState } from "vuex";
 
 export default {
     data: () => ({
         loading: false,
         selection: 1,
-        step: 1,
+        // step: 1,
         form: new Form({
             device_token: "admin@ctm.com",
             phone: "",
@@ -98,42 +102,65 @@ export default {
         errors: [],
         error_message_otp: null
     }),
+    computed: {
+        ...mapState(["forgotPasswordErrors", "forgotPasswordErrorMessageOtp","step"]),
+    },
     async created() {
         const fingerprint = await getFingerprint();
         this.form.device_token = fingerprint;
         console.log(this.form.device_token);
+        // this.$store.dispatch("ForgotPassword/function1", { id: 1, name: "John" });
     },
     methods: {
-        sendOtp() {
-            this.loading = true;
-            const headers = {
-                Authorization: `Bearer ${this.bearerToken}`,
-                "Content-Type": "application/json",
-            };
+        async sendOtp() {
+            await this.$store.dispatch("sendOtp", this.form);
+            // try {
+            //         .then((response) => {
+            //             this.loading = false;
+            //             // alert(response);
+            //             // if (response.data.success) {
+            //             //     this.otpDialog = true;
+            //             //     this.startCountdown();
+            //             // }
 
-            const data = {
-                phone: this.form.phone,
-            };
+            //         });
+            // } catch (err) {
+            //     // this.errors = err.response.data.errors;
+            //     console.log(err);
+            // }
 
-            axios({
-                method: "post",
-                url: this.apiUrl,
-                headers: headers,
-                data: data,
-            })
-                .then((response) => {
-                    this.otpDialog = true;
-                    console.log("Response Data:", response);
-                    console.log("Response Data:", response.data);
-                    if (response.data.success) {
-                        this.step = 2;
-                    }
-                })
-                .catch((err) => {
-                    this.loading = false;
-                    // console.log(err.response.data.errors);
-                    this.errors = err.response.data.errors;
-                });
+            // this.loading = true;
+            // const headers = {
+            //     Authorization: `Bearer ${this.bearerToken}`,
+            //     "Content-Type": "application/json",
+            // };
+
+            // const data = {
+            //     phone: this.form.phone,
+            // };
+
+            // axios({
+            //     method: "post",
+            //     url: this.apiUrl,
+            //     headers: headers,
+            //     data: data,
+            // })
+            //     .then((response) => {
+            //         this.otpDialog = true;
+            //         console.log("Response Data:", response);
+            //         console.log("Response Data:", response.data);
+            //         if (response.data.success) {
+            //             this.step = 2;
+            //         }
+            //     })
+            //     .catch((err) => {
+            //         this.loading = false;
+            //         // console.log(err.response.data.errors);
+            //         this.errors = err.response.data.errors;
+            //     });
+        },
+        async forgotPasswordSubmit() {
+            await this.$store.dispatch("forgotPasswordSubmit", this.form);
         },
         submitPassword() {
             this.loading = true;

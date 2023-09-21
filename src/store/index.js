@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
+import { http } from "@/hooks/httpService";
 // import axios from 'axios'
 
 import ApplicationSelection from "./ApplicationSelection";
@@ -13,7 +14,6 @@ import MEReporting from "./MEReporting";
 import PayrollManagement from "./PayrollManagement";
 import SystemConfiguration from "./SystemConfiguration";
 import TrainingManagement from "./TrainingManagement";
-import ForgotPassword from "./ForgotPassword";
 // Import other modules as needed
 
 Vue.use(Vuex);
@@ -28,6 +28,9 @@ export default new Vuex.Store({
     notification: [],
     notificationUnseen: 0,
     notificationTime: 0,
+    forgotPasswordErrors: [],
+    forgotPasswordErrorMessageOtp: null,
+    step: 1,
   },
   /* -------------------------------------------------------------------------- */
   /*                               Getters Define                               */
@@ -43,6 +46,40 @@ export default new Vuex.Store({
       const data = await fetch("http://api.icndb.com/jokes/random/15");
       commit("SET_DATA", await data.json());
     },
+    sendOtp: ({ commit, state }, data) => {
+      return http()
+        .post("admin/forgot-password", data)
+        .then((result) => {
+          commit("setStep", 2);
+          console.log(state.step);
+          console.log(result);
+        })
+        .catch((err) => {
+          console.log(err);
+          commit("setforgotPasswordErrors", err.response.data.errors);
+        })
+    },
+    forgotPasswordSubmit: ({ commit, state }, data) => {
+      return http()
+        .post("admin/forgot-password/submit", data)
+        .then((result) => {
+          console.log(result);
+          this.$router.push({
+            path: "/login",
+          })
+
+        })
+        .catch((err) => {
+          console.log(err);
+          if (err.response.data.success == false) {
+            // this.error_message_otp = err.response.data.message;
+            commit("setforgotPasswordErrorMessageOtp", err.response.data.message);
+          } else {
+            // this.errors = err.response.data.errors;
+            commit("setforgotPasswordErrors", err.response.data.errors);
+          }
+        })
+    }
   },
   /* -------------------------------------------------------------------------- */
   /*                              Mutations Define                              */
@@ -66,6 +103,15 @@ export default new Vuex.Store({
     setNotificationTime(state, payload) {
       state.notificationTime = payload;
     },
+    setforgotPasswordErrors(state, payload) {
+      state.forgotPasswordErrors = payload;
+    },
+    setforgotPasswordErrorMessageOtp(state, payload) {
+      state.forgotPasswordErrorMessageOtp = payload;
+    },
+    setStep(state, payload) {
+      state.step = payload;
+    },
   },
   // use modules
   modules: {
@@ -79,7 +125,6 @@ export default new Vuex.Store({
     PayrollManagement,
     SystemConfiguration,
     TrainingManagement,
-    ForgotPassword,
 
 
 
