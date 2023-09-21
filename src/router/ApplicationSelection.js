@@ -1,11 +1,9 @@
-
-
 const ApplicationSelectionRoutes = [
-//   {
-//     path: '/login',
-//     name: 'Login',
-//     component: Login,
-//   }, 
+  //   {
+  //     path: '/login',
+  //     name: 'Login',
+  //     component: Login,
+  //   },
 ];
 
 export default ApplicationSelectionRoutes;
