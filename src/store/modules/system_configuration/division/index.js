@@ -81,7 +81,7 @@ const actions = {
   /*start  store division*/
   StoreDivision: ({ commit }, data) => {
     return http()
-      .post("/api/division/store", data)
+      .post("/admin/division/insert", data)
       .then((result) => {
         commit("STORE_DIVISION", result);
       })

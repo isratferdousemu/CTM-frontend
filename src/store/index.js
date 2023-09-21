@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
+import { http } from "@/hooks/httpService";
 // import axios from 'axios'
 
 import ApplicationSelection from "./ApplicationSelection";
@@ -34,6 +35,15 @@ export default new Vuex.Store({
     permissions: [],
     userPermissions: [],
     userData: null,
+    //practice
+    forms: [],
+    division: {},
+    success_message: "",
+    errors: {},
+    error_message: "",
+    error_status: "",
+    success_status: "",
+   
   },
   /* -------------------------------------------------------------------------- */
   /*                               Getters Define                               */
@@ -62,6 +72,17 @@ export default new Vuex.Store({
       commit("setToken", null);
       commit("setUser", []);
     },
+    LoginSubmit: ({ commit,state }, data) => {
+    return http()
+    .post("admin/login/otp", data)
+    .then((result) => {
+      commit("LoginSubmit", result);
+    })
+    .catch((err) => {
+      state.errors = err.response.data.errors;
+      state.error_status = err.response.status;
+    });
+  },
   },
   /* -------------------------------------------------------------------------- */
   /*                              Mutations Define                              */
@@ -104,6 +125,15 @@ export default new Vuex.Store({
     setUser(state, userData) {
       state.userData = userData;
     },
+    LoginSubmit: (state, data) => {
+    if (state.forms.push(data.data)) {
+      state.success_message = data.data.message;
+      state.success_status = data.status;
+    } else {
+      state.success_message = "";
+    }
+  },
+
   },
   // use modules
   modules: {
