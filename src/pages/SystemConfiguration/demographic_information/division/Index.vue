@@ -131,9 +131,9 @@ export default {
   methods: {
     deleteDivision: async function (id) {
       try {
-        await this.$store.dispatch('Division/DestroyDivision', id).then(() => {
-          console.log('success');
-        })
+        await this.$store.dispatch("Division/DestroyDivision", id).then(() => {
+          console.log("success");
+        });
       } catch (e) {
         console.log(e);
       }

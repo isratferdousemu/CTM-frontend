@@ -53,7 +53,6 @@
                 ></v-badge>
               </v-list-item-title>
             </v-list-item-content>
-
           </v-list-item>
 
           <v-list-item
@@ -92,7 +91,9 @@
             v-can="item.permission"
           >
             <template v-slot:activator>
-              <v-list-item-title class="list_size">{{item.title }}</v-list-item-title>
+              <v-list-item-title class="list_size">{{
+                item.title
+              }}</v-list-item-title>
             </template>
 
             <template v-for="subitem in item.subTtems">
