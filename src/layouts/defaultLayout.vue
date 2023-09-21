@@ -26,7 +26,7 @@ export default {
   data() {
     return {
       data: "",
-      hello:"okk"
+      hello: "okk",
     };
   },
   methods: {
@@ -48,4 +48,8 @@ export default {
   },
 };
 </script>
-<style></style>
+<style>
+.v-main {
+  padding: 70px 4px 70px 150px !important;
+}
+</style>
