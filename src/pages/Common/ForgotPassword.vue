@@ -18,12 +18,12 @@
             </div>
             <v-card-title class="justify-center"><b>Forgot Password</b></v-card-title>
 
-            <v-card-text></v-card-text>
             <v-card-text>
                 Please Enter Your Phone Number
-                <v-text-field name="input-10-2" label="Phone" hint="Phone Number" v-model="phone"></v-text-field>
+                <v-text-field type="number" label="Phone" v-model="phone" :error="errors && errors.phone"
+                    :error-messages="errors ? errors.phone : []" />
             </v-card-text>
-            <div v-if="errors && errors.phone" v-html="errors.phone" />
+
             <v-card-actions>
                 <v-btn color="primary lighten-2" block @click="sendOtp">
                     Send OTP
@@ -51,6 +51,8 @@
 
 <script>
 import axios from 'axios';
+// import { getFingerprint } from '../../plugins/fingerprint.js';
+
 export default {
     data: () => ({
         loading: false,
@@ -63,6 +65,10 @@ export default {
         bearerToken: '4|1QjdA8vjG15B4ImbcOI5Kr0r7uuRAjJKpwoU2s5f40c5d6bc',
         errors: [],
     }),
+    // async created() {
+    //     const fingerprint = await getFingerprint();
+    //     this.form.device_token = fingerprint;
+    // },
     methods: {
         sendOtp() {
             this.loading = true
@@ -76,7 +82,6 @@ export default {
                 phone: this.phone,
             };
 
-            alert(JSON.stringify(data));
             axios({
                 method: 'post', // Specify the HTTP method (GET, POST, PUT, DELETE, etc.)
                 url: this.apiUrl,    // Specify the URL of the API endpoint
@@ -90,11 +95,11 @@ export default {
                     console.log('Response Data:', response);
                     console.log('Response Data:', response.data);
                     if (response.data.success) {
-                        // this.otpDialog = true
-                        // this.startCountdown();
-                        this.$router.push({
-                            path: "/",
-                        })
+                        this.otpDialog = true
+                        this.startCountdown();
+                        // this.$router.push({
+                        //     path: "/",
+                        // })
                     }
                     // console.log('Response Token:', response.data.authorisation.token);
                     // token = response.data.authorisation;
@@ -105,8 +110,9 @@ export default {
                 .catch(err => {
                     this.loading = false;
                     // console.log(err.response.data);
-                    console.log(err.response.data.errors.phone[0]);
-                    this.errors = err.response.data.errors.phone[0];
+                    console.log(err.response.data.errors);
+                    // console.log(err.response.data.errors.phone);
+                    this.errors = err.response.data.errors;
                     // this.errors = JSON.stringify(err.response.data.errors.message);
                 });
 
