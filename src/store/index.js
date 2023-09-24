@@ -44,12 +44,14 @@ export default new Vuex.Store({
     forms: [],
     division: {},
     success_message: "",
-    errors: {},
+    errors: [],
     error_message: "",
     error_status: "",
     success_status: "",
     loginData:[],
-    otpData:[]
+    otpData:[],
+
+
       
   },
   /* -------------------------------------------------------------------------- */
@@ -57,6 +59,15 @@ export default new Vuex.Store({
   /* -------------------------------------------------------------------------- */
   getters: {
     data: (state) => state.data,
+    GetBudget(state){
+      return state.loginData
+    },
+    getOtpresponse(state){
+      return state.otpData
+    },
+    getLoginresponse(state){
+      return state.loginData
+    }
   },
    GetToken: function (state) {
       return state.token;
@@ -78,26 +89,30 @@ export default new Vuex.Store({
     logout({ commit }) {
       commit('setToken', null);
       commit('setUser', []);
+   
     },
-    login({ commit }, data) {
-      commit("setToken", data.token);
-      console.log("state permission", data.permissions);
-      commit("setUserPermissions", data.permissions);
-      commit("setUser", data.user);
-    },
-    logout({ commit }) {
-      commit("setToken", null);
-      commit("setUser", []);
-    },
+    // login({ commit }, data) {
+    //   commit("setToken", data.token);
+    //   console.log("state permission", data.permissions);
+    //   commit("setUserPermissions", data.permissions);
+    //   commit("setUser", data.user);
+    // },
+    // logout({ commit }) {
+    //   commit("setToken", null);
+    //   commit("setUser", []);
+    // },
     LoginSubmit: ({ commit,state }, data) => {
     return http()
     .post("admin/login/otp", data)
     .then((result) => {
+      
       commit("setOtpresponse", result);
     })
     .catch((err) => {
       state.errors = err.response.data.errors;
-      state.error_status = err.response.status;
+      state.error_message = err.response.data.message;
+      console.log(state.error_message);
+     
     });
   },
    sendOtp: ({ commit,state }, data) => {
