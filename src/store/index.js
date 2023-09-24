@@ -14,6 +14,9 @@ import MEReporting from "./MEReporting";
 import PayrollManagement from "./PayrollManagement";
 import SystemConfiguration from "./SystemConfiguration";
 import TrainingManagement from "./TrainingManagement";
+import Division from "@/store/modules/system_configuration/division";
+import Menu from "@/store/modules/system_configuration/menu";
+
 // Import other modules as needed
 import Division from "./modules/system_configuration/division/index.js";
 
@@ -173,22 +176,9 @@ export default new Vuex.Store({
     //Authentication
     setToken(state, token) {
       state.token = token;
-      state.token = '1|lt5Vo6QK300ypBrCXNascL540T9SEU03KQTBFL4Nccd6b3fd';
     },
     setRoles(state, data) {
       state.roles = data;
-    },
-    GetAllRole(state, data) {
-      state.rolesAll = data;
-    },
-    setPermissions(state, data) {
-      state.permissions = data;
-    },
-    setUserPermissions(state, data) {
-      state.userPermissions = data;
-    },
-    setUser(state, userData) {
-      state.userData = userData;
     },
     GetAllRole(state, data) {
       state.rolesAll = data;
@@ -230,6 +220,8 @@ export default new Vuex.Store({
     PayrollManagement,
     SystemConfiguration,
     TrainingManagement,
+    Division,
+    Menu,
   },
   plugins: [
     createPersistedState({
