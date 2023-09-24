@@ -1,5 +1,61 @@
+<script>
+import { mapActions, mapState } from "vuex";
+
+export default {
+  name: "Index",
+  title: "CTM - Menu",
+  data() {
+    return {
+      search: '',
+    };
+  },
+
+  computed: {
+    headers() {
+      return [
+        { text: "#Sl", value: "id", align: "start", sortable: false },
+        { text: "Label Name English", value: "label_name_en" },
+        { text: "Label Name Bangla", value: "label_name_bn" },
+        { text: "Parent", value: "parent_id" },
+        { text: "Link", value: "link" },
+        { text: "Actions", value: "actions", align: "center", sortable: false },
+      ];
+    },
+
+    ...mapState({
+      parents: (state) => state.Menu.parents,
+      menus: (state) => state.Menu.menus,
+      message: (state) => state.Menu.success_message,
+    }),
+  },
+
+  mounted() {
+    this.GetAllMenu();
+    this.GetAllParents();
+  },
+
+  methods: {
+    ...mapActions({
+      GetAllMenu: "Menu/GetAllMenus",
+      GetAllParents: "Menu/GetAllParents",
+    }),
+
+    deleteMenu: async function (id) {
+      try {
+        await this.$store.dispatch("Menu/DestroyMenu", id).then(() => {
+          this.GetAllMenu();
+          console.log("success");
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+  },
+};
+</script>
+
 <template>
-  <div id="division">
+  <div id="menu">
     <v-row class="mx-5">
       <v-col cols="12">
         <v-row wrap>
@@ -7,7 +63,7 @@
             <v-card>
               <v-row>
                 <v-col col="6">
-                  <v-card-title>Division Lists</v-card-title>
+                  <v-card-title>Menu Lists</v-card-title>
                 </v-col>
 
                 <v-col cols="6">
@@ -16,7 +72,7 @@
                       text
                       color="success"
                       router
-                      to="/system-configuration/division/create"
+                      to="/system-configuration/menu/create"
                     >
                       <v-icon small left>mdi-plus</v-icon>
                       <span>Add New</span>
@@ -46,11 +102,19 @@
                 <v-card-subtitle>
                   <v-data-table
                     :headers="headers"
-                    :items="divisions"
+                    :items="menus"
                     :search="search"
                     dense
                     class="elevation-1"
                   >
+                    <template v-slot:[`item.parent_id`]="{ item }">
+                      <div v-for="parent in parents" :key="parent.id">
+                        <span v-if="parent.id === item.parent_id">
+                          {{ parent.label_name_en }}
+                        </span>
+                      </div>
+                    </template>
+
                     <template v-slot:[`item.actions`]="{ item }">
                       <v-tooltip top>
                         <template v-slot:activator="{ on }">
@@ -60,7 +124,7 @@
                             color="grey"
                             v-on="on"
                             router
-                            :to="`/system-configuration/division/edit/${item.id}`"
+                            :to="`/system-configuration/menu/edit/${item.id}`"
                           >
                             <v-icon left small>mdi-pencil</v-icon>
                             <span right class="caption text-lowercase"
@@ -78,7 +142,7 @@
                             text
                             color="grey"
                             v-on="on"
-                            @click="deleteDivision(item.id)"
+                            @click="deleteMenu(item.id)"
                           >
                             <v-icon left small>mdi-delete</v-icon>
                             <span right class="caption text-lowercase"
@@ -99,47 +163,5 @@
     </v-row>
   </div>
 </template>
-
-<script>
-import { mapState } from "vuex";
-
-export default {
-  name: "Index",
-  title: "CTM - Divisions",
-  data() {
-    return {
-      search: "",
-      divisions: [{ id: 1, name_en: "Dhaka", name_bn: "Dhaka" }],
-    };
-  },
-
-  computed: {
-    headers() {
-      return [
-        { text: "#Sl", value: "id", align: "start", sortable: false },
-        { text: "Division Name English", value: "name_en" },
-        { text: "Division Name English Bangla", value: "name_bn" },
-        { text: "Actions", value: "actions", align: "center", sortable: false },
-      ];
-    },
-
-    ...mapState({
-      message: (state) => state.Division.success_message,
-    }),
-  },
-
-  methods: {
-    deleteDivision: async function (id) {
-      try {
-        await this.$store.dispatch("Division/DestroyDivision", id).then(() => {
-          console.log("success");
-        });
-      } catch (e) {
-        console.log(e);
-      }
-    },
-  },
-};
-</script>
 
 <style scoped></style>
