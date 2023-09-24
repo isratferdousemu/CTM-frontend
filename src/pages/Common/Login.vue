@@ -13,7 +13,7 @@
                                         <v-card-text>
                                                 <p>You will get a verification code to your registered number.</p>
                                                 <v-otp-input v-model="form.otp" :loading="loading" @finish="onFinish"></v-otp-input>
-                                                  <div v-if="getLoginresponse.message" v-html="getLoginresponse.message" class="red--text" />
+                                                  <div v-if="getLoginresponse?.message" v-html="getLoginresponse?.message" class="red--text" />
                                                 <p>Remaining time: {{ remainingTime }} sec</p>
 
                                         </v-card-text>

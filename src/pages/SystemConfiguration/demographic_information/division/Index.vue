@@ -1,98 +1,8 @@
 <template>
   <div id="division">
-    <v-row class="mx-5">
-      <v-col cols="12">
-        <v-row wrap>
+    <v-row class="mx-5 mt-4">
+
           <v-col cols="12">
-            <v-card>
-              <v-row>
-                <v-col col="6">
-                  <v-card-title>Division Lists</v-card-title>
-                </v-col>
-
-                <v-col cols="6">
-                  <v-card-actions class="justify-end">
-                    <v-btn
-                      text
-                      color="success"
-                      router
-                      to="/system-configuration/division/create"
-                    >
-                      <v-icon small left>mdi-plus</v-icon>
-                      <span>Add New</span>
-                    </v-btn>
-                  </v-card-actions>
-                </v-col>
-              </v-row>
-
-              <v-divider></v-divider>
-
-              <v-card-text>
-                <v-card-title>
-                  <v-spacer></v-spacer>
-
-                  <v-col sm="4" style="margin-right: -10px">
-                    <v-text-field
-                      v-model="search"
-                      append-icon="mdi-magnify"
-                      label="Search"
-                      hide-details
-                      class="mb-5"
-                      outlined
-                    ></v-text-field>
-                  </v-col>
-                </v-card-title>
-
-                <v-card-subtitle>
-                  <v-data-table
-                    :headers="headers"
-                    :items="divisions"
-                    :search="search"
-                    dense
-                    class="elevation-1"
-                  >
-                    <template v-slot:[`item.actions`]="{ item }">
-                      <v-tooltip top>
-                        <template v-slot:activator="{ on }">
-                          <v-btn
-                            small
-                            text
-                            color="grey"
-                            v-on="on"
-                            router
-                            :to="`/system-configuration/division/edit/${item.id}`"
-                          >
-                            <v-icon left small>mdi-pencil</v-icon>
-                            <span right class="caption text-lowercase"
-                              >Edit</span
-                            >
-                          </v-btn>
-                        </template>
-                        <span>Edit</span>
-                      </v-tooltip>
-
-                      <v-tooltip top>
-                        <template v-slot:activator="{ on }">
-                          <v-btn
-                            small
-                            text
-                            color="grey"
-                            v-on="on"
-                            @click="deleteDivision(item.id)"
-                          >
-                            <v-icon left small>mdi-delete</v-icon>
-                            <span right class="caption text-lowercase"
-                              >Delete</span
-                            >
-                          </v-btn>
-                        </template>
-                        <span>Delete</span>
-                      </v-tooltip>
-                    </template>
-                  </v-data-table>
-                </v-card-subtitle>
-              </v-card-text>
-
               <v-row>
                 <v-col cols="12">
                   <v-card
@@ -102,19 +12,30 @@
                     theme="light"
                     class="mb-8"
                   >
+                  <v-card-title class=" justify-center "  tag="div">
+                      <h3 class="text-uppercase pt-3">Division List</h3>
+                  </v-card-title>
                     <v-card-text>
                       <v-row
-                        class="ma-0 pa-3 white round-border d-flex justify-space-between align-center monthName-container"
+                        class="ma-0 pa-3 white round-border d-flex justify-space-between align-center "
                         justify="center"
                         justify-lg="space-between"
                       >
+                   <div class="d-flex justify-sm-end flex-wrap">
+                    <v-text-field @keyup.native="GetDivision"  outlined dense v-model="search" prepend-inner-icon="mdi-magnify"
+                    class="my-sm-0 my-3 mx-0v -input--horizontal " flat variant="outlined" label="search Division"
+                    hide-details color="primary">
+                  </v-text-field>
+                  
+
+          </div>  
                         <v-btn
-                          @click="dailogAdd = true"
+                          @click="dialogAdd = true"
                           flat
                           color="primary"
                           prepend-icon="mdi-account-multiple-plus"
                         >
-                          Add New Plan
+                          Add New Division
                         </v-btn>
                         <v-col cols="12">
                           <v-data-table
@@ -122,9 +43,13 @@
                             item-key="id"
                             :headers="headers"
                             :items="divisions"
+          :items-per-page="pagination.perPage"
                             hide-default-footer
-                            class="elevation-0 transparent customer_list row-pointer"
+                            class="elevation-0 transparent row-pointer"
                           >
+                            <template v-slot:item.id="{ item,index }">
+                              {{ (pagination.current - 1) * pagination.perPage + index+1 }}
+                            </template>
                             <template v-slot:item.name_en="{ item }">
                               {{ item.name_en }}
                             </template>
@@ -143,16 +68,44 @@
                         <v-icon> mdi-account-edit-outline </v-icon>
                       </v-btn>
                               <v-btn
-                                v-can="'delete-post'"
+                                v-can="'delete-division'"
                                 fab
                                 x-small
                                 color="grey"
-                                class="mr-1 white--text"
+                                class="ml-3 white--text"
                                 elevation="0"
-                                @click="deleteDivision(item.id)"
+                                @click="deleteAlert(item.id)"
                               >
                                 <v-icon> mdi-delete </v-icon>
                               </v-btn>
+                            </template>
+                            <template v-slot:footer="item">
+                              <div class="text-center pt-2 v-data-footer justify-center pb-2">
+                                <v-select
+                                style="
+                                  position: absolute;
+                                  right: 25px;
+                                  width: 149px;
+                                  transform: translate(0px, 0px);
+                                "
+                                :items="items"
+                                hide-details
+                                dense
+                                outlined
+                                @change="onPageChange"
+                                v-model="pagination.perPage"
+                              ></v-select>
+                                <v-pagination
+                                  circle
+                                  primary
+                                  v-model="pagination.current"
+                                  :length="pagination.total"
+                                  @input="onPageChange"
+                                  :total-visible="11"
+                                  class="custom-pagination-item"
+                                ></v-pagination>
+                                
+                              </div>
                             </template>
                           </v-data-table>
                         </v-col>
@@ -161,17 +114,110 @@
                   </v-card>
                 </v-col>
               </v-row>
-            </v-card>
           </v-col>
-        </v-row>
-      </v-col>
+
+              <!-- division add modal  -->
+    <v-dialog v-model="dialogAdd" width="650">
+      <v-card style="justify-content: center; text-align: center">
+        <v-card-title class="font-weight-bold justify-center">
+          Add New Division
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text class="mt-7">
+          <ValidationObserver ref="form" v-slot="{ invalid }">
+            <form
+              @submit.prevent="submitDivision()">
+              <ValidationProvider
+                name="Name English"
+                vid="name_en"
+                rules="required"
+                v-slot="{ errors }">
+                <v-text-field
+                outlined
+                  type="text"
+                  v-model="data.name_en"
+                  label="Name English"
+                  required
+                  :error="errors[0] ? true : false"
+                  :error-messages="errors[0]"
+                ></v-text-field>
+              </ValidationProvider>
+              <ValidationProvider
+                name="Name Bangla"
+                vid="name_bn"
+                rules="required"
+                v-slot="{ errors }">
+                <v-text-field
+                outlined
+                  type="text"
+                  v-model="data.name_bn"
+                  label="Name Bangla"
+                  required
+                  :error="errors[0] ? true : false"
+                  :error-messages="errors[0]"
+                ></v-text-field>
+              </ValidationProvider>
+           
+                <v-row class="mx-0 my-0 py-2" justify="center">
+                  <v-btn
+                  flat
+                    @click="dialogAdd = false"
+                    outlined
+                    class="custom-btn-width py-2 mr-10"
+                  >
+                    Cancel
+                  </v-btn>
+                  <v-btn
+                  type="submit"
+                  flat
+                    color="primary"
+                    :disabled="invalid"
+                    :loading="loading"
+                    class="custom-btn-width black white--text py-2"
+                  >
+                    Submit
+                  </v-btn>
+                </v-row>
+            </form>
+          </ValidationObserver>
+          </v-card-text>
+      </v-card>
+    </v-dialog>
+    <!-- division add modal  -->
+
+        <!-- delete modal  -->
+        <v-dialog v-model="deleteDialog" width="350">
+          <v-card style="justify-content: center; text-align: center">
+            <v-card-title class="font-weight-bold justify-center">
+              Delete Division
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-card-text>
+              <div class="subtitle-1 font-weight-medium mt-5">
+                Are you sure to delete this Division? Division all information will be deleted.
+              </div>
+            </v-card-text>
+            <v-card-actions style="display: block">
+              <v-row class="mx-0 my-0 py-2" justify="center">
+                <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
+                  Cancel
+                </v-btn>
+                <v-btn text @click="deleteDivision()" color="white" :loading="delete_loading"
+                  class="custom-btn-width black white--text py-2">
+                  Delete
+                </v-btn>
+              </v-row>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <!-- delete modal  -->
     </v-row>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import { extend } from "vee-validate";
+import { extend,ValidationProvider,ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 
 extend("required", required);
@@ -180,24 +226,31 @@ export default {
   title: "CTM - Divisions",
   data() {
     return {
+      data: {
+        name_en: null,
+        name_bn: null,
+      },
+      dialogAdd: false,
+      deleteDialog: false,
+      delete_loading: false,
       loading: false,
       search: "",
-      divisions: [
-        { id: 1, name_en: "1Dhaka", name_bn: "1Dhaka" },
-        { id: 2, name_en: "2Dhaka", name_bn: "2Dhaka" },
-        { id: 3, name_en: "3Dhaka", name_bn: "3Dhaka" },
-        { id: 4, name_en: "4Dhaka", name_bn: "4Dhaka" },
-        { id: 5, name_en: "5Dhaka", name_bn: "5Dhaka" },
-        { id: 6, name_en: "6Dhaka", name_bn: "6Dhaka" },
-        { id: 7, name_en: "7Dhaka", name_bn: "7Dhaka" },
-      ],
+      delete_id: "",
+      divisions: [],
+      pagination: {
+        current: 1,
+        total: 0,
+        perPage: 5,
+      },
+      items: [5, 10, 15, 20, 40, 50, 100],
     };
   },
   components: {
-    // ValidationProvider,
-    // ValidationObserver,
+    ValidationProvider,
+    ValidationObserver,
   },
   computed: {
+
     headers() {
       return [
         { text: "#Sl", value: "id", align: "start", sortable: false },
@@ -213,11 +266,37 @@ export default {
   },
 
   methods: {
-    editPlan() {
-      this.$router.push({
-        name: "EditPlan",
-      });
+    submitDivision() {
+  
     },
+    deleteAlert(id) {
+      this.deleteDialog = true;
+      this.delete_id = id;
+    },
+    onPageChange($event) {
+      // this.pagination.current = $event;
+      this.GetDivision();
+    },
+    async GetDivision() {
+      const queryParams = {
+                searchText: this.search,
+                perPage: this.pagination.perPage,
+                page: this.pagination.current,
+      };
+      this.$axios.get("/admin/division/get", {
+                headers: {
+                    Authorization: "Bearer " + this.$store.state.token,
+                    "Content-Type": "multipart/form-data",
+        },
+        params: queryParams,
+            }).then((result) => {
+              this.divisions = result.data.data;
+              this.pagination.current = result.data.meta.current_page;
+          this.pagination.total = result.data.meta.last_page;
+          this.pagination.grand_total = result.data.meta.total;
+            });
+        },
+ 
     deleteDivision: async function (id) {
       try {
         await this.$store.dispatch("Division/DestroyDivision", id).then(() => {
@@ -228,10 +307,11 @@ export default {
       }
     },
   },
+  created() {
+    this.GetDivision();
+  },
   beforeMount() {
     this.$store.commit("setHeaderTitle", "Division List");
   },
 };
 </script>
-
-<style scoped></style>

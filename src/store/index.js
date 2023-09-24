@@ -54,6 +54,12 @@ export default new Vuex.Store({
   /* -------------------------------------------------------------------------- */
   getters: {
     data: (state) => state.data,
+    getLoginresponse(state){
+      return state.loginData
+    },
+       getOtpresponse(state){
+      return state.otpData
+    },
   },
    GetToken: function (state) {
       return state.token;
