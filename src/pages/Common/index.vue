@@ -1,4 +1,7 @@
 <template>
+  <div>
+Wlcome 
+  </div>
   <div id="app">
     <v-app>
       <v-container class="my-5">
