@@ -127,7 +127,7 @@ export default {
   },
   methods: {
     async sendOtp() {
-      await this.$store.dispatch("sendOtp", this.form);
+      await this.$store.dispatch("sendOtpForgetPassword", this.form);
     },
     async forgotPasswordSubmit() {
       await this.$store.dispatch("forgotPasswordSubmit", this.form);

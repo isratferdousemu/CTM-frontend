@@ -38,6 +38,17 @@ export default new Vuex.Store({
     permissions: [],
     userPermissions: [],
     userData: null,
+    //practice
+    forms: [],
+    division: {},
+    success_message: "",
+    errors: {},
+    error_message: "",
+    error_status: "",
+    success_status: "",
+    loginData:[],
+    otpData:[]
+
   },
   /* -------------------------------------------------------------------------- */
   /*                               Getters Define                               */
@@ -56,7 +67,7 @@ export default new Vuex.Store({
       const data = await fetch("http://api.icndb.com/jokes/random/15");
       commit("SET_DATA", await data.json());
     },
-    sendOtp: ({ commit, state }, data) => {
+    sendOtpForgetPassword: ({ commit, state }, data) => {
       return http()
         .post("admin/forgot-password", data)
         .then((result) => {
@@ -102,6 +113,30 @@ export default new Vuex.Store({
       commit('setToken', null);
       commit('setUser', []);
     },
+    LoginSubmit: ({ commit,state }, data) => {
+    return http()
+    .post("admin/login/otp", data)
+    .then((result) => {
+      commit("setOtpresponse", result);
+    })
+    .catch((err) => {
+      state.errors = err.response.data.errors;
+      state.error_status = err.response.status;
+    });
+  },
+   sendOtp: ({ commit,state }, data) => {
+    return http()
+    .post("admin/login", data)
+    .then((result) => {
+      commit("setOtp", result);
+
+    })
+    .catch((err) => {
+      state.errors = err.response.data.errors;
+      state.error_status = err.response.status;
+    });
+  },
+
   },
   /* -------------------------------------------------------------------------- */
   /*                              Mutations Define                              */
@@ -155,6 +190,33 @@ export default new Vuex.Store({
     setUser(state, userData) {
       state.userData = userData;
     },
+    GetAllRole(state, data) {
+      state.rolesAll = data;
+    },
+    setPermissions(state, data) {
+      state.permissions = data;
+    },
+    setUserPermissions(state, data) {
+      state.userPermissions = data;
+    },
+    setUser(state, userData) {
+      state.userData = userData;
+    },
+    LoginSubmit: (state, data) => {
+    if (state.forms.push(data.data)) {
+      state.loginData = data.data;
+      // state.success_status = data.status;
+    } else {
+      state.success_message = "";
+    }
+  },
+   setOtp(state, loginData) {
+      state.loginData = loginData
+    },
+    setOtpresponse(state, otpData){
+       state.otpData = otpData
+    }
+
   },
   // use modules
   modules: {
@@ -168,7 +230,6 @@ export default new Vuex.Store({
     PayrollManagement,
     SystemConfiguration,
     TrainingManagement,
-    Division,
   },
   plugins: [
     createPersistedState({
