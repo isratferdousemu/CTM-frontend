@@ -29,6 +29,24 @@ const SystemConfigurationRoutes = [
         "../pages/SystemConfiguration/demographic_information/division/Edit.vue"
       ),
   },
+
+  {
+    path: "/system-configuration/menu",
+    name: "Menu",
+    component: () => import("../pages/SystemConfiguration/menu/Index.vue"),
+  },
+
+  {
+    path: "/system-configuration/menu/create",
+    name: "CreateMenu",
+    component: () => import("../pages/SystemConfiguration/menu/Create.vue"),
+  },
+
+  {
+    path: "/system-configuration/menu/edit/:id",
+    name: "EditMenu",
+    component: () => import("../pages/SystemConfiguration/menu/Edit.vue"),
+  },
 ];
 
 export default SystemConfigurationRoutes;
