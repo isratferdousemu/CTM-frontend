@@ -2,6 +2,10 @@ const SystemConfigurationRoutes = [
   {
     path: "/system-configuration/division",
     name: "Division",
+    meta: {
+      requiresAuth: true,
+      permission: "common",
+    },
     component: () =>
       import(
         "../pages/SystemConfiguration/demographic_information/division/Index.vue"
