@@ -48,7 +48,9 @@ export default new Vuex.Store({
     error_message: "",
     error_status: "",
     success_status: "",
-   
+    loginData:[],
+    otpData:[]
+
   },
   /* -------------------------------------------------------------------------- */
   /*                               Getters Define                               */
@@ -59,9 +61,6 @@ export default new Vuex.Store({
    GetToken: function (state) {
       return state.token;
     },
-  GetToken: function (state) {
-    return state.token;
-  },
   /* -------------------------------------------------------------------------- */
   /*                               Actions Define                               */
   /* -------------------------------------------------------------------------- */
@@ -94,13 +93,26 @@ export default new Vuex.Store({
     return http()
     .post("admin/login/otp", data)
     .then((result) => {
-      commit("LoginSubmit", result);
+      commit("setOtpresponse", result);
     })
     .catch((err) => {
       state.errors = err.response.data.errors;
       state.error_status = err.response.status;
     });
   },
+   sendOtp: ({ commit,state }, data) => {
+    return http()
+    .post("admin/login", data)
+    .then((result) => {
+      commit("setOtp", result);
+
+    })
+    .catch((err) => {
+      state.errors = err.response.data.errors;
+      state.error_status = err.response.status;
+    });
+  },
+
   },
   /* -------------------------------------------------------------------------- */
   /*                              Mutations Define                              */
@@ -165,12 +177,18 @@ export default new Vuex.Store({
     },
     LoginSubmit: (state, data) => {
     if (state.forms.push(data.data)) {
-      state.success_message = data.data.message;
-      state.success_status = data.status;
+      state.loginData = data.data;
+      // state.success_status = data.status;
     } else {
       state.success_message = "";
     }
   },
+   setOtp(state, loginData) {
+      state.loginData = loginData
+    },
+    setOtpresponse(state, otpData){
+       state.otpData = otpData
+    }
 
   },
   // use modules
