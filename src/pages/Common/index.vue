@@ -1,6 +1,6 @@
 <template>
   <div>
-Wlcome 
+Wlcome
   </div>
   <div id="app">
     <v-app>

@@ -1,4 +1,4 @@
-// import components
+
 import Login from "../pages/Common/Login.vue";
 import TokenView from "../pages/Common/copy.vue";
 const CommonRoutes = [
