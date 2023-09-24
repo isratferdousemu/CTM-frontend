@@ -80,10 +80,13 @@ const actions = {
 
   /*start  store division*/
   StoreDivision: ({ commit }, data) => {
+    // alert('StoreDivision'+ data);
+    console.log(commit);
     return http()
-      .post("/api/division/store", data)
+      .post("/admin/division/insert", data)
       .then((result) => {
-        commit("STORE_DIVISION", result);
+        console.log(result);
+        // commit("STORE_DIVISION", result);
       })
       .catch((err) => {
         state.errors = err.response.data.errors;

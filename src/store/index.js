@@ -15,6 +15,7 @@ import PayrollManagement from "./PayrollManagement";
 import SystemConfiguration from "./SystemConfiguration";
 import TrainingManagement from "./TrainingManagement";
 // Import other modules as needed
+import Division from "./modules/system_configuration/division/index.js";
 
 Vue.use(Vuex);
 export default new Vuex.Store({
@@ -31,6 +32,7 @@ export default new Vuex.Store({
     forgotPasswordErrors: [],
     forgotPasswordErrorMessageOtp: null,
     step: 1,
+    token: "1|lt5Vo6QK300ypBrCXNascL540T9SEU03KQTBFL4Nccd6b3fd",
   },
   /* -------------------------------------------------------------------------- */
   /*                               Getters Define                               */
@@ -57,7 +59,7 @@ export default new Vuex.Store({
         .catch((err) => {
           // console.log(err);
           commit("setforgotPasswordErrors", err.response.data.errors);
-        })
+        });
     },
     forgotPasswordSubmit: ({ commit, state }, data) => {
       return http()
@@ -66,20 +68,22 @@ export default new Vuex.Store({
           // console.log(result);
           this.$router.push({
             path: "/login",
-          })
-
+          });
         })
         .catch((err) => {
           console.log(err);
           if (err.response.data.success == false) {
             // this.error_message_otp = err.response.data.message;
-            commit("setforgotPasswordErrorMessageOtp", err.response.data.message);
+            commit(
+              "setforgotPasswordErrorMessageOtp",
+              err.response.data.message
+            );
           } else {
             // this.errors = err.response.data.errors;
             commit("setforgotPasswordErrors", err.response.data.errors);
           }
-        })
-    }
+        });
+    },
   },
   /* -------------------------------------------------------------------------- */
   /*                              Mutations Define                              */
@@ -125,10 +129,7 @@ export default new Vuex.Store({
     PayrollManagement,
     SystemConfiguration,
     TrainingManagement,
-
-
-
-
+    Division,
   },
   plugins: [
     createPersistedState({

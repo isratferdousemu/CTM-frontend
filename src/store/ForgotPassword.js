@@ -35,7 +35,7 @@ const actions = {
       console.error("Error fetching data:", error);
     }
   },
-  function1({commit}, data) {
+  function1({ commit }, data) {
     // alert('Forgot Password store'+);
     // console.log(JSON.stringify(commit.name));
     console.log(JSON.stringify(data));
