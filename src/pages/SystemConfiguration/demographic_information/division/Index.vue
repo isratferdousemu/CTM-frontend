@@ -270,6 +270,7 @@ export default {
   
     },
     deleteAlert(id) {
+      this.$toast.success("Logout Successfully");
       this.deleteDialog = true;
       this.delete_id = id;
     },
