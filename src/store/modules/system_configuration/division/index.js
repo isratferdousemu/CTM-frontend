@@ -48,7 +48,7 @@ const mutations = {
 
   DELETE_DIVISION: (state, { id, data }) => {
     if (id) {
-      state.divisions = state.divisions.filter((item) => {
+      state.divisions.data = state.divisions.data.filter((item) => {
         return id !== item.id;
       });
 
@@ -68,8 +68,24 @@ const actions = {
   /*start get all divisions*/
   GetAllDivisions: ({ commit }) => {
     return http()
-      .get("/api/division")
+      .get("/admin/division/get")
       .then((result) => {
+        console.log(result.data);
+        commit("GET_DIVISION", result.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  /*end get all divisions*/
+
+  /*start get all divisions*/
+  GetSearchDivisions: ({ commit },data) => {
+    return http()
+      .get(`/admin/division/get/${data}`)
+      .then((result) => {
+        // console.log("hello");
+        console.log(result.data);
         commit("GET_DIVISION", result.data);
       })
       .catch((err) => {
@@ -81,16 +97,23 @@ const actions = {
   /*start  store division*/
   StoreDivision: ({ commit }, data) => {
     // alert('StoreDivision'+ data);
-    console.log(commit);
     return http()
       .post("/admin/division/insert", data)
       .then((result) => {
-        console.log(result);
+        console.log(result.data);
+        console.log(commit);
+        // alert("Successfully Inserted");
+        // this.$router.push({
+        //   path: "/system-configuration/division",
+        // });
         // commit("STORE_DIVISION", result);
       })
       .catch((err) => {
         state.errors = err.response.data.errors;
         state.error_status = err.response.status;
+        console.log(state.errors.code[0]);
+        // console.log(state.error_status);
+        // console.log(state.errors);
       });
   },
   /*end  store division*/
@@ -98,7 +121,7 @@ const actions = {
   /*start edit division */
   EditDivision: ({ commit }, id) => {
     return http()
-      .get(`/api/division/edit/${id}`)
+      .get(`/admin/division/edit/${id}`)
       .then((result) => {
         commit("GET_SINGLE_DIVISION", result.data);
       })
@@ -126,8 +149,9 @@ const actions = {
   /*start delete division*/
   DestroyDivision: ({ commit }, id) => {
     return http()
-      .get(`/api/division/destroy/${id}`)
+      .get(`/admin/division/destroy/${id}`)
       .then((result) => {
+        console.log(result);
         commit("DELETE_DIVISION", { id: id, data: result.data });
       })
       .catch((err) => {
