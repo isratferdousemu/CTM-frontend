@@ -13,8 +13,9 @@
                                         <v-card-text>
                                                 <p>You will get a verification code to your registered number.</p>
                                                 <v-otp-input v-model="form.otp" :loading="loading" @finish="onFinish"></v-otp-input>
+                                                  <div v-if="getLoginresponse.message" v-html="getLoginresponse.message" class="red--text" />
                                                 <p>Remaining time: {{ remainingTime }} sec</p>
-                                              
+
                                         </v-card-text>
                                 </v-card>
                         </v-dialog>
@@ -65,16 +66,20 @@
                                 </v-sheet>
                         </v-card>
                         <span class="d-flex align-center justify-center my-10">Copyright © 2023 DSS | All Rights Reserved</span>
+
                 </v-container>
+
         </v-app>
 </div>
 </template>
 
 <script>
-import axios from "axios";
 import {
         getFingerprint
 } from "../../plugins/fingerprint.js";
+import {
+        mapGetters
+} from 'vuex'
 export default {
         name: "Login",
         title: "CTM - Login",
@@ -96,6 +101,7 @@ export default {
 
                 };
         },
+        computed: mapGetters(["getLoginresponse", "getOtpresponse"]),
 
         async created() {
                 const fingerprint = await getFingerprint();
@@ -103,35 +109,24 @@ export default {
         },
 
         methods: {
-                async submitData() {
-                        this.loading = true;
-                        axios
-                                .post("/admin/login/otp", this.form)
-                                .then((response) => {
-                                        this.loading = false;
-                                        if (response.data.success) {
-                                                this.otpDialog = true;
-                                                this.startCountdown();
-                                        }
-                                        // console.log(response.data.permissions)
-
-                                        // let data = {
-                                        //         permissions: response.data.permissions,
-                                        //         token: response.data.token,
-                                        //         user: response.data.data
-                                        // }
-                                        // this.$store.dispatch('login', data);
-                                        // this.$router.push({
-                                        //         path: "/",
-                                        // })
-                                })
-                                .catch((err) => {
-                                        this.loading = false;
-                                        // console.log(err.response.data)
-                                        this.errors = err.response.data.errors;
-                                        this.message = err.response.data.message;
-                                });
-                },
+                // async submitData() {
+                //         this.loading = true;
+                //         axios
+                //                 .post("/admin/login/otp", this.form)
+                //                 .then((response) => {
+                //                         this.loading = false;
+                //                         if (response.data.success) {
+                //                                 this.otpDialog = true;
+                //                                 this.startCountdown();
+                //                         }
+                //                 })
+                //                 .catch((err) => {
+                //                         this.loading = false;
+                //                         // console.log(err.response.data)
+                //                         this.errors = err.response.data.errors;
+                //                         this.message = err.response.data.message;
+                //                 });
+                // },
                 startCountdown() {
                         this.intervalId = setInterval(() => {
                                 if (this.remainingTime > 0) {
@@ -143,43 +138,82 @@ export default {
                                 }
                         }, 1000); // Update every second (1000 milliseconds)
                 },
-                onFinish() {
-                        this.loading = true;
-                        axios
-                                .post("/admin/login", this.form)
-                                .then((response) => {
-                                        this.loading = false;
-                                        console.log(response, "final");
-                                        // console.log(response.data.permissions)
+                // onFinish() {
+                //         this.loading = true;
+                //         axios
+                //                 .post("/admin/login", this.form)
+                //                 .then((response) => {
+                //                         this.loading = false;
+                //                         console.log(response, "final");
+                //                         // console.log(response.data.permissions)
 
-                                        let data = {
-                                                permissions: response.data.permissions,
-                                                token: response.data.token,
-                                                user: response.data.data,
-                                        };
-                                        this.$store.dispatch("login", data);
-                                        this.$router.push({
-                                                path: "/",
+                //                         let data = {
+                //                                 permissions: response.data.permissions,
+                //                                 token: response.data.token,
+                //                                 user: response.data.data,
+                //                         };
+                //                         this.$store.dispatch("login", data);
+                //                         this.$router.push({
+                //                                 path: "/",
+                //                         });
+                //                 })
+                //                 .catch((err) => {
+                //                         this.loading = false;
+                //                         console.log(err.response.data);
+                //                         this.errors = err.response.data.errors;
+                //                         // this.validation_message = err.response.data.message;
+                //                 });
+                // },
+                onFinish: async function () {
+                        try {
+                                this.loading = true;
+                                await this.$store
+                                        .dispatch("sendOtp", this.form)
+                                        .then(() => {
+
+                                                if (this.getLoginresponse.data.token) {
+                                                        let data = {
+
+                                                                permissions: this.getLoginresponse.data.permissions,
+                                                                token: this.getLoginresponse.data.token,
+                                                                user: this.getLoginresponse.data.data,
+                                                        };
+                                                        this.$store.dispatch("login", data);
+                                                        this.$router.push({
+                                                                path: "/",
+                                                        });
+
+                                                }
+                                                // let data = {
+                                                //   // permissions: response.data.permissions,
+                                                //   // token: response.data.token,
+                                                //   // user: response.data.data,
+                                                //         permissions:  this.Getotp.data.permissions,
+                                                //         token: this.Getotp.data.token,
+                                                //         user: this.Getotp.data.data,
+                                                // };
+                                                // this.$store.dispatch("login", data);
+                                                // this.$router.push({
+                                                //         path: "/",
+                                                // });
+
                                         });
-                                })
-                                .catch((err) => {
-                                        this.loading = false;
-                                        console.log(err.response.data);
-                                        this.errors = err.response.data.errors;
-                                        // this.validation_message = err.response.data.message;
-                                });
+                        } catch (err) {
+                                console.log(err);
+                        }
                 },
                 submitLogin: async function () {
                         try {
+                                this.loading = true;
                                 await this.$store
                                         .dispatch("LoginSubmit", this.form)
-                                        .then((response) => {
+                                        .then(() => {
 
                                                 this.loading = false;
-                                                if (response.data.success) {
-                                                        this.otpDialog = true;
-                                                        this.startCountdown();
-                                                }
+                                                // if (response.data.success) {
+                                                this.otpDialog = true;
+                                                this.startCountdown();
+                                                // }
                                         });
                         } catch (err) {
                                 console.log(err);
