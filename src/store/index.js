@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import { http } from "@/hooks/httpService";
+import axios from 'axios'
 // import axios from 'axios'
 
 import ApplicationSelection from "./ApplicationSelection";
@@ -14,7 +15,8 @@ import MEReporting from "./MEReporting";
 import PayrollManagement from "./PayrollManagement";
 import SystemConfiguration from "./SystemConfiguration";
 import TrainingManagement from "./TrainingManagement";
-// import Division from "@/store/modules/system_configuration/division";
+import Division from "@/store/modules/system_configuration/division";
+import Thana from "@/store/modules/system_configuration/thana";
 import Menu from "@/store/modules/system_configuration/menu";
 
 // Import other modules as needed
@@ -31,6 +33,9 @@ export default new Vuex.Store({
     notification: [],
     notificationUnseen: 0,
     notificationTime: 0,
+    forgotPasswordErrors: [],
+    forgotPasswordErrorMessageOtp: null,
+    step: 1,
     token: null,
     roles: [],
     rolesAll: [],
@@ -46,7 +51,26 @@ export default new Vuex.Store({
     error_status: "",
     success_status: "",
     loginData:[],
-    otpData:[]
+    otpData:[],
+    lookupTypes: [
+      {id: 1, name: 'Location Type'},
+      {id: 2, name: 'Allowance Service'},
+      {id: 3, name: 'Office category'},
+      {id: 4, name: 'Health Status'},
+      {id: 5, name: 'Financial Status'},
+      {id: 6, name: 'Social Status'},
+      {id: 7, name: 'PMT Scoring'},
+      {id: 8, name: 'Education Status'},
+      {id: 9, name: 'Religion'},
+      {id:10, name: 'Household Asset Own'},
+      {id:11, name: 'Disability Type'},
+      {id:12, name: 'Disability Level'},
+      {id:13, name: 'Bank Name'},
+      {id:14, name: 'Branch Name'},
+      {id:15, name: 'Complaint Category'},
+      {id:16, name: 'Module Name'},
+      {id:17, name: 'Organization'},
+    ],
 
   },
   /* -------------------------------------------------------------------------- */
@@ -54,15 +78,14 @@ export default new Vuex.Store({
   /* -------------------------------------------------------------------------- */
   getters: {
     data: (state) => state.data,
-    GetBudget(state){
-      return state.loginData
-    },
+ 
     getOtpresponse(state){
       return state.otpData
     },
     getLoginresponse(state){
       return state.loginData
     }
+  
   },
    GetToken: function (state) {
       return state.token;
@@ -74,6 +97,42 @@ export default new Vuex.Store({
     async getData({ commit }) {
       const data = await fetch("http://api.icndb.com/jokes/random/15");
       commit("SET_DATA", await data.json());
+    },
+    sendOtpForgetPassword: ({ commit, state }, data) => {
+      return http()
+        .post("admin/forgot-password", data)
+        .then((result) => {
+          commit("setStep", 2);
+          // console.log(state.step);
+          // console.log(result);
+        })
+        .catch((err) => {
+          // console.log(err);
+          commit("setforgotPasswordErrors", err.response.data.errors);
+        });
+    },
+    forgotPasswordSubmit: ({ commit, state }, data) => {
+      return http()
+        .post("admin/forgot-password/submit", data)
+        .then((result) => {
+          // console.log(result);
+          this.$router.push({
+            path: "/login",
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          if (err.response.data.success == false) {
+            // this.error_message_otp = err.response.data.message;
+            commit(
+              "setforgotPasswordErrorMessageOtp",
+              err.response.data.message
+            );
+          } else {
+            // this.errors = err.response.data.errors;
+            commit("setforgotPasswordErrors", err.response.data.errors);
+          }
+        });
     },
     login({ commit }, data) {
       commit('setToken', data.token);
@@ -123,13 +182,24 @@ export default new Vuex.Store({
       state.error_status = err.response.status;
     });
   },
+  async getLookupByType({state },type) {
+    return await axios.get("/admin/lookup/get/"+type, {
+      headers: {
+        Authorization: "Bearer " + state.token,
+        "Content-Type": "multipart/form-data",
+      }
+    }).then((result) => {
+      
+      return result.data.data
+    });
+  },
 
   },
   /* -------------------------------------------------------------------------- */
   /*                              Mutations Define                              */
   /* -------------------------------------------------------------------------- */
   mutations: {
-  
+
     setDrawer(state, payload) {
       state.Drawer = payload;
     },
@@ -148,7 +218,15 @@ export default new Vuex.Store({
     setNotificationTime(state, payload) {
       state.notificationTime = payload;
     },
-
+    setforgotPasswordErrors(state, payload) {
+      state.forgotPasswordErrors = payload;
+    },
+    setforgotPasswordErrorMessageOtp(state, payload) {
+      state.forgotPasswordErrorMessageOtp = payload;
+    },
+    setStep(state, payload) {
+      state.step = payload;
+    },
     //Authentication
     setToken(state, token) {
       state.token = token;
@@ -196,7 +274,8 @@ export default new Vuex.Store({
     PayrollManagement,
     SystemConfiguration,
     TrainingManagement,
-    // Division,
+    Division,
+    Thana,
     Menu,
   },
   plugins: [

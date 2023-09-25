@@ -5,6 +5,7 @@ import axios from "axios";
 const apiUrl = process.env.VUE_APP_BASE_API_URL_BACKEND;
 
 export function http() {
+  console.log("from" + store.state.token);
   return axios.create({
     baseURL: apiUrl,
     headers: {

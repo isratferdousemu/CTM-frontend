@@ -204,7 +204,8 @@ export default {
   },
   methods: {
     logout() {
-      axios
+      console.log(this.$store.state.token);
+      this.$axios
         .get("/admin/logout", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
@@ -212,10 +213,10 @@ export default {
           },
         })
         .then(() => {
-          // console.log(res)
+          
           this.$store.commit("setToken", null);
           this.$store.commit("setUser", null);
-          this.$router.push("/login");
+          this.$router.push({ name: "Login" });
         });
     },
   },

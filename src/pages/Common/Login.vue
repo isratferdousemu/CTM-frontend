@@ -4,18 +4,17 @@
                         <v-container class="my-5">
                                 <!-- login OTP -->
 
-                                <v-dialog persistent v-model="otpDialog" width="350">
-                                        <v-card style="justify-content: center; text-align: center">
-                                                <v-card-title class="font-weight-bold justify-center">
-                                                        OTP
-                                                </v-card-title>
-                                                <v-divider></v-divider>
-                                                <v-card-text>
-                                                        <p>You will get a verification code to your registered number.</p>
-                                                        <v-otp-input v-model="form.otp" :loading="loading"
-                                                                @finish="onFinish"></v-otp-input>
-                                                        <!-- <div v-if="getLoginresponse.message" v-html="getLoginresponse.message" class="red--text" /> -->
-                                                        <p>Remaining time: {{ remainingTime }} sec</p>
+                        <v-dialog persistent v-model="otpDialog" width="350">
+                                <v-card style="justify-content: center; text-align: center">
+                                        <v-card-title class="font-weight-bold justify-center">
+                                                OTP
+                                        </v-card-title>
+                                        <v-divider></v-divider>
+                                        <v-card-text>
+                                                <p>You will get a verification code to your registered number.</p>
+                                                <v-otp-input v-model="form.otp" :loading="loading" @finish="onFinish"></v-otp-input>
+                                                  <div v-if="getLoginresponse?.message" v-html="getLoginresponse?.message" class="red--text" />
+                                                <p>Remaining time: {{ remainingTime }} sec</p>
 
 
                                                 </v-card-text>
