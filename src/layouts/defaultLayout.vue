@@ -49,5 +49,7 @@ export default {
 };
 </script>
 <style>
- 
+ .v-main{
+     padding: 110px 0px 70px 280px !important;
+ }
 </style>

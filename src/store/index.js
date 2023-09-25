@@ -16,6 +16,7 @@ import SystemConfiguration from "./SystemConfiguration";
 import TrainingManagement from "./TrainingManagement";
 import Division from "@/store/modules/system_configuration/division";
 import Menu from "@/store/modules/system_configuration/menu";
+import Device_registration from "@/store/modules/system_configuration/device_registration";
 
 // Import other modules as needed
 
@@ -180,10 +181,10 @@ export default new Vuex.Store({
       state.step = payload;
     },
     //Authentication
-    setToken(state, token) {
-      state.token = token;
-      state.token = '1|lt5Vo6QK300ypBrCXNascL540T9SEU03KQTBFL4Nccd6b3fd';
-    },
+    // setToken(state, token) {
+    //   state.token = token;
+    //   state.token = '1|lt5Vo6QK300ypBrCXNascL540T9SEU03KQTBFL4Nccd6b3fd';
+    // },
     setRoles(state, data) {
       state.roles = data;
     },
@@ -229,6 +230,7 @@ export default new Vuex.Store({
     TrainingManagement,
     Division,
     Menu,
+    Device_registration,
   },
   plugins: [
     createPersistedState({
