@@ -26,9 +26,9 @@
                     class="my-sm-0 my-3 mx-0v -input--horizontal " flat variant="outlined" label="search Division"
                     hide-details color="primary">
                   </v-text-field>
-                  
 
-          </div>  
+
+          </div>
                         <v-btn
                           @click="dialogAdd = true"
                           flat
@@ -104,7 +104,7 @@
                                   :total-visible="11"
                                   class="custom-pagination-item"
                                 ></v-pagination>
-                                
+
                               </div>
                             </template>
                           </v-data-table>
@@ -157,7 +157,7 @@
                   :error-messages="errors[0]"
                 ></v-text-field>
               </ValidationProvider>
-           
+
                 <v-row class="mx-0 my-0 py-2" justify="center">
                   <v-btn
                   flat
@@ -254,6 +254,7 @@ export default {
     headers() {
       return [
         { text: "#Sl", value: "id", align: "start", sortable: false },
+        { text: "Code", value: "code" },
         { text: "Division Name English", value: "name_en" },
         { text: "Division Name English Bangla", value: "name_bn" },
         { text: "Actions", value: "actions", align: "center", sortable: false },
@@ -261,13 +262,14 @@ export default {
     },
 
     ...mapState({
-      message: (state) => state.Division.success_message,
+      message: (state) => state.SystemConfiguration.success_message,
+      divisions: (state) => state.SystemConfiguration.divisions.data,
     }),
   },
 
   methods: {
     submitDivision() {
-  
+
     },
     deleteAlert(id) {
       this.$toast.success("Logout Successfully");
@@ -297,11 +299,12 @@ export default {
           this.pagination.grand_total = result.data.meta.total;
             });
         },
- 
+
     deleteDivision: async function (id) {
       try {
-        await this.$store.dispatch("Division/DestroyDivision", id).then(() => {
+        await this.$store.dispatch("SystemConfiguration/DestroyDivision", id).then(() => {
           console.log("success");
+          console.log("Delete Item: " + id);
         });
       } catch (e) {
         console.log(e);

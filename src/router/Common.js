@@ -1,7 +1,12 @@
-
+import ForgotPassword from "../pages/Common/ForgotPassword.vue";
 import Login from "../pages/Common/Login.vue";
 import TokenView from "../pages/Common/copy.vue";
 const CommonRoutes = [
+  {
+    path: "/forgotPassword",
+    name: "ForgotPassword",
+    component: ForgotPassword,
+  },
   {
     path: "/login",
     name: "Login",
@@ -18,6 +23,5 @@ const CommonRoutes = [
     },
     component: TokenView,
   },
-];
-
+]
 export default CommonRoutes;

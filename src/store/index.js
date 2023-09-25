@@ -31,6 +31,9 @@ export default new Vuex.Store({
     notification: [],
     notificationUnseen: 0,
     notificationTime: 0,
+    forgotPasswordErrors: [],
+    forgotPasswordErrorMessageOtp: null,
+    step: 1,
     token: null,
     roles: [],
     rolesAll: [],
@@ -72,6 +75,42 @@ export default new Vuex.Store({
       const data = await fetch("http://api.icndb.com/jokes/random/15");
       commit("SET_DATA", await data.json());
     },
+    sendOtpForgetPassword: ({ commit, state }, data) => {
+      return http()
+        .post("admin/forgot-password", data)
+        .then((result) => {
+          commit("setStep", 2);
+          // console.log(state.step);
+          // console.log(result);
+        })
+        .catch((err) => {
+          // console.log(err);
+          commit("setforgotPasswordErrors", err.response.data.errors);
+        });
+    },
+    forgotPasswordSubmit: ({ commit, state }, data) => {
+      return http()
+        .post("admin/forgot-password/submit", data)
+        .then((result) => {
+          // console.log(result);
+          this.$router.push({
+            path: "/login",
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          if (err.response.data.success == false) {
+            // this.error_message_otp = err.response.data.message;
+            commit(
+              "setforgotPasswordErrorMessageOtp",
+              err.response.data.message
+            );
+          } else {
+            // this.errors = err.response.data.errors;
+            commit("setforgotPasswordErrors", err.response.data.errors);
+          }
+        });
+    },
     login({ commit }, data) {
       commit('setToken', data.token);
       console.log('state permission', data.permissions);
@@ -112,7 +151,7 @@ export default new Vuex.Store({
   /*                              Mutations Define                              */
   /* -------------------------------------------------------------------------- */
   mutations: {
-  
+
     setDrawer(state, payload) {
       state.Drawer = payload;
     },
@@ -131,10 +170,19 @@ export default new Vuex.Store({
     setNotificationTime(state, payload) {
       state.notificationTime = payload;
     },
-
+    setforgotPasswordErrors(state, payload) {
+      state.forgotPasswordErrors = payload;
+    },
+    setforgotPasswordErrorMessageOtp(state, payload) {
+      state.forgotPasswordErrorMessageOtp = payload;
+    },
+    setStep(state, payload) {
+      state.step = payload;
+    },
     //Authentication
     setToken(state, token) {
       state.token = token;
+      state.token = '1|lt5Vo6QK300ypBrCXNascL540T9SEU03KQTBFL4Nccd6b3fd';
     },
     setRoles(state, data) {
       state.roles = data;
