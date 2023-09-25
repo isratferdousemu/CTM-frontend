@@ -7,7 +7,6 @@
   font-family: "Bree Serif", serif !important;
   font-weight: 400 !important;
 }
-
 a.v-list-item--active.v-list-item.v-list-item--link.theme--light {
   background: linear-gradient(89.9deg,#1b1875e3 2.01%,#06a078 98.89%) !important;
   color: white;
@@ -503,27 +502,7 @@ html, body{
   html,body{
     overflow: unset !important;
 }
-
-.video_call_options {
-  height: 58px !important;
-  position: fixed !important;
-  bottom: 0;
-  width: 100%;
-  background: #191919b0 !important;
-  justify-content: center !important;
-  align-items: center !important;
-}
-
-/* .agora_video_wraf{
-  display: grid !important;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: 2fr;
-  grid-auto-rows: 1fr;
-}
-
-.agora_video_wraf .agora-video:nth-child(1) {
- grid-column: 1/-1;
-} */
+ 
 .setting_app .v-application--wrap,.childSetting{
   max-height: 85vh !important;
   min-height: 85vh !important;

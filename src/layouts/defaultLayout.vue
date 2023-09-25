@@ -5,7 +5,7 @@
     <!------TopBar-------->
     <TopBar />
     <!-- MAIN VIEW COMPONENT  -->
-    <v-main>
+    <v-main >
       <v-container fluid class="page-wrapper">
         <!-- <h1 v-tooltip="hello">OK</h1> -->
         <router-view />
@@ -49,7 +49,5 @@ export default {
 };
 </script>
 <style>
-.v-main {
-  padding: 70px 4px 70px 150px !important;
-}
+ 
 </style>

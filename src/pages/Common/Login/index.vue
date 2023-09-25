@@ -1,19 +1,4 @@
 <template>
-  <!-- <v-form @submit.prevent="submitData" class="mt-10">
-                                        <v-text-field label="Email" v-model="data.email" required></v-text-field>
-                                        <div v-if="errors && errors.email" v-html="errors.email" />
-                                        <v-text-field label="Password" type="password" v-model="data.password" required></v-text-field>
-                                        <div v-if="errors && errors.password" v-html="errors.password" />
-                                        <div class="d-inline d-flex justify-end">
-
-                                                <v-btn color="green" @click="submitData">Submit</v-btn>
-
-                                        </div>
-
-                                </v-form> -->
-
-  <!-- <v-img class="text-center ma-auto" max-height="100%" max-width="80px" position="center center" src="/assets/images/dss.jpg"></v-img> -->
-
   <div id="app">
     <v-app>
       <v-container class="my-5">
@@ -91,7 +76,6 @@ export default {
 
       errors: [],
       loading: false,
-      // image: "./assets/images/.jpg"
     };
   },
 

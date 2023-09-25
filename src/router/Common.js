@@ -10,13 +10,18 @@ const CommonRoutes = [
   {
     path: "/login",
     name: "Login",
+    meta: {
+      guest: true
+    },
     component: Login,
   },
   {
     path: "/browser-token",
     name: "TokenView",
+    meta: {
+      guest: true
+    },
     component: TokenView,
-    meta: {},
   },
 ]
 export default CommonRoutes;

@@ -8,17 +8,27 @@ import "vuetify/dist/vuetify.min.css";
 import "@mdi/font/css/materialdesignicons.css";
 import { useApiRequest } from "@/hooks/apiRequestHook";
 import "@/Directives/v-tooltip";
-Vue.use(Vuetify);
-const vuetify = new Vuetify({});
-
-//mixins import
+import axios from "axios";
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
 import HeaderMixins from "./mixins/HeaderMixins";
-Vue.mixin(HeaderMixins);
 
 Vue.config.productionTip = false;
-import axios from "axios";
+Vue.use(Vuetify);
+
+const vuetify = new Vuetify({});
+const options = {
+  transition: "Vue-Toastification__bounce",
+  maxToasts: 20,
+  newestOnTop: true
+};
+Vue.use(Toast, options);
+//mixins import
+Vue.mixin(HeaderMixins);
+
 
 axios.defaults.baseURL = `http://127.0.0.1:8000/api/v1`;
+Vue.prototype.$axios = axios;
 
 // Register the ApiRequestPlugin globally
 const apiRequest = useApiRequest();

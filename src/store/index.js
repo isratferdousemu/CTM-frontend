@@ -18,7 +18,6 @@ import Division from "@/store/modules/system_configuration/division";
 import Menu from "@/store/modules/system_configuration/menu";
 
 // Import other modules as needed
-import Division from "./modules/system_configuration/division/index.js";
 
 Vue.use(Vuex);
 export default new Vuex.Store({
@@ -58,10 +57,16 @@ export default new Vuex.Store({
   /* -------------------------------------------------------------------------- */
   getters: {
     data: (state) => state.data,
+    getLoginresponse(state){
+      return state.loginData
+    },
+       getOtpresponse(state){
+      return state.otpData
+    },
   },
-  GetToken: function (state) {
-    return state.token;
-  },
+   GetToken: function (state) {
+      return state.token;
+    },
   /* -------------------------------------------------------------------------- */
   /*                               Actions Define                               */
   /* -------------------------------------------------------------------------- */
@@ -176,6 +181,7 @@ export default new Vuex.Store({
     //Authentication
     setToken(state, token) {
       state.token = token;
+      // state.token = '1|lt5Vo6QK300ypBrCXNascL540T9SEU03KQTBFL4Nccd6b3fd';
     },
     setRoles(state, data) {
       state.roles = data;
