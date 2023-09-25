@@ -25,12 +25,19 @@ const mutations = {
   },
 
   STORE_DIVISION: (state, data) => {
-    if (state.divisions.push(data.data)) {
-      state.success_message = data.data.message;
-      state.success_status = data.status;
-    } else {
-      state.success_message = "";
-    }
+    state.divisions = data.data;
+    state.errors = {};
+    // if (state.divisions.push(data.data)) {
+    //   state.success_message = data.data.message;
+    //   state.success_status = data.status;
+    // } else {
+    //   state.success_message = "";
+    // }
+  },
+
+  RESET_ERRORS: (state) => {
+    state.errors = {};
+    state.error_status = "";
   },
 
   GET_SINGLE_DIVISION: (state, data) => {
@@ -102,16 +109,12 @@ const actions = {
       .then((result) => {
         console.log(result.data);
         console.log(commit);
-        // alert("Successfully Inserted");
-        // this.$router.push({
-        //   path: "/system-configuration/division",
-        // });
-        // commit("STORE_DIVISION", result);
+        commit("RESET_ERRORS");
       })
       .catch((err) => {
         state.errors = err.response.data.errors;
-        state.error_status = err.response.status;
-        console.log(state.errors.code[0]);
+        state.error_status = err.response.message;
+        // console.log(state.errors.code[0]);
         // console.log(state.error_status);
         // console.log(state.errors);
       });
@@ -133,15 +136,16 @@ const actions = {
   /*end edit division */
 
   /*start update division*/
-  UpdateDivision: ({ commit }, { id, data }) => {
+  UpdateDivision: ({ commit }, data ) => {
     return http()
-      .post(`/api/division/update/${id}`, data)
+      .post(`/admin/division/update/`, data)
       .then((result) => {
-        commit("UPDATE_DIVISION", result);
+        console.log(result);
+        commit("RESET_ERRORS");        
       })
       .catch((err) => {
         state.errors = err.response.data.errors;
-        state.error_status = err.response.status;
+        state.error_status = err.response.message;
       });
   },
   /*end update division*/
@@ -152,7 +156,6 @@ const actions = {
       .get(`/admin/division/destroy/${id}`)
       .then((result) => {
         console.log(result);
-        commit("DELETE_DIVISION", { id: id, data: result.data });
       })
       .catch((err) => {
         console.log(err);

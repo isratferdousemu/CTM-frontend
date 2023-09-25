@@ -181,7 +181,6 @@ export default new Vuex.Store({
     //Authentication
     setToken(state, token) {
       state.token = token;
-      // state.token = '1|lt5Vo6QK300ypBrCXNascL540T9SEU03KQTBFL4Nccd6b3fd';
     },
     setRoles(state, data) {
       state.roles = data;
