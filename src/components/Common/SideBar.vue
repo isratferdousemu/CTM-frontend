@@ -147,6 +147,11 @@ export default {
               icon: "mdi mdi-plus",
               to: "/system-configuration/division",
             },
+            {
+              title: "Menu",
+              icon: "mdi mdi-plus",
+              to: "/system-configuration/menu",
+            },
           ],
           permission: "",
         },

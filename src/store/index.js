@@ -181,10 +181,10 @@ export default new Vuex.Store({
       state.step = payload;
     },
     //Authentication
-    // setToken(state, token) {
-    //   state.token = token;
-    //   state.token = '1|lt5Vo6QK300ypBrCXNascL540T9SEU03KQTBFL4Nccd6b3fd';
-    // },
+    setToken(state, token) {
+      state.token = token;
+    },
+
     setRoles(state, data) {
       state.roles = data;
     },
@@ -234,7 +234,7 @@ export default new Vuex.Store({
   },
   plugins: [
     createPersistedState({
-      paths: ["userData", "token", "userPermissions"],
+      paths: ["userData", "token", "userPermissions","loginData"],
     }),
   ],
 });
