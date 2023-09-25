@@ -148,6 +148,11 @@ export default {
               to: "/system-configuration/division",
             },
             {
+              title: "Menu",
+              icon: "mdi mdi-plus",
+              to: "/system-configuration/menu",
+            },
+            {
               title: "Thana/Upazila",
               icon: "mdi mdi-plus",
               to: "/system-configuration/thana",

@@ -18,9 +18,6 @@ const CommonRoutes = [
   {
     path: "/browser-token",
     name: "TokenView",
-    meta: {
-      guest: true
-    },
     component: TokenView,
   },
 ]

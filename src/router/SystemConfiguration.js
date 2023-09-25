@@ -60,6 +60,7 @@ const SystemConfigurationRoutes = [
  
 
 
+    /*Menu route start*/
   {
     path: "/system-configuration/menu",
     name: "Menu",
@@ -77,6 +78,27 @@ const SystemConfigurationRoutes = [
     name: "EditMenu",
     component: () => import("../pages/SystemConfiguration/menu/Edit.vue"),
   },
+    /*Menu route end*/
+
+    /*Device Registration route start*/
+  {
+    path: "/system-configuration/device_registration",
+    name: "DeviceRegistration",
+    component: () => import("../pages/SystemConfiguration/device_registration/Index.vue")
+  },
+
+  {
+    path: "/system-configuration/device_registration/create",
+    name: "DeviceRegistrationCreate",
+    component: () => import("../pages/SystemConfiguration/device_registration/Create.vue")
+  },
+
+  {
+    path: "/system-configuration/device_registration/edit/:id",
+    name: "DeviceRegistrationEdit",
+    component: () => import("../pages/SystemConfiguration/device_registration/Edit.vue")
+  }
+    /*Device Registration route end*/
 ];
 
 export default SystemConfigurationRoutes;
