@@ -6,7 +6,18 @@ export default {
   title: "CTM - Device Registration",
   data(){
     return{
-      search: ''
+      device_types: [
+        {id: 1, name: 'Computer Desktop'},
+        {id: 2, name: 'Android Mobile'},
+        {id: 3, name: 'Ios Mobile'},
+        {id: 4, name: 'Laptop'},
+      ],
+
+      deleteDialog: false,
+      delete_loading: false,
+      deleted_id: '',
+      search: '',
+      page: 1
     }
   },
 
@@ -24,6 +35,9 @@ export default {
     },
 
     ...mapState({
+        devices: (state) => state.Device_registration.devices,
+        pagination: (state) => state.Device_registration.pagination,
+        totalDevice: (state) => state.Device_registration.total,
         message: (state) => state.Device_registration.success_message
     })
   },
@@ -37,10 +51,18 @@ export default {
       GetAllDevice: "Device_registration/GetAllDevice"
     }),
 
-    deleteDevice: async function(id){
+    deleteAlert(id) {
+      //this.$toast.success("Logout Successfully");
+      this.deleteDialog = true;
+      this.deleted_id = id;
+    },
+
+    deleteDevice: async function(){
       try {
+        let id = this.deleted_id;
         await this.$store.dispatch("Device_registration/DestroyDevice", id).then(() => {
-          console.log('success')
+          this.deleteDialog = false;
+          this.$toast.success(this.message);
         })
       }catch (e) {
         console.log(e);
@@ -98,11 +120,20 @@ export default {
                 <v-card-subtitle>
                   <v-data-table
                       :headers="headers"
-                      :items="menus"
+                      :items="devices"
                       :search="search"
                       dense
                       class="elevation-1"
                   >
+
+                    <template v-slot:[`item.device_type`]="{ item }">
+                      <div v-for="device in device_types" :key="device.id">
+                        <span v-if="device.id === item.device_type">
+                          {{ device.name }}
+                        </span>
+                      </div>
+                    </template>
+
                     <template v-slot:[`item.actions`]="{ item }">
                       <v-tooltip top>
                         <template v-slot:activator="{ on }">
@@ -112,7 +143,7 @@ export default {
                               color="grey"
                               v-on="on"
                               router
-                              :to="`/system-configuration/device/edit/${item.id}`"
+                              :to="`/system-configuration/device_registration/edit/${item.id}`"
                           >
                             <v-icon left small>mdi-pencil</v-icon>
                             <span right class="caption text-lowercase"
@@ -130,7 +161,7 @@ export default {
                               text
                               color="grey"
                               v-on="on"
-                              @click="deleteDevice(item.id)"
+                              @click="deleteAlert(item.id)"
                           >
                             <v-icon left small>mdi-delete</v-icon>
                             <span right class="caption text-lowercase"
@@ -148,6 +179,33 @@ export default {
           </v-col>
         </v-row>
       </v-col>
+
+      <!-- delete modal  -->
+      <v-dialog v-model="deleteDialog" width="350">
+        <v-card style="justify-content: center; text-align: center">
+          <v-card-title class="font-weight-bold justify-center">
+            Delete Device
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            <div class="subtitle-1 font-weight-medium mt-5">
+              Are you sure to delete this Device? Division all information will be deleted.
+            </div>
+          </v-card-text>
+          <v-card-actions style="display: block">
+            <v-row class="mx-0 my-0 py-2" justify="center">
+              <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
+                Cancel
+              </v-btn>
+              <v-btn text @click="deleteDevice" color="white" :loading="delete_loading"
+                     class="custom-btn-width black white--text py-2">
+                Delete
+              </v-btn>
+            </v-row>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <!-- delete modal  -->
     </v-row>
   </div>
 </template>
