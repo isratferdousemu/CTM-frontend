@@ -15,6 +15,7 @@ import PayrollManagement from "./PayrollManagement";
 import SystemConfiguration from "./SystemConfiguration";
 import TrainingManagement from "./TrainingManagement";
 import Division from "@/store/modules/system_configuration/division";
+import District from "@/store/modules/system_configuration/district";
 import Menu from "@/store/modules/system_configuration/menu";
 
 // Import other modules as needed
@@ -226,6 +227,7 @@ export default new Vuex.Store({
     SystemConfiguration,
     TrainingManagement,
     Division,
+    District,
     Menu,
   },
   plugins: [
