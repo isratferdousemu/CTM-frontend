@@ -43,7 +43,7 @@
                             item-key="id"
                             :headers="headers"
                             :items="divisions"
-          :items-per-page="pagination.perPage"
+                            :items-per-page="pagination.perPage"
                             hide-default-footer
                             class="elevation-0 transparent row-pointer"
                           >
@@ -58,15 +58,14 @@
                             </template>
                             <template v-slot:item.actions="{ item }">
                               <v-btn
-                        v-can="'update-post'"
-                        fab
-                        x-small
-                        color="success"
-                        elevation="0"
-                        @click="editPlan(item)"
-                      >
-                        <v-icon> mdi-account-edit-outline </v-icon>
-                      </v-btn>
+                                v-can="'update-post'"
+                                fab
+                                x-small
+                                color="success"
+                                elevation="0"
+                                @click="editPlan(item)">
+                                <v-icon> mdi-account-edit-outline </v-icon>
+                              </v-btn>
                               <v-btn
                                 v-can="'delete-division'"
                                 fab
@@ -74,8 +73,7 @@
                                 color="grey"
                                 class="ml-3 white--text"
                                 elevation="0"
-                                @click="deleteAlert(item.id)"
-                              >
+                                @click="deleteAlert(item.id)">
                                 <v-icon> mdi-delete </v-icon>
                               </v-btn>
                             </template>
@@ -116,74 +114,74 @@
               </v-row>
           </v-col>
 
-              <!-- division add modal  -->
-    <v-dialog v-model="dialogAdd" width="650">
-      <v-card style="justify-content: center; text-align: center">
-        <v-card-title class="font-weight-bold justify-center">
-          Add New Division
-        </v-card-title>
-        <v-divider></v-divider>
-        <v-card-text class="mt-7">
-          <ValidationObserver ref="form" v-slot="{ invalid }">
-            <form
-              @submit.prevent="submitDivision()">
-              <ValidationProvider
-                name="Name English"
-                vid="name_en"
-                rules="required"
-                v-slot="{ errors }">
-                <v-text-field
-                outlined
-                  type="text"
-                  v-model="data.name_en"
-                  label="Name English"
-                  required
-                  :error="errors[0] ? true : false"
-                  :error-messages="errors[0]"
-                ></v-text-field>
-              </ValidationProvider>
-              <ValidationProvider
-                name="Name Bangla"
-                vid="name_bn"
-                rules="required"
-                v-slot="{ errors }">
-                <v-text-field
-                outlined
-                  type="text"
-                  v-model="data.name_bn"
-                  label="Name Bangla"
-                  required
-                  :error="errors[0] ? true : false"
-                  :error-messages="errors[0]"
-                ></v-text-field>
-              </ValidationProvider>
-
-                <v-row class="mx-0 my-0 py-2" justify="center">
-                  <v-btn
-                  flat
-                    @click="dialogAdd = false"
+        <!-- division add modal  -->
+        <v-dialog v-model="dialogAdd" width="650">
+          <v-card style="justify-content: center; text-align: center">
+            <v-card-title class="font-weight-bold justify-center">
+              Add New Division
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-card-text class="mt-7">
+              <ValidationObserver ref="form" v-slot="{ invalid }">
+                <form
+                  @submit.prevent="submitDivision()">
+                  <ValidationProvider
+                    name="Name English"
+                    vid="name_en"
+                    rules="required"
+                    v-slot="{ errors }">
+                    <v-text-field
                     outlined
-                    class="custom-btn-width py-2 mr-10"
-                  >
-                    Cancel
-                  </v-btn>
-                  <v-btn
-                  type="submit"
-                  flat
-                    color="primary"
-                    :disabled="invalid"
-                    :loading="loading"
-                    class="custom-btn-width black white--text py-2"
-                  >
-                    Submit
-                  </v-btn>
-                </v-row>
-            </form>
-          </ValidationObserver>
-          </v-card-text>
-      </v-card>
-    </v-dialog>
-    <!-- division add modal  -->
+                      type="text"
+                      v-model="data.name_en"
+                      label="Name English"
+                      required
+                      :error="errors[0] ? true : false"
+                      :error-messages="errors[0]"
+                    ></v-text-field>
+                  </ValidationProvider>
+                  <ValidationProvider
+                    name="Name Bangla"
+                    vid="name_bn"
+                    rules="required"
+                    v-slot="{ errors }">
+                    <v-text-field
+                    outlined
+                      type="text"
+                      v-model="data.name_bn"
+                      label="Name Bangla"
+                      required
+                      :error="errors[0] ? true : false"
+                      :error-messages="errors[0]"
+                    ></v-text-field>
+                  </ValidationProvider>
+
+                    <v-row class="mx-0 my-0 py-2" justify="center">
+                      <v-btn
+                      flat
+                        @click="dialogAdd = false"
+                        outlined
+                        class="custom-btn-width py-2 mr-10"
+                      >
+                        Cancel
+                      </v-btn>
+                      <v-btn
+                      type="submit"
+                      flat
+                        color="primary"
+                        :disabled="invalid"
+                        :loading="loading"
+                        class="custom-btn-width black white--text py-2"
+                      >
+                        Submit
+                      </v-btn>
+                    </v-row>
+                </form>
+              </ValidationObserver>
+              </v-card-text>
+          </v-card>
+        </v-dialog>
+        <!-- division add modal  -->
 
         <!-- delete modal  -->
         <v-dialog v-model="deleteDialog" width="350">
@@ -276,10 +274,12 @@ export default {
       this.deleteDialog = true;
       this.delete_id = id;
     },
+
     onPageChange($event) {
       // this.pagination.current = $event;
       this.GetDivision();
     },
+
     async GetDivision() {
       const queryParams = {
                 searchText: this.search,
@@ -295,8 +295,8 @@ export default {
             }).then((result) => {
               this.divisions = result.data.data;
               this.pagination.current = result.data.meta.current_page;
-          this.pagination.total = result.data.meta.last_page;
-          this.pagination.grand_total = result.data.meta.total;
+              this.pagination.total = result.data.meta.last_page;
+              this.pagination.grand_total = result.data.meta.total;
             });
         },
 
