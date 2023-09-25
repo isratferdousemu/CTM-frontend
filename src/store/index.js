@@ -18,6 +18,7 @@ import Division from "@/store/modules/system_configuration/division";
 import District from "@/store/modules/system_configuration/district";
 import City from "@/store/modules/system_configuration/city";
 import Menu from "@/store/modules/system_configuration/menu";
+import Device_registration from "@/store/modules/system_configuration/device_registration";
 
 // Import other modules as needed
 
@@ -184,6 +185,7 @@ export default new Vuex.Store({
     setToken(state, token) {
       state.token = token;
     },
+
     setRoles(state, data) {
       state.roles = data;
     },
@@ -231,10 +233,11 @@ export default new Vuex.Store({
     District,
     City,
     Menu,
+    Device_registration,
   },
   plugins: [
     createPersistedState({
-      paths: ["userData", "token", "userPermissions"],
+      paths: ["userData", "token", "userPermissions","loginData"],
     }),
   ],
 });
