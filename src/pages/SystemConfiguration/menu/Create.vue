@@ -11,21 +11,21 @@ export default {
         { id: 2, name: "External" },
       ],
       add_menu: {
-        label_name_en: "",
-        label_name_bn: "",
-        page_link_id: "",
-        parent_id: "",
-        order: "",
-        link_type: "",
-        link: "",
+        label_name_en: null,
+        label_name_bn: null,
+        page_link_id: null,
+        parent_id: null,
+        order: null,
+        link_type: null,
+        link: null,
       },
       labelNameEnRules: [
         v => !!v || 'Label Name English is Required',
-        v => v.length >= 50 || 'Label Name English must be 50 characters or more',
+        v => v.length <= 50 || 'Label Name English must be 50 characters or more',
       ],
       labelNameBnRules: [
         v => !!v || 'Label Name Bangla is Required',
-        v => v.length >= 50 || 'Label Name must bangla be 50 characters or more',
+        v => v.length <= 50 || 'Label Name must bangla be 50 characters or more',
       ],
       orderRules: [
         v => v.length > 0 || 'This field may not be empty',
@@ -58,18 +58,16 @@ export default {
     addmenu: async function () {
       try {
         let formData = new FormData();
+        for (const [key, value] of Object.entries(this.add_menu)) {
+        if (value !== null) {
+          formData.append(key, value);
+        }
+      }
 
-        formData.append("label_name_en", this.add_menu.label_name_en);
-        formData.append("label_name_bn", this.add_menu.label_name_bn);
-        formData.append("page_link_id", this.add_menu.page_link_id);
-        formData.append("parent_id", this.add_menu.parent_id);
-        formData.append("link_type", this.add_menu.link_type);
-        formData.append("link", this.add_menu.link);
-        formData.append("order", this.add_menu.order);
-
-        await this.$store.dispatch("Menu/StoreMenu", formData).then(() => {
+        await this.$store.dispatch("Menu/StoreMenu", formData).then((res) => {
           this.add_menu = {};
           console.log("Menu store successful");
+          this.$router.push({ name: "Menu" });
         });
       } catch (e) {
         console.log(e);
@@ -104,7 +102,7 @@ export default {
                           outlined
                         ></v-text-field>
                         <p
-                          v-if="errors.label_name_en"
+                          v-if="errors?.label_name_en"
                           class="red--text custom_error"
                         >
                           {{ errors.label_name_en[0] }}
@@ -121,10 +119,10 @@ export default {
                           outlined
                         ></v-text-field>
                         <p
-                          v-if="errors.label_name_bn"
+                          v-if="errors?.label_name_bn"
                           class="red--text custom_error"
                         >
-                          {{ errors.label_name_bn[0] }}
+                          {{ errors?.label_name_bn[0] }}
                         </p>
                       </v-col>
                     </v-row>
@@ -142,7 +140,7 @@ export default {
                       outlined
                       v-model="add_menu.parent_id"
                     ></v-select>
-                    <p v-if="errors.parent_id" class="red--text custom_error">
+                    <p v-if="errors?.parent_id" class="red--text custom_error">
                       {{ errors.parent_id[0] }}
                     </p>
                   </v-col>
@@ -198,7 +196,7 @@ export default {
                           outlined
                         ></v-text-field>
                         <p v-if="errors.link" class="red--text custom_error">
-                          {{ errors.link[0] }}
+                          {{ errors?.link[0] }}
                         </p>
                       </v-col>
 
@@ -211,8 +209,8 @@ export default {
                           persistent-hint
                           outlined
                         ></v-text-field>
-                        <p v-if="errors.order" class="red--text custom_error">
-                          {{ errors.order[0] }}
+                        <p v-if="errors?.order" class="red--text custom_error">
+                          {{ errors?.order[0] }}
                         </p>
                       </v-col>
                     </v-row>
