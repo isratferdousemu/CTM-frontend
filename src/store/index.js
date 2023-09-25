@@ -16,6 +16,7 @@ import SystemConfiguration from "./SystemConfiguration";
 import TrainingManagement from "./TrainingManagement";
 import Division from "@/store/modules/system_configuration/division";
 import District from "@/store/modules/system_configuration/district";
+import City from "@/store/modules/system_configuration/city";
 import Menu from "@/store/modules/system_configuration/menu";
 
 // Import other modules as needed
@@ -228,6 +229,7 @@ export default new Vuex.Store({
     TrainingManagement,
     Division,
     District,
+    City,
     Menu,
   },
   plugins: [

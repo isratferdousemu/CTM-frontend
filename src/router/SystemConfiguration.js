@@ -23,6 +23,18 @@ const SystemConfigurationRoutes = [
         "../pages/SystemConfiguration/demographic_information/district/Index.vue"
       ),
   },
+  {
+    path: "/system-configuration/city",
+    name: "City",
+    meta: {
+      requiresAuth: true,
+      permission: "common",
+    },
+    component: () =>
+      import(
+        "../pages/SystemConfiguration/demographic_information/city/Index.vue"
+      ),
+  },
 
   {
     path: "/system-configuration/division/create",

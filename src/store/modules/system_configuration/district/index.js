@@ -24,6 +24,10 @@ const mutations = {
     state.districts = data;
   },
 
+  SET_DISTRICT: (state, data) => {
+    state.districts = data;
+  },
+  
   STORE_DIVISION: (state, data) => {
     state.districts = data.data;
     state.errors = {};
@@ -162,6 +166,14 @@ const actions = {
       });
   },
   /*end delete district*/
+  
+  /*Set division*/
+  SetDistrict: ({ commit }, data) => {   
+    console.log("District"); 
+    console.log(data); 
+    commit("SET_DISTRICT", data);
+  },
+  /*Set division*/
 };
 
 /* -------------------------------------------------------------------------- */

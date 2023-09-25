@@ -5,8 +5,8 @@ import { http } from "@/hooks/httpService";
 /* -------------------------------------------------------------------------- */
 const state = {
   // Module-specific state
-  divisions: [],
-  division: {},
+  city: [],
+  city: {},
   success_message: "",
   errors: {},
   error_message: "",
@@ -20,19 +20,14 @@ const state = {
 const mutations = {
   // Module-specific mutations
 
-  GET_DIVISION: (state, data) => {
-    state.divisions = data;
+  GET_CITY: (state, data) => {
+    state.city = data;
   },
-  
-  SET_DIVISION: (state, data) => {
-    state.divisions = data;
-  },
-  
 
-  STORE_DIVISION: (state, data) => {
-    state.divisions = data.data;
+  STORE_CITY: (state, data) => {
+    state.city = data.data;
     state.errors = {};
-    // if (state.divisions.push(data.data)) {
+    // if (state.city.push(data.data)) {
     //   state.success_message = data.data.message;
     //   state.success_status = data.status;
     // } else {
@@ -45,12 +40,12 @@ const mutations = {
     state.error_status = "";
   },
 
-  GET_SINGLE_DIVISION: (state, data) => {
-    state.division = data;
+  GET_SINGLE_CITY: (state, data) => {
+    state.city = data;
   },
 
-  UPDATE_DIVISION: (state, data) => {
-    if (state.divisions.push(data.data)) {
+  UPDATE_CITY: (state, data) => {
+    if (state.city.push(data.data)) {
       state.success_message = data.data.message;
       state.success_status = data.status;
     } else {
@@ -58,9 +53,9 @@ const mutations = {
     }
   },
 
-  DELETE_DIVISION: (state, { id, data }) => {
+  DELETE_CITY: (state, { id, data }) => {
     if (id) {
-      state.divisions.data = state.divisions.data.filter((item) => {
+      state.city.data = state.city.data.filter((item) => {
         return id !== item.id;
       });
 
@@ -77,40 +72,40 @@ const mutations = {
 const actions = {
   // Module-specific actions
 
-  /*start get all divisions*/
-  GetAllDivisions: ({ commit }) => {
+  /*start get all city*/
+  GetAllCity: ({ commit }) => {
     return http()
-      .get("/admin/division/get")
+      .get("/admin/city/get")
       .then((result) => {
         console.log(result.data);
-        commit("GET_DIVISION", result.data);
+        commit("GET_CITY", result.data);
       })
       .catch((err) => {
         console.log(err);
       });
   },
-  /*end get all divisions*/
+  /*end get all city*/
 
-  /*start get all divisions*/
-  GetSearchDivisions: ({ commit },data) => {
+  /*start get all city*/
+  GetSearchCity: ({ commit },data) => {
     return http()
-      .get(`/admin/division/get/${data}`)
+      .get(`/admin/city/get/${data}`)
       .then((result) => {
         // console.log("hello");
         console.log(result.data);
-        commit("GET_DIVISION", result.data);
+        commit("GET_CITY", result.data);
       })
       .catch((err) => {
         console.log(err);
       });
   },
-  /*end get all divisions*/
+  /*end get all city*/
 
-  /*start  store division*/
-  StoreDivision: ({ commit }, data) => {
-    // alert('StoreDivision'+ data);
+  /*start  store city*/
+  StoreCity: ({ commit }, data) => {
+    // alert('StoreCity'+ data);
     return http()
-      .post("/admin/division/insert", data)
+      .post("/admin/city/insert", data)
       .then((result) => {
         console.log(result.data);
         console.log(commit);
@@ -124,26 +119,26 @@ const actions = {
         // console.log(state.errors);
       });
   },
-  /*end  store division*/
+  /*end  store city*/
 
-  /*start edit division */
-  EditDivision: ({ commit }, id) => {
+  /*start edit city */
+  EditCity: ({ commit }, id) => {
     return http()
-      .get(`/admin/division/edit/${id}`)
+      .get(`/admin/city/edit/${id}`)
       .then((result) => {
-        commit("GET_SINGLE_DIVISION", result.data);
+        commit("GET_SINGLE_CITY", result.data);
       })
       .catch((err) => {
         state.errors = err.response.data.errors;
         state.error_status = err.response.status;
       });
   },
-  /*end edit division */
+  /*end edit city */
 
-  /*start update division*/
-  UpdateDivision: ({ commit }, data ) => {
+  /*start update city*/
+  UpdateCity: ({ commit }, data ) => {
     return http()
-      .post(`/admin/division/update/`, data)
+      .post(`/admin/city/update/`, data)
       .then((result) => {
         console.log(result);
         commit("RESET_ERRORS");        
@@ -153,12 +148,12 @@ const actions = {
         state.error_status = err.response.message;
       });
   },
-  /*end update division*/
+  /*end update city*/
 
-  /*start delete division*/
-  DestroyDivision: ({ commit }, id) => {
+  /*start delete city*/
+  DestroyCity: ({ commit }, id) => {
     return http()
-      .get(`/admin/division/destroy/${id}`)
+      .get(`/admin/city/destroy/${id}`)
       .then((result) => {
         console.log(result);
       })
@@ -166,13 +161,7 @@ const actions = {
         console.log(err);
       });
   },
-  /*end delete division*/
-
-  /*Set division*/
-  SetDivision: ({ commit }, data) => {    
-    commit("SET_DIVISION", data);
-  },
-  /*Set division*/
+  /*end delete city*/
 };
 
 /* -------------------------------------------------------------------------- */
