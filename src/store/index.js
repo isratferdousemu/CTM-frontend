@@ -14,7 +14,7 @@ import MEReporting from "./MEReporting";
 import PayrollManagement from "./PayrollManagement";
 import SystemConfiguration from "./SystemConfiguration";
 import TrainingManagement from "./TrainingManagement";
-import Division from "@/store/modules/system_configuration/division";
+// import Division from "@/store/modules/system_configuration/division";
 import Menu from "@/store/modules/system_configuration/menu";
 
 // Import other modules as needed
@@ -86,22 +86,23 @@ export default new Vuex.Store({
       commit('setUser', []);
    
     },
-    login({ commit }, data) {
-      commit("setToken", data.token);
-      console.log("state permission", data.permissions);
-      commit("setUserPermissions", data.permissions);
-      commit("setUser", data.user);
-    },
-    logout({ commit }) {
-      commit("setToken", null);
-      commit("setUser", []);
-    },
+    // login({ commit }, data) {
+    //   commit("setToken", data.token);
+    //   console.log("state permission", data.permissions);
+    //   commit("setUserPermissions", data.permissions);
+    //   commit("setUser", data.user);
+    // },
+    // logout({ commit }) {
+    //   commit("setToken", null);
+    //   commit("setUser", []);
+    // },
     LoginSubmit: ({ commit,state }, data) => {
     return http()
     .post("admin/login/otp", data)
     .then((result) => {
       
       commit("setOtpresponse", result);
+      state.errors = [];
     })
     .catch((err) => {
       state.errors = err.response.data.errors;
@@ -195,7 +196,7 @@ export default new Vuex.Store({
     PayrollManagement,
     SystemConfiguration,
     TrainingManagement,
-    Division,
+    // Division,
     Menu,
   },
   plugins: [

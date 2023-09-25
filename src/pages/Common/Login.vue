@@ -4,7 +4,7 @@
                         <v-container class="my-5">
                                 <!-- login OTP -->
 
-                                <v-dialog persistent v-model="otpDialog"   width="350">
+                                <v-dialog persistent v-model="otpDialog" width="350">
                                         <v-card style="justify-content: center; text-align: center">
                                                 <v-card-title class="font-weight-bold justify-center">
                                                         OTP
@@ -16,7 +16,7 @@
                                                                 @finish="onFinish"></v-otp-input>
                                                         <!-- <div v-if="getLoginresponse.message" v-html="getLoginresponse.message" class="red--text" /> -->
                                                         <p>Remaining time: {{ remainingTime }} sec</p>
-                                                    
+
 
                                                 </v-card-text>
                                         </v-card>
@@ -69,8 +69,8 @@
                                                                         required></v-text-field>
                                                                 <!-- <div v-if="message && !errors" v-html="message"
                                                                         class="red--text" /> -->
-                                                                      
-                                                                
+
+
 
                                                                 <div class="d-inline d-flex justify-end">
                                                                         <router-link to="/forgot-password"
@@ -108,6 +108,7 @@ export default {
                 return {
                         remainingTime: 60,
                         intervalId: null,
+
                         form: {
                                 device_token: "admin@ctm.com",
                                 email: null,
@@ -116,22 +117,22 @@ export default {
                         },
 
                         loading: false,
-                        otpDialog:false
-                
+                        otpDialog: false
+
 
 
                 };
         },
         computed: {
 
-                // ...mapState({
-                //         message: (state) => state.success_message,
-                //         errors: (state) => state.errors,
-                //         success_status: (state) => state.success_status,
-                //         error_message: (state) => state.error_message,
-                    
-                        
-                // }),
+                ...mapState({
+                        message: (state) => state.success_message,
+                        errors: (state) => state.errors,
+                        success_status: (state) => state.success_status,
+                        error_message: (state) => state.error_message,
+
+
+                }),
                 ...mapGetters(["getLoginresponse", "getOtpresponse"]),
         },
 
@@ -236,31 +237,34 @@ export default {
                         }
                 },
                 submitLogin: async function () {
-                    
-                                this.loading = true;
-                                await this.$store
-                                        .dispatch("LoginSubmit", this.form)
-                                
-                                 
 
-                                        this.otpDialog = true;
+                        this.loading = true;
+                        await this.$store
+                                .dispatch("LoginSubmit", this.form).then(() => {
+                                        if (!this.errors.email) {
+                                                this.otpDialog = true;
+                                                this.startCountdown();
+                                                console.log(this.errors)
+                                        }
+
                                         this.loading = false;
-                              
-                                   
-                                          
-                                                // if (response.data.success) {
-                                            
-                                                // this.startCountdown();
-                                                // }
-                                    
-                
-                        
+
+
+
+
+                                });
+
+
+
+
                 },
         },
 };
 </script>
 
-<style>html.my-app,
+<style>
+html.my-app,
 body.my-app {
         overflow: hidden !important;
-}</style>
+}
+</style>
