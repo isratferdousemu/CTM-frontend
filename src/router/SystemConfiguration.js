@@ -40,24 +40,16 @@ const SystemConfigurationRoutes = [
       ),
   },
   {
-    path: "/system-configuration/thana/create",
-    name: "CreateThana",
+    path: "/system-configuration/union",
+    name: "Thana",
+    meta: {
+    
+    },
     component: () =>
       import(
-        "../pages/SystemConfiguration/demographic_information/thana/Create.vue"
+        "../pages/SystemConfiguration/demographic_information/union/Index.vue"
       ),
   },
-  {
-    path: "/system-configuration/thana/edit/:id",
-    name: "EditThana",
-    component: () =>
-      import(
-        "../pages/SystemConfiguration/demographic_information/thana/Edit.vue"
-      ),
-  },
-
-  
- 
 
 
   {

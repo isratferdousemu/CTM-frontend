@@ -17,6 +17,7 @@ import SystemConfiguration from "./SystemConfiguration";
 import TrainingManagement from "./TrainingManagement";
 import Division from "@/store/modules/system_configuration/division";
 import Thana from "@/store/modules/system_configuration/thana";
+import Union from "@/store/modules/system_configuration/union";
 import Menu from "@/store/modules/system_configuration/menu";
 
 // Import other modules as needed
@@ -276,6 +277,7 @@ export default new Vuex.Store({
     TrainingManagement,
     Division,
     Thana,
+    Union,
     Menu,
   },
   plugins: [

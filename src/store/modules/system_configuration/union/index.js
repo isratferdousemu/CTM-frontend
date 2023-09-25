@@ -21,6 +21,9 @@ const state = {
 const mutations = {
   // Module-specific mutations
 
+  GET_UPAZILA: (state, data) => {
+    state.upazilas = data;
+  },
 
   STORE_UPAZILA: (state, data) => {
     if (state.upazilas.push(data.data)) {
@@ -31,6 +34,30 @@ const mutations = {
     }
   },
 
+  GET_SINGLE_DIVISION: (state, data) => {
+    state.division = data;
+  },
+
+  UPDATE_DIVISION: (state, data) => {
+    if (state.divisions.push(data.data)) {
+      state.success_message = data.data.message;
+      state.success_status = data.status;
+    } else {
+      state.success_message = "";
+    }
+  },
+
+  DELETE_UPAZILA: (state, { id, data }) => {
+    if (id) {
+      state.upazilas.data = state.upazilas.data.filter((item) => {
+        return id !== item.id;
+      });
+
+      state.success_message = data.message;
+    } else {
+      state.success_message = "";
+    }
+  },
     UPDATE_ERROR(state, newData) {
       state.thana_errors = newData;
     },

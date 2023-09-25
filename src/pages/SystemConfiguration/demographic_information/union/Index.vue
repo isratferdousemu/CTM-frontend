@@ -7,7 +7,7 @@
           <v-col cols="12">
             <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8">
               <v-card-title class=" justify-center " tag="div">
-                <h3 class="text-uppercase pt-3">Thana/Upazila List</h3>
+                <h3 class="text-uppercase pt-3">Union List</h3>
               </v-card-title>
               <v-card-text>
                 <v-row class="ma-0 pa-3 white round-border d-flex justify-space-between align-center " justify="center"
@@ -21,10 +21,10 @@
 
                   </div>
                   <v-btn @click="dialogOpen" flat color="primary" prepend-icon="mdi-account-multiple-plus">
-                    Add New Thana/Upazila
+                    Add New Union
                   </v-btn>
                   <v-col cols="12">
-                    <v-data-table :loading="loading" item-key="id" :headers="headers" :items="upazilas"
+                    <v-data-table :loading="loading" item-key="id" :headers="headers" :items="unions"
                       :items-per-page="pagination.perPage" hide-default-footer
                       class="elevation-0 transparent row-pointer">
                       <template v-slot:item.id="{ item, index }">
@@ -35,9 +35,6 @@
                       </template>
                       <template v-slot:item.district="{ item }">
                         {{ item.district.name_en }}
-                      </template>
-                      <template v-slot:item.locationType="{ item }">
-                        {{ item.locationType.value_en }}
                       </template>
                       <template v-slot:item.name_en="{ item }">
                         {{ item.name_en }}
