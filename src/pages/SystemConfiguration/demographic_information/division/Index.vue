@@ -354,7 +354,7 @@ export default {
       deleteDialog: false,
       dialogEdit: false,
       delete_loading: false,
-      // loading: false,
+      loading: false,
       search: "",
       delete_id: "",
       divisions: [],

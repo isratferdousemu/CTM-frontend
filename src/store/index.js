@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import { http } from "@/hooks/httpService";
+import axios from 'axios'
 // import axios from 'axios'
 
 import ApplicationSelection from "./ApplicationSelection";
@@ -17,6 +18,7 @@ import TrainingManagement from "./TrainingManagement";
 import Division from "@/store/modules/system_configuration/division";
 import District from "@/store/modules/system_configuration/district";
 import City from "@/store/modules/system_configuration/city";
+import Thana from "@/store/modules/system_configuration/thana";
 import Menu from "@/store/modules/system_configuration/menu";
 import Device_registration from "@/store/modules/system_configuration/device_registration";
 
@@ -47,12 +49,31 @@ export default new Vuex.Store({
     forms: [],
     division: {},
     success_message: "",
-    errors: {},
+    errors: [],
     error_message: "",
     error_status: "",
     success_status: "",
     loginData:[],
-    otpData:[]
+    otpData:[],
+    lookupTypes: [
+      {id: 1, name: 'Location Type'},
+      {id: 2, name: 'Allowance Service'},
+      {id: 3, name: 'Office category'},
+      {id: 4, name: 'Health Status'},
+      {id: 5, name: 'Financial Status'},
+      {id: 6, name: 'Social Status'},
+      {id: 7, name: 'PMT Scoring'},
+      {id: 8, name: 'Education Status'},
+      {id: 9, name: 'Religion'},
+      {id:10, name: 'Household Asset Own'},
+      {id:11, name: 'Disability Type'},
+      {id:12, name: 'Disability Level'},
+      {id:13, name: 'Bank Name'},
+      {id:14, name: 'Branch Name'},
+      {id:15, name: 'Complaint Category'},
+      {id:16, name: 'Module Name'},
+      {id:17, name: 'Organization'},
+    ],
 
   },
   /* -------------------------------------------------------------------------- */
@@ -60,12 +81,14 @@ export default new Vuex.Store({
   /* -------------------------------------------------------------------------- */
   getters: {
     data: (state) => state.data,
-    getLoginresponse(state){
-      return state.loginData
-    },
-       getOtpresponse(state){
+
+    getOtpresponse(state){
       return state.otpData
     },
+    getLoginresponse(state){
+      return state.loginData
+    }
+
   },
    GetToken: function (state) {
       return state.token;
@@ -124,15 +147,22 @@ export default new Vuex.Store({
       commit('setToken', null);
       commit('setUser', []);
     },
+
+    },
+
     LoginSubmit: ({ commit,state }, data) => {
     return http()
     .post("admin/login/otp", data)
     .then((result) => {
+
       commit("setOtpresponse", result);
+      state.errors = [];
     })
     .catch((err) => {
       state.errors = err.response.data.errors;
-      state.error_status = err.response.status;
+      state.error_message = err.response.data.message;
+      console.log(state.error_message);
+
     });
   },
    sendOtp: ({ commit,state }, data) => {
@@ -147,12 +177,23 @@ export default new Vuex.Store({
       state.error_status = err.response.status;
     });
   },
+  async getLookupByType({state },type) {
+    return await axios.get("/admin/lookup/get/"+type, {
+      headers: {
+        Authorization: "Bearer " + state.token,
+        "Content-Type": "multipart/form-data",
+      }
+    }).then((result) => {
+
+      return result.data.data
+    });
+  },
 
   },
   /* -------------------------------------------------------------------------- */
   /*                              Mutations Define                              */
   /* -------------------------------------------------------------------------- */
-  mutations: {
+    mutations: {
 
     setDrawer(state, payload) {
       state.Drawer = payload;
@@ -230,6 +271,7 @@ export default new Vuex.Store({
     SystemConfiguration,
     TrainingManagement,
     Division,
+    Thana,
     District,
     City,
     Menu,

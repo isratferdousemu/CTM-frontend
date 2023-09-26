@@ -204,6 +204,7 @@ export default {
   },
   methods: {
     logout() {
+      console.log(this.$store.state.token);
       this.$axios
         .get("/admin/logout", {
           headers: {
@@ -212,7 +213,7 @@ export default {
           },
         })
         .then(() => {
-          // console.log(res)
+          
           this.$store.commit("setToken", null);
           this.$store.commit("setUser", null);
           this.$router.push({ name: "Login" });

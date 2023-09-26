@@ -3,8 +3,7 @@ const SystemConfigurationRoutes = [
     path: "/system-configuration/division",
     name: "Division",
     meta: {
-      requiresAuth: true,
-      permission: "common",
+ 
     },
     component: () =>
       import(
@@ -53,6 +52,37 @@ const SystemConfigurationRoutes = [
         "../pages/SystemConfiguration/demographic_information/division/Edit.vue"
       ),
   },
+  {
+    path: "/system-configuration/thana",
+    name: "Thana",
+    meta: {
+    
+    },
+    component: () =>
+      import(
+        "../pages/SystemConfiguration/demographic_information/thana/Index.vue"
+      ),
+  },
+  {
+    path: "/system-configuration/thana/create",
+    name: "CreateThana",
+    component: () =>
+      import(
+        "../pages/SystemConfiguration/demographic_information/thana/Create.vue"
+      ),
+  },
+  {
+    path: "/system-configuration/thana/edit/:id",
+    name: "EditThana",
+    component: () =>
+      import(
+        "../pages/SystemConfiguration/demographic_information/thana/Edit.vue"
+      ),
+  },
+
+  
+ 
+
 
     /*Menu route start*/
   {
