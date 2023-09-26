@@ -162,9 +162,25 @@ export default {
               icon: "mdi mdi-plus",
               to: "/system-configuration/menu",
             },
+            {
+              title: "Thana/Upazila",
+              icon: "mdi mdi-plus",
+              to: "/system-configuration/thana",
+            },
+              {
+              title: "Union",
+              icon: "mdi mdi-plus",
+              to: "/system-configuration/union",
+            },
+             {
+              title: "Ward",
+              icon: "mdi mdi-plus",
+              to: "/system-configuration/ward",
+            },
           ],
           permission: "",
         },
+       
         {
           icon: "mdi-cog-outline",
           title: "Settings",
