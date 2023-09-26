@@ -16,6 +16,8 @@ import PayrollManagement from "./PayrollManagement";
 import SystemConfiguration from "./SystemConfiguration";
 import TrainingManagement from "./TrainingManagement";
 import Division from "@/store/modules/system_configuration/division";
+import District from "@/store/modules/system_configuration/district";
+import City from "@/store/modules/system_configuration/city";
 import Thana from "@/store/modules/system_configuration/thana";
 import Union from "@/store/modules/system_configuration/union";
 import Ward from "@/store/modules/system_configuration/ward";
@@ -81,7 +83,6 @@ export default new Vuex.Store({
   /* -------------------------------------------------------------------------- */
   getters: {
     data: (state) => state.data,
-
     getOtpresponse(state) {
       return state.otpData
     },
@@ -148,20 +149,15 @@ export default new Vuex.Store({
       commit('setUser', []);
 
     },
-
     LoginSubmit: ({ commit, state }, data) => {
       return http()
         .post("admin/login/otp", data)
         .then((result) => {
-
           commit("setOtpresponse", result);
-          state.errors = [];
         })
         .catch((err) => {
           state.errors = err.response.data.errors;
-          state.error_message = err.response.data.message;
-          console.log(state.error_message);
-
+          state.error_status = err.response.status;
         });
     },
     sendOtp: ({ commit, state }, data) => {
@@ -270,6 +266,8 @@ export default new Vuex.Store({
     SystemConfiguration,
     TrainingManagement,
     Division,
+    District,
+    City,
     Thana,
     Union,
     Ward,

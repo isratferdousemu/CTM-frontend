@@ -98,10 +98,9 @@ export default {
                           persistent-hint
                           outlined
                           v-model="menuEdit.label_name_en"
-                          :rules="labelNameEnRules"
                         ></v-text-field>
                         <p
-                          v-if="errors.label_name_en"
+                          v-if="errors?.label_name_en"
                           class="red--text custom_error"
                         >
                           {{ errors.label_name_en[0] }}
@@ -112,13 +111,12 @@ export default {
                         <v-text-field
                           type="text"
                           v-model="menuEdit.label_name_bn"
-                          :rules="labelNameBnRules"
                           label="Enter Menu Name Bangla"
                           persistent-hint
                           outlined
                         ></v-text-field>
                         <p
-                          v-if="errors.label_name_bn"
+                          v-if="errors?.label_name_bn"
                           class="red--text custom_error"
                         >
                           {{ errors.label_name_bn[0] }}
@@ -139,7 +137,7 @@ export default {
                       outlined
                       v-model="menuEdit.parent_id"
                     ></v-select>
-                    <p v-if="errors.parent_id" class="red--text custom_error">
+                    <p v-if="errors?.parent_id" class="red--text custom_error">
                       {{ errors.parent_id[0] }}
                     </p>
                   </v-col>
@@ -149,7 +147,6 @@ export default {
                       :items="link_types"
                       item-text="name"
                       item-value="id"
-                      :rules="[v => !!v || 'Link Type is required']"
                       label="Select link type"
                       menu-props="auto"
                       hide-details
@@ -171,7 +168,6 @@ export default {
                           :items="pageUrls"
                           item-text="page_url"
                           item-value="id"
-                          :rules="[v => !!v || 'Page Urls is required']"
                           label="Select page url"
                           menu-props="auto"
                           hide-details
@@ -194,7 +190,7 @@ export default {
                           persistent-hint
                           outlined
                         ></v-text-field>
-                        <p v-if="errors.link" class="red--text custom_error">
+                        <p v-if="errors?.link" class="red--text custom_error">
                           {{ errors.link[0] }}
                         </p>
                       </v-col>
@@ -203,12 +199,11 @@ export default {
                         <v-text-field
                           type="number"
                           v-model="menuEdit.order"
-                          :rules="orderRules"
                           label="Enter Order"
                           persistent-hint
                           outlined
                         ></v-text-field>
-                        <p v-if="errors.order" class="red--text custom_error">
+                        <p v-if="errors?.order" class="red--text custom_error">
                           {{ errors.order[0] }}
                         </p>
                       </v-col>

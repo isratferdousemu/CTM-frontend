@@ -12,6 +12,14 @@ const state = {
     error_message: "",
     error_status: "",
     success_status: "",
+    pagination: {
+        current_page: 1,
+        from: '',
+        last_page: '',
+        per_page: 1,
+        to: ''
+    },
+    total: ''
 };
 
 /* -------------------------------------------------------------------------- */
@@ -19,7 +27,16 @@ const state = {
 /* -------------------------------------------------------------------------- */
 const mutations = {
     GET_ALL_DEVICE: (state, data) => {
-        state.devices = data.menus;
+        state.devices = data.data;
+        state.pagination.current_page = data.meta.current_page;
+        state.pagination.from = data.meta.from;
+        state.pagination.last_page = data.meta.last_page;
+        state.total = data.meta.total;
+        console.log(state.total);
+    },
+
+    GET_ALL_USERS: (state, data) => {
+        state.users = data;
     },
 
     STORE_DEVICE: (state, data) => {
@@ -63,6 +80,7 @@ const mutations = {
 const actions = {
     /*start get all device*/
     GetAllDevice: ({ commit }) => {
+
         return http()
             .get("/admin/device/get")
             .then((result) => {
@@ -73,6 +91,16 @@ const actions = {
             });
     },
     /*end get all device*/
+
+    /*start get all users*/
+    GetAllUsers: ({commit}) => {
+        return http().get('/admin/device/get_users').then((result) => {
+            commit('GET_ALL_USERS', result.data.users);
+        }).catch((err) => {
+            console.log(err);
+        })
+    },
+    /*end get all users*/
 
     /*start store menus*/
     StoreDevice: ({ commit }, data) => {
@@ -103,9 +131,9 @@ const actions = {
     /*end get single device*/
 
     /*start update device*/
-    UpdateDevice: ({ commit }, { id, data }) => {
+    UpdateDevice: ({ commit },  data ) => {
         return http()
-            .post(`/admin/device/update/${id}`, data)
+            .post(`/admin/device/update`, data)
             .then((result) => {
                 commit("UPDATE_DEVICE", result);
             })

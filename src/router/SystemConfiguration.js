@@ -11,6 +11,31 @@ const SystemConfigurationRoutes = [
       ),
   },
   {
+    path: "/system-configuration/district",
+    name: "District",
+    meta: {
+      requiresAuth: true,
+      permission: "common",
+    },
+    component: () =>
+      import(
+        "../pages/SystemConfiguration/demographic_information/district/Index.vue"
+      ),
+  },
+  {
+    path: "/system-configuration/city",
+    name: "City",
+    meta: {
+      requiresAuth: true,
+      permission: "common",
+    },
+    component: () =>
+      import(
+        "../pages/SystemConfiguration/demographic_information/city/Index.vue"
+      ),
+  },
+
+  {
     path: "/system-configuration/thana",
     name: "Thana",
     meta: {
