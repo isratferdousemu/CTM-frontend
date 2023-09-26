@@ -180,7 +180,7 @@ export default {
           ],
           permission: "",
         },
-       
+
         {
           icon: "mdi-cog-outline",
           title: "Settings",

@@ -2,9 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import { http } from "@/hooks/httpService";
-import axios from 'axios'
-// import axios from 'axios'
-
+import axios from 'axios';
 import ApplicationSelection from "./ApplicationSelection";
 import BeneficiaryManagement from "./BeneficiaryManagement";
 import BudgetManagement from "./BudgetManagement";
@@ -58,23 +56,23 @@ export default new Vuex.Store({
     loginData: [],
     otpData: [],
     lookupTypes: [
-      { id: 1, name: 'Location Type' },
-      { id: 2, name: 'Allowance Service' },
-      { id: 3, name: 'Office category' },
-      { id: 4, name: 'Health Status' },
-      { id: 5, name: 'Financial Status' },
-      { id: 6, name: 'Social Status' },
-      { id: 7, name: 'PMT Scoring' },
-      { id: 8, name: 'Education Status' },
-      { id: 9, name: 'Religion' },
-      { id: 10, name: 'Household Asset Own' },
-      { id: 11, name: 'Disability Type' },
-      { id: 12, name: 'Disability Level' },
-      { id: 13, name: 'Bank Name' },
-      { id: 14, name: 'Branch Name' },
-      { id: 15, name: 'Complaint Category' },
-      { id: 16, name: 'Module Name' },
-      { id: 17, name: 'Organization' },
+      {  id: 1, name: 'Location Type'  },
+      {  id: 2, name: 'Allowance Service'  },
+      {  id: 3, name: 'Office category'  },
+      {  id: 4, name: 'Health Status'  },
+      {  id: 5, name: 'Financial Status'  },
+      {  id: 6, name: 'Social Status'  },
+      {  id: 7, name: 'PMT Scoring'  },
+      {  id: 8, name: 'Education Status'  },
+      {  id: 9, name: 'Religion'  },
+      {  id:  10, name: 'Household Asset Own'  },
+      {  id:  11, name: 'Disability Type'  },
+      {  id:  12, name: 'Disability Level'  },
+      {  id:  13, name: 'Bank Name'  },
+      {  id:  14, name: 'Branch Name'  },
+      {  id:  15, name: 'Complaint Category'  },
+      {  id:  16, name: 'Module Name'  },
+      {  id:  17, name: 'Organization'  },
     ],
 
   },
@@ -86,7 +84,7 @@ export default new Vuex.Store({
     getOtpresponse(state) {
       return state.otpData
     },
-    getLoginresponse(state) {
+    getLoginresponse(state)  {
       return state.loginData
     }
 
@@ -98,10 +96,6 @@ export default new Vuex.Store({
   /*                               Actions Define                               */
   /* -------------------------------------------------------------------------- */
   actions: {
-    async getData({ commit }) {
-      const data = await fetch("http://api.icndb.com/jokes/random/15");
-      commit("SET_DATA", await data.json());
-    },
     sendOtpForgetPassword: ({ commit, state }, data) => {
       return http()
         .post("admin/forgot-password", data)
@@ -140,7 +134,6 @@ export default new Vuex.Store({
     },
     login({ commit }, data) {
       commit('setToken', data.token);
-      console.log('state permission', data.permissions);
       commit('setUserPermissions', data.permissions);
       commit('setUser', data.user);
     },
@@ -185,11 +178,9 @@ export default new Vuex.Store({
     },
 
   },
-  /* -------------------------------------------------------------------------- */
-  /*                              Mutations Define                              */
-  /* -------------------------------------------------------------------------- */
-  mutations: {
 
+
+ mutations: {
     setDrawer(state, payload) {
       state.Drawer = payload;
     },
