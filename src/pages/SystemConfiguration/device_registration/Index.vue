@@ -1,5 +1,6 @@
 <script>
 import {mapActions, mapState} from "vuex";
+import {http} from "@/hooks/httpService";
 
 export default {
   name: "Index",
@@ -16,9 +17,27 @@ export default {
       deleteDialog: false,
       delete_loading: false,
       deleted_id: '',
+      totalDevices: 0,
+      devices: [],
+      loading: true,
+      options: {},
       search: '',
-      page: 1
     }
+  },
+
+  watch: {
+    options: {
+      handler () {
+        this.getAllDevices()
+      },
+      deep: true,
+    },
+
+    search: {
+      handler () {
+        this.getAllDevices()
+      },
+    },
   },
 
   computed: {
@@ -30,29 +49,44 @@ export default {
         { text: "Device Type", value: "device_type" },
         { text: "IP Address", value: "ip_address" },
         { text: "Purpose of Use", value: "purpose_use" },
+        { text: "Status", value: "status" },
         { text: "Actions", value: "actions", align: "center", sortable: false },
       ];
     },
 
     ...mapState({
-        devices: (state) => state.Device_registration.devices,
-        pagination: (state) => state.Device_registration.pagination,
-        totalDevice: (state) => state.Device_registration.total,
         message: (state) => state.Device_registration.success_message
     })
   },
 
   mounted() {
-    this.GetAllDevice();
+    console.log("First Loading")
   },
 
   methods: {
-    ...mapActions({
-      GetAllDevice: "Device_registration/GetAllDevice"
-    }),
+    getAllDevices(){
+      this.loading = true
+
+      const { sortBy, sortDesc, page, itemsPerPage } = this.options
+
+      http().get('/admin/device/get', {
+        params: {
+          sortBy: sortBy[0],
+          sortDesc: sortDesc[0],
+          page: page,
+          itemsPerPage: itemsPerPage,
+          search: this.search
+        }
+      }).then((result) => {
+        this.devices = result.data.data;
+        this.totalDevices = result.data.total;
+        this.loading = false;
+      }).catch((err) => {
+        console.log(err);
+      })
+    },
 
     deleteAlert(id) {
-      //this.$toast.success("Logout Successfully");
       this.deleteDialog = true;
       this.deleted_id = id;
     },
@@ -62,6 +96,16 @@ export default {
         let id = this.deleted_id;
         await this.$store.dispatch("Device_registration/DestroyDevice", id).then(() => {
           this.deleteDialog = false;
+          this.$toast.success(this.message);
+        })
+      }catch (e) {
+        console.log(e);
+      }
+    },
+
+    deviceActivate: async function(id){
+      try {
+        await this.$store.dispatch("Device_registration/ActivateDevice", id).then(() => {
           this.$toast.success(this.message);
         })
       }catch (e) {
@@ -81,40 +125,38 @@ export default {
             <v-card>
               <v-row>
                 <v-col col="6">
-                  <v-card-title>Device Registration Lists</v-card-title>
-                </v-col>
-
-                <v-col cols="6">
-                  <v-card-actions class="justify-end">
-                    <v-btn
-                        text
-                        color="success"
-                        router
-                        to="/system-configuration/device_registration/create"
-                    >
-                      <v-icon small left>mdi-plus</v-icon>
-                      <span>Add New</span>
-                    </v-btn>
-                  </v-card-actions>
+                  <v-card-title><h3>Device Registration Lists</h3></v-card-title>
                 </v-col>
               </v-row>
 
               <v-divider></v-divider>
 
               <v-card-text>
-                <v-card-title>
-                  <v-spacer></v-spacer>
-
-                  <v-col sm="4" style="margin-right: -10px">
+                <v-card-title class="mb-5">
+                  <div class="d-flex justify-sm-end flex-wrap">
                     <v-text-field
                         v-model="search"
                         append-icon="mdi-magnify"
                         label="Search"
                         hide-details
-                        class="mb-5"
-                        outlined
+                        class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal"
+                        flat
+                        outlined dense
                     ></v-text-field>
-                  </v-col>
+                  </div>
+
+                  <v-spacer></v-spacer>
+
+                  <v-btn
+                      medium
+                      flat
+                      color="primary"
+                      router
+                      to="/system-configuration/device_registration/create"
+                  >
+                    <v-icon small left>mdi-plus</v-icon>
+                    <span>Add New</span>
+                  </v-btn>
                 </v-card-title>
 
                 <v-card-subtitle>
@@ -122,8 +164,14 @@ export default {
                       :headers="headers"
                       :items="devices"
                       :search="search"
+                      :options.sync="options"
+                      :server-items-length="totalDevices"
+                      :loading="loading"
+                      :footer-props="{
+                          'items-per-page-options': [10,20,30,40,50]
+                      }"
                       dense
-                      class="elevation-1"
+                      class="elevation-1 transparent row-pointer"
                   >
 
                     <template v-slot:[`item.device_type`]="{ item }">
@@ -134,21 +182,24 @@ export default {
                       </div>
                     </template>
 
-                    <template v-slot:[`item.actions`]="{ item }">
+                    <template v-slot:[`item.status`]="{item}">
+                      <span>
+                           <v-switch :input-value="item.status === 1 ? true : false" @click="deviceActivate(item.id)" hide-details color="orange darken-3"></v-switch>
+                      </span>
+                    </template>
+
+                    <template v-slot:[`item.actions`]="{ item }" style="padding: 10px;">
                       <v-tooltip top>
                         <template v-slot:activator="{ on }">
                           <v-btn
-                              small
-                              text
-                              color="grey"
+                              fab
+                              x-small
+                              color="success"
                               v-on="on"
                               router
                               :to="`/system-configuration/device_registration/edit/${item.id}`"
                           >
-                            <v-icon left small>mdi-pencil</v-icon>
-                            <span right class="caption text-lowercase"
-                            >Edit</span
-                            >
+                            <v-icon>mdi-account-edit-outline</v-icon>
                           </v-btn>
                         </template>
                         <span>Edit</span>
@@ -157,16 +208,14 @@ export default {
                       <v-tooltip top>
                         <template v-slot:activator="{ on }">
                           <v-btn
-                              small
-                              text
+                              fab
+                              x-small
                               color="grey"
+                              class="ml-3 white--text"
                               v-on="on"
                               @click="deleteAlert(item.id)"
                           >
-                            <v-icon left small>mdi-delete</v-icon>
-                            <span right class="caption text-lowercase"
-                            >Delete</span
-                            >
+                            <v-icon>mdi-delete</v-icon>
                           </v-btn>
                         </template>
                         <span>Delete</span>
@@ -210,6 +259,6 @@ export default {
   </div>
 </template>
 
-<style scoped>
+<style lang="css" scoped>
 
 </style>

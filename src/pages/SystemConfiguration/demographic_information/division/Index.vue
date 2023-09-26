@@ -22,13 +22,11 @@
                         justify-lg="space-between"
                       >
                    <div class="d-flex justify-sm-end flex-wrap">
-                    <v-text-field @keyup.native="GetDivision"  outlined dense v-model="search" prepend-inner-icon="mdi-magnify"
-                    class="my-sm-0 my-3 mx-0v -input--horizontal " flat variant="outlined" label="search Division"
-                    hide-details color="primary">
-                  </v-text-field>
-
-
-          </div>
+                      <v-text-field @keyup.native="GetDivision"  outlined dense v-model="search" prepend-inner-icon="mdi-magnify"
+                      class="my-sm-0 my-3 mx-0v -input--horizontal " flat variant="outlined" label="search Division"
+                      hide-details color="primary">
+                      </v-text-field>
+                   </div>
                         <v-btn
                           @click="dialogAdd = true"
                           flat
