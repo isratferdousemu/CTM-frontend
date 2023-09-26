@@ -403,7 +403,7 @@ export default {
         total: 0,
         perPage: 5,
       },
-      errors: "",
+      // errors: "",
       items: [5, 10, 15, 20, 40, 50, 100],
     };
   },

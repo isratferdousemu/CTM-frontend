@@ -148,6 +148,16 @@ export default {
               to: "/system-configuration/division",
             },
             {
+              title: "Disrict",
+              icon: "mdi mdi-plus",
+              to: "/system-configuration/district",
+            },
+            {
+              title: "City Corporation",
+              icon: "mdi mdi-plus",
+              to: "/system-configuration/city",
+            },
+            {
               title: "Menu",
               icon: "mdi mdi-plus",
               to: "/system-configuration/menu",
@@ -156,6 +166,21 @@ export default {
               title: "Thana/Upazila",
               icon: "mdi mdi-plus",
               to: "/system-configuration/thana",
+            },
+            {
+              title: "Thana/Upazila",
+              icon: "mdi mdi-plus",
+              to: "/system-configuration/thana",
+            },
+              {
+              title: "Union",
+              icon: "mdi mdi-plus",
+              to: "/system-configuration/union",
+            },
+             {
+              title: "Ward",
+              icon: "mdi mdi-plus",
+              to: "/system-configuration/ward",
             },
           ],
           permission: "",
