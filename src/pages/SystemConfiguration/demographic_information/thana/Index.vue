@@ -93,7 +93,7 @@
               <form @submit.prevent="submitUpazila()">
                 <v-row>
                   <v-col>
-                    <ValidationProvider name="Code" vid="code" rules="required">
+                    <ValidationProvider name="Code" vid="code" rules="required" v-slot="{ errors }">
                       <v-text-field outlined type="text" v-model="data.code" label="Code" required
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
                       <div v-if="thana_errors && thana_errors.code" v-html="thana_errors.code[0]" class="red--text" />
@@ -125,7 +125,7 @@
                     </ValidationProvider>
 
                     <ValidationProvider name="Location Type" vid="division" rules="required" v-slot="{ errors }">
-                      <v-autocomplete v-model="data.location_type" outlined label="Location Type" :items="filteredOptions" 
+                      <v-autocomplete v-model="data.location_type" outlined label="Location Type" :items="filteredOptions" v-if="data.location_type === '1'"
                         item-text="value_en" item-value="id" required :error="errors[0] ? true : false"
                         :error-messages="errors[0]"></v-autocomplete>
                       <div v-if="thana_errors && thana_errors.thana_id" v-html="thana_errors.thana_id[0]"
@@ -406,7 +406,7 @@ export default {
     ...mapActions({
       GetAllDivisions: "Division/GetAllDivisions",
 
-      updateError: "Union/updateError",
+      updateError: "Thana/updateError",
 
     }),
     deleteAlert(id) {

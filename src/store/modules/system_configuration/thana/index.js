@@ -8,7 +8,7 @@ const state = {
   upazilas: [],
   upazila: {},
   success_message: "",
-  upazila_errors: {},
+  thana_errors: {},
   error_message: "",
   error_status: "",
   success_status: "",
@@ -44,7 +44,7 @@ const mutations = {
   },
  
   updateMyData(state, update_error_value) {
-    state.union_errors = update_error_value;
+    state.thana_errors = update_error_value;
   },
 
 };
