@@ -448,7 +448,7 @@
       <!-- {{ city }}
       {{ districts }} -->
       <!-- {{ locationType }} -->
-      {{ divisions }}
+      <!-- {{ divisions }} -->
       <!-- delete modal  -->
     </v-row>
   </div>
