@@ -5,14 +5,13 @@ import { http } from "@/hooks/httpService";
 /* -------------------------------------------------------------------------- */
 const state = {
   // Module-specific state
-  divisions: [],
-  division: {},
+  districts: [],
+  district: {},
   success_message: "",
   errors: {},
   error_message: "",
   error_status: "",
   success_status: "",
-
 };
 
 /* -------------------------------------------------------------------------- */
@@ -22,18 +21,17 @@ const mutations = {
   // Module-specific mutations
 
   GET_DIVISION: (state, data) => {
-    state.divisions = data;
+    state.districts = data;
   },
-  
-  SET_DIVISION: (state, data) => {
-    state.divisions = data;
-  },
-  
 
+  SET_DISTRICT: (state, data) => {
+    state.districts = data;
+  },
+  
   STORE_DIVISION: (state, data) => {
-    state.divisions = data.data;
+    state.districts = data.data;
     state.errors = {};
-    // if (state.divisions.push(data.data)) {
+    // if (state.districts.push(data.data)) {
     //   state.success_message = data.data.message;
     //   state.success_status = data.status;
     // } else {
@@ -47,11 +45,11 @@ const mutations = {
   },
 
   GET_SINGLE_DIVISION: (state, data) => {
-    state.division = data;
+    state.district = data;
   },
 
   UPDATE_DIVISION: (state, data) => {
-    if (state.divisions.push(data.data)) {
+    if (state.districts.push(data.data)) {
       state.success_message = data.data.message;
       state.success_status = data.status;
     } else {
@@ -61,7 +59,7 @@ const mutations = {
 
   DELETE_DIVISION: (state, { id, data }) => {
     if (id) {
-      state.divisions.data = state.divisions.data.filter((item) => {
+      state.districts.data = state.districts.data.filter((item) => {
         return id !== item.id;
       });
 
@@ -78,24 +76,24 @@ const mutations = {
 const actions = {
   // Module-specific actions
 
-  /*start get all divisions*/
-  GetAllDivisions: ({ commit }) => {
+  /*start get all districts*/
+  GetAllDistricts: ({ commit }) => {
     return http()
-      .get("/admin/division/get")
+      .get("/admin/district/get")
       .then((result) => {
         console.log(result.data);
-        commit("GET_DIVISION", result.data.data);
+        commit("GET_DIVISION", result.data);
       })
       .catch((err) => {
         console.log(err);
       });
   },
-  /*end get all divisions*/
+  /*end get all districts*/
 
-  /*start get all divisions*/
-  GetSearchDivisions: ({ commit },data) => {
+  /*start get all districts*/
+  GetSearchDistricts: ({ commit },data) => {
     return http()
-      .get(`/admin/division/get/${data}`)
+      .get(`/admin/district/get/${data}`)
       .then((result) => {
         // console.log("hello");
         console.log(result.data);
@@ -105,13 +103,13 @@ const actions = {
         console.log(err);
       });
   },
-  /*end get all divisions*/
+  /*end get all districts*/
 
-  /*start  store division*/
-  StoreDivision: ({ commit }, data) => {
-    // alert('StoreDivision'+ data);
+  /*start  store district*/
+  StoreDistrict: ({ commit }, data) => {
+    // alert('StoreDistrict'+ data);
     return http()
-      .post("/admin/division/insert", data)
+      .post("/admin/district/insert", data)
       .then((result) => {
         console.log(result.data);
         console.log(commit);
@@ -125,12 +123,12 @@ const actions = {
         // console.log(state.errors);
       });
   },
-  /*end  store division*/
+  /*end  store district*/
 
-  /*start edit division */
-  EditDivision: ({ commit }, id) => {
+  /*start edit district */
+  EditDistrict: ({ commit }, id) => {
     return http()
-      .get(`/admin/division/edit/${id}`)
+      .get(`/admin/district/edit/${id}`)
       .then((result) => {
         commit("GET_SINGLE_DIVISION", result.data);
       })
@@ -139,12 +137,12 @@ const actions = {
         state.error_status = err.response.status;
       });
   },
-  /*end edit division */
+  /*end edit district */
 
-  /*start update division*/
-  UpdateDivision: ({ commit }, data ) => {
+  /*start update district*/
+  UpdateDistrict: ({ commit }, data ) => {
     return http()
-      .post(`/admin/division/update/`, data)
+      .post(`/admin/district/update/`, data)
       .then((result) => {
         console.log(result);
         commit("RESET_ERRORS");        
@@ -154,12 +152,12 @@ const actions = {
         state.error_status = err.response.message;
       });
   },
-  /*end update division*/
+  /*end update district*/
 
-  /*start delete division*/
-  DestroyDivision: ({ commit }, id) => {
+  /*start delete district*/
+  DestroyDistrict: ({ commit }, id) => {
     return http()
-      .get(`/admin/division/destroy/${id}`)
+      .get(`/admin/district/destroy/${id}`)
       .then((result) => {
         console.log(result);
       })
@@ -167,11 +165,13 @@ const actions = {
         console.log(err);
       });
   },
-  /*end delete division*/
-
+  /*end delete district*/
+  
   /*Set division*/
-  SetDivision: ({ commit }, data) => {    
-    commit("SET_DIVISION", data);
+  SetDistrict: ({ commit }, data) => {   
+    console.log("District"); 
+    console.log(data); 
+    commit("SET_DISTRICT", data);
   },
   /*Set division*/
 };

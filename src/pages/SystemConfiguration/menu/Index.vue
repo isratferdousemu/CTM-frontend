@@ -112,7 +112,19 @@ export default {
                         <span v-if="parent.id === item.parent_id">
                           {{ parent.label_name_en }}
                         </span>
+                        <span v-else>
+                          ---
+                        </span>
                       </div>
+                    </template>
+
+                    <template v-slot:[`item.link`]="{ item }">
+                        <span v-if="item.link != null">
+                          {{ item.link }}
+                        </span>
+                        <span v-else>
+                          ---
+                        </span>
                     </template>
 
                     <template v-slot:[`item.actions`]="{ item }">

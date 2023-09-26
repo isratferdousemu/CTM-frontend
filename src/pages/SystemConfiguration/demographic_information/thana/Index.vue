@@ -194,7 +194,6 @@
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                       <div v-if="thana_errors && thana_errors.division_id" v-html="thana_errors.division_id[0]"
                         class="red--text" />
-
                     </ValidationProvider>
                     <ValidationProvider name="Location_type" vid="location_type" rules="required" v-slot="{ errors }">
                       <v-autocomplete outlined v-model="data.location_type" label="Location Type" :items="locationTypes"

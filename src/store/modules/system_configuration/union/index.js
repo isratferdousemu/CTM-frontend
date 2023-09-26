@@ -5,10 +5,10 @@ import { http } from "@/hooks/httpService";
 /* -------------------------------------------------------------------------- */
 const state = {
   // Module-specific state
-  upazilas: [],
+  ubions: [],
   upazila: {},
   success_message: "",
-  thana_errors: {},
+  union_errors: {},
   error_message: "",
   error_status: "",
   success_status: "",
@@ -21,12 +21,9 @@ const state = {
 const mutations = {
   // Module-specific mutations
 
-  GET_UPAZILA: (state, data) => {
-    state.upazilas = data;
-  },
 
-  STORE_UPAZILA: (state, data) => {
-    if (state.upazilas.push(data.data)) {
+  STORE_UNION: (state, data) => {
+    if (state.unions.push(data.data)) {
       state.success_message = data.data.message;
       state.success_status = data.status;
     } else {
@@ -34,32 +31,8 @@ const mutations = {
     }
   },
 
-  GET_SINGLE_DIVISION: (state, data) => {
-    state.division = data;
-  },
-
-  UPDATE_DIVISION: (state, data) => {
-    if (state.divisions.push(data.data)) {
-      state.success_message = data.data.message;
-      state.success_status = data.status;
-    } else {
-      state.success_message = "";
-    }
-  },
-
-  DELETE_UPAZILA: (state, { id, data }) => {
-    if (id) {
-      state.upazilas.data = state.upazilas.data.filter((item) => {
-        return id !== item.id;
-      });
-
-      state.success_message = data.message;
-    } else {
-      state.success_message = "";
-    }
-  },
-    UPDATE_ERROR(state, newData) {
-      state.thana_errors = newData;
+   UPDATE_ERROR(state, newData) {
+      state.union_errors = newData;
     },
 };
 
@@ -72,10 +45,10 @@ const actions = {
 
 
   /*start  store division*/
-  StoreUpazila: ({ commit }, data) => {
+  StoreUnion: ({ commit }, data) => {
     // alert('StoreDivision'+ data);
     return http()
-      .post("/admin/thana/insert", data)
+      .post("/admin/union/insert", data)
       .then((result) => {
         console.log(result.data);
         console.log(commit);
@@ -83,20 +56,24 @@ const actions = {
         // this.$router.push({
         //   path: "/system-configuration/division",
         // });
-        commit("STORE_UPAZILA", result);
+        commit("STORE_UNION", result);
       })
       .catch((err) => {
-        state.thana_errors = err.response.data.errors;
-        state.error_status = err.response.status;
-
-        // console.log(state.error_status);
-        // console.log(state.errors);
+        // state.union_errors = err.response.data.errors;
+        // state.error_status = err.response.status;
+        if (err.response && err.response.data && err.response.data.errors) {
+          state.union_errors = err.response.data.errors;
+          state.error_status = err.response.status;
+        } else {
+          console.error("Error:", err);
+          // Handle the error as needed when response or data is not available
+        }
       });
   },
-  UpdateUpazila: ({ commit }, data) => {
+  UpdateUnion: ({ commit }, data) => {
     // alert('StoreDivision'+ data);
     return http()
-      .post("/admin/thana/update", data)
+      .post("/admin/union/update", data)
       .then((result) => {
         console.log(result.data);
         console.log(commit);
@@ -104,11 +81,16 @@ const actions = {
         // this.$router.push({
         //   path: "/system-configuration/division",
         // });
-        commit("STORE_UPAZILA", result);
+        commit("STORE_UNION", result);
       })
       .catch((err) => {
-        state.thana_errors = err.response.data.errors;
-        state.error_status = err.response.status;
+        if (err.response && err.response.data && err.response.data.errors) {
+          state.union_errors = err.response.data.errors;
+          state.error_status = err.response.status;
+        } else {
+          console.error("Error:", err);
+          // Handle the error as needed when response or data is not available
+        }
 
         // console.log(state.error_status);
         // console.log(state.errors);
@@ -116,9 +98,9 @@ const actions = {
   },
   
 
-  DestroyUpazila: ({ commit }, id) => {
+  DestroyUnion: ({ commit }, id) => {
     return http()
-      .get(`/admin/thana/destroy/${id}`)
+      .get(`/admin/union/destroy/${id}`)
       .then((result) => {
         console.log(result);
         commit("DELETE_UPAZILA", { id: id, data: result.data });

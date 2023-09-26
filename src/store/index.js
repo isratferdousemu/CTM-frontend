@@ -16,9 +16,12 @@ import PayrollManagement from "./PayrollManagement";
 import SystemConfiguration from "./SystemConfiguration";
 import TrainingManagement from "./TrainingManagement";
 import Division from "@/store/modules/system_configuration/division";
+import District from "@/store/modules/system_configuration/district";
+import City from "@/store/modules/system_configuration/city";
 import Thana from "@/store/modules/system_configuration/thana";
 import Union from "@/store/modules/system_configuration/union";
 import Menu from "@/store/modules/system_configuration/menu";
+import Device_registration from "@/store/modules/system_configuration/device_registration";
 
 // Import other modules as needed
 
@@ -146,16 +149,6 @@ export default new Vuex.Store({
       commit('setUser', []);
    
     },
-    // login({ commit }, data) {
-    //   commit("setToken", data.token);
-    //   console.log("state permission", data.permissions);
-    //   commit("setUserPermissions", data.permissions);
-    //   commit("setUser", data.user);
-    // },
-    // logout({ commit }) {
-    //   commit("setToken", null);
-    //   commit("setUser", []);
-    // },
     LoginSubmit: ({ commit,state }, data) => {
     return http()
     .post("admin/login/otp", data)
@@ -232,6 +225,7 @@ export default new Vuex.Store({
     setToken(state, token) {
       state.token = token;
     },
+
     setRoles(state, data) {
       state.roles = data;
     },
@@ -276,13 +270,16 @@ export default new Vuex.Store({
     SystemConfiguration,
     TrainingManagement,
     Division,
+    District,
+    City,
     Thana,
     Union,
     Menu,
+    Device_registration,
   },
   plugins: [
     createPersistedState({
-      paths: ["userData", "token", "userPermissions"],
+      paths: ["userData", "token", "userPermissions","loginData"],
     }),
   ],
 });
