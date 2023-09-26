@@ -295,12 +295,6 @@
                 </ValidationProvider>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
-                  <v-btn
-                    flat
-                    @click="dialogEdit = false"
-                    outlined
-                    class="custom-btn-width py-2 mr-10"
-                  >
                     Cancel
                   </v-btn>
                   <v-btn
@@ -424,6 +418,42 @@ export default {
       this.dialogAdd = true;
     },
     submitDivision() {
+<<<<<<< HEAD
+   
+
+    },
+    deleteAlert(id) {
+      this.$toast.success("Logout Successfully");
+      this.deleteDialog = true;
+      this.delete_id = id;
+    },
+    onPageChange($event) {
+      // this.pagination.current = $event;
+      this.GetDivision();
+    },
+    async GetDivision() {
+      const queryParams = {
+                searchText: this.search,
+                perPage: this.pagination.perPage,
+                page: this.pagination.current,
+      };
+      this.$axios.get("/admin/division/get", {
+                headers: {
+                    Authorization: "Bearer " + this.$store.state.token,
+                    "Content-Type": "multipart/form-data",
+        },
+        params: queryParams,
+            }).then((result) => {
+              this.divisions = result.data.data;
+              this.pagination.current = result.data.meta.current_page;
+          this.pagination.total = result.data.meta.last_page;
+          this.pagination.grand_total = result.data.meta.total;
+            });
+        },
+
+    deleteDivision: async function (id) {
+=======
+>>>>>>> e5975b18b1ad1dedcc250a3fbf6a85206febd2a3
       try {
         this.$store.dispatch("Division/StoreDivision", this.data).then(() => {
           if (this.error_status == "") {
