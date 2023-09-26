@@ -7,7 +7,7 @@
           <v-col cols="12">
             <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8">
               <v-card-title class=" justify-center " tag="div">
-                <h3 class="text-uppercase pt-3">Union List</h3>
+                <h3 class="text-uppercase pt-3">Thana/Upazila List</h3>
               </v-card-title>
               <v-card-text>
                 <v-row class="ma-0 pa-3 white round-border d-flex justify-space-between align-center " justify="center"
@@ -37,7 +37,7 @@
                         {{ item.district.name_en }}
                       </template>
                       <template v-slot:item.locationType="{ item }">
-                        {{ item.location_type.value_en }}
+                        {{ item.locationType ?.value_en }}
                       </template>
                       <template v-slot:item.name_en="{ item }">
                         {{ item.name_en }}
@@ -96,13 +96,13 @@
                     <ValidationProvider name="Code" vid="code" rules="required" v-slot="{ errors }">
                       <v-text-field outlined type="text" v-model="data.code" label="Code" required
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
-                      <div v-if="union_errors && union_errors.code" v-html="union_errors.code[0]" class="red--text" />
+                      <div v-if="thana_errors && thana_errors.code" v-html="thana_errors.code[0]" class="red--text" />
                     </ValidationProvider>
                     <ValidationProvider name="District" vid="district" rules="required" v-slot="{ errors }">
-                      <v-autocomplete outlined v-model="data.district_id" @input="onChangeDistrict($event)"
+                      <v-autocomplete outlined v-model="data.district_id" 
                         label="District" :items="districts" item-text="name_en" item-value="id" required
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
-                      <div v-if="union_errors && union_errors.district_id" v-html="union_errors.district_id[0]"
+                      <div v-if="thana_errors && thana_errors.district_id" v-html="thana_errors.district_id[0]"
                         class="red--text" />
                     </ValidationProvider>
 
@@ -110,7 +110,7 @@
                     <ValidationProvider name="Name English" vid="name_en" rules="required" v-slot="{ errors }">
                       <v-text-field outlined type="text" v-model="data.name_en" label="Name English" required
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
-                      <div v-if="union_errors && union_errors.name_en" v-html="union_errors.name_en[0]"
+                      <div v-if="thana_errors && thana_errors.name_en" v-html="thana_errors.name_en[0]"
                         class="red--text" />
                     </ValidationProvider>
                   </v-col>
@@ -120,22 +120,22 @@
                       <v-autocomplete @input="onChangeDivision($event)" v-model="data.division_id" outlined
                         label="Division" :items="divisions" item-text="name_en" item-value="id" required
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
-                      <div v-if="union_errors && union_errors.division_id" v-html="union_errors.division_id[0]"
+                      <div v-if="thana_errors && thana_errors.division_id" v-html="thana_errors.division_id[0]"
                         class="red--text" />
                     </ValidationProvider>
 
-                    <ValidationProvider name="Thana" vid="division" rules="required" v-slot="{ errors }">
-                      <v-autocomplete v-model="data.thana_id" outlined label="Thana" :items="thanas" item-text="name_en"
-                        item-value="id" required :error="errors[0] ? true : false"
+                    <ValidationProvider name="Location Type" vid="division" rules="required" v-slot="{ errors }">
+                      <v-autocomplete v-model="data.location_type" outlined label="Location Type" :items="locationType" item-text="value_en"
+                        item-value="type" required :error="errors[0] ? true : false"
                         :error-messages="errors[0]"></v-autocomplete>
-                      <div v-if="union_errors && union_errors.thana_id" v-html="union_errors.thana_id[0]"
+                      <div v-if="thana_errors && thana_errors.thana_id" v-html="thana_errors.thana_id[0]"
                         class="red--text" />
                     </ValidationProvider>
 
                     <ValidationProvider name="Name Bangla" vid="name_bn" rules="required" v-slot="{ errors }">
                       <v-text-field outlined type="text" v-model="data.name_bn" label="Name Bangla" required
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
-                      <div v-if="union_errors && union_errors.name_bn" v-html="union_errors.name_bn[0]"
+                      <div v-if="thana_errors && thana_errors.name_bn" v-html="thana_errors.name_bn[0]"
                         class="red--text" />
                     </ValidationProvider>
                   </v-col>
@@ -169,25 +169,25 @@
             </v-row>
 
             <ValidationObserver ref="form" v-slot="{ invalid }">
-              <form @submit.prevent="updateUnion()">
+              <form @submit.prevent="updateUpazila()">
                 <v-row>
                   <v-col>
                     <ValidationProvider name="Code" vid="code" rules="required" v-slot="{ errors }">
                       <v-text-field outlined type="text" v-model="data.code" label="Code" required
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
-                      <div v-if="union_errors && union_errors.code" v-html="union_errors.code[0]" class="red--text" />
+                      <div v-if="thana_errors && thana_errors.code" v-html="thana_errors.code[0]" class="red--text" />
                     </ValidationProvider>
                     <ValidationProvider name="District" vid="district" rules="required" v-slot="{ errors }">
                       <v-autocomplete outlined v-model="data.district_id" label="District"
-                        @input="onChangeDistrict($event)" :items="districts" item-text="name_en" item-value="id" required
+                         :items="districts" item-text="name_en" item-value="id" required
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
-                      <div v-if="union_errors && union_errors.district_id" v-html="union_errors.district_id[0]"
+                      <div v-if="thana_errors && thana_errors.district_id" v-html="thana_errors.district_id[0]"
                         class="red--text" />
                     </ValidationProvider>
                     <ValidationProvider name="Name English" vid="name_en" rules="required" v-slot="{ errors }">
                       <v-text-field outlined type="text" v-model="data.name_en" label="Name English" required
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
-                      <div v-if="union_errors && union_errors.name_en" v-html="union_errors.name_en[0]"
+                      <div v-if="thana_errors && thana_errors.name_en" v-html="thana_errors.name_en[0]"
                         class="red--text" />
                     </ValidationProvider>
 
@@ -197,22 +197,22 @@
                       <v-autocomplete @input="onChangeDivision($event)" v-model="data.division_id" outlined
                         label="Division" :items="divisions" item-text="name_en" item-value="id" required
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
-                      <div v-if="union_errors && union_errors.division_id" v-html="union_errors.division_id[0]"
+                      <div v-if="thana_errors && thana_errors.division_id" v-html="thana_errors.division_id[0]"
                         class="red--text" />
                     </ValidationProvider>
 
-                    <ValidationProvider name="Thana" vid="division" rules="required" v-slot="{ errors }">
-                      <v-autocomplete v-model="data.thana_id" outlined label="Thana" :items="thanas" item-text="name_en"
-                        item-value="id" required :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"></v-autocomplete>
-                      <div v-if="union_errors && union_errors.thana_id" v-html="union_errors.thana_id[0]"
-                        class="red--text" />
-                    </ValidationProvider>
+                 <ValidationProvider name="Location Type" vid="division" rules="required" v-slot="{ errors }">
+                        <v-autocomplete v-model="data.location_type" outlined label="Location Type" :items="locationType" item-text="value_en"
+                          item-value="id" required :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"></v-autocomplete>
+                        <div v-if="thana_errors && thana_errors.thana_id" v-html="thana_errors.thana_id[0]"
+                          class="red--text" />
+                      </ValidationProvider>
 
                     <ValidationProvider name="Name Bangla" vid="name_bn" rules="required" v-slot="{ errors }">
                       <v-text-field outlined type="text" v-model="data.name_bn" label="Name Bangla" required
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
-                      <div v-if="union_errors && union_errors.name_bn" v-html="union_errors.name_bn[0]"
+                      <div v-if="thana_errors && thana_errors.name_bn" v-html="thana_errors.name_bn[0]"
                         class="red--text" />
                     </ValidationProvider>
                   </v-col>
@@ -239,12 +239,12 @@
       <v-dialog v-model="deleteDialog" width="350">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            Delete Union
+            Delete Thana/Upazila
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
-              Are you sure to delete this Union? Union all information will be deleted.
+              Are you sure to delete this Thana/Upazila? Thana/Upazila all information will be deleted.
             </div>
           </v-card-text>
           <v-card-actions style="display: block">
@@ -252,7 +252,7 @@
               <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
                 Cancel
               </v-btn>
-              <v-btn text @click="deleteUnion()" color="white" :loading="delete_loading"
+              <v-btn text @click="deleteUpazila()" color="white" :loading="delete_loading"
                 class="custom-btn-width black white--text py-2">
                 Delete
               </v-btn>
@@ -274,7 +274,7 @@ import axios from 'axios'
 extend("required", required);
 export default {
   name: "Index",
-  title: "CTM - Union",
+  title: "CTM - Thana/Upazila",
   data() {
     return {
       data: {
@@ -284,12 +284,12 @@ export default {
         code: null,
         division_id: null,
         district_id: null,
-        thana_id: null,
+        location_type: null,
       },
 
 
       districts: [],
-      thanas: [],
+      locationType: [],
       dialogAdd: false,
       dialogEdit: false,
       deleteDialog: false,
@@ -298,7 +298,7 @@ export default {
 
       search: "",
       delete_id: "",
-      unions: [],
+      upazilas: [],
       pagination: {
         current: 1,
         total: 0,
@@ -319,17 +319,17 @@ export default {
         { text: "Code", value: "code" },
         { text: "Division ", value: "division" },
         { text: "District", value: "district" },
-        { text: "Thana", value: "thana" },
-        { text: "Union  (EN)", value: "name_en" },
-        { text: "Union  (BN)", value: "name_bn" },
+        { text: "Location Type", value: "locationType" },
+        { text: "Thana/Upazila  (EN)", value: "name_en" },
+        { text: "Thana/Upazila  (BN)", value: "name_bn" },
         { text: "Actions", value: "actions", align: "center", sortable: false },
       ];
     },
 
     ...mapState({
       divisions: (state) => state.Division.divisions,
-      error_status: (state) => state.Union.error_status,
-      union_errors: (state) => state.Union.union_errors,
+      error_status: (state) => state.Thana.error_status,
+      thana_errors: (state) => state.Thana.thana_errors,
       // message: (state) => state.SystemConfiguration.success_message,
 
 
@@ -337,14 +337,14 @@ export default {
   },
 
   methods: {
-    async submitUnion() {
+    async submitUpazila() {
       try {
-        this.$store.dispatch("Union/StoreUnion", this.data).then(() => {
+        this.$store.dispatch("Thana/StoreUpazila", this.data).then(() => {
           if (this.error_status == "") {
             this.$toast.success("Data Inserted Successfully");
             this.dialogAdd = false;
             this.resetData();
-            this.GetUnion();
+            this.GetUpazila();
           }
         });
       } catch (e) {
@@ -353,14 +353,14 @@ export default {
 
 
     },
-    async updateUnion() {
+    async updateUpazila() {
       try {
-        this.$store.dispatch("Union/UpdateUnion", this.data).then(() => {
+        this.$store.dispatch("Thana/UpdateUpazila", this.data).then(() => {
           if (this.error_status == "") {
             this.$toast.success("Data Updated Successfully");
             this.dialogEdit = false;
             this.resetData();
-            this.GetUnion();
+            this.GetUpazila();
           }
         });
       } catch (e) {
@@ -396,25 +396,6 @@ export default {
 
 
     },
-    async onChangeDistrict(event) {
-
-      console.log(this.thanas)
-
-      await axios.get(`/admin/thana/get/${event}`, {
-        headers: {
-          Authorization: "Bearer " + this.$store.state.token,
-          "Content-Type": "multipart/form-data",
-        }
-      }).then((result) => {
-
-        this.thanas = result.data.data
-
-
-
-      });
-
-
-    },
 
 
 
@@ -432,36 +413,37 @@ export default {
     },
     onPageChange($event) {
       // this.pagination.current = $event;
-      this.GetUnion();
+      this.GetUpazila();
     },
-    async GetUnion() {
+    async GetUpazila() {
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
       };
-      this.$axios.get("/admin/union/get", {
+      this.$axios.get("/admin/thana/get", {
         headers: {
           Authorization: "Bearer " + this.$store.state.token,
           "Content-Type": "multipart/form-data",
         },
         params: queryParams,
       }).then((result) => {
-        this.unions = result.data.data;
+        this.upazilas = result.data.data;
         this.pagination.current = result.data.meta.current_page;
         this.pagination.total = result.data.meta.last_page;
         this.pagination.grand_total = result.data.meta.total;
+      
       });
     },
 
-    deleteUnion: async function (id) {
+   deleteUpazila: async function (id) {
 
       try {
-        await this.$store.dispatch("Union/DestroyUnion", this.delete_id).then(() => {
+        await this.$store.dispatch("Thana/DestroyUpazila", this.delete_id).then(() => {
           console.log("success");
           this.$toast.error("Deleted Successfully");
           this.deleteDialog = false;
-          this.GetUnion();
+          this.GetUpazila();
         });
       } catch (e) {
         console.log(e);
@@ -471,14 +453,14 @@ export default {
     },
     resetData() {
 
-      this.data.name_en = null,
+        this.data.name_en = null,
         this.data.name_bn = null,
         this.data.code = null,
         this.data.division_id = null,
         this.data.district_id = null,
-        this.data.thana_id = null
+        this.data.location_type = null
     },
-    editUnion(item) {
+    editUpazila(item) {
       if (this.$refs.form) {
         this.$refs.form.reset();
       }
@@ -490,14 +472,14 @@ export default {
       this.data.name_en = item.name_en;
       this.data.name_bn = item.name_bn;
       this.data.code = item.code
-      this.data.division_id = item.thana.district.division.id;
+      this.data.division_id = item.district.division.id;
 
-      this.data.district_id = item.thana.district.id;
-      this.data.thana_id = item.thana.id;
-      console.log(this.data.division_id)
+      this.data.district_id = item.district.id;
+      this.data.location_type = item.locationType.id;
+ 
       this.onChangeDivision(this.data.division_id);
 
-      this.onChangeDistrict(this.data.district_id);
+     
     }
 
   },
@@ -505,7 +487,9 @@ export default {
   mounted() {
     this.$store.commit("setHeaderTitle", "Division List");
     this.GetAllDivisions();
-    this.GetUnion();
+    this.GetUpazila();
+    this.$store.dispatch('getLookupByType', 1).then((res) => this.locationType= res)
+
   },
 };
 </script>

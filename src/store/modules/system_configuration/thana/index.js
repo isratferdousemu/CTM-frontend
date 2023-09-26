@@ -42,17 +42,7 @@ const mutations = {
       state.success_message = "";
     }
   },
-  DELETE_UPAZILA: (state, { id, data }) => {
-    if (id) {
-      state.upazilas.data = state.upazilas.data.filter((item) => {
-        return id !== item.id;
-      });
-
-      state.success_message = data.message;
-    } else {
-      state.success_message = "";
-    }
-  },
+ 
   updateMyData(state, update_error_value) {
     state.union_errors = update_error_value;
   },
@@ -91,7 +81,7 @@ const actions = {
   UpdateUpazila: ({ commit }, data) => {
     // alert('StoreDivision'+ data);
     return http()
-      .post("/admin/upazila/update", data)
+      .post("/admin/thana/update", data)
       .then((result) => {
         console.log(result.data);
         console.log(commit);
@@ -103,7 +93,7 @@ const actions = {
       })
       .catch((err) => {
         if (err.response && err.response.data && err.response.data.errors) {
-          state.upazila_errors = err.response.data.errors;
+          state.thana_errors = err.response.data.errors;
           state.error_status = err.response.status;
         } else {
           console.error("Error:", err);
@@ -111,6 +101,7 @@ const actions = {
         }
       });
   },
+
 
   // UpdateUnion: ({ commit }, { id, data }) => {
   //     return http()
@@ -137,7 +128,6 @@ const actions = {
         console.log(err);
       });
   },
-
   async updateError({ commit }, update_error_value) {
     // You can perform asynchronous operations here if needed.
     commit('updateMyData', update_error_value);
