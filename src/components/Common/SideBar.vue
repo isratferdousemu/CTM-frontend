@@ -162,6 +162,11 @@ export default {
               icon: "mdi mdi-plus",
               to: "/system-configuration/union",
             },
+             {
+              title: "Ward",
+              icon: "mdi mdi-plus",
+              to: "/system-configuration/ward",
+            },
           ],
           permission: "",
         },

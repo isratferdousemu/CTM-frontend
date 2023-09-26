@@ -32,6 +32,18 @@ const SystemConfigurationRoutes = [
         "../pages/SystemConfiguration/demographic_information/union/Index.vue"
       ),
   },
+  {
+    path: "/system-configuration/ward",
+    name: "Thana",
+    meta: {
+
+    },
+    component: () =>
+      import(
+        "../pages/SystemConfiguration/demographic_information/ward/Index.vue"
+      ),
+  },
+
 
 
     /*Menu route start*/

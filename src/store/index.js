@@ -18,6 +18,7 @@ import TrainingManagement from "./TrainingManagement";
 import Division from "@/store/modules/system_configuration/division";
 import Thana from "@/store/modules/system_configuration/thana";
 import Union from "@/store/modules/system_configuration/union";
+import Ward from "@/store/modules/system_configuration/ward";
 import Menu from "@/store/modules/system_configuration/menu";
 import Device_registration from "@/store/modules/system_configuration/device_registration";
 
@@ -271,6 +272,7 @@ export default new Vuex.Store({
     Division,
     Thana,
     Union,
+    Ward,
     Menu,
     Device_registration,
   },
