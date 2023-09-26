@@ -8,7 +8,7 @@ const state = {
   upazilas: [],
   upazila: {},
   success_message: "",
-  errors: {},
+  upazila_errors: {},
   error_message: "",
   error_status: "",
   success_status: "",
@@ -21,25 +21,9 @@ const state = {
 const mutations = {
   // Module-specific mutations
 
-  GET_UPAZILA: (state, data) => {
-    state.upazilas = data;
-  },
 
   STORE_UPAZILA: (state, data) => {
     if (state.upazilas.push(data.data)) {
-      state.success_message = data.data.message;
-      state.success_status = data.status;
-    } else {
-      state.success_message = "";
-    }
-  },
-
-  GET_SINGLE_DIVISION: (state, data) => {
-    state.division = data;
-  },
-
-  UPDATE_DIVISION: (state, data) => {
-    if (state.divisions.push(data.data)) {
       state.success_message = data.data.message;
       state.success_status = data.status;
     } else {
@@ -58,45 +42,29 @@ const mutations = {
       state.success_message = "";
     }
   },
+  DELETE_UPAZILA: (state, { id, data }) => {
+    if (id) {
+      state.upazilas.data = state.upazilas.data.filter((item) => {
+        return id !== item.id;
+      });
+
+      state.success_message = data.message;
+    } else {
+      state.success_message = "";
+    }
+  },
+  updateMyData(state, update_error_value) {
+    state.union_errors = update_error_value;
+  },
+
 };
+
 
 /* -------------------------------------------------------------------------- */
 /*                               Actions Define                               */
 /* -------------------------------------------------------------------------- */
 const actions = {
-  // Module-specific actions
 
-  /*start get all divisions*/
-  GetAllUpazilas: ({ commit }) => {
-    return http()
-      .get("/admin/thana/get")
-      .then((result) => {
-       
-        commit("GET_UPAZILA", result.data.data);
-        console.log(result.data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  },
-  /*end get all divisions*/
-
-  /*start get all divisions*/
-  GetSearchDivisions: ({ commit },data) => {
-    return http()
-      .get(`/admin/division/get/${data}`)
-      .then((result) => {
-        // console.log("hello");
-   
-        commit("GET_DIVISION", result.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  },
-  /*end get all divisions*/
-
-  /*start  store division*/
   StoreUpazila: ({ commit }, data) => {
     // alert('StoreDivision'+ data);
     return http()
@@ -111,41 +79,50 @@ const actions = {
         commit("STORE_UPAZILA", result);
       })
       .catch((err) => {
-        state.errors = err.response.data.errors;
-        state.error_status = err.response.status;
-        console.log(state.errors.code[0]);
-        // console.log(state.error_status);
-        // console.log(state.errors);
+        if (err.response && err.response.data && err.response.data.errors) {
+          state.thana_errors = err.response.data.errors;
+          state.error_status = err.response.status;
+        } else {
+          console.error("Error:", err);
+          // Handle the error as needed when response or data is not available
+        }
       });
   },
-  /*end  store division*/
-
-  /*start edit division */
-  EditDivision: ({ commit }, id) => {
+  UpdateUpazila: ({ commit }, data) => {
+    // alert('StoreDivision'+ data);
     return http()
-      .get(`/admin/division/edit/${id}`)
+      .post("/admin/upazila/update", data)
       .then((result) => {
-        commit("GET_SINGLE_DIVISION", result.data);
+        console.log(result.data);
+        console.log(commit);
+        // alert("Successfully Inserted");
+        // this.$router.push({
+        //   path: "/system-configuration/division",
+        // });
+        commit("STORE_UPAZILA", result);
       })
       .catch((err) => {
-        state.errors = err.response.data.errors;
-        state.error_status = err.response.status;
+        if (err.response && err.response.data && err.response.data.errors) {
+          state.upazila_errors = err.response.data.errors;
+          state.error_status = err.response.status;
+        } else {
+          console.error("Error:", err);
+          // Handle the error as needed when response or data is not available
+        }
       });
   },
-  /*end edit division */
 
-  /*start update division*/
-  UpdateDivision: ({ commit }, { id, data }) => {
-    return http()
-      .post(`/api/division/update/${id}`, data)
-      .then((result) => {
-        commit("UPDATE_DIVISION", result);
-      })
-      .catch((err) => {
-        state.errors = err.response.data.errors;
-        state.error_status = err.response.status;
-      });
-  },
+  // UpdateUnion: ({ commit }, { id, data }) => {
+  //     return http()
+  //         .post(`/admin/union/update/${id}`, data)
+  //         .then((result) => {
+  //             commit("STORE_UNION", result);
+  //         })
+  //         .catch((err) => {
+  //             state.errors = err.response.data.errors;
+  //             state.error_status = err.response.status;
+  //         });
+  // },
   /*end update division*/
 
   /*start delete division*/
@@ -160,7 +137,11 @@ const actions = {
         console.log(err);
       });
   },
-  /*end delete division*/
+
+  async updateError({ commit }, update_error_value) {
+    // You can perform asynchronous operations here if needed.
+    commit('updateMyData', update_error_value);
+  },
 };
 
 /* -------------------------------------------------------------------------- */

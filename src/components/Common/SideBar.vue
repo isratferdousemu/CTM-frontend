@@ -157,6 +157,11 @@ export default {
               icon: "mdi mdi-plus",
               to: "/system-configuration/thana",
             },
+              {
+              title: "Union",
+              icon: "mdi mdi-plus",
+              to: "/system-configuration/union",
+            },
           ],
           permission: "",
         },

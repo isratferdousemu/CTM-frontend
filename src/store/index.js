@@ -16,8 +16,6 @@ import PayrollManagement from "./PayrollManagement";
 import SystemConfiguration from "./SystemConfiguration";
 import TrainingManagement from "./TrainingManagement";
 import Division from "@/store/modules/system_configuration/division";
-import District from "@/store/modules/system_configuration/district";
-import City from "@/store/modules/system_configuration/city";
 import Thana from "@/store/modules/system_configuration/thana";
 import Union from "@/store/modules/system_configuration/union";
 import Menu from "@/store/modules/system_configuration/menu";
@@ -54,26 +52,26 @@ export default new Vuex.Store({
     error_message: "",
     error_status: "",
     success_status: "",
-    loginData:[],
-    otpData:[],
+    loginData: [],
+    otpData: [],
     lookupTypes: [
-      {id: 1, name: 'Location Type'},
-      {id: 2, name: 'Allowance Service'},
-      {id: 3, name: 'Office category'},
-      {id: 4, name: 'Health Status'},
-      {id: 5, name: 'Financial Status'},
-      {id: 6, name: 'Social Status'},
-      {id: 7, name: 'PMT Scoring'},
-      {id: 8, name: 'Education Status'},
-      {id: 9, name: 'Religion'},
-      {id:10, name: 'Household Asset Own'},
-      {id:11, name: 'Disability Type'},
-      {id:12, name: 'Disability Level'},
-      {id:13, name: 'Bank Name'},
-      {id:14, name: 'Branch Name'},
-      {id:15, name: 'Complaint Category'},
-      {id:16, name: 'Module Name'},
-      {id:17, name: 'Organization'},
+      { id: 1, name: 'Location Type' },
+      { id: 2, name: 'Allowance Service' },
+      { id: 3, name: 'Office category' },
+      { id: 4, name: 'Health Status' },
+      { id: 5, name: 'Financial Status' },
+      { id: 6, name: 'Social Status' },
+      { id: 7, name: 'PMT Scoring' },
+      { id: 8, name: 'Education Status' },
+      { id: 9, name: 'Religion' },
+      { id: 10, name: 'Household Asset Own' },
+      { id: 11, name: 'Disability Type' },
+      { id: 12, name: 'Disability Level' },
+      { id: 13, name: 'Bank Name' },
+      { id: 14, name: 'Branch Name' },
+      { id: 15, name: 'Complaint Category' },
+      { id: 16, name: 'Module Name' },
+      { id: 17, name: 'Organization' },
     ],
 
   },
@@ -82,18 +80,18 @@ export default new Vuex.Store({
   /* -------------------------------------------------------------------------- */
   getters: {
     data: (state) => state.data,
- 
-    getOtpresponse(state){
+
+    getOtpresponse(state) {
       return state.otpData
     },
-    getLoginresponse(state){
+    getLoginresponse(state) {
       return state.loginData
     }
-  
+
   },
-   GetToken: function (state) {
-      return state.token;
-    },
+  GetToken: function (state) {
+    return state.token;
+  },
   /* -------------------------------------------------------------------------- */
   /*                               Actions Define                               */
   /* -------------------------------------------------------------------------- */
@@ -147,46 +145,47 @@ export default new Vuex.Store({
     logout({ commit }) {
       commit('setToken', null);
       commit('setUser', []);
-   
-    },
-    LoginSubmit: ({ commit,state }, data) => {
-    return http()
-    .post("admin/login/otp", data)
-    .then((result) => {
-      
-      commit("setOtpresponse", result);
-      state.errors = [];
-    })
-    .catch((err) => {
-      state.errors = err.response.data.errors;
-      state.error_message = err.response.data.message;
-      console.log(state.error_message);
-     
-    });
-  },
-   sendOtp: ({ commit,state }, data) => {
-    return http()
-    .post("admin/login", data)
-    .then((result) => {
-      commit("setOtp", result);
 
-    })
-    .catch((err) => {
-      state.errors = err.response.data.errors;
-      state.error_status = err.response.status;
-    });
-  },
-  async getLookupByType({state },type) {
-    return await axios.get("/admin/lookup/get/"+type, {
-      headers: {
-        Authorization: "Bearer " + state.token,
-        "Content-Type": "multipart/form-data",
-      }
-    }).then((result) => {
-      
-      return result.data.data
-    });
-  },
+    },
+
+    LoginSubmit: ({ commit, state }, data) => {
+      return http()
+        .post("admin/login/otp", data)
+        .then((result) => {
+
+          commit("setOtpresponse", result);
+          state.errors = [];
+        })
+        .catch((err) => {
+          state.errors = err.response.data.errors;
+          state.error_message = err.response.data.message;
+          console.log(state.error_message);
+
+        });
+    },
+    sendOtp: ({ commit, state }, data) => {
+      return http()
+        .post("admin/login", data)
+        .then((result) => {
+          commit("setOtp", result);
+
+        })
+        .catch((err) => {
+          state.errors = err.response.data.errors;
+          state.error_status = err.response.status;
+        });
+    },
+    async getLookupByType({ state }, type) {
+      return await axios.get("/admin/lookup/get/" + type, {
+        headers: {
+          Authorization: "Bearer " + state.token,
+          "Content-Type": "multipart/form-data",
+        }
+      }).then((result) => {
+
+        return result.data.data
+      });
+    },
 
   },
   /* -------------------------------------------------------------------------- */
@@ -242,18 +241,18 @@ export default new Vuex.Store({
       state.userData = userData;
     },
     LoginSubmit: (state, data) => {
-    if (state.forms.push(data.data)) {
-      state.loginData = data.data;
-      // state.success_status = data.status;
-    } else {
-      state.success_message = "";
-    }
-  },
-   setOtp(state, loginData) {
+      if (state.forms.push(data.data)) {
+        state.loginData = data.data;
+        // state.success_status = data.status;
+      } else {
+        state.success_message = "";
+      }
+    },
+    setOtp(state, loginData) {
       state.loginData = loginData
     },
-    setOtpresponse(state, otpData){
-       state.otpData = otpData
+    setOtpresponse(state, otpData) {
+      state.otpData = otpData
     }
 
   },
@@ -270,8 +269,6 @@ export default new Vuex.Store({
     SystemConfiguration,
     TrainingManagement,
     Division,
-    District,
-    City,
     Thana,
     Union,
     Menu,
@@ -279,7 +276,7 @@ export default new Vuex.Store({
   },
   plugins: [
     createPersistedState({
-      paths: ["userData", "token", "userPermissions","loginData"],
+      paths: ["userData", "token", "userPermissions", "loginData"],
     }),
   ],
 });
