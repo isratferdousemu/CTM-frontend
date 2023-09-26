@@ -2,9 +2,10 @@ import store from "@/store";
 import axios from "axios";
 
 // APi Base Url
-const apiUrl = process.env.VUE_APP_BASE_URL_BACKEND;
+const apiUrl = process.env.VUE_APP_BASE_API_URL_BACKEND;
 
 export function http() {
+  console.log("from" + store.state.token);
   return axios.create({
     baseURL: apiUrl,
     headers: {

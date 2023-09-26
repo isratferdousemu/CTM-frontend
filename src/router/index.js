@@ -1,5 +1,4 @@
 // import { createRouter, createWebHistory } from 'vue-router'
-
 import Vue from "vue";
 import VueRouter from "vue-router";
 
@@ -18,9 +17,11 @@ import SystemConfigurationRoutes from "./SystemConfiguration";
 import TrainingManagementRoutes from "./TrainingManagement";
 import CommonRoutes from "./Common";
 
-
+// import dependencies
+import store from "../store/index";
 // import components
 import DefaultLayout from "../layouts/defaultLayout.vue";
+ 
 
 const routes = [
   ...CommonRoutes,
@@ -51,5 +52,38 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth) {
+    // Page requires authentication
+    if (store.state.token) {
+      // console.log(store.getters.GetUserPermissions)
+      // console.log(to.meta.permission)
+      if (to.meta.permission=="common" && store.state && store.state.userData && store.state.userData.roleNames && !store.state.userData.roleNames.includes("super-admin") && store.getters.GetUserPermissions.findIndex(per => per.name === to.meta.permission || per.module_name === to.meta.permission  || per.sub_module_name === to.meta.permission) === -1) {
+      // console.log("don't load permissions")
+
+      next('/dashboard');
+      } 
+      // User is authenticated, allow access
+      next();
+    } else {
+      // User is not authenticated, redirect to login page
+      next('/login');
+    }
+  }else if (to.meta.guest) {
+    if (store.state.token) {
+      // User is already logged in, redirect to the home page or any other authorized page
+      next('/');
+    } else {
+      // User is not logged in, allow access to the login page
+      next();
+    }
+  }  else {
+    // Page doesn't require authentication
+    next();
+  }
+});
+
+
 
 export default router;

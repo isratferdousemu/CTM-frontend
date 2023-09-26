@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
+import { http } from "@/hooks/httpService";
 // import axios from 'axios'
 
 import ApplicationSelection from "./ApplicationSelection";
@@ -14,6 +15,9 @@ import PayrollManagement from "./PayrollManagement";
 import SystemConfiguration from "./SystemConfiguration";
 import TrainingManagement from "./TrainingManagement";
 import Division from "@/store/modules/system_configuration/division";
+import Menu from "@/store/modules/system_configuration/menu";
+import Device_registration from "@/store/modules/system_configuration/device_registration";
+
 // Import other modules as needed
 
 Vue.use(Vuex);
@@ -28,18 +32,38 @@ export default new Vuex.Store({
     notification: [],
     notificationUnseen: 0,
     notificationTime: 0,
+    forgotPasswordErrors: [],
+    forgotPasswordErrorMessageOtp: null,
+    step: 1,
     token: null,
     roles: [],
     rolesAll: [],
     permissions: [],
     userPermissions: [],
     userData: null,
+    //practice
+    forms: [],
+    division: {},
+    success_message: "",
+    errors: {},
+    error_message: "",
+    error_status: "",
+    success_status: "",
+    loginData:[],
+    otpData:[]
+
   },
   /* -------------------------------------------------------------------------- */
   /*                               Getters Define                               */
   /* -------------------------------------------------------------------------- */
   getters: {
     data: (state) => state.data,
+    getLoginresponse(state){
+      return state.loginData
+    },
+       getOtpresponse(state){
+      return state.otpData
+    },
   },
    GetToken: function (state) {
       return state.token;
@@ -52,6 +76,42 @@ export default new Vuex.Store({
       const data = await fetch("http://api.icndb.com/jokes/random/15");
       commit("SET_DATA", await data.json());
     },
+    sendOtpForgetPassword: ({ commit, state }, data) => {
+      return http()
+        .post("admin/forgot-password", data)
+        .then((result) => {
+          commit("setStep", 2);
+          // console.log(state.step);
+          // console.log(result);
+        })
+        .catch((err) => {
+          // console.log(err);
+          commit("setforgotPasswordErrors", err.response.data.errors);
+        });
+    },
+    forgotPasswordSubmit: ({ commit, state }, data) => {
+      return http()
+        .post("admin/forgot-password/submit", data)
+        .then((result) => {
+          // console.log(result);
+          this.$router.push({
+            path: "/login",
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          if (err.response.data.success == false) {
+            // this.error_message_otp = err.response.data.message;
+            commit(
+              "setforgotPasswordErrorMessageOtp",
+              err.response.data.message
+            );
+          } else {
+            // this.errors = err.response.data.errors;
+            commit("setforgotPasswordErrors", err.response.data.errors);
+          }
+        });
+    },
     login({ commit }, data) {
       commit('setToken', data.token);
       console.log('state permission', data.permissions);
@@ -62,12 +122,37 @@ export default new Vuex.Store({
       commit('setToken', null);
       commit('setUser', []);
     },
+
+    LoginSubmit: ({ commit,state }, data) => {
+    return http()
+    .post("admin/login/otp", data)
+    .then((result) => {
+      commit("setOtpresponse", result);
+    })
+    .catch((err) => {
+      state.errors = err.response.data.errors;
+      state.error_status = err.response.status;
+    });
+  },
+   sendOtp: ({ commit,state }, data) => {
+    return http()
+    .post("admin/login", data)
+    .then((result) => {
+      commit("setOtp", result);
+
+    })
+    .catch((err) => {
+      state.errors = err.response.data.errors;
+      state.error_status = err.response.status;
+    });
+  },
+
   },
   /* -------------------------------------------------------------------------- */
   /*                              Mutations Define                              */
   /* -------------------------------------------------------------------------- */
   mutations: {
-  
+
     setDrawer(state, payload) {
       state.Drawer = payload;
     },
@@ -86,10 +171,20 @@ export default new Vuex.Store({
     setNotificationTime(state, payload) {
       state.notificationTime = payload;
     },
+    setforgotPasswordErrors(state, payload) {
+      state.forgotPasswordErrors = payload;
+    },
+    setforgotPasswordErrorMessageOtp(state, payload) {
+      state.forgotPasswordErrorMessageOtp = payload;
+    },
+    setStep(state, payload) {
+      state.step = payload;
+    },
     //Authentication
-        setToken(state, token) {
+    setToken(state, token) {
       state.token = token;
     },
+
     setRoles(state, data) {
       state.roles = data;
     },
@@ -105,6 +200,21 @@ export default new Vuex.Store({
     setUser(state, userData) {
       state.userData = userData;
     },
+    LoginSubmit: (state, data) => {
+    if (state.forms.push(data.data)) {
+      state.loginData = data.data;
+      // state.success_status = data.status;
+    } else {
+      state.success_message = "";
+    }
+  },
+   setOtp(state, loginData) {
+      state.loginData = loginData
+    },
+    setOtpresponse(state, otpData){
+       state.otpData = otpData
+    }
+
   },
   // use modules
   modules: {
@@ -119,10 +229,12 @@ export default new Vuex.Store({
     SystemConfiguration,
     TrainingManagement,
     Division,
+    Menu,
+    Device_registration,
   },
   plugins: [
     createPersistedState({
-      paths: ["userData", "token", "userPermissions"],
+      paths: ["userData", "token", "userPermissions","loginData"],
     }),
   ],
 });

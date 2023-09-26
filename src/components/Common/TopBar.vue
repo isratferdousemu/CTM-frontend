@@ -168,7 +168,9 @@
     <!-- User link End -->
   </v-app-bar>
 </template>
+
 <script>
+import axios from "axios";
 export default {
   computed: {
     headerTitle: {
@@ -200,6 +202,24 @@ export default {
       },
     },
   },
+  methods: {
+    logout() {
+      this.$axios
+        .get("/admin/logout", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then(() => {
+          // console.log(res)
+          this.$store.commit("setToken", null);
+          this.$store.commit("setUser", null);
+          this.$router.push({ name: "Login" });
+        });
+    },
+  },
 };
 </script>
+
 <style lang=""></style>

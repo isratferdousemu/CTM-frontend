@@ -53,7 +53,6 @@
                 ></v-badge>
               </v-list-item-title>
             </v-list-item-content>
-
           </v-list-item>
 
           <v-list-item
@@ -92,7 +91,9 @@
             v-can="item.permission"
           >
             <template v-slot:activator>
-              <v-list-item-title class="list_size">{{item.title }}</v-list-item-title>
+              <v-list-item-title class="list_size">{{
+                item.title
+              }}</v-list-item-title>
             </template>
 
             <template v-for="subitem in item.subTtems">
@@ -145,6 +146,11 @@ export default {
               title: "Division",
               icon: "mdi mdi-plus",
               to: "/system-configuration/division",
+            },
+            {
+              title: "Menu",
+              icon: "mdi mdi-plus",
+              to: "/system-configuration/menu",
             },
           ],
           permission: "",

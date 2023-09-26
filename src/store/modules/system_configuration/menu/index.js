@@ -1,12 +1,13 @@
-import { http } from "@/hooks/httpService";
-
 /* -------------------------------------------------------------------------- */
 /*                                states Define                               */
 /* -------------------------------------------------------------------------- */
+import { http } from "@/hooks/httpService";
+
 const state = {
-  // Module-specific state
-  divisions: [],
-  division: {},
+  menus: [],
+  menu: {},
+  parents: [],
+  pageUrls: [],
   success_message: "",
   errors: {},
   error_message: "",
@@ -18,14 +19,20 @@ const state = {
 /*                              Mutations Define                              */
 /* -------------------------------------------------------------------------- */
 const mutations = {
-  // Module-specific mutations
-
-  GET_DIVISION: (state, data) => {
-    state.divisions = data;
+  GET_ALL_MENU: (state, data) => {
+    state.menus = data.menus;
   },
 
-  STORE_DIVISION: (state, data) => {
-    if (state.divisions.push(data.data)) {
+  GET_ALL_PARENT: (state, data) => {
+    state.parents = data.parents;
+  },
+
+  GET_ALL_PAGE_URLS: (state, data) => {
+    state.pageUrls = data.page_urls;
+  },
+
+  STORE_MENU: (state, data) => {
+    if (state.menus.push(data.data)) {
       state.success_message = data.data.message;
       state.success_status = data.status;
     } else {
@@ -33,12 +40,12 @@ const mutations = {
     }
   },
 
-  GET_SINGLE_DIVISION: (state, data) => {
-    state.division = data;
+  GET_SINGLE_MENU: (state, data) => {
+    state.menu = data.menu;
   },
 
-  UPDATE_DIVISION: (state, data) => {
-    if (state.divisions.push(data.data)) {
+  UPDATE_MENU: (state, data) => {
+    if (state.menus.push(data.data)) {
       state.success_message = data.data.message;
       state.success_status = data.status;
     } else {
@@ -46,9 +53,9 @@ const mutations = {
     }
   },
 
-  DELETE_DIVISION: (state, { id, data }) => {
+  DELETE_MENU: (state, { id, data }) => {
     if (id) {
-      state.divisions.data = state.divisions.data.filter((item) => {
+      state.menus = state.menus.filter((item) => {
         return id !== item.id;
       });
 
@@ -63,113 +70,108 @@ const mutations = {
 /*                               Actions Define                               */
 /* -------------------------------------------------------------------------- */
 const actions = {
-  // Module-specific actions
-
-  /*start get all divisions*/
-  GetAllDivisions: ({ commit }) => {
+  /*start get all menus*/
+  GetAllMenus: ({ commit }) => {
     return http()
-      .get("/admin/division/get")
+      .get("/admin/menu/get")
       .then((result) => {
-        console.log(result.data);
-        commit("GET_DIVISION", result.data);
+        commit("GET_ALL_MENU", result.data);
       })
       .catch((err) => {
         console.log(err);
       });
   },
-  /*end get all divisions*/
+  /*end get all menus*/
 
-  /*start get all divisions*/
-  GetSearchDivisions: ({ commit },data) => {
+  /*start get all parents*/
+  GetAllParents: ({ commit }) => {
     return http()
-      .get(`/admin/division/get/${data}`)
+      .get("/admin/menu/get_parent")
       .then((result) => {
-        // console.log("hello");
-        console.log(result.data);
-        commit("GET_DIVISION", result.data);
+        commit("GET_ALL_PARENT", result.data);
       })
       .catch((err) => {
         console.log(err);
       });
   },
-  /*end get all divisions*/
+  /*end get all parents*/
 
-  /*start  store division*/
-  StoreDivision: ({ commit }, data) => {
-    // alert('StoreDivision'+ data);
+  /*start get all page urls*/
+  GetAllPageUrls: ({ commit }) => {
     return http()
-      .post("/admin/division/insert", data)
+      .get("admin/menu/get_page_url")
       .then((result) => {
-        console.log(result.data);
-        console.log(commit);
-        // alert("Successfully Inserted");
-        // this.$router.push({
-        //   path: "/system-configuration/division",
-        // });
-        // commit("STORE_DIVISION", result);
+        commit("GET_ALL_PAGE_URLS", result.data);
       })
       .catch((err) => {
-        state.errors = err.response.data.errors;
-        state.error_status = err.response.status;
-        console.log(state.errors.code[0]);
-        // console.log(state.error_status);
-        // console.log(state.errors);
+        console.log(err);
       });
   },
-  /*end  store division*/
+  /*end get all page urls*/
 
-  /*start edit division */
-  EditDivision: ({ commit }, id) => {
+  /*start store menus*/
+  StoreMenu: ({ commit }, data) => {
     return http()
-      .get(`/admin/division/edit/${id}`)
+      .post("/admin/menu/insert", data)
       .then((result) => {
-        commit("GET_SINGLE_DIVISION", result.data);
+        commit("STORE_MENU", result);
       })
       .catch((err) => {
         state.errors = err.response.data.errors;
         state.error_status = err.response.status;
       });
   },
-  /*end edit division */
+  /*end store menus*/
 
-  /*start update division*/
-  UpdateDivision: ({ commit }, { id, data }) => {
+  /*start get single menu*/
+  GetSingleMenu: ({ commit }, id) => {
     return http()
-      .post(`/api/division/update/${id}`, data)
+      .get(`/admin/menu/edit/${id}`)
       .then((result) => {
-        commit("UPDATE_DIVISION", result);
+        commit("GET_SINGLE_MENU", result.data);
       })
       .catch((err) => {
         state.errors = err.response.data.errors;
         state.error_status = err.response.status;
       });
   },
-  /*end update division*/
+  /*end get single menu*/
 
-  /*start delete division*/
-  DestroyDivision: ({ commit }, id) => {
+  /*start update menus*/
+  UpdateMenu: ({ commit }, { id, data }) => {
     return http()
-      .get(`/admin/division/destroy/${id}`)
+      .post(`/admin/menu/update/${id}`, data)
       .then((result) => {
-        console.log(result);
-        commit("DELETE_DIVISION", { id: id, data: result.data });
+        commit("UPDATE_MENU", result);
+      })
+      .catch((err) => {
+        state.errors = err.response.data.errors;
+        state.error_status = err.response.status;
+      });
+  },
+  /*end update menus*/
+
+  /*start destroy menu*/
+  DestroyMenu: ({ commit }, id) => {
+    return http()
+      .delete(`/admin/menu/destroy/${id}`)
+      .then((result) => {
+        commit("DELETE_MENU", { id: id, data: result.data });
       })
       .catch((err) => {
         console.log(err);
       });
   },
-  /*end delete division*/
+  /*end destroy menu*/
 };
 
 /* -------------------------------------------------------------------------- */
 /*                               Getters Define                               */
 /* -------------------------------------------------------------------------- */
-const getters = {
-  // Module-specific getters
-};
+const getters = {};
 
 export default {
-  namespaced: true, // Ensures the module is isolated
+  namespaced: true,
   state,
   mutations,
   actions,
