@@ -51,8 +51,8 @@ export default new Vuex.Store({
     error_message: "",
     error_status: "",
     success_status: "",
-    loginData:[],
-    otpData:[]
+    loginData: [],
+    otpData: []
 
   },
   /* -------------------------------------------------------------------------- */
@@ -60,16 +60,16 @@ export default new Vuex.Store({
   /* -------------------------------------------------------------------------- */
   getters: {
     data: (state) => state.data,
-    getLoginresponse(state){
+    getLoginresponse(state) {
       return state.loginData
     },
-       getOtpresponse(state){
+    getOtpresponse(state) {
       return state.otpData
     },
   },
-   GetToken: function (state) {
-      return state.token;
-    },
+  GetToken: function (state) {
+    return state.token;
+  },
   /* -------------------------------------------------------------------------- */
   /*                               Actions Define                               */
   /* -------------------------------------------------------------------------- */
@@ -124,29 +124,29 @@ export default new Vuex.Store({
       commit('setToken', null);
       commit('setUser', []);
     },
-    LoginSubmit: ({ commit,state }, data) => {
-    return http()
-    .post("admin/login/otp", data)
-    .then((result) => {
-      commit("setOtpresponse", result);
-    })
-    .catch((err) => {
-      state.errors = err.response.data.errors;
-      state.error_status = err.response.status;
-    });
-  },
-   sendOtp: ({ commit,state }, data) => {
-    return http()
-    .post("admin/login", data)
-    .then((result) => {
-      commit("setOtp", result);
+    LoginSubmit: ({ commit, state }, data) => {
+      return http()
+        .post("admin/login/otp", data)
+        .then((result) => {
+          commit("setOtpresponse", result);
+        })
+        .catch((err) => {
+          state.errors = err.response.data.errors;
+          state.error_status = err.response.status;
+        });
+    },
+    sendOtp: ({ commit, state }, data) => {
+      return http()
+        .post("admin/login", data)
+        .then((result) => {
+          commit("setOtp", result);
 
-    })
-    .catch((err) => {
-      state.errors = err.response.data.errors;
-      state.error_status = err.response.status;
-    });
-  },
+        })
+        .catch((err) => {
+          state.errors = err.response.data.errors;
+          state.error_status = err.response.status;
+        });
+    },
 
   },
   /* -------------------------------------------------------------------------- */
@@ -202,18 +202,18 @@ export default new Vuex.Store({
       state.userData = userData;
     },
     LoginSubmit: (state, data) => {
-    if (state.forms.push(data.data)) {
-      state.loginData = data.data;
-      // state.success_status = data.status;
-    } else {
-      state.success_message = "";
-    }
-  },
-   setOtp(state, loginData) {
+      if (state.forms.push(data.data)) {
+        state.loginData = data.data;
+        // state.success_status = data.status;
+      } else {
+        state.success_message = "";
+      }
+    },
+    setOtp(state, loginData) {
       state.loginData = loginData
     },
-    setOtpresponse(state, otpData){
-       state.otpData = otpData
+    setOtpresponse(state, otpData) {
+      state.otpData = otpData
     }
 
   },
@@ -237,7 +237,7 @@ export default new Vuex.Store({
   },
   plugins: [
     createPersistedState({
-      paths: ["userData", "token", "userPermissions","loginData"],
+      paths: ["userData", "token", "userPermissions", "loginData"],
     }),
   ],
 });
