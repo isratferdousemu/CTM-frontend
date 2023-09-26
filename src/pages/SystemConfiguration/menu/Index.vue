@@ -113,7 +113,7 @@ export default {
                           {{ parent.label_name_en }}
                         </span>
                         <span v-else>
-                          ---
+                          -
                         </span>
                       </div>
                     </template>
