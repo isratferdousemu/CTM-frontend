@@ -78,81 +78,52 @@
                         >
                           <v-icon> mdi-account-edit-outline </v-icon>
                         </v-btn>
-                        <v-col cols="12">
-                          <v-data-table
-                            :loading="loading"
-                            item-key="id"
-                            :headers="headers"
-                            :items="divisions"
-                            :items-per-page="pagination.perPage"
-                            hide-default-footer
-                            class="elevation-0 transparent row-pointer"
-                          >
-                            <template v-slot:item.id="{ item,index }">
-                              {{ (pagination.current - 1) * pagination.perPage + index+1 }}
-                            </template>
-                            <template v-slot:item.name_en="{ item }">
-                              {{ item.name_en }}
-                            </template>
-                            <template v-slot:item.name_bn="{ item }">
-                              {{ item.name_bn }}
-                            </template>
-                            <template v-slot:item.actions="{ item }">
-                              <v-btn
-                                v-can="'update-post'"
-                                fab
-                                x-small
-                                color="success"
-                                elevation="0"
-                                @click="editPlan(item)">
-                                <v-icon> mdi-account-edit-outline </v-icon>
-                              </v-btn>
-                              <v-btn
-                                v-can="'delete-division'"
-                                fab
-                                x-small
-                                color="grey"
-                                class="ml-3 white--text"
-                                elevation="0"
-                                @click="deleteAlert(item.id)">
-                                <v-icon> mdi-delete </v-icon>
-                              </v-btn>
-                            </template>
-                            <template v-slot:footer="item">
-                              <div class="text-center pt-2 v-data-footer justify-center pb-2">
-                                <v-select
-                                style="
-                                  position: absolute;
-                                  right: 25px;
-                                  width: 149px;
-                                  transform: translate(0px, 0px);
-                                "
-                                :items="items"
-                                hide-details
-                                dense
-                                outlined
-                                @change="onPageChange"
-                                v-model="pagination.perPage"
-                              ></v-select>
-                                <v-pagination
-                                  circle
-                                  primary
-                                  v-model="pagination.current"
-                                  :length="pagination.total"
-                                  @input="onPageChange"
-                                  :total-visible="11"
-                                  class="custom-pagination-item"
-                                ></v-pagination>
-
-                              </div>
-                            </template>
-                          </v-data-table>
-                        </v-col>
-                      </v-row>
-                    </v-card-text>
-                  </v-card>
-                </v-col>
-              </v-row>
+                        <v-btn
+                          v-can="'delete-division'"
+                          fab
+                          x-small
+                          color="grey"
+                          class="ml-3 white--text"
+                          elevation="0"
+                          @click="deleteAlert(item.id)"
+                        >
+                          <v-icon> mdi-delete </v-icon>
+                        </v-btn>
+                      </template>
+                      <template v-slot:footer="item">
+                        <div
+                          class="text-center pt-2 v-data-footer justify-center pb-2"
+                        >
+                          <v-select
+                            style="
+                              position: absolute;
+                              right: 25px;
+                              width: 149px;
+                              transform: translate(0px, 0px);
+                            "
+                            :items="items"
+                            hide-details
+                            dense
+                            outlined
+                            @change="onPageChange"
+                            v-model="pagination.perPage"
+                          ></v-select>
+                          <v-pagination
+                            circle
+                            primary
+                            v-model="pagination.current"
+                            :length="pagination.total"
+                            @input="onPageChange"
+                            :total-visible="11"
+                            class="custom-pagination-item"
+                          ></v-pagination>
+                        </div>
+                      </template>
+                    </v-data-table>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </v-card>
           </v-col>
         </v-row>
       </v-col>
