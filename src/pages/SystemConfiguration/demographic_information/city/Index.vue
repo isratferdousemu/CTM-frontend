@@ -178,7 +178,6 @@
                   v-slot="{ errors }"
                 >
                   <v-autocomplete
-                    @input="onChangeDistrict($event)"
                     v-model="data.district_id"
                     :disabled="isDisabled"
                     outlined
@@ -416,6 +415,7 @@
 import { mapState } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
+import axios from "axios";
 
 extend("required", required);
 export default {
@@ -445,7 +445,6 @@ export default {
         total: 0,
         perPage: 5,
       },
-      errors: "",
       items: [5, 10, 15, 20, 40, 50, 100],
     };
   },
@@ -498,14 +497,16 @@ export default {
       }
     },
     editDialog(item) {
-      console.log(JSON.stringify(item));
+      // alert(JSON.stringify(item.district.id));
       this.dialogEdit = true;
       this.data.code = item.code;
       this.data.division_id = item.district.division.id;
+      this.onChangeDivision(this.data.division_id);
       this.data.district_id = item.district.id;
       this.data.name_en = item.name_en;
       this.data.name_bn = item.name_bn;
       this.data.id = item.id;
+      alert(JSON.stringify(this.data));
     },
     updateCity() {
       // alert(this.data);
@@ -594,53 +595,85 @@ export default {
         console.log(e);
       }
     },
-    onChangeDivision(event) {
+    async onChangeDivision(event) {
       console.log(event);
-      const targetId = event; // The id you want to find
-      // const targetId = 32; // The id you want to find
-      const array = this.$store.state.District.districts.data;
-      console.log(array);
-      const foundItem = array.filter((item) => item.division.id === targetId);
+      await axios
+        .get(`/admin/district/get/${event}`, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
+          // this.districts = result.data.data;
+          console.log(result.data.data, " onChangeDivision");
 
-      if (foundItem) {
-        console.log("Found item:", foundItem);
-        // this.districts = foundItem;
+          try {
+            this.$store
+              .dispatch("District/SetDistrict",result.data)
+              .then(() => {});
+          } catch (e) {
+            console.log(e);
+          }
+
+          this.isDisabled = false;
+        });
+      return;
+
+      this.getAllDistrict();
+
+      console.log(event);
+      const targetValue = event;
+      const array = this.$store.state.District.districts.data;
+      // const foundItem = array.filter((item) => item.division.id === targetValue);
+      const filteredItems = this.filterArrayByProperty(
+        array,
+        "division.id",
+        targetValue
+      );
+
+      if (filteredItems.length != 0) {
+        console.log("Found item:", filteredItems);
         this.isDisabled = false;
-        const array1 ={
-          data: foundItem
-        }
+        const payload = {
+          data: filteredItems,
+        };
 
         try {
-          this.$store.dispatch("District/SetDistrict", array1).then(() => {
-            console.log('SetDistrict Done');
-          });
+          this.$store.dispatch("District/SetDistrict", payload).then(() => {});
         } catch (e) {
           console.log(e);
         }
-
       } else {
+        this.isDisabled = true;
         console.log("Item not found");
       }
-      console.log('--');
-      console.log(this.$store.state.District.districts.data);
-      console.log('--');
-      // await axios
-      //   .get(`/admin/city/get/${event}`, {
-      //     headers: {
-      //       Authorization: "Bearer " + this.$store.state.token,
-      //       "Content-Type": "multipart/form-data",
-      //     },
-      //   })
-      //   .then((result) => {
-      //     this.city = result.data.data;
-      //     console.log(this.city);
-      //   });
+      // console.log("--");
+      // console.log(this.$store.state.District.districts.data);
+      // console.log("--");
+    },
+    filterArrayByProperty(array, propertyPath, targetValue) {
+      const foundItems = array.filter((item) => {
+        // Split the property path into an array of nested properties
+        const properties = propertyPath.split(".");
+
+        // Use reduce to access the nested property
+        const propertyValue = properties.reduce(
+          (obj, prop) => obj && obj[prop],
+          item
+        );
+
+        // Check if the property value matches the target value
+        return propertyValue === targetValue;
+      });
+
+      return foundItems;
     },
   },
   created() {
     this.GetCity();
     this.getAllDivision();
-    this.getAllDistrict();
+    // this.getAllDistrict();
   },
   beforeMount() {
     this.$store.commit("setHeaderTitle", "City List");

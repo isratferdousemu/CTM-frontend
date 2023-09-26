@@ -148,6 +148,16 @@ export default {
               to: "/system-configuration/division",
             },
             {
+              title: "Disrict",
+              icon: "mdi mdi-plus",
+              to: "/system-configuration/district",
+            },
+            {
+              title: "City Corporation",
+              icon: "mdi mdi-plus",
+              to: "/system-configuration/city",
+            },
+            {
               title: "Menu",
               icon: "mdi mdi-plus",
               to: "/system-configuration/menu",
