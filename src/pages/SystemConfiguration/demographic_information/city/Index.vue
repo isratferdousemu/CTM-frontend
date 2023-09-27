@@ -64,6 +64,9 @@
                       <template v-slot:item.name_en="{ item }">
                         {{ item.name_en }}
                       </template>
+                      <template v-slot:item.locationType="{ item }">
+                        {{ item.locationType?.value_en }}
+                      </template>
                       <template v-slot:item.name_bn="{ item }">
                         {{ item.name_bn }}
                       </template>
@@ -191,6 +194,25 @@
                   ></v-autocomplete>
                 </ValidationProvider>
                 <ValidationProvider
+                  name="LocationType"
+                  vid="locationType"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
+                  <v-autocomplete
+                    @input="onChangeLocationType($event)"
+                    v-model="data.location_type "
+                    outlined
+                    label="LocationType"
+                    :items="locationType"
+                    item-text="value_en"
+                    item-value="id"
+                    required
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
+                  ></v-autocomplete>
+                </ValidationProvider>
+                <ValidationProvider
                   name="Name English"
                   vid="name_en"
                   rules="required"
@@ -311,6 +333,25 @@
                   ></v-autocomplete>
                 </ValidationProvider>
                 <ValidationProvider
+                  name="LocationType"
+                  vid="locationType"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
+                  <v-autocomplete
+                    @input="onChangeLocationType($event)"
+                    v-model="data.location_type "
+                    outlined
+                    label="LocationType"
+                    :items="data.locationType"
+                    item-text="value_en"
+                    item-value="id"
+                    required
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
+                  ></v-autocomplete>
+                </ValidationProvider>
+                <ValidationProvider
                   name="Name English"
                   vid="name_en"
                   rules="required"
@@ -404,8 +445,9 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      {{ districts }}
-      <!-- {{ divisions }} -->
+      <!-- {{ city }}
+      {{ districts }} -->
+      <!-- {{ locationType }} -->
       <!-- delete modal  -->
     </v-row>
   </div>
@@ -430,7 +472,10 @@ export default {
         code: null,
         name_en: null,
         name_bn: null,
+        locationType: null,
+        location_type : null,
       },
+      locationType: {},
       isDisabled: true,
       dialogAdd: false,
       deleteDialog: false,
@@ -459,6 +504,7 @@ export default {
         { text: "Code", value: "code" },
         { text: "Division Name English", value: "district.division.name_en" },
         { text: "District Name English", value: "district.name_en" },
+        { text: "Location Type", value: "locationType" },
         { text: "City Name English", value: "name_en" },
         { text: "City Name English Bangla", value: "name_bn" },
         { text: "Actions", value: "actions", align: "center", sortable: false },
@@ -481,7 +527,7 @@ export default {
       this.dialogAdd = true;
     },
     submitCity() {
-      // alert(JSON.stringify(this.data));
+      console.log(JSON.stringify(this.data));
       // return;
       try {
         this.$store.dispatch("City/StoreCity", this.data).then(() => {
@@ -506,7 +552,9 @@ export default {
       this.data.name_en = item.name_en;
       this.data.name_bn = item.name_bn;
       this.data.id = item.id;
-      alert(JSON.stringify(this.data));
+      this.data.location_type  = item.locationType.id;
+
+      // alert(JSON.stringify(this.data));
     },
     updateCity() {
       // alert(this.data);
@@ -529,6 +577,9 @@ export default {
         code: "",
         name_en: "",
         name_bn: "",
+        division_id: null,
+        district_id: null,
+        location_type : null,
         // Reset other form fields
       };
     },
@@ -610,7 +661,7 @@ export default {
 
           try {
             this.$store
-              .dispatch("District/SetDistrict",result.data)
+              .dispatch("District/SetDistrict", result.data)
               .then(() => {});
           } catch (e) {
             console.log(e);
@@ -673,6 +724,10 @@ export default {
   created() {
     this.GetCity();
     this.getAllDivision();
+    this.$store.dispatch("getLookupByType", 1).then((res) => {
+      this.locationType = res;
+      console.log(this.locationType, " here");
+    });
     // this.getAllDistrict();
   },
   beforeMount() {

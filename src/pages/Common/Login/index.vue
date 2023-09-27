@@ -36,7 +36,7 @@
               <v-form @submit.prevent="submitData" class="ma-5">
                 <v-text-field
                   label="Username"
-                  v-model="data.email"
+                  v-model="data.username"
                   required
                 ></v-text-field>
                 <div v-if="errors && errors.email" v-html="errors.email" />
@@ -70,7 +70,7 @@ export default {
   data() {
     return {
       data: {
-        email: null,
+        username: null,
         password: null,
       },
 
