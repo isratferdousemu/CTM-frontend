@@ -12,14 +12,6 @@ const state = {
     error_message: "",
     error_status: "",
     success_status: "",
-    pagination: {
-        current_page: 1,
-        from: '',
-        last_page: '',
-        per_page: 1,
-        to: ''
-    },
-    total: ''
 };
 
 /* -------------------------------------------------------------------------- */
@@ -28,11 +20,6 @@ const state = {
 const mutations = {
     GET_ALL_DEVICE: (state, data) => {
         state.devices = data.data;
-        state.pagination.current_page = data.meta.current_page;
-        state.pagination.from = data.meta.from;
-        state.pagination.last_page = data.meta.last_page;
-        state.total = data.meta.total;
-        console.log(state.total);
     },
 
     GET_ALL_USERS: (state, data) => {
@@ -72,6 +59,16 @@ const mutations = {
             state.success_message = "";
         }
     },
+
+    ACTIVATE_DEVICE: (state, data) => {
+        if(state.devices.push(data.data))
+        {
+            state.success_message = data.data.message;
+            state.success_status = data.status;
+        }else{
+            state.success_message = '';
+        }
+    }
 };
 
 /* -------------------------------------------------------------------------- */
@@ -156,6 +153,16 @@ const actions = {
             });
     },
     /*end destroy device*/
+
+    /*start device activated*/
+    ActivateDevice: ({commit}, id) => {
+        return http().post(`/admin/device/status/${id}`).then((result) => {
+            commit('ACTIVATE_DEVICE', result)
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
+    /*end device activated*/
 };
 
 /* -------------------------------------------------------------------------- */
