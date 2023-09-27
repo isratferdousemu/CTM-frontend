@@ -97,6 +97,7 @@ export default {
         await this.$store.dispatch("Device_registration/DestroyDevice", id).then(() => {
           this.deleteDialog = false;
           this.$toast.success(this.message);
+          this.getAllDevices();
         })
       }catch (e) {
         console.log(e);
@@ -107,6 +108,7 @@ export default {
       try {
         await this.$store.dispatch("Device_registration/ActivateDevice", id).then(() => {
           this.$toast.success(this.message);
+          this.getAllDevices();
         })
       }catch (e) {
         console.log(e);

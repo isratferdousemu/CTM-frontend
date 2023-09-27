@@ -147,15 +147,28 @@ export default {
               icon: "mdi mdi-plus",
               to: "/system-configuration/division",
             },
+
+            {
+              title: "Thana/Upazila",
+              icon: "mdi mdi-plus",
+              to: "/system-configuration/thana",
+            },
+
             {
               title: "Menu",
               icon: "mdi mdi-plus",
               to: "/system-configuration/menu",
             },
+
             {
-              title: "Thana/Upazila",
+              title: "Device Registration",
               icon: "mdi mdi-plus",
-              to: "/system-configuration/thana",
+              to: "/system-configuration/device_registration",
+            },
+            {
+              title: "Office Information",
+              icon: "mdi mdi-plus",
+              to: "/system-configuration/office_information",
             },
           ],
           permission: "",
