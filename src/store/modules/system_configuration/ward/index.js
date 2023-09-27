@@ -5,10 +5,10 @@ import { http } from "@/hooks/httpService";
 /* -------------------------------------------------------------------------- */
 const state = {
     // Module-specific state
-    unions: [],
-    union: {},
+    wards: [],
+    ward: {},
     success_message: "",
-    union_errors: {},
+    ward_errors: {},
     error_message: "",
     error_status: "",
     success_status: "",
@@ -22,8 +22,8 @@ const mutations = {
     // Module-specific mutations
 
 
-    STORE_UNION: (state, data) => {
-        if (state.unions.push(data.data)) {
+    STORE_WARD: (state, data) => {
+        if (state.wards.push(data.data)) {
             state.success_message = data.data.message;
             state.success_status = data.status;
         } else {
@@ -42,9 +42,9 @@ const mutations = {
             state.success_message = "";
         }
     },
-    DELETE_UNION: (state, { id, data }) => {
+    DELETE_WARD: (state, { id, data }) => {
         if (id) {
-            state.upazilas.data = state.upazilas.data.filter((item) => {
+            state.wards.data = state.wards.data.filter((item) => {
                 return id !== item.id;
             });
 
@@ -54,7 +54,7 @@ const mutations = {
         }
     },
     updateMyData(state, update_error_value) {
-        state.union_errors = update_error_value;
+        state.ward_errors = update_error_value;
     },
 
 };
@@ -65,10 +65,10 @@ const mutations = {
 /* -------------------------------------------------------------------------- */
 const actions = {
 
-    StoreUnion: ({ commit }, data) => {
+    StoreWard: ({ commit }, data) => {
         // alert('StoreDivision'+ data);
         return http()
-            .post("/admin/union/insert", data)
+            .post("/admin/ward/insert", data)
             .then((result) => {
                 console.log(result.data);
                 console.log(commit);
@@ -76,11 +76,11 @@ const actions = {
                 // this.$router.push({
                 //   path: "/system-configuration/division",
                 // });
-                commit("STORE_UNION", result);
+                commit("STORE_WARD", result);
             })
             .catch((err) => {
                 if (err.response && err.response.data && err.response.data.errors) {
-                    state.union_errors = err.response.data.errors;
+                    state.ward_errors = err.response.data.errors;
                     state.error_status = err.response.status;
                 } else {
                     console.error("Error:", err);
@@ -88,10 +88,10 @@ const actions = {
                 }
             });
     },
-    UpdateUnion: ({ commit }, data) => {
+    UpdateWard: ({ commit }, data) => {
         // alert('StoreDivision'+ data);
         return http()
-            .post("/admin/union/update", data)
+            .post("/admin/ward/update", data)
             .then((result) => {
                 console.log(result.data);
                 console.log(commit);
@@ -99,11 +99,11 @@ const actions = {
                 // this.$router.push({
                 //   path: "/system-configuration/division",
                 // });
-                commit("STORE_UNION", result);
+                commit("STORE_WARD", result);
             })
             .catch((err) => {
                 if (err.response && err.response.data && err.response.data.errors) {
-                    state.union_errors = err.response.data.errors;
+                    state.ward_errors = err.response.data.errors;
                     state.error_status = err.response.status;
                 } else {
                     console.error("Error:", err);
@@ -126,12 +126,12 @@ const actions = {
     /*end update division*/
 
     /*start delete division*/
-    DestroyUnion: ({ commit }, id) => {
+    DestroyWard: ({ commit }, id) => {
         return http()
-            .get(`/admin/union/destroy/${id}`)
+            .get(`/admin/ward/destroy/${id}`)
             .then((result) => {
                 console.log(result);
-                commit("DELETE_UNION", { id: id, data: result.data });
+                commit("DELETE_WARD", { id: id, data: result.data });
             })
             .catch((err) => {
                 console.log(err);

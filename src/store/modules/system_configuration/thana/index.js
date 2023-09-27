@@ -31,20 +31,30 @@ const mutations = {
     }
   },
 
-    UPDATE_ERROR(state, newData) {
-      state.thana_errors = newData;
-    },
+  DELETE_UPAZILA: (state, { id, data }) => {
+    if (id) {
+      state.upazilas.data = state.upazilas.data.filter((item) => {
+        return id !== item.id;
+      });
+
+      state.success_message = data.message;
+    } else {
+      state.success_message = "";
+    }
+  },
+ 
+  updateMyData(state, update_error_value) {
+    state.thana_errors = update_error_value;
+  },
+
 };
+
 
 /* -------------------------------------------------------------------------- */
 /*                               Actions Define                               */
 /* -------------------------------------------------------------------------- */
 const actions = {
-  // Module-specific actions
 
-
-
-  /*start  store division*/
   StoreUpazila: ({ commit }, data) => {
     // alert('StoreDivision'+ data);
     return http()
@@ -59,11 +69,13 @@ const actions = {
         commit("STORE_UPAZILA", result);
       })
       .catch((err) => {
-        state.thana_errors = err.response.data.errors;
-        state.error_status = err.response.status;
-
-        // console.log(state.error_status);
-        // console.log(state.errors);
+        if (err.response && err.response.data && err.response.data.errors) {
+          state.thana_errors = err.response.data.errors;
+          state.error_status = err.response.status;
+        } else {
+          console.error("Error:", err);
+          // Handle the error as needed when response or data is not available
+        }
       });
   },
   UpdateUpazila: ({ commit }, data) => {
@@ -80,15 +92,31 @@ const actions = {
         commit("STORE_UPAZILA", result);
       })
       .catch((err) => {
-        state.thana_errors = err.response.data.errors;
-        state.error_status = err.response.status;
-
-        // console.log(state.error_status);
-        // console.log(state.errors);
+        if (err.response && err.response.data && err.response.data.errors) {
+          state.thana_errors = err.response.data.errors;
+          state.error_status = err.response.status;
+        } else {
+          console.error("Error:", err);
+          // Handle the error as needed when response or data is not available
+        }
       });
   },
-  
 
+
+  // UpdateUnion: ({ commit }, { id, data }) => {
+  //     return http()
+  //         .post(`/admin/union/update/${id}`, data)
+  //         .then((result) => {
+  //             commit("STORE_UNION", result);
+  //         })
+  //         .catch((err) => {
+  //             state.errors = err.response.data.errors;
+  //             state.error_status = err.response.status;
+  //         });
+  // },
+  /*end update division*/
+
+  /*start delete division*/
   DestroyUpazila: ({ commit }, id) => {
     return http()
       .get(`/admin/thana/destroy/${id}`)
@@ -100,10 +128,9 @@ const actions = {
         console.log(err);
       });
   },
-  /*end delete upazila*/
-  async updateError({ commit }, newData) {
+  async updateError({ commit }, update_error_value) {
     // You can perform asynchronous operations here if needed.
-    commit('UPDATE_ERROR', newData);
+    commit('updateMyData', update_error_value);
   },
 };
 

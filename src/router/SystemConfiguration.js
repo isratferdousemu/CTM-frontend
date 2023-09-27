@@ -36,23 +36,6 @@ const SystemConfigurationRoutes = [
   },
 
   {
-    path: "/system-configuration/division/create",
-    name: "CreateDivision",
-    component: () =>
-      import(
-        "../pages/SystemConfiguration/demographic_information/division/Create.vue"
-      ),
-  },
-
-  {
-    path: "/system-configuration/division/edit/:id",
-    name: "EditDivision",
-    component: () =>
-      import(
-        "../pages/SystemConfiguration/demographic_information/division/Edit.vue"
-      ),
-  },
-  {
     path: "/system-configuration/thana",
     name: "Thana",
     meta: {
@@ -67,13 +50,24 @@ const SystemConfigurationRoutes = [
     path: "/system-configuration/union",
     name: "Thana",
     meta: {
-    
     },
     component: () =>
       import(
         "../pages/SystemConfiguration/demographic_information/union/Index.vue"
       ),
   },
+  {
+    path: "/system-configuration/ward",
+    name: "Thana",
+    meta: {
+
+    },
+    component: () =>
+      import(
+        "../pages/SystemConfiguration/demographic_information/ward/Index.vue"
+      ),
+  },
+
 
 
     /*Menu route start*/

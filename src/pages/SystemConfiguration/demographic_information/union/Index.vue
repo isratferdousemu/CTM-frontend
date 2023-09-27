@@ -31,19 +31,19 @@
                         {{ (pagination.current - 1) * pagination.perPage + index + 1 }}
                       </template>
                       <template v-slot:item.division="{ item }">
-                        {{ item.thana.district.division.name_en }}
+                        {{ item.thana.district.division .name_en }}
                       </template>
                       <template v-slot:item.district="{ item }">
-                        {{ item.thana.district.name_en }}
+                        {{ item.thana ?.district.name_en }}
                       </template>
                       <template v-slot:item.thana="{ item }">
-                        {{ item.thana.name_en }}
+                        {{ item.thana ?.name_en }}
                       </template>
                       <template v-slot:item.name_en="{ item }">
-                        {{ item.name_en }}
+                        {{ item ?.name_en }}
                       </template>
                       <template v-slot:item.name_bn="{ item }">
-                        {{ item.name_bn }}
+                        {{ item ?.name_bn }}
                       </template>
                       <template v-slot:item.actions="{ item }">
                         <v-btn v-can="'update-post'" fab x-small color="success" elevation="0" @click="editUnion(item)">

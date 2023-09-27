@@ -1,13 +1,36 @@
 <script>
 import { mapActions, mapState } from "vuex";
+import {http} from "@/hooks/httpService";
 
 export default {
   name: "Index",
   title: "CTM - Menu",
   data() {
     return {
+      totalMenus: 0,
+      menus: [],
+      loading: true,
+      options: {},
       search: '',
+      deleteDialog: false,
+      delete_loading: false,
+      deleted_id: '',
     };
+  },
+
+  watch: {
+    options: {
+      handler () {
+        this.getAllMenus()
+      },
+      deep: true,
+    },
+
+    search: {
+      handler () {
+        this.getAllMenus()
+      },
+    },
   },
 
   computed: {
@@ -40,11 +63,40 @@ export default {
       GetAllParents: "Menu/GetAllParents",
     }),
 
-    deleteMenu: async function (id) {
+    getAllMenus(){
+      this.loading = true
+
+      const { sortBy, sortDesc, page, itemsPerPage } = this.options
+
+      http().get('/admin/menu/get', {
+        params: {
+          sortBy: sortBy[0],
+          sortDesc: sortDesc[0],
+          page: page,
+          itemsPerPage: itemsPerPage,
+          search: this.search
+        }
+      }).then((result) => {
+        this.menus = result.data.data;
+        this.totalMenus = result.data.total;
+        this.loading = false;
+      }).catch((err) => {
+        console.log(err);
+      })
+    },
+
+    deleteAlert(id) {
+      this.deleteDialog = true;
+      this.deleted_id = id;
+    },
+
+    deleteMenu: async function () {
       try {
+        let id = this.deleted_id;
         await this.$store.dispatch("Menu/DestroyMenu", id).then(() => {
           this.GetAllMenu();
-          console.log("success");
+          this.deleteDialog = false;
+          this.$toast.success(this.message);
         });
       } catch (e) {
         console.log(e);
@@ -63,40 +115,38 @@ export default {
             <v-card>
               <v-row>
                 <v-col col="6">
-                  <v-card-title>Menu Lists</v-card-title>
-                </v-col>
-
-                <v-col cols="6">
-                  <v-card-actions class="justify-end">
-                    <v-btn
-                      text
-                      color="success"
-                      router
-                      to="/system-configuration/menu/create"
-                    >
-                      <v-icon small left>mdi-plus</v-icon>
-                      <span>Add New</span>
-                    </v-btn>
-                  </v-card-actions>
+                  <v-card-title><h3>Menu Lists</h3></v-card-title>
                 </v-col>
               </v-row>
 
               <v-divider></v-divider>
 
               <v-card-text>
-                <v-card-title>
+                <v-card-title class="mb-5">
+                  <div class="d-flex justify-sm-end flex-wrap">
+                      <v-text-field
+                        v-model="search"
+                        append-icon="mdi-magnify"
+                        label="Search"
+                        hide-details
+                        class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal "
+                        flat
+                        outlined dense
+                      ></v-text-field>
+                  </div>
+
                   <v-spacer></v-spacer>
 
-                  <v-col sm="4" style="margin-right: -10px">
-                    <v-text-field
-                      v-model="search"
-                      append-icon="mdi-magnify"
-                      label="Search"
-                      hide-details
-                      class="mb-5"
-                      outlined
-                    ></v-text-field>
-                  </v-col>
+                  <v-btn
+                      medium
+                      flat
+                      color="primary"
+                      router
+                      to="/system-configuration/menu/create"
+                    >
+                    <v-icon small left>mdi-plus</v-icon>
+                    <span>Add New</span>
+                  </v-btn>
                 </v-card-title>
 
                 <v-card-subtitle>
@@ -104,6 +154,12 @@ export default {
                     :headers="headers"
                     :items="menus"
                     :search="search"
+                    :options.sync="options"
+                    :server-items-length="totalMenus"
+                    :loading="loading"
+                    :footer-props="{
+                        'items-per-page-options': [1,10,20,30,40,50]
+                    }"
                     dense
                     class="elevation-1"
                   >
@@ -113,7 +169,7 @@ export default {
                           {{ parent.label_name_en }}
                         </span>
                         <span v-else>
-                          ---
+                          -
                         </span>
                       </div>
                     </template>
@@ -131,17 +187,14 @@ export default {
                       <v-tooltip top>
                         <template v-slot:activator="{ on }">
                           <v-btn
-                            small
-                            text
-                            color="grey"
+                            fab
+                            x-small
+                            color="success"
                             v-on="on"
                             router
                             :to="`/system-configuration/menu/edit/${item.id}`"
                           >
-                            <v-icon left small>mdi-pencil</v-icon>
-                            <span right class="caption text-lowercase"
-                              >Edit</span
-                            >
+                          <v-icon>mdi-account-edit-outline</v-icon>
                           </v-btn>
                         </template>
                         <span>Edit</span>
@@ -150,16 +203,14 @@ export default {
                       <v-tooltip top>
                         <template v-slot:activator="{ on }">
                           <v-btn
-                            small
-                            text
+                            fab
+                            x-small
                             color="grey"
+                            class="ml-3 white--text"
                             v-on="on"
-                            @click="deleteMenu(item.id)"
+                            @click="deleteAlert(item.id)"
                           >
-                            <v-icon left small>mdi-delete</v-icon>
-                            <span right class="caption text-lowercase"
-                              >Delete</span
-                            >
+                            <v-icon>mdi-delete</v-icon>
                           </v-btn>
                         </template>
                         <span>Delete</span>
@@ -172,6 +223,33 @@ export default {
           </v-col>
         </v-row>
       </v-col>
+
+      <!-- delete modal  -->
+      <v-dialog v-model="deleteDialog" width="350">
+        <v-card style="justify-content: center; text-align: center">
+          <v-card-title class="font-weight-bold justify-center">
+            Delete Device
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            <div class="subtitle-1 font-weight-medium mt-5">
+              Are you sure to delete this Device? Division all information will be deleted.
+            </div>
+          </v-card-text>
+          <v-card-actions style="display: block">
+            <v-row class="mx-0 my-0 py-2" justify="center">
+              <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
+                Cancel
+              </v-btn>
+              <v-btn text @click="deleteMenu" color="white" :loading="delete_loading"
+                     class="custom-btn-width black white--text py-2">
+                Delete
+              </v-btn>
+            </v-row>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <!-- delete modal  -->
     </v-row>
   </div>
 </template>
