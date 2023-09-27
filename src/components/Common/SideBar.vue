@@ -163,9 +163,9 @@ export default {
               to: "/system-configuration/menu",
             },
             {
-              title: "Thana/Upazila",
+              title: "Device Registration",
               icon: "mdi mdi-plus",
-              to: "/system-configuration/thana",
+              to: "/system-configuration/device_registration",
             },
             {
               title: "Thana/Upazila",
@@ -183,7 +183,6 @@ export default {
               to: "/system-configuration/ward",
             },
           ],
-          permission: "",
         },
 
         {

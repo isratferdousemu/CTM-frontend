@@ -18,7 +18,6 @@ import TrainingManagement from "./TrainingManagement";
 import Division from "@/store/modules/system_configuration/division";
 import District from "@/store/modules/system_configuration/district";
 import City from "@/store/modules/system_configuration/city";
-import Thana from "@/store/modules/system_configuration/thana";
 import Union from "@/store/modules/system_configuration/union";
 import Ward from "@/store/modules/system_configuration/ward";
 import Thana from "@/store/modules/system_configuration/thana";
@@ -178,6 +177,7 @@ export default new Vuex.Store({
 
         return result.data.data
       });
+    },
     },
 
 
