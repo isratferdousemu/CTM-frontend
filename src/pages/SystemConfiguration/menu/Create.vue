@@ -55,7 +55,7 @@ export default {
       GetAllPageUrls: "Menu/GetAllPageUrls",
     }),
 
-    addmenu: async function () {
+    addMenu: async function () {
       try {
         let formData = new FormData();
         for (const [key, value] of Object.entries(this.add_menu)) {
@@ -66,7 +66,7 @@ export default {
 
         await this.$store.dispatch("Menu/StoreMenu", formData).then((res) => {
           this.add_menu = {};
-          console.log("Menu store successful");
+          this.$toast.success(this.message);
           this.$router.push({ name: "Menu" });
         });
       } catch (e) {
@@ -84,12 +84,12 @@ export default {
         <v-row>
           <v-col cols="12">
             <v-card>
-              <v-card-title>Add Menu</v-card-title>
+              <v-card-title><h3>Add Menu</h3></v-card-title>
 
               <v-divider></v-divider>
 
               <v-card-text>
-                <v-form v-on:submit.prevent="addmenu">
+                <v-form v-on:submit.prevent="addMenu">
                   <v-col cols="12" class="d-flex">
                     <v-row wrap>
                       <v-col cols="12" sm="6" lg="6">
@@ -218,20 +218,20 @@ export default {
 
                   <v-row class="justify-end mt-5 mb-5">
                     <v-btn
-                      tile
+                      flat
                       color="primary"
                       class="custom-btn mr-2"
                       router
                       to="/system-configuration/menu"
-                      >Back</v-btn
-                    >
+                      >Back
+                    </v-btn>
                     <v-btn
-                      tile
+                      flat
                       color="success"
                       type="submit"
                       class="custom-btn mr-2"
-                      >Submit</v-btn
-                    >
+                      >Submit
+                    </v-btn>
                   </v-row>
                 </v-form>
               </v-card-text>
