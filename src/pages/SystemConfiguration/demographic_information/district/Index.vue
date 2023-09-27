@@ -217,7 +217,7 @@
                     color="primary"
                     :disabled="invalid"
                     :loading="loading"
-                    class="custom-btn-width black white--text py-2"
+                    class="custom-btn-width warning white--text py-2"
                   >
                     Submit
                   </v-btn>
@@ -318,7 +318,7 @@
                     color="primary"
                     :disabled="invalid"
                     :loading="loading"
-                    class="custom-btn-width black white--text py-2"
+                    class="custom-btn-width warning white--text py-2"
                   >
                     Submit
                   </v-btn>
@@ -358,7 +358,7 @@
                 @click="deleteDistrict()"
                 color="white"
                 :loading="delete_loading"
-                class="custom-btn-width black white--text py-2"
+                class="custom-btn-width warning white--text py-2"
               >
                 Delete
               </v-btn>

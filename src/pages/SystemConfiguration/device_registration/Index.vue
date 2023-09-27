@@ -249,7 +249,7 @@ export default {
                 Cancel
               </v-btn>
               <v-btn text @click="deleteDevice" color="white" :loading="delete_loading"
-                     class="custom-btn-width black white--text py-2">
+                     class="custom-btn-width warning white--text py-2">
                 Delete
               </v-btn>
             </v-row>

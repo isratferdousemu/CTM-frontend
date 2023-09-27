@@ -150,7 +150,7 @@
                     Cancel
                   </v-btn>
                   <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
-                    class="custom-btn-width black white--text py-2">
+                    class="custom-btn-width warning white--text py-2">
                     Submit
                   </v-btn>
                 </v-row>
@@ -226,7 +226,7 @@
                     Cancel
                   </v-btn>
                   <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
-                    class="custom-btn-width black white--text py-2">
+                    class="custom-btn-width warning white--text py-2">
                     Update
                   </v-btn>
                 </v-row>
@@ -256,7 +256,7 @@
                 Cancel
               </v-btn>
               <v-btn text @click="deleteUpazila()" color="white" :loading="delete_loading"
-                class="custom-btn-width black white--text py-2">
+                class="custom-btn-width warning white--text py-2">
                 Delete
               </v-btn>
             </v-row>
