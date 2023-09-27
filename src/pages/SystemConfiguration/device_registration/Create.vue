@@ -28,7 +28,8 @@ export default {
     ...mapState({
       users: (state) => state.Device_registration.users,
       message: (state) => state.Device_registration.success_message,
-      errors: (state) => state.Device_registration.errors
+      errors: (state) => state.Device_registration.errors,
+      status: (state) => state.Device_registration.success_status
     })
   },
 
@@ -63,8 +64,12 @@ export default {
         formData.append('purpose_use', this.add_device.purpose_use);
 
         await this.$store.dispatch("Device_registration/StoreDevice", formData).then(() => {
-          this.add_device = {};
-          this.$toast.success(this.message);
+          if (this.status == 201)
+          {
+            this.add_device = {};
+            this.$toast.success(this.message);
+          }
+
         })
       }catch (e) {
         console.log(e);

@@ -100,6 +100,10 @@ export default new Vuex.Store({
   /*                               Actions Define                               */
   /* -------------------------------------------------------------------------- */
   actions: {
+    async getData({ commit }) {
+      const data = await fetch("http://api.icndb.com/jokes/random/15");
+      commit("SET_DATA", await data.json());
+    },
     sendOtpForgetPassword: ({ commit, state }, data) => {
       return http()
         .post("admin/forgot-password", data)
