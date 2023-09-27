@@ -204,7 +204,7 @@
                     v-model="data.location_type "
                     outlined
                     label="LocationType"
-                    :items="locationType"
+                    :items="filteredOptions"
                     item-text="value_en"
                     item-value="id"
                     required
@@ -343,7 +343,7 @@
                     v-model="data.location_type "
                     outlined
                     label="LocationType"
-                    :items="data.locationType"
+                    :items="filteredOptions"
                     item-text="value_en"
                     item-value="id"
                     required
@@ -445,8 +445,8 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <!-- {{ city }}
-      {{ districts }} -->
+      <!-- {{ city }} -->
+      <!-- {{ districts }} -->
       <!-- {{ locationType }} -->
       <!-- delete modal  -->
     </v-row>
@@ -519,10 +519,15 @@ export default {
       errors: (state) => state.City.errors,
       error_status: (state) => state.City.error_status,
     }),
+    filteredOptions() {
+      // Apply your filter logic here, e.g., filtering out options with 'Option 2' label
+      return this.locationType.filter(option => option.keyword !== 'Upazila');
+    }
   },
 
   methods: {
     createDialog() {
+      this.$store.commit("RESET_ERRORS");
       this.resetForm();
       this.dialogAdd = true;
     },
@@ -557,7 +562,7 @@ export default {
       // alert(JSON.stringify(this.data));
     },
     updateCity() {
-      // alert(this.data);
+      // alert(JSON.stringify(this.data));
       try {
         this.$store.dispatch("City/UpdateCity", this.data).then(() => {
           if (this.error_status == "") {

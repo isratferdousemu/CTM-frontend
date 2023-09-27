@@ -4,17 +4,19 @@
                         <v-container class="my-5">
                                 <!-- login OTP -->
 
-                        <v-dialog persistent v-model="otpDialog" width="350">
-                                <v-card style="justify-content: center; text-align: center">
-                                        <v-card-title class="font-weight-bold justify-center">
-                                                OTP
-                                        </v-card-title>
-                                        <v-divider></v-divider>
-                                        <v-card-text>
-                                                <p>You will get a verification code to your registered number.</p>
-                                                <v-otp-input v-model="form.otp" :loading="loading" @finish="onFinish"></v-otp-input>
-                                                  <div v-if="getLoginresponse?.message" v-html="getLoginresponse?.message" class="red--text" />
-                                                <p>Remaining time: {{ remainingTime }} sec</p>
+                                <v-dialog persistent v-model="otpDialog" width="350">
+                                        <v-card style="justify-content: center; text-align: center">
+                                                <v-card-title class="font-weight-bold justify-center">
+                                                        OTP
+                                                </v-card-title>
+                                                <v-divider></v-divider>
+                                                <v-card-text>
+                                                        <p>You will get a verification code to your registered number.</p>
+                                                        <v-otp-input v-model="form.otp" :loading="loading"
+                                                                @finish="onFinish"></v-otp-input>
+                                                        <div v-if="getLoginresponse?.message" v-html="getLoginresponse?.message"
+                                                                class="red--text" />
+                                                        <p>Remaining time: {{ remainingTime }} sec</p>
 
 
                                                 </v-card-text>
@@ -66,8 +68,8 @@
                                                                         :error="errors && errors.password"
                                                                         :error-messages="errors ? errors.password : []"
                                                                         required></v-text-field>
-                                                                <!-- <div v-if="message && !errors" v-html="message"
-                                                                        class="red--text" /> -->
+                                                        {{ error_code_login }}
+                                                                 
 
 
 
@@ -129,6 +131,9 @@ export default {
                         errors: (state) => state.errors,
                         success_status: (state) => state.success_status,
                         error_message: (state) => state.error_message,
+                        error_status: (state) => state.error_status_login,
+                        error_code_login: (state) => state.error_code_login,
+                        login_message: (state) => state.login_message,
 
 
                 }),
@@ -236,21 +241,42 @@ export default {
                 },
                 submitLogin: async function () {
 
+                        // this.loading = true;
+                        // await this.$store
+                        //         .dispatch("LoginSubmit", this.form).then((res) => {
+                        //                 if (!this.errors.email) {
+                        //                         this.otpDialog = true;
+                        //                         this.startCountdown();
+                        //                         console.log(this.errors)
+                        //                 }
+
+                        //                 this.loading = false;
+
+
+
+
+                        //         });
                         this.loading = true;
-                        await this.$store
-                                .dispatch("LoginSubmit", this.form).then((res) => {
-                                        if (!this.errors.email) {
+                        try {
+                                this.$store.dispatch("LoginSubmit", this.form).then(() => {
+                                        if (this.error_status == "") {
                                                 this.otpDialog = true;
                                                 this.startCountdown();
-                                                console.log(this.errors)
+                                               
+
                                         }
+                                        else{
+                                                 this.$toast.error(this.login_message);
 
+                                        }
                                         this.loading = false;
-
-
-
-
                                 });
+                        } catch (e) {
+                                this.loading = false;
+                                
+                                console.log(e);
+                        }
+
 
 
 

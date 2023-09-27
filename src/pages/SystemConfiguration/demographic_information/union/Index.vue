@@ -21,8 +21,9 @@
 
                   </div>
                   <v-btn @click="dialogOpen" flat color="primary" prepend-icon="mdi-account-multiple-plus">
-                    Add New Union
+                  Add New Union
                   </v-btn>
+                
                   <v-col cols="12">
                     <v-data-table :loading="loading" item-key="id" :headers="headers" :items="unions"
                       :items-per-page="pagination.perPage" hide-default-footer
@@ -470,6 +471,9 @@ export default {
 
     },
     resetData() {
+      if (this.$refs.form) {
+        this.$refs.form.reset();
+      }
 
       this.data.name_en = null,
         this.data.name_bn = null,
