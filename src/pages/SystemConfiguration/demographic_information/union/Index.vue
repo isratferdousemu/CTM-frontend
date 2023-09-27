@@ -21,8 +21,9 @@
 
                   </div>
                   <v-btn @click="dialogOpen" flat color="primary" prepend-icon="mdi-account-multiple-plus">
-                    Add New Union
+                  Add New Union
                   </v-btn>
+                
                   <v-col cols="12">
                     <v-data-table :loading="loading" item-key="id" :headers="headers" :items="unions"
                       :items-per-page="pagination.perPage" hide-default-footer
@@ -146,7 +147,7 @@
                     Cancel
                   </v-btn>
                   <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
-                    class="custom-btn-width black white--text py-2">
+                    class="custom-btn-width warning white--text py-2">
                     Submit
                   </v-btn>
                 </v-row>
@@ -223,7 +224,7 @@
                     Cancel
                   </v-btn>
                   <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
-                    class="custom-btn-width black white--text py-2">
+                    class="custom-btn-width warning white--text py-2">
                     Update
                   </v-btn>
                 </v-row>
@@ -253,7 +254,7 @@
                 Cancel
               </v-btn>
               <v-btn text @click="deleteUnion()" color="white" :loading="delete_loading"
-                class="custom-btn-width black white--text py-2">
+                class="custom-btn-width  white--text py-2">
                 Delete
               </v-btn>
             </v-row>
@@ -470,6 +471,9 @@ export default {
 
     },
     resetData() {
+      if (this.$refs.form) {
+        this.$refs.form.reset();
+      }
 
       this.data.name_en = null,
         this.data.name_bn = null,

@@ -21,7 +21,7 @@
 
                   </div>
                   <v-btn @click="dialogOpen" flat color="primary" prepend-icon="mdi-account-multiple-plus">
-                    Add New Ward
+                    Add New Ward {{ error_status }}
                   </v-btn>
                   <v-col cols="12">
                     <v-data-table :loading="loading" item-key="id" :headers="headers" :items="wards"
@@ -111,7 +111,7 @@
 
                     <ValidationProvider v-if="data.location_type == '1'" name="Thana" vid="division" rules="required"
                       v-slot="{ errors }">
-                      <v-autocomplete v-model="data.thana_id" outlined label="Upazila" @input="onChangeThana($event)"
+                      <v-autocomplete v-model="data.thana_id" @input="onChangeUpazila($event)" outlined label="Upazila"
                         :items="thanas" item-text="name_en" item-value="id" required :error="errors[0] ? true : false"
                         :error-messages="errors[0]"></v-autocomplete>
                       <div v-if="ward_errors && ward_errors.thana_id" v-html="ward_errors.thana_id[0]"
@@ -119,15 +119,14 @@
                     </ValidationProvider>
                     <ValidationProvider v-if="data.location_type == '2'" name="Thana" vid="division" rules="required"
                       v-slot="{ errors }">
-                      <v-autocomplete v-model="data.thana_id" outlined label="City Corporation"
-                        @input="onChangeThana($event)" :items="thanas" item-text="name_en" item-value="id" required
+                      <v-autocomplete v-model="data.city_id" outlined label="City Corporation"
+                        @input="onChangeThana($event)" :items="cities" item-text="name_en" item-value="id" required
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
-                      <div v-if="ward_errors && ward_errors.thana_id" v-html="ward_errors.thana_id[0]"
-                        class="red--text" />
+                      <div v-if="ward_errors && ward_errors.city_id" v-html="ward_errors.city_id[0]" class="red--text" />
                     </ValidationProvider>
                     <ValidationProvider name="Thana" vid="division" rules="required" v-slot="{ errors }">
-                      <v-autocomplete v-if="data.location_type == '3'" v-model="data.thana_id" outlined
-                        label="District Pouroshava" @input="onChangeThana($event)" :items="thanas" item-text="name_en"
+                      <v-autocomplete v-if="data.location_type == '3'" v-model="data.district_pouro_id" outlined
+                        label="District Pouroshava" :items="district_poros" item-text="name_en"
                         item-value="id" required :error="errors[0] ? true : false"
                         :error-messages="errors[0]"></v-autocomplete>
                       <div v-if="ward_errors && ward_errors.thana_id" v-html="ward_errors.thana_id[0]"
@@ -151,9 +150,9 @@
                     </ValidationProvider>
 
                     <ValidationProvider name="Location Type" vid="division" rules="required" v-slot="{ errors }">
-                      <v-autocomplete v-model="data.location_type" outlined label="Location Type" :items="locationType"
-                        item-text="value_en" item-value="id" required :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"></v-autocomplete>
+                      <v-autocomplete @input="LocationType($event)" v-model="data.location_type" outlined
+                        label="Location Type" :items="locationType" item-text="value_en" item-value="id" required
+                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                       <div v-if="ward_errors && ward_errors.location_type" v-html="thana_errors.location_type[0]"
                         class="red--text" />
                     </ValidationProvider>
@@ -169,8 +168,8 @@
 
 
                     <ValidationProvider name="Thana" vid="division" rules="required" v-slot="{ errors }">
-                      <v-autocomplete v-if="data.location_type == '2'" v-model="data.thana_id" outlined label="Thana"
-                        @input="onChangeThana($event)" :items="thanas" item-text="name_en" item-value="id" required
+                      <v-autocomplete v-if="data.location_type == '2'" v-model="data.city_thana_id" outlined label="Thana"
+                        :items="city_thanas" item-text="name_en" item-value="id" required
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                       <div v-if="ward_errors && ward_errors.thana_id" v-html="ward_errors.thana_id[0]"
                         class="red--text" />
@@ -207,91 +206,115 @@
             Edit Ward
           </v-card-title>
           <v-divider></v-divider>
-          <v-card-text class="mt-7">
-            <v-row>
+         <v-card-text class="mt-7">
+              <v-row>
 
-            </v-row>
+              </v-row>
 
-            <ValidationObserver ref="form" v-slot="{ invalid }">
-              <form @submit.prevent="updateWard()">
-                <v-row>
-                  <v-col>
-                    <ValidationProvider name="Code" vid="code" rules="required" v-slot="{ errors }">
-                      <v-text-field outlined type="text" v-model="data.code" label="Code" required
-                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
-                      <div v-if="ward_errors && ward_errors.code" v-html="ward_errors.code[0]" class="red--text" />
-                    </ValidationProvider>
-                    <ValidationProvider name="District" vid="district" rules="required" v-slot="{ errors }">
-                      <v-autocomplete outlined v-model="data.district_id" @input="onChangeDistrict($event)"
-                        label="District" :items="districts" item-text="name_en" item-value="id" required
-                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
-                      <div v-if="ward_errors && ward_errors.district_id" v-html="ward_errors.district_id[0]"
-                        class="red--text" />
-                    </ValidationProvider>
+              <ValidationObserver ref="form" v-slot="{ invalid }">
+                <form @submit.prevent="submitWard()">
+                  <v-row>
+                    <v-col>
+                      <ValidationProvider name="Code" vid="code" rules="required" v-slot="{ errors }">
+                        <v-text-field outlined type="text" v-model="data.code" label="Code" required
+                          :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
+                        <div v-if="ward_errors && ward_errors.code" v-html="ward_errors.code[0]"    class="red--text" />
+                      </ValidationProvider>
+                      <ValidationProvider name="District" vid="district" rules="required" v-slot="{ errors }">
+                        <v-autocomplete outlined v-model="data.district_id" @input="onChangeDistrict($event)"
+                          label="District" :items="districts" item-text="name_en" item-value="id" required
+                          :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                        <div v-if="ward_errors && ward_errors.district_id" v-html="ward_errors.district_id[0]"
+                          class="red--text" />
+                      </ValidationProvider>
 
-                    <ValidationProvider name="Thana" vid="division" rules="required" v-slot="{ errors }">
-                      <v-autocomplete v-model="data.thana_id" outlined label="Thana" @input="onChangeThana($event)"
-                        :items="thanas" item-text="name_en" item-value="id" required :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"></v-autocomplete>
-                      <div v-if="ward_errors && ward_errors.thana_id" v-html="ward_errors.thana_id[0]"
-                        class="red--text" />
-                    </ValidationProvider>
-                    <ValidationProvider name="Name English" vid="name_en" rules="required" v-slot="{ errors }">
-                      <v-text-field outlined type="text" v-model="data.name_en" label="Name English" required
-                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
-                      <div v-if="ward_errors && ward_errors.name_en" v-html="ward_errors.name_en[0]" class="red--text" />
-                    </ValidationProvider>
-                  </v-col>
-                  <v-col>
+                      <ValidationProvider  name="Thana" vid="division" rules="required"
+                        v-slot="{ errors }">
+                        <v-autocomplete v-model="data.thana_id" @input="onChangeUpazila($event)" outlined label="Upazila"
+                          :items="thanas" item-text="name_en" item-value="id" required :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"></v-autocomplete>
+                        <div v-if="ward_errors && ward_errors.thana_id" v-html="ward_errors.thana_id[0]"
+                          class="red--text" />
+                      </ValidationProvider>
+                      <ValidationProvider  name="Thana" vid="division" rules="required"
+                        v-slot="{ errors }">
+                        <v-autocomplete v-model="data.city_id" outlined label="City Corporation" v-if="data.city_id"
+                          @input="onChangeThana($event)" :items="cities" item-text="name_en" item-value="id" required
+                          :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                        <div v-if="ward_errors && ward_errors.city_id" v-html="ward_errors.city_id[0]" class="red--text" />
+                      </ValidationProvider>
+                      <ValidationProvider name="Thana" vid="division" rules="required" v-slot="{ errors }">
+                        <v-autocomplete  v-model="data.district_pouro_id" outlined v-if="data.district_pouro_id"
+                          label="District Pouroshava" :items="district_poros" item-text="name_en"
+                          item-value="id" required :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"></v-autocomplete>
+                        <div v-if="ward_errors && ward_errors.thana_id" v-html="ward_errors.thana_id[0]"
+                          class="red--text" />
+                      </ValidationProvider>
 
-                    <ValidationProvider name="Division" vid="division" rules="required" v-slot="{ errors }">
-                      <v-autocomplete @input="onChangeDivision($event)" v-model="data.division_id" outlined
-                        label="Division" :items="divisions" item-text="name_en" item-value="id" required
-                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
-                      <div v-if="ward_errors && ward_errors.division_id" v-html="ward_errors.division_id[0]"
-                        class="red--text" />
-                    </ValidationProvider>
+                      <ValidationProvider name="Name English" vid="name_en" rules="required" v-slot="{ errors }">
+                        <v-text-field outlined type="text" v-model="data.name_en" label="Name English" required
+                          :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
+                        <div v-if="ward_errors && ward_errors.name_en" v-html="ward_errors.name_en[0]" class="red--text" />
+                      </ValidationProvider>
+                    </v-col>
+                    <v-col>
 
-                    <ValidationProvider name="Location Type" vid="division" rules="required" v-slot="{ errors }">
-                      <v-autocomplete v-model="data.location_type" outlined label="Location Type" :items="locationType"
-                        item-text="value_en" item-value="id" required :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"></v-autocomplete>
-                      <div v-if="ward_errors && ward_errors.location_type" v-html="thana_errors.location_type[0]"
-                        class="red--text" />
-                    </ValidationProvider>
+                      <ValidationProvider name="Division" vid="division" rules="required" v-slot="{ errors }">
+                        <v-autocomplete @input="onChangeDivision($event)" v-model="data.division_id" outlined
+                          label="Division" :items="divisions" item-text="name_en" item-value="id" required
+                          :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                        <div v-if="ward_errors && ward_errors.division_id" v-html="ward_errors.division_id[0]"
+                          class="red--text" />
+                      </ValidationProvider>
 
-
-
-                    <ValidationProvider name="Union/pourashava" vid="division" rules="required" v-slot="{ errors }">
-                      <v-autocomplete v-model="data.union_id" outlined label="Union/pourashava" :items="unions"
-                        item-text="name_en" item-value="id" required :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"></v-autocomplete>
-                      <div v-if="ward_errors && ward_errors.union_id" v-html="ward_errors.union_id[0]"
-                        class="red--text" />
-                    </ValidationProvider>
+                      <ValidationProvider name="Location Type" vid="division" rules="required" v-slot="{ errors }">
+                        <v-autocomplete @input="LocationType($event)" v-model="data.location_type" outlined
+                          label="Location Type" :items="locationType" item-text="value_en" item-value="id" required
+                          :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                        <div v-if="ward_errors && ward_errors.location_type" v-html="thana_errors.location_type[0]"
+                          class="red--text" />
+                      </ValidationProvider>
 
 
+                      <ValidationProvider name="Union/pourashava" vid="division" rules="required" v-slot="{ errors }">
+                        <v-autocomplete v-model="data.union_id" outlined v-if="data.union_id"
+                          label="Union/pourashava" :items="unions" item-text="name_en" item-value="id" required
+                          :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                        <div v-if="ward_errors && ward_errors.union_id" v-html="ward_errors.union_id[0]"
+                          class="red--text" />
+                      </ValidationProvider>
 
-                    <ValidationProvider name="Name Bangla" vid="name_bn" rules="required" v-slot="{ errors }">
-                      <v-text-field outlined type="text" v-model="data.name_bn" label="Name Bangla" required
-                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
-                      <div v-if="ward_errors && ward_errors.name_bn" v-html="ward_errors.name_bn[0]" class="red--text" />
-                    </ValidationProvider>
-                  </v-col>
-                </v-row>
 
-                <v-row class="mx-0 my-0 py-2" justify="center">
-                  <v-btn flat @click="dialogAdd = false" outlined class="custom-btn-width py-2 mr-10">
-                    Cancel
-                  </v-btn>
-                  <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
-                    class="custom-btn-width black white--text py-2">
-                    Submit
-                  </v-btn>
-                </v-row>
-              </form>
-            </ValidationObserver>
-          </v-card-text>
+                      <ValidationProvider name="Thana" vid="division" rules="required" v-slot="{ errors }">
+                        <v-autocomplete  v-model="data.city_thana_id" outlined label="Thana" v-if="data.city_thana_id"
+                          :items="city_thanas" item-text="name_en" item-value="id" required
+                          :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                        <div v-if="ward_errors && ward_errors.thana_id" v-html="ward_errors.thana_id[0]"
+                          class="red--text" />
+                      </ValidationProvider>
+
+
+                      <ValidationProvider name="Name Bangla" vid="name_bn" rules="required" v-slot="{ errors }">
+                        <v-text-field outlined type="text" v-model="data.name_bn" label="Name Bangla" required
+                          :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
+                        <div v-if="ward_errors && ward_errors.name_bn" v-html="ward_errors.name_bn[0]" class="red--text" />
+                      </ValidationProvider>
+                    </v-col>
+                  </v-row>
+
+                  <v-row class="mx-0 my-0 py-2" justify="center">
+                    <v-btn flat @click="dialogAdd = false" outlined class="custom-btn-width py-2 mr-10">
+                      Cancel
+                    </v-btn>
+                    <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
+                      class="custom-btn-width black white--text py-2">
+                      Submit
+                    </v-btn>
+                  </v-row>
+                </form>
+              </ValidationObserver>
+            </v-card-text>
 
         </v-card>
       </v-dialog>
@@ -348,7 +371,10 @@ export default {
         district_id: null,
         thana_id: null,
         union_id: null,
-        location_type: null,
+        city_id: null,
+        city_thana_id: null,
+        district_pouro_id: null,
+        location_type: null
       },
 
 
@@ -379,6 +405,7 @@ export default {
   },
   computed: {
 
+
     headers() {
       return [
         { text: "#Sl", value: "id", align: "start", sortable: false },
@@ -407,7 +434,13 @@ export default {
   methods: {
     async submitWard() {
       try {
-        this.$store.dispatch("Ward/StoreWard", this.data).then(() => {
+        let fd = new FormData();
+        for (const [key, value] of Object.entries(this.data)) {
+          if (value !== null) {
+            fd.append(key, value);
+          }
+        }
+        this.$store.dispatch("Ward/StoreWard", fd).then(() => {
           if (this.error_status == "") {
             this.$toast.success("Data Inserted Successfully");
             this.dialogAdd = false;
@@ -436,6 +469,77 @@ export default {
       }
 
     },
+    async LocationType($event) {
+      if (this.data.district_id != null && this.data.location_type != null) {
+        if ($event === 1) {
+          await axios.get(`/admin/thana/get/${this.data.district_id}`, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            }
+          }).then((result) => {
+
+            this.thanas = result.data.data
+
+
+
+          });
+
+
+        }
+        if ($event === 2) {
+
+          await axios.get("/admin/city/get/"+this.data.district_id+"/"+$event, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            }
+          }).then((result) => {
+
+            this.cities = result.data.data
+
+
+
+          });
+
+
+        }
+            if ($event === 3) {
+          await axios.get("/admin/city/get/" + this.data.district_id + "/" + $event, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            }
+          }).then((result) => {
+
+            this.district_poros = result.data.data
+
+
+
+          });
+
+
+        }
+
+      }
+
+    },
+    async onChangeUpazila(event) {
+      await axios.get(`/admin/union/get/${this.data.thana_id}`, {
+        headers: {
+          Authorization: "Bearer " + this.$store.state.token,
+          "Content-Type": "multipart/form-data",
+        }
+      }).then((result) => {
+
+        this.unions = result.data.data
+
+
+
+      });
+
+    },
+
     dialogOpen() {
       if (this.$refs.form) {
         this.$refs.form.reset();
@@ -501,6 +605,24 @@ export default {
 
 
     },
+    async onChangeCity(event) {
+
+
+      await axios.get(`/admin/thana/get/${this.data.city_id}`, {
+        headers: {
+          Authorization: "Bearer " + this.$store.state.token,
+          "Content-Type": "multipart/form-data",
+        }
+      }).then((result) => {
+
+        this.city_thanas = result.data.data
+
+
+
+      });
+
+
+    },
 
 
 
@@ -508,7 +630,7 @@ export default {
     ...mapActions({
       GetAllDivisions: "Division/GetAllDivisions",
 
-      updateError: "Union/updateError",
+      updateError: "Ward/updateError",
 
     }),
     deleteAlert(id) {
@@ -535,6 +657,7 @@ export default {
         params: queryParams,
       }).then((result) => {
         this.wards = result.data.data;
+        console.log(this.wards);
         this.pagination.current = result.data.meta.current_page;
         this.pagination.total = result.data.meta.last_page;
         this.pagination.grand_total = result.data.meta.total;
@@ -563,9 +686,12 @@ export default {
         this.data.code = null,
         this.data.division_id = null,
         this.data.district_id = null,
-        this.data.thana_id = null
-      this.data.union_id = null
-      this.data.location_type = null
+        this.data.thana_id = null,
+        this.data.union_id = null,
+        this.data.location_type = null,
+        this.city_id = null,
+        this.city_thana_id = null,
+        this.district_pouro_id = null
     },
     editWard(item) {
       if (this.$refs.form) {
@@ -590,6 +716,11 @@ export default {
 
       this.onChangeDistrict(this.data.district_id);
       this.onChangeThana(this.data.thana_id);
+      //  thana_id: null,
+      //   union_id: null,
+      //     city_id: null,
+      //       city_thana_id: null,
+      //         district_pouro_id: null,
     }
 
   },

@@ -54,7 +54,10 @@ export default new Vuex.Store({
     errors: [],
     error_message: "",
     error_status: "",
+    error_status_login: "",
+    error_code_login: "",
     success_status: "",
+    login_message:"",
     loginData:[],
     otpData:[],
     lookupTypes: [
@@ -156,7 +159,11 @@ export default new Vuex.Store({
         })
         .catch((err) => {
           state.errors = err.response.data.errors;
-          state.error_status = err.response.status;
+          console.log(err.response.data.message);
+          state.login_message = err.response.data.message
+          state.error_status_login = err.response.status;
+          state.error_code_login = err.response.error_code;
+          
         });
     },
     sendOtp: ({ commit, state }, data) => {

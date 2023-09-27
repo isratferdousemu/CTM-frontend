@@ -147,13 +147,6 @@ export default {
               icon: "mdi mdi-plus",
               to: "/system-configuration/division",
             },
-
-            {
-              title: "Thana/Upazila",
-              icon: "mdi mdi-plus",
-              to: "/system-configuration/thana",
-            },
-
             {
               title: "Disrict",
               icon: "mdi mdi-plus",
@@ -164,61 +157,40 @@ export default {
               icon: "mdi mdi-plus",
               to: "/system-configuration/city",
             },
-
             {
               title: "Thana/Upazila",
               icon: "mdi mdi-plus",
-              to: "/system-configuration/device_registration",
+              to: "/system-configuration/thana",
             },
             {
-              title: "Office Information",
-              icon: "mdi mdi-plus",
-              to: "/system-configuration/office_information",
-            },
-              {
               title: "Union",
               icon: "mdi mdi-plus",
               to: "/system-configuration/union",
             },
-             {
+            {
               title: "Ward",
               icon: "mdi mdi-plus",
               to: "/system-configuration/ward",
             },
-
-            {
-              title: "Menu",
-              icon: "mdi mdi-plus",
-              to: "/system-configuration/menu",
-            },
-
-            {
-              title: "Device Registration",
-
-              icon: "mdi mdi-plus",
-              to: "/system-configuration/device_registration",
-            },
+            // {
+            //   title: "Office Information",
+            //   icon: "mdi mdi-plus",
+            //   to: "/system-configuration/office_information",
+            // },
+            // {
+            //   title: "Menu",
+            //   icon: "mdi mdi-plus",
+            //   to: "/system-configuration/menu",
+            // },
+            //
+            // {
+            //   title: "Device Registration",
+            //   icon: "mdi mdi-plus",
+            //   to: "/system-configuration/device_registration",
+            // },
           ],
         },
 
-        {
-          icon: "mdi-cog-outline",
-          title: "Settings",
-          to: "/setting/company-setting",
-          permission: "view-customers",
-        },
-        {
-          icon: "mdi-chart-box-outline",
-          title: "Reports",
-          to: "/activity-log",
-          permission: "view-customers",
-        },
-        {
-          icon: "mdi-fence",
-          title: "Activity Log",
-          to: "/activity-log",
-          permission: "view-customers",
-        },
       ],
       miniVariant: false,
       right: true,
