@@ -9,19 +9,6 @@ export default {
       link_types: [
         { id: "1", name: "Internal" },
         { id: "2", name: "External" },
-      ],
-      labelNameEnRules: [
-        v => !!v || 'Label Name English is Required',
-        v => v.length >= 50 || 'Label Name English must be 50 characters or more',
-      ],
-      labelNameBnRules: [
-        v => !!v || 'Label Name Bangla is Required',
-        v => v.length >= 50 || 'Label Name must bangla be 50 characters or more',
-      ],
-      orderRules: [
-        v => v.length > 0 || 'This field may not be empty',
-        v => Number.isInteger(Number(v)) || "The value must be an integer number",
-        v => v > 0 || 'The value must be greater than zero'
       ]
     };
   },
@@ -31,7 +18,8 @@ export default {
       menuEdit: (state) => state.Menu.menu,
       parents: (state) => state.Menu.parents,
       pageUrls: (state) => state.Menu.pageUrls,
-      errors: (state) => state.Menu.errors
+      errors: (state) => state.Menu.errors,
+      message: (state) => state.Menu.success_message
     }),
   },
 
@@ -54,14 +42,22 @@ export default {
 
         let formData = new FormData();
 
-        formData.append("label_name_en", this.menuEdit.label_name_en);
-        formData.append("label_name_bn", this.menuEdit.label_name_bn);
-        formData.append("page_link_id", this.menuEdit.page_link_id);
-        formData.append("parent_id", this.menuEdit.parent_id);
-        formData.append("link_type", this.menuEdit.link_type);
-        formData.append("link", this.menuEdit.link);
-        formData.append("order", this.menuEdit.order);
+        for (const [key, value] of Object.entries(this.menuEdit)) {
+          if (value !== null) {
+            formData.append(key, value);
+          }
+        }
+
         formData.append("_method", "PUT");
+
+        // formData.append("label_name_en", this.menuEdit.label_name_en);
+        // formData.append("label_name_bn", this.menuEdit.label_name_bn);
+        // formData.append("page_link_id", this.menuEdit.page_link_id);
+        // formData.append("parent_id", this.menuEdit.parent_id);
+        // formData.append("link_type", this.menuEdit.link_type);
+        // formData.append("link", this.menuEdit.link);
+        // formData.append("order", this.menuEdit.order);
+
 
         await this.$store
           .dispatch("Menu/UpdateMenu", { id: id, data: formData })

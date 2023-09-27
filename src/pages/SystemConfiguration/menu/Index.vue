@@ -47,19 +47,16 @@ export default {
 
     ...mapState({
       parents: (state) => state.Menu.parents,
-      menus: (state) => state.Menu.menus,
       message: (state) => state.Menu.success_message,
     }),
   },
 
   mounted() {
-    this.GetAllMenu();
     this.GetAllParents();
   },
 
   methods: {
     ...mapActions({
-      GetAllMenu: "Menu/GetAllMenus",
       GetAllParents: "Menu/GetAllParents",
     }),
 
@@ -94,7 +91,7 @@ export default {
       try {
         let id = this.deleted_id;
         await this.$store.dispatch("Menu/DestroyMenu", id).then(() => {
-          this.GetAllMenu();
+          this.getAllMenus();
           this.deleteDialog = false;
           this.$toast.success(this.message);
         });
@@ -164,14 +161,17 @@ export default {
                     class="elevation-1"
                   >
                     <template v-slot:[`item.parent_id`]="{ item }">
-                      <div v-for="parent in parents" :key="parent.id">
-                        <span v-if="parent.id === item.parent_id">
-                          {{ parent.label_name_en }}
+                      <span v-if="item.parent_id == null">
+                          ---
+                      </span>
+                      <span v-else>
+                        <span v-if="item.parent_id != null">
+                          <div v-for="parent in parents" :key="parent.id">
+                              <span v-if="item.parent_id === parent.id">{{ parent.label_name_en }}</span>
+                          </div>
                         </span>
-                        <span v-else>
-                          -
-                        </span>
-                      </div>
+                      </span>
+
                     </template>
 
                     <template v-slot:[`item.link`]="{ item }">

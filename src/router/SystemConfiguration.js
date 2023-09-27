@@ -107,8 +107,26 @@ const SystemConfigurationRoutes = [
     path: "/system-configuration/device_registration/edit/:id",
     name: "DeviceRegistrationEdit",
     component: () => import("../pages/SystemConfiguration/device_registration/Edit.vue")
-  }
+  },
     /*Device Registration route end*/
+
+    /*Office information route start*/
+  {
+    path: "/system-configuration/office_information",
+    name: "OfficeInformation",
+    component: () => import("../pages/SystemConfiguration/office_information/Index.vue")
+  },
+  {
+    path: "/system-configuration/office_information/create",
+    name: "OfficeInformationCreate",
+    component: () => import("../pages/SystemConfiguration/office_information/Create.vue")
+  },
+  {
+    path: "/system-configuration/office_information/edit/:id",
+    name: "OfficeInformationEdit",
+    component: () => import("../pages/SystemConfiguration/office_information/Edit.vue")
+  }
+    /*Office information route end*/
 ];
 
 export default SystemConfigurationRoutes;
