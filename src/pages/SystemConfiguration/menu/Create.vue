@@ -132,7 +132,7 @@ export default {
                     <v-select
                       :items="parents"
                       item-text="label_name_en"
-                      item-value="parent_id"
+                      item-value="id"
                       label="Select parent"
                       menu-props="auto"
                       hide-details

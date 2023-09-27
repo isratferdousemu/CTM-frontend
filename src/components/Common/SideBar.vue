@@ -147,6 +147,13 @@ export default {
               icon: "mdi mdi-plus",
               to: "/system-configuration/division",
             },
+
+            {
+              title: "Thana/Upazila",
+              icon: "mdi mdi-plus",
+              to: "/system-configuration/thana",
+            },
+
             {
               title: "Disrict",
               icon: "mdi mdi-plus",
@@ -157,20 +164,16 @@ export default {
               icon: "mdi mdi-plus",
               to: "/system-configuration/city",
             },
+
             {
-              title: "Menu",
-              icon: "mdi mdi-plus",
-              to: "/system-configuration/menu",
-            },
-            {
-              title: "Device Registration",
+              title: "Thana/Upazila",
               icon: "mdi mdi-plus",
               to: "/system-configuration/device_registration",
             },
             {
-              title: "Thana/Upazila",
+              title: "Office Information",
               icon: "mdi mdi-plus",
-              to: "/system-configuration/thana",
+              to: "/system-configuration/office_information",
             },
               {
               title: "Union",
@@ -181,6 +184,19 @@ export default {
               title: "Ward",
               icon: "mdi mdi-plus",
               to: "/system-configuration/ward",
+            },
+
+            {
+              title: "Menu",
+              icon: "mdi mdi-plus",
+              to: "/system-configuration/menu",
+            },
+
+            {
+              title: "Device Registration",
+
+              icon: "mdi mdi-plus",
+              to: "/system-configuration/device_registration",
             },
           ],
         },
