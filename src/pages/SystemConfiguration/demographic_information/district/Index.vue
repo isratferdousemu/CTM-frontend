@@ -1,5 +1,5 @@
 <template>
-  <div id="division">
+  <div id="district">
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
         <v-row>
@@ -12,7 +12,7 @@
               class="mb-8"
             >
               <v-card-title class="justify-center" tag="div">
-                <h3 class="text-uppercase pt-3">Division List</h3>
+                <h3 class="text-uppercase pt-3">District List</h3>
               </v-card-title>
               <v-card-text>
                 <v-row
@@ -22,7 +22,7 @@
                 >
                   <div class="d-flex justify-sm-end flex-wrap">
                     <v-text-field
-                      @keyup.native="GetDivision"
+                      @keyup.native="GetDistrict"
                       outlined
                       dense
                       v-model="search"
@@ -30,7 +30,7 @@
                       class="my-sm-0 my-3 mx-0v -input--horizontal"
                       flat
                       variant="outlined"
-                      label="search Division"
+                      label="search District"
                       hide-details
                       color="primary"
                     >
@@ -42,14 +42,14 @@
                     color="primary"
                     prepend-icon="mdi-account-multiple-plus"
                   >
-                    Add New Division
+                    Add New District
                   </v-btn>
                   <v-col cols="12">
                     <v-data-table
                       :loading="loading"
                       item-key="id"
                       :headers="headers"
-                      :items="divisions"
+                      :items="districts"
                       :items-per-page="pagination.perPage"
                       hide-default-footer
                       class="elevation-0 transparent row-pointer"
@@ -79,7 +79,7 @@
                           <v-icon> mdi-account-edit-outline </v-icon>
                         </v-btn>
                         <v-btn
-                          v-can="'delete-division'"
+                          v-can="'delete-district'"
                           fab
                           x-small
                           color="grey"
@@ -128,16 +128,16 @@
         </v-row>
       </v-col>
 
-      <!-- division add modal  -->
+      <!-- district add modal  -->
       <v-dialog v-model="dialogAdd" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            Add New Division
+            Add New District
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
             <ValidationObserver ref="form" v-slot="{ invalid }">
-              <form @submit.prevent="submitDivision()">
+              <form @submit.prevent="submitDistrict()">
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
 
@@ -151,6 +151,25 @@
                     :error="errors[0] ? true : false"
                     :error-messages="errors.code"
                   ></v-text-field>
+                </ValidationProvider>
+                <ValidationProvider
+                  name="Division"
+                  vid="division"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
+                  <v-autocomplete
+                    @input="onChangeDivision($event)"
+                    v-model="data.division_id"
+                    outlined
+                    label="Division"
+                    :items="divisions"
+                    item-text="name_en"
+                    item-value="id"
+                    required
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
+                  ></v-autocomplete>
                 </ValidationProvider>
                 <ValidationProvider
                   name="Name English"
@@ -208,18 +227,18 @@
           </v-card-text>
         </v-card>
       </v-dialog>
-      <!-- division add modal  -->
+      <!-- district add modal  -->
 
-      <!-- division Edit modal  -->
+      <!-- district Edit modal  -->
       <v-dialog v-model="dialogEdit" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            Edit New Division
+            Edit New District
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
             <ValidationObserver ref="form" v-slot="{ invalid }">
-              <form @submit.prevent="updateDivision()">
+              <form @submit.prevent="updateDistrict()">
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
 
@@ -233,6 +252,25 @@
                     :error="errors[0] ? true : false"
                     :error-messages="errors.code"
                   ></v-text-field>
+                </ValidationProvider>
+                <ValidationProvider
+                  name="Division"
+                  vid="division"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
+                  <v-autocomplete
+                    @input="onChangeDivision($event)"
+                    v-model="data.division_id"
+                    outlined
+                    label="Division"
+                    :items="divisions"
+                    item-text="name_en"
+                    item-value="id"
+                    required
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
+                  ></v-autocomplete>
                 </ValidationProvider>
                 <ValidationProvider
                   name="Name English"
@@ -290,18 +328,18 @@
           </v-card-text>
         </v-card>
       </v-dialog>
-      <!-- division Edit modal  -->
+      <!-- district Edit modal  -->
 
       <!-- delete modal  -->
       <v-dialog v-model="deleteDialog" width="350">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            Delete Division
+            Delete District
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
-              Are you sure to delete this Division? Division all information
+              Are you sure to delete this District? District all information
               will be deleted.
             </div>
           </v-card-text>
@@ -317,7 +355,7 @@
               </v-btn>
               <v-btn
                 text
-                @click="deleteDivision()"
+                @click="deleteDistrict()"
                 color="white"
                 :loading="delete_loading"
                 class="custom-btn-width black white--text py-2"
@@ -328,6 +366,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+      <!-- {{ divisions }} -->
       <!-- delete modal  -->
     </v-row>
   </div>
@@ -341,10 +380,11 @@ import { required } from "vee-validate/dist/rules";
 extend("required", required);
 export default {
   name: "Index",
-  title: "CTM - Divisions",
+  title: "CTM - Districts",
   data() {
     return {
       data: {
+        division_id: null,
         id: null,
         code: null,
         name_en: null,
@@ -357,12 +397,13 @@ export default {
       loading: false,
       search: "",
       delete_id: "",
-      divisions: [],
+      districts: [],
       pagination: {
         current: 1,
         total: 0,
         perPage: 5,
       },
+      errors: "",
       items: [5, 10, 15, 20, 40, 50, 100],
     };
   },
@@ -375,17 +416,19 @@ export default {
       return [
         { text: "#Sl", value: "id", align: "start", sortable: false },
         { text: "Code", value: "code" },
-        { text: "Division Name English", value: "name_en" },
-        { text: "Division Name English Bangla", value: "name_bn" },
+        { text: "Division Name English", value: "division.name_en" },
+        { text: "District Name English", value: "name_en" },
+        { text: "District Name English Bangla", value: "name_bn" },
         { text: "Actions", value: "actions", align: "center", sortable: false },
       ];
     },
 
     ...mapState({
-      message: (state) => state.Division.success_message,
-      divisions: (state) => state.Division.divisions,
-      errors: (state) => state.Division.errors,
-      error_status: (state) => state.Division.error_status,
+      message: (state) => state.District.success_message,
+      divisions: (state) => state.Division.divisions.data,
+      districts: (state) => state.District.districts,
+      errors: (state) => state.District.errors,
+      error_status: (state) => state.District.error_status,
     }),
   },
 
@@ -394,14 +437,14 @@ export default {
       this.resetForm();
       this.dialogAdd = true;
     },
-    submitDivision() {
+    submitDistrict() {
       try {
-        this.$store.dispatch("Division/StoreDivision", this.data).then(() => {
+        this.$store.dispatch("District/StoreDistrict", this.data).then(() => {
           if (this.error_status == "") {
             this.$toast.success("Data Inserted Successfully");
             this.dialogAdd = false;
             this.resetForm();
-            this.GetDivision();
+            this.GetDistrict();
           }
         });
       } catch (e) {
@@ -409,20 +452,23 @@ export default {
       }
     },
     editDialog(item) {
+      console.log(JSON.stringify(item));
       this.dialogEdit = true;
       this.data.code = item.code;
+      this.data.division_id = item.division.id;
       this.data.name_en = item.name_en;
       this.data.name_bn = item.name_bn;
       this.data.id = item.id;
     },
-    updateDivision() {
+    updateDistrict() {
+      // alert(this.data);
       try {
-        this.$store.dispatch("Division/UpdateDivision", this.data).then(() => {
+        this.$store.dispatch("District/UpdateDistrict", this.data).then(() => {
           if (this.error_status == "") {
             this.$toast.success("Data Updated Successfully");
             this.dialogEdit = false;
             this.resetForm();
-            this.GetDivision();
+            this.GetDistrict();
           }
         });
       } catch (e) {
@@ -438,20 +484,18 @@ export default {
         // Reset other form fields
       };
     },
-
     onPageChange($event) {
       // this.pagination.current = $event;
-      this.GetDivision();
+      this.GetDistrict();
     },
-
-    async GetDivision() {
+    async GetDistrict() {
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
       };
       this.$axios
-        .get("/admin/division/get", {
+        .get("/admin/district/get", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -459,20 +503,22 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          this.divisions = result.data.data;
+          this.districts = result.data.data;
           this.pagination.current = result.data.meta.current_page;
           this.pagination.total = result.data.meta.last_page;
           this.pagination.grand_total = result.data.meta.total;
         });
     },
-    deleteDivision: async function () {
+    deleteDistrict: async function () {
       try {
-        await this.$store.dispatch("Division/DestroyDivision", this.delete_id).then(() => {
-          console.log("success");
-          this.$toast.error("Deleted Successfully");
-          this.deleteDialog = false;
-          this.GetDivision();
-        });
+        await this.$store
+          .dispatch("District/DestroyDistrict", this.delete_id)
+          .then(() => {
+            console.log("success");
+            this.$toast.error("Deleted Successfully");
+            this.deleteDialog = false;
+            this.GetDistrict();
+          });
       } catch (e) {
         console.log(e);
       }
@@ -483,12 +529,36 @@ export default {
       this.deleteDialog = true;
       this.delete_id = id;
     },
+    getAllDivision() {
+      try {
+        this.$store.dispatch("Division/GetAllDivisions").then(() => {
+          console.log("success");
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async onChangeDivision(event) {
+      console.log(event);
+      // await axios
+      //   .get(`/admin/district/get/${event}`, {
+      //     headers: {
+      //       Authorization: "Bearer " + this.$store.state.token,
+      //       "Content-Type": "multipart/form-data",
+      //     },
+      //   })
+      //   .then((result) => {
+      //     this.districts = result.data.data;
+      //     console.log(this.districts);
+      //   });
+    },
   },
   created() {
-    this.GetDivision();
+    this.GetDistrict();
+    this.getAllDivision();
   },
   beforeMount() {
-    this.$store.commit("setHeaderTitle", "Division List");
+    this.$store.commit("setHeaderTitle", "District List");
   },
 };
 </script>

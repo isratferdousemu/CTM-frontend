@@ -5,8 +5,8 @@ import { http } from "@/hooks/httpService";
 /* -------------------------------------------------------------------------- */
 const state = {
   // Module-specific state
-  divisions: [],
-  division: {},
+  upazilas: [],
+  upazila: {},
   success_message: "",
   errors: {},
   error_message: "",
@@ -21,29 +21,17 @@ const state = {
 const mutations = {
   // Module-specific mutations
 
-  GET_DIVISION: (state, data) => {
-    state.divisions = data;
-  },
-  
-  SET_DIVISION: (state, data) => {
-    state.divisions = data;
-  },
-  
-
-  STORE_DIVISION: (state, data) => {
-    state.divisions = data.data;
-    state.errors = {};
-    // if (state.divisions.push(data.data)) {
-    //   state.success_message = data.data.message;
-    //   state.success_status = data.status;
-    // } else {
-    //   state.success_message = "";
-    // }
+  GET_UPAZILA: (state, data) => {
+    state.upazilas = data;
   },
 
-  RESET_ERRORS: (state) => {
-    state.errors = {};
-    state.error_status = "";
+  STORE_UPAZILA: (state, data) => {
+    if (state.upazilas.push(data.data)) {
+      state.success_message = data.data.message;
+      state.success_status = data.status;
+    } else {
+      state.success_message = "";
+    }
   },
 
   GET_SINGLE_DIVISION: (state, data) => {
@@ -59,9 +47,9 @@ const mutations = {
     }
   },
 
-  DELETE_DIVISION: (state, { id, data }) => {
+  DELETE_UPAZILA: (state, { id, data }) => {
     if (id) {
-      state.divisions.data = state.divisions.data.filter((item) => {
+      state.upazilas.data = state.upazilas.data.filter((item) => {
         return id !== item.id;
       });
 
@@ -79,12 +67,13 @@ const actions = {
   // Module-specific actions
 
   /*start get all divisions*/
-  GetAllDivisions: ({ commit }) => {
+  GetAllUpazilas: ({ commit }) => {
     return http()
-      .get("/admin/division/get")
+      .get("/admin/thana/get")
       .then((result) => {
-        console.log(result.data);
-        commit("GET_DIVISION", result.data.data);
+       
+        commit("GET_UPAZILA", result.data.data);
+        console.log(result.data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -98,7 +87,7 @@ const actions = {
       .get(`/admin/division/get/${data}`)
       .then((result) => {
         // console.log("hello");
-        console.log(result.data);
+   
         commit("GET_DIVISION", result.data);
       })
       .catch((err) => {
@@ -108,19 +97,23 @@ const actions = {
   /*end get all divisions*/
 
   /*start  store division*/
-  StoreDivision: ({ commit }, data) => {
+  StoreUpazila: ({ commit }, data) => {
     // alert('StoreDivision'+ data);
     return http()
-      .post("/admin/division/insert", data)
+      .post("/admin/thana/insert", data)
       .then((result) => {
         console.log(result.data);
         console.log(commit);
-        commit("RESET_ERRORS");
+        // alert("Successfully Inserted");
+        // this.$router.push({
+        //   path: "/system-configuration/division",
+        // });
+        commit("STORE_UPAZILA", result);
       })
       .catch((err) => {
         state.errors = err.response.data.errors;
-        state.error_status = err.response.message;
-        // console.log(state.errors.code[0]);
+        state.error_status = err.response.status;
+        console.log(state.errors.code[0]);
         // console.log(state.error_status);
         // console.log(state.errors);
       });
@@ -142,38 +135,32 @@ const actions = {
   /*end edit division */
 
   /*start update division*/
-  UpdateDivision: ({ commit }, data ) => {
+  UpdateDivision: ({ commit }, { id, data }) => {
     return http()
-      .post(`/admin/division/update/`, data)
+      .post(`/api/division/update/${id}`, data)
       .then((result) => {
-        console.log(result);
-        commit("RESET_ERRORS");        
+        commit("UPDATE_DIVISION", result);
       })
       .catch((err) => {
         state.errors = err.response.data.errors;
-        state.error_status = err.response.message;
+        state.error_status = err.response.status;
       });
   },
   /*end update division*/
 
   /*start delete division*/
-  DestroyDivision: ({ commit }, id) => {
+  DestroyUpazila: ({ commit }, id) => {
     return http()
-      .get(`/admin/division/destroy/${id}`)
+      .get(`/admin/thana/destroy/${id}`)
       .then((result) => {
         console.log(result);
+        commit("DELETE_UPAZILA", { id: id, data: result.data });
       })
       .catch((err) => {
         console.log(err);
       });
   },
   /*end delete division*/
-
-  /*Set division*/
-  SetDivision: ({ commit }, data) => {    
-    commit("SET_DIVISION", data);
-  },
-  /*Set division*/
 };
 
 /* -------------------------------------------------------------------------- */

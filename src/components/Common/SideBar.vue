@@ -152,9 +152,15 @@ export default {
               icon: "mdi mdi-plus",
               to: "/system-configuration/menu",
             },
+            {
+              title: "Thana/Upazila",
+              icon: "mdi mdi-plus",
+              to: "/system-configuration/thana",
+            },
           ],
           permission: "",
         },
+
         {
           icon: "mdi-cog-outline",
           title: "Settings",
