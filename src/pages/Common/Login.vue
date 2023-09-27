@@ -53,9 +53,9 @@
                                                         </div>
 
                                                         <v-form v-on:submit.prevent="submitLogin" class="ma-5">
-                                                                <v-text-field label="Username" v-model="form.email"
-                                                                        :error="errors && errors.email"
-                                                                        :error-messages="errors ? errors.email : []"
+                                                                <v-text-field label="Username" v-model="form.username"
+                                                                        :error="errors && errors.username"
+                                                                        :error-messages="errors ? errors.username : []"
                                                                         required></v-text-field>
                                                                 <!-- <div v-if="errors && errors.email" v-html="errors.email" /> -->
                                                                 <!-- <p v-if="errors.email" class="red--text custom_error">
@@ -109,8 +109,8 @@ export default {
                         intervalId: null,
 
                         form: {
-                                device_token: "admin@ctm.com",
-                                email: null,
+                                device_token: null,
+                                username: null,
                                 password: null,
                                 otp: "",
                         },
@@ -202,7 +202,6 @@ export default {
                                 await this.$store
                                         .dispatch("sendOtp", this.form)
                                         .then(() => {
-                                                console.log('emu')
 
                                                 if (this.getLoginresponse.data.token) {
                                                         let data = {
@@ -239,7 +238,7 @@ export default {
 
                         this.loading = true;
                         await this.$store
-                                .dispatch("LoginSubmit", this.form).then(() => {
+                                .dispatch("LoginSubmit", this.form).then((res) => {
                                         if (!this.errors.email) {
                                                 this.otpDialog = true;
                                                 this.startCountdown();

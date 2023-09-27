@@ -64,6 +64,9 @@
                       <template v-slot:item.name_en="{ item }">
                         {{ item.name_en }}
                       </template>
+                      <template v-slot:item.locationType="{ item }">
+                        {{ item.locationType?.value_en }}
+                      </template>
                       <template v-slot:item.name_bn="{ item }">
                         {{ item.name_bn }}
                       </template>
@@ -178,13 +181,31 @@
                   v-slot="{ errors }"
                 >
                   <v-autocomplete
-                    @input="onChangeDistrict($event)"
                     v-model="data.district_id"
                     :disabled="isDisabled"
                     outlined
                     label="District"
                     :items="districts"
                     item-text="name_en"
+                    item-value="id"
+                    required
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
+                  ></v-autocomplete>
+                </ValidationProvider>
+                <ValidationProvider
+                  name="LocationType"
+                  vid="locationType"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
+                  <v-autocomplete
+                    @input="onChangeLocationType($event)"
+                    v-model="data.location_type "
+                    outlined
+                    label="LocationType"
+                    :items="locationType"
+                    item-text="value_en"
                     item-value="id"
                     required
                     :error="errors[0] ? true : false"
@@ -312,6 +333,25 @@
                   ></v-autocomplete>
                 </ValidationProvider>
                 <ValidationProvider
+                  name="LocationType"
+                  vid="locationType"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
+                  <v-autocomplete
+                    @input="onChangeLocationType($event)"
+                    v-model="data.location_type "
+                    outlined
+                    label="LocationType"
+                    :items="data.locationType"
+                    item-text="value_en"
+                    item-value="id"
+                    required
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
+                  ></v-autocomplete>
+                </ValidationProvider>
+                <ValidationProvider
                   name="Name English"
                   vid="name_en"
                   rules="required"
@@ -405,8 +445,9 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      {{ districts }}
-      <!-- {{ divisions }} -->
+      <!-- {{ city }}
+      {{ districts }} -->
+      <!-- {{ locationType }} -->
       <!-- delete modal  -->
     </v-row>
   </div>
@@ -416,6 +457,7 @@
 import { mapState } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
+import axios from "axios";
 
 extend("required", required);
 export default {
@@ -430,7 +472,10 @@ export default {
         code: null,
         name_en: null,
         name_bn: null,
+        locationType: null,
+        location_type : null,
       },
+      locationType: {},
       isDisabled: true,
       dialogAdd: false,
       deleteDialog: false,
@@ -445,7 +490,6 @@ export default {
         total: 0,
         perPage: 5,
       },
-      errors: "",
       items: [5, 10, 15, 20, 40, 50, 100],
     };
   },
@@ -460,6 +504,7 @@ export default {
         { text: "Code", value: "code" },
         { text: "Division Name English", value: "district.division.name_en" },
         { text: "District Name English", value: "district.name_en" },
+        { text: "Location Type", value: "locationType" },
         { text: "City Name English", value: "name_en" },
         { text: "City Name English Bangla", value: "name_bn" },
         { text: "Actions", value: "actions", align: "center", sortable: false },
@@ -482,7 +527,7 @@ export default {
       this.dialogAdd = true;
     },
     submitCity() {
-      // alert(JSON.stringify(this.data));
+      console.log(JSON.stringify(this.data));
       // return;
       try {
         this.$store.dispatch("City/StoreCity", this.data).then(() => {
@@ -498,14 +543,18 @@ export default {
       }
     },
     editDialog(item) {
-      console.log(JSON.stringify(item));
+      // alert(JSON.stringify(item.district.id));
       this.dialogEdit = true;
       this.data.code = item.code;
       this.data.division_id = item.district.division.id;
+      this.onChangeDivision(this.data.division_id);
       this.data.district_id = item.district.id;
       this.data.name_en = item.name_en;
       this.data.name_bn = item.name_bn;
       this.data.id = item.id;
+      this.data.location_type  = item.locationType.id;
+
+      // alert(JSON.stringify(this.data));
     },
     updateCity() {
       // alert(this.data);
@@ -528,6 +577,9 @@ export default {
         code: "",
         name_en: "",
         name_bn: "",
+        division_id: null,
+        district_id: null,
+        location_type : null,
         // Reset other form fields
       };
     },
@@ -594,53 +646,89 @@ export default {
         console.log(e);
       }
     },
-    onChangeDivision(event) {
+    async onChangeDivision(event) {
       console.log(event);
-      const targetId = event; // The id you want to find
-      // const targetId = 32; // The id you want to find
-      const array = this.$store.state.District.districts.data;
-      console.log(array);
-      const foundItem = array.filter((item) => item.division.id === targetId);
+      await axios
+        .get(`/admin/district/get/${event}`, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
+          // this.districts = result.data.data;
+          console.log(result.data.data, " onChangeDivision");
 
-      if (foundItem) {
-        console.log("Found item:", foundItem);
-        // this.districts = foundItem;
+          try {
+            this.$store
+              .dispatch("District/SetDistrict", result.data)
+              .then(() => {});
+          } catch (e) {
+            console.log(e);
+          }
+
+          this.isDisabled = false;
+        });
+      return;
+
+      this.getAllDistrict();
+
+      console.log(event);
+      const targetValue = event;
+      const array = this.$store.state.District.districts.data;
+      // const foundItem = array.filter((item) => item.division.id === targetValue);
+      const filteredItems = this.filterArrayByProperty(
+        array,
+        "division.id",
+        targetValue
+      );
+
+      if (filteredItems.length != 0) {
+        console.log("Found item:", filteredItems);
         this.isDisabled = false;
-        const array1 ={
-          data: foundItem
-        }
+        const payload = {
+          data: filteredItems,
+        };
 
         try {
-          this.$store.dispatch("District/SetDistrict", array1).then(() => {
-            console.log('SetDistrict Done');
-          });
+          this.$store.dispatch("District/SetDistrict", payload).then(() => {});
         } catch (e) {
           console.log(e);
         }
-
       } else {
+        this.isDisabled = true;
         console.log("Item not found");
       }
-      console.log('--');
-      console.log(this.$store.state.District.districts.data);
-      console.log('--');
-      // await axios
-      //   .get(`/admin/city/get/${event}`, {
-      //     headers: {
-      //       Authorization: "Bearer " + this.$store.state.token,
-      //       "Content-Type": "multipart/form-data",
-      //     },
-      //   })
-      //   .then((result) => {
-      //     this.city = result.data.data;
-      //     console.log(this.city);
-      //   });
+      // console.log("--");
+      // console.log(this.$store.state.District.districts.data);
+      // console.log("--");
+    },
+    filterArrayByProperty(array, propertyPath, targetValue) {
+      const foundItems = array.filter((item) => {
+        // Split the property path into an array of nested properties
+        const properties = propertyPath.split(".");
+
+        // Use reduce to access the nested property
+        const propertyValue = properties.reduce(
+          (obj, prop) => obj && obj[prop],
+          item
+        );
+
+        // Check if the property value matches the target value
+        return propertyValue === targetValue;
+      });
+
+      return foundItems;
     },
   },
   created() {
     this.GetCity();
     this.getAllDivision();
-    this.getAllDistrict();
+    this.$store.dispatch("getLookupByType", 1).then((res) => {
+      this.locationType = res;
+      console.log(this.locationType, " here");
+    });
+    // this.getAllDistrict();
   },
   beforeMount() {
     this.$store.commit("setHeaderTitle", "City List");
