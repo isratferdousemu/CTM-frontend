@@ -50,7 +50,6 @@ const SystemConfigurationRoutes = [
     path: "/system-configuration/union",
     name: "Thana",
     meta: {
-
     },
     component: () =>
       import(

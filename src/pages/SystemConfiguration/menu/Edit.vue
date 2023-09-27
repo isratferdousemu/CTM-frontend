@@ -66,6 +66,7 @@ export default {
         await this.$store
           .dispatch("Menu/UpdateMenu", { id: id, data: formData })
           .then(() => {
+            this.$toast.success(this.message);
             this.GetAllEdit(this.$route.params.id);
           });
       } catch (e) {
@@ -83,7 +84,7 @@ export default {
         <v-row>
           <v-col cols="12">
             <v-card>
-              <v-card-title>Edit Menu</v-card-title>
+              <v-card-title><h3>Edit Menu</h3></v-card-title>
 
               <v-divider></v-divider>
 
@@ -212,20 +213,20 @@ export default {
 
                   <v-row class="justify-end mt-5 mb-5">
                     <v-btn
-                      tile
+                      flat
                       color="primary"
                       class="custom-btn mr-2"
                       router
                       to="/system-configuration/menu"
-                      >Back</v-btn
-                    >
+                      >Back
+                    </v-btn>
                     <v-btn
-                      tile
+                      flat
                       color="success"
                       type="submit"
                       class="custom-btn mr-2"
-                      >Submit</v-btn
-                    >
+                      >Submit
+                    </v-btn>
                   </v-row>
                 </v-form>
               </v-card-text>

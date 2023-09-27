@@ -448,7 +448,6 @@
       <!-- {{ city }}
       {{ districts }} -->
       <!-- {{ locationType }} -->
-      <!-- {{ divisions }} -->
       <!-- delete modal  -->
     </v-row>
   </div>

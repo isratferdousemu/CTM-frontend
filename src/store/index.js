@@ -18,9 +18,9 @@ import TrainingManagement from "./TrainingManagement";
 import Division from "@/store/modules/system_configuration/division";
 import District from "@/store/modules/system_configuration/district";
 import City from "@/store/modules/system_configuration/city";
-import Thana from "@/store/modules/system_configuration/thana";
 import Union from "@/store/modules/system_configuration/union";
 import Ward from "@/store/modules/system_configuration/ward";
+import Thana from "@/store/modules/system_configuration/thana";
 import Menu from "@/store/modules/system_configuration/menu";
 import Device_registration from "@/store/modules/system_configuration/device_registration";
 
@@ -55,26 +55,26 @@ export default new Vuex.Store({
     error_message: "",
     error_status: "",
     success_status: "",
-    loginData: [],
-    otpData: [],
+    loginData:[],
+    otpData:[],
     lookupTypes: [
-      { id: 1, name: 'Location Type' },
-      { id: 2, name: 'Allowance Service' },
-      { id: 3, name: 'Office category' },
-      { id: 4, name: 'Health Status' },
-      { id: 5, name: 'Financial Status' },
-      { id: 6, name: 'Social Status' },
-      { id: 7, name: 'PMT Scoring' },
-      { id: 8, name: 'Education Status' },
-      { id: 9, name: 'Religion' },
-      { id: 10, name: 'Household Asset Own' },
-      { id: 11, name: 'Disability Type' },
-      { id: 12, name: 'Disability Level' },
-      { id: 13, name: 'Bank Name' },
-      { id: 14, name: 'Branch Name' },
-      { id: 15, name: 'Complaint Category' },
-      { id: 16, name: 'Module Name' },
-      { id: 17, name: 'Organization' },
+      {id: 1, name: 'Location Type'},
+      {id: 2, name: 'Allowance Service'},
+      {id: 3, name: 'Office category'},
+      {id: 4, name: 'Health Status'},
+      {id: 5, name: 'Financial Status'},
+      {id: 6, name: 'Social Status'},
+      {id: 7, name: 'PMT Scoring'},
+      {id: 8, name: 'Education Status'},
+      {id: 9, name: 'Religion'},
+      {id:10, name: 'Household Asset Own'},
+      {id:11, name: 'Disability Type'},
+      {id:12, name: 'Disability Level'},
+      {id:13, name: 'Bank Name'},
+      {id:14, name: 'Branch Name'},
+      {id:15, name: 'Complaint Category'},
+      {id:16, name: 'Module Name'},
+      {id:17, name: 'Organization'},
     ],
 
   },
@@ -82,18 +82,17 @@ export default new Vuex.Store({
   /*                               Getters Define                               */
   /* -------------------------------------------------------------------------- */
   getters: {
-    data: (state) => state.data,
     getOtpresponse(state) {
       return state.otpData
     },
-    getLoginresponse(state) {
+    getLoginresponse(state)  {
       return state.loginData
-    }
+    },
+    GetToken: function (state) {
+      return state.token;
+    },
+  },
 
-  },
-  GetToken: function (state) {
-    return state.token;
-  },
   /* -------------------------------------------------------------------------- */
   /*                               Actions Define                               */
   /* -------------------------------------------------------------------------- */
@@ -183,13 +182,10 @@ export default new Vuex.Store({
         return result.data.data
       });
     },
+    },
 
-  },
-  /* -------------------------------------------------------------------------- */
-  /*                              Mutations Define                              */
-  /* -------------------------------------------------------------------------- */
-  mutations: {
 
+ mutations: {
     setDrawer(state, payload) {
       state.Drawer = payload;
     },
@@ -266,9 +262,9 @@ export default new Vuex.Store({
     SystemConfiguration,
     TrainingManagement,
     Division,
+    Thana,
     District,
     City,
-    Thana,
     Union,
     Ward,
     Menu,
