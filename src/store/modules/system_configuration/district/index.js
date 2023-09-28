@@ -118,9 +118,11 @@ const actions = {
       .catch((err) => {
         state.errors = err.response.data.errors;
         state.error_status = err.response.message;
-        // console.log(state.errors.code[0]);
-        // console.log(state.error_status);
-        // console.log(state.errors);
+        const data = {
+          errors: err.response.data.errors,
+          error_status: err.response.message,
+        };
+        return data;
       });
   },
   /*end  store district*/
@@ -150,6 +152,11 @@ const actions = {
       .catch((err) => {
         state.errors = err.response.data.errors;
         state.error_status = err.response.message;
+        const data = {
+          errors: err.response.data.errors,
+          error_status: err.response.message,
+        };
+        return data;
       });
   },
   /*end update district*/

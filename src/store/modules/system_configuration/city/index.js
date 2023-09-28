@@ -87,7 +87,7 @@ const actions = {
   /*end get all city*/
 
   /*start get all city*/
-  GetSearchCity: ({ commit },data) => {
+  GetSearchCity: ({ commit }, data) => {
     return http()
       .get(`/admin/city/get/${data}`)
       .then((result) => {
@@ -114,9 +114,11 @@ const actions = {
       .catch((err) => {
         state.errors = err.response.data.errors;
         state.error_status = err.response.message;
-        // console.log(state.errors.code[0]);
-        // console.log(state.error_status);
-        // console.log(state.errors);
+        const data = {
+          errors: err.response.data.errors,
+          error_status: err.response.message,
+        };
+        return data;
       });
   },
   /*end  store city*/
@@ -136,16 +138,21 @@ const actions = {
   /*end edit city */
 
   /*start update city*/
-  UpdateCity: ({ commit }, data ) => {
+  UpdateCity: ({ commit }, data) => {
     return http()
       .post(`/admin/city/update/`, data)
       .then((result) => {
         console.log(result);
-        commit("RESET_ERRORS");        
+        commit("RESET_ERRORS");
       })
       .catch((err) => {
         state.errors = err.response.data.errors;
         state.error_status = err.response.message;
+        const data = {
+          errors: err.response.data.errors,
+          error_status: err.response.message,
+        };
+        return data;
       });
   },
   /*end update city*/

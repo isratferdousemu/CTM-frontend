@@ -156,7 +156,6 @@
                   name="Division"
                   vid="division"
                   rules="required"
-                  v-slot="{ errors }"
                 >
                   <v-autocomplete
                     @input="onChangeDivision($event)"
@@ -197,7 +196,7 @@
                     v-model="data.name_bn"
                     label="Name Bangla"
                     required
-                    :error="errors.name_en ? true : false"
+                    :error="errors.name_bn ? true : false"
                     :error-messages="errors.name_bn"
                   ></v-text-field>
                 </ValidationProvider>
@@ -233,7 +232,7 @@
       <v-dialog v-model="dialogEdit" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            Edit New District
+            Edit District
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
@@ -298,7 +297,7 @@
                     v-model="data.name_bn"
                     label="Name Bangla"
                     required
-                    :error="errors.name_en ? true : false"
+                    :error="errors.name_bn ? true : false"
                     :error-messages="errors.name_bn"
                   ></v-text-field>
                 </ValidationProvider>
@@ -339,8 +338,8 @@
           <v-divider></v-divider>
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
-              Are you sure to delete this District? District all information
-              will be deleted.
+              Are you sure to delete this District? All information under this
+              District will be deleted?
             </div>
           </v-card-text>
           <v-card-actions style="display: block">
@@ -398,6 +397,8 @@ export default {
       search: "",
       delete_id: "",
       districts: [],
+      errors: {},
+      error_status: {},
       pagination: {
         current: 1,
         total: 0,
@@ -418,7 +419,7 @@ export default {
         { text: "Code", value: "code" },
         { text: "Division Name English", value: "division.name_en" },
         { text: "District Name English", value: "name_en" },
-        { text: "District Name English Bangla", value: "name_bn" },
+        { text: "District Name Bangla", value: "name_bn" },
         { text: "Actions", value: "actions", align: "center", sortable: false },
       ];
     },
@@ -427,8 +428,6 @@ export default {
       message: (state) => state.District.success_message,
       divisions: (state) => state.Division.divisions.data,
       districts: (state) => state.District.districts,
-      errors: (state) => state.District.errors,
-      error_status: (state) => state.District.error_status,
     }),
   },
 
@@ -439,14 +438,26 @@ export default {
     },
     submitDistrict() {
       try {
-        this.$store.dispatch("District/StoreDistrict", this.data).then(() => {
-          if (this.error_status == "") {
-            this.$toast.success("Data Inserted Successfully");
-            this.dialogAdd = false;
-            this.resetForm();
-            this.GetDistrict();
-          }
-        });
+        this.$store
+          .dispatch("District/StoreDistrict", this.data)
+          .then((data) => {
+            console.log(data, "submit");
+            if (data == null) {
+              this.$toast.success("Data Inserted Successfully");
+              this.dialogAdd = false;
+              this.resetForm();
+              this.GetDistrict();
+            } else {
+              this.errors = data.errors;
+            }
+
+            // if (this.error_status == "") {
+            //   this.$toast.success("Data Inserted Successfully");
+            //   this.dialogAdd = false;
+            //   this.resetForm();
+            //   this.GetDistrict();
+            // }
+          });
       } catch (e) {
         console.log(e);
       }
@@ -459,30 +470,40 @@ export default {
       this.data.name_en = item.name_en;
       this.data.name_bn = item.name_bn;
       this.data.id = item.id;
+      this.errors = {};
     },
     updateDistrict() {
       // alert(this.data);
       try {
-        this.$store.dispatch("District/UpdateDistrict", this.data).then(() => {
-          if (this.error_status == "") {
+        this.$store.dispatch("District/UpdateDistrict", this.data).then((data) => {
+          console.log(data, "update");
+          if (data == null) {
             this.$toast.success("Data Updated Successfully");
             this.dialogEdit = false;
             this.resetForm();
             this.GetDistrict();
+          } else {
+            this.errors = data.errors;
           }
+
+          // if (this.error_status == "") {
+          //   this.$toast.success("Data Updated Successfully");
+          //   this.dialogEdit = false;
+          //   this.resetForm();
+          //   this.GetDistrict();
+          // }
         });
       } catch (e) {
         console.log(e);
       }
     },
     resetForm() {
-      // Reset the form data
       this.data = {
         code: "",
         name_en: "",
         name_bn: "",
-        // Reset other form fields
       };
+      this.errors = {};
     },
     onPageChange($event) {
       // this.pagination.current = $event;

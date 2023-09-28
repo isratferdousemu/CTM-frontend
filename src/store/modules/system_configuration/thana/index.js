@@ -42,7 +42,7 @@ const mutations = {
       state.success_message = "";
     }
   },
- 
+
   updateMyData(state, update_error_value) {
     state.thana_errors = update_error_value;
   },
@@ -69,13 +69,18 @@ const actions = {
         commit("STORE_UPAZILA", result);
       })
       .catch((err) => {
-        if (err.response && err.response.data && err.response.data.errors) {
-          state.thana_errors = err.response.data.errors;
-          state.error_status = err.response.status;
-        } else {
-          console.error("Error:", err);
-          // Handle the error as needed when response or data is not available
-        }
+        const data = {
+          errors: err.response.data.errors,
+          error_status: err.response.message,
+        };
+        return data;
+        // if (err.response && err.response.data && err.response.data.errors) {
+        //   state.thana_errors = err.response.data.errors;
+        //   state.error_status = err.response.status;
+        // } else {
+        //   console.error("Error:", err);
+        //   // Handle the error as needed when response or data is not available
+        // }
       });
   },
   UpdateUpazila: ({ commit }, data) => {
@@ -92,13 +97,18 @@ const actions = {
         commit("STORE_UPAZILA", result);
       })
       .catch((err) => {
-        if (err.response && err.response.data && err.response.data.errors) {
-          state.thana_errors = err.response.data.errors;
-          state.error_status = err.response.status;
-        } else {
-          console.error("Error:", err);
-          // Handle the error as needed when response or data is not available
-        }
+        const data = {
+          errors: err.response.data.errors,
+          error_status: err.response.message,
+        };
+        return data;
+        // if (err.response && err.response.data && err.response.data.errors) {
+        //   state.thana_errors = err.response.data.errors;
+        //   state.error_status = err.response.status;
+        // } else {
+        //   console.error("Error:", err);
+        //   // Handle the error as needed when response or data is not available
+        // }
       });
   },
 
