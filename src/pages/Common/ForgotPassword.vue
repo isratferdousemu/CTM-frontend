@@ -13,9 +13,12 @@
       height="250"
       src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
     ></v-img> -->
+
       <div class="d-flex justify-center py-4">
         <div class="logo">
-          <router-link to="/"> <!-- <Logo /> -->LOGO </router-link>
+            <v-img class="text-center ma-auto" max-height="100%" max-width="80px"
+                                                                position="center center" src="/assets/images/logo.png"></v-img>
+          <!-- <router-link to="/"> <Logo />LOGO </router-link> -->
         </div>
       </div>
       <v-card-title class="justify-center"><b>Forgot Password</b></v-card-title>
