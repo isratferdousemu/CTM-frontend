@@ -422,7 +422,7 @@ export default {
     },
 
     ...mapState({
-      divisions: (state) => state.Division.divisions,
+      divisions: (state) => state.Division.divisions.data,
       error_status: (state) => state.Ward.error_status,
       ward_errors: (state) => state.Ward.ward_errors,
       // message: (state) => state.SystemConfiguration.success_message,

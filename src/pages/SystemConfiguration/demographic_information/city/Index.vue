@@ -42,7 +42,7 @@
                     color="primary"
                     prepend-icon="mdi-account-multiple-plus"
                   >
-                    Add New City
+                    Add New City Corporation
                   </v-btn>
                   <v-col cols="12">
                     <v-data-table
@@ -135,7 +135,7 @@
       <v-dialog v-model="dialogAdd" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            Add New City
+            Add New City Corporation
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
@@ -159,7 +159,7 @@
                   name="Division"
                   vid="division"
                   rules="required"
-                  v-slot="{ errors }"
+                  
                 >
                   <v-autocomplete
                     @input="onChangeDivision($event)"
@@ -178,7 +178,7 @@
                   name="District"
                   vid="district"
                   rules="required"
-                  v-slot="{ errors }"
+                  
                 >
                   <v-autocomplete
                     v-model="data.district_id"
@@ -197,11 +197,11 @@
                   name="LocationType"
                   vid="locationType"
                   rules="required"
-                  v-slot="{ errors }"
+                  
                 >
                   <v-autocomplete
                     @input="onChangeLocationType($event)"
-                    v-model="data.location_type "
+                    v-model="data.location_type"
                     outlined
                     label="LocationType"
                     :items="filteredOptions"
@@ -274,7 +274,7 @@
       <v-dialog v-model="dialogEdit" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            Edit New City
+            Edit City Corporation
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
@@ -298,7 +298,7 @@
                   name="Division"
                   vid="division"
                   rules="required"
-                  v-slot="{ errors }"
+                  
                 >
                   <v-autocomplete
                     @input="onChangeDivision($event)"
@@ -311,13 +311,15 @@
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
+                    :readonly="true"
+
                   ></v-autocomplete>
                 </ValidationProvider>
                 <ValidationProvider
                   name="District"
                   vid="district"
                   rules="required"
-                  v-slot="{ errors }"
+                  
                 >
                   <v-autocomplete
                     @input="onChangeDistrict($event)"
@@ -330,17 +332,17 @@
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
+                    :readonly="true"
                   ></v-autocomplete>
                 </ValidationProvider>
                 <ValidationProvider
                   name="LocationType"
                   vid="locationType"
                   rules="required"
-                  v-slot="{ errors }"
+                  
                 >
                   <v-autocomplete
-                    @input="onChangeLocationType($event)"
-                    v-model="data.location_type "
+                    v-model="data.location_type"
                     outlined
                     label="LocationType"
                     :items="filteredOptions"
@@ -349,6 +351,7 @@
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
+                    :readonly="true"
                   ></v-autocomplete>
                 </ValidationProvider>
                 <ValidationProvider
@@ -413,13 +416,13 @@
       <v-dialog v-model="deleteDialog" width="350">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            Delete City
+            Delete City Corporation
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
-              Are you sure to delete this City? City all information will be
-              deleted.
+              Are you sure to delete this City Corporation? All information
+              under this City Corporation will be deleted?
             </div>
           </v-card-text>
           <v-card-actions style="display: block">
@@ -473,7 +476,7 @@ export default {
         name_en: null,
         name_bn: null,
         locationType: null,
-        location_type : null,
+        location_type: null,
       },
       locationType: {},
       isDisabled: true,
@@ -485,6 +488,8 @@ export default {
       search: "",
       delete_id: "",
       city: [],
+      errors: {},
+      error_status: {},
       pagination: {
         current: 1,
         total: 0,
@@ -506,7 +511,7 @@ export default {
         { text: "District Name English", value: "district.name_en" },
         { text: "Location Type", value: "locationType" },
         { text: "City Name English", value: "name_en" },
-        { text: "City Name English Bangla", value: "name_bn" },
+        { text: "City Name Bangla", value: "name_bn" },
         { text: "Actions", value: "actions", align: "center", sortable: false },
       ];
     },
@@ -521,8 +526,8 @@ export default {
     }),
     filteredOptions() {
       // Apply your filter logic here, e.g., filtering out options with 'Option 2' label
-      return this.locationType.filter(option => option.keyword !== 'Upazila');
-    }
+      return this.locationType.filter((option) => option.keyword !== "Upazila");
+    },
   },
 
   methods: {
@@ -535,13 +540,22 @@ export default {
       console.log(JSON.stringify(this.data));
       // return;
       try {
-        this.$store.dispatch("City/StoreCity", this.data).then(() => {
-          if (this.error_status == "") {
+        this.$store.dispatch("City/StoreCity", this.data).then((data) => {
+          console.log(data, "submit");
+          if (data == null) {
             this.$toast.success("Data Inserted Successfully");
             this.dialogAdd = false;
             this.resetForm();
             this.GetCity();
+          } else {
+            this.errors = data.errors;
           }
+          // if (this.error_status == "") {
+          //   this.$toast.success("Data Inserted Successfully");
+          //   this.dialogAdd = false;
+          //   this.resetForm();
+          //   this.GetCity();
+          // }
         });
       } catch (e) {
         console.log(e);
@@ -557,20 +571,29 @@ export default {
       this.data.name_en = item.name_en;
       this.data.name_bn = item.name_bn;
       this.data.id = item.id;
-      this.data.location_type  = item.locationType.id;
-
+      this.data.location_type = item.locationType.id;
+      this.errors = {};
       // alert(JSON.stringify(this.data));
     },
     updateCity() {
       // alert(JSON.stringify(this.data));
       try {
-        this.$store.dispatch("City/UpdateCity", this.data).then(() => {
-          if (this.error_status == "") {
+        this.$store.dispatch("City/UpdateCity", this.data).then((data) => {
+          console.log(data, "update");
+          if (data == null) {
             this.$toast.success("Data Updated Successfully");
             this.dialogEdit = false;
             this.resetForm();
             this.GetCity();
+          } else {
+            this.errors = data.errors;
           }
+          // if (this.error_status == "") {
+          //   this.$toast.success("Data Updated Successfully");
+          //   this.dialogEdit = false;
+          //   this.resetForm();
+          //   this.GetCity();
+          // }
         });
       } catch (e) {
         console.log(e);
@@ -584,9 +607,10 @@ export default {
         name_bn: "",
         division_id: null,
         district_id: null,
-        location_type : null,
+        location_type: null,
         // Reset other form fields
       };
+      this.errors = {};
     },
     onPageChange($event) {
       // this.pagination.current = $event;

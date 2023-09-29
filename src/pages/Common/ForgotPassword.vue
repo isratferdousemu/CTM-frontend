@@ -53,8 +53,8 @@
         v-model="form.otp"
         placeholder="OTP"
         required
-        :error="forgotPasswordErrorMessageOtp"
-        :error-messages="forgotPasswordErrorMessageOtp"
+        :error="errors.message ? true : false"
+        :error-messages="errors.message"
       ></v-text-field>
       <v-text-field
         outlined
@@ -63,10 +63,8 @@
         prepend-inner-icon="mdi-lock-open"
         placeholder="Password"
         required
-        :error="forgotPasswordErrors && forgotPasswordErrors.password"
-        :error-messages="
-          forgotPasswordErrors ? forgotPasswordErrors.password : []
-        "
+        :error="errors.password ? true : false"
+        :error-messages="errors.password"
       ></v-text-field>
       <v-text-field
         outlined
@@ -75,10 +73,8 @@
         prepend-inner-icon="mdi-lock-open"
         placeholder="Confirm Password"
         required
-        :error="forgotPasswordErrors && forgotPasswordErrors.confirm_password"
-        :error-messages="
-          forgotPasswordErrors ? forgotPasswordErrors.confirm_password : []
-        "
+        :error="errors.confirm_password ? true : false"
+        :error-messages="errors.confirm_password"
       ></v-text-field>
 
       <v-btn
@@ -115,7 +111,10 @@ export default {
     remainingTime: 60,
     apiUrl: "http://127.0.0.1:8000/api/v1/admin/forgot-password",
     bearerToken: "4|1QjdA8vjG15B4ImbcOI5Kr0r7uuRAjJKpwoU2s5f40c5d6bc",
-    errors: [],
+    errors: {
+      message: "",
+    },
+    error_message: {},
     error_message_otp: null,
   }),
   computed: {
@@ -129,8 +128,52 @@ export default {
     async sendOtp() {
       await this.$store.dispatch("sendOtpForgetPassword", this.form);
     },
+    resetErrors() {
+      this.errors = {};
+      this.errors = { message: "" };
+    },
     async forgotPasswordSubmit() {
-      await this.$store.dispatch("forgotPasswordSubmit", this.form);
+      this.resetErrors();
+      try {
+        this.$store.dispatch("forgotPasswordSubmit", this.form).then((data) => {
+          console.log(data);
+          if (data == null) {
+            this.$toast.success("Password Reset Successfully");
+            this.$router.push({
+              path: "/login",
+            });
+          } else {
+            if (data.success == false) {
+              this.errors.message = data.message;
+              // this.$toast.error("Password Reset Failed");
+            } else {
+              this.errors = data.errors;
+              //   this.$toast.error("Password Reset Failed");
+            }
+          }
+
+          //   this.$router.push({
+          //     path: "/login",
+          //   });
+          //   console.log(data, "submitForgotIndex");
+          // if (data == null) {
+          //   this.$toast.success("Data Inserted Successfully");
+          //   this.dialogAdd = false;
+          //   this.resetForm();
+          //   this.GetDivision();
+          // } else {
+          //   this.errors = data.errors;
+          // }
+          // // if (this.error_status == "") {
+          // //   this.$toast.success("Data Inserted Successfully");
+          // //   this.dialogAdd = false;
+          // //   this.resetForm();
+          // //   this.GetDivision();
+          // // }
+        });
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
 };

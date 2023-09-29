@@ -328,7 +328,7 @@ export default {
     },
 
     ...mapState({
-      divisions: (state) => state.Division.divisions,
+      divisions: (state) => state.Division.divisions.data,
       error_status: (state) => state.Union.error_status,
       union_errors: (state) => state.Union.union_errors,
       // message: (state) => state.SystemConfiguration.success_message,

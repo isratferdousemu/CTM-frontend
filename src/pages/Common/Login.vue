@@ -74,7 +74,7 @@
 
 
                                                                 <div class="d-inline d-flex justify-end">
-                                                                        <router-link to="/forgot-password"
+                                                                        <router-link to="/forgotPassword"
                                                                                 class="font-sm">Forgot Password</router-link>
                                                                 </div>
                                                                 <div class="d-inline d-flex justify-end">

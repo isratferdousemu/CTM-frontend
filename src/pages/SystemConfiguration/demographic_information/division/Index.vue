@@ -178,7 +178,7 @@
                     v-model="data.name_bn"
                     label="Name Bangla"
                     required
-                    :error="errors.name_en ? true : false"
+                    :error="errors.name_bn ? true : false"
                     :error-messages="errors.name_bn"
                   ></v-text-field>
                 </ValidationProvider>
@@ -214,7 +214,7 @@
       <v-dialog v-model="dialogEdit" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            Edit New Division
+            Edit Division
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
@@ -260,7 +260,7 @@
                     v-model="data.name_bn"
                     label="Name Bangla"
                     required
-                    :error="errors.name_en ? true : false"
+                    :error="errors.name_bn ? true : false"
                     :error-messages="errors.name_bn"
                   ></v-text-field>
                 </ValidationProvider>
@@ -301,8 +301,8 @@
           <v-divider></v-divider>
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
-              Are you sure to delete this Division? Division all information
-              will be deleted.
+              Are you sure to delete this Division? All information under this
+              Division will be deleted.
             </div>
           </v-card-text>
           <v-card-actions style="display: block">
@@ -358,6 +358,8 @@ export default {
       search: "",
       delete_id: "",
       divisions: [],
+      errors: {},
+      error_status: {},
       pagination: {
         current: 1,
         total: 0,
@@ -376,7 +378,7 @@ export default {
         { text: "#Sl", value: "id", align: "start", sortable: false },
         { text: "Code", value: "code" },
         { text: "Division Name English", value: "name_en" },
-        { text: "Division Name English Bangla", value: "name_bn" },
+        { text: "Division Name Bangla", value: "name_bn" },
         { text: "Actions", value: "actions", align: "center", sortable: false },
       ];
     },
@@ -384,8 +386,8 @@ export default {
     ...mapState({
       message: (state) => state.Division.success_message,
       divisions: (state) => state.Division.divisions,
-      errors: (state) => state.Division.errors,
-      error_status: (state) => state.Division.error_status,
+      // errors: (state) => state.Division.errors,
+      // error_status: (state) => state.Division.error_status,
     }),
   },
 
@@ -396,14 +398,25 @@ export default {
     },
     submitDivision() {
       try {
-        this.$store.dispatch("Division/StoreDivision", this.data).then(() => {
-          if (this.error_status == "") {
-            this.$toast.success("Data Inserted Successfully");
-            this.dialogAdd = false;
-            this.resetForm();
-            this.GetDivision();
-          }
-        });
+        this.$store
+          .dispatch("Division/StoreDivision", this.data)
+          .then((data) => {
+            console.log(data, "submit");
+            if (data == null) {
+              this.$toast.success("Data Inserted Successfully");
+              this.dialogAdd = false;
+              this.resetForm();
+              this.GetDivision();
+            } else {
+              this.errors = data.errors;
+            }
+            // if (this.error_status == "") {
+            //   this.$toast.success("Data Inserted Successfully");
+            //   this.dialogAdd = false;
+            //   this.resetForm();
+            //   this.GetDivision();
+            // }
+          });
       } catch (e) {
         console.log(e);
       }
@@ -414,16 +427,26 @@ export default {
       this.data.name_en = item.name_en;
       this.data.name_bn = item.name_bn;
       this.data.id = item.id;
+      this.errors = {};
     },
     updateDivision() {
       try {
-        this.$store.dispatch("Division/UpdateDivision", this.data).then(() => {
-          if (this.error_status == "") {
+        this.$store.dispatch("Division/UpdateDivision", this.data).then((data) => {
+          console.log(data, "update");
+          if (data == null) {
             this.$toast.success("Data Updated Successfully");
             this.dialogEdit = false;
             this.resetForm();
             this.GetDivision();
+          } else {
+            this.errors = data.errors;
           }
+          // if (this.error_status == "") {
+          //   this.$toast.success("Data Updated Successfully");
+          //   this.dialogEdit = false;
+          //   this.resetForm();
+          //   this.GetDivision();
+          // }
         });
       } catch (e) {
         console.log(e);
@@ -437,6 +460,7 @@ export default {
         name_bn: "",
         // Reset other form fields
       };
+      this.errors = {};
     },
 
     onPageChange($event) {
@@ -467,12 +491,14 @@ export default {
     },
     deleteDivision: async function () {
       try {
-        await this.$store.dispatch("Division/DestroyDivision", this.delete_id).then(() => {
-          console.log("success");
-          this.$toast.error("Deleted Successfully");
-          this.deleteDialog = false;
-          this.GetDivision();
-        });
+        await this.$store
+          .dispatch("Division/DestroyDivision", this.delete_id)
+          .then(() => {
+            console.log("success");
+            this.$toast.error("Deleted Successfully");
+            this.deleteDialog = false;
+            this.GetDivision();
+          });
       } catch (e) {
         console.log(e);
       }

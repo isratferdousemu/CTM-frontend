@@ -121,22 +121,28 @@ export default new Vuex.Store({
       return http()
         .post("admin/forgot-password/submit", data)
         .then((result) => {
-          // console.log(result);
-          this.$router.push({
-            path: "/login",
-          });
+          console.log(result, 'submit working');
         })
         .catch((err) => {
           console.log(err);
           if (err.response.data.success == false) {
             // this.error_message_otp = err.response.data.message;
-            commit(
-              "setforgotPasswordErrorMessageOtp",
-              err.response.data.message
-            );
+            // commit(
+            //   "setforgotPasswordErrorMessageOtp",
+            //   err.response.data.message
+            // );
+            const data = {
+              success: err.response.data.success,
+              message: err.response.data.message,
+            };
+            return data;
           } else {
             // this.errors = err.response.data.errors;
-            commit("setforgotPasswordErrors", err.response.data.errors);
+            // commit("setforgotPasswordErrors", err.response.data.errors);
+            const data = {
+              errors: err.response.data.errors,
+            };
+            return data;
           }
         });
     },
