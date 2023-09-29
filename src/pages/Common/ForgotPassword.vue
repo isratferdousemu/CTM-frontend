@@ -110,7 +110,6 @@ export default {
     otpDialog: false,
     remainingTime: 60,
     apiUrl: "http://127.0.0.1:8000/api/v1/admin/forgot-password",
-    bearerToken: "4|1QjdA8vjG15B4ImbcOI5Kr0r7uuRAjJKpwoU2s5f40c5d6bc",
     errors: {
       message: "",
     },

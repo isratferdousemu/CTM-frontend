@@ -238,7 +238,6 @@ import {
 import {
     required
 } from "vee-validate/dist/rules";
-import axios from 'axios'
 
 extend("required", required);
 export default {
@@ -441,9 +440,14 @@ export default {
         deleteUnion: async function (id) {
 
             try {
-                await this.$store.dispatch("Union/DestroyUnion", this.delete_id).then(() => {
-                    console.log("success");
-                    this.$toast.error("Deleted Successfully");
+                await this.$store.dispatch("Union/DestroyUnion", this.delete_id).then((res) => {
+                      // check if the request was successful
+              console.log(res.data)
+              if (res?.data?.success) {
+            this.$toast.success(res.data.message);
+            } else {
+              this.$toast.error(res.response.data.message);
+            }
                     this.deleteDialog = false;
                     this.GetUnion();
                 });

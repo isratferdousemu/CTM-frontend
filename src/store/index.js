@@ -23,7 +23,6 @@ import Ward from "@/store/modules/system_configuration/ward";
 import Thana from "@/store/modules/system_configuration/thana";
 import Menu from "@/store/modules/system_configuration/menu";
 import Device_registration from "@/store/modules/system_configuration/device_registration";
-
 // Import other modules as needed
 
 Vue.use(Vuex);

@@ -169,9 +169,10 @@ const actions = {
       .get(`/admin/division/destroy/${id}`)
       .then((result) => {
         console.log(result);
+        return result
       })
       .catch((err) => {
-        console.log(err);
+        return err
       });
   },
   /*end delete division*/

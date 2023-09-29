@@ -354,7 +354,6 @@
 import { mapState, mapActions } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
-import axios from 'axios'
 
 extend("required", required);
 export default {
@@ -667,9 +666,14 @@ export default {
     deleteWard: async function (id) {
 
       try {
-        await this.$store.dispatch("Ward/DestroyWard", this.delete_id).then(() => {
-          console.log("success");
-          this.$toast.error("Deleted Successfully");
+        await this.$store.dispatch("Ward/DestroyWard", this.delete_id).then((err) => {
+                  // check if the request was successful
+                  console.log(res.data)
+              if (res?.data?.success) {
+            this.$toast.success(res.data.message);
+            } else {
+              this.$toast.error(res.response.data.message);
+            }
           this.deleteDialog = false;
           this.GetWard();
         });

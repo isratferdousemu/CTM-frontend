@@ -131,9 +131,10 @@ const actions = {
       .then((result) => {
         console.log(result);
         commit("DELETE_UPAZILA", { id: id, data: result.data });
+        return result
       })
       .catch((err) => {
-        console.log(err);
+        return err
       });
   },
   async updateError({ commit }, update_error_value) {

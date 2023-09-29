@@ -63,7 +63,6 @@
                                     <ValidationProvider name="Password" vid="password" rules="required" v-slot="{ errors }">
                                         <v-text-field type="password" v-model="form.password" placeholder="Password" required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
                                     </ValidationProvider>
-                                    {{ error_code_login }}
 
                                     <div class="d-inline d-flex justify-end">
                                         <router-link to="/forgotPassword" class="font-sm">Forgot Password
@@ -136,11 +135,6 @@ export default {
 
         ...mapState({
             message: (state) => state.success_message,
-            success_status: (state) => state.success_status,
-            error_message: (state) => state.error_message,
-            error_status: (state) => state.error_status_login,
-            error_code_login: (state) => state.error_code_login,
-            login_message: (state) => state.login_message,
 
         }),
         ...mapGetters(["getLoginresponse", "getOtpresponse"]),
@@ -179,7 +173,6 @@ export default {
                     if (result.data.success == true) {
                         this.$toast.success(result.data.message);
                         let data = {
-
                             permissions: result
                                 .data
                                 .permissions,
@@ -215,6 +208,11 @@ export default {
                                 this.$toast.error(err.response.data.message);
 
                             }
+                            if (err.response.data.error_code == "device_not_found") {
+                                 
+                                 this.$toast.error(err.response.data.message);
+ 
+                             }
                         } else if (err.response) {
                             this.$refs.form.setErrors(err.response.data.errors);
                         }
@@ -256,6 +254,11 @@ export default {
                                 }
                                 this.$refs.form.setErrors(errs);
                             }
+                            if (err.response.data.error_code == "device_not_found") {
+                                 
+                                 this.$toast.error(err.response.data.message);
+ 
+                             }
                         } else if (err.response) {
                             this.$refs.form.setErrors(err.response.data.errors);
                         }

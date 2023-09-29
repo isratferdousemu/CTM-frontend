@@ -253,7 +253,7 @@
                   ></v-text-field>
                 </ValidationProvider>
 
-                
+
                 <ValidationProvider
                   name="Division"
                   vid="division"
@@ -452,13 +452,10 @@ export default {
             } else {
               this.errors = data.errors;
             }
-
-            // if (this.error_status == "") {
-            //   this.$toast.success("Data Inserted Successfully");
-            //   this.dialogAdd = false;
-            //   this.resetForm();
-            //   this.GetDistrict();
-            // }
+ 
+          })
+          .catch((error) => {
+            console.log(error,'error');
           });
       } catch (e) {
         console.log(e);
@@ -536,9 +533,14 @@ export default {
       try {
         await this.$store
           .dispatch("District/DestroyDistrict", this.delete_id)
-          .then(() => {
-            console.log("success");
-            this.$toast.error("Deleted Successfully");
+          .then((res) => {
+            // check if the request was successful
+              console.log(res.data)
+              if (res?.data?.success) {
+            this.$toast.success(res.data.message);
+            } else {
+              this.$toast.error(res.response.data.message);
+            }
             this.deleteDialog = false;
             this.GetDistrict();
           });

@@ -804,9 +804,14 @@ export default {
       try {
         await this.$store
           .dispatch("Thana/DestroyUpazila", this.delete_id)
-          .then(() => {
-            console.log("success");
-            this.$toast.error("Deleted Successfully");
+          .then((res) => {
+              // check if the request was successful
+              console.log(res.data)
+              if (res?.data?.success) {
+            this.$toast.success(res.data.message);
+            } else {
+              this.$toast.error(res.response.data.message);
+            }
             this.deleteDialog = false;
             this.GetUpazila();
           });
