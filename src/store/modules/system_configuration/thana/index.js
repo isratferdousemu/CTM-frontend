@@ -60,8 +60,6 @@ const actions = {
     return http()
       .post("/admin/thana/insert", data)
       .then((result) => {
-        console.log(result.data);
-        console.log(commit);
         // alert("Successfully Inserted");
         // this.$router.push({
         //   path: "/system-configuration/division",

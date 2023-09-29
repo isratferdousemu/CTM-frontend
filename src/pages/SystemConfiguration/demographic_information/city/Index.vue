@@ -518,7 +518,7 @@ export default {
 
     ...mapState({
       message: (state) => state.City.success_message,
-      divisions: (state) => state.Division.divisions.data,
+      divisions: (state) => state.Division.divisions,
       districts: (state) => state.District.districts.data,
       city: (state) => state.City.city,
       errors: (state) => state.City.errors,

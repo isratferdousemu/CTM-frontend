@@ -252,6 +252,8 @@
                     :error-messages="errors.code"
                   ></v-text-field>
                 </ValidationProvider>
+
+                
                 <ValidationProvider
                   name="Division"
                   vid="division"
@@ -426,7 +428,7 @@ export default {
 
     ...mapState({
       message: (state) => state.District.success_message,
-      divisions: (state) => state.Division.divisions.data,
+      divisions: (state) => state.Division.divisions,
       districts: (state) => state.District.districts,
     }),
   },

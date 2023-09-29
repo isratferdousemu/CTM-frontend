@@ -162,6 +162,7 @@ export default new Vuex.Store({
         .post("admin/login/otp", data)
         .then((result) => {
           commit("setOtpresponse", result);
+          return result
         })
         .catch((err) => {
           state.errors = err.response.data.errors;
@@ -169,7 +170,7 @@ export default new Vuex.Store({
           state.login_message = err.response.data.message
           state.error_status_login = err.response.status;
           state.error_code_login = err.response.error_code;
-          
+          return err;
         });
     },
     sendOtp: ({ commit, state }, data) => {
@@ -177,11 +178,13 @@ export default new Vuex.Store({
         .post("admin/login", data)
         .then((result) => {
           commit("setOtp", result);
-
+          return result;
         })
         .catch((err) => {
           state.errors = err.response.data.errors;
           state.error_status = err.response.status;
+          return err;
+
         });
     },
     async getLookupByType({ state }, type) {

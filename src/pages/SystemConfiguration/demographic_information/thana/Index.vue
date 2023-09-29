@@ -637,7 +637,7 @@ export default {
     },
 
     ...mapState({
-      divisions: (state) => state.Division.divisions.data,
+      divisions: (state) => state.Division.divisions,
       // error_status: (state) => state.Thana.error_status,
       // thana_errors: (state) => state.Thana.thana_errors,
       // message: (state) => state.SystemConfiguration.success_message,
