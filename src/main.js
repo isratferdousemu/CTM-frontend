@@ -27,7 +27,8 @@ Vue.use(Toast, options);
 Vue.mixin(HeaderMixins);
 
 
-axios.defaults.baseURL = `http://127.0.0.1:8000/api/v1`;
+axios.defaults.baseURL = process.env.VUE_APP_BASE_API_URL_BACKEND;
+// axios.defaults.baseURL = `http://127.0.0.1:8000/api/v1`;
 Vue.prototype.$axios = axios;
 
 // Register the ApiRequestPlugin globally
