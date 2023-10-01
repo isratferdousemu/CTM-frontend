@@ -216,7 +216,7 @@
                     color="primary"
                     :disabled="invalid"
                     :loading="loading"
-                    class="custom-btn-width black white--text py-2"
+                    class="custom-btn-width warning white--text py-2"
                   >
                     Submit
                   </v-btn>
@@ -252,6 +252,8 @@
                     :error-messages="errors.code"
                   ></v-text-field>
                 </ValidationProvider>
+
+
                 <ValidationProvider
                   name="Division"
                   vid="division"
@@ -317,7 +319,7 @@
                     color="primary"
                     :disabled="invalid"
                     :loading="loading"
-                    class="custom-btn-width black white--text py-2"
+                    class="custom-btn-width warning white--text py-2"
                   >
                     Submit
                   </v-btn>
@@ -357,7 +359,7 @@
                 @click="deleteDistrict()"
                 color="white"
                 :loading="delete_loading"
-                class="custom-btn-width black white--text py-2"
+                class="custom-btn-width warning white--text py-2"
               >
                 Delete
               </v-btn>
@@ -402,7 +404,7 @@ export default {
       pagination: {
         current: 1,
         total: 0,
-        perPage: 5,
+        perPage: 15,
       },
       // errors: "",
       items: [5, 10, 15, 20, 40, 50, 100],
@@ -426,7 +428,7 @@ export default {
 
     ...mapState({
       message: (state) => state.District.success_message,
-      divisions: (state) => state.Division.divisions.data,
+      divisions: (state) => state.Division.divisions,
       districts: (state) => state.District.districts,
     }),
   },
@@ -450,13 +452,10 @@ export default {
             } else {
               this.errors = data.errors;
             }
-
-            // if (this.error_status == "") {
-            //   this.$toast.success("Data Inserted Successfully");
-            //   this.dialogAdd = false;
-            //   this.resetForm();
-            //   this.GetDistrict();
-            // }
+ 
+          })
+          .catch((error) => {
+            console.log(error,'error');
           });
       } catch (e) {
         console.log(e);
@@ -534,9 +533,14 @@ export default {
       try {
         await this.$store
           .dispatch("District/DestroyDistrict", this.delete_id)
-          .then(() => {
-            console.log("success");
-            this.$toast.error("Deleted Successfully");
+          .then((res) => {
+            // check if the request was successful
+              console.log(res.data)
+              if (res?.data?.success) {
+            this.$toast.success(res.data.message);
+            } else {
+              this.$toast.error(res.response.data.message);
+            }
             this.deleteDialog = false;
             this.GetDistrict();
           });

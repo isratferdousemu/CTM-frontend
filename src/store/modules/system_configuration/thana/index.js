@@ -60,8 +60,6 @@ const actions = {
     return http()
       .post("/admin/thana/insert", data)
       .then((result) => {
-        console.log(result.data);
-        console.log(commit);
         // alert("Successfully Inserted");
         // this.$router.push({
         //   path: "/system-configuration/division",
@@ -131,11 +129,11 @@ const actions = {
     return http()
       .get(`/admin/thana/destroy/${id}`)
       .then((result) => {
-        console.log(result);
-        commit("DELETE_UPAZILA", { id: id, data: result.data });
+        console.log(result,'result in store');
+        return result
       })
       .catch((err) => {
-        console.log(err);
+        return err
       });
   },
   async updateError({ commit }, update_error_value) {

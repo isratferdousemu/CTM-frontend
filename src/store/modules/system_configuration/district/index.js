@@ -166,10 +166,10 @@ const actions = {
     return http()
       .get(`/admin/district/destroy/${id}`)
       .then((result) => {
-        console.log(result);
+        return result
       })
       .catch((err) => {
-        console.log(err);
+      return err
       });
   },
   /*end delete district*/

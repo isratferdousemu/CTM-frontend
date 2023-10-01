@@ -162,10 +162,10 @@ const actions = {
     return http()
       .get(`/admin/city/destroy/${id}`)
       .then((result) => {
-        console.log(result);
+        return result
       })
       .catch((err) => {
-        console.log(err);
+      return err
       });
   },
   /*end delete city*/

@@ -77,6 +77,7 @@ const actions = {
                 //   path: "/system-configuration/division",
                 // });
                 commit("STORE_WARD", result);
+                return result
             })
             .catch((err) => {
                 if (err.response && err.response.data && err.response.data.errors) {
@@ -100,6 +101,7 @@ const actions = {
                 //   path: "/system-configuration/division",
                 // });
                 commit("STORE_WARD", result);
+                return result;
             })
             .catch((err) => {
                 if (err.response && err.response.data && err.response.data.errors) {
@@ -132,9 +134,11 @@ const actions = {
             .then((result) => {
                 console.log(result);
                 commit("DELETE_WARD", { id: id, data: result.data });
+                return result
             })
             .catch((err) => {
                 console.log(err);
+                return err;
             });
     },
     

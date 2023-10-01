@@ -1,268 +1,311 @@
 <template>
-        <div id="app">
-                <v-app>
-                        <v-container class="my-5">
-                                <!-- login OTP -->
+<div id="app" class="loginApp" style="background-image:url('/assets/images/dss.jpg');background-size:cover">
+    <div class="loginAppShadow"></div>
+    <v-container class="h-100vh">
+        <!-- login OTP -->
+        <v-dialog persistent v-model="otpDialog" width="350">
+            <v-card style="justify-content: center; text-align: center">
+                <v-card-title class="font-weight-bold justify-center">
+                    OTP
+                </v-card-title>
+                <v-divider></v-divider>
+                <v-card-text>
+                    <p>You will get a verification code to your registered number.
+                    </p>
+                    <ValidationObserver ref="form" class="w-100" lazy-validation v-slot="{ invalid }">
+                        <ValidationProvider name="OTP" vid="otp" rules="required" v-slot="{ errors }">
+                            <v-otp-input v-model="form.otp" :loading="loading" :error="errors[0] ? true : false" :error-messages="errors[0]" @finish="onFinish"></v-otp-input>
+                        </ValidationProvider>
+                    </ValidationObserver>
+                    <p>Remaining time: {{ remainingTime }} sec</p>
 
-                        <v-dialog persistent v-model="otpDialog" width="350">
-                                <v-card style="justify-content: center; text-align: center">
-                                        <v-card-title class="font-weight-bold justify-center">
-                                                OTP
-                                        </v-card-title>
-                                        <v-divider></v-divider>
-                                        <v-card-text>
-                                                <p>You will get a verification code to your registered number.</p>
-                                                <v-otp-input v-model="form.otp" :loading="loading" @finish="onFinish"></v-otp-input>
-                                                  <div v-if="getLoginresponse?.message" v-html="getLoginresponse?.message" class="red--text" />
-                                                <p>Remaining time: {{ remainingTime }} sec</p>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
 
+        <!-- login OTP -->
 
-                                                </v-card-text>
-                                        </v-card>
-                                </v-dialog>
+        <div class="row d-flex loginBox justify-center align-center">
+            <v-card elevation="12" class="d-flex align-center col-lg-8 col-12">
+                <v-row>
+                    <v-col cols="6" class="loginLeft">
+                        <div class="pa-5 ma-5 text-center ma-auto">
+                            <v-img class="text-center ma-auto" max-height="100%" max-width="80px" position="center center" src="/assets/images/logo.png"></v-img>
+                            <!-- <Logo class="ml-7" /> -->
+                        </div>
+                        <h3 class="text-center white--text">
+                            Integrated Social Protection Management Information System
+                            (ISPMIS)
+                        </h3>
+                        <div class="text-center orange--text my-4">
+                            <h3>Notice Board</h3>
+                        </div>
+                        <p class=" orange--text mx-6" style="font-size: 14px;">
+                            No One's ID and password is asked from the MIS admin of the
+                            Department Social Services without solving your problem.Beware
+                            of
+                            cheaters. Please do not share your password with anyone and do
+                            not
+                            save it in your browser.
+                        </p>
+                    </v-col>
+                    <v-col cols="6">
+                        <div class="d-flex flex-column align-center justify-center" style="height: 57vh">
+                            <div class="text-center mb-2">
+                                <h3>Login</h3>
+                            </div>
+                            <ValidationObserver ref="form" class="w-100" lazy-validation v-slot="{ invalid }">
+                                <v-form @submit.prevent="submitLogin" class="ma-5">
+                                    <ValidationProvider name="Username" vid="username" rules="required" v-slot="{ errors }">
+                                        <v-text-field label="Username" v-model="form.username" :error="errors[0] ? true : false" :error-messages="errors[0]" required></v-text-field>
+                                    </ValidationProvider>
+                                    <!-- :error="errors && errors.username" :error-messages="errors ? errors.username : []"  -->
+                                    <ValidationProvider name="Password" vid="password" rules="required" v-slot="{ errors }">
+                                        <v-text-field type="password" v-model="form.password" placeholder="Password" required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
+                                    </ValidationProvider>
 
-                                <!-- login OTP -->
+                                    <div class="d-inline d-flex justify-end">
+                                        <router-link to="/forgotPassword" class="font-sm">Forgot Password
+                                        </router-link>
+                                    </div>
+                                    <div class="d-inline d-flex justify-end">
+                                        <v-btn color="blue" block type="submit" class="my-4 white--text" :loading="loading">Login</v-btn>
+                                    </div>
+                                </v-form>
+                            </ValidationObserver>
 
-                                <v-card elevation="12" class="d-flex" min-height="550">
-                                        <v-sheet width="50%" color="#0D47A1">
-                                                <div class="pa-5 ma-5 text-center ma-auto">
-                                                        <v-img class="text-center ma-auto" max-height="100%" max-width="80px"
-                                                                position="center center" src="/assets/images/logo.png"></v-img>
-                                                        <!-- <Logo class="ml-7" /> -->
-                                                </div>
-                                                <div class="d-flex align-center justify-center white--text">
-                                                        Integrated Social Protection Management Information System
-                                                        (ISPMIS)
-                                                </div>
-                                                <div class="d-flex align-center justify-center orange--text ma-t">
-                                                        <h3>Notice Board</h3>
-                                                </div>
-                                                <div class="d-flex align-center justify-start orange--text mx-6">
-                                                        No One's ID and password is asked from the MIS admin of the
-                                                        Department Social Services without solving your problem.Beware of
-                                                        cheaters. Please do not share your password with anyone and do not
-                                                        save it in your browser.
-                                                </div>
-                                        </v-sheet>
+                        </div>
+                    </v-col>
+                </v-row>
 
-                                        <v-sheet width="50%">
-                                                <div class="d-flex flex-column align-center justify-center"
-                                                        style="height: 70vh">
-                                                        <div class="text-center mb-2">
-                                                                <h3>Login</h3>
-                                                        </div>
+            </v-card>
 
-                                                        <v-form v-on:submit.prevent="submitLogin" class="ma-5">
-                                                                <v-text-field label="Username" v-model="form.username"
-                                                                        :error="errors && errors.username"
-                                                                        :error-messages="errors ? errors.username : []"
-                                                                        required></v-text-field>
-                                                                <!-- <div v-if="errors && errors.email" v-html="errors.email" /> -->
-                                                                <!-- <p v-if="errors.email" class="red--text custom_error">
-                                                                        {{ errors.email }}
-                                                                </p> -->
-                                                                <v-text-field label="Password" type="password"
-                                                                        v-model="form.password"
-                                                                        :error="errors && errors.password"
-                                                                        :error-messages="errors ? errors.password : []"
-                                                                        required></v-text-field>
-                                                                <!-- <div v-if="message && !errors" v-html="message"
-                                                                        class="red--text" /> -->
-
-
-
-                                                                <div class="d-inline d-flex justify-end">
-                                                                        <router-link to="/forgotPassword"
-                                                                                class="font-sm">Forgot Password</router-link>
-                                                                </div>
-                                                                <div class="d-inline d-flex justify-end">
-                                                                        <v-btn color="blue" type="submit" class="my-4"
-                                                                                :loading="loading">Login</v-btn>
-                                                                </div>
-                                                        </v-form>
-                                                </div>
-                                        </v-sheet>
-                                </v-card>
-                                <span class="d-flex align-center justify-center my-10">Copyright © 2023 DSS | All Rights
-                                        Reserved</span>
-
-                        </v-container>
-
-                </v-app>
         </div>
+        <p class="text-center white--text position-relative">Copyright © 2023 DSS | All Rights
+            Reserved</p>
+
+    </v-container>
+</div>
 </template>
 
 <script>
 import {
-        getFingerprint
+    getFingerprint
 } from "../../plugins/fingerprint.js";
 import {
-        mapGetters
+    mapGetters
 } from 'vuex'
-import { mapState } from "vuex";
+import {
+    mapState
+} from "vuex";
+import {
+    extend,
+    ValidationProvider,
+    ValidationObserver
+} from "vee-validate";
+import {
+    required
+} from "vee-validate/dist/rules";
+extend("required", required);
 export default {
-        name: "Login",
-        title: "CTM - Login",
-        data() {
-                return {
-                        remainingTime: 60,
-                        intervalId: null,
+    name: "Login",
+    title: "CTM - Login",
+    components: {
+        ValidationProvider,
+        ValidationObserver,
+    },
+    data() {
+        return {
+            remainingTime: 60,
+            intervalId: null,
+            errors: [],
+            form: {
+                device_token: null,
+                username: "ctm-01",
+                password: "@N159983a",
+                otp: "",
+            },
 
-                        form: {
-                                device_token: null,
-                                username: null,
-                                password: null,
-                                otp: "",
-                        },
+            loading: false,
+            otpDialog: false
 
-                        loading: false,
-                        otpDialog: false
+        };
+    },
+    computed: {
 
+        ...mapState({
+            message: (state) => state.success_message,
 
+        }),
+        ...mapGetters(["getLoginresponse", "getOtpresponse"]),
+    },
 
-                };
+    async created() {
+        const fingerprint = await getFingerprint();
+        this.form.device_token = fingerprint;
+    },
+
+    methods: {
+
+        startCountdown() {
+            this.intervalId = setInterval(() => {
+                if (this.remainingTime > 0) {
+                    this.remainingTime--;
+                } else {
+                    clearInterval(this.intervalId);
+                    this.otpDialog = false;
+                    this.remainingTime = 60;
+                }
+            }, 1000); // Update every second (1000 milliseconds)
         },
-        computed: {
 
-                ...mapState({
-                        message: (state) => state.success_message,
-                        errors: (state) => state.errors,
-                        success_status: (state) => state.success_status,
-                        error_message: (state) => state.error_message,
+        onFinish() {
+            this.loading = true;
+            this.$axios
+                .post("admin/login", this.form, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+                .then((result) => {
+                    this.loading = false;
+                    console.log(result, 'result')
+                    if (result.data.success == true) {
+                        this.$toast.success(result.data.message);
+                        let data = {
+                            permissions: result
+                                .data
+                                .permissions,
+                            token: result
+                                .data.token,
+                            user: result
+                                .data.data,
+                        };
+                        this.$store.dispatch("login", data);
+                        this.$router.push({
+                            path: "/",
+                        });
+                        // this.otpDialog = true;
+                        //                 this.startCountdown();
 
+                    } else {
+                        this.$refs.form.setErrors(result.data.errors);
 
-                }),
-                ...mapGetters(["getLoginresponse", "getOtpresponse"]),
-        },
+                    }
 
-        async created() {
-                const fingerprint = await getFingerprint();
-                this.form.device_token = fingerprint;
-        },
-
-        methods: {
-                // async submitData() {
-                //         this.loading = true;
-                //         axios
-                //                 .post("/admin/login/otp", this.form)
-                //                 .then((response) => {
-                //                         this.loading = false;
-                //                         if (response.data.success) {
-                //                                 this.otpDialog = true;
-                //                                 this.startCountdown();
-                //                         }
-                //                 })
-                //                 .catch((err) => {
-                //                         this.loading = false;
-                //                         // console.log(err.response.data)
-                //                         this.errors = err.response.data.errors;
-                //                         this.message = err.response.data.message;
-                //                 });
-                // },
-                startCountdown() {
-                        this.intervalId = setInterval(() => {
-                                if (this.remainingTime > 0) {
-                                        this.remainingTime--;
-                                } else {
-                                        clearInterval(this.intervalId);
-                                        this.otpDialog = false;
-                                        this.remainingTime = 60;
+                })
+                .catch((err) => {
+                    this.loading = false;
+                    if (err.response) {
+                        if (err.response.data.success == false) {
+                            console.log(err.response.data, 'und');
+                            console.log(err.response.data.error_code, 'und');
+                            if (err.response.data.error_code == "verify_failed") {
+                                let errs = {
+                                    "otp": [err.response.data.message]
                                 }
-                        }, 1000); // Update every second (1000 milliseconds)
-                },
-                // onFinish() {
-                //         this.loading = true;
-                //         axios
-                //                 .post("/admin/login", this.form)
-                //                 .then((response) => {
-                //                         this.loading = false;
-                //                         console.log(response, "final");
-                //                         // console.log(response.data.permissions)
+                                this.$refs.form.setErrors(errs);
+                                this.$toast.error(err.response.data.message);
 
-                //                         let data = {
-                //                                 permissions: response.data.permissions,
-                //                                 token: response.data.token,
-                //                                 user: response.data.data,
-                //                         };
-                //                         this.$store.dispatch("login", data);
-                //                         this.$router.push({
-                //                                 path: "/",
-                //                         });
-                //                 })
-                //                 .catch((err) => {
-                //                         this.loading = false;
-                //                         console.log(err.response.data);
-                //                         this.errors = err.response.data.errors;
-                //                         // this.validation_message = err.response.data.message;
-                //                 });
-                // },
-                onFinish: async function () {
-                        try {
-                                this.loading = true;
-                                await this.$store
-                                        .dispatch("sendOtp", this.form)
-                                        .then(() => {
-
-                                                if (this.getLoginresponse.data.token) {
-                                                        let data = {
-
-                                                                permissions: this.getLoginresponse.data.permissions,
-                                                                token: this.getLoginresponse.data.token,
-                                                                user: this.getLoginresponse.data.data,
-                                                        };
-                                                        this.$store.dispatch("login", data);
-                                                        this.$router.push({
-                                                                path: "/",
-                                                        });
-
-                                                }
-                                                // let data = {
-                                                //   // permissions: response.data.permissions,
-                                                //   // token: response.data.token,
-                                                //   // user: response.data.data,
-                                                //         permissions:  this.Getotp.data.permissions,
-                                                //         token: this.Getotp.data.token,
-                                                //         user: this.Getotp.data.data,
-                                                // };
-                                                // this.$store.dispatch("login", data);
-                                                // this.$router.push({
-                                                //         path: "/",
-                                                // });
-
-                                        });
-                        } catch (err) {
-                                console.log(err);
+                            }
+                            if (err.response.data.error_code == "device_not_found") {
+                                 
+                                 this.$toast.error(err.response.data.message);
+ 
+                             }
+                        } else if (err.response) {
+                            this.$refs.form.setErrors(err.response.data.errors);
                         }
-                },
-                submitLogin: async function () {
+                    }
 
-                        this.loading = true;
-                        await this.$store
-                                .dispatch("LoginSubmit", this.form).then((res) => {
-                                        if (!this.errors.email) {
-                                                this.otpDialog = true;
-                                                this.startCountdown();
-                                                console.log(this.errors)
-                                        }
-
-                                        this.loading = false;
-
-
-
-
-                                });
-
-
-
-
-                },
+                });
         },
+        submitLogin: async function () {
+            this.loading = true;
+            this.$axios
+                .post("admin/login/otp", this.form, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+                .then((result) => {
+                    this.loading = false;
+                    console.log(result, 'result')
+                    if (result.data.success == true) {
+                        this.$toast.success(result.data.message);
+
+                        this.otpDialog = true;
+                        this.startCountdown();
+
+                    } else {
+                        this.$refs.form.setErrors(result.data.errors);
+                    }
+
+                })
+                .catch((err) => {
+                    this.loading = false;
+                    if (err.response) {
+                        if (err.response.data.success == false) {
+                            console.log(err.response.data, 'und');
+                            console.log(err.response.data.error_code, 'und');
+                            if (err.response.data.error_code == "wrong_email_or_password") {
+                                let errs = {
+                                    "password": [err.response.data.message]
+                                }
+                                this.$refs.form.setErrors(errs);
+                            }
+                            if (err.response.data.error_code == "device_not_found") {
+                                 
+                                 this.$toast.error(err.response.data.message);
+ 
+                             }
+                        } else if (err.response) {
+                            this.$refs.form.setErrors(err.response.data.errors);
+                        }
+                    }
+
+                });
+
+        },
+    },
 };
 </script>
 
 <style>
 html.my-app,
 body.my-app {
-        overflow: hidden !important;
+    overflow: hidden !important;
+}
+
+.h-100vh {
+    height: 100vh;
+}
+
+.loginLeft {
+    background: linear-gradient(180deg, rgba(43, 48, 75, 1) 54%, rgba(63, 43, 150, 1) 134%);
+}
+
+.loginBox {
+    height: 100%;
+}
+
+.loginAppShadow {
+    border-width: 0px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100% !important;
+    height: 100% !important;
+    background-color: rgba(43, 43, 43, 0.6823529411764706);
+    border: none;
+    border-radius: 0px;
+}
+
+.position-relative {
+    position: relative;
+}
+
+.w-100 {
+    width: 100%;
 }
 </style>

@@ -84,7 +84,7 @@ const actions = {
       .get("/admin/division/get")
       .then((result) => {
         console.log(result.data);
-        commit("GET_DIVISION", result.data);
+        commit("GET_DIVISION", result.data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -169,9 +169,10 @@ const actions = {
       .get(`/admin/division/destroy/${id}`)
       .then((result) => {
         console.log(result);
+        return result
       })
       .catch((err) => {
-        console.log(err);
+        return err
       });
   },
   /*end delete division*/

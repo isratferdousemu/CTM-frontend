@@ -132,9 +132,11 @@ const actions = {
             .then((result) => {
                 console.log(result);
                 commit("DELETE_UNION", { id: id, data: result.data });
+                return result
             })
             .catch((err) => {
                 console.log(err);
+                return err
             });
     },
     

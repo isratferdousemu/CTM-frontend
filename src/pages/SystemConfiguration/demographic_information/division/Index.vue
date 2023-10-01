@@ -198,7 +198,7 @@
                     color="primary"
                     :disabled="invalid"
                     :loading="loading"
-                    class="custom-btn-width black white--text py-2"
+                    class="custom-btn-width warning white--text py-2"
                   >
                     Submit
                   </v-btn>
@@ -280,7 +280,7 @@
                     color="primary"
                     :disabled="invalid"
                     :loading="loading"
-                    class="custom-btn-width black white--text py-2"
+                    class="custom-btn-width warning white--text py-2"
                   >
                     Submit
                   </v-btn>
@@ -320,7 +320,7 @@
                 @click="deleteDivision()"
                 color="white"
                 :loading="delete_loading"
-                class="custom-btn-width black white--text py-2"
+                class="custom-btn-width warning white--text py-2"
               >
                 Delete
               </v-btn>
@@ -363,7 +363,7 @@ export default {
       pagination: {
         current: 1,
         total: 0,
-        perPage: 5,
+        perPage: 10,
       },
       items: [5, 10, 15, 20, 40, 50, 100],
     };
@@ -493,11 +493,18 @@ export default {
       try {
         await this.$store
           .dispatch("Division/DestroyDivision", this.delete_id)
-          .then(() => {
-            console.log("success");
-            this.$toast.error("Deleted Successfully");
+          .then((res) => {
+            // check if the request was successful
+            if (res?.data?.success) {
+            this.$toast.success(res.data.message);
+            } else {
+              this.$toast.error(res.response.data.message);
+            }
             this.deleteDialog = false;
             this.GetDivision();
+          })
+          .catch((error) => {
+            console.log(error,'error');
           });
       } catch (e) {
         console.log(e);
