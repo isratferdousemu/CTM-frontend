@@ -538,7 +538,8 @@ export default {
                     text: "Actions",
                     value: "actions",
                     align: "center",
-                    sortable: false
+                    sortable: false,
+                    width:'14%',
                 },
             ];
         },
@@ -845,7 +846,7 @@ if (item?.parent?.parent?.type=='district') {
     },
 
     mounted() {
-        this.$store.commit("setHeaderTitle", "Division List");
+        this.$store.commit("setHeaderTitle", "Ward List");
         this.GetAllDivisions();
         this.GetWard();
 
