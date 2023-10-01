@@ -654,7 +654,13 @@ export default {
       // alert(JSON.stringify(this.data));
       // return;
       try {
-        this.$store.dispatch("Thana/StoreUpazila", this.data).then((data) => {
+        let fd = new FormData();
+                for (const [key, value] of Object.entries(this.data)) {
+                    if (value !== null) {
+                        fd.append(key, value);
+                    }
+                }
+        this.$store.dispatch("Thana/StoreUpazila", fd).then((data) => {
           console.log(data, "submit");
           if (data == null) {
             this.$toast.success("Data Inserted Successfully");
