@@ -576,6 +576,7 @@ import { mapState, mapActions } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 
+
 extend("required", required);
 export default {
   name: "Index",
@@ -631,18 +632,20 @@ export default {
         { text: "Location Type", value: "locationType" },
         { text: "Thana/Upazila  (EN)", value: "name_en" },
         { text: "Thana/Upazila  (BN)", value: "name_bn" },
-        { text: "Actions", value: "actions", align: "center", sortable: false, width: '13%' },
+        {
+          text: "Actions",
+          value: "actions",
+          align: "center",
+          sortable: false,
+          width: "13%",
+        },
       ];
     },
 
     ...mapState({
       divisions: (state) => state.Division.divisions,
-      // error_status: (state) => state.Thana.error_status,
-      // thana_errors: (state) => state.Thana.thana_errors,
-      // message: (state) => state.SystemConfiguration.success_message,
     }),
     filteredOptions() {
-      // Apply your filter logic here, e.g., filtering out options with 'Option 2' label
       return this.locationType.filter(
         (option) => option.value_en !== "District Pouroshava"
       );
@@ -651,10 +654,15 @@ export default {
 
   methods: {
     async submitUpazila() {
-      // alert(JSON.stringify(this.data));
-      // return;
+      let fd = new FormData();
+      for (const [key, value] of Object.entries(this.data)) {
+        if (value !== null) {
+          fd.append(key, value);
+        }
+      }
+
       try {
-        this.$store.dispatch("Thana/StoreUpazila", this.data).then((data) => {
+        this.$store.dispatch("Thana/StoreUpazila", fd).then((data) => {
           console.log(data, "submit");
           if (data == null) {
             this.$toast.success("Data Inserted Successfully");
@@ -664,12 +672,6 @@ export default {
           } else {
             this.errors = data.errors;
           }
-          // if (this.error_status == "") {
-          //   this.$toast.success("Data Inserted Successfully");
-          //   this.dialogAdd = false;
-          //   this.resetData();
-          //   this.GetUpazila();
-          // }
         });
       } catch (e) {
         console.log(e);
@@ -687,13 +689,6 @@ export default {
           } else {
             this.errors = data.errors;
           }
-
-          // if (this.error_status == "") {
-          //   this.$toast.success("Data Updated Successfully");
-          //   this.dialogEdit = false;
-          //   this.resetData();
-          //   this.GetUpazila();
-          // }
         });
       } catch (e) {
         console.log(e);
@@ -729,17 +724,6 @@ export default {
       }
     },
     async onChangeLocationType(event) {
-      console.log(event)
-      // alert("onChangeLocationType"+event);
-      if (this.data.division_id == null) {
-        alert("Select Division First");
-        return;
-      }
-      if (this.data.district_id == null) {
-        alert("Select District First");
-        return;
-      }
-
       if (event == 3) {
         this.isCityCorporationHidden = false;
 
@@ -750,11 +734,11 @@ export default {
         console.log(JSON.stringify(queryParams));
         // return;
         await this.$axios
-          .get(`/admin/city/get/`+this.data.district_id+'/'+event, {
+          .get(`/admin/city/get/` + this.data.district_id + "/" + event, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
-            }
+            },
           })
           .then((result) => {
             this.city = result.data.data;
@@ -804,10 +788,10 @@ export default {
         await this.$store
           .dispatch("Thana/DestroyUpazila", this.delete_id)
           .then((res) => {
-              // check if the request was successful
-              console.log(res,'result in vue')
-              if (res?.data?.success) {
-            this.$toast.success(res.data.message);
+            // check if the request was successful
+            console.log(res, "result in vue");
+            if (res?.data?.success) {
+              this.$toast.success(res.data.message);
             } else {
               this.$toast.error(res.response.data.message);
             }
