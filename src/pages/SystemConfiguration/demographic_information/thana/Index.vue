@@ -197,13 +197,13 @@
                       <div v-if="thana_errors && thana_errors.code" v-html="thana_errors.code[0]" class="red--text" />
                     </ValidationProvider> -->
                     <ValidationProvider
-                      v-if="isCityCorporationHidden"
+                      v-if="!isCityCorporationHidden"
                       name="City Corporation"
                       vid="city corporation"
                       rules="required"
                     >
                       <v-autocomplete
-                        v-model="data.cityCorporation"
+                        v-model="data.city_corporation_id"
                         outlined
                         label="City Corporation"
                         :items="city"
@@ -575,7 +575,6 @@
 import { mapState, mapActions } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
-import axios from "axios";
 
 extend("required", required);
 export default {
@@ -591,7 +590,7 @@ export default {
         division_id: null,
         district_id: null,
         location_type: null,
-        cityCorporation: null,
+        city_corporation_id: null,
       },
       isDistrictHidden: true,
       isLocationTypeHidden: true,
@@ -612,7 +611,7 @@ export default {
       pagination: {
         current: 1,
         total: 0,
-        perPage: 5,
+        perPage: 15,
       },
       items: [5, 10, 15, 20, 40, 50, 100],
     };
@@ -632,7 +631,7 @@ export default {
         { text: "Location Type", value: "locationType" },
         { text: "Thana/Upazila  (EN)", value: "name_en" },
         { text: "Thana/Upazila  (BN)", value: "name_bn" },
-        { text: "Actions", value: "actions", align: "center", sortable: false },
+        { text: "Actions", value: "actions", align: "center", sortable: false, width: '13%' },
       ];
     },
 
@@ -645,7 +644,7 @@ export default {
     filteredOptions() {
       // Apply your filter logic here, e.g., filtering out options with 'Option 2' label
       return this.locationType.filter(
-        (option) => option.keyword !== "District Pouroshava"
+        (option) => option.value_en !== "District Pouroshava"
       );
     },
   },
@@ -711,7 +710,7 @@ export default {
       this.dialogAdd = true;
     },
     async onChangeDivision(event) {
-      await axios
+      await this.$axios
         .get(`/admin/district/get/${event}`, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
@@ -725,11 +724,12 @@ export default {
     },
     onChangeDistrict() {
       this.isLocationTypeHidden = true;
-      if (this.data.location_type != null && this.data.location_type == 2) {
+      if (this.data.location_type != null && this.data.district_id != null) {
         this.onChangeLocationType(this.data.location_type);
       }
     },
     async onChangeLocationType(event) {
+      console.log(event)
       // alert("onChangeLocationType"+event);
       if (this.data.division_id == null) {
         alert("Select Division First");
@@ -740,8 +740,8 @@ export default {
         return;
       }
 
-      if (event == "2") {
-        this.isCityCorporationHidden = true;
+      if (event == 3) {
+        this.isCityCorporationHidden = false;
 
         const queryParams = {
           district_id: this.data.district_id,
@@ -749,20 +749,19 @@ export default {
         };
         console.log(JSON.stringify(queryParams));
         // return;
-        await axios
-          .get(`/admin/city/get/`, {
+        await this.$axios
+          .get(`/admin/city/get/`+this.data.district_id+'/'+event, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
-            },
-            params: queryParams,
+            }
           })
           .then((result) => {
             this.city = result.data.data;
             console.log(this.city);
           });
       } else {
-        this.isCityCorporationHidden = false;
+        this.isCityCorporationHidden = true;
       }
     },
     ...mapActions({
@@ -806,7 +805,7 @@ export default {
           .dispatch("Thana/DestroyUpazila", this.delete_id)
           .then((res) => {
               // check if the request was successful
-              console.log(res.data)
+              console.log(res,'result in vue')
               if (res?.data?.success) {
             this.$toast.success(res.data.message);
             } else {

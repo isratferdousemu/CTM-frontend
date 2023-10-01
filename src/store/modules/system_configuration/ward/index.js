@@ -77,6 +77,7 @@ const actions = {
                 //   path: "/system-configuration/division",
                 // });
                 commit("STORE_WARD", result);
+                return result
             })
             .catch((err) => {
                 if (err.response && err.response.data && err.response.data.errors) {
@@ -100,6 +101,7 @@ const actions = {
                 //   path: "/system-configuration/division",
                 // });
                 commit("STORE_WARD", result);
+                return result;
             })
             .catch((err) => {
                 if (err.response && err.response.data && err.response.data.errors) {

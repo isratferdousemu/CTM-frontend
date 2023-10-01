@@ -404,7 +404,7 @@ export default {
       pagination: {
         current: 1,
         total: 0,
-        perPage: 5,
+        perPage: 15,
       },
       // errors: "",
       items: [5, 10, 15, 20, 40, 50, 100],

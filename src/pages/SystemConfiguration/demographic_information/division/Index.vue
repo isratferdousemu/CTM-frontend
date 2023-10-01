@@ -363,7 +363,7 @@ export default {
       pagination: {
         current: 1,
         total: 0,
-        perPage: 5,
+        perPage: 10,
       },
       items: [5, 10, 15, 20, 40, 50, 100],
     };
@@ -495,7 +495,7 @@ export default {
           .dispatch("Division/DestroyDivision", this.delete_id)
           .then((res) => {
             // check if the request was successful
-            if (res.data.success) {
+            if (res?.data?.success) {
             this.$toast.success(res.data.message);
             } else {
               this.$toast.error(res.response.data.message);

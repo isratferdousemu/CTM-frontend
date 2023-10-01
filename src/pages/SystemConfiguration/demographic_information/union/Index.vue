@@ -269,9 +269,9 @@ export default {
             pagination: {
                 current: 1,
                 total: 0,
-                perPage: 5,
+                perPage: 20,
             },
-            items: [5, 10, 15, 20, 40, 50, 100],
+            items: [10, 15, 20, 40, 50, 100],
         };
     },
     components: {
@@ -321,7 +321,7 @@ export default {
         },
 
         ...mapState({
-            divisions: (state) => state.Division.divisions.data,
+            divisions: (state) => state.Division.divisions,
             error_status: (state) => state.Union.error_status,
             union_errors: (state) => state.Union.union_errors,
             // message: (state) => state.SystemConfiguration.success_message,
@@ -373,7 +373,7 @@ export default {
         },
         async onChangeDivision(event) {
 
-            await axios.get(`/admin/district/get/${event}`, {
+            await this.$axios.get(`/admin/district/get/${event}`, {
                 headers: {
                     Authorization: "Bearer " + this.$store.state.token,
                     "Content-Type": "multipart/form-data",
@@ -389,7 +389,7 @@ export default {
 
             console.log(this.thanas)
 
-            await axios.get(`/admin/thana/get/${event}`, {
+            await this.$axios.get(`/admin/thana/get/${event}`, {
                 headers: {
                     Authorization: "Bearer " + this.$store.state.token,
                     "Content-Type": "multipart/form-data",

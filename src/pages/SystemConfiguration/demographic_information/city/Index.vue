@@ -83,10 +83,10 @@
                                 <v-autocomplete @input="onChangeDivision($event)" v-model="data.division_id" outlined label="Division" :items="divisions" item-text="name_en" item-value="id" required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                             </ValidationProvider>
                             <ValidationProvider name="District" vid="district" rules="required">
-                                <v-autocomplete v-model="data.district_id" :disabled="isDisabled" outlined label="District" :items="districts" item-text="name_en" item-value="id" required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                                <v-autocomplete v-model="data.district_id" outlined label="District" :items="districts" item-text="name_en" item-value="id" required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                             </ValidationProvider>
                             <ValidationProvider name="LocationType" vid="locationType" rules="required">
-                                <v-autocomplete @input="onChangeLocationType($event)" v-model="data.location_type" outlined label="LocationType" :items="filteredOptions" item-text="value_en" item-value="id" required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                                <v-autocomplete  v-model="data.location_type" outlined label="LocationType" :items="filteredOptions" item-text="value_en" item-value="id" required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                             </ValidationProvider>
                             <ValidationProvider name="Name English" vid="name_en" rules="required">
                                 <v-text-field outlined type="text" v-model="data.name_en" label="Name English" required :error="errors.name_en ? true : false" :error-messages="errors.name_en"></v-text-field>
@@ -99,7 +99,7 @@
                                 <v-btn flat @click="dialogAdd = false" outlined class="custom-btn-width py-2 mr-10">
                                     Cancel
                                 </v-btn>
-                                <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading" class="custom-btn-width warning white--text py-2">
+                                <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading" class="custom-btn-width primary white--text py-2">
                                     Submit
                                 </v-btn>
                             </v-row>
@@ -146,7 +146,7 @@
                                 <v-btn flat @click="dialogEdit = false" outlined class="custom-btn-width py-2 mr-10">
                                     Cancel
                                 </v-btn>
-                                <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading" class="custom-btn-width warning white--text py-2">
+                                <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading" class="custom-btn-width primary white--text py-2">
                                     Submit
                                 </v-btn>
                             </v-row>
@@ -234,7 +234,7 @@ export default {
             pagination: {
                 current: 1,
                 total: 0,
-                perPage: 5,
+                perPage: 15,
             },
             items: [5, 10, 15, 20, 40, 50, 100],
         };
@@ -249,37 +249,43 @@ export default {
                     text: "#Sl",
                     value: "id",
                     align: "start",
-                    sortable: false
+              sortable: true,
+                    width: "5%"
                 },
                 {
                     text: "Code",
-                    value: "code"
+                  value: "code",
+                    width: "5%"
+                    
                 },
                 {
-                    text: "Division Name English",
+                    text: "Division",
                     value: "district.division.name_en"
                 },
                 {
-                    text: "District Name English",
+                    text: "District",
                     value: "district.name_en"
                 },
                 {
                     text: "Location Type",
-                    value: "locationType"
+                  value: "locationType",
+                  sortable: true,
+                    
                 },
                 {
-                    text: "City Name English",
+                    text: "City Name En",
                     value: "name_en"
                 },
                 {
-                    text: "City Name Bangla",
+                    text: "City Name Bn",
                     value: "name_bn"
                 },
                 {
                     text: "Actions",
                     value: "actions",
                     align: "center",
-                    sortable: false
+                  sortable: false,
+                    width: "15%"
                 },
             ];
         },
@@ -293,8 +299,9 @@ export default {
             error_status: (state) => state.City.error_status,
         }),
         filteredOptions() {
-            // Apply your filter logic here, e.g., filtering out options with 'Option 2' label
-            return this.locationType.filter((option) => option.keyword !== "Upazila");
+          // Apply your filter logic here, e.g., filtering out options with 'Option 2' label
+          return this.locationType.filter((option) => option.value_en !== "Upazila");
+            
         },
     },
 
@@ -450,7 +457,7 @@ export default {
         },
         async onChangeDivision(event) {
             console.log(event);
-            await axios
+            await this.$axios
                 .get(`/admin/district/get/${event}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
@@ -471,10 +478,7 @@ export default {
 
                     this.isDisabled = false;
                 });
-            return;
-
-            this.getAllDistrict();
-
+         
             console.log(event);
             const targetValue = event;
             const array = this.$store.state.District.districts.data;
