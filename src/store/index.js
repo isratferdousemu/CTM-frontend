@@ -23,6 +23,7 @@ import Ward from "@/store/modules/system_configuration/ward";
 import Thana from "@/store/modules/system_configuration/thana";
 import Menu from "@/store/modules/system_configuration/menu";
 import Device_registration from "@/store/modules/system_configuration/device_registration";
+import Office from "@/store/modules/system_configuration/office";
 // Import other modules as needed
 
 Vue.use(Vuex);
@@ -56,27 +57,27 @@ export default new Vuex.Store({
     error_status_login: "",
     error_code_login: "",
     success_status: "",
-    login_message:"",
-    loginData:[],
-    otpData:[],
+    login_message: "",
+    loginData: [],
+    otpData: [],
     lookupTypes: [
-      {id: 1, name: 'Location Type'},
-      {id: 2, name: 'Allowance Service'},
-      {id: 3, name: 'Office category'},
-      {id: 4, name: 'Health Status'},
-      {id: 5, name: 'Financial Status'},
-      {id: 6, name: 'Social Status'},
-      {id: 7, name: 'PMT Scoring'},
-      {id: 8, name: 'Education Status'},
-      {id: 9, name: 'Religion'},
-      {id:10, name: 'Household Asset Own'},
-      {id:11, name: 'Disability Type'},
-      {id:12, name: 'Disability Level'},
-      {id:13, name: 'Bank Name'},
-      {id:14, name: 'Branch Name'},
-      {id:15, name: 'Complaint Category'},
-      {id:16, name: 'Module Name'},
-      {id:17, name: 'Organization'},
+      { id: 1, name: 'Location Type' },
+      { id: 2, name: 'Allowance Service' },
+      { id: 3, name: 'Office category' },
+      { id: 4, name: 'Health Status' },
+      { id: 5, name: 'Financial Status' },
+      { id: 6, name: 'Social Status' },
+      { id: 7, name: 'PMT Scoring' },
+      { id: 8, name: 'Education Status' },
+      { id: 9, name: 'Religion' },
+      { id: 10, name: 'Household Asset Own' },
+      { id: 11, name: 'Disability Type' },
+      { id: 12, name: 'Disability Level' },
+      { id: 13, name: 'Bank Name' },
+      { id: 14, name: 'Branch Name' },
+      { id: 15, name: 'Complaint Category' },
+      { id: 16, name: 'Module Name' },
+      { id: 17, name: 'Organization' },
     ],
     appLanguage: "bn", 
 
@@ -88,7 +89,7 @@ export default new Vuex.Store({
     getOtpresponse(state) {
       return state.otpData
     },
-    getLoginresponse(state)  {
+    getLoginresponse(state) {
       return state.loginData
     },
     GetToken: function (state) {
@@ -109,7 +110,8 @@ export default new Vuex.Store({
       return http()
         .post("admin/forgot-password", data)
         .then((result) => {
-          commit("setStep", 2);
+          // commit("setStep", 2);
+          return result.data;
           // console.log(state.step);
           // console.log(result);
         })
@@ -199,10 +201,39 @@ export default new Vuex.Store({
         return result.data.data
       });
     },
+    /*start get all Upazila*/
+    GetAllUpazilaByDistrict: ({ commit }, data) => {
+      return http()
+        .get(`/admin/thana/get/${data}`)
+        .then((result) => {
+          console.log(result.data);
+          return result.data.data;
+          // commit("GET_OFFICE", result.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
+    /*end get all Upazila*/
+
+    /*start get all City*/
+    GetAllCityByDistrict: ({ commit }, data) => {
+      return http()
+        .get(`/admin/thana/get/${data}`)
+        .then((result) => {
+          console.log(result.data);
+          return result.data.data;
+          // commit("GET_OFFICE", result.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    /*end get all City*/
+  },
 
 
- mutations: {
+  mutations: {
     setDrawer(state, payload) {
       state.Drawer = payload;
     },
@@ -289,6 +320,7 @@ export default new Vuex.Store({
     Ward,
     Menu,
     Device_registration,
+    Office,
   },
   plugins: [
     createPersistedState({

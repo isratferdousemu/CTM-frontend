@@ -42,7 +42,7 @@
                         </div>
                         <p class=" orange--text mx-6" style="font-size: 14px;">
                             No One's ID and password is asked from the MIS admin of the
-                            Department Social Services without solving your problem.Beware
+                            Department of Social Services (DSS) without solving your problem. Beware
                             of
                             cheaters. Please do not share your password with anyone and do
                             not

@@ -637,12 +637,8 @@ export default {
 
     ...mapState({
       divisions: (state) => state.Division.divisions,
-      // error_status: (state) => state.Thana.error_status,
-      // thana_errors: (state) => state.Thana.thana_errors,
-      // message: (state) => state.SystemConfiguration.success_message,
     }),
     filteredOptions() {
-      // Apply your filter logic here, e.g., filtering out options with 'Option 2' label
       return this.locationType.filter(
         (option) => option.value_en !== "District Pouroshava"
       );
@@ -669,7 +665,7 @@ export default {
             this.GetUpazila();
           } else {
             this.errors = data.errors;
-          } 
+          }
         });
       } catch (e) {
         console.log(e);
@@ -687,7 +683,7 @@ export default {
           } else {
             this.errors = data.errors;
           }
- 
+
         });
       } catch (e) {
         console.log(e);
