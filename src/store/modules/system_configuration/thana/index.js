@@ -54,6 +54,20 @@ const mutations = {
 /*                               Actions Define                               */
 /* -------------------------------------------------------------------------- */
 const actions = {
+  /*start get all Upazila*/
+  GetAllUpazilaByDistrict: ({ commit }, data) => {
+    return http()
+      .get(`/admin/thana/get/${data}`)
+      .then((result) => {
+        console.log(result.data);
+        return result.data.data;
+        // commit("GET_OFFICE", result.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  /*end get all Upazila*/
 
   StoreUpazila: ({ commit }, data) => {
     // alert('StoreDivision'+ data);
@@ -129,7 +143,7 @@ const actions = {
     return http()
       .get(`/admin/thana/destroy/${id}`)
       .then((result) => {
-        console.log(result,'result in store');
+        console.log(result, 'result in store');
         return result
       })
       .catch((err) => {
