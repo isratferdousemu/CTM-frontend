@@ -1366,7 +1366,7 @@ export default {
       this.data.name_bn = item.name_bn;
       this.data.office_address = item.office_address;
       this.data.comment = item.comment;
-      this.data.status = item.status;
+
       // console.log(item?.assignLocation?.type, 'division 1');
       if (item?.assignLocation?.type == "division") {
         console.log("division here");
