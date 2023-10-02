@@ -396,7 +396,6 @@
                     <ValidationProvider
                       name="Status"
                       vid="status"
-                      rules="required"
                       v-slot="{ errors }"
                     >
                       <v-checkbox
@@ -674,13 +673,13 @@
                     <ValidationProvider
                       name="Status"
                       vid="status"
-                      rules="required"
                       v-slot="{ errors }"
                     >
                       <v-checkbox
                         v-model="data.status"
                         label="Active"
                         color="green"
+                        value="1"
                         :hide-details="errors[0] ? false : true"
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
@@ -964,7 +963,7 @@
                 <v-row class="mx-0 my-0 py-2" justify="center">
                   <v-btn
                     flat
-                    @click="dialogAdd = false"
+                    @click="dialogEdit = false"
                     outlined
                     class="custom-btn-width py-2 mr-10"
                   >
@@ -997,8 +996,7 @@
           <v-divider></v-divider>
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
-              Are you sure to delete this Office? All information under this
-              Office will be deleted.
+              Are you sure to delete this Office?
             </div>
           </v-card-text>
           <v-card-actions style="display: block">
@@ -1109,9 +1107,6 @@ export default {
 
     ...mapState({
       divisions: (state) => state.Division.divisions,
-      // error_status: (state) => state.Office.error_status,
-      // thana_errors: (state) => state.Office.thana_errors,
-      // message: (state) => state.SystemConfiguration.success_message,
     }),
     filteredOptions() {
       // Apply your filter logic here, e.g., filtering out options with 'Option 2' label
@@ -1122,12 +1117,17 @@ export default {
   },
   methods: {
     submitOffice() {
+      if (this.data.status == null) {
+        this.data.status ="0"
+      }
+      
       let fd = new FormData();
       for (const [key, value] of Object.entries(this.data)) {
         if (value !== null) {
           fd.append(key, value);
         }
       }
+
       // for (const [key, value] of fd.entries()) {
       //   console.log(`${key}: ${value}`);
       // }
@@ -1149,12 +1149,17 @@ export default {
       }
     },
     async updateOffice() {
+      if (this.data.status == null) {
+        this.data.status ="0"
+      }
+
       let fd = new FormData();
       for (const [key, value] of Object.entries(this.data)) {
         if (value !== null) {
           fd.append(key, value);
         }
       }
+
       try {
         this.$store.dispatch("Office/UpdateOffice", fd).then((data) => {
           console.log(data, "update");
@@ -1170,6 +1175,49 @@ export default {
       } catch (e) {
         console.log(e);
       }
+    },
+    editOffice(item) {
+      console.log(item, "editOffice");
+      console.log(item?.assignLocation?.parent?.parent?.type, "editDivision");
+
+      this.resetData();
+
+      this.dialogEdit = true;
+      this.data.id = item.id;
+      this.data.office_type = item.officeType.id;
+      this.office_type_id = item.officeType.id;
+      this.data.name_en = item.name_en;
+      this.data.name_bn = item.name_bn;
+      this.data.office_address = item.office_address;
+      this.data.comment = item.comment;
+      this.data.status = String(item.status);
+      // console.log(this.data.status);
+      
+      if (item?.assignLocation?.type == "division") {
+        console.log("division here");
+        this.data.division_id = item?.assignLocation?.id;
+      }
+      if (item?.assignLocation?.type == "district") {
+        console.log("district here");
+        this.data.division_id = item?.assignLocation?.parent?.id;
+        this.onChangeDivision(this.data.division_id);
+        this.data.district_id = item?.assignLocation?.id;
+      }
+      if (item?.assignLocation?.parent?.parent?.type == "division") {
+        this.data.division_id = item?.assignLocation?.parent?.parent?.id;
+        this.onChangeDivision(this.data.division_id);
+      }
+      if (item?.assignLocation?.parent?.type == "district") {
+        this.data.district_id = item?.assignLocation?.parent?.id;
+        this.onChangeDistrict(this.data.district_id);
+      }
+      if (item?.assignLocation?.location_type?.value_en == "City Corporation") {
+        this.data.city_corpo_id = item?.assignLocation?.id;
+      }
+      if (item?.assignLocation?.location_type?.value_en == "Upazila") {
+        this.data.thana_id = item?.assignLocation?.id;
+      }
+      console.log(this.data, "editOffice End");
     },
     dialogOpen() {
       if (this.$refs.form) {
@@ -1295,26 +1343,6 @@ export default {
           this.pagination.grand_total = result.data.meta.total;
         });
     },
-    // deleteOffice: async function (id) {
-    //   alert
-    //   try {
-    //     await this.$store
-    //       .dispatch("Office/DestroyOffice", this.delete_id)
-    //       .then((res) => {
-    //         // check if the request was successful
-    //         console.log(res, "result in vue");
-    //         if (res?.data?.success) {
-    //           this.$toast.success(res.data.message);
-    //         } else {
-    //           this.$toast.error(res.response.data.message);
-    //         }
-    //         this.deleteDialog = false;
-    //         this.GetOffices();
-    //       });
-    //   } catch (e) {
-    //     console.log(e);
-    //   }
-    // },
     deleteOffice: async function () {
       try {
         await this.$store
@@ -1351,51 +1379,6 @@ export default {
       this.data.district_id = null;
       this.data.city_corpo_id = null;
       this.data.thana_id = null;
-    },
-    editOffice(item) {
-      console.log(item, "editOffice");
-      console.log(item?.assignLocation?.parent?.parent?.type, "editDivision");
-
-      this.resetData();
-
-      this.dialogEdit = true;
-      this.data.id = item.id;
-      this.data.office_type = item.officeType.id;
-      this.office_type_id = item.officeType.id;
-      this.data.name_en = item.name_en;
-      this.data.name_bn = item.name_bn;
-      this.data.office_address = item.office_address;
-      this.data.comment = item.comment;
-
-      // console.log(item?.assignLocation?.type, 'division 1');
-      if (item?.assignLocation?.type == "division") {
-        console.log("division here");
-        this.data.division_id = item?.assignLocation?.id;
-        // console.log(this.data.division_id);
-        // this.onChangeDivision(this.data.division_id);
-        // this.data.district_id = item?.assignLocation?.id;
-      }
-      if (item?.assignLocation?.type == "district") {
-        console.log("district here");
-        this.data.division_id = item?.assignLocation?.parent?.id;
-        this.onChangeDivision(this.data.division_id);
-        this.data.district_id = item?.assignLocation?.id;
-      }
-      if (item?.assignLocation?.parent?.parent?.type == "division") {
-        this.data.division_id = item?.assignLocation?.parent?.parent?.id;
-        this.onChangeDivision(this.data.division_id);
-      }
-      if (item?.assignLocation?.parent?.type == "district") {
-        this.data.district_id = item?.assignLocation?.parent?.id;
-        this.onChangeDistrict(this.data.district_id);
-      }
-      if (item?.assignLocation?.location_type?.value_en == "City Corporation") {
-        this.data.city_corpo_id = item?.assignLocation?.id;
-      }
-      if (item?.assignLocation?.location_type?.value_en == "Upazila") {
-        this.data.thana_id = item?.assignLocation?.id;
-      }
-      console.log(this.data, "editOffice End");
     },
   },
   mounted() {
