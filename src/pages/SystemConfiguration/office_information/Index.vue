@@ -1367,7 +1367,14 @@ export default {
       this.data.office_address = item.office_address;
       this.data.comment = item.comment;
       this.data.status = item.status;
-
+      // console.log(item?.assignLocation?.type, 'division 1');
+      if (item?.assignLocation?.type == "division") {
+        console.log("division here");
+        this.data.division_id = item?.assignLocation?.id;
+        // console.log(this.data.division_id);
+        // this.onChangeDivision(this.data.division_id);
+        // this.data.district_id = item?.assignLocation?.id;
+      }
       if (item?.assignLocation?.type == "district") {
         console.log("district here");
         this.data.division_id = item?.assignLocation?.parent?.id;

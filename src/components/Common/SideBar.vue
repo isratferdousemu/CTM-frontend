@@ -172,11 +172,11 @@ export default {
               icon: "mdi mdi-plus",
               to: "/system-configuration/ward",
             },
-            // {
-            //   title: "Office Information",
-            //   icon: "mdi mdi-plus",
-            //   to: "/system-configuration/office_information",
-            // },
+            {
+              title: "Office Information",
+              icon: "mdi mdi-plus",
+              to: "/system-configuration/office_information",
+            },
             // {
             //   title: "Menu",
             //   icon: "mdi mdi-plus",
