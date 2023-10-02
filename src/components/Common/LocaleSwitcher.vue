@@ -1,32 +1,17 @@
 
 <template>
   <div class="locale-switcher">
-    <!-- <select v-model="$i18n.locale">
-          <option value="en">English</option>
-          <option value="bn">Bangla</option>
-        </select> -->
-    <v-switch v-model="$i18n.locale"   :label="getSwitchLabel"  value="bn" hide-details
+    <v-btn-toggle @change="handleSwitchChange" v-model="getSwitchLabel">
+      <v-btn small>
+        BN
+      </v-btn>
+      <v-btn small>
+      EN
+      </v-btn>
+    </v-btn-toggle>
+    <!-- <v-switch v-model="$i18n.locale"   :label="getSwitchLabel"  value="bn" hide-details
       @change="handleSwitchChange"></v-switch>
-           <!-- <v-row align="center">
-          <v-col>
-            <v-row align="center">
-              <v-col>
-                <div class="switch-label">OFF</div>
-              </v-col>
-              <v-col>
-                <v-switch
-                  v-model="switchState"
-                  color="primary"
-                  hide-details
-                  @change="handleSwitchChange"
-                ></v-switch>
-              </v-col>
-              <v-col>
-                <div class="switch-label">ON</div>
-              </v-col>
-            </v-row>
-          </v-col>
-        </v-row> -->
+        -->
   </div>
 
 </template>
@@ -41,15 +26,12 @@ export default {
 
   data() {
     return {
-
-
-
-
+      toggle_none: 0,
     };
   },
     computed: {
      getSwitchLabel() {
-      return this.$i18n.locale === 'bn' ? 'BN' : 'EN';
+      return this.$i18n.locale === 'bn' ? 0 : 1;
     }
   },
 
@@ -66,17 +48,9 @@ export default {
 
     }),
     handleSwitchChange(newLocale) {
-
-      if (!newLocale) {
-        this.$i18n.locale = "en";
-        newLocale = "en"
-
-      }
-      else {
-        newLocale = "bn"
-      }
-
-      this.$store.commit("setAppLanguage", newLocale);
+      console.log(newLocale,'button switch')
+      this.$i18n.locale = newLocale==1?'en':'bn';
+      this.$store.commit("setAppLanguage", newLocale==1?'en':'bn');
 
 
 
