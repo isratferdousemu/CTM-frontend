@@ -13,10 +13,11 @@ import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import HeaderMixins from "./mixins/HeaderMixins";
 
+
 import i18n from "./i18n";
 // // Check if the language is stored in localStorage
 
-i18n.locale =   "bn";
+
 
 Vue.config.productionTip = false;
 Vue.use(Vuetify);
@@ -46,6 +47,12 @@ Vue.mixin({
     };
   },
 });
+// Set the initial locale during the creation of the VueI18n instance
+
+
+
+// Mount the Vue app once i18n is fully initialized
+
 
 new Vue({
   router,
@@ -56,3 +63,4 @@ new Vue({
     return h(App);
   },
 }).$mount("#app");
+

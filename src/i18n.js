@@ -44,8 +44,8 @@ function loadLocaleMessages() {
 }
 
 const i18n = new VueI18n({
-    locale: store.getters.getAppLanguage || process.env.VUE_APP_I18N_LOCALE || "bn",
-    fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || "bn",
+    locale: store.getters.getAppLanguage || process.env.VUE_APP_I18N_FALLBACK_LOCALE || "bn",
+    fallbackLocale: store.getters.getAppLanguage || process.env.VUE_APP_I18N_FALLBACK_LOCALE || "bn",
     messages: loadLocaleMessages(),
 });
 

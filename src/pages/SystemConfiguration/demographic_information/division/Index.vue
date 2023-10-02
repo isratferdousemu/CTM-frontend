@@ -6,7 +6,7 @@
           <v-col cols="12">
             <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8">
               <v-card-title class="justify-center" tag="div">
-                <h3 class="text-uppercase pt-3"> {{ $t("container.system_config.demo_graphic.division.division_list") }}
+                <h3 class="text-uppercase pt-3"> {{ $t("container.system_config.demo_graphic.division.list") }}
                 </h3>
               </v-card-title>
               <v-card-text>
@@ -15,11 +15,11 @@
                   <div class="d-flex justify-sm-end flex-wrap">
                     <v-text-field @keyup.native="GetDivision" outlined dense v-model="search"
                       prepend-inner-icon="mdi-magnify" class="my-sm-0 my-3 mx-0v -input--horizontal" flat
-                      variant="outlined" label="search Division" hide-details color="primary">
+                      variant="outlined" :label='$t("container.system_config.demo_graphic.division.search")' hide-details color="primary">
                     </v-text-field>
                   </div>
                   <v-btn @click="createDialog" flat color="primary" prepend-icon="mdi-account-multiple-plus">
-                   {{ $t("container.system_config.demo_graphic.division.add_new_division") }}
+                   {{ $t("container.list.add_new") }}
                   </v-btn>
                   <v-col cols="12">
                     <v-data-table :loading="loading" item-key="id" :headers="headers" :items="divisions"
@@ -73,7 +73,7 @@
       <v-dialog v-model="dialogAdd" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-               {{ $t("container.system_config.demo_graphic.division.add_new_division") }}
+               {{ $t("container.system_config.demo_graphic.division.add_new") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
@@ -115,7 +115,7 @@
       <v-dialog v-model="dialogEdit" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-              {{ $t("container.system_config.demo_graphic.division.division") }} 
+              {{ $t("container.system_config.demo_graphic.division.edit") }} 
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
@@ -129,21 +129,21 @@
                     :error="errors[0] ? true : false" :error-messages="errors.code"></v-text-field>
                 </ValidationProvider>
                 <ValidationProvider name="Name English" vid="name_en" rules="required">
-                  <v-text-field outlined type="text" v-model="data.name_en" :label='$t("container.list.name-en")'  required
+                  <v-text-field outlined type="text" v-model="data.name_en" :label='$t("container.list.name_en")'  required
                     :error="errors.name_en ? true : false" :error-messages="errors.name_en"></v-text-field>
                 </ValidationProvider>
                 <ValidationProvider name="Name Bangla" vid="name_bn" rules="required">
-                  <v-text-field outlined type="text" v-model="data.name_bn" label="Name Bangla" required
+                  <v-text-field outlined type="text" v-model="data.name_bn" :label='$t("container.list.name_bn")' required
                     :error="errors.name_bn ? true : false" :error-messages="errors.name_bn"></v-text-field>
                 </ValidationProvider>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
                   <v-btn flat @click="dialogEdit = false" outlined class="custom-btn-width py-2 mr-10">
-                    Cancel
+               {{$t("container.list.cancel")}}
                   </v-btn>
                   <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
                     class="custom-btn-width warning white--text py-2">
-                    Submit
+                {{ $t("container.list.update") }}
                   </v-btn>
                 </v-row>
               </form>
@@ -157,23 +157,22 @@
       <v-dialog v-model="deleteDialog" width="350">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            Delete Division
+             {{ $t("container.system_config.demo_graphic.division.delete") }} 
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
-              Are you sure to delete this Division? All information under this
-              Division will be deleted.
+             {{ $t("container.system_config.demo_graphic.division.delete_alert") }} 
             </div>
           </v-card-text>
           <v-card-actions style="display: block">
             <v-row class="mx-0 my-0 py-2" justify="center">
               <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
-                Cancel
+              {{ $t("container.list.cancel") }} 
               </v-btn>
               <v-btn text @click="deleteDivision()" color="white" :loading="delete_loading"
                 class="custom-btn-width warning white--text py-2">
-                Delete
+            {{ $t("container.list.delete") }} 
               </v-btn>
             </v-row>
           </v-card-actions>
@@ -226,11 +225,11 @@ export default {
   computed: {
     headers() {
       return [
-        { text: "#Sl", value: "id", align: "start", sortable: false },
-        { text: "Code", value: "code" },
-        { text: "Division Name English", value: "name_en" },
-        { text: "Division Name Bangla", value: "name_bn" },
-        { text: "Actions", value: "actions", align: "center", sortable: false },
+        { text: this.$t("container.list.sl"), value: "id", align: "start", sortable: false },
+        { text: this.$t("container.list.code"), value: "code" },
+        { text: this.$t("container.system_config.demo_graphic.division.name_en"), value: "name_en" },
+        { text: this.$t("container.system_config.demo_graphic.division.name_bn"), value: "name_bn" },
+        { text: this.$t("container.list.action"), value: "actions", align: "center", sortable: false },
       ];
     },
 
@@ -243,6 +242,7 @@ export default {
   },
 
   methods: {
+   
     createDialog() {
       this.resetForm();
       this.dialogAdd = true;
@@ -370,6 +370,7 @@ export default {
   },
   created() {
     this.GetDivision();
+  
   },
   beforeMount() {
     this.$store.commit("setHeaderTitle", "Division List");
