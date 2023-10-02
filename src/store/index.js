@@ -79,7 +79,7 @@ export default new Vuex.Store({
       { id: 16, name: 'Module Name' },
       { id: 17, name: 'Organization' },
     ],
-    appLanguage: "bn", 
+    appLanguage: localStorage.getItem("appLanguage") || process.env.VUE_APP_I18N_LOCALE || 'bn'
 
   },
   /* -------------------------------------------------------------------------- */
@@ -220,6 +220,10 @@ export default new Vuex.Store({
           console.log(err);
         });
     },
+    async updateLanguage({ commit }, newLocale) {
+      // You can perform asynchronous operations here if needed.
+      commit('updateMyLocale', newLocale);
+    },
     /*end get all City*/
   },
 
@@ -286,9 +290,13 @@ export default new Vuex.Store({
     setOtpresponse(state, otpData) {
       state.otpData = otpData
     },
-   setAppLanguage(state, language) {
-     state.appLanguage = language;
-   },
+    setAppLanguage(state, newLocale) {
+      state.appLanguage = newLocale;
+      localStorage.setItem("appLanguage", newLocale); // Whenever we change the appLanguage we save it to the localStorage
+    },
+    updateMyLocale(state, newLocale) {
+      state.appLanguage = newLocale;
+    },
 
   },
   // use modules
@@ -315,7 +323,7 @@ export default new Vuex.Store({
   },
   plugins: [
     createPersistedState({
-      paths: ["userData", "token", "userPermissions", "loginData"],
+      paths: ["userData", "token", "userPermissions", "loginData", "appLanguage"],
     }),
   ],
 });

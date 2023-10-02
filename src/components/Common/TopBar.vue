@@ -14,10 +14,10 @@
     </v-btn>
 
     <b>{{ headerTitle }}</b>
-{{ $t("nav.dashboard") }}
+
 
     <v-spacer />
-      English  <LocaleSwitcher />
+     <LocaleSwitcher />
 
     <!-- Notification Start -->
     <v-menu
