@@ -14,8 +14,10 @@
     </v-btn>
 
     <b>{{ headerTitle }}</b>
+{{ $t("nav.dashboard") }}
 
     <v-spacer />
+      English  <LocaleSwitcher />
 
     <!-- Notification Start -->
     <v-menu
@@ -171,7 +173,10 @@
 
 <script>
 import axios from "axios";
+import LocaleSwitcher from "@/components/Common/LocaleSwitcher"
 export default {
+  
+  components: { LocaleSwitcher },
   computed: {
     headerTitle: {
       get() {

@@ -78,6 +78,7 @@ export default new Vuex.Store({
       {id:16, name: 'Module Name'},
       {id:17, name: 'Organization'},
     ],
+    appLanguage: "bn", 
 
   },
   /* -------------------------------------------------------------------------- */
@@ -93,6 +94,7 @@ export default new Vuex.Store({
     GetToken: function (state) {
       return state.token;
     },
+    getAppLanguage: state => state.appLanguage,
   },
 
   /* -------------------------------------------------------------------------- */
@@ -261,7 +263,10 @@ export default new Vuex.Store({
     },
     setOtpresponse(state, otpData) {
       state.otpData = otpData
-    }
+    },
+   setAppLanguage(state, language) {
+     state.appLanguage = language;
+   },
 
   },
   // use modules

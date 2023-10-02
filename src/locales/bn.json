@@ -1,0 +1,46 @@
+{
+    "nav": {
+        "dashboard": "dashboard"
+    },
+    "container": {
+            "list": {
+                "sl": "ক্রমিক নং ",
+                "action": "অ্যাকশন ",
+                "submit": "সাবমিট ",
+                "cancel": "বাতিল",
+                "edit": "সম্পাদনা",
+                "code": "কোড",
+                "name_en": "নাম ইংরেজিতে",
+                "name_bn": "নাম বাংলায়"
+
+                
+            },
+
+        "system_config": {
+            "demo_graphic": {
+                "location_type": "অবস্থানের ধরন",
+                "division": {
+                    "division": "বিভাগ",
+                    "division_list": "বিভাগের তালিকা",
+                    "name_en": "বিভাগের নাম ইংরেজিতে",
+                    "name_bn": "বিভাগের নাম বাংলায় ",
+                    "add_new_division": "নতুন বিভাগ যোগ করুন"
+                },
+                "district": {
+                    "district": "জেলার ",
+                    "district_list": "জেলার তালিকা ",
+                    "name_en": "জেলার  নাম ইংরেজিতে",
+                    "name_bn": "জেলার  নাম বাংলায় ",
+                    "add_new_district": "নতুন জেলা যোগ করুন"
+                },
+                "city": {
+                    "city": "City",
+                    "city_list": "City List",
+                    "name_en": "District Name English",
+                    "name_bn": "District Name Bangla",
+                    "add_new_city": "নতুন শহর যোগ করুন"
+                }
+            }
+        }
+    }
+}
