@@ -87,6 +87,20 @@ const actions = {
   /*end get all city*/
 
   /*start get all city*/
+  GetAllCityByDistrict: ({ commit }, payload) => {
+    return http()
+      .get("/admin/city/get" + payload.district_id + "/" + payload.lookup_id)
+      .then((result) => {
+        console.log(result.data);
+        commit("GET_CITY", result.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+  /*end get all city*/
+
+  /*start get all city*/
   GetSearchCity: ({ commit }, data) => {
     return http()
       .get(`/admin/city/get/${data}`)

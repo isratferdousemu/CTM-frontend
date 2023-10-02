@@ -42,14 +42,14 @@
                         </div>
                         <p class=" orange--text mx-6" style="font-size: 14px;">
                             No One's ID and password is asked from the MIS admin of the
-                            Department Social Services without solving your problem.Beware
+                            Department of Social Services (DSS) without solving your problem. Beware
                             of
                             cheaters. Please do not share your password with anyone and do
                             not
                             save it in your browser.
                         </p>
                     </v-col>
-                    <v-col cols="6">
+                    <v-col v-if="!resetPassword" cols="6">
                         <div class="d-flex flex-column align-center justify-center" style="height: 57vh">
                             <div class="text-center mb-2">
                                 <h3>Login</h3>
@@ -76,6 +76,39 @@
 
                         </div>
                     </v-col>
+                    <!-- reset password  -->
+                    <v-col v-if="resetPassword" cols="6">
+                        <div class="d-flex flex-column align-center justify-center" style="height: 57vh">
+                            <div class="text-center mb-2">
+                                <h3>Reset Password</h3>
+                            </div>
+                            <ValidationObserver ref="form" class="w-100" lazy-validation v-slot="{ invalid }">
+                                <v-form @submit.prevent="submitResetPassword" class="ma-5">
+                                    <ValidationProvider name="OldPassword" vid="old_password" rules="required" v-slot="{ errors }">
+                                        <v-text-field type="password" label="Old Password" v-model="form.old_password" :error="errors[0] ? true : false" :error-messages="errors[0]" required></v-text-field>
+                                    </ValidationProvider>
+                                    <!-- :error="errors && errors.username" :error-messages="errors ? errors.username : []"  -->
+                                    <ValidationProvider name="Password" vid="password" rules="required" v-slot="{ errors }">
+                                        <v-text-field type="password" v-model="form.password" placeholder="Password" required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
+                                    </ValidationProvider>
+                                    <v-text-field
+                                    type="password"
+                                    v-model="form.confirm_password" 
+                                    placeholder="Confirm Password"
+                                    required
+                                    :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                  ></v-text-field>
+ 
+                                    <div class="d-inline d-flex justify-end">
+                                        <v-btn color="blue" block type="submit" class="my-4 white--text" :loading="loading">Submit</v-btn>
+                                    </div>
+                                </v-form>
+                            </ValidationObserver>
+
+                        </div>
+                    </v-col>
+
+
                 </v-row>
 
             </v-card>
@@ -116,6 +149,7 @@ export default {
     },
     data() {
         return {
+            resetPassword:false,
             remainingTime: 60,
             intervalId: null,
             errors: [],
@@ -123,6 +157,8 @@ export default {
                 device_token: null,
                 username: "ctm-01",
                 password: "@N159983a",
+                confirm_password: "",
+                old_password: "",
                 otp: "",
             },
 
@@ -158,7 +194,50 @@ export default {
                 }
             }, 1000); // Update every second (1000 milliseconds)
         },
+        submitResetPassword() {
+            this.loading = true;
+            this.$axios
+                .post("admin/reset/password", this.form, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+                .then((result) => {
+                    this.loading = false;
+                    console.log(result, 'result')
+                    if (result.data.success == true) {
+                        this.$toast.success(result.data.message);
+                        this.resetPassword=false;
+                    } else {
+                        this.$refs.form.setErrors(result.data.errors);
+                    }
+                })
+                .catch((err) => {
+                    this.loading = false;
+                    if (err.response) {
+                        if (err.response.data.success == false) {
+                            console.log(err.response.data, 'und');
+                            console.log(err.response.data.error_code, 'und');
+                            if (err.response.data.error_code == "verify_failed") {
+                                let errs = {
+                                    "otp": [err.response.data.message]
+                                }
+                                this.$refs.form.setErrors(errs);
+                                this.$toast.error(err.response.data.message);
 
+                            }
+                            if (err.response.data.error_code == "device_not_found") {
+                                 
+                                 this.$toast.error(err.response.data.message);
+ 
+                             }
+                        } else if (err.response) {
+                            this.$refs.form.setErrors(err.response.data.errors);
+                        }
+                    }
+
+                });
+        },
         onFinish() {
             this.loading = true;
             this.$axios
@@ -257,6 +336,11 @@ export default {
                             if (err.response.data.error_code == "device_not_found") {
                                  
                                  this.$toast.error(err.response.data.message);
+                             }
+                            if (err.response.data.error_code == "user_default_password") {
+                                 
+                                this.$toast.error(err.response.data.message);
+                                 this.resetPassword=true
  
                              }
                         } else if (err.response) {

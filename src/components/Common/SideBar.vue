@@ -28,6 +28,7 @@
             :key="i"
             router
             exact
+         
             v-can="item.permission"
             @click.stop="
               drawer = false;
@@ -40,6 +41,7 @@
 
             <v-list-item-content>
               <v-list-item-title class="list_size">
+                  <!-- {{ $t(`sidebar.${item.title}`) }} -->
                 {{ item.title }}
                 <v-badge
                   v-if="item.title == 'Employee' && new_employee > 0"
@@ -68,7 +70,9 @@
             </v-list-item-action>
             <v-list-item-content>
               <v-list-item-title class="list_size">
-                {{ item.title }}
+                {{ $t(`sidebar.${item.title}`) }}
+                 <!-- {{ $t(`sidebar.${item.title}`) }} -->
+                <!-- {{ item.title }} -->
                 <v-badge
                   v-if="item.title == 'Employee' && new_employee > 0"
                   :content="new_employee"
@@ -134,13 +138,13 @@ export default {
       items: [
         {
           icon: "mdi-view-dashboard-outline",
-          title: "Dashboard",
+          title: 'dashboard',
           to: "/",
           permission: "view-dashboard",
         },
         {
           icon: "mdi mdi-cogs",
-          title: "System Configuration",
+          title: 'system Configuration',
           subTtems: [
             {
               title: "Division",
@@ -172,11 +176,11 @@ export default {
               icon: "mdi mdi-plus",
               to: "/system-configuration/ward",
             },
-            // {
-            //   title: "Office Information",
-            //   icon: "mdi mdi-plus",
-            //   to: "/system-configuration/office_information",
-            // },
+            {
+              title: "Office Information",
+              icon: "mdi mdi-plus",
+              to: "/system-configuration/office_information",
+            },
             // {
             //   title: "Menu",
             //   icon: "mdi mdi-plus",
