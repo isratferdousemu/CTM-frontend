@@ -116,8 +116,13 @@ export default new Vuex.Store({
           // console.log(result);
         })
         .catch((err) => {
+          const data = {
+            errors: err.response.data.errors,
+          };
+          return data;
           // console.log(err);
-          commit("setforgotPasswordErrors", err.response.data.errors);
+          // commit("setforgotPasswordErrors", err.response.data.errors);
+          
         });
     },
     forgotPasswordSubmit: ({ commit, state }, data) => {
@@ -201,20 +206,6 @@ export default new Vuex.Store({
         return result.data.data
       });
     },
-    /*start get all Upazila*/
-    GetAllUpazilaByDistrict: ({ commit }, data) => {
-      return http()
-        .get(`/admin/thana/get/${data}`)
-        .then((result) => {
-          console.log(result.data);
-          return result.data.data;
-          // commit("GET_OFFICE", result.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    /*end get all Upazila*/
 
     /*start get all City*/
     GetAllCityByDistrict: ({ commit }, data) => {

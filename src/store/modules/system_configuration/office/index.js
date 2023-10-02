@@ -143,7 +143,6 @@ const actions = {
       .post(`/admin/office/update/`, data)
       .then((result) => {
         console.log(result);
-        commit("RESET_ERRORS");
       })
       .catch((err) => {
         state.errors = err.response.data.errors;

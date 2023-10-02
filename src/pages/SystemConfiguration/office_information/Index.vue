@@ -22,7 +22,7 @@
                 >
                   <div class="d-flex justify-sm-end flex-wrap">
                     <v-text-field
-                      @keyup.native="GetOffice"
+                      @keyup.native="GetOffices"
                       outlined
                       dense
                       v-model="search"
@@ -54,25 +54,19 @@
                       hide-default-footer
                       class="elevation-0 transparent row-pointer"
                     >
-                      <!-- <template v-slot:item.id="{ item, index }">
-                                              {{ (pagination.current - 1) * pagination.perPage + index + 1 }}
-                                          </template> -->
-                      <template v-slot:item.division="{ item }">
-                        <span
-                          v-if="item?.parent?.parent?.parent.type == 'division'"
-                        >
-                          {{ item?.parent?.parent?.parent.name_en }}
-                        </span>
-                        <span
-                          v-if="
-                            item?.parent?.type == 'union' ||
-                            item?.parent?.type == 'thana'
-                          "
-                        >
-                          {{ item?.parent?.parent?.parent?.parent?.name_en }}
-                        </span>
+                      <template v-slot:item.id="{ item, index }">
+                        {{
+                          (pagination.current - 1) * pagination.perPage +
+                          index +
+                          1
+                        }}
                       </template>
-                      <template v-slot:item.district="{ item }">
+
+                      <template v-slot:item.status="{ item }">
+                        <span v-if="item?.status == '0'"> Inactive </span>
+                        <span v-if="item?.status == '1'"> Active </span>
+                      </template>
+                      <!--      <template v-slot:item.district="{ item }">
                         <span v-if="item?.parent?.parent?.type == 'district'">
                           {{ item?.parent?.parent.name_en }}
                         </span>
@@ -105,7 +99,7 @@
                         >
                           {{ item?.parent?.name_en }}
                         </span>
-                      </template>
+                      </template> -->
                       <template v-slot:item.actions="{ item }">
                         <v-btn
                           v-can="'update-post'"
@@ -207,12 +201,12 @@
                     md="6"
                     cols="12"
                     v-if="
-                      officeType_id == 6 ||
-                      officeType_id == 7 ||
-                      officeType_id == 8 ||
-                      officeType_id == 9 ||
-                      officeType_id == 10 ||
-                      officeType_id == 11
+                      office_type_id == 6 ||
+                      office_type_id == 7 ||
+                      office_type_id == 8 ||
+                      office_type_id == 9 ||
+                      office_type_id == 10 ||
+                      office_type_id == 11
                     "
                   >
                     <ValidationProvider
@@ -241,11 +235,11 @@
                     md="6"
                     cols="12"
                     v-if="
-                      officeType_id == 7 ||
-                      officeType_id == 8 ||
-                      officeType_id == 9 ||
-                      officeType_id == 10 ||
-                      officeType_id == 11
+                      office_type_id == 7 ||
+                      office_type_id == 8 ||
+                      office_type_id == 9 ||
+                      office_type_id == 10 ||
+                      office_type_id == 11
                     "
                   >
                     <ValidationProvider
@@ -274,9 +268,9 @@
                     md="6"
                     cols="12"
                     v-if="
-                      officeType_id == 8 ||
-                      officeType_id == 10 ||
-                      officeType_id == 11
+                      office_type_id == 8 ||
+                      office_type_id == 10 ||
+                      office_type_id == 11
                     "
                   >
                     <ValidationProvider
@@ -300,16 +294,16 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12" v-if="officeType_id == 9">
+                  <v-col lg="6" md="6" cols="12" v-if="office_type_id == 9">
                     <ValidationProvider
                       name="city"
-                      vid="city_id"
+                      vid="city_corpo_id"
                       rules="required"
                       v-slot="{ errors }"
                     >
                       <v-autocomplete
                         :hide-details="errors[0] ? false : true"
-                        v-model="data.city_id"
+                        v-model="data.city_corpo_id"
                         @change="onChangeCity($event)"
                         outlined
                         label="City Corporation"
@@ -444,8 +438,285 @@
         </v-card>
       </v-dialog>
       <!-- office add modal  -->
-      <!-- office edit modal  -->
+
+      <!-- office Edit modal  -->
       <v-dialog v-model="dialogEdit" width="650">
+        <v-card style="justify-content: center; text-align: center">
+          <v-card-title class="font-weight-bold justify-center">
+            Edit Office
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text class="mt-7">
+            <v-row> </v-row>
+
+            <ValidationObserver ref="form" v-slot="{ invalid }">
+              <form @submit.prevent="updateOffice()">
+                <v-row>
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                      name="OfficeType"
+                      vid="officeType"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        :hide-details="errors[0] ? false : true"
+                        @input="onChangeOfficeType($event)"
+                        v-model="data.office_type"
+                        outlined
+                        label="Office Type"
+                        :items="officeType"
+                        item-text="value_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col
+                    lg="6"
+                    md="6"
+                    cols="12"
+                    v-if="
+                      office_type_id == 6 ||
+                      office_type_id == 7 ||
+                      office_type_id == 8 ||
+                      office_type_id == 9 ||
+                      office_type_id == 10 ||
+                      office_type_id == 11
+                    "
+                  >
+                    <ValidationProvider
+                      name="Division"
+                      vid="division"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        :hide-details="errors[0] ? false : true"
+                        @input="onChangeDivision($event)"
+                        v-model="data.division_id"
+                        outlined
+                        label="Division"
+                        :items="divisions"
+                        item-text="name_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col
+                    lg="6"
+                    md="6"
+                    cols="12"
+                    v-if="
+                      office_type_id == 7 ||
+                      office_type_id == 8 ||
+                      office_type_id == 9 ||
+                      office_type_id == 10 ||
+                      office_type_id == 11
+                    "
+                  >
+                    <ValidationProvider
+                      name="District"
+                      vid="district"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        :hide-details="errors[0] ? false : true"
+                        outlined
+                        v-model="data.district_id"
+                        @input="onChangeDistrict($event)"
+                        label="District"
+                        :items="districts"
+                        item-text="name_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col
+                    lg="6"
+                    md="6"
+                    cols="12"
+                    v-if="
+                      office_type_id == 8 ||
+                      office_type_id == 10 ||
+                      office_type_id == 11
+                    "
+                  >
+                    <ValidationProvider
+                      name="Upazila"
+                      vid="upazila"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        :hide-details="errors[0] ? false : true"
+                        outlined
+                        v-model="data.thana_id"
+                        @input="onChangeUpazila($event)"
+                        label="Upazila"
+                        :items="upazilas"
+                        item-text="name_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12" v-if="office_type_id == 9">
+                    <ValidationProvider
+                      name="city"
+                      vid="city_corpo_id"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        :hide-details="errors[0] ? false : true"
+                        v-model="data.city_corpo_id"
+                        @change="onChangeCity($event)"
+                        outlined
+                        label="City Corporation"
+                        :items="city"
+                        item-text="name_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                      name="Office Name English"
+                      vid="name_en"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-text-field
+                        outlined
+                        type="text"
+                        :hide-details="errors[0] ? false : true"
+                        v-model="data.name_en"
+                        label="Office Name English"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-text-field>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                      name="Office Name Bangla"
+                      vid="name_bn"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-text-field
+                        :hide-details="errors[0] ? false : true"
+                        outlined
+                        type="text"
+                        v-model="data.name_bn"
+                        label="Office Name Bangla"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-text-field>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                      name="Office Address"
+                      vid="office_address"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-text-field
+                        :hide-details="errors[0] ? false : true"
+                        outlined
+                        type="text"
+                        v-model="data.office_address"
+                        label="Office Address"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-text-field>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                      name="Comment"
+                      vid="comment"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-text-field
+                        :hide-details="errors[0] ? false : true"
+                        outlined
+                        type="text"
+                        v-model="data.comment"
+                        label="Comment"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-text-field>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                      name="Status"
+                      vid="status"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-checkbox
+                        v-model="data.status"
+                        label="Active"
+                        color="green"
+                        :hide-details="errors[0] ? false : true"
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-checkbox>
+                    </ValidationProvider>
+                  </v-col>
+                </v-row>
+
+                <v-row class="mx-0 my-0 py-2" justify="center">
+                  <v-btn
+                    flat
+                    @click="dialogAdd = false"
+                    outlined
+                    class="custom-btn-width py-2 mr-10"
+                  >
+                    Cancel
+                  </v-btn>
+                  <v-btn
+                    type="submit"
+                    flat
+                    color="primary"
+                    :disabled="invalid"
+                    :loading="loading"
+                    class="custom-btn-width black white--text py-2"
+                  >
+                    Submit
+                  </v-btn>
+                </v-row>
+              </form>
+            </ValidationObserver>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+      <!-- office Edit modal  -->
+      <!-- office edit modal  -->
+      <v-dialog v-model="dialogEditold" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
             Update Office
@@ -627,13 +898,13 @@
                   <v-col v-if="data.location_type == 3" lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="city"
-                      vid="city_id"
+                      vid="city_corpo_id"
                       rules="required"
                       v-slot="{ errors }"
                     >
                       <v-autocomplete
                         :hide-details="errors[0] ? false : true"
-                        v-model="data.city_id"
+                        v-model="data.city_corpo_id"
                         @change="onChangeCity($event)"
                         outlined
                         label="City Corporation"
@@ -726,8 +997,8 @@
           <v-divider></v-divider>
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
-              Are you sure to delete this Office? Office all information will be
-              deleted.
+              Are you sure to delete this Office? All information under this
+              Office will be deleted.
             </div>
           </v-card-text>
           <v-card-actions style="display: block">
@@ -742,7 +1013,7 @@
               </v-btn>
               <v-btn
                 text
-                @click="deleteOffice()"
+                @click="deleteOffice($event)"
                 color="white"
                 :loading="delete_loading"
                 class="custom-btn-width black white--text py-2"
@@ -775,17 +1046,17 @@ export default {
         id: null,
         name_en: null,
         name_bn: null,
-        thana_id:null,
+        thana_id: null,
         office_type: null,
         office_address: null,
         comment: null,
-        status: 0,
+        status: "0",
         division_id: null,
         district_id: null,
         location_type: null,
-        city_corporation_id: null,
+        city_corpo_id: null,
       },
-      officeType_id: null,
+      office_type_id: null,
       isDistrictHidden: true,
       isLocationTypeHidden: true,
       isCityCorporationHidden: false,
@@ -822,7 +1093,7 @@ export default {
         { text: "#Sl", value: "id", align: "start", sortable: false },
         { text: "Office  (EN)", value: "name_en" },
         { text: "Office  (BN)", value: "name_bn" },
-        { text: "Office Category", value: "office_type" },
+        { text: "Office Category", value: "officeType.value_en" },
         { text: "Office Address", value: "office_address" },
         // { text: "Location Type", value: "locationType" },
         { text: "Status", value: "status" },
@@ -850,28 +1121,25 @@ export default {
     },
   },
   methods: {
-    async submitOffice() {
+    submitOffice() {
       let fd = new FormData();
       for (const [key, value] of Object.entries(this.data)) {
         if (value !== null) {
           fd.append(key, value);
         }
       }
-      for (const [key, value] of fd.entries()) {
-        console.log(`${key}: ${value}`);
-      }
-      console.log(fd);
-      console.log(this.data);
-      // return;
+      // for (const [key, value] of fd.entries()) {
+      //   console.log(`${key}: ${value}`);
+      // }
 
       try {
         this.$store.dispatch("Office/StoreOffice", fd).then((data) => {
-          console.log(data, "submit");
+          // console.log(data, "submit");
           if (data == null) {
             this.$toast.success("Data Inserted Successfully");
             this.dialogAdd = false;
             this.resetData();
-            // this.GetOffices();
+            this.GetOffices();
           } else {
             this.errors = data.errors;
           }
@@ -881,8 +1149,14 @@ export default {
       }
     },
     async updateOffice() {
+      let fd = new FormData();
+      for (const [key, value] of Object.entries(this.data)) {
+        if (value !== null) {
+          fd.append(key, value);
+        }
+      }
       try {
-        this.$store.dispatch("Office/UpdateOffice", this.data).then((data) => {
+        this.$store.dispatch("Office/UpdateOffice", fd).then((data) => {
           console.log(data, "update");
           if (data == null) {
             this.$toast.success("Data Updated Successfully");
@@ -917,12 +1191,15 @@ export default {
         console.log(e);
       }
     },
-    async GetAllUpazila() {
+    async GetAllUpazila(id) {
+      console.log(id, "GetAllUpazila");
       try {
-        this.$store.dispatch("GetAllUpazilaByDistrict", 9).then((data) => {
-          console.log(data, "GetAllUpazilaByDistrict");
-          this.upazilas = data;
-        });
+        this.$store
+          .dispatch("Thana/GetAllUpazilaByDistrict", id)
+          .then((data) => {
+            console.log(data, "GetAllUpazilaByDistrict");
+            this.upazilas = data;
+          });
       } catch (e) {
         console.log(e);
       }
@@ -937,8 +1214,8 @@ export default {
       }
     },
     async onChangeOfficeType(event) {
-      this.officeType_id = event;
-      console.log(this.officeType_id);
+      this.office_type_id = event;
+      console.log(this.office_type_id);
     },
     async onChangeDivision(event) {
       await this.$axios
@@ -954,24 +1231,34 @@ export default {
         });
     },
     async onChangeDistrict(event) {
-      event = 3;
-      const queryParams = {
+      event = 3; //Lookup.id = 3 , Look.name_en = 'City Corporation'
+      const payload = {
         district_id: this.data.district_id,
-        location_type: "3",
+        lookup_id: "3",
       };
-      console.log(JSON.stringify(queryParams));
+      console.log(JSON.stringify(payload));
       // return;
-      await this.$axios
-        .get(`/admin/city/get/` + this.data.district_id + "/" + event, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((result) => {
-          this.city = result.data.data;
-          console.log(this.city, "onChangeDistrict");
-        });
+      if (
+        this.office_type_id == 8 ||
+        this.office_type_id == 10 ||
+        this.office_type_id == 11
+      ) {
+        console.log("load Upazila");
+        this.GetAllUpazila(this.data.district_id);
+      } else {
+        console.log("load City Corporation");
+        await this.$axios
+          .get(`/admin/city/get/` + this.data.district_id + "/" + event, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((result) => {
+            this.city = result.data.data;
+            console.log(this.city, "onChangeDistrict");
+          });
+      }
     },
     ...mapActions({
       GetAllDivisions: "Division/GetAllDivisions",
@@ -991,6 +1278,7 @@ export default {
         perPage: this.pagination.perPage,
         page: this.pagination.current,
       };
+      console.log(queryParams);
       this.$axios
         .get("/admin/office/get", {
           headers: {
@@ -1007,61 +1295,113 @@ export default {
           this.pagination.grand_total = result.data.meta.total;
         });
     },
-    deleteOffice: async function (id) {
+    // deleteOffice: async function (id) {
+    //   alert
+    //   try {
+    //     await this.$store
+    //       .dispatch("Office/DestroyOffice", this.delete_id)
+    //       .then((res) => {
+    //         // check if the request was successful
+    //         console.log(res, "result in vue");
+    //         if (res?.data?.success) {
+    //           this.$toast.success(res.data.message);
+    //         } else {
+    //           this.$toast.error(res.response.data.message);
+    //         }
+    //         this.deleteDialog = false;
+    //         this.GetOffices();
+    //       });
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
+    // },
+    deleteOffice: async function () {
       try {
         await this.$store
           .dispatch("Office/DestroyOffice", this.delete_id)
           .then((res) => {
+            console.log(res);
             // check if the request was successful
-            console.log(res, "result in vue");
             if (res?.data?.success) {
-              this.$toast.success(res.data.message);
+              this.$toast.error(res.data.message);
             } else {
-              this.$toast.error(res.response.data.message);
+              this.$toast.success(res.data.message);
             }
             this.deleteDialog = false;
             this.GetOffices();
+          })
+          .catch((error) => {
+            console.log(error, "error");
           });
       } catch (e) {
         console.log(e);
       }
     },
     resetData() {
-      (this.data.name_en = null),
-        (this.data.name_bn = null),
-        (this.data.code = null),
-        (this.data.division_id = null),
-        (this.data.district_id = null),
-        (this.data.location_type = null);
+      this.dialogEdit = null;
+      this.data.id = null;
+      this.data.office_type = null;
+      this.office_type_id = null;
+      this.data.name_en = null;
+      this.data.name_bn = null;
+      this.data.office_address = null;
+      this.data.comment = null;
+      this.data.status = null;
+      this.data.division_id = null;
+      this.data.district_id = null;
+      this.data.city_corpo_id = null;
+      this.data.thana_id = null;
     },
     editOffice(item) {
-      if (this.$refs.form) {
-        this.$refs.form.reset();
-      }
-      const update_error_value = null;
-      this.updateError("update_error_value");
-      console.log(item.district.division, "edit");
+      console.log(item, "editOffice");
+      console.log(item?.assignLocation?.parent?.parent?.type, "editDivision");
+
+      this.resetData();
+
       this.dialogEdit = true;
       this.data.id = item.id;
+      this.data.office_type = item.officeType.id;
+      this.office_type_id = item.officeType.id;
       this.data.name_en = item.name_en;
       this.data.name_bn = item.name_bn;
-      this.data.code = item.code;
-      this.data.division_id = item.district.division.id;
-
-      this.data.district_id = item.district.id;
-      this.data.location_type = item.locationType.id;
-
-      this.onChangeDivision(this.data.division_id);
-
-      this.data.district_id = item.district.id;
-      this.data.location_type = item.locationType.id;
-      this.onChangeDivision(this.data.division_id);
+      this.data.office_address = item.office_address;
+      this.data.comment = item.comment;
+      this.data.status = item.status;
+      // console.log(item?.assignLocation?.type, 'division 1');
+      if (item?.assignLocation?.type == "division") {
+        console.log("division here");
+        this.data.division_id = item?.assignLocation?.id;
+        // console.log(this.data.division_id);
+        // this.onChangeDivision(this.data.division_id);
+        // this.data.district_id = item?.assignLocation?.id;
+      }
+      if (item?.assignLocation?.type == "district") {
+        console.log("district here");
+        this.data.division_id = item?.assignLocation?.parent?.id;
+        this.onChangeDivision(this.data.division_id);
+        this.data.district_id = item?.assignLocation?.id;
+      }
+      if (item?.assignLocation?.parent?.parent?.type == "division") {
+        this.data.division_id = item?.assignLocation?.parent?.parent?.id;
+        this.onChangeDivision(this.data.division_id);
+      }
+      if (item?.assignLocation?.parent?.type == "district") {
+        this.data.district_id = item?.assignLocation?.parent?.id;
+        this.onChangeDistrict(this.data.district_id);
+      }
+      if (item?.assignLocation?.location_type?.value_en == "City Corporation") {
+        this.data.city_corpo_id = item?.assignLocation?.id;
+      }
+      if (item?.assignLocation?.location_type?.value_en == "Upazila") {
+        this.data.thana_id = item?.assignLocation?.id;
+      }
+      console.log(this.data, "editOffice End");
     },
   },
   mounted() {
+    this.GetOfficeType();
     this.GetOffices();
     this.GetAllDivisions();
-    this.GetOfficeType();
     this.GetLocationType();
     this.GetAllUpazila();
     this.GetCityCorporation();

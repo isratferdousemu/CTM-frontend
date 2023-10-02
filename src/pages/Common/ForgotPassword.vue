@@ -219,19 +219,20 @@
                       name="Phone"
                       vid="phone"
                       rules="required"
-                      v-slot="{ errors }"
                     >
-                      <v-text-field
-                        type="number"
-                        label="Phone"
-                        v-model="form.phone"
-                        :error="
+                    <v-text-field
+                      type="number"
+                      label="Phone"
+                      v-model="form.phone"
+                      :error="errors.phone ? true : false"
+                      :error-messages="errors.phone"
+                    ></v-text-field>
+                      <!-- :error="
                           forgotPasswordErrors && forgotPasswordErrors.phone
                         "
                         :error-messages="
                           forgotPasswordErrors ? forgotPasswordErrors.phone : []
-                        "
-                      ></v-text-field>
+                        " -->
                     </ValidationProvider>
 
                     <div class="d-inline d-flex justify-end">
@@ -291,10 +292,7 @@ export default {
     ValidationObserver,
   },
   computed: {
-    ...mapState([
-      "forgotPasswordErrors",
-      "forgotPasswordErrorMessageOtp",
-    ]),
+    ...mapState(["forgotPasswordErrors", "forgotPasswordErrorMessageOtp"]),
   },
   methods: {
     reloadPage() {
@@ -307,11 +305,13 @@ export default {
         this.$store
           .dispatch("sendOtpForgetPassword", this.form)
           .then((data) => {
-            console.log(data);
-            if (data.success == true) {
+            if (data?.success == true) {
               this.height = "70vh";
               this.step = 2;
               this.resetErrors();
+            } else {
+              this.errors = data.errors;
+              console.log(this.errors.phone);
             }
           });
       } catch (e) {
@@ -319,14 +319,16 @@ export default {
       }
     },
     resetErrors() {
-      this.form.otp = "",
-      this.form.password = "",
-      this.form.confirm_password = "",
-      this.errors = {};
+      (this.form.otp = ""),
+        (this.form.password = ""),
+        (this.form.confirm_password = ""),
+        (this.errors = {});
       this.errors = { message: "" };
     },
     async forgotPasswordSubmit() {
-      this.resetErrors();
+      console.log(JSON.stringify(this.form));
+      // return;
+      // this.resetErrors();
       try {
         this.$store.dispatch("forgotPasswordSubmit", this.form).then((data) => {
           console.log(data);
