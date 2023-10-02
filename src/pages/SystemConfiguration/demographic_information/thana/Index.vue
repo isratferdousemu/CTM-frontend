@@ -669,13 +669,7 @@ export default {
             this.GetUpazila();
           } else {
             this.errors = data.errors;
-          }
-          // if (this.error_status == "") {
-          //   this.$toast.success("Data Inserted Successfully");
-          //   this.dialogAdd = false;
-          //   this.resetData();
-          //   this.GetUpazila();
-          // }
+          } 
         });
       } catch (e) {
         console.log(e);
@@ -693,13 +687,7 @@ export default {
           } else {
             this.errors = data.errors;
           }
-
-          // if (this.error_status == "") {
-          //   this.$toast.success("Data Updated Successfully");
-          //   this.dialogEdit = false;
-          //   this.resetData();
-          //   this.GetUpazila();
-          // }
+ 
         });
       } catch (e) {
         console.log(e);
