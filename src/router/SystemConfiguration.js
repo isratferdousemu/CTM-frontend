@@ -173,16 +173,28 @@ const SystemConfigurationRoutes = [
   {
     path: "/system-configuration/role",
     name: "Role",
+    meta: {
+      requiresAuth: true,
+      permission: "common",
+    },
     component: () => import("../pages/SystemConfiguration/user_management/roles/Index.vue")
   },
   {
     path: "/system-configuration/role/create",
     name: "RoleCreate",
+    meta: {
+      requiresAuth: true,
+      permission: "common",
+    },
     component: () => import("../pages/SystemConfiguration/user_management/roles/Create.vue")
   },
   {
     path: "/system-configuration/role/edit/:id",
     name: "RoleEdit",
+    meta: {
+      requiresAuth: true,
+      permission: "common",
+    },
     component: () => import("../pages/SystemConfiguration/user_management/roles/Edit.vue")
   },
     /*user management/role route end*/
@@ -191,12 +203,13 @@ const SystemConfigurationRoutes = [
   {
     path: "/system-configuration/role-permission",
     name: "RolePermission",
+    meta: {
+      requiresAuth: true,
+      permission: "common",
+    },
     component: () => import("../pages/SystemConfiguration/user_management/role_permission/Index.vue")
   }
-    /*user management/rolePermission route end*/
-
-    /*user management/user route start*/
-    /*user management/user route end*/
+ 
 ];
 
 export default SystemConfigurationRoutes;
