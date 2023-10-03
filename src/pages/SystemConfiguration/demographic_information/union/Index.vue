@@ -852,9 +852,11 @@ export default {
   },
 
   mounted() {
-    this.$store.commit("setHeaderTitle", "Division List");
     this.GetAllDivisions();
     this.GetUnion();
+  },
+  beforeMount() {
+    this.$store.commit("setHeaderTitle", this.$t("container.system_config.demo_graphic.union.union"));
   },
 };
 </script>

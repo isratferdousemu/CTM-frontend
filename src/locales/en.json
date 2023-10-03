@@ -71,7 +71,7 @@
                     "delete_alert": "Are you sure to delete this Thana/Upazila? All Information under this will be deleted"
                 },
                 "union": {
-                    "thana": "Union/Pouroshava",
+                    "union": "Union/Pouroshava",
                     "list": "Union/Pouroshava List",
                     "name_en": "Union/Pouroshava Name English",
                     "name_bn": "Union/Pouroshava Name Bangla",
