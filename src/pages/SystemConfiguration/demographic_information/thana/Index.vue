@@ -900,9 +900,17 @@ export default {
       this.data.location_type = item.locationType.id;
       this.onChangeDivision(this.data.division_id);
     },
+    updateHeaderTitle() {
+      const title = this.$t("container.system_config.demo_graphic.thana.list");
+      this.$store.commit("setHeaderTitle", title);
+    },
   },
-
+  watch: {
+    '$i18n.locale': 'updateHeaderTitle',
+  },
+  
   mounted() {
+   
     this.GetAllDivisions();
     this.GetUpazila();
     this.$store
@@ -910,7 +918,7 @@ export default {
       .then((res) => (this.locationType = res));
   },
   beforeMount() {
-    this.$store.commit("setHeaderTitle", this.$t("container.system_config.demo_graphic.thana.thana"));
+    this.updateHeaderTitle();
   },
 };
 </script>

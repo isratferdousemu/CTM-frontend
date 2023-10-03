@@ -832,14 +832,22 @@ export default {
 
       this.onChangeDistrict(this.data.district_id);
     },
+       updateHeaderTitle() {
+      const title = this.$t("container.system_config.demo_graphic.union.list");
+      this.$store.commit("setHeaderTitle", title);
+    },
+  },
+   watch: {
+    '$i18n.locale': 'updateHeaderTitle',
   },
 
   mounted() {
+   
     this.GetAllDivisions();
     this.GetUnion();
   },
   beforeMount() {
-    this.$store.commit("setHeaderTitle", this.$t("container.system_config.demo_graphic.union.union"));
+    this.updateHeaderTitle();
   },
 };
 </script>

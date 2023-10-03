@@ -117,6 +117,11 @@
                     "status": "Status",
                     "comment": "Comment",
                     "active": "Active"
+                },
+                "role": {
+                 
+                    "list": "Role List"
+                  
                 }
             }
         }
