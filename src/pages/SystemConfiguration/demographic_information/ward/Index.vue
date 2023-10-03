@@ -699,7 +699,7 @@ console.log(res,'res')
           // check if the request was successful
           console.log(res,'DestroyWard');
           if (res?.data?.success) {
-            this.$toast.success(res.data.message);
+            this.$toast.error(res.data.message);
           } else {
             this.$toast.error(res.data.message);
           }
