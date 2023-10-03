@@ -868,6 +868,7 @@ export default {
   computed: {
     headers() {
       return [
+   
         {
           text: this.$t("container.list.code"),
           value: "code",

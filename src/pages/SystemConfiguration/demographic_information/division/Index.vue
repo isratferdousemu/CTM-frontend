@@ -569,9 +569,7 @@ export default {
     this.GetDivision();
   },
   beforeMount() {
-    this.$store.commit("setHeaderTitle", this.$t(
-      "container.system_config.demo_graphic.division.list"
-    ));
+    this.$store.commit("setHeaderTitle","Division List" );
   },
 };
 </script>
