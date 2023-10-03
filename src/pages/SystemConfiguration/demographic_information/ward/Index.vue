@@ -935,15 +935,20 @@ export default {
           }
         }
         this.$store.dispatch("Ward/StoreWard", fd).then((res) => {
-          if (res.data.success) {
+console.log(res,'res')
+          if (res.data?.success) {
             this.$toast.success("Data Inserted Successfully");
             this.resetData();
             this.dialogAdd = false;
             this.GetWard();
+          } else if (res.response?.data?.errors) {
+            this.$refs.form.setErrors(res.response.data.errors);
+            this.$toast.error(res.response.data.message);
+           
           }
         });
       } catch (e) {
-        console.log(e);
+        console.log(e,'err');
       }
     },
     async updateWard() {
