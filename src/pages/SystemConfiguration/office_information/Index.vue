@@ -1195,8 +1195,13 @@ export default {
       this.data.city_corpo_id = null;
       this.data.thana_id = null;
     },
+     updateHeaderTitle() {
+      const title = this.$t("container.system_config.demo_graphic.office.list");
+      this.$store.commit("setHeaderTitle", title);
+    },
   },
   mounted() {
+     this.GetOfficeType();
     this.GetOfficeType();
     this.GetOffices();
     this.GetAllDivisions();
@@ -1207,8 +1212,11 @@ export default {
     //   .dispatch("getLookupByType", 1)
     //   .then((res) => (this.locationType = res));
   },
+  watch: {
+    '$i18n.locale': 'updateHeaderTitle',
+  },
   beforeMount() {
-    this.$store.commit("setHeaderTitle", "Office List");
+    this.updateHeaderTitle();
   },
 };
 </script>

@@ -137,7 +137,7 @@ export default {
       items: [
         {
           icon: "mdi-view-dashboard-outline",
-          title: "Dashboard",
+          title: "dashboard",
           to: "/",
           permission: "view-dashboard",
         },

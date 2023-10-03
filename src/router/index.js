@@ -64,6 +64,7 @@ router.beforeEach((to, from, next) => {
       // console.log("don't load permissions")
 
       next('/dashboard');
+      
       } 
       // User is authenticated, allow access
       next();
