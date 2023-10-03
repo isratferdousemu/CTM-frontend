@@ -842,9 +842,12 @@ export default {
   },
 
   mounted() {
-   this.updateHeaderTitle(); 
+   
     this.GetAllDivisions();
     this.GetUnion();
+  },
+  beforeMount() {
+    this.updateHeaderTitle();
   },
 };
 </script>

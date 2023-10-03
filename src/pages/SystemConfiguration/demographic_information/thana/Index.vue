@@ -910,12 +910,15 @@ export default {
   },
   
   mounted() {
-    this.updateHeaderTitle();
+   
     this.GetAllDivisions();
     this.GetUpazila();
     this.$store
       .dispatch("getLookupByType", 1)
       .then((res) => (this.locationType = res));
+  },
+  beforeMount() {
+    this.updateHeaderTitle();
   },
 };
 </script>
