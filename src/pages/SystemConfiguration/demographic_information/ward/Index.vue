@@ -516,7 +516,6 @@ console.log(res,'res')
           } else if (res.response?.data?.errors) {
             this.$refs.form.setErrors(res.response.data.errors);
             this.$toast.error(res.response.data.message);
-           
           }
         });
       } catch (e) {

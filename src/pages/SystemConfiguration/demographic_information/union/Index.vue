@@ -727,12 +727,15 @@ export default {
     async submitUnion() {
       try {
         this.$store.dispatch("Union/StoreUnion", this.data).then((res) => {
-          // if (this.error_status == "") {
-          this.$toast.success("Data Inserted Successfully");
+          if (res.data?.success) {
+            this.$toast.success("Data Inserted Successfully");
           this.dialogAdd = false;
           this.resetData();
           this.GetUnion();
-          // }
+          } else if (res.response?.data?.errors) {
+            this.$refs.form.setErrors(res.response.data.errors);
+            this.$toast.error(res.response.data.message);
+          }
         });
       } catch (e) {
         console.log(e);

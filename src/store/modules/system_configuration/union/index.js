@@ -70,20 +70,16 @@ const actions = {
         return http()
             .post("/admin/union/insert", data)
             .then((result) => {
-                console.log(result.data);
-                console.log(commit);
-                // alert("Successfully Inserted");
-                // this.$router.push({
-                //   path: "/system-configuration/division",
-                // });
-                commit("STORE_UNION", result);
+                return result;
             })
             .catch((err) => {
+                return err;
                 if (err.response && err.response.data && err.response.data.errors) {
                     state.union_errors = err.response.data.errors;
                     state.error_status = err.response.status;
                 } else {
                     console.error("Error:", err);
+
                     // Handle the error as needed when response or data is not available
                 }
             });
