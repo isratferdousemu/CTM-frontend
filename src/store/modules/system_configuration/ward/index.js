@@ -80,13 +80,7 @@ const actions = {
                 return result
             })
             .catch((err) => {
-                if (err.response && err.response.data && err.response.data.errors) {
-                    state.ward_errors = err.response.data.errors;
-                    state.error_status = err.response.status;
-                } else {
-                    console.error("Error:", err);
-                    // Handle the error as needed when response or data is not available
-                }
+                return err
             });
     },
     UpdateWard: ({ commit }, data) => {
