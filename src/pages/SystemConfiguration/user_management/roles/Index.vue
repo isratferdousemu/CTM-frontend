@@ -1,24 +1,18 @@
 <script>
-import {mapActions, mapState} from "vuex";
 import {http} from "@/hooks/httpService";
+import {mapState} from "vuex";
 
 export default {
   name: "Index",
-  title: "CTM - Device Registration",
+  title: "CTM - Roles",
+
   data(){
     return{
-      device_types: [
-        {id: 1, name: 'Computer Desktop'},
-        {id: 2, name: 'Android Mobile'},
-        {id: 3, name: 'Ios Mobile'},
-        {id: 4, name: 'Laptop'},
-      ],
-
       deleteDialog: false,
       delete_loading: false,
       deleted_id: '',
-      totalDevices: 0,
-      devices: [],
+      totalRoles: 0,
+      roles: [],
       loading: true,
       options: {},
       search: '',
@@ -28,48 +22,47 @@ export default {
   watch: {
     options: {
       handler () {
-        this.getAllDevices()
+        this.getAllRoles()
       },
       deep: true,
     },
 
     search: {
       handler () {
-        this.getAllDevices()
+        this.getAllRoles()
       },
     },
   },
 
   computed: {
-    headers() {
-      return [
+    headers(){
+      return[
         { text: "#Sl", value: "id", align: "start", sortable: false },
-        { text: "User ID", value: "user_id" },
-        { text: "User Name", value: "name" },
-        { text: "Device Type", value: "device_type" },
-        { text: "IP Address", value: "ip_address" },
-        { text: "Purpose of Use", value: "purpose_use" },
+        { text: "Code", value: "code" },
+        { text: "Role Name (BN)", value: "name_bn" },
+        { text: "Role Name (EN)", value: "name_en" },
+        { text: "Remarks", value: "comment" },
         { text: "Status", value: "status" },
         { text: "Actions", value: "actions", align: "center", sortable: false },
-      ];
+      ]
     },
 
     ...mapState({
-        message: (state) => state.Device_registration.success_message
+      message: (state) => state.Role.success_message
     })
   },
 
   mounted() {
-    console.log("First Loading")
+    this.getAllRoles();
   },
 
   methods: {
-    getAllDevices(){
+    getAllRoles(){
       this.loading = true
 
       const { sortBy, sortDesc, page, itemsPerPage } = this.options
 
-      http().get('/admin/device/get', {
+      http().get('/admin/role/get', {
         params: {
           sortBy: sortBy[0],
           sortDesc: sortDesc[0],
@@ -78,8 +71,8 @@ export default {
           search: this.search
         }
       }).then((result) => {
-        this.devices = result.data.data;
-        this.totalDevices = result.data.total;
+        this.roles = result.data.data;
+        this.totalRoles = result.data.total;
         this.loading = false;
       }).catch((err) => {
         console.log(err);
@@ -91,24 +84,13 @@ export default {
       this.deleted_id = id;
     },
 
-    deleteDevice: async function(){
+    deleteRole: async function(){
       try {
         let id = this.deleted_id;
-        await this.$store.dispatch("Device_registration/DestroyDevice", id).then(() => {
+        await this.$store.dispatch("Role/DestroyRole", id).then(() => {
           this.deleteDialog = false;
           this.$toast.success(this.message);
-          this.getAllDevices();
-        })
-      }catch (e) {
-        console.log(e);
-      }
-    },
-
-    deviceActivate: async function(id){
-      try {
-        await this.$store.dispatch("Device_registration/ActivateDevice", id).then(() => {
-          this.$toast.success(this.message);
-          this.getAllDevices();
+          this.getAllRoles();
         })
       }catch (e) {
         console.log(e);
@@ -119,7 +101,7 @@ export default {
 </script>
 
 <template>
-  <div id="device-registration">
+  <div id="roles">
     <v-row class="mx-5">
       <v-col cols="12">
         <v-row wrap>
@@ -127,7 +109,7 @@ export default {
             <v-card>
               <v-row>
                 <v-col col="6">
-                  <v-card-title><h3>Device Registration Lists</h3></v-card-title>
+                  <v-card-title><h3>Role Lists</h3></v-card-title>
                 </v-col>
               </v-row>
 
@@ -137,7 +119,7 @@ export default {
                 <v-card-title class="mb-5">
                   <div class="d-flex justify-sm-end flex-wrap">
                     <v-text-field
-                        @keyup.native="getAllDevices"
+                        @keyup.native="getAllRoles"
                         v-model="search"
                         append-icon="mdi-magnify"
                         label="Search"
@@ -155,7 +137,7 @@ export default {
                       flat
                       color="primary"
                       router
-                      to="/system-configuration/device_registration/create"
+                      to="/system-configuration/role/create"
                   >
                     <v-icon small left>mdi-plus</v-icon>
                     <span>Add New</span>
@@ -165,10 +147,10 @@ export default {
                 <v-card-subtitle>
                   <v-data-table
                       :headers="headers"
-                      :items="devices"
+                      :items="roles"
                       :search="search"
                       :options.sync="options"
-                      :server-items-length="totalDevices"
+                      :server-items-length="totalRoles"
                       :loading="loading"
                       :footer-props="{
                           'items-per-page-options': [10,20,30,40,50]
@@ -177,17 +159,21 @@ export default {
                       class="elevation-1 transparent row-pointer"
                   >
 
-                    <template v-slot:[`item.device_type`]="{ item }">
-                      <div v-for="device in device_types" :key="device.id">
-                        <span v-if="device.id === item.device_type">
-                          {{ device.name }}
-                        </span>
-                      </div>
+                    <template v-slot:[`item.comment`]="{ item }">
+                      <span v-if="item.comment != null">
+                        {{ item.comment }}
+                      </span>
+                      <span v-else>
+                        ---
+                      </span>
                     </template>
 
-                    <template v-slot:[`item.status`]="{item}">
-                      <span>
-                           <v-switch :input-value="item.status === 1 ? true : false" @click="deviceActivate(item.id)" hide-details color="orange darken-3"></v-switch>
+                    <template v-slot:[`item.status`]="{ item }">
+                      <span v-if="item.statu === 0">
+                        InActive
+                      </span>
+                      <span v-else>
+                        Active
                       </span>
                     </template>
 
@@ -200,7 +186,7 @@ export default {
                               color="success"
                               v-on="on"
                               router
-                              :to="`/system-configuration/device_registration/edit/${item.id}`"
+                              :to="`/system-configuration/role/edit/${item.id}`"
                           >
                             <v-icon>mdi-account-edit-outline</v-icon>
                           </v-btn>
@@ -249,7 +235,7 @@ export default {
               <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
                 Cancel
               </v-btn>
-              <v-btn text @click="deleteDevice" color="white" :loading="delete_loading"
+              <v-btn text @click="deleteRole" color="white" :loading="delete_loading"
                      class="custom-btn-width warning white--text py-2">
                 Delete
               </v-btn>
@@ -262,6 +248,6 @@ export default {
   </div>
 </template>
 
-<style lang="css" scoped>
+<style scoped>
 
 </style>

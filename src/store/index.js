@@ -23,6 +23,8 @@ import Ward from "@/store/modules/system_configuration/ward";
 import Thana from "@/store/modules/system_configuration/thana";
 import Menu from "@/store/modules/system_configuration/menu";
 import Device_registration from "@/store/modules/system_configuration/device_registration";
+import Role from "@/store/modules/system_configuration/role";
+import Role_permission from "@/store/modules/system_configuration/role_permission";
 // Import other modules as needed
 
 Vue.use(Vuex);
@@ -284,6 +286,8 @@ export default new Vuex.Store({
     Ward,
     Menu,
     Device_registration,
+    Role,
+    Role_permission,
   },
   plugins: [
     createPersistedState({
