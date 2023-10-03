@@ -9,9 +9,7 @@
       EN
       </v-btn>
     </v-btn-toggle>
-    <!-- <v-switch v-model="$i18n.locale"   :label="getSwitchLabel"  value="bn" hide-details
-      @change="handleSwitchChange"></v-switch>
-        -->
+ 
   </div>
 
 </template>

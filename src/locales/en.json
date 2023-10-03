@@ -1,9 +1,7 @@
 {
     "sidebar": {
-        "dashboard": "Dashboard",
-        "system_config": {
-            "system_config": "System Configuration"
-        }
+        "dashboard": "Dashboard"
+       
     },
 
         "container": {
