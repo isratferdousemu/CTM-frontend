@@ -5,6 +5,9 @@ const CommonRoutes = [
   {
     path: "/forgotPassword",
     name: "ForgotPassword",
+    meta: {
+      guest: true
+    },
     component: ForgotPassword,
   },
   {
