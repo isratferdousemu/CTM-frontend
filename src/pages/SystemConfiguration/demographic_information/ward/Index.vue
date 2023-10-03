@@ -4,75 +4,38 @@
       <v-col cols="12">
         <v-row>
           <v-col cols="12">
-            <v-card
-              elevation="10"
-              color="white"
-              rounded="md"
-              theme="light"
-              class="mb-8"
-            >
+            <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8">
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
                   {{ $t("container.system_config.demo_graphic.ward.list") }}
                 </h3>
               </v-card-title>
               <v-card-text>
-                <v-row
-                  class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
-                  justify="center"
-                  justify-lg="space-between"
-                >
+                <v-row class="ma-0 pa-3 white round-border d-flex justify-space-between align-center" justify="center"
+                  justify-lg="space-between">
                   <div class="d-flex justify-sm-end flex-wrap">
-                    <v-text-field
-                      @keyup.native="GetWard"
-                      outlined
-                      dense
-                      v-model="search"
-                      prepend-inner-icon="mdi-magnify"
-                      class="my-sm-0 my-3 mx-0v -input--horizontal"
-                      flat
-                      variant="outlined"
-                      :label="
-                        $t('container.system_config.demo_graphic.ward.search')
-                      "
-                      hide-details
-                      color="primary"
-                    >
+                    <v-text-field @keyup.native="GetWard" outlined dense v-model="search" prepend-inner-icon="mdi-magnify"
+                      class="my-sm-0 my-3 mx-0v -input--horizontal" flat variant="outlined" :label="$t('container.system_config.demo_graphic.ward.search')
+                        " hide-details color="primary">
                     </v-text-field>
                   </div>
-                  <v-btn
-                    @click="dialogOpen"
-                    flat
-                    color="primary"
-                    prepend-icon="mdi-account-multiple-plus"
-                  >
+                  <v-btn @click="dialogOpen" flat color="primary" prepend-icon="mdi-account-multiple-plus">
                     {{ $t("container.list.add_new") }}
                   </v-btn>
                   <v-col cols="12">
-                    <v-data-table
-                      :loading="loading"
-                      item-key="id"
-                      :headers="headers"
-                      :items="wards"
-                      :items-per-page="pagination.perPage"
-                      hide-default-footer
-                      class="elevation-0 transparent row-pointer"
-                    >
+                    <v-data-table :loading="loading" item-key="id" :headers="headers" :items="wards"
+                      :items-per-page="pagination.perPage" hide-default-footer
+                      class="elevation-0 transparent row-pointer">
                       <!-- <template v-slot:item.id="{ item, index }">
                                             {{ (pagination.current - 1) * pagination.perPage + index + 1 }}
                                         </template> -->
                       <template v-slot:item.division="{ item }">
-                        <span
-                          v-if="item?.parent?.parent?.parent.type == 'division'"
-                        >
+                        <span v-if="item?.parent?.parent?.parent.type == 'division'">
                           {{ item?.parent?.parent?.parent.name_en }}
                         </span>
-                        <span
-                          v-if="
-                            item?.parent?.type == 'union' ||
-                            item?.parent?.type == 'thana'
-                          "
-                        >
+                        <span v-if="item?.parent?.type == 'union' ||
+                          item?.parent?.type == 'thana'
+                          ">
                           {{ item?.parent?.parent?.parent?.parent?.name_en }}
                         </span>
                       </template>
@@ -80,51 +43,35 @@
                         <span v-if="item?.parent?.parent?.type == 'district'">
                           {{ item?.parent?.parent.name_en }}
                         </span>
-                        <span
-                          v-if="
-                            item?.parent?.type == 'union' ||
-                            item?.parent?.type == 'thana'
-                          "
-                        >
+                        <span v-if="item?.parent?.type == 'union' ||
+                          item?.parent?.type == 'thana'
+                          ">
                           {{ item?.parent?.parent?.parent?.name_en }}
                         </span>
                       </template>
                       <template v-slot:item.thana="{ item }">
-                        <span
-                          v-if="
-                            item?.parent?.type == 'union' ||
-                            item?.parent?.type == 'thana'
-                          "
-                        >
+                        <span v-if="item?.parent?.type == 'union' ||
+                          item?.parent?.type == 'thana'
+                          ">
                           {{ item?.parent?.parent?.name_en }}
                         </span>
                       </template>
                       <template v-slot:item.union="{ item }">
-                        <span
-                          v-if="
-                            item?.parent?.type == 'city' ||
-                            item?.parent?.type == 'union' ||
-                            item?.parent?.type == 'thana'
-                          "
-                        >
+                        <span v-if="item?.parent?.type == 'city' ||
+                          item?.parent?.type == 'union' ||
+                          item?.parent?.type == 'thana'
+                          ">
                           {{ item?.parent?.name_en }}
                         </span>
                       </template>
-                     
+
 
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'update-post'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="success"
-                              elevation="0"
-                              @click="editWard(item)"
-                            >
+                            <v-btn v-can="'update-post'" fab x-small v-on="on" color="success" elevation="0"
+                              @click="editWard(item)">
                               <v-icon> mdi-account-edit-outline </v-icon>
                             </v-btn>
                           </template>
@@ -135,16 +82,8 @@
 
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'delete-division'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="grey"
-                              class="ml-3 white--text"
-                              elevation="0"
-                              @click="deleteAlert(item.id)"
-                            >
+                            <v-btn v-can="'delete-division'" fab x-small v-on="on" color="grey" class="ml-3 white--text"
+                              elevation="0" @click="deleteAlert(item.id)">
                               <v-icon> mdi-delete </v-icon>
                             </v-btn>
                           </template>
@@ -154,32 +93,16 @@
                       <!-- End Action Button -->
 
                       <template v-slot:footer="item">
-                        <div
-                          class="text-center pt-2 v-data-footer justify-center pb-2"
-                        >
-                          <v-select
-                            style="
+                        <div class="text-center pt-2 v-data-footer justify-center pb-2">
+                          <v-select style="
                               position: absolute;
                               right: 25px;
                               width: 149px;
                               transform: translate(0px, 0px);
-                            "
-                            :items="items"
-                            hide-details
-                            dense
-                            outlined
-                            @change="onPageChange"
-                            v-model="pagination.perPage"
-                          ></v-select>
-                          <v-pagination
-                            circle
-                            primary
-                            v-model="pagination.current"
-                            :length="pagination.total"
-                            @input="onPageChange"
-                            :total-visible="11"
-                            class="custom-pagination-item"
-                          ></v-pagination>
+                            " :items="items" hide-details dense outlined @change="onPageChange"
+                            v-model="pagination.perPage"></v-select>
+                          <v-pagination circle primary v-model="pagination.current" :length="pagination.total"
+                            @input="onPageChange" :total-visible="11" class="custom-pagination-item"></v-pagination>
                         </div>
                       </template>
                     </v-data-table>
@@ -205,273 +128,101 @@
               <form @submit.prevent="submitWard()">
                 <v-row>
                   <v-col lg="12" md="12" cols="12">
-                    <ValidationProvider
-                      name="Code"
-                      vid="code"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-text-field
-                        :hide-details="errors[0] ? false : true"
-                        outlined
-                        type="text"
-                        v-model="data.code"
-                        :label="$t('container.list.code')"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-text-field>
+                    <ValidationProvider name="Code" vid="code" rules="required" v-slot="{ errors }">
+                      <v-text-field :hide-details="errors[0] ? false : true" outlined type="text" v-model="data.code"
+                        :label="$t('container.list.code')" required :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"></v-text-field>
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="Ward Name English"
-                      vid="name_en"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-text-field
-                        outlined
-                        type="text"
-                        :hide-details="errors[0] ? false : true"
-                        v-model="data.name_en"
-                        :label="$t('container.list.name_en')"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-text-field>
+                    <ValidationProvider name="Ward Name English" vid="name_en" rules="required" v-slot="{ errors }">
+                      <v-text-field outlined type="text" :hide-details="errors[0] ? false : true" v-model="data.name_en"
+                        :label="$t('container.list.name_en')" required :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"></v-text-field>
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="Ward Name Bangla"
-                      vid="name_bn"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-text-field
-                        :hide-details="errors[0] ? false : true"
-                        outlined
-                        type="text"
-                        v-model="data.name_bn"
-                        :label="$t('container.list.name_bn')"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-text-field>
+                    <ValidationProvider name="Ward Name Bangla" vid="name_bn" rules="required" v-slot="{ errors }">
+                      <v-text-field :hide-details="errors[0] ? false : true" outlined type="text" v-model="data.name_bn"
+                        :label="$t('container.list.name_bn')" required :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"></v-text-field>
                     </ValidationProvider>
                   </v-col>
 
                   <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="Division"
-                      vid="division"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        :hide-details="errors[0] ? false : true"
-                        @input="onChangeDivision($event)"
-                        v-model="data.division_id"
-                        outlined
-                        :label="
-                          $t(
-                            'container.system_config.demo_graphic.division.division'
-                          )
-                        "
-                        :items="divisions"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-autocomplete>
+                    <ValidationProvider name="Division" vid="division" rules="required" v-slot="{ errors }">
+                      <v-autocomplete :hide-details="errors[0] ? false : true" @input="onChangeDivision($event)"
+                        v-model="data.division_id" outlined :label="$t(
+                          'container.system_config.demo_graphic.division.division'
+                        )
+                          " :items="divisions" item-text="name_en" item-value="id" required
+                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="District"
-                      vid="district"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        :hide-details="errors[0] ? false : true"
-                        outlined
-                        v-model="data.district_id"
-                        @input="onChangeDistrict($event)"
-                        :label="
-                          $t(
-                            'container.system_config.demo_graphic.district.district'
-                          )
-                        "
-                        :items="districts"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-autocomplete>
+                    <ValidationProvider name="District" vid="district" rules="required" v-slot="{ errors }">
+                      <v-autocomplete :hide-details="errors[0] ? false : true" outlined v-model="data.district_id"
+                        @input="onChangeDistrict($event)" :label="$t(
+                          'container.system_config.demo_graphic.district.district'
+                        )
+                          " :items="districts" item-text="name_en" item-value="id" required
+                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col cols="12">
-                    <ValidationProvider
-                      name="Location Type"
-                      vid="location_type"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        @input="LocationType($event)"
-                        v-model="data.location_type"
-                        :hide-details="errors[0] ? false : true"
-                        outlined
-                        :label="$t('container.list.location_type')"
-                        :items="locationType"
-                        item-text="value_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-autocomplete>
+                    <ValidationProvider name="Location Type" vid="location_type" rules="required" v-slot="{ errors }">
+                      <v-autocomplete @input="LocationType($event)" v-model="data.location_type"
+                        :hide-details="errors[0] ? false : true" outlined :label="$t('container.list.location_type')"
+                        :items="locationType" item-text="value_en" item-value="id" required
+                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col v-if="data.location_type == 2" lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="Upazila"
-                      vid="thana_id"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        :hide-details="errors[0] ? false : true"
-                        v-model="data.thana_id"
-                        outlined
-                        :label="
-                          $t('container.system_config.demo_graphic.thana.thana')
-                        "
-                        @change="onChangeUpazila($event)"
-                        :items="thanas"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-autocomplete>
+                    <ValidationProvider name="Upazila" vid="thana_id" rules="required" v-slot="{ errors }">
+                      <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.thana_id" outlined :label="$t('container.system_config.demo_graphic.thana.thana')
+                        " @change="onChangeUpazila($event)" :items="thanas" item-text="name_en" item-value="id"
+                        required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col v-if="data.location_type == 2" lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="union"
-                      vid="union_id"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        :hide-details="errors[0] ? false : true"
-                        v-model="data.union_id"
-                        outlined
-                        :label="
-                          $t('container.system_config.demo_graphic.ward.union')
-                        "
-                        :items="unions"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-autocomplete>
+                    <ValidationProvider name="union" vid="union_id" rules="required" v-slot="{ errors }">
+                      <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.union_id" outlined :label="$t('container.system_config.demo_graphic.ward.union')
+                        " :items="unions" item-text="name_en" item-value="id" required
+                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col v-if="data.location_type == 3" lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="city"
-                      vid="city_id"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        :hide-details="errors[0] ? false : true"
-                        v-model="data.city_id"
-                        @change="onChangeCity($event)"
-                        outlined
-                        :label="
-                          $t('container.system_config.demo_graphic.ward.city')
-                        "
-                        :items="cities"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-autocomplete>
+                    <ValidationProvider name="city" vid="city_id" rules="required" v-slot="{ errors }">
+                      <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.city_id"
+                        @change="onChangeCity($event)" outlined :label="$t('container.system_config.demo_graphic.ward.city')
+                          " :items="cities" item-text="name_en" item-value="id" required
+                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col v-if="data.location_type == 3" lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="thana"
-                      vid="city_thana_id"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        :hide-details="errors[0] ? false : true"
-                        v-model="data.city_thana_id"
-                        outlined
-                        :label="
-                          $t('container.system_config.demo_graphic.ward.thana')
-                        "
-                        :items="city_thanas"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-autocomplete>
+                    <ValidationProvider name="thana" vid="city_thana_id" rules="required" v-slot="{ errors }">
+                      <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.city_thana_id" outlined
+                        :label="$t('container.system_config.demo_graphic.ward.thana')
+                          " :items="city_thanas" item-text="name_en" item-value="id" required
+                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col v-if="data.location_type == 1" lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="thana"
-                      vid="district_pouro_id"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        :hide-details="errors[0] ? false : true"
-                        v-model="data.district_pouro_id"
-                        outlined
-                        :label="
-                          $t('container.system_config.demo_graphic.ward.pouro')
-                        "
-                        :items="district_poros"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-autocomplete>
+                    <ValidationProvider name="thana" vid="district_pouro_id" rules="required" v-slot="{ errors }">
+                      <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.district_pouro_id" outlined
+                        :label="$t('container.system_config.demo_graphic.ward.pouro')
+                          " :items="district_poros" item-text="name_en" item-value="id" required
+                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                 </v-row>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
-                  <v-btn
-                    flat
-                    @click="dialogAdd = false"
-                    outlined
-                    class="custom-btn-width py-2 mr-10"
-                  >
+                  <v-btn flat @click="dialogAdd = false" outlined class="custom-btn-width py-2 mr-10">
                     {{ $t("container.list.cancel") }}
                   </v-btn>
-                  <v-btn
-                    type="submit"
-                    flat
-                    color="primary"
-                    :disabled="invalid"
-                    :loading="loading"
-                    class="custom-btn-width black white--text py-2"
-                  >
+                  <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
+                    class="custom-btn-width black white--text py-2">
                     {{ $t("container.list.submit") }}
                   </v-btn>
                 </v-row>
@@ -495,273 +246,102 @@
               <form @submit.prevent="updateWard()">
                 <v-row>
                   <v-col lg="12" md="12" cols="12">
-                    <ValidationProvider
-                      name="Code"
-                      vid="code"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-text-field
-                        :hide-details="errors[0] ? false : true"
-                        outlined
-                        type="text"
-                        v-model="data.code"
-                        :label="$t('container.list.code')"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-text-field>
+                    <ValidationProvider name="Code" vid="code" rules="required" v-slot="{ errors }">
+                      <v-text-field :hide-details="errors[0] ? false : true" outlined type="text" v-model="data.code"
+                        :label="$t('container.list.code')" required :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"></v-text-field>
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="Ward Name English"
-                      vid="name_en"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-text-field
-                        outlined
-                        type="text"
-                        :hide-details="errors[0] ? false : true"
-                        v-model="data.name_en"
-                        :label="$t('container.list.name_en')"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-text-field>
+                    <ValidationProvider name="Ward Name English" vid="name_en" rules="required" v-slot="{ errors }">
+                      <v-text-field outlined type="text" :hide-details="errors[0] ? false : true" v-model="data.name_en"
+                        :label="$t('container.list.name_en')" required :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"></v-text-field>
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="Ward Name Bangla"
-                      vid="name_bn"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-text-field
-                        :hide-details="errors[0] ? false : true"
-                        outlined
-                        type="text"
-                        v-model="data.name_bn"
-                        :label="$t('container.list.name_bn')"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-text-field>
+                    <ValidationProvider name="Ward Name Bangla" vid="name_bn" rules="required" v-slot="{ errors }">
+                      <v-text-field :hide-details="errors[0] ? false : true" outlined type="text" v-model="data.name_bn"
+                        :label="$t('container.list.name_bn')" required :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"></v-text-field>
                     </ValidationProvider>
                   </v-col>
 
                   <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="Division"
-                      vid="division"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        :hide-details="errors[0] ? false : true"
-                        @input="onChangeDivision($event)"
-                        v-model="data.division_id"
-                        outlined
-                        :label="
-                          $t(
-                            'container.system_config.demo_graphic.division.division'
-                          )
-                        "
-                        :items="divisions"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-autocomplete>
+                    <ValidationProvider name="Division" vid="division" rules="required" v-slot="{ errors }">
+                      <v-autocomplete :hide-details="errors[0] ? false : true" @input="onChangeDivision($event)"
+                        v-model="data.division_id" outlined :label="$t(
+                          'container.system_config.demo_graphic.division.division'
+                        )
+                          " :items="divisions" item-text="name_en" item-value="id" required
+                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="District"
-                      vid="district"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        :hide-details="errors[0] ? false : true"
-                        outlined
-                        v-model="data.district_id"
-                        @input="onChangeDistrict($event)"
-                        :label="
-                          $t(
-                            'container.system_config.demo_graphic.district.district'
-                          )
-                        "
-                        :items="districts"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-autocomplete>
+                    <ValidationProvider name="District" vid="district" rules="required" v-slot="{ errors }">
+                      <v-autocomplete :hide-details="errors[0] ? false : true" outlined v-model="data.district_id"
+                        @input="onChangeDistrict($event)" :label="$t(
+                          'container.system_config.demo_graphic.district.district'
+                        )
+                          " :items="districts" item-text="name_en" item-value="id" required
+                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col cols="12">
-                    <ValidationProvider
-                      name="Location Type"
-                      vid="location_type"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        @input="LocationType($event)"
-                        v-model="data.location_type"
-                        :hide-details="errors[0] ? false : true"
-                        outlined
-                        :label="$t('container.list.location_type')"
-                        :items="locationType"
-                        item-text="value_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-autocomplete>
+                    <ValidationProvider name="Location Type" vid="location_type" rules="required" v-slot="{ errors }">
+                      <v-autocomplete @input="LocationType($event)" v-model="data.location_type"
+                        :hide-details="errors[0] ? false : true" outlined :label="$t('container.list.location_type')"
+                        :items="locationType" item-text="value_en" item-value="id" required
+                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col v-if="data.location_type == 2" lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="Upazila"
-                      vid="thana_id"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        :hide-details="errors[0] ? false : true"
-                        v-model="data.thana_id"
-                        outlined
-                        :label="
-                          $t(
-                            'container.system_config.demo_graphic.ward.upazila'
-                          )
-                        "
-                        @change="onChangeUpazila($event)"
-                        :items="thanas"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-autocomplete>
+                    <ValidationProvider name="Upazila" vid="thana_id" rules="required" v-slot="{ errors }">
+                      <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.thana_id" outlined :label="$t(
+                        'container.system_config.demo_graphic.ward.upazila'
+                      )
+                        " @change="onChangeUpazila($event)" :items="thanas" item-text="name_en" item-value="id"
+                        required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col v-if="data.location_type == 2" lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="union"
-                      vid="union_id"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        :hide-details="errors[0] ? false : true"
-                        v-model="data.union_id"
-                        outlined
-                        :label="
-                          $t('container.system_config.demo_graphic.ward.union')
-                        "
-                        :items="unions"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-autocomplete>
+                    <ValidationProvider name="union" vid="union_id" rules="required" v-slot="{ errors }">
+                      <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.union_id" outlined :label="$t('container.system_config.demo_graphic.ward.union')
+                        " :items="unions" item-text="name_en" item-value="id" required
+                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col v-if="data.location_type == 3" lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="city"
-                      vid="city_id"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        :hide-details="errors[0] ? false : true"
-                        v-model="data.city_id"
-                        @change="onChangeCity($event)"
-                        outlined
-                        :label="
-                          $t('container.system_config.demo_graphic.ward.city')
-                        "
-                        :items="cities"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-autocomplete>
+                    <ValidationProvider name="city" vid="city_id" rules="required" v-slot="{ errors }">
+                      <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.city_id"
+                        @change="onChangeCity($event)" outlined :label="$t('container.system_config.demo_graphic.ward.city')
+                          " :items="cities" item-text="name_en" item-value="id" required
+                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col v-if="data.location_type == 3" lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="thana"
-                      vid="city_thana_id"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        :hide-details="errors[0] ? false : true"
-                        v-model="data.city_thana_id"
-                        outlined
-                        :label="
-                          $t('container.system_config.demo_graphic.ward.thana')
-                        "
-                        :items="city_thanas"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-autocomplete>
+                    <ValidationProvider name="thana" vid="city_thana_id" rules="required" v-slot="{ errors }">
+                      <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.city_thana_id" outlined
+                        :label="$t('container.system_config.demo_graphic.ward.thana')
+                          " :items="city_thanas" item-text="name_en" item-value="id" required
+                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col v-if="data.location_type == 1" lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="thana"
-                      vid="district_pouro_id"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        :hide-details="errors[0] ? false : true"
-                        v-model="data.district_pouro_id"
-                        outlined
-                        label="District Pouroshava"
-                        :items="district_poros"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-autocomplete>
+                    <ValidationProvider name="thana" vid="district_pouro_id" rules="required" v-slot="{ errors }">
+                      <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.district_pouro_id" outlined
+                        label="District Pouroshava" :items="district_poros" item-text="name_en" item-value="id" required
+                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                 </v-row>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
-                  <v-btn
-                    flat
-                    @click="dialogEdit = false"
-                    outlined
-                    class="custom-btn-width py-2 mr-10"
-                  >
+                  <v-btn flat @click="dialogEdit = false" outlined class="custom-btn-width py-2 mr-10">
                     {{ $t("container.list.cancel") }}
                   </v-btn>
-                  <v-btn
-                    type="submit"
-                    flat
-                    color="primary"
-                    :disabled="invalid"
-                    :loading="loading"
-                    class="custom-btn-width black white--text py-2"
-                  >
+                  <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
+                    class="custom-btn-width black white--text py-2">
                     {{ $t("container.list.submit") }}
                   </v-btn>
                 </v-row>
@@ -786,21 +366,11 @@
           </v-card-text>
           <v-card-actions style="display: block">
             <v-row class="mx-0 my-0 py-2" justify="center">
-              <v-btn
-                text
-                @click="deleteDialog = false"
-                outlined
-                class="custom-btn-width py-2 mr-10"
-              >
+              <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
                 {{ $t("container.list.cancel") }}
               </v-btn>
-              <v-btn
-                text
-                @click="deleteWard()"
-                color="white"
-                :loading="delete_loading"
-                class="custom-btn-width black white--text py-2"
-              >
+              <v-btn text @click="deleteWard()" color="white" :loading="delete_loading"
+                class="custom-btn-width black white--text py-2">
                 {{ $t("container.list.delete") }}
               </v-btn>
             </v-row>
@@ -868,7 +438,7 @@ export default {
   computed: {
     headers() {
       return [
-   
+
         {
           text: this.$t("container.list.code"),
           value: "code",
@@ -924,7 +494,9 @@ export default {
       // message: (state) => state.SystemConfiguration.success_message,
     }),
   },
-
+  watch: {
+    '$i18n.locale': 'updateHeaderTitle',
+  },
   methods: {
     async submitWard() {
       try {
@@ -1116,45 +688,49 @@ export default {
         });
     },
 
-        deleteWard: async function (id) {
+    deleteWard: async function (id) {
 
-            try {
-                await this.$store.dispatch("Ward/DestroyWard", this.delete_id).then((err) => {
-                    // check if the request was successful
-                    // console.log(res.data)
-                    if (res?.data?.success) {
-                        this.$toast.success(res.data.message);
-                    } else {
-                        this.$toast.error(res.response.data.message);
-                    }
-                    this.deleteDialog = false;
-                    this.GetWard();
-                });
-            } catch (e) {
-                console.log(e);
-            }
+      try {
+        await this.$store.dispatch("Ward/DestroyWard", this.delete_id).then((err) => {
+          // check if the request was successful
+          // console.log(res.data)
+          if (res?.data?.success) {
+            this.$toast.success(res.data.message);
+          } else {
+            this.$toast.error(res.response.data.message);
+          }
+          this.deleteDialog = false;
+          this.GetWard();
+        });
+      } catch (e) {
+        console.log(e);
+      }
 
-        },
-        resetData() {
+    },
+    updateHeaderTitle() {
+      const title = this.$t("container.system_config.demo_graphic.ward.list");
+      this.$store.commit("setHeaderTitle", title);
+    },
+    resetData() {
 
-            this.data.name_en = null,
-                this.data.name_bn = null,
-                this.data.code = null,
-                this.data.division_id = null,
-                this.data.district_id = null,
-                this.data.thana_id = null,
-                this.data.union_id = null,
-                this.data.location_type = null,
-                this.city_id = null,
-                this.city_thana_id = null,
-                this.district_pouro_id = null
-        },
-        editWard(item) {
-            if (this.$refs.form) {
-                this.$refs.form.reset();
-            }
-            const update_error_value = null;
-            this.updateError('update_error_value');
+      this.data.name_en = null,
+        this.data.name_bn = null,
+        this.data.code = null,
+        this.data.division_id = null,
+        this.data.district_id = null,
+        this.data.thana_id = null,
+        this.data.union_id = null,
+        this.data.location_type = null,
+        this.city_id = null,
+        this.city_thana_id = null,
+        this.district_pouro_id = null
+    },
+    editWard(item) {
+      if (this.$refs.form) {
+        this.$refs.form.reset();
+      }
+      const update_error_value = null;
+      this.updateError('update_error_value');
 
       this.data.id = item.id;
       this.data.name_en = item.name_en;
@@ -1204,7 +780,7 @@ export default {
   },
 
   mounted() {
-    this.$store.commit("setHeaderTitle", "Ward List");
+    this.updateHeaderTitle();
     this.GetAllDivisions();
     this.GetWard();
 

@@ -817,6 +817,10 @@ export default {
 
       return foundItems;
     },
+       updateHeaderTitle() {
+      const title = this.$t("container.system_config.demo_graphic.city.list");
+      this.$store.commit("setHeaderTitle", title);
+    },
   },
   created() {
     this.GetCity();
@@ -827,8 +831,11 @@ export default {
     });
     // this.getAllDistrict();
   },
+    watch: {
+    '$i18n.locale': 'updateHeaderTitle',
+  },
   beforeMount() {
-    this.$store.commit("setHeaderTitle", "City List");
+    this.updateHeaderTitle();
   },
 };
 </script>

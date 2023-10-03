@@ -626,13 +626,20 @@ export default {
       //     console.log(this.districts);
       //   });
     },
+       updateHeaderTitle() {
+      const title = this.$t("container.system_config.demo_graphic.district.list");
+      this.$store.commit("setHeaderTitle", title);
+    },
+  },
+    watch: {
+    '$i18n.locale': 'updateHeaderTitle',
   },
   created() {
     this.GetDistrict();
     this.getAllDivision();
   },
   beforeMount() {
-    this.$store.commit("setHeaderTitle", "District List");
+    this.updateHeaderTitle();
   },
 };
 </script>
