@@ -15,7 +15,9 @@
 
     <b>{{ headerTitle }}</b>
 
+
     <v-spacer />
+     <LocaleSwitcher />
 
     <!-- Notification Start -->
     <v-menu
@@ -171,7 +173,10 @@
 
 <script>
 import axios from "axios";
+import LocaleSwitcher from "@/components/Common/LocaleSwitcher"
 export default {
+  
+  components: { LocaleSwitcher },
   computed: {
     headerTitle: {
       get() {

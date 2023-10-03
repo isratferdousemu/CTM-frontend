@@ -1,0 +1,126 @@
+{
+    "sidebar": {
+        "dashboard": "Dashboard",
+        "system_config": {
+            "system_config": "System Configuration"
+        }
+    },
+    "container": {
+        "list": {
+            "sl": "SL",
+            "action": "Action",
+            "submit": "Submit",
+            "cancel": "cancel",
+            "edit": "Edit",
+            "code": "Code",
+            "name_en": "Name English",
+            "name_bn": "Name Bangla",
+            "location_type": "Location Type",
+            "add_new": "Add New",
+            "update": "Update",
+            "delete": "Delete",
+            "saved": "Data saved Successfully",
+            "updated": "Data updated Successfully৷",
+            "deleted": "Data deleted Successfully"
+        },
+        "system_config": {
+            "demo_graphic": {
+                "location_type": "Location Type",
+                "division": {
+                    "division": "Division",
+                    "list": "Division List",
+                    "name_en": "Division Name English",
+                    "name_bn": "Division Name Bangla",
+                    "add_new": "Add New Division",
+                    "search": "Search Division",
+                    "edit": "Edit Division",
+                    "delete": "Delete Division",
+                    "delete_alert": "Are you sure to delete this Division? All Information under this will be deleted"
+                },
+                "district": {
+                    "district": "District",
+                    "list": "District List",
+                    "name_en": "District Name English",
+                    "name_bn": "District Name Bangla",
+                    "add_new": "Add New District",
+                    "search": "Search District",
+                    "edit": "Edit District",
+                    "delete": "Delete Division",
+                    "delete_alert": "Are you sure to delete this Division? All Information under this will be deleted"
+                },
+                "city": {
+                    "city": "City Corporation/District Pourashava",
+                    "list": "City Corporation/District Pourashava List",
+                    "name_en": "District Name English",
+                    "name_bn": "District Name Bangla",
+                    "add_new": "Add New City",
+                    "search": "Search Division",
+                    "edit": "Edit Division",
+                    "delete": "Delete Division",
+                    "delete_alert": "Are you sure to delete this Division? All Information under this will be deleted"
+                },
+                "thana": {
+                    "thana": "Thana/Upazila",
+                    "list": "Thana/Upazila List",
+                    "name_en": "Thana/Upazila Name English",
+                    "name_bn": "Thana/Upazila Name Bangla",
+                    "add_new": "Add New Thana/Upazila",
+                    "search": "Search Thana/Upazila",
+                    "edit": "Edit Thana/Upazila",
+                    "delete": "Delete Thana/Upazila",
+                    "delete_alert": "Are you sure to delete this Thana/Upazila? All Information under this will be deleted"
+                },
+                "union": {
+                    "thana": "Union/Pouroshava",
+                    "list": "Union/Pouroshava List",
+                    "name_en": "Union/Pouroshava Name English",
+                    "name_bn": "Union/Pouroshava Name Bangla",
+                    "add_new": "Add New Union/Pouroshava",
+                    "search": "Search Union/Pouroshava",
+                    "edit": "Edit Union/Pouroshava",
+                    "delete": "Delete Union/Pouroshava",
+                    "delete_alert": "Are you sure to delete this TUnion/Pouroshava? All Information under this will be deleted"
+                },
+                "ward": {
+                    "ward": "Ward",
+                    "list": "Ward List",
+                    "name_en": "WardName English",
+                    "name_bn": "Ward Name Bangla",
+                    "add_new": "Add New Ward",
+                    "search": "Search Ward",
+                    "edit": "Edit Ward",
+                    "delete": "Delete Ward",
+                    "delete_alert": "Are you sure to delete this Ward? All Information under this will be deleted",
+                    "city": "City Corporation",
+                    "thana": "Thana",
+                    "upazila": "Upazila",
+                    "union": "Union",
+                    "pouro": "District Pouroshava",
+                    "union_pouro_city": "Union/District Pouroshava/City Corporation"
+                },
+                "office": {
+                    "office": "Office",
+                    "list": "Office List",
+                    "name_en": "OfficeName English",
+                    "name_bn": "Office Name Bangla",
+                    "add_new": "Add New Office",
+                    "search": "Search Office",
+                    "edit": "Edit Office",
+                    "delete": "Delete Office",
+                    "delete_alert": "Are you sure to delete this Office? All Information under this will be deleted",
+                    "city": "City Corporation",
+                    "thana": "Thana",
+                    "upazila": "Upazila",
+                    "union": "Union",
+                    "pouro": "District Pouroshava",
+                    "union_pouro_city": "Union/District Pouroshava/City Corporation",
+                    "office_type": "Office Type",
+                    "office_address": "Office Address",
+                    "status": "Status",
+                    "comment": "Comment",
+                    "active": "Active"
+                }
+            }
+        }
+    }
+}

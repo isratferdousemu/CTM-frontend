@@ -25,6 +25,7 @@ import Menu from "@/store/modules/system_configuration/menu";
 import Device_registration from "@/store/modules/system_configuration/device_registration";
 import Role from "@/store/modules/system_configuration/role";
 import Role_permission from "@/store/modules/system_configuration/role_permission";
+import Office from "@/store/modules/system_configuration/office";
 // Import other modules as needed
 
 Vue.use(Vuex);
@@ -58,28 +59,29 @@ export default new Vuex.Store({
     error_status_login: "",
     error_code_login: "",
     success_status: "",
-    login_message:"",
-    loginData:[],
-    otpData:[],
+    login_message: "",
+    loginData: [],
+    otpData: [],
     lookupTypes: [
-      {id: 1, name: 'Location Type'},
-      {id: 2, name: 'Allowance Service'},
-      {id: 3, name: 'Office category'},
-      {id: 4, name: 'Health Status'},
-      {id: 5, name: 'Financial Status'},
-      {id: 6, name: 'Social Status'},
-      {id: 7, name: 'PMT Scoring'},
-      {id: 8, name: 'Education Status'},
-      {id: 9, name: 'Religion'},
-      {id:10, name: 'Household Asset Own'},
-      {id:11, name: 'Disability Type'},
-      {id:12, name: 'Disability Level'},
-      {id:13, name: 'Bank Name'},
-      {id:14, name: 'Branch Name'},
-      {id:15, name: 'Complaint Category'},
-      {id:16, name: 'Module Name'},
-      {id:17, name: 'Organization'},
+      { id: 1, name: 'Location Type' },
+      { id: 2, name: 'Allowance Service' },
+      { id: 3, name: 'Office category' },
+      { id: 4, name: 'Health Status' },
+      { id: 5, name: 'Financial Status' },
+      { id: 6, name: 'Social Status' },
+      { id: 7, name: 'PMT Scoring' },
+      { id: 8, name: 'Education Status' },
+      { id: 9, name: 'Religion' },
+      { id: 10, name: 'Household Asset Own' },
+      { id: 11, name: 'Disability Type' },
+      { id: 12, name: 'Disability Level' },
+      { id: 13, name: 'Bank Name' },
+      { id: 14, name: 'Branch Name' },
+      { id: 15, name: 'Complaint Category' },
+      { id: 16, name: 'Module Name' },
+      { id: 17, name: 'Organization' },
     ],
+    appLanguage: localStorage.getItem("appLanguage") || process.env.VUE_APP_I18N_LOCALE || 'bn'
 
   },
   /* -------------------------------------------------------------------------- */
@@ -89,12 +91,13 @@ export default new Vuex.Store({
     getOtpresponse(state) {
       return state.otpData
     },
-    getLoginresponse(state)  {
+    getLoginresponse(state) {
       return state.loginData
     },
     GetToken: function (state) {
       return state.token;
     },
+    getAppLanguage: state => state.appLanguage,
   },
 
   /* -------------------------------------------------------------------------- */
@@ -109,13 +112,19 @@ export default new Vuex.Store({
       return http()
         .post("admin/forgot-password", data)
         .then((result) => {
-          commit("setStep", 2);
+          // commit("setStep", 2);
+          return result.data;
           // console.log(state.step);
           // console.log(result);
         })
         .catch((err) => {
+          const data = {
+            errors: err.response.data.errors,
+          };
+          return data;
           // console.log(err);
-          commit("setforgotPasswordErrors", err.response.data.errors);
+          // commit("setforgotPasswordErrors", err.response.data.errors);
+          
         });
     },
     forgotPasswordSubmit: ({ commit, state }, data) => {
@@ -199,10 +208,29 @@ export default new Vuex.Store({
         return result.data.data
       });
     },
+
+    /*start get all City*/
+    GetAllCityByDistrict: ({ commit }, data) => {
+      return http()
+        .get(`/admin/thana/get/${data}`)
+        .then((result) => {
+          console.log(result.data);
+          return result.data.data;
+          // commit("GET_OFFICE", result.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
+    async updateLanguage({ commit }, newLocale) {
+      // You can perform asynchronous operations here if needed.
+      commit('updateMyLocale', newLocale);
+    },
+    /*end get all City*/
+  },
 
 
- mutations: {
+  mutations: {
     setDrawer(state, payload) {
       state.Drawer = payload;
     },
@@ -263,7 +291,14 @@ export default new Vuex.Store({
     },
     setOtpresponse(state, otpData) {
       state.otpData = otpData
-    }
+    },
+    setAppLanguage(state, newLocale) {
+      state.appLanguage = newLocale;
+      localStorage.setItem("appLanguage", newLocale); // Whenever we change the appLanguage we save it to the localStorage
+    },
+    updateMyLocale(state, newLocale) {
+      state.appLanguage = newLocale;
+    },
 
   },
   // use modules
@@ -288,10 +323,11 @@ export default new Vuex.Store({
     Device_registration,
     Role,
     Role_permission,
+    Office,
   },
   plugins: [
     createPersistedState({
-      paths: ["userData", "token", "userPermissions", "loginData"],
+      paths: ["userData", "token", "userPermissions", "loginData", "appLanguage"],
     }),
   ],
 });

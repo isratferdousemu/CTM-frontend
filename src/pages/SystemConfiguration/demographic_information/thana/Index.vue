@@ -12,7 +12,7 @@
               class="mb-8"
             >
               <v-card-title class="justify-center" tag="div">
-                <h3 class="text-uppercase pt-3">Thana/Upazila List</h3>
+                <h3 class="text-uppercase pt-3"> {{ $t("container.system_config.demo_graphic.thana.list") }}</h3>
               </v-card-title>
               <v-card-text>
                 <v-row
@@ -30,7 +30,7 @@
                       class="my-sm-0 my-3 mx-0v -input--horizontal"
                       flat
                       variant="outlined"
-                      label="search thana/upazila"
+                      :label='$t("container.system_config.demo_graphic.thana.search")'
                       hide-details
                       color="primary"
                     >
@@ -42,7 +42,7 @@
                     color="primary"
                     prepend-icon="mdi-account-multiple-plus"
                   >
-                    Add New Thana/Upazila
+                    {{ $t("container.list.add_new") }}
                   </v-btn>
                   <v-col cols="12">
                     <v-data-table
@@ -141,7 +141,7 @@
       <v-dialog v-model="dialogAdd" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            Add New Upazila/Thana
+         {{ $t("container.system_config.demo_graphic.thana.add_new") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
@@ -156,7 +156,7 @@
                         outlined
                         type="text"
                         v-model="data.code"
-                        label="Code"
+                        :label='$t("container.list.code")' 
                         required
                         :error="errors.code ? true : false"
                         :error-messages="errors.code"
@@ -177,7 +177,7 @@
                         @input="onChangeDistrict($event)"
                         outlined
                         v-model="data.district_id"
-                        label="District"
+                        :label='$t("container.system_config.demo_graphic.division.division")' 
                         :items="districts"
                         item-text="name_en"
                         item-value="id"
@@ -205,7 +205,7 @@
                       <v-autocomplete
                         v-model="data.city_corporation_id"
                         outlined
-                        label="City Corporation"
+                       :label='$t("container.system_config.demo_graphic.city.city")' 
                         :items="city"
                         item-text="name_en"
                         item-value="id"
@@ -228,7 +228,7 @@
                         outlined
                         type="text"
                         v-model="data.name_bn"
-                        label="Name Bangla"
+                       :label='$t("container.list.name_bn")' 
                         required
                         :error="errors.name_bn ? true : false"
                         :error-messages="errors.name_bn"
@@ -250,7 +250,7 @@
                         @input="onChangeDivision($event)"
                         v-model="data.division_id"
                         outlined
-                        label="Division"
+                       :label='$t("container.system_config.demo_graphic.division.division")' 
                         :items="divisions"
                         item-text="name_en"
                         item-value="id"
@@ -275,7 +275,7 @@
                         @input="onChangeLocationType($event)"
                         v-model="data.location_type"
                         outlined
-                        label="Location Type"
+                       :label='$t("container.list.location_type")' 
                         :items="filteredOptions"
                         item-text="value_en"
                         item-value="id"
@@ -294,7 +294,7 @@
                         outlined
                         type="text"
                         v-model="data.name_en"
-                        label="Name English"
+                        :label='$t("container.list.name_en")' 
                         required
                         :error="errors.name_en ? true : false"
                         :error-messages="errors.name_en"
@@ -315,7 +315,7 @@
                     outlined
                     class="custom-btn-width py-2 mr-10"
                   >
-                    Cancel
+                   {{ $t("container.list.cancel")  }}
                   </v-btn>
                   <v-btn
                     type="submit"
@@ -325,7 +325,7 @@
                     :loading="loading"
                     class="custom-btn-width black white--text py-2"
                   >
-                    Submit
+                  {{ $t("container.list.submit") }}
                   </v-btn>
                 </v-row>
               </form>
@@ -338,7 +338,7 @@
       <v-dialog v-model="dialogEdit" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            Edit Thana/Upazilla
+              {{ $t("container.system_config.demo_graphic.thana.edit") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
@@ -353,7 +353,7 @@
                         outlined
                         type="text"
                         v-model="data.code"
-                        label="Code"
+                      :label='$t("container.list.code")' 
                         required
                         :error="errors.code ? true : false"
                         :error-messages="errors.code"
@@ -373,7 +373,7 @@
                       <v-autocomplete
                         outlined
                         v-model="data.district_id"
-                        label="District"
+                      :label='$t("container.system_config.demo_graphic.district.district")' 
                         :items="districts"
                         item-text="name_en"
                         item-value="id"
@@ -397,7 +397,7 @@
                         outlined
                         type="text"
                         v-model="data.name_en"
-                        label="Name English"
+                        :label='$t("container.list.name_en")' 
                         required
                         :error="errors.name_en ? true : false"
                         :error-messages="errors.name_en"
@@ -419,7 +419,7 @@
                         @input="onChangeDivision($event)"
                         v-model="data.division_id"
                         outlined
-                        label="Division"
+                         :label='$t("container.system_config.demo_graphic.division.division")' 
                         :items="divisions"
                         item-text="name_en"
                         item-value="id"
@@ -443,7 +443,7 @@
                       <v-autocomplete
                         v-model="data.location_type"
                         outlined
-                        label="Location Type"
+                         :label='$t("container.list.location_type")' 
                         :items="filteredOptions"
                         item-text="value_en"
                         item-value="id"
@@ -489,7 +489,7 @@
                         outlined
                         type="text"
                         v-model="data.name_bn"
-                        label="Name Bangla"
+                      :label='$t("container.list.name_bn")' 
                         required
                         :error="errors.name_bn ? true : false"
                         :error-messages="errors.name_bn"
@@ -510,7 +510,7 @@
                     outlined
                     class="custom-btn-width py-2 mr-10"
                   >
-                    Cancel
+               {{  $t("container.list.cancel") }}
                   </v-btn>
                   <v-btn
                     type="submit"
@@ -520,7 +520,7 @@
                     :loading="loading"
                     class="custom-btn-width black white--text py-2"
                   >
-                    Update
+              {{ $t("container.list.update") }}
                   </v-btn>
                 </v-row>
               </form>
@@ -534,13 +534,12 @@
       <v-dialog v-model="deleteDialog" width="350">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            Delete Thana/Upazila
+            {{ $t("container.system_config.demo_graphic.thana.delete") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
-              Are you sure to delete this Thana/Upazila? All information under
-              this Thana/Upazila will be deleted?
+           {{ $t("container.system_config.demo_graphic.thana.delete_alert") }}
             </div>
           </v-card-text>
           <v-card-actions style="display: block">
@@ -551,7 +550,7 @@
                 outlined
                 class="custom-btn-width py-2 mr-10"
               >
-                Cancel
+           {{ $t("container.list.cancel") }}
               </v-btn>
               <v-btn
                 text
@@ -560,7 +559,7 @@
                 :loading="delete_loading"
                 class="custom-btn-width black white--text py-2"
               >
-                Delete
+             {{ $t("container.list.delete") }}
               </v-btn>
             </v-row>
           </v-card-actions>
@@ -623,26 +622,22 @@ export default {
   computed: {
     headers() {
       return [
-        { text: "#Sl", value: "id", align: "start", sortable: false },
-        { text: "Code", value: "code" },
-        { text: "Division ", value: "division" },
-        { text: "District", value: "district" },
+        { text: this.$t("container.list.sl"), value: "id", align: "start", sortable: false },
+        { text: this.$t("container.list.code"), value: "code" },
+        { text: this.$t("container.system_config.demo_graphic.division.division"), value: "division" },
+        { text: this.$t("container.system_config.demo_graphic.district.district"), value: "district" },
         // { text: "Location Type", value: "locationType" },
-        { text: "Location Type", value: "locationType" },
-        { text: "Thana/Upazila  (EN)", value: "name_en" },
-        { text: "Thana/Upazila  (BN)", value: "name_bn" },
-        { text: "Actions", value: "actions", align: "center", sortable: false, width: '13%' },
+        { text: this.$t("container.list.location_type"), value: "locationType" },
+        { text: this.$t("container.list.name_en"), value: "name_en" },
+        { text: this.$t("container.list.name_bn"), value: "name_bn" },
+        { text: this.$t("container.list.action"), value: "actions", align: "center", sortable: false, width: '13%' },
       ];
     },
 
     ...mapState({
       divisions: (state) => state.Division.divisions,
-      // error_status: (state) => state.Thana.error_status,
-      // thana_errors: (state) => state.Thana.thana_errors,
-      // message: (state) => state.SystemConfiguration.success_message,
     }),
     filteredOptions() {
-      // Apply your filter logic here, e.g., filtering out options with 'Option 2' label
       return this.locationType.filter(
         (option) => option.value_en !== "District Pouroshava"
       );
@@ -654,7 +649,13 @@ export default {
       // alert(JSON.stringify(this.data));
       // return;
       try {
-        this.$store.dispatch("Thana/StoreUpazila", this.data).then((data) => {
+        let fd = new FormData();
+                for (const [key, value] of Object.entries(this.data)) {
+                    if (value !== null) {
+                        fd.append(key, value);
+                    }
+                }
+        this.$store.dispatch("Thana/StoreUpazila", fd).then((data) => {
           console.log(data, "submit");
           if (data == null) {
             this.$toast.success("Data Inserted Successfully");
@@ -664,12 +665,6 @@ export default {
           } else {
             this.errors = data.errors;
           }
-          // if (this.error_status == "") {
-          //   this.$toast.success("Data Inserted Successfully");
-          //   this.dialogAdd = false;
-          //   this.resetData();
-          //   this.GetUpazila();
-          // }
         });
       } catch (e) {
         console.log(e);
@@ -688,12 +683,6 @@ export default {
             this.errors = data.errors;
           }
 
-          // if (this.error_status == "") {
-          //   this.$toast.success("Data Updated Successfully");
-          //   this.dialogEdit = false;
-          //   this.resetData();
-          //   this.GetUpazila();
-          // }
         });
       } catch (e) {
         console.log(e);
