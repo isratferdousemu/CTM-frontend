@@ -833,11 +833,11 @@ export default {
           .dispatch("Union/DestroyUnion", this.delete_id)
           .then((res) => {
             // check if the request was successful
-            console.log(res.data);
+            console.log(res, 'delete');
             if (res?.data?.success) {
-              this.$toast.success(res.data.message);
+              this.$toast.error(res.data.message);
             } else {
-              this.$toast.error(res.response.data.message);
+              this.$toast.error(res.data.message);
             }
             this.deleteDialog = false;
             this.GetUnion();
