@@ -28,6 +28,7 @@
             :key="i"
             router
             exact
+         
             v-can="item.permission"
             @click.stop="
               drawer = false;
@@ -137,13 +138,13 @@ export default {
       items: [
         {
           icon: "mdi-view-dashboard-outline",
-          title: "Dashboard",
+          title: 'dashboard',
           to: "/",
           permission: "view-dashboard",
         },
         {
           icon: "mdi mdi-cogs",
-          title: "System Configuration",
+          title: 'System Configuration',
           subTtems: [
             {
               title: "Division",
@@ -179,11 +180,6 @@ export default {
               title: "Office Information",
               icon: "mdi mdi-plus",
               to: "/system-configuration/office_information",
-            },
-            {
-              title: "Role Management",
-              icon: "mdi mdi-plus",
-              to: "/system-configuration/role",
             },
             // {
             //   title: "Menu",
