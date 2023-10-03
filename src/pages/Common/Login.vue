@@ -156,7 +156,7 @@ export default {
             form: {
                 device_token: null,
                 username: "ctm-01",
-                password: "@N159983a",
+                password: "12345678",
                 confirm_password: "",
                 old_password: "",
                 otp: "",

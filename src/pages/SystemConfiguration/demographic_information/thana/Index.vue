@@ -12,7 +12,9 @@
               class="mb-8"
             >
               <v-card-title class="justify-center" tag="div">
-                <h3 class="text-uppercase pt-3"> {{ $t("container.system_config.demo_graphic.thana.list") }}</h3>
+                <h3 class="text-uppercase pt-3">
+                  {{ $t("container.system_config.demo_graphic.thana.list") }}
+                </h3>
               </v-card-title>
               <v-card-text>
                 <v-row
@@ -30,7 +32,9 @@
                       class="my-sm-0 my-3 mx-0v -input--horizontal"
                       flat
                       variant="outlined"
-                      :label='$t("container.system_config.demo_graphic.thana.search")'
+                      :label="
+                        $t('container.system_config.demo_graphic.thana.search')
+                      "
                       hide-details
                       color="primary"
                     >
@@ -76,29 +80,48 @@
                       <template v-slot:item.name_bn="{ item }">
                         {{ item.name_bn }}
                       </template>
+
+                      <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
-                        <v-btn
-                          v-can="'update-post'"
-                          fab
-                          x-small
-                          color="success"
-                          elevation="0"
-                          @click="editUpazila(item)"
-                        >
-                          <v-icon> mdi-account-edit-outline </v-icon>
-                        </v-btn>
-                        <v-btn
-                          v-can="'delete-division'"
-                          fab
-                          x-small
-                          color="grey"
-                          class="ml-3 white--text"
-                          elevation="0"
-                          @click="deleteAlert(item.id)"
-                        >
-                          <v-icon> mdi-delete </v-icon>
-                        </v-btn>
+                        <v-tooltip top>
+                          <template v-slot:activator="{ on }">
+                            <v-btn
+                              v-can="'update-post'"
+                              fab
+                              x-small
+                              v-on="on"
+                              color="success"
+                              elevation="0"
+                              @click="editUpazila(item)"
+                            >
+                              <v-icon> mdi-account-edit-outline </v-icon>
+                            </v-btn>
+                          </template>
+                          <span>
+                            {{ $t("container.list.edit") }}
+                          </span>
+                        </v-tooltip>
+
+                        <v-tooltip top>
+                          <template v-slot:activator="{ on }">
+                            <v-btn
+                              v-can="'delete-division'"
+                              fab
+                              x-small
+                              v-on="on"
+                              color="grey"
+                              class="ml-3 white--text"
+                              elevation="0"
+                              @click="deleteAlert(item.id)"
+                            >
+                              <v-icon> mdi-delete </v-icon>
+                            </v-btn>
+                          </template>
+                          <span> {{ $t("container.list.delete") }}</span>
+                        </v-tooltip>
                       </template>
+                      <!-- End Action Button -->
+
                       <template v-slot:footer="item">
                         <div
                           class="text-center pt-2 v-data-footer justify-center pb-2"
@@ -141,7 +164,7 @@
       <v-dialog v-model="dialogAdd" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-         {{ $t("container.system_config.demo_graphic.thana.add_new") }}
+            {{ $t("container.system_config.demo_graphic.thana.add_new") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
@@ -156,7 +179,7 @@
                         outlined
                         type="text"
                         v-model="data.code"
-                        :label='$t("container.list.code")' 
+                        :label="$t('container.list.code')"
                         required
                         :error="errors.code ? true : false"
                         :error-messages="errors.code"
@@ -205,7 +228,9 @@
                       <v-autocomplete
                         v-model="data.city_corporation_id"
                         outlined
-                       :label='$t("container.system_config.demo_graphic.city.city")' 
+                        :label="
+                          $t('container.system_config.demo_graphic.city.city')
+                        "
                         :items="city"
                         item-text="name_en"
                         item-value="id"
@@ -228,7 +253,7 @@
                         outlined
                         type="text"
                         v-model="data.name_bn"
-                       :label='$t("container.list.name_bn")' 
+                        :label="$t('container.list.name_bn')"
                         required
                         :error="errors.name_bn ? true : false"
                         :error-messages="errors.name_bn"
@@ -250,7 +275,11 @@
                         @input="onChangeDivision($event)"
                         v-model="data.division_id"
                         outlined
-                       :label='$t("container.system_config.demo_graphic.division.division")' 
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.division.division'
+                          )
+                        "
                         :items="divisions"
                         item-text="name_en"
                         item-value="id"
@@ -275,7 +304,7 @@
                         @input="onChangeLocationType($event)"
                         v-model="data.location_type"
                         outlined
-                       :label='$t("container.list.location_type")' 
+                        :label="$t('container.list.location_type')"
                         :items="filteredOptions"
                         item-text="value_en"
                         item-value="id"
@@ -294,7 +323,7 @@
                         outlined
                         type="text"
                         v-model="data.name_en"
-                        :label='$t("container.list.name_en")' 
+                        :label="$t('container.list.name_en')"
                         required
                         :error="errors.name_en ? true : false"
                         :error-messages="errors.name_en"
@@ -315,7 +344,7 @@
                     outlined
                     class="custom-btn-width py-2 mr-10"
                   >
-                   {{ $t("container.list.cancel")  }}
+                    {{ $t("container.list.cancel") }}
                   </v-btn>
                   <v-btn
                     type="submit"
@@ -325,7 +354,7 @@
                     :loading="loading"
                     class="custom-btn-width black white--text py-2"
                   >
-                  {{ $t("container.list.submit") }}
+                    {{ $t("container.list.submit") }}
                   </v-btn>
                 </v-row>
               </form>
@@ -338,7 +367,7 @@
       <v-dialog v-model="dialogEdit" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-              {{ $t("container.system_config.demo_graphic.thana.edit") }}
+            {{ $t("container.system_config.demo_graphic.thana.edit") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
@@ -353,7 +382,7 @@
                         outlined
                         type="text"
                         v-model="data.code"
-                      :label='$t("container.list.code")' 
+                        :label="$t('container.list.code')"
                         required
                         :error="errors.code ? true : false"
                         :error-messages="errors.code"
@@ -373,7 +402,11 @@
                       <v-autocomplete
                         outlined
                         v-model="data.district_id"
-                      :label='$t("container.system_config.demo_graphic.district.district")' 
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.district.district'
+                          )
+                        "
                         :items="districts"
                         item-text="name_en"
                         item-value="id"
@@ -397,7 +430,7 @@
                         outlined
                         type="text"
                         v-model="data.name_en"
-                        :label='$t("container.list.name_en")' 
+                        :label="$t('container.list.name_en')"
                         required
                         :error="errors.name_en ? true : false"
                         :error-messages="errors.name_en"
@@ -419,7 +452,11 @@
                         @input="onChangeDivision($event)"
                         v-model="data.division_id"
                         outlined
-                         :label='$t("container.system_config.demo_graphic.division.division")' 
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.division.division'
+                          )
+                        "
                         :items="divisions"
                         item-text="name_en"
                         item-value="id"
@@ -443,7 +480,7 @@
                       <v-autocomplete
                         v-model="data.location_type"
                         outlined
-                         :label='$t("container.list.location_type")' 
+                        :label="$t('container.list.location_type')"
                         :items="filteredOptions"
                         item-text="value_en"
                         item-value="id"
@@ -489,7 +526,7 @@
                         outlined
                         type="text"
                         v-model="data.name_bn"
-                      :label='$t("container.list.name_bn")' 
+                        :label="$t('container.list.name_bn')"
                         required
                         :error="errors.name_bn ? true : false"
                         :error-messages="errors.name_bn"
@@ -510,7 +547,7 @@
                     outlined
                     class="custom-btn-width py-2 mr-10"
                   >
-               {{  $t("container.list.cancel") }}
+                    {{ $t("container.list.cancel") }}
                   </v-btn>
                   <v-btn
                     type="submit"
@@ -520,7 +557,7 @@
                     :loading="loading"
                     class="custom-btn-width black white--text py-2"
                   >
-              {{ $t("container.list.update") }}
+                    {{ $t("container.list.update") }}
                   </v-btn>
                 </v-row>
               </form>
@@ -539,7 +576,9 @@
           <v-divider></v-divider>
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
-           {{ $t("container.system_config.demo_graphic.thana.delete_alert") }}
+              {{
+                $t("container.system_config.demo_graphic.thana.delete_alert")
+              }}
             </div>
           </v-card-text>
           <v-card-actions style="display: block">
@@ -550,7 +589,7 @@
                 outlined
                 class="custom-btn-width py-2 mr-10"
               >
-           {{ $t("container.list.cancel") }}
+                {{ $t("container.list.cancel") }}
               </v-btn>
               <v-btn
                 text
@@ -559,7 +598,7 @@
                 :loading="delete_loading"
                 class="custom-btn-width black white--text py-2"
               >
-             {{ $t("container.list.delete") }}
+                {{ $t("container.list.delete") }}
               </v-btn>
             </v-row>
           </v-card-actions>
@@ -622,15 +661,39 @@ export default {
   computed: {
     headers() {
       return [
-        { text: this.$t("container.list.sl"), value: "id", align: "start", sortable: false },
+        {
+          text: this.$t("container.list.sl"),
+          value: "id",
+          align: "start",
+          sortable: false,
+        },
         { text: this.$t("container.list.code"), value: "code" },
-        { text: this.$t("container.system_config.demo_graphic.division.division"), value: "division" },
-        { text: this.$t("container.system_config.demo_graphic.district.district"), value: "district" },
+        {
+          text: this.$t(
+            "container.system_config.demo_graphic.division.division"
+          ),
+          value: "division",
+        },
+        {
+          text: this.$t(
+            "container.system_config.demo_graphic.district.district"
+          ),
+          value: "district",
+        },
         // { text: "Location Type", value: "locationType" },
-        { text: this.$t("container.list.location_type"), value: "locationType" },
+        {
+          text: this.$t("container.list.location_type"),
+          value: "locationType",
+        },
         { text: this.$t("container.list.name_en"), value: "name_en" },
         { text: this.$t("container.list.name_bn"), value: "name_bn" },
-        { text: this.$t("container.list.action"), value: "actions", align: "center", sortable: false, width: '13%' },
+        {
+          text: this.$t("container.list.action"),
+          value: "actions",
+          align: "center",
+          sortable: false,
+          width: "13%",
+        },
       ];
     },
 
@@ -650,11 +713,11 @@ export default {
       // return;
       try {
         let fd = new FormData();
-                for (const [key, value] of Object.entries(this.data)) {
-                    if (value !== null) {
-                        fd.append(key, value);
-                    }
-                }
+        for (const [key, value] of Object.entries(this.data)) {
+          if (value !== null) {
+            fd.append(key, value);
+          }
+        }
         this.$store.dispatch("Thana/StoreUpazila", fd).then((data) => {
           console.log(data, "submit");
           if (data == null) {
@@ -682,7 +745,6 @@ export default {
           } else {
             this.errors = data.errors;
           }
-
         });
       } catch (e) {
         console.log(e);
@@ -718,7 +780,7 @@ export default {
       }
     },
     async onChangeLocationType(event) {
-      console.log(event)
+      console.log(event);
       // alert("onChangeLocationType"+event);
       if (this.data.division_id == null) {
         alert("Select Division First");
@@ -739,11 +801,11 @@ export default {
         console.log(JSON.stringify(queryParams));
         // return;
         await this.$axios
-          .get(`/admin/city/get/`+this.data.district_id+'/'+event, {
+          .get(`/admin/city/get/` + this.data.district_id + "/" + event, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
-            }
+            },
           })
           .then((result) => {
             this.city = result.data.data;
@@ -793,10 +855,10 @@ export default {
         await this.$store
           .dispatch("Thana/DestroyUpazila", this.delete_id)
           .then((res) => {
-              // check if the request was successful
-              console.log(res,'result in vue')
-              if (res?.data?.success) {
-            this.$toast.success(res.data.message);
+            // check if the request was successful
+            console.log(res, "result in vue");
+            if (res?.data?.success) {
+              this.$toast.success(res.data.message);
             } else {
               this.$toast.error(res.response.data.message);
             }
