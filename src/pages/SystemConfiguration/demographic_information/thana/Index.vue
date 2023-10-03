@@ -177,7 +177,7 @@
                         @input="onChangeDistrict($event)"
                         outlined
                         v-model="data.district_id"
-                        :label='$t("container.system_config.demo_graphic.division.division")' 
+                        :label='$t("container.system_config.demo_graphic.district.district")' 
                         :items="districts"
                         item-text="name_en"
                         item-value="id"

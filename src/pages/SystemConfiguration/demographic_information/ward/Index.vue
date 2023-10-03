@@ -734,7 +734,7 @@ export default {
             try {
                 await this.$store.dispatch("Ward/DestroyWard", this.delete_id).then((err) => {
                     // check if the request was successful
-                    console.log(res.data)
+                    // console.log(res.data)
                     if (res?.data?.success) {
                         this.$toast.success(res.data.message);
                     } else {
