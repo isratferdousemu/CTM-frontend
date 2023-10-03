@@ -300,12 +300,12 @@
                     {{ $t("container.list.cancel") }}
                   </v-btn>
                   <v-btn
-                    type="submit"
-                    flat
-                    color="primary"
-                    :disabled="invalid"
-                    :loading="loading"
-                    class="custom-btn-width warning white--text py-2"
+                     type="submit"
+                      flat
+                      color="primary"
+                      :disabled="invalid"
+                      :loading="loading"
+                      class="custom-btn-width primary white--text py-2"
                   >
                     {{ $t("container.list.update") }}
                   </v-btn>
@@ -569,7 +569,7 @@ export default {
     this.GetDivision();
   },
   beforeMount() {
-    this.$store.commit("setHeaderTitle", "Division List");
+    this.$store.commit("setHeaderTitle","Division List" );
   },
 };
 </script>

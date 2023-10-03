@@ -868,6 +868,7 @@ export default {
   computed: {
     headers() {
       return [
+   
         {
           text: this.$t("container.list.code"),
           value: "code",
@@ -1115,44 +1116,45 @@ export default {
         });
     },
 
-    deleteWard: async function (id) {
-      try {
-        await this.$store
-          .dispatch("Ward/DestroyWard", this.delete_id)
-          .then((err) => {
-            // check if the request was successful
-            console.log(res.data);
-            if (res?.data?.success) {
-              this.$toast.success(res.data.message);
-            } else {
-              this.$toast.error(res.response.data.message);
+        deleteWard: async function (id) {
+
+            try {
+                await this.$store.dispatch("Ward/DestroyWard", this.delete_id).then((err) => {
+                    // check if the request was successful
+                    // console.log(res.data)
+                    if (res?.data?.success) {
+                        this.$toast.success(res.data.message);
+                    } else {
+                        this.$toast.error(res.response.data.message);
+                    }
+                    this.deleteDialog = false;
+                    this.GetWard();
+                });
+            } catch (e) {
+                console.log(e);
             }
-            this.deleteDialog = false;
-            this.GetWard();
-          });
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    resetData() {
-      (this.data.name_en = null),
-        (this.data.name_bn = null),
-        (this.data.code = null),
-        (this.data.division_id = null),
-        (this.data.district_id = null),
-        (this.data.thana_id = null),
-        (this.data.union_id = null),
-        (this.data.location_type = null),
-        (this.city_id = null),
-        (this.city_thana_id = null),
-        (this.district_pouro_id = null);
-    },
-    editWard(item) {
-      if (this.$refs.form) {
-        this.$refs.form.reset();
-      }
-      const update_error_value = null;
-      this.updateError("update_error_value");
+
+        },
+        resetData() {
+
+            this.data.name_en = null,
+                this.data.name_bn = null,
+                this.data.code = null,
+                this.data.division_id = null,
+                this.data.district_id = null,
+                this.data.thana_id = null,
+                this.data.union_id = null,
+                this.data.location_type = null,
+                this.city_id = null,
+                this.city_thana_id = null,
+                this.district_pouro_id = null
+        },
+        editWard(item) {
+            if (this.$refs.form) {
+                this.$refs.form.reset();
+            }
+            const update_error_value = null;
+            this.updateError('update_error_value');
 
       this.data.id = item.id;
       this.data.name_en = item.name_en;

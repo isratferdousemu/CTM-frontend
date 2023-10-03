@@ -1,9 +1,7 @@
 {
     "sidebar": {
-        "dashboard": "Dashboard",
-        "system_config": {
-            "system_config": "System Configuration"
-        }
+        "dashboard": "Dashboard"
+       
     },
     "container": {
         "list": {
@@ -53,8 +51,8 @@
                     "list": "City Corporation/District Pourashava List",
                     "name_en": "District Name English",
                     "name_bn": "District Name Bangla",
-                    "add_new": "Add New City",
-                    "search": "Search Division",
+                    "add_new": "Add New City Corporation/District Pourashava",
+                    "search": "Search City Corporation/District Pourashava",
                     "edit": "Edit Division",
                     "delete": "Delete Division",
                     "delete_alert": "Are you sure to delete this Division? All Information under this will be deleted"

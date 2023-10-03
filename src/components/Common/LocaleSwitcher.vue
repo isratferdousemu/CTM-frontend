@@ -2,16 +2,14 @@
 <template>
   <div class="locale-switcher">
     <v-btn-toggle @change="handleSwitchChange" v-model="getSwitchLabel">
-      <v-btn small>
+      <v-btn small  :color="getSwitchLabel === 0 ? '#388E3C' : undefined" :class="{ 'white--text': getSwitchLabel === 0 }">
         BN
       </v-btn>
-      <v-btn small>
+      <v-btn small :color="getSwitchLabel === 1 ? '#283593' : undefined" :class="{ 'white--text': getSwitchLabel === 1 }">
       EN
       </v-btn>
     </v-btn-toggle>
-    <!-- <v-switch v-model="$i18n.locale"   :label="getSwitchLabel"  value="bn" hide-details
-      @change="handleSwitchChange"></v-switch>
-        -->
+ 
   </div>
 
 </template>
@@ -62,7 +60,7 @@ export default {
 <style >
 .switch-label {
   font-size: 12px;
-  color: gray;
+  color: blue;
   margin-top: 5px;
   /* Adjust as needed */
 }
