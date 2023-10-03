@@ -28,6 +28,7 @@
             :key="i"
             router
             exact
+         
             v-can="item.permission"
             @click.stop="
               drawer = false;
@@ -143,7 +144,7 @@ export default {
         },
         {
           icon: "mdi mdi-cogs",
-          title: "System Configuration",
+          title: 'System Configuration',
           subTtems: [
             {
               title: "Division",

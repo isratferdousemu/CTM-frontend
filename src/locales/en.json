@@ -33,7 +33,7 @@
                     "search": "Search Division",
                     "edit": "Edit Division",
                     "delete": "Delete Division",
-                    "delete_alert": "Are you sure to delete this Division? All Information under this will be deleted"
+                    "delete_alert": "Are you sure to delete this Division?"
                 },
                 "district": {
                     "district": "District",
@@ -44,7 +44,7 @@
                     "search": "Search District",
                     "edit": "Edit District",
                     "delete": "Delete Division",
-                    "delete_alert": "Are you sure to delete this Division? All Information under this will be deleted"
+                    "delete_alert": "Are you sure to delete this Division?"
                 },
                 "city": {
                     "city": "City Corporation/District Pourashava",
@@ -55,7 +55,7 @@
                     "search": "Search City Corporation/District Pourashava",
                     "edit": "Edit Division",
                     "delete": "Delete Division",
-                    "delete_alert": "Are you sure to delete this Division? All Information under this will be deleted"
+                    "delete_alert": "Are you sure to delete this Division?"
                 },
                 "thana": {
                     "thana": "Thana/Upazila",
@@ -66,7 +66,7 @@
                     "search": "Search Thana/Upazila",
                     "edit": "Edit Thana/Upazila",
                     "delete": "Delete Thana/Upazila",
-                    "delete_alert": "Are you sure to delete this Thana/Upazila? All Information under this will be deleted"
+                    "delete_alert": "Are you sure to delete this Thana/Upazila?"
                 },
                 "union": {
                     "union": "Union/Pouroshava",
@@ -77,7 +77,7 @@
                     "search": "Search Union/Pouroshava",
                     "edit": "Edit Union/Pouroshava",
                     "delete": "Delete Union/Pouroshava",
-                    "delete_alert": "Are you sure to delete this TUnion/Pouroshava? All Information under this will be deleted"
+                    "delete_alert": "Are you sure to delete this TUnion/Pouroshava?"
                 },
                 "ward": {
                     "ward": "Ward",
@@ -88,7 +88,7 @@
                     "search": "Search Ward",
                     "edit": "Edit Ward",
                     "delete": "Delete Ward",
-                    "delete_alert": "Are you sure to delete this Ward? All Information under this will be deleted",
+                    "delete_alert": "Are you sure to delete this Ward?",
                     "city": "City Corporation",
                     "thana": "Thana",
                     "upazila": "Upazila",
@@ -105,7 +105,7 @@
                     "search": "Search Office",
                     "edit": "Edit Office",
                     "delete": "Delete Office",
-                    "delete_alert": "Are you sure to delete this Office? All Information under this will be deleted.",
+                    "delete_alert": "Are you sure to delete this Office?.",
                     "city": "City Corporation",
                     "thana": "Thana",
                     "upazila": "Upazila",
