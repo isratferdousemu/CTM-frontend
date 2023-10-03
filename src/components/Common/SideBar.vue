@@ -176,7 +176,7 @@ export default {
               to: "/system-configuration/ward",
             },
             {
-              title: "Office Information",
+              title: "Office Management",
               icon: "mdi mdi-plus",
               to: "/system-configuration/office_information",
             },
