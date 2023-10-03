@@ -1,5 +1,5 @@
-# stage 2 as builder
-FROM node:12-alpine as builder
+# stage1 as builder
+FROM node:14-alpine as builder
 
 WORKDIR /app
 
@@ -7,24 +7,21 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-# Copy rest of the code file
+# Copy rest of the files
 COPY . .
 
 # Build the project
 RUN npm run build
 
+
 FROM nginx:alpine as production-build
 COPY ./nginx.conf /etc/nginx/nginx.conf
 
-## Remove default nginx index html page
+## Remove default nginx index page
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copy from the stage 2
+# Copy from the stahg 1
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-
-EXPOSE 80
+EXPOSE 8080
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
-
-
-
