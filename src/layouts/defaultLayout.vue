@@ -37,15 +37,28 @@ export default {
 
       this.data = response;
     },
+     updateHeaderTitle() {
+      const title = this.$t("sidebar.dashboard");
+      this.$store.commit("setHeaderTitle", title);
+    },
+    
   },
   created() {
     this.getdata();
+    this.updateHeaderTitle();
   },
+
   computed: {
     str() {
       return this.$store.state;
     },
   },
+  watch: {
+    '$i18n.locale': 'updateHeaderTitle',
+  },
+
+
+ 
 };
 </script>
 

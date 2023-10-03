@@ -54,6 +54,10 @@ export default {
 
   mounted() {
     this.getAllRoles();
+    this.updateHeaderTitle();
+  },
+    watch: {
+    '$i18n.locale': 'updateHeaderTitle',
   },
 
   methods: {
@@ -77,6 +81,10 @@ export default {
       }).catch((err) => {
         console.log(err);
       })
+    },
+     updateHeaderTitle() {
+      const title = this.$t("container.system_config.demo_graphic.role.list");
+      this.$store.commit("setHeaderTitle", title);
     },
 
     deleteAlert(id) {
