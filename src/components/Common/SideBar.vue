@@ -40,6 +40,7 @@
 
             <v-list-item-content>
               <v-list-item-title class="list_size">
+                  <!-- {{ $t(`sidebar.${item.title}`) }} -->
                 {{ item.title }}
                 <v-badge
                   v-if="item.title == 'Employee' && new_employee > 0"
@@ -68,7 +69,9 @@
             </v-list-item-action>
             <v-list-item-content>
               <v-list-item-title class="list_size">
-                {{ item.title }}
+                {{ $t(`sidebar.${item.title}`) }}
+                 <!-- {{ $t(`sidebar.${item.title}`) }} -->
+                <!-- {{ item.title }} -->
                 <v-badge
                   v-if="item.title == 'Employee' && new_employee > 0"
                   :content="new_employee"

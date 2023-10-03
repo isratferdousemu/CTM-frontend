@@ -903,12 +903,14 @@ export default {
   },
 
   mounted() {
-    this.$store.commit("setHeaderTitle", "Division List");
     this.GetAllDivisions();
     this.GetUpazila();
     this.$store
       .dispatch("getLookupByType", 1)
       .then((res) => (this.locationType = res));
+  },
+  beforeMount() {
+    this.$store.commit("setHeaderTitle", this.$t("container.system_config.demo_graphic.thana.thana"));
   },
 };
 </script>

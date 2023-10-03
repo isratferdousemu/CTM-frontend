@@ -69,7 +69,7 @@
                     "delete_alert": "Are you sure to delete this Thana/Upazila? All Information under this will be deleted"
                 },
                 "union": {
-                    "thana": "Union/Pouroshava",
+                    "union": "Union/Pouroshava",
                     "list": "Union/Pouroshava List",
                     "name_en": "Union/Pouroshava Name English",
                     "name_bn": "Union/Pouroshava Name Bangla",
@@ -99,13 +99,13 @@
                 "office": {
                     "office": "Office",
                     "list": "Office List",
-                    "name_en": "OfficeName English",
+                    "name_en": "Office Name English",
                     "name_bn": "Office Name Bangla",
                     "add_new": "Add New Office",
                     "search": "Search Office",
                     "edit": "Edit Office",
                     "delete": "Delete Office",
-                    "delete_alert": "Are you sure to delete this Office? All Information under this will be deleted",
+                    "delete_alert": "Are you sure to delete this Office? All Information under this will be deleted.",
                     "city": "City Corporation",
                     "thana": "Thana",
                     "upazila": "Upazila",
