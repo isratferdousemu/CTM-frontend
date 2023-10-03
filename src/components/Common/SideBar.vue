@@ -144,7 +144,7 @@ export default {
         },
         {
           icon: "mdi mdi-cogs",
-          title: 'system Configuration',
+          title: 'System Configuration',
           subTtems: [
             {
               title: "Division",
