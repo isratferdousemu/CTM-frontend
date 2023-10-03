@@ -42,17 +42,17 @@ const mutations = {
             state.success_message = "";
         }
     },
-    DELETE_WARD: (state, { id, data }) => {
-        if (id) {
-            state.wards.data = state.wards.data.filter((item) => {
-                return id !== item.id;
-            });
+    // DELETE_WARD: (state, { id, data }) => {
+    //     if (id) {
+    //         state.wards.data = state.wards.data.filter((item) => {
+    //             return id !== item.id;
+    //         });
 
-            state.success_message = data.message;
-        } else {
-            state.success_message = "";
-        }
-    },
+    //         state.success_message = data.message;
+    //     } else {
+    //         state.success_message = "";
+    //     }
+    // },
     updateMyData(state, update_error_value) {
         state.ward_errors = update_error_value;
     },
@@ -127,8 +127,8 @@ const actions = {
             .get(`/admin/ward/destroy/${id}`)
             .then((result) => {
                 console.log(result);
-                commit("DELETE_WARD", { id: id, data: result.data });
-                return result
+                // commit("DELETE_WARD", { id: id, data: result.data });
+                return result.data;
             })
             .catch((err) => {
                 console.log(err);

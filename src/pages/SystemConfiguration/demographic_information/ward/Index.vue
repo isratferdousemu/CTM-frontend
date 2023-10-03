@@ -693,19 +693,27 @@ console.log(res,'res')
         });
     },
 
-    deleteWard: async function (id) {
+    deleteWard: async function () {
 
       try {
-        await this.$store.dispatch("Ward/DestroyWard", this.delete_id).then((err) => {
+        await this.$store.dispatch("Ward/DestroyWard", this.delete_id).then((res) => {
           // check if the request was successful
-          // console.log(res.data)
+          console.log(res,'DestroyWard');
           if (res?.data?.success) {
             this.$toast.success(res.data.message);
           } else {
-            this.$toast.error(res.response.data.message);
+            this.$toast.error(res.data.message);
           }
           this.deleteDialog = false;
           this.GetWard();
+            //           // check if the request was successful
+            //           if (res?.data?.success) {
+            //   this.$toast.error(res.data.message);
+            // } else {
+            //   this.$toast.success(res.data.message);
+            // }
+            // this.deleteDialog = false;
+            // this.GetOffices();
         });
       } catch (e) {
         console.log(e);

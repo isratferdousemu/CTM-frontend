@@ -110,7 +110,7 @@ export default {
 
 <template>
   <div id="roles">
-    <v-row class="mx-5">
+    <v-row class="mx-5 mt-5">
       <v-col cols="12">
         <v-row wrap>
           <v-col cols="12">
@@ -180,8 +180,8 @@ export default {
                     </template>
 
                     <template v-slot:[`item.status`]="{ item }">
-                      <span v-if="item.statu === 0">
-                        InActive
+                      <span v-if="item.status === 0">
+                        Inactive
                       </span>
                       <span v-else>
                         Active

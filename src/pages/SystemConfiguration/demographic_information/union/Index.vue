@@ -277,10 +277,6 @@
                       />
                     </ValidationProvider>
 
-                                    <ValidationProvider name="Thana" vid="division" rules="required" v-slot="{ errors }">
-                                        <v-autocomplete v-model="data.thana_id" outlined :label='$t("container.system_config.demo_graphic.ward.upazila")' :items="thanas" item-text="name_en" item-value="id" required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
-                                        <div v-if="union_errors && union_errors.thana_id" v-html="union_errors.thana_id[0]" class="red--text" />
-                                    </ValidationProvider>
                     <ValidationProvider
                       name="Thana"
                       vid="division"
@@ -292,7 +288,7 @@
                         outlined
                         :label="
                           $t(
-                            'container.system_config.demo_graphic.division.division'
+                            'container.system_config.demo_graphic.ward.upazila'
                           )
                         "
                         :items="thanas"
@@ -308,6 +304,33 @@
                         class="red--text"
                       />
                     </ValidationProvider>
+                    <!-- <ValidationProvider
+                      name="Thana"
+                      vid="division"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        v-model="data.thana_id"
+                        outlined
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.ward.upazila'
+                          )
+                        "
+                        :items="thanas"
+                        item-text="name_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-autocomplete>
+                      <div
+                        v-if="union_errors && union_errors.thana_id"
+                        v-html="union_errors.thana_id[0]"
+                        class="red--text"
+                      />
+                    </ValidationProvider> -->
 
                     <ValidationProvider
                       name="Name Bangla"
@@ -474,10 +497,31 @@
                       />
                     </ValidationProvider>
 
-                                    <ValidationProvider name="Thana" vid="division" rules="required" v-slot="{ errors }">
-                                        <v-autocomplete v-model="data.thana_id" outlined :label='$t("container.system_config.demo_graphic.thana.thana")'  :items="thanas" item-text="name_en" item-value="id" required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
-                                        <div v-if="union_errors && union_errors.thana_id" v-html="union_errors.thana_id[0]" class="red--text" />
-                                    </ValidationProvider>
+                    <ValidationProvider
+                      name="Thana"
+                      vid="division"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        v-model="data.thana_id"
+                        outlined
+                        :label="
+                          $t('container.system_config.demo_graphic.thana.thana')
+                        "
+                        :items="thanas"
+                        item-text="name_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-autocomplete>
+                      <div
+                        v-if="union_errors && union_errors.thana_id"
+                        v-html="union_errors.thana_id[0]"
+                        class="red--text"
+                      />
+                    </ValidationProvider>
 
                     <ValidationProvider
                       name="Name Bangla"
@@ -832,17 +876,16 @@ export default {
 
       this.onChangeDistrict(this.data.district_id);
     },
-       updateHeaderTitle() {
+    updateHeaderTitle() {
       const title = this.$t("container.system_config.demo_graphic.union.list");
       this.$store.commit("setHeaderTitle", title);
     },
   },
-   watch: {
-    '$i18n.locale': 'updateHeaderTitle',
+  watch: {
+    "$i18n.locale": "updateHeaderTitle",
   },
 
   mounted() {
-   
     this.GetAllDivisions();
     this.GetUnion();
   },
