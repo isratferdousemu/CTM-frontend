@@ -159,6 +159,9 @@ export default {
                       class="elevation-1 transparent row-pointer"
                   >
 
+                    <template v-slot:[`item.id`]="{ item,index }">
+                     {{ index + 1 }}
+                    </template>
                     <template v-slot:[`item.comment`]="{ item }">
                       <span v-if="item.comment != null">
                         {{ item.comment }}
@@ -181,6 +184,7 @@ export default {
                       <v-tooltip top>
                         <template v-slot:activator="{ on }">
                           <v-btn
+                          :disabled="item.default === 1"
                               fab
                               x-small
                               color="success"
@@ -197,6 +201,7 @@ export default {
                       <v-tooltip top>
                         <template v-slot:activator="{ on }">
                           <v-btn
+                          :disabled="item.default === 1"
                               fab
                               x-small
                               color="grey"
