@@ -127,7 +127,7 @@ const actions = {
             .get(`/admin/union/destroy/${id}`)
             .then((result) => {
                 console.log(result);
-                commit("DELETE_UNION", { id: id, data: result.data });
+                // commit("DELETE_UNION", { id: id, data: result.data });
                 return result
             })
             .catch((err) => {
