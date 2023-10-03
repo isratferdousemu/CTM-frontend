@@ -721,7 +721,7 @@
                     >
                       <v-checkbox
                         v-model="data.status"
-                        :label='$t("container.system_config.demo_graphic.office.status")'
+                        :label='$t("container.system_config.demo_graphic.office.active")'
                         color="green"
                         value="1"
                         :hide-details="errors[0] ? false : true"
