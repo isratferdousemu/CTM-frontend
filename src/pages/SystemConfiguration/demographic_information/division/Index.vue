@@ -104,17 +104,17 @@
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
 
-                <ValidationProvider name="Code" vid="code" rules="required">
-                  <v-text-field outlined type="text" v-model="data.code" :label="$t('container.list.code')" required
-                    :error="errors[0] ? true : false" :error-messages="errors.code"></v-text-field>
+                <ValidationProvider v-slot="{ errors }" name="Code" vid="code" rules="required">
+                  <v-text-field outlined type="text" v-model="data.code" :label="$t('container.list.code')" required :error="errors[0] ? true : false"
+                  :error-messages="errors[0]">></v-text-field>
                 </ValidationProvider>
-                <ValidationProvider name="Name English" vid="name_en" rules="required">
-                  <v-text-field outlined type="text" v-model="data.name_en" :label="$t('container.list.name_en')" required
-                    :error="errors.name_en ? true : false" :error-messages="errors.name_en"></v-text-field>
+                <ValidationProvider v-slot="{ errors }" name="Name English" vid="name_en" rules="required">
+                  <v-text-field outlined type="text" v-model="data.name_en" :label="$t('container.list.name_en')" required :error="errors[0] ? true : false"
+                  :error-messages="errors[0]">></v-text-field>
                 </ValidationProvider>
-                <ValidationProvider name="Name Bangla" vid="name_bn" rules="required">
-                  <v-text-field outlined type="text" v-model="data.name_bn" :label="$t('container.list.name_bn')" required
-                    :error="errors.name_bn ? true : false" :error-messages="errors.name_bn"></v-text-field>
+                <ValidationProvider v-slot="{ errors }" name="Name Bangla" vid="name_bn" rules="required">
+                  <v-text-field outlined type="text" v-model="data.name_bn" :label="$t('container.list.name_bn')" required :error="errors[0] ? true : false"
+                  :error-messages="errors[0]">></v-text-field>
                 </ValidationProvider>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
@@ -291,25 +291,30 @@ export default {
       this.dialogAdd = true;
     },
     submitDivision() {
+      let checkLanguage = this.$checkLanguage(this.data.name_bn)
+      if (checkLanguage != 'Bangla') {
+let errs = {
+            "name_bn": ['Please Enter Name Bangla in Bangla']
+        }
+        this.$refs.form.setErrors(errs);
+        // this.$toast.error("Please Enter Name Bangla in Bangla");
+        return false;
+      }
       try {
         this.$store
           .dispatch("Division/StoreDivision", this.data)
-          .then((data) => {
-            console.log(data, "submit");
-            if (data == null) {
-              this.$toast.success("Data Inserted Successfully");
-              this.dialogAdd = false;
-              this.resetForm();
-              this.GetDivision();
-            } else {
-              this.errors = data.errors;
-            }
-            // if (this.error_status == "") {
-            //   this.$toast.success("Data Inserted Successfully");
-            //   this.dialogAdd = false;
-            //   this.resetForm();
-            //   this.GetDivision();
-            // }
+          .then((res) => {
+           
+          if (res.data?.success) {
+            this.$toast.success("Data Inserted Successfully");
+            this.resetForm();
+            this.dialogAdd = false;
+            this.GetDivision();
+          } else if (res.response?.data?.errors) {
+            console.log(res.response.data.errors)
+            this.$refs.form.setErrors(res.response.data.errors);
+            this.$toast.error(res.response.data.message);
+          }
           });
       } catch (e) {
         console.log(e);
@@ -363,7 +368,7 @@ export default {
       // this.pagination.current = $event;
       this.GetDivision();
     },
-
+ 
     async GetDivision() {
       const queryParams = {
         searchText: this.search,

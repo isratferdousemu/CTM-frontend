@@ -116,6 +116,7 @@ const actions = {
         console.log(result.data);
         console.log(commit);
         commit("RESET_ERRORS");
+        return result;
       })
       .catch((err) => {
         // state.errors = err.response.data.errors;
@@ -124,7 +125,7 @@ const actions = {
           errors: err.response.data.errors,
           error_status: err.response.message,
         };
-        return data;
+        return err;
       });
   },
   /*end  store division*/
