@@ -685,8 +685,8 @@ export default {
           text: this.$t("container.list.location_type"),
           value: "locationType",
         },
-        { text: this.$t("container.list.name_en"), value: "name_en" },
-        { text: this.$t("container.list.name_bn"), value: "name_bn" },
+        { text: this.$t("container.system_config.demo_graphic.thana.name_en"), value: "name_en" },
+        { text: this.$t("container.system_config.demo_graphic.thana.name_bn"), value: "name_bn" },
         {
           text: this.$t("container.list.action"),
           value: "actions",

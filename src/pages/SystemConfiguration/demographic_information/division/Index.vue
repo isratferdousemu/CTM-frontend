@@ -4,31 +4,62 @@
       <v-col cols="12">
         <v-row>
           <v-col cols="12">
-            <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8">
+            <v-card
+              elevation="10"
+              color="white"
+              rounded="md"
+              theme="light"
+              class="mb-8"
+            >
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
                   {{ $t("container.system_config.demo_graphic.division.list") }}
                 </h3>
               </v-card-title>
               <v-card-text>
-                <v-row class="ma-0 pa-3 white round-border d-flex justify-space-between align-center" justify="center"
-                  justify-lg="space-between">
+                <v-row
+                  class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
+                  justify="center"
+                  justify-lg="space-between"
+                >
                   <div class="d-flex justify-sm-end flex-wrap">
-                    <v-text-field @keyup.native="GetDivision" outlined dense v-model="search"
-                      prepend-inner-icon="mdi-magnify" class="my-sm-0 my-3 mx-0v -input--horizontal" flat
-                      variant="outlined" :label="$t(
-                        'container.system_config.demo_graphic.division.search'
-                      )
-                        " hide-details color="primary">
+                    <v-text-field
+                      @keyup.native="GetDivision"
+                      outlined
+                      dense
+                      v-model="search"
+                      prepend-inner-icon="mdi-magnify"
+                      class="my-sm-0 my-3 mx-0v -input--horizontal"
+                      flat
+                      variant="outlined"
+                      :label="
+                        $t(
+                          'container.system_config.demo_graphic.division.search'
+                        )
+                      "
+                      hide-details
+                      color="primary"
+                    >
                     </v-text-field>
                   </div>
-                  <v-btn @click="createDialog" flat color="primary" prepend-icon="mdi-account-multiple-plus">
+                  <v-btn
+                    @click="createDialog"
+                    flat
+                    color="primary"
+                    prepend-icon="mdi-account-multiple-plus"
+                  >
                     {{ $t("container.list.add_new") }}
                   </v-btn>
                   <v-col cols="12">
-                    <v-data-table :loading="loading" item-key="id" :headers="headers" :items="divisions"
-                      :items-per-page="pagination.perPage" hide-default-footer
-                      class="elevation-0 transparent row-pointer">
+                    <v-data-table
+                      :loading="loading"
+                      item-key="id"
+                      :headers="headers"
+                      :items="divisions"
+                      :items-per-page="pagination.perPage"
+                      hide-default-footer
+                      class="elevation-0 transparent row-pointer"
+                    >
                       <template v-slot:item.id="{ item, index }">
                         {{
                           (pagination.current - 1) * pagination.perPage +
@@ -47,8 +78,15 @@
                       <template v-slot:item.actions="{ item }">
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn v-can="'update-post'" fab x-small v-on="on" color="success" elevation="0"
-                              @click="editDialog(item)">
+                            <v-btn
+                              v-can="'update-post'"
+                              fab
+                              x-small
+                              v-on="on"
+                              color="success"
+                              elevation="0"
+                              @click="editDialog(item)"
+                            >
                               <v-icon> mdi-account-edit-outline </v-icon>
                             </v-btn>
                           </template>
@@ -59,8 +97,16 @@
 
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn v-can="'delete-division'" fab x-small v-on="on" color="grey" class="ml-3 white--text"
-                              elevation="0" @click="deleteAlert(item.id)">
+                            <v-btn
+                              v-can="'delete-division'"
+                              fab
+                              x-small
+                              v-on="on"
+                              color="grey"
+                              class="ml-3 white--text"
+                              elevation="0"
+                              @click="deleteAlert(item.id)"
+                            >
                               <v-icon> mdi-delete </v-icon>
                             </v-btn>
                           </template>
@@ -70,16 +116,32 @@
                       <!-- End Action Button -->
 
                       <template v-slot:footer="item">
-                        <div class="text-center pt-2 v-data-footer justify-center pb-2">
-                          <v-select style="
+                        <div
+                          class="text-center pt-2 v-data-footer justify-center pb-2"
+                        >
+                          <v-select
+                            style="
                               position: absolute;
                               right: 25px;
                               width: 149px;
                               transform: translate(0px, 0px);
-                            " :items="items" hide-details dense outlined @change="onPageChange"
-                            v-model="pagination.perPage"></v-select>
-                          <v-pagination circle primary v-model="pagination.current" :length="pagination.total"
-                            @input="onPageChange" :total-visible="11" class="custom-pagination-item"></v-pagination>
+                            "
+                            :items="items"
+                            hide-details
+                            dense
+                            outlined
+                            @change="onPageChange"
+                            v-model="pagination.perPage"
+                          ></v-select>
+                          <v-pagination
+                            circle
+                            primary
+                            v-model="pagination.current"
+                            :length="pagination.total"
+                            @input="onPageChange"
+                            :total-visible="11"
+                            class="custom-pagination-item"
+                          ></v-pagination>
                         </div>
                       </template>
                     </v-data-table>
@@ -104,25 +166,75 @@
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
 
-                <ValidationProvider v-slot="{ errors }" name="Code" vid="code" rules="required">
-                  <v-text-field outlined type="text" v-model="data.code" :label="$t('container.list.code')" required :error="errors[0] ? true : false"
-                  :error-messages="errors[0]">></v-text-field>
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  name="Code"
+                  vid="code"
+                  rules="required"
+                >
+                  <v-text-field
+                    outlined
+                    type="text"
+                    v-model="data.code"
+                    :label="$t('container.list.code')"
+                    required
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
+                    >></v-text-field
+                  >
                 </ValidationProvider>
-                <ValidationProvider v-slot="{ errors }" name="Name English" vid="name_en" rules="required">
-                  <v-text-field outlined type="text" v-model="data.name_en" :label="$t('container.list.name_en')" required :error="errors[0] ? true : false"
-                  :error-messages="errors[0]">></v-text-field>
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  name="Name English"
+                  vid="name_en"
+                  rules="required"
+                >
+                  <v-text-field
+                    outlined
+                    type="text"
+                    v-model="data.name_en"
+                    :label="$t('container.list.name_en')"
+                    required
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
+                    >></v-text-field
+                  >
                 </ValidationProvider>
-                <ValidationProvider v-slot="{ errors }" name="Name Bangla" vid="name_bn" rules="required">
-                  <v-text-field outlined type="text" v-model="data.name_bn" :label="$t('container.list.name_bn')" required :error="errors[0] ? true : false"
-                  :error-messages="errors[0]">></v-text-field>
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  name="Name Bangla"
+                  vid="name_bn"
+                  rules="required"
+                >
+                  <v-text-field
+                    outlined
+                    type="text"
+                    v-model="data.name_bn"
+                    :label="$t('container.list.name_bn')"
+                    required
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
+                    >></v-text-field
+                  >
                 </ValidationProvider>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
-                  <v-btn flat @click="dialogAdd = false" outlined class="custom-btn-width py-2 mr-10">
+                  <v-btn
+                    flat
+                    @click="dialogAdd = false"
+                    outlined
+                    class="custom-btn-width py-2 mr-10"
+                  >
                     {{ $t("container.list.cancel") }}
                   </v-btn>
-                  <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
-                    class="custom-btn-width warning white--text py-2">
+                  <v-btn
+                    type="submit"
+                    flat
+                    color="primary"
+                    :disabled="invalid"
+                    :loading="loading"
+                    class="custom-btn-width warning white--text py-2"
+                  >
                     {{ $t("container.list.submit") }}
                   </v-btn>
                 </v-row>
@@ -147,24 +259,64 @@
                 {{errors.name_en}} -->
 
                 <ValidationProvider name="Code" vid="code" rules="required">
-                  <v-text-field outlined type="text" v-model="data.code" :label="$t('container.list.code')" required
-                    :error="errors[0] ? true : false" :error-messages="errors.code"></v-text-field>
+                  <v-text-field
+                    outlined
+                    type="text"
+                    v-model="data.code"
+                    :label="$t('container.list.code')"
+                    required
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors.code"
+                  ></v-text-field>
                 </ValidationProvider>
-                <ValidationProvider name="Name English" vid="name_en" rules="required">
-                  <v-text-field outlined type="text" v-model="data.name_en" :label="$t('container.list.name_en')" required
-                    :error="errors.name_en ? true : false" :error-messages="errors.name_en"></v-text-field>
+                <ValidationProvider
+                  name="Name English"
+                  vid="name_en"
+                  rules="required"
+                >
+                  <v-text-field
+                    outlined
+                    type="text"
+                    v-model="data.name_en"
+                    :label="$t('container.list.name_en')"
+                    required
+                    :error="errors.name_en ? true : false"
+                    :error-messages="errors.name_en"
+                  ></v-text-field>
                 </ValidationProvider>
-                <ValidationProvider name="Name Bangla" vid="name_bn" rules="required">
-                  <v-text-field outlined type="text" v-model="data.name_bn" :label="$t('container.list.name_bn')" required
-                    :error="errors.name_bn ? true : false" :error-messages="errors.name_bn"></v-text-field>
+                <ValidationProvider
+                  name="Name Bangla"
+                  vid="name_bn"
+                  rules="required"
+                >
+                  <v-text-field
+                    outlined
+                    type="text"
+                    v-model="data.name_bn"
+                    :label="$t('container.list.name_bn')"
+                    required
+                    :error="errors.name_bn ? true : false"
+                    :error-messages="errors.name_bn"
+                  ></v-text-field>
                 </ValidationProvider>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
-                  <v-btn flat @click="dialogEdit = false" outlined class="custom-btn-width py-2 mr-10">
+                  <v-btn
+                    flat
+                    @click="dialogEdit = false"
+                    outlined
+                    class="custom-btn-width py-2 mr-10"
+                  >
                     {{ $t("container.list.cancel") }}
                   </v-btn>
-                  <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
-                    class="custom-btn-width primary white--text py-2">
+                  <v-btn
+                    type="submit"
+                    flat
+                    color="primary"
+                    :disabled="invalid"
+                    :loading="loading"
+                    class="custom-btn-width primary white--text py-2"
+                  >
                     {{ $t("container.list.update") }}
                   </v-btn>
                 </v-row>
@@ -191,11 +343,21 @@
           </v-card-text>
           <v-card-actions style="display: block">
             <v-row class="mx-0 my-0 py-2" justify="center">
-              <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
+              <v-btn
+                text
+                @click="deleteDialog = false"
+                outlined
+                class="custom-btn-width py-2 mr-10"
+              >
                 {{ $t("container.list.cancel") }}
               </v-btn>
-              <v-btn text @click="deleteDivision()" color="white" :loading="delete_loading"
-                class="custom-btn-width warning white--text py-2">
+              <v-btn
+                text
+                @click="deleteDivision()"
+                color="white"
+                :loading="delete_loading"
+                class="custom-btn-width warning white--text py-2"
+              >
                 {{ $t("container.list.delete") }}
               </v-btn>
             </v-row>
@@ -287,34 +449,57 @@ export default {
 
   methods: {
     createDialog() {
-      this.resetForm();
+      if (this.$refs.form) {
+        this.$refs.form.reset();
+      }
+
       this.dialogAdd = true;
     },
-    submitDivision() {
-      let checkLanguage = this.$checkLanguage(this.data.name_bn)
-      if (checkLanguage != 'Bangla') {
-let errs = {
-            "name_bn": ['Please Enter Name Bangla in Bangla']
-        }
+    checkLanguage() {
+      let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
+      let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
+      if (checkLanguageBangla != "Bangla" && checkLanguageEnglish != "English" ) {
+        let errs = {
+          name_bn: ["Please Enter in Bangla Language in this Field"],
+          name_en: ["Please Enter in English Language in this Field"],
+        };
         this.$refs.form.setErrors(errs);
-        // this.$toast.error("Please Enter Name Bangla in Bangla");
         return false;
+      } else if (checkLanguageBangla != "Bangla") {
+        let errs = {
+          name_bn: ["Please Enter in Bangla Language in this Field"],
+        };
+        this.$refs.form.setErrors(errs);
+        return false;
+      } else if (checkLanguageEnglish != "English") {
+        let errs = {
+          name_en: ["Please Enter in English Language in this Field"],
+        };
+        this.$refs.form.setErrors(errs);
+        return false;
+      } else {
+        return true;
       }
+    },
+    submitDivision() {
+      if (!this.checkLanguage()) {
+        return;
+      }
+
       try {
         this.$store
           .dispatch("Division/StoreDivision", this.data)
           .then((res) => {
-           
-          if (res.data?.success) {
-            this.$toast.success("Data Inserted Successfully");
-            this.resetForm();
-            this.dialogAdd = false;
-            this.GetDivision();
-          } else if (res.response?.data?.errors) {
-            console.log(res.response.data.errors)
-            this.$refs.form.setErrors(res.response.data.errors);
-            this.$toast.error(res.response.data.message);
-          }
+            if (res.data?.success) {
+              this.$toast.success("Data Inserted Successfully");
+              this.resetForm();
+              this.dialogAdd = false;
+              this.GetDivision();
+            } else if (res.response?.data?.errors) {
+              console.log(res.response.data.errors);
+              this.$refs.form.setErrors(res.response.data.errors);
+              this.$toast.error(res.response.data.message);
+            }
           });
       } catch (e) {
         console.log(e);
@@ -368,7 +553,7 @@ let errs = {
       // this.pagination.current = $event;
       this.GetDivision();
     },
- 
+
     async GetDivision() {
       const queryParams = {
         searchText: this.search,
@@ -418,12 +603,14 @@ let errs = {
       this.delete_id = id;
     },
     updateHeaderTitle() {
-      const title = this.$t("container.system_config.demo_graphic.division.list");
+      const title = this.$t(
+        "container.system_config.demo_graphic.division.list"
+      );
       this.$store.commit("setHeaderTitle", title);
     },
   },
   watch: {
-    '$i18n.locale': 'updateHeaderTitle',
+    "$i18n.locale": "updateHeaderTitle",
   },
   created() {
     this.GetDivision();
