@@ -128,7 +128,7 @@ const actions = {
             .then((result) => {
                 console.log(result);
                 // commit("DELETE_WARD", { id: id, data: result.data });
-                return result.data;
+                return result;
             })
             .catch((err) => {
                 console.log(err);
