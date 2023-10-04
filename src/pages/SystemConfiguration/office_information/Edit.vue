@@ -1,7 +1,7 @@
 <script>
 export default {
   name: "Edit",
-  title: "CTM - Edit Office Information"
+  title: "CTM - Edit Office Management",
 }
 </script>
 

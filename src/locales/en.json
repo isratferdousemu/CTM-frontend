@@ -1,9 +1,7 @@
 {
     "sidebar": {
-        "dashboard": "Dashboard",
-        "system_config": {
-            "system_config": "System Configuration"
-        }
+        "dashboard": "Dashboard"
+       
     },
     "container": {
         "list": {
@@ -35,7 +33,7 @@
                     "search": "Search Division",
                     "edit": "Edit Division",
                     "delete": "Delete Division",
-                    "delete_alert": "Are you sure to delete this Division? All Information under this will be deleted"
+                    "delete_alert": "Are you sure to delete this Division?"
                 },
                 "district": {
                     "district": "District",
@@ -46,18 +44,18 @@
                     "search": "Search District",
                     "edit": "Edit District",
                     "delete": "Delete Division",
-                    "delete_alert": "Are you sure to delete this Division? All Information under this will be deleted"
+                    "delete_alert": "Are you sure to delete this Division?"
                 },
                 "city": {
                     "city": "City Corporation/District Pourashava",
                     "list": "City Corporation/District Pourashava List",
                     "name_en": "District Name English",
                     "name_bn": "District Name Bangla",
-                    "add_new": "Add New City",
-                    "search": "Search Division",
+                    "add_new": "Add New City Corporation/District Pourashava",
+                    "search": "Search City Corporation/District Pourashava",
                     "edit": "Edit Division",
                     "delete": "Delete Division",
-                    "delete_alert": "Are you sure to delete this Division? All Information under this will be deleted"
+                    "delete_alert": "Are you sure to delete this Division?"
                 },
                 "thana": {
                     "thana": "Thana/Upazila",
@@ -68,10 +66,10 @@
                     "search": "Search Thana/Upazila",
                     "edit": "Edit Thana/Upazila",
                     "delete": "Delete Thana/Upazila",
-                    "delete_alert": "Are you sure to delete this Thana/Upazila? All Information under this will be deleted"
+                    "delete_alert": "Are you sure to delete this Thana/Upazila?"
                 },
                 "union": {
-                    "thana": "Union/Pouroshava",
+                    "union": "Union/Pouroshava",
                     "list": "Union/Pouroshava List",
                     "name_en": "Union/Pouroshava Name English",
                     "name_bn": "Union/Pouroshava Name Bangla",
@@ -79,7 +77,7 @@
                     "search": "Search Union/Pouroshava",
                     "edit": "Edit Union/Pouroshava",
                     "delete": "Delete Union/Pouroshava",
-                    "delete_alert": "Are you sure to delete this TUnion/Pouroshava? All Information under this will be deleted"
+                    "delete_alert": "Are you sure to delete this TUnion/Pouroshava?"
                 },
                 "ward": {
                     "ward": "Ward",
@@ -90,7 +88,7 @@
                     "search": "Search Ward",
                     "edit": "Edit Ward",
                     "delete": "Delete Ward",
-                    "delete_alert": "Are you sure to delete this Ward? All Information under this will be deleted",
+                    "delete_alert": "Are you sure to delete this Ward?",
                     "city": "City Corporation",
                     "thana": "Thana",
                     "upazila": "Upazila",
@@ -101,13 +99,13 @@
                 "office": {
                     "office": "Office",
                     "list": "Office List",
-                    "name_en": "OfficeName English",
+                    "name_en": "Office Name English",
                     "name_bn": "Office Name Bangla",
                     "add_new": "Add New Office",
                     "search": "Search Office",
                     "edit": "Edit Office",
                     "delete": "Delete Office",
-                    "delete_alert": "Are you sure to delete this Office? All Information under this will be deleted",
+                    "delete_alert": "Are you sure to delete this Office?.",
                     "city": "City Corporation",
                     "thana": "Thana",
                     "upazila": "Upazila",
@@ -119,6 +117,11 @@
                     "status": "Status",
                     "comment": "Comment",
                     "active": "Active"
+                },
+                "role": {
+                 
+                    "list": "Role List"
+                  
                 }
             }
         }

@@ -61,6 +61,8 @@ export default {
           {
             this.$toast.success(this.message);
             this.EditRole(this.$route.params.id);
+            this.$router.push('/system-configuration/role');
+
           }
 
           if (this.error_status === 422)
@@ -80,7 +82,7 @@ export default {
 
 <template>
   <div id="edit_role">
-    <v-row class="mx-5">
+    <v-row class="mx-5 mt-5">
       <v-col cols="12">
         <v-row>
           <v-col cols="12">

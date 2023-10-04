@@ -138,13 +138,13 @@ export default {
       items: [
         {
           icon: "mdi-view-dashboard-outline",
-          title: 'dashboard',
+          title: "dashboard",
           to: "/",
           permission: "view-dashboard",
         },
         {
           icon: "mdi mdi-cogs",
-          title: 'system Configuration',
+          title: 'System Configuration',
           subTtems: [
             {
               title: "Division",
@@ -177,9 +177,14 @@ export default {
               to: "/system-configuration/ward",
             },
             {
-              title: "Office Information",
+              title: "Office Management",
               icon: "mdi mdi-plus",
               to: "/system-configuration/office_information",
+            },
+            {
+              title: "Role Management",
+              icon: "mdi mdi-plus",
+              to: "/system-configuration/role",
             },
             // {
             //   title: "Menu",

@@ -4,6 +4,10 @@
   transition: height .2s cubic-bezier(.4,0,.6,1);
 }
 
+/* .v-main{
+    padding: 120px 0px 60px 280px !important;
+} */
+
 .fb {
   font-family: "Bree Serif", serif !important;
 }

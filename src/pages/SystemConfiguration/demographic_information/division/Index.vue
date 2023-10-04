@@ -6,7 +6,8 @@
           <v-col cols="12">
             <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8">
               <v-card-title class="justify-center" tag="div">
-                <h3 class="text-uppercase pt-3"> {{ $t("container.system_config.demo_graphic.division.list") }}
+                <h3 class="text-uppercase pt-3">
+                  {{ $t("container.system_config.demo_graphic.division.list") }}
                 </h3>
               </v-card-title>
               <v-card-text>
@@ -15,11 +16,14 @@
                   <div class="d-flex justify-sm-end flex-wrap">
                     <v-text-field @keyup.native="GetDivision" outlined dense v-model="search"
                       prepend-inner-icon="mdi-magnify" class="my-sm-0 my-3 mx-0v -input--horizontal" flat
-                      variant="outlined" :label='$t("container.system_config.demo_graphic.division.search")' hide-details color="primary">
+                      variant="outlined" :label="$t(
+                        'container.system_config.demo_graphic.division.search'
+                      )
+                        " hide-details color="primary">
                     </v-text-field>
                   </div>
                   <v-btn @click="createDialog" flat color="primary" prepend-icon="mdi-account-multiple-plus">
-                   {{ $t("container.list.add_new") }}
+                    {{ $t("container.list.add_new") }}
                   </v-btn>
                   <v-col cols="12">
                     <v-data-table :loading="loading" item-key="id" :headers="headers" :items="divisions"
@@ -38,15 +42,33 @@
                       <template v-slot:item.name_bn="{ item }">
                         {{ item.name_bn }}
                       </template>
+
+                      <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
-                        <v-btn v-can="'update-post'" fab x-small color="success" elevation="0" @click="editDialog(item)">
-                          <v-icon> mdi-account-edit-outline </v-icon>
-                        </v-btn>
-                        <v-btn v-can="'delete-division'" fab x-small color="grey" class="ml-3 white--text" elevation="0"
-                          @click="deleteAlert(item.id)">
-                          <v-icon> mdi-delete </v-icon>
-                        </v-btn>
+                        <v-tooltip top>
+                          <template v-slot:activator="{ on }">
+                            <v-btn v-can="'update-post'" fab x-small v-on="on" color="success" elevation="0"
+                              @click="editDialog(item)">
+                              <v-icon> mdi-account-edit-outline </v-icon>
+                            </v-btn>
+                          </template>
+                          <span>
+                            {{ $t("container.list.edit") }}
+                          </span>
+                        </v-tooltip>
+
+                        <v-tooltip top>
+                          <template v-slot:activator="{ on }">
+                            <v-btn v-can="'delete-division'" fab x-small v-on="on" color="grey" class="ml-3 white--text"
+                              elevation="0" @click="deleteAlert(item.id)">
+                              <v-icon> mdi-delete </v-icon>
+                            </v-btn>
+                          </template>
+                          <span> {{ $t("container.list.delete") }}</span>
+                        </v-tooltip>
                       </template>
+                      <!-- End Action Button -->
+
                       <template v-slot:footer="item">
                         <div class="text-center pt-2 v-data-footer justify-center pb-2">
                           <v-select style="
@@ -73,7 +95,7 @@
       <v-dialog v-model="dialogAdd" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-               {{ $t("container.system_config.demo_graphic.division.add_new") }}
+            {{ $t("container.system_config.demo_graphic.division.add_new") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
@@ -82,26 +104,26 @@
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
 
-                <ValidationProvider name="Code" vid="code" rules="required">
-                  <v-text-field outlined type="text" v-model="data.code" :label='$t("container.list.code")' required
-                    :error="errors[0] ? true : false" :error-messages="errors.code"></v-text-field>
+                <ValidationProvider v-slot="{ errors }" name="Code" vid="code" rules="required">
+                  <v-text-field outlined type="text" v-model="data.code" :label="$t('container.list.code')" required :error="errors[0] ? true : false"
+                  :error-messages="errors[0]">></v-text-field>
                 </ValidationProvider>
-                <ValidationProvider name="Name English" vid="name_en" rules="required">
-                  <v-text-field outlined type="text" v-model="data.name_en" :label='$t("container.list.name_en")'  required
-                    :error="errors.name_en ? true : false" :error-messages="errors.name_en"></v-text-field>
+                <ValidationProvider v-slot="{ errors }" name="Name English" vid="name_en" rules="required">
+                  <v-text-field outlined type="text" v-model="data.name_en" :label="$t('container.list.name_en')" required :error="errors[0] ? true : false"
+                  :error-messages="errors[0]">></v-text-field>
                 </ValidationProvider>
-                <ValidationProvider name="Name Bangla" vid="name_bn" rules="required">
-                  <v-text-field outlined type="text" v-model="data.name_bn" :label='$t("container.list.name_bn")' required
-                    :error="errors.name_bn ? true : false" :error-messages="errors.name_bn"></v-text-field>
+                <ValidationProvider v-slot="{ errors }" name="Name Bangla" vid="name_bn" rules="required">
+                  <v-text-field outlined type="text" v-model="data.name_bn" :label="$t('container.list.name_bn')" required :error="errors[0] ? true : false"
+                  :error-messages="errors[0]">></v-text-field>
                 </ValidationProvider>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
                   <v-btn flat @click="dialogAdd = false" outlined class="custom-btn-width py-2 mr-10">
-                     {{ $t("container.list.cancel") }}
+                    {{ $t("container.list.cancel") }}
                   </v-btn>
                   <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
                     class="custom-btn-width warning white--text py-2">
-                   {{ $t("container.list.submit") }}
+                    {{ $t("container.list.submit") }}
                   </v-btn>
                 </v-row>
               </form>
@@ -115,7 +137,7 @@
       <v-dialog v-model="dialogEdit" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-              {{ $t("container.system_config.demo_graphic.division.edit") }} 
+            {{ $t("container.system_config.demo_graphic.division.edit") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
@@ -125,25 +147,25 @@
                 {{errors.name_en}} -->
 
                 <ValidationProvider name="Code" vid="code" rules="required">
-                  <v-text-field outlined type="text" v-model="data.code"  :label='$t("container.list.code")'  required
+                  <v-text-field outlined type="text" v-model="data.code" :label="$t('container.list.code')" required
                     :error="errors[0] ? true : false" :error-messages="errors.code"></v-text-field>
                 </ValidationProvider>
                 <ValidationProvider name="Name English" vid="name_en" rules="required">
-                  <v-text-field outlined type="text" v-model="data.name_en" :label='$t("container.list.name_en")'  required
+                  <v-text-field outlined type="text" v-model="data.name_en" :label="$t('container.list.name_en')" required
                     :error="errors.name_en ? true : false" :error-messages="errors.name_en"></v-text-field>
                 </ValidationProvider>
                 <ValidationProvider name="Name Bangla" vid="name_bn" rules="required">
-                  <v-text-field outlined type="text" v-model="data.name_bn" :label='$t("container.list.name_bn")' required
+                  <v-text-field outlined type="text" v-model="data.name_bn" :label="$t('container.list.name_bn')" required
                     :error="errors.name_bn ? true : false" :error-messages="errors.name_bn"></v-text-field>
                 </ValidationProvider>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
                   <v-btn flat @click="dialogEdit = false" outlined class="custom-btn-width py-2 mr-10">
-               {{$t("container.list.cancel")}}
+                    {{ $t("container.list.cancel") }}
                   </v-btn>
                   <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
-                    class="custom-btn-width warning white--text py-2">
-                {{ $t("container.list.update") }}
+                    class="custom-btn-width primary white--text py-2">
+                    {{ $t("container.list.update") }}
                   </v-btn>
                 </v-row>
               </form>
@@ -157,22 +179,24 @@
       <v-dialog v-model="deleteDialog" width="350">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-             {{ $t("container.system_config.demo_graphic.division.delete") }} 
+            {{ $t("container.system_config.demo_graphic.division.delete") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
-             {{ $t("container.system_config.demo_graphic.division.delete_alert") }} 
+              {{
+                $t("container.system_config.demo_graphic.division.delete_alert")
+              }}
             </div>
           </v-card-text>
           <v-card-actions style="display: block">
             <v-row class="mx-0 my-0 py-2" justify="center">
               <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
-              {{ $t("container.list.cancel") }} 
+                {{ $t("container.list.cancel") }}
               </v-btn>
               <v-btn text @click="deleteDivision()" color="white" :loading="delete_loading"
                 class="custom-btn-width warning white--text py-2">
-            {{ $t("container.list.delete") }} 
+                {{ $t("container.list.delete") }}
               </v-btn>
             </v-row>
           </v-card-actions>
@@ -225,11 +249,31 @@ export default {
   computed: {
     headers() {
       return [
-        { text: this.$t("container.list.sl"), value: "id", align: "start", sortable: false },
+        {
+          text: this.$t("container.list.sl"),
+          value: "id",
+          align: "start",
+          sortable: false,
+        },
         { text: this.$t("container.list.code"), value: "code" },
-        { text: this.$t("container.system_config.demo_graphic.division.name_en"), value: "name_en" },
-        { text: this.$t("container.system_config.demo_graphic.division.name_bn"), value: "name_bn" },
-        { text: this.$t("container.list.action"), value: "actions", align: "center", sortable: false },
+        {
+          text: this.$t(
+            "container.system_config.demo_graphic.division.name_en"
+          ),
+          value: "name_en",
+        },
+        {
+          text: this.$t(
+            "container.system_config.demo_graphic.division.name_bn"
+          ),
+          value: "name_bn",
+        },
+        {
+          text: this.$t("container.list.action"),
+          value: "actions",
+          align: "center",
+          sortable: false,
+        },
       ];
     },
 
@@ -242,31 +286,35 @@ export default {
   },
 
   methods: {
-   
     createDialog() {
       this.resetForm();
       this.dialogAdd = true;
     },
     submitDivision() {
+      let checkLanguage = this.$checkLanguage(this.data.name_bn)
+      if (checkLanguage != 'Bangla') {
+let errs = {
+            "name_bn": ['Please Enter Name Bangla in Bangla']
+        }
+        this.$refs.form.setErrors(errs);
+        // this.$toast.error("Please Enter Name Bangla in Bangla");
+        return false;
+      }
       try {
         this.$store
           .dispatch("Division/StoreDivision", this.data)
-          .then((data) => {
-            console.log(data, "submit");
-            if (data == null) {
-              this.$toast.success("Data Inserted Successfully");
-              this.dialogAdd = false;
-              this.resetForm();
-              this.GetDivision();
-            } else {
-              this.errors = data.errors;
-            }
-            // if (this.error_status == "") {
-            //   this.$toast.success("Data Inserted Successfully");
-            //   this.dialogAdd = false;
-            //   this.resetForm();
-            //   this.GetDivision();
-            // }
+          .then((res) => {
+           
+          if (res.data?.success) {
+            this.$toast.success("Data Inserted Successfully");
+            this.resetForm();
+            this.dialogAdd = false;
+            this.GetDivision();
+          } else if (res.response?.data?.errors) {
+            console.log(res.response.data.errors)
+            this.$refs.form.setErrors(res.response.data.errors);
+            this.$toast.error(res.response.data.message);
+          }
           });
       } catch (e) {
         console.log(e);
@@ -282,23 +330,25 @@ export default {
     },
     updateDivision() {
       try {
-        this.$store.dispatch("Division/UpdateDivision", this.data).then((data) => {
-          console.log(data, "update");
-          if (data == null) {
-            this.$toast.success("Data Updated Successfully");
-            this.dialogEdit = false;
-            this.resetForm();
-            this.GetDivision();
-          } else {
-            this.errors = data.errors;
-          }
-          // if (this.error_status == "") {
-          //   this.$toast.success("Data Updated Successfully");
-          //   this.dialogEdit = false;
-          //   this.resetForm();
-          //   this.GetDivision();
-          // }
-        });
+        this.$store
+          .dispatch("Division/UpdateDivision", this.data)
+          .then((data) => {
+            console.log(data, "update");
+            if (data == null) {
+              this.$toast.success("Data Updated Successfully");
+              this.dialogEdit = false;
+              this.resetForm();
+              this.GetDivision();
+            } else {
+              this.errors = data.errors;
+            }
+            // if (this.error_status == "") {
+            //   this.$toast.success("Data Updated Successfully");
+            //   this.dialogEdit = false;
+            //   this.resetForm();
+            //   this.GetDivision();
+            // }
+          });
       } catch (e) {
         console.log(e);
       }
@@ -318,7 +368,7 @@ export default {
       // this.pagination.current = $event;
       this.GetDivision();
     },
-
+ 
     async GetDivision() {
       const queryParams = {
         searchText: this.search,
@@ -355,7 +405,7 @@ export default {
             this.GetDivision();
           })
           .catch((error) => {
-            console.log(error, 'error');
+            console.log(error, "error");
           });
       } catch (e) {
         console.log(e);
@@ -367,13 +417,19 @@ export default {
       this.deleteDialog = true;
       this.delete_id = id;
     },
+    updateHeaderTitle() {
+      const title = this.$t("container.system_config.demo_graphic.division.list");
+      this.$store.commit("setHeaderTitle", title);
+    },
+  },
+  watch: {
+    '$i18n.locale': 'updateHeaderTitle',
   },
   created() {
     this.GetDivision();
-  
   },
   beforeMount() {
-    this.$store.commit("setHeaderTitle", "Division List");
+    this.updateHeaderTitle();
   },
 };
 </script>

@@ -54,6 +54,10 @@ export default {
 
   mounted() {
     this.getAllRoles();
+    this.updateHeaderTitle();
+  },
+    watch: {
+    '$i18n.locale': 'updateHeaderTitle',
   },
 
   methods: {
@@ -77,6 +81,10 @@ export default {
       }).catch((err) => {
         console.log(err);
       })
+    },
+     updateHeaderTitle() {
+      const title = this.$t("container.system_config.demo_graphic.role.list");
+      this.$store.commit("setHeaderTitle", title);
     },
 
     deleteAlert(id) {
@@ -102,7 +110,7 @@ export default {
 
 <template>
   <div id="roles">
-    <v-row class="mx-5">
+    <v-row class="mx-5 mt-5">
       <v-col cols="12">
         <v-row wrap>
           <v-col cols="12">
@@ -159,6 +167,9 @@ export default {
                       class="elevation-1 transparent row-pointer"
                   >
 
+                    <template v-slot:[`item.id`]="{ item,index }">
+                     {{ index + 1 }}
+                    </template>
                     <template v-slot:[`item.comment`]="{ item }">
                       <span v-if="item.comment != null">
                         {{ item.comment }}
@@ -169,8 +180,8 @@ export default {
                     </template>
 
                     <template v-slot:[`item.status`]="{ item }">
-                      <span v-if="item.statu === 0">
-                        InActive
+                      <span v-if="item.status === 0">
+                        Inactive
                       </span>
                       <span v-else>
                         Active
@@ -181,6 +192,7 @@ export default {
                       <v-tooltip top>
                         <template v-slot:activator="{ on }">
                           <v-btn
+                          :disabled="item.default === 1"
                               fab
                               x-small
                               color="success"
@@ -197,6 +209,7 @@ export default {
                       <v-tooltip top>
                         <template v-slot:activator="{ on }">
                           <v-btn
+                          :disabled="item.default === 1"
                               fab
                               x-small
                               color="grey"

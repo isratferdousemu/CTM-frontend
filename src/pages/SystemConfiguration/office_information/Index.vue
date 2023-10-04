@@ -70,63 +70,48 @@
                         <span v-if="item?.status == '0'"> Inactive </span>
                         <span v-if="item?.status == '1'"> Active </span>
                       </template>
-                      <!--      <template v-slot:item.district="{ item }">
-                        <span v-if="item?.parent?.parent?.type == 'district'">
-                          {{ item?.parent?.parent.name_en }}
-                        </span>
-                        <span
-                          v-if="
-                            item?.parent?.type == 'union' ||
-                            item?.parent?.type == 'thana'
-                          "
-                        >
-                          {{ item?.parent?.parent?.parent?.name_en }}
-                        </span>
-                      </template>
-                      <template v-slot:item.thana="{ item }">
-                        <span
-                          v-if="
-                            item?.parent?.type == 'union' ||
-                            item?.parent?.type == 'thana'
-                          "
-                        >
-                          {{ item?.parent?.parent?.name_en }}
-                        </span>
-                      </template>
-                      <template v-slot:item.union="{ item }">
-                        <span
-                          v-if="
-                            item?.parent?.type == 'city' ||
-                            item?.parent?.type == 'union' ||
-                            item?.parent?.type == 'thana'
-                          "
-                        >
-                          {{ item?.parent?.name_en }}
-                        </span>
-                      </template> -->
+
+                <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
-                        <v-btn
-                          v-can="'update-post'"
-                          fab
-                          x-small
-                          color="success"
-                          elevation="0"
-                          @click="editOffice(item)"
-                        >
-                          <v-icon> mdi-account-edit-outline </v-icon>
-                        </v-btn>
-                        <v-btn
-                          v-can="'delete-division'"
-                          fab
-                          x-small
-                          color="grey"
-                          class="ml-3 white--text"
-                          elevation="0"
-                          @click="deleteAlert(item.id)"
-                        >
-                          <v-icon> mdi-delete </v-icon>
-                        </v-btn>
+                        <v-tooltip top>
+                          <template v-slot:activator="{ on }">
+                            <v-btn
+                              v-can="'update-post'"
+                              fab
+                              x-small
+                              v-on="on"
+                              color="success"
+                              elevation="0"
+                              @click="editOffice(item)"
+                            >
+                              <v-icon> mdi-account-edit-outline </v-icon>
+                            </v-btn>
+                          </template>
+                          <span>
+                            {{ $t("container.list.edit") }}
+                          </span>
+                        </v-tooltip>
+
+                        <v-tooltip top>
+                          <template v-slot:activator="{ on }">
+                            <v-btn
+                              v-can="'delete-division'"
+                              fab
+                              x-small
+                              v-on="on"
+                              color="grey"
+                              class="ml-3 white--text"
+                              elevation="0"
+                              @click="deleteAlert(item.id)"
+                            >
+                              <v-icon> mdi-delete </v-icon>
+                            </v-btn>
+                          </template>
+                          <span> {{ $t("container.list.delete") }}</span>
+                        </v-tooltip>
                       </template>
+                <!-- End Action Button -->
+
                       <template v-slot:footer="item">
                         <div
                           class="text-center pt-2 v-data-footer justify-center pb-2"
@@ -460,8 +445,7 @@
                     outlined
                     class="custom-btn-width py-2 mr-10"
                   >
-                    {{$t("container.list.cancel")}}
-
+                    {{ $t("container.list.cancel") }}
                   </v-btn>
                   <v-btn
                     type="submit"
@@ -471,8 +455,7 @@
                     :loading="loading"
                     class="custom-btn-width black white--text py-2"
                   >
-                    {{$t("container.list.submit")}}
-
+                    {{ $t("container.list.submit") }}
                   </v-btn>
                 </v-row>
               </form>
@@ -486,7 +469,7 @@
       <v-dialog v-model="dialogEdit" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{$t("container.system_config.demo_graphic.office.edit")}}
+            {{ $t("container.system_config.demo_graphic.office.edit") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
@@ -507,7 +490,11 @@
                         @input="onChangeOfficeType($event)"
                         v-model="data.office_type"
                         outlined
-                        :label='$t("container.system_config.demo_graphic.office.office_type")'
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.office.office_type'
+                          )
+                        "
                         :items="officeType"
                         item-text="value_en"
                         item-value="id"
@@ -541,7 +528,11 @@
                         @input="onChangeDivision($event)"
                         v-model="data.division_id"
                         outlined
-                        :label='$t("container.system_config.demo_graphic.division.division")'
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.division.division'
+                          )
+                        "
                         :items="divisions"
                         item-text="name_en"
                         item-value="id"
@@ -574,7 +565,11 @@
                         outlined
                         v-model="data.district_id"
                         @input="onChangeDistrict($event)"
-                        :label='$t("container.system_config.demo_graphic.district.district")'
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.district.district'
+                          )
+                        "
                         :items="districts"
                         item-text="name_en"
                         item-value="id"
@@ -605,7 +600,11 @@
                         outlined
                         v-model="data.thana_id"
                         @input="onChangeUpazila($event)"
-                        :label='$t("container.system_config.demo_graphic.office.upazila")'
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.office.upazila'
+                          )
+                        "
                         :items="upazilas"
                         item-text="name_en"
                         item-value="id"
@@ -627,7 +626,9 @@
                         v-model="data.city_corpo_id"
                         @change="onChangeCity($event)"
                         outlined
-                        :label='$t("container.system_config.demo_graphic.office.city")'
+                        :label="
+                          $t('container.system_config.demo_graphic.office.city')
+                        "
                         :items="city"
                         item-text="name_en"
                         item-value="id"
@@ -649,7 +650,11 @@
                         type="text"
                         :hide-details="errors[0] ? false : true"
                         v-model="data.name_en"
-                        :label='$t("container.system_config.demo_graphic.office.name_en")'
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.office.name_en'
+                          )
+                        "
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
@@ -668,7 +673,11 @@
                         outlined
                         type="text"
                         v-model="data.name_bn"
-                        :label='$t("container.system_config.demo_graphic.office.name_bn")'
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.office.name_bn'
+                          )
+                        "
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
@@ -687,7 +696,11 @@
                         outlined
                         type="text"
                         v-model="data.office_address"
-                        :label='$t("container.system_config.demo_graphic.office.office_address")'
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.office.office_address'
+                          )
+                        "
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
@@ -706,7 +719,11 @@
                         outlined
                         type="text"
                         v-model="data.comment"
-                        :label='$t("container.system_config.demo_graphic.office.comment")'
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.office.comment'
+                          )
+                        "
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
@@ -721,7 +738,11 @@
                     >
                       <v-checkbox
                         v-model="data.status"
-                        :label='$t("container.system_config.demo_graphic.office.status")'
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.office.active'
+                          )
+                        "
                         color="green"
                         value="1"
                         :hide-details="errors[0] ? false : true"
@@ -735,12 +756,11 @@
                 <v-row class="mx-0 my-0 py-2" justify="center">
                   <v-btn
                     flat
-                    @click="dialogAdd = false"
+                    @click="dialogEdit = false"
                     outlined
                     class="custom-btn-width py-2 mr-10"
                   >
-                    {{$t("container.list.cancel")}}
-
+                    {{ $t("container.list.cancel") }}
                   </v-btn>
                   <v-btn
                     type="submit"
@@ -750,8 +770,7 @@
                     :loading="loading"
                     class="custom-btn-width black white--text py-2"
                   >
-                    {{$t("container.list.submit")}}
-
+                    {{ $t("container.list.submit") }}
                   </v-btn>
                 </v-row>
               </form>
@@ -759,18 +778,20 @@
           </v-card-text>
         </v-card>
       </v-dialog>
-      <!-- office Edit modal  --> 
+      <!-- office Edit modal  -->
 
       <!-- delete modal  -->
       <v-dialog v-model="deleteDialog" width="350">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{$t("container.system_config.demo_graphic.office.delete")}}
+            {{ $t("container.system_config.demo_graphic.office.delete") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
-              {{$t("container.system_config.demo_graphic.office.delete_alert")}}
+              {{
+                $t("container.system_config.demo_graphic.office.delete_alert")
+              }}
             </div>
           </v-card-text>
           <v-card-actions style="display: block">
@@ -781,8 +802,7 @@
                 outlined
                 class="custom-btn-width py-2 mr-10"
               >
-                {{$t("container.list.cancel")}}
-
+                {{ $t("container.list.cancel") }}
               </v-btn>
               <v-btn
                 text
@@ -791,8 +811,7 @@
                 :loading="delete_loading"
                 class="custom-btn-width black white--text py-2"
               >
-                {{$t("container.list.delete")}}
-
+                {{ $t("container.list.delete") }}
               </v-btn>
             </v-row>
           </v-card-actions>
@@ -864,12 +883,36 @@ export default {
   computed: {
     headers() {
       return [
-        { text: this.$t("container.list.sl"), value: "id", align: "start", sortable: false },
-        { text: this.$t("container.system_config.demo_graphic.office.name_en"), value: "name_en" },
-        { text: this.$t("container.system_config.demo_graphic.office.name_bn"), value: "name_bn" },
-        { text: this.$t("container.system_config.demo_graphic.office.office_type"), value: "officeType.value_en" },
-        { text: this.$t("container.system_config.demo_graphic.office.office_address"), value: "office_address" },
-        { text:  this.$t("container.system_config.demo_graphic.office.status"), value: "status" },
+        {
+          text: this.$t("container.list.sl"),
+          value: "id",
+          align: "start",
+          sortable: false,
+        },
+        {
+          text: this.$t("container.system_config.demo_graphic.office.name_en"),
+          value: "name_en",
+        },
+        {
+          text: this.$t("container.system_config.demo_graphic.office.name_bn"),
+          value: "name_bn",
+        },
+        {
+          text: this.$t(
+            "container.system_config.demo_graphic.office.office_type"
+          ),
+          value: "officeType.value_en",
+        },
+        {
+          text: this.$t(
+            "container.system_config.demo_graphic.office.office_address"
+          ),
+          value: "office_address",
+        },
+        {
+          text: this.$t("container.system_config.demo_graphic.office.status"),
+          value: "status",
+        },
         {
           text: this.$t("container.list.action"),
           value: "actions",
@@ -1152,8 +1195,13 @@ export default {
       this.data.city_corpo_id = null;
       this.data.thana_id = null;
     },
+     updateHeaderTitle() {
+      const title = this.$t("container.system_config.demo_graphic.office.list");
+      this.$store.commit("setHeaderTitle", title);
+    },
   },
   mounted() {
+     this.GetOfficeType();
     this.GetOfficeType();
     this.GetOffices();
     this.GetAllDivisions();
@@ -1164,8 +1212,11 @@ export default {
     //   .dispatch("getLookupByType", 1)
     //   .then((res) => (this.locationType = res));
   },
+  watch: {
+    '$i18n.locale': 'updateHeaderTitle',
+  },
   beforeMount() {
-    this.$store.commit("setHeaderTitle", "Office List");
+    this.updateHeaderTitle();
   },
 };
 </script>

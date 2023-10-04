@@ -42,17 +42,17 @@ const mutations = {
             state.success_message = "";
         }
     },
-    DELETE_WARD: (state, { id, data }) => {
-        if (id) {
-            state.wards.data = state.wards.data.filter((item) => {
-                return id !== item.id;
-            });
+    // DELETE_WARD: (state, { id, data }) => {
+    //     if (id) {
+    //         state.wards.data = state.wards.data.filter((item) => {
+    //             return id !== item.id;
+    //         });
 
-            state.success_message = data.message;
-        } else {
-            state.success_message = "";
-        }
-    },
+    //         state.success_message = data.message;
+    //     } else {
+    //         state.success_message = "";
+    //     }
+    // },
     updateMyData(state, update_error_value) {
         state.ward_errors = update_error_value;
     },
@@ -80,13 +80,7 @@ const actions = {
                 return result
             })
             .catch((err) => {
-                if (err.response && err.response.data && err.response.data.errors) {
-                    state.ward_errors = err.response.data.errors;
-                    state.error_status = err.response.status;
-                } else {
-                    console.error("Error:", err);
-                    // Handle the error as needed when response or data is not available
-                }
+                return err
             });
     },
     UpdateWard: ({ commit }, data) => {
@@ -133,8 +127,8 @@ const actions = {
             .get(`/admin/ward/destroy/${id}`)
             .then((result) => {
                 console.log(result);
-                commit("DELETE_WARD", { id: id, data: result.data });
-                return result
+                // commit("DELETE_WARD", { id: id, data: result.data });
+                return result;
             })
             .catch((err) => {
                 console.log(err);
