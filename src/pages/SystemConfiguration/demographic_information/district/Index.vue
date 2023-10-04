@@ -511,7 +511,6 @@ export default {
       if (this.$refs.form) {
         this.$refs.form.reset();
       }
-      this.$refs.form.setErrors(null);
       this.resetForm();
       this.dialogAdd = true;
     },
