@@ -25,11 +25,22 @@ Vue.prototype.$checkLanguage = function (str) {
   for (let i = 0; i < str.length; i++) {
     const charCode = str.charCodeAt(i);
 
-    if ((charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122)) {
+    // if ((charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122)) {
+    //   isEnglish = true;
+    // } else if (charCode >= 2432 && charCode <= 2559) {
+    //   isBangla = true;
+    // }
+    if (
+      ((charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122)) || // English letters
+      (charCode < 2432 || charCode > 2559) // Exclude Bangla letters
+    ) {
       isEnglish = true;
     } else if (charCode >= 2432 && charCode <= 2559) {
       isBangla = true;
+      console.log('Bangla');
     }
+
+
   }
 
   if (isEnglish && !isBangla) {

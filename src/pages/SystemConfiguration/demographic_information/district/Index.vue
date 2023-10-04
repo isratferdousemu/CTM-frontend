@@ -166,7 +166,12 @@
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
 
-                <ValidationProvider name="Code" vid="code" rules="required">
+                <ValidationProvider
+                  name="Code"
+                  vid="code"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
                   <v-text-field
                     outlined
                     type="text"
@@ -174,13 +179,14 @@
                     :label="$t('container.list.code')"
                     required
                     :error="errors[0] ? true : false"
-                    :error-messages="errors.code"
+                    :error-messages="errors[0]"
                   ></v-text-field>
                 </ValidationProvider>
                 <ValidationProvider
                   name="Division"
                   vid="division"
                   rules="required"
+                  v-slot="{ errors }"
                 >
                   <v-autocomplete
                     @input="onChangeDivision($event)"
@@ -203,6 +209,7 @@
                   name="Name English"
                   vid="name_en"
                   rules="required"
+                  v-slot="{ errors }"
                 >
                   <v-text-field
                     outlined
@@ -210,14 +217,15 @@
                     v-model="data.name_en"
                     :label="$t('container.list.name_en')"
                     required
-                    :error="errors.name_en ? true : false"
-                    :error-messages="errors.name_en"
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
                   ></v-text-field>
                 </ValidationProvider>
                 <ValidationProvider
                   name="Name Bangla"
                   vid="name_bn"
                   rules="required"
+                  v-slot="{ errors }"
                 >
                   <v-text-field
                     outlined
@@ -225,8 +233,8 @@
                     v-model="data.name_bn"
                     :label="$t('container.list.name_bn')"
                     required
-                    :error="errors.name_bn ? true : false"
-                    :error-messages="errors.name_bn"
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
                   ></v-text-field>
                 </ValidationProvider>
 
@@ -270,7 +278,12 @@
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
 
-                <ValidationProvider name="Code" vid="code" rules="required">
+                <ValidationProvider
+                  name="Code"
+                  vid="code"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
                   <v-text-field
                     outlined
                     type="text"
@@ -278,7 +291,7 @@
                     :label="$t('container.list.code')"
                     required
                     :error="errors[0] ? true : false"
-                    :error-messages="errors.code"
+                    :error-messages="errors[0]"
                   ></v-text-field>
                 </ValidationProvider>
 
@@ -309,6 +322,7 @@
                   name="Name English"
                   vid="name_en"
                   rules="required"
+                  v-slot="{ errors }"
                 >
                   <v-text-field
                     outlined
@@ -316,14 +330,15 @@
                     v-model="data.name_en"
                     :label="$t('container.list.name_en')"
                     required
-                    :error="errors.name_en ? true : false"
-                    :error-messages="errors.name_en"
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
                   ></v-text-field>
                 </ValidationProvider>
                 <ValidationProvider
                   name="Name Bangla"
                   vid="name_bn"
                   rules="required"
+                  v-slot="{ errors }"
                 >
                   <v-text-field
                     outlined
@@ -331,8 +346,8 @@
                     v-model="data.name_bn"
                     :label="$t('container.list.name_bn')"
                     required
-                    :error="errors.name_bn ? true : false"
-                    :error-messages="errors.name_bn"
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
                   ></v-text-field>
                 </ValidationProvider>
 
@@ -463,8 +478,18 @@ export default {
           ),
           value: "division.name_en",
         },
-        { text: this.$t("container.list.name_en"), value: "name_en" },
-        { text: this.$t("container.list.name_bn"), value: "name_bn" },
+        {
+          text: this.$t(
+            "container.system_config.demo_graphic.district.name_en"
+          ),
+          value: "name_en",
+        },
+        {
+          text: this.$t(
+            "container.system_config.demo_graphic.district.name_bn"
+          ),
+          value: "name_bn",
+        },
         {
           text: this.$t("container.list.action"),
           value: "actions",
@@ -483,13 +508,59 @@ export default {
 
   methods: {
     createDialog() {
+      if (this.$refs.form) {
+        this.$refs.form.reset();
+      }
+      this.$refs.form.setErrors(null);
       this.resetForm();
       this.dialogAdd = true;
     },
+    checkLanguage() {
+      let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
+      let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
+      if (
+        checkLanguageBangla != "Bangla" &&
+        checkLanguageEnglish != "English"
+      ) {
+        let errs = {
+          name_bn: ["Please Enter in Bangla Language in this Field"],
+          name_en: ["Please Enter in English Language in this Field"],
+        };
+        this.$refs.form.setErrors(errs);
+        return false;
+      } else if (checkLanguageBangla != "Bangla") {
+        let errs = {
+          name_bn: ["Please Enter in Bangla Language in this Field"],
+        };
+        this.$refs.form.setErrors(errs);
+        return false;
+      } else if (checkLanguageEnglish != "English") {
+        let errs = {
+          name_en: ["Please Enter in English Language in this Field"],
+        };
+        this.$refs.form.setErrors(errs);
+        return false;
+      } else {
+        return true;
+      }
+    },
+    validator() {
+      let fd = new FormData();
+      for (const [key, value] of Object.entries(this.data)) {
+        if (value !== null) {
+          fd.append(key, value);
+        }
+      }
+      return fd;
+    },
     submitDistrict() {
+      if (!this.checkLanguage()) {
+        return;
+      }
+
       try {
         this.$store
-          .dispatch("District/StoreDistrict", this.data)
+          .dispatch("District/StoreDistrict", this.validator())
           .then((data) => {
             console.log(data, "submit");
             if (data == null) {
@@ -498,6 +569,7 @@ export default {
               this.resetForm();
               this.GetDistrict();
             } else {
+              this.$refs.form.setErrors(data.errors);
               this.errors = data.errors;
             }
           })
@@ -519,10 +591,13 @@ export default {
       this.errors = {};
     },
     updateDistrict() {
-      // alert(this.data);
+      if (!this.checkLanguage()) {
+        return;
+      }
+
       try {
         this.$store
-          .dispatch("District/UpdateDistrict", this.data)
+          .dispatch("District/UpdateDistrict", this.validator())
           .then((data) => {
             console.log(data, "update");
             if (data == null) {
@@ -531,7 +606,7 @@ export default {
               this.resetForm();
               this.GetDistrict();
             } else {
-              this.errors = data.errors;
+              this.$refs.form.setErrors(data.errors);
             }
 
             // if (this.error_status == "") {
@@ -626,13 +701,15 @@ export default {
       //     console.log(this.districts);
       //   });
     },
-       updateHeaderTitle() {
-      const title = this.$t("container.system_config.demo_graphic.district.list");
+    updateHeaderTitle() {
+      const title = this.$t(
+        "container.system_config.demo_graphic.district.list"
+      );
       this.$store.commit("setHeaderTitle", title);
     },
   },
-    watch: {
-    '$i18n.locale': 'updateHeaderTitle',
+  watch: {
+    "$i18n.locale": "updateHeaderTitle",
   },
   created() {
     this.GetDistrict();

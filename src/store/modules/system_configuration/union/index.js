@@ -95,9 +95,11 @@ const actions = {
                 // this.$router.push({
                 //   path: "/system-configuration/division",
                 // });
-                commit("STORE_UNION", result);
+                // commit("STORE_UNION", result);
+                return result;
             })
             .catch((err) => {
+                return err;
                 if (err.response && err.response.data && err.response.data.errors) {
                     state.union_errors = err.response.data.errors;
                     state.error_status = err.response.status;

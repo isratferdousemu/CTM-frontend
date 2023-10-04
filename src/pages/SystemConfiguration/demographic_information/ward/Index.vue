@@ -469,14 +469,8 @@ export default {
           text: this.$t("container.list.location_type"),
           value: "location_type.value_en",
         },
-        {
-          text: this.$t("container.list.name_en"),
-          value: "name_en",
-        },
-        {
-          text: this.$t("container.list.name_bn"),
-          value: "name_bn",
-        },
+        { text: this.$t("container.system_config.demo_graphic.ward.name_en"), value: "name_en" },
+        { text: this.$t("container.system_config.demo_graphic.ward.name_bn"), value: "name_bn" },
         {
           text: this.$t("container.list.action"),
           value: "actions",
