@@ -258,7 +258,12 @@
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
 
-                <ValidationProvider name="Code" vid="code" rules="required">
+                <ValidationProvider
+                  name="Code"
+                  vid="code"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
                   <v-text-field
                     outlined
                     type="text"
@@ -266,13 +271,14 @@
                     :label="$t('container.list.code')"
                     required
                     :error="errors[0] ? true : false"
-                    :error-messages="errors.code"
+                    :error-messages="errors[0]"
                   ></v-text-field>
                 </ValidationProvider>
                 <ValidationProvider
                   name="Name English"
                   vid="name_en"
                   rules="required"
+                  v-slot="{ errors }"
                 >
                   <v-text-field
                     outlined
@@ -280,14 +286,15 @@
                     v-model="data.name_en"
                     :label="$t('container.list.name_en')"
                     required
-                    :error="errors.name_en ? true : false"
-                    :error-messages="errors.name_en"
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
                   ></v-text-field>
                 </ValidationProvider>
                 <ValidationProvider
                   name="Name Bangla"
                   vid="name_bn"
                   rules="required"
+                  v-slot="{ errors }"
                 >
                   <v-text-field
                     outlined
@@ -295,8 +302,8 @@
                     v-model="data.name_bn"
                     :label="$t('container.list.name_bn')"
                     required
-                    :error="errors.name_bn ? true : false"
-                    :error-messages="errors.name_bn"
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
                   ></v-text-field>
                 </ValidationProvider>
 
@@ -452,13 +459,17 @@ export default {
       if (this.$refs.form) {
         this.$refs.form.reset();
       }
-
+      this.$refs.form.setErrors({});
+      this.resetForm();
       this.dialogAdd = true;
     },
     checkLanguage() {
       let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
       let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
-      if (checkLanguageBangla != "Bangla" && checkLanguageEnglish != "English" ) {
+      if (
+        checkLanguageBangla != "Bangla" &&
+        checkLanguageEnglish != "English"
+      ) {
         let errs = {
           name_bn: ["Please Enter in Bangla Language in this Field"],
           name_en: ["Please Enter in English Language in this Field"],
@@ -481,6 +492,15 @@ export default {
         return true;
       }
     },
+    validator() {
+      let fd = new FormData();
+      for (const [key, value] of Object.entries(this.data)) {
+        if (value !== null) {
+          fd.append(key, value);
+        }
+      }
+      return fd;
+    },
     submitDivision() {
       if (!this.checkLanguage()) {
         return;
@@ -488,7 +508,7 @@ export default {
 
       try {
         this.$store
-          .dispatch("Division/StoreDivision", this.data)
+          .dispatch("Division/StoreDivision", this.validator())
           .then((res) => {
             if (res.data?.success) {
               this.$toast.success("Data Inserted Successfully");
@@ -498,7 +518,6 @@ export default {
             } else if (res.response?.data?.errors) {
               console.log(res.response.data.errors);
               this.$refs.form.setErrors(res.response.data.errors);
-              this.$toast.error(res.response.data.message);
             }
           });
       } catch (e) {
@@ -514,9 +533,13 @@ export default {
       this.errors = {};
     },
     updateDivision() {
+      if (!this.checkLanguage()) {
+        return;
+      }
+
       try {
         this.$store
-          .dispatch("Division/UpdateDivision", this.data)
+          .dispatch("Division/UpdateDivision", this.validator())
           .then((data) => {
             console.log(data, "update");
             if (data == null) {
@@ -525,14 +548,8 @@ export default {
               this.resetForm();
               this.GetDivision();
             } else {
-              this.errors = data.errors;
+              this.$refs.form.setErrors(res.response.data.errors);
             }
-            // if (this.error_status == "") {
-            //   this.$toast.success("Data Updated Successfully");
-            //   this.dialogEdit = false;
-            //   this.resetForm();
-            //   this.GetDivision();
-            // }
           });
       } catch (e) {
         console.log(e);

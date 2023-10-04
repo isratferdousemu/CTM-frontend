@@ -174,7 +174,7 @@
             <ValidationObserver ref="form" v-slot="{ invalid }">
               <form @submit.prevent="submitUnion()">
                 <v-row>
-                  <v-col>
+                  <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Code"
                       vid="code"
@@ -189,65 +189,11 @@
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
+                        :hide-details="errors[0] ? false : true"
                       ></v-text-field>
-                      <div
-                        v-if="union_errors && union_errors.code"
-                        v-html="union_errors.code[0]"
-                        class="red--text"
-                      />
-                    </ValidationProvider>
-                    <ValidationProvider
-                      name="District"
-                      vid="district"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        outlined
-                        v-model="data.district_id"
-                        @input="onChangeDistrict($event)"
-                        :label="
-                          $t(
-                            'container.system_config.demo_graphic.district.district'
-                          )
-                        "
-                        :items="districts"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-autocomplete>
-                      <div
-                        v-if="union_errors && union_errors.district_id"
-                        v-html="union_errors.district_id[0]"
-                        class="red--text"
-                      />
-                    </ValidationProvider>
-
-                    <ValidationProvider
-                      name="Name English"
-                      vid="name_en"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-text-field
-                        outlined
-                        type="text"
-                        v-model="data.name_en"
-                        :label="$t('container.list.name_en')"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-text-field>
-                      <div
-                        v-if="union_errors && union_errors.name_en"
-                        v-html="union_errors.name_en[0]"
-                        class="red--text"
-                      />
                     </ValidationProvider>
                   </v-col>
-                  <v-col>
+                  <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Division"
                       vid="division"
@@ -269,14 +215,37 @@
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
+                        :hide-details="errors[0] ? false : true"
                       ></v-autocomplete>
-                      <div
-                        v-if="union_errors && union_errors.division_id"
-                        v-html="union_errors.division_id[0]"
-                        class="red--text"
-                      />
                     </ValidationProvider>
-
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                      name="District"
+                      vid="district"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        outlined
+                        v-model="data.district_id"
+                        @input="onChangeDistrict($event)"
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.district.district'
+                          )
+                        "
+                        :items="districts"
+                        item-text="name_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                        :hide-details="errors[0] ? false : true"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Thana"
                       vid="division"
@@ -297,41 +266,30 @@
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
+                        :hide-details="errors[0] ? false : true"
                       ></v-autocomplete>
-                      <div
-                        v-if="union_errors && union_errors.thana_id"
-                        v-html="union_errors.thana_id[0]"
-                        class="red--text"
-                      />
                     </ValidationProvider>
-                    <!-- <ValidationProvider
-                      name="Thana"
-                      vid="division"
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                      name="Name English"
+                      vid="name_en"
                       rules="required"
                       v-slot="{ errors }"
                     >
-                      <v-autocomplete
-                        v-model="data.thana_id"
+                      <v-text-field
                         outlined
-                        :label="
-                          $t(
-                            'container.system_config.demo_graphic.ward.upazila'
-                          )
-                        "
-                        :items="thanas"
-                        item-text="name_en"
-                        item-value="id"
+                        type="text"
+                        v-model="data.name_en"
+                        :label="$t('container.list.name_en')"
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
-                      ></v-autocomplete>
-                      <div
-                        v-if="union_errors && union_errors.thana_id"
-                        v-html="union_errors.thana_id[0]"
-                        class="red--text"
-                      />
-                    </ValidationProvider> -->
-
+                        :hide-details="errors[0] ? false : true"
+                      ></v-text-field>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Name Bangla"
                       vid="name_bn"
@@ -346,12 +304,8 @@
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
+                        :hide-details="errors[0] ? false : true"
                       ></v-text-field>
-                      <div
-                        v-if="union_errors && union_errors.name_bn"
-                        v-html="union_errors.name_bn[0]"
-                        class="red--text"
-                      />
                     </ValidationProvider>
                   </v-col>
                 </v-row>
@@ -394,7 +348,7 @@
 
             <ValidationObserver ref="form" v-slot="{ invalid }">
               <form @submit.prevent="updateUnion()">
-                <v-row>
+                <!-- <v-row>
                   <v-col>
                     <ValidationProvider
                       name="Code"
@@ -545,8 +499,144 @@
                       />
                     </ValidationProvider>
                   </v-col>
-                </v-row>
+                </v-row> -->
 
+                <v-row>
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                      name="Code"
+                      vid="code"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-text-field
+                        outlined
+                        type="text"
+                        v-model="data.code"
+                        :label="$t('container.list.code')"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                        :hide-details="errors[0] ? false : true"
+                      ></v-text-field>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                      name="Division"
+                      vid="division"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        @input="onChangeDivision($event)"
+                        v-model="data.division_id"
+                        outlined
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.division.division'
+                          )
+                        "
+                        :items="divisions"
+                        item-text="name_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                        :hide-details="errors[0] ? false : true"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                      name="District"
+                      vid="district"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        outlined
+                        v-model="data.district_id"
+                        @input="onChangeDistrict($event)"
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.district.district'
+                          )
+                        "
+                        :items="districts"
+                        item-text="name_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                        :hide-details="errors[0] ? false : true"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                      name="Thana"
+                      vid="division"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        v-model="data.thana_id"
+                        outlined
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.ward.upazila'
+                          )
+                        "
+                        :items="thanas"
+                        item-text="name_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                        :hide-details="errors[0] ? false : true"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                      name="Name English"
+                      vid="name_en"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-text-field
+                        outlined
+                        type="text"
+                        v-model="data.name_en"
+                        :label="$t('container.list.name_en')"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                        :hide-details="errors[0] ? false : true"
+                      ></v-text-field>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                      name="Name Bangla"
+                      vid="name_bn"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-text-field
+                        outlined
+                        type="text"
+                        v-model="data.name_bn"
+                        :label="$t('container.list.name_bn')"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                        :hide-details="errors[0] ? false : true"
+                      ></v-text-field>
+                    </ValidationProvider>
+                  </v-col>
+                </v-row>
                 <v-row class="mx-0 my-0 py-2" justify="center">
                   <v-btn
                     flat
@@ -698,8 +788,14 @@ export default {
           text: this.$t("container.system_config.demo_graphic.thana.thana"),
           value: "thana",
         },
-        { text: this.$t("container.system_config.demo_graphic.union.name_en"), value: "name_en" },
-        { text: this.$t("container.system_config.demo_graphic.union.name_bn"), value: "name_bn" },
+        {
+          text: this.$t("container.system_config.demo_graphic.union.name_en"),
+          value: "name_en",
+        },
+        {
+          text: this.$t("container.system_config.demo_graphic.union.name_bn"),
+          value: "name_bn",
+        },
         {
           text: this.$t("container.list.action"),
           value: "actions",
@@ -711,38 +807,93 @@ export default {
 
     ...mapState({
       divisions: (state) => state.Division.divisions,
-      error_status: (state) => state.Union.error_status,
-      union_errors: (state) => state.Union.union_errors,
+    //   error_status: (state) => state.Union.error_status,
+    //   union_errors: (state) => state.Union.union_errors,
       // message: (state) => state.SystemConfiguration.success_message,
     }),
   },
 
   methods: {
-    async submitUnion() {
+    createDialog() {
+      if (this.$refs.form) {
+        this.$refs.form.reset();
+      }
+      this.resetData();
+      this.dialogAdd = true;
+    },
+    checkLanguage() {
+      let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
+      let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
+      if (
+        checkLanguageBangla != "Bangla" &&
+        checkLanguageEnglish != "English"
+      ) {
+        let errs = {
+          name_bn: ["Please Enter in Bangla Language in this Field"],
+          name_en: ["Please Enter in English Language in this Field"],
+        };
+        this.$refs.form.setErrors(errs);
+        return false;
+      } else if (checkLanguageBangla != "Bangla") {
+        let errs = {
+          name_bn: ["Please Enter in Bangla Language in this Field"],
+        };
+        this.$refs.form.setErrors(errs);
+        return false;
+      } else if (checkLanguageEnglish != "English") {
+        let errs = {
+          name_en: ["Please Enter in English Language in this Field"],
+        };
+        this.$refs.form.setErrors(errs);
+        return false;
+      } else {
+        return true;
+      }
+    },
+    validator() {
+      let fd = new FormData();
+      for (const [key, value] of Object.entries(this.data)) {
+        if (value !== null) {
+          fd.append(key, value);
+        }
+      }
+      return fd;
+    },
+    submitUnion() {
+      if (!this.checkLanguage()) {
+        return;
+      }
+
       try {
-        this.$store.dispatch("Union/StoreUnion", this.data).then((res) => {
+        this.$store.dispatch("Union/StoreUnion", this.validator()).then((res) => {
           if (res.data?.success) {
             this.$toast.success("Data Inserted Successfully");
-          this.dialogAdd = false;
-          this.resetData();
-          this.GetUnion();
+            this.dialogAdd = false;
+            this.resetData();
+            this.GetUnion();
           } else if (res.response?.data?.errors) {
             this.$refs.form.setErrors(res.response.data.errors);
-            this.$toast.error(res.response.data.message);
           }
         });
       } catch (e) {
         console.log(e);
       }
     },
-    async updateUnion() {
+    updateUnion() {
+      if (!this.checkLanguage()) {
+        return;
+      }
+      alert('clicked');
       try {
-        this.$store.dispatch("Union/UpdateUnion", this.data).then(() => {
-          if (this.error_status == "") {
+        this.$store.dispatch("Union/UpdateUnion", this.validator()).then((res) => {
+            console.log(res,'update_union');
+            if (res.data?.success) {
             this.$toast.success("Data Updated Successfully");
             this.dialogEdit = false;
             this.resetData();
             this.GetUnion();
+          } else if (res.response?.data?.errors) {
+            this.$refs.form.setErrors(res.response.data.errors);
           }
         });
       } catch (e) {
@@ -753,7 +904,6 @@ export default {
       if (this.$refs.form) {
         this.$refs.form.reset();
       }
-
       const update_error_value = null;
       this.updateError("update_error_value");
       this.resetData();
@@ -827,7 +977,7 @@ export default {
           .dispatch("Union/DestroyUnion", this.delete_id)
           .then((res) => {
             // check if the request was successful
-            console.log(res, 'delete');
+            console.log(res, "delete");
             if (res?.data?.success) {
               this.$toast.error(res.data.message);
             } else {
@@ -850,6 +1000,9 @@ export default {
         (this.data.code = null),
         (this.data.division_id = null),
         (this.data.district_id = null),
+        (this.divisions = []),
+        (this.districts = []),
+        (this.thanas = []),
         (this.data.thana_id = null);
     },
     editUnion(item) {

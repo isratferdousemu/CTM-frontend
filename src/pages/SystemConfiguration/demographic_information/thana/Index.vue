@@ -41,7 +41,7 @@
                     </v-text-field>
                   </div>
                   <v-btn
-                    @click="dialogOpen"
+                    @click="createDialog"
                     flat
                     color="primary"
                     prepend-icon="mdi-account-multiple-plus"
@@ -92,7 +92,7 @@
                               v-on="on"
                               color="success"
                               elevation="0"
-                              @click="editUpazila(item)"
+                              @click="editDialog(item)"
                             >
                               <v-icon> mdi-account-edit-outline </v-icon>
                             </v-btn>
@@ -173,103 +173,31 @@
             <ValidationObserver ref="form" v-slot="{ invalid }">
               <form @submit.prevent="submitUpazila()">
                 <v-row>
-                  <v-col>
-                    <ValidationProvider name="Code" vid="code" rules="required">
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                      name="Code"
+                      vid="code"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
                       <v-text-field
                         outlined
                         type="text"
                         v-model="data.code"
                         :label="$t('container.list.code')"
                         required
-                        :error="errors.code ? true : false"
-                        :error-messages="errors.code"
-                      ></v-text-field>
-                      <!-- <div
-                        v-if="thana_errors && thana_errors.code"
-                        v-html="thana_errors.code[0]"
-                        class="red--text"
-                      /> -->
-                    </ValidationProvider>
-                    <ValidationProvider
-                      v-if="isDistrictHidden"
-                      name="District"
-                      vid="district"
-                      rules="required"
-                    >
-                      <v-autocomplete
-                        @input="onChangeDistrict($event)"
-                        outlined
-                        v-model="data.district_id"
-                        :label='$t("container.system_config.demo_graphic.district.district")' 
-                        :items="districts"
-                        item-text="name_en"
-                        item-value="id"
-                        required
+                        :hide-details="errors[0] ? false : true"
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
-                      ></v-autocomplete>
-                      <!-- <div
-                        v-if="thana_errors && thana_errors.district_id"
-                        v-html="thana_errors.district_id[0]"
-                        class="red--text"
-                      /> -->
-                    </ValidationProvider>
-                    <!-- <ValidationProvider name="Code" vid="code" rules="required" >
-                      <v-text-field outlined type="text" v-model="data.code" label="Code" required
-                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
-                      <div v-if="thana_errors && thana_errors.code" v-html="thana_errors.code[0]" class="red--text" />
-                    </ValidationProvider> -->
-                    <ValidationProvider
-                      v-if="!isCityCorporationHidden"
-                      name="City Corporation"
-                      vid="city corporation"
-                      rules="required"
-                    >
-                      <v-autocomplete
-                        v-model="data.city_corporation_id"
-                        outlined
-                        :label="
-                          $t('container.system_config.demo_graphic.city.city')
-                        "
-                        :items="city"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-autocomplete>
-                      <div
-                        v-if="thana_errors && thana_errors.thana_id"
-                        v-html="thana_errors.thana_id[0]"
-                        class="red--text"
-                      />
-                    </ValidationProvider>
-                    <ValidationProvider
-                      name="Name Bangla"
-                      vid="name_bn"
-                      rules="required"
-                    >
-                      <v-text-field
-                        outlined
-                        type="text"
-                        v-model="data.name_bn"
-                        :label="$t('container.list.name_bn')"
-                        required
-                        :error="errors.name_bn ? true : false"
-                        :error-messages="errors.name_bn"
                       ></v-text-field>
-                      <!-- <div
-                        v-if="thana_errors && thana_errors.name_bn"
-                        v-html="thana_errors.name_bn[0]"
-                        class="red--text"
-                      /> -->
                     </ValidationProvider>
                   </v-col>
-                  <v-col>
+                  <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Division"
-                      vid="division"
+                      vid="division_id"
                       rules="required"
+                      v-slot="{ errors }"
                     >
                       <v-autocomplete
                         @input="onChangeDivision($event)"
@@ -284,21 +212,47 @@
                         item-text="name_en"
                         item-value="id"
                         required
+                        :hide-details="errors[0] ? false : true"
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
                       ></v-autocomplete>
-                      <!-- <div
-                        v-if="thana_errors && thana_errors.division_id"
-                        v-html="thana_errors.division_id[0]"
-                        class="red--text"
-                      /> -->
                     </ValidationProvider>
+                  </v-col>
 
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                      v-if="isDistrictHidden"
+                      name="District"
+                      vid="district"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        @input="onChangeDistrict($event)"
+                        outlined
+                        v-model="data.district_id"
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.district.district'
+                          )
+                        "
+                        :items="districts"
+                        item-text="name_en"
+                        item-value="id"
+                        required
+                        :hide-details="errors[0] ? false : true"
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       v-if="isLocationTypeHidden"
                       name="Location Type"
                       vid="division"
                       rules="required"
+                      v-slot="{ errors }"
                     >
                       <v-autocomplete
                         @input="onChangeLocationType($event)"
@@ -309,15 +263,46 @@
                         item-text="value_en"
                         item-value="id"
                         required
+                        :hide-details="errors[0] ? false : true"
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
                       ></v-autocomplete>
                     </ValidationProvider>
-
+                  </v-col>
+                  <v-col
+                    lg="6"
+                    md="6"
+                    cols="12"
+                    v-if="!isCityCorporationHidden"
+                  >
+                    <ValidationProvider
+                      name="City Corporation"
+                      vid="city corporation"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        v-model="data.city_corporation_id"
+                        outlined
+                        :label="
+                          $t('container.system_config.demo_graphic.city.city')
+                        "
+                        :items="city"
+                        item-text="name_en"
+                        item-value="id"
+                        required
+                        :hide-details="errors[0] ? false : true"
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Name English"
                       vid="name_en"
                       rules="required"
+                      v-slot="{ errors }"
                     >
                       <v-text-field
                         outlined
@@ -325,14 +310,29 @@
                         v-model="data.name_en"
                         :label="$t('container.list.name_en')"
                         required
-                        :error="errors.name_en ? true : false"
-                        :error-messages="errors.name_en"
+                        :hide-details="errors[0] ? false : true"
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
                       ></v-text-field>
-                      <!-- <div
-                        v-if="thana_errors && thana_errors.name_en"
-                        v-html="thana_errors.name_en[0]"
-                        class="red--text"
-                      /> -->
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                      name="Name Bangla"
+                      vid="name_bn"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-text-field
+                        outlined
+                        type="text"
+                        v-model="data.name_bn"
+                        :label="$t('container.list.name_bn')"
+                        required
+                        :hide-details="errors[0] ? false : true"
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-text-field>
                     </ValidationProvider>
                   </v-col>
                 </v-row>
@@ -376,77 +376,31 @@
             <ValidationObserver ref="form" v-slot="{ invalid }">
               <form @submit.prevent="updateUpazila()">
                 <v-row>
-                  <v-col>
-                    <ValidationProvider name="Code" vid="code" rules="required">
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                      name="Code"
+                      vid="code"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
                       <v-text-field
                         outlined
                         type="text"
                         v-model="data.code"
                         :label="$t('container.list.code')"
                         required
-                        :error="errors.code ? true : false"
-                        :error-messages="errors.code"
-                        :readonly="true"
-                      ></v-text-field>
-                      <!-- <div
-                        v-if="thana_errors && thana_errors.code"
-                        v-html="thana_errors.code[0]"
-                        class="red--text"
-                      /> -->
-                    </ValidationProvider>
-                    <ValidationProvider
-                      name="District"
-                      vid="district"
-                      rules="required"
-                    >
-                      <v-autocomplete
-                        outlined
-                        v-model="data.district_id"
-                        :label="
-                          $t(
-                            'container.system_config.demo_graphic.district.district'
-                          )
-                        "
-                        :items="districts"
-                        item-text="name_en"
-                        item-value="id"
-                        required
+                        :hide-details="errors[0] ? false : true"
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
-                        :readonly="true"
-                      ></v-autocomplete>
-                      <!-- <div
-                        v-if="thana_errors && thana_errors.district_id"
-                        v-html="thana_errors.district_id[0]"
-                        class="red--text"
-                      /> -->
-                    </ValidationProvider>
-                    <ValidationProvider
-                      name="Name English"
-                      vid="name_en"
-                      rules="required"
-                    >
-                      <v-text-field
-                        outlined
-                        type="text"
-                        v-model="data.name_en"
-                        :label="$t('container.list.name_en')"
-                        required
-                        :error="errors.name_en ? true : false"
-                        :error-messages="errors.name_en"
                       ></v-text-field>
-                      <!-- <div
-                        v-if="thana_errors && thana_errors.name_en"
-                        v-html="thana_errors.name_en[0]"
-                        class="red--text"
-                      /> -->
                     </ValidationProvider>
                   </v-col>
-                  <v-col>
+                  <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Division"
-                      vid="division"
+                      vid="division_id"
                       rules="required"
+                      v-slot="{ errors }"
                     >
                       <v-autocomplete
                         @input="onChangeDivision($event)"
@@ -461,23 +415,52 @@
                         item-text="name_en"
                         item-value="id"
                         required
+                        :hide-details="errors[0] ? false : true"
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
-                        :readonly="true"
+                        readonly
                       ></v-autocomplete>
-                      <div
-                        v-if="thana_errors && thana_errors.division_id"
-                        v-html="thana_errors.division_id[0]"
-                        class="red--text"
-                      />
                     </ValidationProvider>
+                  </v-col>
 
+                  <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
+                      v-if="isDistrictHidden"
+                      name="District"
+                      vid="district"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        @input="onChangeDistrict($event)"
+                        outlined
+                        v-model="data.district_id"
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.district.district'
+                          )
+                        "
+                        :items="districts"
+                        item-text="name_en"
+                        item-value="id"
+                        required
+                        :hide-details="errors[0] ? false : true"
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                        readonly
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                      v-if="isLocationTypeHidden"
                       name="Location Type"
                       vid="division"
                       rules="required"
+                      v-slot="{ errors }"
                     >
                       <v-autocomplete
+                        @input="onChangeLocationType($event)"
                         v-model="data.location_type"
                         outlined
                         :label="$t('container.list.location_type')"
@@ -485,42 +468,67 @@
                         item-text="value_en"
                         item-value="id"
                         required
+                        :hide-details="errors[0] ? false : true"
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
-                        :readonly="true"
+                        readonly
                       ></v-autocomplete>
-                      <!-- <div
-                        v-if="thana_errors && thana_errors.thana_id"
-                        v-html="thana_errors.thana_id[0]"
-                        class="red--text"
-                      /> -->
                     </ValidationProvider>
-                    <!-- <ValidationProvider
+                  </v-col>
+                  <v-col
+                    lg="6"
+                    md="6"
+                    cols="12"
+                    v-if="!isCityCorporationHidden"
+                  >
+                    <ValidationProvider
                       name="City Corporation"
                       vid="city corporation"
                       rules="required"
-                      
+                      v-slot="{ errors }"
                     >
                       <v-autocomplete
-                        v-model="data.cityCorporation"
+                        v-model="data.city_corporation_id"
                         outlined
-                        label="City Corporation"
+                        :label="
+                          $t('container.system_config.demo_graphic.city.city')
+                        "
                         :items="city"
                         item-text="name_en"
                         item-value="id"
                         required
+                        :hide-details="errors[0] ? false : true"
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
+                        readonly
                       ></v-autocomplete>
-                      <div
-                        v-if="thana_errors && thana_errors.thana_id"
-                        v-html="thana_errors.thana_id[0]"
-                        class="red--text"
-                    </ValidationProvider> -->
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                      name="Name English"
+                      vid="name_en"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-text-field
+                        outlined
+                        type="text"
+                        v-model="data.name_en"
+                        :label="$t('container.list.name_en')"
+                        required
+                        :hide-details="errors[0] ? false : true"
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-text-field>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Name Bangla"
                       vid="name_bn"
                       rules="required"
+                      v-slot="{ errors }"
                     >
                       <v-text-field
                         outlined
@@ -528,14 +536,10 @@
                         v-model="data.name_bn"
                         :label="$t('container.list.name_bn')"
                         required
-                        :error="errors.name_bn ? true : false"
-                        :error-messages="errors.name_bn"
+                        :hide-details="errors[0] ? false : true"
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
                       ></v-text-field>
-                      <!-- <div
-                        v-if="thana_errors && thana_errors.name_bn"
-                        v-html="thana_errors.name_bn[0]"
-                        class="red--text"
-                      /> -->
                     </ValidationProvider>
                   </v-col>
                 </v-row>
@@ -685,8 +689,14 @@ export default {
           text: this.$t("container.list.location_type"),
           value: "locationType",
         },
-        { text: this.$t("container.system_config.demo_graphic.thana.name_en"), value: "name_en" },
-        { text: this.$t("container.system_config.demo_graphic.thana.name_bn"), value: "name_bn" },
+        {
+          text: this.$t("container.system_config.demo_graphic.thana.name_en"),
+          value: "name_en",
+        },
+        {
+          text: this.$t("container.system_config.demo_graphic.thana.name_bn"),
+          value: "name_bn",
+        },
         {
           text: this.$t("container.list.action"),
           value: "actions",
@@ -708,57 +718,97 @@ export default {
   },
 
   methods: {
-    async submitUpazila() {
-      // alert(JSON.stringify(this.data));
-      // return;
-      try {
-        let fd = new FormData();
-        for (const [key, value] of Object.entries(this.data)) {
-          if (value !== null) {
-            fd.append(key, value);
-          }
+    createDialog() {
+      if (this.$refs.form) {
+        this.$refs.form.reset();
+      }
+      this.$refs.form.setErrors(null);
+      this.resetForm();
+      this.dialogAdd = true;
+    },
+    checkLanguage() {
+      let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
+      let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
+      if (
+        checkLanguageBangla != "Bangla" &&
+        checkLanguageEnglish != "English"
+      ) {
+        let errs = {
+          name_bn: ["Please Enter in Bangla Language in this Field"],
+          name_en: ["Please Enter in English Language in this Field"],
+        };
+        this.$refs.form.setErrors(errs);
+        return false;
+      } else if (checkLanguageBangla != "Bangla") {
+        let errs = {
+          name_bn: ["Please Enter in Bangla Language in this Field"],
+        };
+        this.$refs.form.setErrors(errs);
+        return false;
+      } else if (checkLanguageEnglish != "English") {
+        let errs = {
+          name_en: ["Please Enter in English Language in this Field"],
+        };
+        this.$refs.form.setErrors(errs);
+        return false;
+      } else {
+        return true;
+      }
+    },
+    validator() {
+      let fd = new FormData();
+      for (const [key, value] of Object.entries(this.data)) {
+        if (value !== null) {
+          fd.append(key, value);
         }
-        this.$store.dispatch("Thana/StoreUpazila", fd).then((data) => {
-          console.log(data, "submit");
-          if (data == null) {
-            this.$toast.success("Data Inserted Successfully");
-            this.dialogAdd = false;
-            this.resetData();
-            this.GetUpazila();
-          } else {
-            this.errors = data.errors;
-          }
-        });
+      }
+      return fd;
+    },
+    submitUpazila() {
+      if (!this.checkLanguage()) {
+        return;
+      }
+
+      try {
+        this.$store
+          .dispatch("Thana/StoreUpazila", this.validator())
+          .then((data) => {
+            console.log(data, "submit");
+            if (data == null) {
+              this.$toast.success("Data Inserted Successfully");
+              this.dialogAdd = false;
+              this.resetForm();
+              this.GetUpazila();
+            } else {
+              this.$refs.form.setErrors(data.errors);
+            }
+          });
       } catch (e) {
         console.log(e);
       }
     },
     async updateUpazila() {
+      if (!this.checkLanguage()) {
+        return;
+      }
+
       try {
-        this.$store.dispatch("Thana/UpdateUpazila", this.data).then((data) => {
-          console.log(data, "update");
-          if (data == null) {
-            this.$toast.success("Data Updated Successfully");
-            this.dialogEdit = false;
-            this.resetData();
-            this.GetUpazila();
-          } else {
-            this.errors = data.errors;
-          }
-        });
+        this.$store
+          .dispatch("Thana/UpdateUpazila", this.validator())
+          .then((data) => {
+            console.log(data, "update");
+            if (data == null) {
+              this.$toast.success("Data Updated Successfully");
+              this.dialogEdit = false;
+              this.resetForm();
+              this.GetUpazila();
+            } else {
+              this.$refs.form.setErrors(data.errors);
+            }
+          });
       } catch (e) {
         console.log(e);
       }
-    },
-    dialogOpen() {
-      if (this.$refs.form) {
-        this.$refs.form.reset();
-      }
-
-      const update_error_value = null;
-      this.updateError("update_error_value");
-      this.resetData();
-      this.dialogAdd = true;
     },
     async onChangeDivision(event) {
       await this.$axios
@@ -869,15 +919,17 @@ export default {
         console.log(e);
       }
     },
-    resetData() {
+    resetForm() {
       (this.data.name_en = null),
         (this.data.name_bn = null),
         (this.data.code = null),
         (this.data.division_id = null),
         (this.data.district_id = null),
+        (this.divisions = []),
+        (this.districts = []),
         (this.data.location_type = null);
     },
-    editUpazila(item) {
+    editDialog(item) {
       if (this.$refs.form) {
         this.$refs.form.reset();
       }
@@ -906,11 +958,10 @@ export default {
     },
   },
   watch: {
-    '$i18n.locale': 'updateHeaderTitle',
+    "$i18n.locale": "updateHeaderTitle",
   },
-  
+
   mounted() {
-   
     this.GetAllDivisions();
     this.GetUpazila();
     this.$store
