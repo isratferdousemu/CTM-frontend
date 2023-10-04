@@ -506,7 +506,7 @@ export default {
         locationType: null,
         location_type: null,
       },
-      locationType: {},
+      locationType: [],
       isDisabled: true,
       dialogAdd: false,
       deleteDialog: false,
