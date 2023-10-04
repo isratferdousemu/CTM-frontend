@@ -17,7 +17,40 @@ import HeaderMixins from "./mixins/HeaderMixins";
 import i18n from "./i18n";
 // // Check if the language is stored in localStorage
 
+// Custom global method to check if a string is in English or Bengali
+Vue.prototype.$checkLanguage = function (str) {
+  let isEnglish = false;
+  let isBangla = false;
 
+  for (let i = 0; i < str.length; i++) {
+    const charCode = str.charCodeAt(i);
+
+    // if ((charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122)) {
+    //   isEnglish = true;
+    // } else if (charCode >= 2432 && charCode <= 2559) {
+    //   isBangla = true;
+    // }
+    if (
+      ((charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122)) || // English letters
+      (charCode < 2432 || charCode > 2559) // Exclude Bangla letters
+    ) {
+      isEnglish = true;
+    } else if (charCode >= 2432 && charCode <= 2559) {
+      isBangla = true;
+      console.log('Bangla');
+    }
+
+
+  }
+
+  if (isEnglish && !isBangla) {
+    return 'English';
+  } else if (isBangla && !isEnglish) {
+    return 'Bangla';
+  } else {
+    return 'Mixed or Other';
+  }
+};
 
 Vue.config.productionTip = false;
 Vue.use(Vuetify);
