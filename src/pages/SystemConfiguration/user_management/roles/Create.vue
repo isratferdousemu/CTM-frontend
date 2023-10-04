@@ -1,9 +1,23 @@
 <script>
 import {mapState} from "vuex";
 
+import {
+  extend,
+  ValidationProvider,
+  ValidationObserver
+} from "vee-validate";
+
+import {
+  required
+} from "vee-validate/dist/rules";
+
 export default {
   name: "Create",
   title: "CTM - Create Role",
+  components: {
+    ValidationProvider,
+    ValidationObserver,
+  },
 
   data(){
     return{
@@ -13,7 +27,8 @@ export default {
         name_bn: '',
         comment: '',
         status: ''
-      }
+      },
+      loading: false
     }
   },
 
@@ -21,7 +36,8 @@ export default {
     ...mapState({
       message: (state) => state.Role.success_message,
       success_status: (state) => state.Role.success_status,
-      errors: (state) => state.Role.errors
+      errors: (state) => state.Role.errors,
+      error_status: (state) => state.Role.error_status
     })
 
   },
@@ -46,6 +62,13 @@ export default {
             this.add_role = {};
             this.errors = {};
           }
+
+          if (this.error_status === 422)
+          {
+            this.$refs.form.setErrors(this.errors);
+          }else{
+            this.$refs.form.setErrors();
+          }
         })
       }catch (e) {
         console.log(e);
@@ -67,7 +90,8 @@ export default {
               <v-divider></v-divider>
 
               <v-card-text>
-                <v-form v-on:submit.prevent="addRole">
+                <ValidationObserver ref="form" v-slot="{ invalid }">
+                  <v-form v-on:submit.prevent="addRole">
 
                   <v-col cols="12" class="d-flex">
                     <v-row wrap>
@@ -76,29 +100,33 @@ export default {
                           sm="6"
                           lg="6"
                       >
+                        <ValidationProvider name="code" vid="code" rules="required" v-slot="{ errors }">
                         <v-text-field
                             type="text"
                             v-model="add_role.code"
                             label="Enter Code"
                             persistent-hint
                             outlined
+                            :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"
+                            required
                         ></v-text-field>
-                        <p v-if="errors?.code" class="red--text custom_error">
-                          {{ errors?.code[0] }}
-                        </p>
+                        </ValidationProvider>
                       </v-col>
 
                       <v-col cols="12" sm="6" lg="6">
+                        <ValidationProvider name="name_bn" vid="name_bn" rules="required" v-slot="{ errors }">
                         <v-text-field
                             type="text"
                             v-model="add_role.name_bn"
                             label="Enter Role Name (BN)"
                             persistent-hint
                             outlined
+                            :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"
+                            required
                         ></v-text-field>
-                        <p v-if="errors?.name_bn" class="red--text custom_error">
-                          {{ errors?.name_bn[0] }}
-                        </p>
+                        </ValidationProvider>
                       </v-col>
                     </v-row>
                   </v-col>
@@ -110,29 +138,33 @@ export default {
                           sm="6"
                           lg="6"
                       >
+                        <ValidationProvider name="name_en" vid="name_en" rules="required" v-slot="{ errors }">
                         <v-text-field
                             type="text"
                             v-model="add_role.name_en"
                             label="Enter Role Name (EN)"
                             persistent-hint
                             outlined
+                            :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"
+                            required
                         ></v-text-field>
-                        <p v-if="errors?.name_en" class="red--text custom_error">
-                          {{ errors?.name_en[0] }}
-                        </p>
+                        </ValidationProvider>
                       </v-col>
 
                       <v-col cols="12" sm="6" lg="6">
+                        <ValidationProvider name="comment" vid="comment" rules="required" v-slot="{ errors }">
                         <v-text-field
                             type="text"
                             v-model="add_role.comment"
                             label="Enter Remark"
                             persistent-hint
                             outlined
+                            :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"
+                            required
                         ></v-text-field>
-                        <p v-if="errors?.comment" class="red--text custom_error">
-                          {{ errors?.comment[0] }}
-                        </p>
+                        </ValidationProvider>
                       </v-col>
                     </v-row>
                   </v-col>
@@ -144,15 +176,16 @@ export default {
                           sm="6"
                           lg="6"
                       >
+                        <ValidationProvider name="status" vid="status" rules="required" v-slot="{ errors }">
                         <v-checkbox
                             v-model="add_role.status"
                             color="primary"
                             label="Is Active ?"
-                            hide-details
+                            :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"
+                            required
                         ></v-checkbox>
-                        <p v-if="errors?.status" class="red--text custom_error">
-                          {{ errors?.status[0] }}
-                        </p>
+                        </ValidationProvider>
                       </v-col>
                     </v-row>
                   </v-col>
@@ -171,11 +204,14 @@ export default {
                         color="success"
                         type="submit"
                         class="custom-btn mr-2"
+                        :disabled="invalid"
+                        :loading="loading"
                     >Submit
                     </v-btn>
                   </v-row>
 
                 </v-form>
+                </ValidationObserver>
               </v-card-text>
             </v-card>
           </v-col>
