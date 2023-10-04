@@ -50,7 +50,7 @@ const SystemConfigurationRoutes = [
   },
   {
     path: "/system-configuration/union",
-    name: "Thana",
+    name: "Union",
     meta: {
       requiresAuth: true,
       permission: "common",
@@ -62,7 +62,7 @@ const SystemConfigurationRoutes = [
   },
   {
     path: "/system-configuration/ward",
-    name: "Thana",
+    name: "Ward",
     meta: {
       requiresAuth: true,
       permission: "common",

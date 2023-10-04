@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/valid-v-for -->
 <template lang="">
   <v-list-item-group>
     <v-list-item v-for="(sub, i) in item" :key="i">
