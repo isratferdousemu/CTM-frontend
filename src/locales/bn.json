@@ -132,6 +132,7 @@
                     "email": "Enter Email Address",
                     "role_id": "Select Role",
                     "status": "Status",
+                    "delete":"User Delete",
                     "office_type": "Select Office Type",
                     "office_id": "Select Office",
                     "office": "Office",
@@ -139,6 +140,7 @@
                     "district_id": "Select District",
                     "thana_id": "Select Thana",
                     "city_corpo_id": "Select City Corporation",
+                    "delete_alert": "Are you sure to delete this User?.",
                     "add_new": "Add New User",
                     "search": "Search User"
                 }
