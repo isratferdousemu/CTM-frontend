@@ -77,6 +77,8 @@ export default {
     selectAll: function() {
       this.add_role_permission.permissions = [];
 
+      console.log(this.allSelected);
+
       if (this.allSelected)
       {
         for (let key in this.subModules)
@@ -93,6 +95,11 @@ export default {
               }else {
                 let mm = value[m];
                 this.rolePermissions.push(mm.id);
+
+                if (this.allSelected === false)
+                {
+                  this.rolePermissions.splice(this.rolePermissions.indexOf(mm.id),1);
+                }
               }
 
             }
@@ -100,8 +107,33 @@ export default {
           }
         }
       }else {
-        this.add_role_permission.permissions = [];
-        this.rolePermissions = [];
+        for (let key in this.subModules)
+        {
+          if (this.subModules.hasOwnProperty(key)) {
+            var value = this.subModules[key];
+
+            for (let m in value)
+            {
+              if (this.rolePermissions == null)
+              {
+                let mm = value[m];
+                if (this.allSelected === false)
+                {
+                  this.add_role_permission.permissions.splice(this.this.add_role_permission.permissions.indexOf(mm.id),1);
+                }
+              }else {
+                let mm = value[m];
+
+                if (this.allSelected === false)
+                {
+                  this.rolePermissions.splice(this.rolePermissions.indexOf(mm.id),1);
+                }
+              }
+
+            }
+
+          }
+        }
       }
     },
 
@@ -131,7 +163,6 @@ export default {
 
     addRolePermission: async function(){
       try {
-        //this.add_role_permission.permissions.push(this.rolePermissions);
         let formData = new FormData();
 
         formData.append('role_id', this.add_role_permission.role_id);
@@ -151,7 +182,6 @@ export default {
             this.add_role_permission = {};
             this.errors = {};
             this.selectedModule = null;
-            this.allSelected = false;
             this.select();
           }
 
