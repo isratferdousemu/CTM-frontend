@@ -498,11 +498,11 @@ export default {
       console.log(checkLanguageBangla);
       let errs = {};
 
-      if (checkLanguageBangla !== "Bangla") {
+      if (checkLanguageBangla !== "Bangla" && checkLanguageBangla !== "BanglaSpecialChar") {
         errs.name_bn = ["Please Enter in Bangla Language in this Field"];
       }
 
-      if (checkLanguageEnglish !== "English") {
+      if (checkLanguageEnglish != "English") {
         errs.name_en = ["Please Enter in English Language in this Field"];
       }
 
