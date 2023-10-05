@@ -399,8 +399,7 @@ export default {
       delete_loading: false,
       loading: false,
       search: "",
-      delete_id: "",
-      divisions: [],
+      delete_id: "", 
       errors: {},
       error_status: {},
       pagination: {
@@ -589,7 +588,11 @@ export default {
           this.pagination.current = result.data.meta.current_page;
           this.pagination.total = result.data.meta.last_page;
           this.pagination.grand_total = result.data.meta.total;
-        });
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        ;
     },
     deleteDivision: async function () {
       try {
@@ -607,6 +610,10 @@ export default {
           })
           .catch((error) => {
             console.log(error, "error");
+            if (err.response?.data?.errors) {
+            this.$refs.form.setErrors(err.response.data.errors);
+            this.$toast.error(err.response.data.message);
+          }
           });
       } catch (e) {
         console.log(e);

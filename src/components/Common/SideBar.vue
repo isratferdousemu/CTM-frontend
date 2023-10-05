@@ -63,7 +63,7 @@
             :to="item.to"
             router
             exact
-            v-can="item.permission"
+            v-can="!item.subTtems?item.permission:''"
           >
             <v-list-item-action>
               <v-icon>{{ item.icon }}</v-icon>
@@ -92,8 +92,8 @@
             :key="i"
             :value="false"
             :prepend-icon="item.icon"
-            v-can="item.permission"
-          >
+            >
+            <!-- v-can="item.permission" -->
             <template v-slot:activator>
               <v-list-item-title class="list_size">{{
                 item.title
@@ -140,7 +140,7 @@ export default {
           icon: "mdi-view-dashboard-outline",
           title: "dashboard",
           to: "/",
-          permission: "view-dashboard",
+          permission: "common",
         },
         {
           icon: "mdi mdi-cogs",
@@ -150,46 +150,71 @@ export default {
               title: "Division",
               icon: "mdi mdi-plus",
               to: "/system-configuration/division",
+          permission: "division-list",
+
             },
             {
-              title: "Disrict",
+              title: "District",
               icon: "mdi mdi-plus",
               to: "/system-configuration/district",
+          permission: "district-list",
+
             },
             {
               title: "City Corporation",
               icon: "mdi mdi-plus",
               to: "/system-configuration/city",
+          permission: "city-list",
+
             },
             {
               title: "Thana/Upazila",
               icon: "mdi mdi-plus",
               to: "/system-configuration/thana",
+          permission: "thana-list",
+
             },
             {
               title: "Union",
               icon: "mdi mdi-plus",
               to: "/system-configuration/union",
+          permission: "union-list",
+
             },
             {
               title: "Ward",
               icon: "mdi mdi-plus",
               to: "/system-configuration/ward",
+          permission: "ward-list",
+
             },
             {
               title: "Office Management",
               icon: "mdi mdi-plus",
               to: "/system-configuration/office_information",
+          permission: "office-list",
+
             },
             {
               title: "Role Management",
               icon: "mdi mdi-plus",
               to: "/system-configuration/role",
+          permission: "role-list",
+
+            },
+            {
+              title: "Role Permission",
+              icon: "mdi mdi-plus",
+              to: "/system-configuration/role-permission",
+          permission: "role-permission-list",
+
             },
             {
               title: "User Management",
               icon: "mdi mdi-plus",
               to: "/system-configuration/users",
+          permission: "user-list",
+
             },
             // {
             //   title: "Menu",

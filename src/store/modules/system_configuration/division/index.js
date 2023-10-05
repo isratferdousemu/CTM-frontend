@@ -85,8 +85,10 @@ const actions = {
       .then((result) => {
         console.log(result.data);
         commit("GET_DIVISION", result.data.data);
+        return result
       })
       .catch((err) => {
+        return err
         console.log(err);
       });
   },
