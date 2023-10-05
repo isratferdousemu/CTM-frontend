@@ -550,7 +550,7 @@
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="District"
-                      vid="district"
+                      vid="district_id"
                       rules="required"
                       v-slot="{ errors }"
                     >
@@ -576,7 +576,7 @@
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Thana"
-                      vid="division"
+                      vid="thana"
                       rules="required"
                       v-slot="{ errors }"
                     >
