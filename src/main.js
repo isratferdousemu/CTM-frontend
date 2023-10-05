@@ -35,7 +35,9 @@ Vue.prototype.$checkLanguage = function (str) {
       (charCode < 2432 || charCode > 2559) // Exclude Bangla letters
     ) {
       isEnglish = true;
-    } else if (charCode >= 2432 && charCode <= 2559) {
+    } else if ((charCode >= 2432 && charCode <= 2559) 
+    || ((charCode >= 65 || charCode <= 90) || (charCode >= 97 || charCode <= 122))
+    ) {
       isBangla = true;
       console.log('Bangla');
     }
