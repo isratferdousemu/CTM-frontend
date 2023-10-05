@@ -208,7 +208,16 @@ const SystemConfigurationRoutes = [
       permission: "common",
     },
     component: () => import("../pages/SystemConfiguration/user_management/role_permission/Index.vue")
-  }
+  },
+  {
+    path: "/system-configuration/users",
+    name: "userList",
+    meta: {
+      requiresAuth: true,
+      permission: "user-list",
+    },
+    component: () => import("../pages/SystemConfiguration/user_management/users/index.vue")
+  },
  
 ];
 
