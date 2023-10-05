@@ -51,8 +51,8 @@
                 "city": {
                     "city": "City Corporation/District Pourashava",
                     "list": "City Corporation/District Pourashava List",
-                    "name_en": "District Name English",
-                    "name_bn": "District Name Bangla",
+                    "name_en": "City Name English",
+                    "name_bn": "City Name Bangla",
                     "add_new": "Add New City Corporation/District Pourashava",
                     "search": "Search City Corporation/District Pourashava",
                     "edit": "Edit Division",
@@ -84,7 +84,7 @@
                 "ward": {
                     "ward": "Ward",
                     "list": "Ward List",
-                    "name_en": "WardName English",
+                    "name_en": "Ward Name English",
                     "name_bn": "Ward Name Bangla",
                     "add_new": "Add New Ward",
                     "search": "Search Ward",

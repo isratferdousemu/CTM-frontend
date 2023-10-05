@@ -74,7 +74,7 @@
                       <template v-slot:item.name_bn="{ item }">
                         {{ item.name_bn }}
                       </template>
-                      
+
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
                         <v-tooltip top>
@@ -167,7 +167,12 @@
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
 
-                <ValidationProvider name="Code" vid="code" rules="required">
+                <ValidationProvider
+                  name="Code"
+                  vid="code"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
                   <v-text-field
                     outlined
                     type="text"
@@ -175,13 +180,14 @@
                     :label="$t('container.list.code')"
                     required
                     :error="errors[0] ? true : false"
-                    :error-messages="errors.code"
+                    :error-messages="errors[0]"
                   ></v-text-field>
                 </ValidationProvider>
                 <ValidationProvider
                   name="Division"
                   vid="division"
                   rules="required"
+                  v-slot="{ errors }"
                 >
                   <v-autocomplete
                     @input="onChangeDivision($event)"
@@ -204,6 +210,7 @@
                   name="District"
                   vid="district"
                   rules="required"
+                  v-slot="{ errors }"
                 >
                   <v-autocomplete
                     v-model="data.district_id"
@@ -225,6 +232,7 @@
                   name="LocationType"
                   vid="locationType"
                   rules="required"
+                  v-slot="{ errors }"
                 >
                   <v-autocomplete
                     v-model="data.location_type"
@@ -242,6 +250,7 @@
                   name="Name English"
                   vid="name_en"
                   rules="required"
+                  v-slot="{ errors }"
                 >
                   <v-text-field
                     outlined
@@ -249,14 +258,15 @@
                     v-model="data.name_en"
                     :label="$t('container.list.name_en')"
                     required
-                    :error="errors.name_en ? true : false"
-                    :error-messages="errors.name_en"
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
                   ></v-text-field>
                 </ValidationProvider>
                 <ValidationProvider
                   name="Name Bangla"
                   vid="name_bn"
                   rules="required"
+                  v-slot="{ errors }"
                 >
                   <v-text-field
                     outlined
@@ -264,8 +274,8 @@
                     v-model="data.name_bn"
                     :label="$t('container.list.name_bn')"
                     required
-                    :error="errors.name_en ? true : false"
-                    :error-messages="errors.name_bn"
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
                   ></v-text-field>
                 </ValidationProvider>
 
@@ -309,7 +319,12 @@
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
 
-                <ValidationProvider name="Code" vid="code" rules="required">
+                <ValidationProvider
+                  name="Code"
+                  vid="code"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
                   <v-text-field
                     outlined
                     type="text"
@@ -317,13 +332,14 @@
                     :label="$t('container.list.code')"
                     required
                     :error="errors[0] ? true : false"
-                    :error-messages="errors.code"
+                    :error-messages="errors[0]"
                   ></v-text-field>
                 </ValidationProvider>
                 <ValidationProvider
                   name="Division"
                   vid="division"
                   rules="required"
+                  v-slot="{ errors }"
                 >
                   <v-autocomplete
                     @input="onChangeDivision($event)"
@@ -347,6 +363,7 @@
                   name="District"
                   vid="district"
                   rules="required"
+                  v-slot="{ errors }"
                 >
                   <v-autocomplete
                     @input="onChangeDistrict($event)"
@@ -370,6 +387,7 @@
                   name="LocationType"
                   vid="locationType"
                   rules="required"
+                  v-slot="{ errors }"
                 >
                   <v-autocomplete
                     v-model="data.location_type"
@@ -388,6 +406,7 @@
                   name="Name English"
                   vid="name_en"
                   rules="required"
+                  v-slot="{ errors }"
                 >
                   <v-text-field
                     outlined
@@ -395,14 +414,15 @@
                     v-model="data.name_en"
                     :label="$t('container.list.name_en')"
                     required
-                    :error="errors.name_en ? true : false"
-                    :error-messages="errors.name_en"
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
                   ></v-text-field>
                 </ValidationProvider>
                 <ValidationProvider
                   name="Name Bangla"
                   vid="name_bn"
                   rules="required"
+                  v-slot="{ errors }"
                 >
                   <v-text-field
                     outlined
@@ -410,8 +430,8 @@
                     v-model="data.name_bn"
                     :label="$t('container.list.name_bn')"
                     required
-                    :error="errors.name_en ? true : false"
-                    :error-messages="errors.name_bn"
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
                   ></v-text-field>
                 </ValidationProvider>
 
@@ -506,7 +526,8 @@ export default {
         locationType: null,
         location_type: null,
       },
-      locationType: {},
+      locationType: [],
+      districts: [],
       isDisabled: true,
       dialogAdd: false,
       deleteDialog: false,
@@ -563,11 +584,11 @@ export default {
           sortable: true,
         },
         {
-          text: this.$t("container.list.name_en"),
+          text: this.$t("container.system_config.demo_graphic.city.name_en"),
           value: "name_en",
         },
         {
-          text: this.$t("container.list.name_bn"),
+          text: this.$t("container.system_config.demo_graphic.city.name_bn"),
           value: "name_bn",
         },
         {
@@ -579,11 +600,10 @@ export default {
         },
       ];
     },
-
     ...mapState({
       message: (state) => state.City.success_message,
       divisions: (state) => state.Division.divisions,
-      districts: (state) => state.District.districts.data,
+    //   districts: (state) => state.District.districts.data,
       city: (state) => state.City.city,
       errors: (state) => state.City.errors,
       error_status: (state) => state.City.error_status,
@@ -598,37 +618,75 @@ export default {
 
   methods: {
     createDialog() {
-      this.$store.commit("RESET_ERRORS");
+      if (this.$refs.form) {
+        this.$refs.form.reset();
+      }
       this.resetForm();
       this.dialogAdd = true;
     },
+    checkLanguage() {
+      let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
+      let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
+      if (
+        checkLanguageBangla != "Bangla" &&
+        checkLanguageEnglish != "English"
+      ) {
+        let errs = {
+          name_bn: ["Please Enter in Bangla Language in this Field"],
+          name_en: ["Please Enter in English Language in this Field"],
+        };
+        this.$refs.form.setErrors(errs);
+        return false;
+      } else if (checkLanguageBangla != "Bangla") {
+        let errs = {
+          name_bn: ["Please Enter in Bangla Language in this Field"],
+        };
+        this.$refs.form.setErrors(errs);
+        return false;
+      } else if (checkLanguageEnglish != "English") {
+        let errs = {
+          name_en: ["Please Enter in English Language in this Field"],
+        };
+        this.$refs.form.setErrors(errs);
+        return false;
+      } else {
+        return true;
+      }
+    },
+    validator() {
+      let fd = new FormData();
+      for (const [key, value] of Object.entries(this.data)) {
+        if (value !== null) {
+          fd.append(key, value);
+        }
+      }
+      return fd;
+    },
     submitCity() {
-      console.log(JSON.stringify(this.data));
-      // return;
+      if (!this.checkLanguage()) {
+        return;
+      }
+
       try {
-        this.$store.dispatch("City/StoreCity", this.data).then((data) => {
-          console.log(data, "submit");
-          if (data == null) {
-            this.$toast.success("Data Inserted Successfully");
-            this.dialogAdd = false;
-            this.resetForm();
-            this.GetCity();
-          } else {
-            this.errors = data.errors;
-          }
-          // if (this.error_status == "") {
-          //   this.$toast.success("Data Inserted Successfully");
-          //   this.dialogAdd = false;
-          //   this.resetForm();
-          //   this.GetCity();
-          // }
-        });
+        this.$store
+          .dispatch("City/StoreCity", this.validator())
+          .then((data) => {
+            console.log(data, "submit");
+            if (data == null) {
+              this.$toast.success("Data Inserted Successfully");
+              this.dialogAdd = false;
+              this.resetForm();
+              this.GetCity();
+            } else {
+              this.$refs.form.setErrors(data.errors);
+            }
+          });
       } catch (e) {
         console.log(e);
       }
     },
     editDialog(item) {
-      // alert(JSON.stringify(item.district.id));
+
       this.dialogEdit = true;
       this.data.code = item.code;
       this.data.division_id = item.district.division.id;
@@ -642,25 +700,30 @@ export default {
       // alert(JSON.stringify(this.data));
     },
     updateCity() {
-      // alert(JSON.stringify(this.data));
+      if (!this.checkLanguage()) {
+        return;
+      }
+
       try {
-        this.$store.dispatch("City/UpdateCity", this.data).then((data) => {
-          console.log(data, "update");
-          if (data == null) {
-            this.$toast.success("Data Updated Successfully");
-            this.dialogEdit = false;
-            this.resetForm();
-            this.GetCity();
-          } else {
-            this.errors = data.errors;
-          }
-          // if (this.error_status == "") {
-          //   this.$toast.success("Data Updated Successfully");
-          //   this.dialogEdit = false;
-          //   this.resetForm();
-          //   this.GetCity();
-          // }
-        });
+        this.$store
+          .dispatch("City/UpdateCity", this.validator())
+          .then((data) => {
+            console.log(data, "update");
+            if (data == null) {
+              this.$toast.success("Data Updated Successfully");
+              this.dialogEdit = false;
+              this.resetForm();
+              this.GetCity();
+            } else {
+              this.$refs.form.setErrors(data.errors);
+            }
+            // if (this.error_status == "") {
+            //   this.$toast.success("Data Updated Successfully");
+            //   this.dialogEdit = false;
+            //   this.resetForm();
+            //   this.GetCity();
+            // }
+          });
       } catch (e) {
         console.log(e);
       }
@@ -676,6 +739,7 @@ export default {
         location_type: null,
         // Reset other form fields
       };
+      this.districts = [];
       this.errors = {};
     },
     onPageChange($event) {
@@ -747,6 +811,19 @@ export default {
       }
     },
     async onChangeDivision(event) {
+      await this.$axios
+        .get(`/admin/district/get/${event}`, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
+          this.districts = result.data.data;
+          this.isDistrictHidden = true;
+        });
+    },
+    async onChangeDivision1(event) {
       console.log(event);
       await this.$axios
         .get(`/admin/district/get/${event}`, {
@@ -817,7 +894,7 @@ export default {
 
       return foundItems;
     },
-       updateHeaderTitle() {
+    updateHeaderTitle() {
       const title = this.$t("container.system_config.demo_graphic.city.list");
       this.$store.commit("setHeaderTitle", title);
     },
@@ -831,8 +908,8 @@ export default {
     });
     // this.getAllDistrict();
   },
-    watch: {
-    '$i18n.locale': 'updateHeaderTitle',
+  watch: {
+    "$i18n.locale": "updateHeaderTitle",
   },
   beforeMount() {
     this.updateHeaderTitle();
