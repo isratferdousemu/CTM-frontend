@@ -4,7 +4,7 @@ const SystemConfigurationRoutes = [
     name: "Division",
     meta: {
       requiresAuth: true,
-      permission: "common",
+      permission: "division-list",
     },
     component: () =>
       import(
@@ -16,7 +16,7 @@ const SystemConfigurationRoutes = [
     name: "District",
     meta: {
       requiresAuth: true,
-      permission: "common",
+      permission: "district-list",
     },
     component: () =>
       import(
@@ -28,7 +28,7 @@ const SystemConfigurationRoutes = [
     name: "City",
     meta: {
       requiresAuth: true,
-      permission: "common",
+      permission: "city-list",
     },
     component: () =>
       import(
@@ -41,7 +41,7 @@ const SystemConfigurationRoutes = [
     name: "Thana",
     meta: {
       requiresAuth: true,
-      permission: "common",
+      permission: "thana-list",
     },
     component: () =>
       import(
@@ -53,7 +53,7 @@ const SystemConfigurationRoutes = [
     name: "Thana",
     meta: {
       requiresAuth: true,
-      permission: "common",
+      permission: "union-list",
     },
     component: () =>
       import(
@@ -65,7 +65,7 @@ const SystemConfigurationRoutes = [
     name: "Thana",
     meta: {
       requiresAuth: true,
-      permission: "common",
+      permission: "ward-list",
     },
     component: () =>
       import(
@@ -81,7 +81,7 @@ const SystemConfigurationRoutes = [
     name: "Menu",
     meta: {
       requiresAuth: true,
-      permission: "common",
+      permission: "menu-list",
     },
     component: () => import("../pages/SystemConfiguration/menu/Index.vue"),
   },
@@ -91,7 +91,7 @@ const SystemConfigurationRoutes = [
     name: "CreateMenu",
     meta: {
       requiresAuth: true,
-      permission: "common",
+      permission: "menu-create",
     },
     component: () => import("../pages/SystemConfiguration/menu/Create.vue"),
   },
@@ -101,7 +101,7 @@ const SystemConfigurationRoutes = [
     name: "EditMenu",
     meta: {
       requiresAuth: true,
-      permission: "common",
+      permission: "menu-edit",
     },
     component: () => import("../pages/SystemConfiguration/menu/Edit.vue"),
   },
@@ -113,7 +113,7 @@ const SystemConfigurationRoutes = [
     name: "DeviceRegistration",
     meta: {
       requiresAuth: true,
-      permission: "common",
+      permission: "device-list",
     },
     component: () => import("../pages/SystemConfiguration/device_registration/Index.vue")
   },
@@ -123,7 +123,7 @@ const SystemConfigurationRoutes = [
     name: "DeviceRegistrationCreate",
     meta: {
       requiresAuth: true,
-      permission: "common",
+      permission: "device-create",
     },
     component: () => import("../pages/SystemConfiguration/device_registration/Create.vue")
   },
@@ -133,7 +133,7 @@ const SystemConfigurationRoutes = [
     name: "DeviceRegistrationEdit",
     meta: {
       requiresAuth: true,
-      permission: "common",
+      permission: "device-edit",
     },
     component: () => import("../pages/SystemConfiguration/device_registration/Edit.vue")
   },
@@ -145,7 +145,7 @@ const SystemConfigurationRoutes = [
     name: "OfficeInformation",
     meta: {
       requiresAuth: true,
-      permission: "common",
+      permission: "office-list",
     },
     component: () => import("../pages/SystemConfiguration/office_information/Index.vue")
   },
@@ -154,7 +154,7 @@ const SystemConfigurationRoutes = [
     name: "OfficeInformationCreate",
     meta: {
       requiresAuth: true,
-      permission: "common",
+      permission: "office-create",
     },
     component: () => import("../pages/SystemConfiguration/office_information/Create.vue")
   },
@@ -163,7 +163,7 @@ const SystemConfigurationRoutes = [
     name: "OfficeInformationEdit",
     meta: {
       requiresAuth: true,
-      permission: "common",
+      permission: "office-edit",
     },
     component: () => import("../pages/SystemConfiguration/office_information/Edit.vue")
   },
@@ -175,7 +175,7 @@ const SystemConfigurationRoutes = [
     name: "Role",
     meta: {
       requiresAuth: true,
-      permission: "common",
+      permission: "role-list",
     },
     component: () => import("../pages/SystemConfiguration/user_management/roles/Index.vue")
   },
@@ -184,7 +184,7 @@ const SystemConfigurationRoutes = [
     name: "RoleCreate",
     meta: {
       requiresAuth: true,
-      permission: "common",
+      permission: "role-create",
     },
     component: () => import("../pages/SystemConfiguration/user_management/roles/Create.vue")
   },
@@ -193,7 +193,7 @@ const SystemConfigurationRoutes = [
     name: "RoleEdit",
     meta: {
       requiresAuth: true,
-      permission: "common",
+      permission: "role-edit",
     },
     component: () => import("../pages/SystemConfiguration/user_management/roles/Edit.vue")
   },
@@ -205,7 +205,7 @@ const SystemConfigurationRoutes = [
     name: "RolePermission",
     meta: {
       requiresAuth: true,
-      permission: "common",
+      permission: "role-permission-list",
     },
     component: () => import("../pages/SystemConfiguration/user_management/role_permission/Index.vue")
   },

@@ -65,15 +65,15 @@
                             </span>
                           </v-tooltip> -->
   
-                          <!-- <v-tooltip top>
+                     <v-tooltip top>
                             <template v-slot:activator="{ on }">
-                              <v-btn v-can="'delete-division'" fab x-small v-on="on" color="grey" class="ml-3 white--text"
+                              <v-btn :disabled="item.user_type==1" v-can="'user-destroy'" fab x-small v-on="on" color="grey" class="ml-3 white--text"
                                 elevation="0" @click="deleteAlert(item.id)">
                                 <v-icon> mdi-delete </v-icon>
                               </v-btn>
                             </template>
                             <span> {{ $t("container.list.delete") }}</span>
-                          </v-tooltip> -->
+                          </v-tooltip>  
                         </template>
                         <!-- End Action Button -->
   
@@ -99,7 +99,7 @@
           </v-row>
         </v-col>
   
-        <!-- division add modal  -->
+        <!-- user add modal  -->
         <v-dialog v-model="dialogAdd" width="650">
           <v-card style="justify-content: center; text-align: center">
             <v-card-title class="font-weight-bold justify-center">
@@ -334,13 +334,13 @@
         <v-dialog v-model="deleteDialog" width="350">
           <v-card style="justify-content: center; text-align: center">
             <v-card-title class="font-weight-bold justify-center">
-              {{ $t("container.system_config.demo_graphic.division.delete") }}
+              {{ $t("container.system_config.demo_graphic.user.delete") }}
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text>
               <div class="subtitle-1 font-weight-medium mt-5">
                 {{
-                  $t("container.system_config.demo_graphic.division.delete_alert")
+                  $t("container.system_config.demo_graphic.user.delete_alert")
                 }}
               </div>
             </v-card-text>
@@ -349,7 +349,7 @@
                 <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
                   {{ $t("container.list.cancel") }}
                 </v-btn>
-                <v-btn text @click="deleteDivision()" color="white" :loading="delete_loading"
+                <v-btn text @click="deleteUser()" color="white" :loading="delete_loading"
                   class="custom-btn-width warning white--text py-2">
                   {{ $t("container.list.delete") }}
                 </v-btn>
@@ -500,7 +500,8 @@
           .post("/admin/user/insert",fd, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
-              "Content-Type": "multipart/form-data",
+                    "Content-Type": "multipart/form-data",
+              "Accept": "application/json",
             }})
                   .then((res) => {
                     this.$toast.success("Data Inserted Successfully");
@@ -595,27 +596,29 @@
             this.divisions = result.data.data;
           });
       },
-      deleteDivision: async function () {
-        try {
-            
-          await this.$store
-            .dispatch("Division/DestroyDivision", this.delete_id)
-            .then((res) => {
-              // check if the request was successful
+          deleteUser: async function () {
+            this.$axios.delete('/admin/user/destroy/'+this.delete_id, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            }}).then((res) => {
+                this.deleteDialog = false;
+                  // check if the request was successful
               if (res?.data?.success) {
                 this.$toast.success(res.data.message);
               } else {
                 this.$toast.error(res.response.data.message);
               }
-              this.deleteDialog = false;
-              this.GetDivision();
-            })
-            .catch((error) => {
-              console.log(error, "error");
-            });
-        } catch (e) {
-          console.log(e);
-        }
+              this.getUsers();
+      }).catch((err) => {
+        console.log(err, "error");
+            if (err.response?.data?.errors) {
+            this.$refs.form.setErrors(err.response.data.errors);
+          }
+          console.log(err.response);
+          this.$toast.error(err?.response?.data?.message);
+      })
+     
       },
       deleteAlert(id) {
         this.data.id = id;

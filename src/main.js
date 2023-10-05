@@ -15,8 +15,30 @@ import HeaderMixins from "./mixins/HeaderMixins";
 
 
 import i18n from "./i18n";
-// // Check if the language is stored in localStorage
+Vue.directive('can', {
+  bind(el, binding, vnode) {
 
+    // console.log(el,binding, vnode,'directive')
+        if (binding.value != 'common' && store.state && store.state.userData && store.state.userData.roleNames && store.state.userPermissions.findIndex(per => per.name === binding.value || per.module_name === binding.value  || per.sub_module_name === binding.value) === -1 && !store.state.userData.roleNames.includes("super-admin")) {
+            const comment = document.createComment(" ");
+            Object.defineProperty(comment, "setAttribute", {
+              value: () => undefined
+            });
+            vnode.elm = comment;
+            if (vnode.componentInstance) {
+                vnode.componentInstance.$el = comment;
+            }
+            if (vnode.componentInstance) {
+                vnode.componentInstance.$el = comment;
+              }
+        
+              if (el.parentNode) {
+                el.parentNode.replaceChild(comment, el);
+              }
+            // el.removeChild() 
+          }
+      }, 
+});
 // Custom global method to check if a string is in English or Bengali
 Vue.prototype.$checkLanguage = function (str) {
   let isEnglish = false;
@@ -99,7 +121,6 @@ Vue.mixin({
 
 
 
-// Mount the Vue app once i18n is fully initialized
 
 
 new Vue({

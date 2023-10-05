@@ -98,6 +98,9 @@ export default new Vuex.Store({
       return state.token;
     },
     getAppLanguage: state => state.appLanguage,
+    GetUserPermissions: function (state) {
+      return state.userPermissions;
+    }, 
   },
 
   /* -------------------------------------------------------------------------- */
