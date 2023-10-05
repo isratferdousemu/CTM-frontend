@@ -7,6 +7,8 @@
         "list": {
             "sl": "SL",
             "action": "Action",
+            "active": "Active",
+            "inactive": "Inactive",
             "submit": "Submit",
             "cancel": "cancel",
             "edit": "Edit",
@@ -121,7 +123,25 @@
                 "role": {
                  
                     "list": "Role List"
-                  
+                },
+                "user": {
+                 
+                    "listTitle": "User List",
+                    "full_name": "Full Name",
+                    "username": "Username",
+                    "mobile": "Enter Mobile Number",
+                    "email": "Enter Email Address",
+                    "role_id": "Select Role",
+                    "status": "Status",
+                    "office_type": "Select Office Type",
+                    "office_id": "Select Office",
+                    "office": "Office",
+                    "division_id": "Select Division",
+                    "district_id": "Select District",
+                    "thana_id": "Select Thana",
+                    "city_corpo_id": "Select City Corporation",
+                    "add_new": "Add New User",
+                    "search": "Search User"
                 }
             }
         }

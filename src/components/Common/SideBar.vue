@@ -186,6 +186,11 @@ export default {
               icon: "mdi mdi-plus",
               to: "/system-configuration/role",
             },
+            {
+              title: "User Management",
+              icon: "mdi mdi-plus",
+              to: "/system-configuration/users",
+            },
             // {
             //   title: "Menu",
             //   icon: "mdi mdi-plus",
