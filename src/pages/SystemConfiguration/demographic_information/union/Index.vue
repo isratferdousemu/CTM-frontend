@@ -1072,7 +1072,7 @@ export default {
     this.GetUnion();
   },
   beforeMount() {
-    this.updateHeaderTitle();
+    this.updateHeaderTitle(); 
   },
 };
 </script>
