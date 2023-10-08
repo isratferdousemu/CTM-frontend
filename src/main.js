@@ -43,6 +43,7 @@ Vue.directive('can', {
 Vue.prototype.$checkLanguage = function (str) {
   let isEnglish = false;
   let isBangla = false;
+  let hasSpecialChars = false;
 
   for (let i = 0; i < str.length; i++) {
     const charCode = str.charCodeAt(i);
@@ -55,11 +56,23 @@ Vue.prototype.$checkLanguage = function (str) {
     if (
       ((charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122)) || // English letters
       (charCode < 2432 || charCode > 2559) // Exclude Bangla letters
+      ||charCode === 32
     ) {
       isEnglish = true;
-    } else if (charCode >= 2432 && charCode <= 2559) {
+    } else if ((charCode >= 2432 && charCode <= 2559)) {
       isBangla = true;
       console.log('Bangla');
+      if (
+        (charCode >= 2432 && charCode <= 2509) || // Bengali script general category
+        (charCode >= 2534 && charCode <= 2543) || // Digits in Bengali script
+        charCode === 2494 || // Bengali full stop
+        charCode === 2404 || // Bengali comma
+        charCode === 2405 || // Bengali full stop (alternate)
+        charCode === 2406 // Bengali comma (alternate)
+        || charCode === 32
+      ) {
+        hasSpecialChars = true;
+      }
     }
 
 
@@ -69,6 +82,8 @@ Vue.prototype.$checkLanguage = function (str) {
     return 'English';
   } else if (isBangla && !isEnglish) {
     return 'Bangla';
+  } else if (isBangla && !isEnglish || hasSpecialChars) {
+    return 'BanglaSpecialChar';
   } else {
     return 'Mixed or Other';
   }

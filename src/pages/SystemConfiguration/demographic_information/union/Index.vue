@@ -41,7 +41,7 @@
                     </v-text-field>
                   </div>
                   <v-btn
-                    @click="dialogOpen"
+                    @click="createDialog"
                     flat
                     color="primary"
                     prepend-icon="mdi-account-multiple-plus"
@@ -171,7 +171,7 @@
           <v-card-text class="mt-7">
             <v-row> </v-row>
 
-            <ValidationObserver ref="form" v-slot="{ invalid }">
+            <ValidationObserver ref="formAdd" v-slot="{ invalid }">
               <form @submit.prevent="submitUnion()">
                 <v-row>
                   <v-col lg="6" md="6" cols="12">
@@ -196,7 +196,7 @@
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Division"
-                      vid="division"
+                      vid="division_id"
                       rules="required"
                       v-slot="{ errors }"
                     >
@@ -346,7 +346,7 @@
           <v-card-text class="mt-7">
             <v-row> </v-row>
 
-            <ValidationObserver ref="form" v-slot="{ invalid }">
+            <ValidationObserver ref="formEdit" v-slot="{ invalid }">
               <form @submit.prevent="updateUnion()">
                 <!-- <v-row>
                   <v-col>
@@ -524,7 +524,7 @@
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Division"
-                      vid="division"
+                      vid="division_id"
                       rules="required"
                       v-slot="{ errors }"
                     >
@@ -550,7 +550,7 @@
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="District"
-                      vid="district"
+                      vid="district_id"
                       rules="required"
                       v-slot="{ errors }"
                     >
@@ -576,7 +576,7 @@
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Thana"
-                      vid="division"
+                      vid="thana"
                       rules="required"
                       v-slot="{ errors }"
                     >
@@ -807,48 +807,76 @@ export default {
 
     ...mapState({
       divisions: (state) => state.Division.divisions,
-    //   error_status: (state) => state.Union.error_status,
-    //   union_errors: (state) => state.Union.union_errors,
+      //   error_status: (state) => state.Union.error_status,
+      //   union_errors: (state) => state.Union.union_errors,
       // message: (state) => state.SystemConfiguration.success_message,
     }),
   },
 
   methods: {
     createDialog() {
-      if (this.$refs.form) {
-        this.$refs.form.reset();
+      if (this.$refs.formAdd) {
+        this.$refs.formAdd.reset();
       }
       this.resetData();
       this.dialogAdd = true;
     },
     checkLanguage() {
+      //   let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
+      //   let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
+      //   if (
+      //     checkLanguageBangla != "Bangla" &&
+      //     checkLanguageEnglish != "English"
+      //   ) {
+      //     let errs = {
+      //       name_bn: ["Please Enter in Bangla Language in this Field"],
+      //       name_en: ["Please Enter in English Language in this Field"],
+      //     };
+      //     this.$refs.formAdd.setErrors(errs);
+      //     return false;
+      //   } else if (checkLanguageBangla != "Bangla") {
+      //     let errs = {
+      //       name_bn: ["Please Enter in Bangla Language in this Field"],
+      //     };
+      //     this.$refs.formAdd.setErrors(errs);
+      //     return false;
+      //   } else if (checkLanguageEnglish != "English") {
+      //     let errs = {
+      //       name_en: ["Please Enter in English Language in this Field"],
+      //     };
+      //     this.$refs.formAdd.setErrors(errs);
+      //     return false;
+      //   } else {
+      //     return true;
+      //   }
+
       let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
       let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
-      if (
-        checkLanguageBangla != "Bangla" &&
-        checkLanguageEnglish != "English"
-      ) {
-        let errs = {
-          name_bn: ["Please Enter in Bangla Language in this Field"],
-          name_en: ["Please Enter in English Language in this Field"],
-        };
-        this.$refs.form.setErrors(errs);
-        return false;
-      } else if (checkLanguageBangla != "Bangla") {
-        let errs = {
-          name_bn: ["Please Enter in Bangla Language in this Field"],
-        };
-        this.$refs.form.setErrors(errs);
-        return false;
-      } else if (checkLanguageEnglish != "English") {
-        let errs = {
-          name_en: ["Please Enter in English Language in this Field"],
-        };
-        this.$refs.form.setErrors(errs);
-        return false;
-      } else {
-        return true;
+      
+      console.log(checkLanguageEnglish);
+      console.log(checkLanguageBangla);
+      let errs = {};
+
+      if (checkLanguageBangla !== "Bangla") {
+        errs.name_bn = ["Please Enter in Bangla Language in this Field"];
       }
+
+      if (checkLanguageEnglish !== "English") {
+        errs.name_en = ["Please Enter in English Language in this Field"];
+      }
+
+      if (Object.keys(errs).length > 0) {
+        if (this.$refs.formAdd) {
+            this.$refs.formAdd.setErrors(errs);
+        }
+        if (this.$refs.formEdit) {
+            this.$refs.formEdit.setErrors(errs);
+        }
+
+        return false;
+      }
+
+      return true;
     },
     validator() {
       let fd = new FormData();
@@ -865,16 +893,18 @@ export default {
       }
 
       try {
-        this.$store.dispatch("Union/StoreUnion", this.validator()).then((res) => {
-          if (res.data?.success) {
-            this.$toast.success("Data Inserted Successfully");
-            this.dialogAdd = false;
-            this.resetData();
-            this.GetUnion();
-          } else if (res.response?.data?.errors) {
-            this.$refs.form.setErrors(res.response.data.errors);
-          }
-        });
+        this.$store
+          .dispatch("Union/StoreUnion", this.validator())
+          .then((res) => {
+            if (res.data?.success) {
+              this.$toast.success("Data Inserted Successfully");
+              this.dialogAdd = false;
+              this.resetData();
+              this.GetUnion();
+            } else if (res.response?.data?.errors) {
+              this.$refs.formAdd.setErrors(res.response.data.errors);
+            }
+          });
       } catch (e) {
         console.log(e);
       }
@@ -883,26 +913,28 @@ export default {
       if (!this.checkLanguage()) {
         return;
       }
-      alert('clicked');
+
       try {
-        this.$store.dispatch("Union/UpdateUnion", this.validator()).then((res) => {
-            console.log(res,'update_union');
+        this.$store
+          .dispatch("Union/UpdateUnion", this.validator())
+          .then((res) => {
+            console.log(res, "update_union");
             if (res.data?.success) {
-            this.$toast.success("Data Updated Successfully");
-            this.dialogEdit = false;
-            this.resetData();
-            this.GetUnion();
-          } else if (res.response?.data?.errors) {
-            this.$refs.form.setErrors(res.response.data.errors);
-          }
-        });
+              this.$toast.success("Data Updated Successfully");
+              this.dialogEdit = false;
+              this.resetData();
+              this.GetUnion();
+            } else if (res.response?.data?.errors) {
+              this.$refs.formEdit.setErrors(res.response.data.errors);
+            }
+          });
       } catch (e) {
         console.log(e);
       }
     },
     dialogOpen() {
-      if (this.$refs.form) {
-        this.$refs.form.reset();
+      if (this.$refs.formAdd) {
+        this.$refs.formAdd.reset();
       }
       const update_error_value = null;
       this.updateError("update_error_value");
@@ -991,9 +1023,9 @@ export default {
       }
     },
     resetData() {
-      if (this.$refs.form) {
-        this.$refs.form.reset();
-      }
+    //   if (this.$refs.formAdd) {
+    //     this.$refs.formAdd.reset();
+    //   }
 
       (this.data.name_en = null),
         (this.data.name_bn = null),
@@ -1006,8 +1038,8 @@ export default {
         (this.data.thana_id = null);
     },
     editUnion(item) {
-      if (this.$refs.form) {
-        this.$refs.form.reset();
+      if (this.$refs.formEdit) {
+        this.$refs.formEdit.reset();
       }
       const update_error_value = null;
       this.updateError("update_error_value");

@@ -162,7 +162,7 @@
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
-            <ValidationObserver ref="form" v-slot="{ invalid }">
+            <ValidationObserver ref="formAdd" v-slot="{ invalid }">
               <form @submit.prevent="submitCity()">
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
@@ -314,7 +314,7 @@
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
-            <ValidationObserver ref="form" v-slot="{ invalid }">
+            <ValidationObserver ref="formEdit" v-slot="{ invalid }">
               <form @submit.prevent="updateCity()">
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
@@ -603,7 +603,7 @@ export default {
     ...mapState({
       message: (state) => state.City.success_message,
       divisions: (state) => state.Division.divisions,
-    //   districts: (state) => state.District.districts.data,
+      //   districts: (state) => state.District.districts.data,
       city: (state) => state.City.city,
       errors: (state) => state.City.errors,
       error_status: (state) => state.City.error_status,
@@ -618,40 +618,68 @@ export default {
 
   methods: {
     createDialog() {
-      if (this.$refs.form) {
-        this.$refs.form.reset();
+      if (this.$refs.formAdd) {
+        this.$refs.formAdd.reset();
       }
       this.resetForm();
       this.dialogAdd = true;
     },
     checkLanguage() {
+      //   let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
+      //   let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
+      //   if (
+      //     checkLanguageBangla != "Bangla" &&
+      //     checkLanguageEnglish != "English"
+      //   ) {
+      //     let errs = {
+      //       name_bn: ["Please Enter in Bangla Language in this Field"],
+      //       name_en: ["Please Enter in English Language in this Field"],
+      //     };
+      //     this.$refs.form.setErrors(errs);
+      //     return false;
+      //   } else if (checkLanguageBangla != "Bangla") {
+      //     let errs = {
+      //       name_bn: ["Please Enter in Bangla Language in this Field"],
+      //     };
+      //     this.$refs.form.setErrors(errs);
+      //     return false;
+      //   } else if (checkLanguageEnglish != "English") {
+      //     let errs = {
+      //       name_en: ["Please Enter in English Language in this Field"],
+      //     };
+      //     this.$refs.form.setErrors(errs);
+      //     return false;
+      //   } else {
+      //     return true;
+      //   }
+
       let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
       let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
-      if (
-        checkLanguageBangla != "Bangla" &&
-        checkLanguageEnglish != "English"
-      ) {
-        let errs = {
-          name_bn: ["Please Enter in Bangla Language in this Field"],
-          name_en: ["Please Enter in English Language in this Field"],
-        };
-        this.$refs.form.setErrors(errs);
-        return false;
-      } else if (checkLanguageBangla != "Bangla") {
-        let errs = {
-          name_bn: ["Please Enter in Bangla Language in this Field"],
-        };
-        this.$refs.form.setErrors(errs);
-        return false;
-      } else if (checkLanguageEnglish != "English") {
-        let errs = {
-          name_en: ["Please Enter in English Language in this Field"],
-        };
-        this.$refs.form.setErrors(errs);
-        return false;
-      } else {
-        return true;
+
+      console.log(checkLanguageEnglish);
+      console.log(checkLanguageBangla);
+      let errs = {};
+
+      if (checkLanguageBangla !== "Bangla") {
+        errs.name_bn = ["Please Enter in Bangla Language in this Field"];
       }
+
+      if (checkLanguageEnglish !== "English") {
+        errs.name_en = ["Please Enter in English Language in this Field"];
+      }
+
+      if (Object.keys(errs).length > 0) {
+        if (this.$refs.formAdd) {
+          this.$refs.formAdd.setErrors(errs);
+        }
+        if (this.$refs.formEdit) {
+          this.$refs.formEdit.setErrors(errs);
+        }
+
+        return false;
+      }
+
+      return true;
     },
     validator() {
       let fd = new FormData();
@@ -678,7 +706,7 @@ export default {
               this.resetForm();
               this.GetCity();
             } else {
-              this.$refs.form.setErrors(data.errors);
+              this.$refs.formAdd.setErrors(data.errors);
             }
           });
       } catch (e) {
@@ -686,7 +714,6 @@ export default {
       }
     },
     editDialog(item) {
-
       this.dialogEdit = true;
       this.data.code = item.code;
       this.data.division_id = item.district.division.id;
@@ -715,14 +742,8 @@ export default {
               this.resetForm();
               this.GetCity();
             } else {
-              this.$refs.form.setErrors(data.errors);
+              this.$refs.formEdit.setErrors(data.errors);
             }
-            // if (this.error_status == "") {
-            //   this.$toast.success("Data Updated Successfully");
-            //   this.dialogEdit = false;
-            //   this.resetForm();
-            //   this.GetCity();
-            // }
           });
       } catch (e) {
         console.log(e);
