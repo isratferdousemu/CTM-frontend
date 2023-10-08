@@ -763,7 +763,7 @@ export default {
       console.log(checkLanguageBangla);
       let errs = {};
 
-      if (checkLanguageBangla !== "Bangla") {
+      if (checkLanguageBangla !== "Bangla" && checkLanguageBangla !== "BanglaSpecialChar") {
         errs.name_bn = ["Please Enter in Bangla Language in this Field"];
       }
 
