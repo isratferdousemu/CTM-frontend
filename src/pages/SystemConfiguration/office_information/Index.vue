@@ -1151,19 +1151,28 @@ export default {
           params: queryParams,
         })
         .then((result) => {
+          console.log(result,'office')
           this.offices = result.data.data;
           console.log(this.offices, "Get Office");
           this.pagination.current = result.data.meta.current_page;
           this.pagination.total = result.data.meta.last_page;
           this.pagination.grand_total = result.data.meta.total;
+        })
+        .catch((err) => {
+          console.log(err, "error");
+            if (err.response?.data?.errors) {
+            this.$refs.form.setErrors(err.response.data.errors);
+          }
+          console.log(err.response);
+          this.$toast.error(err?.response?.data?.message);
         });
+        ;
     },
     deleteOffice: async function () {
-      try {
         await this.$store
           .dispatch("Office/DestroyOffice", this.delete_id)
           .then((res) => {
-            console.log(res);
+            // console.log(res);
             // check if the request was successful
             if (res?.data?.success) {
               this.$toast.error(res.data.message);
@@ -1175,10 +1184,13 @@ export default {
           })
           .catch((error) => {
             console.log(error, "error");
+            if (error.response?.data?.errors) {
+            this.$refs.form.setErrors(error.response.data.errors);
+          }
+          console.log(error.response);
+          this.$toast.error(error?.response?.data?.message);
           });
-      } catch (e) {
-        console.log(e);
-      }
+     
     },
     resetData() {
       this.dialogEdit = null;

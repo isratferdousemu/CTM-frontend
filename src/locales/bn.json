@@ -5,6 +5,8 @@
     "container": {
         "list": {
             "sl": "ক্রমিক নং ",
+            "active": "Active",
+            "inactive": "Inactive",
             "action": "অ্যাকশন ",
             "submit": "সাবমিট ",
             "cancel": "বাতিল",
@@ -120,6 +122,27 @@
                 "role": {
                    
                     "list":"রোলের তালিকা "
+                },
+                "user": {
+                 
+                    "listTitle": "User List",
+                    "full_name": "Full Name",
+                    "username": "Username",
+                    "mobile": "Enter Mobile Number",
+                    "email": "Enter Email Address",
+                    "role_id": "Select Role",
+                    "status": "Status",
+                    "delete":"User Delete",
+                    "office_type": "Select Office Type",
+                    "office_id": "Select Office",
+                    "office": "Office",
+                    "division_id": "Select Division",
+                    "district_id": "Select District",
+                    "thana_id": "Select Thana",
+                    "city_corpo_id": "Select City Corporation",
+                    "delete_alert": "Are you sure to delete this User?.",
+                    "add_new": "Add New User",
+                    "search": "Search User"
                 }
             }
         }

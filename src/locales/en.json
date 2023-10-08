@@ -136,11 +136,13 @@
                     "office_type": "Select Office Type",
                     "office_id": "Select Office",
                     "office": "Office",
+                    "delete":"User Delete",
                     "division_id": "Select Division",
                     "district_id": "Select District",
                     "thana_id": "Select Thana",
                     "city_corpo_id": "Select City Corporation",
                     "add_new": "Add New User",
+                    "delete_alert": "Are you sure to delete this User?.",
                     "search": "Search User"
                 }
             }
