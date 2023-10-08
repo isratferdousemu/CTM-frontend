@@ -12,7 +12,9 @@ import axios from "axios";
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import HeaderMixins from "./mixins/HeaderMixins";
+// import VueTablerIcons from "vue-tabler-icons";
 
+// Vue.use(VueTablerIcons);
 
 import i18n from "./i18n";
 Vue.directive('can', {

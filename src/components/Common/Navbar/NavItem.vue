@@ -2,6 +2,7 @@
   <!---Single Item-->
   <v-list-item
     :to="item.to"
+    two-line
     rounded
     class="mb-1"
     active-color="primary"

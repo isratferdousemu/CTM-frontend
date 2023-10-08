@@ -1,7 +1,8 @@
 <template>
   <v-app>
     <!-- SideBar  -->
-    <sidebarView />
+    <newSidebarView />
+    <!-- <sidebarView /> -->
     <!------TopBar-------->
     <TopBar />
     <!-- MAIN VIEW COMPONENT  -->
@@ -18,11 +19,12 @@
 </template>
 <script>
 import sidebarView from "@/components/Common/SideBar.vue";
+import newSidebarView from "@/components/Common/newSideBar.vue";
 import TopBar from "@/components/Common/TopBar.vue";
 import FooterBar from "@/components/Common/FooterBar.vue";
 
 export default {
-  components: { sidebarView, TopBar, FooterBar },
+  components: { sidebarView, TopBar, FooterBar,newSidebarView },
   data() {
     return {
       data: "",
