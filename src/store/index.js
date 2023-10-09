@@ -11,6 +11,7 @@ import BudgetManagement from "./BudgetManagement";
 import EmergencyPaymentManagement from "./EmergencyPaymentManagement";
 import GrievanceManagement from "./GrievanceManagement";
 import ManageAllotment from "./ManageAllotment";
+import GeneralSetting from "./GeneralSetting";
 import MEReporting from "./MEReporting";
 import PayrollManagement from "./PayrollManagement";
 import SystemConfiguration from "./SystemConfiguration";
@@ -312,6 +313,7 @@ export default new Vuex.Store({
     EmergencyPaymentManagement,
     GrievanceManagement,
     ManageAllotment,
+    GeneralSetting,
     MEReporting,
     PayrollManagement,
     SystemConfiguration,

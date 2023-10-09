@@ -16,6 +16,7 @@ import ManageAllotmentRoutes from "./ManageAllotment";
 import PayrollManagementRoutes from "./PayrollManagement";
 import SystemConfigurationRoutes from "./SystemConfiguration";
 import TrainingManagementRoutes from "./TrainingManagement";
+import GeneralSettingRoutes from "./GeneralSetting";
 import CommonRoutes from "./Common";
 
 // import dependencies
@@ -56,6 +57,7 @@ const routes = [
       ...PayrollManagementRoutes,
       ...SystemConfigurationRoutes,
       ...TrainingManagementRoutes,
+      ...GeneralSettingRoutes,
     ],
   },
 ];
