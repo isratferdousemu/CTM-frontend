@@ -7,8 +7,8 @@ export default {
   data() {
     return {
       link_types: [
-        { id: "1", name: "Internal" },
-        { id: "2", name: "External" },
+        { id: 1, name: "Internal" },
+        { id: 2, name: "External" },
       ]
     };
   },
@@ -124,8 +124,9 @@ export default {
                   </v-col>
 
                   <v-col cols="12" sm="6" lg="12">
-                    <v-select
-                      :items="parents"
+                    <v-autocomplete
+                    :items="parents"
+                    v-model="menuEdit.parent_id"
                       item-text="label_name_en"
                       item-value="id"
                       label="Select parent"
@@ -133,11 +134,7 @@ export default {
                       hide-details
                       persistent-hint
                       outlined
-                      v-model="menuEdit.parent_id"
-                    ></v-select>
-                    <p v-if="errors?.parent_id" class="red--text custom_error">
-                      {{ errors.parent_id[0] }}
-                    </p>
+                  ></v-autocomplete>
                   </v-col>
 
                   <v-col cols="12" sm="6" lg="12">
@@ -160,26 +157,31 @@ export default {
                         cols="12"
                         sm="6"
                         lg="6"
-                        v-if="menuEdit.link_type === '1'"
+                        v-if="menuEdit.link_type === 1"
                       >
-                        <v-select
-                          :items="pageUrls"
-                          item-text="page_url"
-                          item-value="id"
-                          label="Select page url"
-                          menu-props="auto"
-                          hide-details
-                          persistent-hint
-                          outlined
-                          v-model="menuEdit.page_link_id"
-                        ></v-select>
+                        <v-autocomplete
+                        :items="pageUrls"
+                        :item-text="item => item.page_url"
+                        item-value="id"
+                        :rules="[v => !!v || 'Page urls is required']"
+                        label="Select page url"
+                        menu-props="auto"
+                        persistent-hint
+                        outlined
+                        v-model="menuEdit.page_link_id"
+                      >
+                      <template v-slot:item="{ item }">
+                        ({{ item.name}}) {{ item.page_url }}
+                      </template>
+                    </v-autocomplete>
+
                       </v-col>
 
                       <v-col
                         cols="12"
                         sm="6"
                         lg="6"
-                        v-if="menuEdit.link_type === '2'"
+                        v-if="menuEdit.link_type === 2"
                       >
                         <v-text-field
                           type="text"
