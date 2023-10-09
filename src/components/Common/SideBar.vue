@@ -19,7 +19,6 @@
       <!-- <Logo class="ml-7" /> -->
     </div>
     <v-divider></v-divider>
-
     <v-list two-line  class="white--text left-sidebar">
         <template v-for="(menu,index) in menus">
             <v-list-item  class="white--text" v-if="menu.children.length==0"
@@ -29,14 +28,14 @@
             v-can="menu.link_type==2?'common':menu?.page_link?.name"
              > 
         
-                <v-list-item-title  >{{menu.label_name_bn}}</v-list-item-title>
+                <v-list-item-title  > {{language=='bn'?menu.label_name_bn:menu.label_name_en}}</v-list-item-title>
               </v-list-item>
             <!-- single menu end  -->
              <!-- sub menu start  -->
             <v-list-group v-else v-can="getPermissionName(menu)"
             :value="false" class="sub_menus"  >
             <template v-slot:activator>
-              <v-list-item-title class="white--text">{{menu.label_name_bn}}</v-list-item-title>
+              <v-list-item-title class="white--text">{{language=='bn'?menu.label_name_bn:menu.label_name_en}}</v-list-item-title>
             </template>
             <template v-for="(subMenu) in menu.children">
             <v-list-group  v-if="subMenu.children.length!=0"
@@ -46,7 +45,7 @@
             <template v-slot:activator >
 
               <v-list-item-content>
-                <v-list-item-title class="pl-1 white--text"> {{subMenu.label_name_bn}}</v-list-item-title>
+                <v-list-item-title class="pl-1 white--text"> {{language=='bn'?subMenu.label_name_bn:subMenu.label_name_en}}</v-list-item-title>
               </v-list-item-content>
             
             </template>
@@ -61,7 +60,7 @@
             <v-list-item-icon>
               <v-icon >mdi-minus </v-icon>
             </v-list-item-icon>
-              <v-list-item-title class="white--text" v-text="subSubMenu.label_name_bn"></v-list-item-title>
+              <v-list-item-title class="white--text" v-text="language=='bn'?subSubMenu.label_name_bn:subSubMenu.label_name_en"></v-list-item-title>
    
             </v-list-item>
             <!-- sub sub  -->
@@ -82,7 +81,7 @@
                 <v-list-item-icon>
                   <v-icon >mdi-minus </v-icon>
                 </v-list-item-icon>
-                <v-list-item-title class="white--text">{{subMenu.label_name_bn}}</v-list-item-title>
+                <v-list-item-title class="white--text">{{language=='bn'?subMenu.label_name_bn:subMenu.label_name_en}}</v-list-item-title>
               </v-list-item>
 
             </template>
@@ -115,6 +114,11 @@ export default {
       },
       set(v) {
         return this.$store.commit("setMenus", v);
+      },
+    },
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
       },
     },
     Drawer: {
