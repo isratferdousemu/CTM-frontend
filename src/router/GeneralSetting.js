@@ -1,15 +1,15 @@
 const CommonRoutes = [
   {
-    path: "/general-setting",
+    path: "/setting/general",
     name: "GeneralSetting",
-    meta: {
+    meta: { 
       requiresAuth: true,
-      // permission: "union-list",
+      permission: "general-setting-view",
     },
     component: () =>
       import(
         "../pages/GeneralSetting/Index.vue"
       ),
-  },
+  }
 ]
 export default CommonRoutes;
