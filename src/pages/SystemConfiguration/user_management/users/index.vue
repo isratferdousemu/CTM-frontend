@@ -530,12 +530,12 @@
       <v-dialog v-model="dialogEdit" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.system_config.demo_graphic.user.add_new") }}
+            {{ $t("container.system_config.demo_graphic.user.edit") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
             <ValidationObserver ref="form" v-slot="{ invalid }">
-              <form @submit.prevent="submitUser()">
+              <form @submit.prevent="updateUser()">
                 <v-row>
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
@@ -968,6 +968,7 @@ export default {
       delete_id: "",
       offices: [],
       divisions: [],
+      districts: [],
       upazilas: [],
       city: [],
       roles: [],
@@ -1074,43 +1075,122 @@ export default {
           }
         });
     },
+    updateUser() {
+      console.log(this.data, "edit");
+      this.loading = true;
+      // return;
+      // this.data.role_id = [];
+      // let temp = this.data.role_id[];
+      let ud = new FormData();
+      for (const [key, value] of Object.entries(this.data)) {
+        if (value != null) {
+          ud.append(key, value);
+          // role_id is array so we need to append it separately
+
+          if (key == "role_id") {
+            for (let i = 0; i < value.length; i++) {
+              ud.append("role_id[]", value);
+            }
+          }
+          
+          // ud.append("_method", "PUT");
+        }
+        console.log(key, value, "ud");
+      }
+      // return;
+      // Include the _method field for PUT request
+      console.log('FormData:', ud);
+
+      // delete ud["role_id"]; 
+      // ud.delete("role_id");
+
+      for (const [key, value] of ud.entries()) {
+        console.log(`${key}: ${value}`);
+      }
+            ud.append("_method", "PUT");
+
+      this.$axios
+        .put("/admin/user/update/"+this.data.id, ud, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            'Content-Type': 'application/json',
+            // "Content-Type": "multipart/form-data",
+            Accept: "application/json",
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          this.$toast.success("Data updated Successfully");
+          this.dialogAdd = false;
+          this.getUsers();
+          this.$refs.form.reset();
+          this.loading = false;
+        })
+        .catch((err) => {
+          this.loading = false;
+          if (err.response?.data?.errors) {
+            this.$refs.form.setErrors(err.response.data.errors);
+            this.$toast.error(err.response.data.message);
+          }
+        });
+    },
     editDialog(item) {
       this.dialogEdit = true;
+      // console.log(item.roles[0].id, "roles id");
       console.log(item, "editDialog");
+      this.data.id = item.id;
       this.data.full_name = item.full_name;
       this.data.username = item.username;
       this.data.mobile = item.mobile;
       this.data.email = item.email;
-      this.data.role_id = item.id;
+
+      this.data.role_id = [];
+      item.roles.forEach((role) => {
+        this.data.role_id.push(role.id);
+      });
+
       this.data.status = item.status;
       this.data.office_type = item.office_type.id;
-
-      this.onChangeOfficeType(item.office_type.id);
-      if (item?.assignLocation?.type == "division") {
-        console.log("division here");
-        this.data.division_id = item?.assignLocation?.id;
+      this.data.office_id = item?.office?.id;
+      // console.log(item?.assign_location?.type, 'edit--');
+      // this.onChangeOfficeType(item.office_type.id);
+      if (item.office_type.id == "4" || item.office_type.id == "5") {
+        this.getOfficeByLocation(this.data.office_type, null);
       }
-      if (item?.assignLocation?.type == "district") {
+      if (item?.assign_location?.type == "division") {
+        // console.log("division here");
+        this.data.division_id = item?.assign_location?.id;
+        this.onChangeDivision(this.data.division_id);
+      }
+      if (item?.assign_location?.type == "district") {
         console.log("district here");
-        this.data.division_id = item?.assignLocation?.parent?.id;
+        this.data.division_id = item?.assign_location?.parent?.id;
         this.onChangeDivision(this.data.division_id);
-        this.data.district_id = item?.assignLocation?.id;
+        this.data.district_id = item?.assign_location?.id;
       }
-      if (item?.assignLocation?.parent?.parent?.type == "division") {
-        this.data.division_id = item?.assignLocation?.parent?.parent?.id;
+      if (item?.assign_location?.parent?.parent?.type == "division") {
+        console.log("here Division");
+        this.data.division_id = item?.assign_location?.parent?.parent?.id;
         this.onChangeDivision(this.data.division_id);
       }
-      if (item?.assignLocation?.parent?.type == "district") {
-        this.data.district_id = item?.assignLocation?.parent?.id;
+      if (item?.assign_location?.parent?.type == "district") {
+        this.data.district_id = item?.assign_location?.parent?.id;
         this.onChangeDistrict(this.data.district_id);
       }
-      if (item?.assignLocation?.location_type?.value_en == "City Corporation") {
-        this.data.city_corpo_id = item?.assignLocation?.id;
+      if (item?.assign_location?.type == "city") {
+        this.data.city_corpo_id = item?.assign_location?.id;
+        this.onChangeCity(item?.assign_location?.id);
+        console.log(item?.office?.id, " in the city");
       }
-      if (item?.assignLocation?.location_type?.value_en == "Upazila") {
-        this.data.thana_id = item?.assignLocation?.id;
+      if (item?.assign_location?.type == "thana") {
+        this.data.city_corpo_id = item?.assign_location?.id;
+        this.onChangeUpazila(item?.assign_location?.id);
       }
-      
+
+      // if (item?.assign_location?.location_type?.value_en == "Upazila") {
+      //   this.data.thana_id = item?.assign_location?.id;
+      // }
+
       console.log(this.data, "End editDialog");
       // this.data.code = item.code;
       // this.data.name_en = item.name_en;
@@ -1172,7 +1252,7 @@ export default {
         })
         .then((result) => {
           this.users = result.data.data;
-          console.log(this.users, 'getUsers');
+          console.log(this.users, "getUsers");
           this.pagination.current = result.data.meta.current_page;
           this.pagination.total = result.data.meta.last_page;
           this.pagination.grand_total = result.data.meta.total;
@@ -1259,11 +1339,24 @@ export default {
           console.log(err);
         });
     },
+    onChangeUpazila(event) {
+      if (this.data.office_type != null) {
+        this.getOfficeByLocation(this.data.office_type, event);
+      }
+    },
+    onChangeCity(event) {
+      console.log(event, "onchangeCity");
+      console.log(this.data.office_type, "office_type onchangeCity");
+      if (this.data.office_type != null) {
+        this.getOfficeByLocation(this.data.office_type, event);
+      }
+    },
     async onChangeDivision(event) {
       this.data.office_id = null;
       this.data.district_id = null;
       this.data.thana_id = null;
       this.data.city_corpo_id = null;
+      console.log(this.data.office_type, "this.data.office_type");
       if (this.data.office_type != null) {
         this.getOfficeByLocation(this.data.office_type, event);
       }
@@ -1278,16 +1371,6 @@ export default {
           this.districts = result.data.data;
           this.isDistrictHidden = true;
         });
-    },
-    onChangeUpazila(event) {
-      if (this.data.office_type != null) {
-        this.getOfficeByLocation(this.data.office_type, event);
-      }
-    },
-    onChangeCity(event) {
-      if (this.data.office_type != null) {
-        this.getOfficeByLocation(this.data.office_type, event);
-      }
     },
     async onChangeDistrict(event) {
       this.data.office_id = null;
@@ -1323,6 +1406,49 @@ export default {
           });
       }
     },
+    // async onChangeDivision(event) {
+    //   await this.$axios
+    //     .get(`/admin/district/get/${event}`, {
+    //       headers: {
+    //         Authorization: "Bearer " + this.$store.state.token,
+    //         "Content-Type": "multipart/form-data",
+    //       },
+    //     })
+    //     .then((result) => {
+    //       this.districts = result.data.data;
+    //       this.isDistrictHidden = true;
+    //     });
+    // },
+    // async onChangeDistrict(event) {
+    //   event = 3; //Lookup.id = 3 , Look.name_en = 'City Corporation'
+    //   const payload = {
+    //     district_id: this.data.district_id,
+    //     lookup_id: "3",
+    //   };
+    //   console.log(JSON.stringify(payload));
+    //   // return;
+    //   if (
+    //     this.office_type_id == 8 ||
+    //     this.office_type_id == 10 ||
+    //     this.office_type_id == 11
+    //   ) {
+    //     console.log("load Upazila");
+    //     this.GetAllUpazila(this.data.district_id);
+    //   } else {
+    //     console.log("load City Corporation");
+    //     await this.$axios
+    //       .get(`/admin/city/get/` + this.data.district_id + "/" + event, {
+    //         headers: {
+    //           Authorization: "Bearer " + this.$store.state.token,
+    //           "Content-Type": "multipart/form-data",
+    //         },
+    //       })
+    //       .then((result) => {
+    //         this.city = result.data.data;
+    //         console.log(this.city, "onChangeDistrict");
+    //       });
+    //   }
+    // },
     async GetAllUpazila(id) {
       if (this.data.office_type != null) {
         this.getOfficeByLocation(this.data.office_type, id);
@@ -1341,7 +1467,6 @@ export default {
         console.log(e);
       }
     },
-
     onChangeOfficeType(event) {
       this.data.division_id = null;
       this.data.district_id = null;
@@ -1350,12 +1475,12 @@ export default {
       this.data.city_corpo_id = null;
       this.getOfficeByLocation(event);
     },
-
     getOfficeByLocation(office_type_id, location_type_id = null) {
       let data = {
         office_type_id: office_type_id,
         location_type_id: location_type_id,
       };
+      console.log(data, "getOfficeByLocation");
       let fd = new FormData();
       for (const [key, value] of Object.entries(data)) {
         if (value !== null) {
@@ -1372,7 +1497,7 @@ export default {
         .then((result) => {
           this.offices = result.data.data;
           console.log(this.offices, "this.offices");
-          this.data.office_id = this.offices.id;
+          this.data.office_id = this.offices[0].id;
           // console.log(result, "result");
         })
         .catch((err) => {
