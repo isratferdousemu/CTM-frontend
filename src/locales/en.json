@@ -136,6 +136,7 @@
                     "email": "Enter Email Address",
                     "role_id": "Select Role",
                     "status": "Status",
+                    "edit": "Edit User",
                     "office_type": "Select Office Type",
                     "office_id": "Select Office",
                     "office": "Office",
