@@ -183,6 +183,7 @@ export default {
             this.errors = {};
             this.selectedModule = null;
             this.select();
+            this.$refs.form.setErrors();
           }
 
           if (this.error_status === 422)
@@ -283,8 +284,8 @@ export default {
                                    color="primary"
                                    :label="mm.name"
                                    :value="mm.id"
+                                   :hide-details="errors[0] ? false : true"
                                    @click="select"
-                                   hide-details
                                ></v-checkbox>
                             </span>
                             </td>
@@ -317,7 +318,7 @@ export default {
                                    color="primary"
                                    :label="mm.name"
                                    :value="mm.id"
-                                   hide-details
+                                   :hide-details="errors[0] ? false : true"
                                    @click="select"
                                ></v-checkbox>
                             </span>

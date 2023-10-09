@@ -822,34 +822,7 @@ export default {
       this.dialogAdd = true;
     },
     checkLanguage() {
-      //   let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
-      //   let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
-      //   if (
-      //     checkLanguageBangla != "Bangla" &&
-      //     checkLanguageEnglish != "English"
-      //   ) {
-      //     let errs = {
-      //       name_bn: ["Please Enter in Bangla Language in this Field"],
-      //       name_en: ["Please Enter in English Language in this Field"],
-      //     };
-      //     this.$refs.formAdd.setErrors(errs);
-      //     return false;
-      //   } else if (checkLanguageBangla != "Bangla") {
-      //     let errs = {
-      //       name_bn: ["Please Enter in Bangla Language in this Field"],
-      //     };
-      //     this.$refs.formAdd.setErrors(errs);
-      //     return false;
-      //   } else if (checkLanguageEnglish != "English") {
-      //     let errs = {
-      //       name_en: ["Please Enter in English Language in this Field"],
-      //     };
-      //     this.$refs.formAdd.setErrors(errs);
-      //     return false;
-      //   } else {
-      //     return true;
-      //   }
-
+        
       let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
       let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
       
@@ -857,7 +830,7 @@ export default {
       console.log(checkLanguageBangla);
       let errs = {};
 
-      if (checkLanguageBangla !== "Bangla") {
+      if (checkLanguageBangla !== "Bangla" && checkLanguageBangla !== "BanglaSpecialChar") {
         errs.name_bn = ["Please Enter in Bangla Language in this Field"];
       }
 
@@ -1072,7 +1045,7 @@ export default {
     this.GetUnion();
   },
   beforeMount() {
-    this.updateHeaderTitle();
+    this.updateHeaderTitle(); 
   },
 };
 </script>

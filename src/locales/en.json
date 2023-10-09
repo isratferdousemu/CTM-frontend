@@ -15,6 +15,9 @@
             "code": "Code",
             "name_en": "Name English",
             "name_bn": "Name Bangla",
+            "value_en": "Name English",
+            "value_bn": "Name Bangla",
+            "keyword": "Keyword",
             "location_type": "Location Type",
             "add_new": "Add New",
             "update": "Update",
@@ -146,6 +149,18 @@
                     "search": "Search User"
                 }
             }
+        },
+        "general_setting": {
+            "general_setting": "General Setting",
+            "lookup_type": "Lookup Type",
+            "list": "General Setting List",
+            "value_en": "General Setting Name English",
+            "value_bn": "General Setting Name Bangla",
+            "add_new": "Add New General Setting",
+            "search": "Search General Setting",
+            "edit": "Edit General Setting",
+            "delete": "Delete Division",
+            "delete_alert": "Are you sure to delete this Division?"
         }
     }
 }
