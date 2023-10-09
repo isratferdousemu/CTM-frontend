@@ -170,7 +170,7 @@
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
-            <ValidationObserver ref="form" v-slot="{ invalid }">
+            <ValidationObserver ref="formAdd" v-slot="{ invalid }">
               <form @submit.prevent="submitUser()">
                 <v-row>
                   <v-col lg="6" md="6" cols="12">
@@ -534,7 +534,7 @@
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
-            <ValidationObserver ref="form" v-slot="{ invalid }">
+            <ValidationObserver ref="formEdit" v-slot="{ invalid }">
               <form @submit.prevent="updateUser()">
                 <v-row>
                   <v-col lg="6" md="6" cols="12">
@@ -1036,6 +1036,11 @@ export default {
 
   methods: {
     createDialog() {
+      console.log(this.refs);
+      if (this.$refs.formAdd) {
+        this.$refs.formAdd.reset();
+      }
+      this.resetForm();
       this.dialogAdd = true;
     },
     submitUser() {
@@ -1094,8 +1099,8 @@ export default {
           }
           
           // ud.append("_method", "PUT");
+          console.log(key, value, "ud");
         }
-        console.log(key, value, "ud");
       }
       // return;
       // Include the _method field for PUT request
@@ -1110,7 +1115,7 @@ export default {
             ud.append("_method", "PUT");
 
       this.$axios
-        .put("/admin/user/update/"+this.data.id, ud, {
+        .put("/admin/user/update/"+this.data.id, this.data, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             'Content-Type': 'application/json',
@@ -1135,6 +1140,9 @@ export default {
         });
     },
     editDialog(item) {
+      if (this.$refs.formEdit) {
+        this.$refs.formEdit.reset();
+      }
       this.dialogEdit = true;
       // console.log(item.roles[0].id, "roles id");
       console.log(item, "editDialog");
@@ -1183,7 +1191,7 @@ export default {
         console.log(item?.office?.id, " in the city");
       }
       if (item?.assign_location?.type == "thana") {
-        this.data.city_corpo_id = item?.assign_location?.id;
+        this.data.thana_id = item?.assign_location?.id;
         this.onChangeUpazila(item?.assign_location?.id);
       }
 
