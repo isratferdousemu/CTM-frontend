@@ -13,7 +13,7 @@
             >
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
-                  {{ $t("container.system_config.demo_graphic.district.list") }}
+                  {{ $t("container.general_setting.list") }}
                 </h3>
               </v-card-title>
               <v-card-text>
@@ -22,21 +22,28 @@
                   justify="center"
                   justify-lg="space-between"
                 >
-                  <div class="d-flex justify-sm-end flex-wrap">
+                  <div class="d-flex justify-sm-end flex-wrap">                  
+                    <v-autocomplete
+                      dense
+                      class="my-sm-0 my-3 mx-0v -input--horizontal"
+                      @input="onChangeLookupFilter($event)"
+                      outlined
+                      :label="$t('container.general_setting.lookup_type')"
+                      :items="lookupTypes"
+                      item-text="name"
+                      item-value="id"
+                      required
+                    ></v-autocomplete>
                     <v-text-field
-                      @keyup.native="GetDistrict"
+                      @keyup.native="GetLookup"
                       outlined
                       dense
+                      class="ml-5 my-sm-0 my-3 mx-0v -input--horizontal"
                       v-model="search"
                       prepend-inner-icon="mdi-magnify"
-                      class="my-sm-0 my-3 mx-0v -input--horizontal"
                       flat
                       variant="outlined"
-                      :label="
-                        $t(
-                          'container.system_config.demo_graphic.district.search'
-                        )
-                      "
+                      :label="$t('container.general_setting.search')"
                       hide-details
                       color="primary"
                     >
@@ -55,7 +62,7 @@
                       :loading="loading"
                       item-key="id"
                       :headers="headers"
-                      :items="districts"
+                      :items="lookups"
                       :items-per-page="pagination.perPage"
                       hide-default-footer
                       class="elevation-0 transparent row-pointer"
@@ -67,17 +74,23 @@
                           1
                         }}
                       </template>
-                      <template v-slot:item.name_en="{ item }">
-                        {{ item.name_en }}
+                      <template v-slot:item.type="{ item }">
+                        {{ lookupTypes[item.type - 1].name }}
                       </template>
-                      <template v-slot:item.name_bn="{ item }">
-                        {{ item.name_bn }}
+                      <template v-slot:item.value_en="{ item }">
+                        {{ item.value_en }}
+                      </template>
+                      <template v-slot:item.value_bn="{ item }">
+                        {{ item.value_bn }}
                       </template>
 
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
                         <v-tooltip top>
-                          <template v-slot:activator="{ on }">
+                          <template
+                            v-slot:activator="{ on }"
+                            v-if="item.default !== 1"
+                          >
                             <v-btn
                               v-can="'update-post'"
                               fab
@@ -96,7 +109,10 @@
                         </v-tooltip>
 
                         <v-tooltip top>
-                          <template v-slot:activator="{ on }">
+                          <template
+                            v-slot:activator="{ on }"
+                            v-if="item.default !== 1"
+                          >
                             <v-btn
                               v-can="'delete-division'"
                               fab
@@ -157,48 +173,28 @@
       <v-dialog v-model="dialogAdd" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.system_config.demo_graphic.district.add_new") }}
+            {{ $t("container.general_setting.add_new") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
             <ValidationObserver ref="formAdd" v-slot="{ invalid }">
-              <form @submit.prevent="submitDistrict()">
+              <form @submit.prevent="submitLookup()">
                 <!-- {{errors.code}}
-                {{errors.name_en}} -->
+                {{errors.value_en}} -->
 
                 <ValidationProvider
-                  name="Code"
-                  vid="code"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <v-text-field
-                    outlined
-                    type="text"
-                    v-model="data.code"
-                    :label="$t('container.list.code')"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-text-field>
-                </ValidationProvider>
-                <ValidationProvider
-                  name="Division"
+                  name="Lookup"
                   vid="division"
                   rules="required"
                   v-slot="{ errors }"
                 >
                   <v-autocomplete
-                    @input="onChangeDivision($event)"
-                    v-model="data.division_id"
+                    @input="onChangeLookup($event)"
+                    v-model="data.type"
                     outlined
-                    :label="
-                      $t(
-                        'container.system_config.demo_graphic.division.division'
-                      )
-                    "
-                    :items="divisions"
-                    item-text="name_en"
+                    :label="$t('container.general_setting.lookup_type')"
+                    :items="lookupTypes"
+                    item-text="name"
                     item-value="id"
                     required
                     :error="errors[0] ? true : false"
@@ -207,15 +203,15 @@
                 </ValidationProvider>
                 <ValidationProvider
                   name="Name English"
-                  vid="name_en"
+                  vid="value_en"
                   rules="required"
                   v-slot="{ errors }"
                 >
                   <v-text-field
                     outlined
                     type="text"
-                    v-model="data.name_en"
-                    :label="$t('container.list.name_en')"
+                    v-model="data.value_en"
+                    :label="$t('container.general_setting.value_en')"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -223,15 +219,32 @@
                 </ValidationProvider>
                 <ValidationProvider
                   name="Name Bangla"
-                  vid="name_bn"
+                  vid="value_bn"
                   rules="required"
                   v-slot="{ errors }"
                 >
                   <v-text-field
                     outlined
                     type="text"
-                    v-model="data.name_bn"
-                    :label="$t('container.list.name_bn')"
+                    v-model="data.value_bn"
+                    :label="$t('container.general_setting.value_bn')"
+                    required
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
+                  ></v-text-field>
+                </ValidationProvider>
+
+                <ValidationProvider
+                  name="Keywork"
+                  vid="keyword"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
+                  <v-text-field
+                    outlined
+                    type="text"
+                    v-model="data.keyword"
+                    :label="$t('container.list.keyword')"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -269,49 +282,28 @@
       <v-dialog v-model="dialogEdit" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.system_config.demo_graphic.district.edit") }}
+            {{ $t("container.general_setting.edit") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
             <ValidationObserver ref="formEdit" v-slot="{ invalid }">
-              <form @submit.prevent="updateDistrict()">
+              <form @submit.prevent="updateLookup()">
                 <!-- {{errors.code}}
-                {{errors.name_en}} -->
+                {{errors.value_en}} -->
 
                 <ValidationProvider
-                  name="Code"
-                  vid="code"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <v-text-field
-                    outlined
-                    type="text"
-                    v-model="data.code"
-                    :label="$t('container.list.code')"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-text-field>
-                </ValidationProvider>
-
-                <ValidationProvider
-                  name="Division"
+                  name="Lookup"
                   vid="division"
                   rules="required"
                   v-slot="{ errors }"
                 >
                   <v-autocomplete
-                    @input="onChangeDivision($event)"
-                    v-model="data.division_id"
+                    @input="onChangeLookup($event)"
+                    v-model="data.type"
                     outlined
-                    :label="
-                      $t(
-                        'container.system_config.demo_graphic.division.division'
-                      )
-                    "
-                    :items="divisions"
-                    item-text="name_en"
+                    :label="$t('container.general_setting.lookup_type')"
+                    :items="lookupTypes"
+                    item-text="name"
                     item-value="id"
                     required
                     :error="errors[0] ? true : false"
@@ -320,15 +312,15 @@
                 </ValidationProvider>
                 <ValidationProvider
                   name="Name English"
-                  vid="name_en"
+                  vid="value_en"
                   rules="required"
                   v-slot="{ errors }"
                 >
                   <v-text-field
                     outlined
                     type="text"
-                    v-model="data.name_en"
-                    :label="$t('container.list.name_en')"
+                    v-model="data.value_en"
+                    :label="$t('container.general_setting.value_en')"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -336,21 +328,37 @@
                 </ValidationProvider>
                 <ValidationProvider
                   name="Name Bangla"
-                  vid="name_bn"
+                  vid="value_bn"
                   rules="required"
                   v-slot="{ errors }"
                 >
                   <v-text-field
                     outlined
                     type="text"
-                    v-model="data.name_bn"
-                    :label="$t('container.list.name_bn')"
+                    v-model="data.value_bn"
+                    :label="$t('container.general_setting.value_en')"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
                   ></v-text-field>
                 </ValidationProvider>
 
+                <ValidationProvider
+                  name="Keywork"
+                  vid="keyword"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
+                  <v-text-field
+                    outlined
+                    type="text"
+                    v-model="data.keyword"
+                    :label="$t('container.list.keyword')"
+                    required
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
+                  ></v-text-field>
+                </ValidationProvider>
                 <v-row class="mx-0 my-0 py-2" justify="center">
                   <v-btn
                     flat
@@ -382,14 +390,12 @@
       <v-dialog v-model="deleteDialog" width="350">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.system_config.demo_graphic.district.delete") }}
+            {{ $t("container.general_setting.delete") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
-              {{
-                $t("container.system_config.demo_graphic.district.delete_alert")
-              }}
+              {{ $t("container.general_setting.delete_alert") }}
             </div>
           </v-card-text>
           <v-card-actions style="display: block">
@@ -404,7 +410,7 @@
               </v-btn>
               <v-btn
                 text
-                @click="deleteDistrict()"
+                @click="deleteLookup()"
                 color="white"
                 :loading="delete_loading"
                 class="custom-btn-width warning white--text py-2"
@@ -429,15 +435,15 @@ import { required } from "vee-validate/dist/rules";
 extend("required", required);
 export default {
   name: "Index",
-  title: "CTM - Districts",
+  title: "CTM - General Setting",
   data() {
     return {
       data: {
-        division_id: null,
         id: null,
-        code: null,
-        name_en: null,
-        name_bn: null,
+        type: null,
+        value_en: null,
+        value_bn: null,
+        keyword: null,
       },
       dialogAdd: false,
       deleteDialog: false,
@@ -446,7 +452,7 @@ export default {
       loading: false,
       search: "",
       delete_id: "",
-      districts: [],
+      lookups: [],
       errors: {},
       error_status: {},
       pagination: {
@@ -471,24 +477,21 @@ export default {
           align: "start",
           sortable: false,
         },
-        { text: this.$t("container.list.code"), value: "code" },
         {
-          text: this.$t(
-            "container.system_config.demo_graphic.division.division"
-          ),
-          value: "division.name_en",
+          text: this.$t("container.general_setting.lookup_type"),
+          value: "type",
         },
         {
-          text: this.$t(
-            "container.system_config.demo_graphic.district.name_en"
-          ),
-          value: "name_en",
+          text: this.$t("container.general_setting.value_en"),
+          value: "value_en",
         },
         {
-          text: this.$t(
-            "container.system_config.demo_graphic.district.name_bn"
-          ),
-          value: "name_bn",
+          text: this.$t("container.general_setting.value_bn"),
+          value: "value_bn",
+        },
+        {
+          text: this.$t("container.list.keyword"),
+          value: "keyword",
         },
         {
           text: this.$t("container.list.action"),
@@ -502,7 +505,7 @@ export default {
     ...mapState({
       message: (state) => state.District.success_message,
       divisions: (state) => state.Division.divisions,
-      districts: (state) => state.District.districts,
+      lookupTypes: (state) => state.lookupTypes,
     }),
   },
 
@@ -515,27 +518,27 @@ export default {
       this.dialogAdd = true;
     },
     checkLanguage() {
-      // let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
-      // let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
+      // let checkLanguageEnglish = this.$checkLanguage(this.data.value_en);
+      // let checkLanguageBangla = this.$checkLanguage(this.data.value_bn);
       // if (
       //   checkLanguageBangla != "Bangla" &&
       //   checkLanguageEnglish != "English"
       // ) {
       //   let errs = {
-      //     name_bn: ["Please Enter in Bangla Language in this Field"],
-      //     name_en: ["Please Enter in English Language in this Field"],
+      //     value_bn: ["Please Enter in Bangla Language in this Field"],
+      //     value_en: ["Please Enter in English Language in this Field"],
       //   };
       //   this.$refs.form.setErrors(errs);
       //   return false;
       // } else if (checkLanguageBangla != "Bangla") {
       //   let errs = {
-      //     name_bn: ["Please Enter in Bangla Language in this Field"],
+      //     value_bn: ["Please Enter in Bangla Language in this Field"],
       //   };
       //   this.$refs.form.setErrors(errs);
       //   return false;
       // } else if (checkLanguageEnglish != "English") {
       //   let errs = {
-      //     name_en: ["Please Enter in English Language in this Field"],
+      //     value_en: ["Please Enter in English Language in this Field"],
       //   };
       //   this.$refs.form.setErrors(errs);
       //   return false;
@@ -543,19 +546,22 @@ export default {
       //   return true;
       // }
 
-      let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
-      let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
+      let checkLanguageEnglish = this.$checkLanguage(this.data.value_en);
+      let checkLanguageBangla = this.$checkLanguage(this.data.value_bn);
 
       console.log(checkLanguageEnglish);
       console.log(checkLanguageBangla);
       let errs = {};
 
-      if (checkLanguageBangla !== "Bangla" && checkLanguageBangla !== "BanglaSpecialChar") {
-        errs.name_bn = ["Please Enter in Bangla Language in this Field"];
+      if (
+        checkLanguageBangla !== "Bangla" &&
+        checkLanguageBangla !== "BanglaSpecialChar"
+      ) {
+        errs.value_bn = ["Please Enter in Bangla Language in this Field"];
       }
 
       if (checkLanguageEnglish !== "English") {
-        errs.name_en = ["Please Enter in English Language in this Field"];
+        errs.value_en = ["Please Enter in English Language in this Field"];
       }
 
       if (Object.keys(errs).length > 0) {
@@ -576,25 +582,27 @@ export default {
       for (const [key, value] of Object.entries(this.data)) {
         if (value !== null) {
           fd.append(key, value);
+          console.log(key, value);
         }
       }
       return fd;
     },
-    submitDistrict() {
+    submitLookup() {
       if (!this.checkLanguage()) {
         return;
       }
-
+      // this.validator();
+      // return;
       try {
         this.$store
-          .dispatch("District/StoreDistrict", this.validator())
+          .dispatch("GeneralSetting/StoreLookup", this.validator())
           .then((data) => {
             console.log(data, "submit");
             if (data == null) {
               this.$toast.success("Data Inserted Successfully");
               this.dialogAdd = false;
               this.resetForm();
-              this.GetDistrict();
+              this.GetLookup();
             } else {
               this.$refs.formAdd.setErrors(data.errors);
               this.errors = data.errors;
@@ -610,28 +618,28 @@ export default {
     editDialog(item) {
       console.log(JSON.stringify(item));
       this.dialogEdit = true;
-      this.data.code = item.code;
-      this.data.division_id = item.division.id;
-      this.data.name_en = item.name_en;
-      this.data.name_bn = item.name_bn;
       this.data.id = item.id;
+      this.data.type = item.type;
+      this.data.value_en = item.value_en;
+      this.data.value_bn = item.value_bn;
+      this.data.keyword = item.keyword;
       this.errors = {};
     },
-    updateDistrict() {
+    updateLookup() {
       if (!this.checkLanguage()) {
         return;
       }
 
       try {
         this.$store
-          .dispatch("District/UpdateDistrict", this.validator())
+          .dispatch("GeneralSetting/UpdateLookup", this.validator())
           .then((data) => {
             console.log(data, "update");
             if (data == null) {
               this.$toast.success("Data Updated Successfully");
               this.dialogEdit = false;
               this.resetForm();
-              this.GetDistrict();
+              this.GetLookup();
             } else {
               this.$refs.formEdit.setErrors(data.errors);
             }
@@ -643,22 +651,22 @@ export default {
     resetForm() {
       this.data = {
         code: "",
-        name_en: "",
-        name_bn: "",
+        value_en: "",
+        value_bn: "",
       };
     },
     onPageChange($event) {
       // this.pagination.current = $event;
-      this.GetDistrict();
+      this.GetLookup();
     },
-    async GetDistrict() {
+    async GetLookup() {
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
       };
       this.$axios
-        .get("/admin/district/get", {
+        .get("/admin/lookup/get", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -666,26 +674,27 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          this.districts = result.data.data;
+          console.log(result.data.data, "getLookup");
+          this.lookups = result.data.data;
           this.pagination.current = result.data.meta.current_page;
           this.pagination.total = result.data.meta.last_page;
           this.pagination.grand_total = result.data.meta.total;
         });
     },
-    deleteDistrict: async function () {
+    deleteLookup: async function () {
       try {
         await this.$store
-          .dispatch("District/DestroyDistrict", this.delete_id)
+          .dispatch("GeneralSetting/DestroyLookup", this.delete_id)
           .then((res) => {
             // check if the request was successful
             console.log(res.data);
             if (res?.data?.success) {
-              this.$toast.success(res.data.message);
+              this.$toast.error(res.data.message);
             } else {
               this.$toast.error(res.response.data.message);
             }
             this.deleteDialog = false;
-            this.GetDistrict();
+            this.GetLookup();
           });
       } catch (e) {
         console.log(e);
@@ -706,24 +715,27 @@ export default {
         console.log(e);
       }
     },
-    async onChangeDivision(event) {
-      console.log(event);
-      // await axios
-      //   .get(`/admin/district/get/${event}`, {
-      //     headers: {
-      //       Authorization: "Bearer " + this.$store.state.token,
-      //       "Content-Type": "multipart/form-data",
-      //     },
-      //   })
-      //   .then((result) => {
-      //     this.districts = result.data.data;
-      //     console.log(this.districts);
-      //   });
+    async onChangeLookupFilter(event) {
+      console.log(event, "onChangeLookupFilter");
+      if (event === null) {
+        this.GetLookup();
+        return;
+      }
+
+      this.$axios
+        .get("/admin/lookup/get/" + event, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
+          console.log(result.data.data, "getLookup");
+          this.lookups = result.data.data;
+        });
     },
     updateHeaderTitle() {
-      const title = this.$t(
-        "container.system_config.demo_graphic.district.list"
-      );
+      const title = this.$t("container.general_setting.list");
       this.$store.commit("setHeaderTitle", title);
     },
   },
@@ -731,7 +743,8 @@ export default {
     "$i18n.locale": "updateHeaderTitle",
   },
   created() {
-    this.GetDistrict();
+    console.log(this.lookupTypes);
+    this.GetLookup();
     this.getAllDivision();
   },
   beforeMount() {

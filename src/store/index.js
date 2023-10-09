@@ -11,6 +11,7 @@ import BudgetManagement from "./BudgetManagement";
 import EmergencyPaymentManagement from "./EmergencyPaymentManagement";
 import GrievanceManagement from "./GrievanceManagement";
 import ManageAllotment from "./ManageAllotment";
+import GeneralSetting from "./GeneralSetting";
 import MEReporting from "./MEReporting";
 import PayrollManagement from "./PayrollManagement";
 import SystemConfiguration from "./SystemConfiguration";
@@ -37,6 +38,7 @@ export default new Vuex.Store({
   state: {
     headerTitle: "Dashboard",
     Drawer: true,
+    menus: [],
     notification: [],
     notificationUnseen: 0,
     notificationTime: 0,
@@ -107,10 +109,7 @@ export default new Vuex.Store({
   /*                               Actions Define                               */
   /* -------------------------------------------------------------------------- */
   actions: {
-    async getData({ commit }) {
-      const data = await fetch("http://api.icndb.com/jokes/random/15");
-      commit("SET_DATA", await data.json());
-    },
+ 
     sendOtpForgetPassword: ({ commit, state }, data) => {
       return http()
         .post("admin/forgot-password", data)
@@ -200,6 +199,19 @@ export default new Vuex.Store({
 
         });
     },
+    getAllMenus: ({ commit, state }) => {
+      return http()
+        .get("/admin/menu/get-all")
+        .then((result) => {
+      commit('setMenus', result.data.data);
+        })
+        .catch((err) => {
+          state.errors = err.response.data.errors;
+          state.error_status = err.response.status;
+          return err;
+
+        });
+    },
     async getLookupByType({ state }, type) {
       return await axios.get("/admin/lookup/get/" + type, {
         headers: {
@@ -236,6 +248,9 @@ export default new Vuex.Store({
   mutations: {
     setDrawer(state, payload) {
       state.Drawer = payload;
+    },
+    setMenus(state, payload) {
+      state.menus = payload;
     },
     setHeaderTitle(state, payload) {
       state.headerTitle = payload;
@@ -312,6 +327,7 @@ export default new Vuex.Store({
     EmergencyPaymentManagement,
     GrievanceManagement,
     ManageAllotment,
+    GeneralSetting,
     MEReporting,
     PayrollManagement,
     SystemConfiguration,
@@ -330,7 +346,7 @@ export default new Vuex.Store({
   },
   plugins: [
     createPersistedState({
-      paths: ["userData", "token", "userPermissions", "loginData", "appLanguage"],
+      paths: ["userData", "token", "userPermissions", "loginData", "appLanguage","menus"],
     }),
   ],
 });

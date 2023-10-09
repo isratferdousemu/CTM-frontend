@@ -109,7 +109,7 @@ const SystemConfigurationRoutes = [
 
     /*Device Registration route start*/
   {
-    path: "/system-configuration/device_registration",
+    path: "/system-configuration/device-registration",
     name: "DeviceRegistration",
     meta: {
       requiresAuth: true,
@@ -205,7 +205,7 @@ const SystemConfigurationRoutes = [
     name: "RolePermission",
     meta: {
       requiresAuth: true,
-      permission: "role-permission-list",
+      permission: "role-permission",
     },
     component: () => import("../pages/SystemConfiguration/user_management/role_permission/Index.vue")
   },
