@@ -1,242 +1,126 @@
 <template lang="">
   <div>
-    <v-navigation-drawer
-      width="280"
-      elevation="0"
-      v-model="Drawer"
-      :clipped="clipped"
-      fixed
-      app
-      class="mr-9 ml-3 my-3 nav-height rounded-lg nav-left-custom"
-    >
-      <div class="pa-2 text-center ma-auto">
-        <v-img
-          class="text-center ma-auto"
-          max-height="100%"
-          max-width="80px"
-          position="center center"
-          src="/assets/images/logo.png"
-        ></v-img>
-        <!-- <Logo class="ml-7" /> -->
-      </div>
-      <v-divider></v-divider>
-
-      <v-list class="left-sidebar">
-        <template v-for="(item, i) in items">
-          <v-list-item
-            v-if="!item.subTtems && item.to == '/log'"
-            :key="i"
+    <v-navigation-drawer width="320"
+    elevation="0"
+    v-model="Drawer"
+    :clipped="clipped"
+    color="rgba(28, 59, 104, 1)"
+    fixed
+    app
+    class="mr-9 ml-3 my-3 nav-height rounded-lg nav-left-custom">
+    <div class="pa-2 text-center ma-auto">
+      <v-img
+        class="text-center ma-auto"
+        max-height="100%"
+        max-width="80px"
+        position="center center"
+        src="/assets/images/logo.png"
+      ></v-img>
+      <!-- <Logo class="ml-7" /> -->
+    </div>
+    <v-divider></v-divider>
+    <v-list two-line  class="white--text left-sidebar">
+        <template v-for="(menu,index) in menus">
+            <v-list-item  class="white--text" v-if="menu.children.length==0"
             router
-            exact
-         
-            v-can="item.permission"
-            @click.stop="
-              drawer = false;
-              $router.push(item.to);
-            "
-          >
-            <v-list-item-action>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-item-action>
-
-            <v-list-item-content>
-              <v-list-item-title class="list_size">
-                  <!-- {{ $t(`sidebar.${item.title}`) }} -->
-                {{ item.title }}
-                <v-badge
-                  v-if="item.title == 'Employee' && new_employee > 0"
-                  :content="new_employee"
-                  class="badge-employee"
-                ></v-badge>
-                <v-badge
-                  v-if="item.title == 'Apprentice' && new_apprentice > 0"
-                  :content="new_apprentice"
-                  class="badge-employee"
-                ></v-badge>
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-item
-            v-else-if="!item.subTtems"
-            :key="i"
-            :to="item.to"
-            router
-            exact
-            v-can="!item.subTtems?item.permission:''"
-          >
-            <v-list-item-action>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title class="list_size">
-                {{ $t(`sidebar.${item.title}`) }}
-                 <!-- {{ $t(`sidebar.${item.title}`) }} -->
-                <!-- {{ item.title }} -->
-                <v-badge
-                  v-if="item.title == 'Employee' && new_employee > 0"
-                  :content="new_employee"
-                  class="badge-employee"
-                ></v-badge>
-                <v-badge
-                  v-if="item.title == 'Apprentice' && new_apprentice > 0"
-                  :content="new_apprentice"
-                  class="badge-employee"
-                ></v-badge>
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
-          <v-list-group
-            v-else
-            :key="i"
-            :value="false"
-            :prepend-icon="item.icon"
-            >
-            <!-- v-can="item.permission" -->
-            <template v-slot:activator>
-              <v-list-item-title class="list_size">{{
-                item.title
-              }}</v-list-item-title>
-            </template>
-
-            <template v-for="subitem in item.subTtems">
-              <v-list-item
-                v-if="
-                  subitem.to == '/setting/franchise-info'
-                    ? isSuperAdmin()
-                    : true
-                "
-                :to="subitem.to"
-                :key="subitem.id"
-                v-can="subitem.permission"
-              >
-                <v-list-item-action>
-                  <v-icon>{{ subitem.icon }}</v-icon>
-                </v-list-item-action>
-                <v-list-item-content>
-                  <v-list-item-title
-                    class="sub_list_size"
-                    v-text="subitem.title"
-                  />
-                </v-list-item-content>
+            link
+            :to="menu?.page_link!=null ? menu.page_link.page_url : menu.link"
+            v-can="menu.link_type==2?'common':menu?.page_link?.name"
+             > 
+        
+                <v-list-item-title  > {{language=='bn'?menu.label_name_bn:menu.label_name_en}}</v-list-item-title>
               </v-list-item>
+            <!-- single menu end  -->
+             <!-- sub menu start  -->
+            <v-list-group v-else v-can="getPermissionName(menu)"
+            :value="false" class="sub_menus"  >
+            <template v-slot:activator>
+              <v-list-item-title class="white--text">{{language=='bn'?menu.label_name_bn:menu.label_name_en}}</v-list-item-title>
+            </template>
+            <template v-for="(subMenu) in menu.children">
+            <v-list-group  v-if="subMenu.children.length!=0"
+            :value="false" v-can="getPermissionName(subMenu)"
+            sub-group prepend-icon="mdi-chevron-down"
+          >
+            <template v-slot:activator >
+
+              <v-list-item-content>
+                <v-list-item-title class="pl-1 white--text"> {{language=='bn'?subMenu.label_name_bn:subMenu.label_name_en}}</v-list-item-title>
+              </v-list-item-content>
+            
+            </template>
+            <v-list-item class="white--text"
+              v-for="(subSubMenu,subSubIndex) in subMenu.children"
+              :key="subSubIndex"
+              router
+            link
+            :to="subSubMenu?.page_link!=null ? subSubMenu.page_link.page_url : subSubMenu.link"
+            v-can="subSubMenu?.page_link?.name"
+            >
+            <v-list-item-icon>
+              <v-icon >mdi-minus </v-icon>
+            </v-list-item-icon>
+              <v-list-item-title class="white--text" v-text="language=='bn'?subSubMenu.label_name_bn:subSubMenu.label_name_en"></v-list-item-title>
+   
+            </v-list-item>
+            <!-- sub sub  -->
+           
+            <!-- sub sub end -->
+          </v-list-group>
+
+          <v-list-item v-else
+            router
+            link
+            class="white--text"
+            :to="subMenu?.page_link!=null ? subMenu.page_link.page_url : subMenu.link"
+            v-can="subMenu?.page_link?.name"
+             >
+                <!-- <v-list-item-icon>
+                  <v-icon>mdi-minus</v-icon>
+                </v-list-item-icon> -->
+                <v-list-item-icon>
+                  <v-icon >mdi-minus </v-icon>
+                </v-list-item-icon>
+                <v-list-item-title class="white--text">{{language=='bn'?subMenu.label_name_bn:subMenu.label_name_en}}</v-list-item-title>
+              </v-list-item>
+
             </template>
           </v-list-group>
+            
+
         </template>
+    
+  
+    
       </v-list>
     </v-navigation-drawer>
   </div>
 </template>
 <script>
+import {http} from "@/hooks/httpService";
+
 export default {
   data() {
     return {
       menu: false,
       clipped: false,
       fixed: false,
-      items: [
-        {
-          icon: "mdi-view-dashboard-outline",
-          title: "dashboard",
-          to: "/",
-          permission: "common",
-        },
-        {
-          icon: "mdi mdi-cogs",
-          title: 'System Configuration',
-          subTtems: [
-            {
-              title: "Division",
-              icon: "mdi mdi-plus",
-              to: "/system-configuration/division",
-          permission: "division-list",
-
-            },
-            {
-              title: "District",
-              icon: "mdi mdi-plus",
-              to: "/system-configuration/district",
-          permission: "district-list",
-
-            },
-            {
-              title: "City Corporation",
-              icon: "mdi mdi-plus",
-              to: "/system-configuration/city",
-          permission: "city-list",
-
-            },
-            {
-              title: "Thana/Upazila",
-              icon: "mdi mdi-plus",
-              to: "/system-configuration/thana",
-          permission: "thana-list",
-
-            },
-            {
-              title: "Union",
-              icon: "mdi mdi-plus",
-              to: "/system-configuration/union",
-          permission: "union-list",
-
-            },
-            {
-              title: "Ward",
-              icon: "mdi mdi-plus",
-              to: "/system-configuration/ward",
-          permission: "ward-list",
-
-            },
-            {
-              title: "Office Management",
-              icon: "mdi mdi-plus",
-              to: "/system-configuration/office_information",
-          permission: "office-list",
-
-            },
-            {
-              title: "Role Management",
-              icon: "mdi mdi-plus",
-              to: "/system-configuration/role",
-          permission: "role-list",
-
-            },
-            {
-              title: "Role Permission",
-              icon: "mdi mdi-plus",
-              to: "/system-configuration/role-permission",
-          permission: "role-permission-list",
-
-            },
-            {
-              title: "User Management",
-              icon: "mdi mdi-plus",
-              to: "/system-configuration/users",
-          permission: "user-list",
-
-            },
-            // {
-            //   title: "Menu",
-            //   icon: "mdi mdi-plus",
-            //   to: "/system-configuration/menu",
-            // },
-            //
-            // {
-            //   title: "Device Registration",
-            //   icon: "mdi mdi-plus",
-            //   to: "/system-configuration/device_registration",
-            // },
-          ],
-        },
-
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
     };
   },
   computed: {
+    menus: {
+      get() {
+        return this.$store.state.menus;
+      },
+      set(v) {
+        return this.$store.commit("setMenus", v);
+      },
+    },
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      },
+    },
     Drawer: {
       get() {
         return this.$store.state.Drawer;
@@ -246,11 +130,47 @@ export default {
       },
     },
   },
+  methods: {
+    getPermissionName(menu) {
+      // menu.link_type==2?'common':menu?.page_link?.name
+      console.log(menu.permission,'permission');
+      if(menu.permission!=null){
+        return menu.permission
+      }
+      if(menu.link_type==2){
+        return 'common'
+      }
+    if(menu?.page_link?.name){
+      return menu?.page_link?.name
+    }
+},
+},
+  mounted() {
+    this.$store.dispatch('getAllMenus');
+},
 };
 </script>
 
-<style lang="css">
+<style>
 .list_size {
   color: #000000;
+}
+.v-list.left-sidebar.v-sheet.theme--light .v-list-item__title {
+  font-size: 14px;
+}
+.left-sidebar .theme--light.v-icon{
+color: #f6f5f5dd;
+}
+.left-sidebar .v-list-item{
+min-height: 50px !important;
+}
+.left-sidebar .v-list-group__items{
+padding-left: 15px !important;
+}
+.left-sidebar .v-list-group__items .v-list-item {
+padding-left: 0px !important;
+}
+.left-sidebar .v-list-item .v-list-item__icon{
+margin-bottom: 16px !important;
 }
 </style>

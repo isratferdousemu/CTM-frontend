@@ -17,7 +17,7 @@
   font-weight: 400 !important;
 }
 a.v-list-item--active.v-list-item.v-list-item--link.theme--light {
-  background: linear-gradient(89.9deg,#1b1875e3 2.01%,#06a078 98.89%) !important;
+  background: linear-gradient(89.9deg,#2b4872 2.01%,#1C3B68 98.89%) !important;
   color: white;
 }
 #zmmtg-root{
@@ -58,7 +58,7 @@ a{
 ::-webkit-scrollbar-thumb {
   -webkit-border-radius: 6px;
   border-radius: 6px;
-  background: linear-gradient(89.9deg,#1b1875e3 2.01%,#06a078 98.89%) !important;
+  background: linear-gradient(89.9deg,#2b4872 2.01%,#1C3B68 98.89%) !important;
   /* -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); */
 }
 /* .v-app-bar.v-app-bar--fixed{
@@ -214,7 +214,7 @@ input.googlesearch {
 }
 
 .customer_list tbody tr:hover  {
-  background: linear-gradient(89.9deg,#1b1875e3 2.01%,#06a078 98.89%) !important;
+  background: linear-gradient(89.9deg,#2b4872 2.01%,#1C3B68 98.89%) !important;
   color: white;
 }
 
