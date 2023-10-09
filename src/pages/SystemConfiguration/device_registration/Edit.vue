@@ -186,7 +186,7 @@ export default {
                         color="primary"
                         class="custom-btn mr-2"
                         router
-                        to="/system-configuration/device_registration"
+                        to="/system-configuration/device-registration"
                     >Back
                     </v-btn>
                     <v-btn

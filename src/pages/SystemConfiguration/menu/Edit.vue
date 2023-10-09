@@ -62,6 +62,7 @@ export default {
         await this.$store
           .dispatch("Menu/UpdateMenu", { id: id, data: formData })
           .then(() => {
+    this.$store.dispatch('getAllMenus');
             this.$toast.success(this.message);
             this.GetAllEdit(this.$route.params.id);
           });

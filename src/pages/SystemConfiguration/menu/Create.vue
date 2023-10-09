@@ -65,9 +65,17 @@ export default {
       }
 
         await this.$store.dispatch("Menu/StoreMenu", formData).then((res) => {
-          this.add_menu = {};
+          console.log(res, 'res');
+          if (res.status === 200 || res.status === 201) {
+    this.$store.dispatch('getAllMenus');
+            this.add_menu = {};
           this.$toast.success(this.message);
           this.$router.push({ name: "Menu" });
+          }else{
+            this.$toast.error(res.response.data.message);
+          }
+
+        
         });
       } catch (e) {
         console.log(e);
@@ -131,6 +139,7 @@ export default {
                   <v-col cols="12" sm="6" lg="12">
                     <v-autocomplete
                     :items="parents"
+                    v-model="add_menu.parent_id"
                       item-text="label_name_en"
                       item-value="id"
                       label="Select parent"
@@ -166,16 +175,19 @@ export default {
                       > 
                         <v-autocomplete
                         :items="pageUrls"
-                        item-text="page_url"
+                        :item-text="item => item.page_url"
                         item-value="id"
                         :rules="[v => !!v || 'Page urls is required']"
                         label="Select page url"
                         menu-props="auto"
-                        hide-details
                         persistent-hint
                         outlined
                         v-model="add_menu.page_link_id"
-                      ></v-autocomplete>
+                      >
+                      <template v-slot:item="{ item }">
+                        ({{ item.name}}) {{ item.page_url }}
+                      </template>
+                    </v-autocomplete>
                       </v-col>
 
                       <v-col
