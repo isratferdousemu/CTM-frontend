@@ -192,7 +192,7 @@ export default {
             this.selectedModule = null;
             this.subModules = null;
             this.select();
-            this.$refs.form.reset();
+            this.$refs.form.setErrors();
           }
 
           if (this.error_status === 422)
@@ -297,8 +297,8 @@ export default {
                                    v-model="add_role_permission.permissions"
                                    color="primary"
                                    :value="mm.id"
+                                   :hide-details="errors[0] ? false : true"
                                    @click="select"
-                                   hide-details
                                ></v-checkbox>
                             </span>
                             </td>
@@ -335,7 +335,7 @@ export default {
                                    v-model="rolePermissions"
                                    color="primary"
                                    :value="mm.id"
-                                   hide-details
+                                   :hide-details="errors[0] ? false : true"
                                    @click="select"
                                ></v-checkbox>
                             </span>

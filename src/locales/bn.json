@@ -14,6 +14,9 @@
             "code": "কোড",
             "name_en": "নাম ইংরেজিতে",
             "name_bn": "নাম বাংলায়",
+            "value_en": "নাম ইংরেজিতে",
+            "value_bn": "নাম বাংলায়",
+            "keyword": "কীওয়ার্ড",
             "location_type": "অবস্থানের ধরন",
             "add_new": "যোগ করুন",
             "update": "আপডেট",
@@ -124,7 +127,6 @@
                     "list":"রোলের তালিকা "
                 },
                 "user": {
-                 
                     "listTitle": "User List",
                     "full_name": "Full Name",
                     "username": "Username",
@@ -132,6 +134,7 @@
                     "email": "Enter Email Address",
                     "role_id": "Select Role",
                     "status": "Status",
+                    "edit": "ব্যবহারকারী সম্পাদনা করুন",
                     "delete":"User Delete",
                     "office_type": "Select Office Type",
                     "office_id": "Select Office",
@@ -145,6 +148,18 @@
                     "search": "Search User"
                 }
             }
+        },
+        "general_setting": {
+            "general_setting": "সাধারণ সেটিং",
+            "lookup_type": "লুকআপ টাইপ",
+            "list": "সাধারণ সেটিং তালিকা",
+            "value_en": "সাধারণ সেটিং নাম ইংরেজি",
+            "value_bn": "সাধারণ সেটিং নাম বাংলা",
+            "add_new": "নতুন সাধারণ সেটিং যোগ করুন",
+            "search": "সাধারণ সেটিং অনুসন্ধান করুন",
+            "edit": "সাধারণ সেটিং সম্পাদনা করুন",
+            "delete": "বিভাগ মুছুন",
+            "delete_alert": "আপনি কি এই বিভাগটি মুছে ফেলার বিষয়ে নিশ্চিত?"
         }
     }
 }

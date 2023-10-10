@@ -170,7 +170,7 @@
           <v-card-text class="mt-7">
             <v-row> </v-row>
 
-            <ValidationObserver ref="form" v-slot="{ invalid }">
+            <ValidationObserver ref="formAdd" v-slot="{ invalid }">
               <form @submit.prevent="submitUpazila()">
                 <v-row>
                   <v-col lg="6" md="6" cols="12">
@@ -373,7 +373,7 @@
           <v-card-text class="mt-7">
             <v-row> </v-row>
 
-            <ValidationObserver ref="form" v-slot="{ invalid }">
+            <ValidationObserver ref="formEdit" v-slot="{ invalid }">
               <form @submit.prevent="updateUpazila()">
                 <v-row>
                   <v-col lg="6" md="6" cols="12">
@@ -719,40 +719,70 @@ export default {
 
   methods: {
     createDialog() {
-      if (this.$refs.form) {
-        this.$refs.form.reset();
+      console.log(this.$refs);
+      if (this.$refs.formAdd) {
+        console.log(this.$refs, 'inside');
+        this.$refs.formAdd.reset();
       }
-      this.resetForm();
+      this.resetForm();   
       this.dialogAdd = true;
     },
     checkLanguage() {
+      // let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
+      // let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
+      // if (
+      //   checkLanguageBangla != "Bangla" &&
+      //   checkLanguageEnglish != "English"
+      // ) {
+      //   let errs = {
+      //     name_bn: ["Please Enter in Bangla Language in this Field"],
+      //     name_en: ["Please Enter in English Language in this Field"],
+      //   };
+      //   this.$refs.form.setErrors(errs);
+      //   return false;
+      // } else if (checkLanguageBangla != "Bangla") {
+      //   let errs = {
+      //     name_bn: ["Please Enter in Bangla Language in this Field"],
+      //   };
+      //   this.$refs.form.setErrors(errs);
+      //   return false;
+      // } else if (checkLanguageEnglish != "English") {
+      //   let errs = {
+      //     name_en: ["Please Enter in English Language in this Field"],
+      //   };
+      //   this.$refs.form.setErrors(errs);
+      //   return false;
+      // } else {
+      //   return true;
+      // }
+
       let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
       let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
-      if (
-        checkLanguageBangla != "Bangla" &&
-        checkLanguageEnglish != "English"
-      ) {
-        let errs = {
-          name_bn: ["Please Enter in Bangla Language in this Field"],
-          name_en: ["Please Enter in English Language in this Field"],
-        };
-        this.$refs.form.setErrors(errs);
-        return false;
-      } else if (checkLanguageBangla != "Bangla") {
-        let errs = {
-          name_bn: ["Please Enter in Bangla Language in this Field"],
-        };
-        this.$refs.form.setErrors(errs);
-        return false;
-      } else if (checkLanguageEnglish != "English") {
-        let errs = {
-          name_en: ["Please Enter in English Language in this Field"],
-        };
-        this.$refs.form.setErrors(errs);
-        return false;
-      } else {
-        return true;
+
+      console.log(checkLanguageEnglish);
+      console.log(checkLanguageBangla);
+      let errs = {};
+
+      if (checkLanguageBangla !== "Bangla" && checkLanguageBangla !== "BanglaSpecialChar") {
+        errs.name_bn = ["Please Enter in Bangla Language in this Field"];
       }
+
+      if (checkLanguageEnglish !== "English") {
+        errs.name_en = ["Please Enter in English Language in this Field"];
+      }
+
+      if (Object.keys(errs).length > 0) {
+        if (this.$refs.formAdd) {
+          this.$refs.formAdd.setErrors(errs);
+        }
+        if (this.$refs.formEdit) {
+          this.$refs.formEdit.setErrors(errs);
+        }
+
+        return false;
+      }
+
+      return true;
     },
     validator() {
       let fd = new FormData();
@@ -779,7 +809,7 @@ export default {
               this.resetForm();
               this.GetUpazila();
             } else {
-              this.$refs.form.setErrors(data.errors);
+              this.$refs.formAdd.setErrors(data.errors);
             }
           });
       } catch (e) {
@@ -802,7 +832,7 @@ export default {
               this.resetForm();
               this.GetUpazila();
             } else {
-              this.$refs.form.setErrors(data.errors);
+              this.$refs.formEdit.setErrors(data.errors);
             }
           });
       } catch (e) {
@@ -929,12 +959,12 @@ export default {
         (this.data.location_type = null);
     },
     editDialog(item) {
-      if (this.$refs.form) {
-        this.$refs.form.reset();
-      }
-      const update_error_value = null;
-      this.updateError("update_error_value");
-      console.log(item.district.division, "edit");
+      // if (this.$refs.form) {
+      //   this.$refs.form.reset();
+      // }
+      // const update_error_value = null;
+      // this.updateError("update_error_value");
+      // console.log(item.district.division, "edit");
       this.dialogEdit = true;
       this.data.id = item.id;
       this.data.name_en = item.name_en;

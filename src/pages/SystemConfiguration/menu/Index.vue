@@ -92,6 +92,8 @@ export default {
         let id = this.deleted_id;
         await this.$store.dispatch("Menu/DestroyMenu", id).then(() => {
           this.getAllMenus();
+    this.$store.dispatch('getAllMenus');
+
           this.deleteDialog = false;
           this.$toast.success(this.message);
         });

@@ -115,10 +115,12 @@ const actions = {
       .post("/admin/menu/insert", data)
       .then((result) => {
         commit("STORE_MENU", result);
+        return result
       })
       .catch((err) => {
         state.errors = err.response.data.errors;
         state.error_status = err.response.status;
+        return err
       });
   },
   /*end store menus*/

@@ -50,7 +50,7 @@ const SystemConfigurationRoutes = [
   },
   {
     path: "/system-configuration/union",
-    name: "Thana",
+    name: "Union",
     meta: {
       requiresAuth: true,
       permission: "union-list",
@@ -62,7 +62,7 @@ const SystemConfigurationRoutes = [
   },
   {
     path: "/system-configuration/ward",
-    name: "Thana",
+    name: "Ward",
     meta: {
       requiresAuth: true,
       permission: "ward-list",
@@ -109,7 +109,7 @@ const SystemConfigurationRoutes = [
 
     /*Device Registration route start*/
   {
-    path: "/system-configuration/device_registration",
+    path: "/system-configuration/device-registration",
     name: "DeviceRegistration",
     meta: {
       requiresAuth: true,
@@ -205,7 +205,7 @@ const SystemConfigurationRoutes = [
     name: "RolePermission",
     meta: {
       requiresAuth: true,
-      permission: "role-permission-list",
+      permission: "role-permission",
     },
     component: () => import("../pages/SystemConfiguration/user_management/role_permission/Index.vue")
   },
