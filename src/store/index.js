@@ -27,6 +27,7 @@ import Device_registration from "@/store/modules/system_configuration/device_reg
 import Role from "@/store/modules/system_configuration/role";
 import Role_permission from "@/store/modules/system_configuration/role_permission";
 import Office from "@/store/modules/system_configuration/office";
+import Allowance from "@/store/modules/system_configuration/allowance";
 // Import other modules as needed
 
 Vue.use(Vuex);
@@ -343,6 +344,7 @@ export default new Vuex.Store({
     Role,
     Role_permission,
     Office,
+    Allowance,
   },
   plugins: [
     createPersistedState({
