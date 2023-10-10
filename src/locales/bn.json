@@ -11,6 +11,13 @@
             "submit": "সাবমিট ",
             "cancel": "বাতিল",
             "edit": "সম্পাদনা",
+            "print": "প্রিন্ট",
+            "view": "দেখুন",
+            "search": "খুঁজুন",
+            "reset": "রিসেট",
+            "forward": "ফরওয়ার্ড",
+            "waiting": "অপেক্ষেয়মান ",
+            "reject": "প্রত্যাখ্যান",
             "code": "কোড",
             "name_en": "নাম ইংরেজিতে",
             "name_bn": "নাম বাংলায়",
@@ -146,6 +153,15 @@
                     "delete_alert": "Are you sure to delete this User?.",
                     "add_new": "Add New User",
                     "search": "Search User"
+                },
+           
+                "financial_year": {
+                    "financial_year": "আর্থিক বর্ষ",
+                    "list": "আর্থিক বর্ষের তালিকা ",
+                    "start_date": "Start date",
+                    "end_date": "শেষের তারিখ",
+                    "status": "স্ট্যাটাস",
+                    "search": "আর্থিক বর্ষ খুঁজন "
                 }
             }
         },
@@ -160,6 +176,14 @@
             "edit": "সাধারণ সেটিং সম্পাদনা করুন",
             "delete": "বিভাগ মুছুন",
             "delete_alert": "আপনি কি এই বিভাগটি মুছে ফেলার বিষয়ে নিশ্চিত?"
+        },
+        "application_selection": {
+            "application": {
+                "application": "Application",
+                "list": "আবেদনের তালিকা ",
+                "search": "আবেদন খুঁজন",
+                "update_status": "আবেদন স্ট্যাটাস আপডেট"
+            }
         }
     }
 }

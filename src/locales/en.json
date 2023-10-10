@@ -12,6 +12,14 @@
             "submit": "Submit",
             "cancel": "cancel",
             "edit": "Edit",
+            "print": "Print",
+            "view": "View",
+            "search": "Search",
+            "reset":"Reset",
+            "forward": "Forward",
+            "waiting": "waiting",
+            "reject": "Reject",
+
             "code": "Code",
             "name_en": "Name English",
             "name_bn": "Name Bangla",
@@ -148,7 +156,16 @@
                     "add_new": "Add New User",
                     "delete_alert": "Are you sure to delete this User?.",
                     "search": "Search User"
-                }
+                },
+                    "financial_year": {
+                        "financial_year": "Financial Year",
+                        "list": "Financial Year List",
+                        "start_date": "Start date",
+                        "end_date": "End date",
+                        "status": "Status",
+                        "search": "Search Financial Year"
+                    }
+                   
             }
         },
         "general_setting": {
@@ -162,6 +179,17 @@
             "edit": "Edit General Setting",
             "delete": "Delete Division",
             "delete_alert": "Are you sure to delete this Division?"
-        }
+        },
+            "application_selection": {
+               
+                "application": {
+                   "application": "Application",
+                    "list": "Application List",
+                    "search": "Application List Search",
+                    "update_status": "Application Status Update"
+                }
+            
+            
+            }
     }
 }

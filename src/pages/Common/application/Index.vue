@@ -1,4 +1,5 @@
 <template>
+ 
     <div id="application">
         <v-row class="mx-5 mt-4">
             <v-col cols="10" offset="1">
@@ -9,12 +10,10 @@
 
 
                     <ValidationProvider name="program" vid="program" rules="required" v-slot="{ errors }">
-                        <v-select outlined :items="programs" v-model="data.program" required
+                          <label>Program </label>
+                                    <span style="margin-left: 4px; color: red">*</span> <v-select outlined :items="programs" v-model="data.program" required
                             :error="errors[0] ? true : false" :error-messages="errors[0]">
-                            <template v-slot:label>
-                                <label style="display: inline-block">Program </label>
-                                <span style="margin-left: 4px; color: red">*</span>
-                            </template>
+              
                         </v-select>
                     </ValidationProvider>
 
@@ -24,7 +23,7 @@
                         <v-expansion-panels>
                             <v-expansion-panel>
                                 <v-expansion-panel-header color=#8C9EFF>
-                                    <h3 class="white--text centered-text">Applicant Verfication </h3>
+                                    <h3 class="white--text ">Applicant Verfication </h3>
                                 </v-expansion-panel-header>
                                 <v-expansion-panel-content class="mt-5">
                                     <ValidationProvider name="program" vid="program" rules="required" v-slot="{ errors }">
@@ -39,19 +38,21 @@
                                         <v-col>
                                             <ValidationProvider name="Number" vid="Number" rules="required"
                                                 v-slot="{ errors }">
+                                                <label>Number </label>
+                                                <span style="margin-left: 4px; color: red">*</span>
                                                 <v-text-field outlined clearable v-model="data.number" class="mr-2"
                                                     type="number" required :error="errors[0] ? true : false"
                                                     :error-messages="errors[0]">
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">Number </label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
 
-                                                    </template>
+
                                                 </v-text-field>
                                             </ValidationProvider>
                                         </v-col>
 
                                         <v-col>
+
+                                            <label>Date of Birth </label>
+                                            <span style="margin-left: 4px; color: red">*</span>
 
                                             <v-menu ref="menu" v-model="menu" :close-on-content-click="false"
                                                 transition="scale-transition" offset-y min-width="auto">
@@ -61,10 +62,7 @@
                                                         <v-text-field v-model="data.date_of_birth" outlined
                                                             prepend-inner-icon="mdi-calendar" v-bind="attrs" v-on="on"
                                                             class="no-calendar-icon" format="YYYY-MM-DD">
-                                                            <template v-slot:label>
-                                                                <label style="display: inline-block">Date of Birth </label>
-                                                                <span style="margin-left: 4px; color: red">*</span>
-                                                            </template></v-text-field>
+                                                        </v-text-field>
                                                     </ValidationProvider>
                                                 </template>
                                                 <v-date-picker v-model="data.date_of_birth"
@@ -98,7 +96,7 @@
 
                             <v-expansion-panel class="ma-4">
                                 <v-expansion-panel-header color=#8C9EFF>
-                                    <h3 class="white--text centered-text">Information According to {{ data.program }} </h3>
+                                    <h3 class="white--text ">Information According to {{ data.program }} </h3>
                                 </v-expansion-panel-header>
                                 <v-expansion-panel-content class="mt-5">
                                     <div class="pa-2 ma-4">
@@ -107,46 +105,37 @@
                                             <v-col>
                                                 <ValidationProvider name="Yearly Income" vid="yearly_income"
                                                     rules="required" v-slot="{ errors }">
+                                                    <label>Yearly Income </label>
+                                                    <span style="margin-left: 4px; color: red">*</span>
                                                     <v-select outlined clearable required v-model="data.yearly_income"
                                                         :items="yearly_income" :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]">
-                                                        <template v-slot:label>
-                                                            <label style="display: inline-block">Yearly Income </label>
-                                                            <span style="margin-left: 4px; color: red">*</span>
-
-                                                        </template>
                                                     </v-select>
                                                 </ValidationProvider>
                                                 <!-- <div class="d-inline d-flex  "> -->
 
-
-
                                                 <ValidationProvider name="Govt/Private Beneficiary Details"
                                                     vid="beneficiary_details" v-slot="{ errors }">
+                                                    <label>Govt/Private Beneficiary Details </label>
                                                     <v-select outlined v-model="data.beneficiary_details" clearable
-                                                        :items="govt_programs" label="Govt/Private Beneficiary Details"
-                                                        :error="errors[0] ? true : false"
+                                                        :items="govt_programs" :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]"></v-select>
                                                 </ValidationProvider>
-
+                                                <label>Other</label>
                                                 <v-text-field v-model="data.beneficiary_details_others"
                                                     v-if="data.beneficiary_details === 'Other (specify)'" outlined clearable
                                                     label="Other">
-
                                                 </v-text-field>
-                                                <!-- </div> -->
+                                                <label>Health Status</label>
                                                 <ValidationProvider name="Health Status" vid="health_status"
                                                     v-slot="{ errors }">
                                                     <v-select outlined v-model="data.health_status" clearable
-                                                        :items="health_status" label="Health Status"
-                                                        :error="errors[0] ? true : false"
+                                                        :items="health_status" :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]"></v-select>
                                                 </ValidationProvider>
-
-                                                <v-text-field v-model="health_status_others"
-                                                    v-if="data.health_status === 'Other (specify)'" outlined clearable
-                                                    label="Other">
-
+                                                
+                                                <v-text-field v-model="health_status_others" label="Other"
+                                                    v-if="data.health_status === 'Other (specify)'" outlined clearable>
                                                 </v-text-field>
                                             </v-col>
                                             <v-col>
@@ -155,9 +144,9 @@
                                                     <v-col>
                                                         <ValidationProvider name="Family Member No" vid="family_member_no"
                                                             v-slot="{ errors }">
+                                                            <label>Total No. of Family Member</label>
                                                             <v-text-field v-model="data.family_member_no" outlined clearable
-                                                                type="number" label="Total No. of Family Member"
-                                                                class="mr-2" :error="errors[0] ? true : false"
+                                                                type="number" class="mr-2" :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
                                                             </v-text-field>
                                                         </ValidationProvider>
@@ -165,8 +154,9 @@
                                                     <v-col>
                                                         <ValidationProvider name="Male Member No" vid="male_member_no"
                                                             v-slot="{ errors }">
+                                                            <label>Male</label>
                                                             <v-text-field v-model="data.male_member_no" outlined clearable
-                                                                type="number" label="Male" :error="errors[0] ? true : false"
+                                                                type="number" :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
                                                             </v-text-field>
                                                         </ValidationProvider>
@@ -177,9 +167,9 @@
                                                     <v-col>
                                                         <ValidationProvider name="Female Member no " vid="female_member_no"
                                                             v-slot="{ errors }">
+                                                            <label>Female</label>
                                                             <v-text-field outlined clearable v-model="data.female_member_no"
-                                                                type="number" label="Female" class="mr-2"
-                                                                :error="errors[0] ? true : false"
+                                                                type="number" class="mr-2" :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
                                                             </v-text-field>
                                                         </ValidationProvider>
@@ -188,9 +178,9 @@
 
                                                         <ValidationProvider name="Hijra Member no " vid="hijra_member_no"
                                                             v-slot="{ errors }">
+                                                            <label>Hijra</label>
                                                             <v-text-field v-model="data.hijra_member_no" outlined clearable
-                                                                type="number" label="Hijra"
-                                                                :error="errors[0] ? true : false"
+                                                                type="number" :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
                                                             </v-text-field>
                                                         </ValidationProvider>
@@ -220,37 +210,43 @@
                                                     <v-col>
                                                         <ValidationProvider name="Financial Status" vid="financial_status"
                                                             rules="required" v-slot="{ errors }">
+                                                            <label>Financial
+                                                                Status</label> <span
+                                                                style="margin-left: 4px; color: red">*</span>
                                                             <v-select outlined v-model="data.financial_status"
                                                                 :items="financial_status" :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
-                                                                <template v-slot:label>
-                                                                    <label style="display: inline-block">Financial
-                                                                        Status</label>
-                                                                    <span style="margin-left: 4px; color: red">*</span>
-
-                                                                </template>
                                                             </v-select>
                                                         </ValidationProvider>
-                                                        <ValidationProvider name="Land Ownership" vid="land_ownership"
-                                                            v-slot="{ errors }">
-                                                            <v-text-field v-model="data.land_ownership" outlined clearable
-                                                                label="Land Ownership" :error="errors[0] ? true : false"
-                                                                :error-messages="errors[0]" class="mr-2">
-                                                            </v-text-field>
-                                                        </ValidationProvider>
+                                                            <ValidationProvider name="Residence" vid="residence"
+                                                                    v-slot="{ errors }">
+                                                                    <label>Residence</label>
+                                                                    <v-select v-model="data.residence" outlined clearable
+                                                                        :items="house_status" :error="errors[0] ? true : false"
+                                                                        :error-messages="errors[0]" class="mr-2">
+                                                                    </v-select>
+                                                                </ValidationProvider>
 
                                                     </v-col>
                                                     <v-col>
                                                         <ValidationProvider name="Social Status" vid="socila_status"
                                                             v-slot="{ errors }">
+                                                            <label>Social
+                                                                Status</label> <span
+                                                                style="margin-left: 4px; color: red">*</span>
                                                             <v-select v-model="data.social_status" outlined
                                                                 :items="social_status" :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
-                                                                <template v-slot:label>
-                                                                    <label style="display: inline-block">Social
-                                                                        Status</label>
-                                                                    <!-- <span style="margin-left: 4px; color: red">*</span> -->
-                                                                </template>
+
+                                                            </v-select>
+                                                        </ValidationProvider>
+                                                   
+                                                               <ValidationProvider name="Land Ownership" vid="land_ownership"
+                                                            v-slot="{ errors }">
+                                                            <label>Land Ownership</label>
+                                                            <v-select v-model="data.land_ownership" outlined clearable
+                                                                :items="land_ownership" :error="errors[0] ? true : false"
+                                                                :error-messages="errors[0]" class="mr-2">
                                                             </v-select>
                                                         </ValidationProvider>
                                                     </v-col>
@@ -301,7 +297,7 @@
 
                             <v-expansion-panel>
                                 <v-expansion-panel-header color=#8C9EFF>
-                                    <h3 class="white--text centered-text">Personal Information </h3>
+                                    <h3 class="white--text">Personal Information </h3>
                                 </v-expansion-panel-header>
                                 <v-expansion-panel-content class="mt-5">
                                     <div class="pa-2 mb-4">
@@ -311,54 +307,51 @@
 
                                                 <ValidationProvider name="Name in Bangla" vid="name_bn" rules="required"
                                                     v-slot="{ errors }">
+                                                    <label>Name (BN) </label>
+                                                    <span style="margin-left: 4px; color: red">*</span>
                                                     <v-text-field v-model="data.name_bn" outlined clearable
                                                         :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                                        <template v-slot:label>
-                                                            <label style="display: inline-block">Name (BN) </label>
-                                                            <span style="margin-left: 4px; color: red">*</span>
 
-                                                        </template>
                                                     </v-text-field>
                                                 </ValidationProvider>
                                                 <ValidationProvider name="Name in English" vid="name_en" rules="required"
                                                     v-slot="{ errors }">
+                                                    <label>Name (EN) </label>
+                                                    <span style="margin-left: 4px; color: red">*</span>
                                                     <v-text-field v-model="data.name_en" outlined clearable
                                                         :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                                        <template v-slot:label>
-                                                            <label style="display: inline-block">Name (EN) </label>
-                                                            <span style="margin-left: 4px; color: red">*</span>
 
-                                                        </template>
                                                     </v-text-field>
                                                 </ValidationProvider>
                                                 <ValidationProvider name="Father Name in Bangla" vid="father_name_bn"
                                                     v-slot="{ errors }">
+                                                    <label>Father Name (BN)</label>
+
                                                     <v-text-field v-model="data.father_name_bn" outlined clearable
-                                                        :error="errors[0] ? true : false" :error-messages="errors[0]"
-                                                        label="Father Name (BN)">
+                                                        :error="errors[0] ? true : false" :error-messages="errors[0]">
                                                     </v-text-field>
 
                                                 </ValidationProvider>
 
                                                 <ValidationProvider name="Father Name in English" vid="mother_name_bn"
                                                     v-slot="{ errors }">
+                                                    <label>Father Name (EN)</label>
                                                     <v-text-field v-model="data.father_name_en" outlined clearable
-                                                        label="Father Name (EN)" :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]">
+                                                        :error="errors[0] ? true : false" :error-messages="errors[0]">
                                                     </v-text-field>
                                                 </ValidationProvider>
                                                 <ValidationProvider name="Mother Name in English" vid="mother_name_bn"
                                                     v-slot="{ errors }">
+                                                    <label>Mother Name (BN)</label>
                                                     <v-text-field v-model="data.mother_name_bn" outlined clearable
-                                                        label="Mother Name (BN)" :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]">
+                                                        :error="errors[0] ? true : false" :error-messages="errors[0]">
                                                     </v-text-field>
                                                 </ValidationProvider>
                                                 <ValidationProvider name="Mother Name in English" vid="mother_name_en"
                                                     v-slot="{ errors }">
+                                                    <label>Mother Name (EN)</label>
                                                     <v-text-field v-model="data.mother_name_en" outlined clearable
-                                                        label="Mother Name (EN)" :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]">
+                                                        :error="errors[0] ? true : false" :error-messages="errors[0]">
                                                     </v-text-field>
                                                 </ValidationProvider>
                                                 <div>
@@ -367,36 +360,37 @@
                                                 </div>
                                                 <ValidationProvider name="Spouse Name in Bangla" vid="spouse_name_bn"
                                                     v-slot="{ errors }">
+                                                    <label>Spouse Name (BN)</label>
                                                     <v-text-field v-model="data.spouse_name_bn" outlined clearable
-                                                        label="Spouse Name (BN)" :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]">
+                                                        :error="errors[0] ? true : false" :error-messages="errors[0]">
                                                     </v-text-field>
                                                 </ValidationProvider>
+                                                 <ValidationProvider name="Marital Status" vid="marital_status"
+                                                        v-slot="{ errors }">
+                                                        <label>Marital Status</label>
+                                                        <v-select v-model="data.marital_status" outlined clearable :items="marital_status"
+                                                            :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                                        </v-select>
+                                                    </ValidationProvider>
+
                                                 <ValidationProvider name="Spouse Name in English" vid="spouse_name_en"
                                                     v-slot="{ errors }">
+                                                    <label>Spouse Name (EN)</label>
                                                     <v-text-field v-model="data.spouse_name_en" outlined clearable
-                                                        label="Spouse Name (EN)" :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]">
+                                                        :error="errors[0] ? true : false" :error-messages="errors[0]">
                                                     </v-text-field>
                                                 </ValidationProvider>
                                                 <ValidationProvider name="Religion" vid="religion" v-slot="{ errors }"
                                                     rules="required">
+                                                    <label>Religion</label> <span
+                                                        style="margin-left: 4px; color: red">*</span>
+
                                                     <v-select v-model="data.religion" outlined :items="religion"
                                                         :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                                        <template v-slot:label>
-                                                            <label style="display: inline-block">Religion</label>
-                                                            <span style="margin-left: 4px; color: red">*</span>
-
-                                                        </template>
                                                     </v-select>
                                                 </ValidationProvider>
-                                                <ValidationProvider name="Nationality" vid="nationality"
-                                                    v-slot="{ errors }">
-                                                    <v-text-field v-model="data.nationality" outlined clearable
-                                                        label="Nationality" :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]">
-                                                    </v-text-field>
-                                                </ValidationProvider>
+
+
 
 
 
@@ -413,7 +407,8 @@
                                                             class="mb-5"></v-img>
                                                         <ValidationProvider v-slot="{ errors }" name="Image"
                                                             rules="required" vid="image">
-                                                            <v-file-input label="Image" outlined show-size counter
+                                                            <label>Image</label>
+                                                            <v-file-input outlined show-size counter
                                                                 prepend-inner-icon="mdi-camera" v-model="data.image"
                                                                 accept="image/*" @change="previewImage"
                                                                 prepend-icon=""></v-file-input>
@@ -428,67 +423,67 @@
                                                             class="mb-5"></v-img>
                                                         <ValidationProvider v-slot="{ errors }" name="Signature"
                                                             rules="required" vid="sign">
-                                                            <v-file-input label="Signature" outlined show-size counter
+                                                            <label>Signature</label>
+                                                            <v-file-input outlined show-size counter
                                                                 prepend-inner-icon="mdi-camera" v-model="data.sign"
                                                                 accept="image/*" @change="previewSign"
                                                                 prepend-icon=""></v-file-input>
                                                         </ValidationProvider>
                                                     </v-col>
                                                 </v-row>
-
+                                                <ValidationProvider name="Nationality" vid="nationality"
+                                                    v-slot="{ errors }">
+                                                    <label>Nationality</label>
+                                                    <v-text-field v-model="data.nationality" outlined clearable
+                                                        :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                                    </v-text-field>
+                                                </ValidationProvider>
 
                                                 <ValidationProvider name="Age" vid="age" v-slot="{ errors }"
                                                     rules="required">
+                                                    <label>Age</label> <span style="margin-left: 4px; color: red">*</span>
                                                     <v-text-field v-model="data.age" outlined clearable
                                                         :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                                        <template v-slot:label>
-                                                            <label style="display: inline-block">Age </label>
-                                                            <span style="margin-left: 4px; color: red">*</span>
 
-                                                        </template>
                                                     </v-text-field>
                                                 </ValidationProvider>
                                                 <ValidationProvider name="Gender" vid="gender" v-slot="{ errors }"
                                                     rules="required">
+                                                    <label>Gender</label> <span
+                                                        style="margin-left: 4px; color: red">*</span>
                                                     <v-select v-model="data.gender" outlined :items="gender"
                                                         :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                                        <template v-slot:label>
-                                                            <label style="display: inline-block">Gender</label>
-                                                            <span style="margin-left: 4px; color: red">*</span>
 
-                                                        </template>
                                                     </v-select>
                                                 </ValidationProvider>
-                                                <ValidationProvider name="Spouse Name in English" vid="spouse_name_en"
+                                                <!-- <ValidationProvider name="Spouse Name in English" vid="spouse_name_en"
                                                     v-slot="{ errors }">
                                                     <v-text-field v-model="data.spouse_name_en" outlined clearable
                                                         label="Spouse Name (EN)" :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]">
                                                     </v-text-field>
-                                                </ValidationProvider>
+                                                </ValidationProvider> -->
                                                 <ValidationProvider name="Education Status" vid="education_status"
                                                     rules="required" v-slot="{ errors }">
+                                                    <label>Education Status</label> <span
+                                                        style="margin-left: 4px; color: red">*</span>
                                                     <v-select v-model="data.education_status" outlined
                                                         :error="errors[0] ? true : false" :error-messages="errors[0]"
                                                         :items="education_status">
-                                                        <template v-slot:label>
-                                                            <label style="display: inline-block">Education Status</label>
-                                                            <span style="margin-left: 4px; color: red">*</span>
 
-                                                        </template>
                                                     </v-select>
                                                 </ValidationProvider>
                                                 <ValidationProvider name="Proffession" vid="profession" v-slot="{ errors }">
+                                                    <label>Proffession</label>
                                                     <v-text-field v-model="data.profession" outlined clearable
-                                                        label="Proffession" :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]">
+                                                        :error="errors[0] ? true : false" :error-messages="errors[0]">
                                                     </v-text-field>
                                                 </ValidationProvider>
                                                 <ValidationProvider name="Identification Mark" vid="identification_mark"
                                                     v-slot="{ errors }">
+                                                    <label>Identification Mark</label>
                                                     <v-text-field v-model="data.identification_mark" outlined clearable
-                                                        label="Identification Mark" :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]">
+                                                        :error="errors[0] ? true : false" :error-messages="errors[0]">
                                                     </v-text-field>
                                                 </ValidationProvider>
 
@@ -503,7 +498,7 @@
                             <!-- 3rd Expansion panel -->
                             <v-expansion-panel class="ma-4">
                                 <v-expansion-panel-header color=#8C9EFF>
-                                    <h3 class="white--text centered-text">Contact Information </h3>
+                                    <h3 class="white--text ">Contact Information </h3>
                                 </v-expansion-panel-header>
                                 <v-expansion-panel-content class="mt-5">
                                     <div class="d-inline d-flex justify-center ma-4 ">
@@ -513,83 +508,72 @@
                                         <v-col>
                                             <ValidationProvider name="Division" vid="division" rules="required"
                                                 v-slot="{ errors }">
+                                                <label style="display: inline-block">Division</label>
+                                                <span style="margin-left: 4px; color: red">*</span>
                                                 <v-autocomplete v-model="data.division" outlined :items="division"
                                                     :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">Division</label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
 
-                                                    </template>
+
+
+
                                                 </v-autocomplete>
                                             </ValidationProvider>
                                             <ValidationProvider name="Upazila" vid="upazila" rules="required"
                                                 v-slot="{ errors }">
+                                                <label style="display: inline-block">Upazila</label>
+                                                <span style="margin-left: 4px; color: red">*</span>
                                                 <v-autocomplete v-model="data.upazila" outlined :items="districts"
                                                     :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">Upazila</label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
 
-                                                    </template>
                                                 </v-autocomplete>
                                             </ValidationProvider>
                                             <ValidationProvider name="Post Code" vid="post_code" rules="required"
                                                 v-slot="{ errors }">
+                                                <label style="display: inline-block">Post Code </label>
+                                                <span style="margin-left: 4px; color: red">*</span>
                                                 <v-text-field v-model="data.post_code" outlined clearable
                                                     :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">Post Code </label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
 
-                                                    </template>
                                                 </v-text-field>
                                             </ValidationProvider>
                                             <ValidationProvider name="Mobile Number" vid="mobile" rules="required"
                                                 v-slot="{ errors }">
+                                                <label style="display: inline-block">Mobile Number </label>
+                                                <span style="margin-left: 4px; color: red">*</span>
                                                 <v-text-field v-model="data.mobile" outlined clearable type="Number"
                                                     :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">Mobile Number </label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
 
-                                                    </template>
                                                 </v-text-field>
                                             </ValidationProvider>
                                         </v-col>
                                         <v-col>
                                             <ValidationProvider name="District" vid="district" rules="required"
                                                 v-slot="{ errors }">
+                                                <label style="display: inline-block">District</label>
+                                                <span style="margin-left: 4px; color: red">*</span>
                                                 <v-autocomplete v-model="data.district" outlined :items="division"
                                                     :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">District</label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
 
-                                                    </template>
                                                 </v-autocomplete>
                                             </ValidationProvider>
                                             <ValidationProvider name="Location" vid="locationType" rules="required"
                                                 v-slot="{ errors }">
+                                                <label style="display: inline-block">Location Type </label>
+                                                <span style="margin-left: 4px; color: red">*</span>
                                                 <v-text-field v-model="data.locationType" outlined clearable
                                                     :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">Location Type </label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
 
-                                                    </template>
                                                 </v-text-field>
                                             </ValidationProvider>
                                             <ValidationProvider name="Village/House No.,
                                                         Road No., Block No, Section" vid="address" rules="required"
                                                 v-slot="{ errors }">
+                                                <label style="display: inline-block">Village/House No.,
+                                                    Road No., Block No, Section </label>
+                                                <span style="margin-left: 4px; color: red">*</span>
                                                 <v-text-field v-model="data.address" outlined clearable
                                                     :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">Village/House No.,
-                                                            Road No., Block No, Section </label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
 
-                                                    </template>
                                                 </v-text-field>
                                             </ValidationProvider>
 
@@ -604,84 +588,72 @@
                                         <v-col>
                                             <ValidationProvider name="Division" vid="division" rules="required"
                                                 v-slot="{ errors }">
+                                                <label style="display: inline-block">Division</label>
+                                                <span style="margin-left: 4px; color: red">*</span>
                                                 <v-autocomplete v-model="data.permanent_division" outlined :items="division"
                                                     :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">Division</label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
 
-                                                    </template>
+
                                                 </v-autocomplete>
                                             </ValidationProvider>
+
                                             <ValidationProvider name="Upazila" vid="upazila" rules="required"
                                                 v-slot="{ errors }">
+                                                <label style="display: inline-block">Upazila</label>
+                                                <span style="margin-left: 4px; color: red">*</span>
                                                 <v-autocomplete v-model="data.permanent_upazila" outlined :items="districts"
                                                     :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">Upazila</label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
 
-                                                    </template>
                                                 </v-autocomplete>
                                             </ValidationProvider>
                                             <ValidationProvider name="Post Code" vid="post_code" rules="required"
                                                 v-slot="{ errors }">
+                                                <label style="display: inline-block">Post Code </label>
+                                                <span style="margin-left: 4px; color: red">*</span>
                                                 <v-text-field v-model="data.permanent_post_code" outlined clearable
                                                     :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">Post Code </label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
 
-                                                    </template>
                                                 </v-text-field>
                                             </ValidationProvider>
                                             <ValidationProvider name="Mobile Number" vid="mobile" rules="required"
                                                 v-slot="{ errors }">
+                                                <label style="display: inline-block">Mobile Number </label>
+                                                <span style="margin-left: 4px; color: red">*</span>
                                                 <v-text-field v-model="data.permanent_mobile" outlined clearable
                                                     type="Number" :error="errors[0] ? true : false"
                                                     :error-messages="errors[0]">
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">Mobile Number </label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
-
-                                                    </template>
                                                 </v-text-field>
                                             </ValidationProvider>
                                         </v-col>
                                         <v-col>
                                             <ValidationProvider name="District" vid="district" rules="required"
                                                 v-slot="{ errors }">
+                                                <label style="display: inline-block">District</label>
+                                                <span style="margin-left: 4px; color: red">*</span>
                                                 <v-autocomplete v-model="data.permanent_district" outlined :items="division"
                                                     :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">District</label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
 
-                                                    </template>
                                                 </v-autocomplete>
                                             </ValidationProvider>
                                             <ValidationProvider name="Location" vid="locationType" rules="required"
                                                 v-slot="{ errors }">
+                                                <label style="display: inline-block">Location Type </label>
+                                                <span style="margin-left: 4px; color: red">*</span>
                                                 <v-text-field v-model="data.permanent_locationType" outlined clearable
                                                     :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">Location Type </label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
 
-                                                    </template>
+
                                                 </v-text-field>
                                             </ValidationProvider>
                                             <ValidationProvider name="Village/House No.,
                                                         Road No., Block No, Section" vid="address" rules="required"
                                                 v-slot="{ errors }">
+                                                <label style="display: inline-block">Village/House No.,
+                                                    Road No., Block No, Section </label>
+                                                <span style="margin-left: 4px; color: red">*</span>
                                                 <v-text-field v-model="data.permanent_address" outlined clearable
                                                     :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">Village/House No.,
-                                                            Road No., Block No, Section </label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
 
-                                                    </template>
                                                 </v-text-field>
                                             </ValidationProvider>
 
@@ -691,10 +663,54 @@
                                 </v-expansion-panel-content>
                             </v-expansion-panel>
                             <!-- 4th Expansion panel -->
+                            <!-- Expansion panel 5 start-->
+                              <v-expansion-panel class="mb-4">
+                                    <v-expansion-panel-header color=#8C9EFF>
+                                        <h3 class="white--text">Bank/MFS Information </h3>
+                                    </v-expansion-panel-header>
+                                    <v-expansion-panel-content class="mt-5">
+                                       
+<v-row>
+    <v-col>
+           <ValidationProvider name="Bank Name" vid="bank_name"
+                                                        rules="required" v-slot="{ errors }">
+                                                             <label style="display: inline-block">Bank Name  </label>
+                                                                    <span style="margin-left: 4px; color: red">*</span>
+                                                        <v-text-field v-model="data.bank_name" outlined clearable
+                                                            :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                           
+                                                        </v-text-field>
+                                                        </ValidationProvider> 
+                                                        <ValidationProvider name="Bank Name" vid="Bank"
+                                                             v-slot="{ errors }">
+                                                                 <label style="display: inline-block">Mobile Ownnership </label>
+                                                                        
+                                                            <v-select v-model="data.mobile_ownership" outlined clearable :items="mobile_ownership"
+                                                                :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                           
+                                                            </v-select>
+                                                            </ValidationProvider> 
+    </v-col>
+      <v-col>
+         <ValidationProvider name="Mobile Number" vid="mobile_number"
+                                                            rules="required" v-slot="{ errors }">
+                                                                 <label style="display: inline-block">Mobile Number  </label><span style="margin-left: 4px; color: red">*</span>
+                                                                      
+                                                            <v-text-field v-model="data.mobile_number" outlined clearable
+                                                                :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                           
+                                                            </v-text-field>
+                                                            </ValidationProvider> 
+      </v-col>
 
-                            <v-expansion-panel calss="ma-4">
+</v-row>
+                                    </v-expansion-panel-content>
+                                </v-expansion-panel>
+                                <!-- Expansion panel 5 End -->
+
+                            <v-expansion-panel calss="mb-4">
                                 <v-expansion-panel-header color=#8C9EFF>
-                                    <h3 class="white--text centered-text">Nominee Information </h3>
+                                    <h3 class="white--text ">Nominee Information </h3>
                                 </v-expansion-panel-header>
                                 <v-expansion-panel-content class="mt-5">
                                     <div class="pa-2 mb-4">
@@ -707,53 +723,48 @@
                                                 </div>
                                                 <ValidationProvider name="Nominee Name (BN)" vid="nominee_bn"
                                                     rules="required" v-slot="{ errors }">
+                                                         <label style="display: inline-block">Name (BN) </label>
+                                                                <span style="margin-left: 4px; color: red">*</span>
                                                     <v-text-field v-model="data.nominee_bn" outlined clearable
                                                         :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                                        <template v-slot:label>
-                                                            <label style="display: inline-block">Name (BN) </label>
-                                                            <span style="margin-left: 4px; color: red">*</span>
-
-                                                        </template>
+                                           
                                                     </v-text-field>
                                                 </ValidationProvider>
                                                 <ValidationProvider name="Nominee Name (EN)" vid="nominee_en"
                                                     rules="required" v-slot="{ errors }">
+                                                        <label style="display: inline-block">Name (EN) </label>
+                                                                <span style="margin-left: 4px; color: red">*</span>
                                                     <v-text-field v-model="data.nominee_en" outlined clearable
                                                         :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                                        <template v-slot:label>
-                                                            <label style="display: inline-block">Name (EN) </label>
-                                                            <span style="margin-left: 4px; color: red">*</span>
-
-                                                        </template>
+                                          
                                                     </v-text-field>
                                                 </ValidationProvider>
                                                 <ValidationProvider name="National Identity (NID) /
 Birth Registration Number" vid="nominee_nid" v-slot="{ errors }">
-                                                    <v-text-field v-model="data.nominee_nid" outlined clearable label="National Identity (NID) /
-Birth Registration Number" :error="errors[0] ? true : false" :error-messages="errors[0]">
+    <label>National Identity (NID) /
+    Birth Registration Number </label>
+                                                    <v-text-field v-model="data.nominee_nid" outlined clearable label="" :error="errors[0] ? true : false" :error-messages="errors[0]">
                                                     </v-text-field>
                                                 </ValidationProvider>
                                                 <ValidationProvider name="Nominee Natinality" vid="nominee_nationality"
                                                     v-slot="{ errors }">
+                                                     <label>Nationality </label>
                                                     <v-text-field v-model="data.nominee_nationality" outlined clearable
-                                                        label="Nationality" :error="errors[0] ? true : false"
+                                                       :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]">
                                                     </v-text-field>
                                                 </ValidationProvider>
                                                 <ValidationProvider name="Gender of Nominee" vid="nominee_relationship"
                                                     v-slot="{ errors }" rules="required">
+                                                      <label>Relationship with
+                                                                    Beneficiary</label>
+                                                                <span style="margin-left: 4px; color: red">*</span>
                                                     <v-autocomplete v-model="data.nominee_relationship" outlined
                                                         :items="gender" :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]">
-                                                        <template v-slot:label>
-                                                            <label style="display: inline-block">Relationship with
-                                                                Beneficiary</label>
-                                                            <span style="margin-left: 4px; color: red">*</span>
-
-                                                        </template>
                                                     </v-autocomplete>
                                                 </ValidationProvider>
-                                                <v-checkbox v-model="checkbox" label="Same Address "></v-checkbox>
+                                               
 
                                             </v-col>
                                             <v-col>
@@ -768,7 +779,9 @@ Birth Registration Number" :error="errors[0] ? true : false" :error-messages="er
                                                             class="mb-5"></v-img>
                                                         <ValidationProvider v-slot="{ errors }" name="Image"
                                                             rules="required" vid="image">
-                                                            <v-file-input label="Image" outlined show-size counter
+                                                               <label>Image</label>
+                                                                  
+                                                            <v-file-input  outlined show-size counter
                                                                 prepend-inner-icon="mdi-camera" v-model="data.nominee_image"
                                                                 accept="image/*" @change="previewImageNominee"
                                                                 prepend-icon=""></v-file-input>
@@ -783,18 +796,20 @@ Birth Registration Number" :error="errors[0] ? true : false" :error-messages="er
                                                             class="mb-5"></v-img>
                                                         <ValidationProvider v-slot="{ errors }" name="Signature"
                                                             rules="required" vid="sign">
-                                                            <v-file-input label="Signature" outlined show-size counter
+                                                            <label>Signature</label>
+                                                            <v-file-input  outlined show-size counter
                                                                 prepend-inner-icon="mdi-camera" v-model="data.nominee_sign"
                                                                 accept="image/*" @change="previewSignNominee"
                                                                 prepend-icon=""></v-file-input>
                                                         </ValidationProvider>
                                                     </v-col>
                                                 </v-row>
-
+     <v-checkbox v-model="checkbox" label="Same Address "></v-checkbox>
                                                 <ValidationProvider name="Address of Nominee" vid="nominee_address"
                                                     v-slot="{ errors }" rules="required">
+                                                       <label>Address</label>
                                                     <v-textarea v-model="data.nominee_address" outlined clearable
-                                                        label="Address" row="1" :error="errors[0] ? true : false"
+                                                       :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]"></v-textarea>
                                                 </ValidationProvider>
 
@@ -810,201 +825,125 @@ Birth Registration Number" :error="errors[0] ? true : false" :error-messages="er
                             <!-- 5th Expansion panel -->
 
 
-                            <v-expansion-panel calss="ma-4">
+                            <v-expansion-panel calss="mt-4">
                                 <v-expansion-panel-header color=#8C9EFF>
-                                    <h3 class="white--text centered-text">Other Information of Eligiblity </h3>
+                                    <h3 class="white--text">Other Information of Eligiblity </h3>
                                 </v-expansion-panel-header>
                                 <v-expansion-panel-content class="mt-5">
                                     <div class="pa-2 mb-4">
                                         <v-row>
 
                                             <v-col>
-                                                <v-select outlined :items="yes_no">
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">Is this house yours?</label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
 
-                                                    </template>
-                                                </v-select>
-                                                <v-text-field outlined clearable label="Age of House Member Head">
-                                                </v-text-field>
-                                                <v-text-field outlined clearable type="Number">
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">Number of House Members
-                                                        </label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
-
-                                                    </template>
-                                                </v-text-field>
-
-
-
-                                                <v-text-field outlined clearable type="Number">
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">Number of Childresn of House
-                                                        </label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
-
-                                                    </template>
-                                                </v-text-field>
-                                                <v-select outlined :items="house_head_education" label="">
-                                                    > <template v-slot:label>
-                                                        <label style="display: inline-block">House member Head Education
-                                                        </label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
-
-                                                    </template>
-
-                                                </v-select>
-                                                <v-select outlined :items="house_head_occupation" label="">
-                                                    > <template v-slot:label>
-                                                        <label style="display: inline-block">House member Head Occupation
-                                                        </label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
-
-                                                    </template>
-
-                                                </v-select>
-                                                <v-select outlined :items="spouse_education"> <template v-slot:label>
-                                                        <label style="display: inline-block">Spouse's Education (Highest
-
-                                                            Degree Completed)
-                                                        </label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
-
-                                                    </template>
-
-                                                </v-select>
-
-                                                <v-text-field outlined>
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">How many total rooms does your
-                                                            house
-                                                            use for living?</label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
-
-                                                    </template>
-                                                </v-text-field>
-       
-                                                <v-select outlined :items="yes_no">
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">How many Does your kitchen have
-                                                            electricity connection?</label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
-
-                                                    </template>
-                                                </v-select>
-                                                <v-select outlined :items="yes_no">
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">Does your House have a separate
-                                                            kitchen
-                                                            ?</label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
-
-                                                    </template>
-                                                </v-select>
+                                                <label>Is this house yours?</label>
+                                                <span style="margin-left: 4px; color: red">*</span>
 
                                                 <v-select outlined :items="yes_no">
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">Has your Family member head
-                                                            received any money from someone staying abroad in the last 1
-                                                            year?
-                                                            ?</label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
-
-                                                    </template>
                                                 </v-select>
 
-                                                <v-select outlined :items="yes_no">
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">Has any member of this
-                                                            household received any
-                                                            assistance under the social
-                                                            safety net program in the
-                                                            last 1 year?
-                                                            ?</label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
-
-                                                    </template>
-                                                </v-select>
-                                                <v-select outlined :items="yes_no" label="
-Other Information of Eligibility
-
-Does your kitchen have  a separate Room in a house?">
-
-                                                </v-select>
-                                                <v-select outlined :items="yes_no"
-                                                    label="Has your Family member head received any money from someone staying abroad in the last 1 year?">
-
-                                                </v-select>
-                                                <v-select outlined :items="yes_no" label="as any member of this
-household received any
-assistance under the social
-safety net program in the
-last 1 year?">
-                                                </v-select>
-                                                   <v-select outlined :items="yes_no"
-                                                        label="Does your House have a separate kitchen?">
-
-                                                    </v-select>
-                                                    <v-select outlined :items="yes_no" label="as any member of this
-household received any
-assistance under the social
-safety net program in the
-last 1 year?">
-                                                    </v-select>
-                                                            <v-select outlined :items="yes_no" label="as any member of this
-household received any
-assistance under the social
-safety net program in the
-last 1 year?">
-                                                        </v-select>
-
-
-
-                                                <v-select outlined :items="wall_status">
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">What is the roof of your main
-                                                            house
-                                                            made of ?</label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
-
-                                                    </template>
-                                                </v-select>
-
-                                                <v-select outlined :items="toilet_status">
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">What kind of toilet do the
-                                                            members
-                                                            of
-                                                            this house use ?</label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
-
-                                                    </template>
-                                                </v-select>
-
-                                                <v-select outlined :items="yes_no">
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">What is the total amount of
-                                                            land
-                                                            owned
-                                                            by all the members of your police station ?</label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
-
-                                                    </template>
-                                                </v-select>
+                                                <label>Age of House Member Head</label>
                                                 <v-text-field outlined clearable>
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">What are the walls of your main
-                                                            room
-                                                            made of ?</label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
-
-                                                    </template>
                                                 </v-text-field>
+
+                                                <label style="display: inline-block">Number of House Members
+                                                </label>
+                                                <span style="margin-left: 4px; color: red">*</span>
+                                                <v-text-field outlined clearable type="Number">
+
+                                                </v-text-field>
+
+                                                <label style="display: inline-block">Number of Childresn of House
+                                                </label>
+                                                <span style="margin-left: 4px; color: red">*</span>
+
+                                                <v-text-field outlined clearable type="Number">
+                                                </v-text-field>
+
+                                                <label>House member Head Education
+                                                </label>
+                                                <span style="margin-left: 4px; color: red">*</span>
+                                                <v-select outlined :items="house_head_education" label="">
+                                                </v-select>
+
+                                                <label>House member Head Occupation
+                                                </label>
+                                                <span style="margin-left: 4px; color: red">*</span>
+                                                <v-select outlined :items="house_head_occupation" label="">
+                                                </v-select>
+
+                                                <label>Spouse's Education (Highest
+
+                                                    Degree Completed)
+                                                </label>
+                                                <span style="margin-left: 4px; color: red">*</span>
+                                                <v-select outlined :items="spouse_education">
+                                                </v-select>
+
+                                                <label style="display: inline-block">How many total rooms does your
+                                                    house
+                                                    use for living?</label>
+                                                <span style="margin-left: 4px; color: red">*</span>
+                                                <v-text-field outlined>
+                                                </v-text-field>
+
+                                                <label>How many Does your kitchen have
+                                                    electricity connection?</label>
+                                                <span style="margin-left: 4px; color: red">*</span>
+                                                <v-select outlined :items="yes_no">
+                                                </v-select>
+
+                                                <label>Does your House have a separate
+                                                    kitchen
+                                                    ?</label>
+                                                <span style="margin-left: 4px; color: red">*</span>
+                                                <v-select outlined :items="yes_no">
+                                                </v-select>
+
+                                                <label>Has your Family member head
+                                                    received any money from someone staying abroad in the last 1
+                                                    year?
+                                                </label>
+                                                <span style="margin-left: 4px; color: red">*</span>
+                                                <v-select outlined :items="yes_no">
+                                                </v-select>
+
+                                                <label>Has any member of this
+                                                    household received any
+                                                    assistance under the social
+                                                    safety net program in the
+                                                    last 1 year?
+                                                    ?</label>
+                                                <span style="margin-left: 4px; color: red">*</span>
+                                                <v-select outlined :items="yes_no">
+                                                </v-select>
+
+
 
                                             </v-col>
                                             <v-col>
+                                                <label>What is the roof of your main
+                                                    house
+                                                    made of ?</label>
+                                                <span style="margin-left: 4px; color: red">*</span>
+                                                <v-select outlined :items="wall_status">
+                                                </v-select>
+
+
+                                                <label>What kind of toilet do the
+                                                    members
+                                                    of
+                                                    this house use ?</label>
+                                                <span style="margin-left: 4px; color: red">*</span>
+                                                <v-select outlined :items="toilet_status">
+                                                </v-select>
+
+                                                <label>What is the total amount of
+                                                    land
+                                                    owned
+                                                    by all the members of your police station ?</label>
+                                                <span style="margin-left: 4px; color: red">*</span>
+                                                <v-select outlined :items="yes_no">
+                                                </v-select>
 
                                                 Which of the following assets does your household own? (Multiple answer
                                                 accepted)
@@ -1024,6 +963,10 @@ last 1 year?">
                                                             dense></v-checkbox>
                                                         <v-checkbox v-model="checkbox" label="VCR/VCP/DISH connection"
                                                             dense></v-checkbox>
+                                                        <v-checkbox v-model="checkbox" label="Carpet" dense></v-checkbox>
+                                                        <v-checkbox v-model="checkbox" label="Heater" dense></v-checkbox>
+                                                        <v-checkbox v-model="checkbox" label="Cow/ Goat/ Sheep"
+                                                            dense></v-checkbox>
                                                     </v-col>
 
                                                     <v-col>
@@ -1035,36 +978,46 @@ last 1 year?">
                                                             label="Radio/Cassette Player/Two-in-One" dense></v-checkbox>
                                                         <v-checkbox v-model="checkbox" label="Tractor" dense></v-checkbox>
                                                         <v-checkbox v-model="checkbox" label="The Boat" dense></v-checkbox>
-                                                        <v-checkbox v-model="checkbox" label="Camera Camera"
+                                                        <v-checkbox v-model="checkbox" label="Camera" dense></v-checkbox>
+                                                        <v-checkbox v-model="checkbox" label="Furniture "
+                                                            dense></v-checkbox>
+                                                        <v-checkbox v-model="checkbox" label="Tube Well for Irrigation"
+                                                            dense></v-checkbox>
+                                                        <v-checkbox v-model="checkbox" label="Power Tiller"
                                                             dense></v-checkbox>
 
                                                     </v-col>
                                                 </v-row>
-                                                <v-select outlined :items="yes_no">
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">What type of toilet do members
-                                                            of
-                                                            this
-                                                            household use?</label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
 
-                                                    </template>
+
+                                                <label>What is the source of food and water in your police station?</label>
+                                                <span style="margin-left: 4px; color: red">*</span>
+                                                <v-select outlined :items="yes_no">
                                                 </v-select>
+                                                <label>Are any members of your police station engaged as agricultural or
+                                                    non-agricultural labourers?</label>
+                                                <span style="margin-left: 4px; color: red">*</span>
                                                 <v-select outlined :items="yes_no">
-                                                    <template v-slot:label>
-                                                        <label style="display: inline-block">What type of toilet do members
-                                                            of
-                                                            this
-                                                            household use?</label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
-
-                                                    </template>
+                                                </v-select>
+                                                <label>What is the total amount of land owned by all the members of your
+                                                    house?</label>
+                                                <span style="margin-left: 4px; color: red">*</span>
+                                                <v-select outlined :items="house_land_status">
+                                                </v-select>
+                                                <label>What is the source of drinking water in your police station</label>
+                                                <span style="margin-left: 4px; color: red">*</span>
+                                                <v-select outlined :items="water_resource_status">
                                                 </v-select>
 
                                             </v-col>
                                             <!-- <v-responsive></v-responsive> -->
 
                                         </v-row>
+                                          <div class="d-inline d-flex justify-end ">
+                                              <v-btn elevation="2" class="btn mr-2" color="primary">Reset</v-btn>
+                                            <v-btn elevation="2" class="btn" color="green">Save</v-btn>
+
+                                        </div>
                                     </div>
 
                                 </v-expansion-panel-content>
@@ -1075,15 +1028,17 @@ last 1 year?">
                     <p class="red--text  mt-5">If you have any objections or complaints regarding the
                         application, please contact the Upazila Social Service Officer. *</p>
                 </v-card>
-
+   
             </v-col>
         </v-row>
 
-
+       <FooterBar />
     </div>
+    
 </template>
 
 <script>
+import FooterBar from "@/components/Common/FooterBar.vue";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { mapState } from "vuex";
 export default {
@@ -1096,25 +1051,27 @@ export default {
             health_status: ["Totally Disabled", "Sick", "Insane", "Disabled", "Partially Powerless", "Other (specify)"],
             financial_status: ["Poor", "Refugee", "Landless"],
             social_status: ["Widow", "Widower", "Divorced"],
+            house_status: ["Homeless", "Self", "Rent", "Others"],
             land_ownership: ["Habitatless", "Below 0.5 acre", "Up to 1 acre", "Above 1 acre", "Other (specify)"],
-            mobile_ownership: ["Family Memeber", "Others", "No Mobie Phone"],
+            marital_status:["Married","Unmarried","Widow"],
+            mobile_ownership: ["No Mobie Phone","Family Memeber", "Others" ],
             religion: ["Islam", "Hindu"],
             gender: ["Male", "Female", "3rd Gender"],
             education_status: ["JSC", "SSC", "HSC"],
             division: ["Dhaka", "Rajshahi"],
-            yes_no: [,"Select","Yes ", "No"],
-            house_status: ["Self", "Rent"],
+            yes_no: ["Yes ", "No"],
+           
             house_children_no: ["0", "1", "2", "3", "4", "4+"],
             spouse_education: ["Uneducated", "Below 5 Statndard", "5-9 Standard", "Above 10 Stansard", "Not Applicable"],
             house_head_education: ["Uneducated", "Below 5 Statndard", "5-9 Standard", "Above 10 Stansard", "Not Applicable"],
             house_head_education: ["Uneducated", "Below 5 Statndard", "5-9 Standard", "Above 10 Stansard", "Not Applicable"],
             house_head_occupation: ["Job", "Farming", "Business", "Student", "Retired"],
-            Wall_status: ["Concrete", "Tin/wood", "Mud house", "Others"],
+            wall_status: ["Concrete", "Tin/wood", "Mud house", "Others"],
             toilet_status: ["Sanitary Latrines", "Pit or hole", "Raw or Hanging", "Open field or open space"],
             water_resource_status: ["Supply", "Tubewell", "Others"],
             agricultural_status: ["Labor in agriculture", "Labor in non-agricultural sector"],
             house_land_status: ["Below 0.5 acre", "0.51 to 1.50 acre", "Above 1.50 acre"],
-            house_land_status: ["Below 0.5 acre", "0.51 to 1.50 acre", "Above 1.50 acre"],
+
 
 
             activePicker: null,
@@ -1138,6 +1095,7 @@ export default {
                 financial_status: null,
                 social_status: null,
                 land_ownership: null,
+                residence: null,
                 name_en: null,
                 name_bn: null,
                 father_name_en: null,
@@ -1180,6 +1138,11 @@ export default {
                 nominee_nationality: null,
                 nominee_relationship: null,
                 nominee_address: null,
+                bank_name:null,
+                mobile_ownership:null,
+                mobile_number:null,
+                marital_status:null
+                
 
 
 
@@ -1203,7 +1166,7 @@ export default {
     },
     components: {
         ValidationProvider,
-        ValidationObserver,
+        ValidationObserver, FooterBar
     },
     watch: {
         menu(val) {
