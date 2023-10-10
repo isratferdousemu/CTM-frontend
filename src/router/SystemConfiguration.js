@@ -209,6 +209,9 @@ const SystemConfigurationRoutes = [
     },
     component: () => import("../pages/SystemConfiguration/user_management/role_permission/Index.vue")
   },
+  /*user management/rolePermission route start*/
+
+    /*user management/ users route start*/
   {
     path: "/system-configuration/users",
     name: "userList",
@@ -218,7 +221,38 @@ const SystemConfigurationRoutes = [
     },
     component: () => import("../pages/SystemConfiguration/user_management/users/index.vue")
   },
- 
+    /*user management/ users route start*/
+
+    /*allowance program route start*/
+  {
+    path: '/system-configuration/allowance-program',
+    name: 'AllowanceProgram',
+    meta: {
+      requiresAuth: true,
+      permission: "allowance-program-list",
+    },
+    component: () => import("../pages/SystemConfiguration/allowance_program/Index.vue")
+  },
+  {
+    path: '/system-configuration/allowance-program/create',
+    name: 'AllowanceProgramCreate',
+    meta: {
+      requiresAuth: true,
+      permission: "allowance-program-create",
+    },
+    component: () => import("../pages/SystemConfiguration/allowance_program/Create.vue")
+  },
+  {
+    path: '/system-configuration/allowance-program/edit/:id',
+    name: 'AllowanceProgramEdit',
+    meta: {
+      requiresAuth: true,
+      permission: "allowance-program-edit",
+    },
+    component: () => import("../pages/SystemConfiguration/allowance_program/Edit.vue")
+  },
+    /*allowance program route end*/
+
 ];
 
 export default SystemConfigurationRoutes;
