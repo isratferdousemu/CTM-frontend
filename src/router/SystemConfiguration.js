@@ -225,7 +225,7 @@ const SystemConfigurationRoutes = [
 
     /*allowance program route start*/
   {
-    path: '/system-configuration/allowance-program',
+    path: '/system-configuration/allowance',
     name: 'AllowanceProgram',
     meta: {
       requiresAuth: true,
@@ -234,7 +234,7 @@ const SystemConfigurationRoutes = [
     component: () => import("../pages/SystemConfiguration/allowance_program/Index.vue")
   },
   {
-    path: '/system-configuration/allowance-program/create',
+    path: '/system-configuration/allowance/create',
     name: 'AllowanceProgramCreate',
     meta: {
       requiresAuth: true,
@@ -243,7 +243,7 @@ const SystemConfigurationRoutes = [
     component: () => import("../pages/SystemConfiguration/allowance_program/Create.vue")
   },
   {
-    path: '/system-configuration/allowance-program/edit/:id',
+    path: '/system-configuration/allowance/edit/:id',
     name: 'AllowanceProgramEdit',
     meta: {
       requiresAuth: true,
