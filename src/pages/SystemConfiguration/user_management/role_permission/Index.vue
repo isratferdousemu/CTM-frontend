@@ -25,6 +25,7 @@ export default {
 
       subModules: '',
       subModuleKey: '',
+      sub_module_name: '',
       selectedModule: null,
 
       roleDialog: false,
@@ -120,6 +121,7 @@ export default {
                 if (this.allSelected === false)
                 {
                   this.add_role_permission.permissions.splice(this.this.add_role_permission.permissions.indexOf(mm.id),1);
+                  this.add_role_permission.permissions = [];
                 }
               }else {
                 let mm = value[m];
@@ -127,6 +129,7 @@ export default {
                 if (this.allSelected === false)
                 {
                   this.rolePermissions.splice(this.rolePermissions.indexOf(mm.id),1);
+                  this.rolePermissions = [];
                 }
               }
 
@@ -142,23 +145,29 @@ export default {
     },
 
     toggleModule(selectedModule){
-      let module = selectedModule.split('/');
-      let module_name = module[0];
-      let sub_module_name = module[1];
-
       this.subModules = null;
+
       for (var key in this.all_modules) {
         if (this.all_modules.hasOwnProperty(key)) {
           var value = this.all_modules[key];
 
-          if (module_name === key)
+          if (selectedModule === key)
           {
             this.subModules = value;
             this.subModuleKey = key;
-          }
 
+            console.log(this.subModules)
+          }
         }
       }
+    },
+
+    forceUpdate(){
+
+        this.selectedModule = null;
+        this.subModules = null;
+        this.add_role_permission.role_id = null;
+        this.$refs.form.reset();
     },
 
     addRolePermission: async function(){
@@ -180,9 +189,10 @@ export default {
           {
             this.$toast.success(this.message);
             this.add_role_permission = {};
-            this.errors = {};
             this.selectedModule = null;
+            this.subModules = null;
             this.select();
+            this.$refs.form.reset();
           }
 
           if (this.error_status === 422)
@@ -251,7 +261,7 @@ export default {
                                 persistent-hint
                                 outlined
                                 v-model="selectedModule"
-                                :rules="[v => !!v || 'Please select a module']"
+                                :rules="required ? 'Please select a module' : []"
                                 @change="toggleModule(selectedModule)"
                             >
                             </v-select>
@@ -262,26 +272,30 @@ export default {
                   </v-card>
                 </v-col>
 
-                <v-col cols="12" v-if="rolePermissions == null">
+                <v-col cols="12" v-if="rolePermissions === null">
                   <v-card style="margin-bottom: 50px">
                     <v-card-text>
-                      <v-simple-table height="300px">
+                      <v-simple-table height="500px">
                         <template v-slot:default>
                           <thead>
                           <tr>
-                            <th class="text-left"><v-checkbox @click="selectAll" v-model="allSelected" color="primary" label="Url Name"></v-checkbox></th>
-                            <th class="text-left" colspan="7"><h3>{{ subModuleKey }} For Permission Lists</h3></th>
+                            <th class="text-left"><v-checkbox @click="selectAll" v-model="allSelected" color="primary" label="Select All"></v-checkbox></th>
+                            <th class="text-left">Create</th>
+                            <th class="text-left">View</th>
+                            <th class="text-left">Edit</th>
+                            <th class="text-left">Delete</th>
                           </tr>
                           </thead>
                           <tbody>
-                          <tr v-for="m in subModules" :key="m.id">
-                            <td> <h4>{{ subModuleKey }}</h4></td>
+                          <tr v-for="(m, key) in subModules" :key="m.id">
+                            <td style="width: 30%">
+                                <h4>{{ key }}</h4>
+                            </td>
                             <td v-for="mm in m" :key="mm.id">
                             <span>
                                <v-checkbox
                                    v-model="add_role_permission.permissions"
                                    color="primary"
-                                   :label="mm.name"
                                    :value="mm.id"
                                    @click="select"
                                    hide-details
@@ -299,23 +313,27 @@ export default {
                 <v-col cols="12" v-else>
                   <v-card style="margin-bottom: 50px">
                     <v-card-text>
-                      <v-simple-table height="300px">
+                      <v-simple-table height="500px">
                         <template v-slot:default>
                           <thead>
                           <tr>
-                            <th class="text-left"><v-checkbox @click="selectAll" v-model="allSelected" color="primary" label="Url Name"></v-checkbox></th>
-                            <th class="text-left" colspan="7"><h3>{{ subModuleKey }} For Permission Lists</h3></th>
+                            <th class="text-left"><v-checkbox @click="selectAll" v-model="allSelected" color="primary" label="Select All"></v-checkbox></th>
+                            <th class="text-left">Create</th>
+                            <th class="text-left">View</th>
+                            <th class="text-left">Edit</th>
+                            <th class="text-left">Delete</th>
                           </tr>
                           </thead>
                           <tbody>
-                          <tr v-for="m in subModules" :key="m.id">
-                            <td> <h4>{{ subModuleKey }}</h4></td>
+                          <tr v-for="(m, key) in subModules" :key="m.id">
+                            <td style="width: 30%">
+                              <h4>{{ key }}</h4>
+                            </td>
                             <td v-for="mm in m" :key="mm.id">
                             <span>
                                <v-checkbox
                                    v-model="rolePermissions"
                                    color="primary"
-                                   :label="mm.name"
                                    :value="mm.id"
                                    hide-details
                                    @click="select"
@@ -339,6 +357,14 @@ export default {
                         router
                         to="/system-configuration/role"
                     >Back
+                    </v-btn>
+
+                    <v-btn
+                        flat
+                        color="orange"
+                        class="custom-btn mr-2"
+                        @click="forceUpdate()"
+                    >Reset
                     </v-btn>
                     <v-btn
                         flat

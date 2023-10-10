@@ -387,10 +387,10 @@
           district_id: null,
           thana_id: null,
           city_corpo_id: null,
-            },
-      isDistrictHidden: true,
-      isLocationTypeHidden: true,
-      isCityCorporationHidden: false,
+        },
+        isDistrictHidden: true,
+        isLocationTypeHidden: true,
+        isCityCorporationHidden: false,
         dialogAdd: false,
         deleteDialog: false,
         dialogEdit: false,
@@ -478,7 +478,7 @@
     },
   
     methods: {
-          createDialog() {
+      createDialog() {
         this.dialogAdd = true;
       },
       submitUser() {
@@ -596,7 +596,8 @@
             this.divisions = result.data.data;
           });
       },
-          deleteUser: async function () {
+
+      deleteUser: async function () {
             this.$axios.delete('/admin/user/destroy/'+this.delete_id, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
@@ -629,28 +630,28 @@
       updateHeaderTitle() {
         const title = this.$t("container.system_config.demo_graphic.user.listTitle");
         this.$store.commit("setHeaderTitle", title);
-          },
-    async GetOfficeType() {
-      try {
-        this.$store.dispatch("getLookupByType", 3).then((data) => {
-          this.officeType = data;
-        });
-      } catch (e) {
-        console.log(e);
-      }
-    },
-          getRoles() {
-            this.$axios.get('/admin/role/get', {
-            headers: {
-              Authorization: "Bearer " + this.$store.state.token,
-              "Content-Type": "multipart/form-data",
-            }}).then((result) => {
-        this.roles = result.data.data;
-      }).catch((err) => {
-        console.log(err);
-      })
-          },
-          async onChangeDivision(event) {
+      },
+      async GetOfficeType() {
+        try {
+          this.$store.dispatch("getLookupByType", 3).then((data) => {
+            this.officeType = data;
+          });
+        } catch (e) {
+          console.log(e);
+        }
+      },
+      getRoles() {
+          this.$axios.get('/admin/role/get', {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          }}).then((result) => {
+          this.roles = result.data.data;
+        }).catch((err) => {
+          console.log(err);
+        })
+      },
+      async onChangeDivision(event) {
         this.data.office_id=null
         this.data.district_id=null
         this.data.thana_id=null
@@ -658,28 +659,28 @@
         if (this.data.office_type != null) {
             this.getOfficeByLocation(this.data.office_type, event);
         }
-      await this.$axios
-        .get(`/admin/district/get/${event}`, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((result) => {
-          this.districts = result.data.data;
-          this.isDistrictHidden = true;
-        });
-          },
-          onChangeUpazila(event) {
-            if (this.data.office_type != null) {
-            this.getOfficeByLocation(this.data.office_type, event);
+        await this.$axios
+          .get(`/admin/district/get/${event}`, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((result) => {
+            this.districts = result.data.data;
+            this.isDistrictHidden = true;
+          });
+            },
+            onChangeUpazila(event) {
+              if (this.data.office_type != null) {
+              this.getOfficeByLocation(this.data.office_type, event);
+          }
+            },
+            onChangeCity(event) {
+              if (this.data.office_type != null) {
+              this.getOfficeByLocation(this.data.office_type, event);
         }
-          },
-          onChangeCity(event) {
-            if (this.data.office_type != null) {
-            this.getOfficeByLocation(this.data.office_type, event);
-        }
-          },
+      },
     async onChangeDistrict(event) {
             this.data.office_id=null
           this.data.thana_id=null
@@ -735,11 +736,11 @@
 
           onChangeOfficeType(event) {
             this.data.division_id=null
-        this.data.district_id=null
+            this.data.district_id=null
             this.data.office_id=null
-          this.data.thana_id=null
-                this.data.city_corpo_id = null  
-                this.getOfficeByLocation(event);
+            this.data.thana_id=null
+            this.data.city_corpo_id = null
+            this.getOfficeByLocation(event);
           
           },
 
@@ -749,11 +750,11 @@
                 location_type_id: location_type_id,
             };
             let fd = new FormData();
-        for (const [key, value] of Object.entries(data)) {
-          if (value !== null) {
-            fd.append(key, value);
-          }
-        }
+            for (const [key, value] of Object.entries(data)) {
+              if (value !== null) {
+                fd.append(key, value);
+              }
+            }
             this.$axios
                 .post("/admin/user/office/by-location",fd, {
                     headers: {

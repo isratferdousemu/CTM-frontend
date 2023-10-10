@@ -53,7 +53,12 @@ export default {
         formData.append('name_en', this.add_role.name_en);
         formData.append('name_bn', this.add_role.name_bn);
         formData.append('comment', this.add_role.comment);
-        formData.append('status', this.add_role.status);
+
+        if (this.add_role.status !== null)
+        {
+          formData.append('status', this.add_role.status);
+        }
+
 
         await this.$store.dispatch("Role/StoreRole", formData).then(() => {
           if (this.success_status === 201)
@@ -177,16 +182,14 @@ export default {
                           sm="6"
                           lg="6"
                       >
-                        <ValidationProvider name="status" vid="status" rules="required" v-slot="{ errors }">
+
                         <v-checkbox
                             v-model="add_role.status"
                             color="primary"
                             label="Is Active ?"
-                            :error="errors[0] ? true : false"
-                            :error-messages="errors[0]"
                             required
                         ></v-checkbox>
-                        </ValidationProvider>
+
                       </v-col>
                     </v-row>
                   </v-col>
