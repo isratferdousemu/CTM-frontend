@@ -63,22 +63,22 @@
                       <v-col lg="6" md="6" cols="12">
                         <ValidationProvider
                           name="ProgramName"
-                          vid="officeType"
+                          vid="programType"
                           rules="required"
                           v-slot="{ errors }"
                         >
                           <v-autocomplete
                             :hide-details="errors[0] ? false : true"
                             @input="onChangeProgramName($event)"
-                            v-model="data.office_type"
+                            v-model="data.programType"
                             outlined
                             :label="
                               $t(
                                 'container.system_config.demo_graphic.committee.program_name'
                               )
                             "
-                            :items="officeType"
-                            item-text="value_en"
+                            :items="programs"
+                            item-text="name_en"
                             item-value="id"
                             required
                             :error="errors[0] ? true : false"
@@ -409,7 +409,8 @@
                                 v-if="committee.members.length > 1"
                                 class="ma-1"
                                 color="error"
-                                > <v-icon >mdi-trash-can-outline </v-icon></v-btn
+                              >
+                                <v-icon>mdi-trash-can-outline </v-icon></v-btn
                               >
                             </v-col>
                           </v-row>
@@ -483,6 +484,7 @@ export default {
     return {
       data: {
         id: null,
+        programType: [],
         name_en: null,
         name_bn: null,
         thana_id: null,
@@ -518,6 +520,7 @@ export default {
       isCityCorporationHidden: false,
       districts: [],
       offices: [],
+      programs: [],
       officeType: [],
       upazilas: [],
       city: null,
@@ -736,14 +739,27 @@ export default {
         console.log(e);
       }
     },
-    async GetAllProgram(id) {
-      console.log(id, "GetAllUpazila");
+    async GetAllProgram() {
       try {
-        this.$store
-          .dispatch("Thana/GetAllUpazilaByDistrict", id)
-          .then((data) => {
-            console.log(data, "GetAllUpazilaByDistrict");
-            this.upazilas = data;
+        this.$axios
+          .get("/admin/allowance/get", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((result) => {
+              console.log(result, "programs");
+              this.programs = result.data.data;
+              alert(this.programs);
+          })
+          .catch((err) => {
+            console.log(err, "error");
+            if (err.response?.data?.errors) {
+              this.$refs.form.setErrors(err.response.data.errors);
+            }
+            console.log(err.response);
+            this.$toast.error(err?.response?.data?.message);
           });
       } catch (e) {
         console.log(e);
@@ -906,9 +922,9 @@ export default {
     remove(index) {
       this.committee.members.splice(index, 1);
     },
-
   },
   mounted() {
+    this.GetAllProgram();
     this.GetCommitteeType();
     this.GetCommitteeType();
     this.GetOffices();
