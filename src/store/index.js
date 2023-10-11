@@ -82,7 +82,9 @@ export default new Vuex.Store({
       { id: 14, name: 'Branch Name' },
       { id: 15, name: 'Complaint Category' },
       { id: 16, name: 'Module Name' },
-      { id: 17, name: 'Organization' },
+      { id: 17, name: 'Committee Type' },
+      { id: 18, name: 'Organization' },
+      { id: 19, name: 'Designation' },
     ],
     appLanguage: localStorage.getItem("appLanguage") || process.env.VUE_APP_I18N_LOCALE || 'bn'
 

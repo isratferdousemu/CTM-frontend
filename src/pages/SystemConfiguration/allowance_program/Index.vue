@@ -142,7 +142,7 @@ export default {
                       flat
                       color="primary"
                       router
-                      to="/system-configuration/allowance-program/create"
+                      to="/system-configuration/allowance/create"
                   >
                     <v-icon small left>mdi-plus</v-icon>
                     <span>Add New</span>
@@ -187,7 +187,7 @@ export default {
                               color="success"
                               v-on="on"
                               router
-                              :to="`/system-configuration/allowance-program/edit/${item.id}`"
+                              :to="`/system-configuration/allowance/edit/${item.id}`"
                           >
                             <v-icon>mdi-account-edit-outline</v-icon>
                           </v-btn>
