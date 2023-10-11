@@ -51,6 +51,7 @@ const mutations = {
         state.allowanceField = data.allowance_field;
         state.allowanceAge = data.allowance_age_limit;
         state.allowanceAmount = data.allowance_amount;
+        state.allowanceGender = data.allowance_gender;
     },
     /*edit allowance program end*/
 
@@ -64,8 +65,12 @@ const mutations = {
         } else {
             state.success_message = "";
         }
-    }
+    },
     /*update allowance program end*/
+
+    updateValue: (state, data) => {
+        state.allowanceField = data;
+    }
 };
 
 /* -------------------------------------------------------------------------- */
