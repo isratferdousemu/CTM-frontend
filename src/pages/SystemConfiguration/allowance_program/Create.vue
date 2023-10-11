@@ -50,6 +50,8 @@ export default {
   computed: {
     ...mapState({
         additionalFields: (state) => state.Allowance.additionalFields,
+        genders: (state) => state.Allowance.genders,
+        genderTypes: (state) => state.Allowance.genderTypes,
         message: (state) => state.Allowance.success_message,
         success_status: (state) => state.Allowance.success_status,
         errors: (state) => state.Allowance.errors,
@@ -59,11 +61,15 @@ export default {
 
   mounted() {
     this.GetAllAdditionalField();
+    this.GerAllLookUpGender();
+    this.GerAllLookUpGenderType();
   },
 
   methods: {
     ...mapActions({
-      GetAllAdditionalField: "Allowance/GetAllAdditionalField"
+      GetAllAdditionalField: "Allowance/GetAllAdditionalField",
+      GerAllLookUpGender: "Allowance/GerAllLookUpGender",
+      GerAllLookUpGenderType: "Allowance/GerAllLookUpGenderType"
     }),
 
     maritalStatus(){
@@ -111,20 +117,18 @@ export default {
         formData.append('name_en', this.add_allowance_program.name_en);
         formData.append('name_bn', this.add_allowance_program.name_bn);
         formData.append('payment_cycle', this.add_allowance_program.payment_cycle);
-
-
         formData.append('is_marital', this.add_allowance_program.is_marital);
         formData.append('marital_status', this.add_allowance_program.marital_status);
         formData.append('is_active', this.add_allowance_program.is_active);
-        formData.append('is_active', this.add_allowance_program.is_age_limit);
-        formData.append('is_active', this.add_allowance_program.is_amount);
+        formData.append('is_age_limit', this.add_allowance_program.is_age_limit);
+        formData.append('is_amount', this.add_allowance_program.is_amount);
 
-        this.add_allowance_program.allowance_age.forEach((item) => formData.append("gender_id[]", JSON.parse(item.gender_id)));
-        this.add_allowance_program.allowance_age.forEach((item) => formData.append("min_age[]", JSON.parse(item.min_age)));
-        this.add_allowance_program.allowance_age.forEach((item) => formData.append("max_age[]", JSON.parse(item.max_age)));
+        this.add_allowance_program.allowance_age.forEach((item) => formData.append("gender_id[]", item.gender_id));
+        this.add_allowance_program.allowance_age.forEach((item) => formData.append("min_age[]", item.min_age));
+        this.add_allowance_program.allowance_age.forEach((item) => formData.append("max_age[]", item.max_age));
 
-        this.divs.forEach(item => formData.append('type_id[]', JSON.parse(item.type_id)));
-        this.divs.forEach(item => formData.append('amount[]', JSON.parse(item.amount)));
+        this.divs.forEach(item => formData.append('type_id[]', item.type_id));
+        this.divs.forEach(item => formData.append('amount[]', item.amount));
 
         this.add_allowance_program.add_field_id.forEach((item) => formData.append("add_field_id[]", item));
 
@@ -210,8 +214,8 @@ export default {
                           <ValidationProvider name="gender" vid="gender" rules="required" v-slot="{ errors }">
                             <v-select
                                 v-model="add_allowance_program.gender"
-                                :items="gender_items"
-                                item-text="name"
+                                :items="genders"
+                                item-text="value_en"
                                 item-value="id"
                                 chips
                                 label="Select Gender"
@@ -272,7 +276,7 @@ export default {
                             <tbody>
                             <tr v-for="(g,index) in add_allowance_program.allowance_age" :key="index">
                               <td>
-                                <v-select v-model="g.gender_id" :items="gender_items" item-text="name" item-value="id" dense outlined></v-select>
+                                <v-select v-model="g.gender_id" :items="genders" item-text="value_en" item-value="id" dense outlined></v-select>
                               </td>
                               <td><v-text-field v-model="g.min_age" dense outlined></v-text-field></td>
                               <td><v-text-field v-model="g.max_age"  dense outlined></v-text-field></td>
@@ -294,7 +298,7 @@ export default {
                             </thead>
                             <tbody>
                             <tr v-for="div in divs" :key="div.id">
-                              <td><v-select v-model="div.type_id" :items="gender_items" item-value="id" item-text="name" label="Please Select" dense outlined></v-select></td>
+                              <td><v-select v-model="div.type_id" :items="genderTypes" item-value="id" item-text="value_en" label="Please Select" dense outlined></v-select></td>
                               <td><v-text-field v-model="div.amount" dense outlined></v-text-field></td>
                               <td>
                                 <v-btn
@@ -342,7 +346,7 @@ export default {
                   <v-card-text>
                     <v-col cols="12" class="d-flex">
                       <v-row wrap>
-                        <v-col cols="12" sm="6" lg="6" v-for="field in additionalFields" :key="field.id">
+                        <v-col cols="12" sm="4" lg="4" v-for="field in additionalFields" :key="field.id">
                           <ValidationProvider name="add_field_id" vid="add_field_id" rules="required" v-slot="{ errors }">
                             <v-checkbox
                                 v-model="add_allowance_program.add_field_id"

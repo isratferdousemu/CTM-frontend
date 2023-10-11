@@ -49,6 +49,8 @@ export default {
       editAllowanceField: (state) => state.Allowance.allowanceField,
       editAllowanceAge: (state) => state.Allowance.allowanceAge,
       editAllowanceAmount: (state) => state.Allowance.allowanceAmount,
+      genders: (state) => state.Allowance.genders,
+      genderTypes: (state) => state.Allowance.genderTypes,
       message: (state) => state.Allowance.success_message,
       success_status: (state) => state.Allowance.success_status,
       errors: (state) => state.Allowance.errors,
@@ -68,12 +70,16 @@ export default {
   mounted() {
     this.GetAllAdditionalField();
     this.GetEditAllowanceProgram(this.$route.params.id);
+    this.GerAllLookUpGender();
+    this.GerAllLookUpGenderType();
   },
 
   methods: {
     ...mapActions({
       GetAllAdditionalField: "Allowance/GetAllAdditionalField",
-      GetEditAllowanceProgram: "Allowance/GetEditAllowanceProgram"
+      GetEditAllowanceProgram: "Allowance/GetEditAllowanceProgram",
+      GerAllLookUpGender: "Allowance/GerAllLookUpGender",
+      GerAllLookUpGenderType: "Allowance/GerAllLookUpGenderType"
     }),
 
     maritalStatus(marital){
@@ -218,8 +224,8 @@ export default {
                           <ValidationProvider name="gender" vid="gender" rules="required" v-slot="{ errors }">
                             <v-select
                                 v-model="editAllowanceGender"
-                                :items="gender_items"
-                                item-text="name"
+                                :items="genders"
+                                item-text="value_en"
                                 item-value="id"
                                 chips
                                 label="Select Gender"
@@ -280,7 +286,7 @@ export default {
                             <tbody>
                             <tr v-for="(g,index) in editAllowanceAge" :key="index">
                               <td>
-                                <v-select v-model="g.gender_id" :items="gender_items" item-text="name" item-value="id" dense outlined></v-select>
+                                <v-select v-model="g.gender_id" :items="genders" item-text="value_en" item-value="id" dense outlined></v-select>
                               </td>
                               <td><v-text-field v-model="g.min_age" dense outlined></v-text-field></td>
                               <td><v-text-field v-model="g.max_age"  dense outlined></v-text-field></td>
@@ -302,7 +308,7 @@ export default {
                             </thead>
                             <tbody>
                             <tr v-for="(aa, index) in editAllowanceAmount" :key="index">
-                              <td><v-select v-model="aa.type_id" :items="gender_items" item-value="id" item-text="name" label="Please Select" dense outlined></v-select></td>
+                              <td><v-select v-model="aa.type_id" :items="genderTypes" item-value="id" item-text="value_en" label="Please Select" dense outlined></v-select></td>
                               <td><v-text-field v-model="aa.amount" dense outlined></v-text-field></td>
                               <td>
                                 <v-btn
