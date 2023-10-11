@@ -111,13 +111,13 @@ export default {
         formData.append('name_en', this.add_allowance_program.name_en);
         formData.append('name_bn', this.add_allowance_program.name_bn);
         formData.append('payment_cycle', this.add_allowance_program.payment_cycle);
+
+
         formData.append('is_marital', this.add_allowance_program.is_marital);
         formData.append('marital_status', this.add_allowance_program.marital_status);
         formData.append('is_active', this.add_allowance_program.is_active);
-        formData.append('is_age_limit', this.add_allowance_program.is_age_limit);
-        formData.append('is_amount', this.add_allowance_program.is_amount);
-
-        this.add_allowance_program.gender.forEach((item) => formData.append("gender[]", item));
+        formData.append('is_active', this.add_allowance_program.is_age_limit);
+        formData.append('is_active', this.add_allowance_program.is_amount);
 
         this.add_allowance_program.allowance_age.forEach((item) => formData.append("gender_id[]", JSON.parse(item.gender_id)));
         this.add_allowance_program.allowance_age.forEach((item) => formData.append("min_age[]", JSON.parse(item.min_age)));
