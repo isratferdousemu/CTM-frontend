@@ -12,6 +12,8 @@ const state = {
     allowanceAmount: [],
     allowanceField: [],
     additionalFields: [],
+    genders: [],
+    genderTypes: [],
     success_message: "",
     errors: {},
     error_message: "",
@@ -31,6 +33,18 @@ const mutations = {
         state.additionalFields = data;
     },
     /*get all additional field end*/
+
+    /*get all gender lookup start*/
+    GET_ALL_LOOKUP_GENDER: (state, data) => {
+        state.genders = data.data;
+    },
+    /*get all gender lookup end*/
+
+    /*get all gender lookup start*/
+    GET_ALL_LOOKUP_GENDER_TYPE: (state, data) => {
+        state.genderTypes = data.data;
+    },
+    /*get all gender lookup end*/
 
     /*store allowance program start*/
     STORE_ALLOWANCE_PROGRAM: (state, data) => {
@@ -88,6 +102,30 @@ const actions = {
         })
     },
     /*Get All Additional Field end*/
+
+    /*Get lookup gender start*/
+    GerAllLookUpGender: ({commit}) => {
+        let type = 2;
+        return http().get(`/admin/lookup/get/${type}`).then((result) => {
+            commit('GET_ALL_LOOKUP_GENDER', result.data);
+            console.log(result);
+        }).catch((err) => {
+            console.log(err);
+        })
+    },
+    /*Get lookup gender end*/
+
+    /*Get lookup gender type start*/
+    GerAllLookUpGenderType: ({commit}) => {
+        let type = 20;
+        return http().get(`/admin/lookup/get/${type}`).then((result) => {
+            commit('GET_ALL_LOOKUP_GENDER_TYPE', result.data);
+            console.log(result);
+        }).catch((err) => {
+            console.log(err);
+        })
+    },
+    /*Get lookup gender type end*/
 
     /*store allowance program start*/
     StoreAllowanceProgram: ({commit}, data) => {
