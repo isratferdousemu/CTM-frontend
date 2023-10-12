@@ -53,7 +53,12 @@ export default {
         formData.append('name_en', this.role.name_en);
         formData.append('name_bn', this.role.name_bn);
         formData.append('comment', this.role.comment);
-        formData.append('status', this.role.status);
+
+        if (this.role.status !== null)
+        {
+          formData.append('status', this.role.status);
+        }
+
         formData.append('id', id);
 
         await this.$store.dispatch("Role/UpdateRole", formData).then(() => {

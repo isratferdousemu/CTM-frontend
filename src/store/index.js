@@ -27,6 +27,7 @@ import Device_registration from "@/store/modules/system_configuration/device_reg
 import Role from "@/store/modules/system_configuration/role";
 import Role_permission from "@/store/modules/system_configuration/role_permission";
 import Office from "@/store/modules/system_configuration/office";
+import Allowance from "@/store/modules/system_configuration/allowance";
 // Import other modules as needed
 
 Vue.use(Vuex);
@@ -66,7 +67,7 @@ export default new Vuex.Store({
     otpData: [],
     lookupTypes: [
       { id: 1, name: 'Location Type' },
-      { id: 2, name: 'Allowance Service' },
+      { id: 2, name: 'Gender' },
       { id: 3, name: 'Office category' },
       { id: 4, name: 'Health Status' },
       { id: 5, name: 'Financial Status' },
@@ -81,7 +82,10 @@ export default new Vuex.Store({
       { id: 14, name: 'Branch Name' },
       { id: 15, name: 'Complaint Category' },
       { id: 16, name: 'Module Name' },
-      { id: 17, name: 'Organization' },
+      { id: 17, name: 'Committee Type' },
+      { id: 18, name: 'Organization' },
+      { id: 19, name: 'Designation' },
+      { id: 20, name: 'Gender Type' },
     ],
     appLanguage: localStorage.getItem("appLanguage") || process.env.VUE_APP_I18N_LOCALE || 'bn'
 
@@ -343,6 +347,7 @@ export default new Vuex.Store({
     Role,
     Role_permission,
     Office,
+    Allowance,
   },
   plugins: [
     createPersistedState({

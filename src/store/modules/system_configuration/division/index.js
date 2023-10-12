@@ -125,7 +125,7 @@ const actions = {
         // state.error_status = err.response.message;
         const data = {
           errors: err.response.data.errors,
-          error_status: err.response.message,
+          error_status: err.response.status,
         };
         return err;
       });

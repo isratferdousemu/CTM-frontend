@@ -77,7 +77,7 @@ const actions = {
             })
             .catch((err) => {
                 state.errors = err.response.data.errors;
-                state.error_status = err.response.message;
+                state.error_status = err.response.status;
             });
     },
     /*end  store role*/
@@ -105,7 +105,7 @@ const actions = {
             })
             .catch((err) => {
                 state.errors = err.response.data.errors;
-                state.error_status = err.response.message;
+                state.error_status = err.response.status;
             });
     },
     /*end update role*/
