@@ -160,7 +160,7 @@
           <v-card-text class="mt-7">
             <v-row> </v-row>
 
-            <ValidationObserver ref="form" v-slot="{ invalid }">
+            <ValidationObserver ref="formAdd" v-slot="{ invalid }">
               <form @submit.prevent="submitOffice()">
                 <v-row>
                   <v-col lg="6" md="6" cols="12">
@@ -396,7 +396,6 @@
                     <ValidationProvider
                       name="Comment"
                       vid="comment"
-                      rules="required"
                       v-slot="{ errors }"
                     >
                       <v-text-field
@@ -409,7 +408,6 @@
                             'container.system_config.demo_graphic.office.comment'
                           )
                         "
-                        required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
                       ></v-text-field>
@@ -475,7 +473,7 @@
           <v-card-text class="mt-7">
             <v-row> </v-row>
 
-            <ValidationObserver ref="form" v-slot="{ invalid }">
+            <ValidationObserver ref="formEdit" v-slot="{ invalid }">
               <form @submit.prevent="updateOffice()">
                 <v-row>
                   <v-col lg="6" md="6" cols="12">
@@ -711,7 +709,6 @@
                     <ValidationProvider
                       name="Comment"
                       vid="comment"
-                      rules="required"
                       v-slot="{ errors }"
                     >
                       <v-text-field
@@ -724,7 +721,6 @@
                             'container.system_config.demo_graphic.office.comment'
                           )
                         "
-                        required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
                       ></v-text-field>
@@ -958,7 +954,8 @@ export default {
             this.resetData();
             this.GetOffices();
           } else {
-            this.errors = data.errors;
+            this.$refs.formAdd.setErrors(data.errors);
+            // this.errors = data.errors;
           }
         });
       } catch (e) {
@@ -984,7 +981,8 @@ export default {
             this.resetData();
             this.GetOffices();
           } else {
-            this.errors = data.errors;
+            this.$refs.formEdit.setErrors(data.errors);
+            // this.errors = data.errors;
           }
         });
       } catch (e) {
