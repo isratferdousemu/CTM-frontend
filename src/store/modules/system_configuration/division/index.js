@@ -83,7 +83,7 @@ const actions = {
     return http()
       .get("/admin/division/get")
       .then((result) => {
-        console.log(result.data);
+        console.log(result.data.data);
         commit("GET_DIVISION", result.data.data);
         return result
       })

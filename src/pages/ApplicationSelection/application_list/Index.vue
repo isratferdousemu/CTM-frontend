@@ -7,146 +7,186 @@
             <!-- Expantion panels start -->
             <v-expansion-panels>
               <v-expansion-panel class="ma-2">
-                <v-expansion-panel-header>
-                  <h3 class="text-uppercase pt-3">
+                <v-expansion-panel-header color=#8C9EFF>
+                  <h3 class="white--text ">
                     {{ $t("container.application_selection.application.search") }}
                   </h3>
                 </v-expansion-panel-header>
-                <v-expansion-panel-content class="elevation-0 transparent ">
-                  <v-row>
-                    <v-col>
-                      <v-select outlined clearable label="Program">
-                      </v-select>
-                      <v-select outlined clearable label="District">
-                      </v-select>
-                      <v-select outlined clearable label="Upazila/City Corporation/
-District Pourashava">
-                      </v-select>
-                      <v-select outlined clearable label="List type">
-                      </v-select>
-                    </v-col>
-                    <v-col>
-                      <v-select outlined clearable label="Division">
-                      </v-select>
-                      <v-select outlined clearable label="location Type">
-                      </v-select>
-                      <v-select outlined clearable label="Union/Pourashava/
-Ward">
-                      </v-select>
-                    </v-col>
-                  </v-row>
-                  <div class="d-inline d-flex justify-end ">
-                    <v-btn elevation="2" class="btn mr-2" color="green">{{ $t("container.list.search") }}</v-btn>
-                    <v-btn elevation="2" class="btn" color="primary">{{ $t("container.list.reset") }}</v-btn>
-                  </div>
+                <v-expansion-panel-content class="elevation-0 transparent mt-10">
+                  <ValidationObserver ref="form" v-slot="{ invalid }">
+                    <form @submit.prevent="submitWard()">
+                      <v-row>
+                        <v-col lg="6" md="6" cols="12">
+
+                          <v-select outlined menu-props="top" clearable
+                            :label="$t('container.application_selection.application.program')">
+                          </v-select>
+                        </v-col>
+                          <v-col lg="6" md="6" cols="12">
+                            <v-select outlined clearable
+                              :label="$t('container.application_selection.application.list_type')">
+                            </v-select>
+                          </v-col>
+                      
+                        <v-col lg="6" md="6" cols="12">
+                          <ValidationProvider name="Division" vid="division" rules="required" v-slot="{ errors }">
+                            <v-autocomplete outlined clearable @input="onChangeDivision($event)"
+                              v-model="data.division_id" :label="$t(
+                                'container.system_config.demo_graphic.division.division'
+                              )
+                                " :items="divisions" item-text="name_en" item-value="id" required
+                              :error="errors[0] ? true : false" :error-messages="errors[0]">
+                            </v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col lg="6" md="6" cols="12">
+                          <ValidationProvider name="District" vid="district" rules="required" v-slot="{ errors }">
+                            <v-autocomplete outlined v-model="data.district_id" @input="onChangeDistrict($event)" :label="$t(
+                              'container.system_config.demo_graphic.district.district'
+                            )
+                              " :items="districts" item-text="name_en" item-value="id" required
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                          <v-col  cols="12">
+                            <ValidationProvider name="Location Type" vid="location_type" rules="required"
+                              v-slot="{ errors }">
+                              <v-autocomplete @input="LocationType($event)" v-model="data.location_type" outlined
+                                :label="$t('container.list.location_type')" :items="locationType" item-text="value_en"
+                                item-value="id" required :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"></v-autocomplete>
+                            </ValidationProvider>
+                          </v-col>
+                               <v-col v-if="data.location_type == 1" lg="6" md="6" cols="12">
+                            <ValidationProvider name="thana" vid="district_pouro_id" rules="required" v-slot="{ errors }">
+                              <v-autocomplete  v-model="data.district_pouro_id" outlined
+                                :label="$t('container.system_config.demo_graphic.ward.pouro')
+                                  " :items="district_pouros" item-text="name_en" item-value="id" required
+                                :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            </ValidationProvider>
+                          </v-col>
+                             <v-col v-if="data.location_type == 2" lg="6" md="6" cols="12">
+                            <ValidationProvider name="Upazila" vid="thana_id" rules="required" v-slot="{ errors }">
+                              <v-autocomplete  v-model="data.thana_id" outlined :label="$t('container.system_config.demo_graphic.thana.thana')
+                                " @change="onChangeUpazila($event)" :items="thanas" item-text="name_en" item-value="id"
+                                required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            </ValidationProvider>
+                          </v-col>
+                        <v-col  v-if="data.location_type == 2" lg="6" md="6" cols="12">
+                          <ValidationProvider name="union" vid="union_id" rules="required" v-slot="{ errors }">
+                            <v-autocomplete  v-model="data.union_id" outlined :label="$t('container.system_config.demo_graphic.ward.union')
+                              " :items="unions" item-text="name_en" item-value="id" required
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+
+                        <v-col  v-if="data.location_type == 3" lg="6" md="6" cols="12">
+                          <ValidationProvider name="city" vid="city_id" rules="required" v-slot="{ errors }">
+                            <v-autocomplete  v-model="data.city_id"
+                              @change="onChangeCity($event)" outlined :label="$t('container.system_config.demo_graphic.ward.city')
+                                " :items="cities" item-text="name_en" item-value="id" required
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+
+                        <v-col v-if="data.location_type == 3" lg="6" md="6" cols="12">
+                          <ValidationProvider name="thana" vid="city_thana_id" rules="required" v-slot="{ errors }">
+                            <v-autocomplete  v-model="data.city_thana_id" outlined :label="$t('container.system_config.demo_graphic.ward.thana')
+                              " :items="city_thanas" item-text="name_en" item-value="id" required
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                       
+                      </v-row>
+                      
+                      <div class="d-inline d-flex justify-end ">
+                        <v-btn elevation="2" class="btn mr-2" color="success">{{ $t("container.list.search") }}</v-btn>
+                        <v-btn elevation="2" class="btn">{{ $t("container.list.reset") }}</v-btn>
+                      </div>
+                    </form>
+                  </ValidationObserver>
 
                 </v-expansion-panel-content>
               </v-expansion-panel>
               <v-expansion-panel class="ma-2">
-                <v-expansion-panel-header>
-                  <h3 class="text-uppercase pt-3">
+                <v-expansion-panel-header color=#8C9EFF>
+                  <h3 class="white--text ">
                     {{ $t("container.application_selection.application.update_status") }}
                   </h3>
                 </v-expansion-panel-header>
-                <v-expansion-panel-content class="elevation-0 transparent ">
+                <v-expansion-panel-content class="elevation-0 transparent mt-10">
                   <v-row>
-                    <v-col>
-                      <v-text-field outlined label="Reamrk">
+                    <v-col lg="6" md="6" cols="12">
+                      <v-text-field outlined :label="$t('container.application_selection.application.remark')">
 
                       </v-text-field>
                     </v-col>
-                    <v-col>
-                      <v-select outlined clearable >
-  <template v-slot:label>
-          <label>Forward to Commitee</label>
-           <span style="margin-left: 4px; color: red">*</span>
-        </template>
+                    <v-col lg="6" md="6" cols="12">
+                      <v-select outlined clearable>
+                        <template v-slot:label>
+                          <label> {{ $t("container.application_selection.application.forward_to_committee") }}</label>
+                          <span style="margin-left: 4px; color: red">*</span>
+                        </template>
 
                       </v-select>
                     </v-col>
                   </v-row>
                   <div class="d-inline d-flex justify-end ">
-                    <v-btn elevation="2" class="btn mr-2" color="green">{{ $t("container.list.forward") }}</v-btn>
-                    <v-btn elevation="2" class="btn mr-2" color="yellow">{{ $t("container.list.waiting") }}</v-btn>
-                     <v-btn elevation="2" class="btn mr-2" color="red">{{ $t("container.list.reject") }}</v-btn>
+                    <v-btn elevation="2" class="btn mr-2" color="success">{{ $t("container.list.forward") }}</v-btn>
+                    <v-btn elevation="2" class="btn mr-2" color="warning">{{ $t("container.list.waiting") }}</v-btn>
+                    <v-btn elevation="2" class="btn mr-2 error">{{ $t("container.list.reject") }}</v-btn>
                   </div>
 
                 </v-expansion-panel-content>
               </v-expansion-panel>
             </v-expansion-panels>
-               <!-- Expantion panels end -->
-               <!-- Application list -->
+            <!-- Expantion panels end -->
+            <!-- Application list -->
             <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8 mt-5">
-                  
-                 
- 
+
+
+
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
                   {{ $t("container.application_selection.application.list") }}
                 </h3>
               </v-card-title>
               <v-card-text>
-                 <v-row>
-                      <v-col>
-       
-                      </v-col>
-                       <v-col>
-                      
-                        </v-col>
-                           <v-col>
-                                           <!-- selected columns -->
-                             <v-select
-                v-model="value"
-                :items="headers"
-                label="Select Item"
-                multiple
-                return-object
-                outlined
-                class="ma-5"
-              >
-                <template v-slot:selection="{ item, index }">
-                  <v-chip v-if="index === 0">
-                    <span>{{ item.text }}</span>
-                  </v-chip>
-                  <span
-                    v-if="index === 1"
-                    class="grey--text caption"
-                  >(+{{ value.length - 1 }} others)</span>
-                </template>
-              </v-select>
-              <!-- Select column End -->
-                      
-                          </v-col>
-                    </v-row>
-                <v-row class="ma-0 pa-3 white round-border d-flex justify-space-between align-center" justify="center"
-                  justify-lg="space-between">
-                  <!-- <div class="d-flex justify-sm-end flex-wrap">
+                <v-row>
+                  <v-col>
 
-                  </div> -->
+                  </v-col>
+                  <v-col>
+
+                  </v-col>
+                  <v-col>
+
+                    <!-- selected columns -->
+                    <v-select v-model="value" :items="headers"
+                      :label="$t('container.application_selection.application.select_column')" multiple return-object
+                      outlined menu-props="top">
+                      <template v-slot:selection="{ item, index }">
+
+                      </template>
+                    </v-select>
+                    <!-- Select column End -->
+
+                  </v-col>
+                </v-row>
+                <v-row class="ma-0  white round-border d-flex justify-space-between align-center" justify="center"
+                  justify-lg="space-between">
+
                   <v-col cols="12">
-    
-                    <v-data-table    :headers="selectedHeaders" :items="divisions"
-                    
-                      class="elevation-1">
-                      <!-- <template v-slot:item.id="{ item, index }">
+
+                    <v-data-table :headers="selectedHeaders" :items="applications"
+                      class="elevation-0 transparent row-pointer">
+                      <template v-slot:item.sl="{ item, index }">
                         {{
                           (pagination.current - 1) * pagination.perPage +
                           index +
                           1
                         }}
                       </template>
-                      <template v-slot:item.name_en="{ item }">
-                        {{ item.name_en }}
-                      </template>
-                      <template v-slot:item.name_bn="{ item }">
-                        {{ item.name_bn }}
-                      </template> -->
-                         <template v-slot:item.id="{ item }">
-          <v-chip dark>
-            {{ divisions.map(function (x) { return x.id; }).indexOf(item.id) }}
-          </v-chip>
-        </template>
-
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
                         <v-tooltip top>
@@ -184,7 +224,7 @@ Ward">
                           <v-pagination circle primary v-model="pagination.current" :length="pagination.total"
                             @input="onPageChange" :total-visible="11" class="custom-pagination-item"></v-pagination>
                         </div>
-                      </template> 
+                      </template>
                     </v-data-table>
                   </v-col>
                 </v-row>
@@ -200,7 +240,7 @@ Ward">
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 
@@ -210,13 +250,30 @@ export default {
   title: "CTM - Application List",
   data() {
     return {
+      data: {
+        division_id: null,
+        district_id: null,
+        city_id: null,
+        city_thana_id: null,
+        union_id: null,
+        thana_id: null
+      },
 
-      value: [],
+      value: ["3", "100", "11", "12"], // Default selection without 'name'
       selectedHeaders: [],
       loading: false,
       search: "",
       delete_id: "",
-      divisions: [],
+      applications: [],
+
+      districts: [],
+      locationType: [],
+      thanas: [],
+      cities: [],
+      unions: [],
+      city_thanas: [],
+      district_pouros: [],
+
 
       pagination: {
         current: 1,
@@ -231,40 +288,239 @@ export default {
     ValidationObserver,
   },
   computed: {
+    ...mapState({
+      divisions: (state) => state.Division.divisions,
+
+
+    }),
     headers() {
       return [
-      
-        { text: this.$t("container.list.code"), value: "code" },
         {
           text: this.$t(
-            "container.system_config.demo_graphic.division.name_en"
+            "container.application_selection.application.applicant_id"
           ),
-          value: "name_en",
+          value: "",
         },
         {
           text: this.$t(
-            "container.system_config.demo_graphic.division.name_bn"
+            "container.application_selection.application.program"
           ),
-          value: "name_bn",
+          value: "100",
         },
         {
-          text: this.$t("container.list.action"),
-          value: "actions",
-          align: "center",
-          sortable: false,
+          text: this.$t("container.list.name_en"),
+          value: "1",
+
         },
+        {
+          text: this.$t("container.list.name_bn"),
+          value: "2",
+
+        },
+        {
+          text: this.$t("container.application_selection.application.father_name_en"),
+          value: "3",
+
+        },
+        {
+          text: this.$t("container.application_selection.application.father_name_bn"),
+          value: "4",
+
+        },
+        {
+          text: this.$t("container.application_selection.application.mother_name_en"),
+          value: "5",
+
+        },
+        {
+          text: this.$t("container.application_selection.application.mother_name_bn"),
+          value: "6",
+
+        },
+        {
+          text: this.$t("container.application_selection.application.spouse_name_en"),
+          value: "7",
+
+        },
+        {
+          text: this.$t("container.application_selection.application.spouse_name_bn"),
+          value: "8",
+
+        },
+        {
+          text: this.$t("container.application_selection.application.union_pourashava"),
+          value: "9",
+
+        },
+        {
+          text: this.$t("container.system_config.demo_graphic.ward.ward"),
+          value: "13",
+
+        },
+        {
+          text: this.$t("container.application_selection.application.village"),
+          value: "10",
+
+        },
+        {
+          text: this.$t("container.application_selection.application.mobile"),
+          value: "11",
+
+        },
+        {
+          text: this.$t("container.list.status"),
+          value: "12",
+
+        },
+
+
+
       ];
     },
+    headers_start() {
+      return [
+        { text: this.$t("container.list.sl"), value: "sl" },
+        {
+          text: this.$t("container.list.name_en"),
+          value: "200",
+
+        },
+        {
+          text: this.$t(
+            "container.application_selection.application.program"
+          ),
+          value: "100",
+        },
+        {
+          text: this.$t("container.application_selection.application.mobile"),
+          value: "11",
+
+        },
+        {
+          text: this.$t("container.list.status"),
+          value: "12",
+
+        },
+        { text: this.$t("container.list.action"), value: "actions" },
+
+      ];
+    },
+
+
 
 
   },
 
   methods: {
+    ...mapActions({
+      GetAllDivisions: "Division/GetAllDivisions",
 
 
+    }),
 
+    async onChangeDivision(event) {
+      await this.$axios
+        .get(`/admin/district/get/${event}`, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
+          this.districts = result.data.data;
+        });
+    },
+    async onChangeDistrict(event) {
+      await this.$axios
+        .get(`/admin/thana/get/${event}`, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
+          this.LocationType(this.data.location_type);
+          this.thanas = result.data.data;
+        });
+    },
 
+    async LocationType($event) {
+      if (this.data.district_id != null && this.data.location_type != null) {
+        if ($event === 2) {
+          await this.$axios
+            .get(`/admin/thana/get/${this.data.district_id}`, {
+              headers: {
+                Authorization: "Bearer " + this.$store.state.token,
+                "Content-Type": "multipart/form-data",
+              },
+            })
+            .then((result) => {
+              this.thanas = result.data.data;
+            });
+        }
+        if ($event === 3) {
+          await this.$axios
+            .get("/admin/city/get/" + this.data.district_id + "/" + $event, {
+              headers: {
+                Authorization: "Bearer " + this.$store.state.token,
+                "Content-Type": "multipart/form-data",
+              },
+            })
+            .then((result) => {
+              this.cities = result.data.data;
+            });
+        }
+        if ($event === 1) {
+          await this.$axios
+            .get("/admin/city/get/" + this.data.district_id + "/" + $event, {
+              headers: {
+                Authorization: "Bearer " + this.$store.state.token,
+                "Content-Type": "multipart/form-data",
+              },
+            })
+            .then((result) => {
+              this.district_pouros = result.data.data;
+            });
+        }
+      }
+    },
 
+    async onChangeThana(event) {
+      await this.$axios
+        .get(`/admin/union/get/${event}`, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
+          this.unions = result.data.data;
+        });
+    },
+    async onChangeCity(event) {
+      await this.$axios
+        .get(`/admin/thana/get/city/${this.data.city_id}`, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
+          this.city_thanas = result.data.data;
+        });
+    },
+    async onChangeUpazila(event) {
+      await this.$axios
+        .get(`/admin/union/get/${this.data.thana_id}`, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
+          this.unions = result.data.data;
+        });
+    },
 
 
     onPageChange($event) {
@@ -278,20 +534,8 @@ export default {
         perPage: this.pagination.perPage,
         page: this.pagination.current,
       };
-      this.$axios
-        .get("/admin/division/get", {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-          params: queryParams,
-        })
-        .then((result) => {
-          this.divisions = result.data.data;
-          this.pagination.current = result.data.meta.current_page;
-          this.pagination.total = result.data.meta.last_page;
-          this.pagination.grand_total = result.data.meta.total;
-        });
+
+
     },
 
     updateHeaderTitle() {
@@ -304,15 +548,26 @@ export default {
   watch: {
     "$i18n.locale": "updateHeaderTitle",
     value(val) {
-      this.selectedHeaders = val;
+      // this.selectedHeaders = val;
+      this.selectedHeaders = [{ text: this.$t("container.list.sl"), value: "sl" }, ...val, { text: this.$t("container.list.action"), value: "actions" }];
+
+
     }
   },
   created() {
     this.GetApplication();
-    this.selectedHeaders = this.headers;
+
+
   },
   beforeMount() {
     this.updateHeaderTitle();
   },
+  mounted() {
+    this.selectedHeaders = this.headers_start
+    this.GetAllDivisions();
+    this.$store
+      .dispatch("getLookupByType", 1)
+      .then((res) => (this.locationType = res));
+  }
 };
 </script>

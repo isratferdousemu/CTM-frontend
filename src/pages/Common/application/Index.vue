@@ -693,7 +693,7 @@
     </v-col>
       <v-col>
          <ValidationProvider name="Mobile Number" vid="mobile_number"
-                                                            rules="required" v-slot="{ errors }">
+                                                            v-slot="{ errors }">
                                                                  <label style="display: inline-block">Mobile Number  </label><span style="margin-left: 4px; color: red">*</span>
                                                                       
                                                             <v-text-field v-model="data.mobile_number" outlined clearable
@@ -701,9 +701,24 @@
                                            
                                                             </v-text-field>
                                                             </ValidationProvider> 
-      </v-col>
+                                                               <ValidationProvider name="Email" vid="Email"
+                                                                    rules="required" v-slot="{ errors }">
+                                                                         <label style="display: inline-block">Email  </label><span style="margin-left: 4px; color: red">*</span>
+                                                                      
+                                                                    <v-text-field v-model="data.email" outlined clearable type="email"
+                                                                        :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                           
+                                                                    </v-text-field>
+                                                                    </ValidationProvider> 
+                                                                   
+        </v-col>
+    
+          
+      
 
 </v-row>
+      <p class="red--text  mt-2">   Must have active Nagad / Bkash account where applicable. </p>
+ 
                                     </v-expansion-panel-content>
                                 </v-expansion-panel>
                                 <!-- Expansion panel 5 End -->
@@ -886,7 +901,7 @@ Birth Registration Number" vid="nominee_nid" v-slot="{ errors }">
                                                 <v-text-field outlined>
                                                 </v-text-field>
 
-                                                <label>How many Does your kitchen have
+                                                <label>How many Does your house have
                                                     electricity connection?</label>
                                                 <span style="margin-left: 4px; color: red">*</span>
                                                 <v-select outlined :items="yes_no">
@@ -1120,6 +1135,7 @@ export default {
                 Location: null,
                 post_code: null,
                 mobile: null,
+                email:null,
                 address: null,
                 locationType: null,
                 permanent_division: null,

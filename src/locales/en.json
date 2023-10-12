@@ -19,7 +19,7 @@
             "forward": "Forward",
             "waiting": "waiting",
             "reject": "Reject",
-
+            "status":"Status",
             "code": "Code",
             "name_en": "Name English",
             "name_bn": "Name Bangla",
@@ -186,7 +186,22 @@
                    "application": "Application",
                     "list": "Application List",
                     "search": "Application List Search",
-                    "update_status": "Application Status Update"
+                    "update_status": "Application Status Update",
+                    "program":"Program",
+                    "list_type":"List type",
+                    "remark":"Remark",
+                    "forward_to_committee":"Forward to Committee",
+                    "select_column":"Select Column",
+                    "applicant_id":"Applicant ID",
+                    "father_name_en":"Father Name (English)",
+                    "father_name_bn": "Father Name (Bangla)",
+                    "mother_name_en":"Mother Name (English)",
+                    "mother_name_bn": "Mother Name (Bangla)",
+                    "spouse_name_en":"Spouse Name (English)",
+                    "spouse_name_bn": "Spouse Name (Bangla)",
+                    "union_pourashava":"Union Pourashava",
+                    "village":"Village",
+                    "mobile":"Mobile"
                 }
             
             

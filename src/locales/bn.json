@@ -15,6 +15,7 @@
             "view": "দেখুন",
             "search": "খুঁজুন",
             "reset": "রিসেট",
+            "status": "স্ট্যাটাস",
             "forward": "ফরওয়ার্ড",
             "waiting": "অপেক্ষেয়মান ",
             "reject": "প্রত্যাখ্যান",
@@ -179,10 +180,25 @@
         },
         "application_selection": {
             "application": {
-                "application": "Application",
+                "application": "আবেদন",
                 "list": "আবেদনের তালিকা ",
                 "search": "আবেদন খুঁজন",
-                "update_status": "আবেদন স্ট্যাটাস আপডেট"
+                "update_status": "আবেদন স্ট্যাটাস আপডেট",
+                "program": "কর্মসূচী",
+                "list_type": "তালিকার ধরন",
+                "remark": "মন্তব্য",
+                "forward_to_committee": "কমিটিতে ফরোয়ার্ড",
+                "select_column": "কলাম নির্বাচন করুন",
+                "applicant_id": "আবেদনকারী আইডি",
+                "father_name_en": "বাবার নাম (ইংরেজিতে)",
+                "father_name_bn": "বাবার নাম (বাংলায়)",
+                "mother_name_en": "মায়ের নাম (ইংরেজিতে)",
+                "mother_name_bn": "মায়ের নাম (বাংলায়)",
+                "spouse_name_en": "স্বামী/স্ত্রীর নাম (ইংরেজিতে)",
+                "spouse_name_bn": "স্বামী/স্ত্রীর নাম (বাংলায়)",
+                "union_pourashava": "ইউনিয়ন পৌরসভা",
+                "village": "গ্রাম",
+                "mobile": "মোবাইল"
             }
         }
     }
