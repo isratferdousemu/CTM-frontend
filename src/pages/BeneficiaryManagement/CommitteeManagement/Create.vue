@@ -414,8 +414,6 @@
                       ><h4>Add More Committee Member Info</h4></v-card-title
                     >
                     <v-divider></v-divider>
-                    <!-- {{ errors }}
-{{ errors['members.0.phone'] }} -->
                     <div class="wrapper mt-5">
                       <div>
                         <div

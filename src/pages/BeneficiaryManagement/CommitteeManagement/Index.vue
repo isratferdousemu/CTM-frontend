@@ -87,6 +87,25 @@
                               elevation="0"
                               :to="`/beneficiary-management/committee/edit/${item.id}`"
                             >
+                              <v-icon> mdi-eye-circle-outline </v-icon>
+                            </v-btn>
+                          </template>
+                          <span>
+                            {{ $t("container.list.edit") }}
+                          </span>
+                        </v-tooltip>
+                        
+                        <v-tooltip top>
+                          <template v-slot:activator="{ on }">
+                            <v-btn
+                              v-can="'update-post'"
+                              fab
+                              x-small
+                              v-on="on"
+                              color="success"
+                              elevation="0"
+                              :to="`/beneficiary-management/committee/edit/${item.id}`"
+                            >
                               <v-icon> mdi-account-edit-outline </v-icon>
                             </v-btn>
                           </template>
