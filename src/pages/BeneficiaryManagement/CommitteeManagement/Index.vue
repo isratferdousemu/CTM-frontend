@@ -1,134 +1,351 @@
-
 <template>
-  <div id="menu">
+  <div id="division">
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
-        <v-row wrap>
+        <v-row>
           <v-col cols="12">
-            <v-card>
-              <v-row>
-                <v-col col="6">
-                  <v-card-title><h3>Menu Lists</h3></v-card-title>
-                </v-col>
-              </v-row>
-
-              <v-divider></v-divider>
-
+            <v-card
+              elevation="10"
+              color="white"
+              rounded="md"
+              theme="light"
+              class="mb-8"
+            >
+              <v-card-title class="justify-center" tag="div">
+                <h3 class="text-uppercase pt-3">
+                  {{ $t("container.system_config.demo_graphic.committee.list") }}
+                </h3>
+              </v-card-title>
               <v-card-text>
-                <v-card-title class="mb-5">
+                <v-row
+                  class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
+                  justify="center"
+                  justify-lg="space-between"
+                >
                   <div class="d-flex justify-sm-end flex-wrap">
                     <v-text-field
-                      v-model="search"
-                      append-icon="mdi-magnify"
-                      label="Search"
-                      hide-details
-                      class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal"
-                      flat
+                      @keyup.native="GetCommittee"
                       outlined
                       dense
-                    ></v-text-field>
+                      v-model="search"
+                      prepend-inner-icon="mdi-magnify"
+                      class="my-sm-0 my-3 mx-0v -input--horizontal"
+                      flat
+                      variant="outlined"
+                      :label="
+                        $t(
+                          'container.system_config.demo_graphic.committee.search'
+                        )
+                      "
+                      hide-details
+                      color="primary"
+                    >
+                    </v-text-field>
                   </div>
-
-                  <v-spacer></v-spacer>
-
                   <v-btn
-                    medium
+                    to="/beneficiary-management/committee/create"
                     flat
                     color="primary"
-                    router
-                    to="/beneficiary-management/committee/create"
+                    prepend-icon="mdi-account-multiple-plus"
                   >
-                    <v-icon small left>mdi-plus</v-icon>
-                    <span>Add New</span>
+                    {{ $t("container.list.add_new") }}
                   </v-btn>
-                </v-card-title>
+                  <v-col cols="12">
+                    <v-data-table
+                      :loading="loading"
+                      item-key="id"
+                      :headers="headers"
+                      :items="divisions"
+                      :items-per-page="pagination.perPage"
+                      hide-default-footer
+                      class="elevation-0 transparent row-pointer"
+                    >
+                      <template v-slot:item.id="{ item, index }">
+                        {{
+                          (pagination.current - 1) * pagination.perPage +
+                          index +
+                          1
+                        }}
+                      </template>
+                      <template v-slot:item.name_en="{ item }">
+                        {{ item.name_en }}
+                      </template>
+                      <template v-slot:item.name_bn="{ item }">
+                        {{ item.name_bn }}
+                      </template>
 
-                <v-card-subtitle>
-                  <v-data-table
-                    :headers="headers"
-                    :items="menus"
-                    :search="search"
-                    :options.sync="options"
-                    :server-items-length="totalMenus"
-                    :loading="loading"
-                    :footer-props="{
-                      'items-per-page-options': [1, 10, 20, 30, 40, 50],
-                    }"
-                    dense
-                    class="elevation-1"
-                  >
-                    <template v-slot:[`item.parent_id`]="{ item }">
-                      <span v-if="item.parent_id == null"> --- </span>
-                      <span v-else>
-                        <span v-if="item.parent_id != null">
-                          <div v-for="parent in parents" :key="parent.id">
-                            <span v-if="item.parent_id === parent.id">{{
-                              parent.label_name_en
-                            }}</span>
-                          </div>
-                        </span>
-                      </span>
-                    </template>
+                      <!-- Action Button -->
+                      <template v-slot:item.actions="{ item }">
+                        <v-tooltip top>
+                          <template v-slot:activator="{ on }">
+                            <v-btn
+                              v-can="'update-post'"
+                              fab
+                              x-small
+                              v-on="on"
+                              color="success"
+                              elevation="0"
+                              :to="`/beneficiary-management/committee/edit/${item.id}`"
+                            >
+                              <v-icon> mdi-account-edit-outline </v-icon>
+                            </v-btn>
+                          </template>
+                          <span>
+                            {{ $t("container.list.edit") }}
+                          </span>
+                        </v-tooltip>
 
-                    <template v-slot:[`item.link`]="{ item }">
-                      <span v-if="item.link != null">
-                        {{ item.link }}
-                      </span>
-                      <span v-else> --- </span>
-                    </template>
+                        <v-tooltip top>
+                          <template v-slot:activator="{ on }">
+                            <v-btn
+                              v-can="'delete-division'"
+                              fab
+                              x-small
+                              v-on="on"
+                              color="grey"
+                              class="ml-3 white--text"
+                              elevation="0"
+                              @click="deleteAlert(item.id)"
+                            >
+                              <v-icon> mdi-delete </v-icon>
+                            </v-btn>
+                          </template>
+                          <span> {{ $t("container.list.delete") }}</span>
+                        </v-tooltip>
+                      </template>
+                      <!-- End Action Button -->
 
-                    <template v-slot:[`item.actions`]="{ item }">
-                      <v-tooltip top>
-                        <template v-slot:activator="{ on }">
-                          <v-btn
-                            fab
-                            x-small
-                            color="success"
-                            v-on="on"
-                            router
-                            :to="`/system-configuration/menu/edit/${item.id}`"
-                          >
-                            <v-icon>mdi-account-edit-outline</v-icon>
-                          </v-btn>
-                        </template>
-                        <span>Edit</span>
-                      </v-tooltip>
-
-                      <v-tooltip top>
-                        <template v-slot:activator="{ on }">
-                          <v-btn
-                            fab
-                            x-small
-                            color="grey"
-                            class="ml-3 white--text"
-                            v-on="on"
-                            @click="deleteAlert(item.id)"
-                          >
-                            <v-icon>mdi-delete</v-icon>
-                          </v-btn>
-                        </template>
-                        <span>Delete</span>
-                      </v-tooltip>
-                    </template>
-                  </v-data-table>
-                </v-card-subtitle>
+                      <template v-slot:footer="item">
+                        <div
+                          class="text-center pt-2 v-data-footer justify-center pb-2"
+                        >
+                          <v-select
+                            style="
+                              position: absolute;
+                              right: 25px;
+                              width: 149px;
+                              transform: translate(0px, 0px);
+                            "
+                            :items="items"
+                            hide-details
+                            dense
+                            outlined
+                            @change="onPageChange"
+                            v-model="pagination.perPage"
+                          ></v-select>
+                          <v-pagination
+                            circle
+                            primary
+                            v-model="pagination.current"
+                            :length="pagination.total"
+                            @input="onPageChange"
+                            :total-visible="11"
+                            class="custom-pagination-item"
+                          ></v-pagination>
+                        </div>
+                      </template>
+                    </v-data-table>
+                  </v-col>
+                </v-row>
               </v-card-text>
             </v-card>
           </v-col>
         </v-row>
       </v-col>
 
+      <!-- division add modal  -->
+      <v-dialog v-model="dialogAdd" width="650">
+        <v-card style="justify-content: center; text-align: center">
+          <v-card-title class="font-weight-bold justify-center">
+            {{ $t("container.system_config.demo_graphic.committee.add_new") }}
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text class="mt-7">
+            <ValidationObserver ref="formAdd" v-slot="{ invalid }">
+              <form @submit.prevent="submitCommittee()">
+                <!-- {{errors.code}}
+                  {{errors.name_en}} -->
+
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  name="Code"
+                  vid="code"
+                  rules="required"
+                >
+                  <v-text-field
+                    outlined
+                    type="text"
+                    v-model="data.code"
+                    :label="$t('container.list.code')"
+                    required
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
+                    >></v-text-field
+                  >
+                </ValidationProvider>
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  name="Name English"
+                  vid="name_en"
+                  rules="required"
+                >
+                  <v-text-field
+                    outlined
+                    type="text"
+                    v-model="data.name_en"
+                    :label="$t('container.list.name_en')"
+                    required
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
+                    >></v-text-field
+                  >
+                </ValidationProvider>
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  name="Name Bangla"
+                  vid="name_bn"
+                  rules="required"
+                >
+                  <v-text-field
+                    outlined
+                    type="text"
+                    v-model="data.name_bn"
+                    :label="$t('container.list.name_bn')"
+                    required
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
+                    >></v-text-field
+                  >
+                </ValidationProvider>
+
+                <v-row class="mx-0 my-0 py-2" justify="center">
+                  <v-btn
+                    flat
+                    @click="dialogAdd = false"
+                    outlined
+                    class="custom-btn-width py-2 mr-10"
+                  >
+                    {{ $t("container.list.cancel") }}
+                  </v-btn>
+                  <v-btn
+                    type="submit"
+                    flat
+                    color="primary"
+                    :disabled="invalid"
+                    :loading="loading"
+                    class="custom-btn-width warning white--text py-2"
+                  >
+                    {{ $t("container.list.submit") }}
+                  </v-btn>
+                </v-row>
+              </form>
+            </ValidationObserver>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+      <!-- division add modal  -->
+
+      <!-- division Edit modal  -->
+      <v-dialog v-model="dialogEdit" width="650">
+        <v-card style="justify-content: center; text-align: center">
+          <v-card-title class="font-weight-bold justify-center">
+            {{ $t("container.system_config.demo_graphic.committee.edit") }}
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text class="mt-7">
+            <ValidationObserver ref="formEdit" v-slot="{ invalid }">
+              <form @submit.prevent="updateCommittee()">
+                <!-- {{errors.code}}
+                  {{errors.name_en}} -->
+
+                <ValidationProvider
+                  name="Code"
+                  vid="code"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
+                  <v-text-field
+                    outlined
+                    type="text"
+                    v-model="data.code"
+                    :label="$t('container.list.code')"
+                    required
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
+                  ></v-text-field>
+                </ValidationProvider>
+                <ValidationProvider
+                  name="Name English"
+                  vid="name_en"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
+                  <v-text-field
+                    outlined
+                    type="text"
+                    v-model="data.name_en"
+                    :label="$t('container.list.name_en')"
+                    required
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
+                  ></v-text-field>
+                </ValidationProvider>
+                <ValidationProvider
+                  name="Name Bangla"
+                  vid="name_bn"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
+                  <v-text-field
+                    outlined
+                    type="text"
+                    v-model="data.name_bn"
+                    :label="$t('container.list.name_bn')"
+                    required
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
+                  ></v-text-field>
+                </ValidationProvider>
+
+                <v-row class="mx-0 my-0 py-2" justify="center">
+                  <v-btn
+                    flat
+                    @click="dialogEdit = false"
+                    outlined
+                    class="custom-btn-width py-2 mr-10"
+                  >
+                    {{ $t("container.list.cancel") }}
+                  </v-btn>
+                  <v-btn
+                    type="submit"
+                    flat
+                    color="primary"
+                    :disabled="invalid"
+                    :loading="loading"
+                    class="custom-btn-width primary white--text py-2"
+                  >
+                    {{ $t("container.list.update") }}
+                  </v-btn>
+                </v-row>
+              </form>
+            </ValidationObserver>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+      <!-- division Edit modal  -->
+
       <!-- delete modal  -->
       <v-dialog v-model="deleteDialog" width="350">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            Delete Device
+            {{ $t("container.system_config.demo_graphic.committee.delete") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
-              Are you sure to delete this Device? Division all information will
-              be deleted.
+              {{
+                $t("container.system_config.demo_graphic.committee.delete_alert")
+              }}
             </div>
           </v-card-text>
           <v-card-actions style="display: block">
@@ -139,16 +356,16 @@
                 outlined
                 class="custom-btn-width py-2 mr-10"
               >
-                Cancel
+                {{ $t("container.list.cancel") }}
               </v-btn>
               <v-btn
                 text
-                @click="deleteMenu"
+                @click="deleteCommittee()"
                 color="white"
                 :loading="delete_loading"
                 class="custom-btn-width warning white--text py-2"
               >
-                Delete
+                {{ $t("container.list.delete") }}
               </v-btn>
             </v-row>
           </v-card-actions>
@@ -159,115 +376,275 @@
   </div>
 </template>
   
-  <style scoped></style>
-  
+  <script>
+import { mapState } from "vuex";
+import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
+import { required } from "vee-validate/dist/rules";
 
-<script>
-import { mapActions, mapState } from "vuex";
-import { http } from "@/hooks/httpService";
-
+extend("required", required);
 export default {
   name: "Index",
-  title: "CTM - Menu",
+  title: "CTM - Committees",
   data() {
     return {
-      totalMenus: 0,
-      menus: [],
-      loading: true,
-      options: {},
-      search: "",
+      data: {
+        id: null,
+        code: null,
+        name_en: null,
+        name_bn: null,
+      },
+      dialogAdd: false,
       deleteDialog: false,
+      dialogEdit: false,
       delete_loading: false,
-      deleted_id: "",
+      loading: false,
+      search: "",
+      delete_id: "",
+      divisions: [],
+      errors: {},
+      error_status: {},
+      pagination: {
+        current: 1,
+        total: 0,
+        perPage: 10,
+      },
+      items: [5, 10, 15, 20, 40, 50, 100],
     };
   },
-
-  watch: {
-    options: {
-      handler() {
-        this.getAllMenus();
-      },
-      deep: true,
-    },
-
-    search: {
-      handler() {
-        this.getAllMenus();
-      },
-    },
+  components: {
+    ValidationProvider,
+    ValidationObserver,
   },
-
   computed: {
     headers() {
       return [
-        { text: "#Sl", value: "id", align: "start", sortable: false },
-        { text: "Label Name English", value: "label_name_en" },
-        { text: "Label Name Bangla", value: "label_name_bn" },
-        { text: "Parent", value: "parent_id" },
-        { text: "Link", value: "link" },
+        { text: "#Sl", value: "id", align: "start", sortable: true },
+        { text: "code", value: "code" },
+        { text: "Name", value: "name" },
+        { text: "Program", value: "program.name_en" },
+        { text: "Details", value: "details" },
         { text: "Actions", value: "actions", align: "center", sortable: false },
       ];
     },
 
     ...mapState({
-      parents: (state) => state.Menu.parents,
-      message: (state) => state.Menu.success_message,
+      message: (state) => state.committee.success_message,
+      divisions: (state) => state.committee.divisions,
+      // errors: (state) => state.committee.errors,
+      // error_status: (state) => state.committee.error_status,
     }),
-  },
-
-  mounted() {
-    this.GetAllParents();
   },
 
   methods: {
-    ...mapActions({
-      GetAllParents: "Menu/GetAllParents",
-    }),
-
-    getAllMenus() {
-      this.loading = true;
-
-      const { sortBy, sortDesc, page, itemsPerPage } = this.options;
-
-      http()
-        .get("/admin/menu/get", {
-          params: {
-            sortBy: sortBy[0],
-            sortDesc: sortDesc[0],
-            page: page,
-            itemsPerPage: itemsPerPage,
-            search: this.search,
-          },
-        })
-        .then((result) => {
-          this.menus = result.data.data;
-          this.totalMenus = result.data.total;
-          this.loading = false;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    createDialog() {
+      if (this.$refs.formAdd) {
+        this.$refs.formAdd.reset();
+      }
+      this.resetForm();
+      this.dialogAdd = true;
     },
+    checkLanguage() {
+      // let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
+      // let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
+      // if (
+      //   checkLanguageBangla != "Bangla" &&
+      //   checkLanguageEnglish != "English"
+      // ) {
+      //   let errs = {
+      //     name_bn: ["Please Enter in Bangla Language in this Field"],
+      //     name_en: ["Please Enter in English Language in this Field"],
+      //   };
+      //   this.$refs.form.setErrors(errs);
+      //   return false;
+      // } else if (checkLanguageBangla != "Bangla") {
+      //   let errs = {
+      //     name_bn: ["Please Enter in Bangla Language in this Field"],
+      //   };
+      //   this.$refs.form.setErrors(errs);
+      //   return false;
+      // } else if (checkLanguageEnglish != "English") {
+      //   let errs = {
+      //     name_en: ["Please Enter in English Language in this Field"],
+      //   };
+      //   this.$refs.form.setErrors(errs);
+      //   return false;
+      // } else {
+      //   return true;
+      // }
 
-    deleteAlert(id) {
-      this.deleteDialog = true;
-      this.deleted_id = id;
+      let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
+      let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
+
+      console.log(checkLanguageEnglish);
+      console.log(checkLanguageBangla);
+      let errs = {};
+
+      if (
+        checkLanguageBangla !== "Bangla" &&
+        checkLanguageBangla !== "BanglaSpecialChar"
+      ) {
+        errs.name_bn = ["Please Enter in Bangla Language in this Field"];
+      }
+
+      if (checkLanguageEnglish != "English") {
+        errs.name_en = ["Please Enter in English Language in this Field"];
+      }
+
+      if (Object.keys(errs).length > 0) {
+        if (this.$refs.formAdd) {
+          this.$refs.formAdd.setErrors(errs);
+        }
+        if (this.$refs.formEdit) {
+          this.$refs.formEdit.setErrors(errs);
+        }
+
+        return false;
+      }
+
+      return true;
     },
+    validator() {
+      let fd = new FormData();
+      for (const [key, value] of Object.entries(this.data)) {
+        if (value !== null) {
+          fd.append(key, value);
+        }
+      }
+      return fd;
+    },
+    submitCommittee() {
+      if (!this.checkLanguage()) {
+        return;
+      }
 
-    deleteMenu: async function () {
       try {
-        let id = this.deleted_id;
-        await this.$store.dispatch("Menu/DestroyMenu", id).then(() => {
-          this.getAllMenus();
-          this.$store.dispatch("getAllMenus");
-
-          this.deleteDialog = false;
-          this.$toast.success(this.message);
-        });
+        this.$store
+          .dispatch("Committee/StoreCommittee", this.validator())
+          .then((res) => {
+            if (res.data?.success) {
+              this.$toast.success("Data Inserted Successfully");
+              this.resetForm();
+              this.dialogAdd = false;
+              this.GetCommittee();
+            } else if (res.response?.data?.errors) {
+              console.log(res.response.data.errors);
+              this.$refs.formAdd.setErrors(res.response.data.errors);
+            }
+          });
       } catch (e) {
         console.log(e);
       }
     },
+    editDialog(item) {
+      this.dialogEdit = true;
+      this.data.code = item.code;
+      this.data.name_en = item.name_en;
+      this.data.name_bn = item.name_bn;
+      this.data.id = item.id;
+      this.errors = {};
+    },
+    updateCommittee() {
+      if (!this.checkLanguage()) {
+        return;
+      }
+
+      try {
+        this.$store
+          .dispatch("Committee/UpdateCommittee", this.validator())
+          .then((data) => {
+            console.log(data, "update");
+            if (data == null) {
+              this.$toast.success("Data Updated Successfully");
+              this.dialogEdit = false;
+              this.resetForm();
+              this.GetCommittee();
+            } else {
+              this.$refs.formEdit.setErrors(data.errors);
+            }
+          });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    resetForm() {
+      // Reset the form data
+      this.data = {
+        code: "",
+        name_en: "",
+        name_bn: "",
+        // Reset other form fields
+      };
+      this.errors = {};
+    },
+
+    onPageChange($event) {
+      // this.pagination.current = $event;
+      this.GetCommittee();
+    },
+
+    async GetCommittee() {
+      const queryParams = {
+        searchText: this.search,
+        perPage: this.pagination.perPage,
+        page: this.pagination.current,
+      };
+      this.$axios
+        .get("/admin/committee/get", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          this.divisions = result.data.data;
+          this.pagination.current = result.data.meta.current_page;
+          this.pagination.total = result.data.meta.last_page;
+          this.pagination.grand_total = result.data.meta.total;
+        });
+    },
+    deleteCommittee: async function () {
+      try {
+        await this.$store
+          .dispatch("BeneficiaryManagement/DestroyCommittee", this.delete_id)
+          .then((res) => {
+            // check if the request was successful
+            if (res?.data?.success) {
+              this.$toast.error(res.data.message);
+            } else {
+              this.$toast.error(res.response.data.message);
+            }
+            this.deleteDialog = false;
+            this.GetCommittee();
+          })
+          .catch((error) => {
+            console.log(error, "error");
+          });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    deleteAlert(id) {
+      this.data.id = id;
+      // alert(JSON.stringify(id));
+      this.deleteDialog = true;
+      this.delete_id = id;
+    },
+    updateHeaderTitle() {
+      const title = this.$t(
+        "container.system_config.demo_graphic.committee.list"
+      );
+      this.$store.commit("setHeaderTitle", title);
+    },
+  },
+  watch: {
+    "$i18n.locale": "updateHeaderTitle",
+  },
+  created() {
+    this.GetCommittee();
+  },
+  beforeMount() {
+    this.updateHeaderTitle();
   },
 };
 </script>

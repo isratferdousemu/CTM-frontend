@@ -1,7 +1,7 @@
 const BeneficiaryManagementRoutes = [
     {
         path: "/beneficiary-management/committee",
-        name: "Thana",
+        name: "Committee-List",
         meta: {
           requiresAuth: true,
           permission: "thana-list",
@@ -13,7 +13,7 @@ const BeneficiaryManagementRoutes = [
       },
     {
         path: "/beneficiary-management/committee/create",
-        name: "Thana",
+        name: "Committee-Create",
         meta: {
           requiresAuth: true,
           permission: "thana-list",
@@ -25,7 +25,7 @@ const BeneficiaryManagementRoutes = [
       },
     {
         path: "/beneficiary-management/committee/edit/:id",
-        name: "Thana",
+        name: "Committee-Edit",
         meta: {
           requiresAuth: true,
           permission: "thana-list",
