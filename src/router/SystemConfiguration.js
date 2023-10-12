@@ -141,7 +141,7 @@ const SystemConfigurationRoutes = [
 
     /*Office information route start*/
   {
-    path: "/system-configuration/office_information",
+    path: "/system-configuration/office",
     name: "OfficeInformation",
     meta: {
       requiresAuth: true,
@@ -150,7 +150,7 @@ const SystemConfigurationRoutes = [
     component: () => import("../pages/SystemConfiguration/office_information/Index.vue")
   },
   {
-    path: "/system-configuration/office_information/create",
+    path: "/system-configuration/office/create",
     name: "OfficeInformationCreate",
     meta: {
       requiresAuth: true,
@@ -159,7 +159,7 @@ const SystemConfigurationRoutes = [
     component: () => import("../pages/SystemConfiguration/office_information/Create.vue")
   },
   {
-    path: "/system-configuration/office_information/edit/:id",
+    path: "/system-configuration/office/edit/:id",
     name: "OfficeInformationEdit",
     meta: {
       requiresAuth: true,
@@ -221,6 +221,16 @@ const SystemConfigurationRoutes = [
     },
     component: () => import("../pages/SystemConfiguration/user_management/users/index.vue")
   },
+  {
+    path: "/system-configuration/financial",
+    name: "financial_year_list",
+    meta: {
+      requiresAuth: true,
+      permission: "financial-year-list",
+    },
+    component: () => import("../pages/SystemConfiguration/financial_year/Index.vue")
+  },
+ 
     /*user management/ users route start*/
 
     /*allowance program route start*/

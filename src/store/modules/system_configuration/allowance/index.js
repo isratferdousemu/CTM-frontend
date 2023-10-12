@@ -12,6 +12,8 @@ const state = {
     allowanceAmount: [],
     allowanceField: [],
     additionalFields: [],
+    genders: [],
+    genderTypes: [],
     success_message: "",
     errors: {},
     error_message: "",
@@ -32,6 +34,18 @@ const mutations = {
     },
     /*get all additional field end*/
 
+    /*get all gender lookup start*/
+    GET_ALL_LOOKUP_GENDER: (state, data) => {
+        state.genders = data.data;
+    },
+    /*get all gender lookup end*/
+
+    /*get all gender lookup start*/
+    GET_ALL_LOOKUP_GENDER_TYPE: (state, data) => {
+        state.genderTypes = data.data;
+    },
+    /*get all gender lookup end*/
+
     /*store allowance program start*/
     STORE_ALLOWANCE_PROGRAM: (state, data) => {
         if (state.allowanceProgrames.push(data.data)) {
@@ -51,6 +65,7 @@ const mutations = {
         state.allowanceField = data.allowance_field;
         state.allowanceAge = data.allowance_age_limit;
         state.allowanceAmount = data.allowance_amount;
+        state.allowanceGender = data.allowance_gender;
     },
     /*edit allowance program end*/
 
@@ -64,8 +79,12 @@ const mutations = {
         } else {
             state.success_message = "";
         }
-    }
+    },
     /*update allowance program end*/
+
+    updateValue: (state, data) => {
+        state.allowanceField = data;
+    }
 };
 
 /* -------------------------------------------------------------------------- */
@@ -83,6 +102,30 @@ const actions = {
         })
     },
     /*Get All Additional Field end*/
+
+    /*Get lookup gender start*/
+    GerAllLookUpGender: ({commit}) => {
+        let type = 2;
+        return http().get(`/admin/lookup/get/${type}`).then((result) => {
+            commit('GET_ALL_LOOKUP_GENDER', result.data);
+            console.log(result);
+        }).catch((err) => {
+            console.log(err);
+        })
+    },
+    /*Get lookup gender end*/
+
+    /*Get lookup gender type start*/
+    GerAllLookUpGenderType: ({commit}) => {
+        let type = 20;
+        return http().get(`/admin/lookup/get/${type}`).then((result) => {
+            commit('GET_ALL_LOOKUP_GENDER_TYPE', result.data);
+            console.log(result);
+        }).catch((err) => {
+            console.log(err);
+        })
+    },
+    /*Get lookup gender type end*/
 
     /*store allowance program start*/
     StoreAllowanceProgram: ({commit}, data) => {

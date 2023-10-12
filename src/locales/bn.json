@@ -11,6 +11,14 @@
             "submit": "সাবমিট ",
             "cancel": "বাতিল",
             "edit": "সম্পাদনা",
+            "print": "প্রিন্ট",
+            "view": "দেখুন",
+            "search": "খুঁজুন",
+            "reset": "রিসেট",
+            "status": "স্ট্যাটাস",
+            "forward": "ফরওয়ার্ড",
+            "waiting": "অপেক্ষেয়মান ",
+            "reject": "প্রত্যাখ্যান",
             "code": "কোড",
             "name_en": "নাম ইংরেজিতে",
             "name_bn": "নাম বাংলায়",
@@ -180,6 +188,15 @@
                     "delete_alert": "Are you sure to delete this User?.",
                     "add_new": "Add New User",
                     "search": "Search User"
+                },
+           
+                "financial_year": {
+                    "financial_year": "আর্থিক বর্ষ",
+                    "list": "আর্থিক বর্ষের তালিকা ",
+                    "start_date": "Start date",
+                    "end_date": "শেষের তারিখ",
+                    "status": "স্ট্যাটাস",
+                    "search": "আর্থিক বর্ষ খুঁজন "
                 }
             }
         },
@@ -194,6 +211,29 @@
             "edit": "সাধারণ সেটিং সম্পাদনা করুন",
             "delete": "বিভাগ মুছুন",
             "delete_alert": "আপনি কি এই বিভাগটি মুছে ফেলার বিষয়ে নিশ্চিত?"
+        },
+        "application_selection": {
+            "application": {
+                "application": "আবেদন",
+                "list": "আবেদনের তালিকা ",
+                "search": "আবেদন খুঁজন",
+                "update_status": "আবেদন স্ট্যাটাস আপডেট",
+                "program": "কর্মসূচী",
+                "list_type": "তালিকার ধরন",
+                "remark": "মন্তব্য",
+                "forward_to_committee": "কমিটিতে ফরোয়ার্ড",
+                "select_column": "কলাম নির্বাচন করুন",
+                "applicant_id": "আবেদনকারী আইডি",
+                "father_name_en": "বাবার নাম (ইংরেজিতে)",
+                "father_name_bn": "বাবার নাম (বাংলায়)",
+                "mother_name_en": "মায়ের নাম (ইংরেজিতে)",
+                "mother_name_bn": "মায়ের নাম (বাংলায়)",
+                "spouse_name_en": "স্বামী/স্ত্রীর নাম (ইংরেজিতে)",
+                "spouse_name_bn": "স্বামী/স্ত্রীর নাম (বাংলায়)",
+                "union_pourashava": "ইউনিয়ন পৌরসভা",
+                "village": "গ্রাম",
+                "mobile": "মোবাইল"
+            }
         }
     }
 }
