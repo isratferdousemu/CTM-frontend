@@ -86,7 +86,7 @@ export default {
         <v-row>
           <v-col cols="12">
             <v-card>
-              <v-card-title><h3>Add Device</h3></v-card-title>
+              <v-card-title><h3>{{ $t('container.system_config.device.add') }}</h3></v-card-title>
 
               <v-divider></v-divider>
 
@@ -100,7 +100,9 @@ export default {
                             :items="users"
                             item-text="user_id"
                             item-value="id"
-                            label="Select User ID"
+                            :label="$t(
+                              'container.system_config.device.user_id'
+                            )"
                             menu-props="auto"
                             hide-details
                             persistent-hint
@@ -117,7 +119,9 @@ export default {
                         <v-text-field
                             type="text"
                             v-model="add_device.name"
-                            label="Enter User Name"
+                               :label="$t(
+                                 'container.system_config.device.user_name'
+                               )"
                             persistent-hint
                             outlined
                         ></v-text-field>
@@ -138,7 +142,9 @@ export default {
                             :items="device_types"
                             item-text="name"
                             item-value="id"
-                            label="Select Device Type"
+                               :label="$t(
+                                 'container.system_config.device.device_type'
+                               )"
                             menu-props="auto"
                             hide-details
                             persistent-hint
@@ -154,7 +160,9 @@ export default {
                         <v-text-field
                             type="text"
                             v-model="add_device.device_id"
-                            label="Enter Unique ID"
+                             :label="$t(
+                               'container.system_config.device.unique_id'
+                             )"
                             persistent-hint
                             outlined
                         ></v-text-field>
@@ -175,7 +183,9 @@ export default {
                         <v-text-field
                             type="text"
                             v-model="add_device.ip_address"
-                            label="Enter Ip Address"
+                               :label="$t(
+                                 'container.system_config.device.ip_address'
+                               )"
                             persistent-hint
                             outlined
                         ></v-text-field>
@@ -188,7 +198,9 @@ export default {
                         <v-text-field
                             type="text"
                             v-model="add_device.purpose_use"
-                            label="Enter Purpose of Use"
+                              :label="$t(
+                                'container.system_config.device.pupose_of_use'
+                              )"
                             persistent-hint
                             outlined
                         ></v-text-field>
@@ -206,14 +218,13 @@ export default {
                         class="custom-btn mr-2"
                         router
                         to="/system-configuration/device-registration"
-                    >Back
+                    >{{ $t('container.list.back') }}
                     </v-btn>
                     <v-btn
                         flat
                         color="success"
                         type="submit"
-                        class="custom-btn mr-2"
-                    >Submit
+                        class="custom-btn mr-2" > {{$t('container.list.submit')}}
                     </v-btn>
                   </v-row>
                 </v-form>

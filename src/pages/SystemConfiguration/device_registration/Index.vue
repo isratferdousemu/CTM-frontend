@@ -43,14 +43,14 @@ export default {
   computed: {
     headers() {
       return [
-        { text: "#Sl", value: "id", align: "start", sortable: false },
-        { text: "User ID", value: "user_id" },
-        { text: "User Name", value: "name" },
-        { text: "Device Type", value: "device_type" },
-        { text: "IP Address", value: "ip_address" },
-        { text: "Purpose of Use", value: "purpose_use" },
-        { text: "Status", value: "status" },
-        { text: "Actions", value: "actions", align: "center", sortable: false },
+        { text: this.$t('container.list.sl'), value: "id", align: "start", sortable: false },
+        { text: this.$t('container.system_config.device.user_id'), value: "user_id" },
+        { text: this.$t('container.system_config.device.user_name'), value: "name" },
+        { text: this.$t('container.system_config.device.device_type'), value: "device_type" },
+        { text: this.$t('container.system_config.device.ip_address'), value: "ip_address" },
+        { text: this.$t('container.system_config.device.pupose_of_use'), value: "purpose_use" },
+        { text: this.$t('container.list.status'), value: "status" },
+        { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false },
       ];
     },
 
@@ -127,7 +127,7 @@ export default {
             <v-card>
               <v-row>
                 <v-col col="6">
-                  <v-card-title><h3>Device Registration Lists</h3></v-card-title>
+                  <v-card-title><h3>{{ $t('container.system_config.device.list') }}</h3></v-card-title>
                 </v-col>
               </v-row>
 
@@ -140,7 +140,9 @@ export default {
                         @keyup.native="getAllDevices"
                         v-model="search"
                         append-icon="mdi-magnify"
-                        label="Search"
+                            :label="$t(
+                              'container.list.search'
+                            )"
                         hide-details
                         class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal"
                         flat
@@ -158,7 +160,8 @@ export default {
                       to="/system-configuration/device_registration/create"
                   >
                     <v-icon small left>mdi-plus</v-icon>
-                    <span>Add New</span>
+                    <span>{{     
+                    $t('container.list.add_new')}}</span>
                   </v-btn>
                 </v-card-title>
 
@@ -205,7 +208,7 @@ export default {
                             <v-icon>mdi-account-edit-outline</v-icon>
                           </v-btn>
                         </template>
-                        <span>Edit</span>
+                        <span>{{ $t('container.list.edit') }}</span>
                       </v-tooltip>
 
                       <v-tooltip top>
@@ -221,7 +224,7 @@ export default {
                             <v-icon>mdi-delete</v-icon>
                           </v-btn>
                         </template>
-                        <span>Delete</span>
+                        <span>{{ $t('container.list.delete') }}</span>
                       </v-tooltip>
                     </template>
                   </v-data-table>
