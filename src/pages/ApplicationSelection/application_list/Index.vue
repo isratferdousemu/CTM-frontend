@@ -189,6 +189,7 @@
                       </template>
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
+                        
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn v-can="'update-post'" fab x-small v-on="on" color="success" elevation="0"
@@ -201,11 +202,12 @@
                           </span>
                         </v-tooltip>
 
+
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn v-can="'delete-division'" fab x-small v-on="on" color="grey" class="ml-3 white--text"
                               elevation="0" @click="deleteAlert(item.id)">
-                              <v-icon> mdi-print </v-icon>
+                              <v-icon> mdi mdi-cloud-print-outline </v-icon>
                             </v-btn>
                           </template>
                           <span> {{ $t("container.list.print") }}</span>

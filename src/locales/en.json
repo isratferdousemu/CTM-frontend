@@ -16,6 +16,7 @@
             "view": "View",
             "search": "Search",
             "reset":"Reset",
+            "back":"Back",
             "forward": "Forward",
             "waiting": "waiting",
             "reject": "Reject",
@@ -32,7 +33,9 @@
             "delete": "Delete",
             "saved": "Data saved Successfully",
             "updated": "Data updated Successfully৷",
-            "deleted": "Data deleted Successfully"
+            "deleted": "Data deleted Successfully",
+            "switch_program":"Switch Proram",
+            "replace":"Replace"
         },
         "system_config": {
             "demo_graphic": {
@@ -201,6 +204,17 @@
                         "search": "Search Financial Year"
                     }
                    
+            },
+            "device":{
+                "list":"Device Registration Lists",
+                "user_id":"User ID",
+                "user_name": "User Name",
+                "device_type": "Device Type",
+                "ip_address":"IP Address",
+                "pupose_of_use":"Purpose of Use",
+                "unique_id":"Unique ID",
+                "add": "Add Device",
+                "edit":"Edit device"
             }
         },
         "general_setting": {
@@ -240,6 +254,22 @@
                 }
             
             
+            },
+            "beneficiary_management": {
+                "beneficiary_list": {
+                    "beneficiary": "Beneficiary",
+                    "list": "Beneficiary Information List",
+                    "program": "Program",
+                    "beneficiary_id":"Beneficiary ID",
+                    "select_column": "Select Column",
+                    "advance_search": "Advance Search",
+                    "search_by": "Search By",
+                    "nominee":"Nominee",
+                    "acoount_no": "Account No",
+                    "nid": "NID"
+                    
+
+                }
             }
     }
 }

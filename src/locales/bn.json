@@ -15,6 +15,7 @@
             "view": "দেখুন",
             "search": "খুঁজুন",
             "reset": "রিসেট",
+            "back": "ব্যাক",
             "status": "স্ট্যাটাস",
             "forward": "ফরওয়ার্ড",
             "waiting": "অপেক্ষেয়মান ",
@@ -31,7 +32,8 @@
             "delete": "মুছে ফেলুন",
             "saved": "ডেটা সফলভাবে সংরক্ষিত হয়েছে",
             "updated": "ডেটা সফলভাবে আপডেট হয়েছে",
-            "deleted": "ডেটা সফলভাবে মুছে ফেলা হয়েছে"
+            "deleted": "ডেটা সফলভাবে মুছে ফেলা হয়েছে",
+            "switch_program": "কর্মসূচী পরিবর্তন "
         },
         "system_config": {
             "demo_graphic": {
@@ -188,7 +190,8 @@
                     "city_corpo_id": "Select City Corporation",
                     "delete_alert": "Are you sure to delete this User?.",
                     "add_new": "Add New User",
-                    "search": "Search User"
+                    "search": "Search User",
+                    "replace": "প্রতিস্থাপন"
                 },
            
                 "financial_year": {
@@ -199,6 +202,17 @@
                     "status": "স্ট্যাটাস",
                     "search": "আর্থিক বর্ষ খুঁজন "
                 }
+            },
+            "device": {
+                "list": "ডিভাইস নিবন্ধন তালিকা",
+                "user_id": "ব্যবহারকারী আইডি",
+                "user_name": "ব্যবহারকারীর নাম",
+                "device_type": "ডিভাইসের ধরন",
+                "ip_address": "আইপি ঠিকানা",
+                "pupose_of_use": "ব্যবহারের উদ্দেশ্য",
+                "unique_id": "ইউনিক আইডি",
+                "add":"ডিভাইস যোগ করুন",
+                "edit": "ডিভাইস সম্পাদনা করুন"
             }
         },
         "general_setting": {
@@ -235,6 +249,18 @@
                 "village": "গ্রাম",
                 "mobile": "মোবাইল"
             }
-        }
+        },
+            "beneficiary_management": {
+                "beneficiary_list": {
+                    "beneficiary": "সুবিধাভোগী",
+                    "list": "সুবিধাভোগী তথ্যের তালিকা",
+                    "beneficiary_id": "সুবিধাভোগী আইডি",
+                    "search_by":"অনুসন্ধান করুন",
+                    "advance_search": "অ্যাডভান্সড সার্চ",
+                    "nominee": "নমিনী ",
+                    "account_no": "হিসাব নাম্বার",
+                    "nid": "এনআইডি"
+                }
+            }
     }
 }
