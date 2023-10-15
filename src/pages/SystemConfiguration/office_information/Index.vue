@@ -71,7 +71,7 @@
                         <span v-if="item?.status == '1'"> Active </span>
                       </template>
 
-                <!-- Action Button -->
+                      <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
@@ -110,7 +110,7 @@
                           <span> {{ $t("container.list.delete") }}</span>
                         </v-tooltip>
                       </template>
-                <!-- End Action Button -->
+                      <!-- End Action Button -->
 
                       <template v-slot:footer="item">
                         <div
@@ -160,7 +160,7 @@
           <v-card-text class="mt-7">
             <v-row> </v-row>
 
-            <ValidationObserver ref="form" v-slot="{ invalid }">
+            <ValidationObserver ref="formAdd" v-slot="{ invalid }">
               <form @submit.prevent="submitOffice()">
                 <v-row>
                   <v-col lg="6" md="6" cols="12">
@@ -396,7 +396,6 @@
                     <ValidationProvider
                       name="Comment"
                       vid="comment"
-                      rules="required"
                       v-slot="{ errors }"
                     >
                       <v-text-field
@@ -409,7 +408,6 @@
                             'container.system_config.demo_graphic.office.comment'
                           )
                         "
-                        required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
                       ></v-text-field>
@@ -475,7 +473,7 @@
           <v-card-text class="mt-7">
             <v-row> </v-row>
 
-            <ValidationObserver ref="form" v-slot="{ invalid }">
+            <ValidationObserver ref="formEdit" v-slot="{ invalid }">
               <form @submit.prevent="updateOffice()">
                 <v-row>
                   <v-col lg="6" md="6" cols="12">
@@ -711,7 +709,6 @@
                     <ValidationProvider
                       name="Comment"
                       vid="comment"
-                      rules="required"
                       v-slot="{ errors }"
                     >
                       <v-text-field
@@ -724,7 +721,6 @@
                             'container.system_config.demo_graphic.office.comment'
                           )
                         "
-                        required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
                       ></v-text-field>
@@ -958,7 +954,8 @@ export default {
             this.resetData();
             this.GetOffices();
           } else {
-            this.errors = data.errors;
+            this.$refs.formAdd.setErrors(data.errors);
+            // this.errors = data.errors;
           }
         });
       } catch (e) {
@@ -984,7 +981,8 @@ export default {
             this.resetData();
             this.GetOffices();
           } else {
-            this.errors = data.errors;
+            this.$refs.formEdit.setErrors(data.errors);
+            // this.errors = data.errors;
           }
         });
       } catch (e) {
@@ -1151,7 +1149,7 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          console.log(result,'office')
+          console.log(result, "office");
           this.offices = result.data.data;
           console.log(this.offices, "Get Office");
           this.pagination.current = result.data.meta.current_page;
@@ -1160,37 +1158,35 @@ export default {
         })
         .catch((err) => {
           console.log(err, "error");
-            if (err.response?.data?.errors) {
+          if (err.response?.data?.errors) {
             this.$refs.form.setErrors(err.response.data.errors);
           }
           console.log(err.response);
           this.$toast.error(err?.response?.data?.message);
         });
-        ;
     },
     deleteOffice: async function () {
-        await this.$store
-          .dispatch("Office/DestroyOffice", this.delete_id)
-          .then((res) => {
-            // console.log(res);
-            // check if the request was successful
-            if (res?.data?.success) {
-              this.$toast.error(res.data.message);
-            } else {
-              this.$toast.success(res.data.message);
-            }
-            this.deleteDialog = false;
-            this.GetOffices();
-          })
-          .catch((error) => {
-            console.log(error, "error");
-            if (error.response?.data?.errors) {
+      await this.$store
+        .dispatch("Office/DestroyOffice", this.delete_id)
+        .then((res) => {
+          // console.log(res);
+          // check if the request was successful
+          if (res?.data?.success) {
+            this.$toast.error(res.data.message);
+          } else {
+            this.$toast.success(res.data.message);
+          }
+          this.deleteDialog = false;
+          this.GetOffices();
+        })
+        .catch((error) => {
+          console.log(error, "error");
+          if (error.response?.data?.errors) {
             this.$refs.form.setErrors(error.response.data.errors);
           }
           console.log(error.response);
           this.$toast.error(error?.response?.data?.message);
-          });
-     
+        });
     },
     resetData() {
       this.dialogEdit = null;
@@ -1207,13 +1203,13 @@ export default {
       this.data.city_corpo_id = null;
       this.data.thana_id = null;
     },
-     updateHeaderTitle() {
+    updateHeaderTitle() {
       const title = this.$t("container.system_config.demo_graphic.office.list");
       this.$store.commit("setHeaderTitle", title);
     },
   },
   mounted() {
-     this.GetOfficeType();
+    this.GetOfficeType();
     this.GetOfficeType();
     this.GetOffices();
     this.GetAllDivisions();
@@ -1225,7 +1221,7 @@ export default {
     //   .then((res) => (this.locationType = res));
   },
   watch: {
-    '$i18n.locale': 'updateHeaderTitle',
+    "$i18n.locale": "updateHeaderTitle",
   },
   beforeMount() {
     this.updateHeaderTitle();
