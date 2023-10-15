@@ -1089,9 +1089,9 @@ export default {
       let ud = new FormData();
       for (const [key, value] of Object.entries(this.data)) {
         if (value != null) {
-          ud.append(key, value);
           // role_id is array so we need to append it separately
-
+          ud.append(key, value);
+          
           if (key == "role_id") {
             for (let i = 0; i < value.length; i++) {
               ud.append("role_id[]", value);
