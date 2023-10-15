@@ -134,10 +134,27 @@
                         </ValidationProvider>
                       </v-col>
                     </v-row>
-                    <v-card-title v-if="data.committee_type == 12"
+                    <v-card-title 
+                    
+                           v-if="
+                          data.committee_type == 12 ||
+                          data.committee_type == 13 ||
+                          data.committee_type == 14 ||
+                          data.committee_type == 15 ||
+                          data.committee_type == 16 ||
+                          data.committee_type == 17
+                        "
                       ><h4>DSS Center</h4></v-card-title
                     >
-                    <v-divider v-if="data.committee_type == 12"></v-divider>
+                    <v-divider 
+                           v-if="
+                          data.committee_type == 12 ||
+                          data.committee_type == 13 ||
+                          data.committee_type == 14 ||
+                          data.committee_type == 15 ||
+                          data.committee_type == 16 ||
+                          data.committee_type == 17
+                        "></v-divider>
 
                     <v-row>
                       <v-col
