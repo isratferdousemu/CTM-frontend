@@ -492,7 +492,7 @@ export default {
     headers() {
       return [
         { text: "#Sl", value: "id", align: "start", sortable: true },
-        { text: "Code", value: "Code" },
+        { text: "Code", value: "code" },
         { text: "Name", value: "name" },
         { text: "Program", value: "program.name_en" },
         { text: "Details", value: "details" },
