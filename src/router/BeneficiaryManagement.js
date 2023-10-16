@@ -1,7 +1,4 @@
 const BeneficiaryManagementRoutes = [
-<<<<<<< HEAD
- 
-=======
     {
         path: "/beneficiary-management/committee",
         name: "Committee-List",
@@ -47,7 +44,6 @@ const BeneficiaryManagementRoutes = [
         },
         component: () => import("../pages/BeneficiaryManagement/switch_program/Index.vue")
     },
->>>>>>> e6bbd3102121b39f25e9f3d13dcad30ce5798e82
     {
         path: "/beneficiary-management/beneficiary-card",
         name: "beneficiary_list",
