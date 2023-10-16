@@ -224,10 +224,11 @@
                                                 }}
                                             </template>
                                             <!-- Action Button -->
-                                            <template v-slot:item.actions="{ item }">
+                                            <template v-slot:item.actions="{ item }" width="50%">
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
                                                         <v-btn v-can="'update-post'" fab x-small v-on="on" color="#795548" class="mr-3 white--text"
+                                                          router to="/beneficiary-management/switch-program"
                                                             elevation="0">
                                                             <v-icon> mdi mdi-swap-horizontal </v-icon>
                                                         </v-btn>
@@ -238,7 +239,7 @@
                                                 </v-tooltip>
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
-                                                        <v-btn v-can="'update-post'" fab x-small v-on="on" color="blue-grey"
+                                                        <v-btn v-can="'update-post'" fab x-small v-on="on" color="#AFB42B"
                                                             elevation="0" class="white--text">
                                                             <v-icon> mdi-eye </v-icon>
                                                         </v-btn>
@@ -259,25 +260,26 @@
                                                         </span>
                                                     </v-tooltip>
 
-                                                <v-tooltip top>
-                                                    <template v-slot:activator="{ on }">
-                                                        <v-btn v-can="'delete-division'" fab x-small v-on="on" color="grey"
-                                                            router to="/beneficiary-management/switch_program"
-                                                            class="ml-3 white--text" elevation="0">
-                                                            <v-icon> mdi mdi-cloud-print-outline </v-icon>
-                                                        </v-btn>
-                                                    </template>
-                                                    <span> {{ $t("container.list.print") }}</span>
-                                                </v-tooltip>
+                                             
                                                    <v-tooltip top>
                                                         <template v-slot:activator="{ on }">
-                                                            <v-btn v-can="'delete-division'" fab x-small v-on="on" color="grey"
-                                                                router to="/beneficiary-management/switch_program"
+                                                            <v-btn v-can="'delete-division'" fab x-small v-on="on" color="#827717"
+                                                               router to="/beneficiary-management/beneficiary-replacement"
                                                                 class="ml-3 white--text" elevation="0">
                                                                 <v-icon> mdi mdi-file-replace </v-icon>
                                                             </v-btn>
                                                         </template>
-                                                        <span> {{ $t("container.list.replace") }}</span>
+                                                             <span> {{ $t("container.list.replace") }}</span>
+                                                    </v-tooltip>
+                                                       <v-tooltip top>
+                                                        <template v-slot:activator="{ on }">
+                                                            <v-btn v-can="'delete-division'" fab x-small v-on="on" color="#546E7A"
+                                                                router to="/beneficiary-management/beneficiary-journey"
+                                                                class="ml-3 white--text" elevation="0">
+                                                                <v-icon> mdi mdi-history </v-icon>
+                                                            </v-btn>
+                                                        </template>
+                                                        <span> {{ $t("container.list.beneficiary_journey") }}</span>
                                                     </v-tooltip>
                                             </template>
                                             <!-- End Action Button -->
@@ -477,7 +479,7 @@ export default {
                     value: "12",
 
                 },
-                { text: this.$t("container.list.action"), value: "actions" },
+                { text: this.$t("container.list.action"), value: "actions",width: '25%' },
 
             ];
         },

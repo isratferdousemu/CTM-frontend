@@ -1,4 +1,5 @@
-{
+
+   {
     "sidebar": {
         "dashboard": "ড্যাশবোর্ড"
     },
@@ -33,7 +34,12 @@
             "saved": "ডেটা সফলভাবে সংরক্ষিত হয়েছে",
             "updated": "ডেটা সফলভাবে আপডেট হয়েছে",
             "deleted": "ডেটা সফলভাবে মুছে ফেলা হয়েছে",
-            "switch_program": "কর্মসূচী পরিবর্তন "
+            "switch_program": "কর্মসূচী পরিবর্তন",
+            "replace": "প্রতিস্থাপন",
+            "save": "সংরক্ষণ",
+            "reason":"কারণ",
+            "mobile": "মোবাইল",
+            "beneficiary_journey": "সুবিধাভোগী যাত্রা"
         },
         "system_config": {
             "demo_graphic": {
@@ -190,8 +196,8 @@
                     "city_corpo_id": "Select City Corporation",
                     "delete_alert": "Are you sure to delete this User?.",
                     "add_new": "Add New User",
-                    "search": "Search User",
-                    "replace": "প্রতিস্থাপন"
+                    "search": "Search User"
+                  
                 },
            
                 "financial_year": {
@@ -282,7 +288,36 @@
                     "advance_search": "অ্যাডভান্সড সার্চ",
                     "nominee": "নমিনী ",
                     "account_no": "হিসাব নাম্বার",
-                    "nid": "এনআইডি"
+                    "nid": "এনআইডি",
+                    "beneficiary_summary": "সুবিধাভোগী সারসংক্ষেপে ",
+                    "beneficiary_replacement": "সুবিধাভোগী প্রতিস্থাপন",
+                    "replacement_with": "সঙ্গে প্রতিস্থাপন",
+                    "beneficiary_details": "সুবিধাভোগীর বিবরণ",
+                    "replacement_cause": "প্রতিস্থাপনের কারণ",
+                    "cause_date": "প্রভাবের তারিখ",
+                    "reason_provision": "কারণ বিধান",
+                    "beneficiary_replacement_list": "সুবিধাভোগী প্রতিস্থাপন তালিকা",
+                    "payment_history": "অর্থপ্রদানের ইতিহাস",
+                    "grievance_history": "অভিযোগের ইতিহাস",
+                    "Change_tracking": "ট্র্যাকিং পরিবর্তন",
+                     "total_receive": "মোট প্রাপ্তি",
+                    "last_payment_amount": "শেষ অর্থপ্রদানের পরিমাণ", 
+                    "total_grievance": "মোট অভিযোগ",
+                    "last_grievance_type": "শেষ অভিযোগের ধরন",
+                    "total_change": "মোট পরিবর্তন",
+                    "payment_disbursed_date": "অর্থ প্রদানের তারিখ",
+                    "ammount": "পরিমাণ",
+                    "fiscal_year": "অর্থবছর",
+                    "due": "বকেয়া অর্থ প্রদান (যদি থাকে)",
+                    "type": "ধরণ ",
+                    "subject": "বিষয়",
+                    "details": "বিবরণ",
+                    "grievance_raise_date": "অভিযোগ উত্থাপনের তারিখ",
+                    "allotment_distribution": "বরাদ্দ বিতরণের সংশোধন",
+                    "resolved_by": "সমাধান করা হয়েছে",
+                    "resolve_comment": "সমাধান বিষয়ে মন্তব্য",
+                    "resolve_date": "সমাধানের তারিখ"
+
                 }
             }
     }
