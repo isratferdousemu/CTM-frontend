@@ -221,6 +221,16 @@ const SystemConfigurationRoutes = [
     },
     component: () => import("../pages/SystemConfiguration/user_management/users/index.vue")
   },
+  {
+    path: "/system-configuration/financial",
+    name: "financial_year_list",
+    meta: {
+      requiresAuth: true,
+      permission: "financial-year-list",
+    },
+    component: () => import("../pages/SystemConfiguration/financial_year/Index.vue")
+  },
+ 
     /*user management/ users route start*/
 
     /*allowance program route start*/

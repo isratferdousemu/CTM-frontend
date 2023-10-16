@@ -55,8 +55,8 @@ const mutations = {
 /* -------------------------------------------------------------------------- */
 const actions = {
   /*start get all Upazila*/
-  GetAllUpazilaByDistrict: ({ commit }, data) => {
-    return http()
+   GetAllUpazilaByDistrict: async ({ commit }, data) => {
+    return await http()
       .get(`/admin/thana/get/${data}`)
       .then((result) => {
         console.log(result.data);

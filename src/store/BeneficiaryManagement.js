@@ -1,3 +1,5 @@
+import { http } from "@/hooks/httpService";
+
 /* -------------------------------------------------------------------------- */
 /*                                states Define                               */
 /* -------------------------------------------------------------------------- */
@@ -30,6 +32,57 @@ const actions = {
       console.error("Error fetching data:", error);
     }
   },
+  
+  StoreCommittee: ({ commit }, data) => {
+    return http()
+      .post("/admin/committee/insert", data)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        return err;
+      });
+  },
+  
+  /*start get single menu*/
+  GetSingleCommittee: ({ commit }, id) => {
+    return http()
+      .get(`/admin/committee/${id}`)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        return err;
+      });
+  },
+
+  UpdateCommittee: ({ commit }, data) => {
+    return http()
+      .post("/admin/committee/update", data)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        const data = {
+          errors: err.response.data.errors,
+          error_status: err.response.message,
+        };
+        return err;
+      });
+  },
+
+  DestroyCommittee: ({ commit }, id) => {
+    return http()
+      .get(`/admin/committee/destroy/${id}`)
+      .then((result) => {
+        console.log(result);
+        return result
+      })
+      .catch((err) => {
+        return err
+      });
+  },
+
 };
 /* -------------------------------------------------------------------------- */
 /*                               Getters Define                               */

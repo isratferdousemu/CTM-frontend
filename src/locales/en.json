@@ -1,7 +1,6 @@
 {
     "sidebar": {
         "dashboard": "Dashboard"
-       
     },
     "container": {
         "list": {
@@ -12,6 +11,15 @@
             "submit": "Submit",
             "cancel": "cancel",
             "edit": "Edit",
+            "print": "Print",
+            "view": "View",
+            "search": "Search",
+            "reset": "Reset",
+            "back": "Back",
+            "forward": "Forward",
+            "waiting": "waiting",
+            "reject": "Reject",
+            "status": "Status",
             "code": "Code",
             "name_en": "Name English",
             "name_bn": "Name Bangla",
@@ -24,7 +32,13 @@
             "delete": "Delete",
             "saved": "Data saved Successfully",
             "updated": "Data updated Successfully৷",
-            "deleted": "Data deleted Successfully"
+            "deleted": "Data deleted Successfully",
+            "switch_program": "Switch Proram",
+            "replace": "Replace",
+            "save": "Save",
+            "reason": "Reason",
+            "mobile": "Mobile",
+            "beneficiary_journey": "Beneficiary Journey"
         },
         "system_config": {
             "demo_graphic": {
@@ -123,12 +137,45 @@
                     "comment": "Comment",
                     "active": "Active"
                 },
+                "committee": {
+                    "committee": "Committee",
+                    "code": "Code",
+                    "list": "Committee List",
+                    "view": "View",
+                    "name_en": "Committee Name",
+                    "name_bn": "Committee Name Bangla",
+                    "program_name": "Program Name",
+                    "committee_type": "Committee Type",
+                    "ward": "Ward",
+                    "add_new": "Add New Committee",
+                    "search": "Search Committee",
+                    "edit": "Edit Committee",
+                    "delete": "Delete Committee",
+                    "delete_alert": "Are you sure to delete this Committee?.",
+                    "city": "City Corporation",
+                    "thana": "Thana",
+                    "thana_upazila": "Thana/Upazila",
+                    "upazila": "Upazila",
+                    "union": "Union",
+                    "pouro": "District Pouroshava",
+                    "union_pouro_city": "Union/District Pouroshava/City Corporation",
+                    "office_type": "Committee Type",
+                    "office_address": "Committee Address",
+                    "status": "Status",
+                    "details": "Details",
+                    "active": "Active",
+                    "add_row": "Add Row",
+                    "remove_row": "Remove Row",
+                    "member_name": "Name",
+                    "member_designation": "Designation",
+                    "member_address": "Address",
+                    "member_email": "Email",
+                    "member_phone": "Phone"
+                },
                 "role": {
-                 
                     "list": "Role List"
                 },
                 "user": {
-                 
                     "listTitle": "User List",
                     "full_name": "Full Name",
                     "username": "Username",
@@ -140,7 +187,7 @@
                     "office_type": "Select Office Type",
                     "office_id": "Select Office",
                     "office": "Office",
-                    "delete":"User Delete",
+                    "delete": "User Delete",
                     "division_id": "Select Division",
                     "district_id": "Select District",
                     "thana_id": "Select Thana",
@@ -148,7 +195,26 @@
                     "add_new": "Add New User",
                     "delete_alert": "Are you sure to delete this User?.",
                     "search": "Search User"
+                },
+                "financial_year": {
+                    "financial_year": "Financial Year",
+                    "list": "Financial Year List",
+                    "start_date": "Start date",
+                    "end_date": "End date",
+                    "status": "Status",
+                    "search": "Search Financial Year"
                 }
+            },
+            "device": {
+                "list": "Device Registration Lists",
+                "user_id": "User ID",
+                "user_name": "User Name",
+                "device_type": "Device Type",
+                "ip_address": "IP Address",
+                "pupose_of_use": "Purpose of Use",
+                "unique_id": "Unique ID",
+                "add": "Add Device",
+                "edit": "Edit device"
             }
         },
         "general_setting": {
@@ -162,6 +228,108 @@
             "edit": "Edit General Setting",
             "delete": "Delete Division",
             "delete_alert": "Are you sure to delete this Division?"
+        },
+        "application_selection": {
+            "application": {
+                "application": "Application",
+                "list": "Application List",
+                "search": "Application List Search",
+                "update_status": "Application Status Update",
+                "program": "Program",
+                "list_type": "List type",
+                "remark": "Remark",
+                "forward_to_committee": "Forward to Committee",
+                "select_column": "Select Column",
+                "applicant_id": "Applicant ID",
+                "father_name_en": "Father Name (English)",
+                "father_name_bn": "Father Name (Bangla)",
+                "mother_name_en": "Mother Name (English)",
+                "mother_name_bn": "Mother Name (Bangla)",
+                "spouse_name_en": "Spouse Name (English)",
+                "spouse_name_bn": "Spouse Name (Bangla)",
+                "union_pourashava": "Union Pourashava",
+                "village": "Village",
+                "mobile": "Mobile"
+            },
+            "division_cut_off": {
+                "division_cut_off": "Division Cut Off",
+                "list": "Division Cut Off List",
+                "score": "score",
+                "name_en": "Division Cut Off Name English",
+                "name_bn": "Division Cut Off Name Bangla",
+                "add_new": "Add New Division Cut Off",
+                "search": "Search Division Cut Off",
+                "edit": "Edit Division Cut Off",
+                "delete": "Delete Division Cut Off",
+                "delete_alert": "Are you sure to delete this Division Cut Off?.",
+                "city": "City Corporation",
+                "thana": "Thana",
+                "upazila": "Upazila",
+                "union": "Union",
+                "pouro": "District Pouroshava",
+                "union_pouro_city": "Union/District Pouroshava/City Corporation",
+                "division_cut_off_type": "Division Cut Off Type",
+                "division_cut_off_address": "Division Cut Off Address",
+                "status": "Status",
+                "comment": "Comment",
+                "active": "Active"
+            },
+            "beneficiary_management": {
+                "beneficiary_list": {
+                    "beneficiary": "Beneficiary",
+                    "list": "Beneficiary Information List",
+                    "program": "Program",
+                    "beneficiary_id": "Beneficiary ID",
+                    "select_column": "Select Column",
+                    "advance_search": "Advance Search",
+                    "search_by": "Search By",
+                    "nominee": "Nominee",
+                    "acoount_no": "Account No",
+                    "nid": "NID",
+                    "beneficiary_summary": "Beneficiary Summary",
+                    "beneficiary_replacement": "Beneficiary Replacement",
+                    "replacement_with": "Replacement With",
+                    "beneficiary_details": "Beneficiary Details",
+                    "replacement_cause": "Replacement Reason",
+                    "cause_date": "Date of Impact",
+                    "reason_provision": "reason provision",
+                    "beneficiary_replacement_list": "Beneficiary Replacement List",
+                    "payment_history": "Payment History",
+                    "grievance_history": "Grievance History",
+                    "Change_tracking": "Change Tracking",
+                    "total_receive": "Total Receive",
+                    "last_payment_amount": "Last Payment Amount",
+                    "total_grievance": "Total Grievance",
+                    "last_grievance_type": "Last Grievance Type",
+                    "total_change": "Total Change",
+                    "payment_disbursed_date": "Payment Disbursed Date",
+                    "ammount": "Ammount",
+                    "fiscal_year": "Fiscal Year",
+                    "due": "Due Payment (if any)",
+                    "type": "Type",
+                    "subject": "Subject",
+                    "details": "Deatails",
+                    "grievance_raise_date": "Grievance Raise Date",
+                    "allotment_distribution": "Correction of Allotment Distribution",
+                    "resolved_by": "Resolve By",
+                    "resolve_comment": "Resolve Comment",
+                    "resolve_date": "Resolve Date"
+                }
+            }
+        },
+        "beneficiary_management": {
+            "beneficiary_list": {
+                "beneficiary": "Beneficiary",
+                "list": "Beneficiary Information List",
+                "program": "Program",
+                "beneficiary_id": "Beneficiary ID",
+                "select_column": "Select Column",
+                "advance_search": "Advance Search",
+                "search_by": "Search By",
+                "nominee": "Nominee",
+                "acoount_no": "Account No",
+                "nid": "NID"
+            }
         }
     }
 }
