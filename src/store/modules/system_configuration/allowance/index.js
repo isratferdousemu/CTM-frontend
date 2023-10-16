@@ -84,6 +84,14 @@ const mutations = {
 
     updateValue: (state, data) => {
         state.allowanceField = data;
+    },
+
+    updateGenderValue: (state, data) => {
+      state.allowanceGender = data;
+    },
+
+    UPDATE_ALLOWANCE_AGE: (state,data)=>{
+        state.allowanceAge = data
     }
 };
 
