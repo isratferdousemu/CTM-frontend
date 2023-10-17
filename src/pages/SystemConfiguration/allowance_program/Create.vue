@@ -140,7 +140,7 @@ export default {
             this.is_amount = false;
             this.divs = [];
             this.$refs.form.reset();
-            this.$router.push('/system-configuration/allowance-program')
+            this.$router.push('/system-configuration/allowance')
           }
 
           if (this.error_status === 422)
