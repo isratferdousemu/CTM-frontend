@@ -92,6 +92,16 @@ const mutations = {
 
     UPDATE_ALLOWANCE_AGE: (state,data)=>{
         state.allowanceAge = data
+    },
+
+    DELETE_GENDER: (state, data) => {
+        state.success_message = data.data.message;
+        state.success_status = data.status;
+    },
+
+    DELETE_DISABLE: (state, data) => {
+        state.success_message = data.data.message;
+        state.success_status = data.status;
     }
 };
 
@@ -164,8 +174,30 @@ const actions = {
             state.errors = err.response.data.errors
             state.error_status = err.response.status
         })
-    }
+    },
     /*update allowance program end*/
+
+    /*delete gender age start*/
+    DeleteGender: ({commit}, data) => {
+      return http().post('/admin/allowance/gender_delete', data).then((result) => {
+          commit('DELETE_GENDER', result);
+      }).catch((err) => {
+          state.errors = err.response.data.errors
+          state.error_status = err.response.status
+      })
+    },
+    /*delete gender age end*/
+
+    /*delete disable class start*/
+    DeleteDisableClass: ({commit}, id) => {
+        return http().post(`/admin/allowance/disable_delete/${id}`).then((result) => {
+            commit('DELETE_DISABLE', result);
+        }).catch((err) => {
+            state.errors = err.response.data.errors
+            state.error_status = err.response.status
+        })
+    }
+    /*delete disable class end*/
 };
 
 /* -------------------------------------------------------------------------- */
