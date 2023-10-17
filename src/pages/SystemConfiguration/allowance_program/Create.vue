@@ -29,9 +29,8 @@ export default {
 
       is_marital_toggle: false,
       is_age_limit: false,
-      is_amount: false,
+      is_disable_class: false,
 
-      gender_items: [{id:1, name: "Male"}, {id:2, name: "Female"}, {id:3, name: "Other"}],
       marital_items: [{name: "Married"}, {name: "UnMarried"}, {name: "Widow"}],
       payment_cycle_items: [{name: "Monthly"}, {name: "Quarterly"}, {name: "Half Yearly"}, {name: "Yearly"}],
 
@@ -85,15 +84,32 @@ export default {
         let age_limit = {
           gender_id: item,
           min_age: '',
-          max_age: ''
+          max_age: '',
+          amount: ''
         };
 
         this.add_allowance_program.allowance_age.push(age_limit);
       })
     },
 
+    removeGender(event){
+      this.add_allowance_program.allowance_age = [];
+
+      event.forEach(item => {
+        let age_limit = {
+          gender_id: item,
+          min_age: '',
+          max_age: '',
+          amount: ''
+        };
+
+        this.add_allowance_program.allowance_age.push(age_limit);
+      })
+
+    },
+
     allowanceAmount(){
-      this.is_amount = !this.is_amount
+      this.is_disable_class = !this.is_disable_class
     },
 
     addRow() {
@@ -121,14 +137,10 @@ export default {
         formData.append('marital_status', this.add_allowance_program.marital_status);
         formData.append('is_active', this.add_allowance_program.is_active);
         formData.append('is_age_limit', this.add_allowance_program.is_age_limit);
-        formData.append('is_amount', this.add_allowance_program.is_amount);
+        formData.append('is_disable_class', this.add_allowance_program.is_disable_class);
 
-        this.add_allowance_program.allowance_age.forEach((item) => formData.append("gender_id[]", item.gender_id));
-        this.add_allowance_program.allowance_age.forEach((item) => formData.append("min_age[]", item.min_age));
-        this.add_allowance_program.allowance_age.forEach((item) => formData.append("max_age[]", item.max_age));
-
-        this.divs.forEach(item => formData.append('type_id[]', item.type_id));
-        this.divs.forEach(item => formData.append('amount[]', item.amount));
+        formData.append('age_limit', JSON.stringify(this.add_allowance_program.allowance_age));
+        formData.append('amount', JSON.stringify(this.divs));
 
         this.add_allowance_program.add_field_id.forEach((item) => formData.append("add_field_id[]", item));
 
@@ -221,6 +233,7 @@ export default {
                                 label="Select Gender"
                                 multiple
                                 outlined
+                                @change="removeGender($event)"
                             ></v-select>
                           </ValidationProvider>
                         </v-col>
@@ -271,6 +284,7 @@ export default {
                                 <td>Gender</td>
                                 <td>Min Age</td>
                                 <td>Max Age</td>
+                                <td>Amount</td>
                               </tr>
                             </thead>
                             <tbody>
@@ -280,15 +294,16 @@ export default {
                               </td>
                               <td><v-text-field v-model="g.min_age" dense outlined></v-text-field></td>
                               <td><v-text-field v-model="g.max_age"  dense outlined></v-text-field></td>
+                              <td><v-text-field v-model="g.amount"  dense outlined></v-text-field></td>
                             </tr>
                             </tbody>
                           </table>
                         </v-col>
 
                         <v-col cols="12" sm="6" lg="6">
-                          <v-checkbox label="Amount" @click="allowanceAmount"></v-checkbox>
+                          <v-checkbox label="Disable Class" @click="allowanceAmount"></v-checkbox>
 
-                          <table v-if="is_amount === true">
+                          <table v-if="is_disable_class === true">
                             <thead>
                             <tr>
                               <td>Type</td>

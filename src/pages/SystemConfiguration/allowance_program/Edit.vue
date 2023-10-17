@@ -31,7 +31,7 @@ export default {
 
       is_marital_toggle: false,
       age_limit: false,
-      amount_limit: false,
+      disable_class: false,
 
       gender_items: [{id:1, name: "Male"}, {id:2, name: "Female"}, {id:3, name: "Other"}],
       marital_items: [{name: "Married"}, {name: "UnMarried"}, {name: "Widow"}],
@@ -64,7 +64,26 @@ export default {
       set(value){
         this.$store.commit('Allowance/updateValue', value)
       }
-    }
+    },
+
+    genderUpdatevalue: {
+      get() {
+        return this.editAllowanceGender;
+      },
+
+      set(value) {
+        this.$store.commit("Allowance/updateGenderValue", value);
+      }
+    },
+
+    updateAllowanceAge: {
+      get() {
+        return this.editAllowanceAge;
+      },
+      set(value) {
+        return this.$store.commit("Allowance/UPDATE_ALLOWANCE_AGE", value);
+      },
+    },
   },
 
   mounted() {
@@ -103,12 +122,41 @@ export default {
     allowanceAmount(amount){
       if (amount === true)
       {
-        this.amount_limit = true;
+        this.disable_class = true;
       }else {
-        this.amount_limit = false;
+        this.disable_class = false;
+      }
+    },
+
+    removeGender(event)
+    {
+      let arr =[];
+
+      for (let i = 0; i < event.length; i++) {
+        this.updateAllowanceAge.forEach((item)=>{
+          if (item.gender_id == event[i])
+          {
+              arr.push(item);
+          }
+        })
+
+        let toggle_age = this.updateAllowanceAge.includes((item) => {return item.gender_id !== event[i]});
+
+        if (toggle_age === false)
+        {
+          let age_limit = {
+            gender_id: event[i],
+            min_age: '',
+            max_age: '',
+            amount: ''
+          };
+
+          arr.push(age_limit);
+        }
+
       }
 
-      console.log(this.editAllowanceAmount);
+      this.updateAllowanceAge=arr
     },
 
     addRow() {
@@ -140,7 +188,6 @@ export default {
         formData.append('is_age_limit', this.editAllowanceProgram.is_age_limit);
         formData.append('is_amount', this.editAllowanceProgram.is_amount);
 
-        formData.append("gender", JSON.stringify(this.editAllowanceGender));
         formData.append('age_limit', JSON.stringify(this.editAllowanceAge));
         formData.append('amount', JSON.stringify(this.editAllowanceAmount));
 
@@ -223,7 +270,7 @@ export default {
                         <v-col cols="12" sm="6" lg="6">
                           <ValidationProvider name="gender" vid="gender" rules="required" v-slot="{ errors }">
                             <v-select
-                                v-model="editAllowanceGender"
+                                v-model="genderUpdatevalue"
                                 :items="genders"
                                 item-text="value_en"
                                 item-value="id"
@@ -231,6 +278,7 @@ export default {
                                 label="Select Gender"
                                 multiple
                                 outlined
+                                @change="removeGender($event)"
                             ></v-select>
                           </ValidationProvider>
                         </v-col>
@@ -281,24 +329,26 @@ export default {
                               <td>Gender</td>
                               <td>Min Age</td>
                               <td>Max Age</td>
+                              <td>Amount</td>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="(g,index) in editAllowanceAge" :key="index">
+                            <tr v-for="(g,index) in updateAllowanceAge" :key="index">
                               <td>
                                 <v-select v-model="g.gender_id" :items="genders" item-text="value_en" item-value="id" dense outlined></v-select>
                               </td>
                               <td><v-text-field v-model="g.min_age" dense outlined></v-text-field></td>
                               <td><v-text-field v-model="g.max_age"  dense outlined></v-text-field></td>
+                              <td><v-text-field v-model="g.amount"  dense outlined></v-text-field></td>
                             </tr>
                             </tbody>
                           </table>
                         </v-col>
 
                         <v-col cols="12" sm="6" lg="6">
-                          <v-checkbox v-model="editAllowanceProgram.is_amount" label="Amount" @click="allowanceAmount(editAllowanceProgram.is_amount)"></v-checkbox>
+                          <v-checkbox v-model="editAllowanceProgram.is_disable_class" label="Disable Class" @click="allowanceAmount(editAllowanceProgram.is_disable_class)"></v-checkbox>
 
-                          <table v-if="editAllowanceProgram.is_amount === 1 || amount_limit === true">
+                          <table v-if="editAllowanceProgram.is_disable_class === 1 || disable_class === true">
                             <thead>
                             <tr>
                               <td>Type</td>
