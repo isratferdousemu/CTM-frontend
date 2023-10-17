@@ -67,7 +67,7 @@ export default new Vuex.Store({
     otpData: [],
     lookupTypes: [
       { id: 1, name: 'Location Type' },
-      { id: 2, name: 'Allowance Service' },
+      { id: 2, name: 'Gender' },
       { id: 3, name: 'Office category' },
       { id: 4, name: 'Health Status' },
       { id: 5, name: 'Financial Status' },
@@ -85,6 +85,7 @@ export default new Vuex.Store({
       { id: 17, name: 'Committee Type' },
       { id: 18, name: 'Organization' },
       { id: 19, name: 'Designation' },
+      { id: 20, name: 'Gender Type' },
     ],
     appLanguage: localStorage.getItem("appLanguage") || process.env.VUE_APP_I18N_LOCALE || 'bn'
 

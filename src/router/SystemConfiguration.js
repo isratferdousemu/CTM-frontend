@@ -221,11 +221,21 @@ const SystemConfigurationRoutes = [
     },
     component: () => import("../pages/SystemConfiguration/user_management/users/index.vue")
   },
+  {
+    path: "/system-configuration/financial",
+    name: "financial_year_list",
+    meta: {
+      requiresAuth: true,
+      permission: "financial-year-list",
+    },
+    component: () => import("../pages/SystemConfiguration/financial_year/Index.vue")
+  },
+ 
     /*user management/ users route start*/
 
     /*allowance program route start*/
   {
-    path: '/system-configuration/allowance',
+    path: '/system-configuration/allowance-program',
     name: 'AllowanceProgram',
     meta: {
       requiresAuth: true,
@@ -234,7 +244,7 @@ const SystemConfigurationRoutes = [
     component: () => import("../pages/SystemConfiguration/allowance_program/Index.vue")
   },
   {
-    path: '/system-configuration/allowance/create',
+    path: '/system-configuration/allowance-program/create',
     name: 'AllowanceProgramCreate',
     meta: {
       requiresAuth: true,
@@ -243,7 +253,7 @@ const SystemConfigurationRoutes = [
     component: () => import("../pages/SystemConfiguration/allowance_program/Create.vue")
   },
   {
-    path: '/system-configuration/allowance/edit/:id',
+    path: '/system-configuration/allowance-program/edit/:id',
     name: 'AllowanceProgramEdit',
     meta: {
       requiresAuth: true,
