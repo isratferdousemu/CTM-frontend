@@ -39,7 +39,8 @@
             "save": "সংরক্ষণ",
             "reason":"কারণ",
             "mobile": "মোবাইল",
-            "beneficiary_journey": "সুবিধাভোগী যাত্রা"
+            "beneficiary_journey": "সুবিধাভোগী যাত্রা",
+            "change_tracking_details": "ট্র্যাকিং বিবরণ পরিবর্তন করুন"
         },
         "system_config": {
             "demo_graphic": {
@@ -114,7 +115,8 @@
                     "upazila": "উপজেলা",
                     "union": "ইউনিয়ন",
                     "pouro": "জেলা পৌরসভা",
-                    "union_pouro_city": "ইউনিয়ন/জেলা পৌরসভা/সিটি কর্পোরেশন"
+                    "union_pouro_city": "ইউনিয়ন/জেলা পৌরসভা/সিটি কর্পোরেশন",
+                    "union_ward": "ইউনিয়ন/ওয়ার্ড"
                 },
                 "office": {
                     "office": "অফিস",
@@ -316,7 +318,14 @@
                     "allotment_distribution": "বরাদ্দ বিতরণের সংশোধন",
                     "resolved_by": "সমাধান করা হয়েছে",
                     "resolve_comment": "সমাধান বিষয়ে মন্তব্য",
-                    "resolve_date": "সমাধানের তারিখ"
+                    "resolve_date": "সমাধানের তারিখ",
+                    "change_tracking_type": "ট্র্যাকিং টাইপ পরিবর্তন ",
+                    "change_count": "গণনা পরিবর্তন করুন",
+                    "successful_change": "সফল পরিবর্তন",
+                    "unsuccessful_change": "অসফল পরিবর্তন",
+                    "information_tracking": "ইনফরমেশন ট্র্যাকিং",
+                    "tracking_type": "ট্র্যাকিং টাইপ",
+                    "address": "ঠিকানা"
 
                 }
             }

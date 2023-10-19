@@ -38,7 +38,8 @@
             "save": "Save",
             "reason": "Reason",
             "mobile": "Mobile",
-            "beneficiary_journey": "Beneficiary Journey"
+            "beneficiary_journey":"Beneficiary Journey",
+            "change_tracking_details":"Change Tracking Details"
         },
         "system_config": {
             "demo_graphic": {
@@ -113,7 +114,8 @@
                     "upazila": "Upazila",
                     "union": "Union",
                     "pouro": "District Pouroshava",
-                    "union_pouro_city": "Union/District Pouroshava/City Corporation"
+                    "union_pouro_city": "Union/District Pouroshava/City Corporation",
+                    "union_ward":"Union/Ward"
                 },
                 "office": {
                     "office": "Office",
@@ -308,28 +310,28 @@
                     "due": "Due Payment (if any)",
                     "type": "Type",
                     "subject": "Subject",
-                    "details": "Deatails",
-                    "grievance_raise_date": "Grievance Raise Date",
-                    "allotment_distribution": "Correction of Allotment Distribution",
-                    "resolved_by": "Resolve By",
-                    "resolve_comment": "Resolve Comment",
-                    "resolve_date": "Resolve Date"
+                    "details":"Deatails",
+                    "grievance_raise_date":"Grievance Raise Date",
+                    "allotment_distribution":"Correction of Allotment Distribution",
+                    "resolved_by":"Resolve By",
+                    "resolve_comment":"Resolve Comment",
+                    "resolve_date":"Resolve Date",
+                    "change_tracking_type":"Change Tracking Type",
+                    "change_count": "Change Count",
+                    "successful_change":"Successful Change",
+                    "unsuccessful_change":"Unsuccessful Change",
+                    "information_tracking":"Information Tracking",
+                    "tracking_type":"Tracking Type",
+                    "address":"Address"
+
+
+            
+
+                 
+                    
+
                 }
             }
-        },
-        "beneficiary_management": {
-            "beneficiary_list": {
-                "beneficiary": "Beneficiary",
-                "list": "Beneficiary Information List",
-                "program": "Program",
-                "beneficiary_id": "Beneficiary ID",
-                "select_column": "Select Column",
-                "advance_search": "Advance Search",
-                "search_by": "Search By",
-                "nominee": "Nominee",
-                "acoount_no": "Account No",
-                "nid": "NID"
-            }
-        }
     }
+}
 }
