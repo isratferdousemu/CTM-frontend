@@ -10,7 +10,6 @@ import BeneficiaryManagement from "./BeneficiaryManagement";
 import BudgetManagement from "./BudgetManagement";
 import EmergencyPaymentManagement from "./EmergencyPaymentManagement";
 import GrievanceManagement from "./GrievanceManagement";
-import ManageAllotment from "./ManageAllotment";
 import GeneralSetting from "./GeneralSetting";
 import MEReporting from "./MEReporting";
 import PayrollManagement from "./PayrollManagement";
@@ -28,6 +27,7 @@ import Role from "@/store/modules/system_configuration/role";
 import Role_permission from "@/store/modules/system_configuration/role_permission";
 import Office from "@/store/modules/system_configuration/office";
 import Allowance from "@/store/modules/system_configuration/allowance";
+import ManageAllotment from "@/store/modules/manage_allotment/ManageAllotment";
 // Import other modules as needed
 
 Vue.use(Vuex);
@@ -85,7 +85,7 @@ export default new Vuex.Store({
       { id: 17, name: 'Committee Type' },
       { id: 18, name: 'Organization' },
       { id: 19, name: 'Designation' },
-      { id: 20, name: 'Gender Type' },
+      { id: 20, name: 'Class' },
     ],
     appLanguage: localStorage.getItem("appLanguage") || process.env.VUE_APP_I18N_LOCALE || 'bn'
 
@@ -330,7 +330,6 @@ export default new Vuex.Store({
     BudgetManagement,
     EmergencyPaymentManagement,
     GrievanceManagement,
-    ManageAllotment,
     GeneralSetting,
     MEReporting,
     PayrollManagement,
@@ -348,6 +347,7 @@ export default new Vuex.Store({
     Role_permission,
     Office,
     Allowance,
+    ManageAllotment
   },
   plugins: [
     createPersistedState({

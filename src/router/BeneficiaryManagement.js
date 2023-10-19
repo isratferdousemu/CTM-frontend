@@ -1,5 +1,4 @@
 const BeneficiaryManagementRoutes = [
- 
     {
         path: "/beneficiary-management/committee",
         name: "Committee-List",
@@ -36,7 +35,6 @@ const BeneficiaryManagementRoutes = [
             "../pages/BeneficiaryManagement/CommitteeManagement/Edit.vue"
           ),
       },
-
     {
       path: "/beneficiary-management/beneficiary-info",
         name: "beneficiary_list",

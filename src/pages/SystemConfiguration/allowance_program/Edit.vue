@@ -6,6 +6,7 @@ import {
   ValidationProvider,
   ValidationObserver
 } from "vee-validate";
+import {http} from "@/hooks/httpService";
 
 export default {
   name: "Edit",
@@ -17,21 +18,16 @@ export default {
 
   data(){
     return{
-      add_allowance_program: {
-        name_en: '',
-        name_bn: '',
-        gender: [],
-        payment_cycle: '',
-        is_marital: '',
-        marital_status: '',
-        is_active: '',
-        add_field_id: [],
-        allowance_age: [],
-      },
+      delete_disable_id: '',
+      dataArray: '',
+      deleteDialog: false,
+      delete_loading: false,
+
+      deleteDisableDialog: false,
 
       is_marital_toggle: false,
       age_limit: false,
-      amount_limit: false,
+      disable_class: false,
 
       gender_items: [{id:1, name: "Male"}, {id:2, name: "Female"}, {id:3, name: "Other"}],
       marital_items: [{name: "Married"}, {name: "UnMarried"}, {name: "Widow"}],
@@ -64,7 +60,26 @@ export default {
       set(value){
         this.$store.commit('Allowance/updateValue', value)
       }
-    }
+    },
+
+    genderUpdatevalue: {
+      get() {
+        return this.editAllowanceGender;
+      },
+
+      set(value) {
+        this.$store.commit("Allowance/updateGenderValue", value);
+      }
+    },
+
+    updateAllowanceAge: {
+      get() {
+        return this.editAllowanceAge;
+      },
+      set(value) {
+        return this.$store.commit("Allowance/UPDATE_ALLOWANCE_AGE", value);
+      },
+    },
   },
 
   mounted() {
@@ -103,12 +118,58 @@ export default {
     allowanceAmount(amount){
       if (amount === true)
       {
-        this.amount_limit = true;
+        this.disable_class = true;
       }else {
-        this.amount_limit = false;
+        this.disable_class = false;
+      }
+    },
+
+    removeGender(event)
+    {
+      var arr =[];
+
+      for (let i = 0; i < event.length; i++) {
+        this.updateAllowanceAge.forEach((item)=>{
+          if (item.gender_id === event[i])
+          {
+              arr.push(item);
+          }
+        })
       }
 
-      console.log(this.editAllowanceAmount);
+      this.updateAllowanceAge = arr
+
+      if (event.length !== this.updateAllowanceAge.length)
+      {
+        this.deleteDialog = false;
+      }else {
+        this.deleteAlert(arr);
+      }
+    },
+
+    deleteAlert(arr) {
+      this.deleteDialog = true;
+      this.dataArray = arr;
+    },
+
+    singleRemoveGender(){
+      if (this.dataArray !== null)
+      {
+        let formData = new FormData();
+
+        formData.append('gender_age', JSON.stringify(this.dataArray));
+        formData.append('allowance_program_id', this.$route.params.id)
+        this.$store.dispatch("Allowance/DeleteGender", formData).then(() => {
+          if (this.success_status === 200)
+          {
+            this.$toast.success(this.message);
+
+            this.GetEditAllowanceProgram(this.$route.params.id);
+
+            this.deleteDialog = false;
+          }
+        });
+      }
     },
 
     addRow() {
@@ -120,8 +181,35 @@ export default {
       this.index++;
     },
 
-    deletedRow(index) {
-      this.editAllowanceAmount.splice(index, 1);
+    deletedRow({index,id}) {
+      if (id == 0)
+      {
+        this.editAllowanceAmount.splice(index, 1);
+      }else {
+        this.deletedisableAlert(id);
+      }
+    },
+
+    deletedisableAlert(id) {
+      this.deleteDisableDialog = true;
+      this.delete_disable_id = id;
+    },
+
+    singleDisableClassremove(){
+      try {
+        this.$store.dispatch("Allowance/DeleteDisableClass", this.delete_disable_id).then(() => {
+          if (this.success_status === 200)
+          {
+            this.$toast.success(this.message);
+
+            this.GetEditAllowanceProgram(this.$route.params.id);
+
+            this.deleteDisableDialog = false;
+          }
+        })
+      }catch (e) {
+        console.log(e);
+      }
     },
 
     updateAllowanceProgram: async function(){
@@ -140,7 +228,6 @@ export default {
         formData.append('is_age_limit', this.editAllowanceProgram.is_age_limit);
         formData.append('is_amount', this.editAllowanceProgram.is_amount);
 
-        formData.append("gender", JSON.stringify(this.editAllowanceGender));
         formData.append('age_limit', JSON.stringify(this.editAllowanceAge));
         formData.append('amount', JSON.stringify(this.editAllowanceAmount));
 
@@ -223,7 +310,7 @@ export default {
                         <v-col cols="12" sm="6" lg="6">
                           <ValidationProvider name="gender" vid="gender" rules="required" v-slot="{ errors }">
                             <v-select
-                                v-model="editAllowanceGender"
+                                v-model="genderUpdatevalue"
                                 :items="genders"
                                 item-text="value_en"
                                 item-value="id"
@@ -231,6 +318,7 @@ export default {
                                 label="Select Gender"
                                 multiple
                                 outlined
+                                @change="removeGender($event)"
                             ></v-select>
                           </ValidationProvider>
                         </v-col>
@@ -281,24 +369,26 @@ export default {
                               <td>Gender</td>
                               <td>Min Age</td>
                               <td>Max Age</td>
+                              <td>Amount</td>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="(g,index) in editAllowanceAge" :key="index">
+                            <tr v-for="(g,index) in updateAllowanceAge" :key="index">
                               <td>
                                 <v-select v-model="g.gender_id" :items="genders" item-text="value_en" item-value="id" dense outlined></v-select>
                               </td>
                               <td><v-text-field v-model="g.min_age" dense outlined></v-text-field></td>
                               <td><v-text-field v-model="g.max_age"  dense outlined></v-text-field></td>
+                              <td><v-text-field v-model="g.amount"  dense outlined></v-text-field></td>
                             </tr>
                             </tbody>
                           </table>
                         </v-col>
 
                         <v-col cols="12" sm="6" lg="6">
-                          <v-checkbox v-model="editAllowanceProgram.is_amount" label="Amount" @click="allowanceAmount(editAllowanceProgram.is_amount)"></v-checkbox>
+                          <v-checkbox v-model="editAllowanceProgram.is_disable_class" label="Disable Class" @click="allowanceAmount(editAllowanceProgram.is_disable_class)"></v-checkbox>
 
-                          <table v-if="editAllowanceProgram.is_amount === 1 || amount_limit === true">
+                          <table v-if="editAllowanceProgram.is_disable_class === 1 || disable_class === true">
                             <thead>
                             <tr>
                               <td>Type</td>
@@ -310,7 +400,7 @@ export default {
                             <tr v-for="(aa, index) in editAllowanceAmount" :key="index">
                               <td><v-select v-model="aa.type_id" :items="genderTypes" item-value="id" item-text="value_en" label="Please Select" dense outlined></v-select></td>
                               <td><v-text-field v-model="aa.amount" dense outlined></v-text-field></td>
-                              <td>
+                              <td style="display: flex; align-items: center; justify-content: space-between">
                                 <v-btn
                                     fab
                                     dark
@@ -326,10 +416,11 @@ export default {
                                     dark
                                     x-small
                                     color="red"
-                                    @click="deletedRow(index)"
+                                    @click="deletedRow({index:index, id:aa.id})"
                                     v-show="editAllowanceAmount.length > 1"
                                 >
                                   <v-icon>mdi-minus</v-icon>
+                                  {{ aa.id }}
                                 </v-btn>
                               </td>
                             </tr>
@@ -399,13 +490,66 @@ export default {
           </v-form>
         </ValidationObserver>
       </v-col>
+
+      <!-- delete modal for allowance program age  -->
+      <v-dialog v-model="deleteDialog" width="350">
+        <v-card style="justify-content: center; text-align: center">
+          <v-card-title class="font-weight-bold justify-center">
+            Delete Allowance Program Age
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            <div class="subtitle-1 font-weight-medium mt-5">
+              Are you sure to delete this allowance program age ? Allowance program age all information will be deleted.
+            </div>
+          </v-card-text>
+          <v-card-actions style="display: block">
+            <v-row class="mx-0 my-0 py-2" justify="center">
+              <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
+                Cancel
+              </v-btn>
+              <v-btn text @click="singleRemoveGender()" color="white" :loading="delete_loading" class="custom-btn-width warning white--text py-2">
+                Delete
+              </v-btn>
+            </v-row>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <!-- delete modal for allowance program age  -->
+
+      <!-- delete modal for allowance program disable class  -->
+      <v-dialog v-model="deleteDisableDialog" width="350">
+        <v-card style="justify-content: center; text-align: center">
+          <v-card-title class="font-weight-bold justify-center">
+            Delete Allowance Program disable class
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            <div class="subtitle-1 font-weight-medium mt-5">
+              Are you sure to delete this allowance program disable class  ? Allowance program disable class  all information will be deleted.
+            </div>
+          </v-card-text>
+          <v-card-actions style="display: block">
+            <v-row class="mx-0 my-0 py-2" justify="center">
+              <v-btn text @click="deleteDisableDialog = false" outlined class="custom-btn-width py-2 mr-10">
+                Cancel
+              </v-btn>
+              <v-btn text @click="singleDisableClassremove()" color="white" :loading="delete_loading" class="custom-btn-width warning white--text py-2">
+                Delete
+              </v-btn>
+            </v-row>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <!-- delete modal for allowance program disable class  -->
     </v-row>
   </div>
 </template>
 
 <style scoped>
 .theme--dark.v-btn.v-btn--has-bg {
-  margin-top: -25px !important;
+  margin-top: 0px !important;
   margin-left: 10px;
+  margin-bottom: 25px !important;
 }
 </style>
