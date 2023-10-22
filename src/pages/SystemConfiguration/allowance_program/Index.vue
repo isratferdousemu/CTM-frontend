@@ -114,7 +114,7 @@ export default {
             <v-card>
               <v-row>
                 <v-col col="6">
-                  <v-card-title><h3>Allowance Programe Lists</h3></v-card-title>
+                  <v-card-title><h3>Allowance Program Lists</h3></v-card-title>
                 </v-col>
               </v-row>
 
