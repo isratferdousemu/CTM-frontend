@@ -13,18 +13,49 @@
             >
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
-                  {{ $t("container.application_selection.division_cut_off.list") }}
+                  {{
+                    $t("container.application_selection.division_cut_off.list")
+                  }}
                 </h3>
               </v-card-title>
+
               <v-card-text>
                 <v-row
                   class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
                   justify="center"
                   justify-lg="space-between"
                 >
-                  <div class="d-flex justify-sm-end flex-wrap">
+                  <div class="d-flex justify-md-end flex-wrap">
+                    <v-autocomplete
+                      @input="onChangeFilter()"
+                      class="mr-5"
+                      v-model="financial_year_id"
+                      :items="financial_years"
+                      label="Financial Year"
+                      outlined
+                      dense
+                      item-text="financial_year"
+                      item-value="id"
+                      :error="errors[0] ? true : false"
+                      :error-messages="errors[0]"
+                    ></v-autocomplete>
+
+                    <v-select
+                      @input="onChangeFilter()"
+                      class="mr-5"
+                      v-model="location_type_id"
+                      :items="location_types"
+                      label="Location Type"
+                      outlined
+                      dense
+                      item-text="name_en"
+                      item-value="id"
+                      :error="errors[0] ? true : false"
+                      :error-messages="errors[0]"
+                    ></v-select>
+
                     <v-text-field
-                      @keyup.native="GetDivision"
+                      @keyup.native="GetPovertyCutOff"
                       outlined
                       dense
                       v-model="search"
@@ -41,15 +72,16 @@
                       color="primary"
                     >
                     </v-text-field>
+                    <!-- <v-btn
+                      @click="createDialog"
+                      flat
+                      class="my-sm-0 my-3 mx-0v -input--horizontal"
+                      color="primary"
+                      prepend-icon="mdi-account-multiple-plus"
+                    >
+                      {{ $t("container.list.add_new") }}
+                    </v-btn> -->
                   </div>
-                  <v-btn
-                    @click="createDialog"
-                    flat
-                    color="primary"
-                    prepend-icon="mdi-account-multiple-plus"
-                  >
-                    {{ $t("container.list.add_new") }}
-                  </v-btn>
                   <v-col cols="12">
                     <v-data-table
                       :loading="loading"
@@ -67,8 +99,11 @@
                           1
                         }}
                       </template>
-                      <template v-slot:item.name_en="{ item }">
-                        {{ item.name_en }}
+                      <template v-slot:item.location_id="{ item }">
+                        <span v-if="item.location_id == 1">All Over Bangladesh</span>
+                      </template>
+                      <template v-slot:item.score="{ item }">
+                        {{ item.score }}
                       </template>
                       <template v-slot:item.name_bn="{ item }">
                         {{ item.name_bn }}
@@ -94,7 +129,7 @@
                             {{ $t("container.list.edit") }}
                           </span>
                         </v-tooltip>
-
+<!-- 
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
@@ -111,7 +146,7 @@
                             </v-btn>
                           </template>
                           <span> {{ $t("container.list.delete") }}</span>
-                        </v-tooltip>
+                        </v-tooltip> -->
                       </template>
                       <!-- End Action Button -->
 
@@ -160,87 +195,7 @@
             {{ $t("container.application_selection.division_cut_off.add_new") }}
           </v-card-title>
           <v-divider></v-divider>
-          <v-card-text class="mt-7">
-            <ValidationObserver ref="formAdd" v-slot="{ invalid }">
-              <form @submit.prevent="submitDivision()">
-                <!-- {{errors.code}}
-                {{errors.name_en}} -->
-
-                <ValidationProvider
-                  v-slot="{ errors }"
-                  name="Code"
-                  vid="code"
-                  rules="required"
-                >
-                  <v-text-field
-                    outlined
-                    type="text"
-                    v-model="data.code"
-                    :label="$t('container.list.code')"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                    >></v-text-field
-                  >
-                </ValidationProvider>
-                <ValidationProvider
-                  v-slot="{ errors }"
-                  name="Name English"
-                  vid="name_en"
-                  rules="required"
-                >
-                  <v-text-field
-                    outlined
-                    type="text"
-                    v-model="data.name_en"
-                    :label="$t('container.list.name_en')"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                    >></v-text-field
-                  >
-                </ValidationProvider>
-                <ValidationProvider
-                  v-slot="{ errors }"
-                  name="Name Bangla"
-                  vid="name_bn"
-                  rules="required"
-                >
-                  <v-text-field
-                    outlined
-                    type="text"
-                    v-model="data.name_bn"
-                    :label="$t('container.list.name_bn')"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                    >></v-text-field
-                  >
-                </ValidationProvider>
-
-                <v-row class="mx-0 my-0 py-2" justify="center">
-                  <v-btn
-                    flat
-                    @click="dialogAdd = false"
-                    outlined
-                    class="custom-btn-width py-2 mr-10"
-                  >
-                    {{ $t("container.list.cancel") }}
-                  </v-btn>
-                  <v-btn
-                    type="submit"
-                    flat
-                    color="primary"
-                    :disabled="invalid"
-                    :loading="loading"
-                    class="custom-btn-width warning white--text py-2"
-                  >
-                    {{ $t("container.list.submit") }}
-                  </v-btn>
-                </v-row>
-              </form>
-            </ValidationObserver>
-          </v-card-text>
+          <v-card-text class="mt-7"> </v-card-text>
         </v-card>
       </v-dialog>
       <!-- division add modal  -->
@@ -254,53 +209,38 @@
           <v-divider></v-divider>
           <v-card-text class="mt-7">
             <ValidationObserver ref="formEdit" v-slot="{ invalid }">
-              <form @submit.prevent="updateDivision()">
-                <!-- {{errors.code}}
-                {{errors.name_en}} -->
+              <form @submit.prevent="updateCuttOff()">
+                <!-- {{errors.division_name}}
+                {{errors.score}} -->
 
                 <ValidationProvider
-                  name="Code"
-                  vid="code"
+                  name="Division"
+                  vid="division_name"
                   rules="required"
                   v-slot="{ errors }"
                 >
                   <v-text-field
                     outlined
+                    readonly
                     type="text"
-                    v-model="data.code"
-                    :label="$t('container.list.code')"
+                    v-model="data.division_name"
+                    :label="$t('container.list.division_name')"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
                   ></v-text-field>
                 </ValidationProvider>
                 <ValidationProvider
-                  name="Name English"
-                  vid="name_en"
+                  name="Score"
+                  vid="score"
                   rules="required"
                   v-slot="{ errors }"
                 >
                   <v-text-field
                     outlined
                     type="text"
-                    v-model="data.name_en"
-                    :label="$t('container.list.name_en')"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-text-field>
-                </ValidationProvider>
-                <ValidationProvider
-                  name="Name Bangla"
-                  vid="name_bn"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <v-text-field
-                    outlined
-                    type="text"
-                    v-model="data.name_bn"
-                    :label="$t('container.list.name_bn')"
+                    v-model="data.score"
+                    :label="$t('container.list.score')"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -344,7 +284,9 @@
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
               {{
-                $t("container.application_selection.division_cut_off.delete_alert")
+                $t(
+                  "container.application_selection.division_cut_off.delete_alert"
+                )
               }}
             </div>
           </v-card-text>
@@ -389,18 +331,36 @@ export default {
     return {
       data: {
         id: null,
-        code: null,
-        name_en: null,
-        name_bn: null,
+        division_name: null,
+        type: null,
+        score: null,
       },
       dialogAdd: false,
       deleteDialog: false,
       dialogEdit: false,
       delete_loading: false,
       loading: false,
+      location_type: null,
+      location_type_id: null,
+      location_types: [
+        {
+          id: 0,
+          name_en: "All",
+        },
+        {
+          id: 1,
+          name_en: "Division",
+        },
+        {
+          id: 2,
+          name_en: "District",
+        },
+      ],
       search: "",
       delete_id: "",
+      financial_year_id: null,
       divisions: [],
+      financial_years: [],
       errors: {},
       error_status: {},
       pagination: {
@@ -447,7 +407,7 @@ export default {
 
     ...mapState({
       message: (state) => state.Division.success_message,
-      divisions: (state) => state.Division.divisions,
+      // divisions: (state) => state.Division.divisions,
       // errors: (state) => state.Division.errors,
       // error_status: (state) => state.Division.error_status,
     }),
@@ -462,47 +422,22 @@ export default {
       this.dialogAdd = true;
     },
     checkLanguage() {
-      // let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
-      // let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
-      // if (
-      //   checkLanguageBangla != "Bangla" &&
-      //   checkLanguageEnglish != "English"
-      // ) {
-      //   let errs = {
-      //     name_bn: ["Please Enter in Bangla Language in this Field"],
-      //     name_en: ["Please Enter in English Language in this Field"],
-      //   };
-      //   this.$refs.form.setErrors(errs);
-      //   return false;
-      // } else if (checkLanguageBangla != "Bangla") {
-      //   let errs = {
-      //     name_bn: ["Please Enter in Bangla Language in this Field"],
-      //   };
-      //   this.$refs.form.setErrors(errs);
-      //   return false;
-      // } else if (checkLanguageEnglish != "English") {
-      //   let errs = {
-      //     name_en: ["Please Enter in English Language in this Field"],
-      //   };
-      //   this.$refs.form.setErrors(errs);
-      //   return false;
-      // } else {
-      //   return true;
-      // }
-
-      let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
+      let checkLanguageEnglish = this.$checkLanguage(this.data.score);
       let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
 
       console.log(checkLanguageEnglish);
       console.log(checkLanguageBangla);
       let errs = {};
 
-      if (checkLanguageBangla !== "Bangla" && checkLanguageBangla !== "BanglaSpecialChar") {
+      if (
+        checkLanguageBangla !== "Bangla" &&
+        checkLanguageBangla !== "BanglaSpecialChar"
+      ) {
         errs.name_bn = ["Please Enter in Bangla Language in this Field"];
       }
 
       if (checkLanguageEnglish != "English") {
-        errs.name_en = ["Please Enter in English Language in this Field"];
+        errs.score = ["Please Enter in English Language in this Field"];
       }
 
       if (Object.keys(errs).length > 0) {
@@ -540,7 +475,7 @@ export default {
               this.$toast.success("Data Inserted Successfully");
               this.resetForm();
               this.dialogAdd = false;
-              this.GetDivision();
+              this.GetPovertyCutOff();
             } else if (res.response?.data?.errors) {
               console.log(res.response.data.errors);
               this.$refs.formAdd.setErrors(res.response.data.errors);
@@ -551,31 +486,38 @@ export default {
       }
     },
     editDialog(item) {
+      console.log(item);
       this.dialogEdit = true;
-      this.data.code = item.code;
-      this.data.name_en = item.name_en;
-      this.data.name_bn = item.name_bn;
+      this.data.division_name = item.assign_location.name_en;
+      this.data.score = item.score;
+      this.data.location_id = item.assign_location.id;
+      this.data.type = item.type;
       this.data.id = item.id;
       this.errors = {};
     },
-    updateDivision() {
-      if (!this.checkLanguage()) {
-        return;
-      }
-
+    updateCuttOff() {
       try {
         this.$store
-          .dispatch("Division/UpdateDivision", this.validator())
-          .then((data) => {
-            console.log(data, "update");
-            if (data == null) {
+          .dispatch("ApplicationSelection/updateCuttOff", this.validator())
+          .then((res) => {
+            if (res.data?.success) {
               this.$toast.success("Data Updated Successfully");
+              // this.resetData();
               this.dialogEdit = false;
-              this.resetForm();
-              this.GetDivision();
-            } else {
-              this.$refs.formEdit.setErrors(data.errors);
+              this.GetPovertyCutOff();
+            } else if (res.response?.data?.errors) {
+              this.$refs.form.setErrors(res.response.data.errors);
+              this.$toast.error(res.response.data.message);
             }
+            // console.log(data, "update");
+            // if (data == null) {
+            //   this.$toast.success("Data Updated Successfully");
+            //   this.dialogEdit = false;
+            //   this.resetForm();
+            //   this.GetPovertyCutOff();
+            // } else {
+            //   this.$refs.formEdit.setErrors(data);
+            // }
           });
       } catch (e) {
         console.log(e);
@@ -584,8 +526,8 @@ export default {
     resetForm() {
       // Reset the form data
       this.data = {
-        code: "",
-        name_en: "",
+        division_name: "",
+        score: "",
         name_bn: "",
         // Reset other form fields
       };
@@ -594,10 +536,28 @@ export default {
 
     onPageChange($event) {
       // this.pagination.current = $event;
-      this.GetDivision();
+      this.GetPovertyCutOff();
     },
+    async onChangeFilter() {
+      const data = {
+        financial_year_id: this.financial_year_id,
+        type: this.location_type_id,
+      };
+      console.log(data, "onChangeFilter");
+      // return;
 
-    async GetDivision() {
+      try {
+        this.$store
+          .dispatch("ApplicationSelection/filterCutOff", data)
+          .then((res) => {
+            console.log(res, "filterCutOff");
+            this.divisions = res.data.data;
+          });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async GetPovertyCutOff() {
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
@@ -613,9 +573,22 @@ export default {
         })
         .then((result) => {
           this.divisions = result.data.data;
+          console.log(this.divisions);
           this.pagination.current = result.data.meta.current_page;
           this.pagination.total = result.data.meta.last_page;
           this.pagination.grand_total = result.data.meta.total;
+        });
+    },
+    async GetFinancialYear() {
+      this.$axios
+        .get("/admin/financial-year/get", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
+          this.financial_years = result.data.data;
         });
     },
     deleteDivision: async function () {
@@ -630,7 +603,7 @@ export default {
               this.$toast.error(res.response.data.message);
             }
             this.deleteDialog = false;
-            this.GetDivision();
+            this.GetPovertyCutOff();
           })
           .catch((error) => {
             console.log(error, "error");
@@ -656,7 +629,8 @@ export default {
     "$i18n.locale": "updateHeaderTitle",
   },
   created() {
-    this.GetDivision();
+    this.GetFinancialYear();
+    this.GetPovertyCutOff();
   },
   beforeMount() {
     this.updateHeaderTitle();
