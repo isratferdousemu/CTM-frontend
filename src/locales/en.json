@@ -37,6 +37,7 @@
             "replace": "Replace",
             "save": "Save",
             "reason": "Reason",
+            "reason_details": "Reason Details",
             "mobile": "Mobile",
             "beneficiary_journey":"Beneficiary Journey",
             "change_tracking_details":"Change Tracking Details"
@@ -275,7 +276,8 @@
                 "status": "Status",
                 "comment": "Comment",
                 "active": "Active"
-            },
+            }
+        },
             "beneficiary_management": {
                 "beneficiary_list": {
                     "beneficiary": "Beneficiary",
@@ -323,15 +325,16 @@
                     "information_tracking":"Information Tracking",
                     "tracking_type":"Tracking Type",
                     "address":"Address"
-
-
-            
-
-                 
-                    
-
-                }
+             
+                },
+                        "digital_id": {
+                            "digital_id_card": "Digital ID Card"
+                        },
+                        "beneficiary_exit": {
+                            "title": "Beneficiary Exit and Adiition Management ",
+                            "date_of_exit":"Date of Exit"
+                        }
+                       
             }
     }
-}
 }

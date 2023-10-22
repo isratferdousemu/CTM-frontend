@@ -48,6 +48,16 @@
                         </v-row>
                         
                     <v-row class="mx-0 my-0 py-2" justify="end">
+                            <v-btn
+                            type="submit"
+                            flat
+                      router to="/beneficiary-management/beneficiary-info"
+                            :disabled="invalid"
+                            :loading="loading"
+                            class="custom-btn-width   py-2 mr-2"
+                          >
+                            {{ $t("container.list.back") }}
+                          </v-btn>
                       <v-btn
                         type="submit"
                         flat

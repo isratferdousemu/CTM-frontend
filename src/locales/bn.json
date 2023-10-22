@@ -38,6 +38,7 @@
             "replace": "প্রতিস্থাপন",
             "save": "সংরক্ষণ",
             "reason":"কারণ",
+            "reason_details": "কারণ বিবরণ",
             "mobile": "মোবাইল",
             "beneficiary_journey": "সুবিধাভোগী যাত্রা",
             "change_tracking_details": "ট্র্যাকিং বিবরণ পরিবর্তন করুন"
@@ -327,7 +328,14 @@
                     "tracking_type": "ট্র্যাকিং টাইপ",
                     "address": "ঠিকানা"
 
-                }
+                },
+                "digital_id": {
+                    "digital_id_card": "ডিজিটাল আইডি কার্ড"
+                },
+                "beneficiary_exit": {
+                    "title": "সুবিধাভোগী প্রস্থান এবং এডিশন ব্যবস্থাপনা"
+                },
+                "date_of_exit": "প্রস্থানের তারিখ"
             }
     }
 }
