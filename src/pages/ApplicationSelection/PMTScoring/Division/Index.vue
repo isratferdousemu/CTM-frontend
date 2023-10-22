@@ -99,8 +99,9 @@
                           1
                         }}
                       </template>
-                      <template v-slot:item.location_id="{ item }">
-                        <span v-if="item.location_id == 1">All Over Bangladesh</span>
+                      <template v-slot:item.assign_location.name_en="{ item }">
+                        <span v-if="item.type === 0">All Over Bangladesh</span>
+                        <span v-else>{{ item.assign_location.name_en }}</span>
                       </template>
                       <template v-slot:item.score="{ item }">
                         {{ item.score }}
@@ -129,7 +130,7 @@
                             {{ $t("container.list.edit") }}
                           </span>
                         </v-tooltip>
-<!-- 
+                        <!-- 
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
@@ -504,7 +505,11 @@ export default {
               this.$toast.success("Data Updated Successfully");
               // this.resetData();
               this.dialogEdit = false;
-              this.GetPovertyCutOff();
+              if (this.financial_year_id == null && this.type == null) {
+                this.GetPovertyCutOff();
+              } else {
+                this.onChangeFilter();
+              }
             } else if (res.response?.data?.errors) {
               this.$refs.form.setErrors(res.response.data.errors);
               this.$toast.error(res.response.data.message);
@@ -539,19 +544,28 @@ export default {
       this.GetPovertyCutOff();
     },
     async onChangeFilter() {
-      const data = {
+      const filterData = {
         financial_year_id: this.financial_year_id,
         type: this.location_type_id,
       };
-      console.log(data, "onChangeFilter");
+      console.log(filterData, "onChangeFilter");
       // return;
+      let fd = new FormData();
+      for (const [key, value] of Object.entries(filterData)) {
+        if (value !== null) {
+          fd.append(key, value);
+        }
+      }
 
       try {
         this.$store
-          .dispatch("ApplicationSelection/filterCutOff", data)
-          .then((res) => {
-            console.log(res, "filterCutOff");
-            this.divisions = res.data.data;
+          .dispatch("ApplicationSelection/filterCutOff", fd)
+          .then((result) => {
+            console.log(result, "filterCutOff");
+            this.divisions = result.data.data;
+            this.pagination.current = result.data.meta.current_page;
+            this.pagination.total = result.data.meta.last_page;
+            this.pagination.grand_total = result.data.meta.total;
           });
       } catch (e) {
         console.log(e);
