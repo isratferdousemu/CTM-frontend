@@ -16,21 +16,19 @@
                   <ValidationObserver ref="form" v-slot="{ invalid }">
                     <form @submit.prevent="submitWard()">
                       <v-row>
-                        <v-col lg="6" md="6" cols="12">
+                        <v-col lg="3" md="3" cols="12">
 
-                          <v-select outlined menu-props="top" clearable
+                          <v-select outlined menu-props="top" clearable class="no-arrow-icon" 
+                            :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
                             :label="$t('container.application_selection.application.program')">
                           </v-select>
                         </v-col>
-                          <v-col lg="6" md="6" cols="12">
-                            <v-select outlined clearable
-                              :label="$t('container.application_selection.application.list_type')">
-                            </v-select>
-                          </v-col>
-                      
-                        <v-col lg="6" md="6" cols="12">
+
+
+                        <v-col lg="3" md="3" cols="12">
                           <ValidationProvider name="Division" vid="division" rules="required" v-slot="{ errors }">
-                            <v-autocomplete outlined clearable @input="onChangeDivision($event)"
+                            <v-autocomplete outlined clearable @input="onChangeDivision($event)" 
+                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
                               v-model="data.division_id" :label="$t(
                                 'container.system_config.demo_graphic.division.division'
                               )
@@ -39,66 +37,112 @@
                             </v-autocomplete>
                           </ValidationProvider>
                         </v-col>
-                        <v-col lg="6" md="6" cols="12">
+                        <v-col lg="3" md="3" cols="12">
                           <ValidationProvider name="District" vid="district" rules="required" v-slot="{ errors }">
-                            <v-autocomplete outlined v-model="data.district_id" @input="onChangeDistrict($event)" :label="$t(
-                              'container.system_config.demo_graphic.district.district'
-                            )
-                              " :items="districts" item-text="name_en" item-value="id" required
+                            <v-autocomplete outlined :append-icon-cb="appendIconCallback"
+                             append-icon="mdi-plus" v-model="data.district_id" @input="onChangeDistrict($event)"
+                              :label="$t(
+                                'container.system_config.demo_graphic.district.district'
+                              )
+                                " :items="districts" item-text="name_en" item-value="id" required
                               :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
-                          <v-col  cols="12">
-                            <ValidationProvider name="Location Type" vid="location_type" rules="required"
-                              v-slot="{ errors }">
-                              <v-autocomplete @input="LocationType($event)" v-model="data.location_type" outlined
-                                :label="$t('container.list.location_type')" :items="locationType" item-text="value_en"
-                                item-value="id" required :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"></v-autocomplete>
-                            </ValidationProvider>
-                          </v-col>
-                               <v-col v-if="data.location_type == 1" lg="6" md="6" cols="12">
-                            <ValidationProvider name="thana" vid="district_pouro_id" rules="required" v-slot="{ errors }">
-                              <v-autocomplete  v-model="data.district_pouro_id" outlined
-                                :label="$t('container.system_config.demo_graphic.ward.pouro')
-                                  " :items="district_pouros" item-text="name_en" item-value="id" required
-                                :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
-                            </ValidationProvider>
-                          </v-col>
-                             <v-col v-if="data.location_type == 2" lg="6" md="6" cols="12">
-                            <ValidationProvider name="Upazila" vid="thana_id" rules="required" v-slot="{ errors }">
-                              <v-autocomplete  v-model="data.thana_id" outlined :label="$t('container.system_config.demo_graphic.thana.thana')
+                        <v-col lg="3" md="3" cols="12">
+                          <ValidationProvider name="Location Type" vid="location_type" rules="required"
+                            v-slot="{ errors }">
+                            <v-autocomplete  :append-icon-cb="appendIconCallback"
+                            append-icon="mdi-plus" @input="LocationType($event)" v-model="data.location_type"
+                              outlined :label="$t('container.list.location_type')" :items="locationType"
+                              item-text="value_en" item-value="id" required :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col v-if="data.location_type == 1" lg="3" md="3" cols="12">
+                          <ValidationProvider name="thana" vid="district_pouro_id" rules="required" v-slot="{ errors }">
+                            <v-autocomplete :append-icon="appendIcon" :append-icon-cb="appendIconCallback"
+                              prepend-inner-icon="mdi-plus" v-model="data.district_pouro_id" outlined :label="$t('container.system_config.demo_graphic.ward.pouro')
+                                " :items="district_pouros" item-text="name_en" item-value="id" required
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col v-if="data.location_type == 2" lg="3" md="3" cols="12">
+                          <ValidationProvider name="Upazila" vid="thana_id" rules="required" v-slot="{ errors }">
+                            <v-autocomplete :append-icon="appendIcon" :append-icon-cb="appendIconCallback"
+                              prepend-inner-icon="mdi-plus" v-model="data.thana_id" outlined :label="$t('container.system_config.demo_graphic.thana.thana')
                                 " @change="onChangeUpazila($event)" :items="thanas" item-text="name_en" item-value="id"
-                                required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
-                            </ValidationProvider>
-                          </v-col>
-                        <v-col  v-if="data.location_type == 2" lg="6" md="6" cols="12">
+                              required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col v-if="data.location_type == 2" lg="3" md="3" cols="12">
                           <ValidationProvider name="union" vid="union_id" rules="required" v-slot="{ errors }">
-                            <v-autocomplete  v-model="data.union_id" outlined :label="$t('container.system_config.demo_graphic.ward.union')
-                              " :items="unions" item-text="name_en" item-value="id" required
+                            <v-autocomplete :append-icon="appendIcon" :append-icon-cb="appendIconCallback"
+                              prepend-inner-icon="mdi-plus" v-model="data.union_id" outlined :label="$t('container.system_config.demo_graphic.ward.union')
+                                " :items="unions" item-text="name_en" item-value="id" required
                               :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
 
-                        <v-col  v-if="data.location_type == 3" lg="6" md="6" cols="12">
+                        <v-col v-if="data.location_type == 3" lg="3" md="3" cols="12">
                           <ValidationProvider name="city" vid="city_id" rules="required" v-slot="{ errors }">
-                            <v-autocomplete  v-model="data.city_id"
-                              @change="onChangeCity($event)" outlined :label="$t('container.system_config.demo_graphic.ward.city')
+                            <v-autocomplete :append-icon="appendIcon" :append-icon-cb="appendIconCallback"
+                              prepend-inner-icon="mdi-plus" v-model="data.city_id" @change="onChangeCity($event)" outlined
+                              :label="$t('container.system_config.demo_graphic.ward.city')
                                 " :items="cities" item-text="name_en" item-value="id" required
                               :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
 
-                        <v-col v-if="data.location_type == 3" lg="6" md="6" cols="12">
+                        <v-col v-if="data.location_type == 3" lg="3" md="3" cols="12">
                           <ValidationProvider name="thana" vid="city_thana_id" rules="required" v-slot="{ errors }">
-                            <v-autocomplete  v-model="data.city_thana_id" outlined :label="$t('container.system_config.demo_graphic.ward.thana')
-                              " :items="city_thanas" item-text="name_en" item-value="id" required
+                            <v-autocomplete :append-icon="appendIcon" :append-icon-cb="appendIconCallback"
+                              prepend-inner-icon="mdi-plus" v-model="data.city_thana_id" outlined :label="$t('container.system_config.demo_graphic.ward.thana')
+                                " :items="city_thanas" item-text="name_en" item-value="id" required
                               :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
-                       
+
+
                       </v-row>
-                      
+                      <v-row>
+                        <v-btn elevation="2" class="btn ml-3" color="blue" @click="toggleFieldVisibility">{{
+                          $t("container.beneficiary_management.beneficiary_list.advance_search") }}</v-btn>
+
+                      </v-row>
+                      <v-row v-if="isFieldVisible" class="mt-10">
+                        <v-col lg="3" md="3" cols="12">
+                          <v-select outlined clearable append-icon="mdi-plus" :append-icon-cb="appendIconCallback"
+                          
+                            :label="$t('container.beneficiary_management.beneficiary_list.beneficiary_id')">
+                          </v-select>
+                        </v-col>
+                        <v-col lg="3" md="3" cols="12">
+                          <v-text-field outlined clearable append-icon="mdi-plus" :append-icon-cb="appendIconCallback"
+                         
+                            :label="$t('container.beneficiary_management.beneficiary_list.nominee')">
+                          </v-text-field>
+                        </v-col>
+                        <v-col lg="3" md="3" cols="12">
+                          <v-text-field outlined clearable :append-icon-cb="appendIconCallback"
+                      append-icon="mdi-plus"
+                            :label="$t('container.application_selection.application.account')">
+                          </v-text-field>
+                        </v-col>
+                        <v-col lg="3" md="3" cols="12">
+                          <v-text-field outlined clearable append-icon="mdi-plus" :append-icon-cb="appendIconCallback"
+                          
+                            :label="$t('container.beneficiary_management.beneficiary_list.nid')">
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col lg="3" md="3" cols="12">
+                          <v-select outlined clearable append-icon="mdi-plus" :append-icon-cb="appendIconCallback"
+                           
+                            :label="$t('container.application_selection.application.list_type')">
+                          </v-select>
+                        </v-col>
+                      </v-row>
+
                       <div class="d-inline d-flex justify-end ">
                         <v-btn elevation="2" class="btn mr-2" color="success">{{ $t("container.list.search") }}</v-btn>
                         <v-btn elevation="2" class="btn">{{ $t("container.list.reset") }}</v-btn>
@@ -152,14 +196,9 @@
                 </h3>
               </v-card-title>
               <v-card-text>
-                <v-row>
-                  <v-col>
-
-                  </v-col>
-                  <v-col>
-
-                  </v-col>
-                  <v-col>
+                <v-row justify="end">
+                
+                  <v-col lg="3" md="3" cols="12">
 
                     <!-- selected columns -->
                     <v-select v-model="value" :items="headers"
@@ -189,7 +228,7 @@
                       </template>
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
-                        
+
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn v-can="'update-post'" fab x-small v-on="on" color="success" elevation="0"
@@ -260,7 +299,7 @@ export default {
         union_id: null,
         thana_id: null
       },
-
+      isFieldVisible: false,
       value: ["3", "100", "11", "12"], // Default selection without 'name'
       selectedHeaders: [],
       loading: false,
@@ -283,6 +322,34 @@ export default {
         perPage: 10,
       },
       items: [5, 10, 15, 20, 40, 50, 100],
+      headers_start: [
+          { text: this.$t("container.list.sl"), value: "sl" },
+          {
+            text: this.$t("container.list.name_en"),
+            value: "200",
+
+          },
+          {
+            text: this.$t(
+              "container.application_selection.application.program"
+            ),
+            value: "100",
+          },
+          {
+            text: this.$t("container.application_selection.application.mobile"),
+            value: "11",
+
+          },
+          {
+            text: this.$t("container.list.status"),
+            value: "12",
+
+          },
+          { text: this.$t("container.list.action"), value: "actions" },
+
+        ]
+    
+
     };
   },
   components: {
@@ -379,45 +446,26 @@ export default {
 
       ];
     },
-    headers_start() {
-      return [
-        { text: this.$t("container.list.sl"), value: "sl" },
-        {
-          text: this.$t("container.list.name_en"),
-          value: "200",
-
-        },
-        {
-          text: this.$t(
-            "container.application_selection.application.program"
-          ),
-          value: "100",
-        },
-        {
-          text: this.$t("container.application_selection.application.mobile"),
-          value: "11",
-
-        },
-        {
-          text: this.$t("container.list.status"),
-          value: "12",
-
-        },
-        { text: this.$t("container.list.action"), value: "actions" },
-
-      ];
-    },
-
+    
 
 
 
   },
 
   methods: {
-    ...mapActions({
+    appendIconCallback() {
+      // Handle the click event for the custom append icon here
+
+    },
+    appendIcon() {
+      return 'mdi-plus'; // Use the appropriate Material Design Icons (MDI) class for the "+" icon
+    },
+    toggleFieldVisibility() {
+      this.isFieldVisible = !this.isFieldVisible;
+    },
+      ...mapActions({
       GetAllDivisions: "Division/GetAllDivisions",
-
-
+   
     }),
 
     async onChangeDivision(event) {
@@ -550,10 +598,8 @@ export default {
   watch: {
     "$i18n.locale": "updateHeaderTitle",
     value(val) {
-      // this.selectedHeaders = val;
+      this.selectedHeaders=[]
       this.selectedHeaders = [{ text: this.$t("container.list.sl"), value: "sl" }, ...val, { text: this.$t("container.list.action"), value: "actions" }];
-
-
     }
   },
   created() {
@@ -565,11 +611,25 @@ export default {
     this.updateHeaderTitle();
   },
   mounted() {
-    this.selectedHeaders = this.headers_start
     this.GetAllDivisions();
+    this.selectedHeaders = this.headers_start
     this.$store
       .dispatch("getLookupByType", 1)
       .then((res) => (this.locationType = res));
   }
 };
 </script>
+<style >
+.no-arrow-icon .v-input__icon--clear {
+  display: none;
+
+}
+.v-input__icon--append .v-icon { 
+    color: purple;
+      font-weight: bold;
+}
+.no-arrow-icon .v-input__icon--append {
+    font-weight: bold;
+
+}
+</style>

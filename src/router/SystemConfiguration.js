@@ -222,7 +222,7 @@ const SystemConfigurationRoutes = [
     component: () => import("../pages/SystemConfiguration/user_management/users/index.vue")
   },
   {
-    path: "/system-configuration/financial",
+    path: "/system-configuration/financial-year",
     name: "financial_year_list",
     meta: {
       requiresAuth: true,

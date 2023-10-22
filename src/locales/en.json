@@ -252,7 +252,8 @@
                 "spouse_name_bn": "Spouse Name (Bangla)",
                 "union_pourashava": "Union Pourashava",
                 "village": "Village",
-                "mobile": "Mobile"
+                "mobile": "Mobile",
+                "account":"Account No"
             },
             "division_cut_off": {
                 "division_cut_off": "Cut Off",

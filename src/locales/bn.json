@@ -206,7 +206,7 @@
                 "financial_year": {
                     "financial_year": "আর্থিক বর্ষ",
                     "list": "আর্থিক বর্ষের তালিকা ",
-                    "start_date": "Start date",
+                    "start_date": "শুরুর তারিখ",
                     "end_date": "শেষের তারিখ",
                     "status": "স্ট্যাটাস",
                     "search": "আর্থিক বর্ষ খুঁজন "
@@ -256,7 +256,8 @@
                 "spouse_name_bn": "স্বামী/স্ত্রীর নাম (বাংলায়)",
                 "union_pourashava": "ইউনিয়ন পৌরসভা",
                 "village": "গ্রাম",
-                "mobile": "মোবাইল"
+                "mobile": "মোবাইল",
+                "account": "হিসাব নাম্বার"
             },
             "division_cut_off": {
                 "division_cut_off": "কাট অফ",

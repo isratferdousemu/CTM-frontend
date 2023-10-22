@@ -140,7 +140,23 @@
                                             {{ $t("container.beneficiary_management.beneficiary_list.list")
                                             }}
                                         </v-card-title>
-                                        <v-data-table :loading="loading" item-key="id" :headers="headers" :items="divisions"
+                                         <v-row justify="end">
+                
+                      <v-col lg="3" md="3" cols="12">
+
+                        <!-- selected columns -->
+                        <v-select v-model="value" :items="headers" class="mr-5"
+                          :label="$t('container.application_selection.application.select_column')" multiple return-object
+                          outlined menu-props="top">
+                          <template v-slot:selection="{ item, index }">
+
+                          </template>
+                        </v-select>
+                        <!-- Select column End -->
+
+                      </v-col>
+                    </v-row>
+                                        <v-data-table :loading="loading" item-key="id" :headers="selectedHeaders" :items="divisions"
                                             :items-per-page="pagination.perPage" hide-default-footer
                                             class="elevation-0 transparent row-pointer">
                                             <template v-slot:item.id="{ item, index }">
@@ -222,8 +238,8 @@ export default {
                 thana_id: null
             },
 
-  
-      
+            value:["name_bn"],
+            selectedHeaders:[],
             loading: false,
             search: "",
             divisions: [],
@@ -242,6 +258,42 @@ export default {
                 perPage: 10,
             },
             items: [5, 10, 15, 20, 40, 50, 100],
+            headers_start:[
+                 {
+                    text: this.$t("container.list.sl"),
+                    value: "id",
+                    align: "start",
+                    sortable: false,
+                },
+
+
+                {
+                    text: this.$t(
+                        "container.beneficiary_management.beneficiary_list.beneficiary_id"
+                    ),
+                    value: "name_bn",
+                },
+                {
+                    text: this.$t(
+                        "container.system_config.demo_graphic.union.union"
+                    ),
+                    value: "name_bn",
+                },
+                {
+                    text: this.$t(
+                        "container.list.mobile"
+                    ),
+                    value: "name_bn",
+                },
+
+                {
+                    text: this.$t("container.list.action"),
+                    value: "actions",
+                    align: "center",
+                    sortable: false,
+                },
+
+            ]
         };
     },
      components: {
@@ -437,11 +489,9 @@ export default {
     },
     watch: {
         "$i18n.locale": "updateHeaderTitle",
-        value(val) {
-            // this.selectedHeaders = val;
+       value(val) {
+         
             this.selectedHeaders = [{ text: this.$t("container.list.sl"), value: "sl" }, ...val, { text: this.$t("container.list.action"), value: "actions" }];
-
-
         }
     },
 
@@ -450,6 +500,7 @@ export default {
     },
     mounted() {
         this.Getbeneficiary();
+        this.selectedHeaders = this.headers_start
 
         this.$store
             .dispatch("getLookupByType", 1)
