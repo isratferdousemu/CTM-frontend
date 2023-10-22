@@ -38,8 +38,10 @@
             "replace": "প্রতিস্থাপন",
             "save": "সংরক্ষণ",
             "reason":"কারণ",
+            "reason_details": "কারণ বিবরণ",
             "mobile": "মোবাইল",
-            "beneficiary_journey": "সুবিধাভোগী যাত্রা"
+            "beneficiary_journey": "সুবিধাভোগী যাত্রা",
+            "change_tracking_details": "ট্র্যাকিং বিবরণ পরিবর্তন করুন"
         },
         "system_config": {
             "demo_graphic": {
@@ -114,7 +116,8 @@
                     "upazila": "উপজেলা",
                     "union": "ইউনিয়ন",
                     "pouro": "জেলা পৌরসভা",
-                    "union_pouro_city": "ইউনিয়ন/জেলা পৌরসভা/সিটি কর্পোরেশন"
+                    "union_pouro_city": "ইউনিয়ন/জেলা পৌরসভা/সিটি কর্পোরেশন",
+                    "union_ward": "ইউনিয়ন/ওয়ার্ড"
                 },
                 "office": {
                     "office": "অফিস",
@@ -203,7 +206,7 @@
                 "financial_year": {
                     "financial_year": "আর্থিক বর্ষ",
                     "list": "আর্থিক বর্ষের তালিকা ",
-                    "start_date": "Start date",
+                    "start_date": "শুরুর তারিখ",
                     "end_date": "শেষের তারিখ",
                     "status": "স্ট্যাটাস",
                     "search": "আর্থিক বর্ষ খুঁজন "
@@ -253,27 +256,28 @@
                 "spouse_name_bn": "স্বামী/স্ত্রীর নাম (বাংলায়)",
                 "union_pourashava": "ইউনিয়ন পৌরসভা",
                 "village": "গ্রাম",
-                "mobile": "মোবাইল"
+                "mobile": "মোবাইল",
+                "account": "হিসাব নাম্বার"
             },
             "division_cut_off": {
-                "division_cut_off": "ডিভিশন কাট অফ",
+                "division_cut_off": "কাট অফ",
                 "list": "বিভাগ কাট অফ তালিকা",
                 "score": "স্কোর",
-                "name_en": "ডিভিশন কাট অফ নাম ইংরেজি",
+                "name_en": "কাট অফ নাম ইংরেজি",
                 "name_bn": "বিভাগ কাট অফ নাম বাংলা",
                 "add_new": "কাট অফ নতুন বিভাগ যোগ করুন",
                 "search": "অনুসন্ধান বিভাগ কেটে গেছে",
                 "edit": "সম্পাদনা বিভাগ কাট অফ",
-                "delete": "ডিভিশন কাট অফ মুছুন",
-                "delete_alert": "আপনি কি এই ডিভিশন কাট অফ মুছে ফেলার ব্যাপারে নিশ্চিত?.",
+                "delete": "কাট অফ মুছুন",
+                "delete_alert": "আপনি কি এই কাট অফ মুছে ফেলার ব্যাপারে নিশ্চিত?.",
                 "city": "সিটি কর্পোরেশন",
                 "thana": "থানা",
                 "Upazila": "উপজেলা",
                 "union": "ইউনিয়ন",
                 "pouro": "জেলা পৌরসভা",
                 "union_pouro_city": "ইউনিয়ন/জেলা পৌরসভা/সিটি কর্পোরেশন",
-                "division_cut_off_type": "ডিভিশন কাট অফ টাইপ",
-                "division_cut_off_address": "ডিভিশন কাট অফ ঠিকানা",
+                "division_cut_off_type": "কাট অফ টাইপ",
+                "division_cut_off_address": "কাট অফ ঠিকানা",
                 "status": "স্থিতি",
                 "comment": "মন্তব্য",
                 "active": "সক্রিয়"
@@ -316,9 +320,23 @@
                     "allotment_distribution": "বরাদ্দ বিতরণের সংশোধন",
                     "resolved_by": "সমাধান করা হয়েছে",
                     "resolve_comment": "সমাধান বিষয়ে মন্তব্য",
-                    "resolve_date": "সমাধানের তারিখ"
+                    "resolve_date": "সমাধানের তারিখ",
+                    "change_tracking_type": "ট্র্যাকিং টাইপ পরিবর্তন ",
+                    "change_count": "গণনা পরিবর্তন করুন",
+                    "successful_change": "সফল পরিবর্তন",
+                    "unsuccessful_change": "অসফল পরিবর্তন",
+                    "information_tracking": "ইনফরমেশন ট্র্যাকিং",
+                    "tracking_type": "ট্র্যাকিং টাইপ",
+                    "address": "ঠিকানা"
 
-                }
+                },
+                "digital_id": {
+                    "digital_id_card": "ডিজিটাল আইডি কার্ড"
+                },
+                "beneficiary_exit": {
+                    "title": "সুবিধাভোগী প্রস্থান এবং এডিশন ব্যবস্থাপনা"
+                },
+                "date_of_exit": "প্রস্থানের তারিখ"
             }
     }
 }

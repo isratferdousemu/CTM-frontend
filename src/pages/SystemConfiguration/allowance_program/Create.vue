@@ -318,7 +318,7 @@ export default {
                             <tr v-for="div in divs" :key="div.id">
                               <td><v-select v-model="div.type_id" :items="genderTypes" item-value="id" item-text="value_en" label="Please Select" dense outlined></v-select></td>
                               <td><v-text-field v-model="div.amount" dense outlined></v-text-field></td>
-                              <td>
+                              <td style="display: flex; align-items: center; justify-content: space-between">
                                 <v-btn
                                     fab
                                     dark
@@ -413,7 +413,8 @@ export default {
 
 <style scoped>
 .theme--dark.v-btn.v-btn--has-bg {
-  margin-top: -25px !important;
+  margin-top: 0px !important;
   margin-left: 10px;
+  margin-bottom: 25px !important;
 }
 </style>

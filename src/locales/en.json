@@ -37,8 +37,10 @@
             "replace": "Replace",
             "save": "Save",
             "reason": "Reason",
+            "reason_details": "Reason Details",
             "mobile": "Mobile",
-            "beneficiary_journey": "Beneficiary Journey"
+            "beneficiary_journey":"Beneficiary Journey",
+            "change_tracking_details":"Change Tracking Details"
         },
         "system_config": {
             "demo_graphic": {
@@ -113,7 +115,8 @@
                     "upazila": "Upazila",
                     "union": "Union",
                     "pouro": "District Pouroshava",
-                    "union_pouro_city": "Union/District Pouroshava/City Corporation"
+                    "union_pouro_city": "Union/District Pouroshava/City Corporation",
+                    "union_ward":"Union/Ward"
                 },
                 "office": {
                     "office": "Office",
@@ -249,31 +252,33 @@
                 "spouse_name_bn": "Spouse Name (Bangla)",
                 "union_pourashava": "Union Pourashava",
                 "village": "Village",
-                "mobile": "Mobile"
+                "mobile": "Mobile",
+                "account":"Account No"
             },
             "division_cut_off": {
-                "division_cut_off": "Division Cut Off",
-                "list": "Division Cut Off List",
+                "division_cut_off": "Cut Off",
+                "list": "Cut Off List",
                 "score": "score",
-                "name_en": "Division Cut Off Name English",
-                "name_bn": "Division Cut Off Name Bangla",
-                "add_new": "Add New Division Cut Off",
-                "search": "Search Division Cut Off",
-                "edit": "Edit Division Cut Off",
-                "delete": "Delete Division Cut Off",
-                "delete_alert": "Are you sure to delete this Division Cut Off?.",
+                "name_en": "Cut Off Name English",
+                "name_bn": "Cut Off Name Bangla",
+                "add_new": "Add New Cut Off",
+                "search": "Search Cut Off",
+                "edit": "Edit Cut Off",
+                "delete": "Delete Cut Off",
+                "delete_alert": "Are you sure to delete this Cut Off?.",
                 "city": "City Corporation",
                 "thana": "Thana",
                 "upazila": "Upazila",
                 "union": "Union",
                 "pouro": "District Pouroshava",
                 "union_pouro_city": "Union/District Pouroshava/City Corporation",
-                "division_cut_off_type": "Division Cut Off Type",
-                "division_cut_off_address": "Division Cut Off Address",
+                "division_cut_off_type": "Cut Off Type",
+                "division_cut_off_address": "Cut Off Address",
                 "status": "Status",
                 "comment": "Comment",
                 "active": "Active"
-            },
+            }
+        },
             "beneficiary_management": {
                 "beneficiary_list": {
                     "beneficiary": "Beneficiary",
@@ -308,28 +313,29 @@
                     "due": "Due Payment (if any)",
                     "type": "Type",
                     "subject": "Subject",
-                    "details": "Deatails",
-                    "grievance_raise_date": "Grievance Raise Date",
-                    "allotment_distribution": "Correction of Allotment Distribution",
-                    "resolved_by": "Resolve By",
-                    "resolve_comment": "Resolve Comment",
-                    "resolve_date": "Resolve Date"
-                }
+                    "details":"Deatails",
+                    "grievance_raise_date":"Grievance Raise Date",
+                    "allotment_distribution":"Correction of Allotment Distribution",
+                    "resolved_by":"Resolve By",
+                    "resolve_comment":"Resolve Comment",
+                    "resolve_date":"Resolve Date",
+                    "change_tracking_type":"Change Tracking Type",
+                    "change_count": "Change Count",
+                    "successful_change":"Successful Change",
+                    "unsuccessful_change":"Unsuccessful Change",
+                    "information_tracking":"Information Tracking",
+                    "tracking_type":"Tracking Type",
+                    "address":"Address"
+             
+                },
+                        "digital_id": {
+                            "digital_id_card": "Digital ID Card"
+                        },
+                        "beneficiary_exit": {
+                            "title": "Beneficiary Exit and Adiition Management ",
+                            "date_of_exit":"Date of Exit"
+                        }
+                       
             }
-        },
-        "beneficiary_management": {
-            "beneficiary_list": {
-                "beneficiary": "Beneficiary",
-                "list": "Beneficiary Information List",
-                "program": "Program",
-                "beneficiary_id": "Beneficiary ID",
-                "select_column": "Select Column",
-                "advance_search": "Advance Search",
-                "search_by": "Search By",
-                "nominee": "Nominee",
-                "acoount_no": "Account No",
-                "nid": "NID"
-            }
-        }
     }
 }
