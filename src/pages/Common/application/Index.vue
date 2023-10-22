@@ -1,17 +1,36 @@
 <template>
  
     <div id="application">
-        <v-row class="mx-5 mt-4">
-            <v-col cols="10" offset="1">
+        <v-app-bar
+        color="#405c61"
+        fixed
+        height="80"
+        class="px-4 "
+      dense
+      dark
+    > 
+    <v-img
+    class="p-3 mr-4"
+    max-height="100%"
+    max-width="60px"
+    position="center center"
+    src="/assets/images/logo.png"
+  ></v-img>
+      <v-toolbar-title>সামাজিক নিরাপত্তা কর্মসূচী
+        সমাজসেবা অধিদফতর</v-toolbar-title>
+    </v-app-bar>
+        <v-row class="mx-5 my-5 mt-10">
+            <v-col class="mt-10" cols="10" offset="1">
 
-                <v-card class="pa-2 mb-4">
+                <v-card class="pa-5 px-10 mb-4">
                     <p class="mt-5" style="font-size: 20px;">New Applicant Information<span class="red--text"> (Those
                             receiving allowances need not apply)</span></p>
 
 
                     <ValidationProvider name="program" vid="program" rules="required" v-slot="{ errors }">
                           <label>Program </label>
-                                    <span style="margin-left: 4px; color: red">*</span> <v-select outlined :items="programs" v-model="data.program" required
+                                    <span style="margin-left: 4px; color: red">*</span>
+        <v-select @change="getProgramName()" outlined :items="programs" item-text="name_en" item-value="id" v-model="data.program" required
                             :error="errors[0] ? true : false" :error-messages="errors[0]">
               
                         </v-select>
@@ -20,30 +39,29 @@
 
 
                     <div v-if="data.program">
-                        <v-expansion-panels>
+                        <v-expansion-panels v-model="panel" multiple>
                             <v-expansion-panel>
-                                <v-expansion-panel-header color=#8C9EFF>
-                                    <h3 class="white--text ">Applicant Verfication </h3>
+                                <v-expansion-panel-header color="primary">
+                                    <h3 class="white--text ">Applicant Verification </h3>
                                 </v-expansion-panel-header>
                                 <v-expansion-panel-content class="mt-5">
-                                    <ValidationProvider name="program" vid="program" rules="required" v-slot="{ errors }">
-                                        <v-radio-group v-model="row" row>
+                                    <ValidationProvider name="program" vid="verification_type" rules="required" v-slot="{ errors }">
+                                        <v-radio-group v-model="data.verification_type" row>
                                             Verification type <span
                                                 style="margin-left: 4px;margin-right: 4px;  color: red">*</span>
-                                            <v-radio label="National Identity (NID)" value="1"></v-radio>
-                                            <v-radio label="Birth Registration Number" value="2"></v-radio>
+                                            <v-radio label="National Identity (NID)" :value='1'></v-radio>
+                                            <v-radio label="Birth Registration Number" :value="2"></v-radio>
                                         </v-radio-group>
                                     </ValidationProvider>
                                     <V-row>
                                         <v-col>
-                                            <ValidationProvider name="Number" vid="Number" rules="required"
+                                            <ValidationProvider name="Number" vid="verification_number" rules="required"
                                                 v-slot="{ errors }">
-                                                <label>Number </label>
+                                                <label>NID/ BRN No</label>
                                                 <span style="margin-left: 4px; color: red">*</span>
-                                                <v-text-field outlined clearable v-model="data.number" class="mr-2"
+                                                <v-text-field outlined clearable v-model="data.verification_number" class="mr-2"
                                                     type="number" required :error="errors[0] ? true : false"
                                                     :error-messages="errors[0]">
-
 
                                                 </v-text-field>
                                             </ValidationProvider>
@@ -73,20 +91,13 @@
 
 
                                         </v-col>
-
-
-                                        <!-- <div class="mb-6">Active picker: <code>{{ activePicker || 'null' }}</code></div> -->
-
-
-
-
+ 
                                     </V-row>
                                     <div>
 
                                     </div>
                                     <div class="d-inline d-flex justify-end ">
-                                        <v-btn elevation="2" class="btn" color="green">Verify</v-btn>
-
+                                        <v-btn @click="verifyCard()" elevation="2" class="btn" color="primary">Verify</v-btn>
                                     </div>
 
                                 </v-expansion-panel-content>
@@ -95,105 +106,32 @@
                             <!-- 2nd Expansion panel -->
 
                             <v-expansion-panel class="ma-4">
-                                <v-expansion-panel-header color=#8C9EFF>
-                                    <h3 class="white--text ">Information According to {{ data.program }} </h3>
+                                <v-expansion-panel-header color="primary">
+                                    <h3 class="white--text ">Information According to the {{programName}} </h3>
                                 </v-expansion-panel-header>
                                 <v-expansion-panel-content class="mt-5">
                                     <div class="pa-2 ma-4">
                                         <v-row>
+         <v-col v-for="(fields,index) in programDetails?.additional_field" cols="6" lg="6" >
+                                            <template v-if="fields.type=='dropdown'">
+                            <label>{{fields.name_en}}</label> 
+                            <v-select hide-details outlined required v-model="data.yearly_income"
+                            :items="fields.additional_field_value" item-value="id" item-text="value"  >
+                        </v-select>
+                                    </template>
+                         <template v-if="fields.type=='number'">
+                            <label>{{fields.name_en}}</label> 
+                            <v-text-field v-model="data.name_bn" type="number" outlined >
 
-                                            <v-col>
-                                                <ValidationProvider name="Yearly Income" vid="yearly_income"
-                                                    rules="required" v-slot="{ errors }">
-                                                    <label>Yearly Income </label>
-                                                    <span style="margin-left: 4px; color: red">*</span>
-                                                    <v-select outlined clearable required v-model="data.yearly_income"
-                                                        :items="yearly_income" :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]">
-                                                    </v-select>
-                                                </ValidationProvider>
-                                                <!-- <div class="d-inline d-flex  "> -->
-
-                                                <ValidationProvider name="Govt/Private Beneficiary Details"
-                                                    vid="beneficiary_details" v-slot="{ errors }">
-                                                    <label>Govt/Private Beneficiary Details </label>
-                                                    <v-select outlined v-model="data.beneficiary_details" clearable
-                                                        :items="govt_programs" :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]"></v-select>
-                                                </ValidationProvider>
-                                                <label>Other</label>
-                                                <v-text-field v-model="data.beneficiary_details_others"
-                                                    v-if="data.beneficiary_details === 'Other (specify)'" outlined clearable
-                                                    label="Other">
-                                                </v-text-field>
-                                                <label>Health Status</label>
-                                                <ValidationProvider name="Health Status" vid="health_status"
-                                                    v-slot="{ errors }">
-                                                    <v-select outlined v-model="data.health_status" clearable
-                                                        :items="health_status" :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]"></v-select>
-                                                </ValidationProvider>
-                                                
-                                                <v-text-field v-model="health_status_others" label="Other"
-                                                    v-if="data.health_status === 'Other (specify)'" outlined clearable>
-                                                </v-text-field>
-                                            </v-col>
-                                            <v-col>
-
-                                                <v-row>
-                                                    <v-col>
-                                                        <ValidationProvider name="Family Member No" vid="family_member_no"
-                                                            v-slot="{ errors }">
-                                                            <label>Total No. of Family Member</label>
-                                                            <v-text-field v-model="data.family_member_no" outlined clearable
-                                                                type="number" class="mr-2" :error="errors[0] ? true : false"
-                                                                :error-messages="errors[0]">
-                                                            </v-text-field>
-                                                        </ValidationProvider>
-                                                    </v-col>
-                                                    <v-col>
-                                                        <ValidationProvider name="Male Member No" vid="male_member_no"
-                                                            v-slot="{ errors }">
-                                                            <label>Male</label>
-                                                            <v-text-field v-model="data.male_member_no" outlined clearable
-                                                                type="number" :error="errors[0] ? true : false"
-                                                                :error-messages="errors[0]">
-                                                            </v-text-field>
-                                                        </ValidationProvider>
-                                                    </v-col>
-                                                </v-row>
-
-                                                <v-row>
-                                                    <v-col>
-                                                        <ValidationProvider name="Female Member no " vid="female_member_no"
-                                                            v-slot="{ errors }">
-                                                            <label>Female</label>
-                                                            <v-text-field outlined clearable v-model="data.female_member_no"
-                                                                type="number" class="mr-2" :error="errors[0] ? true : false"
-                                                                :error-messages="errors[0]">
-                                                            </v-text-field>
-                                                        </ValidationProvider>
-                                                    </v-col>
-                                                    <v-col>
-
-                                                        <ValidationProvider name="Hijra Member no " vid="hijra_member_no"
-                                                            v-slot="{ errors }">
-                                                            <label>Hijra</label>
-                                                            <v-text-field v-model="data.hijra_member_no" outlined clearable
-                                                                type="number" :error="errors[0] ? true : false"
-                                                                :error-messages="errors[0]">
-                                                            </v-text-field>
-                                                        </ValidationProvider>
-                                                    </v-col>
-                                                </v-row>
-
-
-
-
-
-                                            </v-col>
-                                            <!-- <v-responsive></v-responsive> -->
-
+                        </v-text-field>
+                                    </template>
+                                    <template v-if="fields.type=='checkbox'">
+                                        <label>{{fields.name_en}}</label> 
+                                        <v-select multiple hide-details outlined required v-model="data.yearly_income"
+                                        :items="fields.additional_field_value" item-value="id" item-text="value"  >
+                                    </v-select>
+                                                </template>
+                                </v-col>
                                         </v-row>
 
                                         <div class="d-inline d-flex ml-4">
@@ -296,7 +234,7 @@
                             <!-- 3rd Expansion panel -->
 
                             <v-expansion-panel>
-                                <v-expansion-panel-header color=#8C9EFF>
+                                <v-expansion-panel-header color="primary">
                                     <h3 class="white--text">Personal Information </h3>
                                 </v-expansion-panel-header>
                                 <v-expansion-panel-content class="mt-5">
@@ -497,7 +435,7 @@
                             </v-expansion-panel>
                             <!-- 3rd Expansion panel -->
                             <v-expansion-panel class="ma-4">
-                                <v-expansion-panel-header color=#8C9EFF>
+                                <v-expansion-panel-header color="primary">
                                     <h3 class="white--text ">Contact Information </h3>
                                 </v-expansion-panel-header>
                                 <v-expansion-panel-content class="mt-5">
@@ -665,7 +603,7 @@
                             <!-- 4th Expansion panel -->
                             <!-- Expansion panel 5 start-->
                               <v-expansion-panel class="mb-4">
-                                    <v-expansion-panel-header color=#8C9EFF>
+                                    <v-expansion-panel-header color="primary">
                                         <h3 class="white--text">Bank/MFS Information </h3>
                                     </v-expansion-panel-header>
                                     <v-expansion-panel-content class="mt-5">
@@ -723,8 +661,8 @@
                                 </v-expansion-panel>
                                 <!-- Expansion panel 5 End -->
 
-                            <v-expansion-panel calss="mb-4">
-                                <v-expansion-panel-header color=#8C9EFF>
+                            <v-expansion-panel class="mb-4">
+                                <v-expansion-panel-header color="primary">
                                     <h3 class="white--text ">Nominee Information </h3>
                                 </v-expansion-panel-header>
                                 <v-expansion-panel-content class="mt-5">
@@ -840,8 +778,8 @@ Birth Registration Number" vid="nominee_nid" v-slot="{ errors }">
                             <!-- 5th Expansion panel -->
 
 
-                            <v-expansion-panel calss="mt-4">
-                                <v-expansion-panel-header color=#8C9EFF>
+                            <v-expansion-panel class="mb-4">
+                                <v-expansion-panel-header color="primary">
                                     <h3 class="white--text">Other Information of Eligiblity </h3>
                                 </v-expansion-panel-header>
                                 <v-expansion-panel-content class="mt-5">
@@ -1056,11 +994,14 @@ Birth Registration Number" vid="nominee_nid" v-slot="{ errors }">
 import FooterBar from "@/components/Common/FooterBar.vue";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { mapState } from "vuex";
+import axios from 'axios';
 export default {
     title: "CTM - Online Application",
     data() {
         return {
-            programs: ["Old Age Allowance Program", "Disability Allowance Program", "Widow And Husband Adopted Allowance program"],
+            panel: [0, 1, 2, 3, 4, 5, 6],
+            programs:[],
+            // programs: ["Old Age Allowance Program", "Disability Allowance Program", "Widow And Husband Adopted Allowance program"],
             govt_programs: ["Old Age Allowance Program", "Disability Allowance Program", "Widow And Husband Adopted Allowance program", "Freedom Fighter Honorary Allowance", "No Allowance", "Other (specify)"],
             yearly_income: ["Up to 24000 Tk", "28001 to 48000 Tk", "48001 to 72000 Tk", "72000 TK or above"],
             health_status: ["Totally Disabled", "Sick", "Insane", "Disabled", "Partially Powerless", "Other (specify)"],
@@ -1094,6 +1035,8 @@ export default {
             menu: false,
             isChecked: false,
             data: {
+                verification_type:null,
+                verification_number:null,
                 date_of_birth: null,
                 program: null,
                 number: null,
@@ -1158,18 +1101,14 @@ export default {
                 mobile_ownership:null,
                 mobile_number:null,
                 marital_status:null
-                
-
-
-
-
             },
 
             imageUrl: null,
             signUrl: null,
             nomineeImageUrl: null,
-            nomineeSignUrl: null
-
+            programName: null,
+            nomineeSignUrl: null,
+            programDetails: null,
         }
     },
     computed: {
@@ -1190,6 +1129,18 @@ export default {
         },
     },
     methods: {
+        async getProgramName() {
+            // if (this.data.program != null && this.programs.length > 0) {
+                let programName = this.programs.filter((item) =>  item.id == this.data.program);
+            this.programName = await programName[0]?.name_en;
+            this.programDetails = await programName[0];
+            // }
+        },
+        getAllProgram() {
+            this.$axios.get("global/program").then((res) => {
+                this.programs = res.data.data;
+            });
+        },
         save(data) {
             this.$refs.menu.save(data.date_of_birth)
         },
@@ -1252,10 +1203,10 @@ export default {
 
     },
 
-    mounted() {
-        this.$store.commit("setHeaderTitle", "Online Application Entry");
-
-    }
+    created() {
+        this.getAllProgram()
+        this.getProgramName()
+    },
 
 }
 </script>

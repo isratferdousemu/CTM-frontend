@@ -36,12 +36,7 @@ export default {
 
       index: 0,
       divs: [
-        {
-          id: '',
-          name: '',
-          type_id: '',
-          amount: '',
-        }
+      
       ],
     }
   },
@@ -110,6 +105,14 @@ export default {
 
     allowanceAmount(){
       this.is_disable_class = !this.is_disable_class
+      let data = {
+        id: '',
+        name: '',
+        type_id: '',
+        amount: '',
+      };
+      this.divs = [];
+      this.divs.push(data)
     },
 
     addRow() {
@@ -156,7 +159,7 @@ export default {
             this.is_amount = false;
             this.divs = [];
             this.$refs.form.reset();
-            this.$router.push('/system-configuration/allowance')
+            this.$router.push('/system-configuration/allowance-program')
           }
 
           if (this.error_status === 422)
