@@ -1040,7 +1040,7 @@ export default {
       if (this.$refs.formAdd) {
         this.$refs.formAdd.reset();
       }
-      this.resetForm();
+      // this.resetForm();
       this.dialogAdd = true;
     },
     submitUser() {
