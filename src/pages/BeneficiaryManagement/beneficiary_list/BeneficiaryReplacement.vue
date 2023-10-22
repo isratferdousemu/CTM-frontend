@@ -181,41 +181,37 @@
                             </v-tooltip>
                           </template>
                           <!-- End Action Button -->
-
-                          <template v-slot:footer="item">
-                            <div
-                              class="text-center pt-2 v-data-footer justify-center pb-2"
-                            >
-                              <v-select
-                                style="
+              <template v-slot:footer="item">
+                                                  <div class="text-center pt-2 v-data-footer justify-center pb-2">
+                                                      <v-select style="
                               position: absolute;
                               right: 25px;
                               width: 149px;
                               transform: translate(0px, 0px);
-                            "
-                                :items="items"
-                                hide-details
-                                dense
-                                outlined
-                                @change="onPageChange"
-                                v-model="pagination.perPage"
-                              ></v-select>
-                              <v-pagination
-                                circle
-                                primary
-                                v-model="pagination.current"
-                                :length="pagination.total"
-                                @input="onPageChange"
-                                :total-visible="11"
-                                class="custom-pagination-item"
-                              ></v-pagination>
-                            </div>
-                          </template>
+                            " :items="items" hide-details dense outlined @change="onPageChange"
+                                                          v-model="pagination.perPage"></v-select>
+                                                      <v-pagination circle primary v-model="pagination.current"
+                                                          :length="pagination.total" @input="onPageChange" :total-visible="11"
+                                                          class="custom-pagination-item"></v-pagination>
+                                                  </div>
+                                              </template>
                         </v-data-table>
 
                          </v-col>
                     </v-row>
-   
+      <v-row class="mx-0 my-0 py-2" justify="end">
+                              <v-btn
+                              type="submit"
+                              flat
+                        router to="/beneficiary-management/beneficiary-info"
+                              :disabled="invalid"
+                              :loading="loading"
+                              class="custom-btn-width   py-2 mr-2"
+                            >
+                              {{ $t("container.list.back") }}
+                            </v-btn>
+                     
+                      </v-row>
         
               </v-card-text>
                     </v-card>

@@ -154,10 +154,12 @@
                   
                 </v-row>
                 </v-col>
+                  
                 </v-row>
         
     </div>
-</template><script>
+</template>
+<script>
 import { mapState,mapActions } from 'vuex';
 export default {
     name: 'FrontendInformationTracking',

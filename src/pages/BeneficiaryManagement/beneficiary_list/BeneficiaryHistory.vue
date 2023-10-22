@@ -200,6 +200,19 @@
                                 </v-expansion-panel>
 
                             </v-expansion-panels>
+                                <v-row class="mx-0 my-0 py-2 mt-5" justify="end">
+                                    <v-btn
+                                    type="submit"
+                                    flat
+                              router to="/beneficiary-management/beneficiary-info"
+                                    :disabled="invalid"
+                                    :loading="loading"
+                                    class="custom-btn-width   py-2 mr-2"
+                                  >
+                                    {{ $t("container.list.back") }}
+                                  </v-btn>
+                     
+                            </v-row>
 
                         </v-col>
                         <!-- payment Modal -->
@@ -321,7 +334,7 @@
                         </v-dialog>
                         <!-- Grievance History Modal  -->
                         <!-- Change Tracking Modal -->
-                        <v-dialog v-model="tracking_modal" width="800">
+                        <v-dialog v-model="tracking_modal" >
                             <v-card style="justify-content: center; text-align: center">
                                 <v-card-title class="font-weight-bold justify-center">
                                     {{ $t("container.beneficiary_management.beneficiary_list.Change_tracking") }}

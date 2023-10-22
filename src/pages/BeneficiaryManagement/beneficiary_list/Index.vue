@@ -14,7 +14,7 @@
                                 </v-expansion-panel-header>
                                 <v-expansion-panel-content class="elevation-0 transparent mt-10">
                                     <ValidationObserver ref="form" v-slot="{ invalid }">
-                                        <form @submit.prevent="submitWard()">
+                                        <form @submit.prevent="">
                                             <v-row>
                                                 <v-col lg="6" md="6" cols="12">
 
@@ -337,7 +337,7 @@ export default {
             search: "",
             delete_id: "",
             applications: [],
-
+            divisions:[],
             districts: [],
             locationType: [],
             thanas: [],
@@ -360,11 +360,7 @@ export default {
         ValidationObserver,
     },
     computed: {
-        ...mapState({
-            divisions: (state) => state.Division.divisions,
-
-
-        }),
+       
         headers() {
             return [
                 {
@@ -612,6 +608,21 @@ export default {
                 perPage: this.pagination.perPage,
                 page: this.pagination.current,
             };
+
+              this.$axios
+                .get("/admin/division/get", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                    params: queryParams,
+                })
+                .then((result) => {
+                    this.divisions = result.data.data;
+                    this.pagination.current = result.data.meta.current_page;
+                    this.pagination.total = result.data.meta.last_page;
+                    this.pagination.grand_total = result.data.meta.total;
+                });
 
 
         },
