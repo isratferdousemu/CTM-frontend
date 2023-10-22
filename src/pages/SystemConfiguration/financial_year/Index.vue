@@ -161,11 +161,13 @@ export default {
         },
 
         async GetFinancialYear() {
+       
             const queryParams = {
                 searchText: this.search,
                 perPage: this.pagination.perPage,
                 page: this.pagination.current,
             };
+                 
             this.$axios
                 .get("/admin/financial-year/get", {
                     headers: {
@@ -179,6 +181,7 @@ export default {
                     this.pagination.current = result.data.meta.current_page;
                     this.pagination.total = result.data.meta.last_page;
                     this.pagination.grand_total = result.data.meta.total;
+                    console.log(queryParams)
                 });
         },
        
