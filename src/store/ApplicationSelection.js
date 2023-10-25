@@ -1,3 +1,5 @@
+import { http } from "@/hooks/httpService";
+
 /* -------------------------------------------------------------------------- */
 /*                                states Define                               */
 /* -------------------------------------------------------------------------- */
@@ -29,6 +31,83 @@ const actions = {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
+  },
+  filterCutOff: ({ commit }, data) => {
+    return http()
+      .post("/admin/poverty/poverty-cut-off/filter", data)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        return err;
+
+      });
+  },
+  updateCuttOff: ({ commit }, data) => {
+    return http()
+      .post("/admin/poverty/poverty-cut-off/update", data)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        return err;
+
+      });
+  },
+  updateDistrictFixedEffect: ({ commit }, data) => {
+    return http()
+      .post("/admin/poverty/district-fixed-effect/update", data)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        return err;
+
+      });
+  },
+  StoreVariable: ({ commit }, data) => {
+    return http()
+      .post("/admin/poverty/variable/insert", data)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        return err;
+
+      });
+  },
+  updateVariable: ({ commit }, data) => {
+    return http()
+      .post("/admin/poverty/variable/update", data)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        return err;
+
+      });
+  },
+  StoreSubVariable: ({ commit }, data) => {
+    return http()
+      .post("/admin/poverty/variable/insert", data)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        return err;
+
+      });
+  },
+  updateSubVariable: ({ commit }, data) => {
+    return http()
+      .post("/admin/poverty/variable/update", data)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        return err;
+
+      });
   },
 };
 /* -------------------------------------------------------------------------- */

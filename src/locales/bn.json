@@ -1,5 +1,4 @@
-
-   {
+{
     "sidebar": {
         "dashboard": "ড্যাশবোর্ড"
     },
@@ -37,9 +36,11 @@
             "switch_program": "কর্মসূচী পরিবর্তন",
             "replace": "প্রতিস্থাপন",
             "save": "সংরক্ষণ",
-            "reason":"কারণ",
+            "reason": "কারণ",
+            "reason_details": "কারণ বিবরণ",
             "mobile": "মোবাইল",
-            "beneficiary_journey": "সুবিধাভোগী যাত্রা"
+            "beneficiary_journey": "সুবিধাভোগী যাত্রা",
+            "change_tracking_details": "ট্র্যাকিং বিবরণ পরিবর্তন করুন"
         },
         "system_config": {
             "demo_graphic": {
@@ -114,7 +115,8 @@
                     "upazila": "উপজেলা",
                     "union": "ইউনিয়ন",
                     "pouro": "জেলা পৌরসভা",
-                    "union_pouro_city": "ইউনিয়ন/জেলা পৌরসভা/সিটি কর্পোরেশন"
+                    "union_pouro_city": "ইউনিয়ন/জেলা পৌরসভা/সিটি কর্পোরেশন",
+                    "union_ward": "ইউনিয়ন/ওয়ার্ড"
                 },
                 "office": {
                     "office": "অফিস",
@@ -167,15 +169,14 @@
                     "active": "সক্রিয়",
                     "add_row": "সারি যোগ করুন",
                     "remove_row": "সারি মুছুন",
-                    "member_name":"নাম",
-                    "member_designation":"পদবী",
-                    "member_address":"ঠিকানা",
-                    "member_email":"ইমেইল",
-                    "member_phone":"ফোন"
+                    "member_name": "নাম",
+                    "member_designation": "পদবী",
+                    "member_address": "ঠিকানা",
+                    "member_email": "ইমেইল",
+                    "member_phone": "ফোন"
                 },
                 "role": {
-                   
-                    "list":"রোলের তালিকা "
+                    "list": "রোলের তালিকা "
                 },
                 "user": {
                     "listTitle": "User List",
@@ -186,7 +187,7 @@
                     "role_id": "Select Role",
                     "status": "Status",
                     "edit": "ব্যবহারকারী সম্পাদনা করুন",
-                    "delete":"User Delete",
+                    "delete": "User Delete",
                     "office_type": "Select Office Type",
                     "office_id": "Select Office",
                     "office": "Office",
@@ -197,13 +198,11 @@
                     "delete_alert": "Are you sure to delete this User?.",
                     "add_new": "Add New User",
                     "search": "Search User"
-                  
                 },
-           
                 "financial_year": {
                     "financial_year": "আর্থিক বর্ষ",
                     "list": "আর্থিক বর্ষের তালিকা ",
-                    "start_date": "Start date",
+                    "start_date": "শুরুর তারিখ",
                     "end_date": "শেষের তারিখ",
                     "status": "স্ট্যাটাস",
                     "search": "আর্থিক বর্ষ খুঁজন "
@@ -217,7 +216,7 @@
                 "ip_address": "আইপি ঠিকানা",
                 "pupose_of_use": "ব্যবহারের উদ্দেশ্য",
                 "unique_id": "ইউনিক আইডি",
-                "add":"ডিভাইস যোগ করুন",
+                "add": "ডিভাইস যোগ করুন",
                 "edit": "ডিভাইস সম্পাদনা করুন"
             }
         },
@@ -253,72 +252,134 @@
                 "spouse_name_bn": "স্বামী/স্ত্রীর নাম (বাংলায়)",
                 "union_pourashava": "ইউনিয়ন পৌরসভা",
                 "village": "গ্রাম",
-                "mobile": "মোবাইল"
+                "mobile": "মোবাইল",
+                "account": "হিসাব নাম্বার"
             },
-            "division_cut_off": {
-                "division_cut_off": "ডিভিশন কাট অফ",
-                "list": "বিভাগ কাট অফ তালিকা",
+            "poverty_cut_off": {
+                "poverty_cut_off": "কাট অফ",
+                "list": "কাট অফ তালিকা",
                 "score": "স্কোর",
-                "name_en": "ডিভিশন কাট অফ নাম ইংরেজি",
-                "name_bn": "বিভাগ কাট অফ নাম বাংলা",
-                "add_new": "কাট অফ নতুন বিভাগ যোগ করুন",
-                "search": "অনুসন্ধান বিভাগ কেটে গেছে",
-                "edit": "সম্পাদনা বিভাগ কাট অফ",
-                "delete": "ডিভিশন কাট অফ মুছুন",
-                "delete_alert": "আপনি কি এই ডিভিশন কাট অফ মুছে ফেলার ব্যাপারে নিশ্চিত?.",
+                "name_en": "কাট অফ নাম ইংরেজি",
+                "name_bn": "কাট অফ নাম বাংলা",
+                "add_new": "কাট অফ নতুন যোগ করুন",
+                "search": "অনুসন্ধান কাট অফ",
+                "edit": "সম্পাদনা কাট অফ",
+                "delete": "কাট অফ মুছুন",
+                "delete_alert": "আপনি কি এই কাট অফ মুছে ফেলার ব্যাপারে নিশ্চিত?.",
                 "city": "সিটি কর্পোরেশন",
                 "thana": "থানা",
                 "Upazila": "উপজেলা",
                 "union": "ইউনিয়ন",
                 "pouro": "জেলা পৌরসভা",
                 "union_pouro_city": "ইউনিয়ন/জেলা পৌরসভা/সিটি কর্পোরেশন",
-                "division_cut_off_type": "ডিভিশন কাট অফ টাইপ",
-                "division_cut_off_address": "ডিভিশন কাট অফ ঠিকানা",
+                "poverty_cut_off_type": "কাট অফ টাইপ",
+                "poverty_cut_off_address": "কাট অফ ঠিকানা",
                 "status": "স্থিতি",
                 "comment": "মন্তব্য",
                 "active": "সক্রিয়"
+            },
+            "district_fixed_effect": {
+                "district_fixed_effect": "ডিস্ট্রিক্ট ফিক্সড ইফেক্ট",
+                "list": "ডিস্ট্রিক্ট ফিক্সড ইফেক্ট তালিকা",
+                "score": "স্কোর",
+                "name_en": "ডিস্ট্রিক্ট ফিক্সড ইফেক্ট নাম ইংরেজি",
+                "name_bn": "ডিস্ট্রিক্ট ফিক্সড ইফেক্ট নাম বাংলা",
+                "add_new": "ডিস্ট্রিক্ট ফিক্সড ইফেক্ট নতুন যোগ করুন",
+                "search": "অনুসন্ধান কাট অফ",
+                "edit": "সম্পাদনা ডিস্ট্রিক্ট ফিক্সড ইফেক্ট",
+                "delete": "ডিস্ট্রিক্ট ফিক্সড ইফেক্ট মুছুন",
+                "delete_alert": "আপনি কি এই ডিস্ট্রিক্ট ফিক্সড ইফেক্ট মুছে ফেলার ব্যাপারে নিশ্চিত?.",
+                "city": "সিটি কর্পোরেশন",
+                "thana": "থানা",
+                "Upazila": "উপজেলা",
+                "union": "ইউনিয়ন",
+                "pouro": "জেলা পৌরসভা",
+                "union_pouro_city": "ইউনিয়ন/জেলা পৌরসভা/সিটি কর্পোরেশন",
+                "poverty_cut_off_type": "ডিস্ট্রিক্ট ফিক্সড ইফেক্ট টাইপ",
+                "poverty_cut_off_address": "ডিস্ট্রিক্ট ফিক্সড ইফেক্ট ঠিকানা",
+                "status": "স্থিতি",
+                "comment": "মন্তব্য",
+                "active": "সক্রিয়"
+            },
+            "variable": {
+                "variable": "সাব ভ্যারিয়েবল",
+                "list": "সাব ভ্যারিয়েবল তালিকা",
+                "score": "স্কোর",
+                "name_en": "সাব ভ্যারিয়েবল নাম",
+                "name_bn": "সাব ভ্যারিয়েবল নাম বাংলা",
+                "add_new": "সাব ভ্যারিয়েবল নতুন যোগ করুন",
+                "search": "অনুসন্ধান",
+                "edit": "সম্পাদনা সাব ভ্যারিয়েবল",
+                "delete": "সাব ভ্যারিয়েবল মুছুন",
+                "delete_alert": "আপনি কি এই সাব ভ্যারিয়েবল মুছে ফেলার ব্যাপারে নিশ্চিত?.",
+                "city": "সিটি কর্পোরেশন",
+                "thana": "থানা",
+                "Upazila": "উপজেলা",
+                "union": "ইউনিয়ন",
+                "pouro": "জেলা পৌরসভা",
+                "union_pouro_city": "ইউনিয়ন/জেলা পৌরসভা/সিটি কর্পোরেশন",
+                "poverty_cut_off_type": "সাব ভ্যারিয়েবল টাইপ",
+                "poverty_cut_off_address": "সাব ভ্যারিয়েবল ঠিকানা",
+                "status": "স্থিতি",
+                "comment": "মন্তব্য",
+                "active": "সক্রিয়",
+                "field_type": "ফিল্ড টাইপ"
+                
             }
         },
-            "beneficiary_management": {
-                "beneficiary_list": {
-                    "beneficiary": "সুবিধাভোগী",
-                    "list": "সুবিধাভোগী তথ্যের তালিকা",
-                    "beneficiary_id": "সুবিধাভোগী আইডি",
-                    "search_by":"অনুসন্ধান করুন",
-                    "advance_search": "অ্যাডভান্সড সার্চ",
-                    "nominee": "নমিনী ",
-                    "account_no": "হিসাব নাম্বার",
-                    "nid": "এনআইডি",
-                    "beneficiary_summary": "সুবিধাভোগী সারসংক্ষেপে ",
-                    "beneficiary_replacement": "সুবিধাভোগী প্রতিস্থাপন",
-                    "replacement_with": "সঙ্গে প্রতিস্থাপন",
-                    "beneficiary_details": "সুবিধাভোগীর বিবরণ",
-                    "replacement_cause": "প্রতিস্থাপনের কারণ",
-                    "cause_date": "প্রভাবের তারিখ",
-                    "reason_provision": "কারণ বিধান",
-                    "beneficiary_replacement_list": "সুবিধাভোগী প্রতিস্থাপন তালিকা",
-                    "payment_history": "অর্থপ্রদানের ইতিহাস",
-                    "grievance_history": "অভিযোগের ইতিহাস",
-                    "Change_tracking": "ট্র্যাকিং পরিবর্তন",
-                     "total_receive": "মোট প্রাপ্তি",
-                    "last_payment_amount": "শেষ অর্থপ্রদানের পরিমাণ", 
-                    "total_grievance": "মোট অভিযোগ",
-                    "last_grievance_type": "শেষ অভিযোগের ধরন",
-                    "total_change": "মোট পরিবর্তন",
-                    "payment_disbursed_date": "অর্থ প্রদানের তারিখ",
-                    "ammount": "পরিমাণ",
-                    "fiscal_year": "অর্থবছর",
-                    "due": "বকেয়া অর্থ প্রদান (যদি থাকে)",
-                    "type": "ধরণ ",
-                    "subject": "বিষয়",
-                    "details": "বিবরণ",
-                    "grievance_raise_date": "অভিযোগ উত্থাপনের তারিখ",
-                    "allotment_distribution": "বরাদ্দ বিতরণের সংশোধন",
-                    "resolved_by": "সমাধান করা হয়েছে",
-                    "resolve_comment": "সমাধান বিষয়ে মন্তব্য",
-                    "resolve_date": "সমাধানের তারিখ"
-
-                }
-            }
+        "beneficiary_management": {
+            "beneficiary_list": {
+                "beneficiary": "সুবিধাভোগী",
+                "list": "সুবিধাভোগী তথ্যের তালিকা",
+                "beneficiary_id": "সুবিধাভোগী আইডি",
+                "search_by": "অনুসন্ধান করুন",
+                "advance_search": "অ্যাডভান্সড সার্চ",
+                "nominee": "নমিনী ",
+                "account_no": "হিসাব নাম্বার",
+                "nid": "এনআইডি",
+                "beneficiary_summary": "সুবিধাভোগী সারসংক্ষেপে ",
+                "beneficiary_replacement": "সুবিধাভোগী প্রতিস্থাপন",
+                "replacement_with": "সঙ্গে প্রতিস্থাপন",
+                "beneficiary_details": "সুবিধাভোগীর বিবরণ",
+                "replacement_cause": "প্রতিস্থাপনের কারণ",
+                "cause_date": "প্রভাবের তারিখ",
+                "reason_provision": "কারণ বিধান",
+                "beneficiary_replacement_list": "সুবিধাভোগী প্রতিস্থাপন তালিকা",
+                "payment_history": "অর্থপ্রদানের ইতিহাস",
+                "grievance_history": "অভিযোগের ইতিহাস",
+                "Change_tracking": "ট্র্যাকিং পরিবর্তন",
+                "total_receive": "মোট প্রাপ্তি",
+                "last_payment_amount": "শেষ অর্থপ্রদানের পরিমাণ",
+                "total_grievance": "মোট অভিযোগ",
+                "last_grievance_type": "শেষ অভিযোগের ধরন",
+                "total_change": "মোট পরিবর্তন",
+                "payment_disbursed_date": "অর্থ প্রদানের তারিখ",
+                "ammount": "পরিমাণ",
+                "fiscal_year": "অর্থবছর",
+                "due": "বকেয়া অর্থ প্রদান (যদি থাকে)",
+                "type": "ধরণ ",
+                "subject": "বিষয়",
+                "details": "বিবরণ",
+                "grievance_raise_date": "অভিযোগ উত্থাপনের তারিখ",
+                "allotment_distribution": "বরাদ্দ বিতরণের সংশোধন",
+                "resolved_by": "সমাধান করা হয়েছে",
+                "resolve_comment": "সমাধান বিষয়ে মন্তব্য",
+                "resolve_date": "সমাধানের তারিখ",
+                "change_tracking_type": "ট্র্যাকিং টাইপ পরিবর্তন ",
+                "change_count": "গণনা পরিবর্তন করুন",
+                "successful_change": "সফল পরিবর্তন",
+                "unsuccessful_change": "অসফল পরিবর্তন",
+                "information_tracking": "ইনফরমেশন ট্র্যাকিং",
+                "tracking_type": "ট্র্যাকিং টাইপ",
+                "address": "ঠিকানা"
+            },
+            "digital_id": {
+                "digital_id_card": "ডিজিটাল আইডি কার্ড"
+            },
+            "beneficiary_exit": {
+                "title": "সুবিধাভোগী প্রস্থান এবং এডিশন ব্যবস্থাপনা"
+            },
+            "date_of_exit": "প্রস্থানের তারিখ"
+        }
     }
 }

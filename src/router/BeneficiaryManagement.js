@@ -35,17 +35,8 @@ const BeneficiaryManagementRoutes = [
             "../pages/BeneficiaryManagement/CommitteeManagement/Edit.vue"
           ),
       },
-    //   {
-    //     path: "/beneficiary-management/switch_program",
-    //     name: "beneficiary_list",
-    //     meta: {
-    //         requiresAuth: true,
-    //         permission: "beneficiary-list",
-    //     },
-    //     component: () => import("../pages/BeneficiaryManagement/switch_program/Index.vue")
-    // },
     {
-        path: "/beneficiary-management/beneficiary-card",
+      path: "/beneficiary-management/beneficiary-info",
         name: "beneficiary_list",
         meta: {
             requiresAuth: true,
@@ -67,7 +58,7 @@ const BeneficiaryManagementRoutes = [
         name: "beneficiary_replacement",
         meta: {
             requiresAuth: true,
-            permission: "beneficiary-list",
+          permission: "beneficiary-replacement",
         },
         component: () => import("../pages/BeneficiaryManagement/beneficiary_list/BeneficiaryReplacement.vue")
     },
@@ -80,6 +71,43 @@ const BeneficiaryManagementRoutes = [
         },
         component: () => import("../pages/BeneficiaryManagement/beneficiary_list/BeneficiaryHistory.vue")
     },
+  {
+    path: "/beneficiary-management/information-tracking",
+    name: "information-tracking",
+    meta: {
+      requiresAuth: true,
+      permission: "information-tracking",
+    },
+    component: () => import("../pages/BeneficiaryManagement/beneficiary_list/InformationTracking.vue")
+  },
+  {
+    path: "/beneficiary-management/beneficiary-card",
+    name: "beneficiary-card",
+    meta: {
+      requiresAuth: true,
+      permission: "beneficiary-list",
+    },
+    component: () => import("../pages/BeneficiaryManagement/DigitalIDCard/Index.vue")
+  },
+  {
+    path: "/beneficiary-management/digital-id-card",
+    name: "beneficiary-card",
+    meta: {
+      requiresAuth: true,
+      permission: "beneficiary-list",
+    },
+    component: () => import("../pages/BeneficiaryManagement/DigitalIDCard/DigitalIDCard.vue")
+  },
+  {
+    path: "/beneficiary-management/beneficiary-exit",
+    name: "beneficiary-exit",
+    meta: {
+      requiresAuth: true,
+      permission: "beneficiary-exit",
+    },
+    component: () => import("../pages/BeneficiaryManagement/BeneficiaryExit/Index.vue")
+  },
+  
 ];
 
 export default BeneficiaryManagementRoutes;

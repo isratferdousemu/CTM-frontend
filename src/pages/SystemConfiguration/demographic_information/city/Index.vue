@@ -168,22 +168,6 @@
                 {{errors.name_en}} -->
 
                 <ValidationProvider
-                  name="Code"
-                  vid="code"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <v-text-field
-                    outlined
-                    type="text"
-                    v-model="data.code"
-                    :label="$t('container.list.code')"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-text-field>
-                </ValidationProvider>
-                <ValidationProvider
                   name="Division"
                   vid="division"
                   rules="required"
@@ -247,6 +231,22 @@
                   ></v-autocomplete>
                 </ValidationProvider>
                 <ValidationProvider
+                  name="Code"
+                  vid="code"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
+                  <v-text-field
+                    outlined
+                    type="text"
+                    v-model="data.code"
+                    :label="$t('container.list.code')"
+                    required
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
+                  ></v-text-field>
+                </ValidationProvider>
+                <ValidationProvider
                   name="Name English"
                   vid="name_en"
                   rules="required"
@@ -256,7 +256,7 @@
                     outlined
                     type="text"
                     v-model="data.name_en"
-                    :label="$t('container.list.name_en')"
+                    :label="$t('container.system_config.demo_graphic.city.name_en')"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -272,7 +272,7 @@
                     outlined
                     type="text"
                     v-model="data.name_bn"
-                    :label="$t('container.list.name_bn')"
+                    :label="$t('container.system_config.demo_graphic.city.name_bn')"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -319,22 +319,6 @@
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
 
-                <ValidationProvider
-                  name="Code"
-                  vid="code"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <v-text-field
-                    outlined
-                    type="text"
-                    v-model="data.code"
-                    :label="$t('container.list.code')"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-text-field>
-                </ValidationProvider>
                 <ValidationProvider
                   name="Division"
                   vid="division"
@@ -403,6 +387,22 @@
                   ></v-autocomplete>
                 </ValidationProvider>
                 <ValidationProvider
+                  name="Code"
+                  vid="code"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
+                  <v-text-field
+                    outlined
+                    type="text"
+                    v-model="data.code"
+                    :label="$t('container.list.code')"
+                    required
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
+                  ></v-text-field>
+                </ValidationProvider>
+                <ValidationProvider
                   name="Name English"
                   vid="name_en"
                   rules="required"
@@ -412,7 +412,7 @@
                     outlined
                     type="text"
                     v-model="data.name_en"
-                    :label="$t('container.list.name_en')"
+                    :label="$t('container.system_config.demo_graphic.city.name_en')"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -428,7 +428,7 @@
                     outlined
                     type="text"
                     v-model="data.name_bn"
-                    :label="$t('container.list.name_bn')"
+                    :label="$t('container.system_config.demo_graphic.city.name_bn')"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -660,7 +660,10 @@ export default {
       console.log(checkLanguageBangla);
       let errs = {};
 
-      if (checkLanguageBangla !== "Bangla" && checkLanguageBangla !== "BanglaSpecialChar") {
+      if (
+        checkLanguageBangla !== "Bangla" &&
+        checkLanguageBangla !== "BanglaSpecialChar"
+      ) {
         errs.name_bn = ["Please Enter in Bangla Language in this Field"];
       }
 

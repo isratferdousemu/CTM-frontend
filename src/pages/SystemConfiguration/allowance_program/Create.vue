@@ -35,7 +35,6 @@ export default {
 
       index: 0,
       divs: [],
-
       number: 0,
       numberRule: val => {
         if(val < 0) return 'Please enter a positive number'
