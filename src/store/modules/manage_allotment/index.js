@@ -1,9 +1,21 @@
 /* -------------------------------------------------------------------------- */
 /*                                states Define                               */
 /* -------------------------------------------------------------------------- */
+import {http} from "@/hooks/httpService";
+
 const state = {
   // Module-specific state
-  someValue: 0,
+  allotments: [],
+  allotment: {},
+  allowances: [],
+  allowanceAmounts: [],
+  educationGender: [],
+  is_disable_class: '',
+  success_message: "",
+  errors: {},
+  error_message: "",
+  error_status: "",
+  success_status: "",
 };
 
 /* -------------------------------------------------------------------------- */
@@ -12,8 +24,15 @@ const state = {
 
 const mutations = {
   // Module-specific mutations
-  incrementValue(state) {
-    state.someValue++;
+
+  GET_ALLOWANCE_PROGRAM: (state, data) => {
+    state.allowances = data;
+  },
+
+  GET_ALLOWANCE_PROGRAM_AMOUNT: (state, data) => {
+    state.allowanceAmounts = data.data;
+    state.is_disable_class = data.is_disable;
+    state.educationGender = data.education_gender;
   },
 };
 /* -------------------------------------------------------------------------- */
@@ -21,22 +40,33 @@ const mutations = {
 /* -------------------------------------------------------------------------- */
 const actions = {
   // Module-specific actions
-  async fetchData({ commit }) {
-    try {
-      // Simulate an async operation
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      commit("incrementValue");
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+
+  /*get all active allowance program start*/
+  getAllAllowanceProgram: ({commit}) => {
+    return http().get('/admin/allotment/get_allowance_program').then((result) => {
+      commit('GET_ALLOWANCE_PROGRAM', result.data.data);
+    }).catch((err) => {
+      state.errors = err.response.errors
+    })
   },
+  /*get all active allowance program end*/
+
+  /*get allowance program amount start*/
+  getAllowanceProgramAmount: ({commit}, id) => {
+    return http().get(`/admin/allotment/get_allowance_amount/${id}`).then((result) => {
+      commit('GET_ALLOWANCE_PROGRAM_AMOUNT', result.data);
+      console.log(result.data);
+    }).catch((err) => {
+      state.errors = err.response.errors;
+    })
+  },
+  /*get allowance program amount end*/
 };
 /* -------------------------------------------------------------------------- */
 /*                               Getters Define                               */
 /* -------------------------------------------------------------------------- */
 const getters = {
   // Module-specific getters
-  doubledValue: (state) => state.someValue * 2,
 };
 
 export default {
