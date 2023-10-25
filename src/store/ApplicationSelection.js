@@ -34,7 +34,7 @@ const actions = {
   },
   filterCutOff: ({ commit }, data) => {
     return http()
-      .post("/admin/poverty/division-cut-off/filter", data)
+      .post("/admin/poverty/poverty-cut-off/filter", data)
       .then((result) => {
         return result;
       })
@@ -45,7 +45,62 @@ const actions = {
   },
   updateCuttOff: ({ commit }, data) => {
     return http()
-      .post("/admin/poverty/division-cut-off/update", data)
+      .post("/admin/poverty/poverty-cut-off/update", data)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        return err;
+
+      });
+  },
+  updateDistrictFixedEffect: ({ commit }, data) => {
+    return http()
+      .post("/admin/poverty/district-fixed-effect/update", data)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        return err;
+
+      });
+  },
+  StoreVariable: ({ commit }, data) => {
+    return http()
+      .post("/admin/poverty/variable/insert", data)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        return err;
+
+      });
+  },
+  updateVariable: ({ commit }, data) => {
+    return http()
+      .post("/admin/poverty/variable/update", data)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        return err;
+
+      });
+  },
+  StoreSubVariable: ({ commit }, data) => {
+    return http()
+      .post("/admin/poverty/variable/insert", data)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        return err;
+
+      });
+  },
+  updateSubVariable: ({ commit }, data) => {
+    return http()
+      .post("/admin/poverty/variable/update", data)
       .then((result) => {
         return result;
       })
