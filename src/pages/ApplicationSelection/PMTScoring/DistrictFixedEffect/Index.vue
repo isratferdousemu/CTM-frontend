@@ -1,5 +1,5 @@
 <template>
-  <div id="district">
+  <div id="division">
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
         <v-row>
@@ -13,18 +13,49 @@
             >
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
-                  {{ $t("container.system_config.demo_graphic.district.list") }}
+                  {{
+                    $t("container.application_selection.district_fixed_effect.list")
+                  }}
                 </h3>
               </v-card-title>
+
               <v-card-text>
                 <v-row
                   class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
                   justify="center"
                   justify-lg="space-between"
                 >
-                  <div class="d-flex justify-sm-end flex-wrap">
+                 <div class="d-flex justify-md-end flex-wrap">
+                    <!--  <v-autocomplete
+                      @input="onChangeFilter()"
+                      class="mr-5"
+                      v-model="financial_year_id"
+                      :items="financial_years"
+                      label="Financial Year"
+                      outlined
+                      dense
+                      item-text="financial_year"
+                      item-value="id"
+                      :error="errors[0] ? true : false"
+                      :error-messages="errors[0]"
+                    ></v-autocomplete>
+
+                    <v-select
+                      @input="onChangeFilter()"
+                      class="mr-5"
+                      v-model="location_type_id"
+                      :items="location_types"
+                      label="Location Type"
+                      outlined
+                      dense
+                      item-text="name_en"
+                      item-value="id"
+                      :error="errors[0] ? true : false"
+                      :error-messages="errors[0]"
+                    ></v-select> -->
+
                     <v-text-field
-                      @keyup.native="GetDistrict"
+                      @keyup.native="GetDistrictFixedEffect"
                       outlined
                       dense
                       v-model="search"
@@ -34,28 +65,29 @@
                       variant="outlined"
                       :label="
                         $t(
-                          'container.system_config.demo_graphic.district.search'
+                          'container.application_selection.district_fixed_effect.search'
                         )
                       "
                       hide-details
                       color="primary"
                     >
                     </v-text-field>
+                    <!-- <v-btn
+                      @click="createDialog"
+                      flat
+                      class="my-sm-0 my-3 mx-0v -input--horizontal"
+                      color="primary"
+                      prepend-icon="mdi-account-multiple-plus"
+                    >
+                      {{ $t("container.list.add_new") }}
+                    </v-btn> -->
                   </div>
-                  <v-btn
-                    @click="createDialog"
-                    flat
-                    color="primary"
-                    prepend-icon="mdi-account-multiple-plus"
-                  >
-                    {{ $t("container.list.add_new") }}
-                  </v-btn>
                   <v-col cols="12">
                     <v-data-table
                       :loading="loading"
                       item-key="id"
                       :headers="headers"
-                      :items="districts"
+                      :items="divisions"
                       :items-per-page="pagination.perPage"
                       hide-default-footer
                       class="elevation-0 transparent row-pointer"
@@ -67,8 +99,12 @@
                           1
                         }}
                       </template>
-                      <template v-slot:item.name_en="{ item }">
-                        {{ item.name_en }}
+                      <template v-slot:item.assign_location.name_en="{ item }">
+                        <span v-if="item.type === 0">All Over Bangladesh</span>
+                        <span v-else>{{ item.assign_location.name_en }}</span>
+                      </template>
+                      <template v-slot:item.score="{ item }">
+                        {{ item.score }}
                       </template>
                       <template v-slot:item.name_bn="{ item }">
                         {{ item.name_bn }}
@@ -94,7 +130,7 @@
                             {{ $t("container.list.edit") }}
                           </span>
                         </v-tooltip>
-
+                        <!-- 
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
@@ -111,7 +147,7 @@
                             </v-btn>
                           </template>
                           <span> {{ $t("container.list.delete") }}</span>
-                        </v-tooltip>
+                        </v-tooltip> -->
                       </template>
                       <!-- End Action Button -->
 
@@ -153,198 +189,59 @@
         </v-row>
       </v-col>
 
-      <!-- district add modal  -->
+      <!-- division add modal  -->
       <v-dialog v-model="dialogAdd" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.system_config.demo_graphic.district.add_new") }}
+            {{ $t("container.application_selection.district_fixed_effect.add_new") }}
           </v-card-title>
           <v-divider></v-divider>
-          <v-card-text class="mt-7">
-            <ValidationObserver ref="formAdd" v-slot="{ invalid }">
-              <form @submit.prevent="submitDistrict()">
-                <!-- {{errors.code}}
-                {{errors.name_en}} -->
-
-                <ValidationProvider
-                  name="Division"
-                  vid="division"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <v-autocomplete
-                    @input="onChangeDivision($event)"
-                    v-model="data.division_id"
-                    outlined
-                    :label="
-                      $t(
-                        'container.system_config.demo_graphic.division.division'
-                      )
-                    "
-                    :items="divisions"
-                    item-text="name_en"
-                    item-value="id"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-autocomplete>
-                </ValidationProvider>
-                <ValidationProvider
-                  name="Code"
-                  vid="code"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <v-text-field
-                    outlined
-                    type="text"
-                    v-model="data.code"
-                    :label="$t('container.list.code')"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-text-field>
-                </ValidationProvider>
-                <ValidationProvider
-                  name="Name English"
-                  vid="name_en"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <v-text-field
-                    outlined
-                    type="text"
-                    v-model="data.name_en"
-                    :label="$t('container.system_config.demo_graphic.district.name_en')"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-text-field>
-                </ValidationProvider>
-                <ValidationProvider
-                  name="Name Bangla"
-                  vid="name_bn"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <v-text-field
-                    outlined
-                    type="text"
-                    v-model="data.name_bn"
-                    :label="$t('container.system_config.demo_graphic.district.name_bn')"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-text-field>
-                </ValidationProvider>
-
-                <v-row class="mx-0 my-0 py-2" justify="center">
-                  <v-btn
-                    flat
-                    @click="dialogAdd = false"
-                    outlined
-                    class="custom-btn-width py-2 mr-10"
-                  >
-                    {{ $t("container.list.cancel") }}
-                  </v-btn>
-                  <v-btn
-                    type="submit"
-                    flat
-                    color="primary"
-                    :disabled="invalid"
-                    :loading="loading"
-                    class="custom-btn-width warning white--text py-2"
-                  >
-                    {{ $t("container.list.submit") }}
-                  </v-btn>
-                </v-row>
-              </form>
-            </ValidationObserver>
-          </v-card-text>
+          <v-card-text class="mt-7"> </v-card-text>
         </v-card>
       </v-dialog>
-      <!-- district add modal  -->
+      <!-- division add modal  -->
 
-      <!-- district Edit modal  -->
+      <!-- division Edit modal  -->
       <v-dialog v-model="dialogEdit" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.system_config.demo_graphic.district.edit") }}
+            {{ $t("container.application_selection.district_fixed_effect.edit") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
             <ValidationObserver ref="formEdit" v-slot="{ invalid }">
-              <form @submit.prevent="updateDistrict()">
-                <!-- {{errors.code}}
-                {{errors.name_en}} -->
+              <form @submit.prevent="updateDistrictFixedEffect()">
+                <!-- {{errors.division_name}}
+                {{errors.score}} -->
 
                 <ValidationProvider
                   name="Division"
-                  vid="division"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <v-autocomplete
-                    @input="onChangeDivision($event)"
-                    v-model="data.division_id"
-                    outlined
-                    :label="
-                      $t(
-                        'container.system_config.demo_graphic.division.division'
-                      )
-                    "
-                    :items="divisions"
-                    item-text="name_en"
-                    item-value="id"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-autocomplete>
-                </ValidationProvider>
-
-                <ValidationProvider
-                  name="Code"
-                  vid="code"
+                  vid="division_name"
                   rules="required"
                   v-slot="{ errors }"
                 >
                   <v-text-field
                     outlined
+                    readonly
                     type="text"
-                    v-model="data.code"
-                    :label="$t('container.list.code')"
+                    v-model="data.division_name"
+                    :label="$t('container.application_selection.district_fixed_effect.name_en')"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
                   ></v-text-field>
                 </ValidationProvider>
                 <ValidationProvider
-                  name="Name English"
-                  vid="name_en"
+                  name="Score"
+                  vid="score"
                   rules="required"
                   v-slot="{ errors }"
                 >
                   <v-text-field
                     outlined
                     type="text"
-                    v-model="data.name_en"
-                    :label="$t('container.system_config.demo_graphic.district.name_en')"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-text-field>
-                </ValidationProvider>
-                <ValidationProvider
-                  name="Name Bangla"
-                  vid="name_bn"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <v-text-field
-                    outlined
-                    type="text"
-                    v-model="data.name_bn"
-                    :label="$t('container.system_config.demo_graphic.district.name_bn')"
+                    v-model="data.score"
+                    :label="$t('container.application_selection.district_fixed_effect.score')"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -366,7 +263,7 @@
                     color="primary"
                     :disabled="invalid"
                     :loading="loading"
-                    class="custom-btn-width warning white--text py-2"
+                    class="custom-btn-width primary white--text py-2"
                   >
                     {{ $t("container.list.update") }}
                   </v-btn>
@@ -376,19 +273,21 @@
           </v-card-text>
         </v-card>
       </v-dialog>
-      <!-- district Edit modal  -->
+      <!-- division Edit modal  -->
 
       <!-- delete modal  -->
       <v-dialog v-model="deleteDialog" width="350">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.system_config.demo_graphic.district.delete") }}
+            {{ $t("container.application_selection.district_fixed_effect.delete") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
               {{
-                $t("container.system_config.demo_graphic.district.delete_alert")
+                $t(
+                  "container.application_selection.district_fixed_effect.delete_alert"
+                )
               }}
             </div>
           </v-card-text>
@@ -404,7 +303,7 @@
               </v-btn>
               <v-btn
                 text
-                @click="deleteDistrict()"
+                @click="deleteDivision()"
                 color="white"
                 :loading="delete_loading"
                 class="custom-btn-width warning white--text py-2"
@@ -415,7 +314,6 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <!-- {{ divisions }} -->
       <!-- delete modal  -->
     </v-row>
   </div>
@@ -429,32 +327,48 @@ import { required } from "vee-validate/dist/rules";
 extend("required", required);
 export default {
   name: "Index",
-  title: "CTM - Districts",
+  title: "CTM - Divisions",
   data() {
     return {
       data: {
-        division_id: null,
         id: null,
-        code: null,
-        name_en: null,
-        name_bn: null,
+        division_name: null,
+        type: null,
+        score: null,
       },
       dialogAdd: false,
       deleteDialog: false,
       dialogEdit: false,
       delete_loading: false,
       loading: false,
+      location_type: null,
+      location_type_id: null,
+      location_types: [
+        {
+          id: 0,
+          name_en: "All",
+        },
+        {
+          id: 1,
+          name_en: "Division",
+        },
+        {
+          id: 2,
+          name_en: "District",
+        },
+      ],
       search: "",
       delete_id: "",
-      districts: [],
+      financial_year_id: null,
+      divisions: [],
+      financial_years: [],
       errors: {},
       error_status: {},
       pagination: {
         current: 1,
         total: 0,
-        perPage: 15,
+        perPage: 10,
       },
-      // errors: "",
       items: [5, 10, 15, 20, 40, 50, 100],
     };
   },
@@ -471,24 +385,17 @@ export default {
           align: "start",
           sortable: false,
         },
-        { text: this.$t("container.list.code"), value: "code" },
         {
           text: this.$t(
-            "container.system_config.demo_graphic.division.division"
+            "container.application_selection.district_fixed_effect.name_en"
           ),
-          value: "division.name_en",
+          value: "assign_location.name_en",
         },
         {
           text: this.$t(
-            "container.system_config.demo_graphic.district.name_en"
+            "container.application_selection.district_fixed_effect.score"
           ),
-          value: "name_en",
-        },
-        {
-          text: this.$t(
-            "container.system_config.demo_graphic.district.name_bn"
-          ),
-          value: "name_bn",
+          value: "score",
         },
         {
           text: this.$t("container.list.action"),
@@ -500,9 +407,10 @@ export default {
     },
 
     ...mapState({
-      message: (state) => state.District.success_message,
-      divisions: (state) => state.Division.divisions,
-      districts: (state) => state.District.districts,
+      message: (state) => state.Division.success_message,
+      // divisions: (state) => state.Division.divisions,
+      // errors: (state) => state.Division.errors,
+      // error_status: (state) => state.Division.error_status,
     }),
   },
 
@@ -515,35 +423,7 @@ export default {
       this.dialogAdd = true;
     },
     checkLanguage() {
-      // let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
-      // let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
-      // if (
-      //   checkLanguageBangla != "Bangla" &&
-      //   checkLanguageEnglish != "English"
-      // ) {
-      //   let errs = {
-      //     name_bn: ["Please Enter in Bangla Language in this Field"],
-      //     name_en: ["Please Enter in English Language in this Field"],
-      //   };
-      //   this.$refs.form.setErrors(errs);
-      //   return false;
-      // } else if (checkLanguageBangla != "Bangla") {
-      //   let errs = {
-      //     name_bn: ["Please Enter in Bangla Language in this Field"],
-      //   };
-      //   this.$refs.form.setErrors(errs);
-      //   return false;
-      // } else if (checkLanguageEnglish != "English") {
-      //   let errs = {
-      //     name_en: ["Please Enter in English Language in this Field"],
-      //   };
-      //   this.$refs.form.setErrors(errs);
-      //   return false;
-      // } else {
-      //   return true;
-      // }
-
-      let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
+      let checkLanguageEnglish = this.$checkLanguage(this.data.score);
       let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
 
       console.log(checkLanguageEnglish);
@@ -557,8 +437,8 @@ export default {
         errs.name_bn = ["Please Enter in Bangla Language in this Field"];
       }
 
-      if (checkLanguageEnglish !== "English") {
-        errs.name_en = ["Please Enter in English Language in this Field"];
+      if (checkLanguageEnglish != "English") {
+        errs.score = ["Please Enter in English Language in this Field"];
       }
 
       if (Object.keys(errs).length > 0) {
@@ -583,85 +463,99 @@ export default {
       }
       return fd;
     },
-    submitDistrict() {
-      if (!this.checkLanguage()) {
-        return;
-      }
-
-      try {
-        this.$store
-          .dispatch("District/StoreDistrict", this.validator())
-          .then((data) => {
-            console.log(data, "submit");
-            if (data == null) {
-              this.$toast.success("Data Inserted Successfully");
-              this.dialogAdd = false;
-              this.resetForm();
-              this.GetDistrict();
-            } else {
-              this.$refs.formAdd.setErrors(data.errors);
-              this.errors = data.errors;
-            }
-          })
-          .catch((error) => {
-            console.log(error, "error");
-          });
-      } catch (e) {
-        console.log(e);
-      }
-    },
     editDialog(item) {
-      console.log(JSON.stringify(item));
+      console.log(item);
       this.dialogEdit = true;
-      this.data.code = item.code;
-      this.data.division_id = item.division.id;
-      this.data.name_en = item.name_en;
-      this.data.name_bn = item.name_bn;
+      this.data.division_name = item.assign_location.name_en;
+      this.data.score = item.score;
+      this.data.location_id = item.assign_location.id;
+      this.data.type = item.type;
       this.data.id = item.id;
       this.errors = {};
     },
-    updateDistrict() {
-      if (!this.checkLanguage()) {
-        return;
-      }
-
+    updateDistrictFixedEffect() {
       try {
         this.$store
-          .dispatch("District/UpdateDistrict", this.validator())
-          .then((data) => {
-            console.log(data, "update");
-            if (data == null) {
+          .dispatch("ApplicationSelection/updateDistrictFixedEffect", this.validator())
+          .then((res) => {
+            if (res.data?.success) {
               this.$toast.success("Data Updated Successfully");
+              // this.resetData();
               this.dialogEdit = false;
-              this.resetForm();
-              this.GetDistrict();
-            } else {
-              this.$refs.formEdit.setErrors(data.errors);
+              this.GetDistrictFixedEffect();
+              // if (this.financial_year_id == null && this.type == null) {
+              // } else {
+              //   this.onChangeFilter();
+              // }
+            } else if (res.response?.data?.errors) {
+              this.$refs.formEdit.setErrors(res.response.data.errors);
+              this.$toast.error(res.response.data.message);
             }
+            // console.log(data, "update");
+            // if (data == null) {
+            //   this.$toast.success("Data Updated Successfully");
+            //   this.dialogEdit = false;
+            //   this.resetForm();
+            //   this.GetDistrictFixedEffect();
+            // } else {
+            //   this.$refs.formEdit.setErrors(data);
+            // }
           });
       } catch (e) {
         console.log(e);
       }
     },
     resetForm() {
+      // Reset the form data
       this.data = {
-        code: "",
-        name_en: "",
+        division_name: "",
+        score: "",
         name_bn: "",
+        // Reset other form fields
       };
+      this.errors = {};
     },
+
     onPageChange($event) {
       // this.pagination.current = $event;
-      this.GetDistrict();
+      this.GetDistrictFixedEffect();
     },
-    async GetDistrict() {
+    async onChangeFilter() {
+      const filterData = {
+        financial_year_id: this.financial_year_id,
+        type: this.location_type_id,
+      };
+      console.log(filterData, "onChangeFilter");
+      // return;
+      let fd = new FormData();
+      for (const [key, value] of Object.entries(filterData)) {
+        if (value !== null) {
+          fd.append(key, value);
+        }
+      }
+
+      try {
+        this.$store
+          .dispatch("ApplicationSelection/filterCutOff", fd)
+          .then((result) => {
+            console.log(result, "filterCutOff");
+            this.divisions = result.data.data;
+            this.pagination.current = result.data.meta.current_page;
+            this.pagination.total = result.data.meta.last_page;
+            this.pagination.grand_total = result.data.meta.total;
+          });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async GetDistrictFixedEffect() {
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
       };
       this.$axios
-        .get("/admin/district/get", {
+        .get("/admin/poverty/get/district-fixed-effect", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -669,26 +563,41 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          this.districts = result.data.data;
+          this.divisions = result.data.data;
+          console.log(this.divisions);
           this.pagination.current = result.data.meta.current_page;
           this.pagination.total = result.data.meta.last_page;
           this.pagination.grand_total = result.data.meta.total;
         });
     },
-    deleteDistrict: async function () {
+    async GetFinancialYear() {
+      this.$axios
+        .get("/admin/financial-year/get", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
+          this.financial_years = result.data.data;
+        });
+    },
+    deleteDivision: async function () {
       try {
         await this.$store
-          .dispatch("District/DestroyDistrict", this.delete_id)
+          .dispatch("Division/DestroyDivision", this.delete_id)
           .then((res) => {
             // check if the request was successful
-            console.log(res.data);
             if (res?.data?.success) {
               this.$toast.success(res.data.message);
             } else {
               this.$toast.error(res.response.data.message);
             }
             this.deleteDialog = false;
-            this.GetDistrict();
+            this.GetDistrictFixedEffect();
+          })
+          .catch((error) => {
+            console.log(error, "error");
           });
       } catch (e) {
         console.log(e);
@@ -700,32 +609,9 @@ export default {
       this.deleteDialog = true;
       this.delete_id = id;
     },
-    getAllDivision() {
-      try {
-        this.$store.dispatch("Division/GetAllDivisions").then(() => {
-          console.log("success");
-        });
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    async onChangeDivision(event) {
-      console.log(event);
-      // await axios
-      //   .get(`/admin/district/get/${event}`, {
-      //     headers: {
-      //       Authorization: "Bearer " + this.$store.state.token,
-      //       "Content-Type": "multipart/form-data",
-      //     },
-      //   })
-      //   .then((result) => {
-      //     this.districts = result.data.data;
-      //     console.log(this.districts);
-      //   });
-    },
     updateHeaderTitle() {
       const title = this.$t(
-        "container.system_config.demo_graphic.district.list"
+        "container.application_selection.district_fixed_effect.list"
       );
       this.$store.commit("setHeaderTitle", title);
     },
@@ -734,8 +620,8 @@ export default {
     "$i18n.locale": "updateHeaderTitle",
   },
   created() {
-    this.GetDistrict();
-    this.getAllDivision();
+    this.GetFinancialYear();
+    this.GetDistrictFixedEffect();
   },
   beforeMount() {
     this.updateHeaderTitle();

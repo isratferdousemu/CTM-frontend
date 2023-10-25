@@ -86,16 +86,12 @@ export default {
 
         await http().delete(`/admin/allowance/destroy/${id}`).then((result) => {
 
-          // if (result.data.status === 200)
-          // {
             this.allowances = this.allowances.filter((item) => {
               return id !== item.id;
             });
             this.deleteDialog = false;
-            this.$toast.success(result.data.data.message);
+            this.$toast.success(result.data.message);
             this.getAllowance();
-          //}
-
         })
       }catch (e) {
         console.log(e);

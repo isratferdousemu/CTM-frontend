@@ -14,22 +14,40 @@ const ApplicationSelectionRoutes = [
     component: () => import("../pages/ApplicationSelection/application_list/Index.vue")
   },
   {
-    path: "/application-management/division-cut-off-score/",
+    path: "/application-management/poverty-cut-off-score/",
     name: "selection_list",
     meta: {
       requiresAuth: true,
       permission: "application-selection-list",
     },
-    component: () => import("../pages/ApplicationSelection/PMTScoring/Division/Index.vue")
+    component: () => import("../pages/ApplicationSelection/PMTScoring/PovertyCutOff/Index.vue")
   },
   {
-    path: "/application-management/district-cut-off-score/",
+    path: "/application-management/district-fixed-effect/",
     name: "selection_list",
     meta: {
       requiresAuth: true,
       permission: "application-selection-list",
     },
-    component: () => import("../pages/ApplicationSelection/PMTScoring/District/Index.vue")
+    component: () => import("../pages/ApplicationSelection/PMTScoring/DistrictFixedEffect/Index.vue")
+  },
+  {
+    path: "/application-management/variable/",
+    name: "selection_list",
+    meta: {
+      requiresAuth: true,
+      permission: "application-selection-list",
+    },
+    component: () => import("../pages/ApplicationSelection/PMTScoring/Variable/Index.vue")
+  },
+  {
+    path: "/application-management/sub-variable/",
+    name: "selection_list",
+    meta: {
+      requiresAuth: true,
+      permission: "application-selection-list",
+    },
+    component: () => import("../pages/ApplicationSelection/PMTScoring/SubVariable/Index.vue")
   },
 ];
 

@@ -174,25 +174,7 @@
             <ValidationObserver ref="formAdd" v-slot="{ invalid }">
               <form @submit.prevent="submitUnion()">
                 <v-row>
-                  <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="Code"
-                      vid="code"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-text-field
-                        outlined
-                        type="text"
-                        v-model="data.code"
-                        :label="$t('container.list.code')"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                        :hide-details="errors[0] ? false : true"
-                      ></v-text-field>
-                    </ValidationProvider>
-                  </v-col>
+                  
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Division"
@@ -272,6 +254,25 @@
                   </v-col>
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
+                      name="Code"
+                      vid="code"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-text-field
+                        outlined
+                        type="text"
+                        v-model="data.code"
+                        :label="$t('container.list.code')"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                        :hide-details="errors[0] ? false : true"
+                      ></v-text-field>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
                       name="Name English"
                       vid="name_en"
                       rules="required"
@@ -281,7 +282,7 @@
                         outlined
                         type="text"
                         v-model="data.name_en"
-                        :label="$t('container.list.name_en')"
+                        :label="$t('container.system_config.demo_graphic.union.name_en')"
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
@@ -300,7 +301,7 @@
                         outlined
                         type="text"
                         v-model="data.name_bn"
-                        :label="$t('container.list.name_bn')"
+                        :label="$t('container.system_config.demo_graphic.union.name_bn')"
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
@@ -409,7 +410,7 @@
                         outlined
                         type="text"
                         v-model="data.name_en"
-                        :label="$t('container.list.name_en')"
+                        :label="$t('container.system_config.demo_graphic.union.name_en')"
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
@@ -487,7 +488,7 @@
                         outlined
                         type="text"
                         v-model="data.name_bn"
-                        :label="$t('container.list.name_bn')"
+                        :label="$t('container.system_config.demo_graphic.union.name_bn')"
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
@@ -502,25 +503,7 @@
                 </v-row> -->
 
                 <v-row>
-                  <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="Code"
-                      vid="code"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-text-field
-                        outlined
-                        type="text"
-                        v-model="data.code"
-                        :label="$t('container.list.code')"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                        :hide-details="errors[0] ? false : true"
-                      ></v-text-field>
-                    </ValidationProvider>
-                  </v-col>
+                 
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Division"
@@ -598,6 +581,25 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
+                   <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                      name="Code"
+                      vid="code"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-text-field
+                        outlined
+                        type="text"
+                        v-model="data.code"
+                        :label="$t('container.list.code')"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                        :hide-details="errors[0] ? false : true"
+                      ></v-text-field>
+                    </ValidationProvider>
+                  </v-col>
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Name English"
@@ -609,7 +611,7 @@
                         outlined
                         type="text"
                         v-model="data.name_en"
-                        :label="$t('container.list.name_en')"
+                        :label="$t('container.system_config.demo_graphic.union.name_en')"
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
@@ -628,7 +630,7 @@
                         outlined
                         type="text"
                         v-model="data.name_bn"
-                        :label="$t('container.list.name_bn')"
+                        :label="$t('container.system_config.demo_graphic.union.name_bn')"
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
