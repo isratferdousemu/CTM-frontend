@@ -156,12 +156,98 @@
                     <v-expansion-panel-content  class="mt-5">
                       <div v-if="programDetails" class="py-2 ma-4">
                         <v-row>
+                          <template v-if="checkIsHaveDIS()">
+                            <v-col cols="6"
+                            lg="6"
+                          > 
+                          <template>
+                            <label
+                              >{{ programDetails?.additional_field[keyGetByName("DIS No.")].name_en }}
+                              <span
+                                style="
+                                  margin-left: 4px;
+                                  margin-right: 4px;
+                                  color: red;
+                                "
+                                >*</span
+                              ></label
+                            >
+                            <ValidationProvider
+                              :name="programDetails?.additional_field[`${keyGetByName('DIS No.')}`].name_en"
+                              vid="value"
+                              rules="required"
+                              v-slot="{ errors }"
+                            >
+                              <v-text-field
+                                v-model="data.application_allowance_values[`${keyGetByName('DIS No.')}`].value"
+                                :hide-details="errors[0] ? false : true"
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                                type="number"
+                                outlined
+                              >
+                              </v-text-field>
+                            </ValidationProvider>
+                          </template>
+                        
+                          </v-col>
+                            <v-col cols="6"
+                            lg="6"
+                          >
+                          <template>
+                            <label
+                              >{{ programDetails?.additional_field[keyGetByName("Disability Type")].name_en }}
+                              <span
+                                style="
+                                  margin-left: 4px;
+                                  margin-right: 4px;
+                                  color: red;
+                                "
+                                >*</span
+                              ></label
+                            >
+                            <ValidationProvider
+                              :name="programDetails?.additional_field[`${keyGetByName('Disability Type')}`].name_en"
+                              vid="value"
+                              rules="required"
+                              v-slot="{ errors }"
+                            >
+                              <v-text-field
+                                v-model="data.application_allowance_values[`${keyGetByName('Disability Type')}`].value"
+                                :hide-details="errors[0] ? false : true"
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                                type="text"
+                                disabled
+                                outlined
+                              >
+                              </v-text-field>
+                            </ValidationProvider>
+                          </template>
+                          </v-col>
+                            <v-col cols="12"
+                            lg="12"
+                          >
+                          <div class="d-inline d-flex justify-end">
+                            <v-btn
+                              @click="verifyCard()"
+                              elevation="2"
+                              :disabled="data.application_allowance_values[`${keyGetByName('DIS No.')}`].value==null || data.application_allowance_values[`${keyGetByName('DIS No.')}`].value==''"
+                              class="btn"
+                              color="primary"
+                              >Verify</v-btn
+                            >
+                          </div>
+                          </v-col>
+                          </template>
                           <v-col
                             v-for="(
                               fields, index
-                            ) in programDetails?.additional_field"
+                            ) in programDetails.additional_field"
+                            :key="index"
                             cols="6"
                             lg="6"
+                            v-if="programDetails?.additional_field.length!=0 && keyGetByName('DIS No.')!=index && keyGetByName('Disability Type')!=index "
                           >
                             <template v-if="fields.type == 'dropdown'">
                               <label
@@ -1571,11 +1657,10 @@ Birth Registration Number"
                       <div class="pa-2 mb-4">
                         <v-row>
                           <v-col
-                          v-for="(
-                            variables, indexPMT
-                          ) in PMTVariables"
+                          v-for="(variables, indexPMT) in PMTVariables"
                           cols="6"
                           lg="6"
+                          :key='indexPMT'
                         >
                           <template v-if="variables.children.length==0">
                             <label
@@ -1733,7 +1818,7 @@ export default {
       panel: [0, 1, 2, 3, 4, 5, 6],
       programs: [],
       classes: [],
-
+      loading:false,
       divisions: [],
       districts: [],
       thanas: [],
@@ -1800,57 +1885,13 @@ export default {
       genders: ["Male", "Female", "3rd Gender"],
     
       yes_no: ["Yes ", "No"],
-
-      house_children_no: ["0", "1", "2", "3", "4", "4+"],
-      spouse_education: [
-        "Uneducated",
-        "Below 5 Statndard",
-        "5-9 Standard",
-        "Above 10 Stansard",
-        "Not Applicable",
-      ],
-      house_head_education: [
-        "Uneducated",
-        "Below 5 Statndard",
-        "5-9 Standard",
-        "Above 10 Stansard",
-        "Not Applicable",
-      ],
-      house_head_education: [
-        "Uneducated",
-        "Below 5 Statndard",
-        "5-9 Standard",
-        "Above 10 Stansard",
-        "Not Applicable",
-      ],
-      house_head_occupation: [
-        "Job",
-        "Farming",
-        "Business",
-        "Student",
-        "Retired",
-      ],
-      wall_status: ["Concrete", "Tin/wood", "Mud house", "Others"],
-      toilet_status: [
-        "Sanitary Latrines",
-        "Pit or hole",
-        "Raw or Hanging",
-        "Open field or open space",
-      ],
-      water_resource_status: ["Supply", "Tubewell", "Others"],
-      agricultural_status: [
-        "Labor in agriculture",
-        "Labor in non-agricultural sector",
-      ],
-      house_land_status: [
-        "Below 0.5 acre",
-        "0.51 to 1.50 acre",
-        "Above 1.50 acre",
-      ],
+        
       relations_with_bef: [
-        "Father",
-        "Mother",
-        "Cousin",
+        "Spouse",
+        "Family member",
+        "Close relative",
+        "Spouse",
+        "Parent",
       ],
 
       activePicker: null,
@@ -1964,7 +2005,38 @@ export default {
       val && setTimeout(() => (this.activePicker = "YEAR"));
     },
   },
+
+  filters: {
+    // keyGetByName: function (name) {
+    //   if (this.programDetails != null) {
+    //     // array programDetails.additional_field key get by name_en
+    //     let key = this.programDetails.additional_field.findIndex(field => field.name_en == name);
+    //     // console.log(key,'key name');
+    //     return key
+    //   }
+    // },
+  },
   methods: {
+    checkIsHaveDIS() {
+      if (this.programDetails != null) {
+        let check = this.programDetails.additional_field.filter((item) => {
+          return item.id == 11;
+        })
+        if (check.length==0) {
+        return false  
+        } else {
+        return true  
+        }
+      }
+
+    },
+
+    keyGetByName(name) {
+      if (this.programDetails != null) {
+        let key = this.programDetails.additional_field.findIndex(field => field.name_en == name);
+        return key
+      }
+    },
 
     handleNomineeCheckboxChange(event) {
       if (event) {
