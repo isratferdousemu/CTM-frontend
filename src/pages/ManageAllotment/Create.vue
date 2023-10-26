@@ -184,19 +184,21 @@ export default {
                                   <v-col cols="12" class="d-flex">
                                     <v-row wrap>
                                       <div v-if="isDisable === 1">
-                                        <span v-for="(eg, index) in educationGenders" :key="index">
-                                          <span v-for="(g, index) in genders" :key="index">
-                                            <v-col sm="6" v-if="eg.gender_id === g.id"><v-text-field :label="g.value_en" outlined dense></v-text-field></v-col>
-                                          </span>
-                                        </span>
+                                        <div v-for="(eg, index) in educationGenders" :key="index">
+                                          <div v-for="(g) in genders" :key="g.id">
+                                            <v-col sm="6" v-if="eg.gender_id === g.id">
+                                                <v-text-field :label="g.value_en" outlined dense></v-text-field>
+                                            </v-col>
+                                          </div>
+                                        </div>
                                       </div>
 
                                       <div v-if="isDisable === 0">
-                                        <span v-for="(aa, index) in allowanceAmounts" :key="index">
-                                          <span v-for="(g, index) in genders" :key="index">
-                                            <v-col sm="6" v-if="aa.gender_id === g.id"><v-text-field :label="g.value_en" outlined dense></v-text-field></v-col>
-                                          </span>
-                                        </span>
+                                        <div v-for="(aa, index) in allowanceAmounts" :key="index">
+                                          <div v-for="(g) in genders" :key="g.id">
+                                              <v-col sm="6" v-if="aa.gender_id === g.id"><v-text-field :label="g.value_en" outlined dense></v-text-field></v-col>
+                                          </div>
+                                        </div>
                                       </div>
                                     </v-row>
                                   </v-col>
