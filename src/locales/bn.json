@@ -40,7 +40,8 @@
             "reason_details": "কারণ বিবরণ",
             "mobile": "মোবাইল",
             "beneficiary_journey": "সুবিধাভোগী যাত্রা",
-            "change_tracking_details": "ট্র্যাকিং বিবরণ পরিবর্তন করুন"
+            "change_tracking_details": "ট্র্যাকিং বিবরণ পরিবর্তন করুন",
+            "exit": "প্রোগ্রাম থেকে প্রস্থান করুন"
         },
         "system_config": {
             "demo_graphic": {
@@ -327,59 +328,65 @@
                 
             }
         },
-        "beneficiary_management": {
-            "beneficiary_list": {
-                "beneficiary": "সুবিধাভোগী",
-                "list": "সুবিধাভোগী তথ্যের তালিকা",
-                "beneficiary_id": "সুবিধাভোগী আইডি",
-                "search_by": "অনুসন্ধান করুন",
-                "advance_search": "অ্যাডভান্সড সার্চ",
-                "nominee": "নমিনী ",
-                "account_no": "হিসাব নাম্বার",
-                "nid": "এনআইডি",
-                "beneficiary_summary": "সুবিধাভোগী সারসংক্ষেপে ",
-                "beneficiary_replacement": "সুবিধাভোগী প্রতিস্থাপন",
-                "replacement_with": "সঙ্গে প্রতিস্থাপন",
-                "beneficiary_details": "সুবিধাভোগীর বিবরণ",
-                "replacement_cause": "প্রতিস্থাপনের কারণ",
-                "cause_date": "প্রভাবের তারিখ",
-                "reason_provision": "কারণ বিধান",
-                "beneficiary_replacement_list": "সুবিধাভোগী প্রতিস্থাপন তালিকা",
-                "payment_history": "অর্থপ্রদানের ইতিহাস",
-                "grievance_history": "অভিযোগের ইতিহাস",
-                "Change_tracking": "ট্র্যাকিং পরিবর্তন",
-                "total_receive": "মোট প্রাপ্তি",
-                "last_payment_amount": "শেষ অর্থপ্রদানের পরিমাণ",
-                "total_grievance": "মোট অভিযোগ",
-                "last_grievance_type": "শেষ অভিযোগের ধরন",
-                "total_change": "মোট পরিবর্তন",
-                "payment_disbursed_date": "অর্থ প্রদানের তারিখ",
-                "ammount": "পরিমাণ",
-                "fiscal_year": "অর্থবছর",
-                "due": "বকেয়া অর্থ প্রদান (যদি থাকে)",
-                "type": "ধরণ ",
-                "subject": "বিষয়",
-                "details": "বিবরণ",
-                "grievance_raise_date": "অভিযোগ উত্থাপনের তারিখ",
-                "allotment_distribution": "বরাদ্দ বিতরণের সংশোধন",
-                "resolved_by": "সমাধান করা হয়েছে",
-                "resolve_comment": "সমাধান বিষয়ে মন্তব্য",
-                "resolve_date": "সমাধানের তারিখ",
-                "change_tracking_type": "ট্র্যাকিং টাইপ পরিবর্তন ",
-                "change_count": "গণনা পরিবর্তন করুন",
-                "successful_change": "সফল পরিবর্তন",
-                "unsuccessful_change": "অসফল পরিবর্তন",
-                "information_tracking": "ইনফরমেশন ট্র্যাকিং",
-                "tracking_type": "ট্র্যাকিং টাইপ",
-                "address": "ঠিকানা"
-            },
-            "digital_id": {
-                "digital_id_card": "ডিজিটাল আইডি কার্ড"
-            },
-            "beneficiary_exit": {
-                "title": "সুবিধাভোগী প্রস্থান এবং এডিশন ব্যবস্থাপনা"
-            },
-            "date_of_exit": "প্রস্থানের তারিখ"
-        }
+            "beneficiary_management": {
+                "beneficiary_list": {
+                    "beneficiary": "সুবিধাভোগী",
+                    "list": "সুবিধাভোগী তথ্যের তালিকা",
+                    "beneficiary_id": "সুবিধাভোগী আইডি",
+                    "search_by":"অনুসন্ধান করুন",
+                    "advance_search": "অ্যাডভান্সড সার্চ",
+                    "nominee": "নমিনী ",
+                    "account_no": "হিসাব নাম্বার",
+                    "nid": "এনআইডি",
+                    "beneficiary_summary": "সুবিধাভোগী সারসংক্ষেপে ",
+                    "beneficiary_replacement": "সুবিধাভোগী প্রতিস্থাপন",
+                    "replacement_with": "সঙ্গে প্রতিস্থাপন",
+                    "beneficiary_details": "সুবিধাভোগীর বিবরণ",
+                    "replacement_cause": "প্রতিস্থাপনের কারণ",
+                    "cause_date": "প্রভাবের তারিখ",
+                    "reason_provision": "কারণ বিধান",
+                    "beneficiary_replacement_list": "সুবিধাভোগী প্রতিস্থাপন তালিকা",
+                    "payment_history": "অর্থপ্রদানের ইতিহাস",
+                    "grievance_history": "অভিযোগের ইতিহাস",
+                    "Change_tracking": "ট্র্যাকিং পরিবর্তন",
+                     "total_receive": "মোট প্রাপ্তি",
+                    "last_payment_amount": "শেষ অর্থপ্রদানের পরিমাণ", 
+                    "total_grievance": "মোট অভিযোগ",
+                    "last_grievance_type": "শেষ অভিযোগের ধরন",
+                    "total_change": "মোট পরিবর্তন",
+                    "payment_disbursed_date": "অর্থ প্রদানের তারিখ",
+                    "ammount": "পরিমাণ",
+                    "fiscal_year": "অর্থবছর",
+                    "due": "বকেয়া অর্থ প্রদান (যদি থাকে)",
+                    "type": "ধরণ ",
+                    "subject": "বিষয়",
+                    "details": "বিবরণ",
+                    "grievance_raise_date": "অভিযোগ উত্থাপনের তারিখ",
+                    "allotment_distribution": "বরাদ্দ বিতরণের সংশোধন",
+                    "resolved_by": "সমাধান করা হয়েছে",
+                    "resolve_comment": "সমাধান বিষয়ে মন্তব্য",
+                    "resolve_date": "সমাধানের তারিখ",
+                    "change_tracking_type": "ট্র্যাকিং টাইপ পরিবর্তন ",
+                    "change_count": "গণনা পরিবর্তন করুন",
+                    "successful_change": "সফল পরিবর্তন",
+                    "unsuccessful_change": "অসফল পরিবর্তন",
+                    "information_tracking": "ইনফরমেশন ট্র্যাকিং",
+                    "tracking_type": "ট্র্যাকিং টাইপ",
+                    "address": "ঠিকানা"
+
+                },
+                "digital_id": {
+                    "digital_id_card": "ডিজিটাল আইডি কার্ড"
+                },
+                "beneficiary_exit": {
+                    "title": "সুবিধাভোগী প্রস্থান এবং এডিশন ব্যবস্থাপনা",
+                    "date_of_exit": "প্রস্থানের তারিখ"
+                },
+                "beneficiary_shifting": {
+                    "title": "সুবিধাভোগী স্থানান্তর",
+                    "cause": "কারণ"
+                }
+                
+            }
     }
 }

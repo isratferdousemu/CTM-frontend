@@ -39,8 +39,9 @@
             "reason": "Reason",
             "reason_details": "Reason Details",
             "mobile": "Mobile",
-            "beneficiary_journey": "Beneficiary Journey",
-            "change_tracking_details": "Change Tracking Details"
+            "beneficiary_journey":"Beneficiary Journey",
+            "change_tracking_details":"Change Tracking Details",
+            "exit":"Exit Program"
         },
         "system_config": {
             "demo_graphic": {
@@ -349,61 +350,67 @@
                 "active": "Active"
             }
         },
-        "beneficiary_management": {
-            "beneficiary_list": {
-                "beneficiary": "Beneficiary",
-                "list": "Beneficiary Information List",
-                "program": "Program",
-                "beneficiary_id": "Beneficiary ID",
-                "select_column": "Select Column",
-                "advance_search": "Advance Search",
-                "search_by": "Search By",
-                "nominee": "Nominee",
-                "acoount_no": "Account No",
-                "nid": "NID",
-                "beneficiary_summary": "Beneficiary Summary",
-                "beneficiary_replacement": "Beneficiary Replacement",
-                "replacement_with": "Replacement With",
-                "beneficiary_details": "Beneficiary Details",
-                "replacement_cause": "Replacement Reason",
-                "cause_date": "Date of Impact",
-                "reason_provision": "reason provision",
-                "beneficiary_replacement_list": "Beneficiary Replacement List",
-                "payment_history": "Payment History",
-                "grievance_history": "Grievance History",
-                "Change_tracking": "Change Tracking",
-                "total_receive": "Total Receive",
-                "last_payment_amount": "Last Payment Amount",
-                "total_grievance": "Total Grievance",
-                "last_grievance_type": "Last Grievance Type",
-                "total_change": "Total Change",
-                "payment_disbursed_date": "Payment Disbursed Date",
-                "ammount": "Ammount",
-                "fiscal_year": "Fiscal Year",
-                "due": "Due Payment (if any)",
-                "type": "Type",
-                "subject": "Subject",
-                "details": "Deatails",
-                "grievance_raise_date": "Grievance Raise Date",
-                "allotment_distribution": "Correction of Allotment Distribution",
-                "resolved_by": "Resolve By",
-                "resolve_comment": "Resolve Comment",
-                "resolve_date": "Resolve Date",
-                "change_tracking_type": "Change Tracking Type",
-                "change_count": "Change Count",
-                "successful_change": "Successful Change",
-                "unsuccessful_change": "Unsuccessful Change",
-                "information_tracking": "Information Tracking",
-                "tracking_type": "Tracking Type",
-                "address": "Address"
-            },
-            "digital_id": {
-                "digital_id_card": "Digital ID Card"
-            },
-            "beneficiary_exit": {
-                "title": "Beneficiary Exit and Adiition Management ",
-                "date_of_exit": "Date of Exit"
+            "beneficiary_management": {
+                "beneficiary_list": {
+                    "beneficiary": "Beneficiary",
+                    "list": "Beneficiary Information List",
+                    "program": "Program",
+                    "beneficiary_id": "Beneficiary ID",
+                    "select_column": "Select Column",
+                    "advance_search": "Advance Search",
+                    "search_by": "Search By",
+                    "nominee": "Nominee",
+                    "acoount_no": "Account No",
+                    "nid": "NID",
+                    "beneficiary_summary": "Beneficiary Summary",
+                    "beneficiary_replacement": "Beneficiary Replacement",
+                    "replacement_with": "Replacement With",
+                    "beneficiary_details": "Beneficiary Details",
+                    "replacement_cause": "Replacement Reason",
+                    "cause_date": "Date of Impact",
+                    "reason_provision": "reason provision",
+                    "beneficiary_replacement_list": "Beneficiary Replacement List",
+                    "payment_history": "Payment History",
+                    "grievance_history": "Grievance History",
+                    "Change_tracking": "Change Tracking",
+                    "total_receive": "Total Receive",
+                    "last_payment_amount": "Last Payment Amount",
+                    "total_grievance": "Total Grievance",
+                    "last_grievance_type": "Last Grievance Type",
+                    "total_change": "Total Change",
+                    "payment_disbursed_date": "Payment Disbursed Date",
+                    "ammount": "Ammount",
+                    "fiscal_year": "Fiscal Year",
+                    "due": "Due Payment (if any)",
+                    "type": "Type",
+                    "subject": "Subject",
+                    "details":"Deatails",
+                    "grievance_raise_date":"Grievance Raise Date",
+                    "allotment_distribution":"Correction of Allotment Distribution",
+                    "resolved_by":"Resolve By",
+                    "resolve_comment":"Resolve Comment",
+                    "resolve_date":"Resolve Date",
+                    "change_tracking_type":"Change Tracking Type",
+                    "change_count": "Change Count",
+                    "successful_change":"Successful Change",
+                    "unsuccessful_change":"Unsuccessful Change",
+                    "information_tracking":"Information Tracking",
+                    "tracking_type":"Tracking Type",
+                    "address":"Address"
+             
+                },
+                        "digital_id": {
+                            "digital_id_card": "Digital ID Card"
+                        },
+                        "beneficiary_exit": {
+                            "title": "Beneficiary Exit and Adiition Management ",
+                            "date_of_exit":"Date of Exit"
+                        },
+                        "beneficiary_shifting": {
+                            "title": "Beneficiary Shifting",
+                            "cause": "Cause"
+                        }
+                       
             }
-        }
     }
 }
