@@ -11,6 +11,7 @@ const state = {
   allowanceAmounts: [],
   educationGender: [],
   districts: [],
+  locations: [],
   is_disable_class: '',
   success_message: "",
   errors: {},
@@ -38,6 +39,10 @@ const mutations = {
 
   GET_ALL_DISTRICT: (state, data) => {
     state.districts = data;
+  },
+
+  GET_ALL_LOCATION: (state, data) => {
+    state.locations = data;
   },
 };
 /* -------------------------------------------------------------------------- */
@@ -76,6 +81,16 @@ const actions = {
     })
   },
   /*get all districts end*/
+
+  /*get all office location start*/
+  getAllOfficeLocation: ({commit}, id) => {
+    return http().get(`/admin/allotment/get_location/${id}`).then((result) => {
+      commit('GET_ALL_LOCATION', result.data.data);
+    }).catch((err) => {
+      state.errors = err.response.errors
+    })
+  },
+  /*get all office location end*/
 };
 /* -------------------------------------------------------------------------- */
 /*                               Getters Define                               */

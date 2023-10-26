@@ -60,6 +60,14 @@ export default {
       error_status: (state) => state.Allowance.error_status
     }),
 
+    ageRules() {
+      return [
+        v => !!v || 'Age is required',
+        v => /^\d+$/.test(v) || 'Age must be a number',
+        v => (v >= 18 && v <= 100) || 'Age must be between 18 and 100',
+      ];
+    },
+
     allowance_field_data: {
       get(){
         return this.editAllowanceField
@@ -484,7 +492,7 @@ export default {
                                     step="any"
                                     min="0"
                                     ref="input"
-                                    :rules="[numberRule]"
+                                    :rules="ageRules"
                                     dense
                                     outlined
                                     :error="errors[0] ? true : false"
@@ -501,7 +509,7 @@ export default {
                                     step="any"
                                     min="0"
                                     ref="input"
-                                    :rules="[numberRule]"
+                                    :rules="ageRules"
                                     dense
                                     outlined
                                     :error="errors[0] ? true : false"
