@@ -27,7 +27,7 @@ import Role from "@/store/modules/system_configuration/role";
 import Role_permission from "@/store/modules/system_configuration/role_permission";
 import Office from "@/store/modules/system_configuration/office";
 import Allowance from "@/store/modules/system_configuration/allowance";
-import ManageAllotment from "@/store/modules/manage_allotment/ManageAllotment";
+import ManageAllotment from "@/store/modules/manage_allotment";
 // Import other modules as needed
 
 Vue.use(Vuex);
@@ -224,6 +224,11 @@ export default new Vuex.Store({
         }
       }).then((result) => {
 
+        return result.data.data
+      });
+    },
+    async getGlobalLookupByType({ state }, type) {
+      return await axios.get("/global/lookup/get/" + type).then((result) => {
         return result.data.data
       });
     },

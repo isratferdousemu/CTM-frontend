@@ -107,6 +107,15 @@ const BeneficiaryManagementRoutes = [
     },
     component: () => import("../pages/BeneficiaryManagement/BeneficiaryExit/Index.vue")
   },
+  {
+    path: "/beneficiary-management/beneficiary-shifting",
+    name: "beneficiary-exit",
+    meta: {
+      requiresAuth: true,
+      permission: "beneficiary-exit",
+    },
+    component: () => import("../pages/BeneficiaryManagement/BeneficiaryShifting/Index.vue")
+  },
   
 ];
 

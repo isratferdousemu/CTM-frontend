@@ -29,11 +29,18 @@ export default {
       age_limit: false,
       disable_class: false,
 
-      gender_items: [{id:1, name: "Male"}, {id:2, name: "Female"}, {id:3, name: "Other"}],
       marital_items: [{name: "Married"}, {name: "UnMarried"}, {name: "Widow"}],
       payment_cycle_items: [{name: "Monthly"}, {name: "Quarterly"}, {name: "Half Yearly"}, {name: "Yearly"}],
 
-      index: 0
+      index: 0,
+
+      number: 0,
+      numberRule: val => {
+        if(val < 0) return 'Please enter a positive number'
+        return true
+      },
+
+      isDisabled: false
     }
   },
 
@@ -172,6 +179,11 @@ export default {
       }
     },
 
+    deleteDialogCancel(){
+      this.deleteDialog = false;
+      this.GetEditAllowanceProgram(this.$route.params.id);
+    },
+
     addRow() {
       this.editAllowanceAmount.push({
         id: this.index,
@@ -224,15 +236,47 @@ export default {
         formData.append('payment_cycle', this.editAllowanceProgram.payment_cycle);
         formData.append('is_marital', this.editAllowanceProgram.is_marital);
         formData.append('marital_status', this.editAllowanceProgram.marital_status);
-        formData.append('is_active', this.editAllowanceProgram.is_active);
-        formData.append('is_age_limit', this.editAllowanceProgram.is_age_limit);
-        formData.append('is_amount', this.editAllowanceProgram.is_amount);
 
-        formData.append('age_limit', JSON.stringify(this.editAllowanceAge));
-        formData.append('amount', JSON.stringify(this.editAllowanceAmount));
+        if (this.editAllowanceProgram.is_active === true)
+        {
+          formData.append('is_active', 1);
+        }else {
+          formData.append('is_active', 0);
+        }
+
+        formData.append('is_disable_class', this.editAllowanceProgram.is_disable_class);
+
+        formData.append('is_age_limit', this.editAllowanceProgram.is_age_limit);
+
+        if (this.updateAllowanceAge !== null)
+        {
+          this.updateAllowanceAge.forEach((item, index) => {
+            formData.append(`age_limit[\`${index}\`]['id']`, item.id);
+            formData.append(`age_limit[\`${index}\`]['gender_id']`, item.gender_id);
+            formData.append(`age_limit[\`${index}\`]['min_age']`, item.min_age);
+            formData.append(`age_limit[\`${index}\`]['max_age']`, item.max_age);
+
+            if (item.amount !== null)
+            {
+              formData.append(`age_limit[\`${index}\`]['amount']`, item.amount);
+            }else {
+              formData.append(`age_limit[\`${index}\`]['amount']`, null);
+            }
+
+          })
+
+        }
+
+        if (this.editAllowanceAmount !== null)
+        {
+          this.editAllowanceAmount.forEach((item, index) => {
+            formData.append(`amount[\`${index}\`]['id']`, item.id);
+            formData.append(`amount[\`${index}\`]['type_id']`, item.type_id);
+            formData.append(`amount[\`${index}\`]['amount']`, item.amount);
+          })
+        }
 
         this.allowance_field_data.forEach((item) => formData.append("add_field_id[]", item));
-
 
         formData.append('_method', 'PUT');
 
@@ -280,25 +324,31 @@ export default {
                     <v-col cols="12" class="d-flex">
                       <v-row wrap>
                         <v-col cols="12" sm="6" lg="6">
-                          <ValidationProvider name="name_en" vid="name_en" rules="required" v-slot="{ errors }">
+                          <ValidationProvider name="name english" vid="name_en" rules="required" v-slot="{ errors }">
                             <v-text-field
                                 v-model="editAllowanceProgram.name_en"
                                 label="Program Name EN"
                                 menu-props="auto"
                                 persistent-hint
                                 outlined
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                                required
                             ></v-text-field>
                           </ValidationProvider>
                         </v-col>
 
                         <v-col cols="12" sm="6" lg="6">
-                          <ValidationProvider name="name_bn" vid="name_bn" rules="required" v-slot="{ errors }">
+                          <ValidationProvider name="name bangla" vid="name_bn" rules="required" v-slot="{ errors }">
                             <v-text-field
                                 v-model="editAllowanceProgram.name_bn"
                                 label="Program Name BN"
                                 menu-props="auto"
                                 persistent-hint
                                 outlined
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                                required
                             ></v-text-field>
                           </ValidationProvider>
                         </v-col>
@@ -319,12 +369,15 @@ export default {
                                 multiple
                                 outlined
                                 @change="removeGender($event)"
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                                required
                             ></v-select>
                           </ValidationProvider>
                         </v-col>
 
                         <v-col cols="12" sm="6" lg="6">
-                          <ValidationProvider name="payment_cycle" vid="payment_cycle" rules="required" v-slot="{ errors }">
+                          <ValidationProvider name="payment cycle" vid="payment_cycle" rules="required" v-slot="{ errors }">
                             <v-select
                                 v-model="editAllowanceProgram.payment_cycle"
                                 :items="payment_cycle_items"
@@ -333,6 +386,9 @@ export default {
                                 chips
                                 label="Select Payment Cycle"
                                 outlined
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                                required
                             ></v-select>
                           </ValidationProvider>
                         </v-col>
@@ -344,10 +400,32 @@ export default {
                         <v-col cols="12" sm="6" lg="6">
                           <v-row wrap>
                             <v-col cols="4" sm="3" lg="3">
-                              <v-checkbox v-model="editAllowanceProgram.is_marital" label="Marital Status" @click="maritalStatus(editAllowanceProgram.is_marital)"></v-checkbox>
+                              <ValidationProvider name="marital" vid="is_marital_toggle" rules="required" v-slot="{ errors }">
+                              <v-checkbox
+                                  v-model="editAllowanceProgram.is_marital"
+                                  label="Marital Status"
+                                  @click="maritalStatus(editAllowanceProgram.is_marital)"
+                                  :error="errors[0] ? true : false"
+                                  :error-messages="errors[0]"
+                                  required
+                                  :disabled="editAllowanceProgram.is_marital === 1 ? true : false"
+                              ></v-checkbox>
+                              </ValidationProvider>
                             </v-col>
                             <v-col cols="12" sm="8" lg="8" v-if="editAllowanceProgram.is_marital === 1 || is_marital_toggle === true">
-                              <v-select v-model="editAllowanceProgram.marital_status" :items="marital_items" item-text="name" item-value="name" label="Please Select" outlined></v-select>
+                              <ValidationProvider name="marital status" vid="marital_status" rules="required" v-slot="{ errors }">
+                              <v-select
+                                  v-model="editAllowanceProgram.marital_status"
+                                  :items="marital_items"
+                                  item-text="name"
+                                  item-value="name"
+                                  label="Please Select"
+                                  outlined
+                                  :error="errors[0] ? true : false"
+                                  :error-messages="errors[0]"
+                                  required
+                              ></v-select>
+                              </ValidationProvider>
                             </v-col>
                           </v-row>
                         </v-col>
@@ -361,45 +439,145 @@ export default {
                     <v-col cols="12" class="d-flex">
                       <v-row wrap>
                         <v-col cols="12" sm="6" lg="6">
-                          <v-checkbox v-model="editAllowanceProgram.is_age_limit" label="Age Limit" @click="ageLimit(editAllowanceProgram.is_age_limit)"></v-checkbox>
+                          <v-checkbox v-model="editAllowanceProgram.is_age_limit" :disabled="editAllowanceProgram.is_age_limit === 1 ? true : false" label="Age Limit & Amount" @click="ageLimit(editAllowanceProgram.is_age_limit)"></v-checkbox>
 
                           <table v-if="editAllowanceProgram.is_age_limit === 1 || age_limit === true">
                             <thead>
-                            <tr>
+                            <tr v-show="updateAllowanceAge.length">
                               <td>Gender</td>
                               <td>Min Age</td>
                               <td>Max Age</td>
-                              <td>Amount</td>
+                              <td>
+                                <span v-if="editAllowanceProgram.is_disable_class === 0">
+                                  Amount
+                                </span>
+
+                              </td>
                             </tr>
                             </thead>
                             <tbody>
                             <tr v-for="(g,index) in updateAllowanceAge" :key="index">
                               <td>
-                                <v-select v-model="g.gender_id" :items="genders" item-text="value_en" item-value="id" dense outlined></v-select>
+                                <ValidationProvider name="gender" vid="gender_id" rules="required" v-slot="{ errors }">
+                                <v-select
+                                    v-model="g.gender_id"
+                                    :items="genders"
+                                    item-text="value_en"
+                                    item-value="id"
+                                    dense
+                                    outlined
+                                    :error="errors[0] ? true : false"
+                                    :error-messages="errors[0]"
+                                    required
+                                ></v-select>
+                                </ValidationProvider>
                               </td>
-                              <td><v-text-field v-model="g.min_age" dense outlined></v-text-field></td>
-                              <td><v-text-field v-model="g.max_age"  dense outlined></v-text-field></td>
-                              <td><v-text-field v-model="g.amount"  dense outlined></v-text-field></td>
+                              <td>
+                                <ValidationProvider name="minimum age" vid="min_age" rules="required" v-slot="{ errors }">
+                                <v-text-field
+                                    v-model="g.min_age"
+                                    type="number"
+                                    step="any"
+                                    min="0"
+                                    ref="input"
+                                    :rules="[numberRule]"
+                                    dense
+                                    outlined
+                                    :error="errors[0] ? true : false"
+                                    :error-messages="errors[0]"
+                                    required
+                                ></v-text-field>
+                                </ValidationProvider>
+                              </td>
+                              <td>
+                                <ValidationProvider name="maximum age" vid="max_age" rules="required" v-slot="{ errors }">
+                                <v-text-field
+                                    v-model="g.max_age"
+                                    type="number"
+                                    step="any"
+                                    min="0"
+                                    ref="input"
+                                    :rules="[numberRule]"
+                                    dense
+                                    outlined
+                                    :error="errors[0] ? true : false"
+                                    :error-messages="errors[0]"
+                                    required
+                                ></v-text-field>
+                                </ValidationProvider>
+                              </td>
+                              <td>
+                                <div v-if="editAllowanceProgram.is_disable_class === 0">
+                                  <ValidationProvider name="amount" vid="amount" rules="required" v-slot="{ errors }">
+                                  <v-text-field
+                                      v-model="g.amount"
+                                      type="number"
+                                      step="any"
+                                      min="0"
+                                      ref="input"
+                                      :rules="[numberRule]"
+                                      dense outlined
+                                      :error="errors[0] ? true : false"
+                                      :error-messages="errors[0]"
+                                      required
+                                  ></v-text-field>
+                                  </ValidationProvider>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr v-show="!updateAllowanceAge.length">
+                              <td colspan="5">No Data Found</td>
                             </tr>
                             </tbody>
                           </table>
                         </v-col>
 
                         <v-col cols="12" sm="6" lg="6">
-                          <v-checkbox v-model="editAllowanceProgram.is_disable_class" label="Disable Class" @click="allowanceAmount(editAllowanceProgram.is_disable_class)"></v-checkbox>
+                          <v-checkbox v-model="editAllowanceProgram.is_disable_class" :disabled="editAllowanceProgram.is_disable_class === 1 ? true : false" label="Class Wise Amount" @click="allowanceAmount(editAllowanceProgram.is_disable_class)"></v-checkbox>
 
                           <table v-if="editAllowanceProgram.is_disable_class === 1 || disable_class === true">
                             <thead>
-                            <tr>
+                            <tr v-show="editAllowanceAmount.length">
                               <td>Type</td>
                               <td>Amount</td>
                               <td>Add/Remove</td>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="(aa, index) in editAllowanceAmount" :key="index">
-                              <td><v-select v-model="aa.type_id" :items="genderTypes" item-value="id" item-text="value_en" label="Please Select" dense outlined></v-select></td>
-                              <td><v-text-field v-model="aa.amount" dense outlined></v-text-field></td>
+                            <tr v-show="editAllowanceAmount.length" v-for="(aa, index) in editAllowanceAmount" :key="index">
+                              <td>
+                                <ValidationProvider name="education class" vid="type_id" rules="required" v-slot="{ errors }">
+                                <v-select
+                                    v-model="aa.type_id"
+                                    :items="genderTypes"
+                                    item-value="id"
+                                    item-text="value_en"
+                                    label="Please Select"
+                                    dense
+                                    outlined
+                                    :error="errors[0] ? true : false"
+                                    :error-messages="errors[0]"
+                                    required
+                                ></v-select>
+                                </ValidationProvider>
+                              </td>
+                              <td>
+                                <ValidationProvider name="education class amount" vid="amount" rules="required" v-slot="{ errors }">
+                                <v-text-field
+                                    v-model="aa.amount"
+                                    type="number"
+                                    step="any"
+                                    min="0"
+                                    ref="input"
+                                    :rules="[numberRule]"
+                                    dense
+                                    outlined
+                                    :error="errors[0] ? true : false"
+                                    :error-messages="errors[0]"
+                                    required
+                                ></v-text-field>
+                                </ValidationProvider>
+                              </td>
                               <td style="display: flex; align-items: center; justify-content: space-between">
                                 <v-btn
                                     fab
@@ -420,9 +598,12 @@ export default {
                                     v-show="editAllowanceAmount.length > 1"
                                 >
                                   <v-icon>mdi-minus</v-icon>
-                                  {{ aa.id }}
                                 </v-btn>
                               </td>
+                            </tr>
+
+                            <tr v-show="!editAllowanceAmount.length">
+                              <td colspan="3">No Data Found</td>
                             </tr>
                             </tbody>
                           </table>
@@ -447,7 +628,7 @@ export default {
                   <v-card-text>
                     <v-col cols="12" class="d-flex">
                       <v-row wrap>
-                        <v-col cols="12" sm="6" lg="6" v-for="(field, index) in additionalFields" :key="field.id">
+                        <v-col cols="12" sm="4" lg="4" v-for="(field, index) in additionalFields" :key="field.id">
                           <ValidationProvider name="add_field_id" vid="add_field_id" rules="required" v-slot="{ errors }">
                             <v-checkbox
                                 v-model="allowance_field_data"
@@ -505,7 +686,7 @@ export default {
           </v-card-text>
           <v-card-actions style="display: block">
             <v-row class="mx-0 my-0 py-2" justify="center">
-              <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
+              <v-btn text @click="deleteDialogCancel" outlined class="custom-btn-width py-2 mr-10">
                 Cancel
               </v-btn>
               <v-btn text @click="singleRemoveGender()" color="white" :loading="delete_loading" class="custom-btn-width warning white--text py-2">
