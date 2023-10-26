@@ -109,6 +109,18 @@ const actions = {
 
       });
   },
+  DestroyVariable: ({ commit }, id) => {
+    return http()
+      .post(`/admin/poverty/variable/destroy`)
+      .then((result) => {
+        console.log(result);
+        return result;
+      })
+      .catch((err) => {
+        console.log(err);
+        return err;
+      });
+  },
 };
 /* -------------------------------------------------------------------------- */
 /*                               Getters Define                               */

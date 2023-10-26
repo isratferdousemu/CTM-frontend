@@ -524,7 +524,7 @@ export default {
       return fd;
     },
     submitSubVariable() {
-      // console.log(this.validator());
+      console.log(this.validator());
       // return;
       try {
         this.$store
