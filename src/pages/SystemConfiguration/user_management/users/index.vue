@@ -1040,7 +1040,7 @@ export default {
       if (this.$refs.formAdd) {
         this.$refs.formAdd.reset();
       }
-      // this.resetForm();
+      this.resetForm();
       this.dialogAdd = true;
     },
     submitUser() {
@@ -1069,13 +1069,13 @@ export default {
           this.$toast.success("Data Inserted Successfully");
           this.dialogAdd = false;
           this.getUsers();
-          this.$refs.form.reset();
+          this.$refs.formAdd.reset();
           this.loading = false;
         })
         .catch((err) => {
           this.loading = false;
           if (err.response?.data?.errors) {
-            this.$refs.form.setErrors(err.response.data.errors);
+            this.$refs.formAdd.setErrors(err.response.data.errors);
             this.$toast.error(err.response.data.message);
           }
         });
@@ -1128,16 +1128,31 @@ export default {
           this.$toast.success("Data updated Successfully");
           this.dialogAdd = false;
           this.getUsers();
-          this.$refs.form.reset();
+          this.$refs.formEdit.reset();
           this.loading = false;
         })
         .catch((err) => {
           this.loading = false;
           if (err.response?.data?.errors) {
-            this.$refs.form.setErrors(err.response.data.errors);
+            this.$refs.formEdit.setErrors(err.response.data.errors);
             this.$toast.error(err.response.data.message);
           }
         });
+    },
+    resetForm(){
+        this.data.id= null;
+        this.data.full_name= null;
+        this.data.username= null;
+        this.data.mobile= null;
+        this.data.email= null;
+        this.data.role_id= [];
+        this.data.status= 0;
+        this.data.office_type= null;
+        this.data.office_id= null;
+        this.data.division_id= null;
+        this.data.district_id= null;
+        this.data.thana_id= null;
+        this.data.city_corpo_id= null;
     },
     editDialog(item) {
       if (this.$refs.formEdit) {
