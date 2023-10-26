@@ -52,7 +52,15 @@ export default {
         success_status: (state) => state.Allowance.success_status,
         errors: (state) => state.Allowance.errors,
         error_status: (state) => state.Allowance.error_status
-    })
+    }),
+
+    ageRules() {
+      return [
+        v => !!v || 'Age is required',
+        v => /^\d+$/.test(v) || 'Age must be a number',
+        v => (v >= 18 && v <= 100) || 'Age must be between 18 and 100',
+      ];
+    },
   },
 
   mounted() {
@@ -400,7 +408,7 @@ export default {
                                       step="any"
                                       min="0"
                                       ref="input"
-                                      :rules="[numberRule]"
+                                      :rules="ageRules"
                                       dense
                                       outlined
                                       :error="errors[0] ? true : false"
@@ -418,7 +426,7 @@ export default {
                                     step="any"
                                     min="0"
                                     ref="input"
-                                    :rules="[numberRule]"
+                                    :rules="ageRules"
                                     dense
                                     outlined
                                     :error="errors[0] ? true : false"
@@ -466,7 +474,18 @@ export default {
                             <tbody>
                             <tr v-for="div in divs" :key="div.id">
                               <td><v-select v-model="div.type_id" :items="genderTypes" item-value="id" item-text="value_en" label="Please Select" dense outlined></v-select></td>
-                              <td><v-text-field v-model="div.amount" dense outlined></v-text-field></td>
+                              <td>
+                                <v-text-field
+                                    v-model="div.amount"
+                                    type="number"
+                                    step="any"
+                                    min="0"
+                                    ref="input"
+                                    :rules="[numberRule]"
+                                    dense
+                                    outlined
+                                ></v-text-field>
+                              </td>
                               <td style="display: flex; align-items: center; justify-content: space-between">
                                 <v-btn
                                     fab
