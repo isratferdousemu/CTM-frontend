@@ -40,7 +40,7 @@ export default {
         return true
       },
 
-      isDisabled: false
+      isChecked: false
     }
   },
 
@@ -224,6 +224,15 @@ export default {
       }
     },
 
+    toggleActive(active){
+      if (active === true)
+      {
+        this.isChecked = true;
+      }else {
+        this.isChecked = false;
+      }
+    },
+
     updateAllowanceProgram: async function(){
       try {
         console.log('hello')
@@ -237,12 +246,7 @@ export default {
         formData.append('is_marital', this.editAllowanceProgram.is_marital);
         formData.append('marital_status', this.editAllowanceProgram.marital_status);
 
-        if (this.editAllowanceProgram.is_active === true)
-        {
-          formData.append('is_active', 1);
-        }else {
-          formData.append('is_active', 0);
-        }
+        formData.append('is_active', this.isChecked);
 
         formData.append('is_disable_class', this.editAllowanceProgram.is_disable_class);
 
@@ -431,7 +435,7 @@ export default {
                         </v-col>
 
                         <v-col cols="12" sm="6" lg="6">
-                          <v-checkbox v-model="editAllowanceProgram.is_active" label="Is Active"></v-checkbox>
+                          <v-checkbox v-model="editAllowanceProgram.is_active" label="Is Active" @click="toggleActive(editAllowanceProgram.is_active)"></v-checkbox>
                         </v-col>
                       </v-row>
                     </v-col>
@@ -533,7 +537,10 @@ export default {
                         </v-col>
 
                         <v-col cols="12" sm="6" lg="6">
-                          <v-checkbox v-model="editAllowanceProgram.is_disable_class" :disabled="editAllowanceProgram.is_disable_class === 1 ? true : false" label="Class Wise Amount" @click="allowanceAmount(editAllowanceProgram.is_disable_class)"></v-checkbox>
+                          <div v-show="editAllowanceProgram.is_disable_class === 1">
+                            <v-checkbox v-model="editAllowanceProgram.is_disable_class" :disabled="editAllowanceProgram.is_disable_class === 1 ? true : false" label="Class Wise Amount" @click="allowanceAmount(editAllowanceProgram.is_disable_class)"></v-checkbox>
+                          </div>
+
 
                           <table v-if="editAllowanceProgram.is_disable_class === 1 || disable_class === true">
                             <thead>

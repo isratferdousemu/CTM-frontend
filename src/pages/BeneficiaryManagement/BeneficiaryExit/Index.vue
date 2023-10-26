@@ -48,68 +48,40 @@
                                                     :error-messages="errors[0]"></v-autocomplete>
                                             </ValidationProvider>
                                         </v-col>
-                                        <v-col lg="6" md="6" cols="12">
-                                            <ValidationProvider name="Location Type" vid="location_type" rules="required"
-                                                v-slot="{ errors }">
-                                                <
-                                            </ValidationProvider>
-                                        </v-col>
-                                        <v-col v-if="data.location_type == 1" lg="6" md="6" cols="12">
-                                            <ValidationProvider name="thana" vid="district_pouro_id" rules="required"
-                                                v-slot="{ errors }">
-                                                <v-autocomplete v-model="data.district_pouro_id" outlined :label="$t('container.system_config.demo_graphic.ward.pouro')
-                                                    " :items="district_pouros" item-text="name_en"
-                                                    item-value="id" required :error="errors[0] ? true : false"
-                                                    :error-messages="errors[0]"></v-autocomplete>
-                                            </ValidationProvider>
-                                        </v-col>
-                                        <v-col v-if="data.location_type == 2" lg="6" md="6" cols="12">
-                                            <ValidationProvider name="Upazila" vid="thana_id" rules="required"
-                                                v-slot="{ errors }">
-                                                <v-autocomplete v-model="data.thana_id" outlined :label="$t('container.system_config.demo_graphic.thana.thana')
-                                                    " @change="onChangeUpazila($event)" :items="thanas"
-                                                    item-text="name_en" item-value="id" required
-                                                    :error="errors[0] ? true : false"
-                                                    :error-messages="errors[0]"></v-autocomplete>
-                                            </ValidationProvider>
-                                        </v-col>
-                                        <v-col v-if="data.location_type == 2" lg="6" md="6" cols="12">
-                                            <ValidationProvider name="union" vid="union_id" rules="required"
-                                                v-slot="{ errors }">
-                                                <v-autocomplete v-model="data.union_id" outlined :label="$t('container.system_config.demo_graphic.ward.union')
-                                                    " :items="unions" item-text="name_en" item-value="id"
-                                                    required :error="errors[0] ? true : false"
-                                                    :error-messages="errors[0]"></v-autocomplete>
-                                            </ValidationProvider>
-                                        </v-col>
-
-                                        <v-col v-if="data.location_type == 3" lg="6" md="6" cols="12">
-                                            <ValidationProvider name="city" vid="city_id" rules="required"
-                                                v-slot="{ errors }">
-                                                <v-autocomplete v-model="data.city_id" @change="onChangeCity($event)"
-                                                    outlined :label="$t('container.system_config.demo_graphic.ward.city')
-                                                        " :items="cities" item-text="name_en"
-                                                    item-value="id" required :error="errors[0] ? true : false"
-                                                    :error-messages="errors[0]"></v-autocomplete>
-                                            </ValidationProvider>
-                                        </v-col>
-
-                                        <v-col v-if="data.location_type == 3" lg="6" md="6" cols="12">
-                                            <ValidationProvider name="thana" vid="city_thana_id" rules="required"
-                                                v-slot="{ errors }">
-                                                <v-autocomplete v-model="data.city_thana_id" outlined :label="$t('container.system_config.demo_graphic.ward.thana')
-                                                    " :items="city_thanas" item-text="name_en"
-                                                    item-value="id" required :error="errors[0] ? true : false"
-                                                    :error-messages="errors[0]"></v-autocomplete>
-                                            </ValidationProvider>
-                                        </v-col>
-
+                                            <v-col lg="6" md="6" cols="12">
+                                                  <v-menu
+            v-model="menu2"
+            :close-on-content-click="false"
+            :nudge-right="40"
+            transition="scale-transition"
+            offset-y
+            min-width="auto"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field outlined clearable
+                v-model="date"
+                 :label="$t(
+                     'container.beneficiary_management.beneficiary_exit.date_of_exit'
+                 )"
+                prepend-inner-icon="mdi-calendar"
+                readonly
+                v-bind="attrs"
+                v-on="on"
+              ></v-text-field>
+            </template>
+            <v-date-picker
+              v-model="date"
+              @input="menu2 = false"
+            ></v-date-picker>
+          </v-menu>
+  </v-col>
                                     </v-row>
 
                                     <div class="d-inline d-flex justify-end ">
+                                         <v-btn elevation="2" class="btn mr-2">{{ $t("container.list.reset") }}</v-btn>
                                         <v-btn elevation="2" class="btn mr-2" color="success">{{
-                                            $t("container.list.search") }}</v-btn>
-                                        <v-btn elevation="2" class="btn">{{ $t("container.list.reset") }}</v-btn>
+                                            $t("container.list.exit") }}</v-btn>
+                                       
                                     </div>
                                 </form>
                             </ValidationObserver>
@@ -151,10 +123,17 @@
                         <!-- Action Button -->
                         <template v-slot:item.actions="{ item }">
 
-                            <v-btn v-on="on" color="success" elevation="0" router
-                                to="/beneficiary-management/digital-id-car">
-                                {{ $t("container.beneficiary_management.digital_id.digital_id_card") }}
-                            </v-btn>
+                           <v-tooltip top>
+                                                        <template v-slot:activator="{ on }">
+                                                            <v-btn v-can="'update-post'" fab x-small v-on="on" color="#AFB42B"
+                                                                elevation="0" class="white--text">
+                                                                <v-icon> mdi-eye </v-icon>
+                                                            </v-btn>
+                                                        </template>
+                                                        <span>
+                                                            {{ $t("container.list.view") }}
+                                                        </span>
+                                                    </v-tooltip>
 
 
                         </template>
@@ -206,7 +185,10 @@ export default {
                 thana_id: null
             },
 
-
+            date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+            menu: false,
+            modal: false,
+            menu2: false,
 
             loading: false,
             search: "",
