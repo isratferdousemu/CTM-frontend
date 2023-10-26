@@ -610,9 +610,12 @@ export default {
         });
     },
     deleteVariable: async function () {
+      const data = {
+        "id" : this.delete_id
+      }
       try {
         await this.$store
-          .dispatch("ApplicationSelection/DestroyVariable", this.delete_id)
+          .dispatch("ApplicationSelection/DestroyVariable", data)
           .then((res) => {
             // check if the request was successful
             if (res?.data?.success) {
