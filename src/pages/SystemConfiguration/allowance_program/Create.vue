@@ -20,7 +20,6 @@ export default {
         name_bn: '',
         gender: [],
         payment_cycle: '',
-        is_marital: '',
         marital_status: '',
         is_active: '',
         add_field_id: [],
@@ -35,14 +34,12 @@ export default {
       payment_cycle_items: [{name: "Monthly"}, {name: "Quarterly"}, {name: "Half Yearly"}, {name: "Yearly"}],
 
       index: 0,
-      divs: [
-        {
-          id: '',
-          name: '',
-          type_id: '',
-          amount: '',
-        }
-      ],
+      divs: [],
+      number: 0,
+      numberRule: val => {
+        if(val < 0) return 'Please enter a positive number'
+        return true
+      }
     }
   },
 
@@ -78,18 +75,21 @@ export default {
     ageLimit(){
       this.is_age_limit = !this.is_age_limit;
 
-      this.add_allowance_program.allowance_age = [];
+      if (this.is_disable_class === false)
+      {
+        this.add_allowance_program.allowance_age = [];
 
-      this.add_allowance_program.gender.forEach(item => {
-        let age_limit = {
-          gender_id: item,
-          min_age: '',
-          max_age: '',
-          amount: ''
-        };
+        this.add_allowance_program.gender.forEach(item => {
+          let age_limit = {
+            gender_id: item,
+            min_age: '',
+            max_age: '',
+            amount: ''
+          };
 
-        this.add_allowance_program.allowance_age.push(age_limit);
-      })
+          this.add_allowance_program.allowance_age.push(age_limit);
+        })
+      }
     },
 
     removeGender(event){
@@ -110,6 +110,23 @@ export default {
 
     allowanceAmount(){
       this.is_disable_class = !this.is_disable_class
+
+      this.add_allowance_program.allowance_age.forEach((item) => {
+        return item.amount = '';
+      })
+
+      this.divs = [];
+      if (this.is_disable_class === true)
+      {
+        let disable_class = {
+          id: '',
+          name: '',
+          type_id: '',
+          amount: '',
+        }
+
+        this.divs.push(disable_class);
+      }
     },
 
     addRow() {
@@ -133,30 +150,57 @@ export default {
         formData.append('name_en', this.add_allowance_program.name_en);
         formData.append('name_bn', this.add_allowance_program.name_bn);
         formData.append('payment_cycle', this.add_allowance_program.payment_cycle);
-        formData.append('is_marital', this.add_allowance_program.is_marital);
+        formData.append('is_marital', this.is_marital_toggle);
         formData.append('marital_status', this.add_allowance_program.marital_status);
         formData.append('is_active', this.add_allowance_program.is_active);
-        formData.append('is_age_limit', this.add_allowance_program.is_age_limit);
-        formData.append('is_disable_class', this.add_allowance_program.is_disable_class);
+        formData.append('is_age_limit', this.is_age_limit);
 
-        formData.append('age_limit', JSON.stringify(this.add_allowance_program.allowance_age));
-        formData.append('amount', JSON.stringify(this.divs));
+        if (this.is_disable_class === false)
+        {
+          formData.append('is_disable_class', 0);
+        }else {
+          formData.append('is_disable_class', 1);
+        }
+
+        if (this.add_allowance_program.allowance_age !== null)
+        {
+          this.add_allowance_program.allowance_age.forEach((item, index) => {
+            let age_limit = {
+              'gender_id': item.gender_id,
+              'min_age': item.min_age,
+              'max_age': item.max_age,
+              'amount': item.amount
+            }
+            formData.append(`age_limit[\`${index}\`]['gender_id']`, item.gender_id);
+            formData.append(`age_limit[\`${index}\`]['min_age']`, item.min_age);
+            formData.append(`age_limit[\`${index}\`]['max_age']`, item.max_age);
+            formData.append(`age_limit[\`${index}\`]['amount']`, item.amount);
+          })
+
+        }
+
+        if (this.divs !== null)
+        {
+          formData.append('amount', JSON.stringify(this.divs));
+        }
 
         this.add_allowance_program.add_field_id.forEach((item) => formData.append("add_field_id[]", item));
 
         await this.$store.dispatch("Allowance/StoreAllowanceProgram", formData).then(() => {
           if (this.success_status === 201)
           {
-            this.$toast.success(this.message);
+            console.log(this.success_status)
             this.add_allowance_program = {};
             this.add_allowance_program.allowance_age = [];
             this.add_allowance_program.gender = [];
             this.is_marital_toggle = false;
             this.is_age_limit = false;
-            this.is_amount = false;
             this.divs = [];
             this.$refs.form.reset();
-            this.$router.push('/system-configuration/allowance')
+
+            this.$router.push('/system-configuration/allowance-program')
+
+            this.$toast.success(this.message);
           }
 
           if (this.error_status === 422)
@@ -165,6 +209,7 @@ export default {
           }else{
             this.$refs.form.setErrors();
           }
+
         })
       }catch (e) {
         console.log(e);
@@ -195,25 +240,31 @@ export default {
                     <v-col cols="12" class="d-flex">
                       <v-row wrap>
                         <v-col cols="12" sm="6" lg="6">
-                          <ValidationProvider name="name_en" vid="name_en" rules="required" v-slot="{ errors }">
+                          <ValidationProvider name="name english" vid="name_en" rules="required" v-slot="{ errors }">
                             <v-text-field
                                 v-model="add_allowance_program.name_en"
                                 label="Program Name EN"
                                 menu-props="auto"
                                 persistent-hint
                                 outlined
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                                required
                             ></v-text-field>
                           </ValidationProvider>
                         </v-col>
 
                         <v-col cols="12" sm="6" lg="6">
-                          <ValidationProvider name="name_bn" vid="name_bn" rules="required" v-slot="{ errors }">
+                          <ValidationProvider name="name bangla" vid="name_bn" rules="required" v-slot="{ errors }">
                           <v-text-field
                               v-model="add_allowance_program.name_bn"
                               label="Program Name BN"
                               menu-props="auto"
                               persistent-hint
                               outlined
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                              required
                           ></v-text-field>
                         </ValidationProvider>
                         </v-col>
@@ -234,12 +285,15 @@ export default {
                                 multiple
                                 outlined
                                 @change="removeGender($event)"
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                                required
                             ></v-select>
                           </ValidationProvider>
                         </v-col>
 
                         <v-col cols="12" sm="6" lg="6">
-                          <ValidationProvider name="payment_cycle" vid="payment_cycle" rules="required" v-slot="{ errors }">
+                          <ValidationProvider name="payment cycle" vid="payment_cycle" rules="required" v-slot="{ errors }">
                             <v-select
                                 v-model="add_allowance_program.payment_cycle"
                                 :items="payment_cycle_items"
@@ -248,6 +302,9 @@ export default {
                                 chips
                                 label="Select Payment Cycle"
                                 outlined
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                                required
                             ></v-select>
                           </ValidationProvider>
                         </v-col>
@@ -259,16 +316,43 @@ export default {
                         <v-col cols="12" sm="6" lg="6">
                           <v-row wrap>
                             <v-col cols="4" sm="3" lg="3">
-                              <v-checkbox v-model="add_allowance_program.is_marital" label="Marital Status" @click="maritalStatus"></v-checkbox>
+                              <ValidationProvider name="marital" vid="is_marital_toggle" rules="required" v-slot="{ errors }">
+                                <v-checkbox
+                                    v-model="add_allowance_program.is_marital_toggle"
+                                    label="Marital Status"
+                                    @click="maritalStatus"
+                                    :error="errors[0] ? true : false"
+                                    :error-messages="errors[0]"
+                                    required
+                                >
+                                </v-checkbox>
+                              </ValidationProvider>
                             </v-col>
                             <v-col cols="12" sm="8" lg="8" v-if="is_marital_toggle === true">
-                              <v-select v-model="add_allowance_program.marital_status" :items="marital_items" item-text="name" item-value="name" label="Please Select" outlined></v-select>
+                              <ValidationProvider name="marital status" vid="marital_status" rules="required" v-slot="{ errors }">
+                                <v-select
+                                    v-model="add_allowance_program.marital_status"
+                                    :items="marital_items"
+                                    item-text="name"
+                                    item-value="name"
+                                    label="Please Select"
+                                    outlined
+                                    :error="errors[0] ? true : false"
+                                    :error-messages="errors[0]"
+                                    required
+                                >
+                                </v-select>
+                              </ValidationProvider>
                             </v-col>
                           </v-row>
                         </v-col>
 
                         <v-col cols="12" sm="6" lg="6">
-                          <v-checkbox v-model="add_allowance_program.is_active" label="Is Active"></v-checkbox>
+                            <v-checkbox
+                                v-model="add_allowance_program.is_active"
+                                label="Is Active"
+                            >
+                            </v-checkbox>
                         </v-col>
                       </v-row>
                     </v-col>
@@ -276,7 +360,7 @@ export default {
                     <v-col cols="12" class="d-flex">
                       <v-row wrap>
                         <v-col cols="12" sm="6" lg="6">
-                          <v-checkbox label="Age Limit" @click="ageLimit"></v-checkbox>
+                          <v-checkbox label="Age Limit & Amount" @click="ageLimit"></v-checkbox>
 
                           <table v-if="is_age_limit === true">
                             <thead>
@@ -284,24 +368,92 @@ export default {
                                 <td>Gender</td>
                                 <td>Min Age</td>
                                 <td>Max Age</td>
-                                <td>Amount</td>
+                                <td>
+                                  <span v-if="is_disable_class === false">
+                                    Amount
+                                  </span>
+                                </td>
                               </tr>
                             </thead>
                             <tbody>
                             <tr v-for="(g,index) in add_allowance_program.allowance_age" :key="index">
                               <td>
-                                <v-select v-model="g.gender_id" :items="genders" item-text="value_en" item-value="id" dense outlined></v-select>
+                                <ValidationProvider name="gender" vid="gender_id" rules="required" v-slot="{ errors }">
+                                  <v-select
+                                      v-model="g.gender_id"
+                                      :items="genders"
+                                      item-text="value_en"
+                                      item-value="id"
+                                      dense
+                                      outlined
+                                      :error="errors[0] ? true : false"
+                                      :error-messages="errors[0]"
+                                      required
+                                  ></v-select>
+                                </ValidationProvider>
                               </td>
-                              <td><v-text-field v-model="g.min_age" dense outlined></v-text-field></td>
-                              <td><v-text-field v-model="g.max_age"  dense outlined></v-text-field></td>
-                              <td><v-text-field v-model="g.amount"  dense outlined></v-text-field></td>
+                              <td>
+                                <ValidationProvider name="min age" vid="min_age" rules="required" v-slot="{ errors }">
+                                  <v-text-field
+                                      v-model="g.min_age"
+                                      type="number"
+                                      step="any"
+                                      min="0"
+                                      ref="input"
+                                      :rules="[numberRule]"
+                                      dense
+                                      outlined
+                                      :error="errors[0] ? true : false"
+                                      :error-messages="errors[0]"
+                                      required
+                                  >
+                                  </v-text-field>
+                                </ValidationProvider>
+                              </td>
+                              <td>
+                                <ValidationProvider name="max age" vid="max_age" rules="required" v-slot="{ errors }">
+                                <v-text-field
+                                    v-model="g.max_age"
+                                    type="number"
+                                    step="any"
+                                    min="0"
+                                    ref="input"
+                                    :rules="[numberRule]"
+                                    dense
+                                    outlined
+                                    :error="errors[0] ? true : false"
+                                    :error-messages="errors[0]"
+                                    required
+                                >
+                                </v-text-field>
+                                </ValidationProvider>
+                              </td>
+                              <td>
+                                <div v-if="is_disable_class === false">
+                                  <ValidationProvider name="amount" vid="amount" rules="required" v-slot="{ errors }">
+                                  <v-text-field
+                                      v-model="g.amount"
+                                      type="number"
+                                      step="any"
+                                      min="0"
+                                      ref="input"
+                                      :rules="[numberRule]"
+                                      dense
+                                      outlined
+                                      :error="errors[0] ? true : false"
+                                      :error-messages="errors[0]"
+                                      required
+                                  ></v-text-field>
+                                  </ValidationProvider>
+                                </div>
+                              </td>
                             </tr>
                             </tbody>
                           </table>
                         </v-col>
 
                         <v-col cols="12" sm="6" lg="6">
-                          <v-checkbox label="Disable Class" @click="allowanceAmount"></v-checkbox>
+                          <v-checkbox label="Class Wise Amount" @click="allowanceAmount"></v-checkbox>
 
                           <table v-if="is_disable_class === true">
                             <thead>

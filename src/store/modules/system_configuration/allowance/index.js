@@ -150,6 +150,7 @@ const actions = {
         return http().post('/admin/allowance/insert', data).then((result) => {
             commit('STORE_ALLOWANCE_PROGRAM', result);
         }).catch((err) => {
+            //console.log(err);
             state.errors = err.response.data.errors
             state.error_status = err.response.status
         })

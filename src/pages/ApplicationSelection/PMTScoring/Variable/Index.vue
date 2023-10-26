@@ -1,5 +1,5 @@
 <template>
-  <div id="district">
+  <div id="division">
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
         <v-row>
@@ -13,7 +13,7 @@
             >
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
-                  {{ $t("container.system_config.demo_graphic.district.list") }}
+                  {{ $t("container.application_selection.variable.list") }}
                 </h3>
               </v-card-title>
               <v-card-text>
@@ -24,7 +24,7 @@
                 >
                   <div class="d-flex justify-sm-end flex-wrap">
                     <v-text-field
-                      @keyup.native="GetDistrict"
+                      @keyup.native="GetVariable"
                       outlined
                       dense
                       v-model="search"
@@ -33,9 +33,7 @@
                       flat
                       variant="outlined"
                       :label="
-                        $t(
-                          'container.system_config.demo_graphic.district.search'
-                        )
+                        $t('container.application_selection.variable.search')
                       "
                       hide-details
                       color="primary"
@@ -55,7 +53,7 @@
                       :loading="loading"
                       item-key="id"
                       :headers="headers"
-                      :items="districts"
+                      :items="variables"
                       :items-per-page="pagination.perPage"
                       hide-default-footer
                       class="elevation-0 transparent row-pointer"
@@ -73,7 +71,10 @@
                       <template v-slot:item.name_bn="{ item }">
                         {{ item.name_bn }}
                       </template>
-
+                      <template v-slot:item.field_type="{ item }">
+                        <span v-if="item?.field_type == '1'"> Checkbox </span>
+                        <span v-if="item?.field_type == '2'"> Dropdown </span>
+                      </template>
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
                         <v-tooltip top>
@@ -153,58 +154,19 @@
         </v-row>
       </v-col>
 
-      <!-- district add modal  -->
+      <!-- division add modal  -->
       <v-dialog v-model="dialogAdd" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.system_config.demo_graphic.district.add_new") }}
+            {{ $t("container.application_selection.variable.add_new") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
             <ValidationObserver ref="formAdd" v-slot="{ invalid }">
-              <form @submit.prevent="submitDistrict()">
+              <form @submit.prevent="submitVariable()">
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
 
-                <ValidationProvider
-                  name="Division"
-                  vid="division"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <v-autocomplete
-                    @input="onChangeDivision($event)"
-                    v-model="data.division_id"
-                    outlined
-                    :label="
-                      $t(
-                        'container.system_config.demo_graphic.division.division'
-                      )
-                    "
-                    :items="divisions"
-                    item-text="name_en"
-                    item-value="id"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-autocomplete>
-                </ValidationProvider>
-                <ValidationProvider
-                  name="Code"
-                  vid="code"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <v-text-field
-                    outlined
-                    type="text"
-                    v-model="data.code"
-                    :label="$t('container.list.code')"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-text-field>
-                </ValidationProvider>
                 <ValidationProvider
                   name="Name English"
                   vid="name_en"
@@ -215,28 +177,55 @@
                     outlined
                     type="text"
                     v-model="data.name_en"
-                    :label="$t('container.system_config.demo_graphic.district.name_en')"
+                    :label="
+                      $t('container.application_selection.variable.name_en')
+                    "
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
                   ></v-text-field>
                 </ValidationProvider>
+
                 <ValidationProvider
-                  name="Name Bangla"
-                  vid="name_bn"
+                  name="Field Type"
+                  vid="field_type"
                   rules="required"
+                  v-slot="{ errors }"
+                >
+                  <v-select
+                    outlined
+                    v-model="data.field_type"
+                    :items="field_types"
+                    item-text="value"
+                    item-value="id"
+                    :label="
+                      $t('container.application_selection.variable.field_type')
+                    "
+                    required
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
+                  ></v-select>
+                </ValidationProvider>
+
+                <ValidationProvider
+                  name="Score"
+                  vid="score"
                   v-slot="{ errors }"
                 >
                   <v-text-field
                     outlined
                     type="text"
-                    v-model="data.name_bn"
-                    :label="$t('container.system_config.demo_graphic.district.name_bn')"
-                    required
+                    v-model="data.score"
+                    :label="
+                      $t(
+                        'container.application_selection.poverty_cut_off.score'
+                      )
+                    "
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
                   ></v-text-field>
                 </ValidationProvider>
+                <v-card-text>Note: If "Score" is present in variable, then the this variable cannot have sub variable</v-card-text>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
                   <v-btn
@@ -263,61 +252,20 @@
           </v-card-text>
         </v-card>
       </v-dialog>
-      <!-- district add modal  -->
+      <!-- division add modal  -->
 
-      <!-- district Edit modal  -->
+      <!-- division Edit modal  -->
       <v-dialog v-model="dialogEdit" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.system_config.demo_graphic.district.edit") }}
+            {{ $t("container.application_selection.variable.edit") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
             <ValidationObserver ref="formEdit" v-slot="{ invalid }">
-              <form @submit.prevent="updateDistrict()">
+              <form @submit.prevent="updateVariable()">
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
-
-                <ValidationProvider
-                  name="Division"
-                  vid="division"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <v-autocomplete
-                    @input="onChangeDivision($event)"
-                    v-model="data.division_id"
-                    outlined
-                    :label="
-                      $t(
-                        'container.system_config.demo_graphic.division.division'
-                      )
-                    "
-                    :items="divisions"
-                    item-text="name_en"
-                    item-value="id"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-autocomplete>
-                </ValidationProvider>
-
-                <ValidationProvider
-                  name="Code"
-                  vid="code"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <v-text-field
-                    outlined
-                    type="text"
-                    v-model="data.code"
-                    :label="$t('container.list.code')"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-text-field>
-                </ValidationProvider>
                 <ValidationProvider
                   name="Name English"
                   vid="name_en"
@@ -328,28 +276,56 @@
                     outlined
                     type="text"
                     v-model="data.name_en"
-                    :label="$t('container.system_config.demo_graphic.district.name_en')"
+                    :label="
+                      $t('container.application_selection.variable.name_en')
+                    "
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
                   ></v-text-field>
                 </ValidationProvider>
+
                 <ValidationProvider
-                  name="Name Bangla"
-                  vid="name_bn"
+                  name="Field Type"
+                  vid="field_type"
                   rules="required"
+                  v-slot="{ errors }"
+                >
+                  <v-select
+                    outlined
+                    v-model="data.field_type"
+                    :items="field_types"
+                    item-text="value"
+                    item-value="id"
+                    :label="
+                      $t('container.application_selection.variable.field_type')
+                    "
+                    required
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
+                  ></v-select>
+                </ValidationProvider>
+
+                <ValidationProvider
+                  name="Score"
+                  vid="score"
                   v-slot="{ errors }"
                 >
                   <v-text-field
                     outlined
                     type="text"
-                    v-model="data.name_bn"
-                    :label="$t('container.system_config.demo_graphic.district.name_bn')"
-                    required
+                    v-model="data.score"
+                    :label="
+                      $t(
+                        'container.application_selection.poverty_cut_off.score'
+                      )
+                    "
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
                   ></v-text-field>
                 </ValidationProvider>
+
+                <v-card-text>Note: If "Score" is present in variable, then the this variable cannot have sub variable</v-card-text>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
                   <v-btn
@@ -366,7 +342,7 @@
                     color="primary"
                     :disabled="invalid"
                     :loading="loading"
-                    class="custom-btn-width warning white--text py-2"
+                    class="custom-btn-width primary white--text py-2"
                   >
                     {{ $t("container.list.update") }}
                   </v-btn>
@@ -376,20 +352,18 @@
           </v-card-text>
         </v-card>
       </v-dialog>
-      <!-- district Edit modal  -->
+      <!-- division Edit modal  -->
 
       <!-- delete modal  -->
       <v-dialog v-model="deleteDialog" width="350">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.system_config.demo_graphic.district.delete") }}
+            {{ $t("container.application_selection.variable.delete") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
-              {{
-                $t("container.system_config.demo_graphic.district.delete_alert")
-              }}
+              {{ $t("container.application_selection.variable.delete_alert") }}
             </div>
           </v-card-text>
           <v-card-actions style="display: block">
@@ -404,7 +378,7 @@
               </v-btn>
               <v-btn
                 text
-                @click="deleteDistrict()"
+                @click="deleteVariable()"
                 color="white"
                 :loading="delete_loading"
                 class="custom-btn-width warning white--text py-2"
@@ -415,7 +389,6 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <!-- {{ divisions }} -->
       <!-- delete modal  -->
     </v-row>
   </div>
@@ -429,16 +402,19 @@ import { required } from "vee-validate/dist/rules";
 extend("required", required);
 export default {
   name: "Index",
-  title: "CTM - Districts",
+  title: "CTM - Variables",
   data() {
     return {
       data: {
-        division_id: null,
         id: null,
         code: null,
         name_en: null,
-        name_bn: null,
+        score: null,
       },
+      field_types: [
+        { id: 1, value: "Checkbox" },
+        { id: 2, value: "Dropdown" },
+      ],
       dialogAdd: false,
       deleteDialog: false,
       dialogEdit: false,
@@ -446,15 +422,14 @@ export default {
       loading: false,
       search: "",
       delete_id: "",
-      districts: [],
+      variables: [],
       errors: {},
       error_status: {},
       pagination: {
         current: 1,
         total: 0,
-        perPage: 15,
+        perPage: 10,
       },
-      // errors: "",
       items: [5, 10, 15, 20, 40, 50, 100],
     };
   },
@@ -471,24 +446,17 @@ export default {
           align: "start",
           sortable: false,
         },
-        { text: this.$t("container.list.code"), value: "code" },
         {
-          text: this.$t(
-            "container.system_config.demo_graphic.division.division"
-          ),
-          value: "division.name_en",
-        },
-        {
-          text: this.$t(
-            "container.system_config.demo_graphic.district.name_en"
-          ),
+          text: this.$t("container.application_selection.variable.name_en"),
           value: "name_en",
         },
         {
-          text: this.$t(
-            "container.system_config.demo_graphic.district.name_bn"
-          ),
-          value: "name_bn",
+          text: this.$t("container.application_selection.variable.field_type"),
+          value: "field_type",
+        },
+        {
+          text: this.$t("container.application_selection.variable.score"),
+          value: "score",
         },
         {
           text: this.$t("container.list.action"),
@@ -500,9 +468,10 @@ export default {
     },
 
     ...mapState({
-      message: (state) => state.District.success_message,
-      divisions: (state) => state.Division.divisions,
-      districts: (state) => state.District.districts,
+      message: (state) => state.Variable.success_message,
+      variables: (state) => state.Variable.variables,
+      // errors: (state) => state.Variable.errors,
+      // error_status: (state) => state.Variable.error_status,
     }),
   },
 
@@ -515,34 +484,6 @@ export default {
       this.dialogAdd = true;
     },
     checkLanguage() {
-      // let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
-      // let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
-      // if (
-      //   checkLanguageBangla != "Bangla" &&
-      //   checkLanguageEnglish != "English"
-      // ) {
-      //   let errs = {
-      //     name_bn: ["Please Enter in Bangla Language in this Field"],
-      //     name_en: ["Please Enter in English Language in this Field"],
-      //   };
-      //   this.$refs.form.setErrors(errs);
-      //   return false;
-      // } else if (checkLanguageBangla != "Bangla") {
-      //   let errs = {
-      //     name_bn: ["Please Enter in Bangla Language in this Field"],
-      //   };
-      //   this.$refs.form.setErrors(errs);
-      //   return false;
-      // } else if (checkLanguageEnglish != "English") {
-      //   let errs = {
-      //     name_en: ["Please Enter in English Language in this Field"],
-      //   };
-      //   this.$refs.form.setErrors(errs);
-      //   return false;
-      // } else {
-      //   return true;
-      // }
-
       let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
       let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
 
@@ -557,7 +498,7 @@ export default {
         errs.name_bn = ["Please Enter in Bangla Language in this Field"];
       }
 
-      if (checkLanguageEnglish !== "English") {
+      if (checkLanguageEnglish != "English") {
         errs.name_en = ["Please Enter in English Language in this Field"];
       }
 
@@ -583,60 +524,48 @@ export default {
       }
       return fd;
     },
-    submitDistrict() {
-      if (!this.checkLanguage()) {
-        return;
-      }
-
+    submitVariable() {
       try {
         this.$store
-          .dispatch("District/StoreDistrict", this.validator())
-          .then((data) => {
-            console.log(data, "submit");
-            if (data == null) {
+          .dispatch("ApplicationSelection/StoreVariable", this.validator())
+          .then((res) => {
+            if (res.data?.success) {
               this.$toast.success("Data Inserted Successfully");
-              this.dialogAdd = false;
               this.resetForm();
-              this.GetDistrict();
-            } else {
-              this.$refs.formAdd.setErrors(data.errors);
-              this.errors = data.errors;
+              this.dialogAdd = false;
+              this.GetVariable();
+            } else if (res.response?.data?.errors) {
+              console.log(res.response.data.errors);
+              this.$refs.formAdd.setErrors(res.response.data.errors);
             }
-          })
-          .catch((error) => {
-            console.log(error, "error");
           });
       } catch (e) {
         console.log(e);
       }
     },
     editDialog(item) {
-      console.log(JSON.stringify(item));
       this.dialogEdit = true;
       this.data.code = item.code;
-      this.data.division_id = item.division.id;
       this.data.name_en = item.name_en;
-      this.data.name_bn = item.name_bn;
+      this.data.score = item.score;
+      this.data.field_type = item.field_type;
       this.data.id = item.id;
       this.errors = {};
     },
-    updateDistrict() {
-      if (!this.checkLanguage()) {
-        return;
-      }
-
+    updateVariable() {
       try {
         this.$store
-          .dispatch("District/UpdateDistrict", this.validator())
-          .then((data) => {
-            console.log(data, "update");
-            if (data == null) {
-              this.$toast.success("Data Updated Successfully");
-              this.dialogEdit = false;
+          .dispatch("ApplicationSelection/updateVariable", this.validator())
+          .then((res) => {
+            console.log(res, "update");
+            if (res.data?.success) {
+              this.$toast.success("Data Inserted Successfully");
               this.resetForm();
-              this.GetDistrict();
-            } else {
-              this.$refs.formEdit.setErrors(data.errors);
+              this.dialogEdit = false;
+              this.GetVariable();
+            } else if (res.response?.data?.errors) {
+              console.log(res.response.data.errors);
+              this.$refs.formEdit.setErrors(res.response.data.errors);
             }
           });
       } catch (e) {
@@ -644,24 +573,29 @@ export default {
       }
     },
     resetForm() {
+      // Reset the form data
       this.data = {
         code: "",
         name_en: "",
         name_bn: "",
+        // Reset other form fields
       };
+      this.errors = {};
     },
+
     onPageChange($event) {
       // this.pagination.current = $event;
-      this.GetDistrict();
+      this.GetVariable();
     },
-    async GetDistrict() {
+
+    async GetVariable() {
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
       };
       this.$axios
-        .get("/admin/district/get", {
+        .get("/admin/poverty/get/variable", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -669,26 +603,28 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          this.districts = result.data.data;
+          this.variables = result.data.data;
           this.pagination.current = result.data.meta.current_page;
           this.pagination.total = result.data.meta.last_page;
           this.pagination.grand_total = result.data.meta.total;
         });
     },
-    deleteDistrict: async function () {
+    deleteVariable: async function () {
       try {
         await this.$store
-          .dispatch("District/DestroyDistrict", this.delete_id)
+          .dispatch("ApplicationSelection/DestroyVariable", this.delete_id)
           .then((res) => {
             // check if the request was successful
-            console.log(res.data);
             if (res?.data?.success) {
               this.$toast.success(res.data.message);
             } else {
               this.$toast.error(res.response.data.message);
             }
             this.deleteDialog = false;
-            this.GetDistrict();
+            this.GetVariable();
+          })
+          .catch((error) => {
+            console.log(error, "error");
           });
       } catch (e) {
         console.log(e);
@@ -700,33 +636,8 @@ export default {
       this.deleteDialog = true;
       this.delete_id = id;
     },
-    getAllDivision() {
-      try {
-        this.$store.dispatch("Division/GetAllDivisions").then(() => {
-          console.log("success");
-        });
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    async onChangeDivision(event) {
-      console.log(event);
-      // await axios
-      //   .get(`/admin/district/get/${event}`, {
-      //     headers: {
-      //       Authorization: "Bearer " + this.$store.state.token,
-      //       "Content-Type": "multipart/form-data",
-      //     },
-      //   })
-      //   .then((result) => {
-      //     this.districts = result.data.data;
-      //     console.log(this.districts);
-      //   });
-    },
     updateHeaderTitle() {
-      const title = this.$t(
-        "container.system_config.demo_graphic.district.list"
-      );
+      const title = this.$t("container.application_selection.variable.list");
       this.$store.commit("setHeaderTitle", title);
     },
   },
@@ -734,8 +645,7 @@ export default {
     "$i18n.locale": "updateHeaderTitle",
   },
   created() {
-    this.GetDistrict();
-    this.getAllDivision();
+    this.GetVariable();
   },
   beforeMount() {
     this.updateHeaderTitle();

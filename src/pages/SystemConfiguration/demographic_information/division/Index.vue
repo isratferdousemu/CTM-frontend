@@ -193,7 +193,7 @@
                     outlined
                     type="text"
                     v-model="data.name_en"
-                    :label="$t('container.list.name_en')"
+                    :label="$t('container.system_config.demo_graphic.division.name_en')"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -210,7 +210,7 @@
                     outlined
                     type="text"
                     v-model="data.name_bn"
-                    :label="$t('container.list.name_bn')"
+                    :label="$t('container.system_config.demo_graphic.division.name_bn')"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -284,7 +284,7 @@
                     outlined
                     type="text"
                     v-model="data.name_en"
-                    :label="$t('container.list.name_en')"
+                    :label="$t('container.system_config.demo_graphic.division.name_en')"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -300,7 +300,7 @@
                     outlined
                     type="text"
                     v-model="data.name_bn"
-                    :label="$t('container.list.name_bn')"
+                    :label="$t('container.system_config.demo_graphic.division.name_bn')"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"

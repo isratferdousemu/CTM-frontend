@@ -175,25 +175,6 @@
                 <v-row>
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
-                      name="Code"
-                      vid="code"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-text-field
-                        outlined
-                        type="text"
-                        v-model="data.code"
-                        :label="$t('container.list.code')"
-                        required
-                        :hide-details="errors[0] ? false : true"
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-text-field>
-                    </ValidationProvider>
-                  </v-col>
-                  <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
                       name="Division"
                       vid="division_id"
                       rules="required"
@@ -299,6 +280,25 @@
                   </v-col>
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
+                      name="Code"
+                      vid="code"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-text-field
+                        outlined
+                        type="text"
+                        v-model="data.code"
+                        :label="$t('container.list.code')"
+                        required
+                        :hide-details="errors[0] ? false : true"
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-text-field>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
                       name="Name English"
                       vid="name_en"
                       rules="required"
@@ -308,7 +308,7 @@
                         outlined
                         type="text"
                         v-model="data.name_en"
-                        :label="$t('container.list.name_en')"
+                        :label="$t('container.system_config.demo_graphic.thana.name_en')"
                         required
                         :hide-details="errors[0] ? false : true"
                         :error="errors[0] ? true : false"
@@ -327,7 +327,7 @@
                         outlined
                         type="text"
                         v-model="data.name_bn"
-                        :label="$t('container.list.name_bn')"
+                        :label="$t('container.system_config.demo_graphic.thana.name_bn')"
                         required
                         :hide-details="errors[0] ? false : true"
                         :error="errors[0] ? true : false"
@@ -376,25 +376,7 @@
             <ValidationObserver ref="formEdit" v-slot="{ invalid }">
               <form @submit.prevent="updateUpazila()">
                 <v-row>
-                  <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="Code"
-                      vid="code"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-text-field
-                        outlined
-                        type="text"
-                        v-model="data.code"
-                        :label="$t('container.list.code')"
-                        required
-                        :hide-details="errors[0] ? false : true"
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-text-field>
-                    </ValidationProvider>
-                  </v-col>
+                 
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Division"
@@ -504,6 +486,25 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
+                   <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                      name="Code"
+                      vid="code"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-text-field
+                        outlined
+                        type="text"
+                        v-model="data.code"
+                        :label="$t('container.list.code')"
+                        required
+                        :hide-details="errors[0] ? false : true"
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-text-field>
+                    </ValidationProvider>
+                  </v-col>
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Name English"
@@ -515,7 +516,7 @@
                         outlined
                         type="text"
                         v-model="data.name_en"
-                        :label="$t('container.list.name_en')"
+                        :label="$t('container.system_config.demo_graphic.thana.name_en')"
                         required
                         :hide-details="errors[0] ? false : true"
                         :error="errors[0] ? true : false"
@@ -534,7 +535,7 @@
                         outlined
                         type="text"
                         v-model="data.name_bn"
-                        :label="$t('container.list.name_bn')"
+                        :label="$t('container.system_config.demo_graphic.thana.name_bn')"
                         required
                         :hide-details="errors[0] ? false : true"
                         :error="errors[0] ? true : false"
@@ -721,10 +722,10 @@ export default {
     createDialog() {
       console.log(this.$refs);
       if (this.$refs.formAdd) {
-        console.log(this.$refs, 'inside');
+        console.log(this.$refs, "inside");
         this.$refs.formAdd.reset();
       }
-      this.resetForm();   
+      this.resetForm();
       this.dialogAdd = true;
     },
     checkLanguage() {
@@ -763,7 +764,10 @@ export default {
       console.log(checkLanguageBangla);
       let errs = {};
 
-      if (checkLanguageBangla !== "Bangla" && checkLanguageBangla !== "BanglaSpecialChar") {
+      if (
+        checkLanguageBangla !== "Bangla" &&
+        checkLanguageBangla !== "BanglaSpecialChar"
+      ) {
         errs.name_bn = ["Please Enter in Bangla Language in this Field"];
       }
 
