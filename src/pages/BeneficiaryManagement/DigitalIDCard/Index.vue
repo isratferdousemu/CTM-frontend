@@ -181,7 +181,7 @@
                                       v-on="on"
                                       color="success"
                                       elevation="0"
-                                      router to="/beneficiary-management/digital-id-car"
+                                      router to="/beneficiary-management/digital-id-card"
                             
                                     >
                                              {{ $t("container.beneficiary_management.digital_id.digital_id_card") }}
@@ -303,39 +303,28 @@ export default {
     computed: {
         headers() {
             return [
-                {
-                    text: this.$t("container.list.sl"),
-                    value: "id",
-                    align: "start",
-                    sortable: false,
-                },
-
+              
             
                 {
                     text: this.$t(
                         "container.beneficiary_management.beneficiary_list.beneficiary_id"
                     ),
-                    value: "name_bn",
+                    value: "name_en",
                 },
                    {
                     text: this.$t(
                         "container.system_config.demo_graphic.union.union"
                     ),
-                    value: "name_bn",
+                    value: "1",
                 },
                    {
                     text: this.$t(
                         "container.list.mobile"
                     ),
-                    value: "name_bn",
+                    value: "2",
                 },
                
-                {
-                    text: this.$t("container.list.action"),
-                    value: "actions",
-                    align: "center",
-                    sortable: false,
-                },
+              
             ];
         },
 

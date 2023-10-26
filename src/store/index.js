@@ -227,6 +227,11 @@ export default new Vuex.Store({
         return result.data.data
       });
     },
+    async getGlobalLookupByType({ state }, type) {
+      return await axios.get("/global/lookup/get/" + type).then((result) => {
+        return result.data.data
+      });
+    },
 
     /*start get all City*/
     GetAllCityByDistrict: ({ commit }, data) => {

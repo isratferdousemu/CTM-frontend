@@ -89,7 +89,7 @@ const actions = {
   },
   StoreSubVariable: ({ commit }, data) => {
     return http()
-      .post("/admin/poverty/variable/insert", data)
+      .post("/admin/poverty/sub-variable/insert", data)
       .then((result) => {
         return result;
       })
@@ -100,7 +100,7 @@ const actions = {
   },
   updateSubVariable: ({ commit }, data) => {
     return http()
-      .post("/admin/poverty/variable/update", data)
+      .post("/admin/poverty/sub-variable/update", data)
       .then((result) => {
         return result;
       })

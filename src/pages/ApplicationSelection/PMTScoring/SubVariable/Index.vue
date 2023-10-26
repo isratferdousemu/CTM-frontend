@@ -518,11 +518,14 @@ export default {
       for (const [key, value] of Object.entries(this.data)) {
         if (value !== null) {
           fd.append(key, value);
+          console.log(key, value);
         }
       }
       return fd;
     },
     submitSubVariable() {
+      // console.log(this.validator());
+      // return;
       try {
         this.$store
           .dispatch("ApplicationSelection/StoreSubVariable", this.validator())
