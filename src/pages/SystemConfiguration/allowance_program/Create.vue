@@ -39,8 +39,12 @@ export default {
       numberRule: val => {
         if(val < 0) return 'Please enter a positive number'
         return true
-      }
+      },
     }
+  },
+
+  watch: {
+
   },
 
   computed: {
@@ -54,13 +58,28 @@ export default {
         error_status: (state) => state.Allowance.error_status
     }),
 
-    ageRules() {
+    minValueRules() {
       return [
-        v => !!v || 'Age is required',
-        v => /^\d+$/.test(v) || 'Age must be a number',
+        v => !!v || "Minimum value is required",
+        v => /^\d+$/.test(v) || 'Minimum Age must be a number',
         v => (v >= 18 && v <= 100) || 'Age must be between 18 and 100',
+        v => {
+          return this.add_allowance_program.allowance_age.every(item => v <= item.max_age) || "Minimum value cannot be greater than the maximum value";
+        }
       ];
     },
+
+    maxValueRules() {
+      return [
+        v => !!v || "Maximum value is required",
+        v => /^\d+$/.test(v) || 'Maximum Age must be a number',
+        v => (v >= 18 && v <= 100) || 'Age must be between 18 and 100',
+        v => {
+          return this.add_allowance_program.allowance_age.every(item => v >= item.min_age) || "Maximum value cannot be less than the minimum value";
+        }
+      ];
+    },
+
   },
 
   mounted() {
@@ -75,6 +94,8 @@ export default {
       GerAllLookUpGender: "Allowance/GerAllLookUpGender",
       GerAllLookUpGenderType: "Allowance/GerAllLookUpGenderType"
     }),
+
+
 
     maritalStatus(){
       this.is_marital_toggle = !this.is_marital_toggle;
@@ -160,7 +181,6 @@ export default {
         formData.append('payment_cycle', this.add_allowance_program.payment_cycle);
         formData.append('is_marital', this.is_marital_toggle);
         formData.append('marital_status', this.add_allowance_program.marital_status);
-        formData.append('is_active', this.add_allowance_program.is_active);
         formData.append('is_age_limit', this.is_age_limit);
 
         if (this.is_disable_class === false)
@@ -356,11 +376,7 @@ export default {
                         </v-col>
 
                         <v-col cols="12" sm="6" lg="6">
-                            <v-checkbox
-                                v-model="add_allowance_program.is_active"
-                                label="Is Active"
-                            >
-                            </v-checkbox>
+
                         </v-col>
                       </v-row>
                     </v-col>
@@ -372,7 +388,7 @@ export default {
 
                           <table v-if="is_age_limit === true">
                             <thead>
-                              <tr>
+                              <tr v-show="add_allowance_program.gender.length">
                                 <td>Gender</td>
                                 <td>Min Age</td>
                                 <td>Max Age</td>
@@ -384,7 +400,7 @@ export default {
                               </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="(g,index) in add_allowance_program.allowance_age" :key="index">
+                            <tr v-show="add_allowance_program.gender.length" v-for="(g,index) in add_allowance_program.allowance_age" :key="index">
                               <td>
                                 <ValidationProvider name="gender" vid="gender_id" rules="required" v-slot="{ errors }">
                                   <v-select
@@ -407,31 +423,31 @@ export default {
                                       type="number"
                                       step="any"
                                       min="0"
-                                      ref="input"
-                                      :rules="ageRules"
                                       dense
                                       outlined
                                       :error="errors[0] ? true : false"
                                       :error-messages="errors[0]"
                                       required
+                                      :rules="minValueRules"
+                                      @keyup="minValueRules()"
                                   >
                                   </v-text-field>
                                 </ValidationProvider>
                               </td>
                               <td>
-                                <ValidationProvider name="max age" vid="max_age" rules="required" v-slot="{ errors }">
+                                <ValidationProvider name="max age" vid="max_age"  rules="required" v-slot="{ errors }">
                                 <v-text-field
                                     v-model="g.max_age"
                                     type="number"
                                     step="any"
                                     min="0"
-                                    ref="input"
-                                    :rules="ageRules"
                                     dense
                                     outlined
                                     :error="errors[0] ? true : false"
                                     :error-messages="errors[0]"
                                     required
+                                    :rules="maxValueRules"
+                                    @keyup="maxValueRules()"
                                 >
                                 </v-text-field>
                                 </ValidationProvider>
@@ -455,6 +471,10 @@ export default {
                                   </ValidationProvider>
                                 </div>
                               </td>
+                            </tr>
+
+                            <tr v-show="!add_allowance_program.gender.length">
+                              <h5>Please Select Gender</h5>
                             </tr>
                             </tbody>
                           </table>
