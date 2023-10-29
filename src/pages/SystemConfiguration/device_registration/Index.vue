@@ -120,7 +120,7 @@ export default {
 
 <template>
   <div id="device-registration">
-    <v-row class="mx-5">
+    <v-row class="mx-5 mt-5">
       <v-col cols="12">
         <v-row wrap>
           <v-col cols="12">

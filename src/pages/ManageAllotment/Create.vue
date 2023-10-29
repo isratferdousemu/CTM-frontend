@@ -5,6 +5,7 @@ import {
   ValidationObserver
 } from "vee-validate";
 import {mapActions, mapState} from "vuex";
+import office from "@/store/modules/system_configuration/office";
 
 export default {
   name: "Create",
@@ -22,7 +23,6 @@ export default {
         financial_year: '',
         office_id: '',
         upazila_id: '',
-
       }
     }
   },
@@ -35,6 +35,8 @@ export default {
       isDisable: (state) => state.ManageAllotment.is_disable_class,
       genders: (state) => state.Allowance.genders,
       genderTypes: (state) => state.Allowance.genderTypes,
+      districts: (state) => state.ManageAllotment.districts,
+      locations: (state) => state.ManageAllotment.locations
     })
   },
 
@@ -42,17 +44,23 @@ export default {
     this.getAllAllowanceProgram();
     this.GerAllLookUpGender();
     this.GerAllLookUpGenderType();
+    this.getAllDistrict();
   },
 
   methods: {
     ...mapActions({
       getAllAllowanceProgram: "ManageAllotment/getAllAllowanceProgram",
       GerAllLookUpGender: "Allowance/GerAllLookUpGender",
-      GerAllLookUpGenderType: "Allowance/GerAllLookUpGenderType"
+      GerAllLookUpGenderType: "Allowance/GerAllLookUpGenderType",
+      getAllDistrict: "ManageAllotment/getAllDistrict"
     }),
 
     getAmount(event){
       this.$store.dispatch("ManageAllotment/getAllowanceProgramAmount", event);
+    },
+
+    getOffice(event){
+      this.$store.dispatch("ManageAllotment/getAllOfficeLocation", event);
     },
 
     addAllotment: async function(){
@@ -100,8 +108,12 @@ export default {
                               </v-select>
 
                               <v-select
+                                  :items="districts"
+                                  item-text="name_en"
+                                  item-value="id"
                                   label="Select District"
                                   outlined
+                                  @change="getOffice($event)"
                               >
                               </v-select>
 
@@ -165,8 +177,7 @@ export default {
                               <tr>
                                 <th class="text-left">#Sl</th>
                                 <th class="text-left">Office</th>
-                                <th class="text-left">Upazila</th>
-                                <th class="text-left">Union/Pourashava</th>
+                                <th class="text-left">Location</th>
                                 <th class="text-left">Beneficiary Regular</th>
                                 <th class="text-center">Beneficiary Additional</th>
                                 <th class="text-left">Total Beneficiary</th>
@@ -174,36 +185,37 @@ export default {
                               </tr>
                               </thead>
                               <tbody>
-                              <tr>
-                                <td>1</td>
-                                <td style="width: 20%">test</td>
-                                <td style="width: 10%">test</td>
-                                <td style="width: 10%">test</td>
-                                <td>200</td>
-                                <td style="width: 40%">
-                                  <v-col cols="12" class="d-flex">
-                                    <v-row wrap>
-                                      <div v-if="isDisable === 1">
-                                        <span v-for="(eg, index) in educationGenders" :key="index">
-                                          <span v-for="(g, index) in genders" :key="index">
-                                            <v-col sm="6" v-if="eg.gender_id === g.id"><v-text-field :label="g.value_en" outlined dense></v-text-field></v-col>
-                                          </span>
-                                        </span>
-                                      </div>
+                                <tr>
+                                  <td>1</td>
+                                  <td style="width: 20%"></td>
+                                  <td style="width: 10%">test</td>
+                                  <td>200</td>
+                                  <td style="width: 40%">
+                                    <v-col cols="12" class="d-flex">
+                                      <v-col v-if="isDisable === 1">
+                                        <v-row>
+                                          <v-col sm="4" v-for="(eg, index) in educationGenders" :key="index">
+                                            <div v-for="(g) in genders" :key="g.id">
+                                              <v-text-field v-show="eg.gender_id === g.id" :label="g.value_en" outlined dense></v-text-field>
+                                            </div>
+                                          </v-col>
+                                        </v-row>
+                                      </v-col>
 
-                                      <div v-if="isDisable === 0">
-                                        <span v-for="(aa, index) in allowanceAmounts" :key="index">
-                                          <span v-for="(g, index) in genders" :key="index">
-                                            <v-col sm="6" v-if="aa.gender_id === g.id"><v-text-field :label="g.value_en" outlined dense></v-text-field></v-col>
-                                          </span>
-                                        </span>
-                                      </div>
-                                    </v-row>
-                                  </v-col>
-                                </td>
-                                <td>700</td>
-                                <td style="width: 10%">34567</td>
-                              </tr>
+                                      <v-col v-if="isDisable === 0">
+                                        <v-row>
+                                          <v-col sm="4" v-for="(aa, index) in allowanceAmounts" :key="index">
+                                            <div v-for="(g) in genders" :key="g.id">
+                                              <v-text-field v-if="aa.gender_id === g.id" :label="g.value_en" outlined dense></v-text-field>
+                                            </div>
+                                          </v-col>
+                                        </v-row>
+                                      </v-col>
+                                    </v-col>
+                                  </td>
+                                  <td>700</td>
+                                  <td style="width: 10%">34567</td>
+                                </tr>
                               </tbody>
                           </table>
                         </v-col>
@@ -220,7 +232,7 @@ export default {
                       color="primary"
                       class="custom-btn mr-2"
                       router
-                      to="/system-configuration/allowance-program"
+                      to="/allotment"
                   >Back
                   </v-btn>
 
