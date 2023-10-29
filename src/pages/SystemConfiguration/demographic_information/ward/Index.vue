@@ -203,7 +203,6 @@
             <ValidationObserver ref="form" v-slot="{ invalid }">
               <form @submit.prevent="submitWard()">
                 <v-row>
-
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Division"
@@ -399,7 +398,7 @@
                     <ValidationProvider
                       name="Code"
                       vid="code"
-                      rules="required"
+                      rules="codeRules"
                       v-slot="{ errors }"
                     >
                       <v-text-field
@@ -407,7 +406,9 @@
                         outlined
                         type="text"
                         v-model="data.code"
-                        :label="$t('container.list.code')"
+                        :label="
+                          $t('container.system_config.demo_graphic.ward.code')
+                        "
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
@@ -426,7 +427,11 @@
                         type="text"
                         :hide-details="errors[0] ? false : true"
                         v-model="data.name_en"
-                        :label="$t('container.system_config.demo_graphic.ward.name_en')"
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.ward.name_en'
+                          )
+                        "
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
@@ -493,7 +498,6 @@
             <ValidationObserver ref="form" v-slot="{ invalid }">
               <form @submit.prevent="updateWard()">
                 <v-row>
-                
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Division"
@@ -685,11 +689,11 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                    <v-col lg="12" md="12" cols="12">
+                  <v-col lg="12" md="12" cols="12">
                     <ValidationProvider
                       name="Code"
                       vid="code"
-                      rules="required"
+                      rules="codeRules"
                       v-slot="{ errors }"
                     >
                       <v-text-field
@@ -697,7 +701,9 @@
                         outlined
                         type="text"
                         v-model="data.code"
-                        :label="$t('container.list.code')"
+                        :label="
+                          $t('container.system_config.demo_graphic.ward.code')
+                        "
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
@@ -716,7 +722,11 @@
                         type="text"
                         :hide-details="errors[0] ? false : true"
                         v-model="data.name_en"
-                        :label="$t('container.system_config.demo_graphic.ward.name_en')"
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.ward.name_en'
+                          )
+                        "
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
@@ -742,7 +752,6 @@
                       ></v-text-field>
                     </ValidationProvider>
                   </v-col>
-
                 </v-row>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
@@ -814,7 +823,7 @@
   
   <script>
 import { mapState, mapActions } from "vuex";
-import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
+import { extend, ValidationProvider, ValidationObserver, Validator } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 
 extend("required", required);
@@ -869,7 +878,7 @@ export default {
     headers() {
       return [
         {
-          text: this.$t("container.list.code"),
+          text: this.$t("container.system_config.demo_graphic.ward.code"),
           value: "code",
         },
         {
@@ -903,7 +912,7 @@ export default {
           value: "name_en",
         },
         {
-          text: this.$t("container.list.name_bn"),
+          text: this.$t("container.system_config.demo_graphic.ward.name_bn"),
           value: "name_bn",
         },
         {
@@ -915,7 +924,11 @@ export default {
         },
       ];
     },
-
+    // codeRules() {
+    //   return [
+    //     v => (v.toString().length <= 6) || 'Ward Code can have maximum 6 digit',
+    //   ];
+    // },
     ...mapState({
       divisions: (state) => state.Division.divisions,
       error_status: (state) => state.Ward.error_status,
@@ -926,7 +939,15 @@ export default {
   watch: {
     "$i18n.locale": "updateHeaderTitle",
   },
+  created() {
+    this.registerCustomRules();
+  },
   methods: {
+    registerCustomRules() {
+      extend('codeRules', (value) => {
+        return (value.toString().length <= 6) || this.$t("container.system_config.demo_graphic.ward.code")+' can have maximum 6 digit';
+      });
+    },
     async submitWard() {
       try {
         let fd = new FormData();
@@ -1220,6 +1241,7 @@ export default {
   },
 
   mounted() {
+    
     this.updateHeaderTitle();
     this.GetAllDivisions();
     this.GetWard();

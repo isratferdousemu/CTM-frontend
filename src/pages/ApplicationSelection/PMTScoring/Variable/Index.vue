@@ -225,7 +225,7 @@
                     :error-messages="errors[0]"
                   ></v-text-field>
                 </ValidationProvider>
-                <v-card-text>Note: If "Score" is present in variable, then the this variable cannot have sub variable</v-card-text>
+                <v-card-text>Note: If "Score" is present in variable, then this variable cannot have sub-variable</v-card-text>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
                   <v-btn
@@ -325,7 +325,7 @@
                   ></v-text-field>
                 </ValidationProvider>
 
-                <v-card-text>Note: If "Score" is present in variable, then the this variable cannot have sub variable</v-card-text>
+                <v-card-text>Note: If "Score" is present in variable, then this variable cannot have sub-variable</v-card-text>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
                   <v-btn
@@ -610,9 +610,12 @@ export default {
         });
     },
     deleteVariable: async function () {
+      const data = {
+        "id" : this.delete_id
+      }
       try {
         await this.$store
-          .dispatch("ApplicationSelection/DestroyVariable", this.delete_id)
+          .dispatch("ApplicationSelection/DestroyVariable", data)
           .then((res) => {
             // check if the request was successful
             if (res?.data?.success) {
