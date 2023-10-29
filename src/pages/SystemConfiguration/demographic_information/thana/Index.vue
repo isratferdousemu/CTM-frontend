@@ -282,16 +282,18 @@
                     <ValidationProvider
                       name="Code"
                       vid="code"
-                      rules="required"
+                      rules="required|codeRules"
                       v-slot="{ errors }"
                     >
                       <v-text-field
                         outlined
+                        :hide-details="errors[0] ? false : true"
                         type="text"
                         v-model="data.code"
-                        :label="$t('container.list.code')"
+                        :label="
+                          $t('container.system_config.demo_graphic.thana.code')
+                          "
                         required
-                        :hide-details="errors[0] ? false : true"
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
                       ></v-text-field>
@@ -308,7 +310,11 @@
                         outlined
                         type="text"
                         v-model="data.name_en"
-                        :label="$t('container.system_config.demo_graphic.thana.name_en')"
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.thana.name_en'
+                          )
+                        "
                         required
                         :hide-details="errors[0] ? false : true"
                         :error="errors[0] ? true : false"
@@ -327,7 +333,11 @@
                         outlined
                         type="text"
                         v-model="data.name_bn"
-                        :label="$t('container.system_config.demo_graphic.thana.name_bn')"
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.thana.name_bn'
+                          )
+                        "
                         required
                         :hide-details="errors[0] ? false : true"
                         :error="errors[0] ? true : false"
@@ -376,7 +386,6 @@
             <ValidationObserver ref="formEdit" v-slot="{ invalid }">
               <form @submit.prevent="updateUpazila()">
                 <v-row>
-                 
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Division"
@@ -486,18 +495,21 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                   <v-col lg="6" md="6" cols="12">
+                  <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Code"
                       vid="code"
-                      rules="required"
+                      rules="required|codeRules"
                       v-slot="{ errors }"
                     >
                       <v-text-field
                         outlined
                         type="text"
                         v-model="data.code"
-                        :label="$t('container.list.code')"
+                        
+                        :label="
+                          $t('container.system_config.demo_graphic.thana.code')
+                        "
                         required
                         :hide-details="errors[0] ? false : true"
                         :error="errors[0] ? true : false"
@@ -516,7 +528,11 @@
                         outlined
                         type="text"
                         v-model="data.name_en"
-                        :label="$t('container.system_config.demo_graphic.thana.name_en')"
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.thana.name_en'
+                          )
+                        "
                         required
                         :hide-details="errors[0] ? false : true"
                         :error="errors[0] ? true : false"
@@ -535,7 +551,11 @@
                         outlined
                         type="text"
                         v-model="data.name_bn"
-                        :label="$t('container.system_config.demo_graphic.thana.name_bn')"
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.thana.name_bn'
+                          )
+                        "
                         required
                         :hide-details="errors[0] ? false : true"
                         :error="errors[0] ? true : false"
@@ -672,7 +692,10 @@ export default {
           align: "start",
           sortable: false,
         },
-        { text: this.$t("container.list.code"), value: "code" },
+        {
+          text: this.$t("container.system_config.demo_graphic.thana.code"),
+          value: "code",
+        },
         {
           text: this.$t(
             "container.system_config.demo_graphic.division.division"
@@ -717,8 +740,15 @@ export default {
       );
     },
   },
-
+  created() {
+    this.registerCustomRules();
+  },
   methods: {
+    registerCustomRules() {
+      extend('codeRules', (value) => {
+        return (value.toString().length <= 6) || this.$t("container.system_config.demo_graphic.thana.code")+' can have maximum 6 digit';
+      });
+    },
     createDialog() {
       console.log(this.$refs);
       if (this.$refs.formAdd) {

@@ -174,7 +174,6 @@
             <ValidationObserver ref="formAdd" v-slot="{ invalid }">
               <form @submit.prevent="submitUnion()">
                 <v-row>
-                  
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Division"
@@ -256,14 +255,16 @@
                     <ValidationProvider
                       name="Code"
                       vid="code"
-                      rules="required"
+                      rules="codeRules"
                       v-slot="{ errors }"
                     >
                       <v-text-field
                         outlined
                         type="text"
                         v-model="data.code"
-                        :label="$t('container.list.code')"
+                        :label="
+                          $t('container.system_config.demo_graphic.union.code')
+                        "
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
@@ -282,7 +283,11 @@
                         outlined
                         type="text"
                         v-model="data.name_en"
-                        :label="$t('container.system_config.demo_graphic.union.name_en')"
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.union.name_en'
+                          )
+                        "
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
@@ -301,7 +306,11 @@
                         outlined
                         type="text"
                         v-model="data.name_bn"
-                        :label="$t('container.system_config.demo_graphic.union.name_bn')"
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.union.name_bn'
+                          )
+                        "
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
@@ -361,7 +370,9 @@
                         outlined
                         type="text"
                         v-model="data.code"
-                        :label="$t('container.list.code')"
+                                            :rules="codeRules"
+
+                        :label="$t('container.system_config.demo_graphic.union.code')"
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
@@ -503,7 +514,6 @@
                 </v-row> -->
 
                 <v-row>
-                 
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Division"
@@ -581,18 +591,21 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                   <v-col lg="6" md="6" cols="12">
+                  <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Code"
                       vid="code"
-                      rules="required"
+                      rules="codeRules"
                       v-slot="{ errors }"
                     >
                       <v-text-field
                         outlined
                         type="text"
                         v-model="data.code"
-                        :label="$t('container.list.code')"
+
+                        :label="
+                          $t('container.system_config.demo_graphic.union.code')
+                        "
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
@@ -611,7 +624,11 @@
                         outlined
                         type="text"
                         v-model="data.name_en"
-                        :label="$t('container.system_config.demo_graphic.union.name_en')"
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.union.name_en'
+                          )
+                        "
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
@@ -630,7 +647,11 @@
                         outlined
                         type="text"
                         v-model="data.name_bn"
-                        :label="$t('container.system_config.demo_graphic.union.name_bn')"
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.union.name_bn'
+                          )
+                        "
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
@@ -771,7 +792,7 @@ export default {
           sortable: false,
         },
         {
-          text: this.$t("container.list.code"),
+          text: this.$t("container.system_config.demo_graphic.union.code"),
           value: "code",
         },
         {
@@ -806,7 +827,6 @@ export default {
         },
       ];
     },
-
     ...mapState({
       divisions: (state) => state.Division.divisions,
       //   error_status: (state) => state.Union.error_status,
@@ -814,8 +834,15 @@ export default {
       // message: (state) => state.SystemConfiguration.success_message,
     }),
   },
-
+  created() {
+    this.registerCustomRules();
+  },
   methods: {
+    registerCustomRules() {
+      extend('codeRules', (value) => {
+        return (value.toString().length <= 6) || this.$t("container.system_config.demo_graphic.union.code")+' can have maximum 6 digit';
+      });
+    },
     createDialog() {
       if (this.$refs.formAdd) {
         this.$refs.formAdd.reset();
@@ -824,15 +851,17 @@ export default {
       this.dialogAdd = true;
     },
     checkLanguage() {
-        
       let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
       let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
-      
+
       console.log(checkLanguageEnglish);
       console.log(checkLanguageBangla);
       let errs = {};
 
-      if (checkLanguageBangla !== "Bangla" && checkLanguageBangla !== "BanglaSpecialChar") {
+      if (
+        checkLanguageBangla !== "Bangla" &&
+        checkLanguageBangla !== "BanglaSpecialChar"
+      ) {
         errs.name_bn = ["Please Enter in Bangla Language in this Field"];
       }
 
@@ -842,10 +871,10 @@ export default {
 
       if (Object.keys(errs).length > 0) {
         if (this.$refs.formAdd) {
-            this.$refs.formAdd.setErrors(errs);
+          this.$refs.formAdd.setErrors(errs);
         }
         if (this.$refs.formEdit) {
-            this.$refs.formEdit.setErrors(errs);
+          this.$refs.formEdit.setErrors(errs);
         }
 
         return false;
@@ -998,9 +1027,9 @@ export default {
       }
     },
     resetData() {
-    //   if (this.$refs.formAdd) {
-    //     this.$refs.formAdd.reset();
-    //   }
+      //   if (this.$refs.formAdd) {
+      //     this.$refs.formAdd.reset();
+      //   }
 
       (this.data.name_en = null),
         (this.data.name_bn = null),
@@ -1047,7 +1076,7 @@ export default {
     this.GetUnion();
   },
   beforeMount() {
-    this.updateHeaderTitle(); 
+    this.updateHeaderTitle();
   },
 };
 </script>
