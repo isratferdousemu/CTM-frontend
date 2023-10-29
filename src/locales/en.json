@@ -49,6 +49,7 @@
                 "division": {
                     "division": "Division",
                     "list": "Division List",
+                    "code": "Division Code",
                     "name_en": "Division Name English",
                     "name_bn": "Division Name Bangla",
                     "add_new": "Add New Division",
@@ -60,6 +61,7 @@
                 "district": {
                     "district": "District",
                     "list": "District List",
+                    "code": "District Code",
                     "name_en": "District Name English",
                     "name_bn": "District Name Bangla",
                     "add_new": "Add New District",
@@ -71,6 +73,7 @@
                 "city": {
                     "city": "City Corporation/District Pourashava",
                     "list": "City Corporation/District Pourashava List",
+                    "code": "City Corporation/District Pourashava Code",
                     "name_en": "City Corporation/District Pourashava English",
                     "name_bn": "City Corporation/District Pourashava Bangla",
                     "add_new": "Add New City Corporation/District Pourashava",
@@ -82,6 +85,7 @@
                 "thana": {
                     "thana": "Thana/Upazila",
                     "list": "Thana/Upazila List",
+                    "code": "Thana/Upazila Code",
                     "name_en": "Thana/Upazila Name English",
                     "name_bn": "Thana/Upazila Name Bangla",
                     "add_new": "Add New Thana/Upazila",
@@ -93,6 +97,7 @@
                 "union": {
                     "union": "Union/Pouroshava",
                     "list": "Union/Pouroshava List",
+                    "code": "Union/Pourashava Code",
                     "name_en": "Union/Pouroshava Name English",
                     "name_bn": "Union/Pouroshava Name Bangla",
                     "add_new": "Add New Union/Pouroshava",
@@ -104,6 +109,7 @@
                 "ward": {
                     "ward": "Ward",
                     "list": "Ward List",
+                    "code": "Ward Code",
                     "name_en": "Ward Name English",
                     "name_bn": "Ward Name Bangla",
                     "add_new": "Add New Ward",
@@ -122,6 +128,7 @@
                 "office": {
                     "office": "Office",
                     "list": "Office List",
+                    "code": "Office Code",
                     "name_en": "Office Name English",
                     "name_bn": "Office Name Bangla",
                     "add_new": "Add New Office",
@@ -143,7 +150,7 @@
                 },
                 "committee": {
                     "committee": "Committee",
-                    "code": "Code",
+                    "code": "Committee Code",
                     "list": "Committee List",
                     "view": "View",
                     "name_en": "Committee Name",

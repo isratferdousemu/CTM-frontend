@@ -18,11 +18,11 @@ export default {
   data(){
     return{
       add_allotment:{
-        allowance_program_id: '',
-        district_id: '',
-        financial_year: '',
-        office_id: '',
-        upazila_id: '',
+        program_id: '',
+        location_id: '',
+        financial_year_id: '',
+        allotment_details: [],
+        allotment_extra: [],
       }
     }
   },
@@ -36,7 +36,8 @@ export default {
       genders: (state) => state.Allowance.genders,
       genderTypes: (state) => state.Allowance.genderTypes,
       districts: (state) => state.ManageAllotment.districts,
-      locations: (state) => state.ManageAllotment.locations
+      locations: (state) => state.ManageAllotment.locations,
+      financial: (state) => state.ManageAllotment.financial_years,
     })
   },
 
@@ -45,6 +46,7 @@ export default {
     this.GerAllLookUpGender();
     this.GerAllLookUpGenderType();
     this.getAllDistrict();
+    this.getAllFinancialYear();
   },
 
   methods: {
@@ -52,7 +54,8 @@ export default {
       getAllAllowanceProgram: "ManageAllotment/getAllAllowanceProgram",
       GerAllLookUpGender: "Allowance/GerAllLookUpGender",
       GerAllLookUpGenderType: "Allowance/GerAllLookUpGenderType",
-      getAllDistrict: "ManageAllotment/getAllDistrict"
+      getAllDistrict: "ManageAllotment/getAllDistrict",
+      getAllFinancialYear: "ManageAllotment/getAllFinancialYear"
     }),
 
     getAmount(event){
@@ -117,7 +120,14 @@ export default {
                               >
                               </v-select>
 
-                              <v-text-field label="Financial Year" outlined></v-text-field>
+                              <v-select
+                                  :items="financial"
+                                  item-text="financial_year"
+                                  item-value="id"
+                                  label="Select Financial Year"
+                                  outlined
+                              >
+                              </v-select>
                             </v-col>
 
                             <v-col cols="12" sm="6" lg="6">
