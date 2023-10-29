@@ -67,7 +67,7 @@ const BeneficiaryManagementRoutes = [
         name: "beneficiary_journey",
         meta: {
             requiresAuth: true,
-            permission: "beneficiary-list",
+            permission: "beneficiary-journey",
         },
         component: () => import("../pages/BeneficiaryManagement/beneficiary_list/BeneficiaryHistory.vue")
     },
@@ -85,16 +85,16 @@ const BeneficiaryManagementRoutes = [
     name: "beneficiary-card",
     meta: {
       requiresAuth: true,
-      permission: "beneficiary-list",
+      permission: "beneficiary-card",
     },
     component: () => import("../pages/BeneficiaryManagement/DigitalIDCard/Index.vue")
   },
   {
     path: "/beneficiary-management/digital-id-card",
-    name: "beneficiary-card",
+    name: "digital-id-card",
     meta: {
       requiresAuth: true,
-      permission: "beneficiary-list",
+      permission: "digital-id-card",
     },
     component: () => import("../pages/BeneficiaryManagement/DigitalIDCard/DigitalIDCard.vue")
   },
@@ -109,10 +109,10 @@ const BeneficiaryManagementRoutes = [
   },
   {
     path: "/beneficiary-management/beneficiary-shifting",
-    name: "beneficiary-exit",
+    name: "beneficiary-shifting",
     meta: {
       requiresAuth: true,
-      permission: "beneficiary-exit",
+      permission: "beneficiary-shifting",
     },
     component: () => import("../pages/BeneficiaryManagement/BeneficiaryShifting/Index.vue")
   },

@@ -18,12 +18,13 @@
                   <v-row>
 
                     <v-col lg="6" md="6" cols="12">
-                      <v-select outlined clearable :label="$t('container.application_selection.application.program')">
+                      <v-autocomplete outlined clearable :items="allowances"
+                          item-text="name_en" item-value="id" :label="$t('container.application_selection.application.program')">
 
-                      </v-select>
+                      </v-autocomplete>
                     </v-col>
                     <v-col lg="6" md="6" cols="12">
-                      <v-select outlined clearable
+                      <v-select outlined clearable  :items="financial_years" item-text="financial_year" item-value="id"
                         :label="$t('container.system_config.demo_graphic.financial_year.financial_year')">
 
                       </v-select>
@@ -73,7 +74,7 @@
 
                   <v-col cols="12">
 
-                    <v-data-table :headers="headers" :items="divisions" class="elevation-0 transparent row-pointer">
+                    <v-data-table :headers="headers" :items="allotments" class="elevation-0 transparent row-pointer">
                       <template v-slot:item.sl="{ item, index }">
                         {{
                           (pagination.current - 1) * pagination.perPage +
@@ -171,12 +172,10 @@ export default {
       loading: false,
       search: "",
       delete_id: "",
-    
-
       districts: [],
-  
-
-
+      allotments:[],
+      allowances:[],
+      financial_years: [],
       pagination: {
         current: 1,
         total: 0,
@@ -283,22 +282,34 @@ export default {
         page: this.pagination.current,
       };
 
-      // this.$axios
-      //   .get("/admin/division/get", {
-      //     headers: {
-      //       Authorization: "Bearer " + this.$store.state.token,
-      //       "Content-Type": "multipart/form-data",
-      //     },
-      //     params: queryParams,
-      //   })
-      //   .then((result) => {
-      //     this.divisions = result.data.data;
-      //     this.pagination.current = result.data.meta.current_page;
-      //     this.pagination.total = result.data.meta.last_page;
-      //     this.pagination.grand_total = result.data.meta.total;
-      //   });
+    },
+    GetAllowance(){
+      this.$axios
+        .get("/admin/allowance/get", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+       
+        })
+        .then((result) => {
+          this.allowances = result.data.data;
+         
+        });
 
+    },
+      GetFinancial_Year() {
+      this.$axios.get("/admin/financial-year/get", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+    
+        })
+        .then((result) => {
+          this.financial_years = result.data.data;
 
+        });
     },
 
     updateHeaderTitle() {
@@ -323,6 +334,8 @@ this.GetAllotment();
   mounted() {
 
     this.GetAllDivisions();
+    this.GetAllowance();
+    this.GetFinancial_Year();
 
   }
 };

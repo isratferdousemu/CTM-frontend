@@ -427,6 +427,20 @@
                 "additional": "Additional Payment",
                 "post":"Post",
                 "download":"Download"
+            },
+            "payroll_management": {
+                "list": "Payment Processor",
+                "add_new": "Add New Payment Processor",
+                "edit": "Edit Payment Processor",
+                "processor_type": "Processor Type",
+                "coverage_area": "Coverage Area",
+                "focal_phone": "Focal Phone",
+                "email": "Focal Email",
+                "bank_name": "Bank Name",
+                "branch_name": "Branch Name",
+                "delete": "Delete Payment Processor ",
+                "delete_alert": "Are you sure to delete this Payment Processor?"
+
             }
     }
 }
