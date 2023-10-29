@@ -13,7 +13,7 @@
             "edit": "সম্পাদনা",
             "print": "প্রিন্ট",
             "view": "দেখুন",
-            "search": "খুঁজুন",
+            "search": "অনুসন্ধান",
             "reset": "রিসেট",
             "back": "ব্যাক",
             "status": "স্ট্যাটাস",
@@ -391,9 +391,18 @@
                 },
                 "beneficiary_shifting": {
                     "title": "সুবিধাভোগী স্থানান্তর",
-                    "cause": "কারণ"
+                    "cause": "কারণ",
+                    "activation_date": "সক্রিয়করণের তারিখ"
                 }
                 
+            },
+            "manage_allotment": {
+                "list": "বরাদ্দ তালিকা",
+                "program": "বরাদ্দ বিতরণ কর্মসূচি",
+                "regular_payment": "নিয়মিত অর্থপ্রদান",
+                "additional": "অতিরিক্ত অর্থপ্রদান",
+                "post": "পোস্ট",
+                "download": "ডাউনলোড"
             }
     }
 }
