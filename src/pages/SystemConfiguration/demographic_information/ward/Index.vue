@@ -912,7 +912,7 @@ export default {
           value: "name_en",
         },
         {
-          text: this.$t("container.list.name_bn"),
+          text: this.$t("container.system_config.demo_graphic.ward.name_bn"),
           value: "name_bn",
         },
         {

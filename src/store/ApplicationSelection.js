@@ -109,6 +109,30 @@ const actions = {
 
       });
   },
+  DestroyVariable: ({ commit }, data) => {
+    return http()
+      .post("/admin/poverty/variable/destroy", data)
+      .then((result) => {
+        console.log(result);
+        return result;
+      })
+      .catch((err) => {
+        console.log(err);
+        return err;
+      });
+  },
+  DestroySubVariable: ({ commit }, data) => {
+    return http()
+      .post("/admin/poverty/sub-variable/destroy", data)
+      .then((result) => {
+        console.log(result);
+        return result;
+      })
+      .catch((err) => {
+        console.log(err);
+        return err;
+      });
+  },
 };
 /* -------------------------------------------------------------------------- */
 /*                               Getters Define                               */

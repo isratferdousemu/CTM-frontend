@@ -524,7 +524,7 @@ export default {
       return fd;
     },
     submitSubVariable() {
-      // console.log(this.validator());
+      console.log(this.validator());
       // return;
       try {
         this.$store
@@ -631,10 +631,13 @@ export default {
           this.pagination.grand_total = result.data.meta.total;
         });
     },
-    deleteVariable: async function () {
+    deleteSubVariable: async function () {
+      const data = {
+        "id" : this.delete_id
+      }
       try {
         await this.$store
-          .dispatch("ApplicationSelection/DestroyVariable", this.delete_id)
+          .dispatch("ApplicationSelection/DestroySubVariable", data)
           .then((res) => {
             // check if the request was successful
             if (res?.data?.success) {
