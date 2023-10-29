@@ -408,9 +408,18 @@
                         },
                         "beneficiary_shifting": {
                             "title": "Beneficiary Shifting",
-                            "cause": "Cause"
+                            "cause": "Cause",
+                            "activation_date":"Activation Date"
                         }
                        
+            },
+            "manage_allotment":{
+                "list":"Allotment List",
+                "program":"Allotment Distribution Program",
+                "regular_payment":"Regular Payment",
+                "additional": "Additional Payment",
+                "post":"Post",
+                "download":"Download"
             }
     }
 }

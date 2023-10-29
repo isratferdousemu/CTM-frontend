@@ -1,5 +1,5 @@
 <template>
-    <div id="information_tracking">
+    <div id="digital_id_list">
         <v-row class="mx-5 mt-4">
             <v-col cols="12">
                
