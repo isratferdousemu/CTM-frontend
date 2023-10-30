@@ -34,7 +34,7 @@
                   <v-text-field outlined clearable
                     v-model="date"
                      :label="$t(
-                         'container.beneficiary_management.beneficiary_exit.date_of_exit'
+                         'container.beneficiary_management.beneficiary_shifting.activation_date'
                      )"
                     prepend-inner-icon="mdi-calendar"
                  
@@ -50,34 +50,48 @@
       </v-col>
 
                                         <v-col lg="6" md="6" cols="12">
-                                            <ValidationProvider name="Division" vid="division" rules="required"
+                                            <ValidationProvider
                                                 v-slot="{ errors }">
                                                 <v-text-field outlined clearable @input="onChangeDivision($event)"
                                                     v-model="data.division_id" :label="$t(
-                                                        'container.list.reason_details'
-                                                    )
-                                                        " :items="divisions" item-text="name_en"
-                                                    item-value="id" required :error="errors[0] ? true : false"
+                                                        'container.beneficiary_management.beneficiary_shifting.activation_date'
+                                                    )"
+                     
+                                                   required :error="errors[0] ? true : false"
                                                     :error-messages="errors[0]">
                                                 </v-text-field>
                                             </ValidationProvider>
                                         </v-col>
-                                        <v-col lg="6" md="6" cols="12">
-                                            <ValidationProvider name="District" vid="district" rules="required"
-                                                v-slot="{ errors }">
-                                                <v-autocomplete outlined v-model="data.district_id"
-                                                     :label="$t(
-                                                        'container.beneficiary_management.beneficiary_list.search_by'
-                                                    )
-                                                        " :items="districts" item-text="name_en"
-                                                    item-value="id" required :error="errors[0] ? true : false"
-                                                    :error-messages="errors[0]"></v-autocomplete>
-                                            </ValidationProvider>
+                                    </v-row>
+                                    <v-row>
+                                        <v-col  cols="12">
+                                            <v-card   elevation="1" outlined >
+                                                <v-card-title>
+
+                                                </v-card-title>
+                                                <v-card-text>
+                                                    <v-row>
+                                                         <v-col lg="6" md="6" cols="12">
+
+                                                    <v-select outlined menu-props="top" clearable
+                                                        :label="$t('container.beneficiary_management.beneficiary_list.beneficiary_id')">
+                                                    </v-select>
+                                                </v-col>
+                                                        <v-col lg="6" md="6" cols="12">
+
+                                                        <v-textarea outlined  rows="2"  v-model="data.details" readonly
+                                                            :label="$t('container.beneficiary_management.beneficiary_list.beneficiary_details')">
+                                                        </v-textarea>
+                                                    </v-col>
+                                                    </v-row>
+                                                   
+                                            
+                                                </v-card-text>
+                                            </v-card>
                                         </v-col>
-               
                                     </v-row>
 
-                                    <div class="d-inline d-flex justify-end ">
+                                    <div class="d-inline d-flex justify-end mt-5">
                                          <v-btn elevation="2" class="btn mr-2">{{ $t("container.list.reset") }}</v-btn>
                                         <v-btn elevation="2" class="btn mr-2" color="success">{{
                                             $t("container.list.exit") }}</v-btn>
@@ -103,9 +117,9 @@
                         {{ $t("container.beneficiary_management.beneficiary_shifting.title")
                         }}
                     </v-card-title>
-                    <v-data-table :loading="loading" item-key="id" :headers="headers" :items="divisions"
+                    <v-data-table :loading="loading" item-key="id" :headers="headers" :items="beneficiaries "
                         :items-per-page="pagination.perPage" hide-default-footer
-                        class="elevation-0 transparent row-pointer">
+                        class="elevation-0 transparent row-pointer mt-5">
                         <template v-slot:item.id="{ item, index }">
                             {{
                                 (pagination.current - 1) * pagination.perPage +
@@ -177,12 +191,8 @@ export default {
     data() {
         return {
             data: {
-                division_id: null,
-                district_id: null,
-                city_id: null,
-                city_thana_id: null,
-                union_id: null,
-                thana_id: null
+                details: 'ID: 005642, Name: Farid Sarker, District: Naogaon, Upazila: Noagaon Sadar, Union: Boaliya ',
+               
             },
 
             date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
@@ -192,15 +202,8 @@ export default {
 
             loading: false,
             search: "",
-            divisions: [],
-            districts: [],
-            locationType: [],
-            thanas: [],
-            cities: [],
-            unions: [],
-            city_thanas: [],
-            district_pouros: [],
-
+            beneficiaries: [],
+          
 
             pagination: {
                 current: 1,
@@ -259,110 +262,7 @@ export default {
 
 
     methods: {
-        async onChangeDivision(event) {
-            await this.$axios
-                .get(`/admin/district/get/${event}`, {
-                    headers: {
-                        Authorization: "Bearer " + this.$store.state.token,
-                        "Content-Type": "multipart/form-data",
-                    },
-                })
-                .then((result) => {
-                    this.districts = result.data.data;
-                });
-        },
-        async onChangeDistrict(event) {
-            await this.$axios
-                .get(`/admin/thana/get/${event}`, {
-                    headers: {
-                        Authorization: "Bearer " + this.$store.state.token,
-                        "Content-Type": "multipart/form-data",
-                    },
-                })
-                .then((result) => {
-                    this.LocationType(this.data.location_type);
-                    this.thanas = result.data.data;
-                });
-        },
-
-        async LocationType($event) {
-            if (this.data.district_id != null && this.data.location_type != null) {
-                if ($event === 2) {
-                    await this.$axios
-                        .get(`/admin/thana/get/${this.data.district_id}`, {
-                            headers: {
-                                Authorization: "Bearer " + this.$store.state.token,
-                                "Content-Type": "multipart/form-data",
-                            },
-                        })
-                        .then((result) => {
-                            this.thanas = result.data.data;
-                        });
-                }
-                if ($event === 3) {
-                    await this.$axios
-                        .get("/admin/city/get/" + this.data.district_id + "/" + $event, {
-                            headers: {
-                                Authorization: "Bearer " + this.$store.state.token,
-                                "Content-Type": "multipart/form-data",
-                            },
-                        })
-                        .then((result) => {
-                            this.cities = result.data.data;
-                        });
-                }
-                if ($event === 1) {
-                    await this.$axios
-                        .get("/admin/city/get/" + this.data.district_id + "/" + $event, {
-                            headers: {
-                                Authorization: "Bearer " + this.$store.state.token,
-                                "Content-Type": "multipart/form-data",
-                            },
-                        })
-                        .then((result) => {
-                            this.district_pouros = result.data.data;
-                        });
-                }
-            }
-        },
-
-        async onChangeThana(event) {
-            await this.$axios
-                .get(`/admin/union/get/${event}`, {
-                    headers: {
-                        Authorization: "Bearer " + this.$store.state.token,
-                        "Content-Type": "multipart/form-data",
-                    },
-                })
-                .then((result) => {
-                    this.unions = result.data.data;
-                });
-        },
-        async onChangeCity(event) {
-            await this.$axios
-                .get(`/admin/thana/get/city/${this.data.city_id}`, {
-                    headers: {
-                        Authorization: "Bearer " + this.$store.state.token,
-                        "Content-Type": "multipart/form-data",
-                    },
-                })
-                .then((result) => {
-                    this.city_thanas = result.data.data;
-                });
-        },
-        async onChangeUpazila(event) {
-            await this.$axios
-                .get(`/admin/union/get/${this.data.thana_id}`, {
-                    headers: {
-                        Authorization: "Bearer " + this.$store.state.token,
-                        "Content-Type": "multipart/form-data",
-                    },
-                })
-                .then((result) => {
-                    this.unions = result.data.data;
-                });
-        },
-
+     
 
         onPageChange($event) {
             // this.pagination.current = $event;
@@ -385,7 +285,7 @@ export default {
                     params: queryParams,
                 })
                 .then((result) => {
-                    this.divisions = result.data.data;
+                    this.beneficiaries = result.data.data;
                     this.pagination.current = result.data.meta.current_page;
                     this.pagination.total = result.data.meta.last_page;
                     this.pagination.grand_total = result.data.meta.total;

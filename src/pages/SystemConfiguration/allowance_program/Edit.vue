@@ -60,11 +60,25 @@ export default {
       error_status: (state) => state.Allowance.error_status
     }),
 
-    ageRules() {
+    minValueRules() {
       return [
-        v => !!v || 'Age is required',
-        v => /^\d+$/.test(v) || 'Age must be a number',
+        v => !!v || "Minimum value is required",
+        v => /^\d+$/.test(v) || 'Minimum Age must be a number',
         v => (v >= 18 && v <= 100) || 'Age must be between 18 and 100',
+        v => {
+          return this.updateAllowanceAge.every(item => v <= item.max_age) || "Minimum value cannot be greater than the maximum value";
+        }
+      ];
+    },
+
+    maxValueRules() {
+      return [
+        v => !!v || "Maximum value is required",
+        v => /^\d+$/.test(v) || 'Maximum Age must be a number',
+        v => (v >= 18 && v <= 100) || 'Age must be between 18 and 100',
+        v => {
+          return this.updateAllowanceAge.every(item => v >= item.min_age) || "Maximum value cannot be less than the minimum value";
+        }
       ];
     },
 
@@ -492,12 +506,13 @@ export default {
                                     step="any"
                                     min="0"
                                     ref="input"
-                                    :rules="ageRules"
+                                    :rules="minValueRules"
                                     dense
                                     outlined
                                     :error="errors[0] ? true : false"
                                     :error-messages="errors[0]"
                                     required
+                                    @keyup="minValueRules()"
                                 ></v-text-field>
                                 </ValidationProvider>
                               </td>
@@ -509,12 +524,13 @@ export default {
                                     step="any"
                                     min="0"
                                     ref="input"
-                                    :rules="ageRules"
+                                    :rules="maxValueRules"
                                     dense
                                     outlined
                                     :error="errors[0] ? true : false"
                                     :error-messages="errors[0]"
                                     required
+                                    @keyup="maxValueRules()"
                                 ></v-text-field>
                                 </ValidationProvider>
                               </td>

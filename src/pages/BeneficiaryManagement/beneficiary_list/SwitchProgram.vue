@@ -1,5 +1,5 @@
 <template>
-    <div id="aplication_list">
+    <div id="switch_program">
         <v-row class="mx-5 mt-4">
 
             <v-col cols="12">

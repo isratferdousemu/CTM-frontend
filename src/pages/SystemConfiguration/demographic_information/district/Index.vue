@@ -192,14 +192,14 @@
                 <ValidationProvider
                   name="Code"
                   vid="code"
-                  rules="required"
+                  rules="required|codeRules"
                   v-slot="{ errors }"
                 >
                   <v-text-field
                     outlined
                     type="text"
                     v-model="data.code"
-                    :label="$t('container.list.code')"
+                    :label="$t('container.system_config.demo_graphic.district.code')"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -305,14 +305,14 @@
                 <ValidationProvider
                   name="Code"
                   vid="code"
-                  rules="required"
+                  rules="required|codeRules"
                   v-slot="{ errors }"
                 >
                   <v-text-field
                     outlined
                     type="text"
                     v-model="data.code"
-                    :label="$t('container.list.code')"
+                    :label="$t('container.system_config.demo_graphic.district.code')"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -471,7 +471,7 @@ export default {
           align: "start",
           sortable: false,
         },
-        { text: this.$t("container.list.code"), value: "code" },
+        { text: this.$t("container.system_config.demo_graphic.district.code"), value: "code" },
         {
           text: this.$t(
             "container.system_config.demo_graphic.division.division"
@@ -498,15 +498,19 @@ export default {
         },
       ];
     },
-
     ...mapState({
       message: (state) => state.District.success_message,
       divisions: (state) => state.Division.divisions,
       districts: (state) => state.District.districts,
     }),
   },
-
   methods: {
+    registerCustomRules() {
+      extend('codeRules', (value) => {
+        return (value.toString().length <= 6) || this.$t("container.system_config.demo_graphic.district.code")+' can have maximum 6 digit';
+
+      });
+    },
     createDialog() {
       if (this.$refs.formAdd) {
         this.$refs.formAdd.reset();
@@ -734,6 +738,7 @@ export default {
     "$i18n.locale": "updateHeaderTitle",
   },
   created() {
+    this.registerCustomRules();
     this.GetDistrict();
     this.getAllDivision();
   },
