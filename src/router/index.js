@@ -15,6 +15,7 @@ import MEReportingRoutes from "./M&EReporting";
 import ManageAllotmentRoutes from "./ManageAllotment";
 import PayrollManagementRoutes from "./PayrollManagement";
 import SystemConfigurationRoutes from "./SystemConfiguration";
+import SystemAuditRoutes from "./SystemAudit";
 import TrainingManagementRoutes from "./TrainingManagement";
 import GeneralSettingRoutes from "./GeneralSetting";
 import CommonRoutes from "./Common";
@@ -58,6 +59,7 @@ const routes = [
       ...SystemConfigurationRoutes,
       ...TrainingManagementRoutes,
       ...GeneralSettingRoutes,
+      ...SystemAuditRoutes,
     ],
   },
 ];
