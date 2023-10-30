@@ -157,7 +157,6 @@ export default {
         this.divs.push(disable_class);
       }
     },
-
     addRow() {
       this.divs.push({
         id: this.index,
@@ -167,11 +166,9 @@ export default {
       });
       this.index++;
     },
-
     deletedRow(id) {
       this.divs = this.divs.filter(d => d.id !== id);
     },
-
     addAllowanceProgram: async function(){
       try {
         let formData = new FormData();
