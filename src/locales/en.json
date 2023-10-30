@@ -41,7 +41,8 @@
             "mobile": "Mobile",
             "beneficiary_journey":"Beneficiary Journey",
             "change_tracking_details":"Change Tracking Details",
-            "exit":"Exit Program"
+            "exit":"Exit Program",
+            "preview":"Preview"
         },
         "system_config": {
             "demo_graphic": {
@@ -440,6 +441,12 @@
                 "branch_name": "Branch Name",
                 "delete": "Delete Payment Processor ",
                 "delete_alert": "Are you sure to delete this Payment Processor?"
+
+            },
+            "system_audit":{
+                "application_tracking":"Application Tracking",
+                "nbr":"NID/Birth Registration Number",
+                "tracking_no":"Tracking No"
 
             }
     }

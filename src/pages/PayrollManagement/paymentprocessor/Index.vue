@@ -467,15 +467,30 @@ export default {
 
         onPageChange($event) {
             // this.pagination.current = $event;
+         this.GetPaymentProcessor()();
       
         },
 
-        async GetDivision() {
+        async GetPaymentProcessor() {
             const queryParams = {
                 searchText: this.search,
                 perPage: this.pagination.perPage,
                 page: this.pagination.current,
             };
+              this.$axios
+                .get("/admin/division/get", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                    params: queryParams,
+                })
+                .then((result) => {
+                    this.divisions = result.data.data;
+                    this.pagination.current = result.data.meta.current_page;
+                    this.pagination.total = result.data.meta.last_page;
+                    this.pagination.grand_total = result.data.meta.total;
+                });
            
         },
        
@@ -496,7 +511,7 @@ export default {
         "$i18n.locale": "updateHeaderTitle",
     },
     created() {
-        this.GetDivision();
+        this.GetPaymentProcessor()();
     },
     beforeMount() {
         this.updateHeaderTitle();
