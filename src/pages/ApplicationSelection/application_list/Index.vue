@@ -621,6 +621,7 @@ export default {
   },
   created() {
     this.GetApplication();
+     this.GetAllowance();
 
 
   },

@@ -64,7 +64,7 @@ export default {
 
                             <v-card-text>
                                 <v-row class="ma-5">
-                                    <v-col cols="12" lg="3" md="3">
+                                    <v-col cols="12" lg="6" md="6">
                                         <table>
                                             <tr>
                                                 <td>
