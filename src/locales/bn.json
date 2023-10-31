@@ -420,8 +420,13 @@
             },
                 "system_audit": {
                     "application_tracking": "আবেদন ট্র্যাকিং",
+                    "grievance_tracking": "অভিযোগ ট্র্যাকিং",
+                    "payment_tracking": "অর্থপ্রদান ট্র্যাকিং",
                     "nbr": "এনআইডি/জন্ম নিবন্ধন নম্বর",
-                    "tracking_no": "ট্র্যাকিং নম্বর"
+                    "tracking_no": "ট্র্যাকিং নম্বর",
+                    "application_status": "আবেদনের অবস্থা",
+                        "grievance_status": "অভিযোগের অবস্থা",
+                        "payment_status": "অর্থপ্রদানের অবস্থা"
                 }
     }
 }

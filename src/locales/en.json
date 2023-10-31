@@ -445,8 +445,13 @@
             },
             "system_audit":{
                 "application_tracking":"Application Tracking",
+                "grievance_tracking": "Grievance Tracking",
+                "payment_tracking": "Payment Tracking",
                 "nbr":"NID/Birth Registration Number",
-                "tracking_no":"Tracking No"
+                "tracking_no":"Tracking No",
+                "application_status":"Application Status",
+                "grievance_status":"Grievance Status",
+              "payment_status":"Payment Status"
 
             }
     }
