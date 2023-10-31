@@ -41,7 +41,8 @@
             "mobile": "মোবাইল",
             "beneficiary_journey": "সুবিধাভোগী যাত্রা",
             "change_tracking_details": "ট্র্যাকিং বিবরণ পরিবর্তন করুন",
-            "exit": "প্রোগ্রাম থেকে প্রস্থান করুন"
+            "exit": "প্রোগ্রাম থেকে প্রস্থান করুন",
+            "preview": "প্রিভিউ"
         },
         "system_config": {
             "demo_graphic": {
@@ -403,6 +404,24 @@
                 "additional": "অতিরিক্ত অর্থপ্রদান",
                 "post": "পোস্ট",
                 "download": "ডাউনলোড"
-            }
+            },
+            "payroll_management": {
+                "list": "পেমেন্ট প্রসেসর",
+                "add_new": "নতুন পেমেন্ট প্রসেসর যোগ করুন",
+                "edit": "পেমেন্ট প্রসেসর সম্পাদন",
+                "processor_type": "প্রসেসরের ধরন",
+                "coverage_area": "অন্তর্ভুক্ত এলাকা",
+                "focal_phone": "ফোকাল ফোন",
+                "email": "ফোকাল ইমেইল",
+                "bank_name":"",
+                "branch_name":"",
+                "delete": "পেমেন্ট প্রসেসর মুছুন ",
+                "delete_alert": "আপনি এই পেমেন্ট প্রসেসর মুছে ফেলার বিষয়ে নিশ্চিত??"
+            },
+                "system_audit": {
+                    "application_tracking": "আবেদন ট্র্যাকিং",
+                    "nbr": "এনআইডি/জন্ম নিবন্ধন নম্বর",
+                    "tracking_no": "ট্র্যাকিং নম্বর"
+                }
     }
 }
