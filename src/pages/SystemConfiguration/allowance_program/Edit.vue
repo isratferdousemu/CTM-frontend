@@ -64,9 +64,9 @@ export default {
       return [
         v => !!v || "Minimum value is required",
         v => /^\d+$/.test(v) || 'Minimum Age must be a number',
-        v => (v >= 18 && v <= 100) || 'Age must be between 18 and 100',
+        v => (v >= 5 && v <= 115) || 'Age must be between 5 and 115',
         v => {
-          return this.updateAllowanceAge.every(item => v <= item.max_age) || "Minimum value cannot be greater than the maximum value";
+          return this.add_allowance_program.allowance_age.every((item) => parseInt(v) < parseInt(item.max_age)) || "Minimum value cannot be greater than the maximum value";
         }
       ];
     },
@@ -75,9 +75,9 @@ export default {
       return [
         v => !!v || "Maximum value is required",
         v => /^\d+$/.test(v) || 'Maximum Age must be a number',
-        v => (v >= 18 && v <= 100) || 'Age must be between 18 and 100',
+        v => (v >= 5 && v <= 115) || 'Age must be between 5 and 115',
         v => {
-          return this.updateAllowanceAge.every(item => v >= item.min_age) || "Maximum value cannot be less than the minimum value";
+          return this.add_allowance_program.allowance_age.every((item) => parseInt(v) > parseInt(item.min_age)) || "Maximum value cannot be less than the minimum value";
         }
       ];
     },
@@ -495,6 +495,7 @@ export default {
                                     :error="errors[0] ? true : false"
                                     :error-messages="errors[0]"
                                     required
+                                    readonly
                                 ></v-select>
                                 </ValidationProvider>
                               </td>
@@ -512,7 +513,8 @@ export default {
                                     :error="errors[0] ? true : false"
                                     :error-messages="errors[0]"
                                     required
-                                    @keyup="minValueRules()"
+                                    @keyup="minValueRules"
+                                    style="height: 64px;"
                                 ></v-text-field>
                                 </ValidationProvider>
                               </td>
@@ -530,7 +532,8 @@ export default {
                                     :error="errors[0] ? true : false"
                                     :error-messages="errors[0]"
                                     required
-                                    @keyup="maxValueRules()"
+                                    @keyup="maxValueRules"
+                                    style="height: 64px;"
                                 ></v-text-field>
                                 </ValidationProvider>
                               </td>
@@ -548,6 +551,7 @@ export default {
                                       :error="errors[0] ? true : false"
                                       :error-messages="errors[0]"
                                       required
+                                      style="height: 64px;"
                                   ></v-text-field>
                                   </ValidationProvider>
                                 </div>
