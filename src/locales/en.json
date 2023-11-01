@@ -83,6 +83,42 @@
                     "delete": "Delete Division",
                     "delete_alert": "Are you sure to delete this Division?"
                 },
+                "city_corporation": {
+                    "city": "City Corporation",
+                    "list": "City Corporation List",
+                    "code": "City Corporation Code",
+                    "name_en": "City Corporation English",
+                    "name_bn": "City Corporation Bangla",
+                    "add_new": "Add New City Corporation",
+                    "search": "Search City Corporation",
+                    "edit": "Edit Division",
+                    "delete": "Delete Division",
+                    "delete_alert": "Are you sure to delete this City Corporation?"
+                },
+                "district_pourashava": {
+                    "city": "District Pourashava",
+                    "list": "District Pourashava List",
+                    "code": "District Pourashava Code",
+                    "name_en": "District Pourashava English",
+                    "name_bn": "District Pourashava Bangla",
+                    "add_new": "Add New District Pourashava",
+                    "search": "Search District Pourashava",
+                    "edit": "Edit Division",
+                    "delete": "Delete Division",
+                    "delete_alert": "Are you sure to delete this Division?"
+                },
+                "upazila": {
+                    "thana": "Upazila",
+                    "list": "Upazila List",
+                    "code": "Upazila Code",
+                    "name_en": "Upazila Name English",
+                    "name_bn": "Upazila Name Bangla",
+                    "add_new": "Add New Upazila",
+                    "search": "Search Upazila",
+                    "edit": "Edit Upazila",
+                    "delete": "Delete Upazila",
+                    "delete_alert": "Are you sure to delete this Thana/Upazila?"
+                },
                 "thana": {
                     "thana": "Thana/Upazila",
                     "list": "Thana/Upazila List",
@@ -95,6 +131,30 @@
                     "delete": "Delete Thana/Upazila",
                     "delete_alert": "Are you sure to delete this Thana/Upazila?"
                 },
+                "union1": {
+                    "union": "Union",
+                    "list": "Union List",
+                    "code": "Union/Pourashava Code",
+                    "name_en": "Union Name English",
+                    "name_bn": "Union Name Bangla",
+                    "add_new": "Add New Union",
+                    "search": "Search Union",
+                    "edit": "Edit Union",
+                    "delete": "Delete Union",
+                    "delete_alert": "Are you sure to delete this Union?"
+                },
+                "pouro": {
+                    "union": "Pouroshava",
+                    "list": "Pouroshava List",
+                    "code": "Pourashava Code",
+                    "name_en": "Pouroshava Name English",
+                    "name_bn": "Pouroshava Name Bangla",
+                    "add_new": "Add New Pouroshava",
+                    "search": "Search Pouroshava",
+                    "edit": "Edit Pouroshava",
+                    "delete": "Delete Pouroshava",
+                    "delete_alert": "Are you sure to delete this Pouroshava?"
+                },
                 "union": {
                     "union": "Union/Pouroshava",
                     "list": "Union/Pouroshava List",
@@ -105,7 +165,7 @@
                     "search": "Search Union/Pouroshava",
                     "edit": "Edit Union/Pouroshava",
                     "delete": "Delete Union/Pouroshava",
-                    "delete_alert": "Are you sure to delete this TUnion/Pouroshava?"
+                    "delete_alert": "Are you sure to delete this Union/Pouroshava?"
                 },
                 "ward": {
                     "ward": "Ward",
