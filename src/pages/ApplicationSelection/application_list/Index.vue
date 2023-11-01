@@ -19,7 +19,7 @@
                         <v-col lg="3" md="3" cols="12">
 
                           <v-select outlined menu-props="top" clearable class="no-arrow-icon" 
-                            :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
+                            :append-icon-cb="appendIconCallback" append-icon="mdi-plus" :items="allowances"  item-text="name_en" item-value="id"
                             :label="$t('container.application_selection.application.program')">
                           </v-select>
                         </v-col>
@@ -217,8 +217,12 @@
 
                   <v-col cols="12">
 
-                    <v-data-table :headers="selectedHeaders" :items="applications"
-                      class="elevation-0 transparent row-pointer">
+                    <v-data-table :headers="selectedHeaders" :items="divisions"
+                       :loading="loading"
+                        item-key="id"
+                        :items-per-page="pagination.perPage"
+                        hide-default-footer
+                        class="elevation-0 transparent row-pointer">
                       <template v-slot:item.sl="{ item, index }">
                         {{
                           (pagination.current - 1) * pagination.perPage +
@@ -314,6 +318,7 @@ export default {
       unions: [],
       city_thanas: [],
       district_pouros: [],
+      allowances:[],
 
 
       pagination: {
@@ -326,7 +331,7 @@ export default {
           { text: this.$t("container.list.sl"), value: "sl" },
           {
             text: this.$t("container.list.name_en"),
-            value: "200",
+            value: "name_en",
 
           },
           {
@@ -374,7 +379,7 @@ export default {
           text: this.$t(
             "container.application_selection.application.program"
           ),
-          value: "100",
+          value: "name_en",
         },
         {
           text: this.$t("container.list.name_en"),
@@ -467,6 +472,21 @@ export default {
       GetAllDivisions: "Division/GetAllDivisions",
    
     }),
+        GetAllowance() {
+      this.$axios
+        .get("/admin/allowance/get", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+
+        })
+        .then((result) => {
+          this.allowances = result.data.data;
+
+        });
+
+    },
 
     async onChangeDivision(event) {
       await this.$axios
@@ -584,6 +604,20 @@ export default {
         perPage: this.pagination.perPage,
         page: this.pagination.current,
       };
+          this.$axios
+        .get("/admin/district/get", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          this.divisions = result.data.data;
+          this.pagination.current = result.data.meta.current_page;
+          this.pagination.total = result.data.meta.last_page;
+          this.pagination.grand_total = result.data.meta.total;
+        });
 
 
     },
@@ -604,6 +638,7 @@ export default {
   },
   created() {
     this.GetApplication();
+     this.GetAllowance();
 
 
   },

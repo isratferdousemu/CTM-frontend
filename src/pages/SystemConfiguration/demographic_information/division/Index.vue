@@ -164,19 +164,19 @@
             <ValidationObserver ref="formAdd" v-slot="{ invalid }">
               <form @submit.prevent="submitDivision()">
                 <!-- {{errors.code}}
-                {{errors.name_en}} -->
-
-                <ValidationProvider
+                  {{errors.name_en}} -->
+                  
+                  <ValidationProvider
                   v-slot="{ errors }"
                   name="Code"
                   vid="code"
-                  rules="required"
-                >
+                  rules="required|codeRules"
+                  >
                   <v-text-field
                     outlined
                     type="text"
                     v-model="data.code"
-                    :label="$t('container.list.code')"
+                    :label="$t('container.system_config.demo_graphic.division.code')"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -261,14 +261,14 @@
                 <ValidationProvider
                   name="Code"
                   vid="code"
-                  rules="required"
+                  rules="codeRules"
                   v-slot="{ errors }"
                 >
                   <v-text-field
                     outlined
                     type="text"
                     v-model="data.code"
-                    :label="$t('container.list.code')"
+                    :label="$t('container.system_config.demo_graphic.division.code')"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -408,9 +408,22 @@ export default {
         total: 0,
         perPage: 10,
       },
+      page: 1,
       items: [5, 10, 15, 20, 40, 50, 100],
     };
   },
+
+  watch:{
+    "$i18n.locale": "updateHeaderTitle",
+
+    search:{
+      handler(){
+        this.page = this.pagination.current;
+        this.GetDivision();
+      }
+    }
+  },
+
   components: {
     ValidationProvider,
     ValidationObserver,
@@ -424,7 +437,7 @@ export default {
           align: "start",
           sortable: false,
         },
-        { text: this.$t("container.list.code"), value: "code" },
+        { text: this.$t("container.system_config.demo_graphic.division.code"), value: "code" },
         {
           text: this.$t(
             "container.system_config.demo_graphic.division.name_en"
@@ -453,8 +466,12 @@ export default {
       // error_status: (state) => state.Division.error_status,
     }),
   },
-
   methods: {
+    registerCustomRules() {
+      extend('codeRules', (value) => {
+        return (value.toString().length <= 6) || this.$t("container.system_config.demo_graphic.division.code")+' can have maximum 6 digit';
+});
+    },
     createDialog() {
       if (this.$refs.formAdd) {
         this.$refs.formAdd.reset();
@@ -653,10 +670,9 @@ export default {
       this.$store.commit("setHeaderTitle", title);
     },
   },
-  watch: {
-    "$i18n.locale": "updateHeaderTitle",
-  },
+
   created() {
+    this.registerCustomRules();
     this.GetDivision();
   },
   beforeMount() {

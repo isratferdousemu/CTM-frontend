@@ -11,6 +11,8 @@ const state = {
   allowanceAmounts: [],
   educationGender: [],
   districts: [],
+  locations: [],
+  financial_years: [],
   is_disable_class: '',
   success_message: "",
   errors: {},
@@ -38,6 +40,14 @@ const mutations = {
 
   GET_ALL_DISTRICT: (state, data) => {
     state.districts = data;
+  },
+
+  GET_ALL_LOCATION: (state, data) => {
+    state.locations = data;
+  },
+
+  GET_FINANCIAL_YEAR: (state, data) => {
+    state.financial_years = data;
   },
 };
 /* -------------------------------------------------------------------------- */
@@ -76,6 +86,26 @@ const actions = {
     })
   },
   /*get all districts end*/
+
+  /*get all office location start*/
+  getAllOfficeLocation: ({commit}, id) => {
+    return http().get(`/admin/allotment/get_location/${id}`).then((result) => {
+      commit('GET_ALL_LOCATION', result.data.data);
+    }).catch((err) => {
+      state.errors = err.response.errors
+    })
+  },
+  /*get all office location end*/
+
+  /*get all financial year start*/
+  getAllFinancialYear: ({commit}) => {
+    return http().get('/admin/allotment/get_financial_year').then((result) => {
+        commit('GET_FINANCIAL_YEAR', result.data.data);
+    }).catch((err) => {
+      state.errors = err.response.errors
+    })
+  },
+  /*get all financial year end*/
 };
 /* -------------------------------------------------------------------------- */
 /*                               Getters Define                               */

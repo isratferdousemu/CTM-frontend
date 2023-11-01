@@ -4,11 +4,11 @@
             <v-col cols="12">
                  <v-expansion-panels>
         <v-expansion-panel>
-          <v-expansion-panel-header>
+          <v-expansion-panel-header color=#8C9EFF>
             {{ $t('container.beneficiary_management.beneficiary_list.beneficiary_replacement') }}
           </v-expansion-panel-header>
           <v-expansion-panel-content>
-              <v-row>
+              <v-row class="mt-10">
                                 <v-col lg="6" md="6" cols="12">
                                     <v-text-field
                                         :label="$t('container.beneficiary_management.beneficiary_list.replacement_with')"
@@ -98,25 +98,7 @@
                     <v-row   class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
                       justify="center"
                       justify-lg="space-between">
-                       <div class="d-flex justify-sm-end flex-wrap">
-                        <v-text-field
-                          @keyup.native="GetDivision"
-                          outlined
-                          dense
-                          v-model="search"
-                          prepend-inner-icon="mdi-magnify"
-                          class="my-sm-0 my-3 mx-0v -input--horizontal"
-                          flat
-                          variant="outlined"
-                          :label="$t(
-                              'container.list.search'
-                          )
-                              "
-                          hide-details
-                          color="primary"
-                        >
-                        </v-text-field>
-                      </div>
+                     
                          <v-col cols="12">
                         <v-data-table
                           :loading="loading"

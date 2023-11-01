@@ -41,7 +41,8 @@
             "mobile": "Mobile",
             "beneficiary_journey":"Beneficiary Journey",
             "change_tracking_details":"Change Tracking Details",
-            "exit":"Exit Program"
+            "exit":"Exit Program",
+            "preview":"Preview"
         },
         "system_config": {
             "demo_graphic": {
@@ -49,6 +50,7 @@
                 "division": {
                     "division": "Division",
                     "list": "Division List",
+                    "code": "Division Code",
                     "name_en": "Division Name English",
                     "name_bn": "Division Name Bangla",
                     "add_new": "Add New Division",
@@ -60,6 +62,7 @@
                 "district": {
                     "district": "District",
                     "list": "District List",
+                    "code": "District Code",
                     "name_en": "District Name English",
                     "name_bn": "District Name Bangla",
                     "add_new": "Add New District",
@@ -71,6 +74,7 @@
                 "city": {
                     "city": "City Corporation/District Pourashava",
                     "list": "City Corporation/District Pourashava List",
+                    "code": "City Corporation/District Pourashava Code",
                     "name_en": "City Corporation/District Pourashava English",
                     "name_bn": "City Corporation/District Pourashava Bangla",
                     "add_new": "Add New City Corporation/District Pourashava",
@@ -82,6 +86,7 @@
                 "thana": {
                     "thana": "Thana/Upazila",
                     "list": "Thana/Upazila List",
+                    "code": "Thana/Upazila Code",
                     "name_en": "Thana/Upazila Name English",
                     "name_bn": "Thana/Upazila Name Bangla",
                     "add_new": "Add New Thana/Upazila",
@@ -93,6 +98,7 @@
                 "union": {
                     "union": "Union/Pouroshava",
                     "list": "Union/Pouroshava List",
+                    "code": "Union/Pourashava Code",
                     "name_en": "Union/Pouroshava Name English",
                     "name_bn": "Union/Pouroshava Name Bangla",
                     "add_new": "Add New Union/Pouroshava",
@@ -104,6 +110,7 @@
                 "ward": {
                     "ward": "Ward",
                     "list": "Ward List",
+                    "code": "Ward Code",
                     "name_en": "Ward Name English",
                     "name_bn": "Ward Name Bangla",
                     "add_new": "Add New Ward",
@@ -122,6 +129,7 @@
                 "office": {
                     "office": "Office",
                     "list": "Office List",
+                    "code": "Office Code",
                     "name_en": "Office Name English",
                     "name_bn": "Office Name Bangla",
                     "add_new": "Add New Office",
@@ -143,7 +151,7 @@
                 },
                 "committee": {
                     "committee": "Committee",
-                    "code": "Code",
+                    "code": "Committee Code",
                     "list": "Committee List",
                     "view": "View",
                     "name_en": "Committee Name",
@@ -219,6 +227,39 @@
                 "unique_id": "Unique ID",
                 "add": "Add Device",
                 "edit": "Edit device"
+            },
+            "allowance_program": {
+                "list": "Allowance Program Lists",
+                "name_en": "Program Name En",
+                "name_bn": "Program Name Bn",
+                "gender": "Gender",
+                "payment_cycle": "Payment Cycle",
+                "is_marital_toggle": "Marital",
+                "marital_status": "Marital Status",
+                "gender_id": "Gender ID",
+                "min_age": "Minimum Age",
+                "max_age": "Maximum Age",
+                "amount": "Amount",
+                "type_id": "Type ID",
+                "add_field": "Add Field ID",
+                "age_limit_amount": "Age Limit & Amount",
+                "class_wise_amount": "CLass Wise Amount",
+                "status": "Status",
+                "is_active": "Is Active",
+                "add": "Add Allowance Program",
+                "edit": "Edit Allowance Program"
+            },
+            "menu": {
+                "list": "Menu Lists",
+                "label_name_en": "Menu English",
+                "label_name_bn": "Menu Bangla",
+                "parent_id": "Parent",
+                "link": "Link",
+                "link_types": "Link Types",
+                "page_link_id": "Page url",
+                "order": "Order",
+                "add": "Add Menu",
+                "edit": "Edit Menu"
             }
         },
         "general_setting": {
@@ -408,9 +449,62 @@
                         },
                         "beneficiary_shifting": {
                             "title": "Beneficiary Shifting",
-                            "cause": "Cause"
+                            "cause": "Cause",
+                            "activation_date":"Activation Date"
                         }
                        
+            },
+            "manage_allotment":{
+                "list":"Allotment List",
+                "program":"Allotment Distribution Program",
+                "regular_payment":"Regular Payment",
+                "additional": "Additional Payment",
+                "post":"Post",
+                "download":"Download",
+                "allotment_setup_list":"Allotment SetUp List",
+                "area_type":"Area Type",
+                "allotment_area":"Allotment Area",
+                "add_new_setup":"Add New SetUp",
+                "setupdelete": "Delete Allotment Area ",
+                "setupdelete_alert": "Are you sure to delete this Allotment Area?"
+            },
+            "payroll_management": {
+                "list": "Payment Processor",
+                "add_new": "Add New Payment Processor",
+                "edit": "Edit Payment Processor",
+                "processor_type": "Processor Type",
+                "coverage_area": "Coverage Area",
+                "focal_phone": "Focal Phone",
+                "email": "Focal Email",
+                "bank_name": "Bank Name",
+                "branch_name": "Branch Name",
+                "delete": "Delete Payment Processor ",
+                "delete_alert": "Are you sure to delete this Payment Processor?"
+
+            },
+            "system_audit":{
+                "application_tracking":"Application Tracking",
+                "grievance_tracking": "Grievance Tracking",
+                "payment_tracking": "Payment Tracking",
+                "nbr":"NID/Birth Registration Number",
+                "tracking_no":"Tracking No",
+                "application_status":"Application Status",
+                "grievance_status":"Grievance Status",
+                "payment_status":"Payment Status",
+                "activity_log":"Activity Log",
+                "from_date":"From Date",
+                "to_date": "To Date",
+                "activity_type":"Activity Type",
+                "user_id":"User ID",
+                "activity_list":"Activity List",
+                "activity":"Activity",
+                "user": "User",
+                "device_id": "Device ID",
+                "location": "Location",
+                "date_time":"Date & Time"
+
+
+
             }
     }
 }

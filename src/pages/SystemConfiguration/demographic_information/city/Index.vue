@@ -233,14 +233,14 @@
                 <ValidationProvider
                   name="Code"
                   vid="code"
-                  rules="required"
+                  rules="required|codeRules"
                   v-slot="{ errors }"
                 >
                   <v-text-field
                     outlined
                     type="text"
                     v-model="data.code"
-                    :label="$t('container.list.code')"
+                    :label="$t('container.system_config.demo_graphic.city.code')"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -389,14 +389,14 @@
                 <ValidationProvider
                   name="Code"
                   vid="code"
-                  rules="required"
+                  rules="required|codeRules"
                   v-slot="{ errors }"
                 >
                   <v-text-field
                     outlined
                     type="text"
                     v-model="data.code"
-                    :label="$t('container.list.code')"
+                    :label="$t('container.system_config.demo_graphic.city.code')"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -562,7 +562,7 @@ export default {
           width: "5%",
         },
         {
-          text: this.$t("container.list.code"),
+          text: this.$t("container.system_config.demo_graphic.city.code"),
           value: "code",
           width: "5%",
         },
@@ -615,8 +615,12 @@ export default {
       );
     },
   },
-
   methods: {
+    registerCustomRules() {
+      extend('codeRules', (value) => {
+        return (value.toString().length <= 6) || this.$t("container.system_config.demo_graphic.city.code")+' can have maximum 6 digit';
+      });
+    },
     createDialog() {
       if (this.$refs.formAdd) {
         this.$refs.formAdd.reset();
@@ -926,6 +930,7 @@ export default {
     },
   },
   created() {
+    this.registerCustomRules();
     this.GetCity();
     this.getAllDivision();
     this.$store.dispatch("getLookupByType", 1).then((res) => {
