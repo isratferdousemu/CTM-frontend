@@ -305,7 +305,12 @@
                     </ValidationProvider>
                   </v-col>
 
-                  <v-col lg="6" md="6" cols="12">
+                  <v-col
+                    lg="6"
+                    md="6"
+                    cols="12"
+                    v-if="data.location_type != null"
+                  >
                     <ValidationProvider
                       name="Code"
                       vid="code"
@@ -316,9 +321,7 @@
                         outlined
                         type="text"
                         v-model="data.code"
-                        :label="
-                          $t('container.system_config.demo_graphic.union.code')
-                        "
+                        :label="codeLabel"
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
@@ -326,7 +329,12 @@
                       ></v-text-field>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12">
+                  <v-col
+                    lg="6"
+                    md="6"
+                    cols="12"
+                    v-if="data.location_type != null"
+                  >
                     <ValidationProvider
                       name="Name English"
                       vid="name_en"
@@ -337,11 +345,7 @@
                         outlined
                         type="text"
                         v-model="data.name_en"
-                        :label="
-                          $t(
-                            'container.system_config.demo_graphic.union.name_en'
-                          )
-                        "
+                        :label="nameEnLabel"
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
@@ -349,7 +353,12 @@
                       ></v-text-field>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12">
+                  <v-col
+                    lg="6"
+                    md="6"
+                    cols="12"
+                    v-if="data.location_type != null"
+                  >
                     <ValidationProvider
                       name="Name Bangla"
                       vid="name_bn"
@@ -360,11 +369,7 @@
                         outlined
                         type="text"
                         v-model="data.name_bn"
-                        :label="
-                          $t(
-                            'container.system_config.demo_graphic.union.name_bn'
-                          )
-                        "
+                        :label="nameBnLabel"
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
@@ -905,17 +910,13 @@ export default {
       // Use a computed property to dynamically determine the label
       if (this.data.location_type === 3) {
         const data = {};
-        return this.$t(
-          "container.system_config.demo_graphic.city_corporation.code"
-        );
+        return this.$t("container.system_config.demo_graphic.union1.code");
       }
       if (this.data.location_type === 1) {
-        return this.$t(
-          "container.system_config.demo_graphic.district_pourashava.code"
-        );
+        return this.$t("container.system_config.demo_graphic.pouro.code");
       }
       if (this.data.location_type === 2) {
-        return this.$t("container.system_config.demo_graphic.upazila.code");
+        return this.$t("container.system_config.demo_graphic.thana1.code");
       } else {
         return "Fallback Label"; // You can set a fallback label here
       }
@@ -924,17 +925,13 @@ export default {
       // Use a computed property to dynamically determine the label
       if (this.data.location_type === 3) {
         const data = {};
-        return this.$t(
-          "container.system_config.demo_graphic.city_corporation.name_en"
-        );
+        return this.$t("container.system_config.demo_graphic.union1.name_en");
       }
       if (this.data.location_type === 1) {
-        return this.$t(
-          "container.system_config.demo_graphic.district_pourashava.name_en"
-        );
+        return this.$t("container.system_config.demo_graphic.pouro.name_en");
       }
       if (this.data.location_type === 2) {
-        return this.$t("container.system_config.demo_graphic.upazila.name_en");
+        return this.$t("container.system_config.demo_graphic.thana1.name_en");
       } else {
         return "Fallback Label"; // You can set a fallback label here
       }
@@ -943,17 +940,13 @@ export default {
       // Use a computed property to dynamically determine the label
       if (this.data.location_type === 3) {
         const data = {};
-        return this.$t(
-          "container.system_config.demo_graphic.city_corporation.name_bn"
-        );
+        return this.$t("container.system_config.demo_graphic.union1.name_bn");
       }
       if (this.data.location_type === 1) {
-        return this.$t(
-          "container.system_config.demo_graphic.district_pourashava.name_bn"
-        );
+        return this.$t("container.system_config.demo_graphic.pouro.name_bn");
       }
       if (this.data.location_type === 2) {
-        return this.$t("container.system_config.demo_graphic.upazila.name_bn");
+        return this.$t("container.system_config.demo_graphic.thana1.name_bn");
       } else {
         return "Fallback Label"; // You can set a fallback label here
       }
@@ -1026,18 +1019,35 @@ export default {
       }
 
       try {
-        this.$store
-          .dispatch("Union/StoreUnion", this.validator())
-          .then((res) => {
-            if (res.data?.success) {
-              this.$toast.success("Data Inserted Successfully");
-              this.dialogAdd = false;
-              this.resetData();
-              this.GetUnion();
-            } else if (res.response?.data?.errors) {
-              this.$refs.formAdd.setErrors(res.response.data.errors);
-            }
-          });
+        if (this.data.location_type == 2) {
+          //Insert Upazila
+          this.$store
+            .dispatch("Thana/StoreUpazila", this.validator())
+            .then((data) => {
+              console.log(data, "submit");
+              if (data == null) {
+                this.$toast.success("Data Inserted Successfully");
+                this.dialogAdd = false;
+                this.resetData();
+                this.GetUnion();
+              } else {
+                this.$refs.formAdd.setErrors(data.errors);
+              }
+            });
+        } else {
+          this.$store
+            .dispatch("Union/StoreUnion", this.validator())
+            .then((res) => {
+              if (res.data?.success) {
+                this.$toast.success("Data Inserted Successfully");
+                this.dialogAdd = false;
+                this.resetData();
+                this.GetUnion();
+              } else if (res.response?.data?.errors) {
+                this.$refs.formAdd.setErrors(res.response.data.errors);
+              }
+            });
+        }
       } catch (e) {
         console.log(e);
       }
@@ -1155,8 +1165,8 @@ export default {
         console.log(e);
       }
     },
-    onChangeDistrict() {
-      this.onChangeLocationType(this.data.location_type);
+    onChangeDistrict(event) {
+      this.onChangeLocationType(event);
     },
     async onChangeLocationType(event) {
       console.log(event);
@@ -1184,20 +1194,10 @@ export default {
             this.city = result.data.data;
             console.log(this.city);
           });
-      }
-
-      else {
-        // this.isCityCorporationHidden = false;
-        param = 2; //City Corporation
-        // const queryParams = {
-        //   district_id: this.data.district_id,
-        //   location_type: event,
-        // };
-
-        // console.log(JSON.stringify(queryParams));
-        // return;
+      } else {
+        // alert(event);
         await this.$axios
-          .get(`/admin/city/get/` + this.data.district_id + "/" + param, {
+          .get(`/admin/thana/get/${event}`, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
@@ -1205,7 +1205,6 @@ export default {
           })
           .then((result) => {
             this.thanas = result.data.data;
-            console.log(this.thanas);
           });
       }
     },

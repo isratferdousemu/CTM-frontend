@@ -131,10 +131,22 @@
                     "delete": "Delete Thana/Upazila",
                     "delete_alert": "Are you sure to delete this Thana/Upazila?"
                 },
+                "thana1": {
+                    "thana": "Thana",
+                    "list": "Thana List",
+                    "code": "Thana Code",
+                    "name_en": "Thana Name English",
+                    "name_bn": "Thana Name Bangla",
+                    "add_new": "Add New Thana",
+                    "search": "Search Thana",
+                    "edit": "Edit Thana",
+                    "delete": "Delete Thana",
+                    "delete_alert": "Are you sure to delete this Thana?"
+                },
                 "union1": {
                     "union": "Union",
                     "list": "Union List",
-                    "code": "Union/Pourashava Code",
+                    "code": "Union Code",
                     "name_en": "Union Name English",
                     "name_bn": "Union Name Bangla",
                     "add_new": "Add New Union",
