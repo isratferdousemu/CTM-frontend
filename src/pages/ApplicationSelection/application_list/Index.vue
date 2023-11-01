@@ -19,7 +19,7 @@
                         <v-col lg="3" md="3" cols="12">
 
                           <v-select outlined menu-props="top" clearable class="no-arrow-icon" 
-                            :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
+                            :append-icon-cb="appendIconCallback" append-icon="mdi-plus" :items="allowances"  item-text="name_en" item-value="id"
                             :label="$t('container.application_selection.application.program')">
                           </v-select>
                         </v-col>
@@ -217,7 +217,7 @@
 
                   <v-col cols="12">
 
-                    <v-data-table :headers="selectedHeaders" :items="applications"
+                    <v-data-table :headers="selectedHeaders" :items="divisions"
                       class="elevation-0 transparent row-pointer">
                       <template v-slot:item.sl="{ item, index }">
                         {{
@@ -314,6 +314,7 @@ export default {
       unions: [],
       city_thanas: [],
       district_pouros: [],
+      allowances:[],
 
 
       pagination: {
@@ -467,6 +468,21 @@ export default {
       GetAllDivisions: "Division/GetAllDivisions",
    
     }),
+        GetAllowance() {
+      this.$axios
+        .get("/admin/allowance/get", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+
+        })
+        .then((result) => {
+          this.allowances = result.data.data;
+
+        });
+
+    },
 
     async onChangeDivision(event) {
       await this.$axios
@@ -584,6 +600,7 @@ export default {
         perPage: this.pagination.perPage,
         page: this.pagination.current,
       };
+       
 
 
     },
@@ -604,6 +621,7 @@ export default {
   },
   created() {
     this.GetApplication();
+     this.GetAllowance();
 
 
   },

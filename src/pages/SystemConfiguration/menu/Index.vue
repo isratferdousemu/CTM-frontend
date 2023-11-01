@@ -15,6 +15,7 @@ export default {
       deleteDialog: false,
       delete_loading: false,
       deleted_id: '',
+      searchDebounce: null
     };
   },
 
@@ -27,21 +28,28 @@ export default {
     },
 
     search: {
-      handler () {
-        this.getAllMenus()
+      handler: function () {
+        // Use debounce to wait for user input before making the API call
+        clearTimeout(this.searchDebounce);
+        this.searchDebounce = setTimeout(() => {
+          this.options.page = 1
+          this.getAllMenus();
+        }, 500); // Adjust debounce time according to your requirements
       },
     },
+
+    "$i18n.locale": "updateHeaderTitle",
   },
 
   computed: {
     headers() {
       return [
         { text: "#Sl", value: "id", align: "start", sortable: false },
-        { text: "Label Name English", value: "label_name_en" },
-        { text: "Label Name Bangla", value: "label_name_bn" },
-        { text: "Parent", value: "parent_id" },
-        { text: "Link", value: "link" },
-        { text: "Actions", value: "actions", align: "center", sortable: false },
+        { text: this.$t('container.system_config.menu.label_name_en'), value: "label_name_en" },
+        { text: this.$t('container.system_config.menu.label_name_bn'), value: "label_name_bn" },
+        { text: this.$t('container.system_config.menu.parent_id'), value: "parent_id" },
+        { text: this.$t('container.system_config.menu.link'), value: "link" },
+        { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false },
       ];
     },
 
@@ -53,6 +61,8 @@ export default {
 
   mounted() {
     this.GetAllParents();
+    this.updateHeaderTitle();
+    this.getAllMenus();
   },
 
   methods: {
@@ -65,21 +75,25 @@ export default {
 
       const { sortBy, sortDesc, page, itemsPerPage } = this.options
 
-      http().get('/admin/menu/get', {
-        params: {
-          sortBy: sortBy[0],
-          sortDesc: sortDesc[0],
-          page: page,
-          itemsPerPage: itemsPerPage,
-          search: this.search
-        }
-      }).then((result) => {
-        this.menus = result.data.data;
-        this.totalMenus = result.data.total;
-        this.loading = false;
-      }).catch((err) => {
-        console.log(err);
-      })
+      clearTimeout(this.searchDebounce);
+      this.searchDebounce = setTimeout(() => {
+        http().get('/admin/menu/get', {
+          params: {
+            sortBy: sortBy[0],
+            sortDesc: sortDesc[0],
+            page: page,
+            itemsPerPage: itemsPerPage,
+            search: this.search // Include the search term
+          }
+        }).then((result) => {
+          this.menus = result.data.data;
+          this.totalMenus = result.data.total;
+          this.loading = false;
+        }).catch((err) => {
+          console.log(err);
+          this.loading = false;
+        });
+      }, 500); // Adjust debounce time according to your requirements
     },
 
     deleteAlert(id) {
@@ -92,8 +106,7 @@ export default {
         let id = this.deleted_id;
         await this.$store.dispatch("Menu/DestroyMenu", id).then(() => {
           this.getAllMenus();
-    this.$store.dispatch('getAllMenus');
-
+          this.$store.dispatch('getAllMenus');
           this.deleteDialog = false;
           this.$toast.success(this.message);
         });
@@ -101,6 +114,14 @@ export default {
         console.log(e);
       }
     },
+
+    updateHeaderTitle() {
+      const title = this.$t(
+          "container.system_config.menu.list"
+      );
+      this.$store.commit("setHeaderTitle", title);
+    },
+
   },
 };
 </script>
@@ -114,7 +135,7 @@ export default {
             <v-card>
               <v-row>
                 <v-col col="6">
-                  <v-card-title><h3>Menu Lists</h3></v-card-title>
+                  <v-card-title><h3>{{ $t('container.system_config.menu.list') }}</h3></v-card-title>
                 </v-col>
               </v-row>
 
@@ -144,7 +165,7 @@ export default {
                       to="/system-configuration/menu/create"
                     >
                     <v-icon small left>mdi-plus</v-icon>
-                    <span>Add New</span>
+                    <span>{{$t('container.list.add_new')}}</span>
                   </v-btn>
                 </v-card-title>
 

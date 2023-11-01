@@ -39,17 +39,18 @@ export default {
     headers(){
       return[
         { text: "#Sl", value: "id", align: "start", sortable: false },
-        { text: "Program Name English", value: "name_en" },
-        { text: "Program Name Bangla", value: "name_bn" },
-        { text: "Payment Cycle", value: "payment_cycle" },
-        { text: "Status", value: "is_active" },
-        { text: "Actions", value: "actions", align: "center", sortable: false },
+        { text: this.$t('container.system_config.allowance_program.name_en'), value: "name_en" },
+        { text: this.$t('container.system_config.allowance_program.name_bn'), value: "name_bn" },
+        { text: this.$t('container.system_config.allowance_program.payment_cycle'), value: "payment_cycle" },
+        { text: this.$t('container.system_config.allowance_program.status'), value: "is_active" },
+        { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false },
       ]
     }
   },
 
   mounted() {
     this.getAllowance();
+    this.updateHeaderTitle();
   },
 
   methods: {
@@ -96,7 +97,14 @@ export default {
       }catch (e) {
         console.log(e);
       }
-    }
+    },
+
+    updateHeaderTitle() {
+      const title = this.$t(
+          "container.system_config.allowance_program.list"
+      );
+      this.$store.commit("setHeaderTitle", title);
+    },
   }
 }
 </script>
@@ -110,7 +118,7 @@ export default {
             <v-card>
               <v-row>
                 <v-col col="6">
-                  <v-card-title><h3>Allowance Program Lists</h3></v-card-title>
+                  <v-card-title><h3>{{ $t('container.system_config.allowance_program.list') }}</h3></v-card-title>
                 </v-col>
               </v-row>
 
@@ -141,7 +149,7 @@ export default {
                       to="/system-configuration/allowance-program/create"
                   >
                     <v-icon small left>mdi-plus</v-icon>
-                    <span>Add New</span>
+                    <span>{{$t('container.list.add_new')}}</span>
                   </v-btn>
                 </v-card-title>
 

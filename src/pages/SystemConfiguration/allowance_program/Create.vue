@@ -44,7 +44,7 @@ export default {
   },
 
   watch: {
-
+    '$i18n.locale': 'updateHeaderTitle',
   },
 
   computed: {
@@ -62,9 +62,9 @@ export default {
       return [
         v => !!v || "Minimum value is required",
         v => /^\d+$/.test(v) || 'Minimum Age must be a number',
-        v => (v >= 18 && v <= 100) || 'Age must be between 18 and 100',
+        v => (v >= 5 && v <= 115) || 'Age must be between 5 and 115',
         v => {
-          return this.add_allowance_program.allowance_age.every(item => v <= item.max_age) || "Minimum value cannot be greater than the maximum value";
+          return this.add_allowance_program.allowance_age.every((item) => parseInt(v) < parseInt(item.max_age)) || "Minimum value cannot be greater than the maximum value";
         }
       ];
     },
@@ -73,9 +73,9 @@ export default {
       return [
         v => !!v || "Maximum value is required",
         v => /^\d+$/.test(v) || 'Maximum Age must be a number',
-        v => (v >= 18 && v <= 100) || 'Age must be between 18 and 100',
+        v => (v >= 5 && v <= 115) || 'Age must be between 5 and 115',
         v => {
-          return this.add_allowance_program.allowance_age.every(item => v >= item.min_age) || "Maximum value cannot be less than the minimum value";
+          return this.add_allowance_program.allowance_age.every((item) => parseInt(v) > parseInt(item.min_age)) || "Maximum value cannot be less than the minimum value";
         }
       ];
     },
@@ -86,6 +86,7 @@ export default {
     this.GetAllAdditionalField();
     this.GerAllLookUpGender();
     this.GerAllLookUpGenderType();
+    this.updateHeaderTitle();
   },
 
   methods: {
@@ -94,8 +95,6 @@ export default {
       GerAllLookUpGender: "Allowance/GerAllLookUpGender",
       GerAllLookUpGenderType: "Allowance/GerAllLookUpGenderType"
     }),
-
-
 
     maritalStatus(){
       this.is_marital_toggle = !this.is_marital_toggle;
@@ -239,7 +238,14 @@ export default {
       }catch (e) {
         console.log(e);
       }
-    }
+    },
+
+    updateHeaderTitle() {
+      const title = this.$t(
+          "container.system_config.allowance_program.add"
+      );
+      this.$store.commit("setHeaderTitle", title);
+    },
   }
 }
 </script>
@@ -255,7 +261,7 @@ export default {
                 <v-card>
                   <v-row>
                     <v-col col="6">
-                      <v-card-title><h3>Allowance Program Create</h3></v-card-title>
+                      <v-card-title><h3>{{ $t('container.system_config.allowance_program.add') }}</h3></v-card-title>
                     </v-col>
                   </v-row>
 
@@ -268,7 +274,7 @@ export default {
                           <ValidationProvider name="name english" vid="name_en" rules="required" v-slot="{ errors }">
                             <v-text-field
                                 v-model="add_allowance_program.name_en"
-                                label="Program Name EN"
+                                :label="$t('container.system_config.allowance_program.name_en')"
                                 menu-props="auto"
                                 persistent-hint
                                 outlined
@@ -283,7 +289,7 @@ export default {
                           <ValidationProvider name="name bangla" vid="name_bn" rules="required" v-slot="{ errors }">
                           <v-text-field
                               v-model="add_allowance_program.name_bn"
-                              label="Program Name BN"
+                              :label="$t('container.system_config.allowance_program.name_bn')"
                               menu-props="auto"
                               persistent-hint
                               outlined
@@ -306,7 +312,7 @@ export default {
                                 item-text="value_en"
                                 item-value="id"
                                 chips
-                                label="Select Gender"
+                                :label="$t('container.system_config.allowance_program.gender')"
                                 multiple
                                 outlined
                                 @change="removeGender($event)"
@@ -325,7 +331,7 @@ export default {
                                 item-text="name"
                                 item-value="name"
                                 chips
-                                label="Select Payment Cycle"
+                                :label="$t('container.system_config.allowance_program.payment_cycle')"
                                 outlined
                                 :error="errors[0] ? true : false"
                                 :error-messages="errors[0]"
@@ -344,7 +350,7 @@ export default {
                               <ValidationProvider name="marital" vid="is_marital_toggle" rules="required" v-slot="{ errors }">
                                 <v-checkbox
                                     v-model="add_allowance_program.is_marital_toggle"
-                                    label="Marital Status"
+                                    :label="$t('container.system_config.allowance_program.is_marital_toggle')"
                                     @click="maritalStatus"
                                     :error="errors[0] ? true : false"
                                     :error-messages="errors[0]"
@@ -360,7 +366,7 @@ export default {
                                     :items="marital_items"
                                     item-text="name"
                                     item-value="name"
-                                    label="Please Select"
+                                    :label="$t('container.system_config.allowance_program.marital_status')"
                                     outlined
                                     :error="errors[0] ? true : false"
                                     :error-messages="errors[0]"
@@ -381,7 +387,7 @@ export default {
                     <v-col cols="12" class="d-flex">
                       <v-row wrap>
                         <v-col cols="12" sm="6" lg="6">
-                          <v-checkbox label="Age Limit & Amount" @click="ageLimit"></v-checkbox>
+                          <v-checkbox :label="$t('container.system_config.allowance_program.age_limit_amount')" @click="ageLimit"></v-checkbox>
 
                           <table v-if="is_age_limit === true">
                             <thead>
@@ -410,6 +416,7 @@ export default {
                                       :error="errors[0] ? true : false"
                                       :error-messages="errors[0]"
                                       required
+                                      readonly
                                   ></v-select>
                                 </ValidationProvider>
                               </td>
@@ -426,7 +433,8 @@ export default {
                                       :error-messages="errors[0]"
                                       required
                                       :rules="minValueRules"
-                                      @keyup="minValueRules()"
+                                      @keyup="minValueRules"
+                                      style="height: 64px;"
                                   >
                                   </v-text-field>
                                 </ValidationProvider>
@@ -444,7 +452,8 @@ export default {
                                     :error-messages="errors[0]"
                                     required
                                     :rules="maxValueRules"
-                                    @keyup="maxValueRules()"
+                                    @keyup="maxValueRules"
+                                    style="height: 64px;"
                                 >
                                 </v-text-field>
                                 </ValidationProvider>
@@ -464,6 +473,7 @@ export default {
                                       :error="errors[0] ? true : false"
                                       :error-messages="errors[0]"
                                       required
+                                      style="height: 64px;"
                                   ></v-text-field>
                                   </ValidationProvider>
                                 </div>
@@ -478,7 +488,7 @@ export default {
                         </v-col>
 
                         <v-col cols="12" sm="6" lg="6">
-                          <v-checkbox label="Class Wise Amount" @click="allowanceAmount"></v-checkbox>
+                          <v-checkbox :label="$t('container.system_config.allowance_program.class_wise_amount')" @click="allowanceAmount"></v-checkbox>
 
                           <table v-if="is_disable_class === true">
                             <thead>
@@ -540,7 +550,7 @@ export default {
                 <v-card style="margin-bottom: 50px">
                   <v-row>
                     <v-col col="6">
-                      <v-card-title><h3>Add Field</h3></v-card-title>
+                      <v-card-title><h3>{{ $t('container.system_config.allowance_program.add_field') }}</h3></v-card-title>
                     </v-col>
                   </v-row>
 
@@ -575,7 +585,7 @@ export default {
                       class="custom-btn mr-2"
                       router
                       to="/system-configuration/allowance-program"
-                  >Back
+                  >{{ $t('container.list.back') }}
                   </v-btn>
 
                   <v-btn
@@ -584,7 +594,7 @@ export default {
                       type="submit"
                       class="custom-btn mr-2"
                       :disabled="invalid"
-                  >Submit
+                  >{{$t('container.list.submit')}}
                   </v-btn>
                 </v-row>
               </v-col>
