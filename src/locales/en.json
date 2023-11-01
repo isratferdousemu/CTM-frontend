@@ -305,6 +305,7 @@
                 "age_limit_amount": "Age Limit & Amount",
                 "class_wise_amount": "CLass Wise Amount",
                 "status": "Status",
+                "is_active": "Is Active",
                 "add": "Add Allowance Program",
                 "edit": "Edit Allowance Program"
             },
@@ -519,7 +520,13 @@
                 "regular_payment":"Regular Payment",
                 "additional": "Additional Payment",
                 "post":"Post",
-                "download":"Download"
+                "download":"Download",
+                "allotment_setup_list":"Allotment SetUp List",
+                "area_type":"Area Type",
+                "allotment_area":"Allotment Area",
+                "add_new_setup":"Add New SetUp",
+                "setupdelete": "Delete Allotment Area ",
+                "setupdelete_alert": "Are you sure to delete this Allotment Area?"
             },
             "payroll_management": {
                 "list": "Payment Processor",
@@ -543,7 +550,20 @@
                 "tracking_no":"Tracking No",
                 "application_status":"Application Status",
                 "grievance_status":"Grievance Status",
-              "payment_status":"Payment Status"
+                "payment_status":"Payment Status",
+                "activity_log":"Activity Log",
+                "from_date":"From Date",
+                "to_date": "To Date",
+                "activity_type":"Activity Type",
+                "user_id":"User ID",
+                "activity_list":"Activity List",
+                "activity":"Activity",
+                "user": "User",
+                "device_id": "Device ID",
+                "location": "Location",
+                "date_time":"Date & Time"
+
+
 
             }
     }

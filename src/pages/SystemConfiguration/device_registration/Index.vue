@@ -22,6 +22,7 @@ export default {
       loading: true,
       options: {},
       search: '',
+      page: 1
     }
   },
 
@@ -35,6 +36,7 @@ export default {
 
     search: {
       handler () {
+        this.page = this.options.page;
         this.getAllDevices()
       },
     },
@@ -68,8 +70,6 @@ export default {
 
   methods: {
     getAllDevices(){
-      this.loading = true
-
       const { sortBy, sortDesc, page, itemsPerPage } = this.options
 
       http().get('/admin/device/get', {

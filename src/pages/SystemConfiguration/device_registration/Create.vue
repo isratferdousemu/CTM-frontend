@@ -167,6 +167,7 @@ export default {
                               :error="errors[0] ? true : false"
                               :error-messages="errors[0]"
                               required
+                              readonly
                             ></v-text-field>
                           </ValidationProvider>
                         </v-col>
