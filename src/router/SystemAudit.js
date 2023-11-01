@@ -26,6 +26,15 @@ const SystemAuditRoutes = [
         },
         component: () => import("../pages/SystemAudit/PaymentTracking/Index.vue")
     },
+    {
+        path: "/system-audit/activity-log",
+        name: "activity-log",
+        meta: {
+            requiresAuth: true,
+            permission: "activity-log",
+        },
+        component: () => import("../pages/SystemAudit/ActivityLog/Index.vue")
+    },
 ];
 
 export default SystemAuditRoutes;
