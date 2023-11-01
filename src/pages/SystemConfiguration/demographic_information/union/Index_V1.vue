@@ -1086,20 +1086,20 @@ export default {
           this.districts = result.data.data;
         });
     },
-    async onChangeDistrict(event) {
-      console.log(this.thanas);
+    // async onChangeDistrict(event) {
+    //   console.log(this.thanas);
 
-      await this.$axios
-        .get(`/admin/thana/get/${event}`, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((result) => {
-          this.thanas = result.data.data;
-        });
-    },
+    //   await this.$axios
+    //     .get(`/admin/thana/get/${event}`, {
+    //       headers: {
+    //         Authorization: "Bearer " + this.$store.state.token,
+    //         "Content-Type": "multipart/form-data",
+    //       },
+    //     })
+    //     .then((result) => {
+    //       this.thanas = result.data.data;
+    //     });
+    // },
 
     ...mapActions({
       GetAllDivisions: "Division/GetAllDivisions",
@@ -1156,34 +1156,22 @@ export default {
       }
     },
     onChangeDistrict() {
-      this.isLocationTypeHidden = true;
-      if (this.data.location_type != null && this.data.district_id != null) {
-        this.onChangeLocationType(this.data.location_type);
-      }
+      this.onChangeLocationType(this.data.location_type);
     },
     async onChangeLocationType(event) {
       console.log(event);
-      console.log(this.data);
-      // alert("onChangeLocationType"+event);
-      // if (this.data.division_id == null) {
-      //   alert("Select Division First");
-      //   return;
-      // }
-      // if (this.data.district_id == null) {
-      //   alert("Select District First");
-      //   return;
-      // }
+      console.log(this.data.location_type);
 
       let param;
 
-      if (data.location_type == 2) {
+      if (this.data.location_type == 2) {
         // this.isCityCorporationHidden = false;
         param = 3; //City Corporation
         // const queryParams = {
         //   district_id: this.data.district_id,
         //   location_type: event,
         // };
-        console.log(JSON.stringify(queryParams));
+        // console.log(JSON.stringify(queryParams));
         // return;
         await this.$axios
           .get(`/admin/city/get/` + this.data.district_id + "/" + param, {
@@ -1198,7 +1186,7 @@ export default {
           });
       }
 
-      if (event == 3) {
+      else {
         // this.isCityCorporationHidden = false;
         param = 2; //City Corporation
         // const queryParams = {
@@ -1206,7 +1194,7 @@ export default {
         //   location_type: event,
         // };
 
-        console.log(JSON.stringify(queryParams));
+        // console.log(JSON.stringify(queryParams));
         // return;
         await this.$axios
           .get(`/admin/city/get/` + this.data.district_id + "/" + param, {
