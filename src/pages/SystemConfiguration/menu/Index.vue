@@ -15,7 +15,7 @@ export default {
       deleteDialog: false,
       delete_loading: false,
       deleted_id: '',
-      searchDebounce: null
+      page: 1
     };
   },
 
@@ -28,17 +28,17 @@ export default {
     },
 
     search: {
-      handler: function () {
-        // Use debounce to wait for user input before making the API call
-        clearTimeout(this.searchDebounce);
-        this.searchDebounce = setTimeout(() => {
-          this.options.page = 1
+      handler() {
+          this.page = this.options.page;
           this.getAllMenus();
-        }, 500); // Adjust debounce time according to your requirements
       },
     },
 
     "$i18n.locale": "updateHeaderTitle",
+  },
+
+  created() {
+    this.getAllMenus();
   },
 
   computed: {
@@ -62,7 +62,6 @@ export default {
   mounted() {
     this.GetAllParents();
     this.updateHeaderTitle();
-    this.getAllMenus();
   },
 
   methods: {
@@ -71,19 +70,15 @@ export default {
     }),
 
     getAllMenus(){
-      this.loading = true
-
       const { sortBy, sortDesc, page, itemsPerPage } = this.options
 
-      clearTimeout(this.searchDebounce);
-      this.searchDebounce = setTimeout(() => {
         http().get('/admin/menu/get', {
           params: {
             sortBy: sortBy[0],
             sortDesc: sortDesc[0],
             page: page,
             itemsPerPage: itemsPerPage,
-            search: this.search // Include the search term
+            search: this.search
           }
         }).then((result) => {
           this.menus = result.data.data;
@@ -93,7 +88,6 @@ export default {
           console.log(err);
           this.loading = false;
         });
-      }, 500); // Adjust debounce time according to your requirements
     },
 
     deleteAlert(id) {
@@ -145,6 +139,7 @@ export default {
                 <v-card-title class="mb-5">
                   <div class="d-flex justify-sm-end flex-wrap">
                       <v-text-field
+                        @keyup.native="getAllMenus"
                         v-model="search"
                         append-icon="mdi-magnify"
                         label="Search"
@@ -178,7 +173,7 @@ export default {
                     :server-items-length="totalMenus"
                     :loading="loading"
                     :footer-props="{
-                        'items-per-page-options': [1,10,20,30,40,50]
+                        'items-per-page-options': [10,20,30,40,50]
                     }"
                     dense
                     class="elevation-1"

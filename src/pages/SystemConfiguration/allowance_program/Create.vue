@@ -64,7 +64,8 @@ export default {
         v => /^\d+$/.test(v) || 'Minimum Age must be a number',
         v => (v >= 5 && v <= 115) || 'Age must be between 5 and 115',
         v => {
-          return this.add_allowance_program.allowance_age.every((item) => parseInt(v) < parseInt(item.max_age)) || "Minimum value cannot be greater than the maximum value";
+          const invalidValue = this.add_allowance_program.allowance_age.some(item => parseInt(v) > parseInt(item.max_age));
+          return invalidValue ? 'Minimum value cannot be greater than the maximum value' : true;
         }
       ];
     },
@@ -75,10 +76,11 @@ export default {
         v => /^\d+$/.test(v) || 'Maximum Age must be a number',
         v => (v >= 5 && v <= 115) || 'Age must be between 5 and 115',
         v => {
-          return this.add_allowance_program.allowance_age.every((item) => parseInt(v) > parseInt(item.min_age)) || "Maximum value cannot be less than the minimum value";
+          const invalidValue = this.add_allowance_program.allowance_age.some(item => parseInt(v) < parseInt(item.min_age));
+          return invalidValue ? 'Maximum value cannot be less than the minimum value' : true;
         }
       ];
-    },
+    }
 
   },
 
@@ -156,7 +158,6 @@ export default {
         this.divs.push(disable_class);
       }
     },
-
     addRow() {
       this.divs.push({
         id: this.index,
@@ -166,11 +167,9 @@ export default {
       });
       this.index++;
     },
-
     deletedRow(id) {
       this.divs = this.divs.filter(d => d.id !== id);
     },
-
     addAllowanceProgram: async function(){
       try {
         let formData = new FormData();
@@ -514,6 +513,7 @@ export default {
                                     :rules="[numberRule]"
                                     dense
                                     outlined
+                                    style="height: 64px;"
                                 ></v-text-field>
                               </td>
                               <td style="display: flex; align-items: center; justify-content: space-between">

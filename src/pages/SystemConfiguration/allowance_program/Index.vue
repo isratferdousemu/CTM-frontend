@@ -15,6 +15,7 @@ export default {
       loading: true,
       options: {},
       search: '',
+      page: 1
     }
   },
 
@@ -30,6 +31,7 @@ export default {
 
     search: {
       handler () {
+        this.page = this.options.page;
         this.getAllowance()
       },
     },
@@ -55,8 +57,6 @@ export default {
 
   methods: {
     getAllowance(){
-      this.loading = true
-
       const { sortBy, sortDesc, page, itemsPerPage } = this.options
 
       http().get('/admin/allowance/get', {
