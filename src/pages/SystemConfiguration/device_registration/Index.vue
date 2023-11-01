@@ -38,6 +38,8 @@ export default {
         this.getAllDevices()
       },
     },
+
+    "$i18n.locale": "updateHeaderTitle",
   },
 
   computed: {
@@ -61,6 +63,7 @@ export default {
 
   mounted() {
     console.log("First Loading")
+    this.updateHeaderTitle();
   },
 
   methods: {
@@ -113,6 +116,13 @@ export default {
       }catch (e) {
         console.log(e);
       }
+    },
+
+    updateHeaderTitle() {
+      const title = this.$t(
+          "container.system_config.device.list"
+      );
+      this.$store.commit("setHeaderTitle", title);
     },
     
   },

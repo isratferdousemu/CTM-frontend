@@ -227,6 +227,40 @@
                 "unique_id": "ইউনিক আইডি",
                 "add": "ডিভাইস যোগ করুন",
                 "edit": "ডিভাইস সম্পাদনা করুন"
+            },
+            "allowance_program": {
+                "list": "ভাতা প্রোগ্রাম তালিকা",
+                "name_en": "প্রোগ্রাম ইংরেজি",
+                "name_bn": "প্রোগ্রাম বাংলা",
+                "gender": "লিঙ্গ",
+                "payment_cycle": "পেমেন্ট চক্র",
+                "is_marital_toggle": "বৈবাহিক অবস্থা",
+                "marital_status": "বৈবাহিক অবস্থা",
+                "gender_id": "Gender ID",
+                "min_age": "Minimum Age",
+                "max_age": "Maximum Age",
+                "amount": "Amount",
+                "type_id": "Type ID",
+                "add_field_id": "Add Field ID",
+                "age_limit_amount": "বয়স সীমা এবং পরিমাণ",
+                "class_wise_amount": "শ্রেণী অনুসারে পরিমাণ",
+                "status": "অবস্থা",
+                "add_field": "ক্ষেত্র যোগ করুন",
+                "is_active": "সক্রিয়",
+                "add": "ভাতা প্রোগ্রাম যোগ করুন",
+                "edit": "ভাতা প্রোগ্রাম সম্পাদনা করুন"
+            },
+            "menu": {
+                "list": "মেনু তালিকা",
+                "label_name_en": "মেনু ইংরেজি",
+                "label_name_bn": "মেনু বাংলা",
+                "parent_id": "অভিভাবক",
+                "link": "লিঙ্ক",
+                "link_types": "লিঙ্ক প্রকার",
+                "page_link_id": "পাতার যোগসূত্র",
+                "order": "আদেশ",
+                "add": "মেনু যোগ করুন",
+                "edit": "হালনাগাদ মেনু করুন"
             }
         },
         "general_setting": {
