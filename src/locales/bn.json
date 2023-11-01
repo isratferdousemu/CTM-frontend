@@ -403,7 +403,13 @@
                 "regular_payment": "নিয়মিত অর্থপ্রদান",
                 "additional": "অতিরিক্ত অর্থপ্রদান",
                 "post": "পোস্ট",
-                "download": "ডাউনলোড"
+                "download": "ডাউনলোড",
+                "allotment_setup_list": "বরাদ্দ সেট আপ তালিকা",
+                "area_type": "এলাকার ধরন",
+                "allotment_area": "বরাদ্দ এলাকা",
+                "add_new_setup": " নতুন সেটআপ যোগ করুন",
+                "setupdelete": "বরাদ্দ এলাকা মুছুন ",
+                "setupdelete_alert": "আপনি কি এই বরাদ্দ এলাকা মুছে ফেলার বিষয়ে নিশ্চিত??"
             },
             "payroll_management": {
                 "list": "পেমেন্ট প্রসেসর",
@@ -426,7 +432,20 @@
                     "tracking_no": "ট্র্যাকিং নম্বর",
                     "application_status": "আবেদনের অবস্থা",
                         "grievance_status": "অভিযোগের অবস্থা",
-                        "payment_status": "অর্থপ্রদানের অবস্থা"
+                        "payment_status": "অর্থপ্রদানের অবস্থা",
+                        "activity_log": "কার্য বিবরণ",
+                        "from_date": "তারিখ থেকে",
+                        "to_date": "তারিখ পর্যন্ত",
+                            "activity_type": "কার্যকলাপের ধরন",
+                            "user_id": "ব্যবহারকারী আইডি",
+                            "activity_list": "কার্যকলাপের তালিকা",
+                               
+                                "activity": "কার্যকলাপ",
+                                "user": "ব্যবহারকারী",
+                                "device_id": "ডিভাইস আইডি",
+                                "location": "অবস্থান",
+                                "date_time": "তারিখ এবং সময়"
+                            
                 }
     }
 }

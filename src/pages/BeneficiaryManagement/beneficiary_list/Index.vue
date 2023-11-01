@@ -215,7 +215,12 @@
                                     <v-col cols="12">
 
                                         <v-data-table :headers="selectedHeaders" :items="divisions"
-                                            class="elevation-0 transparent row-pointer">
+                                            :loading="loading"
+                          item-key="id"
+                         
+                          :items-per-page="pagination.perPage"
+                          hide-default-footer
+                          class="elevation-0 transparent row-pointer">
                                             <template v-slot:item.sl="{ item, index }">
                                                 {{
                                                     (pagination.current - 1) * pagination.perPage +

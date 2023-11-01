@@ -15,6 +15,11 @@ const ManageAllotmentRoutes = [
         path: '/allotment/edit/:id',
         name: "EditManageAllotment",
         component: () => import("../pages/ManageAllotment/Edit.vue")
+    },
+      {
+        path: '/allotment-setup',
+        name: "EditManageSetup",
+          component: () => import("../pages/ManageAllotment/AllotmentSetup/Index.vue")
     }
 ];
 

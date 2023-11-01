@@ -218,7 +218,11 @@
                   <v-col cols="12">
 
                     <v-data-table :headers="selectedHeaders" :items="divisions"
-                      class="elevation-0 transparent row-pointer">
+                       :loading="loading"
+                        item-key="id"
+                        :items-per-page="pagination.perPage"
+                        hide-default-footer
+                        class="elevation-0 transparent row-pointer">
                       <template v-slot:item.sl="{ item, index }">
                         {{
                           (pagination.current - 1) * pagination.perPage +
@@ -327,7 +331,7 @@ export default {
           { text: this.$t("container.list.sl"), value: "sl" },
           {
             text: this.$t("container.list.name_en"),
-            value: "200",
+            value: "name_en",
 
           },
           {
@@ -375,7 +379,7 @@ export default {
           text: this.$t(
             "container.application_selection.application.program"
           ),
-          value: "100",
+          value: "name_en",
         },
         {
           text: this.$t("container.list.name_en"),
@@ -600,7 +604,20 @@ export default {
         perPage: this.pagination.perPage,
         page: this.pagination.current,
       };
-       
+          this.$axios
+        .get("/admin/district/get", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          this.divisions = result.data.data;
+          this.pagination.current = result.data.meta.current_page;
+          this.pagination.total = result.data.meta.last_page;
+          this.pagination.grand_total = result.data.meta.total;
+        });
 
 
     },
