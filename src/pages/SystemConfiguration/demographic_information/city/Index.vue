@@ -776,6 +776,8 @@ export default {
         perPage: this.pagination.perPage,
         page: this.pagination.current,
       };
+   
+
       this.$axios
         .get("/admin/city/get", {
           headers: {

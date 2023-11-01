@@ -37,14 +37,14 @@
                   :items="programs"
                   item-text="name_en"
                   item-value="id"
-                  v-model="data.program"
+                  v-model="data.program_id"
                   required
                   :error="errors[0] ? true : false"
                   :error-messages="errors[0]"
                 >
                 </v-select>
               </ValidationProvider>
-              <div v-if="data.program">
+              <div v-if="data.program_id">
                 <v-expansion-panels v-model="panel" multiple>
                     <!-- Applicant Verification -->
                   <v-expansion-panel>
@@ -230,7 +230,7 @@
                           >
                           <div class="d-inline d-flex justify-end">
                             <v-btn
-                              @click="verifyCard()"
+                              @click="verifyDISCard()"
                               elevation="2"
                               :disabled="data.application_allowance_values[`${keyGetByName('DIS No.')}`].value==null || data.application_allowance_values[`${keyGetByName('DIS No.')}`].value==''"
                               class="btn"
@@ -382,6 +382,7 @@
                                     data.application_allowance_values[index]
                                       .value
                                   "
+                                  @change="addPreviewFile($event, index)"
                                   placeholder="Select your files"
                                   prepend-icon
                                   prepend-inner-icon="mdi-paperclip"
@@ -585,7 +586,7 @@
                                     show-size
                                     counter
                                     prepend-inner-icon="mdi-camera"
-                                    v-model="data.sign"
+                                    v-model="data.signature"
                                     accept="image/*"
                                     @change="previewSign"
                                     prepend-icon=""
@@ -837,11 +838,11 @@
                             >
                               <label>Age</label>
                               <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
+                                >*</span >
                               <v-text-field
                                 v-model="data.age"
                                 outlined
+                                type="number"
                                 required
                                 clearable
                                 :error="errors[0] ? true : false"
@@ -1310,17 +1311,17 @@
                         lg="6"
                       >
                           <ValidationProvider
-                            name="Bank Name"
-                            vid="bank_name"
+                            name="Account Name"
+                            vid="account_name"
                             rules="required"
                             v-slot="{ errors }"
                           >
                             <label style="display: inline-block"
-                              >Bank Name
+                              >Account Name
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-text-field
-                              v-model="data.bank_name"
+                              v-model="data.account_name"
                               outlined
                               clearable
                               :error="errors[0] ? true : false"
@@ -1333,8 +1334,8 @@
                           lg="6"
                         >
                           <ValidationProvider
-                            name="Mobile Ownership"
-                            vid="mobile_ownership"
+                            name="Account Ownership"
+                            vid="account_owner"
                             v-slot="{ errors }"
                           >
                             <label style="display: inline-block"
@@ -1342,7 +1343,7 @@
                             </label>
 
                             <v-select
-                              v-model="data.mobile_ownership"
+                              v-model="data.account_owner"
                               outlined
                               clearable
                               :items="mobile_ownership"
@@ -1357,7 +1358,7 @@
                 >
                           <ValidationProvider
                             name="Mobile Number"
-                            vid="mobile_number"
+                            vid="account_number"
                             v-slot="{ errors }"
                           >
                             <label style="display: inline-block"
@@ -1365,8 +1366,9 @@
                             ><span style="margin-left: 4px; color: red">*</span>
 
                             <v-text-field
-                              v-model="data.mobile_number"
+                              v-model="data.account_number"
                               outlined
+                              type="number"
                               clearable
                               :error="errors[0] ? true : false"
                               :error-messages="errors[0]"
@@ -1375,8 +1377,7 @@
                           </ValidationProvider>
                           </v-col>
                           <v-col cols="6"
-                          lg="6"
-                        >
+                          lg="6">
                           <ValidationProvider
                             name="Email"
                             vid="Email"
@@ -1469,7 +1470,7 @@
                             <ValidationProvider
                               name="National Identity (NID) /
 Birth Registration Number"
-                              vid="nominee_nid"
+                              vid="nominee_verification_number"
                               v-slot="{ errors }"
                             >
                               <label
@@ -1477,10 +1478,10 @@ Birth Registration Number"
                                 Number
                               </label>
                               <v-text-field
-                                v-model="data.nominee_nid"
+                                v-model="data.nominee_verification_number"
                                 outlined
                                 clearable
-                                label=""
+                                type="number"
                                 :error="errors[0] ? true : false"
                                 :error-messages="errors[0]"
                               >
@@ -1511,14 +1512,14 @@ Birth Registration Number"
                           >
                             <ValidationProvider
                               name="Gender of Nominee"
-                              vid="nominee_relationship"
+                              vid="nominee_relation_with_beneficiary"
                               v-slot="{ errors }"
                               rules="required"
                             >
                               <label>Relationship with Beneficiary</label>
                               <span style="margin-left: 4px; color: red">*</span>
                               <v-autocomplete
-                                v-model="data.nominee_relationship"
+                                v-model="data.nominee_relation_with_beneficiary"
                                 outlined
                                 :items="relations_with_bef"
                                 :error="errors[0] ? true : false"
@@ -1597,7 +1598,7 @@ Birth Registration Number"
                                   v-slot="{ errors }"
                                   name="Signature"
                                   rules="required"
-                                  vid="sign"
+                                  vid="nominee_signature"
                                 >
                                   <label>Signature</label>
                                   <v-file-input
@@ -1605,7 +1606,7 @@ Birth Registration Number"
                                     show-size
                                     counter
                                     prepend-inner-icon="mdi-camera"
-                                    v-model="data.nominee_sign"
+                                    v-model="data.nominee_signature"
                                     accept="image/*"
                                     @change="previewSignNominee"
                                     prepend-icon=""
@@ -1694,7 +1695,7 @@ Birth Registration Number"
                                     name_bn: 'হ্যাঁ',
                                   },
                                   {
-                                    id: null,
+                                    id: 0,
                                     name_en: 'No',
                                     name_bn: 'না',
                                   },
@@ -1775,9 +1776,9 @@ Birth Registration Number"
                         </v-row>
                         <div class="d-inline d-flex justify-end">
                           <v-btn elevation="2" class="btn mr-2" color="info"
-                            >Reset</v-btn
-                          >
-                          <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
+                            >Reset</v-btn>
+                            <!-- :disabled="invalid" -->
+                          <v-btn type="submit" flat color="primary"  :loading="loading"
                           class="custom-btn-width black white--text py-2">
                           {{ $t("container.list.submit") }}
                         </v-btn>
@@ -1811,6 +1812,8 @@ import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { mapState } from "vuex";
 import axios from "axios";
 import { required } from 'vee-validate/dist/rules';
+import Form from "vform";
+
 export default {
   title: "CTM - Online Application",
   data() {
@@ -1853,7 +1856,7 @@ export default {
         "No Allowance",
         "Other (specify)",
       ],
-      marital_status: ["Married", "Unmarried", "Widow",
+      marital_status: ["Married", "UnMarried", "Widow",
         "Widower",
         "Husband Abondoner",
         "Divorced",
@@ -1898,66 +1901,47 @@ export default {
       date: null,
       menu: false,
       isChecked: false,
-      data: {
-        location_type:null,
-        application_allowance_values: [],
-        application_pmt: [],
-        verification_type: null,
-        verification_number: null,
-        date_of_birth: null,
-        program: null,
-        number: null,
-        dob: null,
-        yearly_income: null,
-        beneficiary_details: null,
-        beneficiary_details_others: null,
-        family_member_no: null,
-        male_member_no: null,
-        female_member_no: null,
-        hijra_member_no: null,
-        health_status: null,
-        health_status_others: null,
-        financial_status: null,
-        social_status: null,
-        land_ownership: null,
-        residence: null,
-        name_en: null,
-        name_bn: null,
-        father_name_en: null,
-        father_name_bn: null,
-        mother_name_en: null,
-        mother_name_bn: null,
-        marital_status: null,
-        spouse_name_en: null,
-        spouse_name_bn: null,
-        profession: null,
-        religion: null,
-        image: null,
-        sign: null,
-        nationality: null,
-        gender_id: null,
-        age: null,
-        education_status: null,
-        identification_mark: null,
 
+      data: { 
+        location_type:null,
+        program_id: null,
+        verification_type: 1,
+        verification_number: 123345678,
+        age: 24,
+        date_of_birth: "1999-11-11",
+        name_en: 'null',
+        name_bn: 'null',
+        father_name_en: 'null',
+        father_name_bn: 'null',
+        mother_name_en: 'null',
+        mother_name_bn: 'null',
+        spouse_name_en: 'null',
+        spouse_name_bn: 'null',
+        identification_mark: 'null',
+        image: null,
+        signature: null,
+        nationality: 'null',
+        gender_id: null,
+        education_status: null,
+        profession: 'null',
+        religion: null,
         division_id: null,
         district_id: null,
         upazila: null,
         post_code: null,
-        address: null,
+        address: 'null',
         location_type: null,
         thana_id: null,
         union_id: null,
         city_id: null,
         city_thana_id: null,
         district_pouro_id: null,
-        
-
+        mobile: '01877678899',
         permanent_division_id: null,
         permanent_district_id: null,
         permanent_upazila: null,
         permanent_post_code: null,
-        permanent_address: null,
+        permanent_address: 'null',
         permanent_location_type: null,
         permanent_thana_id: null,
         permanent_union_id: null,
@@ -1965,22 +1949,23 @@ export default {
         permanent_city_thana_id: null,
         permanent_district_pouro_id: null,
         permanent_mobile: null,
-
-        mobile: null,
-        email: null,
-        nominee_en: null,
-        nominee_bn: null,
-        nominee_nid: null,
+        nominee_en: 'null',
+        nominee_bn: 'null',
+        nominee_verification_number: 2212121,
+        nominee_address: 'null',
         nominee_image: null,
-        nominee_sign: null,
-        nominee_nationality: null,
-        nominee_relationship: null,
-        nominee_address: null,
-        bank_name: null,
-        mobile_ownership: null,
-        mobile_number: null,
+        nominee_signature: null,
+        nominee_relation_with_beneficiary: null,
+        nominee_nationality: 'null',
+        account_name: 'null',
+        account_owner: null,
+        account_number: '01877678899',
+        application_allowance_values: [],
+        application_pmt: [],
         marital_status: null,
+        email: 'null@gmail.com',
       },
+      
       checkbox:false,
       checkboxNomineeAddress:false,
       imageUrl: null,
@@ -2005,17 +1990,7 @@ export default {
       val && setTimeout(() => (this.activePicker = "YEAR"));
     },
   },
-
-  filters: {
-    // keyGetByName: function (name) {
-    //   if (this.programDetails != null) {
-    //     // array programDetails.additional_field key get by name_en
-    //     let key = this.programDetails.additional_field.findIndex(field => field.name_en == name);
-    //     // console.log(key,'key name');
-    //     return key
-    //   }
-    // },
-  },
+ 
   methods: {
     checkIsHaveDIS() {
       if (this.programDetails != null) {
@@ -2082,11 +2057,162 @@ export default {
         this.data.permanent_mobile=null 
       }
     },
-    submitApplication() {},
+    verifyCard() {
+      let data = {
+        verification_type: this.data.verification_type,
+        verification_number: this.data.verification_number,
+        date_of_birth: this.data.date_of_birth,
+      };
+
+      this.$axios.post("/global/online-application/card-verification",data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Accept: "application/json",
+          },
+      })
+      .then((res) => {
+        console.log(res)  
+        this.$toast.success(res.data.data);
+        
+      })
+      .catch((err) => {
+        console.log(err)
+        this.$toast.error(err.response.data.message);
+      })
+    },
+    verifyDISCard() {
+      let data = {
+        dis_no: this.data.application_allowance_values[`${this.keyGetByName('DIS No.')}`].value,
+      };
+
+      this.$axios.post("/global/online-application/dis-card-verification",data, {
+          headers: {
+            Accept: "application/json",
+          },
+      })
+      .then((res) => {
+        console.log(res)  
+        this.$toast.success(res.data.data);
+        
+      })
+      .catch((err) => {
+        console.log(err)
+        this.$toast.error(err.response.data.message);
+      })
+    },
+ 
+    submitApplication() {
+      let fd = new FormData();
+      for (const [key, value] of Object.entries(this.data)) {
+        if (value !== null) {
+          if (key == 'application_allowance_values') {
+            console.log(value)
+            fd.append("application_allowance_values", JSON.stringify(value));
+          //   let Allow_Arr = []
+
+          //   for (let i = 0; i < value.length; i++) {
+          //     if (Array.isArray(value[i].allowance_program_additional_field_values_id)) {
+          //       for (let e = 0; e < value[i].allowance_program_additional_field_values_id.length; e++) {
+          //         fd.append("application_allowance_values["+`${i}`+"].allowance_program_additional_field_values_id["+`${e}`+"]", value[i].allowance_program_additional_field_values_id[e]);
+          //       }
+          //     }else {
+          //       fd.append("application_allowance_values["+`${i}`+"].allowance_program_additional_field_values_id", value[i].allowance_program_additional_field_values_id);
+          //     } 
+          //     fd.append("application_allowance_values[" + `${i}` + "].allowance_program_additional_fields_id", value[i].allowance_program_additional_fields_id);
+          //     console.log('type check ', typeof value[i].value);    
+          //     if (typeof value[i].value == 'object') {
+          //   this.fileToBase64(value[i].value).then(base64String => {
+          //   fd.append(
+          //       "application_allowance_values["+`${i}`+"].value",
+          //       base64String
+          //     );
+          //   console.log('base file',base64String); // Base64-encoded string
+          // })
+          // .catch(error => {
+          //   console.error(error);
+          // });  
+
+          //     } else {
+          //       fd.append(
+          //       "application_allowance_values["+`${i}`+"].value",
+          //       value[i].value
+          //     );
+          //     }  
+          
+          //   }
+          //   console.log(fd);
+          }
+          if (key == 'application_pmt') {
+            fd.append("application_pmt", JSON.stringify(value));
+            // for (let j = 0; j < value.length; j++) {
+            //   // check application_pmt["+`${j}`+"].sub_variables is array or not 
+            //   if (Array.isArray(value[j].sub_variables)) {
+            //     for (let k = 0; k < value[j].sub_variables.length; k++) {
+            //       fd.append("application_pmt["+`${j}`+"].sub_variables["+`${k}`+"]", value[j].sub_variables[k]);
+            //     }
+            //   }else {
+            //     fd.append("application_pmt[" + `${j}` + "].sub_variables", value[j].sub_variables); 
+            //   }      
+            //   fd.append("application_pmt["+`${j}`+"].variable_id", value[j].variable_id); 
+            // }
+          }
+          if(key != 'application_pmt' && key != 'application_allowance_values') {
+            
+            console.log(key,value);
+            fd.append(key, value);
+          } 
+
+        }
+      }
+
+      this.loading = true;
+      this.$axios.post("/global/online-application/registration",fd,{
+        headers: {
+          "Application": "application/json",
+          "Content-Type": "multipart/form-data",
+        }
+      }).then((res) => {
+        this.$toast.success("Your Application submitted Successfully");
+      this.loading = false;
+      
+    })
+        .catch((err) => {
+          this.loading = false;
+          console.log(err);
+      
+      if (err.response) {
+        if (err.response.data.success == false) {
+      //     this.$refs.form.setErrors(err.response.data.errors);
+          // this.$toast.error(err.response.data.message);
+          if (err.response.data.error_code == "applicant_marital_status") {
+            let errs = {
+              "marital_status": [err.response.data.message]
+            }
+            this.$refs.form.setErrors(errs);
+            this.$toast.error(err.response.data.message);
+
+          }    
+          else if (err.response.data.error_code == "applicant_gender_type") {
+            let errs = {
+              "gender_id": [err.response.data.message]
+            }
+            this.$refs.form.setErrors(errs);
+            this.$toast.error(err.response.data.message);
+
+          }    
+          else if (err.response.data.error_code == "applicant_age_limit") {
+            this.$toast.error(err.response.data.message);
+          } 
+        } else if (err.response) {
+              this.$refs.form.setErrors(err.response.data.errors);
+          }
+      }        
+         });
+    },
     async getProgramName() {
       // if (this.data.program != null && this.programs.length > 0) {
       let programName = this.programs.filter(
-        (item) => item.id == this.data.program
+        (item) => item.id == this.data.program_id
       );
       this.programName = await programName[0]?.name_en;
       this.programDetails = await programName[0];
@@ -2339,14 +2465,22 @@ export default {
         this.imageUrl = null;
       }
     },
+    addPreviewFile(event, index) {
+      console.log(event,index)
+      const reader = new FileReader();
+        reader.onload = (e) => {
+          this.data.application_allowance_values[index].file_value=e.target.result;
+        };
+        reader.readAsDataURL(event);
+    },
     previewSign() {
-      if (this.data.sign) {
+      if (this.data.signature) {
         // Read the selected file and generate a preview URL
         const reader = new FileReader();
         reader.onload = (e) => {
           this.signUrl = e.target.result;
         };
-        reader.readAsDataURL(this.data.sign);
+        reader.readAsDataURL(this.data.signature);
       } else {
         // Clear the preview if no file is selected
         this.signUrl = null;
@@ -2366,13 +2500,13 @@ export default {
       }
     },
     previewSignNominee() {
-      if (this.data.nominee_sign) {
+      if (this.data.nominee_signature) {
         // Read the selected file and generate a preview URL
         const reader = new FileReader();
         reader.onload = (e) => {
           this.nomineeSignUrl = e.target.result;
         };
-        reader.readAsDataURL(this.data.nominee_sign);
+        reader.readAsDataURL(this.data.nominee_signature);
       } else {
         // Clear the preview if no file is selected
         this.nomineeSignUrl = null;
