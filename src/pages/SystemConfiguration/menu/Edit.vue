@@ -39,8 +39,10 @@ export default {
       menuEdit: (state) => state.Menu.menu,
       parents: (state) => state.Menu.parents,
       pageUrls: (state) => state.Menu.pageUrls,
+      message: (state) => state.Menu.success_message,
+      success_status: (state) => state.Menu.success_status,
       errors: (state) => state.Menu.errors,
-      message: (state) => state.Menu.success_message
+      error_status: (state) => state.Menu.error_status,
     }),
   },
 
@@ -75,10 +77,21 @@ export default {
         await this.$store
           .dispatch("Menu/UpdateMenu", { id: id, data: formData })
           .then(() => {
-            this.$store.dispatch('getAllMenus');
-            this.$toast.success(this.message);
-            this.GetAllEdit(this.$route.params.id);
-            this.$router.push('/system-configuration/menu');
+
+            if (this.success_status == 200)
+            {
+              this.$store.dispatch('getAllMenus');
+              this.$toast.success(this.message);
+              this.GetAllEdit(this.$route.params.id);
+              this.$router.push('/system-configuration/menu');
+            }
+
+            if (this.error_status === 422) {
+              this.$refs.form.setErrors(this.errors);
+            } else {
+              this.$refs.form.setErrors();
+            }
+
           });
       } catch (e) {
         console.log(e);
@@ -210,7 +223,7 @@ export default {
                         </v-col>
 
                         <v-col cols="12" sm="6" lg="6" v-if="menuEdit.link_type === 2">
-                          <ValidationProvider name="Url" vid="link" rules="required" v-slot="{ errors }">
+                          <ValidationProvider name="Link" vid="link" rules="required" v-slot="{ errors }">
                             <v-text-field
                               type="text"
                               v-model="menuEdit.link"

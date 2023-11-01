@@ -245,6 +245,7 @@
                 "age_limit_amount": "Age Limit & Amount",
                 "class_wise_amount": "CLass Wise Amount",
                 "status": "Status",
+                "is_active": "Is Active",
                 "add": "Add Allowance Program",
                 "edit": "Edit Allowance Program"
             },

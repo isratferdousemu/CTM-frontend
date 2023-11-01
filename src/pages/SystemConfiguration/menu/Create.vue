@@ -47,8 +47,10 @@ export default {
     ...mapState({
       parents: (state) => state.Menu.parents,
       pageUrls: (state) => state.Menu.pageUrls,
-      errors: state => state.Menu.errors,
-      message: (state) => state.Menu.success_message
+      message: (state) => state.Menu.success_message,
+      success_status: (state) => state.Menu.success_status,
+      errors: (state) => state.Menu.errors,
+      error_status: (state) => state.Menu.error_status,
     }),
   },
 
@@ -81,6 +83,12 @@ export default {
             this.$router.push('/system-configuration/menu');
         }else{
           this.$toast.error(res.response.data.message);
+        }
+
+        if (this.error_status === 422) {
+          this.$refs.form.setErrors(this.errors);
+        } else {
+          this.$refs.form.setErrors();
         }
       });
       } catch (e) {

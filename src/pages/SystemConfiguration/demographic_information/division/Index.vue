@@ -408,9 +408,22 @@ export default {
         total: 0,
         perPage: 10,
       },
+      page: 1,
       items: [5, 10, 15, 20, 40, 50, 100],
     };
   },
+
+  watch:{
+    "$i18n.locale": "updateHeaderTitle",
+
+    search:{
+      handler(){
+        this.page = this.pagination.current;
+        this.GetDivision();
+      }
+    }
+  },
+
   components: {
     ValidationProvider,
     ValidationObserver,
@@ -657,9 +670,7 @@ export default {
       this.$store.commit("setHeaderTitle", title);
     },
   },
-  watch: {
-    "$i18n.locale": "updateHeaderTitle",
-  },
+
   created() {
     this.registerCustomRules();
     this.GetDivision();
