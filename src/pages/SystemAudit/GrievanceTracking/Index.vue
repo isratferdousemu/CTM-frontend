@@ -6,44 +6,44 @@ export default {
         return {
             tracking: [
                 {
-                    icon: 'mdi mdi-check',
-                    name: 'Application Accepted',
-                    state: 'Your application is accepted',
+               
+                    name: 'Grievance Tracking Accepted',
+                    state: 'Your grievance application is accepted',
                     date_time:'Time: 04:05:52 PM Date: 11 - 10 - 2023',
                     status:'completed'
                 },
                   {
-                    icon: 'mdi mdi-check',
-                    name: 'Primarily Verification',
-                    state: 'Your application is included to Verification list Allotted for execution Time / day     : 1 minute Estimated Execution Time / day       : 2 days',
+                 
+                    name: 'Grievance Processing',
+                    state: 'Your grievance application is processing Reviewed by: Upazila social service officer Saver, Dhaka',
                     date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
                     status: 'completed'
                 },
                  {
-                    icon: 'mdi mdi-check',
-                    name: 'Union/Pouroshava Committee',
-                    state: 'Your application has been forwarded to the Union / pouroshava CommitteeAllotted for execution Time / day     : 1 minute Estimated Execution Time / day       : 2 days',
+                  
+                    name: 'Solved / Forwarded',
+                    state: 'Your grievance application has been forwarded Forwared To: Officer Division Head Office',
                     date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
                     status: 'completed'
                 },
                    {
-                    icon: 'mdi mdi-check',
-                    name: 'Upazila/City Corporation Committee',
-                    state: 'Your application has been forwarded to the Upazila/City Corporation Committee Allotted for execution Time / day     : 1 minute Estimated Execution Time / day       : days',
+                   
+                    name: 'Resolved',
+                    state: 'Your Grievance has been Resolved Resolved By: Social Service Officer',
                     date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
                     status: 'waiting'
                 },
                  {
-                    icon: 'mdi mdi-check',
-                    name: 'Waiting List',
-                    state: 'Your application has been included in the waiting list Allotted for execution Time / day     : 1 minute Estimated Execution Time / day       : 2 days',
+                    
+                    name: 'Appeal(If Any)',
+                    state: 'Your Grievance has been Appealed Appealed By: Social Service Officer',
                     date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
                     status: 'pending'
                 },
                 {
-                    icon: 'mdi mdi-check',
-                    name: 'Final Selection List',
-                    state: 'Congratulations, you have been finally selected to receive the allowance Allotted for execution Time / day     : 1 minute Estimated Execution Time / day       : 2 days',
+                   
+                    name: 'Processing Resolved',
+                    state: 'Your Grievance has been Appeal Resolved Appeal Resolved By: Social Service Officer',
                     date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
                     status: 'pending'
                 },
@@ -56,11 +56,11 @@ export default {
                 { status: 'pending', icon: 'mdi-alert', color: '#FFEA00', label: 'Pending' },
             ],
              tracking_summary: [
-                { name: 'National ID/Birth Registration No', value: '2234897899412' },
-                { name: 'Application Time', value: '04:05:52'},
-                { name: 'Application Date', value: '2023-10-04' },
-                { name: 'Office', value: 'Head Office'},
-                  { name: 'Tracking No', value: '2234897899412' },
+                { name: 'Grievance Type', value: 'Application' },
+                { name: 'Subject', value: 'I was not informed when, where and how to submit the application'},
+                { name: 'ID', value: '13298543' },
+                { name: 'Name', value: 'Raisul Islam'},
+              
            
        
             ],
@@ -133,13 +133,13 @@ export default {
 
                     </v-col>
                     <v-col cols="12">
-                        <v-card   elevation="0">
+                        <v-card elevation="0">
 
                             <v-card-text>
                                 <v-row class="ma-5">
                                     <v-col cols="12" lg="6" md="6">
                                         <v-radio-group required row>
-                                            <span class="mr-5">{{ $t('container.system_audit.application_tracking')
+                                            <span class="mr-5">{{ $t('container.system_audit.grievance_tracking')
                                             }}</span>
                                             <v-radio :label="$t('container.system_audit.nbr')" :value="1"></v-radio>
                                             <v-radio :label="$t('container.system_audit.tracking_no')" :value="2"></v-radio>
@@ -174,8 +174,8 @@ export default {
                                 <v-row class="ma-1">
                                     <v-col cols="12" lg="3" md="3">
                                         <table class="small-text">
-                                            <h3 style="text-decoration: underline">Disability Allowance</h3>
-                                            Details
+                                            <h3 style="text-decoration: underline">Grievance Details</h3>
+                                        
                                            
       <tr v-for="item in tracking_summary" :key="item.name">
                                                             <td><b>{{ item.name }}</b></td>
@@ -188,7 +188,7 @@ export default {
                                     </v-col>
                                     <v-col cols="12" lg="9" md="9">
                                         <v-card elevation="0">
-                                            <v-card-title class="custom-title"><h3 class="text-center">{{ $t('container.system_audit.application_status')
+                                            <v-card-title class="custom-title"><h3 class="text-center">{{ $t('container.system_audit.grievance_status')
                                                                                             }}</h3></v-card-title>
                                             <v-card-text>
                <table>
