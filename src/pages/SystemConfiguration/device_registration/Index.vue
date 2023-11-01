@@ -22,6 +22,7 @@ export default {
       loading: true,
       options: {},
       search: '',
+      page: 1
     }
   },
 
@@ -35,9 +36,12 @@ export default {
 
     search: {
       handler () {
+        this.page = this.options.page;
         this.getAllDevices()
       },
     },
+
+    "$i18n.locale": "updateHeaderTitle",
   },
 
   computed: {
@@ -61,12 +65,11 @@ export default {
 
   mounted() {
     console.log("First Loading")
+    this.updateHeaderTitle();
   },
 
   methods: {
     getAllDevices(){
-      this.loading = true
-
       const { sortBy, sortDesc, page, itemsPerPage } = this.options
 
       http().get('/admin/device/get', {
@@ -113,6 +116,13 @@ export default {
       }catch (e) {
         console.log(e);
       }
+    },
+
+    updateHeaderTitle() {
+      const title = this.$t(
+          "container.system_config.device.list"
+      );
+      this.$store.commit("setHeaderTitle", title);
     },
     
   },

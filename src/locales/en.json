@@ -227,6 +227,39 @@
                 "unique_id": "Unique ID",
                 "add": "Add Device",
                 "edit": "Edit device"
+            },
+            "allowance_program": {
+                "list": "Allowance Program Lists",
+                "name_en": "Program Name En",
+                "name_bn": "Program Name Bn",
+                "gender": "Gender",
+                "payment_cycle": "Payment Cycle",
+                "is_marital_toggle": "Marital",
+                "marital_status": "Marital Status",
+                "gender_id": "Gender ID",
+                "min_age": "Minimum Age",
+                "max_age": "Maximum Age",
+                "amount": "Amount",
+                "type_id": "Type ID",
+                "add_field": "Add Field ID",
+                "age_limit_amount": "Age Limit & Amount",
+                "class_wise_amount": "CLass Wise Amount",
+                "status": "Status",
+                "is_active": "Is Active",
+                "add": "Add Allowance Program",
+                "edit": "Edit Allowance Program"
+            },
+            "menu": {
+                "list": "Menu Lists",
+                "label_name_en": "Menu English",
+                "label_name_bn": "Menu Bangla",
+                "parent_id": "Parent",
+                "link": "Link",
+                "link_types": "Link Types",
+                "page_link_id": "Page url",
+                "order": "Order",
+                "add": "Add Menu",
+                "edit": "Edit Menu"
             }
         },
         "general_setting": {
