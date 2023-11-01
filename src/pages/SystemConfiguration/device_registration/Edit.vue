@@ -1,9 +1,20 @@
 <script>
+import {
+  extend,
+  ValidationProvider,
+  ValidationObserver
+} from "vee-validate";
+
 import {mapActions, mapState} from "vuex";
 
 export default {
   name: "Edit",
   title: "CTM - Edit Device",
+  components: {
+    ValidationProvider,
+    ValidationObserver,
+  },
+
   data(){
     return{
       device_types: [
@@ -15,18 +26,25 @@ export default {
     }
   },
 
+  watch: {
+    "$i18n.locale": "updateHeaderTitle",
+  },
+
   computed: {
     ...mapState({
       editDevice: (state) => state.Device_registration.device,
       users: (state) => state.Device_registration.users,
       message: (state) => state.Device_registration.success_message,
-      errors: (state) => state.Device_registration.errors
+      success_status: (state) => state.Device_registration.success_status,
+      errors: (state) => state.Device_registration.errors,
+      error_status: (state) => state.Device_registration.error_status
     })
   },
 
   mounted() {
     this.GetALlUsers();
     this.GetSingleDevice(this.$route.params.id);
+    this.updateHeaderTitle();
   },
 
   methods: {
@@ -49,13 +67,24 @@ export default {
         formData.append('id', id);
 
         await this.$store.dispatch("Device_registration/UpdateDevice", formData).then(() => {
-          this.$toast.success(this.message);
-          this.GetSingleDevice(this.$route.params.id);
+          if (this.success_status == 200)
+          {
+            this.$toast.success(this.message);
+            this.GetSingleDevice(this.$route.params.id);
+            this.$router.push('system-configuration/device-registration');
+          }
         })
       }catch (e) {
         console.log(e);
       }
-    }
+    },
+
+    updateHeaderTitle() {
+      const title = this.$t(
+          "container.system_config.device.edit"
+      );
+      this.$store.commit("setHeaderTitle", title);
+    },
   }
 }
 </script>
@@ -72,142 +101,151 @@ export default {
               <v-divider></v-divider>
 
               <v-card-text>
-                <v-form v-on:submit.prevent="updateDevice">
+                <ValidationObserver ref="form" v-slot="{ invalid }">
+                  <v-form v-on:submit.prevent="updateDevice">
 
-                  <v-col cols="12" class="d-flex">
-                    <v-row wrap>
-                      <v-col cols="12" sm="6" lg="6">
-                        <v-select
-                            :items="users"
-                            item-text="user_id"
-                            item-value="id"
-                             :label="$t(
-                               'container.system_config.device.user_id'
-                             )"
-                            menu-props="auto"
-                            hide-details
-                            persistent-hint
-                            outlined
-                            v-model="editDevice.user_id"
-                            @change="getUserName(add_device.user_id)"
-                        ></v-select>
-                        <p v-if="errors?.user_id" class="red--text custom_error">
-                          {{ errors.user_id[0] }}
-                        </p>
-                      </v-col>
+                    <v-col cols="12" class="d-flex">
+                      <v-row wrap>
+                        <v-col cols="12" sm="6" lg="6">
+                          <ValidationProvider name="User Id" vid="user_id" rules="required" v-slot="{ errors }">
+                            <v-select
+                                :items="users"
+                                item-text="user_id"
+                                item-value="user_id"
+                                :label="$t(
+                                   'container.system_config.device.user_id'
+                                )"
+                                menu-props="auto"
+                                hide-details
+                                persistent-hint
+                                outlined
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                                required
+                                readonly
+                                v-model="editDevice.user_id"
+                            ></v-select>
+                          </ValidationProvider>
+                        </v-col>
 
-                      <v-col cols="12" sm="6" lg="6">
-                        <v-text-field
-                            type="text"
-                            v-model="editDevice.name"
+                        <v-col cols="12" sm="6" lg="6">
+                          <ValidationProvider name="User Name" vid="name" rules="required" v-slot="{ errors }">
+                            <v-text-field
+                                type="text"
+                                v-model="editDevice.name"
+                                  :label="$t(
+                                    'container.system_config.device.user_name'
+                                  )"
+                                persistent-hint
+                                outlined
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                                required
+                                readonly
+                            ></v-text-field>
+                          </ValidationProvider>
+                        </v-col>
+                      </v-row>
+                    </v-col>
+
+                    <v-col cols="12" class="d-flex">
+                      <v-row wrap>
+                        <v-col cols="12" sm="6" lg="6">
+                          <ValidationProvider name="Device type" vid="device_type" rules="required" v-slot="{ errors }">
+                            <v-select
+                                :items="device_types"
+                                item-text="name"
+                                item-value="id"
+                                :label="$t(
+                                  'container.system_config.device.device_type'
+                                )"
+                                menu-props="auto"
+                                hide-details
+                                persistent-hint
+                                outlined
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                                required
+                                v-model="editDevice.device_type"
+                            ></v-select>
+                          </ValidationProvider>
+                        </v-col>
+
+                        <v-col cols="12" sm="6" lg="6">
+                          <ValidationProvider name="Device Id" vid="device_id" rules="required" v-slot="{ errors }">
+                            <v-text-field
+                                type="text"
+                                v-model="editDevice.device_id"
+                                :label="$t(
+                                   'container.system_config.device.unique_id'
+                                )"
+                                persistent-hint
+                                outlined
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                                required
+                            ></v-text-field>
+                          </ValidationProvider>
+                        </v-col>
+                      </v-row>
+                    </v-col>
+
+                    <v-col cols="12" class="d-flex">
+                      <v-row wrap>
+                        <v-col cols="12" sm="6" lg="6">
+                          <ValidationProvider name="Ip Address" vid="ip_address" rules="required" v-slot="{ errors }">
+                          <v-text-field
+                              type="text"
+                              v-model="editDevice.ip_address"
                               :label="$t(
-                                'container.system_config.device.user_name'
+                                'container.system_config.device.ip_address'
                               )"
-                            persistent-hint
-                            outlined
-                        ></v-text-field>
-                        <p
-                            v-if="errors?.name"
-                            class="red--text custom_error"
-                        >
-                          {{ errors?.name[0] }}
-                        </p>
-                      </v-col>
+                              persistent-hint
+                              outlined
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                              required
+                          ></v-text-field>
+                          </ValidationProvider>
+                        </v-col>
+
+                        <v-col cols="12" sm="6" lg="6">
+                          <ValidationProvider name="Purpose Use" vid="purpose_use" rules="required" v-slot="{ errors }">
+                          <v-text-field
+                              type="text"
+                              v-model="editDevice.purpose_use"
+                              label="Enter Purpose of Use"
+                              persistent-hint
+                              outlined
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                              required
+                          ></v-text-field>
+                          </ValidationProvider>
+                        </v-col>
+                      </v-row>
+                    </v-col>
+
+                    <v-row class="justify-end mt-5 mb-5">
+                      <v-btn
+                          flat
+                          color="primary"
+                          class="custom-btn mr-2"
+                          router
+                          to="/system-configuration/device-registration"
+                      >{{ $t('container.list.back') }}
+                      </v-btn>
+                      <v-btn
+                          flat
+                          color="success"
+                          type="submit"
+                          class="custom-btn mr-2"
+                          :disabled="invalid"
+                      >{{ $t('container.list.update') }}
+                      </v-btn>
                     </v-row>
-                  </v-col>
-
-                  <v-col cols="12" class="d-flex">
-                    <v-row wrap>
-                      <v-col cols="12" sm="6" lg="6">
-                        <v-select
-                            :items="device_types"
-                            item-text="name"
-                            item-value="id"
-                         :label="$t(
-                           'container.system_config.device.device_type'
-                         )"
-                            menu-props="auto"
-                            hide-details
-                            persistent-hint
-                            outlined
-                            v-model="editDevice.device_type"
-                        ></v-select>
-                        <p v-if="errors?.device_type" class="red--text custom_error">
-                          {{ errors.device_type[0] }}
-                        </p>
-                      </v-col>
-
-                      <v-col cols="12" sm="6" lg="6">
-                        <v-text-field
-                            type="text"
-                            v-model="editDevice.device_id"
-                               :label="$t(
-                                 'container.system_config.device.unique_id'
-                               )"
-                            persistent-hint
-                            outlined
-                        ></v-text-field>
-                        <p v-if="errors?.device_id" class="red--text custom_error">
-                          {{ errors?.device_id[0] }}
-                        </p>
-                      </v-col>
-                    </v-row>
-                  </v-col>
-
-                  <v-col cols="12" class="d-flex">
-                    <v-row wrap>
-                      <v-col
-                          cols="12"
-                          sm="6"
-                          lg="6"
-                      >
-                        <v-text-field
-                            type="text"
-                            v-model="editDevice.ip_address"
-                        :label="$t(
-                          'container.system_config.device.ip_address'
-                        )"
-                            persistent-hint
-                            outlined
-                        ></v-text-field>
-                        <p v-if="errors?.ip_address" class="red--text custom_error">
-                          {{ errors?.ip_address[0] }}
-                        </p>
-                      </v-col>
-
-                      <v-col cols="12" sm="6" lg="6">
-                        <v-text-field
-                            type="text"
-                            v-model="editDevice.purpose_use"
-                            label="Enter Purpose of Use"
-                            persistent-hint
-                            outlined
-                        ></v-text-field>
-                        <p v-if="errors?.purpose_use" class="red--text custom_error">
-                          {{ errors?.purpose_use[0] }}
-                        </p>
-                      </v-col>
-                    </v-row>
-                  </v-col>
-
-                  <v-row class="justify-end mt-5 mb-5">
-                    <v-btn
-                        flat
-                        color="primary"
-                        class="custom-btn mr-2"
-                        router
-                        to="/system-configuration/device-registration"
-                    >{{ $t('container.list.back') }}
-                    </v-btn>
-                    <v-btn
-                        flat
-                        color="success"
-                        type="submit"
-                        class="custom-btn mr-2"
-                    >{{ $t('container.list.update') }}
-                    </v-btn>
-                  </v-row>
-                </v-form>
+                  </v-form>
+                </ValidationObserver>
               </v-card-text>
             </v-card>
           </v-col>
