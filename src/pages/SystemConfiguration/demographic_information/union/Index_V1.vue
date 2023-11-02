@@ -571,7 +571,7 @@
                     </ValidationProvider>
                   </v-col>
                 </v-row> -->
-
+                <!-- 
                 <v-row>
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
@@ -736,6 +736,234 @@
                     class="custom-btn-width warning white--text py-2"
                   >
                     {{ $t("container.list.update") }}
+                  </v-btn>
+                </v-row>
+                 -->
+
+                <v-row>
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                      name="LocationType"
+                      vid="locationType"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        @input="onChangeLocationType($event)"
+                        v-model="data.location_type"
+                        outlined
+                        :label="$t('container.list.location_type')"
+                        :items="locationType"
+                        item-text="value_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                        :hide-details="errors[0] ? false : true"
+                        :readonly="false"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                      name="Division"
+                      vid="division_id"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        @input="onChangeDivision($event)"
+                        v-model="data.division_id"
+                        outlined
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.division.division'
+                          )
+                        "
+                        :items="divisions"
+                        item-text="name_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                        :hide-details="errors[0] ? false : true"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                      name="District"
+                      vid="district"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        outlined
+                        v-model="data.district_id"
+                        @input="onChangeDistrict($event)"
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.district.district'
+                          )
+                        "
+                        :items="districts"
+                        item-text="name_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                        :hide-details="errors[0] ? false : true"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+
+                  <v-col lg="6" md="6" cols="12" v-if="data.location_type == 2">
+                    <ValidationProvider
+                      name="city"
+                      vid="city"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        v-model="data.city_id"
+                        outlined
+                        :label="
+                          $t('container.system_config.demo_graphic.city.city')
+                        "
+                        :items="city"
+                        item-text="name_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                        :hide-details="errors[0] ? false : true"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+
+                  <v-col
+                    lg="6"
+                    md="6"
+                    cols="12"
+                    v-if="data.location_type == 3 || data.location_type == 1"
+                  >
+                    <ValidationProvider
+                      name="Thana"
+                      vid="division"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        v-model="data.thana_id"
+                        outlined
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.ward.upazila'
+                          )
+                        "
+                        :items="thanas"
+                        item-text="name_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                        :hide-details="errors[0] ? false : true"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+
+                  <v-col
+                    lg="6"
+                    md="6"
+                    cols="12"
+                    v-if="data.location_type != null"
+                  >
+                    <ValidationProvider
+                      name="Code"
+                      vid="code"
+                      rules="codeRules"
+                      v-slot="{ errors }"
+                    >
+                      <v-text-field
+                        outlined
+                        type="text"
+                        v-model="data.code"
+                        :label="codeLabel"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                        :hide-details="errors[0] ? false : true"
+                      ></v-text-field>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col
+                    lg="6"
+                    md="6"
+                    cols="12"
+                    v-if="data.location_type != null"
+                  >
+                    <ValidationProvider
+                      name="Name English"
+                      vid="name_en"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-text-field
+                        outlined
+                        type="text"
+                        v-model="data.name_en"
+                        :label="nameEnLabel"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                        :hide-details="errors[0] ? false : true"
+                      ></v-text-field>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col
+                    lg="6"
+                    md="6"
+                    cols="12"
+                    v-if="data.location_type != null"
+                  >
+                    <ValidationProvider
+                      name="Name Bangla"
+                      vid="name_bn"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-text-field
+                        outlined
+                        type="text"
+                        v-model="data.name_bn"
+                        :label="nameBnLabel"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                        :hide-details="errors[0] ? false : true"
+                      ></v-text-field>
+                    </ValidationProvider>
+                  </v-col>
+                </v-row>
+
+                <v-row class="mx-0 my-0 py-2" justify="center">
+                  <v-btn
+                    flat
+                    @click="dialogAdd = false"
+                    outlined
+                    class="custom-btn-width py-2 mr-10"
+                  >
+                    {{ $t("container.list.cancel") }}
+                  </v-btn>
+                  <v-btn
+                    type="submit"
+                    flat
+                    color="primary"
+                    :disabled="invalid"
+                    :loading="loading"
+                    class="custom-btn-width warning white--text py-2"
+                  >
+                    {{ $t("container.list.submit") }}
                   </v-btn>
                 </v-row>
               </form>
@@ -960,7 +1188,7 @@ export default {
       extend("codeRules", (value) => {
         return (
           value.toString().length <= 6 ||
-          this.$t("container.system_config.demo_graphic.union.code") +
+          this.$t("container.system_config.demo_graphic.union1.code") +
             " can have maximum 6 digit"
         );
       });
@@ -1224,11 +1452,20 @@ export default {
         (this.data.thana_id = null);
     },
     editUnion(item) {
+      console.log(item, "item");
       if (this.$refs.formEdit) {
         this.$refs.formEdit.reset();
       }
       const update_error_value = null;
       this.updateError("update_error_value");
+
+      if (item.type == "union" || item.type == "pouro") {
+        this.data.location_type = 3;
+      }
+
+      if (item.type == "city") {
+        this.data.location_type = 2;
+      }
 
       this.dialogEdit = true;
       this.data.id = item.id;
