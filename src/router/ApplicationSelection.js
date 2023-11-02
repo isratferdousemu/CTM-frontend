@@ -5,7 +5,7 @@ const ApplicationSelectionRoutes = [
   //     component: Login,
   //   },
   {
-    path: "/application-management/primary-selection-upazila",
+    path: "/application-management/application",
     name: "selection_list",
     meta: {
       requiresAuth: true,
