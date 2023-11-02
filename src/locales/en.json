@@ -75,13 +75,49 @@
                     "city": "City Corporation/District Pourashava",
                     "list": "City Corporation/District Pourashava List",
                     "code": "City Corporation/District Pourashava Code",
-                    "name_en": "City Corporation/District Pourashava English",
-                    "name_bn": "City Corporation/District Pourashava Bangla",
+                    "name_en": "City Corporation/District Pourashava Name English",
+                    "name_bn": "City Corporation/District Pourashava Name Bangla",
                     "add_new": "Add New City Corporation/District Pourashava",
                     "search": "Search City Corporation/District Pourashava",
                     "edit": "Edit Division",
                     "delete": "Delete Division",
                     "delete_alert": "Are you sure to delete this Division?"
+                },
+                "city_corporation": {
+                    "city": "City Corporation",
+                    "list": "City Corporation List",
+                    "code": "City Corporation Code",
+                    "name_en": "City Corporation Name English",
+                    "name_bn": "City Corporation Name Bangla",
+                    "add_new": "Add New City Corporation",
+                    "search": "Search City Corporation",
+                    "edit": "Edit Division",
+                    "delete": "Delete Division",
+                    "delete_alert": "Are you sure to delete this City Corporation?"
+                },
+                "district_pourashava": {
+                    "city": "District Pourashava",
+                    "list": "District Pourashava List",
+                    "code": "District Pourashava Code",
+                    "name_en": "District Pourashava Name English",
+                    "name_bn": "District Pourashava Name Bangla",
+                    "add_new": "Add New District Pourashava",
+                    "search": "Search District Pourashava",
+                    "edit": "Edit Division",
+                    "delete": "Delete Division",
+                    "delete_alert": "Are you sure to delete this Division?"
+                },
+                "upazila": {
+                    "thana": "Upazila",
+                    "list": "Upazila List",
+                    "code": "Upazila Code",
+                    "name_en": "Upazila Name English",
+                    "name_bn": "Upazila Name Bangla",
+                    "add_new": "Add New Upazila",
+                    "search": "Search Upazila",
+                    "edit": "Edit Upazila",
+                    "delete": "Delete Upazila",
+                    "delete_alert": "Are you sure to delete this Thana/Upazila?"
                 },
                 "thana": {
                     "thana": "Thana/Upazila",
@@ -95,6 +131,42 @@
                     "delete": "Delete Thana/Upazila",
                     "delete_alert": "Are you sure to delete this Thana/Upazila?"
                 },
+                "thana1": {
+                    "thana": "Thana",
+                    "list": "Thana List",
+                    "code": "Thana Code",
+                    "name_en": "Thana Name English",
+                    "name_bn": "Thana Name Bangla",
+                    "add_new": "Add New Thana",
+                    "search": "Search Thana",
+                    "edit": "Edit Thana",
+                    "delete": "Delete Thana",
+                    "delete_alert": "Are you sure to delete this Thana?"
+                },
+                "union1": {
+                    "union": "Union",
+                    "list": "Union List",
+                    "code": "Union Code",
+                    "name_en": "Union Name English",
+                    "name_bn": "Union Name Bangla",
+                    "add_new": "Add New Union",
+                    "search": "Search Union",
+                    "edit": "Edit Union",
+                    "delete": "Delete Union",
+                    "delete_alert": "Are you sure to delete this Union?"
+                },
+                "pouro": {
+                    "union": "Pouroshava",
+                    "list": "Pouroshava List",
+                    "code": "Pourashava Code",
+                    "name_en": "Pouroshava Name English",
+                    "name_bn": "Pouroshava Name Bangla",
+                    "add_new": "Add New Pouroshava",
+                    "search": "Search Pouroshava",
+                    "edit": "Edit Pouroshava",
+                    "delete": "Delete Pouroshava",
+                    "delete_alert": "Are you sure to delete this Pouroshava?"
+                },
                 "union": {
                     "union": "Union/Pouroshava",
                     "list": "Union/Pouroshava List",
@@ -105,7 +177,7 @@
                     "search": "Search Union/Pouroshava",
                     "edit": "Edit Union/Pouroshava",
                     "delete": "Delete Union/Pouroshava",
-                    "delete_alert": "Are you sure to delete this TUnion/Pouroshava?"
+                    "delete_alert": "Are you sure to delete this Union/Pouroshava?"
                 },
                 "ward": {
                     "ward": "Ward",
@@ -460,7 +532,13 @@
                 "regular_payment":"Regular Payment",
                 "additional": "Additional Payment",
                 "post":"Post",
-                "download":"Download"
+                "download":"Download",
+                "allotment_setup_list":"Allotment SetUp List",
+                "area_type":"Area Type",
+                "allotment_area":"Allotment Area",
+                "add_new_setup":"Add New SetUp",
+                "setupdelete": "Delete Allotment Area ",
+                "setupdelete_alert": "Are you sure to delete this Allotment Area?"
             },
             "payroll_management": {
                 "list": "Payment Processor",
@@ -484,7 +562,20 @@
                 "tracking_no":"Tracking No",
                 "application_status":"Application Status",
                 "grievance_status":"Grievance Status",
-              "payment_status":"Payment Status"
+                "payment_status":"Payment Status",
+                "activity_log":"Activity Log",
+                "from_date":"From Date",
+                "to_date": "To Date",
+                "activity_type":"Activity Type",
+                "user_id":"User ID",
+                "activity_list":"Activity List",
+                "activity":"Activity",
+                "user": "User",
+                "device_id": "Device ID",
+                "location": "Location",
+                "date_time":"Date & Time"
+
+
 
             }
     }
