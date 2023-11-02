@@ -44,7 +44,7 @@ export default {
   computed: {
     headers() {
       return [
-        { text: "#Sl", value: "id", align: "start", sortable: false },
+        { text: this.$t('container.list.sl'), value: "id", align: "start", sortable: false },
         { text: this.$t('container.system_config.menu.label_name_en'), value: "label_name_en" },
         { text: this.$t('container.system_config.menu.label_name_bn'), value: "label_name_bn" },
         { text: this.$t('container.system_config.menu.parent_id'), value: "parent_id" },

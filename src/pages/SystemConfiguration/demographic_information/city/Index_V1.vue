@@ -13,7 +13,11 @@
             >
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
-                  {{ $t("container.system_config.demo_graphic.city.list") }}
+                  {{
+                    $t(
+                      "container.system_config.demo_graphic.city_corporation.customtitle"
+                    )
+                  }}
                 </h3>
               </v-card-title>
               <v-card-text>
@@ -33,7 +37,9 @@
                       flat
                       variant="outlined"
                       :label="
-                        $t('container.system_config.demo_graphic.city.search')
+                        $t(
+                          'container.system_config.demo_graphic.city_corporation.search'
+                        )
                       "
                       hide-details
                       color="primary"
@@ -158,7 +164,11 @@
       <v-dialog v-model="dialogAdd" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.system_config.demo_graphic.city.add_new") }}
+            {{
+              $t(
+                "container.system_config.demo_graphic.city_corporation.add_new"
+              )
+            }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
@@ -167,6 +177,24 @@
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
 
+                <ValidationProvider
+                  name="LocationType"
+                  vid="locationType"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
+                  <v-autocomplete
+                    v-model="data.location_type"
+                    outlined
+                    :label="$t('container.list.location_type')"
+                    :items="locationType"
+                    item-text="value_en"
+                    item-value="id"
+                    required
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
+                  ></v-autocomplete>
+                </ValidationProvider>
                 <ValidationProvider
                   name="Division"
                   vid="division"
@@ -212,35 +240,19 @@
                     :error-messages="errors[0]"
                   ></v-autocomplete>
                 </ValidationProvider>
-                <ValidationProvider
-                  name="LocationType"
-                  vid="locationType"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <v-autocomplete
-                    v-model="data.location_type"
-                    outlined
-                    :label="$t('container.list.location_type')"
-                    :items="filteredOptions"
-                    item-text="value_en"
-                    item-value="id"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-autocomplete>
-                </ValidationProvider>
+
                 <ValidationProvider
                   name="Code"
                   vid="code"
                   rules="required|codeRules"
                   v-slot="{ errors }"
+                  v-if="data.location_type != null"
                 >
                   <v-text-field
                     outlined
                     type="text"
                     v-model="data.code"
-                    :label="$t('container.system_config.demo_graphic.city.code')"
+                    :label="codeLabel"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -251,12 +263,13 @@
                   vid="name_en"
                   rules="required"
                   v-slot="{ errors }"
+                  v-if="data.location_type != null"
                 >
                   <v-text-field
                     outlined
                     type="text"
                     v-model="data.name_en"
-                    :label="$t('container.system_config.demo_graphic.city.name_en')"
+                    :label="nameEnLabel"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -267,12 +280,13 @@
                   vid="name_bn"
                   rules="required"
                   v-slot="{ errors }"
+                  v-if="data.location_type != null"
                 >
                   <v-text-field
                     outlined
                     type="text"
                     v-model="data.name_bn"
-                    :label="$t('container.system_config.demo_graphic.city.name_bn')"
+                    :label="nameBnLabel"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -310,7 +324,9 @@
       <v-dialog v-model="dialogEdit" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.system_config.demo_graphic.city.edit") }}
+            {{
+              $t("container.system_config.demo_graphic.city_corporation.edit")
+            }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
@@ -318,7 +334,25 @@
               <form @submit.prevent="updateCity()">
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
-
+                <ValidationProvider
+                  name="LocationType"
+                  vid="locationType"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
+                  <v-autocomplete
+                    v-model="data.location_type"
+                    outlined
+                    :label="$t('container.list.location_type')"
+                    :items="locationType"
+                    item-text="value_en"
+                    item-value="id"
+                    required
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
+                    :readonly="false"
+                  ></v-autocomplete>
+                </ValidationProvider>
                 <ValidationProvider
                   name="Division"
                   vid="division"
@@ -340,7 +374,7 @@
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
-                    :readonly="true"
+                    :readonly="false"
                   ></v-autocomplete>
                 </ValidationProvider>
                 <ValidationProvider
@@ -364,26 +398,7 @@
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
-                    :readonly="true"
-                  ></v-autocomplete>
-                </ValidationProvider>
-                <ValidationProvider
-                  name="LocationType"
-                  vid="locationType"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <v-autocomplete
-                    v-model="data.location_type"
-                    outlined
-                    :label="$t('container.list.location_type')"
-                    :items="filteredOptions"
-                    item-text="value_en"
-                    item-value="id"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                    :readonly="true"
+                    :readonly="false"
                   ></v-autocomplete>
                 </ValidationProvider>
                 <ValidationProvider
@@ -391,12 +406,13 @@
                   vid="code"
                   rules="required|codeRules"
                   v-slot="{ errors }"
+                  v-if="data.location_type != null"
                 >
                   <v-text-field
                     outlined
                     type="text"
                     v-model="data.code"
-                    :label="$t('container.system_config.demo_graphic.city.code')"
+                    :label="codeLabel"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -407,12 +423,13 @@
                   vid="name_en"
                   rules="required"
                   v-slot="{ errors }"
+                  v-if="data.location_type != null"
                 >
                   <v-text-field
                     outlined
                     type="text"
                     v-model="data.name_en"
-                    :label="$t('container.system_config.demo_graphic.city.name_en')"
+                    :label="nameEnLabel"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -423,12 +440,13 @@
                   vid="name_bn"
                   rules="required"
                   v-slot="{ errors }"
+                  v-if="data.location_type != null"
                 >
                   <v-text-field
                     outlined
                     type="text"
                     v-model="data.name_bn"
-                    :label="$t('container.system_config.demo_graphic.city.name_bn')"
+                    :label="nameBnLabel"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -466,12 +484,18 @@
       <v-dialog v-model="deleteDialog" width="400">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.system_config.demo_graphic.city.delete") }}
+            {{
+              $t("container.system_config.demo_graphic.city_corporation.delete")
+            }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
-              {{ $t("container.system_config.demo_graphic.city.delete_alert") }}
+              {{
+                $t(
+                  "container.system_config.demo_graphic.city_corporation.delete_alert"
+                )
+              }}
             </div>
           </v-card-text>
           <v-card-actions style="display: block">
@@ -536,6 +560,30 @@ export default {
       loading: false,
       search: "",
       delete_id: "",
+      label: [
+        {
+          id: 1,
+          code: this.$t(
+            "container.system_config.demo_graphic.city_corporation.code"
+          ),
+          name_en: this.$t(
+            "container.system_config.demo_graphic.city_corporation.name_en"
+          ),
+          name_bn: this.$t(
+            "container.system_config.demo_graphic.city_corporation.name_bn"
+          ),
+        },
+        {
+          id: 2,
+          code: this.$t("container.system_config.demo_graphic.thana.code"),
+          name_en: this.$t(
+            "container.system_config.demo_graphic.thana.name_en"
+          ),
+          name_bn: this.$t(
+            "container.system_config.demo_graphic.thana.name_bn"
+          ),
+        },
+      ],
       city: [],
       errors: {},
       error_status: {},
@@ -562,7 +610,9 @@ export default {
           width: "5%",
         },
         {
-          text: this.$t("container.system_config.demo_graphic.city.code"),
+          text: this.$t(
+            "container.system_config.demo_graphic.city_corporation.code"
+          ),
           value: "code",
           width: "5%",
         },
@@ -584,11 +634,15 @@ export default {
           sortable: true,
         },
         {
-          text: this.$t("container.system_config.demo_graphic.city.name_en"),
+          text: this.$t(
+            "container.system_config.demo_graphic.city_corporation.name_en"
+          ),
           value: "name_en",
         },
         {
-          text: this.$t("container.system_config.demo_graphic.city.name_bn"),
+          text: this.$t(
+            "container.system_config.demo_graphic.city_corporation.name_bn"
+          ),
           value: "name_bn",
         },
         {
@@ -608,17 +662,80 @@ export default {
       errors: (state) => state.City.errors,
       error_status: (state) => state.City.error_status,
     }),
-    filteredOptions() {
-      // Apply your filter logic here, e.g., filtering out options with 'Option 2' label
-      return this.locationType.filter(
-        (option) => option.value_en !== "Upazila"
-      );
+    codeLabel() {
+      // Use a computed property to dynamically determine the label
+      if (this.data.location_type === 3) {
+        const data = {};
+        return this.$t(
+          "container.system_config.demo_graphic.city_corporation.code"
+        );
+      }
+      if (this.data.location_type === 1) {
+        return this.$t(
+          "container.system_config.demo_graphic.district_pourashava.code"
+        );
+      }
+      if (this.data.location_type === 2) {
+        return this.$t("container.system_config.demo_graphic.upazila.code");
+      } else {
+        return "Fallback Label"; // You can set a fallback label here
+      }
     },
+    nameEnLabel() {
+      // Use a computed property to dynamically determine the label
+      if (this.data.location_type === 3) {
+        const data = {};
+        return this.$t(
+          "container.system_config.demo_graphic.city_corporation.name_en"
+        );
+      }
+      if (this.data.location_type === 1) {
+        return this.$t(
+          "container.system_config.demo_graphic.district_pourashava.name_en"
+        );
+      }
+      if (this.data.location_type === 2) {
+        return this.$t("container.system_config.demo_graphic.upazila.name_en");
+      } else {
+        return "Fallback Label"; // You can set a fallback label here
+      }
+    },
+    nameBnLabel() {
+      // Use a computed property to dynamically determine the label
+      if (this.data.location_type === 3) {
+        const data = {};
+        return this.$t(
+          "container.system_config.demo_graphic.city_corporation.name_bn"
+        );
+      }
+      if (this.data.location_type === 1) {
+        return this.$t(
+          "container.system_config.demo_graphic.district_pourashava.name_bn"
+        );
+      }
+      if (this.data.location_type === 2) {
+        return this.$t("container.system_config.demo_graphic.upazila.name_bn");
+      } else {
+        return "Fallback Label"; // You can set a fallback label here
+      }
+    },
+
+    // filteredOptions() {
+    //   // Apply your filter logic here, e.g., filtering out options with 'Option 2' label
+    //   return this.locationType.filter(
+    //     (option) => option.value_en !== "Upazila"
+    //   );
+    // },
   },
   methods: {
     registerCustomRules() {
-      extend('codeRules', (value) => {
-        return (value.toString().length <= 6) || this.$t("container.system_config.demo_graphic.city.code")+' can have maximum 6 digit';
+      extend("codeRules", (value) => {
+        return (
+          value.toString().length <= 6 ||
+          this.$t(
+            "container.system_config.demo_graphic.city_corporation.code"
+          ) + " can have maximum 6 digit"
+        );
       });
     },
     createDialog() {
@@ -703,24 +820,42 @@ export default {
       }
 
       try {
-        this.$store
-          .dispatch("City/StoreCity", this.validator())
-          .then((data) => {
-            console.log(data, "submit");
-            if (data == null) {
-              this.$toast.success("Data Inserted Successfully");
-              this.dialogAdd = false;
-              this.resetForm();
-              this.GetCity();
-            } else {
-              this.$refs.formAdd.setErrors(data.errors);
-            }
-          });
+        if (this.data.location_type == 2) {
+          //Insert Upazila
+          this.$store
+            .dispatch("Thana/StoreUpazila", this.validator())
+            .then((data) => {
+              console.log(data, "submit");
+              if (data == null) {
+                this.$toast.success("Data Inserted Successfully");
+                this.dialogAdd = false;
+                this.resetForm();
+                this.GetCity();
+              } else {
+                this.$refs.formAdd.setErrors(data.errors);
+              }
+            });
+        } else {
+          this.$store
+            .dispatch("City/StoreCity", this.validator())
+            .then((data) => {
+              console.log(data, "submit");
+              if (data == null) {
+                this.$toast.success("Data Inserted Successfully");
+                this.dialogAdd = false;
+                this.resetForm();
+                this.GetCity();
+              } else {
+                this.$refs.formAdd.setErrors(data.errors);
+              }
+            });
+        }
       } catch (e) {
         console.log(e);
       }
     },
     editDialog(item) {
+      
       this.dialogEdit = true;
       this.data.code = item.code;
       this.data.division_id = item.district.division.id;
@@ -739,19 +874,36 @@ export default {
       }
 
       try {
-        this.$store
-          .dispatch("City/UpdateCity", this.validator())
-          .then((data) => {
-            console.log(data, "update");
-            if (data == null) {
-              this.$toast.success("Data Updated Successfully");
-              this.dialogEdit = false;
-              this.resetForm();
-              this.GetCity();
-            } else {
-              this.$refs.formEdit.setErrors(data.errors);
-            }
-          });
+        if (this.data.location_type == 2) {
+          //update Upazila
+          this.$store
+            .dispatch("Thana/UpdateUpazila", this.validator())
+            .then((data) => {
+              console.log(data, "submit");
+              if (data == null) {
+                this.$toast.success("Data Updated Successfully");
+                this.dialogEdit = false;
+                this.resetForm();
+                this.GetCity();
+              } else {
+                this.$refs.formEdit.setErrors(data.errors);
+              }
+            });
+        } else {
+          this.$store
+            .dispatch("City/UpdateCity", this.validator())
+            .then((data) => {
+              console.log(data, "update");
+              if (data == null) {
+                this.$toast.success("Data Updated Successfully");
+                this.dialogEdit = false;
+                this.resetForm();
+                this.GetCity();
+              } else {
+                this.$refs.formEdit.setErrors(data.errors);
+              }
+            });
+        }
       } catch (e) {
         console.log(e);
       }
@@ -780,8 +932,6 @@ export default {
         perPage: this.pagination.perPage,
         page: this.pagination.current,
       };
-   
-
       this.$axios
         .get("/admin/city/get", {
           headers: {
@@ -925,7 +1075,9 @@ export default {
       return foundItems;
     },
     updateHeaderTitle() {
-      const title = this.$t("container.system_config.demo_graphic.city.list");
+      const title = this.$t(
+         "container.system_config.demo_graphic.city_corporation.customtitle"
+      );
       this.$store.commit("setHeaderTitle", title);
     },
   },
@@ -937,12 +1089,14 @@ export default {
       this.locationType = res;
       console.log(this.locationType, " here");
     });
+    console.log(this.label, "label");
     // this.getAllDistrict();
   },
   watch: {
     "$i18n.locale": "updateHeaderTitle",
   },
   beforeMount() {
+    console.log("V1");
     this.updateHeaderTitle();
   },
 };
