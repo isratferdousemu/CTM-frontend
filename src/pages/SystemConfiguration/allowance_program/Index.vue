@@ -40,7 +40,7 @@ export default {
   computed: {
     headers(){
       return[
-        { text: "#Sl", value: "id", align: "start", sortable: false },
+        { text: this.$t('container.list.sl'), value: "id", align: "start", sortable: false },
         { text: this.$t('container.system_config.allowance_program.name_en'), value: "name_en" },
         { text: this.$t('container.system_config.allowance_program.name_bn'), value: "name_bn" },
         { text: this.$t('container.system_config.allowance_program.payment_cycle'), value: "payment_cycle" },
