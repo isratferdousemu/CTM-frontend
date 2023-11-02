@@ -2173,6 +2173,7 @@ export default {
         }
       }).then((res) => {
         this.$toast.success("Your Application submitted Successfully");
+        this.$refs.form.reset();
       this.loading = false;
       
     })
