@@ -32,7 +32,7 @@ const SystemConfigurationRoutes = [
     },
     component: () =>
       import(
-        "../pages/SystemConfiguration/demographic_information/city/Index.vue"
+        "../pages/SystemConfiguration/demographic_information/city/Index_V1.vue"
       ),
   },
 
@@ -57,7 +57,7 @@ const SystemConfigurationRoutes = [
     },
     component: () =>
       import(
-        "../pages/SystemConfiguration/demographic_information/union/Index.vue"
+        "../pages/SystemConfiguration/demographic_information/union/Index_V1.vue"
       ),
   },
   {
