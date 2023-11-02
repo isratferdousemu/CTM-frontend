@@ -79,8 +79,8 @@
                     "name_bn": "City Corporation/District Pourashava Name Bangla",
                     "add_new": "Add New City Corporation/District Pourashava",
                     "search": "Search City Corporation/District Pourashava",
-                    "edit": "Edit Division",
-                    "delete": "Delete Division",
+                    "edit": "Edit  City Corporation/District Pourashava",
+                    "delete": "Delete  City Corporation/District Pourashava",
                     "delete_alert": "Are you sure to delete this Division?"
                 },
                 "city_corporation": {
@@ -92,8 +92,8 @@
                     "name_bn": "City Corporation Name Bangla",
                     "add_new": "Add New Upazila/ City Corporation/ District Pouroshava",
                     "search": "Search Upazila/ City Corporation/ District Pouroshava",
-                    "edit": "Edit Division",
-                    "delete": "Delete Division",
+                    "edit": "Edit Upazila/ City Corporation/ District Pouroshava",
+                    "delete": "Delete Upazila/ City Corporation/ District Pouroshava",
                     "delete_alert": "Are you sure to delete this Upazila/ City Corporation/ District Pouroshava?"
                 },
                 "district_pourashava": {

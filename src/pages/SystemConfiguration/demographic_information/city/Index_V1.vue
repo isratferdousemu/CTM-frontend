@@ -446,7 +446,7 @@
                     outlined
                     type="text"
                     v-model="data.name_bn"
-                    :label="nameEnLabel"
+                    :label="nameBnLabel"
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
