@@ -15,7 +15,7 @@
                 <h3 class="text-uppercase pt-3">
                   {{
                     $t(
-                      "container.system_config.demo_graphic.city_corporation.list"
+                      "container.system_config.demo_graphic.city_corporation.customtitle"
                     )
                   }}
                 </h3>
@@ -855,6 +855,7 @@ export default {
       }
     },
     editDialog(item) {
+      
       this.dialogEdit = true;
       this.data.code = item.code;
       this.data.division_id = item.district.division.id;
@@ -1075,7 +1076,7 @@ export default {
     },
     updateHeaderTitle() {
       const title = this.$t(
-        "container.system_config.demo_graphic.city_corporation.list"
+         "container.system_config.demo_graphic.city_corporation.customtitle"
       );
       this.$store.commit("setHeaderTitle", title);
     },

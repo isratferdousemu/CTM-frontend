@@ -13,7 +13,7 @@
             >
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
-                  {{ $t("container.system_config.demo_graphic.union.list") }}
+                  {{ $t("container.system_config.demo_graphic.union1.customtitle") }}
                 </h3>
               </v-card-title>
               <v-card-text>
@@ -165,7 +165,7 @@
       <v-dialog v-model="dialogAdd" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.system_config.demo_graphic.union.add_new") }}
+            {{ $t("container.system_config.demo_graphic.union1.add_new") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
@@ -409,7 +409,7 @@
       <v-dialog v-model="dialogEdit" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.system_config.demo_graphic.union.edit") }}
+            {{ $t("container.system_config.demo_graphic.union1.edit") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
@@ -1186,11 +1186,27 @@ export default {
   methods: {
     registerCustomRules() {
       extend("codeRules", (value) => {
-        return (
-          value.toString().length <= 6 ||
-          this.$t("container.system_config.demo_graphic.union1.code") +
-            " can have maximum 6 digit"
-        );
+        if (this.data.location_type === 3) {
+          return (
+            value.toString().length <= 6 ||
+            this.$t("container.system_config.demo_graphic.union1.code") +
+              " can have maximum 6 digit"
+          );
+        }
+        if (this.data.location_type === 1) {
+          return (
+            value.toString().length <= 6 ||
+            this.$t("container.system_config.demo_graphic.pouro.code") +
+              " can have maximum 6 digit"
+          );
+        }
+        if (this.data.location_type === 2) {
+          return (
+            value.toString().length <= 6 ||
+            this.$t("container.system_config.demo_graphic.thana1.code") +
+              " can have maximum 6 digit"
+          );
+        }
       });
     },
     createDialog() {
@@ -1248,7 +1264,7 @@ export default {
 
       try {
         if (this.data.location_type == 2) {
-          //Insert Upazila
+          //Insert Thana
           this.$store
             .dispatch("Thana/StoreUpazila", this.validator())
             .then((data) => {
@@ -1286,19 +1302,36 @@ export default {
       }
 
       try {
-        this.$store
-          .dispatch("Union/UpdateUnion", this.validator())
-          .then((res) => {
-            console.log(res, "update_union");
-            if (res.data?.success) {
-              this.$toast.success("Data Updated Successfully");
-              this.dialogEdit = false;
-              this.resetData();
-              this.GetUnion();
-            } else if (res.response?.data?.errors) {
-              this.$refs.formEdit.setErrors(res.response.data.errors);
-            }
-          });
+        if (this.data.location_type == 2) {
+          //Update Thana
+          this.$store
+            .dispatch("Thana/UpdateUpazila", this.validator())
+            .then((data) => {
+              console.log(data, "submit");
+              if (data == null) {
+                this.$toast.success("Data Updated Successfully");
+                this.dialogEdit = false;
+                this.resetData();
+                this.GetUnion();
+              } else {
+                this.$refs.formEdit.setErrors(data.errors);
+              }
+            });
+        } else {
+          this.$store
+            .dispatch("Union/UpdateUnion", this.validator())
+            .then((res) => {
+              console.log(res, "update_union");
+              if (res.data?.success) {
+                this.$toast.success("Data Updated Successfully");
+                this.dialogEdit = false;
+                this.resetData();
+                this.GetUnion();
+              } else if (res.response?.data?.errors) {
+                this.$refs.formEdit.setErrors(res.response.data.errors);
+              }
+            });
+        }
       } catch (e) {
         console.log(e);
       }
@@ -1402,15 +1435,22 @@ export default {
 
       let param;
 
+      // if (this.data.location_type == 1) {
+      //   param = 3; //City Corporation
+      //   await this.$axios
+      //     .get(`/admin/city/get/` + this.data.district_id + "/" + param, {
+      //       headers: {
+      //         Authorization: "Bearer " + this.$store.state.token,
+      //         "Content-Type": "multipart/form-data",
+      //       },
+      //     })
+      //     .then((result) => {
+      //       this.city = result.data.data;
+      //       console.log(this.city);
+      //     });
+      // } 
       if (this.data.location_type == 2) {
-        // this.isCityCorporationHidden = false;
         param = 3; //City Corporation
-        // const queryParams = {
-        //   district_id: this.data.district_id,
-        //   location_type: event,
-        // };
-        // console.log(JSON.stringify(queryParams));
-        // return;
         await this.$axios
           .get(`/admin/city/get/` + this.data.district_id + "/" + param, {
             headers: {
@@ -1422,10 +1462,12 @@ export default {
             this.city = result.data.data;
             console.log(this.city);
           });
-      } else {
+      } 
+     else {
+      // if (this.data.location_type == 3) {
         // alert(event);
         await this.$axios
-          .get(`/admin/thana/get/${event}`, {
+          .get(`/admin/thana/get/${this.data.district_id}`, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
@@ -1459,8 +1501,12 @@ export default {
       const update_error_value = null;
       this.updateError("update_error_value");
 
-      if (item.type == "union" || item.type == "pouro") {
+      if (item.type == "union") {
         this.data.location_type = 3;
+      }
+
+      if (item.type == "pouro") {
+        this.data.location_type = 1;
       }
 
       if (item.type == "city") {
@@ -1482,7 +1528,7 @@ export default {
       this.onChangeDistrict(this.data.district_id);
     },
     updateHeaderTitle() {
-      const title = this.$t("container.system_config.demo_graphic.union.list");
+      const title = this.$t("container.system_config.demo_graphic.union1.customtitle");
       this.$store.commit("setHeaderTitle", title);
     },
   },
