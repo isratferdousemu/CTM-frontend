@@ -223,12 +223,14 @@ export default {
     },
 
     deletedRow({index,id}) {
-      if (id == 0)
-      {
-        this.editAllowanceAmount.splice(index, 1);
-      }else {
-        this.deletedisableAlert(id);
-      }
+      console.log(id);
+      this.editAllowanceAmount.splice(index, 1);
+      // if (id === 0)
+      // {
+      //   this.editAllowanceAmount.splice(index, 1);
+      // }else {
+      //   this.deletedisableAlert(id);
+      // }
     },
 
     deletedisableAlert(id) {
