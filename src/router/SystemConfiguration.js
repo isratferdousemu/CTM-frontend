@@ -69,7 +69,7 @@ const SystemConfigurationRoutes = [
     },
     component: () =>
       import(
-        "../pages/SystemConfiguration/demographic_information/ward/Index.vue"
+        "../pages/SystemConfiguration/demographic_information/ward/Index_V1.vue"
       ),
   },
 
