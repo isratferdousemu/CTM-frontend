@@ -535,10 +535,10 @@
                 "additional": "Additional Payment",
                 "post":"Post",
                 "download":"Download",
-                "allotment_setup_list":"Allotment SetUp List",
+                "allotment_setup_list":"Allotment Area Setup",
                 "area_type":"Area Type",
                 "allotment_area":"Allotment Area",
-                "add_new_setup":"Add New SetUp",
+                "add_new_setup":"Update Allotment  Setup",
                 "setupdelete": "Delete Allotment Area ",
                 "setupdelete_alert": "Are you sure to delete this Allotment Area?"
             },

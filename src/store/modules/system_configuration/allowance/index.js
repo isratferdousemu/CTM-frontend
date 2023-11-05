@@ -94,6 +94,10 @@ const mutations = {
         state.allowanceAge = data
     },
 
+    UPDATE_ALLOWANCE_AMOUNT: (state, data) => {
+        state.allowanceAmount = data;
+    },
+
     DELETE_GENDER: (state, data) => {
         state.success_message = data.data.message;
         state.success_status = data.status;
@@ -126,7 +130,6 @@ const actions = {
         let type = 2;
         return http().get(`/admin/lookup/get/${type}`).then((result) => {
             commit('GET_ALL_LOOKUP_GENDER', result.data);
-            console.log(result);
         }).catch((err) => {
             console.log(err);
         })
@@ -138,7 +141,6 @@ const actions = {
         let type = 20;
         return http().get(`/admin/lookup/get/${type}`).then((result) => {
             commit('GET_ALL_LOOKUP_GENDER_TYPE', result.data);
-            console.log(result);
         }).catch((err) => {
             console.log(err);
         })
@@ -149,6 +151,7 @@ const actions = {
     StoreAllowanceProgram: ({commit}, data) => {
         return http().post('/admin/allowance/insert', data).then((result) => {
             commit('STORE_ALLOWANCE_PROGRAM', result);
+            console.log(result);
         }).catch((err) => {
             //console.log(err);
             state.errors = err.response.data.errors
@@ -171,6 +174,7 @@ const actions = {
     UpdateAllowanceProgram: ({commit}, {id, data}) => {
         return http().post(`/admin/allowance/update/${id}`, data).then((result) => {
             commit('UPDATE_ALLOWANCE_PROGRAM', result);
+            console.log(result);
         }).catch((err) => {
             state.errors = err.response.data.errors
             state.error_status = err.response.status
