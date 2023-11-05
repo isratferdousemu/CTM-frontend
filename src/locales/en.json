@@ -79,21 +79,22 @@
                     "name_bn": "City Corporation/District Pourashava Name Bangla",
                     "add_new": "Add New City Corporation/District Pourashava",
                     "search": "Search City Corporation/District Pourashava",
-                    "edit": "Edit Division",
-                    "delete": "Delete Division",
+                    "edit": "Edit  City Corporation/District Pourashava",
+                    "delete": "Delete  City Corporation/District Pourashava",
                     "delete_alert": "Are you sure to delete this Division?"
                 },
                 "city_corporation": {
                     "city": "City Corporation",
+                    "customtitle": "Upazila/ City Corporation/ District Pouroshava",
                     "list": "City Corporation List",
                     "code": "City Corporation Code",
                     "name_en": "City Corporation Name English",
                     "name_bn": "City Corporation Name Bangla",
-                    "add_new": "Add New City Corporation",
-                    "search": "Search City Corporation",
-                    "edit": "Edit Division",
-                    "delete": "Delete Division",
-                    "delete_alert": "Are you sure to delete this City Corporation?"
+                    "add_new": "Add New Upazila/ City Corporation/ District Pouroshava",
+                    "search": "Search Upazila/ City Corporation/ District Pouroshava",
+                    "edit": "Edit Upazila/ City Corporation/ District Pouroshava",
+                    "delete": "Delete Upazila/ City Corporation/ District Pouroshava",
+                    "delete_alert": "Are you sure to delete this Upazila/ City Corporation/ District Pouroshava?"
                 },
                 "district_pourashava": {
                     "city": "District Pourashava",
@@ -145,15 +146,16 @@
                 },
                 "union1": {
                     "union": "Union",
+                    "customtitle": "Thana/ Union/ Pouroshava",
                     "list": "Union List",
                     "code": "Union Code",
                     "name_en": "Union Name English",
                     "name_bn": "Union Name Bangla",
-                    "add_new": "Add New Union",
-                    "search": "Search Union",
-                    "edit": "Edit Union",
-                    "delete": "Delete Union",
-                    "delete_alert": "Are you sure to delete this Union?"
+                    "add_new": "Add New Thana/ Union/ Pouroshava",
+                    "search": "Search Thana/ Union/ Pouroshava",
+                    "edit": "Edit Thana/ Union/ Pouroshava",
+                    "delete": "Delete Thana/ Union/ Pouroshava",
+                    "delete_alert": "Are you sure to delete this Thana/ Union/ Pouroshava?"
                 },
                 "pouro": {
                     "union": "Pouroshava",
@@ -533,10 +535,10 @@
                 "additional": "Additional Payment",
                 "post":"Post",
                 "download":"Download",
-                "allotment_setup_list":"Allotment SetUp List",
+                "allotment_setup_list":"Allotment Area Setup",
                 "area_type":"Area Type",
                 "allotment_area":"Allotment Area",
-                "add_new_setup":"Add New SetUp",
+                "add_new_setup":"Update Allotment  Setup",
                 "setupdelete": "Delete Allotment Area ",
                 "setupdelete_alert": "Are you sure to delete this Allotment Area?"
             },
