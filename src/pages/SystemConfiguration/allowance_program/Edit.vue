@@ -18,12 +18,9 @@ export default {
 
   data(){
     return{
-      delete_disable_id: '',
       dataArray: '',
       deleteDialog: false,
       delete_loading: false,
-
-      deleteDisableDialog: false,
 
       is_marital_toggle: false,
       age_limit: false,
@@ -114,6 +111,16 @@ export default {
       set(value) {
         return this.$store.commit("Allowance/UPDATE_ALLOWANCE_AGE", value);
       },
+    },
+
+    updateAllowanceAmount: {
+      get(){
+        return this.editAllowanceAmount;
+      },
+
+      set(value){
+        return this.$store.commit("Allowance/UPDATE_ALLOWANCE_AMOUNT", value);
+      }
     },
   },
 
@@ -213,54 +220,30 @@ export default {
       this.GetEditAllowanceProgram(this.$route.params.id);
     },
 
-    addRow() {
-      this.editAllowanceAmount.push({
-        id: this.index,
+    addRow(id) {
+      this.updateAllowanceAmount.push({
+        id: (id + 1),
         type_id: '',
         amount: '',
       });
-      this.index++;
     },
 
-    deletedRow({index,id}) {
-      console.log(id);
-      this.editAllowanceAmount.splice(index, 1);
-      // if (id === 0)
-      // {
-      //   this.editAllowanceAmount.splice(index, 1);
-      // }else {
-      //   this.deletedisableAlert(id);
-      // }
+    deletedRow(id) {
+      this.updateAllowanceAmount = this.updateAllowanceAmount.filter((item) => {return item.id !== id});
     },
 
-    deletedisableAlert(id) {
-      this.deleteDisableDialog = true;
-      this.delete_disable_id = id;
-    },
-
-    singleDisableClassremove(){
+    singleDisableClassremove(id){
       try {
-        this.$store.dispatch("Allowance/DeleteDisableClass", this.delete_disable_id).then(() => {
+        this.$store.dispatch("Allowance/DeleteDisableClass", id).then(() => {
           if (this.success_status === 200)
           {
             this.$toast.success(this.message);
 
             this.GetEditAllowanceProgram(this.$route.params.id);
-
-            this.deleteDisableDialog = false;
           }
         })
       }catch (e) {
         console.log(e);
-      }
-    },
-
-    toggleActive(active){
-      if (active === true)
-      {
-        this.isChecked = true;
-      }else {
-        this.isChecked = false;
       }
     },
 
@@ -277,7 +260,7 @@ export default {
         formData.append('is_marital', this.editAllowanceProgram.is_marital);
         formData.append('marital_status', this.editAllowanceProgram.marital_status);
 
-        formData.append('is_active', this.isChecked);
+        formData.append('is_active', this.editAllowanceProgram.is_active);
 
         formData.append('is_disable_class', this.editAllowanceProgram.is_disable_class);
 
@@ -302,9 +285,9 @@ export default {
 
         }
 
-        if (this.editAllowanceAmount !== null)
+        if (this.updateAllowanceAmount !== null)
         {
-          this.editAllowanceAmount.forEach((item, index) => {
+          this.updateAllowanceAmount.forEach((item, index) => {
             formData.append(`amount[\`${index}\`]['id']`, item.id);
             formData.append(`amount[\`${index}\`]['type_id']`, item.type_id);
             formData.append(`amount[\`${index}\`]['amount']`, item.amount);
@@ -318,9 +301,12 @@ export default {
         await this.$store.dispatch("Allowance/UpdateAllowanceProgram", {id:id, data:formData}).then(() => {
           if (this.success_status === 200)
           {
-            this.$toast.success(this.message);
             this.$refs.form.reset();
             this.$router.push('/system-configuration/allowance-program')
+            this.$toast.success(this.message);
+
+            this.success_status = '';
+            this.message = '';
           }
 
           if (this.error_status === 422)
@@ -473,7 +459,7 @@ export default {
                         </v-col>
 
                         <v-col cols="12" sm="6" lg="6">
-                          <v-checkbox v-model="editAllowanceProgram.is_active" :label="$t('container.system_config.allowance_program.is_active')" @click="toggleActive(editAllowanceProgram.is_active)"></v-checkbox>
+                          <v-checkbox v-model="editAllowanceProgram.is_active" :label="$t('container.system_config.allowance_program.is_active')"></v-checkbox>
                         </v-col>
                       </v-row>
                     </v-col>
@@ -588,14 +574,14 @@ export default {
 
                           <table v-if="editAllowanceProgram.is_disable_class === 1 || disable_class === true">
                             <thead>
-                            <tr v-show="editAllowanceAmount.length">
+                            <tr v-show="updateAllowanceAmount.length">
                               <td>Type</td>
                               <td>Amount</td>
                               <td>Add/Remove</td>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-show="editAllowanceAmount.length" v-for="(aa, index) in editAllowanceAmount" :key="index">
+                            <tr v-show="updateAllowanceAmount.length" v-for="(aa, index) in updateAllowanceAmount" :key="aa.id">
                               <td>
                                 <ValidationProvider name="education class" vid="type_id" rules="required" v-slot="{ errors }">
                                 <v-select
@@ -636,7 +622,7 @@ export default {
                                     dark
                                     x-small
                                     color="primary"
-                                    @click="addRow()"
+                                    @click="addRow(aa.id)"
                                 >
                                   <v-icon>mdi-plus</v-icon>
                                 </v-btn>
@@ -646,15 +632,15 @@ export default {
                                     dark
                                     x-small
                                     color="red"
-                                    @click="deletedRow({index:index, id:aa.id})"
-                                    v-show="editAllowanceAmount.length > 1"
+                                    @click="deletedRow(aa.id)"
+                                    v-show="updateAllowanceAmount.length > 1"
                                 >
                                   <v-icon>mdi-minus</v-icon>
                                 </v-btn>
                               </td>
                             </tr>
 
-                            <tr v-show="!editAllowanceAmount.length">
+                            <tr v-show="!updateAllowanceAmount.length">
                               <td colspan="3">No Data Found</td>
                             </tr>
                             </tbody>
@@ -749,32 +735,6 @@ export default {
         </v-card>
       </v-dialog>
       <!-- delete modal for allowance program age  -->
-
-      <!-- delete modal for allowance program disable class  -->
-      <v-dialog v-model="deleteDisableDialog" width="350">
-        <v-card style="justify-content: center; text-align: center">
-          <v-card-title class="font-weight-bold justify-center">
-            Delete Allowance Program disable class
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <div class="subtitle-1 font-weight-medium mt-5">
-              Are you sure to delete this allowance program disable class  ? Allowance program disable class  all information will be deleted.
-            </div>
-          </v-card-text>
-          <v-card-actions style="display: block">
-            <v-row class="mx-0 my-0 py-2" justify="center">
-              <v-btn text @click="deleteDisableDialog = false" outlined class="custom-btn-width py-2 mr-10">
-                Cancel
-              </v-btn>
-              <v-btn text @click="singleDisableClassremove()" color="white" :loading="delete_loading" class="custom-btn-width warning white--text py-2">
-                Delete
-              </v-btn>
-            </v-row>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-      <!-- delete modal for allowance program disable class  -->
     </v-row>
   </div>
 </template>
