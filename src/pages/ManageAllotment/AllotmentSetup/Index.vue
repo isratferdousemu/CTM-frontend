@@ -170,13 +170,16 @@
                                         <v-col lg="6" md="6" cols="12">
                                             <ValidationProvider v-slot="{ errors }" name="Area type" vid="area_type" rules="required">
 
-                                                <v-autocomplete  readonly outlined  v-model="data.area_type"
+                                                <v-select  class="no-arrow-icon" readonly outlined  v-model="data.area_type"
                                                     :items="locationTypes"  @input="onChangeAreaType($event)" item-text="value_en" item-value="id"
                                                     :label="$t('container.manage_allotment.area_type')"
                                                     :error="errors[0] ? true : false" :error-messages="errors[0]">
 
-                                                </v-autocomplete>
+                                                </v-select>
                                             </ValidationProvider>
+                                            <!-- <v-text-field  v-model="text" :label="$t('container.manage_allotment.area_type')" readonly>
+
+                                                </v-text-field> -->
                                         </v-col>
                                             <v-col lg="6" md="6" cols="12">
                                                 <ValidationProvider v-slot="{ errors }" name="Allotment Area" vid="allotment_area" rules="required">
@@ -264,6 +267,7 @@ export default {
                 value:null
 
             },
+            text:null,
             allotmentAreas:[],
             dialogAdd: false,
             deleteDialog: false,
@@ -322,7 +326,7 @@ export default {
     methods: {
            async onChangeAreaType($event) {
               if ($event === 1) {
-                   this.allotmentAreas = [{id:1,name:"Pouroshava"}, { id: 2, name: "Ward" }];
+                   this.allotmentAreas = [{id:1,name:"District-Pouroshava"}, { id: 2, name: "Ward" }];
               } 
               if ($event === 2) {
                 this.allotmentAreas = [{ id: 3, name: "Upazila" }, { id: 4, name: "Union" }, {id: 5, name: "Ward" }];
@@ -367,6 +371,7 @@ export default {
         editDialog(item) {
         
             this.dialogEdit = true;
+            this.text= item.area_type.value_en
             this.data.id = item.id;
             this.data.area_type = item.area_type.id;
             this.data.value = item.value;
@@ -563,3 +568,9 @@ console.log(this.data.area_type)
     },
 };
 </script>
+<style>
+.no-arrow-icon .v-input__icon--clear {
+  display: none;
+
+}
+</style>
