@@ -396,7 +396,7 @@
                   </v-col>
                   <v-col lg="12" md="12" cols="12">
                     <ValidationProvider
-                      name="Code"
+                      name=" Ward Code"
                       vid="code"
                       rules="codeRules"
                       v-slot="{ errors }"
@@ -1052,8 +1052,8 @@ export default {
         this.$refs.form.reset();
       }
 
-      const update_error_value = null;
-      this.updateError("update_error_value");
+      // const update_error_value = null;
+      // this.updateError("update_error_value");
       this.resetData();
       this.dialogAdd = true;
     },
