@@ -237,7 +237,7 @@
                 <ValidationProvider
                   name="Keywork"
                   vid="keyword"
-                  rules="required"
+   
                   v-slot="{ errors }"
                 >
                   <v-text-field
@@ -245,7 +245,7 @@
                     type="text"
                     v-model="data.keyword"
                     :label="$t('container.list.keyword')"
-                    required
+              
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
                   ></v-text-field>
