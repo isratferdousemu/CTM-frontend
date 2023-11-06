@@ -198,7 +198,8 @@
                     "union": "Union",
                     "pouro": "District Pouroshava",
                     "union_pouro_city": "Union/District Pouroshava/City Corporation",
-                    "union_ward": "Union/Ward"
+                    "union_ward": "Union/Ward",
+                    "subLocation_type": "Sub Location"
                 },
                 "office": {
                     "office": "Office",
