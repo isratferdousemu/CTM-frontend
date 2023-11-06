@@ -638,6 +638,7 @@ export default {
             "container.system_config.demo_graphic.city_corporation.name_en"
           ),
           value: "name_en",
+          class:"highlight-column"
         },
         {
           text: this.$t(
@@ -1101,3 +1102,9 @@ export default {
   },
 };
 </script>
+<style>
+.highlight-column {
+
+  background-color: #e0eaf1;
+}
+</style>
