@@ -55,7 +55,6 @@ export default {
     
   },
   created() {
-    this.getdata();
     this.updateHeaderTitle();
   },
   beforeMount() {
