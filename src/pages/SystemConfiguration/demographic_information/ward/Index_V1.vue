@@ -60,21 +60,29 @@
                     >
                       <!-- <template v-slot:item.id="{ item, index }">
                                               {{ (pagination.current - 1) * pagination.perPage + index + 1 }}
-                                          </template> -->
+                                              v-if="item?.parent?.parent?.parent.type == 'division'"
+                                            </template> -->
                       <template v-slot:item.division="{ item }">
                         <span
-                          v-if="item?.parent?.parent?.parent.type == 'division'"
+                          v-if="item?.location_type.id == '1'"
                         >
-                          {{ item?.parent?.parent?.parent.name_en }}
+                       {{ item?.parent?.parent?.parent.name_en }}
                         </span>
+                        
                         <span
+                          v-if="item?.location_type.id == '2' || item?.location_type.id == '3'"
+                        >
+                       {{ item?.parent?.parent?.parent?.parent.name_en }}
+                        </span>
+
+                        <!-- <span
                           v-if="
                             item?.parent?.type == 'union' ||
                             item?.parent?.type == 'thana'
                           "
                         >
-                          {{ item?.parent?.parent?.parent?.parent?.name_en }}
-                        </span>
+                         asdasd {{ item?.parent?.parent?.parent?.parent?.name_en }}
+                        </span> -->
                       </template>
                       <template v-slot:item.district="{ item }">
                         <span v-if="item?.parent?.parent?.type == 'district'">
@@ -110,6 +118,7 @@
                           {{ item?.parent?.name_en }}
                         </span>
                       </template>
+                   
 
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
@@ -330,7 +339,7 @@
                   </v-col>
 
                   <v-col
-                    v-if="data.sub_location_type == 1"
+                    v-if="data.location_type != 1 && data.sub_location_type == 1 "
                     lg="6"
                     md="6"
                     cols="12"
@@ -1355,28 +1364,32 @@ export default {
           text: this.$t(
             "container.system_config.demo_graphic.division.division"
           ),
+          // value: "parent.parent.parent.parent.name_en",
           value: "division",
         },
         {
           text: this.$t(
             "container.system_config.demo_graphic.district.district"
           ),
-          value: "district",
+          value: "parent.parent.parent.name_en",
         },
         {
-          text: this.$t("container.system_config.demo_graphic.thana.thana"),
-          value: "parent.type",
+          text: this.$t("container.system_config.demo_graphic.ward.upazila_city_district"),
+          value: "location_type.value_en",
+         
         },
+
         {
           text: this.$t(
             "container.system_config.demo_graphic.ward.union_pouro_city"
           ),
-          value: "union",
+          value: "parent.name_en",
         },
-        {
-          text: this.$t("container.list.location_type"),
-          value: "location_type.value_en",
-        },
+        // {
+        //   text: this.$t("container.list.location_type"),
+        //   value: "type",
+
+        // },
         {
           text: this.$t("container.system_config.demo_graphic.ward.name_en"),
           value: "name_en",
