@@ -197,8 +197,10 @@
                     "upazila": "Upazila",
                     "union": "Union",
                     "pouro": "District Pouroshava",
-                    "union_pouro_city": "Union/District Pouroshava/City Corporation",
-                    "union_ward": "Union/Ward"
+                    "upazila_city_district": "Upazila/District Pouroshava/City Corporation",
+                    "union_pouro_city": "Thana/ Union/ Pouroshava",
+                    "union_ward": "Union/Ward",
+                    "subLocation_type": "Sub Location"
                 },
                 "office": {
                     "office": "Office",
