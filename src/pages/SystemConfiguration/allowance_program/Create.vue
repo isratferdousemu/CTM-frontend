@@ -158,6 +158,7 @@ export default {
         this.divs.push(disable_class);
       }
     },
+
     addRow() {
       this.divs.push({
         id: this.index,
@@ -167,9 +168,11 @@ export default {
       });
       this.index++;
     },
+
     deletedRow(id) {
       this.divs = this.divs.filter(d => d.id !== id);
     },
+
     addAllowanceProgram: async function(){
       try {
         let formData = new FormData();
@@ -215,7 +218,6 @@ export default {
         await this.$store.dispatch("Allowance/StoreAllowanceProgram", formData).then(() => {
           if (this.success_status === 201)
           {
-            console.log(this.success_status)
             this.add_allowance_program = {};
             this.add_allowance_program.allowance_age = [];
             this.add_allowance_program.gender = [];
