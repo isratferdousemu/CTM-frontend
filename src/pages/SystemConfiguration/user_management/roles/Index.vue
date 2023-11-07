@@ -61,8 +61,6 @@ export default {
 
   methods: {
     getAllRoles(){
-      this.loading = true
-
       const { sortBy, sortDesc, page, itemsPerPage } = this.options
 
       http().get('/admin/role/get', {
@@ -166,9 +164,12 @@ export default {
                       class="elevation-1 transparent row-pointer"
                   >
 
-                    <template v-slot:[`item.id`]="{ item,index }">
-                     {{ index + 1 }}
+                    <template v-slot:item.id="{ item, index }">
+                      {{
+                        (options.page - 1) * options.itemsPerPage + index + 1
+                      }}
                     </template>
+
                     <template v-slot:[`item.comment`]="{ item }">
                       <span v-if="item.comment != null">
                         {{ item.comment }}

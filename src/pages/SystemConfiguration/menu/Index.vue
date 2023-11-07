@@ -178,6 +178,12 @@ export default {
                     dense
                     class="elevation-1"
                   >
+                    <template v-slot:item.id="{ item, index }">
+                      {{
+                        (options.page - 1) * options.itemsPerPage + index + 1
+                      }}
+                    </template>
+
                     <template v-slot:[`item.parent_id`]="{ item }">
                       <span v-if="item.parent_id == null">
                           ---
