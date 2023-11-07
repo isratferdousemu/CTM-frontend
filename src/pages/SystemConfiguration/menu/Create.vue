@@ -26,7 +26,6 @@ export default {
         label_name_bn: null,
         page_link_id: null,
         parent_id: null,
-        order: null,
         link_type: null,
         link: null,
       },
@@ -198,7 +197,7 @@ export default {
 
                     <v-col cols="12" class="d-flex">
                       <v-row wrap>
-                        <v-col cols="12" sm="6" lg="6" v-if="add_menu.link_type === 1">
+                        <v-col cols="12" sm="6" lg="12" v-if="add_menu.link_type === 1">
                           <ValidationProvider name="Page Url" vid="page_link_id" rules="required" v-slot="{ errors }">
                             <v-autocomplete
                             :items="pageUrls"
@@ -220,31 +219,12 @@ export default {
                           </ValidationProvider>
                         </v-col>
 
-                        <v-col cols="12" sm="6" lg="6" v-if="add_menu.link_type === 2">
+                        <v-col cols="12" sm="6" lg="12" v-if="add_menu.link_type === 2">
                           <ValidationProvider name="Url" vid="link" rules="required" v-slot="{ errors }">
                             <v-text-field
                               type="text"
                               v-model="add_menu.link"
                               :label="$t('container.system_config.menu.link')"
-                              persistent-hint
-                              outlined
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                              required
-                            ></v-text-field>
-                          </ValidationProvider>
-                        </v-col>
-
-                        <v-col cols="12" sm="6" lg="6">
-                          <ValidationProvider name="Menu Ordering" vid="order" rules="required" v-slot="{ errors }">
-                            <v-text-field
-                              type="number"
-                              v-model="add_menu.order"
-                              step="any"
-                              min="0"
-                              ref="input"
-                              :rules="[numberRule]"
-                              :label="$t('container.system_config.menu.order')"
                               persistent-hint
                               outlined
                               :error="errors[0] ? true : false"

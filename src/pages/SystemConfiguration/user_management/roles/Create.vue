@@ -54,11 +54,6 @@ export default {
         formData.append('name_bn', this.add_role.name_bn);
         formData.append('comment', this.add_role.comment);
 
-        if (this.add_role.status !== null)
-        {
-          formData.append('status', this.add_role.status);
-        }
-
 
         await this.$store.dispatch("Role/StoreRole", formData).then(() => {
           if (this.success_status === 201)
@@ -171,25 +166,6 @@ export default {
                             required
                         ></v-text-field>
                         </ValidationProvider>
-                      </v-col>
-                    </v-row>
-                  </v-col>
-
-                  <v-col cols="12" class="d-flex">
-                    <v-row wrap>
-                      <v-col
-                          cols="12"
-                          sm="6"
-                          lg="6"
-                      >
-
-                        <v-checkbox
-                            v-model="add_role.status"
-                            color="primary"
-                            label="Is Active ?"
-                            required
-                        ></v-checkbox>
-
                       </v-col>
                     </v-row>
                   </v-col>

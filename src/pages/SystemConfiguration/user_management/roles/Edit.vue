@@ -32,7 +32,17 @@ export default {
       success_status: (state) => state.Role.success_status,
       errors: (state) => state.Role.errors,
       error_status: (state) => state.Role.error_status
-    })
+    }),
+
+    update_role: {
+      get(){
+        return this.role;
+      },
+
+      set(value){
+        return this.$store.commit("Role/UPDATE_ROLE_STATUS", value);
+      }
+    }
   },
 
   mounted() {
@@ -49,14 +59,14 @@ export default {
         let id = this.$route.params.id;
         let formData = new FormData();
 
-        formData.append('code', this.role.code);
-        formData.append('name_en', this.role.name_en);
-        formData.append('name_bn', this.role.name_bn);
-        formData.append('comment', this.role.comment);
+        formData.append('code', this.update_role.code);
+        formData.append('name_en', this.update_role.name_en);
+        formData.append('name_bn', this.update_role.name_bn);
+        formData.append('comment', this.update_role.comment);
 
-        if (this.role.status !== null)
+        if (this.update_role.status !== null)
         {
-          formData.append('status', this.role.status);
+          formData.append('status', this.update_role.status);
         }
 
         formData.append('id', id);
@@ -110,7 +120,7 @@ export default {
                         <ValidationProvider name="Code" vid="code" rules="required" v-slot="{ errors }">
                           <v-text-field
                               type="text"
-                              v-model="role.code"
+                              v-model="update_role.code"
                               label="Enter Code"
                               persistent-hint
                               outlined
@@ -126,7 +136,7 @@ export default {
                         <ValidationProvider name="name_bn" vid="name_bn" rules="required" v-slot="{ errors }">
                           <v-text-field
                               type="text"
-                              v-model="role.name_bn"
+                              v-model="update_role.name_bn"
                               label="Enter Role Name (BN)"
                               persistent-hint
                               outlined
@@ -150,7 +160,7 @@ export default {
                         <ValidationProvider name="name_en" vid="name_en" rules="required" v-slot="{ errors }">
                           <v-text-field
                               type="text"
-                              v-model="role.name_en"
+                              v-model="update_role.name_en"
                               label="Enter Role Name (EN)"
                               persistent-hint
                               outlined
@@ -166,7 +176,7 @@ export default {
                         <ValidationProvider name="comment" vid="comment" rules="required" v-slot="{ errors }">
                           <v-text-field
                               type="text"
-                              v-model="role.comment"
+                              v-model="update_role.comment"
                               label="Enter Remark"
                               persistent-hint
                               outlined
@@ -189,7 +199,7 @@ export default {
                       >
                         <ValidationProvider name="status" vid="status" rules="required" v-slot="{ errors }">
                           <v-checkbox
-                              v-model="role.status"
+                              v-model="update_role.status"
                               color="primary"
                               label="Is Active ?"
                               hide-details
