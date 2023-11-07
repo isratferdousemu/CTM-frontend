@@ -259,7 +259,14 @@
                     "member_phone": "Phone"
                 },
                 "role": {
-                    "list": "Role List"
+                    "list": "Role Lists",
+                    "code": "Code",
+                    "name_en": "Role Name (EN)",
+                    "name_bn": "Role Name (BN)",
+                    "comment": "Remarks",
+                    "status": "Status",
+                    "add": "Add Role",
+                    "edit": "Edit Role"
                 },
                 "user": {
                     "listTitle": "User List",

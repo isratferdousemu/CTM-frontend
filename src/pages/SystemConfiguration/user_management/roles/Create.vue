@@ -86,7 +86,7 @@ export default {
         <v-row>
           <v-col cols="12">
             <v-card>
-              <v-card-title><h3>Add Role</h3></v-card-title>
+              <v-card-title><h3>{{ this.$t('container.system_config.demo_graphic.role.add') }}</h3></v-card-title>
 
               <v-divider></v-divider>
 
@@ -105,7 +105,7 @@ export default {
                         <v-text-field
                             type="text"
                             v-model="add_role.code"
-                            label="Enter Code"
+                            :label="$t('container.system_config.demo_graphic.role.code')"
                             persistent-hint
                             outlined
                             :error="errors[0] ? true : false"
@@ -120,7 +120,7 @@ export default {
                         <v-text-field
                             type="text"
                             v-model="add_role.name_bn"
-                            label="Enter Role Name (BN)"
+                            :label="$t('container.system_config.demo_graphic.role.name_bn')"
                             persistent-hint
                             outlined
                             :error="errors[0] ? true : false"
@@ -143,7 +143,7 @@ export default {
                         <v-text-field
                             type="text"
                             v-model="add_role.name_en"
-                            label="Enter Role Name (EN)"
+                            :label="$t('container.system_config.demo_graphic.role.name_en')"
                             persistent-hint
                             outlined
                             :error="errors[0] ? true : false"
@@ -158,7 +158,7 @@ export default {
                         <v-text-field
                             type="text"
                             v-model="add_role.comment"
-                            label="Enter Remark"
+                            :label="$t('container.system_config.demo_graphic.role.comment')"
                             persistent-hint
                             outlined
                             :error="errors[0] ? true : false"
@@ -177,7 +177,7 @@ export default {
                         class="custom-btn mr-2"
                         router
                         to="/system-configuration/role"
-                    >Back
+                    >{{ $t('container.list.back') }}
                     </v-btn>
                     <v-btn
                         flat
@@ -186,7 +186,7 @@ export default {
                         class="custom-btn mr-2"
                         :disabled="invalid"
                         :loading="loading"
-                    >Submit
+                    >{{$t('container.list.submit')}}
                     </v-btn>
                   </v-row>
 
