@@ -57,9 +57,31 @@
                       :headers="headers"
                       :items="districts"
                       :items-per-page="pagination.perPage"
+
+                      :sort-by.sync="sortBy"
+                      :sort-desc.sync="sortDesc"
+                      @update:options="handleOptionsUpdate"
+                      
                       hide-default-footer
                       class="elevation-0 transparent row-pointer"
                     >
+                      <!-- Headers -->
+                      <!-- <template v-slot:header.division.name_en>
+                        <button @click="onClickHeader('division')">
+                          Division
+                        </button>
+                      </template>
+                      <template v-slot:header.name_en>
+                        <button @click="onClickHeader('name_en')">
+                          District
+                        </button>
+                      </template>
+                      <template v-slot:header.name_bn>
+                        <button @click="onClickHeader('name_bn')">
+                          District
+                        </button>
+                      </template> -->
+                      <!-- Headers -->
                       <template v-slot:item.id="{ item, index }">
                         {{
                           (pagination.current - 1) * pagination.perPage +
@@ -199,7 +221,9 @@
                     outlined
                     type="text"
                     v-model="data.code"
-                    :label="$t('container.system_config.demo_graphic.district.code')"
+                    :label="
+                      $t('container.system_config.demo_graphic.district.code')
+                    "
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -215,7 +239,11 @@
                     outlined
                     type="text"
                     v-model="data.name_en"
-                    :label="$t('container.system_config.demo_graphic.district.name_en')"
+                    :label="
+                      $t(
+                        'container.system_config.demo_graphic.district.name_en'
+                      )
+                    "
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -231,7 +259,11 @@
                     outlined
                     type="text"
                     v-model="data.name_bn"
-                    :label="$t('container.system_config.demo_graphic.district.name_bn')"
+                    :label="
+                      $t(
+                        'container.system_config.demo_graphic.district.name_bn'
+                      )
+                    "
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -312,7 +344,9 @@
                     outlined
                     type="text"
                     v-model="data.code"
-                    :label="$t('container.system_config.demo_graphic.district.code')"
+                    :label="
+                      $t('container.system_config.demo_graphic.district.code')
+                    "
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -328,7 +362,11 @@
                     outlined
                     type="text"
                     v-model="data.name_en"
-                    :label="$t('container.system_config.demo_graphic.district.name_en')"
+                    :label="
+                      $t(
+                        'container.system_config.demo_graphic.district.name_en'
+                      )
+                    "
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -344,7 +382,11 @@
                     outlined
                     type="text"
                     v-model="data.name_bn"
-                    :label="$t('container.system_config.demo_graphic.district.name_bn')"
+                    :label="
+                      $t(
+                        'container.system_config.demo_graphic.district.name_bn'
+                      )
+                    "
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -454,6 +496,8 @@ export default {
         total: 0,
         perPage: 15,
       },
+      sortBy: "name_en",
+      sortDesc: false, //ASC
       // errors: "",
       items: [5, 10, 15, 20, 40, 50, 100],
     };
@@ -471,7 +515,10 @@ export default {
           align: "start",
           sortable: false,
         },
-        { text: this.$t("container.system_config.demo_graphic.district.code"), value: "code" },
+        {
+          text: this.$t("container.system_config.demo_graphic.district.code"),
+          value: "code",
+        },
         {
           text: this.$t(
             "container.system_config.demo_graphic.division.division"
@@ -483,7 +530,7 @@ export default {
             "container.system_config.demo_graphic.district.name_en"
           ),
           value: "name_en",
-          class:"highlight-column"
+          class: "highlight-column",
         },
         {
           text: this.$t(
@@ -507,9 +554,12 @@ export default {
   },
   methods: {
     registerCustomRules() {
-      extend('codeRules', (value) => {
-        return (value.toString().length <= 6) || this.$t("container.system_config.demo_graphic.district.code")+' can have maximum 6 digit';
-
+      extend("codeRules", (value) => {
+        return (
+          value.toString().length <= 6 ||
+          this.$t("container.system_config.demo_graphic.district.code") +
+            " can have maximum 6 digit"
+        );
       });
     },
     createDialog() {
@@ -578,6 +628,9 @@ export default {
       }
 
       return true;
+    },
+    onClickHeader() {
+      alert("clicked");
     },
     validator() {
       let fd = new FormData();
@@ -659,12 +712,20 @@ export default {
       // this.pagination.current = $event;
       this.GetDistrict();
     },
+    handleOptionsUpdate({ sortBy, sortDesc }) {
+      this.sortBy = sortBy[0];
+      this.sortDesc = sortDesc[0];
+      // this.GetDistrict();
+    },
     async GetDistrict() {
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
+        // sortBy: this.sortBy,
+        // sortDesc: this.sortDesc,
       };
+
       this.$axios
         .get("/admin/district/get", {
           headers: {
@@ -737,6 +798,21 @@ export default {
   },
   watch: {
     "$i18n.locale": "updateHeaderTitle",
+    options: {
+      handler() {
+        this.GetDistrict();
+        console.log("watcher");
+      },
+      deep: true,
+    },
+
+    search: {
+      handler() {
+        this.current = this.options.page;
+        this.GetDistrict();
+        console.log("search");
+      },
+    },
   },
   created() {
     this.registerCustomRules();
@@ -750,7 +826,6 @@ export default {
 </script>
 <style>
 .highlight-column {
-
   background-color: #e0eaf1;
 }
 </style>

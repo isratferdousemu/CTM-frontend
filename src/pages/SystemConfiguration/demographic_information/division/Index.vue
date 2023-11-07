@@ -13,8 +13,7 @@
             >
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
-                  {{ $t("container.system_config.demo_graphic.division.list") }}      
-
+                  {{ $t("container.system_config.demo_graphic.division.list") }}
                 </h3>
               </v-card-title>
               <v-card-text>
@@ -58,11 +57,16 @@
                       :headers="headers"
                       :items="divisions"
                       :items-per-page="pagination.perPage"
+
+                      
+                      :sort-by.sync="sortBy"
+                      :sort-desc.sync="sortDesc"
+                      @update:options="handleOptionsUpdate"
+                      
+
                       hide-default-footer
                       class="elevation-0 transparent row-pointer"
-                   
-                 
-             >
+                    >
                       <template v-slot:item.id="{ item, index }">
                         {{
                           (pagination.current - 1) * pagination.perPage +
@@ -70,14 +74,14 @@
                           1
                         }}
                       </template>
-                         <!-- <template v-slot:[`item.id`]="{ item, index }">
+                      <!-- <template v-slot:[`item.id`]="{ item, index }">
                         {{ index + 1 }}
                       </template>
                         <template v-slot:[`item.id`]="{ item, index }">
                           {{ options }}
                         </template> -->
-                    
-                      <template v-slot:item.name_en="{ item }" >
+
+                      <template v-slot:item.name_en="{ item }">
                         {{ item.name_en }}
                       </template>
                       <template v-slot:item.name_bn="{ item }">
@@ -125,38 +129,36 @@
                       </template>
                       <!-- End Action Button -->
 
-                        <template v-slot:footer="item">
-                          <div
-                            class="text-center pt-2 v-data-footer justify-center pb-2"
-                          >
-                            <v-select
-                              style="
+                      <template v-slot:footer="item">
+                        <div
+                          class="text-center pt-2 v-data-footer justify-center pb-2"
+                        >
+                          <v-select
+                            style="
                               position: absolute;
                               right: 25px;
                               width: 149px;
                               transform: translate(0px, 0px);
                             "
-                              :items="items"
-                              hide-details
-                              dense
-                              outlined
-                              @change="onPageChange"
-                              v-model="pagination.perPage"
-                            ></v-select>
-                            <v-pagination
-                              circle
-                              primary
-                              v-model="pagination.current"
-                              :length="pagination.total"
-                              @input="onPageChange"
-                              :total-visible="11"
-                              class="custom-pagination-item"
-                            ></v-pagination>
-                          </div>
-                        </template>
-                          
+                            :items="items"
+                            hide-details
+                            dense
+                            outlined
+                            @change="onPageChange"
+                            v-model="pagination.perPage"
+                          ></v-select>
+                          <v-pagination
+                            circle
+                            primary
+                            v-model="pagination.current"
+                            :length="pagination.total"
+                            @input="onPageChange"
+                            :total-visible="11"
+                            class="custom-pagination-item"
+                          ></v-pagination>
+                        </div>
+                      </template>
                     </v-data-table>
-               
                   </v-col>
                 </v-row>
               </v-card-text>
@@ -177,18 +179,20 @@
               <form @submit.prevent="submitDivision()">
                 <!-- {{errors.code}}
                   {{errors.name_en}} -->
-                  
-                  <ValidationProvider
+
+                <ValidationProvider
                   v-slot="{ errors }"
                   name="Code"
                   vid="code"
                   rules="required|codeRules"
-                  >
+                >
                   <v-text-field
                     outlined
                     type="text"
                     v-model="data.code"
-                    :label="$t('container.system_config.demo_graphic.division.code')"
+                    :label="
+                      $t('container.system_config.demo_graphic.division.code')
+                    "
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -205,7 +209,11 @@
                     outlined
                     type="text"
                     v-model="data.name_en"
-                    :label="$t('container.system_config.demo_graphic.division.name_en')"
+                    :label="
+                      $t(
+                        'container.system_config.demo_graphic.division.name_en'
+                      )
+                    "
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -222,7 +230,11 @@
                     outlined
                     type="text"
                     v-model="data.name_bn"
-                    :label="$t('container.system_config.demo_graphic.division.name_bn')"
+                    :label="
+                      $t(
+                        'container.system_config.demo_graphic.division.name_bn'
+                      )
+                    "
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -280,7 +292,9 @@
                     outlined
                     type="text"
                     v-model="data.code"
-                    :label="$t('container.system_config.demo_graphic.division.code')"
+                    :label="
+                      $t('container.system_config.demo_graphic.division.code')
+                    "
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -296,7 +310,11 @@
                     outlined
                     type="text"
                     v-model="data.name_en"
-                    :label="$t('container.system_config.demo_graphic.division.name_en')"
+                    :label="
+                      $t(
+                        'container.system_config.demo_graphic.division.name_en'
+                      )
+                    "
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -312,7 +330,11 @@
                     outlined
                     type="text"
                     v-model="data.name_bn"
-                    :label="$t('container.system_config.demo_graphic.division.name_bn')"
+                    :label="
+                      $t(
+                        'container.system_config.demo_graphic.division.name_bn'
+                      )
+                    "
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
@@ -416,21 +438,20 @@ export default {
       divisions: [],
       errors: {},
       error_status: {},
-     pagination: {
+      pagination: {
         current: 1,
         total: 0,
         perPage: 15,
       },
+      sortBy: "name_en",
+      sortDesc: false, //ASC
       // errors: "",
       items: [5, 10, 15, 20, 40, 50, 100],
-     
     };
   },
 
-  watch:{
+  watch: {
     "$i18n.locale": "updateHeaderTitle",
-
-   
   },
 
   components: {
@@ -446,12 +467,16 @@ export default {
           align: "start",
           sortable: false,
         },
-        { text: this.$t("container.system_config.demo_graphic.division.code"), value: "code" },
+        {
+          text: this.$t("container.system_config.demo_graphic.division.code"),
+          value: "code",
+        },
         {
           text: this.$t(
             "container.system_config.demo_graphic.division.name_en"
           ),
-          value: "name_en", class: "highlight-column "
+          value: "name_en",
+          class: "highlight-column ",
         },
         {
           text: this.$t(
@@ -470,16 +495,20 @@ export default {
 
     ...mapState({
       message: (state) => state.Division.success_message,
-   
+
       // errors: (state) => state.Division.errors,
       // error_status: (state) => state.Division.error_status,
     }),
   },
   methods: {
     registerCustomRules() {
-      extend('codeRules', (value) => {
-        return (value.toString().length <= 6) || this.$t("container.system_config.demo_graphic.division.code")+' can have maximum 6 digit';
-});
+      extend("codeRules", (value) => {
+        return (
+          value.toString().length <= 6 ||
+          this.$t("container.system_config.demo_graphic.division.code") +
+            " can have maximum 6 digit"
+        );
+      });
     },
     createDialog() {
       if (this.$refs.formAdd) {
@@ -524,7 +553,10 @@ export default {
       console.log(checkLanguageBangla);
       let errs = {};
 
-      if (checkLanguageBangla !== "Bangla" && checkLanguageBangla !== "BanglaSpecialChar") {
+      if (
+        checkLanguageBangla !== "Bangla" &&
+        checkLanguageBangla !== "BanglaSpecialChar"
+      ) {
         errs.name_bn = ["Please Enter in Bangla Language in this Field"];
       }
 
@@ -623,12 +655,18 @@ export default {
       // this.pagination.current = $event;
       this.GetDivision();
     },
-
+    handleOptionsUpdate({ sortBy, sortDesc }) {
+      this.sortBy = sortBy[0];
+      this.sortDesc = sortDesc[0];
+      // this.GetDivision();
+    },
     async GetDivision() {
-     const queryParams = {
+      const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
+        // sortBy: this.sortBy,
+        // sortDesc: this.sortDesc,
       };
       this.$axios
         .get("/admin/division/get", {
@@ -644,8 +682,6 @@ export default {
           this.pagination.total = result.data.meta.last_page;
           this.pagination.grand_total = result.data.meta.total;
         });
-
-
     },
     deleteDivision: async function () {
       try {
@@ -693,7 +729,6 @@ export default {
 </script>
 <style>
 .highlight-column {
-
   background-color: #e0eaf1;
 }
 </style>
