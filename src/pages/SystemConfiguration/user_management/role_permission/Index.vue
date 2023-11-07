@@ -34,6 +34,10 @@ export default {
     }
   },
 
+  watch: {
+
+  },
+
   computed: {
     ...mapState({
       roles: (state) => state.Role_permission.roles,
@@ -77,8 +81,6 @@ export default {
 
     selectAll: function() {
       this.add_role_permission.permissions = [];
-
-      console.log(this.allSelected);
 
       if (this.allSelected)
       {
@@ -155,8 +157,6 @@ export default {
           {
             this.subModules = value;
             this.subModuleKey = key;
-
-            console.log(this.subModules)
           }
         }
       }
@@ -261,7 +261,6 @@ export default {
                                 persistent-hint
                                 outlined
                                 v-model="selectedModule"
-                                :rules="required ? 'Please select a module' : []"
                                 @change="toggleModule(selectedModule)"
                             >
                             </v-select>
@@ -297,7 +296,6 @@ export default {
                                    v-model="add_role_permission.permissions"
                                    color="primary"
                                    :value="mm.id"
-                                   :hide-details="errors[0] ? false : true"
                                    @click="select"
                                ></v-checkbox>
                             </span>
@@ -335,7 +333,6 @@ export default {
                                    v-model="rolePermissions"
                                    color="primary"
                                    :value="mm.id"
-                                   :hide-details="errors[0] ? false : true"
                                    @click="select"
                                ></v-checkbox>
                             </span>

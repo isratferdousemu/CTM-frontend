@@ -14,6 +14,8 @@ export default {
         {id: 4, name: 'Laptop'},
       ],
 
+      device_status: null,
+
       deleteDialog: false,
       delete_loading: false,
       deleted_id: '',
@@ -107,10 +109,17 @@ export default {
       }
     },
 
-    deviceActivate: async function(id){
+    deviceActivate: async function({id, device_status}){
       try {
         await this.$store.dispatch("Device_registration/ActivateDevice", id).then(() => {
-          this.$toast.success(this.message);
+
+          if (device_status == 1)
+          {
+            this.$toast.success(this.message);
+          }else {
+            this.$toast.warning(this.message);
+          }
+
           this.getAllDevices();
         })
       }catch (e) {
@@ -191,6 +200,12 @@ export default {
                       class="elevation-1 transparent row-pointer"
                   >
 
+                    <template v-slot:item.id="{ item, index }">
+                      {{
+                        (options.page - 1) * options.itemsPerPage + index + 1
+                      }}
+                    </template>
+
                     <template v-slot:[`item.device_type`]="{ item }">
                       <div v-for="device in device_types" :key="device.id">
                         <span v-if="device.id === item.device_type">
@@ -201,7 +216,7 @@ export default {
 
                     <template v-slot:[`item.status`]="{item}">
                       <span>
-                           <v-switch :input-value="item.status === 1 ? true : false" @click="deviceActivate(item.id)" hide-details color="orange darken-3"></v-switch>
+                           <v-switch :input-value="item.status === 1 ? true : false" @change="deviceActivate({id:item.id, device_status:item.status})" hide-details color="orange darken-3"></v-switch>
                       </span>
                     </template>
 
