@@ -113,7 +113,7 @@ export default {
       try {
         await this.$store.dispatch("Device_registration/ActivateDevice", id).then(() => {
 
-          if (device_status == 1)
+          if (device_status == 0)
           {
             this.$toast.success(this.message);
           }else {
