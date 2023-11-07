@@ -13,7 +13,8 @@
             >
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
-                  {{ $t("container.system_config.demo_graphic.division.list") }}
+                  {{ $t("container.system_config.demo_graphic.division.list") }}      
+
                 </h3>
               </v-card-title>
               <v-card-text>
@@ -59,7 +60,9 @@
                       :items-per-page="pagination.perPage"
                       hide-default-footer
                       class="elevation-0 transparent row-pointer"
-                    >
+                   
+                 
+             >
                       <template v-slot:item.id="{ item, index }">
                         {{
                           (pagination.current - 1) * pagination.perPage +
@@ -67,7 +70,14 @@
                           1
                         }}
                       </template>
-                      <template v-slot:item.name_en="{ item }">
+                         <!-- <template v-slot:[`item.id`]="{ item, index }">
+                        {{ index + 1 }}
+                      </template>
+                        <template v-slot:[`item.id`]="{ item, index }">
+                          {{ options }}
+                        </template> -->
+                    
+                      <template v-slot:item.name_en="{ item }" >
                         {{ item.name_en }}
                       </template>
                       <template v-slot:item.name_bn="{ item }">
@@ -115,36 +125,38 @@
                       </template>
                       <!-- End Action Button -->
 
-                      <template v-slot:footer="item">
-                        <div
-                          class="text-center pt-2 v-data-footer justify-center pb-2"
-                        >
-                          <v-select
-                            style="
+                        <template v-slot:footer="item">
+                          <div
+                            class="text-center pt-2 v-data-footer justify-center pb-2"
+                          >
+                            <v-select
+                              style="
                               position: absolute;
                               right: 25px;
                               width: 149px;
                               transform: translate(0px, 0px);
                             "
-                            :items="items"
-                            hide-details
-                            dense
-                            outlined
-                            @change="onPageChange"
-                            v-model="pagination.perPage"
-                          ></v-select>
-                          <v-pagination
-                            circle
-                            primary
-                            v-model="pagination.current"
-                            :length="pagination.total"
-                            @input="onPageChange"
-                            :total-visible="11"
-                            class="custom-pagination-item"
-                          ></v-pagination>
-                        </div>
-                      </template>
+                              :items="items"
+                              hide-details
+                              dense
+                              outlined
+                              @change="onPageChange"
+                              v-model="pagination.perPage"
+                            ></v-select>
+                            <v-pagination
+                              circle
+                              primary
+                              v-model="pagination.current"
+                              :length="pagination.total"
+                              @input="onPageChange"
+                              :total-visible="11"
+                              class="custom-pagination-item"
+                            ></v-pagination>
+                          </div>
+                        </template>
+                          
                     </v-data-table>
+               
                   </v-col>
                 </v-row>
               </v-card-text>
@@ -380,6 +392,7 @@
 import { mapState } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
+import { http } from "@/hooks/httpService";
 
 extend("required", required);
 export default {
@@ -403,25 +416,21 @@ export default {
       divisions: [],
       errors: {},
       error_status: {},
-      pagination: {
+     pagination: {
         current: 1,
         total: 0,
-        perPage: 10,
+        perPage: 15,
       },
-      page: 1,
+      // errors: "",
       items: [5, 10, 15, 20, 40, 50, 100],
+     
     };
   },
 
   watch:{
     "$i18n.locale": "updateHeaderTitle",
 
-    search:{
-      handler(){
-        this.page = this.pagination.current;
-        this.GetDivision();
-      }
-    }
+   
   },
 
   components: {
@@ -442,7 +451,7 @@ export default {
           text: this.$t(
             "container.system_config.demo_graphic.division.name_en"
           ),
-          value: "name_en",
+          value: "name_en", class: "highlight-column "
         },
         {
           text: this.$t(
@@ -461,7 +470,7 @@ export default {
 
     ...mapState({
       message: (state) => state.Division.success_message,
-      divisions: (state) => state.Division.divisions,
+   
       // errors: (state) => state.Division.errors,
       // error_status: (state) => state.Division.error_status,
     }),
@@ -616,7 +625,7 @@ export default {
     },
 
     async GetDivision() {
-      const queryParams = {
+     const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
@@ -635,6 +644,8 @@ export default {
           this.pagination.total = result.data.meta.last_page;
           this.pagination.grand_total = result.data.meta.total;
         });
+
+
     },
     deleteDivision: async function () {
       try {
@@ -680,3 +691,9 @@ export default {
   },
 };
 </script>
+<style>
+.highlight-column {
+
+  background-color: #e0eaf1;
+}
+</style>

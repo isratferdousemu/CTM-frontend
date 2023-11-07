@@ -30,12 +30,23 @@ export default {
     };
   },
   methods: {
-    async getdata() {
-      const response = await this.apiRequest.fetchData(
-        "https://jsonplaceholder.typicode.com/users"
-      );
-
-      this.data = response;
+    CheckToken() {
+      let token = this.$store.state.token;
+      this.$axios
+        .post("auth/token/check", { token })
+        .then((res) => {
+          console.log(res, "token");
+        })
+        .catch((err) => {
+          console.log(err, "token error");
+          this.$store.dispatch("logout");
+          this.$router.push("/login");
+        });
+      // Cookie.remove('token')
+      //   	Cookie.remove('setUser')
+      //   	this.$store.commit('setToken', null)
+      //   	this.$store.commit('setUser', null)
+      // this.$router.push('/login')
     },
      updateHeaderTitle() {
       const title = this.$t("sidebar.dashboard");
@@ -44,10 +55,11 @@ export default {
     
   },
   created() {
-    this.getdata();
     this.updateHeaderTitle();
   },
-
+  beforeMount() {
+    this.CheckToken();
+  },
   computed: {
     str() {
       return this.$store.state;

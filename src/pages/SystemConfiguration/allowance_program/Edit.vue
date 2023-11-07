@@ -169,25 +169,40 @@ export default {
 
     removeGender(event)
     {
+      console.log(event);
       var arr =[];
-
+    
       for (let i = 0; i < event.length; i++) {
-        this.updateAllowanceAge.forEach((item)=>{
-          if (item.gender_id === event[i])
-          {
-              arr.push(item);
+        if(this.updateAllowanceAge.some((item) => item.gender_id == event[i])){
+          const index = this.updateAllowanceAge.findIndex(obj => obj.gender_id === event[i]);
+          if (index !== -1) {
+            const key = Object.keys(this.updateAllowanceAge[index]);
+            console.log(index);
+            arr.push(this.updateAllowanceAge[index]);
+          } else {
+            console.log('not found');
+            // object with gender_id property does not exist in array
           }
-        })
-      }
+        } else {
+          let age_limit = {
+            gender_id: event[i],
+            min_age: '',
+            max_age: '',
+            amount: ''
+          };
+          console.log(this.updateAllowanceAge[i],'not got',event[i]);
+          arr.push(age_limit)
+        }
 
+      }
+      this.updateAllowanceAge = []
       this.updateAllowanceAge = arr
-
-      if (event.length !== this.updateAllowanceAge.length)
-      {
-        this.deleteDialog = false;
-      }else {
-        this.deleteAlert(arr);
-      }
+      // if (event.length !== this.updateAllowanceAge.length)
+      // {
+      //   this.deleteDialog = false;
+      // }else {
+      //   this.deleteAlert(arr);
+      // }
     },
 
     deleteAlert(arr) {
@@ -269,7 +284,9 @@ export default {
         if (this.updateAllowanceAge !== null)
         {
           this.updateAllowanceAge.forEach((item, index) => {
-            formData.append(`age_limit[\`${index}\`]['id']`, item.id);
+            if (item.id !== undefined) {
+              formData.append(`age_limit[\`${index}\`]['id']`, item.id);
+            }
             formData.append(`age_limit[\`${index}\`]['gender_id']`, item.gender_id);
             formData.append(`age_limit[\`${index}\`]['min_age']`, item.min_age);
             formData.append(`age_limit[\`${index}\`]['max_age']`, item.max_age);

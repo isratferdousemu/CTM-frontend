@@ -171,6 +171,7 @@ export default new Vuex.Store({
     },
     logout({ commit }) {
       commit('setToken', null);
+      commit('setUserPermissions', []);
       commit('setUser', []);
 
     },
