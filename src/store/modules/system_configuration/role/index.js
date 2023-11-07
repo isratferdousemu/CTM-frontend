@@ -59,6 +59,10 @@ const mutations = {
             state.success_message = "";
         }
     },
+
+    UPDATE_ROLE_STATUS: (state, data) => {
+        state.role = data;
+    },
 };
 
 /* -------------------------------------------------------------------------- */
