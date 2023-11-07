@@ -163,7 +163,7 @@
             <ValidationObserver ref="formAdd" v-slot="{ invalid }">
               <form @submit.prevent="submitOffice()">
                 <v-row>
-                  <v-col lg="12" md="12" cols="12">
+                  <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="OfficeType"
                       vid="officeType"
@@ -190,8 +190,8 @@
                     </ValidationProvider>
                   </v-col>
                   <v-col
-                    lg="12"
-                    md="12"
+                    lg="6"
+                    md="6"
                     cols="12"
                     v-if="
                       office_type_id == 6 ||
@@ -228,8 +228,8 @@
                     </ValidationProvider>
                   </v-col>
                   <v-col
-                    lg="12"
-                    md="12"
+                    lg="6"
+                    md="6"
                     cols="12"
                     v-if="
                       office_type_id == 7 ||
@@ -265,8 +265,8 @@
                     </ValidationProvider>
                   </v-col>
                   <v-col
-                    lg="12"
-                    md="12"
+                    lg="6"
+                    md="6"
                     cols="12"
                     v-if="
                       office_type_id == 8 ||
@@ -299,7 +299,7 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="12" md="12" cols="12" v-if="office_type_id == 9">
+                  <v-col lg="6" md="6" cols="12" v-if="office_type_id == 9">
                     <ValidationProvider
                       name="city"
                       vid="city_corpo_id"
@@ -323,7 +323,7 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="12" md="12" cols="12">
+                  <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Office Name English"
                       vid="name_en"
@@ -346,7 +346,7 @@
                       ></v-text-field>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="12" md="12" cols="12">
+                  <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Office Name Bangla"
                       vid="name_bn"
@@ -369,7 +369,7 @@
                       ></v-text-field>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="12" md="12" cols="12">
+                  <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Office Address"
                       vid="office_address"
@@ -392,7 +392,7 @@
                       ></v-text-field>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="12" md="12" cols="12">
+                  <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Comment"
                       vid="comment"
@@ -413,7 +413,7 @@
                       ></v-text-field>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="12" md="12" cols="12">
+                  <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Status"
                       vid="status"
@@ -476,7 +476,7 @@
             <ValidationObserver ref="formEdit" v-slot="{ invalid }">
               <form @submit.prevent="updateOffice()">
                 <v-row>
-                  <v-col lg="12" md="12" cols="12">
+                  <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="OfficeType"
                       vid="officeType"
@@ -503,8 +503,8 @@
                     </ValidationProvider>
                   </v-col>
                   <v-col
-                    lg="12"
-                    md="12"
+                    lg="6"
+                    md="6"
                     cols="12"
                     v-if="
                       office_type_id == 6 ||
@@ -541,8 +541,8 @@
                     </ValidationProvider>
                   </v-col>
                   <v-col
-                    lg="12"
-                    md="12"
+                    lg="6"
+                    md="6"
                     cols="12"
                     v-if="
                       office_type_id == 7 ||
@@ -578,8 +578,8 @@
                     </ValidationProvider>
                   </v-col>
                   <v-col
-                    lg="12"
-                    md="12"
+                    lg="6"
+                    md="6"
                     cols="12"
                     v-if="
                       office_type_id == 8 ||
@@ -612,7 +612,7 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="12" md="12" cols="12" v-if="office_type_id == 9">
+                  <v-col lg="6" md="6" cols="12" v-if="office_type_id == 9">
                     <ValidationProvider
                       name="city"
                       vid="city_corpo_id"
@@ -636,7 +636,7 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="12" md="12" cols="12">
+                  <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Office Name English"
                       vid="name_en"
@@ -659,7 +659,7 @@
                       ></v-text-field>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="12" md="12" cols="12">
+                  <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Office Name Bangla"
                       vid="name_bn"
@@ -682,7 +682,7 @@
                       ></v-text-field>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="12" md="12" cols="12">
+                  <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Office Address"
                       vid="office_address"
@@ -705,7 +705,7 @@
                       ></v-text-field>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="12" md="12" cols="12">
+                  <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Comment"
                       vid="comment"
@@ -726,7 +726,7 @@
                       ></v-text-field>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="12" md="12" cols="12">
+                  <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Status"
                       vid="status"

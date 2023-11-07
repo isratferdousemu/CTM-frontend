@@ -55,6 +55,9 @@
                       :headers="headers"
                       :items="wards"
                       :items-per-page="pagination.perPage"
+                      :sort-by.sync="sortBy"
+                      :sort-desc.sync="sortDesc"
+                      @update:options="handleOptionsUpdate"
                       hide-default-footer
                       class="elevation-0 transparent row-pointer"
                     >
@@ -63,16 +66,17 @@
                                               v-if="item?.parent?.parent?.parent.type == 'division'"
                                             </template> -->
                       <template v-slot:item.division="{ item }">
-                        <span
-                          v-if="item?.location_type.id == '1'"
-                        >
-                       {{ item?.parent?.parent?.parent.name_en }}
+                        <span v-if="item?.location_type.id == '1'">
+                          {{ item?.parent?.parent?.parent.name_en }}
                         </span>
-                        
+
                         <span
-                          v-if="item?.location_type.id == '2' || item?.location_type.id == '3'"
+                          v-if="
+                            item?.location_type.id == '2' ||
+                            item?.location_type.id == '3'
+                          "
                         >
-                       {{ item?.parent?.parent?.parent?.parent.name_en }}
+                          {{ item?.parent?.parent?.parent?.parent.name_en }}
                         </span>
 
                         <!-- <span
@@ -118,7 +122,6 @@
                           {{ item?.parent?.name_en }}
                         </span>
                       </template>
-                   
 
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
@@ -339,7 +342,9 @@
                   </v-col>
 
                   <v-col
-                    v-if="data.location_type != 1 && data.sub_location_type == 1 "
+                    v-if="
+                      data.location_type != 1 && data.sub_location_type == 1
+                    "
                     lg="6"
                     md="6"
                     cols="12"
@@ -1346,6 +1351,8 @@ export default {
         total: 0,
         perPage: 5,
       },
+      sortBy: this.sortBy,
+      sortDesc: this.sortDesc,
       items: [5, 10, 15, 20, 40, 50, 100],
     };
   },
@@ -1374,9 +1381,10 @@ export default {
           value: "parent.parent.parent.name_en",
         },
         {
-          text: this.$t("container.system_config.demo_graphic.ward.upazila_city_district"),
+          text: this.$t(
+            "container.system_config.demo_graphic.ward.upazila_city_district"
+          ),
           value: "location_type.value_en",
-         
         },
 
         {
@@ -1636,11 +1644,18 @@ export default {
       // this.pagination.current = $event;
       this.GetWard();
     },
+    handleOptionsUpdate({ sortBy, sortDesc }) {
+      this.sortBy = sortBy[0];
+      this.sortDesc = sortDesc[0];
+      // this.GetWard();
+    },
     async GetWard() {
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
+        // sortBy: this.sortBy,
+        // sortDesc: this.sortDesc,
       };
       this.$axios
         .get("/admin/ward/get", {
@@ -1743,7 +1758,6 @@ export default {
       }
       this.onChangeCity(this.data.city_id);
 
-
       if (item?.parent?.type == "union") {
         this.data.sub_location_type = 2;
 
@@ -1751,7 +1765,6 @@ export default {
         if (item?.parent?.parent?.type == "thana") {
           this.data.thana_id = item?.parent?.parent?.id;
           this.onChangeThana(this.data.thana_id);
-
         }
       }
       if (item?.parent?.type == "pouro") {

@@ -61,6 +61,9 @@
                       :headers="headers"
                       :items="city"
                       :items-per-page="pagination.perPage"
+                      :sort-by.sync="sortBy"
+                      :sort-desc.sync="sortDesc"
+                      @update:options="handleOptionsUpdate"
                       hide-default-footer
                       class="elevation-0 transparent row-pointer"
                     >
@@ -592,6 +595,8 @@ export default {
         total: 0,
         perPage: 15,
       },
+      sortBy: "name_en",
+      sortDesc: false, //ASC
       items: [5, 10, 15, 20, 40, 50, 100],
     };
   },
@@ -638,7 +643,7 @@ export default {
             "container.system_config.demo_graphic.city_corporation.name_en"
           ),
           value: "name_en",
-          class:"highlight-column"
+          class: "highlight-column",
         },
         {
           text: this.$t(
@@ -856,7 +861,6 @@ export default {
       }
     },
     editDialog(item) {
-      
       this.dialogEdit = true;
       this.data.code = item.code;
       this.data.division_id = item.district.division.id;
@@ -927,11 +931,18 @@ export default {
       // this.pagination.current = $event;
       this.GetCity();
     },
+    handleOptionsUpdate({ sortBy, sortDesc }) {
+      this.sortBy = sortBy[0];
+      this.sortDesc = sortDesc[0];
+      // this.GetCity();
+    },
     async GetCity() {
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
+        // sortBy: this.sortBy,
+        // sortDesc: this.sortDesc,
       };
       this.$axios
         .get("/admin/city/get", {
@@ -1077,7 +1088,7 @@ export default {
     },
     updateHeaderTitle() {
       const title = this.$t(
-         "container.system_config.demo_graphic.city_corporation.customtitle"
+        "container.system_config.demo_graphic.city_corporation.customtitle"
       );
       this.$store.commit("setHeaderTitle", title);
     },
@@ -1104,7 +1115,6 @@ export default {
 </script>
 <style>
 .highlight-column {
-
   background-color: #e0eaf1;
 }
 </style>

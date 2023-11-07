@@ -57,12 +57,31 @@
                       :headers="headers"
                       :items="districts"
                       :items-per-page="pagination.perPage"
+
+                      :sort-by.sync="sortBy"
+                      :sort-desc.sync="sortDesc"
+                      @update:options="handleOptionsUpdate"
+                      
                       hide-default-footer
                       class="elevation-0 transparent row-pointer"
                     >
-                      <template v-slot:header.division.name_en >
-                        <button @click="onClickHeader">Division</button>
+                      <!-- Headers -->
+                      <!-- <template v-slot:header.division.name_en>
+                        <button @click="onClickHeader('division')">
+                          Division
+                        </button>
                       </template>
+                      <template v-slot:header.name_en>
+                        <button @click="onClickHeader('name_en')">
+                          District
+                        </button>
+                      </template>
+                      <template v-slot:header.name_bn>
+                        <button @click="onClickHeader('name_bn')">
+                          District
+                        </button>
+                      </template> -->
+                      <!-- Headers -->
                       <template v-slot:item.id="{ item, index }">
                         {{
                           (pagination.current - 1) * pagination.perPage +
@@ -477,6 +496,8 @@ export default {
         total: 0,
         perPage: 15,
       },
+      sortBy: "name_en",
+      sortDesc: false, //ASC
       // errors: "",
       items: [5, 10, 15, 20, 40, 50, 100],
     };
@@ -608,8 +629,8 @@ export default {
 
       return true;
     },
-    onClickHeader(){
-      alert('clicked');
+    onClickHeader() {
+      alert("clicked");
     },
     validator() {
       let fd = new FormData();
@@ -691,12 +712,20 @@ export default {
       // this.pagination.current = $event;
       this.GetDistrict();
     },
+    handleOptionsUpdate({ sortBy, sortDesc }) {
+      this.sortBy = sortBy[0];
+      this.sortDesc = sortDesc[0];
+      // this.GetDistrict();
+    },
     async GetDistrict() {
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
+        // sortBy: this.sortBy,
+        // sortDesc: this.sortDesc,
       };
+
       this.$axios
         .get("/admin/district/get", {
           headers: {
@@ -772,7 +801,7 @@ export default {
     options: {
       handler() {
         this.GetDistrict();
-        console.log('watcher');
+        console.log("watcher");
       },
       deep: true,
     },
@@ -781,8 +810,7 @@ export default {
       handler() {
         this.current = this.options.page;
         this.GetDistrict();
-        console.log('search');
-
+        console.log("search");
       },
     },
   },
