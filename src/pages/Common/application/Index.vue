@@ -90,7 +90,18 @@
                             rules="required"
                             v-slot="{ errors }"
                           >
-                            <label>NID/ BRN No</label>
+                            <label> 
+                            <span v-if="data.verification_type==1">
+                              NID No
+                            </span>
+                            <span v-else-if="data.verification_type==2">
+                              BRN No
+                            </span>
+                            <span v-else>
+                              NID / BRN No
+                            </span>
+                             
+                            </label>
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-text-field
                               outlined
