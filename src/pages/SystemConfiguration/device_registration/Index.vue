@@ -109,11 +109,11 @@ export default {
       }
     },
 
-    deviceActivate: async function(id){
+    deviceActivate: async function({id, device_status}){
       try {
         await this.$store.dispatch("Device_registration/ActivateDevice", id).then(() => {
 
-          if (this.device_status == 1)
+          if (device_status == 1)
           {
             this.$toast.success(this.message);
           }else {
@@ -216,7 +216,7 @@ export default {
 
                     <template v-slot:[`item.status`]="{item}">
                       <span>
-                           <v-switch v-model="device_status" :input-value="item.status === 1 ? true : false" @click="deviceActivate(item.id)" hide-details color="orange darken-3"></v-switch>
+                           <v-switch :input-value="item.status === 1 ? true : false" @change="deviceActivate({id:item.id, device_status:item.status})" hide-details color="orange darken-3"></v-switch>
                       </span>
                     </template>
 

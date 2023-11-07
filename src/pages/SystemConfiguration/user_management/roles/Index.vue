@@ -39,13 +39,13 @@ export default {
   computed: {
     headers(){
       return[
-        { text: "#Sl", value: "id", align: "start", sortable: false },
-        { text: "Code", value: "code" },
-        { text: "Role Name (BN)", value: "name_bn" },
-        { text: "Role Name (EN)", value: "name_en" },
-        { text: "Remarks", value: "comment" },
-        { text: "Status", value: "status" },
-        { text: "Actions", value: "actions", align: "center", sortable: false },
+        { text: this.$t('container.list.sl'), value: "id", align: "start", sortable: false },
+        { text: this.$t('container.system_config.demo_graphic.role.code'), value: "code" },
+        { text: this.$t('container.system_config.demo_graphic.role.name_en'), value: "name_en" },
+        { text: this.$t('container.system_config.demo_graphic.role.name_bn'), value: "name_bn" },
+        { text: this.$t('container.system_config.demo_graphic.role.comment'), value: "comment" },
+        { text: this.$t('container.system_config.demo_graphic.role.status'), value: "status" },
+        { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false },
       ]
     },
 
@@ -114,7 +114,7 @@ export default {
             <v-card>
               <v-row>
                 <v-col col="6">
-                  <v-card-title><h3>Role Lists</h3></v-card-title>
+                  <v-card-title><h3>{{ this.$t('container.system_config.demo_graphic.role.list') }}</h3></v-card-title>
                 </v-col>
               </v-row>
 
@@ -145,7 +145,7 @@ export default {
                       to="/system-configuration/role/create"
                   >
                     <v-icon small left>mdi-plus</v-icon>
-                    <span>Add New</span>
+                    <span>{{$t('container.list.add_new')}}</span>
                   </v-btn>
                 </v-card-title>
 
