@@ -174,7 +174,7 @@
             <ValidationObserver ref="formAdd" v-slot="{ invalid }">
               <form @submit.prevent="submitUnion()">
                 <v-row>
-                  <v-col lg="6" md="6" cols="12">
+                  <v-col lg="12" md="12" cols="12">
                     <ValidationProvider
                       name="LocationType"
                       vid="locationType"
@@ -197,7 +197,7 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12">
+                  <v-col lg="12" md="12" cols="12">
                     <ValidationProvider
                       name="Division"
                       vid="division_id"
@@ -223,7 +223,7 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12">
+                  <v-col lg="12" md="12" cols="12">
                     <ValidationProvider
                       name="District"
                       vid="district"
@@ -250,7 +250,7 @@
                     </ValidationProvider>
                   </v-col>
 
-                  <v-col lg="6" md="6" cols="12" v-if="data.location_type == 2">
+                  <v-col lg="12" md="12" cols="12" v-if="data.location_type == 2">
                     <ValidationProvider
                       name="city"
                       vid="city"
@@ -275,8 +275,8 @@
                   </v-col>
 
                   <v-col
-                    lg="6"
-                    md="6"
+                    lg="12"
+                    md="12"
                     cols="12"
                     v-if="data.location_type == 3 || data.location_type == 1"
                   >
@@ -306,8 +306,8 @@
                   </v-col>
 
                   <v-col
-                    lg="6"
-                    md="6"
+                    lg="12"
+                    md="12"
                     cols="12"
                     v-if="data.location_type != null"
                   >
@@ -330,8 +330,8 @@
                     </ValidationProvider>
                   </v-col>
                   <v-col
-                    lg="6"
-                    md="6"
+                    lg="12"
+                    md="12"
                     cols="12"
                     v-if="data.location_type != null"
                   >
@@ -354,8 +354,8 @@
                     </ValidationProvider>
                   </v-col>
                   <v-col
-                    lg="6"
-                    md="6"
+                    lg="12"
+                    md="12"
                     cols="12"
                     v-if="data.location_type != null"
                   >
@@ -573,7 +573,7 @@
                 </v-row> -->
                 <!-- 
                 <v-row>
-                  <v-col lg="6" md="6" cols="12">
+                  <v-col lg="12" md="12" cols="12">
                     <ValidationProvider
                       name="Division"
                       vid="division_id"
@@ -599,7 +599,7 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12">
+                  <v-col lg="12" md="12" cols="12">
                     <ValidationProvider
                       name="District"
                       vid="district_id"
@@ -625,7 +625,7 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12">
+                  <v-col lg="12" md="12" cols="12">
                     <ValidationProvider
                       name="Thana"
                       vid="thana"
@@ -650,7 +650,7 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12">
+                  <v-col lg="12" md="12" cols="12">
                     <ValidationProvider
                       name="Code"
                       vid="code"
@@ -671,7 +671,7 @@
                       ></v-text-field>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12">
+                  <v-col lg="12" md="12" cols="12">
                     <ValidationProvider
                       name="Name English"
                       vid="name_en"
@@ -694,7 +694,7 @@
                       ></v-text-field>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12">
+                  <v-col lg="12" md="12" cols="12">
                     <ValidationProvider
                       name="Name Bangla"
                       vid="name_bn"
@@ -741,7 +741,7 @@
                  -->
 
                 <v-row>
-                  <v-col lg="6" md="6" cols="12">
+                  <v-col lg="12" md="12" cols="12">
                     <ValidationProvider
                       name="LocationType"
                       vid="locationType"
@@ -764,7 +764,7 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12">
+                  <v-col lg="12" md="12" cols="12">
                     <ValidationProvider
                       name="Division"
                       vid="division_id"
@@ -790,7 +790,7 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12">
+                  <v-col lg="12" md="12" cols="12">
                     <ValidationProvider
                       name="District"
                       vid="district"
@@ -817,7 +817,7 @@
                     </ValidationProvider>
                   </v-col>
 
-                  <v-col lg="6" md="6" cols="12" v-if="data.location_type == 2">
+                  <v-col lg="12" md="12" cols="12" v-if="data.location_type == 2">
                     <ValidationProvider
                       name="city"
                       vid="city"
@@ -842,8 +842,8 @@
                   </v-col>
 
                   <v-col
-                    lg="6"
-                    md="6"
+                    lg="12"
+                    md="12"
                     cols="12"
                     v-if="data.location_type == 3 || data.location_type == 1"
                   >
@@ -873,8 +873,8 @@
                   </v-col>
 
                   <v-col
-                    lg="6"
-                    md="6"
+                    lg="12"
+                    md="12"
                     cols="12"
                     v-if="data.location_type != null"
                   >
@@ -897,8 +897,8 @@
                     </ValidationProvider>
                   </v-col>
                   <v-col
-                    lg="6"
-                    md="6"
+                    lg="12"
+                    md="12"
                     cols="12"
                     v-if="data.location_type != null"
                   >
@@ -921,8 +921,8 @@
                     </ValidationProvider>
                   </v-col>
                   <v-col
-                    lg="6"
-                    md="6"
+                    lg="12"
+                    md="12"
                     cols="12"
                     v-if="data.location_type != null"
                   >
