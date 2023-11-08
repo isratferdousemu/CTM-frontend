@@ -69,6 +69,10 @@ export default {
         v => {
           const invalidValue = this.updateAllowanceAge.some(item => parseInt(v) > parseInt(item.max_age));
           return invalidValue ? 'Minimum value cannot be greater than the maximum value' : true;
+        },
+        v => {
+          const invalidValues = this.updateAllowanceAge.some(item => parseInt(v) === parseInt(item.max_age));
+          return invalidValues ? 'Minimum age cannot be equal to maximum age' : true;
         }
       ];
     },
@@ -81,6 +85,10 @@ export default {
         v => {
           const invalidValue = this.updateAllowanceAge.some(item => parseInt(v) < parseInt(item.min_age));
           return invalidValue ? 'Maximum value cannot be less than the minimum value' : true;
+        },
+        v => {
+          const invalidValues = this.updateAllowanceAge.some(item => parseInt(v) === parseInt(item.min_age));
+          return invalidValues ? 'Maximum age cannot be equal to minimum age' : true;
         }
       ];
     },
@@ -525,13 +533,12 @@ export default {
                                     type="number"
                                     step="any"
                                     min="0"
-                                    ref="input"
-                                    :rules="minValueRules"
                                     dense
                                     outlined
                                     :error="errors[0] ? true : false"
                                     :error-messages="errors[0]"
                                     required
+                                    :rules="minValueRules"
                                     @keyup="minValueRules"
                                     style="height: 64px;"
                                 ></v-text-field>
@@ -544,13 +551,12 @@ export default {
                                     type="number"
                                     step="any"
                                     min="0"
-                                    ref="input"
-                                    :rules="maxValueRules"
                                     dense
                                     outlined
                                     :error="errors[0] ? true : false"
                                     :error-messages="errors[0]"
                                     required
+                                    :rules="maxValueRules"
                                     @keyup="maxValueRules"
                                     style="height: 64px;"
                                 ></v-text-field>
@@ -564,7 +570,6 @@ export default {
                                       type="number"
                                       step="any"
                                       min="0"
-                                      ref="input"
                                       :rules="[numberRule]"
                                       dense outlined
                                       :error="errors[0] ? true : false"
