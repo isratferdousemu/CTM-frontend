@@ -64,8 +64,12 @@ export default {
         v => /^\d+$/.test(v) || 'Minimum Age must be a number',
         v => (v >= 5 && v <= 115) || 'Age must be between 5 and 115',
         v => {
-          const invalidValue = this.add_allowance_program.allowance_age.some(item => (parseInt(v) > parseInt(item.max_age)));
-          return invalidValue ? 'Minimum value cannot be greater than the maximum value' : true;
+          const invalidValue = this.add_allowance_program.allowance_age.some((item) => (parseInt(v) > parseInt(item.max_age)));
+          return invalidValue ? 'Minimum age cannot be greater than the maximum value' : true;
+        },
+        v => {
+          const invalidValues = this.add_allowance_program.allowance_age.some(item => parseInt(v) === parseInt(item.max_age));
+          return invalidValues ? 'Minimum age cannot be equal to maximum age' : true;
         }
       ];
     },
@@ -76,12 +80,15 @@ export default {
         v => /^\d+$/.test(v) || 'Maximum Age must be a number',
         v => (v >= 5 && v <= 115) || 'Age must be between 5 and 115',
         v => {
-          const invalidValue = this.add_allowance_program.allowance_age.some(item => (parseInt(v) < parseInt(item.min_age)));
-          return invalidValue ? 'Maximum value cannot be less than the minimum value' : true;
+          const invalidValue = this.add_allowance_program.allowance_age.some((item) => (parseInt(v) < parseInt(item.min_age)));
+          return invalidValue ? 'Maximum age cannot be less than the minimum value' : true;
+        },
+        v => {
+          const invalidValues = this.add_allowance_program.allowance_age.some(item => parseInt(v) === parseInt(item.min_age));
+          return invalidValues ? 'Maximum age cannot be equal to minimum age' : true;
         }
       ];
     }
-
   },
 
   mounted() {
