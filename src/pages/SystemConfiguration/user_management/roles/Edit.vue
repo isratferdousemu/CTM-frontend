@@ -121,7 +121,7 @@ export default {
                           <v-text-field
                               type="text"
                               v-model="update_role.code"
-                              label="Enter Code"
+                              :label="$t('container.system_config.demo_graphic.role.code')"
                               persistent-hint
                               outlined
                               :hide-details="errors[0] ? false : true"
@@ -137,7 +137,7 @@ export default {
                           <v-text-field
                               type="text"
                               v-model="update_role.name_bn"
-                              label="Enter Role Name (BN)"
+                              :label="$t('container.system_config.demo_graphic.role.name_bn')"
                               persistent-hint
                               outlined
                               :hide-details="errors[0] ? false : true"
@@ -161,7 +161,7 @@ export default {
                           <v-text-field
                               type="text"
                               v-model="update_role.name_en"
-                              label="Enter Role Name (EN)"
+                              :label="$t('container.system_config.demo_graphic.role.name_en')"
                               persistent-hint
                               outlined
                               :hide-details="errors[0] ? false : true"
@@ -177,7 +177,7 @@ export default {
                           <v-text-field
                               type="text"
                               v-model="update_role.comment"
-                              label="Enter Remark"
+                              :label="$t('container.system_config.demo_graphic.role.comment')"
                               persistent-hint
                               outlined
                               :hide-details="errors[0] ? false : true"
@@ -201,7 +201,7 @@ export default {
                           <v-checkbox
                               v-model="update_role.status"
                               color="primary"
-                              label="Is Active ?"
+                              :label="$t('container.system_config.demo_graphic.role.is_active')"
                               hide-details
                               :hide-details="errors[0] ? false : true"
                               required
