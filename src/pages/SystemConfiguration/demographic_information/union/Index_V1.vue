@@ -13,7 +13,11 @@
             >
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
-                  {{ $t("container.system_config.demo_graphic.union1.customtitle") }}
+                  {{
+                    $t(
+                      "container.system_config.demo_graphic.union1.customtitle"
+                    )
+                  }}
                 </h3>
               </v-card-title>
               <v-card-text>
@@ -56,6 +60,9 @@
                       :headers="headers"
                       :items="unions"
                       :items-per-page="pagination.perPage"
+                      :sort-by.sync="sortBy"
+                      :sort-desc.sync="sortDesc"
+                      @update:options="handleOptionsUpdate"
                       hide-default-footer
                       class="elevation-0 transparent row-pointer"
                     >
@@ -250,7 +257,12 @@
                     </ValidationProvider>
                   </v-col>
 
-                  <v-col lg="12" md="12" cols="12" v-if="data.location_type == 2">
+                  <v-col
+                    lg="12"
+                    md="12"
+                    cols="12"
+                    v-if="data.location_type == 2"
+                  >
                     <ValidationProvider
                       name="city"
                       vid="city"
@@ -817,7 +829,12 @@
                     </ValidationProvider>
                   </v-col>
 
-                  <v-col lg="12" md="12" cols="12" v-if="data.location_type == 2">
+                  <v-col
+                    lg="12"
+                    md="12"
+                    cols="12"
+                    v-if="data.location_type == 2"
+                  >
                     <ValidationProvider
                       name="city"
                       vid="city"
@@ -1076,6 +1093,8 @@ export default {
         total: 0,
         perPage: 20,
       },
+      sortBy: "name_en",
+      sortDesc: false, //ASC
       items: [10, 15, 20, 40, 50, 100],
     };
   },
@@ -1115,7 +1134,6 @@ export default {
         {
           text: this.$t("container.system_config.demo_graphic.union.name_en"),
           value: "name_en",
-          class:"highlight-column"
         },
         {
           text: this.$t("container.system_config.demo_graphic.union.name_bn"),
@@ -1386,11 +1404,18 @@ export default {
       // this.pagination.current = $event;
       this.GetUnion();
     },
+    handleOptionsUpdate({ sortBy, sortDesc }) {
+      this.sortBy = sortBy[0];
+      this.sortDesc = sortDesc[0];
+      // this.GetUnion();
+    },
     async GetUnion() {
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
+        // sortBy: this.sortBy,
+        // sortDesc: this.sortDesc,
       };
       this.$axios
         .get("/admin/union/get", {
@@ -1449,7 +1474,7 @@ export default {
       //       this.city = result.data.data;
       //       console.log(this.city);
       //     });
-      // } 
+      // }
       if (this.data.location_type == 2) {
         param = 3; //City Corporation
         await this.$axios
@@ -1463,9 +1488,8 @@ export default {
             this.city = result.data.data;
             console.log(this.city);
           });
-      } 
-     else {
-      // if (this.data.location_type == 3) {
+      } else {
+        // if (this.data.location_type == 3) {
         // alert(event);
         await this.$axios
           .get(`/admin/thana/get/${this.data.district_id}`, {
@@ -1529,7 +1553,9 @@ export default {
       this.onChangeDistrict(this.data.district_id);
     },
     updateHeaderTitle() {
-      const title = this.$t("container.system_config.demo_graphic.union1.customtitle");
+      const title = this.$t(
+        "container.system_config.demo_graphic.union1.customtitle"
+      );
       this.$store.commit("setHeaderTitle", title);
     },
   },
@@ -1550,9 +1576,3 @@ export default {
   },
 };
 </script>
-<style>
-.highlight-column {
-
-  background-color: #e0eaf1;
-}
-</style>
