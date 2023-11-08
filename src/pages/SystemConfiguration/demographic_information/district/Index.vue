@@ -58,9 +58,7 @@
                       :items="districts"
                       :items-per-page="pagination.perPage"
 
-                      :sort-by.sync="sortBy"
-                      :sort-desc.sync="sortDesc"
-                      @update:options="handleOptionsUpdate"
+                      @update:options="handleOptionsUpdate($event)"
                       
                       hide-default-footer
                       class="elevation-0 transparent row-pointer"
@@ -524,6 +522,7 @@ export default {
             "container.system_config.demo_graphic.division.division"
           ),
           value: "parent.name_en",
+          // sortable: true,
         },
         {
           text: this.$t(
@@ -714,20 +713,28 @@ export default {
     },
     handleOptionsUpdate({ sortBy, sortDesc }) {
       console.log(sortBy, sortDesc);
+        this.sortBy = 'name_en';
+        this.sortDesc = 'asc';
       if (sortBy.length === 0 || sortDesc.length === 0) {
         this.sortBy = 'name_en';
         this.sortDesc = 'asc';
       } else {
         this.sortBy = sortBy[0];
       this.sortDesc = sortDesc[0]==true?'desc':'asc';
-      this.GetDistrict();
-      }
+    }
+    this.GetDistrict();
 
+            const queryParams = {
 
+        sortBy: this.sortBy,
+        orderBy: this.sortDesc,
+      };
+
+      // alert(JSON.stringify(queryParams));
 
     
     },
-    async GetDistrict() {
+    GetDistrict() {
       let page;
       if(!this.sortBy){
         page = this.pagination.current;
@@ -735,11 +742,12 @@ export default {
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
-        page: page,
+        page: this.pagination.current,
         sortBy: this.sortBy,
         orderBy: this.sortDesc,
       };
-
+      console.log(queryParams,'queryParams');
+      // return;
       this.$axios
         .get("/admin/district/get", {
           headers: {
@@ -810,26 +818,29 @@ export default {
       this.$store.commit("setHeaderTitle", title);
     },
   },
+  
   watch: {
     "$i18n.locale": "updateHeaderTitle",
-    options: {
-      handler() {
-        this.GetDistrict();
-        console.log("watcher");
-      },
-      deep: true,
-    },
+    // options: {
+    //   handler() {
+    //     this.GetDistrict();
+    //     console.log("watcher");
+    //   },
+    //   deep: true,
+    // },
 
-    search: {
-      handler() {
-        this.current = this.options.page;
-        this.GetDistrict();
-        console.log("search");
-      },
-    },
+    // search: {
+    //   handler() {
+    //     this.current = this.options.page;
+    //     this.GetDistrict();
+    //     console.log("search");
+    //   },
+    // },
   },
+  
   created() {
     this.registerCustomRules();
+    // this.handleOptionsUpdate();
     this.GetDistrict();
     this.getAllDivision();
   },
