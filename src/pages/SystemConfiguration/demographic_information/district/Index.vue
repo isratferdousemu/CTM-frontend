@@ -840,8 +840,8 @@ export default {
   
   created() {
     this.registerCustomRules();
-    // this.handleOptionsUpdate();
-    this.GetDistrict();
+    this.handleOptionsUpdate();
+    // this.GetDistrict();
     this.getAllDivision();
   },
   beforeMount() {
