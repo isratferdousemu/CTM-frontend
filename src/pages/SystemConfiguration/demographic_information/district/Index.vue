@@ -523,7 +523,7 @@ export default {
           text: this.$t(
             "container.system_config.demo_graphic.division.division"
           ),
-          value: "division.name_en",
+          value: "parent.name_en",
         },
         {
           text: this.$t(
@@ -713,17 +713,31 @@ export default {
       this.GetDistrict();
     },
     handleOptionsUpdate({ sortBy, sortDesc }) {
-      this.sortBy = sortBy[0];
-      this.sortDesc = sortDesc[0];
-      // this.GetDistrict();
+      console.log(sortBy, sortDesc);
+      if (sortBy.length === 0 || sortDesc.length === 0) {
+        this.sortBy = 'name_en';
+        this.sortDesc = 'asc';
+      } else {
+        this.sortBy = sortBy[0];
+      this.sortDesc = sortDesc[0]==true?'desc':'asc';
+      this.GetDistrict();
+      }
+
+
+
+    
     },
     async GetDistrict() {
+      let page;
+      if(!this.sortBy){
+        page = this.pagination.current;
+        }
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
-        page: this.pagination.current,
-        // sortBy: this.sortBy,
-        // sortDesc: this.sortDesc,
+        page: page,
+        sortBy: this.sortBy,
+        orderBy: this.sortDesc,
       };
 
       this.$axios
