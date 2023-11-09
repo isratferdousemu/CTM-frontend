@@ -61,7 +61,6 @@
                       :headers="headers"
                       :items="city"
                       :items-per-page="pagination.perPage"
-
                       @update:options="handleOptionsUpdate"
                       hide-default-footer
                       class="elevation-0 transparent row-pointer"
@@ -636,7 +635,7 @@ export default {
         {
           text: this.$t("container.list.location_type"),
           value: "location_type.value_en",
-          sortable: true,
+          sortable: false,
         },
         {
           text: this.$t(
@@ -932,7 +931,18 @@ export default {
       this.GetCity();
     },
     handleOptionsUpdate({ sortBy, sortDesc }) {
-      console.log(sortBy, sortDesc);
+      console.log(this.headers, sortBy, sortDesc);
+      for (let i = 0; i < this.headers.length; i++) {
+        console.log(this.headers[i]);
+        
+        if(this.headers[i].value == sortBy){
+          this.headers[i].class = 'highlight-column';
+          console.log(this.headers[i],'headers after');
+        }else{
+          this.headers[i].class = '';
+        }
+      }
+
       this.sortBy = "name_en";
       this.sortDesc = "asc";
       if (sortBy.length === 0 || sortDesc.length === 0) {
@@ -944,6 +954,7 @@ export default {
       }
       this.GetCity();
 
+      
       const queryParams = {
         sortBy: this.sortBy,
         orderBy: this.sortDesc,
@@ -953,9 +964,9 @@ export default {
     },
     async GetCity() {
       let page;
-      if(!this.sortBy){
+      if (!this.sortBy) {
         page = this.pagination.current;
-        }
+      }
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
