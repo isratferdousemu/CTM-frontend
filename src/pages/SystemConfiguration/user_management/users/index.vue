@@ -625,7 +625,7 @@
                       ></v-text-field>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12">
+                  <v-col v-if="data.user_type!=1" lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Role"
                       vid="role_id"
@@ -650,7 +650,7 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12">
+                  <v-col v-if="data.user_type!=1" lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Status"
                       vid="status"
@@ -676,7 +676,7 @@
                       ></v-select>
                     </ValidationProvider>
                   </v-col>
-                  <v-col cols="12">
+                  <v-col v-if="data.user_type!=1" cols="12">
                     <ValidationProvider
                       name="Office Type"
                       vid="office_type"
@@ -836,7 +836,7 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12">
+                  <v-col v-if="data.user_type!=1" lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="office"
                       vid="office_id"
@@ -863,7 +863,7 @@
                   </v-col>
                 </v-row>
 
-                <v-row class="mx-0 my-0 py-2" justify="center">
+                <v-row class="mx-0 my-2 py-2" justify="center">
                   <v-btn
                     flat
                     @click="dialogEdit = false"
@@ -878,7 +878,7 @@
                     color="primary"
                     :disabled="invalid"
                     :loading="loading"
-                    class="custom-btn-width warning white--text py-2"
+                    class="custom-btn-width white--text py-2"
                   >
                     {{ $t("container.list.submit") }}
                   </v-btn>
@@ -944,6 +944,7 @@ export default {
       data: {
         id: null,
         full_name: null,
+        user_type: null,
         username: null,
         mobile: null,
         email: null,
@@ -1097,9 +1098,7 @@ export default {
               ud.append("role_id[]", value);
             }
           }
-          
-          // ud.append("_method", "PUT");
-          console.log(key, value, "ud");
+           
         }
       }
       // return;
@@ -1126,10 +1125,10 @@ export default {
         .then((res) => {
           console.log(res);
           this.$toast.success("Data updated Successfully");
-          this.dialogAdd = false;
           this.getUsers();
           this.$refs.formEdit.reset();
           this.loading = false;
+          this.dialogEdit = false;
         })
         .catch((err) => {
           this.loading = false;
@@ -1158,6 +1157,7 @@ export default {
       if (this.$refs.formEdit) {
         this.$refs.formEdit.reset();
       }
+      console.log(item,'user ');
       this.dialogEdit = true;
       // console.log(item.roles[0].id, "roles id");
       console.log(item, "editDialog");
@@ -1166,6 +1166,7 @@ export default {
       this.data.username = item.username;
       this.data.mobile = item.mobile;
       this.data.email = item.email;
+      this.data.user_type = item.user_type;
 
       this.data.role_id = [];
       item.roles.forEach((role) => {
