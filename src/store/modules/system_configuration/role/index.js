@@ -78,10 +78,13 @@ const actions = {
             .post("/admin/role/insert", data)
             .then((result) => {
                 commit("STORE_ROLE", result);
+                return result
             })
             .catch((err) => {
                 state.errors = err.response.data.errors;
                 state.error_status = err.response.status;
+                return err
+
             });
     },
     /*end  store role*/
