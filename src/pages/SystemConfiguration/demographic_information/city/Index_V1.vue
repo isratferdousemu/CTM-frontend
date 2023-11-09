@@ -61,8 +61,7 @@
                       :headers="headers"
                       :items="city"
                       :items-per-page="pagination.perPage"
-                      :sort-by.sync="sortBy"
-                      :sort-desc.sync="sortDesc"
+
                       @update:options="handleOptionsUpdate"
                       hide-default-footer
                       class="elevation-0 transparent row-pointer"
@@ -625,17 +624,18 @@ export default {
           text: this.$t(
             "container.system_config.demo_graphic.division.division"
           ),
-          value: "district.division.name_en",
+          // value: "district.division.name_en",
+          value: "parent.parent.name_en",
         },
         {
           text: this.$t(
             "container.system_config.demo_graphic.district.district"
           ),
-          value: "district.name_en",
+          value: "parent.name_en",
         },
         {
           text: this.$t("container.list.location_type"),
-          value: "locationType",
+          value: "location_type.value_en",
           sortable: true,
         },
         {
@@ -932,17 +932,36 @@ export default {
       this.GetCity();
     },
     handleOptionsUpdate({ sortBy, sortDesc }) {
-      this.sortBy = sortBy[0];
-      this.sortDesc = sortDesc[0];
-      // this.GetCity();
+      console.log(sortBy, sortDesc);
+      this.sortBy = "name_en";
+      this.sortDesc = "asc";
+      if (sortBy.length === 0 || sortDesc.length === 0) {
+        this.sortBy = "name_en";
+        this.sortDesc = "asc";
+      } else {
+        this.sortBy = sortBy[0];
+        this.sortDesc = sortDesc[0] == true ? "desc" : "asc";
+      }
+      this.GetCity();
+
+      const queryParams = {
+        sortBy: this.sortBy,
+        orderBy: this.sortDesc,
+      };
+
+      // alert(JSON.stringify(queryParams));
     },
     async GetCity() {
+      let page;
+      if(!this.sortBy){
+        page = this.pagination.current;
+        }
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
-        // sortBy: this.sortBy,
-        // sortDesc: this.sortDesc,
+        sortBy: this.sortBy,
+        orderBy: this.sortDesc,
       };
       this.$axios
         .get("/admin/city/get", {
@@ -954,9 +973,9 @@ export default {
         })
         .then((result) => {
           this.city = result.data.data;
-          this.pagination.current = result.data.meta.current_page;
-          this.pagination.total = result.data.meta.last_page;
-          this.pagination.grand_total = result.data.meta.total;
+          this.pagination.current = result.data.current_page;
+          this.pagination.total = result.data.last_page;
+          this.pagination.grand_total = result.data.total;
         });
     },
     deleteCity: async function () {
@@ -1095,7 +1114,8 @@ export default {
   },
   created() {
     this.registerCustomRules();
-    this.GetCity();
+    // this.GetCity();
+    this.handleOptionsUpdate();
     this.getAllDivision();
     this.$store.dispatch("getLookupByType", 1).then((res) => {
       this.locationType = res;
