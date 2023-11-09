@@ -24,9 +24,11 @@
             <v-list-item  class="white--text" v-if="menu.children.length==0"
             router
             link
-            :to="menu?.page_link!=null ? menu.page_link.page_url : menu.link"
+            :class="checkIsActive(menu?.page_link!=null ? menu.page_link.page_url : menu.link) ? 'v-list-item--active' : ''"
+            @click="extarnalUrl(menu?.page_link!=null ? menu.page_link.page_url : menu.link,menu.link_type)"
             v-can="menu.link_type==2?'common':menu?.page_link?.name"
-             > 
+            > 
+            <!-- :to="menu?.page_link!=null ? menu.page_link.page_url : menu.link" -->
         
                 <v-list-item-title  > {{language=='bn'?menu.label_name_bn:menu.label_name_en}}</v-list-item-title>
               </v-list-item>
@@ -54,14 +56,15 @@
               :key="subSubIndex"
               router
             link
-            :to="subSubMenu?.page_link!=null ? subSubMenu.page_link.page_url : subSubMenu.link"
+            :class="checkIsActive(subSubMenu?.page_link!=null ? subSubMenu.page_link.page_url : subSubMenu.link) ? 'v-list-item--active' : ''"
+            @click="extarnalUrl(subSubMenu?.page_link!=null ? subSubMenu.page_link.page_url : subSubMenu.link,subSubMenu.link_type)"
             v-can="subSubMenu?.page_link?.name"
             >
+            <!-- :to="subSubMenu?.page_link!=null ? subSubMenu.page_link.page_url : subSubMenu.link" -->
             <v-list-item-icon>
               <v-icon >mdi-minus </v-icon>
             </v-list-item-icon>
               <v-list-item-title class="white--text" v-text="language=='bn'?subSubMenu.label_name_bn:subSubMenu.label_name_en"></v-list-item-title>
-   
             </v-list-item>
             <!-- sub sub  -->
            
@@ -72,9 +75,11 @@
             router
             link
             class="white--text"
-            :to="subMenu?.page_link!=null ? subMenu.page_link.page_url : subMenu.link"
+            :class="checkIsActive(subMenu?.page_link!=null ? subMenu.page_link.page_url : subMenu.link) ? 'v-list-item--active' : ''"
+            @click="extarnalUrl(subMenu?.page_link!=null ? subMenu.page_link.page_url : subMenu.link,subMenu.link_type)"
             v-can="subMenu?.page_link?.name"
-             >
+            >
+            <!-- :to="subMenu?.page_link!=null ? subMenu.page_link.page_url : subMenu.link" -->
                 <!-- <v-list-item-icon>
                   <v-icon>mdi-minus</v-icon>
                 </v-list-item-icon> -->
@@ -131,6 +136,29 @@ export default {
     },
   },
   methods: {
+    checkIsActive(url) {
+      return this.$route.path == url;
+    },
+    extarnalUrl(url,type) {
+      if (type == 1) {
+        console.log(url, 'url');
+        if (this.$route.path != url && url!=null) {
+          this.$router.push(url);
+        }
+        // add active class v-list-item--active in current dom menu
+      }
+      if (type == 2) {
+        window.open(url, '_blank');
+        
+      }
+      
+    },
+    setUrl(url, type) {
+
+      // 
+      
+    },
+
     getPermissionName(menu) {
       // menu.link_type==2?'common':menu?.page_link?.name
       console.log(menu.permission,'permission');
