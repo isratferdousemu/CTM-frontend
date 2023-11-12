@@ -60,8 +60,6 @@
                       :headers="headers"
                       :items="unions"
                       :items-per-page="pagination.perPage"
-                      :sort-by.sync="sortBy"
-                      :sort-desc.sync="sortDesc"
                       @update:options="handleOptionsUpdate"
                       hide-default-footer
                       class="elevation-0 transparent row-pointer"
@@ -1119,17 +1117,17 @@ export default {
           text: this.$t(
             "container.system_config.demo_graphic.division.division"
           ),
-          value: "division",
+          value: "parent.parent.parent.name_en",
         },
         {
           text: this.$t(
             "container.system_config.demo_graphic.district.district"
           ),
-          value: "district",
+          value: "parent.parent.name_en",
         },
         {
           text: this.$t("container.system_config.demo_graphic.thana.thana"),
-          value: "thana",
+          value: "parent.name_en",
         },
         {
           text: this.$t("container.system_config.demo_graphic.union.name_en"),
@@ -1200,6 +1198,7 @@ export default {
     },
   },
   created() {
+    this.GetAllDivisions();
     this.registerCustomRules();
   },
   methods: {
@@ -1404,18 +1403,58 @@ export default {
       // this.pagination.current = $event;
       this.GetUnion();
     },
+    setInitialHeader() {
+      for (let i = 0; i < this.headers.length; i++) {
+        if (this.headers[i].value == "name_en") {
+          this.headers[i].class = "highlight-column";
+          console.log(this.headers[i], "headers after");
+        } else {
+          this.headers[i].class = "";
+        }
+      }
+    },
     handleOptionsUpdate({ sortBy, sortDesc }) {
-      this.sortBy = sortBy[0];
-      this.sortDesc = sortDesc[0];
-      // this.GetUnion();
+      console.log(this.headers, sortBy, sortDesc);
+      for (let i = 0; i < this.headers.length; i++) {
+        console.log(this.headers[i]);
+
+        if (this.headers[i].value == sortBy) {
+          this.headers[i].class = "highlight-column";
+          console.log(this.headers[i], "headers after");
+        } else {
+          this.headers[i].class = "";
+        }
+      }
+
+      this.sortBy = "name_en";
+      this.sortDesc = "asc";
+      if (sortBy.length === 0 || sortDesc.length === 0) {
+        this.sortBy = "name_en";
+        this.sortDesc = "asc";
+      } else {
+        this.sortBy = sortBy[0];
+        this.sortDesc = sortDesc[0] == true ? "desc" : "asc";
+      }
+      this.GetUnion();
+
+      const queryParams = {
+        sortBy: this.sortBy,
+        orderBy: this.sortDesc,
+      };
+
+      // alert(JSON.stringify(queryParams));
     },
     async GetUnion() {
+      let page;
+      if (!this.sortBy) {
+        page = this.pagination.current;
+      }
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
-        // sortBy: this.sortBy,
-        // sortDesc: this.sortDesc,
+        sortBy: this.sortBy,
+        orderBy: this.sortDesc,
       };
       this.$axios
         .get("/admin/union/get", {
@@ -1427,9 +1466,9 @@ export default {
         })
         .then((result) => {
           this.unions = result.data.data;
-          this.pagination.current = result.data.meta.current_page;
-          this.pagination.total = result.data.meta.last_page;
-          this.pagination.grand_total = result.data.meta.total;
+          this.pagination.current = result.data.current_page;
+          this.pagination.total = result.data.last_page;
+          this.pagination.grand_total = result.data.total;
         });
     },
 
@@ -1519,7 +1558,7 @@ export default {
         (this.data.thana_id = null);
     },
     editUnion(item) {
-      console.log(item, "item");
+      console.log(item, "editUnion");
       if (this.$refs.formEdit) {
         this.$refs.formEdit.reset();
       }
@@ -1543,10 +1582,13 @@ export default {
       this.data.name_en = item.name_en;
       this.data.name_bn = item.name_bn;
       this.data.code = item.code;
-      this.data.division_id = item.thana.district.division.id;
-
-      this.data.district_id = item.thana.district.id;
-      this.data.thana_id = item.thana.id;
+      // this.data.division_id = item.thana.district.division.id;
+      this.data.division_id = item.parent.parent.parent.id; //division
+      
+      console.log(this.data.division_id, 'this.data.division_id');
+      console.log(this.divisions,' divisions');
+      this.data.district_id = item.parent.parent.id; //district
+      this.data.thana_id = item.parent.id;
       console.log(this.data.division_id);
       this.onChangeDivision(this.data.division_id);
 
@@ -1568,11 +1610,13 @@ export default {
     //   this.locationType = res;
     //   console.log(this.locationType, " here");
     // });
-    this.GetAllDivisions();
-    this.GetUnion();
+    this.setInitialHeader();
+    // this.GetUnion();
   },
   beforeMount() {
     this.updateHeaderTitle();
   },
+  // mounted(){
+  // }
 };
 </script>

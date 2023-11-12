@@ -614,7 +614,7 @@ export default {
         },
         {
           text: this.$t(
-            "container.system_config.demo_graphic.city_corporation.code"
+            "container.system_config.demo_graphic.city_corporation.customtitleCode"
           ),
           value: "code",
           width: "5%",
