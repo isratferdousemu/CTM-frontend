@@ -86,6 +86,8 @@
                 "city_corporation": {
                     "city": "City Corporation",
                     "customtitle": "Upazila/ City Corporation/ District Pouroshava",
+                    "customtitleEn": "Upazila/ City Corporation/ District Pouroshava English",
+                    "customtitleBn": "Upazila/ City Corporation/ District Pouroshava Bangla",
                     "list": "City Corporation List",
                     "code": "City Corporation Code",
                     "name_en": "City Corporation Name English",

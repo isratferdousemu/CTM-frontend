@@ -639,14 +639,14 @@ export default {
         },
         {
           text: this.$t(
-            "container.system_config.demo_graphic.city_corporation.name_en"
+            "container.system_config.demo_graphic.city_corporation.customtitleEn"
           ),
           value: "name_en",
           class: "highlight-column",
         },
         {
           text: this.$t(
-            "container.system_config.demo_graphic.city_corporation.name_bn"
+            "container.system_config.demo_graphic.city_corporation.customtitleBn"
           ),
           value: "name_bn",
         },
@@ -860,15 +860,18 @@ export default {
       }
     },
     editDialog(item) {
+      console.log(item,'editDialog');
       this.dialogEdit = true;
       this.data.code = item.code;
-      this.data.division_id = item.district.division.id;
+      // this.data.division_id = item.district.division.id;
+      this.data.division_id = item.parent.parent.id; //Division
       this.onChangeDivision(this.data.division_id);
-      this.data.district_id = item.district.id;
+      this.data.district_id = item.parent.id;
       this.data.name_en = item.name_en;
       this.data.name_bn = item.name_bn;
       this.data.id = item.id;
-      this.data.location_type = item.locationType.id;
+      this.data.location_type = item.location_type.id;
+      // this.data.location_type = item.locationType.id;
       this.errors = {};
       // alert(JSON.stringify(this.data));
     },
@@ -929,6 +932,16 @@ export default {
     onPageChange($event) {
       // this.pagination.current = $event;
       this.GetCity();
+    },
+    setInitialHeader(){
+      for (let i = 0; i < this.headers.length; i++) {
+        if(this.headers[i].value == 'name_en'){
+          this.headers[i].class = 'highlight-column';
+          console.log(this.headers[i],'headers after');
+        }else{
+          this.headers[i].class = '';
+        }
+      }
     },
     handleOptionsUpdate({ sortBy, sortDesc }) {
       console.log(this.headers, sortBy, sortDesc);
@@ -1135,6 +1148,8 @@ export default {
     });
     console.log(this.label, "label");
     // this.getAllDistrict();
+    // this.sortBy = 'name_en';
+    
   },
   watch: {
     "$i18n.locale": "updateHeaderTitle",
@@ -1143,6 +1158,9 @@ export default {
     console.log("V1");
     this.updateHeaderTitle();
   },
+  mounted(){
+    this.setInitialHeader();
+  }
 };
 </script>
 <style>
