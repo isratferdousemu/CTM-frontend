@@ -9,7 +9,7 @@ const ApplicationSelectionRoutes = [
     name: "selection_list",
     meta: {
       requiresAuth: true,
-      permission: "application-selection-list",
+      permission: "application-entry-view",
     },
     component: () => import("../pages/ApplicationSelection/application_list/Index.vue")
   },

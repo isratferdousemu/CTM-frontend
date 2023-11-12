@@ -74,10 +74,11 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth) {
     // Page requires authentication
     if (store.state.token) {
-      console.log(store.getters.GetUserPermissions)
-      console.log(to.meta)
+      console.log(store.getters.GetUserPermissions,' -> permission')
+      console.log(to.meta,' -> menu permission')
       if ( store.state && store.state.userData && store.state.userData.roleNames && !store.state.userData.roleNames.includes("super-admin")) {
         if (to.meta.permission != "common" && store.getters.GetUserPermissions.findIndex(per => per.name === to.meta.permission || per.module_name === to.meta.permission || per.sub_module_name === to.meta.permission) === -1) {
+          console.log(to.meta.permission != "common" && store.getters.GetUserPermissions.findIndex(per => per.name === to.meta.permission || per.module_name === to.meta.permission || per.sub_module_name === to.meta.permission) === -1);
           next('/dashboard');
         } else {
           next();
