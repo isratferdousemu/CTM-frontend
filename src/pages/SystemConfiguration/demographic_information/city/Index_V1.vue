@@ -1042,6 +1042,7 @@ export default {
         })
         .then((result) => {
           this.districts = result.data.data;
+          console.log(this.districts, 'onChangeDivision');
           this.isDistrictHidden = true;
         });
     },
@@ -1126,7 +1127,7 @@ export default {
   created() {
     this.registerCustomRules();
     // this.GetCity();
-    this.handleOptionsUpdate();
+    // this.handleOptionsUpdate();
     this.getAllDivision();
     this.$store.dispatch("getLookupByType", 1).then((res) => {
       this.locationType = res;
