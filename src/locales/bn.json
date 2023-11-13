@@ -42,7 +42,8 @@
             "beneficiary_journey": "সুবিধাভোগী যাত্রা",
             "change_tracking_details": "ট্র্যাকিং বিবরণ পরিবর্তন করুন",
             "exit": "প্রোগ্রাম থেকে প্রস্থান করুন",
-            "preview": "প্রিভিউ"
+            "preview": "প্রিভিউ",
+            "approve": "অনুমোদন করুন"
         },
         "system_config": {
             "demo_graphic": {

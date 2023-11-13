@@ -420,7 +420,7 @@
                                                     1
                                                 }}
                                             </template>
-                                            <template v-slot:item.division="{ item }">
+                                            <!-- <template v-slot:item.division="{ item }">
                                                 <span v-if="item?.permanent_location.location_type == '1'">
                                                     {{ item?.permanent_location?.parent?.parent?.name_en }}
                                                 </span>
@@ -451,15 +451,15 @@
                                                     ">
                                                  {{ item?.permanent_location?.parent?.parent?.name_en }}
                                                 </span>
-                                            </template>
+                                            </template> -->
 
                                             <!-- Action Button -->
                                             <template v-slot:item.actions="{ item }">
-                                                <div class="text-truncate" style="width: 100px">
-                                                    <v-tooltip top>
+                                      
+                                                     <v-tooltip top>
                                                         <template v-slot:activator="{ on }">
-                                                            <v-btn v-can="'update-post'" fab x-small v-on="on"
-                                                                color="success" elevation="0" @click="editDialog(item)">
+                                                            <v-btn fab x-small v-on="on" color="#AFB42B"
+                                                                elevation="0" class="white--text">
                                                                 <v-icon> mdi-eye </v-icon>
                                                             </v-btn>
                                                         </template>
@@ -467,19 +467,6 @@
                                                             {{ $t("container.list.view") }}
                                                         </span>
                                                     </v-tooltip>
-
-
-                                                    <v-tooltip top>
-                                                        <template v-slot:activator="{ on }">
-                                                            <v-btn v-can="'delete-division'" fab x-small v-on="on"
-                                                                color="grey" class="ml-3 white--text" elevation="0"
-                                                                @click="deleteAlert(item.id)">
-                                                                <v-icon> mdi mdi-cloud-print-outline </v-icon>
-                                                            </v-btn>
-                                                        </template>
-                                                        <span> {{ $t("container.list.print") }}</span>
-                                                    </v-tooltip>
-                                                </div>
                                             </template>
 
 
@@ -646,14 +633,14 @@ export default {
 
                 },
 
-                {
-                    text: this.$t("container.system_config.demo_graphic.division.division"),
-                    value: "division",
-                },
-                {
-                    text: this.$t("container.system_config.demo_graphic.district.district"),
-                    value: "district",
-                },
+                // {
+                //     text: this.$t("container.system_config.demo_graphic.division.division"),
+                //     value: "division",
+                // },
+                // {
+                //     text: this.$t("container.system_config.demo_graphic.district.district"),
+                //     value: "district",
+                // },
 
 
 
@@ -1076,7 +1063,7 @@ export default {
     },
     mounted() {
 
-        // this.GetAllowance();
+        this.GetAllowance();
 
         this.$store
             .dispatch("getLookupByType", 1)
