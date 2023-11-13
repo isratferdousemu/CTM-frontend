@@ -6,10 +6,10 @@ const ApplicationSelectionRoutes = [
   //   },
   {
     path: "/application-management/application",
-    name: "selection_list",
+    name: "application-list",
     meta: {
       requiresAuth: true,
-      permission: "application-selection-list",
+      permission: "application-entry-view",
     },
     component: () => import("../pages/ApplicationSelection/application_list/Index.vue")
   },
@@ -27,7 +27,7 @@ const ApplicationSelectionRoutes = [
     name: "selection_list",
     meta: {
       requiresAuth: true,
-      permission: "application-selection-list",
+      permission: "application-entry-view",
     },
     component: () => import("../pages/ApplicationSelection/PMTScoring/DistrictFixedEffect/Index.vue")
   },

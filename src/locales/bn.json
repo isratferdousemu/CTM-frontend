@@ -381,7 +381,8 @@
                 "union_pourashava": "ইউনিয়ন পৌরসভা",
                 "village": "গ্রাম",
                 "mobile": "মোবাইল",
-                "account": "হিসাব নাম্বার"
+                "account": "হিসাব নাম্বার",
+                "nominee_relation_with_beneficiary":" নমিনী সাথে সম্পর্ক"
             },
             "poverty_cut_off": {
                 "poverty_cut_off": "কাট অফ",

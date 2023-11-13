@@ -42,7 +42,8 @@
             "beneficiary_journey":"Beneficiary Journey",
             "change_tracking_details":"Change Tracking Details",
             "exit":"Exit Program",
-            "preview":"Preview"
+            "preview":"Preview",
+            "approve":"approve"
         },
         "system_config": {
             "demo_graphic": {
@@ -380,7 +381,8 @@
                 "union_pourashava": "Union Pourashava",
                 "village": "Village",
                 "mobile": "Mobile",
-                "account": "Account No"
+                "account": "Account No",
+                  "nominee_relation_with_beneficiary":" Relationship with Nominee"
             },
             "poverty_cut_off": {
                 "poverty_cut_off": "Cut Off",
