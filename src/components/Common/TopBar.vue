@@ -2,7 +2,6 @@
   <v-app-bar
     elevation="0"
     height="70"
-    :clipped-left="clipped"
     fixed
     app
     class="mx-5 my-3 rounded-lg header-left menu-top"
@@ -21,7 +20,6 @@
 
     <!-- Notification Start -->
     <v-menu
-      v-model="menu"
       :close-on-content-click="false"
       :nudge-width="200"
       offset-x
@@ -112,7 +110,6 @@
     <v-menu
       transition="scale-transition"
       origin="top end 0"
-      v-model="user_menu"
       :close-on-content-click="false"
       offset-y
       :nudge-left="150"
