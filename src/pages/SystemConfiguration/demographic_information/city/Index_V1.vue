@@ -61,8 +61,6 @@
                       :headers="headers"
                       :items="city"
                       :items-per-page="pagination.perPage"
-                      :sort-by.sync="sortBy"
-                      :sort-desc.sync="sortDesc"
                       @update:options="handleOptionsUpdate"
                       hide-default-footer
                       class="elevation-0 transparent row-pointer"
@@ -616,7 +614,7 @@ export default {
         },
         {
           text: this.$t(
-            "container.system_config.demo_graphic.city_corporation.code"
+            "container.system_config.demo_graphic.city_corporation.customtitleCode"
           ),
           value: "code",
           width: "5%",
@@ -625,29 +623,30 @@ export default {
           text: this.$t(
             "container.system_config.demo_graphic.division.division"
           ),
-          value: "district.division.name_en",
+          // value: "district.division.name_en",
+          value: "parent.parent.name_en",
         },
         {
           text: this.$t(
             "container.system_config.demo_graphic.district.district"
           ),
-          value: "district.name_en",
+          value: "parent.name_en",
         },
         {
           text: this.$t("container.list.location_type"),
-          value: "locationType",
-          sortable: true,
+          value: "location_type.value_en",
+          sortable: false,
         },
         {
           text: this.$t(
-            "container.system_config.demo_graphic.city_corporation.name_en"
+            "container.system_config.demo_graphic.city_corporation.customtitleEn"
           ),
           value: "name_en",
           class: "highlight-column",
         },
         {
           text: this.$t(
-            "container.system_config.demo_graphic.city_corporation.name_bn"
+            "container.system_config.demo_graphic.city_corporation.customtitleBn"
           ),
           value: "name_bn",
         },
@@ -861,15 +860,18 @@ export default {
       }
     },
     editDialog(item) {
+      console.log(item,'editDialog');
       this.dialogEdit = true;
       this.data.code = item.code;
-      this.data.division_id = item.district.division.id;
+      // this.data.division_id = item.district.division.id;
+      this.data.division_id = item.parent.parent.id; //Division
       this.onChangeDivision(this.data.division_id);
-      this.data.district_id = item.district.id;
+      this.data.district_id = item.parent.id;
       this.data.name_en = item.name_en;
       this.data.name_bn = item.name_bn;
       this.data.id = item.id;
-      this.data.location_type = item.locationType.id;
+      this.data.location_type = item.location_type.id;
+      // this.data.location_type = item.locationType.id;
       this.errors = {};
       // alert(JSON.stringify(this.data));
     },
@@ -931,18 +933,59 @@ export default {
       // this.pagination.current = $event;
       this.GetCity();
     },
+    setInitialHeader(){
+      for (let i = 0; i < this.headers.length; i++) {
+        if(this.headers[i].value == 'name_en'){
+          this.headers[i].class = 'highlight-column';
+          console.log(this.headers[i],'headers after');
+        }else{
+          this.headers[i].class = '';
+        }
+      }
+    },
     handleOptionsUpdate({ sortBy, sortDesc }) {
-      this.sortBy = sortBy[0];
-      this.sortDesc = sortDesc[0];
-      // this.GetCity();
+      console.log(this.headers, sortBy, sortDesc);
+      for (let i = 0; i < this.headers.length; i++) {
+        console.log(this.headers[i]);
+        
+        if(this.headers[i].value == sortBy){
+          this.headers[i].class = 'highlight-column';
+          console.log(this.headers[i],'headers after');
+        }else{
+          this.headers[i].class = '';
+        }
+      }
+
+      this.sortBy = "name_en";
+      this.sortDesc = "asc";
+      if (sortBy.length === 0 || sortDesc.length === 0) {
+        this.sortBy = "name_en";
+        this.sortDesc = "asc";
+      } else {
+        this.sortBy = sortBy[0];
+        this.sortDesc = sortDesc[0] == true ? "desc" : "asc";
+      }
+      this.GetCity();
+
+      
+      const queryParams = {
+        sortBy: this.sortBy,
+        orderBy: this.sortDesc,
+      };
+
+      // alert(JSON.stringify(queryParams));
     },
     async GetCity() {
+      let page;
+      if (!this.sortBy) {
+        page = this.pagination.current;
+      }
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
-        // sortBy: this.sortBy,
-        // sortDesc: this.sortDesc,
+        sortBy: this.sortBy,
+        orderBy: this.sortDesc,
       };
       this.$axios
         .get("/admin/city/get", {
@@ -954,9 +997,9 @@ export default {
         })
         .then((result) => {
           this.city = result.data.data;
-          this.pagination.current = result.data.meta.current_page;
-          this.pagination.total = result.data.meta.last_page;
-          this.pagination.grand_total = result.data.meta.total;
+          this.pagination.current = result.data.current_page;
+          this.pagination.total = result.data.last_page;
+          this.pagination.grand_total = result.data.total;
         });
     },
     deleteCity: async function () {
@@ -1012,6 +1055,7 @@ export default {
         })
         .then((result) => {
           this.districts = result.data.data;
+          console.log(this.districts, 'onChangeDivision');
           this.isDistrictHidden = true;
         });
     },
@@ -1095,7 +1139,8 @@ export default {
   },
   created() {
     this.registerCustomRules();
-    this.GetCity();
+    // this.GetCity();
+    // this.handleOptionsUpdate();
     this.getAllDivision();
     this.$store.dispatch("getLookupByType", 1).then((res) => {
       this.locationType = res;
@@ -1103,6 +1148,8 @@ export default {
     });
     console.log(this.label, "label");
     // this.getAllDistrict();
+    // this.sortBy = 'name_en';
+    
   },
   watch: {
     "$i18n.locale": "updateHeaderTitle",
@@ -1111,6 +1158,9 @@ export default {
     console.log("V1");
     this.updateHeaderTitle();
   },
+  mounted(){
+    this.setInitialHeader();
+  }
 };
 </script>
 <style>

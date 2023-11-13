@@ -55,18 +55,19 @@ export default {
         formData.append('comment', this.add_role.comment);
 
 
-        await this.$store.dispatch("Role/StoreRole", formData).then(() => {
-          if (this.success_status === 201)
+        await this.$store.dispatch("Role/StoreRole", formData).then((res) => {
+          if (res.status === 201)
           {
             this.$toast.success(this.message);
             this.add_role = {};
             this.errors = {};
             this.$router.push('/system-configuration/role');
           }
+          console.log(res.response.data.errors);
 
-          if (this.error_status === 422)
+          if (res.response.status === 422)
           {
-            this.$refs.form.setErrors(this.errors);
+            this.$refs.form.setErrors(res.response.data.errors);
           }else{
             this.$refs.form.setErrors();
           }

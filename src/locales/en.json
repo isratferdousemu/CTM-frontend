@@ -87,6 +87,9 @@
                 "city_corporation": {
                     "city": "City Corporation",
                     "customtitle": "Upazila/ City Corporation/ District Pouroshava",
+                    "customtitleCode": "Upazila/ City Corporation/ District Pouroshava Code",
+                    "customtitleEn": "Upazila/ City Corporation/ District Pouroshava English",
+                    "customtitleBn": "Upazila/ City Corporation/ District Pouroshava Bangla",
                     "list": "City Corporation List",
                     "code": "City Corporation Code",
                     "name_en": "City Corporation Name English",
@@ -329,7 +332,7 @@
                 "type_id": "Type ID",
                 "add_field": "Add Field ID",
                 "age_limit_amount": "Age Limit & Amount",
-                "class_wise_amount": "CLass Wise Amount",
+                "class_wise_amount": "Class Wise Amount",
                 "status": "Status",
                 "is_active": "Is Active",
                 "add": "Add Allowance Program",
