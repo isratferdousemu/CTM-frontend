@@ -239,7 +239,7 @@ const SystemConfigurationRoutes = [
     name: 'AllowanceProgram',
     meta: {
       requiresAuth: true,
-      permission: "allowance-program-list",
+      permission: "allowance-view",
     },
     component: () => import("../pages/SystemConfiguration/allowance_program/Index.vue")
   },
@@ -248,7 +248,7 @@ const SystemConfigurationRoutes = [
     name: 'AllowanceProgramCreate',
     meta: {
       requiresAuth: true,
-      permission: "allowance-program-create",
+      permission: "allowance-create",
     },
     component: () => import("../pages/SystemConfiguration/allowance_program/Create.vue")
   },
@@ -257,7 +257,7 @@ const SystemConfigurationRoutes = [
     name: 'AllowanceProgramEdit',
     meta: {
       requiresAuth: true,
-      permission: "allowance-program-edit",
+      permission: "allowance-edit",
     },
     component: () => import("../pages/SystemConfiguration/allowance_program/Edit.vue")
   },
