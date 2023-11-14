@@ -63,7 +63,7 @@
                                               {{ (pagination.current - 1) * pagination.perPage + index + 1 }}
                                               v-if="item?.parent?.parent?.parent.type == 'division'"
                                             </template> -->
-                      <template v-slot:item.division="{ item }">
+                      <template v-slot:item.parent.parent.parent.parent.name_en="{ item }">
                         <span v-if="item?.location_type.id == '1'">
                           {{ item?.parent?.parent?.parent.name_en }}
                         </span>
@@ -1358,7 +1358,6 @@ export default {
             "container.system_config.demo_graphic.division.division"
           ),
           value: "parent.parent.parent.parent.name_en",
-          // value: "division",
         },
         {
           text: this.$t(

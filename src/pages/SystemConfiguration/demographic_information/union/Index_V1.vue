@@ -268,7 +268,7 @@
                       v-slot="{ errors }"
                     >
                       <v-autocomplete
-                        v-model="data.city_id"
+                        v-model="data.thana_id"
                         outlined
                         :label="
                           $t('container.system_config.demo_graphic.city.city')
@@ -840,7 +840,7 @@
                       v-slot="{ errors }"
                     >
                       <v-autocomplete
-                        v-model="data.city_id"
+                        v-model="data.thana_id"
                         outlined
                         :label="
                           $t('container.system_config.demo_graphic.city.city')
@@ -1058,6 +1058,7 @@ export default {
         division_id: null,
         district_id: null,
         thana_id: null,
+        // city_id: null,
         location_type: null,
       },
 
@@ -1271,6 +1272,7 @@ export default {
       for (const [key, value] of Object.entries(this.data)) {
         if (value !== null) {
           fd.append(key, value);
+          console.log(key, value);
         }
       }
       return fd;
@@ -1279,24 +1281,27 @@ export default {
       if (!this.checkLanguage()) {
         return;
       }
-
+      // this.validator();
+      // return;
       try {
-        if (this.data.location_type == 2) {
-          //Insert Thana
-          this.$store
-            .dispatch("Thana/StoreUpazila", this.validator())
-            .then((data) => {
-              console.log(data, "submit");
-              if (data == null) {
-                this.$toast.success("Data Inserted Successfully");
-                this.dialogAdd = false;
-                this.resetData();
-                this.GetUnion();
-              } else {
-                this.$refs.formAdd.setErrors(data.errors);
-              }
-            });
-        } else {
+        // if (this.data.location_type == 2) {
+        //   //Insert Thana
+        //   this.$store
+        //     .dispatch("Thana/StoreUpazila", this.validator())
+        //     .then((data) => {
+        //       console.log(data, "submit");
+        //       if (data == null) {
+        //         this.$toast.success("Data Inserted Successfully");
+        //         this.dialogAdd = false;
+        //         this.resetData();
+        //         this.GetUnion();
+        //       } else {
+        //         this.$refs.formAdd.setErrors(data.errors);
+        //       }
+        //     });
+        // } 
+        // else {
+
           this.$store
             .dispatch("Union/StoreUnion", this.validator())
             .then((res) => {
@@ -1309,7 +1314,7 @@ export default {
                 this.$refs.formAdd.setErrors(res.response.data.errors);
               }
             });
-        }
+        // }
       } catch (e) {
         console.log(e);
       }
@@ -1320,22 +1325,23 @@ export default {
       }
 
       try {
-        if (this.data.location_type == 2) {
-          //Update Thana
-          this.$store
-            .dispatch("Thana/UpdateUpazila", this.validator())
-            .then((data) => {
-              console.log(data, "submit");
-              if (data == null) {
-                this.$toast.success("Data Updated Successfully");
-                this.dialogEdit = false;
-                this.resetData();
-                this.GetUnion();
-              } else {
-                this.$refs.formEdit.setErrors(data.errors);
-              }
-            });
-        } else {
+        // if (this.data.location_type == 2) {
+        //   //Update Thana
+        //   this.$store
+        //     .dispatch("Thana/UpdateUpazila", this.validator())
+        //     .then((data) => {
+        //       console.log(data, "submit");
+        //       if (data == null) {
+        //         this.$toast.success("Data Updated Successfully");
+        //         this.dialogEdit = false;
+        //         this.resetData();
+        //         this.GetUnion();
+        //       } else {
+        //         this.$refs.formEdit.setErrors(data.errors);
+        //       }
+        //     });
+        // } else {
+
           this.$store
             .dispatch("Union/UpdateUnion", this.validator())
             .then((res) => {
@@ -1349,7 +1355,8 @@ export default {
                 this.$refs.formEdit.setErrors(res.response.data.errors);
               }
             });
-        }
+        
+          // }
       } catch (e) {
         console.log(e);
       }
