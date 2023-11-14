@@ -201,7 +201,8 @@ const actions = {
             state.errors = err.response.data.errors
             state.error_status = err.response.status
         })
-    }
+    },
+   
     /*delete disable class end*/
 };
 

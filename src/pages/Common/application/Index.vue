@@ -87,7 +87,8 @@
                           <ValidationProvider
                             name="Number"
                             vid="verification_number"
-                            rules="required"
+                            rules="checkNumber"
+
                             v-slot="{ errors }"
                           >
                             <label> 
@@ -104,11 +105,12 @@
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-text-field
+                              @change="checkNum()"
                               outlined
                               clearable
                               v-model="data.verification_number"
                               class="mr-2"
-                              type="number"
+                              type="text"
                               required
                               :error="errors[0] ? true : false"
                               :error-messages="errors[0]"
@@ -1479,8 +1481,8 @@
                             lg="6"
                           >
                             <ValidationProvider
-                              name="National Identity (NID) /
-Birth Registration Number"
+                              name="National Identity (NID) / Birth Registration Number"
+                              rules="checkNumber"
                               vid="nominee_verification_number"
                               v-slot="{ errors }"
                             >
@@ -1491,8 +1493,9 @@ Birth Registration Number"
                               <v-text-field
                                 v-model="data.nominee_verification_number"
                                 outlined
+                                @change="checkNum()"
                                 clearable
-                                type="number"
+                                type="text"
                                 :error="errors[0] ? true : false"
                                 :error-messages="errors[0]"
                               >
@@ -1786,10 +1789,10 @@ Birth Registration Number"
                         </v-col>
                         </v-row>
                         <div class="d-inline d-flex justify-end">
-                          <v-btn elevation="2" class="btn mr-2" color="info"
-                            >Reset</v-btn>
+                          <v-btn @click="resetForm()" elevation="2" class="btn mr-2" color="info"
+                            >Resets</v-btn>
                             <!-- :disabled="invalid" -->
-                          <v-btn type="submit" flat color="primary"  :loading="loading"
+                          <v-btn type="submit" flat color="primary" :disabled="invalid"  :loading="loading"
                           class="custom-btn-width black white--text py-2">
                           {{ $t("container.list.submit") }}
                         </v-btn>
@@ -1822,8 +1825,26 @@ import FooterBar from "@/components/Common/FooterBar.vue";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { mapState } from "vuex";
 import axios from "axios";
-import { required } from 'vee-validate/dist/rules';
-import Form from "vform";
+import { required,numeric } from 'vee-validate/dist/rules';
+
+extend("numeric", {
+  ...numeric,
+  message: "This field must be a number"
+});
+
+// add custom rule  checkNumber
+extend("checkNumber", {
+  validate: (value) => {
+      // check all carecter in numric not allow spacial carecter
+    const regex = /^[0-9]+$/;
+    // check all carecter in numric not allow spacial carecter
+    return regex.test(value);
+  },
+  message: "This field must be a number",
+});
+   
+
+
 
 export default {
   title: "CTM - Online Application",
@@ -2000,9 +2021,76 @@ export default {
     menu(val) {
       val && setTimeout(() => (this.activePicker = "YEAR"));
     },
+ 
   },
  
   methods: {
+    resetForm() {
+        this.data.location_type=null;
+        this.data.program_id= null;
+        this.data.verification_type= null;
+        this.data.verification_number= null;
+        this.data.age= null;
+        this.data.date_of_birth= null;
+        this.data.name_en= null;
+        this.data.name_bn= null;
+        this.data.father_name_en= null;
+        this.data.father_name_bn= null;
+        this.data.mother_name_en= null;
+        this.data.mother_name_bn= null;
+        this.data.spouse_name_en= null;
+        this.data.spouse_name_bn= null;
+        this.data.identification_mark= null;
+        this.data.image= null;
+        this.data.signature= null;
+        this.data.nationality= null;
+        this.data.gender_id= null;
+        this.data.education_status= null;
+        this.data.profession= null;
+        this.data.religion= null;
+        this.data.division_id= null;
+        this.data.district_id= null;
+        this.data.upazila= null;
+        this.data.post_code= null;
+        this.data.address= null;
+        this.data.location_type= null;
+        this.data.thana_id= null;
+        this.data.union_id= null;
+        this.data.city_id= null;
+        this.data.city_thana_id= null;
+        this.data.district_pouro_id= null;
+        this.data.mobile= null;
+        this.data.permanent_division_id= null;
+        this.data.permanent_district_id= null;
+        this.data.permanent_upazila= null;
+        this.data.permanent_post_code= null;
+        this.data.permanent_address= null;
+        this.data.permanent_location_type= null;
+        this.data.permanent_thana_id= null;
+        this.data.permanent_union_id= null;
+        this.data.permanent_city_id= null;
+        this.data.permanent_city_thana_id= null;
+        this.data.permanent_district_pouro_id= null;
+        this.data.permanent_mobile= null;
+        this.data.nominee_en= null;
+        this.data.nominee_bn= null;
+        this.data.nominee_verification_number= null;
+        this.data.nominee_address= null;
+        this.data.nominee_image= null;
+        this.data.nominee_signature= null;
+        this.data.nominee_relation_with_beneficiary= null;
+        this.data.nominee_nationality= null;
+        this.data.account_name= null;
+        this.data.account_owner= null;
+        this.data.account_number= null;
+        this.data.application_allowance_values= null;
+        this.data.application_pmt= null;
+        this.data.marital_status= null;
+        this.data.email= null;
+    },
+    checkNum() {
+      this.$refs.observer.validate();
+    },
     checkIsHaveDIS() {
       if (this.programDetails != null) {
         let check = this.programDetails.additional_field.filter((item) => {

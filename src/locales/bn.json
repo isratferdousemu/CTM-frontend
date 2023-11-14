@@ -42,7 +42,8 @@
             "beneficiary_journey": "সুবিধাভোগী যাত্রা",
             "change_tracking_details": "ট্র্যাকিং বিবরণ পরিবর্তন করুন",
             "exit": "প্রোগ্রাম থেকে প্রস্থান করুন",
-            "preview": "প্রিভিউ"
+            "preview": "প্রিভিউ",
+            "approve": "অনুমোদন করুন"
         },
         "system_config": {
             "demo_graphic": {
@@ -197,7 +198,7 @@
                     "thana": "থানা",
                     "upazila": "উপজেলা",
                     "union": "ইউনিয়ন",
-                    "pouro": "জেলা পৌরসভা",
+                    "pouro": "পৌরসভা",
                     "union_pouro_city": "ইউনিয়ন/জেলা পৌরসভা/সিটি কর্পোরেশন",
                     "union_ward": "ইউনিয়ন/ওয়ার্ড",
                     "subLocation_type": "Sub Location"
@@ -381,7 +382,8 @@
                 "union_pourashava": "ইউনিয়ন পৌরসভা",
                 "village": "গ্রাম",
                 "mobile": "মোবাইল",
-                "account": "হিসাব নাম্বার"
+                "account": "হিসাব নাম্বার",
+                "nominee_relation_with_beneficiary":" নমিনী সাথে সম্পর্ক"
             },
             "poverty_cut_off": {
                 "poverty_cut_off": "কাট অফ",
