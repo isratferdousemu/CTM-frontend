@@ -1048,7 +1048,7 @@ export default {
         });
     },
     async onChangeThana(event) {
-      alert(event, "thana, upazila");
+      // alert(event, "thana, upazila");
       //   if (
       //     this.data.committee_type == 13 // only load wards
       //   ) {
