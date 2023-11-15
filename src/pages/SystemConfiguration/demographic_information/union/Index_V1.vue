@@ -179,29 +179,7 @@
             <ValidationObserver ref="formAdd" v-slot="{ invalid }">
               <form @submit.prevent="submitUnion()">
                 <v-row>
-                  <v-col lg="12" md="12" cols="12">
-                    <ValidationProvider
-                      name="LocationType"
-                      vid="locationType"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        @input="onChangeLocationType($event)"
-                        v-model="data.location_type"
-                        outlined
-                        :label="$t('container.list.location_type')"
-                        :items="locationType"
-                        item-text="value_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                        :hide-details="errors[0] ? false : true"
-                        :readonly="false"
-                      ></v-autocomplete>
-                    </ValidationProvider>
-                  </v-col>
+
                   <v-col lg="12" md="12" cols="12">
                     <ValidationProvider
                       name="Division"
@@ -254,7 +232,31 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-
+                
+                  <v-col lg="12" md="12" cols="12">
+                    <ValidationProvider
+                      name="LocationType"
+                      vid="locationType"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        @input="onChangeLocationType($event)"
+                        v-model="data.location_type"
+                        outlined
+                        :label="$t('container.list.location_type')"
+                        :items="locationType"
+                        item-text="value_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                        :hide-details="errors[0] ? false : true"
+                        :readonly="false"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                
                   <v-col
                     lg="12"
                     md="12"
@@ -753,29 +755,6 @@
                 <v-row>
                   <v-col lg="12" md="12" cols="12">
                     <ValidationProvider
-                      name="LocationType"
-                      vid="locationType"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        @input="onChangeLocationType($event)"
-                        v-model="data.location_type"
-                        outlined
-                        :label="$t('container.list.location_type')"
-                        :items="locationType"
-                        item-text="value_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                        :hide-details="errors[0] ? false : true"
-                        :readonly="false"
-                      ></v-autocomplete>
-                    </ValidationProvider>
-                  </v-col>
-                  <v-col lg="12" md="12" cols="12">
-                    <ValidationProvider
                       name="Division"
                       vid="division_id"
                       rules="required"
@@ -827,6 +806,30 @@
                     </ValidationProvider>
                   </v-col>
 
+                  <v-col lg="12" md="12" cols="12">
+                    <ValidationProvider
+                      name="LocationType"
+                      vid="locationType"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        @input="onChangeLocationType($event)"
+                        v-model="data.location_type"
+                        outlined
+                        :label="$t('container.list.location_type')"
+                        :items="locationType"
+                        item-text="value_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                        :hide-details="errors[0] ? false : true"
+                        :readonly="false"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  
                   <v-col
                     lg="12"
                     md="12"

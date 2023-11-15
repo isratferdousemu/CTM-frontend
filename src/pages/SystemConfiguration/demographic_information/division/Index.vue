@@ -57,13 +57,7 @@
                       :headers="headers"
                       :items="divisions"
                       :items-per-page="pagination.perPage"
-
-                      
-                      :sort-by.sync="sortBy"
-                      :sort-desc.sync="sortDesc"
                       @update:options="handleOptionsUpdate"
-                      
-
                       hide-default-footer
                       class="elevation-0 transparent row-pointer"
                     >
@@ -518,34 +512,6 @@ export default {
       this.dialogAdd = true;
     },
     checkLanguage() {
-      // let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
-      // let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
-      // if (
-      //   checkLanguageBangla != "Bangla" &&
-      //   checkLanguageEnglish != "English"
-      // ) {
-      //   let errs = {
-      //     name_bn: ["Please Enter in Bangla Language in this Field"],
-      //     name_en: ["Please Enter in English Language in this Field"],
-      //   };
-      //   this.$refs.form.setErrors(errs);
-      //   return false;
-      // } else if (checkLanguageBangla != "Bangla") {
-      //   let errs = {
-      //     name_bn: ["Please Enter in Bangla Language in this Field"],
-      //   };
-      //   this.$refs.form.setErrors(errs);
-      //   return false;
-      // } else if (checkLanguageEnglish != "English") {
-      //   let errs = {
-      //     name_en: ["Please Enter in English Language in this Field"],
-      //   };
-      //   this.$refs.form.setErrors(errs);
-      //   return false;
-      // } else {
-      //   return true;
-      // }
-
       let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
       let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
 
@@ -655,18 +621,56 @@ export default {
       // this.pagination.current = $event;
       this.GetDivision();
     },
-    handleOptionsUpdate({ sortBy, sortDesc }) {
-      this.sortBy = sortBy[0];
-      this.sortDesc = sortDesc[0];
-      // this.GetDivision();
+    setInitialHeader() {
+      for (let i = 0; i < this.headers.length; i++) {
+        if (this.headers[i].value == "name_en") {
+          this.headers[i].class = "highlight-column";
+          console.log(this.headers[i], "headers after");
+        } else {
+          this.headers[i].class = "";
+        }
+      }
     },
+    handleOptionsUpdate({ sortBy, sortDesc }) {
+      console.log(this.headers, sortBy, sortDesc);
+      for (let i = 0; i < this.headers.length; i++) {
+        console.log(this.headers[i]);
+
+        if (this.headers[i].value == sortBy) {
+          this.headers[i].class = "highlight-column";
+          console.log(this.headers[i], "headers after");
+        } else {
+          this.headers[i].class = "";
+        }
+      }
+
+      console.log(sortBy, sortDesc);
+      this.sortBy = "name_en";
+      this.sortDesc = "asc";
+      if (sortBy.length === 0 || sortDesc.length === 0) {
+        this.sortBy = "name_en";
+        this.sortDesc = "asc";
+      } else {
+        this.sortBy = sortBy[0];
+        this.sortDesc = sortDesc[0] == true ? "desc" : "asc";
+      }
+      this.GetDivision();
+
+      const queryParams = {
+        sortBy: this.sortBy,
+        orderBy: this.sortDesc,
+      };
+
+      // alert(JSON.stringify(queryParams));
+    },
+
     async GetDivision() {
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
-        // sortBy: this.sortBy,
-        // sortDesc: this.sortDesc,
+        sortBy: this.sortBy,
+        sortDesc: this.sortDesc,
       };
       this.$axios
         .get("/admin/division/get", {
@@ -717,10 +721,12 @@ export default {
       this.$store.commit("setHeaderTitle", title);
     },
   },
-
+  mounted() {
+    this.setInitialHeader();
+  },
   created() {
     this.registerCustomRules();
-    this.GetDivision();
+    // this.GetDivision();
   },
   beforeMount() {
     this.updateHeaderTitle();

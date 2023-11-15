@@ -486,6 +486,7 @@ export default {
       loading: false,
       search: "",
       delete_id: "",
+      divisions: [],
       districts: [],
       errors: {},
       error_status: {},
@@ -547,8 +548,6 @@ export default {
     },
     ...mapState({
       message: (state) => state.District.success_message,
-      divisions: (state) => state.Division.divisions,
-      districts: (state) => state.District.districts,
     }),
   },
   methods: {
@@ -569,33 +568,6 @@ export default {
       this.dialogAdd = true;
     },
     checkLanguage() {
-      // let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
-      // let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
-      // if (
-      //   checkLanguageBangla != "Bangla" &&
-      //   checkLanguageEnglish != "English"
-      // ) {
-      //   let errs = {
-      //     name_bn: ["Please Enter in Bangla Language in this Field"],
-      //     name_en: ["Please Enter in English Language in this Field"],
-      //   };
-      //   this.$refs.form.setErrors(errs);
-      //   return false;
-      // } else if (checkLanguageBangla != "Bangla") {
-      //   let errs = {
-      //     name_bn: ["Please Enter in Bangla Language in this Field"],
-      //   };
-      //   this.$refs.form.setErrors(errs);
-      //   return false;
-      // } else if (checkLanguageEnglish != "English") {
-      //   let errs = {
-      //     name_en: ["Please Enter in English Language in this Field"],
-      //   };
-      //   this.$refs.form.setErrors(errs);
-      //   return false;
-      // } else {
-      //   return true;
-      // }
 
       let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
       let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
@@ -668,10 +640,11 @@ export default {
       }
     },
     editDialog(item) {
+      console.log(item,'editDialog');
       console.log(JSON.stringify(item));
       this.dialogEdit = true;
       this.data.code = item.code;
-      this.data.division_id = item.division.id;
+      this.data.division_id = item.parent.id;
       this.data.name_en = item.name_en;
       this.data.name_bn = item.name_bn;
       this.data.id = item.id;
@@ -711,7 +684,29 @@ export default {
       // this.pagination.current = $event;
       this.GetDistrict();
     },
+    setInitialHeader() {
+      for (let i = 0; i < this.headers.length; i++) {
+        if (this.headers[i].value == "name_en") {
+          this.headers[i].class = "highlight-column";
+          console.log(this.headers[i], "headers after");
+        } else {
+          this.headers[i].class = "";
+        }
+      }
+    },
     handleOptionsUpdate({ sortBy, sortDesc }) {
+      console.log(this.headers, sortBy, sortDesc);
+      for (let i = 0; i < this.headers.length; i++) {
+        console.log(this.headers[i]);
+
+        if (this.headers[i].value == sortBy) {
+          this.headers[i].class = "highlight-column";
+          console.log(this.headers[i], "headers after");
+        } else {
+          this.headers[i].class = "";
+        }
+      }
+
       console.log(sortBy, sortDesc);
         this.sortBy = 'name_en';
         this.sortDesc = 'asc';
@@ -758,9 +753,10 @@ export default {
         })
         .then((result) => {
           this.districts = result.data.data;
-          this.pagination.current = result.data.meta.current_page;
-          this.pagination.total = result.data.meta.last_page;
-          this.pagination.grand_total = result.data.meta.total;
+          console.log(this.districts, 'GetDivision');
+          this.pagination.current = result.data.current_page;
+          this.pagination.total = result.data.last_page;
+          this.pagination.grand_total = result.data.total;
         });
     },
     deleteDistrict: async function () {
@@ -789,13 +785,20 @@ export default {
       this.delete_id = id;
     },
     getAllDivision() {
-      try {
-        this.$store.dispatch("Division/GetAllDivisions").then(() => {
-          console.log("success");
+      this.$axios
+        .get("/admin/division/get", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
+          this.divisions = result.data.data;
+          console.log(this.divisions, 'this.divisions');
+          // this.pagination.current = result.data.meta.current_page;
+          // this.pagination.total = result.data.meta.last_page;
+          // this.pagination.grand_total = result.data.meta.total;
         });
-      } catch (e) {
-        console.log(e);
-      }
     },
     async onChangeDivision(event) {
       console.log(event);
@@ -840,9 +843,12 @@ export default {
   
   created() {
     this.registerCustomRules();
-    this.handleOptionsUpdate();
-    // this.GetDistrict();
     this.getAllDivision();
+    // this.handleOptionsUpdate();
+    // this.GetDistrict();
+  },
+  mounted(){
+    this.setInitialHeader();
   },
   beforeMount() {
     this.updateHeaderTitle();
