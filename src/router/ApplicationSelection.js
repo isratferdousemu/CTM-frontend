@@ -14,6 +14,16 @@ const ApplicationSelectionRoutes = [
     component: () => import("../pages/ApplicationSelection/application_list/Index.vue")
   },
   {
+    path: "/application-selection/application-view",
+    name: "application-list",
+    meta: {
+      requiresAuth: true,
+      permission: "application-entry-view",
+    },
+    component: () => import("../pages/ApplicationSelection/application_list/application_view.vue")
+  },
+  
+  {
     path: "/application-management/poverty-cut-off-score/",
     name: "selection_list",
     meta: {

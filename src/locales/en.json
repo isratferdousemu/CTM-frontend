@@ -44,6 +44,7 @@
             "exit":"Exit Program",
             "preview":"Preview",
             "approve":"Approve"
+            
         },
         "system_config": {
             "demo_graphic": {
@@ -527,7 +528,8 @@
                     "unsuccessful_change":"Unsuccessful Change",
                     "information_tracking":"Information Tracking",
                     "tracking_type":"Tracking Type",
-                    "address":"Address"
+                    "address":"Address",
+                    "account_no": "Account No"
              
                 },
                         "digital_id": {
