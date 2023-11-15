@@ -179,24 +179,6 @@
                 {{errors.name_en}} -->
 
                 <ValidationProvider
-                  name="LocationType"
-                  vid="locationType"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <v-autocomplete
-                    v-model="data.location_type"
-                    outlined
-                    :label="$t('container.list.location_type')"
-                    :items="locationType"
-                    item-text="value_en"
-                    item-value="id"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-autocomplete>
-                </ValidationProvider>
-                <ValidationProvider
                   name="Division"
                   vid="division"
                   rules="required"
@@ -235,6 +217,25 @@
                     "
                     :items="districts"
                     item-text="name_en"
+                    item-value="id"
+                    required
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
+                  ></v-autocomplete>
+                </ValidationProvider>
+
+                <ValidationProvider
+                  name="LocationType"
+                  vid="locationType"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
+                  <v-autocomplete
+                    v-model="data.location_type"
+                    outlined
+                    :label="$t('container.list.location_type')"
+                    :items="locationType"
+                    item-text="value_en"
                     item-value="id"
                     required
                     :error="errors[0] ? true : false"
@@ -335,25 +336,7 @@
               <form @submit.prevent="updateCity()">
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
-                <ValidationProvider
-                  name="LocationType"
-                  vid="locationType"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <v-autocomplete
-                    v-model="data.location_type"
-                    outlined
-                    :label="$t('container.list.location_type')"
-                    :items="locationType"
-                    item-text="value_en"
-                    item-value="id"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                    :readonly="false"
-                  ></v-autocomplete>
-                </ValidationProvider>
+              
                 <ValidationProvider
                   name="Division"
                   vid="division"
@@ -402,6 +385,27 @@
                     :readonly="false"
                   ></v-autocomplete>
                 </ValidationProvider>
+
+                <ValidationProvider
+                  name="LocationType"
+                  vid="locationType"
+                  rules="required"
+                  v-slot="{ errors }"
+                >
+                  <v-autocomplete
+                    v-model="data.location_type"
+                    outlined
+                    :label="$t('container.list.location_type')"
+                    :items="locationType"
+                    item-text="value_en"
+                    item-value="id"
+                    required
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
+                    :readonly="false"
+                  ></v-autocomplete>
+                </ValidationProvider>
+                
                 <ValidationProvider
                   name="Code"
                   vid="code"
