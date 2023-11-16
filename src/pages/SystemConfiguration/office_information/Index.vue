@@ -55,6 +55,7 @@
                       :headers="headers"
                       :items="offices"
                       :items-per-page="pagination.perPage"
+                      @update:options="handleOptionsUpdate"
                       hide-default-footer
                       class="elevation-0 transparent row-pointer"
                     >
@@ -869,6 +870,8 @@ export default {
         total: 0,
         perPage: 15,
       },
+      sortBy: "name_en",
+      sortDesc: false, //ASC
       items: [5, 10, 15, 20, 40, 50, 100],
     };
   },
@@ -888,6 +891,7 @@ export default {
         {
           text: this.$t("container.system_config.demo_graphic.office.name_en"),
           value: "name_en",
+          class: "highlight-column ",
         },
         {
           text: this.$t("container.system_config.demo_graphic.office.name_bn"),
@@ -898,16 +902,20 @@ export default {
             "container.system_config.demo_graphic.office.office_type"
           ),
           value: "officeType.value_en",
+          sortable: false,
         },
         {
           text: this.$t(
             "container.system_config.demo_graphic.office.office_address"
           ),
           value: "office_address",
+          sortable: false,
         },
         {
           text: this.$t("container.system_config.demo_graphic.office.status"),
           value: "status",
+          sortable: false,
+
         },
         {
           text: this.$t("container.list.action"),
@@ -1133,11 +1141,56 @@ export default {
       // this.pagination.current = $event;
       this.GetOffices();
     },
+    setInitialHeader() {
+      for (let i = 0; i < this.headers.length; i++) {
+        if (this.headers[i].value == "name_en") {
+          this.headers[i].class = "highlight-column";
+          console.log(this.headers[i], "headers after");
+        } else {
+          this.headers[i].class = "";
+        }
+      }
+    },
+    handleOptionsUpdate({ sortBy, sortDesc }) {
+      console.log(this.headers, sortBy, sortDesc);
+      for (let i = 0; i < this.headers.length; i++) {
+        console.log(this.headers[i]);
+
+        if (this.headers[i].value == sortBy) {
+          this.headers[i].class = "highlight-column";
+          console.log(this.headers[i], "headers after");
+        } else {
+          this.headers[i].class = "";
+        }
+      }
+
+      console.log(sortBy, sortDesc);
+      this.sortBy = "name_en";
+      this.sortDesc = "asc";
+      if (sortBy.length === 0 || sortDesc.length === 0) {
+        this.sortBy = "name_en";
+        this.sortDesc = "asc";
+      } else {
+        this.sortBy = sortBy[0];
+        this.sortDesc = sortDesc[0] == true ? "desc" : "asc";
+      }
+      this.GetOffices();
+
+      const queryParams = {
+        sortBy: this.sortBy,
+        orderBy: this.sortDesc,
+      };
+
+      // alert(JSON.stringify(queryParams));
+    },
+
     async GetOffices() {
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
+        sortBy: this.sortBy,
+        sortDesc: this.sortDesc,
       };
       console.log(queryParams);
       this.$axios
@@ -1209,9 +1262,10 @@ export default {
     },
   },
   mounted() {
+    this.setInitialHeader();
     this.GetOfficeType();
     this.GetOfficeType();
-    this.GetOffices();
+    // this.GetOffices();
     this.GetAllDivisions();
     this.GetLocationType();
     this.GetAllUpazila();
@@ -1228,3 +1282,8 @@ export default {
   },
 };
 </script>
+<style>
+.highlight-column {
+  background-color: #e0eaf1;
+}
+</style>
