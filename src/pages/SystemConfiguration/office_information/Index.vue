@@ -901,7 +901,7 @@ export default {
           text: this.$t(
             "container.system_config.demo_graphic.office.office_type"
           ),
-          value: "officeType.value_en",
+          value: "office_type.value_en",
           sortable: false,
         },
         {
@@ -999,50 +999,51 @@ export default {
     },
     editOffice(item) {
       console.log(item, "editOffice");
-      console.log(item?.assignLocation?.parent?.parent?.type, "editDivision");
+      console.log(item?.assign_location?.parent?.parent?.type, "editDivision");
 
       this.resetData();
 
       this.dialogEdit = true;
       this.data.id = item.id;
-      this.data.office_type = item.officeType.id;
-      this.office_type_id = item.officeType.id;
+      this.data.office_type = item.office_type.id;
+      this.office_type_id = item.office_type.id;
       this.data.name_en = item.name_en;
       this.data.name_bn = item.name_bn;
       this.data.office_address = item.office_address;
       this.data.comment = item.comment;
       this.data.status = String(item.status);
-      // console.log(this.data.status);
+      console.log('');
 
-      if (item?.assignLocation?.type == "division") {
+      if (item?.assign_location?.type == "division") {
         console.log("division here");
-        this.data.division_id = item?.assignLocation?.id;
+        // this.data.division_id = item?.assign_location?.id;
+        this.data.division_id = item?.parent?.id; // 
       }
-      if (item?.assignLocation?.type == "district") {
+      if (item?.assign_location?.type == "district") {
         console.log("district here");
-        this.data.division_id = item?.assignLocation?.parent?.id;
+        this.data.division_id = item?.assign_location?.parent?.id;
         this.onChangeDivision(this.data.division_id);
-        this.data.district_id = item?.assignLocation?.id;
+        this.data.district_id = item?.assign_location?.id;
       }
-      if (item?.assignLocation?.parent?.parent?.type == "division") {
-        this.data.division_id = item?.assignLocation?.parent?.parent?.id;
+      if (item?.assign_location?.parent?.parent?.type == "division") {
+        this.data.division_id = item?.assign_location?.parent?.parent?.id;
         this.onChangeDivision(this.data.division_id);
       }
-      if (item?.assignLocation?.parent?.type == "district") {
-        this.data.district_id = item?.assignLocation?.parent?.id;
+      if (item?.assign_location?.parent?.type == "district") {
+        this.data.district_id = item?.assign_location?.parent?.id;
         this.onChangeDistrict(this.data.district_id);
       }
-      if (item?.assignLocation?.location_type?.value_en == "City Corporation") {
-        this.data.city_corpo_id = item?.assignLocation?.id;
+      if (item?.assign_location?.location_type?.value_en == "City Corporation") {
+        this.data.city_corpo_id = item?.assign_location?.id;
       }
-      if (item?.assignLocation?.location_type?.value_en == "Upazila") {
-        this.data.thana_id = item?.assignLocation?.id;
+      if (item?.assign_location?.location_type?.value_en == "Upazila") {
+        this.data.thana_id = item?.assign_location?.id;
       }
       console.log(this.data, "editOffice End");
     },
     dialogOpen() {
-      if (this.$refs.form) {
-        this.$refs.form.reset();
+      if (this.$refs.formAdd) {
+        this.$refs.formAdd.reset();
       }
 
       const update_error_value = null;
