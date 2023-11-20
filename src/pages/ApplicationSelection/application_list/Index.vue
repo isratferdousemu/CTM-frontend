@@ -459,7 +459,8 @@
                                                      <v-tooltip top>
                                                         <template v-slot:activator="{ on }">
                                                             <v-btn fab x-small v-on="on" color="#AFB42B"
-                                                              router to="/application-selection/application-view"
+                                                                router
+                                :to="`/application-selection/application-view/${item.id}`"
                                                                 elevation="0" class="white--text">
                                                                 <v-icon> mdi-eye </v-icon>
                                                             </v-btn>

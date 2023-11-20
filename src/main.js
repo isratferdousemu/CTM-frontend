@@ -1,4 +1,5 @@
 import "./assets/css/main.css";
+import "./assets/css/header.css";
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";

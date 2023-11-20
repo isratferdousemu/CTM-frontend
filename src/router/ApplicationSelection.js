@@ -14,7 +14,7 @@ const ApplicationSelectionRoutes = [
     component: () => import("../pages/ApplicationSelection/application_list/Index.vue")
   },
   {
-    path: "/application-selection/application-view",
+    path: "/application-selection/application-view/:id",
     name: "application-list",
     meta: {
       requiresAuth: true,

@@ -38,7 +38,7 @@
                   item-text="name_en"
                   item-value="id"
                   v-model="data.program_id"
-                  required
+               
                   :error="errors[0] ? true : false"
                   :error-messages="errors[0]"
                 >
@@ -622,7 +622,7 @@
                               <v-text-field
                                 v-model="data.name_bn"
                                 outlined
-                                clearable
+                                readonly
                                 :error="errors[0] ? true : false"
                                 :error-messages="errors[0]"
                               >
@@ -2311,9 +2311,11 @@ export default {
     },
     async getProgramName() {
       // if (this.data.program != null && this.programs.length > 0) {
+      console.log(this.programs,"check");
       let programName = this.programs.filter(
         (item) => item.id == this.data.program_id
       );
+
       this.programName = await programName[0]?.name_en;
       this.programDetails = await programName[0];
       if (this.programDetails != null) {

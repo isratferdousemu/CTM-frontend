@@ -1,22 +1,22 @@
 <template>
     <div id="application_view">
-    
         <v-row class="mx-5 my-5 mt-5">
             <v-col class="mt-5" cols="12">
                 <ValidationObserver ref="form" v-slot="{ invalid }">
                     <form @submit.prevent="submitApplication()">
                         <v-card class="pa-5 px-10 mb-4">
-                        
-
+                
+{{data}}
                             <ValidationProvider name="program" vid="program" rules="required" v-slot="{ errors }">
                                 <label>Program </label>
                                 <span style="margin-left: 4px; color: red">*</span>
-                                <v-select @change="getProgramName()" outlined :items="programs" item-text="name_en"
+                                <v-select outlined :items="data?.program" item-text="name_en"
                                     item-value="id" v-model="data.program_id" required :error="errors[0] ? true : false"
-                                    :error-messages="errors[0]">
+                                    :error-messages="errors[0]"
+                                    readonly>
                                 </v-select>
                             </ValidationProvider>
-                            <div v-if="data.program_id">
+                            <div>
                                 <v-expansion-panels v-model="panel" multiple>
                                     <!-- Applicant Verification -->
                                     <v-expansion-panel>
@@ -24,19 +24,25 @@
                                             <h3 class="white--text">Applicant Verification</h3>
                                         </v-expansion-panel-header>
                                         <v-expansion-panel-content class="mt-5">
-                                            <ValidationProvider name="program" vid="verification_type" rules="required"
-                                                v-slot="{ errors }">
-                                                <v-radio-group required v-model="data.verification_type" row>
-                                                    Verification type
-                                                    <span style="
-                              margin-left: 4px;
-                              margin-right: 4px;
-                              color: red;
-                            ">*</span>
-                                                    <v-radio label="National Identity (NID)" :value="1"></v-radio>
-                                                    <v-radio label="Birth Registration Number" :value="2"></v-radio>
-                                                </v-radio-group>
-                                            </ValidationProvider>
+                          <template>
+      <ValidationProvider
+        name="program"
+        vid="verification_type"
+        rules="required"
+        v-slot="{ errors }"
+      >
+        <v-radio-group
+          :readonly="isRadioGroupReadonly"
+          v-model="data.verification_type"
+          row
+        >
+          Verification type
+          <span style="margin-left: 4px; margin-right: 4px; color: red;">*</span>
+          <v-radio label="National Identity (NID)" :value="1"   v-if="!isRadioGroupReadonly"></v-radio>
+          <v-radio label="Birth Registration Number" :value="2"   v-if="!isRadioGroupReadonly"></v-radio>
+        </v-radio-group>
+      </ValidationProvider>
+    </template>
                                             <V-row>
                                                 <v-col>
                                                     <ValidationProvider name="Number" vid="verification_number"
@@ -54,7 +60,7 @@
 
                                                         </label>
                                                         <span style="margin-left: 4px; color: red">*</span>
-                                                        <v-text-field outlined clearable v-model="data.verification_number"
+                                                        <v-text-field outlined readonly v-model="data.verification_number"
                                                             class="mr-2" type="number" required
                                                             :error="errors[0] ? true : false" :error-messages="errors[0]">
                                                         </v-text-field>
@@ -66,7 +72,7 @@
 
                                                     <span style="margin-left: 4px; color: red">*</span>
 
-                                                    <ValidationProvider v-slot="{ errors }" name="Date of Birth"
+                                                    <ValidationProvider v-slot="{ errors }" name="Date of Birth" readonly
                                                         rules="required" vid="date_of_birth">
                                                         <v-text-field v-model="data.date_of_birth" format="YYYY-MM-DD"
                                                             :hide-details="errors[0] ? false : true"
@@ -94,7 +100,7 @@
                                                 Information According to the {{ programName }}
                                             </h3>
                                         </v-expansion-panel-header>
-                                        <v-expansion-panel-content class="mt-5">
+                                        <!-- <v-expansion-panel-content class="mt-5">
                                             <div v-if="programDetails" class="py-2 ma-4">
                                                 <v-row>
                                                     <template v-if="checkIsHaveDIS()">
@@ -284,7 +290,7 @@
                                                         </template>
                                                     </v-col>
                                                 </v-row>
-                                            </div>
+                                            </div> -->
                                         </v-expansion-panel-content>
                                     </v-expansion-panel>
                                     <!-- Information According to the Program End -->
@@ -1036,7 +1042,7 @@ Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }"
                                             </h3>
                                         </v-expansion-panel-header>
                                         <v-expansion-panel-content class="mt-5">
-                                            <div class="pa-2 mb-4">
+                                            <!-- <div class="pa-2 mb-4">
                                                 <v-row>
                                                     <v-col v-for="(variables, indexPMT) in PMTVariables" cols="6" lg="6"
                                                         :key='indexPMT'>
@@ -1108,15 +1114,15 @@ Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }"
                                                     </v-col>
                                                 </v-row>
                                                 <div class="d-inline d-flex justify-end">
-                                                    <v-btn elevation="2" class="btn mr-2" color="info">Reset</v-btn>
+                                                    <v-btn elevation="2" class="btn mr-2" color="info">Reset</v-btn> -->
                                                     <!-- :disabled="invalid" -->
-                                                    <v-btn type="submit" flat color="primary" :loading="loading"
+                                                    <!-- <v-btn type="submit" flat color="primary" :loading="loading"
                                                         class="custom-btn-width black white--text py-2">
                                                         {{ $t("container.list.submit") }}
                                                     </v-btn>
 
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </v-expansion-panel-content>
                                     </v-expansion-panel>
                                     <!-- Other Information of Eligibility end-->
@@ -1146,6 +1152,7 @@ export default {
     title: "CTM - Online Application",
     data() {
         return {
+            applications:[],
             panel: [0, 1, 2, 3, 4, 5, 6],
             programs: [],
             classes: [],
@@ -1230,69 +1237,70 @@ export default {
             menu: false,
             isChecked: false,
 
-            data: {
-                location_type: null,
-                program_id: null,
-                verification_type: 1,
-                verification_number: 123345678,
-                age: 24,
-                date_of_birth: "1999-11-11",
-                name_en: 'null',
-                name_bn: 'null',
-                father_name_en: 'null',
-                father_name_bn: 'null',
-                mother_name_en: 'null',
-                mother_name_bn: 'null',
-                spouse_name_en: 'null',
-                spouse_name_bn: 'null',
-                identification_mark: 'null',
-                image: null,
-                signature: null,
-                nationality: 'null',
-                gender_id: null,
-                education_status: null,
-                profession: 'null',
-                religion: null,
-                division_id: null,
-                district_id: null,
-                upazila: null,
-                post_code: null,
-                address: 'null',
-                location_type: null,
-                thana_id: null,
-                union_id: null,
-                city_id: null,
-                city_thana_id: null,
-                district_pouro_id: null,
-                mobile: '01877678899',
-                permanent_division_id: null,
-                permanent_district_id: null,
-                permanent_upazila: null,
-                permanent_post_code: null,
-                permanent_address: 'null',
-                permanent_location_type: null,
-                permanent_thana_id: null,
-                permanent_union_id: null,
-                permanent_city_id: null,
-                permanent_city_thana_id: null,
-                permanent_district_pouro_id: null,
-                permanent_mobile: null,
-                nominee_en: 'null',
-                nominee_bn: 'null',
-                nominee_verification_number: 2212121,
-                nominee_address: 'null',
-                nominee_image: null,
-                nominee_signature: null,
-                nominee_relation_with_beneficiary: null,
-                nominee_nationality: 'null',
-                account_name: 'null',
-                account_owner: null,
-                account_number: '01877678899',
-                application_allowance_values: [],
-                application_pmt: [],
-                marital_status: null,
-                email: 'null@gmail.com',
-            },
+            // data: {
+            //     location_type: null,
+            //     program_id: null,
+            //     verification_type: 1,
+            //     verification_number: 123345678,
+            //     age: 24,
+            //     date_of_birth: "1999-11-11",
+            //     name_en: 'null',
+            //     name_bn: 'null',
+            //     father_name_en: 'null',
+            //     father_name_bn: 'null',
+            //     mother_name_en: 'null',
+            //     mother_name_bn: 'null',
+            //     spouse_name_en: 'null',
+            //     spouse_name_bn: 'null',
+            //     identification_mark: 'null',
+            //     image: null,
+            //     signature: null,
+            //     nationality: 'null',
+            //     gender_id: null,
+            //     education_status: null,
+            //     profession: 'null',
+            //     religion: null,
+            //     division_id: null,
+            //     district_id: null,
+            //     upazila: null,
+            //     post_code: null,
+            //     address: 'null',
+            //     location_type: null,
+            //     thana_id: null,
+            //     union_id: null,
+            //     city_id: null,
+            //     city_thana_id: null,
+            //     district_pouro_id: null,
+            //     mobile: '01877678899',
+            //     permanent_division_id: null,
+            //     permanent_district_id: null,
+            //     permanent_upazila: null,
+            //     permanent_post_code: null,
+            //     permanent_address: 'null',
+            //     permanent_location_type: null,
+            //     permanent_thana_id: null,
+            //     permanent_union_id: null,
+            //     permanent_city_id: null,
+            //     permanent_city_thana_id: null,
+            //     permanent_district_pouro_id: null,
+            //     permanent_mobile: null,
+            //     nominee_en: 'null',
+            //     nominee_bn: 'null',
+            //     nominee_verification_number: 2212121,
+            //     nominee_address: 'null',
+            //     nominee_image: null,
+            //     nominee_signature: null,
+            //     nominee_relation_with_beneficiary: null,
+            //     nominee_nationality: 'null',
+            //     account_name: 'null',
+            //     account_owner: null,
+            //     account_number: '01877678899',
+            //     application_allowance_values: [],
+            //     application_pmt: [],
+            //     marital_status: null,
+            //     email: 'null@gmail.com',
+            // },
+            data:[],
 
             checkbox: false,
             checkboxNomineeAddress: false,
@@ -1307,6 +1315,12 @@ export default {
 
         };
     },
+     computed: {
+        isRadioGroupReadonly() {
+            return this.data.verification_type !== null;
+        },
+    },
+    
 
     components: {
         ValidationProvider,
@@ -1320,7 +1334,26 @@ export default {
     },
 
     methods: {
-        checkIsHaveDIS() {
+  async  getApplicationById(){
+        
+                  this.$axios
+                .get(`/admin/application/get/${this.$route.params.id}`, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                  
+                })
+                .then((result) => {
+
+                    this.data = result.data.application;
+                    this.PMTVariables = result.data.application.poverty_score;
+                    console.log(this.PMTVariables, 'this.PMTVariables');
+                  
+                });
+
+        },
+         checkIsHaveDIS() {
             if (this.programDetails != null) {
                 let check = this.programDetails.additional_field.filter((item) => {
                     return item.id == 11;
@@ -1538,11 +1571,20 @@ export default {
                     }
                 });
         },
+           getAllProgram() {
+            this.$axios.get("global/program").then((res) => {
+                this.programs = res.data.data;
+                
+            });
+        },
         async getProgramName() {
             // if (this.data.program != null && this.programs.length > 0) {
+           
+           console.log(this.programs,"program check");
             let programName = this.programs.filter(
-                (item) => item.id == this.data.program_id
+                (item) => item.id == 3
             );
+           console.log(this.programName,"program");
             this.programName = await programName[0]?.name_en;
             this.programDetails = await programName[0];
             if (this.programDetails != null) {
@@ -1554,6 +1596,7 @@ export default {
                         value: null,
                     };
                     this.data.application_allowance_values.push(obj);
+                            console.log("Sajjad")
                 });
             }
 
@@ -1565,7 +1608,10 @@ export default {
                         sub_variables: null,
                     };
                     this.data.application_pmt.push(obj);
+                    console.log("Shuvo")
                 });
+                
+               
             }
 
             // }
@@ -1575,11 +1621,7 @@ export default {
                 this.PMTVariables = res.data.data;
             });
         },
-        getAllProgram() {
-            this.$axios.get("global/program").then((res) => {
-                this.programs = res.data.data;
-            });
-        },
+     
         getAllDivision() {
             this.$axios.get("global/division/get").then((res) => {
                 this.divisions = res.data.data;
@@ -1841,10 +1883,13 @@ export default {
                 this.nomineeSignUrl = null;
             }
         },
+ 
     },
+    
 
     created() {
-        this.getAllProgram();
+        this.getApplicationById();
+         this.getAllProgram();
         this.getAllDivision();
         this.permanent_getAllDivision();
         this.getProgramName();
@@ -1858,6 +1903,8 @@ export default {
         this.$store
             .dispatch("getGlobalLookupByType", 1)
             .then((res) => (this.locationType = res));
+  
+      
     },
 };
 </script>
