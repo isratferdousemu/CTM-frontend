@@ -220,7 +220,9 @@ export default {
 
       if(this.is_disable_class === false && this.is_age_limit == false){
 
-        this.amount_error_note = "Please Add any of the Amount";
+        this.amount_error_note = "Atleast one type of amount is required";
+        this.$toast.error(this.amount_error_note);
+
         return;
       }
       try {
