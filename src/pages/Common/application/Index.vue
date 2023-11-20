@@ -2207,53 +2207,11 @@ export default {
           if (key == 'application_allowance_values') {
             console.log(value)
             fd.append("application_allowance_values", JSON.stringify(value));
-          //   let Allow_Arr = []
-
-          //   for (let i = 0; i < value.length; i++) {
-          //     if (Array.isArray(value[i].allowance_program_additional_field_values_id)) {
-          //       for (let e = 0; e < value[i].allowance_program_additional_field_values_id.length; e++) {
-          //         fd.append("application_allowance_values["+`${i}`+"].allowance_program_additional_field_values_id["+`${e}`+"]", value[i].allowance_program_additional_field_values_id[e]);
-          //       }
-          //     }else {
-          //       fd.append("application_allowance_values["+`${i}`+"].allowance_program_additional_field_values_id", value[i].allowance_program_additional_field_values_id);
-          //     } 
-          //     fd.append("application_allowance_values[" + `${i}` + "].allowance_program_additional_fields_id", value[i].allowance_program_additional_fields_id);
-          //     console.log('type check ', typeof value[i].value);    
-          //     if (typeof value[i].value == 'object') {
-          //   this.fileToBase64(value[i].value).then(base64String => {
-          //   fd.append(
-          //       "application_allowance_values["+`${i}`+"].value",
-          //       base64String
-          //     );
-          //   console.log('base file',base64String); // Base64-encoded string
-          // })
-          // .catch(error => {
-          //   console.error(error);
-          // });  
-
-          //     } else {
-          //       fd.append(
-          //       "application_allowance_values["+`${i}`+"].value",
-          //       value[i].value
-          //     );
-          //     }  
-          
-          //   }
-          //   console.log(fd);
+         
           }
           if (key == 'application_pmt') {
             fd.append("application_pmt", JSON.stringify(value));
-            // for (let j = 0; j < value.length; j++) {
-            //   // check application_pmt["+`${j}`+"].sub_variables is array or not 
-            //   if (Array.isArray(value[j].sub_variables)) {
-            //     for (let k = 0; k < value[j].sub_variables.length; k++) {
-            //       fd.append("application_pmt["+`${j}`+"].sub_variables["+`${k}`+"]", value[j].sub_variables[k]);
-            //     }
-            //   }else {
-            //     fd.append("application_pmt[" + `${j}` + "].sub_variables", value[j].sub_variables); 
-            //   }      
-            //   fd.append("application_pmt["+`${j}`+"].variable_id", value[j].variable_id); 
-            // }
+           
           }
           if(key != 'application_pmt' && key != 'application_allowance_values') {
             
@@ -2305,6 +2263,8 @@ export default {
           } 
         } else if (err.response) {
               this.$refs.form.setErrors(err.response.data.errors);
+            this.$toast.error(err.response.data.message);
+
           }
       }        
          });

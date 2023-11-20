@@ -4,7 +4,7 @@ import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { mapActions, mapState } from "vuex";
 
 export default {
-  name: "Create",
+  name: "CreateDevice",
   title: "CTM - Create Device",
   components: {
     ValidationProvider,
@@ -127,15 +127,12 @@ export default {
                             name="User Id"
                             vid="user_id"
                             rules="required"
-                            v-slot="{ errors }"
-                          >
+                            v-slot="{ errors }">
                             <v-select
                               :items="users"
                               item-text="user_id"
-                              item-value="id"
-                              :label="
-                                $t('container.system_config.device.user_id')
-                              "
+                              item-value="user_id"
+                              :label="$t('container.system_config.device.user_id')"
                               menu-props="auto"
                               hide-details
                               persistent-hint
