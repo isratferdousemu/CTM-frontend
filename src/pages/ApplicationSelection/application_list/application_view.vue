@@ -6,7 +6,7 @@
                     <form @submit.prevent="submitApplication()">
                         <v-card class="pa-5 px-10 mb-4">
                 
-{{data}}
+
                             <ValidationProvider name="program" vid="program" rules="required" v-slot="{ errors }">
                                 <label>Program </label>
                                 <span style="margin-left: 4px; color: red">*</span>
@@ -349,7 +349,7 @@
                                                             rules="required" v-slot="{ errors }">
                                                             <label>Name (BN) </label>
                                                             <span style="margin-left: 4px; color: red">*</span>
-                                                            <v-text-field v-model="data.name_bn" outlined clearable
+                                                            <v-text-field v-model="data.name_bn" outlined readonly
                                                                 :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
                                                             </v-text-field>
@@ -360,7 +360,7 @@
                                                             rules="required" v-slot="{ errors }">
                                                             <label>Name (EN) </label>
                                                             <span style="margin-left: 4px; color: red">*</span>
-                                                            <v-text-field v-model="data.name_en" outlined clearable
+                                                            <v-text-field v-model="data.name_en" outlined readonly
                                                                 :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
                                                             </v-text-field>
@@ -372,7 +372,7 @@
                                                             <label>Father Name (BN)</label>
 
                                                             <v-text-field v-model="data.father_name_bn" outlined required
-                                                                clearable :error="errors[0] ? true : false"
+                                                                readonly :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
                                                             </v-text-field>
                                                         </ValidationProvider>
@@ -382,7 +382,7 @@
                                                             vid="father_name_en" rules="required" v-slot="{ errors }">
                                                             <label>Father Name (EN)</label>
                                                             <v-text-field v-model="data.father_name_en" outlined required
-                                                                clearable :error="errors[0] ? true : false"
+                                                                readonly :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
                                                             </v-text-field>
                                                         </ValidationProvider>
@@ -392,7 +392,7 @@
                                                             vid="mother_name_bn" v-slot="{ errors }">
                                                             <label>Mother Name (BN)</label>
                                                             <v-text-field v-model="data.mother_name_bn" outlined required
-                                                                clearable :error="errors[0] ? true : false"
+                                                                readonly :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
                                                             </v-text-field>
                                                         </ValidationProvider>
@@ -401,7 +401,7 @@
                                                         <ValidationProvider name="Mother Name in English"
                                                             vid="mother_name_en" v-slot="{ errors }">
                                                             <label>Mother Name (EN)</label>
-                                                            <v-text-field v-model="data.mother_name_en" outlined clearable
+                                                            <v-text-field v-model="data.mother_name_en" outlined readonly
                                                                 required :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
                                                             </v-text-field>
@@ -411,7 +411,7 @@
                                                         <ValidationProvider name="Spouse Name in Bangla"
                                                             vid="spouse_name_bn" v-slot="{ errors }">
                                                             <label>Spouse Name (BN)</label>
-                                                            <v-text-field v-model="data.spouse_name_bn" outlined clearable
+                                                            <v-text-field v-model="data.spouse_name_bn" outlined readonly
                                                                 :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
                                                             </v-text-field>
@@ -421,7 +421,7 @@
                                                         <ValidationProvider name="Marital Status" vid="marital_status"
                                                             v-slot="{ errors }">
                                                             <label>Marital Status</label>
-                                                            <v-select v-model="data.marital_status" outlined clearable
+                                                            <v-select v-model="data.marital_status" outlined readonly
                                                                 required :items="marital_status"
                                                                 :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
@@ -432,7 +432,7 @@
                                                         <ValidationProvider name="Spouse Name in English"
                                                             vid="spouse_name_en" v-slot="{ errors }">
                                                             <label>Spouse Name (EN)</label>
-                                                            <v-text-field v-model="data.spouse_name_en" outlined clearable
+                                                            <v-text-field v-model="data.spouse_name_en" outlined readonly
                                                                 :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
                                                             </v-text-field>
@@ -456,7 +456,7 @@
                                                             v-slot="{ errors }">
                                                             <label>Nationality</label>
                                                             <v-text-field v-model="data.nationality" outlined required
-                                                                clearable :error="errors[0] ? true : false"
+                                                                readonly :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
                                                             </v-text-field>
                                                         </ValidationProvider>
@@ -467,7 +467,7 @@
                                                             <label>Age</label>
                                                             <span style="margin-left: 4px; color: red">*</span>
                                                             <v-text-field v-model="data.age" outlined type="number" required
-                                                                clearable :error="errors[0] ? true : false"
+                                                                readonly :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
                                                             </v-text-field>
                                                         </ValidationProvider>
@@ -499,7 +499,7 @@
                                                         <ValidationProvider name="Profession" vid="profession"
                                                             v-slot="{ errors }">
                                                             <label>Profession</label>
-                                                            <v-text-field v-model="data.profession" outlined clearable
+                                                            <v-text-field v-model="data.profession" outlined readonly
                                                                 :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
                                                             </v-text-field>
@@ -510,7 +510,7 @@
                                                             vid="identification_mark" v-slot="{ errors }">
                                                             <label>Identification Mark</label>
                                                             <v-text-field v-model="data.identification_mark" outlined
-                                                                clearable :error="errors[0] ? true : false"
+                                                                readonly :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
                                                             </v-text-field>
                                                         </ValidationProvider>
@@ -544,7 +544,7 @@
                                                         <v-autocomplete :hide-details="errors[0] ? false : true"
                                                             @input="onChangeDivision($event)" v-model="data.division_id"
                                                             outlined :items="divisions" item-text="name_en" item-value="id"
-                                                            required :error="errors[0] ? true : false"
+                                                            required :error="errors[0] ? true : false" readonly
                                                             :error-messages="errors[0]"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
@@ -556,7 +556,7 @@
                                                         <span style="margin-left: 4px; color: red">*</span>
                                                         <v-autocomplete :hide-details="errors[0] ? false : true" outlined
                                                             v-model="data.district_id" @input="onChangeDistrict($event)"
-                                                            :items="districts" item-text="name_en" item-value="id" required
+                                                            :items="districts" item-text="name_en" item-value="id" readonly
                                                             :error="errors[0] ? true : false"
                                                             :error-messages="errors[0]"></v-autocomplete>
                                                     </ValidationProvider>
@@ -571,7 +571,7 @@
                                                             v-model="data.location_type"
                                                             :hide-details="errors[0] ? false : true" outlined
                                                             :items="locationType" item-text="value_en" item-value="id"
-                                                            required :error="errors[0] ? true : false"
+                                                            readonly :error="errors[0] ? true : false"
                                                             :error-messages="errors[0]"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
@@ -584,7 +584,7 @@
                                                         <v-autocomplete :hide-details="errors[0] ? false : true"
                                                             v-model="data.thana_id" outlined
                                                             @change="onChangeUpazila($event)" :items="thanas"
-                                                            item-text="name_en" item-value="id" required
+                                                            item-text="name_en" item-value="id" readonly
                                                             :error="errors[0] ? true : false"
                                                             :error-messages="errors[0]"></v-autocomplete>
                                                     </ValidationProvider>
@@ -597,7 +597,7 @@
                                                         <span style="margin-left: 4px; color: red">*</span>
                                                         <v-autocomplete :hide-details="errors[0] ? false : true"
                                                             v-model="data.union_id" outlined :items="unions"
-                                                            item-text="name_en" item-value="id" required
+                                                            item-text="name_en" item-value="id" readonly
                                                             :error="errors[0] ? true : false"
                                                             :error-messages="errors[0]"></v-autocomplete>
                                                     </ValidationProvider>
@@ -610,7 +610,7 @@
                                                         <span style="margin-left: 4px; color: red">*</span>
                                                         <v-autocomplete :hide-details="errors[0] ? false : true"
                                                             v-model="data.city_id" @change="onChangeCity($event)" outlined
-                                                            :items="cities" item-text="name_en" item-value="id" required
+                                                            :items="cities" item-text="name_en" item-value="id" readonly
                                                             :error="errors[0] ? true : false"
                                                             :error-messages="errors[0]"></v-autocomplete>
                                                     </ValidationProvider>
@@ -623,7 +623,7 @@
                                                         <span style="margin-left: 4px; color: red">*</span>
                                                         <v-autocomplete :hide-details="errors[0] ? false : true"
                                                             v-model="data.city_thana_id" outlined :items="city_thanas"
-                                                            item-text="name_en" item-value="id" required
+                                                            item-text="name_en" item-value="id" readonly
                                                             :error="errors[0] ? true : false"
                                                             :error-messages="errors[0]"></v-autocomplete>
                                                     </ValidationProvider>
@@ -637,7 +637,7 @@
                                                         <v-autocomplete :hide-details="errors[0] ? false : true"
                                                             v-model="data.district_pouro_id" outlined
                                                             :items="district_poros" item-text="name_en" item-value="id"
-                                                            required :error="errors[0] ? true : false"
+                                                            required :error="errors[0] ? true : false" readonly
                                                             :error-messages="errors[0]"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
@@ -647,7 +647,7 @@
                                                         <label style="display: inline-block">Post Code
                                                         </label>
                                                         <span style="margin-left: 4px; color: red">*</span>
-                                                        <v-text-field v-model="data.post_code" outlined clearable
+                                                        <v-text-field v-model="data.post_code" outlined readonly
                                                             :error="errors[0] ? true : false" :error-messages="errors[0]">
                                                         </v-text-field>
                                                     </ValidationProvider>
@@ -658,7 +658,7 @@
                                                         <label style="display: inline-block">Mobile Number
                                                         </label>
                                                         <span style="margin-left: 4px; color: red">*</span>
-                                                        <v-text-field v-model="data.mobile" outlined clearable type="Number"
+                                                        <v-text-field v-model="data.mobile" outlined readonly type="Number"
                                                             :error="errors[0] ? true : false" :error-messages="errors[0]">
                                                         </v-text-field>
                                                     </ValidationProvider>
@@ -674,7 +674,7 @@
                                                             Block No, Section
                                                         </label>
                                                         <span style="margin-left: 4px; color: red">*</span>
-                                                        <v-text-field v-model="data.address" outlined clearable
+                                                        <v-text-field v-model="data.address" outlined readonly
                                                             :error="errors[0] ? true : false" :error-messages="errors[0]">
                                                         </v-text-field>
                                                     </ValidationProvider>
@@ -702,7 +702,7 @@
                                                             @input="permanent_onChangeDivision($event)"
                                                             v-model="data.permanent_division_id" outlined
                                                             :items="permanent_divisions" item-text="name_en" item-value="id"
-                                                            required :error="errors[0] ? true : false"
+                                                            readonly :error="errors[0] ? true : false"
                                                             :error-messages="errors[0]"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
@@ -716,7 +716,7 @@
                                                             v-model="data.permanent_district_id"
                                                             @input="permanent_onChangeDistrict($event)"
                                                             :items="permanent_districts" item-text="name_en" item-value="id"
-                                                            required :error="errors[0] ? true : false"
+                                                            required :error="errors[0] ? true : false" readonly
                                                             :error-messages="errors[0]"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
@@ -730,7 +730,7 @@
                                                             v-model="data.permanent_location_type"
                                                             :hide-details="errors[0] ? false : true" outlined
                                                             :items="locationType" item-text="value_en" item-value="id"
-                                                            required :error="errors[0] ? true : false"
+                                                            required :error="errors[0] ? true : false" readonly
                                                             :error-messages="errors[0]"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
@@ -744,7 +744,7 @@
                                                             v-model="data.permanent_thana_id" outlined
                                                             @change="permanent_onChangeUpazila($event)"
                                                             :items="permanent_thanas" item-text="name_en" item-value="id"
-                                                            required :error="errors[0] ? true : false"
+                                                            required :error="errors[0] ? true : false" readonly
                                                             :error-messages="errors[0]"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
@@ -757,7 +757,7 @@
                                                         <v-autocomplete :hide-details="errors[0] ? false : true"
                                                             v-model="data.permanent_union_id" outlined
                                                             :items="permanent_unions" item-text="name_en" item-value="id"
-                                                            required :error="errors[0] ? true : false"
+                                                            required :error="errors[0] ? true : false" readonly
                                                             :error-messages="errors[0]"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
@@ -771,7 +771,7 @@
                                                             v-model="data.permanent_city_id"
                                                             @change="permanent_onChangeCity($event)" outlined
                                                             :items="permanent_cities" item-text="name_en" item-value="id"
-                                                            required :error="errors[0] ? true : false"
+                                                            required :error="errors[0] ? true : false" readonly
                                                             :error-messages="errors[0]"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
@@ -782,7 +782,7 @@
                                                         </label>
                                                         <span style="margin-left: 4px; color: red">*</span>
                                                         <v-autocomplete :hide-details="errors[0] ? false : true"
-                                                            v-model="data.permanent_city_thana_id" outlined
+                                                            v-model="data.permanent_city_thana_id" outlined readonly
                                                             :items="permanent_city_thanas" item-text="name_en"
                                                             item-value="id" required :error="errors[0] ? true : false"
                                                             :error-messages="errors[0]"></v-autocomplete>
@@ -797,7 +797,7 @@
                                                         <v-autocomplete :hide-details="errors[0] ? false : true"
                                                             v-model="data.permanent_district_pouro_id" outlined
                                                             :items="permanent_district_poros" item-text="name_en"
-                                                            item-value="id" required :error="errors[0] ? true : false"
+                                                            item-value="id" required :error="errors[0] ? true : false" readonly
                                                             :error-messages="errors[0]"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
@@ -807,7 +807,7 @@
                                                         <label style="display: inline-block">Post Code
                                                         </label>
                                                         <span style="margin-left: 4px; color: red">*</span>
-                                                        <v-text-field v-model="data.permanent_post_code" outlined clearable
+                                                        <v-text-field v-model="data.permanent_post_code" outlined readonly
                                                             :error="errors[0] ? true : false" :error-messages="errors[0]">
                                                         </v-text-field>
                                                     </ValidationProvider>
@@ -818,7 +818,7 @@
                                                         <label style="display: inline-block">Mobile Number
                                                         </label>
                                                         <span style="margin-left: 4px; color: red">*</span>
-                                                        <v-text-field v-model="data.permanent_mobile" outlined clearable
+                                                        <v-text-field v-model="data.permanent_mobile" outlined readonly
                                                             type="Number" :error="errors[0] ? true : false"
                                                             :error-messages="errors[0]">
                                                         </v-text-field>
@@ -832,7 +832,7 @@
                                                             Block No, Section
                                                         </label>
                                                         <span style="margin-left: 4px; color: red">*</span>
-                                                        <v-text-field v-model="data.permanent_address" outlined clearable
+                                                        <v-text-field v-model="data.permanent_address" outlined readonly
                                                             :error="errors[0] ? true : false" :error-messages="errors[0]">
                                                         </v-text-field>
                                                     </ValidationProvider>
@@ -856,7 +856,7 @@
                                                         <label style="display: inline-block">Account Name
                                                         </label>
                                                         <span style="margin-left: 4px; color: red">*</span>
-                                                        <v-text-field v-model="data.account_name" outlined clearable
+                                                        <v-text-field v-model="data.account_name" outlined readonly
                                                             :error="errors[0] ? true : false" :error-messages="errors[0]">
                                                         </v-text-field>
                                                     </ValidationProvider>
@@ -867,7 +867,7 @@
                                                         <label style="display: inline-block">Mobile Ownership
                                                         </label>
 
-                                                        <v-select v-model="data.account_owner" outlined clearable
+                                                        <v-select v-model="data.account_owner" outlined readonly
                                                             :items="mobile_ownership" :error="errors[0] ? true : false"
                                                             :error-messages="errors[0]">
                                                         </v-select>
@@ -880,7 +880,7 @@
                                                             style="margin-left: 4px; color: red">*</span>
 
                                                         <v-text-field v-model="data.account_number" outlined type="number"
-                                                            clearable :error="errors[0] ? true : false"
+                                                            readonly :error="errors[0] ? true : false"
                                                             :error-messages="errors[0]">
                                                         </v-text-field>
                                                     </ValidationProvider>
@@ -891,7 +891,7 @@
                                                         <label style="display: inline-block">Email </label><span
                                                             style="margin-left: 4px; color: red">*</span>
 
-                                                        <v-text-field v-model="data.email" outlined clearable type="email"
+                                                        <v-text-field v-model="data.email" outlined readonly type="email"
                                                             :error="errors[0] ? true : false" :error-messages="errors[0]">
                                                         </v-text-field>
                                                     </ValidationProvider>
@@ -918,7 +918,7 @@
                                                             <label style="display: inline-block">Name (BN)
                                                             </label>
                                                             <span style="margin-left: 4px; color: red">*</span>
-                                                            <v-text-field v-model="data.nominee_bn" outlined clearable
+                                                            <v-text-field v-model="data.nominee_bn" outlined readonly
                                                                 :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
                                                             </v-text-field>
@@ -930,7 +930,7 @@
                                                             <label style="display: inline-block">Name (EN)
                                                             </label>
                                                             <span style="margin-left: 4px; color: red">*</span>
-                                                            <v-text-field v-model="data.nominee_en" outlined clearable
+                                                            <v-text-field v-model="data.nominee_en" outlined readonly
                                                                 :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
                                                             </v-text-field>
@@ -943,7 +943,7 @@ Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }"
                                                                 Number
                                                             </label>
                                                             <v-text-field v-model="data.nominee_verification_number"
-                                                                outlined clearable type="number"
+                                                                outlined readonly type="number"
                                                                 :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
                                                             </v-text-field>
@@ -954,7 +954,7 @@ Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }"
                                                             vid="nominee_nationality" v-slot="{ errors }">
                                                             <label>Nationality </label>
                                                             <v-text-field v-model="data.nominee_nationality" outlined
-                                                                clearable :error="errors[0] ? true : false"
+                                                                readonly :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
                                                             </v-text-field>
                                                         </ValidationProvider>
@@ -966,7 +966,7 @@ Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }"
                                                             <label>Relationship with Beneficiary</label>
                                                             <span style="margin-left: 4px; color: red">*</span>
                                                             <v-autocomplete v-model="data.nominee_relation_with_beneficiary"
-                                                                outlined :items="relations_with_bef"
+                                                                outlined :items="relations_with_bef" readonly
                                                                 :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
                                                             </v-autocomplete>
@@ -1000,7 +1000,7 @@ Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }"
                                     height: 80px;
                                     border: 1px solid #ccc;
                                   " class="mb-5" v-if="nomineeSignUrl"></v-img>
-                                                        <v-img src="/assets/images/sign.png" v-if="!nomineeSignUrl" style="
+                                                        <v-img :src="imageUrlFetch"  style="
                                     width: 200px;
                                     height: 80px;
                                     border: 1px solid #ccc;
@@ -1010,20 +1010,20 @@ Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }"
                                                             <label>Signature</label>
                                                             <v-file-input outlined show-size counter
                                                                 prepend-inner-icon="mdi-camera"
-                                                                v-model="data.nominee_signature" accept="image/*"
-                                                                @change="previewSignNominee" prepend-icon=""></v-file-input>
+                                                                v-model="data.nominee_signature" 
+                                                                prepend-icon=""></v-file-input>
                                                         </ValidationProvider>
                                                     </v-col>
                                                     <v-col cols="12" lg="12">
                                                         <v-checkbox v-model="checkboxNomineeAddress"
-                                                            @change="handleNomineeCheckboxChange"
+                                                        @change="handleNomineeCheckboxChange"
                                                             label="Same Address"></v-checkbox>
                                                     </v-col>
                                                     <v-col cols="12" lg="12">
                                                         <ValidationProvider name="Address of Nominee" vid="nominee_address"
                                                             v-slot="{ errors }" rules="required">
                                                             <label>Address</label>
-                                                            <v-textarea v-model="data.nominee_address" outlined clearable
+                                                            <v-textarea v-model="data.nominee_address" outlined readonly
                                                                 :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]"></v-textarea>
                                                         </ValidationProvider>
@@ -1042,9 +1042,19 @@ Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }"
                                             </h3>
                                         </v-expansion-panel-header>
                                         <v-expansion-panel-content class="mt-5">
-                                            <!-- <div class="pa-2 mb-4">
+                                                 <!-- <div class="pa-2 mb-4">
+                                                     <v-row>
+                                                           <v-col cols="12" lg="6" md="6" v-for="(variable,indexPMT) in  data.poverty_score" :key='indexPMT'>
+        <v-select outlined readonly :label="variable.name_en" :items="variable.children" item-text="name_en"></v-select>
+                                            </v-col>
+
+                                        </v-row>
+                                                 </div> -->
+                                   
+                                         
+                              <!-- <div class="pa-2 mb-4">
                                                 <v-row>
-                                                    <v-col v-for="(variables, indexPMT) in PMTVariables" cols="6" lg="6"
+                                                    <v-col v-for="(variables, indexPMT) in data.poverty_score" cols="6" lg="6"
                                                         :key='indexPMT'>
                                                         <template v-if="variables.children.length == 0">
                                                             <label>{{ variables.name_en }}
@@ -1114,15 +1124,15 @@ Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }"
                                                     </v-col>
                                                 </v-row>
                                                 <div class="d-inline d-flex justify-end">
-                                                    <v-btn elevation="2" class="btn mr-2" color="info">Reset</v-btn> -->
-                                                    <!-- :disabled="invalid" -->
+                                                    <v-btn elevation="2" class="btn mr-2" color="info">Reset</v-btn>
+                                               :disabled="invalid" -->
                                                     <!-- <v-btn type="submit" flat color="primary" :loading="loading"
                                                         class="custom-btn-width black white--text py-2">
                                                         {{ $t("container.list.submit") }}
                                                     </v-btn>
 
                                                 </div>
-                                            </div> -->
+                                            </div>  -->
                                         </v-expansion-panel-content>
                                     </v-expansion-panel>
                                     <!-- Other Information of Eligibility end-->
@@ -1174,7 +1184,10 @@ export default {
             permanent_district_poros: [],
             permanent_city_thanas: [],
             permanent_locationType: [],
-
+            imageUrlFetch:null,
+            // imageUrlFetch,
+            // imageUrlFetch,
+             UrlFetch:null,
             education_status: [
                 "Illiterate",
                 "Literate",
@@ -1319,6 +1332,7 @@ export default {
         isRadioGroupReadonly() {
             return this.data.verification_type !== null;
         },
+     
     },
     
 
@@ -1347,8 +1361,14 @@ export default {
                 .then((result) => {
 
                     this.data = result.data.application;
-                    this.PMTVariables = result.data.application.poverty_score;
-                    console.log(this.PMTVariables, 'this.PMTVariables');
+                    this.imageUrlFetch= result.data.imagePath;
+                    this.UrlFetch=`http://127.0.0.1:8000/uploads/applications/${this.imageUrlFetch}`
+                    console.log(this.imageUrlFetch);
+                        
+                  
+                   
+            
+                 ;
                   
                 });
 
@@ -1596,7 +1616,7 @@ export default {
                         value: null,
                     };
                     this.data.application_allowance_values.push(obj);
-                            console.log("Sajjad")
+                         
                 });
             }
 
@@ -1883,12 +1903,15 @@ export default {
                 this.nomineeSignUrl = null;
             }
         },
+       
+           
  
     },
     
 
     created() {
         this.getApplicationById();
+      
          this.getAllProgram();
         this.getAllDivision();
         this.permanent_getAllDivision();

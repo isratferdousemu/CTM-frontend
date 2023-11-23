@@ -18,7 +18,7 @@
                                             <v-row>
                                                 <v-col lg="3" md="3" cols="12">
 
-                                                    <v-autocomplete outlined menu-props="top" clearable
+                                                    <v-autocomplete outlined  clearable
                                                         class="no-arrow-icon" v-model="data.program_id"
                                                         :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
                                                         :items="allowances" item-text="name_en" item-value="id"

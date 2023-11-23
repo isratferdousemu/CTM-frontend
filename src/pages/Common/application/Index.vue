@@ -622,7 +622,7 @@
                               <v-text-field
                                 v-model="data.name_bn"
                                 outlined
-                                readonly
+                               
                                 :error="errors[0] ? true : false"
                                 :error-messages="errors[0]"
                               >
