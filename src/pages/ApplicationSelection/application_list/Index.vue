@@ -18,7 +18,7 @@
                                             <v-row>
                                                 <v-col lg="3" md="3" cols="12">
 
-                                                    <v-autocomplete outlined menu-props="top" clearable
+                                                    <v-autocomplete outlined  clearable
                                                         class="no-arrow-icon" v-model="data.program_id"
                                                         :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
                                                         :items="allowances" item-text="name_en" item-value="id"
@@ -29,7 +29,7 @@
                                                     <ValidationProvider name="Location Type" vid="location_type"
                                                         v-slot="{ errors }">
                                                         <v-autocomplete @input="LocationType($event)"
-                                                            :readonly="[8, 9, 10].includes(userData.office.office_type)"
+                                                        :readonly="userData.office !== null && userData.office.office_type === 8 || userData.office !== null && userData.office.office_type === 9|| userData.office !== null && userData.office.office_type === 10"
                                                             v-model="data.location_type" class="no-arrow-icon"
                                                             :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
                                                             :hide-details="errors[0] ? false : true" outlined
@@ -57,7 +57,7 @@
                                                 </v-col>
                                                 <v-col lg="3" md="3" cols="12">
                                                     <ValidationProvider name="District" vid="district" v-slot="{ errors }">
-                                                        <v-autocomplete :readonly="data.district_id !== null"
+                                                        <v-autocomplete :readonly="userData.location !== null"
                                                             :hide-details="errors[0] ? false : true" outlined
                                                             v-model="data.district_id" @input="onChangeDistrict($event)"
                                                             :label="$t(
@@ -409,7 +409,7 @@
 
                                     <v-col cols="12">
 
-
+   
                                         <v-data-table :headers="visibleHeaders" :items="applications" :loading="loading"
                                             item-key="id" :items-per-page="pagination.perPage" hide-default-footer
                                             class="elevation-0 transparent row-pointer">
@@ -420,7 +420,7 @@
                                                     1
                                                 }}
                                             </template>
-                                            <!-- <template v-slot:item.division="{ item }">
+                                            <template v-slot:item.division="{ item }">
                                                 <span v-if="item?.permanent_location.location_type == '1'">
                                                     {{ item?.permanent_location?.parent?.parent?.name_en }}
                                                 </span>
@@ -438,7 +438,7 @@
                                             </template>
                                             <template v-slot:item.district="{ item }">
                                                 <span v-if="item?.permanent_location.location_type == '1'">
-                                                    {{ item?.permanent_location?.parent?.yype }}
+                                                    {{ item?.permanent_location?.parent?.name_en }}
                                                 </span>
 
                                                 <span
@@ -451,7 +451,7 @@
                                                     ">
                                                  {{ item?.permanent_location?.parent?.parent?.name_en }}
                                                 </span>
-                                            </template> -->
+                                            </template>
 
                                             <!-- Action Button -->
                                             <template v-slot:item.actions="{ item }">
@@ -459,6 +459,8 @@
                                                      <v-tooltip top>
                                                         <template v-slot:activator="{ on }">
                                                             <v-btn fab x-small v-on="on" color="#AFB42B"
+                                                                router
+                                :to="`/application-selection/application-view/${item.id}`"
                                                                 elevation="0" class="white--text">
                                                                 <v-icon> mdi-eye </v-icon>
                                                             </v-btn>
@@ -582,6 +584,10 @@ export default {
         ValidationObserver,
     },
     computed: {
+     isReadonly() {
+            const officeType = this.userData.office.office_type;
+            return [8, 9, 10].includes(officeType);
+        },
         ...mapState({
             divisions: (state) => state.Division.divisions,
             userData: (state) => state.userData
@@ -633,14 +639,14 @@ export default {
 
                 },
 
-                // {
-                //     text: this.$t("container.system_config.demo_graphic.division.division"),
-                //     value: "division",
-                // },
-                // {
-                //     text: this.$t("container.system_config.demo_graphic.district.district"),
-                //     value: "district",
-                // },
+                {
+                    text: this.$t("container.system_config.demo_graphic.division.division"),
+                    value: "division",
+                },
+                {
+                    text: this.$t("container.system_config.demo_graphic.district.district"),
+                    value: "district",
+                },
 
 
 
@@ -1037,13 +1043,17 @@ export default {
 
         if (this.userData?.location?.type == "division") {
             this.data.division_id = this.userData.location.id;
+            this.data.location_type = this.userData.location.location_type;
             this.onChangeDivision(this.data.division_id)
+            
 
         }
         if (this.userData?.location?.parent_location?.type == "division") {
             this.data.division_id = this.userData.location.parent_location.id;
             this.data.district_id = this.userData.location.id;
+            this.data.location_type = this.userData.location.location_type;
             this.onChangeDivision(this.data.division_id)
+            this.onChangeDistrict(this.data.district_id)
 
         }
         if (this.userData?.location?.parent_location?.parent_location?.type == "division") {
@@ -1051,6 +1061,7 @@ export default {
             this.data.district_id = this.userData.location.parent_location.id;
             this.data.location_type = this.userData.location.location_type;
             this.onChangeDivision(this.data.division_id)
+            this.onChangeDistrict(this.data.district_id)
 
         }
 
