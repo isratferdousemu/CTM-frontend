@@ -55,6 +55,7 @@
                       :headers="headers"
                       :items="offices"
                       :items-per-page="pagination.perPage"
+                      @update:options="handleOptionsUpdate"
                       hide-default-footer
                       class="elevation-0 transparent row-pointer"
                     >
@@ -869,6 +870,8 @@ export default {
         total: 0,
         perPage: 15,
       },
+      sortBy: "name_en",
+      sortDesc: false, //ASC
       items: [5, 10, 15, 20, 40, 50, 100],
     };
   },
@@ -888,6 +891,7 @@ export default {
         {
           text: this.$t("container.system_config.demo_graphic.office.name_en"),
           value: "name_en",
+          class: "highlight-column ",
         },
         {
           text: this.$t("container.system_config.demo_graphic.office.name_bn"),
@@ -897,17 +901,21 @@ export default {
           text: this.$t(
             "container.system_config.demo_graphic.office.office_type"
           ),
-          value: "officeType.value_en",
+          value: "office_type.value_en",
+          sortable: false,
         },
         {
           text: this.$t(
             "container.system_config.demo_graphic.office.office_address"
           ),
           value: "office_address",
+          sortable: false,
         },
         {
           text: this.$t("container.system_config.demo_graphic.office.status"),
           value: "status",
+          sortable: false,
+
         },
         {
           text: this.$t("container.list.action"),
@@ -991,50 +999,51 @@ export default {
     },
     editOffice(item) {
       console.log(item, "editOffice");
-      console.log(item?.assignLocation?.parent?.parent?.type, "editDivision");
+      console.log(item?.assign_location?.parent?.parent?.type, "editDivision");
 
       this.resetData();
 
       this.dialogEdit = true;
       this.data.id = item.id;
-      this.data.office_type = item.officeType.id;
-      this.office_type_id = item.officeType.id;
+      this.data.office_type = item.office_type.id;
+      this.office_type_id = item.office_type.id;
       this.data.name_en = item.name_en;
       this.data.name_bn = item.name_bn;
       this.data.office_address = item.office_address;
       this.data.comment = item.comment;
       this.data.status = String(item.status);
-      // console.log(this.data.status);
+      console.log('');
 
-      if (item?.assignLocation?.type == "division") {
+      if (item?.assign_location?.type == "division") {
         console.log("division here");
-        this.data.division_id = item?.assignLocation?.id;
+        // this.data.division_id = item?.assign_location?.id;
+        this.data.division_id = item?.parent?.id; // 
       }
-      if (item?.assignLocation?.type == "district") {
+      if (item?.assign_location?.type == "district") {
         console.log("district here");
-        this.data.division_id = item?.assignLocation?.parent?.id;
+        this.data.division_id = item?.assign_location?.parent?.id;
         this.onChangeDivision(this.data.division_id);
-        this.data.district_id = item?.assignLocation?.id;
+        this.data.district_id = item?.assign_location?.id;
       }
-      if (item?.assignLocation?.parent?.parent?.type == "division") {
-        this.data.division_id = item?.assignLocation?.parent?.parent?.id;
+      if (item?.assign_location?.parent?.parent?.type == "division") {
+        this.data.division_id = item?.assign_location?.parent?.parent?.id;
         this.onChangeDivision(this.data.division_id);
       }
-      if (item?.assignLocation?.parent?.type == "district") {
-        this.data.district_id = item?.assignLocation?.parent?.id;
+      if (item?.assign_location?.parent?.type == "district") {
+        this.data.district_id = item?.assign_location?.parent?.id;
         this.onChangeDistrict(this.data.district_id);
       }
-      if (item?.assignLocation?.location_type?.value_en == "City Corporation") {
-        this.data.city_corpo_id = item?.assignLocation?.id;
+      if (item?.assign_location?.location_type?.value_en == "City Corporation") {
+        this.data.city_corpo_id = item?.assign_location?.id;
       }
-      if (item?.assignLocation?.location_type?.value_en == "Upazila") {
-        this.data.thana_id = item?.assignLocation?.id;
+      if (item?.assign_location?.location_type?.value_en == "Upazila") {
+        this.data.thana_id = item?.assign_location?.id;
       }
       console.log(this.data, "editOffice End");
     },
     dialogOpen() {
-      if (this.$refs.form) {
-        this.$refs.form.reset();
+      if (this.$refs.formAdd) {
+        this.$refs.formAdd.reset();
       }
 
       const update_error_value = null;
@@ -1133,11 +1142,56 @@ export default {
       // this.pagination.current = $event;
       this.GetOffices();
     },
+    setInitialHeader() {
+      for (let i = 0; i < this.headers.length; i++) {
+        if (this.headers[i].value == "name_en") {
+          this.headers[i].class = "highlight-column";
+          console.log(this.headers[i], "headers after");
+        } else {
+          this.headers[i].class = "";
+        }
+      }
+    },
+    handleOptionsUpdate({ sortBy, sortDesc }) {
+      console.log(this.headers, sortBy, sortDesc);
+      for (let i = 0; i < this.headers.length; i++) {
+        console.log(this.headers[i]);
+
+        if (this.headers[i].value == sortBy) {
+          this.headers[i].class = "highlight-column";
+          console.log(this.headers[i], "headers after");
+        } else {
+          this.headers[i].class = "";
+        }
+      }
+
+      console.log(sortBy, sortDesc);
+      this.sortBy = "name_en";
+      this.sortDesc = "asc";
+      if (sortBy.length === 0 || sortDesc.length === 0) {
+        this.sortBy = "name_en";
+        this.sortDesc = "asc";
+      } else {
+        this.sortBy = sortBy[0];
+        this.sortDesc = sortDesc[0] == true ? "desc" : "asc";
+      }
+      this.GetOffices();
+
+      const queryParams = {
+        sortBy: this.sortBy,
+        orderBy: this.sortDesc,
+      };
+
+      // alert(JSON.stringify(queryParams));
+    },
+
     async GetOffices() {
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
+        sortBy: this.sortBy,
+        sortDesc: this.sortDesc,
       };
       console.log(queryParams);
       this.$axios
@@ -1209,9 +1263,10 @@ export default {
     },
   },
   mounted() {
+    this.setInitialHeader();
     this.GetOfficeType();
     this.GetOfficeType();
-    this.GetOffices();
+    // this.GetOffices();
     this.GetAllDivisions();
     this.GetLocationType();
     this.GetAllUpazila();
@@ -1228,3 +1283,8 @@ export default {
   },
 };
 </script>
+<style>
+.highlight-column {
+  background-color: #e0eaf1;
+}
+</style>

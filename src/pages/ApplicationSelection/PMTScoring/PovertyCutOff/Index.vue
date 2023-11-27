@@ -87,7 +87,7 @@
                       :loading="loading"
                       item-key="id"
                       :headers="headers"
-                      :items="divisions"
+                      :items="cut_off"
                       :items-per-page="pagination.perPage"
                       hide-default-footer
                       class="elevation-0 transparent row-pointer"
@@ -99,9 +99,13 @@
                           1
                         }}
                       </template>
-                      <template v-slot:item.assign_location.name_en="{ item }">
+                      <template v-slot:item.division_or_district_cut_off="{ item }">
+                        
                         <span v-if="item.type === 0">All Over Bangladesh</span>
-                        <span v-else>{{ item.assign_location.name_en }}</span>
+                        <!-- <span v-if="item.type === 1">{{ item.name_en }}</span> -->
+                        <span v-if="item.type === 1">{{ item.name_en }}</span>
+                        <span v-if="item.type === 2">{{ item.name_en }}</span>
+                        <!-- <span v-else>{{ item.assign_location.name_en }}</span> -->
                       </template>
                       <template v-slot:item.score="{ item }">
                         {{ item.score }}
@@ -360,7 +364,7 @@ export default {
       search: "",
       delete_id: "",
       financial_year_id: null,
-      divisions: [],
+      cut_off: [],
       financial_years: [],
       errors: {},
       error_status: {},
@@ -387,9 +391,15 @@ export default {
         },
         {
           text: this.$t(
+            "container.system_config.demo_graphic.financial_year.financial_year"
+          ),
+          value: "financial_year",
+        },
+        {
+          text: this.$t(
             "container.application_selection.poverty_cut_off.name_en"
           ),
-          value: "assign_location.name_en",
+          value: "division_or_district_cut_off",
         },
         {
           text: this.$t(
@@ -408,7 +418,7 @@ export default {
 
     ...mapState({
       message: (state) => state.Division.success_message,
-      // divisions: (state) => state.Division.divisions,
+      // cut_off: (state) => state.Division.cut_off,
       // errors: (state) => state.Division.errors,
       // error_status: (state) => state.Division.error_status,
     }),
@@ -489,7 +499,7 @@ export default {
     editDialog(item) {
       console.log(item);
       this.dialogEdit = true;
-      this.data.division_name = item.assign_location.name_en;
+      this.data.division_name = item.name_en;
       this.data.score = item.score;
       this.data.location_id = item.assign_location.id;
       this.data.type = item.type;
@@ -511,7 +521,7 @@ export default {
                 this.onChangeFilter();
               }
             } else if (res.response?.data?.errors) {
-              this.$refs.form.setErrors(res.response.data.errors);
+              this.$refs.formEdit.setErrors(res.response.data.errors);
               this.$toast.error(res.response.data.message);
             }
             // console.log(data, "update");
@@ -562,10 +572,10 @@ export default {
           .dispatch("ApplicationSelection/filterCutOff", fd)
           .then((result) => {
             console.log(result, "filterCutOff");
-            this.divisions = result.data.data;
-            this.pagination.current = result.data.meta.current_page;
-            this.pagination.total = result.data.meta.last_page;
-            this.pagination.grand_total = result.data.meta.total;
+            this.cut_off = result.data.data;
+            this.pagination.current = result.data.current_page;
+            this.pagination.total = result.data.last_page;
+            this.pagination.grand_total = result.data.total;
           });
       } catch (e) {
         console.log(e);
@@ -586,11 +596,11 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          this.divisions = result.data.data;
-          console.log(this.divisions);
-          this.pagination.current = result.data.meta.current_page;
-          this.pagination.total = result.data.meta.last_page;
-          this.pagination.grand_total = result.data.meta.total;
+          this.cut_off = result.data.data;
+          console.log(this.cut_off);
+          this.pagination.current = result.data.current_page;
+          this.pagination.total = result.data.last_page;
+          this.pagination.grand_total = result.data.total;
         });
     },
     async GetFinancialYear() {
