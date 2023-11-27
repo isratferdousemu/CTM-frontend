@@ -3,6 +3,7 @@
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
         <v-row>
+          
           <v-col cols="12">
             <v-card
               elevation="10"
@@ -562,7 +563,7 @@ export default {
           width: "5%",
         },
         {
-          text: this.$t("container.system_config.demo_graphic.city.code"),
+          text: this.$t("container.system_config.demo_graphic.city_corporation.code"),
           value: "code",
           width: "5%",
         },

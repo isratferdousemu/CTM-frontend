@@ -52,7 +52,7 @@
                 "division": {
                     "division": "Division",
                     "list": "Division List",
-                    "code": "Division Code",
+                    "code": "Division Geo Code",
                     "name_en": "Division Name English",
                     "name_bn": "Division Name Bangla",
                     "add_new": "Add New Division",
@@ -64,7 +64,8 @@
                 "district": {
                     "district": "District",
                     "list": "District List",
-                    "code": "District Code",
+                    "code": "District Geo Code",
+                  
                     "name_en": "District Name English",
                     "name_bn": "District Name Bangla",
                     "add_new": "Add New District",
@@ -88,11 +89,12 @@
                 "city_corporation": {
                     "city": "City Corporation",
                     "customtitle": "Upazila/ City Corporation/ District Pouroshava",
-                    "customtitleCode": "Upazila/ City Corporation/ District Pouroshava Code",
+                
                     "customtitleEn": "Upazila/ City Corporation/ District Pouroshava English",
                     "customtitleBn": "Upazila/ City Corporation/ District Pouroshava Bangla",
                     "list": "City Corporation List",
-                    "code": "City Corporation Code",
+                    "code": "City Corporation Geo Code",
+                    "custom_code": "Upazila/City Corporation/District Pouroshava Geo Code",
                     "name_en": "City Corporation Name English",
                     "name_bn": "City Corporation Name Bangla",
                     "add_new": "Add New Upazila/ City Corporation/ District Pouroshava",
@@ -116,7 +118,7 @@
                 "upazila": {
                     "thana": "Upazila",
                     "list": "Upazila List",
-                    "code": "Upazila Code",
+                    "code": "Upazila Geo Code",
                     "name_en": "Upazila Name English",
                     "name_bn": "Upazila Name Bangla",
                     "add_new": "Add New Upazila",
@@ -140,7 +142,7 @@
                 "thana1": {
                     "thana": "Thana",
                     "list": "Thana List",
-                    "code": "Thana Code",
+                    "code": "Thana Geo Code",
                     "name_en": "Thana Name English",
                     "name_bn": "Thana Name Bangla",
                     "add_new": "Add New Thana",
@@ -153,7 +155,8 @@
                     "union": "Union",
                     "customtitle": "Thana/ Union/ Pouroshava",
                     "list": "Union List",
-                    "code": "Union Code",
+                    "code": "Union Geo Code",
+                   
                     "name_en": "Union Name English",
                     "name_bn": "Union Name Bangla",
                     "add_new": "Add New Thana/ Union/ Pouroshava",
@@ -165,7 +168,8 @@
                 "pouro": {
                     "union": "Pouroshava",
                     "list": "Pouroshava List",
-                    "code": "Pourashava Code",
+                    "code": "Pourashava Geo Code",
+                    "custom_code": "Thana/Union/Poorashava Geo Code",
                     "name_en": "Pouroshava Name English",
                     "name_bn": "Pouroshava Name Bangla",
                     "add_new": "Add New Pouroshava",
@@ -178,6 +182,7 @@
                     "union": "Union/Pouroshava",
                     "list": "Union/Pouroshava List",
                     "code": "Union/Pourashava Code",
+                    "custom_code": "Thana (City) /Union/Pourashava Geo Code",
                     "name_en": "Union/Pouroshava Name English",
                     "name_bn": "Union/Pouroshava Name Bangla",
                     "add_new": "Add New Union/Pouroshava",
@@ -189,7 +194,7 @@
                 "ward": {
                     "ward": "Ward",
                     "list": "Ward List",
-                    "code": "Ward Code",
+                    "code": "Ward Geo Code",
                     "name_en": "Ward Name English",
                     "name_bn": "Ward Name Bangla",
                     "add_new": "Add New Ward",

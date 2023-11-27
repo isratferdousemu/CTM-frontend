@@ -1426,9 +1426,9 @@ export default {
     registerCustomRules() {
       extend("codeRules", (value) => {
         return (
-          value.toString().length <= 6 ||
+          value.toString().length <= 2 ||
           this.$t("container.system_config.demo_graphic.ward.code") +
-            " can have maximum 6 digit"
+            " can have maximum 2 digit"
         );
       });
     },

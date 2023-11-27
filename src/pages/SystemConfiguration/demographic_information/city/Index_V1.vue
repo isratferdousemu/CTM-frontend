@@ -3,6 +3,97 @@
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
         <v-row>
+           <v-col cols="12">
+                 <v-expansion-panels>
+          <v-expansion-panel>
+            <v-expansion-panel-header  color=#8C9EFF>
+            {{ $t('container.list.search') }}
+            </v-expansion-panel-header>
+            <v-expansion-panel-content class="mt-5">
+
+   
+               <ValidationObserver ref="formsearch" v-slot="{ invalid }">
+                                              <form @submit.prevent="submitsearch()">
+                                                  <v-row>
+                                                      <v-col lg="4" md="4" cols="12">
+
+                                                          <v-autocomplete outlined  clearable
+                                                              class="no-arrow-icon" v-model="location_type_search"
+                                                              :items="locationType" item-text="value_en" item-value="id"
+                                                              :label="$t('container.list.location_type')">
+                                                          </v-autocomplete>
+                                                      </v-col>
+                                                       <v-col lg="4" md="4" cols="12">
+                                                          <ValidationProvider
+                      name="Division"
+                      vid="division"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                  
+                      <v-autocomplete
+                        @input="onChangeDivisionSearch($event)"
+                        v-model="division_id_search"
+                        outlined
+                        :label="$t(
+                          'container.system_config.demo_graphic.division.division'
+                        )
+                          "
+                        :items="divisions"
+                        item-text="name_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                    
+                    
+                     </v-col>
+                     <v-col lg="4" md="4" cols="12">
+                       <ValidationProvider
+                      name="District"
+                      vid="district"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                     
+                        v-model="district_id_search"
+                        outlined
+                        :label="$t(
+                          'container.system_config.demo_graphic.district.district'
+                        )
+                          "
+                        :items="districts_search"
+                        item-text="name_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                        :readonly="false"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                     </v-col>
+  
+                                                
+        
+                                                  </v-row>
+
+                                                  <div class="d-inline d-flex justify-end ">
+                                                      <v-btn elevation="2" type="submit" class="btn mr-2" color="success">{{
+                                                        $t("container.list.search") }}</v-btn>
+                                                      <v-btn elevation="2" class="btn">{{ $t("container.list.reset") }}</v-btn>
+                                                  </div>
+                                              </form>
+                                          </ValidationObserver>
+
+     
+    
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+               </v-col>
           <v-col cols="12">
             <v-card
               elevation="10"
@@ -554,6 +645,8 @@ export default {
         name_bn: null,
         locationType: null,
         location_type: null,
+      
+
       },
       locationType: [],
       districts: [],
@@ -590,6 +683,10 @@ export default {
         },
       ],
       city: [],
+      districts_search:[],
+      location_type_search: null,
+      division_id_search: null,
+      district_id_search: null,
       errors: {},
       error_status: {},
       pagination: {
@@ -600,6 +697,7 @@ export default {
       sortBy: "name_en",
       sortDesc: false, //ASC
       items: [5, 10, 15, 20, 40, 50, 100],
+
     };
   },
   components: {
@@ -618,7 +716,7 @@ export default {
         },
         {
           text: this.$t(
-            "container.system_config.demo_graphic.city_corporation.customtitleCode"
+            "container.system_config.demo_graphic.city_corporation.custom_code"
           ),
           value: "code",
           width: "5%",
@@ -740,10 +838,10 @@ export default {
     registerCustomRules() {
       extend("codeRules", (value) => {
         return (
-          value.toString().length <= 6 ||
+          value.toString().length <= 3 ||
           this.$t(
             "container.system_config.demo_graphic.city_corporation.code"
-          ) + " can have maximum 6 digit"
+          ) + " can have maximum 3 digit"
         );
       });
     },
@@ -986,6 +1084,9 @@ export default {
       }
       const queryParams = {
         searchText: this.search,
+        location:this.location_type_search,
+        division: this.division_id_search,
+        district: this.district_id_search,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
         sortBy: this.sortBy,
@@ -1004,6 +1105,7 @@ export default {
           this.pagination.current = result.data.current_page;
           this.pagination.total = result.data.last_page;
           this.pagination.grand_total = result.data.total;
+          console.log(queryParams);
         });
     },
     deleteCity: async function () {
@@ -1048,6 +1150,20 @@ export default {
       } catch (e) {
         console.log(e);
       }
+    },
+    async onChangeDivisionSearch(event) {
+      await this.$axios
+        .get(`/admin/district/get/${event}`, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
+          this.districts_search = result.data.data;
+         console.log(this.districts_search);
+   
+        });
     },
     async onChangeDivision(event) {
       await this.$axios

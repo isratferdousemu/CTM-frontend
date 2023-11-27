@@ -1114,7 +1114,7 @@ export default {
           sortable: false,
         },
         {
-          text: this.$t("container.system_config.demo_graphic.union.code"),
+          text: this.$t("container.system_config.demo_graphic.union.custom_code"),
           value: "code",
         },
         {

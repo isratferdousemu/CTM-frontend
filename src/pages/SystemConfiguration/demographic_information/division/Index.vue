@@ -3,6 +3,7 @@
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
         <v-row>
+          
           <v-col cols="12">
             <v-card
               elevation="10"
@@ -498,9 +499,9 @@ export default {
     registerCustomRules() {
       extend("codeRules", (value) => {
         return (
-          value.toString().length <= 6 ||
+          value.toString().length <= 2 ||
           this.$t("container.system_config.demo_graphic.division.code") +
-            " can have maximum 6 digit"
+            " can have maximum 2 digit"
         );
       });
     },

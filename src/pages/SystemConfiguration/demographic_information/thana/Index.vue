@@ -747,7 +747,7 @@ export default {
   methods: {
     registerCustomRules() {
       extend('codeRules', (value) => {
-        return (value.toString().length <= 6) || this.$t("container.system_config.demo_graphic.thana.code")+' can have maximum 6 digit';
+        return (value.toString().length <= 5) || this.$t("container.system_config.demo_graphic.thana.code")+' can have maximum 5 digit';
       });
     },
     createDialog() {

@@ -1361,14 +1361,12 @@ export default {
                 .then((result) => {
 
                     this.data = result.data.application;
-                    this.imageUrlFetch= result.data.imagePath;
-                    this.UrlFetch=`http://127.0.0.1:8000/uploads/applications/${this.imageUrlFetch}`
-                    console.log(this.imageUrlFetch);
+              
                         
                   
                    
             
-                 ;
+               
                   
                 });
 
