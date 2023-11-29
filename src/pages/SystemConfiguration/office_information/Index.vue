@@ -1016,8 +1016,8 @@ export default {
 
       if (item?.assign_location?.type == "division") {
         console.log("division here");
-        // this.data.division_id = item?.assign_location?.id;
-        this.data.division_id = item?.parent?.id; // 
+        this.data.division_id = item?.assign_location?.id;
+        // this.data.division_id = item?.parent?.id; // 
       }
       if (item?.assign_location?.type == "district") {
         console.log("district here");
