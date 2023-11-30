@@ -411,18 +411,19 @@
                   </v-col> -->
                   <v-col cols="12">
                     <v-row>
-                       <v-col cols="12" md="4" lg="4">
-                          <ValidationProvider name="Code" vid="code"  v-slot="{ errors }">
-                            <v-text-field :hide-details="errors[0] ? false : true" outlined type="text" v-model="data.ward"  readonly
-                              :label="$t('container.system_config.demo_graphic.ward.name_en')
-                                " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
-                          </ValidationProvider>
-                        </v-col>
+                      <v-col cols="12" md="4" lg="4">
+                        <ValidationProvider name="Code" vid="code" v-slot="{ errors }">
+                          <v-text-field :hide-details="errors[0] ? false : true" outlined type="text" v-model="data.ward"
+                            readonly :label="$t('container.system_config.demo_graphic.ward.name_en')
+                              " required :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"></v-text-field>
+                        </ValidationProvider>
+                      </v-col>
                       <v-col cols="12" md="2" lg="2">
-                        <ValidationProvider name="Code" vid="code" rules="Rules||required" v-slot="{ errors }">
-                          <v-text-field :hide-details="errors[0] ? false : true" outlined  v-model="data.code" required  @keyup="onKeyUp(data.code)" required
-                            :label="$t('container.list.code')
-                              "  :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
+                        <ValidationProvider name="Code" vid="code" rules="Rules" v-slot="{ errors }">
+                          <v-text-field :hide-details="errors[0] ? false : true" outlined v-model="data.code" required
+                            @keyup="onKeyUp(data.code)" required :label="$t('container.list.code')
+                              " :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
                         </ValidationProvider>
                       </v-col>
                       <v-col cols="12" md="6" lg="6">
@@ -430,42 +431,42 @@
                           <v-text-field outlined type="text" :hide-details="errors[0] ? false : true"
                             v-model="data.suffix" :label="$t(
                               'container.system_config.demo_graphic.ward.suffix'
-                            )"  :readonly="isWardInputReadOnly"
-                        
-                                :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
+                            )" :readonly="isWardInputReadOnly" :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"></v-text-field>
                         </ValidationProvider>
                       </v-col>
                     </v-row>
                   </v-col>
                   <!-- //Bangla field start -->
-                    <v-col cols="12">
-                      <v-row>
-                         <v-col cols="12" md="4" lg="4">
-                            <ValidationProvider name="Code" vid="code"  v-slot="{ errors }">
-                              <v-text-field :hide-details="errors[0] ? false : true" outlined type="text" v-model="data.ward_b"  readonly
-                                :label="$t('container.system_config.demo_graphic.ward.name_bn')
-                                  " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
-                            </ValidationProvider>
-                          </v-col>
-                        <v-col cols="12" md="2" lg="2">
-                          <ValidationProvider name="Code" vid="code" rules="Rules||required" v-slot="{ errors }">
-                            <v-text-field :hide-details="errors[0] ? false : true" outlined  v-model="data.code_b"  readonly required
-                              :label="$t('container.list.code')
-                                " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
-                          </ValidationProvider>
-                        </v-col>
-                        <v-col cols="12" md="6" lg="6">
-                          <ValidationProvider name="Suffix" vid="name_en" v-slot="{ errors }">
-                            <v-text-field outlined type="text" :hide-details="errors[0] ? false : true"
-                              v-model="data.suffix_b" :label="$t(
-                                'container.system_config.demo_graphic.ward.suffix_b'
-                              )"  :readonly="isWardInputReadOnly"
-                        
-                                  :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
-                          </ValidationProvider>
-                        </v-col>
-                      </v-row>
-                    </v-col>
+                  <v-col cols="12">
+                    <v-row>
+                      <v-col cols="12" md="4" lg="4">
+                        <ValidationProvider name="Code" vid="code" v-slot="{ errors }">
+                          <v-text-field :hide-details="errors[0] ? false : true" outlined type="text"
+                            v-model="data.ward_b" readonly :label="$t('container.system_config.demo_graphic.ward.name_bn')
+                              " required :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"></v-text-field>
+                        </ValidationProvider>
+                      </v-col>
+                      <v-col cols="12" md="2" lg="2">
+                        <ValidationProvider name="Code" vid="code" rules="Rules||required" v-slot="{ errors }">
+                          <v-text-field :hide-details="errors[0] ? false : true" outlined v-model="data.code_b" readonly
+                            required :label="$t('container.list.code')
+                              " required :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"></v-text-field>
+                        </ValidationProvider>
+                      </v-col>
+                      <v-col cols="12" md="6" lg="6">
+                        <ValidationProvider name="Suffix" vid="name_en" v-slot="{ errors }">
+                          <v-text-field outlined type="text" :hide-details="errors[0] ? false : true"
+                            v-model="data.suffix_b" :label="$t(
+                              'container.system_config.demo_graphic.ward.suffix_b'
+                            )" :readonly="isWardInputReadOnly" :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"></v-text-field>
+                        </ValidationProvider>
+                      </v-col>
+                    </v-row>
+                  </v-col>
                   <!-- <v-col cols="12">
                     <ValidationProvider name="Ward Name Bangla" vid="name_bn" rules="required" v-slot="{ errors }">
                       <v-text-field :hide-details="errors[0] ? false : true" outlined type="text" v-model="data.name_bn"
@@ -624,63 +625,63 @@
                           " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
                     </ValidationProvider>
                   </v-col> -->
-                   <v-col cols="12">
-                      <v-row>
-                         <v-col cols="12" md="4" lg="4">
-                            <ValidationProvider name="Code" vid="code"  v-slot="{ errors }">
-                              <v-text-field :hide-details="errors[0] ? false : true" outlined type="text" v-model="data.ward"  readonly
-                                :label="$t('container.system_config.demo_graphic.ward.name_en')
-                                  " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
-                            </ValidationProvider>
-                          </v-col>
-                        <v-col cols="12" md="2" lg="2">
-                          <ValidationProvider name="Code" vid="code" rules="Rules||required" v-slot="{ errors }">
-                            <v-text-field :hide-details="errors[0] ? false : true" outlined  v-model="data.code" required  @keyup="onKeyUp(data.code)" required
-                              :label="$t('container.list.code')
-                                "  :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
-                          </ValidationProvider>
-                        </v-col>
-                        <v-col cols="12" md="6" lg="6">
-                          <ValidationProvider name="Suffix" vid="name_en" v-slot="{ errors }">
-                            <v-text-field outlined type="text" :hide-details="errors[0] ? false : true"
-                              v-model="data.suffix" :label="$t(
-                                'container.system_config.demo_graphic.ward.suffix'
-                              )"  :readonly="isWardInputReadOnly"
-                        
-                                  :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
-                          </ValidationProvider>
-                        </v-col>
-                      </v-row>
-                    </v-col>
-                    <!-- //Bangla field start -->
-                      <v-col cols="12">
-                        <v-row>
-                           <v-col cols="12" md="4" lg="4">
-                              <ValidationProvider name="Code" vid="code"  v-slot="{ errors }">
-                                <v-text-field :hide-details="errors[0] ? false : true" outlined type="text" v-model="data.ward_b"  readonly
-                                  :label="$t('container.system_config.demo_graphic.ward.name_bn')
-                                    " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
-                              </ValidationProvider>
-                            </v-col>
-                          <v-col cols="12" md="2" lg="2">
-                            <ValidationProvider name="Code" vid="code" rules="Rules||required" v-slot="{ errors }">
-                              <v-text-field :hide-details="errors[0] ? false : true" outlined  v-model="data.code_b"  readonly required
-                                :label="$t('container.list.code')
-                                  " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
-                            </ValidationProvider>
-                          </v-col>
-                          <v-col cols="12" md="6" lg="6">
-                            <ValidationProvider name="Suffix" vid="name_en" v-slot="{ errors }">
-                              <v-text-field outlined type="text" :hide-details="errors[0] ? false : true"
-                                v-model="data.suffix_b" :label="$t(
-                                  'container.system_config.demo_graphic.ward.suffix_b'
-                                )"  :readonly="isWardInputReadOnly"
-                        
-                                    :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
-                            </ValidationProvider>
-                          </v-col>
-                        </v-row>
+                  <v-col cols="12">
+                    <v-row>
+                      <v-col cols="12" md="4" lg="4">
+                        <ValidationProvider name="Code" vid="code" v-slot="{ errors }">
+                          <v-text-field :hide-details="errors[0] ? false : true" outlined type="text" v-model="data.ward"
+                            readonly :label="$t('container.system_config.demo_graphic.ward.name_en')
+                              " required :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"></v-text-field>
+                        </ValidationProvider>
                       </v-col>
+                      <v-col cols="12" md="2" lg="2">
+                        <ValidationProvider name="Code" vid="code" rules="Rules||required" v-slot="{ errors }">
+                          <v-text-field :hide-details="errors[0] ? false : true" outlined v-model="data.code" required
+                            @keyup="onKeyUp(data.code)" required :label="$t('container.list.code')
+                              " :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
+                        </ValidationProvider>
+                      </v-col>
+                      <v-col cols="12" md="6" lg="6">
+                        <ValidationProvider name="Suffix" vid="name_en" v-slot="{ errors }">
+                          <v-text-field outlined type="text" :hide-details="errors[0] ? false : true"
+                            v-model="data.suffix" :label="$t(
+                              'container.system_config.demo_graphic.ward.suffix'
+                            )" :readonly="isWardInputReadOnly" :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"></v-text-field>
+                        </ValidationProvider>
+                      </v-col>
+                    </v-row>
+                  </v-col>
+                  <!-- //Bangla field start -->
+                  <v-col cols="12">
+                    <v-row>
+                      <v-col cols="12" md="4" lg="4">
+                        <ValidationProvider name="Code" vid="code" v-slot="{ errors }">
+                          <v-text-field :hide-details="errors[0] ? false : true" outlined type="text"
+                            v-model="data.ward_b" readonly :label="$t('container.system_config.demo_graphic.ward.name_bn')
+                              " required :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"></v-text-field>
+                        </ValidationProvider>
+                      </v-col>
+                      <v-col cols="12" md="2" lg="2">
+                        <ValidationProvider name="Code" vid="code" rules="Rules||required" v-slot="{ errors }">
+                          <v-text-field :hide-details="errors[0] ? false : true" outlined v-model="data.code_b" readonly
+                            required :label="$t('container.list.code')
+                              " :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
+                        </ValidationProvider>
+                      </v-col>
+                      <v-col cols="12" md="6" lg="6">
+                        <ValidationProvider name="Suffix" vid="name_en" v-slot="{ errors }">
+                          <v-text-field outlined type="text" :hide-details="errors[0] ? false : true"
+                            v-model="data.suffix_b" :label="$t(
+                              'container.system_config.demo_graphic.ward.suffix_b'
+                            )" :readonly="isWardInputReadOnly" :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"></v-text-field>
+                        </ValidationProvider>
+                      </v-col>
+                    </v-row>
+                  </v-col>
 
                   <!-- <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
@@ -1085,7 +1086,7 @@ export default {
     ValidationObserver,
   },
   computed: {
-     isWardInputReadOnly() {
+    isWardInputReadOnly() {
       // Make the "Ward" input read-only if data.location_type is not equal to 3
       return [1, 2, null].includes(this.data.location_type);
     },
@@ -1171,59 +1172,59 @@ export default {
           this.$t("container.system_config.demo_graphic.ward.code") +
           " can have maximum 2 digit"
         );
-      }); 
+      });
     },
-    customCode(){
-        extend("Rules", (value) => {
+    customCode() {
+       extend("Rules", (value) => {
         return (
-          value.toString().length <= 2 ||
-          this.$t("container.list.code") +
-          " can have maximum 2 digit"
+          value.toString().length === 2 ||
+          this.$t("container.system_config.demo_graphic.ward.code") +
+          " must be 2 digit"
         );
       });
 
     },
-    resetSearch(){
-       this.districts_search= [];
-       this.cities_search= [];
-       this.thanas_search= [];
-       this.city_thanas_search= [];
-        this.unions_search =[];
-        this.pouros_search= [];
-        this.district_poros_search= [];
-        this.division_id_search= null;
-        this.district_id_search= null;
-        this.thana_id_search =null;
-        this.union_id_search =null;
-        this.city_id_search= null;
-        this.city_thana_id_search= null;
-        this.district_pouro_id_search= null;
-        this.pouro_id_search= null;
-        this.location_type_search= null;
-        this.sub_location_type_search= null;
+    resetSearch() {
+      this.districts_search = [];
+      this.cities_search = [];
+      this.thanas_search = [];
+      this.city_thanas_search = [];
+      this.unions_search = [];
+      this.pouros_search = [];
+      this.district_poros_search = [];
+      this.division_id_search = null;
+      this.district_id_search = null;
+      this.thana_id_search = null;
+      this.union_id_search = null;
+      this.city_id_search = null;
+      this.city_thana_id_search = null;
+      this.district_pouro_id_search = null;
+      this.pouro_id_search = null;
+      this.location_type_search = null;
+      this.sub_location_type_search = null;
 
     },
-  onKeyUp(data) {
+    onKeyUp(data) {
 
       if (data && data.length === 2 && /^\d+$/.test(data)) {
         const banglaDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
-          this.data.code_b =
+        this.data.code_b =
           banglaDigits[data[0]] + banglaDigits[data[1]];
 
-        console.log(this.data.code_b,"code accepted");
-       
-       
+        console.log(this.data.code_b, "code accepted");
+
+
       } else {
-       this.data.code_b ='';
+        this.data.code_b = '';
         console.log(this.data.code_b, "code invalid");
-       
+
       }
     },
     async submitWard() {
-          this.data.name_en = this.data.ward + ' ' + this.data.code + ' ' + this.data.suffix;
-          this.data.name_bn = this.data.ward_b + ' ' + this.data.code_b + ' ' + this.data.suffix_b;
-        
-  
+      this.data.name_en = this.data.ward + ' ' + this.data.code + ' ' + this.data.suffix;
+      this.data.name_bn = this.data.ward_b + ' ' + this.data.code_b + ' ' + this.data.suffix_b;
+
+
       try {
         let fd = new FormData();
         console.log("------------");
@@ -1253,7 +1254,7 @@ export default {
       }
     },
     async updateWard() {
-        this.data.name_en = this.data.ward + ' ' + this.data.code + ' ' + this.data.suffix;
+      this.data.name_en = this.data.ward + ' ' + this.data.code + ' ' + this.data.suffix;
       this.data.name_bn = this.data.ward_b + ' ' + this.data.code_b + ' ' + this.data.suffix_b;
       try {
         let fd = new FormData();
@@ -1279,6 +1280,7 @@ export default {
       }
     },
     async LocationType($event) {
+     
       if ($event === 1 || $event === 3) {
         this.data.sub_location_type = null;
       }
@@ -1299,6 +1301,8 @@ export default {
               this.data.city_id = null;
               this.data.city_thana_id = null;
               this.data.district_pouro_id = null;
+               this.data.suffix = '';
+              this.data.suffix_b = '';
             });
         }
         if ($event === 3) {
@@ -1336,6 +1340,8 @@ export default {
               this.city_id = null;
               this.city_thana_id = null;
               this.pouro_id = null;
+               this.data.suffix='';
+                 this.data.suffix_b = '';
             });
         }
       }
@@ -1382,14 +1388,14 @@ export default {
       if (this.$refs.formAdd) {
         this.$refs.formAdd.reset();
       }
-      
+
       (this.data.id = ''),
-      (this.data.name_en = ''),
-      (this.data.name_bn = ''),
-      (this.data.code = ''),
-      (this.data.suffix = ''),
-       (this.data.code_b = ''),
-        (this.data.suffix_b= ''),
+        (this.data.name_en = ''),
+        (this.data.name_bn = ''),
+        (this.data.code = ''),
+        (this.data.suffix = ''),
+        (this.data.code_b = ''),
+        (this.data.suffix_b = ''),
         (this.data.division_id = ''),
         (this.data.district_id = ''),
         (this.data.thana_id = ''),
@@ -1596,7 +1602,7 @@ export default {
       this.data.name_en = item.name_en;
       this.data.name_bn = item.name_bn;
       this.data.code = item.code;
-      const inputString = item.name_en ;
+      const inputString = item.name_en;
       // Extracting components
       const parts = inputString.split(' ');
       const wardNo = parts[0] + ' ' + parts[1]; // "Ward No -"
@@ -1606,14 +1612,14 @@ export default {
       console.log("Ward No:", wardNo);
       console.log("Two-digit number:", twoDigitNumber);
       console.log("Rest of the string:", restOfString);
-      this.data.ward= wardNo;
+      this.data.ward = wardNo;
       this.data.code = twoDigitNumber;
       this.data.suffix = restOfString;
 
       const inputString_b = item.name_bn;
       // Extracting components
       const parts_b = inputString_b.split(' ');
-      const wardNo_b = parts_b[0] + ' ' + parts_b[1] ; // "Ward No -"
+      const wardNo_b = parts_b[0] + ' ' + parts_b[1]; // "Ward No -"
       const twoDigitNumber_b = parts_b[2]; // "01"
       const restOfString_b = parts_b.slice(3).join(' '); // "suffix"
 
@@ -1624,7 +1630,7 @@ export default {
       this.data.code_b = twoDigitNumber_b;
       this.data.suffix_b = restOfString_b;
 
-      
+
       if (item?.parent?.parent?.parent.type == "division") {
         this.data.division_id = item?.parent?.parent?.parent.id;
       } else if (
