@@ -8,7 +8,7 @@
               <v-expansion-panel>
                 <v-expansion-panel-header color=#8C9EFF >
                   <h3 class="white--text ">
-                      {{ $t('container.list.search') }}
+                      {{ $t('container.list.filter') }}
                   </h3>
                 
                 </v-expansion-panel-header>
@@ -60,9 +60,8 @@
                       </v-row>
 
                       <div class="d-inline d-flex justify-end ">
-                        <v-btn elevation="2" type="submit" class="btn mr-2" color="success">{{
-                          $t("container.list.search") }}</v-btn>
                         <v-btn elevation="2" class="btn" @click="resetSearch">{{ $t("container.list.reset") }}</v-btn>
+                        <v-btn elevation="2" type="submit" class="btn ml-2" color="success">{{$t("container.list.filter") }}</v-btn>
                       </div>
                     </form>
                   </ValidationObserver>
@@ -558,6 +557,7 @@ export default {
       this.location_type_search = null;
         this.division_id_search = null;
         this.district_id_search = null;
+        this.GetCity();
     },
     registerCustomRules() {
       extend("codeRules", (value) => {
@@ -808,14 +808,15 @@ export default {
       }
       const queryParams = {
         searchText: this.search,
-        location: this.location_type_search,
-        division: this.division_id_search,
-        district: this.district_id_search,
+        location_type: this.location_type_search,
+        division_id: this.division_id_search,
+        district_id: this.district_id_search,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
         sortBy: this.sortBy,
         orderBy: this.sortDesc,
       };
+
       this.$axios
         .get("/admin/city/get", {
           headers: {
@@ -829,7 +830,7 @@ export default {
           this.pagination.current = result.data.current_page;
           this.pagination.total = result.data.last_page;
           this.pagination.grand_total = result.data.total;
-          console.log(queryParams, "params");
+          console.log(queryParams, "params123");
           console.log(this.city, "city");
 
         });

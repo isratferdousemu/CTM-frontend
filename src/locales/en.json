@@ -14,6 +14,7 @@
             "print": "Print",
             "view": "View",
             "search": "Search",
+            "filter": "Filter",
             "reset": "Reset",
             "back": "Back",
             "forward": "Forward",
