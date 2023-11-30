@@ -194,6 +194,10 @@
                 },
                 "ward": {
                     "ward": "Ward",
+                    "suffix":"Suffix",
+                    "suffix_b": "Suffix in Bangla",
+                    
+                    
                     "list": "Ward List",
                     "code": "Ward Geo Code",
                     "name_en": "Ward Name English",
