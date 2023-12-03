@@ -8,7 +8,7 @@
               <v-expansion-panel>
                 <v-expansion-panel-header color="#8C9EFF">
                   <h3 class="white--text">
-                    {{ $t("container.list.search") }}
+                    {{ $t("container.list.filter") }}
                   </h3>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content class="mt-5">
@@ -152,7 +152,10 @@
                           md="4"
                           lg="4"
                           cols="12"
-                          v-if="location_type_search == 3 || location_type_search == 1"
+                          v-if="
+                            location_type_search == 3 ||
+                            location_type_search == 1
+                          "
                         >
                           <ValidationProvider
                             name="city"
@@ -182,16 +185,16 @@
                       </v-row>
 
                       <div class="d-inline d-flex justify-end">
-                        <v-btn
-                          elevation="2"
-                          type="submit"
-                          class="btn mr-2"
-                          color="success"
-                          >{{ $t("container.list.search") }}</v-btn
-                        >
                         <v-btn elevation="2" class="btn" @click="resetSearch">{{
                           $t("container.list.reset")
                         }}</v-btn>
+                        <v-btn
+                          elevation="2"
+                          type="submit"
+                          class="btn ml-2"
+                          color="success"
+                          >{{ $t("container.list.filter") }}</v-btn
+                        >
                       </div>
                     </form>
                   </ValidationObserver>
@@ -1678,10 +1681,10 @@ export default {
       this.division_id_search = null;
       this.district_id_search = null;
 
-      // this.city_id_search = null;
-      // this.upazila_id_search = null;
-      
-      // this.GetCity();
+      this.city_id_search = null;
+      this.upazila_id_search = null;
+
+      this.GetUnion();
     },
     async GetUnion() {
       let page;
@@ -1768,7 +1771,6 @@ export default {
 
             this.city_id_search = null;
             this.district_pouros_search = null;
-            
           });
       }
       if (this.location_type_search === 2) {
