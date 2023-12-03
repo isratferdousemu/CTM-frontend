@@ -3,185 +3,202 @@
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
         <v-row>
-         <v-col cols="12">
-                   <v-expansion-panels>
-            <v-expansion-panel>
-              <v-expansion-panel-header  color=#8C9EFF>
-                    <h3 class="white--text ">
-                        {{ $t('container.list.search') }}
-                    </h3>
-            
-              </v-expansion-panel-header>
-              <v-expansion-panel-content class="mt-5">
-
-   
-                 <ValidationObserver ref="formsearch" v-slot="{ invalid }">
-                                                <form @submit.prevent="GetUnion()">
-                                                    <v-row>
-                                                        <v-col lg="4" md="4" cols="12">
-
-                                                                <v-autocomplete
-         :append-icon-cb="appendIconCallback" append-icon="mdi-plus" 
-         class="no-arrow-icon"                                                              outlined  
-                                                                    
-                                                                       @input="onChangeLocationSearch()"
-                                                                  v-model="location_type_search"
-                                                                    :items="locationTypes" item-text="value_en" item-value="id"
-                                                                    :label="$t('container.list.location_type')">
-                                                                </v-autocomplete>
-                                                            </v-col>
-                                                      
-                                                         <v-col lg="4" md="4" cols="12">
-                                                            <ValidationProvider
-                        name="Division"
-                        vid="division"
-                
-                        v-slot="{ errors }"
-                      >
-                  
-                        <v-autocomplete
-                          @input="onChangeDivisionSearch($event)"
-                          :append-icon-cb="appendIconCallback" append-icon="mdi-plus" 
-                          class="no-arrow-icon" 
-                          v-model="division_id_search"
-                          outlined
-                          :label="$t(
-                            'container.system_config.demo_graphic.division.division'
-                          )
-                            "
-                          :items="divisions"
-                          item-text="name_en"
-                          item-value="id"
-                     
-                          :error="errors[0] ? true : false"
-                          :error-messages="errors[0]"
-                        ></v-autocomplete>
-                      </ValidationProvider>
-                    
-                    
-                       </v-col>
-                       <v-col lg="4" md="4" cols="12">
-                         <ValidationProvider
-                        name="District"
-                        vid="district"
-               
-                        v-slot="{ errors }"
-                      >
-                        <v-autocomplete
-                  @input="onChangeDistrictSearch($event)" 
-                    :append-icon-cb="appendIconCallback" append-icon="mdi-plus" 
-                    class="no-arrow-icon" 
-                          v-model="district_id_search"
-                          outlined
-                          :label="$t(
-                            'container.system_config.demo_graphic.district.district'
-                          )
-                            "
-                          :items="districts_search"
-                          item-text="name_en"
-                          item-value="id"
-                     
-                          :error="errors[0] ? true : false"
-                          :error-messages="errors[0]"
-                          :readonly="false"
-                        ></v-autocomplete>
-                      </ValidationProvider>
-                       </v-col>
-                       
-                        <v-col md="4" lg="4" cols="12"   v-if="location_type_search == 1">
-                      <ValidationProvider
-                        name="city"
-                        vid="city_id"
-                     
-                        v-slot="{ errors }"
-                      >
-                        <v-autocomplete
-                        v-if="location_type_search == 1"
-                          :hide-details="errors[0] ? false : true"
-                          v-model="district_pouro_id_search"
-                         :append-icon-cb="appendIconCallback" append-icon="mdi-plus" 
-                         class="no-arrow-icon" 
-                          outlined
-                          :label="$t('container.system_config.demo_graphic.office.pouro')
-                            "
-                          :items="district_pouros_search"
-                          item-text="name_en"
-                          item-value="id"
-                      
-                          :error="errors[0] ? true : false"
-                          :error-messages="errors[0]"
-                        ></v-autocomplete>
-                      </ValidationProvider>
-                    </v-col>
-                     <v-col md="4" lg="4" cols="12"   v-if="location_type_search == 3">
-                      <ValidationProvider
-                        name="city"
-                        vid="city_id"
-                     
-                        v-slot="{ errors }"
-                      >
-                        <v-autocomplete
-                          :append-icon-cb="appendIconCallback" append-icon="mdi-plus" 
-                          class="no-arrow-icon" 
-                          :hide-details="errors[0] ? false : true"
-                          v-model="city_id_search"
-                      
-                          outlined
-                          :label="$t('container.system_config.demo_graphic.ward.city')
-                            "
-                          :items="cities_search"
-                          item-text="name_en"
-                          item-value="id"
-                      
-                          :error="errors[0] ? true : false"
-                          :error-messages="errors[0]"
-                        ></v-autocomplete>
-                      </ValidationProvider>
-                    </v-col>
-                     <v-col md="4" lg="4" cols="12" v-if="location_type_search == 2">
-                        <ValidationProvider
-                          name="city"
-                          vid="city_id"
-                     
-                          v-slot="{ errors }"
-                        >
+          <v-col cols="12">
+            <v-expansion-panels>
+              <v-expansion-panel>
+                <v-expansion-panel-header color="#8C9EFF">
+                  <h3 class="white--text">
+                    {{ $t("container.list.search") }}
+                  </h3>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content class="mt-5">
+                  <ValidationObserver ref="formsearch" v-slot="{ invalid }">
+                    <form @submit.prevent="GetUnion()">
+                      <v-row>
+                        <v-col lg="4" md="4" cols="12">
                           <v-autocomplete
-                            :append-icon-cb="appendIconCallback" append-icon="mdi-plus" 
-                            class="no-arrow-icon" 
-                            :hide-details="errors[0] ? false : true"
-                            v-model="data.city_id"
-                      
+                            :append-icon-cb="appendIconCallback"
+                            append-icon="mdi-plus"
+                            class="no-arrow-icon"
                             outlined
-                            :label="$t('container.system_config.demo_graphic.ward.upazila')
-                              "
-                            :items="upazilas_search"
-                            item-text="name_en"
+                            @input="onChangeLocationSearch()"
+                            v-model="location_type_search"
+                            :items="locationType"
+                            item-text="value_en"
                             item-value="id"
-                      
-                            :error="errors[0] ? true : false"
-                            :error-messages="errors[0]"
-                          ></v-autocomplete>
-                        </ValidationProvider>
-                      </v-col>
-  
-                                                
-        
-                                                    </v-row>
+                            :label="$t('container.list.location_type')"
+                          >
+                          </v-autocomplete>
+                        </v-col>
 
-                                                    <div class="d-inline d-flex justify-end ">
-                                                        <v-btn elevation="2" type="submit" class="btn mr-2" color="success">{{
-                                                          $t("container.list.search") }}</v-btn>
-                                                        <v-btn elevation="2" class="btn" @click="resetSearch">{{ $t("container.list.reset") }}</v-btn>
-                                                    </div>
-                                                </form>
-                                            </ValidationObserver>
+                        <v-col lg="4" md="4" cols="12">
+                          <ValidationProvider
+                            name="Division"
+                            vid="division"
+                            v-slot="{ errors }"
+                          >
+                            <v-autocomplete
+                              @input="onChangeDivisionSearch($event)"
+                              :append-icon-cb="appendIconCallback"
+                              append-icon="mdi-plus"
+                              class="no-arrow-icon"
+                              v-model="division_id_search"
+                              outlined
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.division.division'
+                                )
+                              "
+                              :items="divisions"
+                              item-text="name_en"
+                              item-value="id"
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                            ></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col lg="4" md="4" cols="12">
+                          <ValidationProvider
+                            name="District"
+                            vid="district"
+                            v-slot="{ errors }"
+                          >
+                            <v-autocomplete
+                              @input="onChangeDistrictSearch($event)"
+                              :append-icon-cb="appendIconCallback"
+                              append-icon="mdi-plus"
+                              class="no-arrow-icon"
+                              v-model="district_id_search"
+                              outlined
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.district.district'
+                                )
+                              "
+                              :items="districts_search"
+                              item-text="name_en"
+                              item-value="id"
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                              :readonly="false"
+                            ></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
 
-     
-    
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-          </v-expansion-panels>
-                 </v-col>
+                        <v-col
+                          md="4"
+                          lg="4"
+                          cols="12"
+                          v-if="location_type_search == 0"
+                        >
+                          <ValidationProvider
+                            name="city"
+                            vid="city_id"
+                            v-slot="{ errors }"
+                          >
+                            <v-autocomplete
+                              v-if="location_type_search == 1"
+                              :hide-details="errors[0] ? false : true"
+                              v-model="district_pouro_id_search"
+                              :append-icon-cb="appendIconCallback"
+                              append-icon="mdi-plus"
+                              class="no-arrow-icon"
+                              outlined
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.office.pouro'
+                                )
+                              "
+                              :items="district_pouros_search"
+                              item-text="name_en"
+                              item-value="id"
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                            ></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col
+                          md="4"
+                          lg="4"
+                          cols="12"
+                          v-if="location_type_search == 2"
+                        >
+                          <ValidationProvider
+                            name="city"
+                            vid="city_id"
+                            v-slot="{ errors }"
+                          >
+                            <v-autocomplete
+                              :append-icon-cb="appendIconCallback"
+                              append-icon="mdi-plus"
+                              class="no-arrow-icon"
+                              :hide-details="errors[0] ? false : true"
+                              v-model="city_id_search"
+                              outlined
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.ward.city'
+                                )
+                              "
+                              :items="cities_search"
+                              item-text="name_en"
+                              item-value="id"
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                            ></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col
+                          md="4"
+                          lg="4"
+                          cols="12"
+                          v-if="location_type_search == 3 || location_type_search == 1"
+                        >
+                          <ValidationProvider
+                            name="city"
+                            vid="city_id"
+                            v-slot="{ errors }"
+                          >
+                            <v-autocomplete
+                              :append-icon-cb="appendIconCallback"
+                              append-icon="mdi-plus"
+                              class="no-arrow-icon"
+                              :hide-details="errors[0] ? false : true"
+                              v-model="upazila_id_search"
+                              outlined
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.ward.upazila'
+                                )
+                              "
+                              :items="upazilas_search"
+                              item-text="name_en"
+                              item-value="id"
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                            ></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                      </v-row>
+
+                      <div class="d-inline d-flex justify-end">
+                        <v-btn
+                          elevation="2"
+                          type="submit"
+                          class="btn mr-2"
+                          color="success"
+                          >{{ $t("container.list.search") }}</v-btn
+                        >
+                        <v-btn elevation="2" class="btn" @click="resetSearch">{{
+                          $t("container.list.reset")
+                        }}</v-btn>
+                      </div>
+                    </form>
+                  </ValidationObserver>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-expansion-panels>
+          </v-col>
           <v-col cols="12">
             <v-card
               elevation="10"
@@ -358,7 +375,6 @@
             <ValidationObserver ref="formAdd" v-slot="{ invalid }">
               <form @submit.prevent="submitUnion()">
                 <v-row>
-
                   <v-col lg="12" md="12" cols="12">
                     <ValidationProvider
                       name="Division"
@@ -411,7 +427,7 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                
+
                   <v-col lg="12" md="12" cols="12">
                     <ValidationProvider
                       name="LocationType"
@@ -435,7 +451,7 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                
+
                   <v-col
                     lg="12"
                     md="12"
@@ -1008,7 +1024,7 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  
+
                   <v-col
                     lg="12"
                     md="12"
@@ -1258,8 +1274,8 @@ export default {
           value_en: "Union",
         },
       ],
-      locationTypes:[],
-      districts_search:[],
+      locationTypes: [],
+      districts_search: [],
       districts: [],
       thanas: [],
       upazilas_search: [],
@@ -1270,13 +1286,13 @@ export default {
       deleteDialog: false,
       delete_loading: false,
       loading: false,
-      location_type_search : null,
-      division_id_search : null,
-      district_id_search :null,
-      upazila_id_search:null,
-      city_id_search:null,
-      district_pouro_id_search:null,
-     
+      location_type_search: null,
+      division_id_search: null,
+      district_id_search: null,
+      upazila_id_search: null,
+      city_id_search: null,
+      district_pouro_id_search: null,
+
       search: "",
       delete_id: "",
       unions: [],
@@ -1304,7 +1320,9 @@ export default {
           sortable: false,
         },
         {
-          text: this.$t("container.system_config.demo_graphic.union.custom_code"),
+          text: this.$t(
+            "container.system_config.demo_graphic.union.custom_code"
+          ),
           value: "code",
         },
         {
@@ -1396,18 +1414,17 @@ export default {
     this.registerCustomRules();
   },
   methods: {
-     appendIconCallback() {
+    appendIconCallback() {
       // Handle the click event for the custom append icon here
-
     },
     appendIcon() {
-      return 'mdi-plus'; // Use the appropriate Material Design Icons (MDI) class for the "+" icon
+      return "mdi-plus"; // Use the appropriate Material Design Icons (MDI) class for the "+" icon
     },
-      resetSearch() {
-      this.location_type_search = null;
-      this.division_id_search = null;
-      this.district_id_search = null;
-    },
+    // resetSearch() {
+    //   this.location_type_search = null;
+    //   this.division_id_search = null;
+    //   this.district_id_search = null;
+    // },
     registerCustomRules() {
       extend("codeRules", (value) => {
         if (this.data.location_type === 3) {
@@ -1504,21 +1521,21 @@ export default {
         //         this.$refs.formAdd.setErrors(data.errors);
         //       }
         //     });
-        // } 
+        // }
         // else {
 
-          this.$store
-            .dispatch("Union/StoreUnion", this.validator())
-            .then((res) => {
-              if (res.data?.success) {
-                this.$toast.success("Data Inserted Successfully");
-                this.dialogAdd = false;
-                this.resetData();
-                this.GetUnion();
-              } else if (res.response?.data?.errors) {
-                this.$refs.formAdd.setErrors(res.response.data.errors);
-              }
-            });
+        this.$store
+          .dispatch("Union/StoreUnion", this.validator())
+          .then((res) => {
+            if (res.data?.success) {
+              this.$toast.success("Data Inserted Successfully");
+              this.dialogAdd = false;
+              this.resetData();
+              this.GetUnion();
+            } else if (res.response?.data?.errors) {
+              this.$refs.formAdd.setErrors(res.response.data.errors);
+            }
+          });
         // }
       } catch (e) {
         console.log(e);
@@ -1547,21 +1564,21 @@ export default {
         //     });
         // } else {
 
-          this.$store
-            .dispatch("Union/UpdateUnion", this.validator())
-            .then((res) => {
-              console.log(res, "update_union");
-              if (res.data?.success) {
-                this.$toast.success("Data Updated Successfully");
-                this.dialogEdit = false;
-                this.resetData();
-                this.GetUnion();
-              } else if (res.response?.data?.errors) {
-                this.$refs.formEdit.setErrors(res.response.data.errors);
-              }
-            });
-        
-          // }
+        this.$store
+          .dispatch("Union/UpdateUnion", this.validator())
+          .then((res) => {
+            console.log(res, "update_union");
+            if (res.data?.success) {
+              this.$toast.success("Data Updated Successfully");
+              this.dialogEdit = false;
+              this.resetData();
+              this.GetUnion();
+            } else if (res.response?.data?.errors) {
+              this.$refs.formEdit.setErrors(res.response.data.errors);
+            }
+          });
+
+        // }
       } catch (e) {
         console.log(e);
       }
@@ -1656,6 +1673,16 @@ export default {
 
       // alert(JSON.stringify(queryParams));
     },
+    resetSearch() {
+      this.location_type_search = null;
+      this.division_id_search = null;
+      this.district_id_search = null;
+
+      // this.city_id_search = null;
+      // this.upazila_id_search = null;
+      
+      // this.GetCity();
+    },
     async GetUnion() {
       let page;
       if (!this.sortBy) {
@@ -1663,11 +1690,31 @@ export default {
       }
       const queryParams = {
         searchText: this.search,
+        location_type: this.location_type_search,
+        division_id: this.division_id_search,
+        district_id: this.district_id_search,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
         sortBy: this.sortBy,
         orderBy: this.sortDesc,
       };
+
+      // if (this.district_pouro_id_search != null) {
+      //   queryParams.district_pouro_id = this.district_pouro_id_search;
+      //   delete queryParams.city_id;
+      //   delete queryParams.upazila_id_search;
+      // }
+      if (this.city_id_search != null) {
+        delete queryParams.district_pouro_id_search;
+        delete queryParams.upazila_id_search;
+        queryParams.city_id = this.city_id_search;
+      }
+      if (this.upazila_id_search != null) {
+        delete queryParams.district_pouro_id_search;
+        delete queryParams.city_id;
+        queryParams.upazila_id = this.upazila_id_search;
+      }
+
       this.$axios
         .get("/admin/union/get", {
           headers: {
@@ -1677,13 +1724,14 @@ export default {
           params: queryParams,
         })
         .then((result) => {
+          console.log(queryParams, "params123");
           this.unions = result.data.data;
           this.pagination.current = result.data.current_page;
           this.pagination.total = result.data.last_page;
           this.pagination.grand_total = result.data.total;
         });
     },
-        async onChangeDivisionSearch(event) {
+    async onChangeDivisionSearch(event) {
       await this.$axios
         .get(`/admin/district/get/${event}`, {
           headers: {
@@ -1693,88 +1741,79 @@ export default {
         })
         .then((result) => {
           this.districts_search = result.data.data;
-
-
         });
     },
-      async onChangeDistrictSearch($event) {
-    //      console.log(this.location_type_search, "location");
-    //        console.log($event, "event");
-    //        this.upazilas_search =null;
-      
-    // await this.$axios
-    //     .get("/admin/city/get/" +  $event + "/" + this.location_type_search , {
-    //       headers: {
-    //         Authorization: "Bearer " + this.$store.state.token,
-    //         "Content-Type": "multipart/form-data",
-    //       },
-    //     })
-    //     .then((result) => {
-    //       this.upazilas_search = result.data.data;
-      
-    //       console.log(this.upazilas_search,"upazila");
-     
-    //     });
+    async onChangeDistrictSearch($event) {
+      console.log($event, "event");
+      console.log(this.location_type_search, "search");
 
-    console.log($event,"event");
-     console.log(this.location_type_search,"search");
-      if (this.district_id_search != null && this.location_type_search != null) {
-        if (this.location_type_search === 2) {
-          await this.$axios
-            .get("/admin/thana/get/"+ $event, {
-              headers: {
-                Authorization: "Bearer " + this.$store.state.token,
-                "Content-Type": "multipart/form-data",
-              },
-            })
-            .then((result) => {
-              this.upazilas_search = result.data.data;
-              this.cities_search = null;
-              this.district_pouros_search = null;
-          
-      
-           
+      // if (
+      //   this.district_id_search != null &&
+      //   this.location_type_search != null
+      // ) {
 
+      if (this.location_type_search === 3 || this.location_type_search === 1) {
+        // $event = '2';
+        await this.$axios
+          .get("/admin/thana/get/" + $event, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((result) => {
+            this.upazilas_search = result.data.data;
+            this.cities_search = null;
+            this.district_pouros_search = null;
 
-
-            });
-        }
-        if (this.location_type_search === 3) {
-
-          await this.$axios
-            .get("/admin/city/get/" +  $event + "/" + this.location_type_search, {
-              headers: {
-                Authorization: "Bearer " + this.$store.state.token,
-                "Content-Type": "multipart/form-data",
-              },
-            })
-            .then((result) => {
-              this.cities_search = result.data.data;
-               this.district_pouros_search = null;
-              this.upazilas_search = null;
-         
-
-            });
-        }
-        if (this.location_type_search === 1) {
-
-          await this.$axios
-            .get("/admin/city/get/" + $event + "/" + this.location_type_search, {
-              headers: {
-                Authorization: "Bearer " + this.$store.state.token,
-                "Content-Type": "multipart/form-data",
-              },
-            })
-            .then((result) => {
-              this.district_pouros_search = result.data.data;
-              this.upazilas_search=null;
-            });
-        }
+            this.city_id_search = null;
+            this.district_pouros_search = null;
+            
+          });
       }
+      if (this.location_type_search === 2) {
+        $event = "3";
+        await this.$axios
+          .get("/admin/city/get/" + this.district_id_search + "/" + $event, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((result) => {
+            console.log(result);
+            this.cities_search = result.data.data;
+            console.log(result.data.data, "City Corporation");
+            // alert(this.location_type_search);
+            this.district_pouros_search = null;
+            this.upazilas_search = null;
+
+            this.upazila_id_search = null;
+            this.district_pouro_id_search = null;
+          });
+      }
+      // if (this.location_type_search === 1) {
+      //   $event = "1";
+      //   await this.$axios
+      //     .get("/admin/city/get/" + $event + "/" + this.district_id_search, {
+      //       headers: {
+      //         Authorization: "Bearer " + this.$store.state.token,
+      //         "Content-Type": "multipart/form-data",
+      //       },
+      //     })
+      //     .then((result) => {
+      //       this.district_pouros_search = result.data.data;
+      //       this.upazilas_search = null;
+
+      //       this.upazila_id_search = null;
+      //       this.city_id_search = null;
+
+      //     });
+      // }
+      // }
     },
     async onChangeLocationSearch($event) {
-      this.onChangeDistrictSearch(this.district_id_search );
-
+      this.onChangeDistrictSearch(this.district_id_search);
     },
 
     deleteUnion: async function (id) {
@@ -1889,8 +1928,8 @@ export default {
       this.data.code = item.code;
       // this.data.division_id = item.thana.district.division.id;
       this.data.division_id = item.parent.parent.parent.id; //division
-      console.log(this.data.division_id, 'this.data.division_id');
-      console.log(this.divisions,' divisions');
+      console.log(this.data.division_id, "this.data.division_id");
+      console.log(this.divisions, " divisions");
       this.data.district_id = item.parent.parent.id; //district
       this.data.thana_id = item.parent.id;
       console.log(this.data.division_id);
@@ -1914,9 +1953,9 @@ export default {
       this.locationTypes = res;
       console.log(this.locationTypes, " here");
     });
-   
+
     this.setInitialHeader();
-   
+
     // this.GetUnion();
   },
   beforeMount() {
@@ -1929,7 +1968,6 @@ export default {
 <style >
 .no-arrow-icon .v-input__icon--clear {
   display: none;
-
 }
 
 .v-input__icon--append .v-icon {
@@ -1939,7 +1977,6 @@ export default {
 
 .no-arrow-icon .v-input__icon--append {
   font-weight: bold;
-
 }
 </style>
 
