@@ -420,9 +420,9 @@
                         </ValidationProvider>
                       </v-col>
                       <v-col cols="12" md="2" lg="2">
-                        <ValidationProvider name="Code" vid="code" rules="Rules" v-slot="{ errors }">
-                          <v-text-field :hide-details="errors[0] ? false : true" outlined v-model="data.code" required
-                            @keyup="onKeyUp(data.code)" required :label="$t('container.list.code')
+                        <ValidationProvider name="Code" vid="code" rules="twoDigitNumberGreaterThanZero" v-slot="{ errors }">
+                          <v-text-field :hide-details="errors[0] ? false : true" outlined v-model="data.code" required 
+                            @keyup="onKeyUp(data.code)"  :label="$t('container.list.code')
                               " :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
                         </ValidationProvider>
                       </v-col>
@@ -431,8 +431,7 @@
                           <v-text-field outlined type="text" :hide-details="errors[0] ? false : true"
                             v-model="data.suffix" :label="$t(
                               'container.system_config.demo_graphic.ward.suffix'
-                            )" :readonly="isWardInputReadOnly" :error="errors[0] ? true : false"
-                            :error-messages="errors[0]"></v-text-field>
+                            )" :disabled="isWardInputReadOnly" ></v-text-field>
                         </ValidationProvider>
                       </v-col>
                     </v-row>
@@ -449,10 +448,10 @@
                         </ValidationProvider>
                       </v-col>
                       <v-col cols="12" md="2" lg="2">
-                        <ValidationProvider name="Code" vid="code" rules="Rules||required" v-slot="{ errors }">
+                        <ValidationProvider name="Code" vid="code"  v-slot="{ errors }">
                           <v-text-field :hide-details="errors[0] ? false : true" outlined v-model="data.code_b" readonly
                             required :label="$t('container.list.code')
-                              " required :error="errors[0] ? true : false"
+                              "  :error="errors[0] ? true : false"
                             :error-messages="errors[0]"></v-text-field>
                         </ValidationProvider>
                       </v-col>
@@ -461,8 +460,7 @@
                           <v-text-field outlined type="text" :hide-details="errors[0] ? false : true"
                             v-model="data.suffix_b" :label="$t(
                               'container.system_config.demo_graphic.ward.suffix_b'
-                            )" :readonly="isWardInputReadOnly" :error="errors[0] ? true : false"
-                            :error-messages="errors[0]"></v-text-field>
+                            )" :disabled="isWardInputReadOnly" ></v-text-field>
                         </ValidationProvider>
                       </v-col>
                     </v-row>
@@ -636,9 +634,9 @@
                         </ValidationProvider>
                       </v-col>
                       <v-col cols="12" md="2" lg="2">
-                        <ValidationProvider name="Code" vid="code" rules="Rules||required" v-slot="{ errors }">
+                        <ValidationProvider name="Code" vid="code" rules="twoDigitNumberGreaterThanZero||required" v-slot="{ errors }">
                           <v-text-field :hide-details="errors[0] ? false : true" outlined v-model="data.code" required
-                            @keyup="onKeyUp(data.code)" required :label="$t('container.list.code')
+                            @keyup="onKeyUp(data.code)"  :label="$t('container.list.code')
                               " :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
                         </ValidationProvider>
                       </v-col>
@@ -647,8 +645,7 @@
                           <v-text-field outlined type="text" :hide-details="errors[0] ? false : true"
                             v-model="data.suffix" :label="$t(
                               'container.system_config.demo_graphic.ward.suffix'
-                            )" :readonly="isWardInputReadOnly" :error="errors[0] ? true : false"
-                            :error-messages="errors[0]"></v-text-field>
+                            )" :disabled="isWardInputReadOnly" ></v-text-field>
                         </ValidationProvider>
                       </v-col>
                     </v-row>
@@ -665,7 +662,7 @@
                         </ValidationProvider>
                       </v-col>
                       <v-col cols="12" md="2" lg="2">
-                        <ValidationProvider name="Code" vid="code" rules="Rules||required" v-slot="{ errors }">
+                        <ValidationProvider name="Code" vid="code" v-slot="{ errors }">
                           <v-text-field :hide-details="errors[0] ? false : true" outlined v-model="data.code_b" readonly
                             required :label="$t('container.list.code')
                               " :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
@@ -676,8 +673,7 @@
                           <v-text-field outlined type="text" :hide-details="errors[0] ? false : true"
                             v-model="data.suffix_b" :label="$t(
                               'container.system_config.demo_graphic.ward.suffix_b'
-                            )" :readonly="isWardInputReadOnly" :error="errors[0] ? true : false"
-                            :error-messages="errors[0]"></v-text-field>
+                            )" :disabled="isWardInputReadOnly" > </v-text-field>
                         </ValidationProvider>
                       </v-col>
                     </v-row>
@@ -1007,8 +1003,8 @@ export default {
         name_bn: null,
         code: null,
         code_b: null,
-        ward: 'Ward No-',
-        ward_b: 'ওয়ার্ড নং-',
+        ward: 'Ward No',
+        ward_b: 'ওয়ার্ড নং',
         suffix: '',
         suffix_b: '',
         division_id: null,
@@ -1175,14 +1171,21 @@ export default {
       });
     },
     customCode() {
-       extend("Rules", (value) => {
-        return (
-          value.toString().length === 2 ||
-          this.$t("container.system_config.demo_graphic.ward.code") +
-          " must be 2 digit"
-        );
-      });
 
+      
+  
+       extend("twoDigitNumberGreaterThanZero", (value) => {
+        const numericValue = Number(value);
+
+        return (
+          !isNaN(numericValue) &&
+          numericValue > 0 &&
+          value.toString().length === 2
+        ) || this.$t("container.system_config.demo_graphic.ward.code") +
+          " must be a 2 digit numeric value and greater than 0";
+      });
+    
+      
     },
     resetSearch() {
       this.districts_search = [];
@@ -1221,8 +1224,8 @@ export default {
       }
     },
     async submitWard() {
-      this.data.name_en = this.data.ward + ' ' + this.data.code + ' ' + this.data.suffix;
-      this.data.name_bn = this.data.ward_b + ' ' + this.data.code_b + ' ' + this.data.suffix_b;
+      this.data.name_en = this.data.ward + ' ' + ' ' + this.data.code + ' ' + this.data.suffix;
+      this.data.name_bn = this.data.ward_b + ' ' + ' ' + this.data.code_b + ' ' + this.data.suffix_b;
 
 
       try {
@@ -1235,7 +1238,7 @@ export default {
             console.log(key, value);
           }
         }
-
+// console.log(this.data);
         // return;
         this.$store.dispatch("Ward/StoreWard", fd).then((res) => {
           console.log(res, "res");
@@ -1263,6 +1266,7 @@ export default {
             fd.append(key, value);
           }
         }
+        console.log(this.data,"update data")
         this.$store.dispatch("Ward/UpdateWard", fd).then((res) => {
           console.log(res, "update rest");
           if (res?.data?.success) {
@@ -1335,13 +1339,13 @@ export default {
               this.district_poros = result.data.data;
               this.cities = [];
               this.thanas = [];
-              this.thana_id = null;
-              this.union_id = null;
-              this.city_id = null;
-              this.city_thana_id = null;
-              this.pouro_id = null;
-               this.data.suffix='';
-                 this.data.suffix_b = '';
+              this.data.thana_id = null;
+              this.data.union_id = null;
+              this.data.city_id = null;
+              this.data.city_thana_id = null;
+              this.data.pouro_id = null;
+              this.data.suffix='';
+              this.data.suffix_b = '';
             });
         }
       }
@@ -1605,13 +1609,11 @@ export default {
       const inputString = item.name_en;
       // Extracting components
       const parts = inputString.split(' ');
-      const wardNo = parts[0] + ' ' + parts[1]; // "Ward No -"
-      const twoDigitNumber = parts[2]; // "01"
+      const wardNo = parts[0] + ' ' + parts[1] + parts[2]; // "Ward No -"
+      const twoDigitNumber = parts[3]; // "01"
       const restOfString = parts.slice(3).join(' '); // "suffix"
 
-      console.log("Ward No:", wardNo);
-      console.log("Two-digit number:", twoDigitNumber);
-      console.log("Rest of the string:", restOfString);
+     
       this.data.ward = wardNo;
       this.data.code = twoDigitNumber;
       this.data.suffix = restOfString;
@@ -1619,13 +1621,11 @@ export default {
       const inputString_b = item.name_bn;
       // Extracting components
       const parts_b = inputString_b.split(' ');
-      const wardNo_b = parts_b[0] + ' ' + parts_b[1]; // "Ward No -"
-      const twoDigitNumber_b = parts_b[2]; // "01"
+      const wardNo_b = parts_b[0] + ' ' + parts_b[1] + parts_b[2]; // "Ward No -"
+      const twoDigitNumber_b = parts_b[3]; // "01"
       const restOfString_b = parts_b.slice(3).join(' '); // "suffix"
 
-      console.log("Ward No:", wardNo_b);
-      console.log("Two-digit number:", twoDigitNumber_b);
-      console.log("Rest of the string:", restOfString_b);
+   
       this.data.ward_b = wardNo_b;
       this.data.code_b = twoDigitNumber_b;
       this.data.suffix_b = restOfString_b;
