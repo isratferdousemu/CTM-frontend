@@ -312,7 +312,351 @@
                       ></v-select>
                     </ValidationProvider>
                   </v-col>
-                  <v-col cols="12">
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                      name="UserType"
+                      vid="userType_id"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        :hide-details="errors[0] ? false : true"
+                        @input="onChangeUserType($event)"
+                        v-model="userType_id"
+                        outlined
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.user.user_type'
+                          )
+                        "
+                        :items="userType"
+                        item-text="name_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <!-- Committee Dropdowns -->
+                  <v-col lg="6" md="6" cols="12" v-if="userType_id == 2">
+                    <ValidationProvider
+                      name="CommitteeType"
+                      vid="committee_type"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        :hide-details="errors[0] ? false : true"
+                        @input="onChangeCommitteeType($event)"
+                        v-model="data.committee_type"
+                        outlined
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.committee.committee_type'
+                          )
+                        "
+                        :items="committee_types"
+                        item-text="value_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                </v-row>
+                <v-card-title
+                  v-if="
+                    data.committee_type == 12 ||
+                    data.committee_type == 13 ||
+                    data.committee_type == 14 ||
+                    data.committee_type == 15 ||
+                    data.committee_type == 16 ||
+                    data.committee_type == 17
+                  "
+                  ><h4>DSS Center</h4></v-card-title
+                >
+                <v-divider
+                  v-if="
+                    data.committee_type == 12 ||
+                    data.committee_type == 13 ||
+                    data.committee_type == 14 ||
+                    data.committee_type == 15 ||
+                    data.committee_type == 16 ||
+                    data.committee_type == 17
+                  "
+                ></v-divider>
+
+                <v-row>
+                  <v-col
+                    lg="6"
+                    md="6"
+                    cols="12"
+                    v-if="
+                      data.committee_type == 12 ||
+                      data.committee_type == 13 ||
+                      data.committee_type == 14 ||
+                      data.committee_type == 15 ||
+                      data.committee_type == 16 ||
+                      data.committee_type == 17
+                    "
+                  >
+                    <ValidationProvider
+                      name="Division"
+                      vid="division"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        :hide-details="errors[0] ? false : true"
+                        @input="onChangeDivision($event)"
+                        v-model="data.division_id"
+                        outlined
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.division.division'
+                          )
+                        "
+                        :items="divisions"
+                        item-text="name_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col
+                    lg="6"
+                    md="6"
+                    cols="12"
+                    v-if="
+                      data.committee_type == 12 ||
+                      data.committee_type == 13 ||
+                      data.committee_type == 14 ||
+                      data.committee_type == 15 ||
+                      data.committee_type == 16 ||
+                      data.committee_type == 17
+                    "
+                  >
+                    <ValidationProvider
+                      name="District"
+                      vid="district"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        :hide-details="errors[0] ? false : true"
+                        outlined
+                        v-model="data.district_id"
+                        @input="onChangeDistrict($event)"
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.district.district'
+                          )
+                        "
+                        :items="districts"
+                        item-text="name_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col
+                    lg="6"
+                    md="6"
+                    cols="12"
+                    v-if="
+                      data.committee_type == 12 ||
+                      data.committee_type == 14 ||
+                      data.committee_type == 16
+                    "
+                  >
+                    <ValidationProvider
+                      name="Upazila"
+                      vid="upazila"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        :hide-details="errors[0] ? false : true"
+                        outlined
+                        v-model="data.upazila_id"
+                        @input="onChangeUpazila($event)"
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.committee.upazila'
+                          )
+                        "
+                        :items="upazilas"
+                        item-text="name_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col
+                    lg="6"
+                    md="6"
+                    cols="12"
+                    v-if="
+                      data.committee_type == 13 || data.committee_type == 15
+                    "
+                  >
+                    <ValidationProvider
+                      name="city"
+                      vid="city_corpo_id"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        :hide-details="errors[0] ? false : true"
+                        v-model="data.city_corpo_id"
+                        @change="onChangeCity($event)"
+                        outlined
+                        :label="
+                          $t('container.system_config.demo_graphic.office.city')
+                        "
+                        :items="city"
+                        item-text="name_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col
+                    lg="6"
+                    md="6"
+                    cols="12"
+                    v-if="
+                      data.committee_type == 13
+                      //   || data.committee_type == 14
+                    "
+                  >
+                    <ValidationProvider
+                      name="thana"
+                      vid="thana_id"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        :hide-details="errors[0] ? false : true"
+                        v-model="data.thana_id"
+                        @change="onChangeThana($event)"
+                        outlined
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.committee.thana'
+                          )
+                        "
+                        :items="thanas"
+                        item-text="name_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col
+                    lg="6"
+                    md="6"
+                    cols="12"
+                    v-if="data.committee_type == 12"
+                  >
+                    <ValidationProvider
+                      name="union"
+                      vid="union_id"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        :hide-details="errors[0] ? false : true"
+                        v-model="data.union_id"
+                        outlined
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.committee.union'
+                          )
+                        "
+                        :items="unions"
+                        item-text="name_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col
+                    lg="6"
+                    md="6"
+                    cols="12"
+                    v-if="data.committee_type == 16"
+                  >
+                    <ValidationProvider
+                      name="union"
+                      vid="paurashava_id"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        :hide-details="errors[0] ? false : true"
+                        v-model="data.paurashava_id"
+                        outlined
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.committee.pouro'
+                          )
+                        "
+                        :items="unions"
+                        item-text="name_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col
+                    lg="6"
+                    md="6"
+                    cols="12"
+                    v-if="data.committee_type == 13"
+                  >
+                    <ValidationProvider
+                      name="ward"
+                      vid="ward_id"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        :hide-details="errors[0] ? false : true"
+                        v-model="data.ward_id"
+                        outlined
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.committee.ward'
+                          )
+                        "
+                        :items="wards"
+                        item-text="name_en"
+                        item-value="id"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <!-- END Committee Dropdowns -->
+                  <v-col cols="12" v-if="userType_id == 1">
                     <ValidationProvider
                       name="Office Type"
                       vid="office_type"
@@ -472,7 +816,22 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12">
+                  <v-col
+                    lg="6"
+                    md="6"
+                    cols="12"
+                    v-if="
+                      data.office_type == 4 ||
+                      data.office_type == 5 ||
+                      data.office_type == 6 ||
+                      data.office_type == 7 ||
+                      data.office_type == 8 ||
+                      data.office_type == 9 ||
+                      data.office_type == 8 ||
+                      data.office_type == 10 ||
+                      data.office_type == 11
+                    "
+                  >
                     <ValidationProvider
                       name="office"
                       vid="office_id"
@@ -625,7 +984,7 @@
                       ></v-text-field>
                     </ValidationProvider>
                   </v-col>
-                  <v-col v-if="data.user_type!=1" lg="6" md="6" cols="12">
+                  <v-col v-if="data.user_type != 1" lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Role"
                       vid="role_id"
@@ -650,7 +1009,7 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col v-if="data.user_type!=1" lg="6" md="6" cols="12">
+                  <v-col v-if="data.user_type != 1" lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="Status"
                       vid="status"
@@ -676,7 +1035,7 @@
                       ></v-select>
                     </ValidationProvider>
                   </v-col>
-                  <v-col v-if="data.user_type!=1" cols="12">
+                  <v-col v-if="data.user_type != 1" cols="12">
                     <ValidationProvider
                       name="Office Type"
                       vid="office_type"
@@ -836,7 +1195,7 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col v-if="data.user_type!=1" lg="6" md="6" cols="12">
+                  <v-col v-if="data.user_type != 1" lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="office"
                       vid="office_id"
@@ -974,6 +1333,17 @@ export default {
       city: [],
       roles: [],
       users: [],
+      userType_id: null,
+      userType: [
+        {
+          id: 1,
+          name_en: "Office User",
+        },
+        {
+          id: 2,
+          name_en: "Committee User",
+        },
+      ],
       officeType: [],
       pagination: {
         current: 1,
@@ -1092,32 +1462,31 @@ export default {
         if (value != null) {
           // role_id is array so we need to append it separately
           ud.append(key, value);
-          
+
           if (key == "role_id") {
             for (let i = 0; i < value.length; i++) {
               ud.append("role_id[]", value);
             }
           }
-           
         }
       }
       // return;
       // Include the _method field for PUT request
-      console.log('FormData:', ud);
+      console.log("FormData:", ud);
 
-      // delete ud["role_id"]; 
+      // delete ud["role_id"];
       // ud.delete("role_id");
 
       for (const [key, value] of ud.entries()) {
         console.log(`${key}: ${value}`);
       }
-            ud.append("_method", "PUT");
+      ud.append("_method", "PUT");
 
       this.$axios
-        .put("/admin/user/update/"+this.data.id, this.data, {
+        .put("/admin/user/update/" + this.data.id, this.data, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             // "Content-Type": "multipart/form-data",
             Accept: "application/json",
           },
@@ -1138,26 +1507,26 @@ export default {
           }
         });
     },
-    resetForm(){
-        this.data.id= null;
-        this.data.full_name= null;
-        this.data.username= null;
-        this.data.mobile= null;
-        this.data.email= null;
-        this.data.role_id= [];
-        this.data.status= 0;
-        this.data.office_type= null;
-        this.data.office_id= null;
-        this.data.division_id= null;
-        this.data.district_id= null;
-        this.data.thana_id= null;
-        this.data.city_corpo_id= null;
+    resetForm() {
+      this.data.id = null;
+      this.data.full_name = null;
+      this.data.username = null;
+      this.data.mobile = null;
+      this.data.email = null;
+      this.data.role_id = [];
+      this.data.status = 0;
+      this.data.office_type = null;
+      this.data.office_id = null;
+      this.data.division_id = null;
+      this.data.district_id = null;
+      this.data.thana_id = null;
+      this.data.city_corpo_id = null;
     },
     editDialog(item) {
       if (this.$refs.formEdit) {
         this.$refs.formEdit.reset();
       }
-      console.log(item,'user ');
+      console.log(item, "user ");
       this.dialogEdit = true;
       // console.log(item.roles[0].id, "roles id");
       console.log(item, "editDialog");
@@ -1528,11 +1897,25 @@ export default {
           console.log(err);
         });
     },
+    async GetAllCommitteeType() {
+      try {
+        this.$store.dispatch("getLookupByType", 17).then((data) => {
+          this.committee_types = data;
+          console.log(this.committee_types);
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async onChangeCommitteeType(event) {
+      this.data.committee_type = event;
+    },
   },
   watch: {
     "$i18n.locale": "updateHeaderTitle",
   },
   created() {
+    this.GetAllCommitteeType();
     this.getUsers();
     this.GetDivision();
     this.getRoles();
