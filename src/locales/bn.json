@@ -44,7 +44,8 @@
             "change_tracking_details": "ট্র্যাকিং বিবরণ পরিবর্তন করুন",
             "exit": "প্রোগ্রাম থেকে প্রস্থান করুন",
             "preview": "প্রিভিউ",
-            "approve": "অনুমোদন করুন"
+            "approve": "অনুমোদন করুন",
+            "remove": "অপসারণ"
         },
         "system_config": {
             "demo_graphic": {
@@ -209,7 +210,9 @@
                     "union_pouro_city": "ইউনিয়ন/জেলা পৌরসভা/সিটি কর্পোরেশন",
                     "upazila_city_district": "উপজেলা/জেলা পৌরসভা/সিটি কর্পোরেশন",
                     "union_ward": "ইউনিয়ন/ওয়ার্ড",
-                    "subLocation_type": "Sub Location"
+                    "subLocation_type": "Sub Location",
+                    "dist_pouro": "জেলা পৌরসভা",
+                    "union_pouro": "ইউনিয়ন /পৌরসভা"
                 },
                 "office": {
                     "office": "অফিস",

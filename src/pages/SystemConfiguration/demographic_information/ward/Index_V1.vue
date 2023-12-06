@@ -355,29 +355,7 @@
                     </ValidationProvider>
                   </v-col>
 
-                  <!-- <v-col v-if="data.location_type == 2" lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="union"
-                      vid="union_id"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        :hide-details="errors[0] ? false : true"
-                        v-model="data.union_id"
-                        outlined
-                        :label="
-                          $t('container.system_config.demo_graphic.ward.union')
-                        "
-                        :items="unions"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-autocomplete>
-                    </ValidationProvider>
-                  </v-col> -->
+                  
                   <v-col v-if="data.location_type == 3" cols="12">
                     <ValidationProvider name="city" vid="city_id" rules="required" v-slot="{ errors }">
                       <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.city_id"
