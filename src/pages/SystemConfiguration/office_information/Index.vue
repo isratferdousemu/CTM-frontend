@@ -1184,6 +1184,7 @@ export default {
 
       // alert(JSON.stringify(queryParams));
     },
+    // console.log(store.state.userData.location, ' -> userData')
 
     async GetOffices() {
       const queryParams = {
@@ -1192,8 +1193,10 @@ export default {
         page: this.pagination.current,
         sortBy: this.sortBy,
         sortDesc: this.sortDesc,
+        user_id: this.$store.state.userData.id,
       };
       console.log(queryParams);
+      console.log(this.$store.state.token, "token");
       this.$axios
         .get("/admin/office/get", {
           headers: {

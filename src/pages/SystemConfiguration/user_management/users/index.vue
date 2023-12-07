@@ -1634,6 +1634,7 @@ export default {
         searchText: this.search,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
+        user_id: this.$store.state.userData.id,
       };
       this.$axios
         .get("/admin/user/get", {
@@ -1646,9 +1647,9 @@ export default {
         .then((result) => {
           this.users = result.data.data;
           console.log(this.users, "getUsers");
-          this.pagination.current = result.data.meta.current_page;
-          this.pagination.total = result.data.meta.last_page;
-          this.pagination.grand_total = result.data.meta.total;
+          this.pagination.current = result.data.current_page;
+          this.pagination.total = result.data.last_page;
+          this.pagination.grand_total = result.data.total;
         });
     },
     async GetDivision() {

@@ -673,6 +673,7 @@ export default {
         sortBy: this.sortBy,
         sortDesc: this.sortDesc,
       };
+      console.log(this.$store.state.token, "div token");
       this.$axios
         .get("/admin/division/get", {
           headers: {
