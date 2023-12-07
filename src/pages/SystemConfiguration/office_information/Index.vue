@@ -92,7 +92,7 @@
       <v-dialog v-model="dialogAdd" width="1250">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.system_config.demo_graphic.office.add_new") }}
+            {{ $t("container.system_config.demo_graphic.office.add_new") }}{}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
@@ -124,11 +124,11 @@
                         v-model="data.division_id" outlined :label="$t(
                           'container.system_config.demo_graphic.division.division'
                         )
-                          " :items="divisions" item-text="name_en" item-value="id" required  :readonly="(data.city_id !== null)|| ((data.upazila_id !== null) && (data.office_type === 10))  "
+                          " :items="divisions" item-text="name_en" item-value="id" required  :readonly="(selectedWards.length > 0) || (selectedWards_UCDUpazila.length > 0)"
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12" v-if="data.office_type === 6 ||
+                  <v-col lg="6" md="6" cols="12" v-if="
                     data.office_type === 7 ||
                     data.office_type === 8 ||
                     data.office_type === 9 ||
@@ -140,7 +140,7 @@
                         @input="onChangeDistrict($event)" :label="$t(
                           'container.system_config.demo_graphic.district.district'
                         )
-                          " :items="districts" item-text="name_en" item-value="id" required  :readonly="(data.city_id !== null) || ((data.upazila_id !== null) && (data.office_type === 10))"
+                          " :items="districts" item-text="name_en" item-value="id" required  :readonly="(selectedWards.length > 0) || (selectedWards_UCDUpazila.length > 0)"
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
@@ -161,7 +161,7 @@
                       <v-autocomplete
                         :hide-details="errors[0] ? false : true"
                         outlined
-                       :readonly="(data.city_id !== null) || ((data.upazila_id !== null) && (data.office_type === 10))"
+                       :readonly="(selectedWards.length > 0) || (selectedWards_UCDUpazila.length > 0)"
                         v-model="data.upazila_id"
                        
                         :label="
@@ -212,7 +212,7 @@
                     <ValidationProvider name="city" vid="city_id" rules="required" v-slot="{ errors }">
                       <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.city_id"
                         @change="onChangeCity($event)" outlined :label="$t('container.system_config.demo_graphic.office.city')
-                          " :items="cities" item-text="name_en" item-value="id" required  :readonly="data.city_id !== null"
+                          " :items="cities" item-text="name_en" item-value="id" required   :readonly="(selectedWards.length > 0) || (selectedWards_UCDUpazila.length > 0)"
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
@@ -407,14 +407,14 @@
       <v-dialog v-model="dialogEdit" width="1250">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.system_config.demo_graphic.office.edit") }}
+            {{ $t("container.system_config.demo_graphic.office.edit") }} 
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
             <v-row> </v-row>
 
             <ValidationObserver ref="formAdd" v-slot="{ invalid }">
-              <form @submit.prevent="submitOffice()">
+              <form @submit.prevent="updateOffice()">
                 <v-row>
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider name="OfficeType" vid="officeType" rules="required" v-slot="{ errors }">
@@ -443,7 +443,7 @@
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12" v-if="data.office_type === 6 ||
+                  <v-col lg="6" md="6" cols="12" v-if="
                     data.office_type === 7 ||
                     data.office_type === 8 ||
                     data.office_type === 9 ||
@@ -494,12 +494,12 @@
                     </ValidationProvider>
                   </v-col>
                   <v-col v-if="data.office_type == 10" cols="12"  md="6" lg="6">
-                      <ValidationProvider name="subLocationType" vid="subLocationType" rules="required" v-slot="{ errors }">
+                      <ValidationProvider name="subLocationType" vid="subLocationType"  v-slot="{ errors }">
                         <v-autocomplete @input="onChangeSubLocationType($event)" v-model="data.sub_location_type" outlined
                           :label="$t(
                             'container.system_config.demo_graphic.ward.subLocation_type'
                           )
-                            " :items="subLocationType" item-text="value_en" item-value="id" required
+                            " :items="subLocationType" item-text="value_en" item-value="id" 
                           :error="errors[0] ? true : false" :error-messages="errors[0]"
                           :hide-details="errors[0] ? false : true"></v-autocomplete>
                       </ValidationProvider>
@@ -507,8 +507,8 @@
 
                     <v-col v-if="data.office_type == 10 && data.sub_location_type == 1
                       " cols="12"  md="6" lg="6">
-                      <ValidationProvider name="pouros" vid="pouros" rules="required" v-slot="{ errors }">
-                        <v-autocomplete v-model="data.pouro_id" outlined :label="$t('container.system_config.demo_graphic.ward.pouro')"  @input="onChangePouro($event)" :items="pouros" item-text="name_en" item-value="id" required
+                      <ValidationProvider name="pouros" vid="pouros"  v-slot="{ errors }">
+                        <v-autocomplete v-model="data.pouro_id" outlined :label="$t('container.system_config.demo_graphic.ward.pouro')"  @input="onChangePouro($event)" :items="pouros" item-text="name_en" item-value="id" 
                           :error="errors[0] ? true : false" :error-messages="errors[0]"
                           :hide-details="errors[0] ? false : true"></v-autocomplete>
                       </ValidationProvider>
@@ -516,8 +516,8 @@
 
                     <v-col v-if="data.sub_location_type == 2 && data.office_type == 10
                       " cols="12"  md="6" lg="6">
-                      <ValidationProvider name="unions" vid="unions" rules="required" v-slot="{ errors }">
-                        <v-autocomplete v-model="data.union_id" outlined :label="$t('container.system_config.demo_graphic.ward.union')" @input="onChangeUnion($event)" :items="unions" item-text="name_en" item-value="id" required
+                      <ValidationProvider name="unions" vid="unions"  v-slot="{ errors }">
+                        <v-autocomplete v-model="data.union_id" outlined :label="$t('container.system_config.demo_graphic.ward.union')" @input="onChangeUnion($event)" :items="unions" item-text="name_en" item-value="id" 
                           :error="errors[0] ? true : false" :error-messages="errors[0]"
                           :hide-details="errors[0] ? false : true"></v-autocomplete>
                       </ValidationProvider>
@@ -532,10 +532,10 @@
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12" v-if="data.office_type === 35">
-                    <ValidationProvider name="city" vid="city_corpo_id" rules="required" v-slot="{ errors }">
+                    <ValidationProvider name="city" vid="city_corpo_id"  v-slot="{ errors }">
                       <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.thana_id"
                         @change="onChangeThana($event)" outlined :label="$t('container.system_config.demo_graphic.ward.thana')
-                          " :items="final_thanas" item-text="name_en" item-value="id" required
+                          " :items="final_thanas" item-text="name_en" item-value="id" 
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
@@ -637,9 +637,9 @@
 
 
                 <v-row class="my-10">
-                  <v-col cols="12" v-if="selectedWards.length > 0">
-                    <v-data-table :headers="headersWard" :items="selectedWardsDetails" :search="search">
-                        <template v-slot:item.sl="{ item, index }">
+                  <!-- <v-col cols="12" v-if="selectedWards.length > 0">
+                    <v-data-table :headers="headersWard_edit" :items="edit[0].wards" :search="search">
+                        <template v-slot:item.sl_edit="{ item, index }">
                           {{
                            
                             index +1
@@ -650,7 +650,7 @@
                  
                   
                
-                   <template v-slot:item.action="{ item }">
+                   <template v-slot:item.action_edit="{ item }">
                           <v-tooltip top>
                             <template v-slot:activator="{ on }">
                               <v-btn fab x-small v-on="on" class="danger" elevation="0"
@@ -667,7 +667,38 @@
                         </template>
                       </v-data-table>
               
-                  </v-col>
+                  </v-col> -->
+                   <v-col cols="12" v-if="selectedWards.length > 0">
+                      <v-data-table :headers="headersWard" :items="selectedWardsDetails" :search="search">
+                          <template v-slot:item.sl="{ item, index }">
+                            {{
+
+                              index + 1
+
+                            }}
+                          </template>
+                    
+                 
+                  
+               
+                     <template v-slot:item.action="{ item }">
+                            <v-tooltip top>
+                              <template v-slot:activator="{ on }">
+                                <v-btn fab x-small v-on="on" class="danger" elevation="0"
+                                  @click="remove(item)">
+                                  <v-icon>mdi-trash-can-outline </v-icon>
+                                </v-btn>
+                              </template>
+                              <span>
+                                {{ $t("container.list.remove") }}
+                              </span>
+                            </v-tooltip>
+
+                        
+                          </template>
+                        </v-data-table>
+              
+                    </v-col>
                    <v-col cols="12" v-if="selectedWards_UCDUpazila.length > 0">
                       <v-data-table :headers="headersWard_ucd_upazila" :items="selectedWardsDetails_UCDUpazila" :search="search">
                           <template v-slot:item.sl_ucd_upazila="{ item, index }">
@@ -913,6 +944,7 @@ export default {
         sub_location_type: null,
       
       },
+      thanas_for_edit:[],
         subLocationType: [
         {
           id: 1,
@@ -1067,6 +1099,54 @@ export default {
        
       ];
     },
+     headersWard_edit() {
+      return [
+        {
+          text: this.$t("container.list.sl"),
+          value: "sl_edit",
+          align: "start",
+          sortable: false,
+        },
+
+        {
+          text: this.$t("container.system_config.demo_graphic.division.division"),
+          value: "parent.parent.parent.parent.parent.name_en",
+
+        },
+        {
+          text: this.$t("container.system_config.demo_graphic.district.district"),
+          value: "parent.parent.parent.parent.name_en",
+        },
+        {
+          text: this.$t(
+            "container.system_config.demo_graphic.ward.city"
+          ),
+          value: "parent.parent.parent.name_en",
+          sortable: false,
+        },
+        {
+          text: this.$t(
+            "container.system_config.demo_graphic.ward.thana"
+          ),
+          value: "parent.parent.name_en",
+          sortable: false,
+        },
+        {
+          text: this.$t(
+            "container.system_config.demo_graphic.ward.ward"
+          ),
+          value: "parent.name_en",
+          sortable: false,
+        },
+        {
+          text: this.$t("container.list.action"),
+          value: "action_edit",
+
+          sortable: false,
+        },
+
+      ];
+    },
      headersWard_ucd_upazila() {
       return [
         {
@@ -1147,6 +1227,7 @@ export default {
         .then((result) => {
           this.final_wards_ucd_upazila = result.data.data;
            this.wards_ucd_upazila = this.wards_ucd_upazila.concat(result.data.data);
+           console.log(this.wards_ucd_upazila,"called pouro properly")
         
         });
 
@@ -1162,6 +1243,7 @@ export default {
         .then((result) => {
           this.final_wards_ucd_upazila = result.data.data;
            this.wards_ucd_upazila = this.wards_ucd_upazila.concat(result.data.data);
+           console.log(this.wards_ucd_upazila, "called union properly")
 
         });
 
@@ -1248,11 +1330,12 @@ export default {
           ward_id: ward.id,
         };
       });
-      console.log(selectedWardsDetails,"selected ward")
+      console.log(this.selectedWardsDetails,"selected ward")
     },
         onChangeWards_UCDUpazila(selectedWards_UCDUpazila) {
       // Update selectedWardsDetails based on the selectedWards
-this.selectedWards=[];
+      this.selectedWards=[];
+      console.log(this.selectedWards_UCDUpazila,"selectedWards_UCDUpazila");
 
       this.selectedWardsDetails_UCDUpazila = selectedWards_UCDUpazila.map(wardId => {
         const ward_ucd_upazila_const = this.wards_ucd_upazila.find(w => w.id === wardId);
@@ -1262,7 +1345,7 @@ this.selectedWards=[];
         const pouro = this.pouros_all?.find(t => t.id === ward_ucd_upazila_const.parent.id);
         const union = this.unions_all?.find(u => u.id === ward_ucd_upazila_const.parent.id);
         
-    
+    console.log(ward_ucd_upazila_const ,"ward_ucd_upazila_const")
     
         return {
           division_ucd_upazila: division_ucd_upazila.name_en,
@@ -1330,13 +1413,42 @@ this.selectedWards=[];
       }
     },
     async updateOffice() {
+      // let fd = new FormData();
+      // for (const [key, value] of Object.entries(this.data)) {
+      //   if (key === "status" && value === null) {
+      //     fd.append(key, "0");
+      //   }
+      //   if (value !== null) {
+      //     fd.append(key, value);
+      //   }
+      // }
+       if (this.selectedWards && this.selectedWards.length > 0) {
+        this.data.selectedWards = this.selectedWards;
+
+      }
+      if (this.selectedWards_UCDUpazila && this.selectedWards_UCDUpazila.length > 0) {
+        this.data.selectedWards = this.selectedWards_UCDUpazila;
+
+      }
+
+
       let fd = new FormData();
       for (const [key, value] of Object.entries(this.data)) {
         if (key === "status" && value === null) {
           fd.append(key, "0");
         }
         if (value !== null) {
-          fd.append(key, value);
+          // fd.append(key, value);
+          // console.log(key, value,"fd values");
+          if (key == "selectedWards") {
+            for (let i = 0; i < value.length; i++) {
+              fd.append("selectedWards[" + i + "]", value[i]);
+
+            }
+          } else {
+            fd.append(key, value);
+          }
+
         }
       }
       try {
@@ -1357,25 +1469,8 @@ this.selectedWards=[];
       }
     },
    async editOffice(item) {
- const queryParams = {
-        id: item.id}
+        this.resetData();
 
-      await this.$axios
-        .get("/admin/office/get-ward-under-office",  {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-        params: queryParams,
-        })
-        .then((result) => {
-          this.edit = result.data;
-          console.log(this.edit.wards,"edit value")
-
-        });
-      this.resetData();
-
-      this.dialogEdit = true;
       this.data.id = item.id;
       this.data.office_type = item.office_type.id;
       this.office_type_id = item.office_type.id;
@@ -1385,11 +1480,13 @@ this.selectedWards=[];
       this.data.office_address = item.office_address;
       this.data.comment = item.comment;
       this.data.status = String(item.status);
+       this.dialogEdit = true;
    
 
       if (item?.assign_location?.type == "division") {
         console.log("division here");
         this.data.division_id = item?.assign_location?.id;
+          this.onChangeDivision(this.data.division_id);
         // this.data.division_id = item?.parent?.id; // 
       }
       if (item?.assign_location?.type == "district") {
@@ -1400,18 +1497,176 @@ this.selectedWards=[];
       }
       if (item?.assign_location?.parent?.parent?.type == "division") {
         this.data.division_id = item?.assign_location?.parent?.parent?.id;
+         console.log("division here 2nd");
         this.onChangeDivision(this.data.division_id);
+           console.log(this.districts, "districts in division here 3rd");
+         
       }
+  
       if (item?.assign_location?.parent?.type == "district") {
         this.data.district_id = item?.assign_location?.parent?.id;
+           console.log("district here 2nd");
         this.onChangeDistrict(this.data.district_id);
+          console.log(this.cities, "cities district here 2nd");
+     
+      }
+      
+      //  if (this.edit[0]?.wards[0]?.parent?.parent?.parent?.type == "city") {
+      //   this.data.city_id = this.edit[0]?.wards[0]?.parent?.parent?.parent?.id;
+      //   this.onChangeCity(this.data.city_id);
+      // }
+     
+      //  if (this.edit[0]?.wards[0]?.parent?.parent?.parent?.type == "thana" && this.edit[0]?.wards[0]?.parent?.parent?.parent?.location_type === 2) {
+      //   this.data.upazila_id = this.edit[0]?.wards[0]?.parent?.parent?.parent?.id;
+      // }
+      const queryParams = {
+        id: item.id
+      }
+
+      await this.$axios
+        .get("/admin/office/get-ward-under-office", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          this.edit = result.data;
+
+
+        });
+      if (item?.assign_location?.location_type?.value_en == "Upazila") {
+        this.data.upazila_id = item?.assign_location?.id;
+        this.selectedWards_UCDUpazila = this.edit[0].wards?.map(ward => ward.ward_id);
+        console.log(this.selectedWards_UCDUpazila,"upazila");
+       let uniqueParentIds = new Set();
+
+        this.edit[0].wards?.forEach((ward) => {
+          if(ward.parent?.parent?.type == "pouro"){
+             const parentId = ward.parent?.parent?.id;
+
+            if (parentId !== undefined && parentId !== null && !uniqueParentIds.has(parentId)) {
+              uniqueParentIds.add(parentId);
+               this.data.pouro_id = parentId
+              console.log(this.data.pouro_id, "Pouro id")
+              this.thanas_for_edit.push(parentId);
+                     setTimeout(() => {
+                       this.data.pouro_id = parentId
+                      
+                this.onChangeSubLocationType(1);
+              }, 1000);
+                   setTimeout(() => {
+                this.onChangePouro(this.data.pouro_id)
+                console.log(this.wards_ucd_upazila, "wards_ucd_upazila_pouro")
+              }, 2000);
+            }
+
+          }
+            if (ward.parent?.parent?.type == "union") {
+            const parentId = ward.parent?.parent?.id;
+
+            if (parentId !== undefined && parentId !== null && !uniqueParentIds.has(parentId)) {
+              uniqueParentIds.add(parentId);
+              this.data.union_id= parentId
+               console.log(this.data.union_id, "Union id")
+              this.thanas_for_edit.push(parentId);
+                   setTimeout(() => {
+                     
+                    this.data.union_id = parentId
+                  this.onChangeSubLocationType(2);
+              }, 1000);
+                 setTimeout(() => {
+              this.onChangeUnion(this.data.union_id)
+              console.log(this.wards_ucd_upazila, "wards_ucd_upazila_union")
+              }, 2000);
+            
+            }
+
+          }
+         
+        });
+        
+
+        setTimeout(() => {
+          this.onChangeWards_UCDUpazila(this.selectedWards_UCDUpazila);
+        }, 10000);
+     
+       
+        // this.onChangeWards_UCDUpazila(this.selectedWards_UCDUpazila);
       }
       if (item?.assign_location?.location_type?.value_en == "City Corporation") {
-        this.data.city_corpo_id = item?.assign_location?.id;
+      this.data.city_id = item?.assign_location?.id;
+       
+        this.selectedWards = this.edit[0].wards?.map(ward => ward.ward_id);
+       
+
+      //     this.thanas_for_edit= this.edit[0].wards?.map(ward => ward?.parent?.parent?.id);
+      //  console.log(this.thanas_for_edit, "this.thanas_for_edit check")
+      //   this.thanas_for_edit.forEach(id => {
+      //     this.onChangeThana(id);
+      //   });
+      //  let parentId;
+      // this.edit[0].wards?.forEach((ward) => {
+       
+      //      parentId = ward.parent?.parent?.id;
+          
+         
+      //       this.thanas_for_edit.push(parentId);
+      //       this.onChangeThana(parentId);
+          
+      //   });
+      let uniqueParentIds = new Set();
+
+        this.edit[0].wards?.forEach((ward) => {
+          const parentId = ward.parent?.parent?.id;
+
+          if (parentId !== undefined && parentId !== null && !uniqueParentIds.has(parentId)) {
+            uniqueParentIds.add(parentId);
+            this.thanas_for_edit.push(parentId);
+            this.onChangeThana(parentId);
+          }
+        });
+        console.log(this.thanas_for_edit,"unique thana id")
+          //   console.log(this.divisions, "divisions");
+        // console.log(this.data.division_id, "division_id");
+        // this.onChangeDivision(this.data.division_id);
+    
+        console.log(this.districts, "districts in city");
+         console.log(this.cities, "cities in city");
+         console.log(this.thanas, "thanas in city");
+          console.log(this.selectedWards, "wards in city");
+        
+        // console.log(this.data.district_id, "district_id");
+        // console.log(this.data.office_type, "office_type");
+        // this.onChangeOfficeType(this.data.office_type)
+        // console.log(this.cities, "cities");
+        // console.log(this.data.city_id, "city_id");
+
+        // console.log(this.thanas, "thanas");
+        // console.log(this.wards, "wards");
+        // // this.onChangeWards(this.selectedWards);
+        // console.log(this.selectedWards, "this.selectedWards");
+       
+        
+      setTimeout(() => {
+            this.onChangeCity(this.data.city_id);
+        }, 2000);   
+        
+    setTimeout(() => {
+          this.onChangeWards(this.selectedWards);
+        }, 3000);
+        // setTimeout(this.onchangeWards(this.selectedWards), 10000);
       }
+      if (item?.assign_location?.location_type?.value_en == "District Pouroshava") {
+        this.data.dist_pouro_id = item?.assign_location?.id;
+      }
+   
+      
       if (item?.assign_location?.location_type?.value_en == "Upazila") {
         this.data.thana_id = item?.assign_location?.id;
       }
+    
        
     },
     dialogOpen() {
@@ -1473,10 +1728,7 @@ this.selectedWards=[];
             });
         }
         if (this.location_type === 3) {
-          console.log("city enter");
-          console.log(this.data.district_id, "city enter");
-          console.log($event, "city enter");
-          console.log("Request URL:", "/admin/city/get/" + this.data.district_id + "/" + this.location_type);
+      
 
           this.$axios
             .get("/admin/city/get/" + this.data.district_id + "/" + this.location_type, {
@@ -1487,6 +1739,7 @@ this.selectedWards=[];
             })
             .then((result) => {
               this.cities = result.data.data;
+              console.log(this.cities,"cities called properly")
           
             })
             .catch((error) => {
@@ -1526,6 +1779,7 @@ this.selectedWards=[];
         .then((result) => {
           this.final_thanas = result.data.data
           this.thanas = this.thanas.concat(result.data.data);
+          console.log(this.thanas,"thana is called properly");
          
 
         });
@@ -1542,10 +1796,14 @@ this.selectedWards=[];
         .then((result) => {
           this.final_wards= result.data.data
            this.wards = this.wards.concat(result.data.data);
+             console.log(this.final_wards, "final wards thanaedit");
+          console.log(this.wards, "final wards thanaedit wards");
 
         });
 
     },
+ 
+
 
     async onChangeDivision(event) {
       await this.$axios
@@ -1557,7 +1815,8 @@ this.selectedWards=[];
         })
         .then((result) => {
           this.districts = result.data.data;
-        
+
+        console.log(this.districts," district function called properly")
         });
     },
     async onChangeDistrict($event) {
