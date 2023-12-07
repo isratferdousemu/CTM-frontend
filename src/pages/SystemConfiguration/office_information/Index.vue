@@ -92,7 +92,7 @@
       <v-dialog v-model="dialogAdd" width="1250">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.system_config.demo_graphic.office.add_new") }}{}
+            {{ $t("container.system_config.demo_graphic.office.add_new") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
