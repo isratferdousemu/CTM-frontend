@@ -280,6 +280,7 @@
                           name="city"
                           vid="city_corpo_id"
                           rules="required"
+                          
                           v-slot="{ errors }"
                         >
                           <v-autocomplete
@@ -656,6 +657,8 @@ export default {
         paurashava_id: null,
         members: [
           {
+
+            
             member_name: null,
             designation: null,
             address: null,
