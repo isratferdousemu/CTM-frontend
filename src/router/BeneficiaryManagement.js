@@ -10,6 +10,17 @@ const BeneficiaryManagementRoutes = [
           import(
             "../pages/BeneficiaryManagement/CommitteeManagement/Index.vue"
           ),
+      }, {
+        path: "/beneficiary-management/committee-permission",
+        name: "Committee-Permission",
+        meta: {
+          requiresAuth: true,
+          permission: "thana-list",
+        },
+        component: () =>
+          import(
+            "../pages/BeneficiaryManagement/CommitteeManagement/CommitteePermission/Index.vue"
+          ),
       },
     {
         path: "/beneficiary-management/committee/create",
