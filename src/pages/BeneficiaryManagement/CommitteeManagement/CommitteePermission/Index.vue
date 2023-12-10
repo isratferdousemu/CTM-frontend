@@ -62,14 +62,27 @@
                           1
                         }}
                       </template>
-                      <template v-slot:item.value_en="{ item }">
-                        {{ item.value_en }}
+
+                      <template v-slot:item.committee_permission.approve="{ item }">
+                        <PermissionBadge :permission="item.committee_permission"
+                                         :status="item.committee_permission?.approve"/>
                       </template>
 
-                      <template v-slot:committee_permission.approve="{ item }">
-<!--  {{committee_permission.approve}}-->
-                        <!--                        {{ committee_permission.approve ? 'u' : 'k'}}-->
+                      <template v-slot:item.committee_permission.forward="{ item }">
+                        <PermissionBadge :permission="item.committee_permission"
+                                         :status="item.committee_permission?.forward"/>
                       </template>
+
+                      <template v-slot:item.committee_permission.reject="{ item }">
+                        <PermissionBadge :permission="item.committee_permission"
+                                         :status="item.committee_permission?.reject"/>
+                      </template>
+
+                      <template v-slot:item.committee_permission.waiting="{ item }">
+                        <PermissionBadge :permission="item.committee_permission"
+                                         :status="item.committee_permission?.waiting"/>
+                      </template>
+
 
 
                       <!-- Action Button -->
@@ -92,14 +105,27 @@
                             {{ $t("container.list.view") }}
                           </span>
                         </v-tooltip>
+
+
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-
+                            <v-btn
+                                v-can="'update-post'"
+                                fab
+                                x-small
+                                v-on="on"
+                                color="success"
+                                elevation="0"
+                                @click="editDialog(item)"
+                            >
+                              <v-icon> mdi-account-edit-outline </v-icon>
+                            </v-btn>
                           </template>
                           <span>
                             {{ $t("container.list.edit") }}
                           </span>
                         </v-tooltip>
+
 
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
@@ -207,6 +233,7 @@
 </template>
   
   <script>
+import PermissionBadge from "../../../../components/BeneficiaryManagement/Committee/PermissionBadge.vue";
 import { mapState } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
@@ -219,61 +246,17 @@ export default {
     return {
       data: {
         id: null,
-        program_id: null,
-        // name_en: null,
-        details: null,
-        thana_id: null,
-        upazila_id: null,
-        office_type: null,
-        office_address: null,
-        comment: null,
-        status: "0",
-        division_id: null,
-        district_id: null,
-        location_type: null,
-        city_corpo_id: null,
-        city_thana_id: null,
-        paurashava_id: null,
-        ward_id: null,
-        committee_type: null,
-        ////
-        committee_type_name: null,
-        division_name: null,
-        district_name: null,
-        city_corpo_name: null,
-        city_thana_name: null,
-        paurashava_name: null,
-        ward_name: null,
-        thana_name: null,
-        upazila_name: null,
-        ///
-        members: [
-          {
-            member_name: null,
-            designation_id: [],
-            address: null,
-            email: null,
-            phone: null,
-          },
-        ],
+        type: null,
+        value_en: "",
+        value_bn: "",
+        committee_permission: {
+          approve: null,
+          forward: null,
+          reject: null,
+          waiting: null,
+        }
       },
-      committee: {
-        id: null,
-        code: null,
-        name: null,
-        program_id: null,
-        district_id: null,
-        office_id: null,
-        members: [
-          {
-            member_name: null,
-            designation_id: null,
-            address: null,
-            email: null,
-            phone: null,
-          },
-        ],
-      },
+
       office_type_id: null,
       isDistrictHidden: true,
       isLocationTypeHidden: true,
@@ -309,6 +292,7 @@ export default {
     };
   },
   components: {
+    PermissionBadge,
     ValidationProvider,
     ValidationObserver,
   },
