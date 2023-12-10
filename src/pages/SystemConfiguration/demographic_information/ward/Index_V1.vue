@@ -1152,15 +1152,26 @@ export default {
 
       
   
-       extend("twoDigitNumberGreaterThanZero", (value) => {
-        const numericValue = Number(value);
+      //  extend("twoDigitNumberGreaterThanZero", (value) => {
+      //   const numericValue = Number(value);
 
-        return (
-          !isNaN(numericValue) &&
-          numericValue > 0 &&
-          value.toString().length === 2
-        ) || this.$t("container.system_config.demo_graphic.ward.code") +
-          " must be a 2 digit numeric value and greater than 0";
+      //   return (
+      //     !isNaN(numericValue) &&
+      //     numericValue > 0 &&
+      //     value.toString().length === 2
+      //   ) || this.$t("container.system_config.demo_graphic.ward.code") +
+      //     " must be a 2 digit numeric value and greater than 0";
+      // });
+      extend("twoDigitNumberGreaterThanZero", {
+        validate: (value) => {
+          const numericValue = Number(value);
+
+          return (
+            !isNaN(numericValue) &&
+            numericValue > 0 &&
+            value.toString().length === 2
+          ) || "Ward code must be a 2 digit numeric value and greater than 0";
+        },
       });
     
       
@@ -1587,9 +1598,9 @@ export default {
       const inputString = item.name_en;
       // Extracting components
       const parts = inputString.split(' ');
-      const wardNo = parts[0] + ' ' + parts[1] + parts[2]; // "Ward No -"
+      const wardNo = parts[0] + ' ' + parts[1] + ' ' + parts[2]; // "Ward No -"
       const twoDigitNumber = parts[3]; // "01"
-      const restOfString = parts.slice(3).join(' '); // "suffix"
+      const restOfString = parts.slice(4).join(' '); // "suffix"
 
      
       this.data.ward = wardNo;
@@ -1599,9 +1610,9 @@ export default {
       const inputString_b = item.name_bn;
       // Extracting components
       const parts_b = inputString_b.split(' ');
-      const wardNo_b = parts_b[0] + ' ' + parts_b[1] + parts_b[2]; // "Ward No -"
+      const wardNo_b = parts_b[0] + ' ' + parts_b[1] + ' ' + parts_b[2]; // "Ward No -"
       const twoDigitNumber_b = parts_b[3]; // "01"
-      const restOfString_b = parts_b.slice(3).join(' '); // "suffix"
+      const restOfString_b = parts_b.slice(4).join(' '); // "suffix"
 
    
       this.data.ward_b = wardNo_b;
