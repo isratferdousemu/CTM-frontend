@@ -1313,6 +1313,8 @@ export default {
       this.onChangeWards_UCDUpazila(this.selectedWards_UCDUpazila);
     },
     onChangeWards(selectedWards) {
+      console.log(this.selectedWards,"selectedWards Check in wards")
+  
       this.selectedWards_UCDUpazila=[];
       // Update selectedWardsDetails based on the selectedWards
       this.selectedWardsDetails = selectedWards.map(wardId => {
@@ -1320,7 +1322,9 @@ export default {
         const district = this.districts.find(d => d.id === this.data.district_id);
         const division = this.divisions.find(div => div.id === this.data.division_id);
         const city = this.cities.find(c => c.id === this.data.city_id);
+        console.log(ward,"ward in ward")
         const thana = this.thanas.find(t => t.id === ward.parent.id);
+        
   return {
           division: division.name_en,
           district: district.name_en,
@@ -1468,7 +1472,7 @@ export default {
         console.log(e);
       }
     },
-   async editOffice(item) {
+   async  editOffice(item) {
         this.resetData();
 
       this.data.id = item.id;
@@ -1498,7 +1502,7 @@ export default {
       if (item?.assign_location?.parent?.parent?.type == "division") {
         this.data.division_id = item?.assign_location?.parent?.parent?.id;
          console.log("division here 2nd");
-        this.onChangeDivision(this.data.division_id);
+         await  this.onChangeDivision(this.data.division_id);
            console.log(this.districts, "districts in division here 3rd");
          
       }
@@ -1506,7 +1510,7 @@ export default {
       if (item?.assign_location?.parent?.type == "district") {
         this.data.district_id = item?.assign_location?.parent?.id;
            console.log("district here 2nd");
-        this.onChangeDistrict(this.data.district_id);
+         await  this.onChangeDistrict(this.data.district_id);
           console.log(this.cities, "cities district here 2nd");
      
       }
@@ -1523,7 +1527,7 @@ export default {
         id: item.id
       }
 
-      await this.$axios
+     await   this.$axios
         .get("/admin/office/get-ward-under-office", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
@@ -1538,7 +1542,7 @@ export default {
         });
       if (item?.assign_location?.location_type?.value_en == "Upazila") {
         this.data.upazila_id = item?.assign_location?.id;
-        this.selectedWards_UCDUpazila = this.edit[0].wards?.map(ward => ward.ward_id);
+           this.selectedWards_UCDUpazila = this.edit[0].wards?.map(ward => ward.ward_id);
         console.log(this.selectedWards_UCDUpazila,"upazila");
        let uniqueParentIds = new Set();
 
@@ -1554,7 +1558,7 @@ export default {
                      setTimeout(() => {
                        this.data.pouro_id = parentId
                       
-                this.onChangeSubLocationType(1);
+                  this.onChangeSubLocationType(1);
               }, 1000);
                    setTimeout(() => {
                 this.onChangePouro(this.data.pouro_id)
@@ -1574,7 +1578,7 @@ export default {
                    setTimeout(() => {
                      
                     this.data.union_id = parentId
-                  this.onChangeSubLocationType(2);
+                     this.onChangeSubLocationType(2);
               }, 1000);
                  setTimeout(() => {
               this.onChangeUnion(this.data.union_id)
@@ -1593,70 +1597,46 @@ export default {
         }, 10000);
      
        
-        // this.onChangeWards_UCDUpazila(this.selectedWards_UCDUpazila);
+      
       }
       if (item?.assign_location?.location_type?.value_en == "City Corporation") {
       this.data.city_id = item?.assign_location?.id;
        
         this.selectedWards = this.edit[0].wards?.map(ward => ward.ward_id);
+        console.log(this.selectedWards,"wards works properly or not")
        
 
-      //     this.thanas_for_edit= this.edit[0].wards?.map(ward => ward?.parent?.parent?.id);
-      //  console.log(this.thanas_for_edit, "this.thanas_for_edit check")
-      //   this.thanas_for_edit.forEach(id => {
-      //     this.onChangeThana(id);
-      //   });
-      //  let parentId;
-      // this.edit[0].wards?.forEach((ward) => {
-       
-      //      parentId = ward.parent?.parent?.id;
-          
-         
-      //       this.thanas_for_edit.push(parentId);
-      //       this.onChangeThana(parentId);
-          
-      //   });
+   
+    
       let uniqueParentIds = new Set();
 
         this.edit[0].wards?.forEach((ward) => {
           const parentId = ward.parent?.parent?.id;
 
           if (parentId !== undefined && parentId !== null && !uniqueParentIds.has(parentId)) {
-            uniqueParentIds.add(parentId);
-            this.thanas_for_edit.push(parentId);
-            this.onChangeThana(parentId);
+           
+        
+             uniqueParentIds.add(parentId);
+          //   console.log(parentId, "thana_id")
+  
+                   this.onChangeThana(parentId);
+               
+              
+         
+           
           }
         });
-        console.log(this.thanas_for_edit,"unique thana id")
-          //   console.log(this.divisions, "divisions");
-        // console.log(this.data.division_id, "division_id");
-        // this.onChangeDivision(this.data.division_id);
-    
-        console.log(this.districts, "districts in city");
-         console.log(this.cities, "cities in city");
-         console.log(this.thanas, "thanas in city");
-          console.log(this.selectedWards, "wards in city");
-        
-        // console.log(this.data.district_id, "district_id");
-        // console.log(this.data.office_type, "office_type");
-        // this.onChangeOfficeType(this.data.office_type)
-        // console.log(this.cities, "cities");
-        // console.log(this.data.city_id, "city_id");
-
-        // console.log(this.thanas, "thanas");
-        // console.log(this.wards, "wards");
-        // // this.onChangeWards(this.selectedWards);
-        // console.log(this.selectedWards, "this.selectedWards");
+     
        
         
       setTimeout(() => {
             this.onChangeCity(this.data.city_id);
-        }, 2000);   
-        
+        }, 3000);   
+       
     setTimeout(() => {
           this.onChangeWards(this.selectedWards);
-        }, 3000);
-        // setTimeout(this.onchangeWards(this.selectedWards), 10000);
+        }, 4000);
+        // setTimeout(this.onchangeWards(this.selectedWards), 5000);
       }
       if (item?.assign_location?.location_type?.value_en == "District Pouroshava") {
         this.data.dist_pouro_id = item?.assign_location?.id;
@@ -1794,10 +1774,12 @@ export default {
           },
         })
         .then((result) => {
+           console.log(this.wards, "faka array check");
           this.final_wards= result.data.data
+          console.log(this.final_wards, "final_wards thanaedit wards");
            this.wards = this.wards.concat(result.data.data);
-             console.log(this.final_wards, "final wards thanaedit");
-          console.log(this.wards, "final wards thanaedit wards");
+          
+          console.log(this.wards, " wards thanaedit wards");
 
         });
 
@@ -2057,7 +2039,7 @@ export default {
     });
     // this.GetOffices();
     this.GetAllDivisions();
-    this.GetLocationType();
+    // this.GetLocationType();
     this.GetAllUpazila();
     // this.GetCityCorporation();
     // this.$store
