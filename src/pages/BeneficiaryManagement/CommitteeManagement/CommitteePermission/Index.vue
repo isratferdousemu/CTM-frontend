@@ -175,25 +175,25 @@
               <v-container fluid>
                 <v-checkbox
                     v-model="data.approve"
-                    label="Approve"
+                    :label='$t("container.system_config.demo_graphic.committeePermission.approve")'
                     :value="true"
                 ></v-checkbox>
 
                 <v-checkbox
                     v-model="data.forward"
-                    label="Forward"
+                    :label='$t("container.system_config.demo_graphic.committeePermission.forward")'
                     :value="true"
                 ></v-checkbox>
 
                 <v-checkbox
                     v-model="data.reject"
-                    label="Reject"
+                    :label='$t("container.system_config.demo_graphic.committeePermission.reject")'
                     :value="true"
                 ></v-checkbox>
 
                 <v-checkbox
                     v-model="data.waiting"
-                    label="Waiting"
+                    :label='$t("container.system_config.demo_graphic.committeePermission.waiting")'
                     :value="true"
                 ></v-checkbox>
 
