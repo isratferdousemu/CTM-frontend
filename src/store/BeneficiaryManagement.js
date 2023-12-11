@@ -83,6 +83,43 @@ const actions = {
       });
   },
 
+
+  StoreCommitteePermission: ({ commit }, data) => {
+    return http()
+        .post("/admin/committee-permissions", data)
+        .then((result) => {
+          return result;
+        })
+        .catch((err) => {
+          const data = {
+            errors: err.response.data.errors,
+            error_status: err.response.message,
+          };
+          return err;
+        });
+  },
+
+  DeleteCommitteePermission: ({ commit }, id) => {
+    return http()
+        .delete(`/admin/committee-permissions/${id}`)
+        .then((result) => {
+
+          console.log('called', result)
+
+          return result;
+        })
+        .catch((err) => {
+
+          console.log(err.response)
+
+          const data = {
+            errors: err.response.data.errors,
+            error_status: err.response.message,
+          };
+          return err;
+        });
+  },
+
 };
 /* -------------------------------------------------------------------------- */
 /*                               Getters Define                               */
