@@ -330,13 +330,13 @@ export default {
   computed: {
     headers() {
       return [
-        { text: "#Sl", value: "id", align: "start", sortable: true },
-        { text: "Name", value: "value_en" },
-        { text: "Approve", value: "committee_permission.approve" },
-        { text: "Forward", value: "committee_permission.forward" },
-        { text: "Reject", value: "committee_permission.reject" },
-        { text: "Waiting", value: "committee_permission.waiting" },
-        { text: "Actions", value: "actions", align: "center", sortable: false },
+        { text: this.$t("container.list.sl"), value: "id", align: "start", sortable: true },
+        { text: this.$t("container.system_config.demo_graphic.committeePermission.name"), value: "value_en" },
+        { text: this.$t("container.system_config.demo_graphic.committeePermission.approve"), value: "committee_permission.approve" },
+        { text: this.$t("container.system_config.demo_graphic.committeePermission.forward"), value: "committee_permission.forward" },
+        { text: this.$t("container.system_config.demo_graphic.committeePermission.reject"), value: "committee_permission.reject" },
+        { text: this.$t("container.system_config.demo_graphic.committeePermission.waiting"), value: "committee_permission.waiting" },
+        { text: this.$t("container.list.action"), value: "actions", align: "center", sortable: false },
       ];
     },
 
