@@ -22,7 +22,12 @@ Vue.directive('can', {
   bind(el, binding, vnode) {
 
     // console.log(el,binding, vnode,'directive')
-        if (binding.value != 'common' && store.state && store.state.userData && store.state.userData.roleNames && store.state.userPermissions.findIndex(per => per.name === binding.value || per.module_name === binding.value  || per.sub_module_name === binding.value) === -1 && !store.state.userData.roleNames.includes("super-admin")) {
+        if (binding.value != 'common' 
+        && store.state 
+        && store.state.userData 
+        && store.state.userData.roleNames 
+        && store.state.userPermissions.findIndex(per => per.name === binding.value || per.module_name === binding.value  || per.sub_module_name === binding.value) === -1 
+        && !store.state.userData.roleNames.includes("super-admin")) {
             const comment = document.createComment(" ");
             Object.defineProperty(comment, "setAttribute", {
               value: () => undefined

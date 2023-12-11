@@ -4,7 +4,7 @@ const SystemConfigurationRoutes = [
     name: "Division",
     meta: {
       requiresAuth: true,
-      permission: "division-list",
+      permission: "division-view",
     },
     component: () =>
       import(
@@ -16,7 +16,7 @@ const SystemConfigurationRoutes = [
     name: "District",
     meta: {
       requiresAuth: true,
-      permission: "district-list",
+      permission: "district-view",
     },
     component: () =>
       import(
@@ -28,7 +28,7 @@ const SystemConfigurationRoutes = [
     name: "City",
     meta: {
       requiresAuth: true,
-      permission: "city-list",
+      permission: "city-view",
     },
     component: () =>
       import(
@@ -41,7 +41,7 @@ const SystemConfigurationRoutes = [
     name: "Thana",
     meta: {
       requiresAuth: true,
-      permission: "thana-list",
+      permission: "thana-view",
     },
     component: () =>
       import(
@@ -53,7 +53,7 @@ const SystemConfigurationRoutes = [
     name: "Union",
     meta: {
       requiresAuth: true,
-      permission: "union-list",
+      permission: "union-view",
     },
     component: () =>
       import(
@@ -65,7 +65,7 @@ const SystemConfigurationRoutes = [
     name: "Ward",
     meta: {
       requiresAuth: true,
-      permission: "ward-list",
+      permission: "ward-view",
     },
     component: () =>
       import(
@@ -81,7 +81,7 @@ const SystemConfigurationRoutes = [
     name: "Menu",
     meta: {
       requiresAuth: true,
-      permission: "menu-list",
+      permission: "menu-view",
     },
     component: () => import("../pages/SystemConfiguration/menu/Index.vue"),
   },
@@ -113,7 +113,7 @@ const SystemConfigurationRoutes = [
     name: "DeviceRegistration",
     meta: {
       requiresAuth: true,
-      permission: "device-list",
+      permission: "device-view",
     },
     component: () => import("../pages/SystemConfiguration/device_registration/Index.vue")
   },
@@ -145,7 +145,7 @@ const SystemConfigurationRoutes = [
     name: "OfficeInformation",
     meta: {
       requiresAuth: true,
-      permission: "office-list",
+      permission: "office-view",
     },
     component: () => import("../pages/SystemConfiguration/office_information/Index.vue")
   },
@@ -175,7 +175,7 @@ const SystemConfigurationRoutes = [
     name: "Role",
     meta: {
       requiresAuth: true,
-      permission: "role-list",
+      permission: "role-view",
     },
     component: () => import("../pages/SystemConfiguration/user_management/roles/Index.vue")
   },
@@ -217,7 +217,7 @@ const SystemConfigurationRoutes = [
     name: "userList",
     meta: {
       requiresAuth: true,
-      permission: "user-list",
+      permission: "user-view",
     },
     component: () => import("../pages/SystemConfiguration/user_management/users/index.vue")
   },
@@ -226,7 +226,7 @@ const SystemConfigurationRoutes = [
     name: "financial_year_list",
     meta: {
       requiresAuth: true,
-      permission: "financial-year-list",
+      permission: "financial-year-view",
     },
     component: () => import("../pages/SystemConfiguration/financial_year/Index.vue")
   },

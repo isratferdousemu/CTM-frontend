@@ -24,7 +24,7 @@ import CommonRoutes from "./Common";
 import store from "../store/index";
 // import components
 import DefaultLayout from "../layouts/defaultLayout.vue";
- 
+
 
 const routes = [
   ...CommonRoutes,
@@ -71,26 +71,39 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  console.log(to.meta, ' -> menu permission');
   if (to.meta.requiresAuth) {
+    console.log(store.getters.GetUserPermissions, ' -> permission')
+    console.log(store.state.userData, ' -> userData')
     // Page requires authentication
     if (store.state.token) {
-      console.log(store.getters.GetUserPermissions,' -> permission')
-      console.log(to.meta,' -> menu permission')
-      if ( store.state && store.state.userData && store.state.userData.roleNames && !store.state.userData.roleNames.includes("super-admin")) {
-        if (to.meta.permission != "common" && store.getters.GetUserPermissions.findIndex(per => per.name === to.meta.permission || per.module_name === to.meta.permission || per.sub_module_name === to.meta.permission) === -1) {
-          console.log(to.meta.permission != "common" && store.getters.GetUserPermissions.findIndex(per => per.name === to.meta.permission || per.module_name === to.meta.permission || per.sub_module_name === to.meta.permission) === -1);
+      console.log(store.state.userData.roleNames, ' -> roleNames');
+
+      console.log(to.meta, ' -> menu permission');
+      if (store.state && store.state.userData && store.state.userData.roleNames && !store.state.userData.roleNames.includes("super-admin")) {
+          console.log(to.meta.permission != "common" && 
+          store.getters.GetUserPermissions.findIndex(per => 
+            per.name === to.meta.permission 
+            // || per.module_name === to.meta.permission
+            // || per.sub_module_name === to.meta.permission            
+            ) === -1);
+
+        if (to.meta.permission != "common" && store.getters.GetUserPermissions.findIndex(per => per.name === to.meta.permission || per.module_name === to.meta.permission || per.sub_module_name === to.meta.permission) === -1)
+        {
           next('/dashboard');
         } else {
           next();
         }
-      } 
+      }
       // User is authenticated, allow access
       next();
     } else {
       // User is not authenticated, redirect to login page
       next('/login');
     }
-  }else if (to.meta.guest) {
+    // next();
+
+  } else if (to.meta.guest) {
     if (store.state.token) {
       // User is already logged in, redirect to the home page or any other authorized page
       next('/');
@@ -98,7 +111,7 @@ router.beforeEach((to, from, next) => {
       // User is not logged in, allow access to the login page
       next();
     }
-  }  else {
+  } else {
     // Page doesn't require authentication
     next();
   }

@@ -44,7 +44,8 @@
             "change_tracking_details":"Change Tracking Details",
             "exit":"Exit Program",
             "preview":"Preview",
-            "approve":"Approve"
+            "approve":"Approve",
+            "remove":"Remove"
             
         },
         "system_config": {
@@ -216,7 +217,9 @@
                     "union_pouro_city": "Thana/ Union/ Pouroshava",
                     "union_ward": "Union/Ward",
                     "subLocation_type": "Sub Location",
-                    "pouroshava":"Pouroshava"
+                    "pouroshava":"Pouroshava",
+                    "dist_pouro": "Distrcit Pouroshava",
+                    "union_pouro":"Union /Pouroshava"
                 },
                 "office": {
                     "office": "Office",
@@ -331,8 +334,9 @@
                     "role_id": "Select Role",
                     "status": "Status",
                     "edit": "Edit User",
-                    "office_type": "Select Office Type",
-                    "office_id": "Select Office",
+                    "office_type": "Office Type",
+                    "user_type": "User Type",
+                    "office_id": "Office",
                     "office": "Office",
                     "delete": "User Delete",
                     "division_id": "Select Division",
