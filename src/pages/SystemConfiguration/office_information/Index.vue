@@ -375,7 +375,7 @@
           <v-card-text class="mt-7">
             <v-row> </v-row>
 
-            <ValidationObserver ref="formAdd" v-slot="{ invalid }">
+            <ValidationObserver ref="formEdit" v-slot="{ invalid }">
               <form @submit.prevent="updateOffice()">
                 <v-row>
                   <v-col lg="6" md="6" cols="12">
@@ -384,7 +384,8 @@
                         v-model="data.office_type" outlined :label="$t(
                           'container.system_config.demo_graphic.office.office_type'
                         )
-                          " :items="officeType" item-text="value_en" item-value="id"   :readonly="(data.city_id !== null) || ((data.upazila_id !== null) && (data.office_type === 10))" 
+                          " :items="officeType" item-text="value_en" item-value="id"
+                        :readonly="(data.city_id !== null) || ((data.upazila_id !== null) && (data.office_type === 10))"
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
@@ -486,7 +487,7 @@
                   <v-col lg="6" md="6" cols="12" v-if="data.office_type === 35">
                     <ValidationProvider name="ward" vid="ward_id" v-slot="{ errors }">
                       <v-autocomplete :hide-details="errors[0] ? false : true" v-model="selectedWards_edit"
-                        @change="onChangeWards($event)" outlined :label="$t('container.system_config.demo_graphic.ward.ward')
+                        @change="onChangeWards_edit($event)" outlined :label="$t('container.system_config.demo_graphic.ward.ward')
                           " :items="final_wards" item-text="name_en" item-value="id" multiple
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
@@ -495,7 +496,7 @@
                   <v-col lg="6" md="6" cols="12" v-if="data.office_type === 10">
                     <ValidationProvider name="ward" vid="ward_id_upazila_ucd" v-slot="{ errors }">
                       <v-autocomplete :hide-details="errors[0] ? false : true" v-model="selectedWards_UCDUpazila_edit"
-                        @change="onChangeWards_UCDUpazila($event)" outlined :label="$t('container.system_config.demo_graphic.ward.ward')
+                        @change="onChangeWards_UCDUpazila_edit($event)" outlined :label="$t('container.system_config.demo_graphic.ward.ward')
                           " :items="final_wards_ucd_upazila" item-text="name_en" item-value="id" multiple
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
@@ -1321,6 +1322,7 @@ export default {
       this.onChangeWards_UCDUpazila(this.selectedWards_UCDUpazila);
     },
     onChangeWards(selectedWards) {
+
       console.log(this.selectedWards, "selectedWards Check in wards")
       if (this.selectedWards.length > 0) {
         this.selectedWards_UCDUpazila = [];
@@ -1351,6 +1353,72 @@ export default {
 
 
     },
+    onChangeWards_edit(selectedWards_edit) {
+
+      console.log(this.selectedWards_edit, "selectedWards Check in wards")
+      if (this.selectedWards_edit.length > 0) {
+        this.selectedWards_UCDUpazila = [];
+        // Update selectedWardsDetails based on the selectedWards
+        this.selectedWardsDetails = selectedWards_edit.map(wardId => {
+          const ward = this.wards.find(w => w.id === wardId);
+          const district = this.districts.find(d => d.id === this.data.district_id);
+          const division = this.divisions.find(div => div.id === this.data.division_id);
+          const city = this.cities.find(c => c.id === this.data.city_id);
+          console.log(this.wards, "all wards")
+          console.log(ward, "const ward in ward")
+          const thana = this.thanas.find(t => t.id === ward.parent.id);
+
+          return {
+            division: division.name_en,
+            district: district.name_en,
+            city: city.name_en,
+            thana: thana.name_en,
+            ward: ward.name_en,
+            ward_id: ward.id,
+          };
+        });
+        console.log(this.selectedWardsDetails, "selected ward")
+        this.selectedWards = this.selectedWards_edit;
+
+      }
+
+
+
+
+    },
+
+    onChangeWards_UCDUpazila_edit(selectedWards_UCDUpazila_edit) {
+      // Update selectedWardsDetails based on the selectedWards
+      this.selectedWards = [];
+      console.log(this.selectedWards_UCDUpazila, "selectedWards_UCDUpazila");
+      console.log(this.wards_ucd_upazila, "all wards");
+
+
+      this.selectedWardsDetails_UCDUpazila = selectedWards_UCDUpazila_edit.map(wardId => {
+        const ward_ucd_upazila_const = this.wards_ucd_upazila.find(w => w.id === wardId);
+        const district_ucd_upazila = this.districts.find(d => d.id === this.data.district_id);
+        const division_ucd_upazila = this.divisions.find(div => div.id === this.data.division_id);
+        const upazila = this.upazilas.find(c => c.id === this.data.upazila_id);
+        const pouro = this.pouros_all?.find(t => t.id === ward_ucd_upazila_const?.parent?.id);
+        const union = this.unions_all?.find(u => u.id === ward_ucd_upazila_const?.parent?.id);
+
+        console.log(ward_ucd_upazila_const, "ward_ucd_upazila_const")
+
+        return {
+          division_ucd_upazila: division_ucd_upazila.name_en,
+          district_ucd_upazila: district_ucd_upazila.name_en,
+          upazila: upazila.name_en,
+          union: union?.name_en,
+          pouro: pouro?.name_en,
+          ward_ucd_upazila: ward_ucd_upazila_const?.name_en,
+          ward_id_ucd_upazila: ward_ucd_upazila_const?.id,
+
+        };
+      });
+
+      this.selectedWards_UCDUpazila = this.selectedWards_UCDUpazila_edit;
+
+    },
     onChangeWards_UCDUpazila(selectedWards_UCDUpazila) {
       // Update selectedWardsDetails based on the selectedWards
       this.selectedWards = [];
@@ -1379,7 +1447,6 @@ export default {
 
         };
       });
-
 
 
     },
@@ -1436,57 +1503,52 @@ export default {
       }
     },
     async updateOffice() {
-      // let fd = new FormData();
-      // for (const [key, value] of Object.entries(this.data)) {
-      //   if (key === "status" && value === null) {
-      //     fd.append(key, "0");
-      //   }
-      //   if (value !== null) {
-      //     fd.append(key, value);
-      //   }
-      // }
-      console.log(this.selectedWards_edit,"this.selectedWards_edit")
-      console.log(this.selectedWards_edit, "this.selectedWards")
-        
+      console.log(this.message, "this.message 1st start")
 
-      if (this.selectedWards_edit && this.selectedWards_edit.length > 0) {
+      console.log(this.selectedWards_edit, "this.selectedWards_edit")
+      console.log(this.selectedWards, "this.selectedWards")
+
+
+      if (this.data.office_type === 35 && this.selectedWards_edit && this.selectedWards_edit.length > 0) {
         this.data.selectedWards = this.selectedWards_edit;
+        console.log(this.selectedWards, "this.selectedWards city if")
 
       }
-      else {
+      else if (this.data.office_type === 35 && this.selectedWards_edit && this.selectedWards_edit.length === 0) {
+
         this.data.selectedWards = this.selectedWards;
+        console.log(this.selectedWards, "this.selectedWards city else")
       }
-      console.log(this.data.selectedWards, "this.data.selectedWards")
-      if (this.selectedWards_UCDUpazila_edit && this.selectedWards_UCDUpazila_edit.length > 0) {
+      //console.log(this.data.selectedWards, "this.data.selectedWards")
+      if (this.data.office_type === 10 && this.selectedWards_UCDUpazila_edit && this.selectedWards_UCDUpazila_edit.length > 0) {
         this.data.selectedWards = this.selectedWards_UCDUpazila_edit;
+        console.log(this.selectedWards, "this.selectedWards upazila if")
 
+      }
+      else if (this.data.office_type === 10 && this.selectedWards_UCDUpazila_edit && this.selectedWards_UCDUpazila_edit.length === 0) {
+        this.data.selectedWards = this.selectedWards_UCDUpazila;
+        console.log(this.selectedWards, "this.selectedWards upazila else")
+      }
+
+      if ((this.data.selectedWards.length === 0 && this.data.office_type === 10 )|| (this.data.selectedWards.length === 0 && this.data.office_type === 35)) {
+        this.message = "wards need to add under this Office type"
+        console.log(this.message, "this.message not null")
       }
       else {
-        this.data.selectedWards = this.selectedWards_UCDUpazila;
+        this.message = null;
+        console.log(this.message, "this.message  null")
+
       }
-      // if ((this.data.office_type === 35) && ( this.data.selectedWards.length === 0)) {
-      //   this.message = "Ward has to  added under UCD (City coporation Office )";
-      //   console.log(this.data.selectedWards, " this.data.selectedWards null or not")
-      //   console.log(this.message, "  this.message")
 
-      // }
-      // else if ((this.data.office_type === 10) &&  (this.data.selectedWards.length === 0)) {
-      //   this.message = "Ward has to  added under UCD (Upazila)";
-      //   console.log(this.data.selectedWards, " this.data.selectedWards null or not")
-      //   console.log(this.message, "  this.message")
-
-      // }
-      // else {
-        console.log(this.data.selectedWards, " this.data.selectedWards null or not else")
-
+      if (this.message === null) {
+        console.log(this.message, "this.message  null")
         let fd = new FormData();
         for (const [key, value] of Object.entries(this.data)) {
           if (key === "status" && value === null) {
             fd.append(key, "0");
           }
           if (value !== null) {
-            // fd.append(key, value);
-            // console.log(key, value,"fd values");
+
             if (key == "selectedWards") {
               for (let i = 0; i < value.length; i++) {
                 fd.append("selectedWards[" + i + "]", value[i]);
@@ -1508,19 +1570,27 @@ export default {
               this.GetOffices();
             } else {
               this.$refs.formEdit.setErrors(data.errors);
-              // this.errors = data.errors;
+
             }
           });
         } catch (e) {
           console.log(e);
         }
-      // }y
-      
+
+      }
+      console.log(this.data.selectedWards, " this.data.selectedWards final")
+
+
+
+
 
 
 
     },
     async editOffice(item) {
+      if (this.$refs.formEdit) {
+        this.$refs.formEdit.reset();
+      }
       this.resetData();
 
       this.data.id = item.id;
@@ -1571,6 +1641,7 @@ export default {
       //  if (this.edit[0]?.wards[0]?.parent?.parent?.parent?.type == "thana" && this.edit[0]?.wards[0]?.parent?.parent?.parent?.location_type === 2) {
       //   this.data.upazila_id = this.edit[0]?.wards[0]?.parent?.parent?.parent?.id;
       // }
+
       const queryParams = {
         id: item.id
       }
@@ -1588,6 +1659,9 @@ export default {
 
 
         });
+
+
+
       if (item?.assign_location?.location_type?.value_en == "Upazila") {
         this.data.upazila_id = item?.assign_location?.id;
         this.selectedWards_UCDUpazila = this.edit[0].wards?.map(ward => ward.ward_id);
@@ -1609,7 +1683,7 @@ export default {
                 this.onChangeSubLocationType(1);
               }, 1000);
               setTimeout(() => {
-                this.onChangePouro_1(this.data.pouro_id)
+                this.onChangePouro_1(parentId)
                 console.log(this.wards_ucd_upazila, "wards_ucd_upazila_pouro")
               }, 2000);
             }
@@ -1629,7 +1703,7 @@ export default {
                 this.onChangeSubLocationType(2);
               }, 1000);
               setTimeout(() => {
-                this.onChangeUnion_1(this.data.union_id)
+                this.onChangeUnion_1(parentId)
                 console.log(this.wards_ucd_upazila, "wards_ucd_upazila_union")
               }, 2000);
 
@@ -1649,6 +1723,9 @@ export default {
       }
       if (item?.assign_location?.location_type?.value_en == "City Corporation") {
         this.data.city_id = item?.assign_location?.id;
+
+
+
         console.log(this.edit[0].wards, "item wards");
         this.selectedWards = this.edit[0].wards?.map(ward => ward.ward_id);
         console.log(this.selectedWards, "wards works properly or not")
@@ -1682,8 +1759,9 @@ export default {
         }, 3000);
 
         setTimeout(() => {
+          console.log(this.selectedWards, "this.selectedWards before onwards call")
           this.onChangeWards(this.selectedWards);
-        }, 4000);
+        }, 10000);
         // setTimeout(this.onchangeWards(this.selectedWards), 5000);
       }
       if (item?.assign_location?.location_type?.value_en == "District Pouroshava") {
@@ -1828,7 +1906,7 @@ export default {
         .then((result) => {
           this.final_thanas = result.data.data
           this.thanas = this.thanas.concat(result.data.data);
-          console.log(this.thanas, "thana is called properly");
+          console.log(this.thanas, "city is called properly all thana show");
 
 
         });
