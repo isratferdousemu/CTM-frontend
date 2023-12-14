@@ -45,6 +45,7 @@ export default {
         { text: this.$t('container.system_config.allowance_program.name_bn'), value: "name_bn" },
         { text: this.$t('container.system_config.allowance_program.payment_cycle'), value: "payment_cycle" },
         { text: this.$t('container.system_config.allowance_program.status'), value: "is_active" },
+        { text: this.$t('container.system_config.allowance_program.system_status'), value: "is_active" },
         { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false },
       ]
     }
@@ -187,16 +188,35 @@ export default {
                           <v-btn
                               :disabled="item.default === 1"
                               fab
+                              style="margin-right: 10px;"
                               x-small
                               color="success"
                               v-on="on"
                               router
                               :to="`/system-configuration/allowance-program/edit/${item.id}`"
                           >
-                            <v-icon>mdi-account-edit-outline</v-icon>
+                          <v-icon>mdi-account-edit-outline</v-icon>
                           </v-btn>
                         </template>
-                        <span>Edit</span>
+                        <span>Setings</span>
+                      </v-tooltip>
+
+                      <v-tooltip top>
+                        <template v-slot:activator="{ on }">
+                          <v-btn
+                              :disabled="item.default === 1"
+                              fab
+                              x-small
+                              color="success"
+                              v-on="on"
+                              router
+                              :to="`/system-configuration/allowance-program/edit/${item.id}`"
+                          >
+                            <v-icon>mdi-cogs</v-icon>
+                            <!-- <v-icon>mdi-account-edit-outline</v-icon> -->
+                          </v-btn>
+                        </template>
+                        <span>Setings</span>
                       </v-tooltip>
 
                       <v-tooltip top>
