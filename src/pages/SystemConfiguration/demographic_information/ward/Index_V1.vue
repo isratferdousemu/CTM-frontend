@@ -914,8 +914,8 @@
                     <v-row>
                       <v-col cols="12" md="4" lg="4">
                         <ValidationProvider
-                          name="Code"
-                          vid="code"
+                          name="ward_b"
+                          vid="ward_b"
                           v-slot="{ errors }"
                         >
                           <v-text-field
@@ -930,8 +930,7 @@
                               )
                             "
                             required
-                            :error="errors[0] ? true : false"
-                            :error-messages="errors[0]"
+                         
                           ></v-text-field>
                         </ValidationProvider>
                       </v-col>

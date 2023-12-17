@@ -139,7 +139,7 @@
                         @input="onChangeDistrict($event)" :label="$t(
                           'container.system_config.demo_graphic.district.district'
                         )
-                          " :items="districts" item-text="name_en" item-value="id" required
+                          " :items="districts" item-text="name_en" item-value="id`" required
                         :readonly="((selectedWards.length > 0) && (data.office_type === 35)) || ((selectedWards_UCDUpazila.length > 0) && (data.office_type === 10))"
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
@@ -385,7 +385,7 @@
                           'container.system_config.demo_graphic.office.office_type'
                         )
                           " :items="officeType" item-text="value_en" item-value="id"
-                        :readonly="(data.city_id !== null) || ((data.upazila_id !== null) && (data.office_type === 10))"
+                        :readonly="((selectedWards.length > 0) && (data.office_type === 35)) || ((selectedWards_UCDUpazila.length > 0) && (data.office_type === 10))"
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
@@ -403,7 +403,7 @@
                           'container.system_config.demo_graphic.division.division'
                         )
                           " :items="divisions" item-text="name_en" item-value="id" required
-                        :readonly="(data.city_id !== null) || ((data.upazila_id !== null) && (data.office_type === 10))"
+                       :readonly="((selectedWards.length > 0) && (data.office_type === 35)) || ((selectedWards_UCDUpazila.length > 0) && (data.office_type === 10))"
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
@@ -419,7 +419,7 @@
                           'container.system_config.demo_graphic.district.district'
                         )
                           " :items="districts" item-text="name_en" item-value="id" required
-                        :readonly="(data.city_id !== null) || ((data.upazila_id !== null) && (data.office_type === 10))"
+                        :readonly="((selectedWards.length > 0) && (data.office_type === 35)) || ((selectedWards_UCDUpazila.length > 0) && (data.office_type === 10))"
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
@@ -427,7 +427,7 @@
                     data.office_type === 10">
                     <ValidationProvider name="Upazila" vid="upazila" rules="required" v-slot="{ errors }">
                       <v-autocomplete :hide-details="errors[0] ? false : true" outlined
-                        :readonly="(data.city_id !== null) || ((data.upazila_id !== null) && (data.office_type === 10))"
+                         :readonly="((selectedWards.length > 0) && (data.office_type === 35)) || ((selectedWards_UCDUpazila.length > 0) && (data.office_type === 10))"
                         v-model="data.upazila_id" :label="$t(
                           'container.system_config.demo_graphic.office.upazila'
                         )
@@ -1204,18 +1204,9 @@ export default {
         .then((result) => {
           this.selectedWards_UCDUpazila_edit = this.selectedWards_UCDUpazila
           this.final_wards_ucd_upazila = result.data.data;
-          console.log(this.final_wards_ucd_upazila, "only union wards")
           this.wards_ucd_upazila = this.wards_ucd_upazila.concat(result.data.data);
-          console.log(this.wards_ucd_upazila, "cancat wards union")
-          //  if(this.data.union_id){
-          //  this.selectedWards_UCDUpazila= selectedWards_UCDUpazila_edit
-          //  }
-          //  else{
-          //  this.selectedWards_UCDUpazila=[]
-          //  }
-
-
-
+          
+      
         });
 
     },
@@ -1234,13 +1225,7 @@ export default {
           console.log(this.final_wards_ucd_upazila, "only union wards")
           this.wards_ucd_upazila = this.wards_ucd_upazila.concat(result.data.data);
           console.log(this.wards_ucd_upazila, "cancat wards union")
-          //  if(this.data.union_id){
-          //  this.selectedWards_UCDUpazila= selectedWards_UCDUpazila_edit
-          //  }
-          //  else{
-          //  this.selectedWards_UCDUpazila=[]
-          //  }
-
+   
 
 
         });
