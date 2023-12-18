@@ -45,6 +45,7 @@ export default {
         { text: this.$t('container.system_config.allowance_program.name_bn'), value: "name_bn" },
         { text: this.$t('container.system_config.allowance_program.payment_cycle'), value: "payment_cycle" },
         { text: this.$t('container.system_config.allowance_program.status'), value: "is_active" },
+        { text: this.$t('container.system_config.allowance_program.system_status'), value: "is_active" },
         { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false },
       ]
     }
@@ -187,17 +188,20 @@ export default {
                           <v-btn
                               :disabled="item.default === 1"
                               fab
+                              style="margin-right: 10px;"
                               x-small
                               color="success"
                               v-on="on"
                               router
                               :to="`/system-configuration/allowance-program/edit/${item.id}`"
                           >
-                            <v-icon>mdi-account-edit-outline</v-icon>
+                          <v-icon>mdi-account-edit-outline</v-icon>
                           </v-btn>
                         </template>
-                        <span>Edit</span>
+                        <span>{{ $t('container.list.edit') }}</span>
                       </v-tooltip>
+
+                   
 
                       <v-tooltip top>
                         <template v-slot:activator="{ on }">
@@ -213,7 +217,7 @@ export default {
                             <v-icon>mdi-delete</v-icon>
                           </v-btn>
                         </template>
-                        <span>Delete</span>
+                    <span>{{ $t('container.list.delete') }}</span>
                       </v-tooltip>
                     </template>
                   </v-data-table>

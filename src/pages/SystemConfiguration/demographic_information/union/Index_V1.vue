@@ -1432,21 +1432,21 @@ export default {
       extend("codeRules", (value) => {
         if (this.data.location_type === 3) {
           return (
-            value.toString().length <= 6 ||
+            value.toString().length <= 5 ||
             this.$t("container.system_config.demo_graphic.union1.code") +
               " can have maximum 6 digit"
           );
         }
         if (this.data.location_type === 1) {
           return (
-            value.toString().length <= 6 ||
+            value.toString().length <= 5 ||
             this.$t("container.system_config.demo_graphic.pouro.code") +
               " can have maximum 6 digit"
           );
         }
         if (this.data.location_type === 2) {
           return (
-            value.toString().length <= 6 ||
+            value.toString().length <= 5 ||
             this.$t("container.system_config.demo_graphic.thana1.code") +
               " can have maximum 6 digit"
           );
