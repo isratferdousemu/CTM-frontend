@@ -301,7 +301,7 @@ const SystemConfigurationRoutes = [
       requiresAuth: true,
       permission: "allowance-edit",
     },
-    component: () => import("../pages/SystemConfiguration/allowance_program/AdditionalField/Index.vue")
+    component: () => import("../pages/SystemConfiguration/allowance_program/AdditionalFieldValue/Index.vue")
   },
     
     //////////////////////////////////

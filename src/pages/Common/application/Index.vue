@@ -1782,18 +1782,22 @@ export default {
         if(this.data.union_id){
      
           this.permanent_onChangeUnion(this.data.union_id);
+          this.data.permanent_ward_id_union= this.data.ward_id_union
         }
         if (this.data.pouro_id) {
           this.Permanent_onChangePouro(this.data.pouro_id);
+          this.data.permanent_ward_id_pouro = this.data.ward_id_pouro
         }
          if (this.data.city_thana_id) {
           this.data.permanent_city_thana_id= this.data.city_thana_id
           this.Permanent_OnChangeCityThana(this.data.permanent_city_thana_id);
+          this.data.permanent_ward_id_city = this.data.ward_id_city
         }
      
         if(this.data.district_pouro_id){
           this.permanent_district_pouro_id=this.district_pouro_id ;
           this.Permanent_onChangeDistrictPouro(this.data.permanent_district_pouro_id);
+          this.data.permanent_ward_id_dist = this.data.ward_id_dist
         } 
       }
       else {
@@ -1892,9 +1896,12 @@ export default {
           "Content-Type": "multipart/form-data",
         }
       }).then((res) => {
-        this.$toast.success("Your Application submitted Successfully");
+        // this.$toast.success("Your Application submitted Successfully");
         this.$refs.form.reset();
         this.loading = false;
+        console.log(res.data.data,"data")
+         console.log(res.data.id, "id")
+        this.$router.push(`/submitted-application/${res.data.id}`);
 
       })
         .catch((err) => {
@@ -1926,7 +1933,14 @@ export default {
               }
             } else if (err.response) {
               this.$refs.form.setErrors(err.response.data.errors);
+                
               this.$toast.error(err.response.data.message);
+             
+               this.errors = err.response.data.errors
+                const firstErrorField = Object.keys(this.errors)[0];
+              if (firstErrorField) {
+                this.$refs[firstErrorField].$el.focus();
+              }
 
             }
           }
@@ -2455,7 +2469,11 @@ export default {
 
     },
   },
-
+  mounted() {
+    if (this.$refs.fieldNameInput) {
+      this.$refs.fieldNameInput.$el.focus();
+    }
+  },
   created() {
     this.getAllProgram();
     this.getAllDivision();
@@ -2472,7 +2490,9 @@ export default {
       .dispatch("getGlobalLookupByType", 1)
       .then((res) => (this.locationType = res));
     this.getAllMobileOperator();
+       console.log(this.$el,"el");
   },
+
 };
 </script>
 
