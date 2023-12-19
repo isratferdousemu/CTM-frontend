@@ -627,6 +627,7 @@
                     >
                       <v-autocomplete
                         :hide-details="errors[0] ? false : true"
+                        @input="onChangeWard($event)"
                         v-model="data.ward_id"
                         outlined
                         :label="
@@ -1373,6 +1374,7 @@
                       <v-autocomplete
                           :hide-details="errors[0] ? false : true"
                           v-model="data.ward_id"
+                          @input="onChangeWard($event)"
                           outlined
                           :label="
                           $t(
@@ -1863,7 +1865,7 @@ export default {
         .catch((err) => {
           this.loading = false;
           if (err.response?.data?.errors) {
-            // this.$refs.formAdd.setErrors(err.response.data.errors);
+            this.$refs.formAdd.setErrors(err.response.data.errors);
             this.$toast.error(err.response.data.message);
           }
         });
@@ -1936,7 +1938,7 @@ export default {
       if (this.$refs.formEdit) {
         this.$refs.formEdit.reset();
       }
-      console.log(item, "user ");
+      console.log('userEdit', item);
       this.dialogEdit = true;
       // console.log(item.roles[0].id, "roles id");
       console.log(item, "editDialog");
@@ -1947,10 +1949,14 @@ export default {
       this.data.email = item.email;
       this.data.user_type = item.office_id ? 1 : 2;
 
-      if (this.data.user_type == 2) {
-        // this.data.committee_type =
-      }
+      this.data.status = item.status
 
+
+      if (this.data.user_type == 2) {
+        this.data.committee_type = item.committee?.committee_type
+      } else {
+        this.data.office_type = item.office_type
+      }
 
       this.data.role_id = [];
       item.roles.forEach((role) => {
@@ -1958,42 +1964,103 @@ export default {
       });
 
       this.data.status = item.status;
-      this.data.office_type = item.office_type.id;
-      this.data.office_id = item?.office?.id;
-      // console.log(item?.assign_location?.type, 'edit--');
-      // this.onChangeOfficeType(item.office_type.id);
-      if (item.office_type.id == "4" || item.office_type.id == "5") {
-        this.getOfficeByLocation(this.data.office_type, null);
+
+
+      if (item.assign_location?.type == 'district') {
+        this.data.division_id = item?.assign_location?.parent?.id
+        this.onChangeDivision(this.data.division_id)
+        this.data.district_id = item?.assign_location?.id
+        this.onChangeDistrict(this.data.district_id)
       }
-      if (item?.assign_location?.type == "division") {
-        // console.log("division here");
-        this.data.division_id = item?.assign_location?.id;
-        this.onChangeDivision(this.data.division_id);
+
+
+      if (item.assign_location?.type == 'thana') {
+        this.data.division_id = item?.assign_location?.parent?.parent?.id
+        this.onChangeDivision(this.data.division_id)
+        this.data.district_id = item?.assign_location?.parent?.id
+        this.onChangeDistrict(this.data.district_id)
+        this.data.upazila_id = item?.assign_location?.id
+        this.onChangeUpazila(this.data.upazila_id)
       }
-      if (item?.assign_location?.type == "district") {
-        console.log("district here");
-        this.data.division_id = item?.assign_location?.parent?.id;
-        this.onChangeDivision(this.data.division_id);
-        this.data.district_id = item?.assign_location?.id;
+
+
+
+      //work from here
+      console.log('union', item)
+
+      if (item.assign_location?.type == 'union') {
+
+        this.data.division_id = item?.assign_location?.parent?.parent?.parent?.parent?.id
+        this.onChangeDivision(this.data.division_id)
+        this.data.district_id = item?.assign_location?.parent?.parent?.parent?.id
+        this.onChangeDistrict(this.data.district_id)
+        this.data.city_corpo_id = item?.assign_location?.parent?.parent?.id
+        this.onChangeCity(this.data.city_corpo_id)
+        this.data.thana_id = item?.assign_location?.parent?.id
+        this.onChangeThana(this.data.thana_id)
+        this.data.ward_id = item?.assign_location?.id
+        this.onChangeWard(this.data.thana_id)
       }
-      if (item?.assign_location?.parent?.parent?.type == "division") {
-        console.log("here Division");
-        this.data.division_id = item?.assign_location?.parent?.parent?.id;
-        this.onChangeDivision(this.data.division_id);
+
+
+      if (item.assign_location?.type == 'ward') {
+        this.data.division_id = item?.assign_location?.parent?.parent?.parent?.parent?.id
+        this.onChangeDivision(this.data.division_id)
+        this.data.district_id = item?.assign_location?.parent?.parent?.parent?.id
+        this.onChangeDistrict(this.data.district_id)
+        this.data.city_corpo_id = item?.assign_location?.parent?.parent?.id
+        this.onChangeCity(this.data.city_corpo_id)
+        this.data.thana_id = item?.assign_location?.parent?.id
+        this.onChangeThana(this.data.thana_id)
+        this.data.ward_id = item?.assign_location?.id
+        this.onChangeWard(this.data.thana_id)
       }
-      if (item?.assign_location?.parent?.type == "district") {
-        this.data.district_id = item?.assign_location?.parent?.id;
-        this.onChangeDistrict(this.data.district_id);
-      }
-      if (item?.assign_location?.type == "city") {
-        this.data.city_corpo_id = item?.assign_location?.id;
-        this.onChangeCity(item?.assign_location?.id);
-        console.log(item?.office?.id, " in the city");
-      }
-      if (item?.assign_location?.type == "thana") {
-        this.data.thana_id = item?.assign_location?.id;
-        this.onChangeUpazila(item?.assign_location?.id);
-      }
+
+
+
+
+
+
+
+
+
+      this.data.office_id = item.office_id
+      this.data.committee_id = item.committee_id
+
+
+
+      // if (item?.assign_location?.type == "division") {
+      //   // console.log("division here");
+      //   this.data.division_id = item?.assign_location?.id;
+      //   this.onChangeDivision(this.data.division_id);
+      // }
+
+
+      // if (item?.assign_location?.type == "district") {
+      //   console.log("district here");
+      //   this.data.division_id = item?.assign_location?.parent?.id;
+      //   this.onChangeDivision(this.data.division_id);
+      //   this.data.district_id = item?.assign_location?.id;
+      // }
+
+      // if (item?.assign_location?.parent?.parent?.type == "division") {
+      //   console.log("here Division");
+      //   this.data.division_id = item?.assign_location?.parent?.parent?.id;
+      //   this.onChangeDivision(this.data.division_id);
+      // }
+      // if (item?.assign_location?.parent?.type == "district") {
+      //   this.data.district_id = item?.assign_location?.parent?.id;
+      //   this.onChangeDistrict(this.data.district_id);
+      // }
+      // if (item?.assign_location?.type == "city") {
+      //   this.data.city_corpo_id = item?.assign_location?.id;
+      //   this.onChangeCity(item?.assign_location?.id);
+      //   console.log(item?.office?.id, " in the city");
+      // }
+      // if (item?.assign_location?.type == "thana") {
+      //   this.data.thana_id = item?.assign_location?.id;
+      //   this.onChangeUpazila(item?.assign_location?.id);
+      // }
 
       // if (item?.assign_location?.location_type?.value_en == "Upazila") {
       //   this.data.thana_id = item?.assign_location?.id;
@@ -2361,7 +2428,7 @@ export default {
     },
 
     async onChangeWard(event) {
-      console.log(event, this.data.ward_id)
+      console.log(event, this.data.ward_id, 'wards')
       if (this.data.committee_type === 13) {
         return this.getCommittees(this.data.ward_id)
       }
