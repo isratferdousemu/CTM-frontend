@@ -182,6 +182,19 @@ const actions = {
     },
     /*update allowance program end*/
 
+    /*update allowance program start*/
+    updateAdditionalField: ({commit}, {id, data}) => {
+        return http().post(`/admin/allowance/allowance-additional-field/update`, data).then((result) => {
+            // commit('UPDATE_ALLOWANCE_PROGRAM', result);
+            // console.log(result);
+            return result;
+        }).catch((err) => {
+            state.errors = err.response.data.errors
+            state.error_status = err.response.status
+        })
+    },
+    /*update allowance program end*/
+
     /*delete gender age start*/
     DeleteGender: ({commit}, data) => {
       return http().post('/admin/allowance/gender_delete', data).then((result) => {
