@@ -150,7 +150,7 @@
         </v-row>
       </v-col>
 
-      <!-- division add modal  -->
+      <!-- additional field add modal  -->
       <v-dialog v-model="dialogAdd" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
@@ -163,7 +163,7 @@
           <v-divider></v-divider>
           <v-card-text class="mt-7">
             <ValidationObserver ref="formAdd" v-slot="{ invalid }">
-              <form @submit.prevent="submitVariable()">
+              <form @submit.prevent="submitField()">
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
 
@@ -270,9 +270,9 @@
           </v-card-text>
         </v-card>
       </v-dialog>
-      <!-- division add modal  -->
+      <!-- additional field add modal  -->
 
-      <!-- division Edit modal  -->
+      <!-- additional field edit  modal  -->
       <v-dialog v-model="dialogEdit" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
@@ -280,12 +280,12 @@
               $t(
                 "container.system_config.allowance_program_additiona_field.edit"
               )
-            }}
+            }}       
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
             <ValidationObserver ref="formEdit" v-slot="{ invalid }">
-              <form @submit.prevent="update()">
+              <form @submit.prevent="updateField()">
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
                 <ValidationProvider
@@ -332,51 +332,47 @@
                   ></v-select>
                 </ValidationProvider>
 
-                <v-data-table
-                  :headers="header_additional_field_value"
-                  :items="additional_field_value"
-                  :search="search"
-                  v-if="data.field_type == 2"
-                  hide-default-footer
-                >
-                  <template v-slot:item.id="{ item, index }">
-                    {{ index + 1 }}
-                  </template>
+              <v-data-table
+    :headers="header_additional_field_value"
+    :items="field_value"
+    v-if="data.field_type == 2"
+    hide-default-footer
+  >
+    <template v-slot:item.id="{ item, index }">
+      {{ index + 1 }}
+    </template>
 
-                  <template v-slot:item.field_value="{ item }">
-                    <v-text-field
-                      outlined
-                      dense
-                      hide-details
-                      v-model="data.field_value[item.id]"
-                    ></v-text-field>
-                  </template>
+    <template v-slot:item.value="{ item }">
+      <v-text-field
+        outlined
+        dense
+        hide-details
+        v-model="item.value"
+      ></v-text-field>
+    </template>
 
-                  <template v-slot:item.action="{ item }">
-                    <v-tooltip top>
-                      <template v-slot:activator="{ on }">
-                        <v-btn
-                          fab
-                          dense
-                          x-small
-                          v-on="on"
-                          class="danger"
-                          elevation="0"
-                          @click="removeRow(item.id)"
-                        >
-                          <v-icon style="color: red"
-                            >mdi-trash-can-outline</v-icon
-                          >
-                        </v-btn>
-                      </template>
-                      <span>
-                        {{ $t("container.list.remove") }}
-                      </span>
-                    </v-tooltip>
-                  </template>
-                </v-data-table>
-
-                <v-btn fab color="primary" class="m-4" @click="addRow">
+    <template v-slot:item.action="{ item }">
+      <v-tooltip top>
+        <template v-slot:activator="{ on }">
+          <v-btn
+            fab
+            dense
+            x-small
+            v-on="on"
+            class="danger"
+            elevation="0"
+            @click="removeRow(item.id)"
+          >
+            <v-icon style="color: red">mdi-trash-can-outline</v-icon>
+          </v-btn>
+        </template>
+        <span>
+          {{ $t("container.list.remove") }}
+        </span>
+      </v-tooltip>
+    </template>
+  </v-data-table>
+                <v-btn v-if="data.field_type == 2" fab color="primary" class="m-4" @click="addRow">
                   <v-icon>mdi-plus</v-icon>
                 </v-btn>
 
@@ -477,36 +473,25 @@ export default {
       field_types: [
         { id: 1, value: "Checkbox" },
         { id: 2, value: "Dropdown" },
+        { id: 3, value: "Date" },
+        { id: 4, value: "Number" },
+        { id: 5, value: "Text" },
+        { id: 6, value: "Disabled" },
       ],
-      additional_field_value: [
-        { id: 1, field_value: "Checkbox" },
-        { id: 2, field_value: "Dropdown" },
-      ],
+      additional_field_value: [],
+      
+      
       additional_fields: [],
       // office_type_id: null,
       //extra work for city
       // Selected wards
       edit: [],
-      selectedWardsDetails: [],
-      selectedWards: [],
-      selectedWards_edit: [],
-      selectedWards_UCDUpazila: [],
-      selectedWards_UCDUpazila_edit: [],
-      selectedWardsDetails_UCDUpazila: [],
+     
       message: null,
       districts: [],
       cities: [],
       additional_fields: [],
-      officeType: [],
-      upazilas: [],
-      cities: [],
-      thanas: [],
-      final_wards: [],
-      wards: [],
-      final_wards_ucd_upazila: [],
-      wards_ucd_upazila: [],
-      dist_pouros: [],
-      locationType: [],
+      field_value: [],
       dialogAdd: false,
       dialogEdit: false,
       deleteDialog: false,
@@ -543,7 +528,7 @@ export default {
           text: this.$t(
             "container.system_config.allowance_program_additiona_field_value.list"
           ),
-          value: "field_value",
+          value: "value",
         },
         {
           text: this.$t("container.list.action"),
@@ -970,36 +955,34 @@ export default {
         this.selectedWards = this.selectedWards_edit;
       }
     },
-    update() {
-      let fd = new FormData();
+    updateField() {
+      console.log("called")
+            console.log(this.field_value,'v')
+            
+       let fd = new FormData();
       for (const [key, value] of Object.entries(this.data)) {
-        // if (key === "status" && value === null) {
-        //   fd.append(key, "0");
-        // }
-        if (value !== null) {
-          fd.append(key, value);
-          console.log(key, value, "key value");
+        if (key === "status" && value === null) {
+          fd.append(key, "0");
         }
-      }
-      return;
-      try {
-        this.$store
-          .dispatch("Allowance/updateAdditionalField", this.validator())
-          .then((res) => {
-            console.log(res, "update");
-            if (res.data?.success) {
-              this.$toast.success("Data Inserted Successfully");
-              this.resetForm();
-              this.dialogEdit = false;
-              this.GetVariable();
-            } else if (res.response?.data?.errors) {
-              console.log(res.response.data.errors);
-              this.$refs.formEdit.setErrors(res.response.data.errors);
+        if (value !== null) {
+          // fd.append(key, value);
+          // console.log(key, value,"fd values");
+          if (key == "item.value") {
+                console.log(key, value, "field_value")
+            for (let i = 0; i < value.length; i++) {
+              fd.append("field_value[" + i + "]", value[i]);
+                 console.log(fd, "fd")
+                 console.log(key, value, "if")
+              
             }
-          });
-      } catch (e) {
-        console.log(e);
+          } else {
+            fd.append(key, value);
+            console.log(key, value, "else")
+          }
+        }
+     
       }
+  
     },
     onChangeWards_UCDUpazila_edit(selectedWards_UCDUpazila_edit) {
       // Update selectedWardsDetails based on the selectedWards
@@ -1224,214 +1207,61 @@ export default {
       console.log(item, "edit Dialog");
       this.dialogEdit = true;
       this.data.name_en = item.name_en;
-      this.data.field_type.id = item.type;
+      if(item.type == "checkbox"){
+      
+         this.data.field_type= 1;
+      }
+       if (item.type == "dropdown") {
+        this.data.field_type = 2;
+         
+      }
+       if (item.type == "date") {
+       
+        this.data.field_type = 3;
+      }
+      if (item.type == "number") {
+        this.data.field_type = 4;
+     
+      }
+       if (item.type == "disabled") {
+        
+        this.data.field_type = 1;
+      }
+ 
+      
       this.field_value = item?.additional_field_value;
+      console.log(this.field_value,"field_value");
       this.data.id = item.id;
       this.errors = {};
     },
-    async editOffice(item) {
-      if (this.$refs.formEdit) {
-        this.$refs.formEdit.reset();
-      }
-      this.resetData();
-
-      this.data.id = item.id;
-      this.data.office_type = item.office_type.id;
-      this.office_type_id = item.office_type.id;
-      this.data.office_type = item.office_type.id;
-      this.data.name_en = item.name_en;
-      this.data.name_bn = item.name_bn;
-      this.data.office_address = item.office_address;
-      this.data.comment = item.comment;
-      this.data.status = String(item.status);
-      this.dialogEdit = true;
-
-      if (item?.assign_location?.type == "division") {
-        console.log("division here");
-        this.data.division_id = item?.assign_location?.id;
-        this.onChangeDivision(this.data.division_id);
-        // this.data.division_id = item?.parent?.id; //
-      }
-      if (item?.assign_location?.type == "district") {
-        console.log("district here");
-        this.data.division_id = item?.assign_location?.parent?.id;
-        this.onChangeDivision(this.data.division_id);
-        this.data.district_id = item?.assign_location?.id;
-      }
-      if (item?.assign_location?.parent?.parent?.type == "division") {
-        this.data.division_id = item?.assign_location?.parent?.parent?.id;
-        console.log("division here 2nd");
-        await this.onChangeDivision(this.data.division_id);
-        console.log(this.districts, "districts in division here 3rd");
-      }
-
-      if (item?.assign_location?.parent?.type == "district") {
-        this.data.district_id = item?.assign_location?.parent?.id;
-        console.log("district here 2nd");
-        await this.onChangeDistrict(this.data.district_id);
-        console.log(this.cities, "cities district here 2nd");
-      }
-
-      //  if (this.edit[0]?.wards[0]?.parent?.parent?.parent?.type == "city") {
-      //   this.data.city_id = this.edit[0]?.wards[0]?.parent?.parent?.parent?.id;
-      //   this.onChangeCity(this.data.city_id);
-      // }
-
-      //  if (this.edit[0]?.wards[0]?.parent?.parent?.parent?.type == "thana" && this.edit[0]?.wards[0]?.parent?.parent?.parent?.location_type === 2) {
-      //   this.data.upazila_id = this.edit[0]?.wards[0]?.parent?.parent?.parent?.id;
-      // }
-
-      const queryParams = {
-        id: item.id,
-      };
-
-      await this.$axios
-        .get("/admin/office/get-ward-under-office", {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-          params: queryParams,
-        })
-        .then((result) => {
-          this.edit = result.data;
-        });
-
-      if (item?.assign_location?.location_type?.value_en == "Upazila") {
-        this.data.upazila_id = item?.assign_location?.id;
-        this.selectedWards_UCDUpazila = this.edit[0].wards?.map(
-          (ward) => ward.ward_id
-        );
-        console.log(this.selectedWards_UCDUpazila, "upazila");
-        let uniqueParentIds = new Set();
-
-        this.edit[0].wards?.forEach((ward) => {
-          if (ward.parent?.parent?.type == "pouro") {
-            const parentId = ward.parent?.parent?.id;
-
-            if (
-              parentId !== undefined &&
-              parentId !== null &&
-              !uniqueParentIds.has(parentId)
-            ) {
-              uniqueParentIds.add(parentId);
-              this.data.pouro_id = parentId;
-              console.log(this.data.pouro_id, "Pouro id");
-
-              setTimeout(() => {
-                this.data.pouro_id = parentId;
-
-                this.onChangeSubLocationType(1);
-              }, 1000);
-              setTimeout(() => {
-                this.onChangePouro_1(parentId);
-                console.log(this.wards_ucd_upazila, "wards_ucd_upazila_pouro");
-              }, 2000);
-            }
-          }
-          if (ward.parent?.parent?.type == "union") {
-            const parentId = ward.parent?.parent?.id;
-
-            if (
-              parentId !== undefined &&
-              parentId !== null &&
-              !uniqueParentIds.has(parentId)
-            ) {
-              uniqueParentIds.add(parentId);
-              this.data.union_id = parentId;
-              console.log(this.data.union_id, "Union id");
-              this.thanas_for_edit.push(parentId);
-              setTimeout(() => {
-                this.data.union_id = parentId;
-
-                this.onChangeSubLocationType(2);
-              }, 1000);
-              setTimeout(() => {
-                this.onChangeUnion_1(parentId);
-                console.log(this.wards_ucd_upazila, "wards_ucd_upazila_union");
-              }, 2000);
-            }
-          }
-        });
-
-        setTimeout(() => {
-          this.onChangeWards_UCDUpazila(this.selectedWards_UCDUpazila);
-        }, 10000);
-      }
-      if (
-        item?.assign_location?.location_type?.value_en == "City Corporation"
-      ) {
-        this.data.city_id = item?.assign_location?.id;
-
-        console.log(this.edit[0].wards, "item wards");
-        this.selectedWards = this.edit[0].wards?.map((ward) => ward.ward_id);
-        console.log(this.selectedWards, "wards works properly or not");
-
-        let uniqueParentIds = new Set();
-
-        this.edit[0].wards?.forEach((ward) => {
-          const parentId = ward.parent?.parent?.id;
-
-          if (
-            parentId !== undefined &&
-            parentId !== null &&
-            !uniqueParentIds.has(parentId)
-          ) {
-            uniqueParentIds.add(parentId);
-            //   console.log(parentId, "thana_id")
-
-            this.onChangeThana_1(parentId);
-          }
-        });
-
-        setTimeout(() => {
-          this.onChangeCity(this.data.city_id);
-        }, 3000);
-
-        setTimeout(() => {
-          console.log(
-            this.selectedWards,
-            "this.selectedWards before onwards call"
-          );
-          this.onChangeWards(this.selectedWards);
-        }, 10000);
-        // setTimeout(this.onchangeWards(this.selectedWards), 5000);
-      }
-      if (
-        item?.assign_location?.location_type?.value_en == "District Pouroshava"
-      ) {
-        this.data.dist_pouro_id = item?.assign_location?.id;
-      }
-
-      if (item?.assign_location?.location_type?.value_en == "Upazila") {
-        this.data.thana_id = item?.assign_location?.id;
-      }
-    },
+  
     addRow() {
       // Find the maximum id in the current array
       const maxId = Math.max(
-        ...this.additional_field_value.map((item) => item.id)
+        ...this.field_value.map((item) => item.id)
       );
 
       if (maxId != 0) {
         // Add a new row with id = maxId + 1
-        this.additional_field_value.push({
+        this.field_value.push({
           id: maxId + 1,
-          field_value: "",
+          value: "",
         });
       } else {
         maxId = maxId - 1;
       }
     },
-    removeRow(id) {
+   removeRow(id) {
       // Find the index of the row with the given id
-      const index = this.additional_field_value.findIndex(
-        (item) => item.id === id
-      );
+      const index = this.field_value.findIndex((item) => item.id === id);
 
-      // If the row was found, remove it from the array
-      if (index !== -1) {
-        this.additional_field_value.splice(index, 1);
+      // Check if there is more than one input before removing
+      if (index !== -1 && this.field_value.length > 1) {
+        this.field_value.splice(index, 1);
+      } else {
+        // Optionally, you can show a message or handle this case differently
+                this.$toast.success("Atleast One input Needed");
+        
       }
     },
     createDialog() {
