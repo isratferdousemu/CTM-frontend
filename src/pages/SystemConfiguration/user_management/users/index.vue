@@ -82,6 +82,16 @@
                         </v-chip>
                       </template>
 
+
+                      <template v-slot:item.assign_location.name_en="{ item }">
+                        {{item?.assign_location?.name_en}}
+                      </template>
+
+                      <template v-slot:item.office.name_en="{ item }">
+                        <p v-if="item.committee_id">{{item?.committee?.name}}</p>
+                        <p v-else>{{item?.office?.name_en}}</p>
+                      </template>
+
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
                         <v-tooltip top>
@@ -1630,7 +1640,7 @@
                 <v-row class="mx-0 my-0 py-2" justify="center">
                   <v-btn
                       flat
-                      @click="dialogAdd = false"
+                      @click="dialogEdit = false"
                       outlined
                       class="custom-btn-width py-2 mr-10"
                   >
@@ -1698,6 +1708,7 @@
 import { mapState } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
+import PermissionBadge from "../../../../components/BeneficiaryManagement/Committee/PermissionBadge.vue";
 
 extend("required", required);
 export default {
@@ -1769,6 +1780,7 @@ export default {
     };
   },
   components: {
+    PermissionBadge,
     ValidationProvider,
     ValidationObserver,
   },
@@ -1790,20 +1802,24 @@ export default {
           value: "username",
         },
         {
-          text: this.$t("container.system_config.demo_graphic.user.email"),
+          text: 'Email',
           value: "email",
         },
         {
-          text: this.$t("container.system_config.demo_graphic.user.mobile"),
+          text: 'Mobile',
           value: "mobile",
         },
         {
-          text: this.$t("container.system_config.demo_graphic.user.office"),
+          text: 'Office/Committee',
           value: "office.name_en",
         },
         {
           text: this.$t("container.system_config.demo_graphic.user.status"),
           value: "status",
+        },
+        {
+          text: 'Location Assign',
+          value: "assign_location.name_en",
         },
         {
           text: this.$t("container.list.action"),
@@ -1873,36 +1889,28 @@ export default {
     updateUser() {
       console.log(this.data, "edit");
       this.loading = true;
-      // return;
-      // this.data.role_id = [];
-      // let temp = this.data.role_id[];
-      let ud = new FormData();
-      for (const [key, value] of Object.entries(this.data)) {
-        if (value != null) {
-          // role_id is array so we need to append it separately
-          ud.append(key, value);
+      let fd = new FormData();
 
-          if (key == "role_id") {
+      for (const [key, value] of Object.entries(this.data)) {
+
+
+
+        if (value !== null) {
+
+          if (key != "role_id") {
+            fd.append(key, value);
+          } else if (this.data.user_type == 1) {
+            // role_id is array so we need to append it separately
             for (let i = 0; i < value.length; i++) {
-              ud.append("role_id[]", value);
+              fd.append("role_id[]", value[i]);
             }
           }
         }
       }
-      // return;
-      // Include the _method field for PUT request
-      console.log("FormData:", ud);
 
-      // delete ud["role_id"];
-      // ud.delete("role_id");
-
-      for (const [key, value] of ud.entries()) {
-        console.log(`${key}: ${value}`);
-      }
-      ud.append("_method", "PUT");
 
       this.$axios
-        .put("/admin/user/update/" + this.data.id, this.data, {
+        .post("/admin/user/update/" + this.data.id, fd, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "application/json",
@@ -1911,7 +1919,7 @@ export default {
           },
         })
         .then((res) => {
-          console.log(res);
+          console.log(res.data);
           this.$toast.success("Data updated Successfully");
           this.getUsers();
           this.$refs.formEdit.reset();
@@ -1922,8 +1930,10 @@ export default {
           this.loading = false;
           if (err.response?.data?.errors) {
             this.$refs.formEdit.setErrors(err.response.data.errors);
-            this.$toast.error(err.response.data.message);
           }
+
+          this.$toast.error(err.response.data.message);
+
         });
     },
     resetForm() {
@@ -1958,6 +1968,10 @@ export default {
         this.data.office_type = item.office_type
       }
 
+
+      console.log('office type', item)
+
+
       this.data.role_id = [];
       item.roles.forEach((role) => {
         this.data.role_id.push(role.id);
@@ -1966,11 +1980,37 @@ export default {
       this.data.status = item.status;
 
 
+      if (item.assign_location?.type == 'division') {
+        this.data.division_id = item?.assign_location?.id
+        this.onChangeDivision(this.data.division_id)
+      }
+
+
       if (item.assign_location?.type == 'district') {
         this.data.division_id = item?.assign_location?.parent?.id
         this.onChangeDivision(this.data.division_id)
         this.data.district_id = item?.assign_location?.id
         this.onChangeDistrict(this.data.district_id)
+      }
+
+
+      if (item.assign_location?.type == 'city') {
+        this.data.division_id = item?.assign_location?.parent?.parent?.id
+        this.onChangeDivision(this.data.division_id)
+        this.data.district_id = item?.assign_location?.parent?.id
+        this.onChangeDistrict(this.data.district_id)
+
+
+        if (item.assign_location?.location_type == 3) {
+          this.data.city_corpo_id = item?.assign_location?.id
+          this.onChangeCity(this.data.city_corpo_id)
+        }
+
+        if (item.assign_location?.location_type == 1) {
+          this.data.paurashava_id = item?.assign_location?.id
+          this.onChangeDistrictPauroshava(this.data.paurashava_id)
+        }
+
       }
 
 
@@ -1985,21 +2025,15 @@ export default {
 
 
 
-      //work from here
-      console.log('union', item)
-
       if (item.assign_location?.type == 'union') {
-
-        this.data.division_id = item?.assign_location?.parent?.parent?.parent?.parent?.id
+        this.data.division_id = item?.assign_location?.parent?.parent?.parent?.id
         this.onChangeDivision(this.data.division_id)
-        this.data.district_id = item?.assign_location?.parent?.parent?.parent?.id
+        this.data.district_id = item?.assign_location?.parent?.parent?.id
         this.onChangeDistrict(this.data.district_id)
-        this.data.city_corpo_id = item?.assign_location?.parent?.parent?.id
-        this.onChangeCity(this.data.city_corpo_id)
-        this.data.thana_id = item?.assign_location?.parent?.id
-        this.onChangeThana(this.data.thana_id)
-        this.data.ward_id = item?.assign_location?.id
-        this.onChangeWard(this.data.thana_id)
+        this.data.upazila_id = item?.assign_location?.parent?.id
+        this.onChangeUpazila(this.data.upazila_id)
+        this.data.union_id = item?.assign_location?.id
+        this.onChangeUnion(this.data.union_id)
       }
 
 
@@ -2017,61 +2051,9 @@ export default {
       }
 
 
-
-
-
-
-
-
-
       this.data.office_id = item.office_id
       this.data.committee_id = item.committee_id
 
-
-
-      // if (item?.assign_location?.type == "division") {
-      //   // console.log("division here");
-      //   this.data.division_id = item?.assign_location?.id;
-      //   this.onChangeDivision(this.data.division_id);
-      // }
-
-
-      // if (item?.assign_location?.type == "district") {
-      //   console.log("district here");
-      //   this.data.division_id = item?.assign_location?.parent?.id;
-      //   this.onChangeDivision(this.data.division_id);
-      //   this.data.district_id = item?.assign_location?.id;
-      // }
-
-      // if (item?.assign_location?.parent?.parent?.type == "division") {
-      //   console.log("here Division");
-      //   this.data.division_id = item?.assign_location?.parent?.parent?.id;
-      //   this.onChangeDivision(this.data.division_id);
-      // }
-      // if (item?.assign_location?.parent?.type == "district") {
-      //   this.data.district_id = item?.assign_location?.parent?.id;
-      //   this.onChangeDistrict(this.data.district_id);
-      // }
-      // if (item?.assign_location?.type == "city") {
-      //   this.data.city_corpo_id = item?.assign_location?.id;
-      //   this.onChangeCity(item?.assign_location?.id);
-      //   console.log(item?.office?.id, " in the city");
-      // }
-      // if (item?.assign_location?.type == "thana") {
-      //   this.data.thana_id = item?.assign_location?.id;
-      //   this.onChangeUpazila(item?.assign_location?.id);
-      // }
-
-      // if (item?.assign_location?.location_type?.value_en == "Upazila") {
-      //   this.data.thana_id = item?.assign_location?.id;
-      // }
-
-      console.log(this.data, "End editDialog");
-      // this.data.code = item.code;
-      // this.data.name_en = item.name_en;
-      // this.data.name_bn = item.name_bn;
-      // this.data.id = item.id;
-      // this.errors = {};
     },
 
 
