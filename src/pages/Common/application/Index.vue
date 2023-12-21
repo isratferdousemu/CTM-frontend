@@ -1938,9 +1938,9 @@ export default {
              
                this.errors = err.response.data.errors
                 const firstErrorField = Object.keys(this.errors)[0];
-              if (firstErrorField) {
-                this.$refs[firstErrorField].$el.focus();
-              }
+              // if (firstErrorField) {
+              //   this.$refs[firstErrorField].$el.focus();
+              // }
 
             }
           }

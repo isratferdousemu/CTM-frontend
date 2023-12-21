@@ -414,7 +414,9 @@
                 "status": "Status",
                 "comment": "Comment",
                 "active": "Active",
-                "field_type": "Field Type"
+                "field_type": "Field Type",
+                "date":"Date",
+                "value":"Value"
             },
             "allowance_program_additiona_field_value": {
                 "variable": "Allowance Program Additional Field",

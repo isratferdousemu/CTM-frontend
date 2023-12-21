@@ -308,6 +308,26 @@
                     :error-messages="errors[0]"
                   ></v-text-field>
                 </ValidationProvider>
+                  <ValidationProvider
+                    name="Name English"
+                    vid="name_bn"
+                    rules="required"
+                    v-slot="{ errors }"
+                  >
+                    <v-text-field
+                      outlined
+                      type="text"
+                      v-model="data.name_bn"
+                      :label="$t(
+                        'container.system_config.allowance_program_additiona_field.name_en'
+                      )
+                        "
+                      required
+                      :error="errors[0] ? true : false"
+                      :error-messages="errors[0]"
+                    ></v-text-field>
+                  </ValidationProvider>
+                    
 
                 <ValidationProvider
                   name="Field Type"
@@ -317,7 +337,7 @@
                 >
                   <v-select
                     outlined
-                    v-model="data.field_type"
+                    v-model="data.type"
                     :items="field_types"
                     item-text="value"
                     item-value="id"
@@ -331,11 +351,71 @@
                     :error-messages="errors[0]"
                   ></v-select>
                 </ValidationProvider>
+                 <ValidationProvider
+                        name="Name English"
+                        vid="name_bn"
+                        rules="required"
+                        v-slot="{ errors }"
+                      >
+                        <v-text-field
+                         v-if="data.type == 3"
+                          outlined
+                          type="date"
+                          v-model="data.date"
+                          :label="$t(
+                            'container.system_config.allowance_program_additiona_field.date'
+                          )
+                            "
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
+                        ></v-text-field>
+                      </ValidationProvider>
+                       <ValidationProvider
+                        name="Name English"
+                        vid="name_bn"
+                        rules="required"
+                        v-slot="{ errors }"
+                      >
+                        <v-text-field
+                         v-if="data.type == 4"
+                          outlined
+                          type="number"
+                          v-model="data.number"
+                          :label="$t(
+                            'container.system_config.allowance_program_additiona_field.value'
+                          )
+                            "
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
+                        ></v-text-field>
+                      </ValidationProvider>
+                       <ValidationProvider
+                        name="Name English"
+                        vid="name_bn"
+                        rules="required"
+                        v-slot="{ errors }"
+                      >
+                        <v-text-field
+                         v-if="data.type == 5"
+                          outlined
+                          type="text"
+                          v-model="data.text"
+                          :label="$t(
+                            'container.system_config.allowance_program_additiona_field.value'
+                          )
+                            "
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
+                        ></v-text-field>
+                      </ValidationProvider>
 
               <v-data-table
     :headers="header_additional_field_value"
-    :items="field_value"
-    v-if="data.field_type == 2"
+    :items="data.field_value"
+    v-if="data.type == 2"
     hide-default-footer
   >
     <template v-slot:item.id="{ item, index }">
@@ -372,7 +452,7 @@
       </v-tooltip>
     </template>
   </v-data-table>
-                <v-btn v-if="data.field_type == 2" fab color="primary" class="m-4" @click="addRow">
+                <v-btn v-if="data.type == 2" fab color="primary" class="m-4" @click="addRow">
                   <v-icon>mdi-plus</v-icon>
                 </v-btn>
 
@@ -468,7 +548,13 @@ export default {
         id: null,
         code: null,
         name_en: null,
+        name_bn: null,
+        type:null,
         field_value: [],
+        date:null,
+        number: null,
+        text: null,
+        checkbox: null,
       },
       field_types: [
         { id: 1, value: "Checkbox" },
@@ -734,502 +820,121 @@ export default {
     },
   },
   methods: {
-    async onChangePouro($event) {
-      console.log(this.data.pouro_id, "called pouro_id properly");
-
-      await this.$axios
-        .get(`/admin/ward/get/pouro/${$event}`, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((result) => {
-          this.selectedWards_UCDUpazila_edit = this.selectedWards_UCDUpazila;
-          this.final_wards_ucd_upazila = result.data.data;
-          console.log(this.final_wards_ucd_upazila, "only pouro wards");
-          this.wards_ucd_upazila = this.wards_ucd_upazila.concat(
-            result.data.data
-          );
-          console.log(this.wards_ucd_upazila, "poro cancat wards in pouro");
-        });
-    },
-    async onChangePouro_1($event) {
-      console.log(this.data.pouro_id, "called pouro_id properly");
-
-      await this.$axios
-        .get(`/admin/ward/get/pouro/${$event}`, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((result) => {
-          this.final_wards_ucd_upazila = result.data.data;
-          console.log(this.final_wards_ucd_upazila, "only pouro wards");
-          this.wards_ucd_upazila = this.wards_ucd_upazila.concat(
-            result.data.data
-          );
-          console.log(this.wards_ucd_upazila, "poro cancat wards in pouro");
-          //    if (this.data.pouro_id) {
-          //   this.selectedWards_UCDUpazila = selectedWards_UCDUpazila_edit
-          // }
-          // else {
-          //   this.selectedWards_UCDUpazila = []
-          // }
-        });
-    },
-    async onChangeUnion($event) {
-      console.log($event);
-      await this.$axios
-        .get(`/admin/ward/get/${$event}`, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((result) => {
-          this.selectedWards_UCDUpazila_edit = this.selectedWards_UCDUpazila;
-          this.final_wards_ucd_upazila = result.data.data;
-          console.log(this.final_wards_ucd_upazila, "only union wards");
-          this.wards_ucd_upazila = this.wards_ucd_upazila.concat(
-            result.data.data
-          );
-          console.log(this.wards_ucd_upazila, "cancat wards union");
-          //  if(this.data.union_id){
-          //  this.selectedWards_UCDUpazila= selectedWards_UCDUpazila_edit
-          //  }
-          //  else{
-          //  this.selectedWards_UCDUpazila=[]
-          //  }
-        });
-    },
-    async onChangeUnion_1($event) {
-      console.log($event);
-      await this.$axios
-        .get(`/admin/ward/get/${$event}`, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((result) => {
-          this.final_wards_ucd_upazila = result.data.data;
-          console.log(this.final_wards_ucd_upazila, "only union wards");
-          this.wards_ucd_upazila = this.wards_ucd_upazila.concat(
-            result.data.data
-          );
-          console.log(this.wards_ucd_upazila, "cancat wards union");
-          //  if(this.data.union_id){
-          //  this.selectedWards_UCDUpazila= selectedWards_UCDUpazila_edit
-          //  }
-          //  else{
-          //  this.selectedWards_UCDUpazila=[]
-          //  }
-        });
-    },
-    async onChangeSubLocationType(event) {
-      // alert(event);
-
-      if (event == 1) {
-        await this.$axios
-          .get(`/admin/union/pouro/get/${this.data.upazila_id}`, {
-            headers: {
-              Authorization: "Bearer " + this.$store.state.token,
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then((result) => {
-            this.pouros = result.data.data;
-            this.data.pouro_id = null;
-            this.data.union_id = null;
-            this.pouros_all = result.data.data;
-            console.log(this.pouros_all, "all pouros_all called properly");
-
-            this.final_wards_ucd_upazila = [];
-          });
-      }
-      if (event == 2) {
-        await this.$axios
-          .get(`/admin/union/get/${this.data.upazila_id}`, {
-            headers: {
-              Authorization: "Bearer " + this.$store.state.token,
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then((result) => {
-            this.unions = result.data.data;
-            this.data.union_id = null;
-            this.data.pouro_id = null;
-            this.unions_all = result.data.data;
-            console.log(this.unions_all, "all unions called properly");
-
-            this.final_wards_ucd_upazila = [];
-          });
-      }
-    },
-
-    remove(item) {
-      const indexToRemove = this.selectedWards.findIndex(
-        (wardId) => wardId === item.ward_id
-      );
-
-      // If the item is found, remove it from the selectedWards array
-      if (indexToRemove !== -1) {
-        this.selectedWards.splice(indexToRemove, 1);
-        console.log(this.selectedWards, "in Remove");
-      }
-
-      this.onChangeWards(this.selectedWards);
-    },
-    remove_ucd_upazila(item) {
-      const indexToRemove = this.selectedWards_UCDUpazila.findIndex(
-        (wardId) => wardId === item.ward_id_ucd_upazila
-      );
-
-      // If the item is found, remove it from the selectedWards array
-      if (indexToRemove !== -1) {
-        this.selectedWards_UCDUpazila.splice(indexToRemove, 1);
-      }
-
-      this.onChangeWards_UCDUpazila(this.selectedWards_UCDUpazila);
-    },
-    onChangeWards(selectedWards) {
-      console.log(this.selectedWards, "selectedWards Check in wards");
-      if (this.selectedWards.length > 0) {
-        this.selectedWards_UCDUpazila = [];
-        // Update selectedWardsDetails based on the selectedWards
-        this.selectedWardsDetails = selectedWards.map((wardId) => {
-          const ward = this.wards.find((w) => w.id === wardId);
-          const district = this.districts.find(
-            (d) => d.id === this.data.district_id
-          );
-          const division = this.divisions.find(
-            (div) => div.id === this.data.division_id
-          );
-          const city = this.cities.find((c) => c.id === this.data.city_id);
-          console.log(this.wards, "all wards");
-          console.log(ward, "const ward in ward");
-          const thana = this.thanas.find((t) => t.id === ward.parent.id);
-
-          return {
-            division: division.name_en,
-            district: district.name_en,
-            city: city.name_en,
-            thana: thana.name_en,
-            ward: ward.name_en,
-            ward_id: ward.id,
-          };
-        });
-        console.log(this.selectedWardsDetails, "selected ward");
-      }
-    },
-    onChangeWards_edit(selectedWards_edit) {
-      console.log(this.selectedWards_edit, "selectedWards Check in wards");
-      if (this.selectedWards_edit.length > 0) {
-        this.selectedWards_UCDUpazila = [];
-        // Update selectedWardsDetails based on the selectedWards
-        this.selectedWardsDetails = selectedWards_edit.map((wardId) => {
-          const ward = this.wards.find((w) => w.id === wardId);
-          const district = this.districts.find(
-            (d) => d.id === this.data.district_id
-          );
-          const division = this.divisions.find(
-            (div) => div.id === this.data.division_id
-          );
-          const city = this.cities.find((c) => c.id === this.data.city_id);
-          console.log(this.wards, "all wards");
-          console.log(ward, "const ward in ward");
-          const thana = this.thanas.find((t) => t.id === ward.parent.id);
-
-          return {
-            division: division.name_en,
-            district: district.name_en,
-            city: city.name_en,
-            thana: thana.name_en,
-            ward: ward.name_en,
-            ward_id: ward.id,
-          };
-        });
-        console.log(this.selectedWardsDetails, "selected ward");
-        this.selectedWards = this.selectedWards_edit;
-      }
-    },
+   
     updateField() {
-      console.log("called")
-            console.log(this.field_value,'v')
-            
-       let fd = new FormData();
-      for (const [key, value] of Object.entries(this.data)) {
-        if (key === "status" && value === null) {
-          fd.append(key, "0");
-        }
-        if (value !== null) {
-          // fd.append(key, value);
-          // console.log(key, value,"fd values");
-          if (key == "item.value") {
-                console.log(key, value, "field_value")
-            for (let i = 0; i < value.length; i++) {
-              fd.append("field_value[" + i + "]", value[i]);
-                 console.log(fd, "fd")
-                 console.log(key, value, "if")
-              
-            }
-          } else {
-            fd.append(key, value);
-            console.log(key, value, "else")
-          }
-        }
+   
+   if (this.data.type === 1) {
+
+        this.data.type =  "checkbox";
+      }
+      if (this.data.type === 2) {
+        this.data.type = "dropdown" ;
      
+
       }
-  
-    },
-    onChangeWards_UCDUpazila_edit(selectedWards_UCDUpazila_edit) {
-      // Update selectedWardsDetails based on the selectedWards
-      this.selectedWards = [];
-      console.log(this.selectedWards_UCDUpazila, "selectedWards_UCDUpazila");
-      console.log(this.wards_ucd_upazila, "all wards");
+      if (this.data.type === 3 ) {
 
-      this.selectedWardsDetails_UCDUpazila = selectedWards_UCDUpazila_edit.map(
-        (wardId) => {
-          const ward_ucd_upazila_const = this.wards_ucd_upazila.find(
-            (w) => w.id === wardId
-          );
-          const district_ucd_upazila = this.districts.find(
-            (d) => d.id === this.data.district_id
-          );
-          const division_ucd_upazila = this.divisions.find(
-            (div) => div.id === this.data.division_id
-          );
-          const upazila = this.upazilas.find(
-            (c) => c.id === this.data.upazila_id
-          );
-          const pouro = this.pouros_all?.find(
-            (t) => t.id === ward_ucd_upazila_const?.parent?.id
-          );
-          const union = this.unions_all?.find(
-            (u) => u.id === ward_ucd_upazila_const?.parent?.id
-          );
-
-          console.log(ward_ucd_upazila_const, "ward_ucd_upazila_const");
-
-          return {
-            division_ucd_upazila: division_ucd_upazila.name_en,
-            district_ucd_upazila: district_ucd_upazila.name_en,
-            upazila: upazila.name_en,
-            union: union?.name_en,
-            pouro: pouro?.name_en,
-            ward_ucd_upazila: ward_ucd_upazila_const?.name_en,
-            ward_id_ucd_upazila: ward_ucd_upazila_const?.id,
-          };
-        }
-      );
-
-      this.selectedWards_UCDUpazila = this.selectedWards_UCDUpazila_edit;
-    },
-    onChangeWards_UCDUpazila(selectedWards_UCDUpazila) {
-      // Update selectedWardsDetails based on the selectedWards
-      this.selectedWards = [];
-      console.log(this.selectedWards_UCDUpazila, "selectedWards_UCDUpazila");
-      console.log(this.wards_ucd_upazila, "all wards");
-
-      this.selectedWardsDetails_UCDUpazila = selectedWards_UCDUpazila.map(
-        (wardId) => {
-          const ward_ucd_upazila_const = this.wards_ucd_upazila.find(
-            (w) => w.id === wardId
-          );
-          const district_ucd_upazila = this.districts.find(
-            (d) => d.id === this.data.district_id
-          );
-          const division_ucd_upazila = this.divisions.find(
-            (div) => div.id === this.data.division_id
-          );
-          const upazila = this.upazilas.find(
-            (c) => c.id === this.data.upazila_id
-          );
-          const pouro = this.pouros_all?.find(
-            (t) => t.id === ward_ucd_upazila_const?.parent?.id
-          );
-          const union = this.unions_all?.find(
-            (u) => u.id === ward_ucd_upazila_const?.parent?.id
-          );
-
-          console.log(ward_ucd_upazila_const, "ward_ucd_upazila_const");
-
-          return {
-            division_ucd_upazila: division_ucd_upazila.name_en,
-            district_ucd_upazila: district_ucd_upazila.name_en,
-            upazila: upazila.name_en,
-            union: union?.name_en,
-            pouro: pouro?.name_en,
-            ward_ucd_upazila: ward_ucd_upazila_const?.name_en,
-            ward_id_ucd_upazila: ward_ucd_upazila_const?.id,
-          };
-        }
-      );
-    },
-    submitOffice() {
-      if (this.selectedWards && this.selectedWards.length > 0) {
-        this.data.selectedWards = this.selectedWards;
+        this.data.type = "date";
       }
-      if (
-        this.selectedWards_UCDUpazila &&
-        this.selectedWards_UCDUpazila.length > 0
-      ) {
-        this.data.selectedWards = this.selectedWards_UCDUpazila;
-      }
+      if (this.data.type === 4 ) {
+        this.data.type = "number";
 
+      }
+      if (this.data.type == 5) {
+
+        this.data.type = "text";
+      }
+       if (this.data.type === 6) {
+        this.data.type = "disabled";
+
+      }
+         console.log(this.data, "this.data")
       let fd = new FormData();
       for (const [key, value] of Object.entries(this.data)) {
-        if (key === "status" && value === null) {
-          fd.append(key, "0");
-        }
+       
         if (value !== null) {
-          // fd.append(key, value);
-          // console.log(key, value,"fd values");
-          if (key == "selectedWards") {
+          if (key == "field_value") {
+            console.log(key, value, "field_value");
             for (let i = 0; i < value.length; i++) {
-              fd.append("selectedWards[" + i + "]", value[i]);
+                console.log("Processing field_value item", i, value[i].value);
+              fd.append("field_value[" + i + "].value", value[i].value);
+             
             }
           } else {
             fd.append(key, value);
+            console.log(key, value, "else");
           }
+           console.log(key, value);
         }
       }
-
-      // for (const [key, value] of fd.entries()) {
-      //   console.log(`${key}: ${value}`);
-      // }
-
-      try {
-        this.$store.dispatch("Office/StoreOffice", fd).then((data) => {
-          // console.log(data, "submit");
-          if (data == null) {
-            this.$toast.success("Data Inserted Successfully");
-            this.dialogAdd = false;
+   
+       this.$axios
+        .post("admin/allowance/allowance-additional-field/update", fd, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
+          this.loading = false;
+          console.log(result, 'result')
+          if (result.data.success == true) {
+            this.$toast.success("Data Updated Successfully");
+            this.dialogEdit = false;
             this.resetData();
-            this.GetOffices();
+          
+
           } else {
-            this.$refs.formAdd.setErrors(data.errors);
-            // this.errors = data.errors;
+            this.$refs.formEdit.setErrors(result.data.errors);
+            //  this.$refs.formAdd.setErrors(data.errors);
           }
+
+        })
+        .catch((err) => {
+
+
         });
-      } catch (e) {
-        console.log(e);
-      }
+  
     },
-    async updateOffice() {
-      console.log(this.message, "this.message 1st start");
-
-      console.log(this.selectedWards_edit, "this.selectedWards_edit");
-      console.log(this.selectedWards, "this.selectedWards");
-
-      if (
-        this.data.office_type === 35 &&
-        this.selectedWards_edit &&
-        this.selectedWards_edit.length > 0
-      ) {
-        this.data.selectedWards = this.selectedWards_edit;
-        console.log(this.selectedWards, "this.selectedWards city if");
-      } else if (
-        this.data.office_type === 35 &&
-        this.selectedWards_edit &&
-        this.selectedWards_edit.length === 0
-      ) {
-        this.data.selectedWards = this.selectedWards;
-        console.log(this.selectedWards, "this.selectedWards city else");
-      }
-      //console.log(this.data.selectedWards, "this.data.selectedWards")
-      if (
-        this.data.office_type === 10 &&
-        this.selectedWards_UCDUpazila_edit &&
-        this.selectedWards_UCDUpazila_edit.length > 0
-      ) {
-        this.data.selectedWards = this.selectedWards_UCDUpazila_edit;
-        console.log(this.selectedWards, "this.selectedWards upazila if");
-      } else if (
-        this.data.office_type === 10 &&
-        this.selectedWards_UCDUpazila_edit &&
-        this.selectedWards_UCDUpazila_edit.length === 0
-      ) {
-        this.data.selectedWards = this.selectedWards_UCDUpazila;
-        console.log(this.selectedWards, "this.selectedWards upazila else");
-      }
-
-      if (
-        (this.data.selectedWards.length === 0 &&
-          this.data.office_type === 10) ||
-        (this.data.selectedWards.length === 0 && this.data.office_type === 35)
-      ) {
-        this.message = "wards need to add under this Office type";
-        console.log(this.message, "this.message not null");
-      } else {
-        this.message = null;
-        console.log(this.message, "this.message  null");
-      }
-
-      if (this.message === null) {
-        console.log(this.message, "this.message  null");
-        let fd = new FormData();
-        for (const [key, value] of Object.entries(this.data)) {
-          if (key === "status" && value === null) {
-            fd.append(key, "0");
-          }
-          if (value !== null) {
-            if (key == "selectedWards") {
-              for (let i = 0; i < value.length; i++) {
-                fd.append("selectedWards[" + i + "]", value[i]);
-              }
-            } else {
-              fd.append(key, value);
-            }
-          }
-        }
-        try {
-          this.$store.dispatch("Office/UpdateOffice", fd).then((data) => {
-            console.log(data, "update");
-            if (data == null) {
-              this.$toast.success("Data Updated Successfully");
-              this.dialogEdit = false;
-              this.resetData();
-              this.GetOffices();
-            } else {
-              this.$refs.formEdit.setErrors(data.errors);
-            }
-          });
-        } catch (e) {
-          console.log(e);
-        }
-      }
-      console.log(this.data.selectedWards, " this.data.selectedWards final");
-    },
+    
+    
     editDialog(item) {
-      console.log(item, "edit Dialog");
+    this.resetData();
       this.dialogEdit = true;
       this.data.name_en = item.name_en;
+       this.data.name_bn = item.name_bn;
       if(item.type == "checkbox"){
       
-         this.data.field_type= 1;
+         this.data.type= 1;
       }
        if (item.type == "dropdown") {
-        this.data.field_type = 2;
+        this.data.type = 2;
+        this.data.field_value = item?.additional_field_value;
+      
          
       }
        if (item.type == "date") {
        
-        this.data.field_type = 3;
+        this.data.type = 3;
+        this.data.date = item?.additional_field_value[0].value;
       }
       if (item.type == "number") {
-        this.data.field_type = 4;
+        this.data.type = 4;
+        this.data.number = item?.additional_field_value[0].value;;
      
       }
-       if (item.type == "disabled") {
+       if (item.type == "text") {
         
-        this.data.field_type = 1;
+        this.data.type = 5;
+         this.data.text = item?.additional_field_value[0].value;;
+      }
+         if (item.type == "disabled" ) {
+
+        this.data.type = 6;
       }
  
       
-      this.field_value = item?.additional_field_value;
+      
       console.log(this.field_value,"field_value");
       this.data.id = item.id;
       this.errors = {};
@@ -1238,12 +943,12 @@ export default {
     addRow() {
       // Find the maximum id in the current array
       const maxId = Math.max(
-        ...this.field_value.map((item) => item.id)
+        ...this.data.field_value.map((item) => item.id)
       );
 
       if (maxId != 0) {
         // Add a new row with id = maxId + 1
-        this.field_value.push({
+        this.data.field_value.push({
           id: maxId + 1,
           value: "",
         });
@@ -1253,16 +958,16 @@ export default {
     },
    removeRow(id) {
       // Find the index of the row with the given id
-      const index = this.field_value.findIndex((item) => item.id === id);
+      const index = this.data.field_value.findIndex((item) => item.id === id);
 
       // Check if there is more than one input before removing
-      if (index !== -1 && this.field_value.length > 1) {
-        this.field_value.splice(index, 1);
-      } else {
+      // if (index !== -1 && this.data.field_value.length > 1) {
+        this.data.field_value.splice(index, 1);
+      // } else {
         // Optionally, you can show a message or handle this case differently
-                this.$toast.success("Atleast One input Needed");
+                // this.$toast.success("Atleast One input Needed");
         
-      }
+      // }
     },
     createDialog() {
       if (this.$refs.formAdd) {
@@ -1293,229 +998,8 @@ export default {
       this.errors = {};
     },
 
-    async GetAllUpazila(id) {
-      console.log(id, "GetAllUpazila");
-      try {
-        this.$store
-          .dispatch("Thana/GetAllUpazilaByDistrict", id)
-          .then((data) => {
-            console.log(data, "GetAllUpazilaByDistrict");
-            this.upazilas = data;
-          });
-      } catch (e) {
-        console.log(e);
-      }
-    },
-
-    async onChangeOfficeType($event) {
-      if ($event === 35) {
-        this.location_type = 3;
-      }
-      if ($event === 8 || $event === 10) {
-        this.location_type = 2;
-      }
-      if ($event === 9) {
-        this.location_type = 1;
-      }
-
-      if (this.data.district_id != null && this.location_type != null) {
-        if (this.location_type === 2) {
-          await this.$axios
-            .get(`/admin/thana/get/${this.data.district_id}`, {
-              headers: {
-                Authorization: "Bearer " + this.$store.state.token,
-                "Content-Type": "multipart/form-data",
-              },
-            })
-            .then((result) => {
-              this.upazilas = result.data.data;
-              this.cities = [];
-
-              this.dist_pouros = [];
-            });
-        }
-        if (this.location_type === 3) {
-          this.$axios
-            .get(
-              "/admin/city/get/" +
-                this.data.district_id +
-                "/" +
-                this.location_type,
-              {
-                headers: {
-                  Authorization: "Bearer " + this.$store.state.token,
-                  "Content-Type": "multipart/form-data",
-                },
-              }
-            )
-            .then((result) => {
-              this.cities = result.data.data;
-              console.log(this.cities, "cities called properly");
-
-              this.dist_pouros = [];
-              this.upazilas = [];
-            })
-            .catch((error) => {
-              console.error("Error:", error);
-            });
-        }
-        if (this.location_type === 1) {
-          await this.$axios
-            .get(
-              "/admin/city/get/" +
-                this.data.district_id +
-                "/" +
-                this.location_type,
-              {
-                headers: {
-                  Authorization: "Bearer " + this.$store.state.token,
-                  "Content-Type": "multipart/form-data",
-                },
-              }
-            )
-            .then((result) => {
-              this.dist_pouros = result.data.data;
-              this.cities = [];
-              this.upazilas = [];
-            });
-        }
-      }
-    },
-    async onChangeCity($event) {
-      await this.$axios
-        .get(`/admin/thana/get/city/${$event}`, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((result) => {
-          this.final_thanas = result.data.data;
-          this.thanas = this.thanas.concat(result.data.data);
-          console.log(this.thanas, "city is called properly all thana show");
-        });
-    },
-    async onChangeThana($event) {
-      await this.$axios
-        .get(`/admin/ward/get/thana/${$event}`, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((result) => {
-          this.selectedWards_edit = this.selectedWards;
-          console.log(this.wards, "faka array check");
-          this.final_wards = result.data.data;
-          console.log(this.final_wards, "final_wards thanaedit wards");
-          this.wards = this.wards.concat(result.data.data);
-
-          console.log(this.wards, " wards thanaedit wards");
-        });
-    },
-    async onChangeThana_1($event) {
-      await this.$axios
-        .get(`/admin/ward/get/thana/${$event}`, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((result) => {
-          console.log(this.wards, "faka array check");
-          this.final_wards = result.data.data;
-          console.log(this.final_wards, "final_wards thanaedit wards");
-          this.wards = this.wards.concat(result.data.data);
-
-          console.log(this.wards, " wards thanaedit wards");
-        });
-    },
-
-    async onChangeDivision(event) {
-      await this.$axios
-        .get(`/admin/district/get/${event}`, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((result) => {
-          this.districts = result.data.data;
-
-          console.log(this.districts, " district function called properly");
-        });
-    },
-    async onChangeDistrict($event) {
-      this.onChangeOfficeType(this.data.office_type);
-
-      //juned vai
-      // event = 3; //Lookup.id = 3 , Look.name_en = 'City Corporation'
-      // const payload = {
-      //   district_id: this.data.district_id,
-      //   lookup_id: "3",
-      // };
-      // console.log(JSON.stringify(payload));
-      // // return;
-      // if (
-      //   this.office_type_id == 8 ||
-      //   this.office_type_id == 10 ||
-      //   this.office_type_id == 11
-      // ) {
-      //   console.log("load Upazila");
-      //   this.GetAllUpazila(this.data.district_id);
-      // } else {
-      //   console.log("load City Corporation");
-      //   await this.$axios
-      //     .get(`/admin/city/get/` + this.data.district_id + "/" + event, {
-      //       headers: {
-      //         Authorization: "Bearer " + this.$store.state.token,
-      //         "Content-Type": "multipart/form-data",
-      //       },
-      //     })
-      //     .then((result) => {
-      //       this.city = result.data.data;
-      //       console.log(this.city, "onChangeDistrict");
-      //     });
-      // }
-    },
-    async onChangeDivisionChange(event) {
-      await this.$axios
-        .get(`/admin/district/get/${event}`, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((result) => {
-          this.districts_search = result.data.data;
-        });
-    },
-    // //done till now
-    async onChangeSubLocationTypeChange(event) {
-      // alert(event);
-
-      if (event == 1) {
-        await this.$axios
-          .get(`/admin/union/pouro/get/${this.thana_id_search}`, {
-            headers: {
-              Authorization: "Bearer " + this.$store.state.token,
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then((result) => {
-            this.pouros_search = result.data.data;
-          });
-        this.union_id_search = null;
-      }
-      if (event == 2) {
-        this.onChangeUpazilaChange(this.thana_id_search);
-        this.pouro_id_search = null;
-      }
-    },
-    ...mapActions({
-      GetAllDivisions: "Division/GetAllDivisions",
-      updateError: "Office/updateError",
-    }),
+    
+  
     deleteAlert(id) {
       this.deleteDialog = true;
       this.delete_id = id;
@@ -1628,42 +1112,18 @@ export default {
         });
     },
     resetData() {
-      this.message = null;
-      this.dialogEdit = null;
-      this.data.id = null;
-      this.data.office_type = null;
-      this.office_type_id = null;
+  
+     
       this.data.name_en = null;
       this.data.name_bn = null;
-      this.data.office_address = null;
-      this.data.comment = null;
-      this.data.status = null;
-      this.data.division_id = null;
-      this.data.district_id = null;
-      this.data.city_id = null;
-      this.data.dist_pouro_id = null;
-      this.data.upazila_id = null;
-      this.data.union_id = null;
-      this.data.pouro_id = null;
-      this.data.dist_pouro_id = null;
-      this.data.thana_id = null;
-      this.data.selectedWards = [];
-      this.data.selectedWards_UCDUpazila = [];
-      this.divisions = [];
-      this.districts = [];
-      this.cities = [];
-      this.final_wards = [];
-      this.final_thanas = [];
-      this.selectedWards = [];
-      this.selectedWards_edit = [];
-      this.selectedWards_UCDUpazila = [];
-      this.selectedWards_UCDUpazila_edit = [];
-      this.selectedWardsDetails_UCDUpazila = [];
-      this.final_wards_ucd_upazila = [];
-      this.wards_ucd_upazila = [];
-      this.dist_pouros = [];
-      this.unions_all = [];
-      this.pouros_all = [];
+      this.data.type = null;
+      this.data.field_value = [];
+      this.data.date = null;
+      this.data.number = null;
+      this.data.text = null;
+      this.data.checkbox = null;
+       
+    
     },
 
     updateHeaderTitle() {
