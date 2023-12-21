@@ -32,13 +32,8 @@
                       v-model="search"
                       prepend-inner-icon="mdi-magnify"
                       class="my-sm-0 my-3 mx-0v -input--horizontal"
-                      flat
                       variant="outlined"
-                      :label="
-                        $t(
-                          'container.system_config.demo_graphic.committeePermission.search'
-                        )
-                      "
+                      :label="$t('container.system_config.demo_graphic.committeePermission.search')"
                       hide-details
                       color="primary"
                     >
@@ -87,24 +82,7 @@
 
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'update-post'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="success mr-3"
-                              elevation="0"
-                              @click="GetCommitteeById(item.id)"
-                            >
-                              <v-icon> mdi-eye-circle-outline </v-icon>
-                            </v-btn>
-                          </template>
-                          <span>
-                            {{ $t("container.list.view") }}
-                          </span>
-                        </v-tooltip>
+
 
 
                         <v-tooltip top>
@@ -185,8 +163,67 @@
         </v-row>
       </v-col>
 
-      <!-- Committee View modal  -->
-      <!-- Committee View modal  -->
+      <!-- division Edit modal  -->
+      <v-dialog v-model="dialogEdit" width="650">
+        <v-card style="justify-content: center; text-align: center">
+          <v-card-title class="font-weight-bold justify-center">
+            {{$t('container.system_config.demo_graphic.committeePermission.edit')}}
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text class="mt-7">
+            <form @submit.prevent="updatePermission()">
+              <v-container fluid>
+                <v-checkbox
+                    v-model="data.approve"
+                    :label='$t("container.system_config.demo_graphic.committeePermission.approve")'
+                    :value="true"
+                ></v-checkbox>
+
+                <v-checkbox
+                    v-model="data.forward"
+                    :label='$t("container.system_config.demo_graphic.committeePermission.forward")'
+                    :value="true"
+                ></v-checkbox>
+
+                <v-checkbox
+                    v-model="data.reject"
+                    :label='$t("container.system_config.demo_graphic.committeePermission.reject")'
+                    :value="true"
+                ></v-checkbox>
+
+                <v-checkbox
+                    v-model="data.waiting"
+                    :label='$t("container.system_config.demo_graphic.committeePermission.waiting")'
+                    :value="true"
+                ></v-checkbox>
+
+              </v-container>
+
+
+
+
+              <v-row class="mx-0 my-0 py-2" justify="center">
+                <v-btn
+                    @click="dialogEdit = false"
+                    outlined
+                    class="custom-btn-width py-2 mr-10"
+                >
+                  {{ $t("container.list.cancel") }}
+                </v-btn>
+                <v-btn
+                    type="submit"
+                    color="primary"
+                    :loading="loading"
+                    class="custom-btn-width primary white--text py-2"
+                >
+                  {{ $t("container.list.update") }}
+                </v-btn>
+              </v-row>
+            </form>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+      <!-- division Edit modal  -->
 
       <!-- delete modal  -->
       <v-dialog v-model="deleteDialog" width="350">
@@ -197,11 +234,7 @@
           <v-divider></v-divider>
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
-              {{
-                $t(
-                  "container.system_config.demo_graphic.committeePermission.delete_alert"
-                )
-              }}
+              {{ $t("container.system_config.demo_graphic.committeePermission.delete_alert") }}
             </div>
           </v-card-text>
           <v-card-actions style="display: block">
@@ -216,7 +249,7 @@
               </v-btn>
               <v-btn
                 text
-                @click="deleteCommittee()"
+                @click="deleteCommitteePermission()"
                 color="white"
                 :loading="delete_loading"
                 class="custom-btn-width warning white--text py-2"
@@ -245,16 +278,13 @@ export default {
   data() {
     return {
       data: {
-        id: null,
-        type: null,
-        value_en: "",
-        value_bn: "",
-        committee_permission: {
-          approve: null,
-          forward: null,
-          reject: null,
-          waiting: null,
-        }
+        committee_type_id: null,
+        value_en: null,
+        value_bn: null,
+        approve: null,
+        forward: null,
+        reject: null,
+        waiting: null,
       },
 
       office_type_id: null,
@@ -276,6 +306,7 @@ export default {
       locationType: [],
       dialogAdd: false,
       dialogView: false,
+      dialogEdit: false,
       deleteDialog: false,
       delete_loading: false,
       loading: false,
@@ -299,13 +330,13 @@ export default {
   computed: {
     headers() {
       return [
-        { text: "#Sl", value: "id", align: "start", sortable: true },
-        { text: "Name", value: "value_en" },
-        { text: "Approve", value: "committee_permission.approve" },
-        { text: "Forward", value: "committee_permission.forward" },
-        { text: "Reject", value: "committee_permission.reject" },
-        { text: "Waiting", value: "committee_permission.waiting" },
-        { text: "Actions", value: "actions", align: "center", sortable: false },
+        { text: this.$t("container.list.sl"), value: "id", align: "start", sortable: true },
+        { text: this.$t("container.system_config.demo_graphic.committeePermission.name"), value: "value_en" },
+        { text: this.$t("container.system_config.demo_graphic.committeePermission.approve"), value: "committee_permission.approve" },
+        { text: this.$t("container.system_config.demo_graphic.committeePermission.forward"), value: "committee_permission.forward" },
+        { text: this.$t("container.system_config.demo_graphic.committeePermission.reject"), value: "committee_permission.reject" },
+        { text: this.$t("container.system_config.demo_graphic.committeePermission.waiting"), value: "committee_permission.waiting" },
+        { text: this.$t("container.list.action"), value: "actions", align: "center", sortable: false },
       ];
     },
 
@@ -325,66 +356,8 @@ export default {
       this.resetForm();
       this.dialogAdd = true;
     },
-    checkLanguage() {
-      // let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
-      // let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
-      // if (
-      //   checkLanguageBangla != "Bangla" &&
-      //   checkLanguageEnglish != "English"
-      // ) {
-      //   let errs = {
-      //     name_bn: ["Please Enter in Bangla Language in this Field"],
-      //     name_en: ["Please Enter in English Language in this Field"],
-      //   };
-      //   this.$refs.form.setErrors(errs);
-      //   return false;
-      // } else if (checkLanguageBangla != "Bangla") {
-      //   let errs = {
-      //     name_bn: ["Please Enter in Bangla Language in this Field"],
-      //   };
-      //   this.$refs.form.setErrors(errs);
-      //   return false;
-      // } else if (checkLanguageEnglish != "English") {
-      //   let errs = {
-      //     name_en: ["Please Enter in English Language in this Field"],
-      //   };
-      //   this.$refs.form.setErrors(errs);
-      //   return false;
-      // } else {
-      //   return true;
-      // }
 
-      let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
-      let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
 
-      console.log(checkLanguageEnglish);
-      console.log(checkLanguageBangla);
-      let errs = {};
-
-      if (
-        checkLanguageBangla !== "Bangla" &&
-        checkLanguageBangla !== "BanglaSpecialChar"
-      ) {
-        errs.name_bn = ["Please Enter in Bangla Language in this Field"];
-      }
-
-      if (checkLanguageEnglish != "English") {
-        errs.name_en = ["Please Enter in English Language in this Field"];
-      }
-
-      if (Object.keys(errs).length > 0) {
-        if (this.$refs.formAdd) {
-          this.$refs.formAdd.setErrors(errs);
-        }
-        if (this.$refs.formEdit) {
-          this.$refs.formEdit.setErrors(errs);
-        }
-
-        return false;
-      }
-
-      return true;
-    },
     validator() {
       let fd = new FormData();
       for (const [key, value] of Object.entries(this.data)) {
@@ -403,6 +376,7 @@ export default {
         this.$store
           .dispatch("Committee/StoreCommittee", this.validator())
           .then((res) => {
+            console.log('res', res.data)
             if (res.data?.success) {
               this.$toast.success("Data Inserted Successfully");
               this.resetForm();
@@ -410,7 +384,7 @@ export default {
               this.GetCommittee();
             } else if (res.response?.data?.errors) {
               console.log(res.response.data.errors);
-              this.$refs.formAdd.setErrors(res.response.data.errors);
+              // this.$refs.formAdd.setErrors(res.response.data.errors);
             }
           });
       } catch (e) {
@@ -418,26 +392,52 @@ export default {
       }
     },
     editDialog(item) {
-      this.dialogView = true;
-      this.data.code = item.code;
-      this.data.name_en = item.name_en;
-      this.data.name_bn = item.name_bn;
-      this.data.id = item.id;
+      this.data.committee_type_id = item.id;
+      this.data.value_en = item.value_en;
+      this.data.value_bn = item.value_bn;
+      this.data.approve = !!item.committee_permission?.approve
+      this.data.forward = !!item.committee_permission?.forward
+      this.data.reject = !!item.committee_permission?.reject
+      this.data.waiting = !!item.committee_permission?.waiting
       this.errors = {};
+
+      this.dialogEdit = true;
     },
+
+    updatePermission() {
+      try {
+        this.$store
+            .dispatch("BeneficiaryManagement/StoreCommitteePermission", this.data)
+            .then((data) => {
+              console.log(data, "update");
+              if (data != null) {
+                this.$toast.success("Data Updated Successfully");
+                this.dialogEdit = false;
+                this.resetForm();
+                this.GetCommittee();
+              } else {
+                // this.$refs.formEdit.setErrors(data.errors);
+              }
+            });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
     updateCommittee() {
       if (!this.checkLanguage()) {
         return;
       }
 
       try {
+        this.$toast.success("Data Updated Successfully");
         this.$store
           .dispatch("Committee/UpdateCommittee", this.validator())
           .then((data) => {
             console.log(data, "update");
             if (data == null) {
               this.$toast.success("Data Updated Successfully");
-              this.dialogView = false;
+              this.dialogEdit = false;
               this.resetForm();
               this.GetCommittee();
             } else {
@@ -449,13 +449,13 @@ export default {
       }
     },
     resetForm() {
-      // Reset the form data
-      this.data = {
-        code: "",
-        name_en: "",
-        name_bn: "",
-        // Reset other form fields
-      };
+      this.data.committee_type_id = null
+      this.data.value_en = null
+      this.data.value_bn = null
+      this.data.approve = null
+      this.data.forward = null
+      this.data.reject = null
+      this.data.waiting = null
       this.errors = {};
     },
 
@@ -779,16 +779,17 @@ export default {
           });
       }
     },
-    deleteCommittee: async function () {
+    deleteCommitteePermission: async function () {
       try {
         await this.$store
-          .dispatch("BeneficiaryManagement/DestroyCommittee", this.delete_id)
+          .dispatch("BeneficiaryManagement/DeleteCommitteePermission", this.delete_id)
           .then((res) => {
             // check if the request was successful
+
             if (res?.data?.success) {
-              this.$toast.error(res.data.message);
+              this.$toast.success(res.data.message);
             } else {
-              this.$toast.error(res.response.data.message);
+              this.$toast.error(res.response.data.errors);
             }
             this.deleteDialog = false;
             this.GetCommittee();
@@ -801,8 +802,6 @@ export default {
       }
     },
     deleteAlert(id) {
-      this.data.id = id;
-      // alert(JSON.stringify(id));
       this.deleteDialog = true;
       this.delete_id = id;
     },

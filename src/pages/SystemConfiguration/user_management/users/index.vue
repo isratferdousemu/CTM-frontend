@@ -82,6 +82,16 @@
                         </v-chip>
                       </template>
 
+
+                      <template v-slot:item.assign_location.name_en="{ item }">
+                        {{item?.assign_location?.name_en}}
+                      </template>
+
+                      <template v-slot:item.office.name_en="{ item }">
+                        <p v-if="item.committee_id">{{item?.committee?.name}}</p>
+                        <p v-else>{{item?.office?.name_en}}</p>
+                      </template>
+
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
                         <v-tooltip top>
@@ -263,6 +273,58 @@
                   </v-col>
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
+                        name="UserType"
+                        vid="userType_id"
+                        rules="required"
+                        v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                          :hide-details="errors[0] ? false : true"
+                          @input="onChangeUserType($event)"
+                          v-model="data.user_type"
+                          outlined
+                          :label="
+                          $t(
+                            'container.system_config.demo_graphic.user.user_type'
+                          )
+                        "
+                          :items="userType"
+                          item-text="name_en"
+                          item-value="id"
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                        name="Status"
+                        vid="status"
+                        rules="required"
+                        v-slot="{ errors }"
+                    >
+                      <v-select
+                          :hide-details="errors[0] ? false : true"
+                          outlined
+                          v-model="data.status"
+                          :items="[
+                          { text: 'Active', value: 1 },
+                          { text: 'Inactive', value: 0 },
+                        ]"
+                          item-text="text"
+                          item-value="value"
+                          :label="
+                          $t('container.system_config.demo_graphic.user.status')
+                        "
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
+                      ></v-select>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12" v-if="data.user_type === 1">
+                    <ValidationProvider
                       name="Role"
                       vid="role_id"
                       rules="required"
@@ -286,60 +348,10 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="Status"
-                      vid="status"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-select
-                        :hide-details="errors[0] ? false : true"
-                        outlined
-                        v-model="data.status"
-                        :items="[
-                          { text: 'Active', value: 1 },
-                          { text: 'Inactive', value: 0 },
-                        ]"
-                        item-text="text"
-                        item-value="value"
-                        :label="
-                          $t('container.system_config.demo_graphic.user.status')
-                        "
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-select>
-                    </ValidationProvider>
-                  </v-col>
-                  <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="UserType"
-                      vid="userType_id"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        :hide-details="errors[0] ? false : true"
-                        @input="onChangeUserType($event)"
-                        v-model="userType_id"
-                        outlined
-                        :label="
-                          $t(
-                            'container.system_config.demo_graphic.user.user_type'
-                          )
-                        "
-                        :items="userType"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-autocomplete>
-                    </ValidationProvider>
-                  </v-col>
-                  <!-- Committee Dropdowns -->
-                  <v-col lg="6" md="6" cols="12" v-if="userType_id == 2">
+
+
+                  <!-- CommitteeTypes Dropdowns -->
+                  <v-col lg="6" md="6" cols="12" v-if="data.user_type === 2">
                     <ValidationProvider
                       name="CommitteeType"
                       vid="committee_type"
@@ -348,7 +360,7 @@
                     >
                       <v-autocomplete
                         :hide-details="errors[0] ? false : true"
-                        @input="onChangeCommitteeType($event)"
+                        @input="onChangeCommitteeType"
                         v-model="data.committee_type"
                         outlined
                         :label="
@@ -367,25 +379,10 @@
                   </v-col>
                 </v-row>
                 <v-card-title
-                  v-if="
-                    data.committee_type == 12 ||
-                    data.committee_type == 13 ||
-                    data.committee_type == 14 ||
-                    data.committee_type == 15 ||
-                    data.committee_type == 16 ||
-                    data.committee_type == 17
-                  "
-                  ><h4>DSS Center</h4></v-card-title
-                >
+                  v-if="[12, 13, 14, 15, 16, 17].includes(data.committee_type)"
+                ><h4>DSS Center</h4></v-card-title>
                 <v-divider
-                  v-if="
-                    data.committee_type == 12 ||
-                    data.committee_type == 13 ||
-                    data.committee_type == 14 ||
-                    data.committee_type == 15 ||
-                    data.committee_type == 16 ||
-                    data.committee_type == 17
-                  "
+                  v-if="[12, 13, 14, 15, 16, 17].includes(data.committee_type)"
                 ></v-divider>
 
                 <v-row>
@@ -471,8 +468,7 @@
                     cols="12"
                     v-if="
                       data.committee_type == 12 ||
-                      data.committee_type == 14 ||
-                      data.committee_type == 16
+                      data.committee_type == 14
                     "
                   >
                     <ValidationProvider
@@ -517,7 +513,7 @@
                       <v-autocomplete
                         :hide-details="errors[0] ? false : true"
                         v-model="data.city_corpo_id"
-                        @change="onChangeCity($event)"
+                        @input="onChangeCity($event)"
                         outlined
                         :label="
                           $t('container.system_config.demo_graphic.office.city')
@@ -548,8 +544,8 @@
                     >
                       <v-autocomplete
                         :hide-details="errors[0] ? false : true"
+                        @input="onChangeThana($event)"
                         v-model="data.thana_id"
-                        @change="onChangeThana($event)"
                         outlined
                         :label="
                           $t(
@@ -579,6 +575,7 @@
                     >
                       <v-autocomplete
                         :hide-details="errors[0] ? false : true"
+                        @input="onChangeUnion($event)"
                         v-model="data.union_id"
                         outlined
                         :label="
@@ -609,6 +606,7 @@
                     >
                       <v-autocomplete
                         :hide-details="errors[0] ? false : true"
+                        @input="onChangeDistrictPauroshava($event)"
                         v-model="data.paurashava_id"
                         outlined
                         :label="
@@ -639,6 +637,7 @@
                     >
                       <v-autocomplete
                         :hide-details="errors[0] ? false : true"
+                        @input="onChangeWard($event)"
                         v-model="data.ward_id"
                         outlined
                         :label="
@@ -655,8 +654,42 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
+
+                  <v-col
+                      lg="6"
+                      md="6"
+                      cols="12"
+                      v-if="data.committee_type"
+                  >
+                    <ValidationProvider
+                        name="committee"
+                        vid="committee_id"
+                        rules="required"
+                        v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                          :hide-details="errors[0] ? false : true"
+                          v-model="data.committee_id"
+                          outlined
+                          :label="
+                          $t(
+                            'container.system_config.demo_graphic.committee.committee'
+                          )
+                        "
+                          :items="committees"
+                          item-text="name"
+                          item-value="id"
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+
                   <!-- END Committee Dropdowns -->
-                  <v-col cols="12" v-if="userType_id == 1">
+
+
+                  <v-col cols="12" v-if="data.user_type === 1">
                     <ValidationProvider
                       name="Office Type"
                       vid="office_type"
@@ -802,7 +835,7 @@
                       <v-autocomplete
                         :hide-details="errors[0] ? false : true"
                         v-model="data.city_corpo_id"
-                        @change="onChangeCity($event)"
+                        @input="onChangeCity($event)"
                         outlined
                         :label="
                           $t('container.system_config.demo_graphic.office.city')
@@ -885,7 +918,7 @@
       </v-dialog>
       <!-- user add modal  -->
 
-      <!-- user add modal  -->
+      <!-- user edit modal  -->
       <v-dialog v-model="dialogEdit" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
@@ -898,174 +931,541 @@
                 <v-row>
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
-                      name="Full Name"
-                      vid="full_name"
-                      rules="required"
-                      v-slot="{ errors }"
+                        name="Full Name"
+                        vid="full_name"
+                        rules="required"
+                        v-slot="{ errors }"
                     >
                       <v-text-field
-                        :hide-details="errors[0] ? false : true"
-                        outlined
-                        type="text"
-                        v-model="data.full_name"
-                        :label="
+                          :hide-details="errors[0] ? false : true"
+                          outlined
+                          type="text"
+                          v-model="data.full_name"
+                          :label="
                           $t(
                             'container.system_config.demo_graphic.user.full_name'
                           )
                         "
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
                       ></v-text-field>
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
-                      name="Username"
-                      vid="username"
-                      rules="required"
-                      v-slot="{ errors }"
+                        name="Username"
+                        vid="username"
+                        rules="required"
+                        v-slot="{ errors }"
                     >
                       <v-text-field
-                        :hide-details="errors[0] ? false : true"
-                        outlined
-                        type="text"
-                        v-model="data.username"
-                        :label="
+                          :hide-details="errors[0] ? false : true"
+                          outlined
+                          type="text"
+                          v-model="data.username"
+                          :label="
                           $t(
                             'container.system_config.demo_graphic.user.username'
                           )
                         "
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
                       ></v-text-field>
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
-                      name="Mobile Number"
-                      vid="mobile"
-                      rules="required"
-                      v-slot="{ errors }"
+                        name="Mobile Number"
+                        vid="mobile"
+                        rules="required"
+                        v-slot="{ errors }"
                     >
                       <v-text-field
-                        :hide-details="errors[0] ? false : true"
-                        outlined
-                        type="text"
-                        v-model="data.mobile"
-                        :label="
+                          :hide-details="errors[0] ? false : true"
+                          outlined
+                          type="text"
+                          v-model="data.mobile"
+                          :label="
                           $t('container.system_config.demo_graphic.user.mobile')
                         "
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
                       ></v-text-field>
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
-                      name="Email"
-                      vid="email"
-                      rules="required"
-                      v-slot="{ errors }"
+                        name="Email"
+                        vid="email"
+                        rules="required"
+                        v-slot="{ errors }"
                     >
                       <v-text-field
-                        :hide-details="errors[0] ? false : true"
-                        outlined
-                        type="text"
-                        v-model="data.email"
-                        :label="
+                          :hide-details="errors[0] ? false : true"
+                          outlined
+                          type="text"
+                          v-model="data.email"
+                          :label="
                           $t('container.system_config.demo_graphic.user.email')
                         "
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
                       ></v-text-field>
                     </ValidationProvider>
                   </v-col>
-                  <v-col v-if="data.user_type != 1" lg="6" md="6" cols="12">
+                  <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
-                      name="Role"
-                      vid="role_id"
-                      rules="required"
-                      v-slot="{ errors }"
+                        name="UserType"
+                        vid="userType_id"
+                        rules="required"
+                        v-slot="{ errors }"
                     >
                       <v-autocomplete
-                        multiple
-                        :hide-details="errors[0] ? false : true"
-                        outlined
-                        v-model="data.role_id"
-                        :items="roles"
-                        item-text="name"
-                        item-value="id"
-                        :label="
+                          :hide-details="errors[0] ? false : true"
+                          @input="onChangeUserType($event)"
+                          v-model="data.user_type"
+                          outlined
+                          :label="
+                          $t(
+                            'container.system_config.demo_graphic.user.user_type'
+                          )
+                        "
+                          :items="userType"
+                          item-text="name_en"
+                          item-value="id"
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                        name="Status"
+                        vid="status"
+                        rules="required"
+                        v-slot="{ errors }"
+                    >
+                      <v-select
+                          :hide-details="errors[0] ? false : true"
+                          outlined
+                          v-model="data.status"
+                          :items="[
+                          { text: 'Active', value: 1 },
+                          { text: 'Inactive', value: 0 },
+                        ]"
+                          item-text="text"
+                          item-value="value"
+                          :label="
+                          $t('container.system_config.demo_graphic.user.status')
+                        "
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
+                      ></v-select>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col lg="6" md="6" cols="12" v-if="data.user_type === 1">
+                    <ValidationProvider
+                        name="Role"
+                        vid="role_id"
+                        rules="required"
+                        v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                          multiple
+                          :hide-details="errors[0] ? false : true"
+                          outlined
+                          v-model="data.role_id"
+                          :items="roles"
+                          item-text="name"
+                          item-value="id"
+                          :label="
                           $t(
                             'container.system_config.demo_graphic.user.role_id'
                           )
                         "
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col v-if="data.user_type != 1" lg="6" md="6" cols="12">
+
+
+                  <!-- CommitteeTypes Dropdowns -->
+                  <v-col lg="6" md="6" cols="12" v-if="data.user_type === 2">
                     <ValidationProvider
-                      name="Status"
-                      vid="status"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-select
-                        :hide-details="errors[0] ? false : true"
-                        outlined
-                        v-model="data.status"
-                        :items="[
-                          { text: 'Active', value: 1 },
-                          { text: 'Inactive', value: 0 },
-                        ]"
-                        item-text="text"
-                        item-value="value"
-                        :label="
-                          $t('container.system_config.demo_graphic.user.status')
-                        "
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-select>
-                    </ValidationProvider>
-                  </v-col>
-                  <v-col v-if="data.user_type != 1" cols="12">
-                    <ValidationProvider
-                      name="Office Type"
-                      vid="office_type"
-                      rules="required"
-                      v-slot="{ errors }"
+                        name="CommitteeType"
+                        vid="committee_type"
+                        rules="required"
+                        v-slot="{ errors }"
                     >
                       <v-autocomplete
-                        @input="onChangeOfficeType($event)"
-                        :hide-details="errors[0] ? false : true"
-                        outlined
-                        v-model="data.office_type"
-                        :items="officeType"
-                        item-text="value_bn"
-                        item-value="id"
-                        :label="
+                          :hide-details="errors[0] ? false : true"
+                          @input="onChangeCommitteeType"
+                          v-model="data.committee_type"
+                          outlined
+                          :label="
                           $t(
-                            'container.system_config.demo_graphic.user.office_type'
+                            'container.system_config.demo_graphic.committee.committee_type'
                           )
                         "
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                          :items="committee_types"
+                          item-text="value_en"
+                          item-value="id"
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                </v-row>
+                <v-card-title
+                    v-if="[12, 13, 14, 15, 16, 17].includes(data.committee_type)"
+                ><h4>DSS Center</h4></v-card-title>
+                <v-divider
+                    v-if="[12, 13, 14, 15, 16, 17].includes(data.committee_type)"
+                ></v-divider>
+
+                <v-row>
+                  <v-col
+                      lg="6"
+                      md="6"
+                      cols="12"
+                      v-if="
+                      data.committee_type == 12 ||
+                      data.committee_type == 13 ||
+                      data.committee_type == 14 ||
+                      data.committee_type == 15 ||
+                      data.committee_type == 16 ||
+                      data.committee_type == 17
+                    "
+                  >
+                    <ValidationProvider
+                        name="Division"
+                        vid="division"
+                        rules="required"
+                        v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                          :hide-details="errors[0] ? false : true"
+                          @input="onChangeDivision($event)"
+                          v-model="data.division_id"
+                          outlined
+                          :label="
+                          $t(
+                            'container.system_config.demo_graphic.division.division'
+                          )
+                        "
+                          :items="divisions"
+                          item-text="name_en"
+                          item-value="id"
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col
-                    lg="6"
-                    md="6"
-                    cols="12"
-                    v-if="
+                      lg="6"
+                      md="6"
+                      cols="12"
+                      v-if="
+                      data.committee_type == 12 ||
+                      data.committee_type == 13 ||
+                      data.committee_type == 14 ||
+                      data.committee_type == 15 ||
+                      data.committee_type == 16 ||
+                      data.committee_type == 17
+                    "
+                  >
+                    <ValidationProvider
+                        name="District"
+                        vid="district"
+                        rules="required"
+                        v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                          :hide-details="errors[0] ? false : true"
+                          outlined
+                          v-model="data.district_id"
+                          @input="onChangeDistrict($event)"
+                          :label="
+                          $t(
+                            'container.system_config.demo_graphic.district.district'
+                          )
+                        "
+                          :items="districts"
+                          item-text="name_en"
+                          item-value="id"
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col
+                      lg="6"
+                      md="6"
+                      cols="12"
+                      v-if="
+                      data.committee_type == 12 ||
+                      data.committee_type == 14
+                    "
+                  >
+                    <ValidationProvider
+                        name="Upazila"
+                        vid="upazila"
+                        rules="required"
+                        v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                          :hide-details="errors[0] ? false : true"
+                          outlined
+                          v-model="data.upazila_id"
+                          @input="onChangeUpazila($event)"
+                          :label="
+                          $t(
+                            'container.system_config.demo_graphic.committee.upazila'
+                          )
+                        "
+                          :items="upazilas"
+                          item-text="name_en"
+                          item-value="id"
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col
+                      lg="6"
+                      md="6"
+                      cols="12"
+                      v-if="
+                      data.committee_type == 13 || data.committee_type == 15
+                    "
+                  >
+                    <ValidationProvider
+                        name="city"
+                        vid="city_corpo_id"
+                        rules="required"
+                        v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                          :hide-details="errors[0] ? false : true"
+                          v-model="data.city_corpo_id"
+                          @input="onChangeCity($event)"
+                          outlined
+                          :label="
+                          $t('container.system_config.demo_graphic.office.city')
+                        "
+                          :items="city"
+                          item-text="name_en"
+                          item-value="id"
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col
+                      lg="6"
+                      md="6"
+                      cols="12"
+                      v-if="
+                      data.committee_type == 13
+                      //   || data.committee_type == 14
+                    "
+                  >
+                    <ValidationProvider
+                        name="thana"
+                        vid="thana_id"
+                        rules="required"
+                        v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                          :hide-details="errors[0] ? false : true"
+                          @input="onChangeThana($event)"
+                          v-model="data.thana_id"
+                          outlined
+                          :label="
+                          $t(
+                            'container.system_config.demo_graphic.committee.thana'
+                          )
+                        "
+                          :items="thanas"
+                          item-text="name_en"
+                          item-value="id"
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col
+                      lg="6"
+                      md="6"
+                      cols="12"
+                      v-if="data.committee_type == 12"
+                  >
+                    <ValidationProvider
+                        name="union"
+                        vid="union_id"
+                        rules="required"
+                        v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                          :hide-details="errors[0] ? false : true"
+                          @input="onChangeUnion($event)"
+                          v-model="data.union_id"
+                          outlined
+                          :label="
+                          $t(
+                            'container.system_config.demo_graphic.committee.union'
+                          )
+                        "
+                          :items="unions"
+                          item-text="name_en"
+                          item-value="id"
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col
+                      lg="6"
+                      md="6"
+                      cols="12"
+                      v-if="data.committee_type == 16"
+                  >
+                    <ValidationProvider
+                        name="union"
+                        vid="paurashava_id"
+                        rules="required"
+                        v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                          :hide-details="errors[0] ? false : true"
+                          @input="onChangeDistrictPauroshava($event)"
+                          v-model="data.paurashava_id"
+                          outlined
+                          :label="
+                          $t(
+                            'container.system_config.demo_graphic.committee.pouro'
+                          )
+                        "
+                          :items="unions"
+                          item-text="name_en"
+                          item-value="id"
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col
+                      lg="6"
+                      md="6"
+                      cols="12"
+                      v-if="data.committee_type == 13"
+                  >
+                    <ValidationProvider
+                        name="ward"
+                        vid="ward_id"
+                        rules="required"
+                        v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                          :hide-details="errors[0] ? false : true"
+                          v-model="data.ward_id"
+                          @input="onChangeWard($event)"
+                          outlined
+                          :label="
+                          $t(
+                            'container.system_config.demo_graphic.committee.ward'
+                          )
+                        "
+                          :items="wards"
+                          item-text="name_en"
+                          item-value="id"
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+
+                  <v-col
+                      lg="6"
+                      md="6"
+                      cols="12"
+                      v-if="data.committee_type"
+                  >
+                    <ValidationProvider
+                        name="committee"
+                        vid="committee_id"
+                        rules="required"
+                        v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                          :hide-details="errors[0] ? false : true"
+                          v-model="data.committee_id"
+                          outlined
+                          :label="
+                          $t(
+                            'container.system_config.demo_graphic.committee.committee'
+                          )
+                        "
+                          :items="committees"
+                          item-text="name"
+                          item-value="id"
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+
+                  <!-- END Committee Dropdowns -->
+
+
+                  <v-col cols="12" v-if="data.user_type === 1">
+                    <ValidationProvider
+                        name="Office Type"
+                        vid="office_type"
+                        rules="required"
+                        v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                          @input="onChangeOfficeType($event)"
+                          :hide-details="errors[0] ? false : true"
+                          outlined
+                          v-model="data.office_type"
+                          :items="officeType"
+                          item-text="value_bn"
+                          item-value="id"
+                          :label="
+                          $t(
+                            'container.system_config.demo_graphic.user.office_type'
+                          )
+                        "
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col
+                      lg="6"
+                      md="6"
+                      cols="12"
+                      v-if="
                       data.office_type == 6 ||
                       data.office_type == 7 ||
                       data.office_type == 8 ||
@@ -1075,35 +1475,35 @@
                     "
                   >
                     <ValidationProvider
-                      name="Division"
-                      vid="division"
-                      rules="required"
-                      v-slot="{ errors }"
+                        name="Division"
+                        vid="division"
+                        rules="required"
+                        v-slot="{ errors }"
                     >
                       <v-autocomplete
-                        :hide-details="errors[0] ? false : true"
-                        @input="onChangeDivision($event)"
-                        v-model="data.division_id"
-                        outlined
-                        :label="
+                          :hide-details="errors[0] ? false : true"
+                          @input="onChangeDivision($event)"
+                          v-model="data.division_id"
+                          outlined
+                          :label="
                           $t(
                             'container.system_config.demo_graphic.division.division'
                           )
                         "
-                        :items="divisions"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                          :items="divisions"
+                          item-text="name_en"
+                          item-value="id"
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col
-                    lg="6"
-                    md="6"
-                    cols="12"
-                    v-if="
+                      lg="6"
+                      md="6"
+                      cols="12"
+                      v-if="
                       data.office_type == 7 ||
                       data.office_type == 8 ||
                       data.office_type == 9 ||
@@ -1112,132 +1512,147 @@
                     "
                   >
                     <ValidationProvider
-                      name="District"
-                      vid="district"
-                      rules="required"
-                      v-slot="{ errors }"
+                        name="District"
+                        vid="district"
+                        rules="required"
+                        v-slot="{ errors }"
                     >
                       <v-autocomplete
-                        :hide-details="errors[0] ? false : true"
-                        outlined
-                        v-model="data.district_id"
-                        @input="onChangeDistrict($event)"
-                        :label="
+                          :hide-details="errors[0] ? false : true"
+                          outlined
+                          v-model="data.district_id"
+                          @input="onChangeDistrict($event)"
+                          :label="
                           $t(
                             'container.system_config.demo_graphic.district.district'
                           )
                         "
-                        :items="districts"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                          :items="districts"
+                          item-text="name_en"
+                          item-value="id"
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col
-                    lg="6"
-                    md="6"
-                    cols="12"
-                    v-if="
+                      lg="6"
+                      md="6"
+                      cols="12"
+                      v-if="
                       data.office_type == 8 ||
                       data.office_type == 10 ||
                       data.office_type == 11
                     "
                   >
                     <ValidationProvider
-                      name="Upazila"
-                      vid="upazila"
-                      rules="required"
-                      v-slot="{ errors }"
+                        name="Upazila"
+                        vid="upazila"
+                        rules="required"
+                        v-slot="{ errors }"
                     >
                       <v-autocomplete
-                        :hide-details="errors[0] ? false : true"
-                        outlined
-                        @input="onChangeUpazila($event)"
-                        v-model="data.thana_id"
-                        :label="
+                          :hide-details="errors[0] ? false : true"
+                          outlined
+                          @input="onChangeUpazila($event)"
+                          v-model="data.thana_id"
+                          :label="
                           $t(
                             'container.system_config.demo_graphic.office.upazila'
                           )
                         "
-                        :items="upazilas"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                          :items="upazilas"
+                          item-text="name_en"
+                          item-value="id"
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12" v-if="data.office_type == 9">
                     <ValidationProvider
-                      name="city"
-                      vid="city_corpo_id"
-                      rules="required"
-                      v-slot="{ errors }"
+                        name="city"
+                        vid="city_corpo_id"
+                        rules="required"
+                        v-slot="{ errors }"
                     >
                       <v-autocomplete
-                        :hide-details="errors[0] ? false : true"
-                        v-model="data.city_corpo_id"
-                        @change="onChangeCity($event)"
-                        outlined
-                        :label="
+                          :hide-details="errors[0] ? false : true"
+                          v-model="data.city_corpo_id"
+                          @input="onChangeCity($event)"
+                          outlined
+                          :label="
                           $t('container.system_config.demo_graphic.office.city')
                         "
-                        :items="city"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                          :items="city"
+                          item-text="name_en"
+                          item-value="id"
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col v-if="data.user_type != 1" lg="6" md="6" cols="12">
+                  <v-col
+                      lg="6"
+                      md="6"
+                      cols="12"
+                      v-if="
+                      data.office_type == 4 ||
+                      data.office_type == 5 ||
+                      data.office_type == 6 ||
+                      data.office_type == 7 ||
+                      data.office_type == 8 ||
+                      data.office_type == 9 ||
+                      data.office_type == 8 ||
+                      data.office_type == 10 ||
+                      data.office_type == 11
+                    "
+                  >
                     <ValidationProvider
-                      name="office"
-                      vid="office_id"
-                      rules="required"
-                      v-slot="{ errors }"
+                        name="office"
+                        vid="office_id"
+                        rules="required"
+                        v-slot="{ errors }"
                     >
                       <v-autocomplete
-                        :hide-details="errors[0] ? false : true"
-                        v-model="data.office_id"
-                        outlined
-                        :label="
+                          :hide-details="errors[0] ? false : true"
+                          v-model="data.office_id"
+                          outlined
+                          :label="
                           $t(
                             'container.system_config.demo_graphic.user.office_id'
                           )
                         "
-                        :items="offices"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                          :items="offices"
+                          item-text="name_en"
+                          item-value="id"
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                 </v-row>
 
-                <v-row class="mx-0 my-2 py-2" justify="center">
+                <v-row class="mx-0 my-0 py-2" justify="center">
                   <v-btn
-                    flat
-                    @click="dialogEdit = false"
-                    outlined
-                    class="custom-btn-width py-2 mr-10"
+                      flat
+                      @click="dialogEdit = false"
+                      outlined
+                      class="custom-btn-width py-2 mr-10"
                   >
                     {{ $t("container.list.cancel") }}
                   </v-btn>
                   <v-btn
-                    type="submit"
-                    flat
-                    color="primary"
-                    :disabled="invalid"
-                    :loading="loading"
-                    class="custom-btn-width white--text py-2"
+                      type="submit"
+                      flat
+                      color="primary"
+                      :disabled="invalid"
+                      :loading="loading"
+                      class="custom-btn-width warning white--text py-2"
                   >
                     {{ $t("container.list.submit") }}
                   </v-btn>
@@ -1247,7 +1662,7 @@
           </v-card-text>
         </v-card>
       </v-dialog>
-      <!-- user add modal  -->
+      <!-- user edit modal  -->
 
       <!-- delete modal  -->
       <v-dialog v-model="deleteDialog" width="350">
@@ -1293,6 +1708,7 @@
 import { mapState } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
+import PermissionBadge from "../../../../components/BeneficiaryManagement/Committee/PermissionBadge.vue";
 
 extend("required", required);
 export default {
@@ -1313,8 +1729,14 @@ export default {
         office_id: null,
         division_id: null,
         district_id: null,
+        upazila_id: null,
         thana_id: null,
+        union_id: null,
+        paurashava_id: null,
+        ward_id: null,
         city_corpo_id: null,
+        committee_type: null,
+        committee_id: null
       },
       isDistrictHidden: true,
       isLocationTypeHidden: true,
@@ -1331,8 +1753,12 @@ export default {
       districts: [],
       upazilas: [],
       city: [],
+      thanas: [],
+      unions: [],
+      wards: [],
       roles: [],
       users: [],
+      committees: [],
       userType_id: null,
       userType: [
         {
@@ -1354,6 +1780,7 @@ export default {
     };
   },
   components: {
+    PermissionBadge,
     ValidationProvider,
     ValidationObserver,
   },
@@ -1375,20 +1802,24 @@ export default {
           value: "username",
         },
         {
-          text: this.$t("container.system_config.demo_graphic.user.email"),
+          text: 'Email',
           value: "email",
         },
         {
-          text: this.$t("container.system_config.demo_graphic.user.mobile"),
+          text: 'Mobile',
           value: "mobile",
         },
         {
-          text: this.$t("container.system_config.demo_graphic.user.office"),
+          text: 'Office/Committee',
           value: "office.name_en",
         },
         {
           text: this.$t("container.system_config.demo_graphic.user.status"),
           value: "status",
+        },
+        {
+          text: 'Location Assign',
+          value: "assign_location.name_en",
         },
         {
           text: this.$t("container.list.action"),
@@ -1401,13 +1832,12 @@ export default {
 
     ...mapState({
       message: (state) => state.Division.success_message,
-      divisions: (state) => state.Division.divisions,
+      // divisions: (state) => state.Division.divisions,
     }),
   },
 
   methods: {
     createDialog() {
-      console.log(this.refs);
       if (this.$refs.formAdd) {
         this.$refs.formAdd.reset();
       }
@@ -1437,6 +1867,11 @@ export default {
           },
         })
         .then((res) => {
+
+
+          console.log(res.data)
+
+
           this.$toast.success("Data Inserted Successfully");
           this.dialogAdd = false;
           this.getUsers();
@@ -1454,36 +1889,28 @@ export default {
     updateUser() {
       console.log(this.data, "edit");
       this.loading = true;
-      // return;
-      // this.data.role_id = [];
-      // let temp = this.data.role_id[];
-      let ud = new FormData();
-      for (const [key, value] of Object.entries(this.data)) {
-        if (value != null) {
-          // role_id is array so we need to append it separately
-          ud.append(key, value);
+      let fd = new FormData();
 
-          if (key == "role_id") {
+      for (const [key, value] of Object.entries(this.data)) {
+
+
+
+        if (value !== null) {
+
+          if (key != "role_id") {
+            fd.append(key, value);
+          } else if (this.data.user_type == 1) {
+            // role_id is array so we need to append it separately
             for (let i = 0; i < value.length; i++) {
-              ud.append("role_id[]", value);
+              fd.append("role_id[]", value[i]);
             }
           }
         }
       }
-      // return;
-      // Include the _method field for PUT request
-      console.log("FormData:", ud);
 
-      // delete ud["role_id"];
-      // ud.delete("role_id");
-
-      for (const [key, value] of ud.entries()) {
-        console.log(`${key}: ${value}`);
-      }
-      ud.append("_method", "PUT");
 
       this.$axios
-        .put("/admin/user/update/" + this.data.id, this.data, {
+        .post("/admin/user/update/" + this.data.id, fd, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "application/json",
@@ -1492,7 +1919,7 @@ export default {
           },
         })
         .then((res) => {
-          console.log(res);
+          console.log(res.data);
           this.$toast.success("Data updated Successfully");
           this.getUsers();
           this.$refs.formEdit.reset();
@@ -1503,30 +1930,25 @@ export default {
           this.loading = false;
           if (err.response?.data?.errors) {
             this.$refs.formEdit.setErrors(err.response.data.errors);
-            this.$toast.error(err.response.data.message);
           }
+
+          this.$toast.error(err.response.data.message);
+
         });
     },
     resetForm() {
-      this.data.id = null;
-      this.data.full_name = null;
-      this.data.username = null;
-      this.data.mobile = null;
-      this.data.email = null;
-      this.data.role_id = [];
-      this.data.status = 0;
-      this.data.office_type = null;
-      this.data.office_id = null;
-      this.data.division_id = null;
-      this.data.district_id = null;
-      this.data.thana_id = null;
-      this.data.city_corpo_id = null;
+      for (let prop in this.data) {
+        this.data[prop] = null; // Set each property's value to null
+        this.data.status = 0
+      }
     },
+
+
     editDialog(item) {
       if (this.$refs.formEdit) {
         this.$refs.formEdit.reset();
       }
-      console.log(item, "user ");
+      console.log('userEdit', item);
       this.dialogEdit = true;
       // console.log(item.roles[0].id, "roles id");
       console.log(item, "editDialog");
@@ -1535,7 +1957,20 @@ export default {
       this.data.username = item.username;
       this.data.mobile = item.mobile;
       this.data.email = item.email;
-      this.data.user_type = item.user_type;
+      this.data.user_type = item.office_id ? 1 : 2;
+
+      this.data.status = item.status
+
+
+      if (this.data.user_type == 2) {
+        this.data.committee_type = item.committee?.committee_type
+      } else {
+        this.data.office_type = item.office_type
+      }
+
+
+      console.log('office type', item)
+
 
       this.data.role_id = [];
       item.roles.forEach((role) => {
@@ -1543,54 +1978,86 @@ export default {
       });
 
       this.data.status = item.status;
-      this.data.office_type = item.office_type.id;
-      this.data.office_id = item?.office?.id;
-      // console.log(item?.assign_location?.type, 'edit--');
-      // this.onChangeOfficeType(item.office_type.id);
-      if (item.office_type.id == "4" || item.office_type.id == "5") {
-        this.getOfficeByLocation(this.data.office_type, null);
-      }
-      if (item?.assign_location?.type == "division") {
-        // console.log("division here");
-        this.data.division_id = item?.assign_location?.id;
-        this.onChangeDivision(this.data.division_id);
-      }
-      if (item?.assign_location?.type == "district") {
-        console.log("district here");
-        this.data.division_id = item?.assign_location?.parent?.id;
-        this.onChangeDivision(this.data.division_id);
-        this.data.district_id = item?.assign_location?.id;
-      }
-      if (item?.assign_location?.parent?.parent?.type == "division") {
-        console.log("here Division");
-        this.data.division_id = item?.assign_location?.parent?.parent?.id;
-        this.onChangeDivision(this.data.division_id);
-      }
-      if (item?.assign_location?.parent?.type == "district") {
-        this.data.district_id = item?.assign_location?.parent?.id;
-        this.onChangeDistrict(this.data.district_id);
-      }
-      if (item?.assign_location?.type == "city") {
-        this.data.city_corpo_id = item?.assign_location?.id;
-        this.onChangeCity(item?.assign_location?.id);
-        console.log(item?.office?.id, " in the city");
-      }
-      if (item?.assign_location?.type == "thana") {
-        this.data.thana_id = item?.assign_location?.id;
-        this.onChangeUpazila(item?.assign_location?.id);
+
+
+      if (item.assign_location?.type == 'division') {
+        this.data.division_id = item?.assign_location?.id
+        this.onChangeDivision(this.data.division_id)
       }
 
-      // if (item?.assign_location?.location_type?.value_en == "Upazila") {
-      //   this.data.thana_id = item?.assign_location?.id;
-      // }
 
-      console.log(this.data, "End editDialog");
-      // this.data.code = item.code;
-      // this.data.name_en = item.name_en;
-      // this.data.name_bn = item.name_bn;
-      // this.data.id = item.id;
-      // this.errors = {};
+      if (item.assign_location?.type == 'district') {
+        this.data.division_id = item?.assign_location?.parent?.id
+        this.onChangeDivision(this.data.division_id)
+        this.data.district_id = item?.assign_location?.id
+        this.onChangeDistrict(this.data.district_id)
+      }
+
+
+      if (item.assign_location?.type == 'city') {
+        this.data.division_id = item?.assign_location?.parent?.parent?.id
+        this.onChangeDivision(this.data.division_id)
+        this.data.district_id = item?.assign_location?.parent?.id
+        this.onChangeDistrict(this.data.district_id)
+
+
+        if (item.assign_location?.location_type == 3) {
+          this.data.city_corpo_id = item?.assign_location?.id
+          this.onChangeCity(this.data.city_corpo_id)
+        }
+
+        if (item.assign_location?.location_type == 1) {
+          this.data.paurashava_id = item?.assign_location?.id
+          this.onChangeDistrictPauroshava(this.data.paurashava_id)
+        }
+
+      }
+
+
+      if (item.assign_location?.type == 'thana') {
+        this.data.division_id = item?.assign_location?.parent?.parent?.id
+        this.onChangeDivision(this.data.division_id)
+        this.data.district_id = item?.assign_location?.parent?.id
+        this.onChangeDistrict(this.data.district_id)
+        this.data.upazila_id = item?.assign_location?.id
+        this.onChangeUpazila(this.data.upazila_id)
+      }
+
+
+
+      if (item.assign_location?.type == 'union') {
+        this.data.division_id = item?.assign_location?.parent?.parent?.parent?.id
+        this.onChangeDivision(this.data.division_id)
+        this.data.district_id = item?.assign_location?.parent?.parent?.id
+        this.onChangeDistrict(this.data.district_id)
+        this.data.upazila_id = item?.assign_location?.parent?.id
+        this.onChangeUpazila(this.data.upazila_id)
+        this.data.union_id = item?.assign_location?.id
+        this.onChangeUnion(this.data.union_id)
+      }
+
+
+      if (item.assign_location?.type == 'ward') {
+        this.data.division_id = item?.assign_location?.parent?.parent?.parent?.parent?.id
+        this.onChangeDivision(this.data.division_id)
+        this.data.district_id = item?.assign_location?.parent?.parent?.parent?.id
+        this.onChangeDistrict(this.data.district_id)
+        this.data.city_corpo_id = item?.assign_location?.parent?.parent?.id
+        this.onChangeCity(this.data.city_corpo_id)
+        this.data.thana_id = item?.assign_location?.parent?.id
+        this.onChangeThana(this.data.thana_id)
+        this.data.ward_id = item?.assign_location?.id
+        this.onChangeWard(this.data.thana_id)
+      }
+
+
+      this.data.office_id = item.office_id
+      this.data.committee_id = item.committee_id
+
     },
+
+
+
     updateDivision() {
       try {
         this.$store
@@ -1709,15 +2176,6 @@ export default {
       );
       this.$store.commit("setHeaderTitle", title);
     },
-    async GetOfficeType() {
-      try {
-        this.$store.dispatch("getLookupByType", 3).then((data) => {
-          this.officeType = data;
-        });
-      } catch (e) {
-        console.log(e);
-      }
-    },
     getRoles() {
       this.$axios
         .get("/admin/role/get", {
@@ -1733,73 +2191,251 @@ export default {
           console.log(err);
         });
     },
-    onChangeUpazila(event) {
-      if (this.data.office_type != null) {
-        this.getOfficeByLocation(this.data.office_type, event);
+
+    onChangeOfficeType(event) {
+      if (this.data.committee_type === 18 || this.data.committee_type === 19) {
+        return this.getCommittees(-1);
       }
-    },
-    onChangeCity(event) {
-      console.log(event, "onchangeCity");
-      console.log(this.data.office_type, "office_type onchangeCity");
-      if (this.data.office_type != null) {
-        this.getOfficeByLocation(this.data.office_type, event);
-      }
-    },
-    async onChangeDivision(event) {
-      this.data.office_id = null;
+
+      this.data.city_corpo_id = null;
+      this.data.division_id = null;
       this.data.district_id = null;
       this.data.thana_id = null;
+      this.data.office_id = null;
+
+      this.getOfficeByLocation(event);
+    },
+
+    async onChangeDivision(event) {
+      this.data.district_id = null;
+      this.data.upazila_id = null;
       this.data.city_corpo_id = null;
-      console.log(this.data.office_type, "this.data.office_type");
+      this.data.union_id = null;
+      this.data.paurashava_id = null;
+      this.data.thana_id = null;
+      this.data.ward_id = null;
+      this.data.office_id = null;
+      this.data.committee_id = null;
+
+
+
       if (this.data.office_type != null) {
         this.getOfficeByLocation(this.data.office_type, event);
       }
       await this.$axios
-        .get(`/admin/district/get/${event}`, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((result) => {
-          this.districts = result.data.data;
-          this.isDistrictHidden = true;
-        });
-    },
-    async onChangeDistrict(event) {
-      this.data.office_id = null;
-      this.data.thana_id = null;
-      this.data.city_corpo_id = null;
-      if (this.data.office_type != null) {
-        this.getOfficeByLocation(this.data.office_type, event);
-      }
-      //   event = 3; //Lookup.id = 3 , Look.name_en = 'City Corporation'
-      const payload = {
-        district_id: this.data.district_id,
-        lookup_id: "3",
-      };
-      if (
-        this.data.office_type == 8 ||
-        this.data.office_type == 10 ||
-        this.data.office_type == 11
-      ) {
-        console.log("load Upazila");
-        this.GetAllUpazila(this.data.district_id);
-      } else {
-        console.log("load City Corporation");
-        await this.$axios
-          .get(`/admin/city/get/` + this.data.district_id + "/" + 3, {
+          .get(`/admin/district/get/${event}`, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
             },
           })
           .then((result) => {
-            this.city = result.data.data;
-            console.log(this.city, "onChangeDistrict");
+            this.districts = result.data.data;
+            this.upazilas = []
+            this.city = []
+            this.unions = []
+            this.thanas = []
+            this.wards = []
+            this.committees = []
+            this.isDistrictHidden = true;
           });
+    },
+
+
+    async onChangeDistrict(event) {
+      console.log('district change')
+
+      if (this.data.committee_type === 17) {
+        return this.getCommittees(this.data.district_id)
+      }
+
+      this.data.upazila_id = null;
+      this.data.city_corpo_id = null;
+      this.data.union_id = null;
+      this.data.paurashava_id = null;
+      this.data.thana_id = null;
+      this.data.ward_id = null;
+      this.data.office_id = null;
+      this.data.committee_id = null;
+
+
+      if (this.data.office_type != null) {
+        this.getOfficeByLocation(this.data.office_type, event);
+      }
+      if ([8, 10, 11].includes(this.data.office_type) || [12, 14].includes(this.data.committee_type)) {
+        this.GetAllUpazila(this.data.district_id);
+      }
+      else {
+        /*
+          if committee_type == 16 (district pourosova)
+          then lookUpType = 1 (District Pouroshava)
+          else lookUpType = 3 (City)
+        */
+
+        const lookupType = this.data.committee_type == 16 ? 1 : 3
+
+        await this.$axios
+            .get(`/admin/city/get/` + this.data.district_id + "/" + lookupType, {
+              headers: {
+                Authorization: "Bearer " + this.$store.state.token,
+                "Content-Type": "multipart/form-data",
+              },
+            })
+            .then((result) => {
+              this.unions = lookupType === 1 ? result.data.data : []
+              this.city = lookupType === 3 ? result.data.data : [];
+              this.thanas = []
+              this.wards = []
+              this.committees = []
+
+              console.log(this.city, "onChangeDistrict");
+            });
       }
     },
+
+
+    async onChangeUpazila(event) {
+      console.log('upazila change')
+
+      if (this.data.committee_type === 14) {
+        return this.getCommittees(this.data.upazila_id)
+      }
+
+      this.data.city_corpo_id = null;
+      this.data.union_id = null;
+      this.data.paurashava_id = null;
+      this.data.thana_id = null;
+      this.data.ward_id = null;
+      this.data.office_id = null;
+      this.data.committee_id = null;
+
+
+      if (this.data.office_type != null) {
+        this.getOfficeByLocation(this.data.office_type, event);
+      }
+
+      await this.$axios
+          .get(`/admin/union/get/${event}`, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((result) => {
+            this.unions = result.data.data;
+            this.thanas = []
+            this.wards = []
+            this.committees = []
+            console.log(this.unions, "unions");
+          });
+    },
+
+
+    async onChangeCity(event) {
+      console.log('City change')
+
+      //City corporation
+      if (this.data.committee_type === 15) {
+        return this.getCommittees(this.data.city_corpo_id)
+      }
+
+      this.data.union_id = null;
+      this.data.paurashava_id = null;
+      this.data.thana_id = null;
+      this.data.ward_id = null;
+      this.data.office_id = null;
+      this.data.committee_id = null;
+
+
+
+      if (this.data.office_type != null) {
+        this.getOfficeByLocation(this.data.office_type, event);
+      }
+
+      await this.$axios
+          .get(`/admin/thana/get/city/${this.data.city_corpo_id}`, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((result) => {
+            this.thanas = result.data.data;
+            this.unions = []
+            this.wards = []
+            this.committees = []
+          });
+
+    },
+
+
+    async onChangeThana(event) {
+
+      console.log('thana change')
+
+      this.data.union_id = null;
+      this.data.paurashava_id = null;
+      this.data.ward_id = null;
+      this.data.office_id = null;
+      this.data.committee_id = null;
+
+
+      await this.$axios
+          .get(`/admin/ward/get/thana/${event}`, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((result) => {
+            this.wards = result.data.data;
+            this.committees = []
+            console.log(this.wards, "wards");
+          });
+    },
+
+
+
+    async onChangeUnion(event) {
+      if (this.data.committee_type === 12) {
+        return this.getCommittees(this.data.union_id)
+      }
+    },
+
+    async onChangeDistrictPauroshava(event) {
+      console.log('pouro',event, this.data.paurashava_id)
+      if (this.data.committee_type === 16) {
+        return this.getCommittees(this.data.paurashava_id)
+      }
+    },
+
+    async onChangeWard(event) {
+      console.log(event, this.data.ward_id, 'wards')
+      if (this.data.committee_type === 13) {
+        return this.getCommittees(this.data.ward_id)
+      }
+    },
+
+
+
+    async getCommittees(locationId) {
+      this.data.committee_id = null;
+
+      console.log('get commitees')
+      await this.$axios
+          .get(`/admin/committee/${this.data.committee_type}/${locationId}`, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((result) => {
+            console.log(result)
+            this.committees = result.data.data;
+          });
+    },
+
+
     // async onChangeDivision(event) {
     //   await this.$axios
     //     .get(`/admin/district/get/${event}`, {
@@ -1844,31 +2480,35 @@ export default {
     //   }
     // },
     async GetAllUpazila(id) {
+      console.log('get thana')
       if (this.data.office_type != null) {
         this.getOfficeByLocation(this.data.office_type, id);
       }
-      this.data.office_id = null;
+
       this.data.city_corpo_id = null;
-      console.log(id, "GetAllUpazila");
+      this.data.thana_id = null;
+      this.data.union_id = null;
+      this.data.paurashava_id = null;
+      this.data.ward_id = null;
+      this.data.office_id = null;
+      this.data.committee_id = null;
+
       try {
         this.$store
           .dispatch("Thana/GetAllUpazilaByDistrict", id)
           .then((data) => {
-            console.log(data, "GetAllUpazilaByDistrict");
             this.upazilas = data;
+            this.city = []
+            this.thanas = []
+            this.unions = []
+            this.wards = []
+            this.committees = []
           });
       } catch (e) {
         console.log(e);
       }
     },
-    onChangeOfficeType(event) {
-      this.data.division_id = null;
-      this.data.district_id = null;
-      this.data.office_id = null;
-      this.data.thana_id = null;
-      this.data.city_corpo_id = null;
-      this.getOfficeByLocation(event);
-    },
+
     getOfficeByLocation(office_type_id, location_type_id = null) {
       let data = {
         office_type_id: office_type_id,
@@ -1908,9 +2548,40 @@ export default {
         console.log(e);
       }
     },
-    async onChangeCommitteeType(event) {
-      this.data.committee_type = event;
+
+    async onChangeUserType(userType) {
+      this.data.committee_type = null
+      this.data.office_type = null
+
+      this.resetLocations()
     },
+
+    //18 = national, 19 = corodination
+    async onChangeCommitteeType() {
+      this.resetLocations()
+
+      if (this.data.committee_type === 18 || this.data.committee_type === 19) {
+        this.getCommittees(-1)
+      }
+
+    },
+
+    async resetLocations() {
+      this.data.division_id = null;
+      this.data.district_id = null;
+      this.data.upazila_id = null;
+      this.data.thana_id = null;
+      this.data.union_id = null;
+      this.data.paurashava_id = null;
+      this.data.ward_id = null;
+      this.data.city_corpo_id = null;
+      this.data.office_id = null;
+      this.data.committee_id = null
+      this.committees = []
+    },
+
+
+
   },
   watch: {
     "$i18n.locale": "updateHeaderTitle",
