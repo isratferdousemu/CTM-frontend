@@ -411,7 +411,9 @@
                 "status": "স্থিতি",
                 "comment": "মন্তব্য",
                 "active": "সক্রিয়",
-                "field_type": "ক্ষেত্রের প্রকার"
+                "field_type": "ক্ষেত্রের প্রকার",
+                "date":"তারিখ",
+                "value": "ভ্যালু "
             },
            
             "allowance_program_additiona_field_value": {
