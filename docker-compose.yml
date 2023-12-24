@@ -7,9 +7,17 @@ networks:
 
 services:
    frontend:
+     container_name:
      image: devopsibcs/ctm:ctm-staging-frontend-service-1.0.0
+     environment:
+            - TZ=Asia/Dhaka
      ports:
-       - 80:80
+       - 3080:80
+     restart: always
+     build:
+         context: "./"
+         dockerfile: "Dockerfile"
+ 
      networks:
        - web-ctm-app-net
 ##End of Scripts
