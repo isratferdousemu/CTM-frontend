@@ -4,7 +4,7 @@ FROM node:14-alpine as builder
 WORKDIR /app
 
 # Copy the package.json and install dependencies
-COPY package*.json ./
+COPY package.json .
 RUN npm install
 
 # Copy rest of the files
@@ -15,7 +15,7 @@ RUN npm run build
 RUN npm audit fix
 
 FROM nginx:alpine as production-build
-COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 
 ## Remove default nginx index page
 RUN rm -rf /usr/share/nginx/html/*
