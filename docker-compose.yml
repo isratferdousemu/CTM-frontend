@@ -1,0 +1,15 @@
+version: '3.5'
+
+networks:
+   web-ctm-app-net:
+       name: my-ctm-web-app-net
+       driver: bridge
+
+services:
+   frontend:
+     image: devopsibcs/ctm:ctm-staging-frontend-service-1.0.0
+     ports:
+       - 80:80
+     networks:
+       - web-ctm-app-net
+##End of Scripts
