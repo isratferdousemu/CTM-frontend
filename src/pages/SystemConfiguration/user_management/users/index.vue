@@ -542,6 +542,7 @@
                       rules="required"
                       v-slot="{ errors }"
                     >
+<!--                      add modal, committee-->
                       <v-autocomplete
                         :hide-details="errors[0] ? false : true"
                         @input="onChangeThana($event)"
@@ -689,6 +690,8 @@
                   <!-- END Committee Dropdowns -->
 
 
+                  <!--  OfficeType Dropdowns -->
+
                   <v-col cols="12" v-if="data.user_type === 1">
                     <ValidationProvider
                       name="Office Type"
@@ -806,6 +809,7 @@
                       rules="required"
                       v-slot="{ errors }"
                     >
+<!--                      add modal, office-->
                       <v-autocomplete
                         :hide-details="errors[0] ? false : true"
                         outlined
@@ -1288,6 +1292,7 @@
                         rules="required"
                         v-slot="{ errors }"
                     >
+<!--                      Edit, city corp, load thana-->
                       <v-autocomplete
                           :hide-details="errors[0] ? false : true"
                           @input="onChangeThana($event)"
@@ -1552,6 +1557,7 @@
                         rules="required"
                         v-slot="{ errors }"
                     >
+<!--                      Edit, office, ucd-->
                       <v-autocomplete
                           :hide-details="errors[0] ? false : true"
                           outlined
@@ -1965,7 +1971,7 @@ export default {
       if (this.data.user_type == 2) {
         this.data.committee_type = item.committee?.committee_type
       } else {
-        this.data.office_type = item.office_type
+        this.data.office_type = item.office?.office_type
       }
 
 
@@ -2021,6 +2027,17 @@ export default {
         this.onChangeDistrict(this.data.district_id)
         this.data.upazila_id = item?.assign_location?.id
         this.onChangeUpazila(this.data.upazila_id)
+
+
+        if (this.data.user_type == 1) {
+
+
+          this.data.thana_id = item?.assign_location?.id
+          this.onChangeUpazila(this.data.thana_id)
+
+        }
+
+
       }
 
 
@@ -2178,14 +2195,14 @@ export default {
     },
     getRoles() {
       this.$axios
-        .get("/admin/role/get", {
+        .get("/admin/user/get-roles", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
           },
         })
         .then((result) => {
-          this.roles = result.data.data;
+          this.roles = result.data;
         })
         .catch((err) => {
           console.log(err);
@@ -2203,7 +2220,13 @@ export default {
       this.data.thana_id = null;
       this.data.office_id = null;
 
+      this.offices = []
+
       this.getOfficeByLocation(event);
+
+      // if (this.dialogEdit) {
+      //   this.getOfficeByLocation(event);
+      // }
     },
 
     async onChangeDivision(event) {
@@ -2304,7 +2327,10 @@ export default {
       this.data.city_corpo_id = null;
       this.data.union_id = null;
       this.data.paurashava_id = null;
-      this.data.thana_id = null;
+
+      if (this.data.user_type == 2) {
+        this.data.thana_id = null;
+      }
       this.data.ward_id = null;
       this.data.office_id = null;
       this.data.committee_id = null;
@@ -2531,7 +2557,6 @@ export default {
         .then((result) => {
           this.offices = result.data.data;
           console.log(this.offices, "this.offices");
-          this.data.office_id = this.offices[0].id;
           // console.log(result, "result");
         })
         .catch((err) => {
