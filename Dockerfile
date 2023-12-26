@@ -11,7 +11,7 @@ RUN npm install
 COPY . .
 
 # Build the project
-RUN npm run build
+RUN npm run build 
 #RUN npm audit fix
 
 FROM nginx:alpine as production-build
