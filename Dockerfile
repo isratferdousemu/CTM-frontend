@@ -1,17 +1,27 @@
-FROM node:14.17-alpine as builder
+# stage1 as builder
+FROM node:14-alpine as builder
 
 WORKDIR /app
-COPY package.json .
 
+# Copy the package.json and install dependencies
+COPY package*.json ./
 RUN npm install
+
+# Copy rest of the files
 COPY . .
+
+# Build the project
 RUN npm run build
-RUN npm audit fix
 
-FROM nginx:1.20.1-alpine
 
-COPY --from=builder /app/dist /var/www
-COPY nginx.conf /etc/nginx/nginx.conf
+FROM nginx:alpine as production-build
+COPY ./nginx.conf /etc/nginx/nginx.conf
+
+## Remove default nginx index page
+RUN rm -rf /usr/share/nginx/html/*
+
+# Copy from the stahg 1
+COPY --from=builder /app/dist /usr/share/nginx/html
 
 EXPOSE 8080
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
