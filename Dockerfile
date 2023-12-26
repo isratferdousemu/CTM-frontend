@@ -1,5 +1,5 @@
 # stage1 as builder
-FROM node:16.20-alpine as builder
+FROM node:14-alpine as builder
 
 WORKDIR /app
 
@@ -12,7 +12,7 @@ COPY . .
 
 # Build the project
 RUN npm run build
-RUN npm audit fix
+#RUN npm audit fix
 
 FROM nginx:alpine as production-build
 COPY nginx.conf /etc/nginx/nginx.conf
