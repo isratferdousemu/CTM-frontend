@@ -10,7 +10,7 @@ RUN npm audit fix
 
 FROM nginx:1.20.1-alpine
 
-COPY --from=builder /app/build /var/www
+COPY --from=builder /app/dist /var/www
 COPY nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 8080
