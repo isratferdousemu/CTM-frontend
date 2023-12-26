@@ -13,5 +13,5 @@ FROM nginx:1.20.1-alpine
 COPY --from=builder /app/build /var/www
 COPY nginx.conf /etc/nginx/nginx.conf
 
-EXPOSE 3000
+EXPOSE 8080
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
