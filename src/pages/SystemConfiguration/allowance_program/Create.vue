@@ -117,7 +117,7 @@ export default {
   },
 
   mounted() {
-    this.GetAllAdditionalField();
+    // this.GetAllAdditionalField();
     this.GerAllLookUpGender();
     this.GerAllLookUpGenderType();
     this.updateHeaderTitle();
@@ -125,7 +125,7 @@ export default {
 
   methods: {
     ...mapActions({
-      GetAllAdditionalField: "Allowance/GetAllAdditionalField",
+      // GetAllAdditionalField: "Allowance/GetAllAdditionalField",
       GerAllLookUpGender: "Allowance/GerAllLookUpGender",
       GerAllLookUpGenderType: "Allowance/GerAllLookUpGenderType",
     }),
@@ -218,13 +218,13 @@ export default {
     },
     addAllowanceProgram: async function () {
 
-      if(this.is_disable_class === false && this.is_age_limit == false){
+      // if(this.is_disable_class === false && this.is_age_limit == false){
 
-        this.amount_error_note = "Atleast one type of amount is required";
-        this.$toast.error(this.amount_error_note);
+      //   this.amount_error_note = "Atleast one type of amount is required";
+      //   this.$toast.error(this.amount_error_note);
 
-        return;
-      }
+      //   return;
+      // }
       try {
         let formData = new FormData();
 
@@ -410,7 +410,7 @@ export default {
                       </v-row>
                     </v-col>
 
-                    <v-col cols="12" class="d-flex">
+                    <!-- <v-col cols="12" class="d-flex">
                       <v-row wrap>
                         <v-col cols="12" sm="6" lg="6">
                           <ValidationProvider
@@ -466,19 +466,14 @@ export default {
                           </ValidationProvider>
                         </v-col>
                       </v-row>
-                    </v-col>
+                    </v-col> -->
 
-                    <v-col cols="12" class="d-flex">
+                    <!-- <v-col cols="12" class="d-flex">
                       <v-row wrap>
                         <v-col cols="12" sm="6" lg="6">
                           <v-row wrap>
                             <v-col cols="4" sm="3" lg="3">
-                              <!-- <ValidationProvider
-                                name="marital"
-                                vid="is_marital_toggle"
-                                rules="required"
-                                v-slot="{ errors }"
-                              > -->
+                            
                                 <v-checkbox
                                   v-model="
                                     add_allowance_program.is_marital_toggle
@@ -490,11 +485,9 @@ export default {
                                   "
                                   @click="maritalStatus"
                                   >
-                                  <!-- :error="errors[0] ? true : false"
-                                  :error-messages="errors[0]"
-                                  required -->
+                               
                                 </v-checkbox>
-                              <!-- </ValidationProvider> -->
+                             
                             </v-col>
                             <v-col
                               cols="12"
@@ -532,10 +525,10 @@ export default {
                         <v-col cols="12" sm="6" lg="6"> </v-col>
                       </v-row>
                     </v-col>
-                    
+                     -->
 
 
-                    <v-col cols="12" class="d-flex">
+                    <!-- <v-col cols="12" class="d-flex">
 
                       <v-row wrap>
                         <v-col cols="12" sm="6" lg="6">
@@ -756,64 +749,13 @@ export default {
                     <v-col cols="12" sm="12" lg="12"> 
                       <div v-if="amount_error_note" v-html="amount_error_note" style="color: red;"/>
 
-                    </v-col>
-                  </v-card-text>
-                </v-card>
-              </v-col>
-
-              <v-col cols="12">
-                <v-card style="margin-bottom: 50px">
-                  <v-row>
-                    <v-col col="6">
-                      <v-card-title
-                        ><h3>
-                          {{
-                            $t(
-                              "container.system_config.allowance_program.add_field"
-                            )
-                          }}
-                        </h3></v-card-title
-                      >
-                    </v-col>
-                  </v-row>
-
-                  <v-divider></v-divider>
-
-                  <v-card-text>
-                    <v-col cols="12" class="d-flex">
-                      <v-row wrap>
-                        <v-col
-                          cols="12"
-                          sm="4"
-                          lg="4"
-                          v-for="field in additionalFields"
-                          :key="field.id"
-                        >
-                          <ValidationProvider
-                            name="add_field_id"
-                            vid="add_field_id"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <v-checkbox
-                              v-model="add_allowance_program.add_field_id"
-                              :label="field.name_en"
-                              :value="field.id"
-                              menu-props="auto"
-                              persistent-hint
-                              outlined
-                            ></v-checkbox>
-                          </ValidationProvider>
-                        </v-col>
-                      </v-row>
-                    </v-col>
-                  </v-card-text>
-                </v-card>
-              </v-col>
+                    </v-col> -->
+            
+              
               
 
               <v-col cols="12">
-                <v-row class="justify-end mb-5" style="margin-top: -50px">
+                <v-row class="justify-end mb-5 mt-2" style="margin-top: -50px">
                   <v-btn
                     flat
                     color="primary"
@@ -832,6 +774,11 @@ export default {
                   </v-btn>
                 </v-row>
               </v-col>
+
+                    </v-card-text>
+                  </v-card>
+                </v-col>
+
             </v-row>
           </v-form>
         </ValidationObserver>

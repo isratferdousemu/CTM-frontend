@@ -233,7 +233,20 @@ const SystemConfigurationRoutes = [
  
     /*user management/ users route start*/
 
+
+
+    //////////////////////////////////
     /*allowance program route start*/
+    //////////////////////////////////
+  {
+    path: '/system-configuration/allowance-program/setting',
+    name: 'AllowanceProgram',
+    meta: {
+      requiresAuth: true,
+      permission: "allowance-view", //change permission: "allowance-view",
+    },
+    component: () => import("../pages/SystemConfiguration/allowance_program/Index.vue")
+  },
   {
     path: '/system-configuration/allowance-program',
     name: 'AllowanceProgram',
@@ -261,7 +274,48 @@ const SystemConfigurationRoutes = [
     },
     component: () => import("../pages/SystemConfiguration/allowance_program/Edit.vue")
   },
-    /*allowance program route end*/
+  {
+    path: '/system-configuration/allowance-program/setting/:id',
+    name: 'AllowanceProgramSetting',
+    meta: {
+      requiresAuth: true,
+      permission: "allowance-edit",
+    },
+    component: () => import("../pages/SystemConfiguration/allowance_program/Setting.vue")
+  },
+  // Allowance Program Field List - this is the list of fields that will be shown in the Allowance Program
+  {
+    path: '/system-configuration/allowance-program-additional-field/',
+    name: 'AllowanceProgramSetting',
+    meta: {
+      requiresAuth: true,
+      permission: "allowance-create",
+    },
+    component: () => import("../pages/SystemConfiguration/allowance_program/AdditionalField/Index.vue")
+  },
+  // Allowance Program Field Values - this is the list of field values that will be shown in the Online Application Form for Allowance Program
+  {
+    path: '/system-configuration/allowance-program-additional-field-value/',
+    name: 'AllowanceProgramSetting',
+    meta: {
+      requiresAuth: true,
+      permission: "allowance-edit",
+    },
+    component: () => import("../pages/SystemConfiguration/allowance_program/AdditionalFieldValue/Index.vue")
+  },
+  {
+    path: '/system-configuration/allowance-program-system-settings/',
+    name: 'AllowanceProgramSetting',
+    meta: {
+      requiresAuth: true,
+      permission: "allowance-edit",
+    },
+    component: () => import("../pages/SystemConfiguration/allowance_program/systemstatus.vue")
+  },
+    
+    //////////////////////////////////
+    /*END allowance program route start*/
+    //////////////////////////////////
 
 ];
 

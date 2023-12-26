@@ -239,8 +239,7 @@
                         cols="12"
                         v-if="
                           data.committee_type == 12 ||
-                          data.committee_type == 14 ||
-                          data.committee_type == 16
+                          data.committee_type == 14
                         "
                       >
                         <ValidationProvider
@@ -1109,32 +1108,31 @@ export default {
         });
     },
     async onChangeDistrict(event) {
-      event = 3; //Lookup.id = 3 , Look.name_en = 'City Corporation'
-      const payload = {
-        district_id: this.data.district_id,
-        lookup_id: "3",
-      };
-      console.log(JSON.stringify(payload));
-      // return;
       if (
         this.data.committee_type == 12 ||
-        this.data.committee_type == 14 ||
-        this.data.committee_type == 16
+        this.data.committee_type == 14
       ) {
         console.log("load Upazila");
         this.GetAllUpazila(this.data.district_id);
       } else {
-        console.log("load City Corporation");
+        /*
+          if committee_type = 16 (district pourosova)
+          then lookUpType = 1 (District Pouroshava)
+          else lookUpType = 3 (City)
+        */
+        console.log("load City Corporation/District Pourosova");
+        const lookupType = this.data.committee_type === 16 ? 1 : 3
+
         await this.$axios
-          .get(`/admin/city/get/` + this.data.district_id + "/" + event, {
+          .get(`/admin/city/get/` + this.data.district_id + "/" + lookupType, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
             },
           })
           .then((result) => {
-            this.city = result.data.data;
-            console.log(this.city, "onChangeDistrict");
+            this.unions = lookupType === 1 ? result.data.data : []
+            this.city = lookupType === 3 ? result.data.data : []
           });
       }
     },
