@@ -1225,7 +1225,7 @@
                   <!-- Nominee Information End -->
                   <!-- 5th Expansion panel -->
                   <!-- Other Information of Eligibility -->
-                  <v-expansion-panel class="mb-4">
+                  <v-expansion-panel class="mb-4" v-if="pmt_status == 1">
                     <v-expansion-panel-header color="primary">
                       <h3 class="white--text">
                         Other Information of Eligibility
@@ -1296,15 +1296,7 @@
                             </template>
                           </v-col>
                         </v-row>
-                        <div class="d-inline d-flex justify-end">
-                          <v-btn @click="resetForm()" elevation="2" class="btn mr-2" color="info">Resets</v-btn>
-                          <!-- :disabled="invalid" -->
-                          <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
-                            class="custom-btn-width black white--text py-2">
-                            {{ $t("container.list.submit") }}
-                          </v-btn>
-
-                        </div>
+                   
                       </div>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
@@ -1312,6 +1304,15 @@
 
                 </v-expansion-panels>
               </div>
+                   <div class="d-inline d-flex justify-end">
+                            <v-btn @click="resetForm()" elevation="2" class="btn mr-2" color="info">Resets</v-btn>
+                            <!-- :disabled="invalid" -->
+                            <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
+                              class="custom-btn-width black white--text py-2">
+                              {{ $t("container.list.submit") }}
+                            </v-btn>
+
+                          </div>
               <p class="red--text mt-5">
                 If you have any objections or complaints regarding the
                 application, please contact the Upazila Social Service Officer.
@@ -1582,7 +1583,8 @@ export default {
         application_pmt: [],
         marital_status: null,
         email: null,
-        mobile_operator: null
+        mobile_operator: null,
+        pmt_status:null
       },
       professionType: ['Farmer',
         'Rickshaw Puller',
@@ -1938,9 +1940,7 @@ export default {
              
                this.errors = err.response.data.errors
                 const firstErrorField = Object.keys(this.errors)[0];
-              // if (firstErrorField) {
-              //   this.$refs[firstErrorField].$el.focus();
-              // }
+             
 
             }
           }
@@ -1954,6 +1954,8 @@ export default {
       );
 
       this.programName = await programName[0]?.name_en;
+      this.pmt_status = await programName[0]?.pmt_status;
+      console.log(this.pmt_status,"pmt_status");
       this.programDetails = await programName[0];
       if (this.programDetails != null) {
         this.data.application_allowance_values = [];

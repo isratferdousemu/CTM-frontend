@@ -410,7 +410,7 @@ export default {
                       </v-row>
                     </v-col>
 
-                    <v-col cols="12" class="d-flex">
+                    <!-- <v-col cols="12" class="d-flex">
                       <v-row wrap>
                         <v-col cols="12" sm="6" lg="6">
                           <ValidationProvider
@@ -466,19 +466,14 @@ export default {
                           </ValidationProvider>
                         </v-col>
                       </v-row>
-                    </v-col>
+                    </v-col> -->
 
-                    <v-col cols="12" class="d-flex">
+                    <!-- <v-col cols="12" class="d-flex">
                       <v-row wrap>
                         <v-col cols="12" sm="6" lg="6">
                           <v-row wrap>
                             <v-col cols="4" sm="3" lg="3">
-                              <!-- <ValidationProvider
-                                name="marital"
-                                vid="is_marital_toggle"
-                                rules="required"
-                                v-slot="{ errors }"
-                              > -->
+                            
                                 <v-checkbox
                                   v-model="
                                     add_allowance_program.is_marital_toggle
@@ -490,11 +485,9 @@ export default {
                                   "
                                   @click="maritalStatus"
                                   >
-                                  <!-- :error="errors[0] ? true : false"
-                                  :error-messages="errors[0]"
-                                  required -->
+                               
                                 </v-checkbox>
-                              <!-- </ValidationProvider> -->
+                             
                             </v-col>
                             <v-col
                               cols="12"
@@ -532,10 +525,10 @@ export default {
                         <v-col cols="12" sm="6" lg="6"> </v-col>
                       </v-row>
                     </v-col>
-                    
+                     -->
 
 
-                    <v-col cols="12" class="d-flex">
+                    <!-- <v-col cols="12" class="d-flex">
 
                       <v-row wrap>
                         <v-col cols="12" sm="6" lg="6">
@@ -756,16 +749,13 @@ export default {
                     <v-col cols="12" sm="12" lg="12"> 
                       <div v-if="amount_error_note" v-html="amount_error_note" style="color: red;"/>
 
-                    </v-col>
-                  </v-card-text>
-                </v-card>
-              </v-col>
-
+                    </v-col> -->
+            
               
               
 
               <v-col cols="12">
-                <v-row class="justify-end mb-5" style="margin-top: -50px">
+                <v-row class="justify-end mb-5 mt-2" style="margin-top: -50px">
                   <v-btn
                     flat
                     color="primary"
@@ -784,6 +774,11 @@ export default {
                   </v-btn>
                 </v-row>
               </v-col>
+
+                    </v-card-text>
+                  </v-card>
+                </v-col>
+
             </v-row>
           </v-form>
         </ValidationObserver>

@@ -303,6 +303,15 @@ const SystemConfigurationRoutes = [
     },
     component: () => import("../pages/SystemConfiguration/allowance_program/AdditionalFieldValue/Index.vue")
   },
+  {
+    path: '/system-configuration/allowance-program-system-settings/',
+    name: 'AllowanceProgramSetting',
+    meta: {
+      requiresAuth: true,
+      permission: "allowance-edit",
+    },
+    component: () => import("../pages/SystemConfiguration/allowance_program/systemstatus.vue")
+  },
     
     //////////////////////////////////
     /*END allowance program route start*/

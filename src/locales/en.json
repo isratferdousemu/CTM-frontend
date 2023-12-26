@@ -394,12 +394,12 @@
             },
             "allowance_program_additiona_field": {
                 "variable": "Allowance Program Additional Field",
-                "list": "Allowance Program Additional Field List",
+           
                 "score": "score",
-                "name_en": "Allowance Program Additional Field Name",
-                "name_bn": "Allowance Program Additional Field Name Bangla",
+                "name_en": "Allowance Program  Field Name",
+                "name_bn": "Allowance Program  Field Name Bangla",
                 "add_new": "Add New Allowance Program Additional Field",
-                "search": "Search Allowance Program Additional Field",
+                "search": "Search Field",
                 "edit": "Edit Allowance Program Additional Field",
                 "delete": "Delete Allowance Program Additional Field",
                 "delete_alert": "Are you sure to delete this Allowance Program Additional Field?.",
@@ -409,14 +409,16 @@
                 "union": "Union",
                 "pouro": "District Pouroshava",
                 "union_pouro_city": "Union/District Pouroshava/City Corporation",
-                "poverty_cut_off_type": "Allowance Program Additional Field Type",
-                "poverty_cut_off_address": "Allowance Program Additional Field Address",
+                "poverty_cut_off_type": "Allowance Program  Field Type",
+                "poverty_cut_off_address": "Allowance Program  Field Address",
                 "status": "Status",
                 "comment": "Comment",
                 "active": "Active",
                 "field_type": "Field Type",
                 "date":"Date",
-                "value":"Value"
+                "value":"Value",
+                "pmt":"PMT",
+                "list":"Allowance Program Field List"
             },
             "allowance_program_additiona_field_value": {
                 "variable": "Allowance Program Additional Field",

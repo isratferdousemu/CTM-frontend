@@ -13,7 +13,7 @@
             >
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
-                  {{ $t("container.system_config.demo_graphic.office.list") }}
+                  {{ $t("container.system_config.allowance_program_additiona_field.list") }}
                 </h3>
               </v-card-title>
               <v-card-text>
@@ -33,7 +33,7 @@
                       flat
                       variant="outlined"
                       :label="
-                        $t('container.system_config.demo_graphic.office.search')
+                        $t('container.system_config.allowance_program_additiona_field.search')
                       "
                       hide-details
                       color="primary"
@@ -102,7 +102,7 @@
                               color="grey"
                               class="ml-3 white--text"
                               elevation="0"
-                              @click="deleteAlert(item.id)"
+                              @click="deleteAlert(item)"
                             >
                               <v-icon> mdi-delete </v-icon>
                             </v-btn>
@@ -187,16 +187,35 @@
                     :error-messages="errors[0]"
                   ></v-text-field>
                 </ValidationProvider>
+                  <ValidationProvider
+                    name="Name Bangla"
+                    vid="name_bn"
+                    rules="required"
+                    v-slot="{ errors }"
+                  >
+                    <v-text-field
+                      outlined
+                      type="text"
+                      v-model="data.name_bn"
+                      :label="$t(
+                        'container.system_config.allowance_program_additiona_field.name_bn'
+                      )
+                        "
+                      required
+                      :error="errors[0] ? true : false"
+                      :error-messages="errors[0]"
+                    ></v-text-field>
+                  </ValidationProvider>
 
                 <ValidationProvider
                   name="Field Type"
-                  vid="field_type"
+                  vid="type"
                   rules="required"
                   v-slot="{ errors }"
                 >
                   <v-select
                     outlined
-                    v-model="data.field_type"
+                    v-model="data.type"
                     :items="field_types"
                     item-text="value"
                     item-value="id"
@@ -260,7 +279,7 @@
                     color="primary"
                     :disabled="invalid"
                     :loading="loading"
-                    class="custom-btn-width warning white--text py-2"
+                    class="custom-btn-width  white--text py-2"
                   >
                     {{ $t("container.list.submit") }}
                   </v-btn>
@@ -332,7 +351,7 @@
                 <ValidationProvider
                   name="Field Type"
                   vid="field_type"
-                  rules="required"
+                 
                   v-slot="{ errors }"
                 >
                   <v-select
@@ -352,9 +371,9 @@
                   ></v-select>
                 </ValidationProvider>
                  <ValidationProvider
-                        name="Name English"
-                        vid="name_bn"
-                        rules="required"
+                        name="Date"
+                        vid="date"
+                    
                         v-slot="{ errors }"
                       >
                         <v-text-field
@@ -372,9 +391,9 @@
                         ></v-text-field>
                       </ValidationProvider>
                        <ValidationProvider
-                        name="Name English"
-                        vid="name_bn"
-                        rules="required"
+                        name="Number"
+                        vid="number"
+                       
                         v-slot="{ errors }"
                       >
                         <v-text-field
@@ -392,9 +411,9 @@
                         ></v-text-field>
                       </ValidationProvider>
                        <ValidationProvider
-                        name="Name English"
-                        vid="name_bn"
-                        rules="required"
+                        name="Text"
+                        vid="text"
+                       
                         v-slot="{ errors }"
                       >
                         <v-text-field
@@ -515,7 +534,7 @@
               </v-btn>
               <v-btn
                 text
-                @click="deleteVariable()"
+                @click="deleteField()"
                 color="white"
                 :loading="delete_loading"
                 class="custom-btn-width warning white--text py-2"
@@ -541,7 +560,7 @@ extend("required", required);
 
 export default {
   name: "Index",
-  title: "CTM - Office",
+  title: "CTM - Additional Field",
   data() {
     return {
       data: {
@@ -557,12 +576,12 @@ export default {
         checkbox: null,
       },
       field_types: [
-        { id: 1, value: "Checkbox" },
+       
         { id: 2, value: "Dropdown" },
         { id: 3, value: "Date" },
         { id: 4, value: "Number" },
         { id: 5, value: "Text" },
-        { id: 6, value: "Disabled" },
+      
       ],
       additional_field_value: [],
       
@@ -634,17 +653,17 @@ export default {
           sortable: false,
         },
         {
-          text: this.$t("container.system_config.demo_graphic.office.name_en"),
+          text: this.$t("container.system_config.allowance_program_additiona_field.name_en"),
           value: "name_en",
           class: "highlight-column ",
         },
         {
-          text: this.$t("container.system_config.demo_graphic.office.name_bn"),
+          text: this.$t("container.system_config.allowance_program_additiona_field.name_bn"),
           value: "name_bn",
         },
         {
           text: this.$t(
-            "container.system_config.demo_graphic.office.office_type"
+            "container.system_config.allowance_program_additiona_field.field_type"
           ),
           value: "type",
           sortable: false,
@@ -820,49 +839,141 @@ export default {
     },
   },
   methods: {
+    submitField(){
+        if (this.data.type === 1) {
+        this.data.field_value = [];
+        this.data.number = null;
+        this.data.text = null;
+        this.data.date = null;
+
+        this.data.type = "checkbox";
+      }
+      if (this.data.type == 2) {
+        this.data.checkbox = null;
+        this.data.number = null;
+        this.data.text = null;
+        this.data.date = null;
+        this.data.type = "dropdown";
+
+
+      }
+      if (this.data.type == 3) {
+
+        this.data.type = "date";
+        this.data.field_value = [];
+        this.data.number = null;
+        this.data.text = null;
+        this.data.checkbox = null;
+
+      }
+      if (this.data.type == 4) {
+        this.data.type = "number";
+        this.data.field_value = [];
+        this.data.date = null;
+        this.data.text = null;
+        this.data.checkbox = null;
+
+      }
+      if (this.data.type == 5) {
+        this.data.type = "number";
+        this.data.field_value = [];
+        this.data.date = null;
+        this.data.number = null;
+        this.data.checkbox = null;
+
+        this.data.type = "text";
+      }
+      this.$axios
+        .post("admin/allowance/allowance-additional-field/insert", this.data, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
+          this.loading = false;
+
+          if (result.data.success == true) {
+            this.$toast.success("Data Inserted Successfully");
+            this.dialogAdd = false;
+            this.resetData();
+            this.GetOffices();
+
+
+          } else {
+            this.$refs.formAdd.setErrors(result.data.errors);
+            //  this.$refs.formAdd.setErrors(data.errors);
+          }
+
+        })
+        .catch((err) => {
+
+
+        });
+
+    },
    
     updateField() {
    
    if (this.data.type === 1) {
+      this.data.field_value = [];
+      this.data.number = null;
+      this.data.text = null;
+      this.data.date = null;
 
         this.data.type =  "checkbox";
       }
-      if (this.data.type === 2) {
+      if (this.data.type == 2) {
+        this.data.checkbox = null;
+        this.data.number = null;
+        this.data.text = null;
+        this.data.date = null;
         this.data.type = "dropdown" ;
      
 
       }
-      if (this.data.type === 3 ) {
+      if (this.data.type == 3 ) {
 
         this.data.type = "date";
+        this.data.field_value=[];
+        this.data.number = null;
+        this.data.text = null;
+        this.data.checkbox = null;
+     
       }
-      if (this.data.type === 4 ) {
+      if (this.data.type == 4 ) {
         this.data.type = "number";
+         this.data.field_value = [];
+        this.data.date = null;
+        this.data.text = null;
+        this.data.checkbox = null;
 
       }
       if (this.data.type == 5) {
+         this.data.type = "number";
+        this.data.field_value = [];
+        this.data.date = null;
+        this.data.number = null;
+        this.data.checkbox = null;
 
         this.data.type = "text";
       }
-       if (this.data.type === 6) {
-        this.data.type = "disabled";
-
-      }
+    
          console.log(this.data, "this.data")
       let fd = new FormData();
       for (const [key, value] of Object.entries(this.data)) {
        
         if (value !== null) {
           if (key == "field_value") {
-            console.log(key, value, "field_value");
+         
             for (let i = 0; i < value.length; i++) {
-                console.log("Processing field_value item", i, value[i].value);
+              
               fd.append("field_value[" + i + "].value", value[i].value);
              
             }
           } else {
             fd.append(key, value);
-            console.log(key, value, "else");
+         
           }
            console.log(key, value);
         }
@@ -877,11 +988,12 @@ export default {
         })
         .then((result) => {
           this.loading = false;
-          console.log(result, 'result')
+         
           if (result.data.success == true) {
             this.$toast.success("Data Updated Successfully");
             this.dialogEdit = false;
             this.resetData();
+            this.GetOffices();
           
 
           } else {
@@ -901,6 +1013,7 @@ export default {
     editDialog(item) {
     this.resetData();
       this.dialogEdit = true;
+      this.data.id = item.id;
       this.data.name_en = item.name_en;
        this.data.name_bn = item.name_bn;
       if(item.type == "checkbox"){
@@ -917,6 +1030,7 @@ export default {
        
         this.data.type = 3;
         this.data.date = item?.additional_field_value[0].value;
+       
       }
       if (item.type == "number") {
         this.data.type = 4;
@@ -935,7 +1049,7 @@ export default {
  
       
       
-      console.log(this.field_value,"field_value");
+     
       this.data.id = item.id;
       this.errors = {};
     },
@@ -946,7 +1060,7 @@ export default {
         ...this.data.field_value.map((item) => item.id)
       );
 
-      if (maxId != 0) {
+      if (maxId !== 0) {
         // Add a new row with id = maxId + 1
         this.data.field_value.push({
           id: maxId + 1,
@@ -1000,9 +1114,12 @@ export default {
 
     
   
-    deleteAlert(id) {
+    deleteAlert(item) {
+      console.log(item, "item ")
       this.deleteDialog = true;
-      this.delete_id = id;
+       this.delete_id = item.id;
+      console.log(this.delete_id,"this.delete_id ")
+     
     },
     onPageChange($event) {
       // this.pagination.current = $event;
@@ -1088,9 +1205,15 @@ export default {
           this.$toast.error(err?.response?.data?.message);
         });
     },
-    deleteOffice: async function () {
-      await this.$store
-        .dispatch("Office/DestroyOffice", this.delete_id)
+    deleteField: async function () {
+      this.$axios
+        .delete(`/admin/allowance/field/destroy/${this.delete_id}`, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+
+        })
         .then((res) => {
           // console.log(res);
           // check if the request was successful
@@ -1113,7 +1236,7 @@ export default {
     },
     resetData() {
   
-     
+      this.data.id = null;
       this.data.name_en = null;
       this.data.name_bn = null;
       this.data.type = null;
@@ -1127,7 +1250,7 @@ export default {
     },
 
     updateHeaderTitle() {
-      const title = this.$t("container.system_config.demo_graphic.office.list");
+      const title = this.$t("container.system_config.allowance_program_additiona_field.list");
       this.$store.commit("setHeaderTitle", title);
     },
   },
