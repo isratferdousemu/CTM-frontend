@@ -45,7 +45,7 @@ export default {
         { text: this.$t('container.system_config.allowance_program.name_bn'), value: "name_bn" },
         { text: this.$t('container.system_config.allowance_program.payment_cycle'), value: "payment_cycle" },
         { text: this.$t('container.system_config.allowance_program.status'), value: "is_active" },
-        { text: this.$t('container.system_config.allowance_program.system_status'), value: "is_active" },
+        
         { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false },
       ]
     }
@@ -181,6 +181,14 @@ export default {
                         Active
                       </span>
                     </template>
+                           <template v-slot:[`item.system_status`]="{ item }">
+                        <span v-if="item.is_active === 0">
+                          Inactive
+                        </span>
+                        <span v-else>
+                          Active
+                        </span>
+                      </template>
 
                     <template v-slot:[`item.actions`]="{ item }" style="padding: 10px;">
                       <v-tooltip top>
@@ -201,7 +209,24 @@ export default {
                         <span>{{ $t('container.list.edit') }}</span>
                       </v-tooltip>
 
-                   
+                     <v-tooltip top>
+                          <template v-slot:activator="{ on }">
+                            <v-btn
+                                :disabled="item.default === 1"
+                                fab
+                                x-small
+                                color="success"
+                                v-on="on"
+                                router
+                                :to="`/system-configuration/allowance-program/setting/${item.id}`"
+                            >
+                              <v-icon>mdi-cogs</v-icon>
+                              <!-- <v-icon>mdi-account-edit-outline</v-icon> -->
+                            </v-btn>
+                          </template>
+                          <span>Setings</span>
+                        </v-tooltip>
+
 
                       <v-tooltip top>
                         <template v-slot:activator="{ on }">

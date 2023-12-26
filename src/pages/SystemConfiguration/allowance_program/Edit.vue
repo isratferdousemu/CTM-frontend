@@ -378,6 +378,8 @@ export default {
       } catch (e) {
         console.log(e);
       }
+      // add code
+        
     },
 
     updateHeaderTitle() {
@@ -464,7 +466,7 @@ export default {
                       </v-row>
                     </v-col>
 
-                    <v-col cols="12" class="d-flex">
+                    <!-- <v-col cols="12" class="d-flex">
                       <v-row wrap>
                         <v-col cols="12" sm="6" lg="6">
                           <ValidationProvider
@@ -904,11 +906,8 @@ export default {
                           "
                         ></v-checkbox>
                       </ValidationProvider>
-                    </v-col>
-                  </v-card-text>
-                </v-card>
-              </v-col>
-
+                    </v-col> -->
+                
               <!-- <v-col cols="12">
                 <v-card style="margin-bottom: 50px">
                   <v-row>
@@ -941,7 +940,7 @@ export default {
               </v-col > -->
 
               <v-col cols="12">
-                <v-row class="justify-end mb-5" style="margin-top: -50px">
+                <v-row class="justify-end mb-5  mt-2" style="margin-top: -50px">
                   <v-btn
                     flat
                     color="primary"
@@ -961,7 +960,12 @@ export default {
                   </v-btn>
                 </v-row>
               </v-col>
+                </v-card-text>
+                  </v-card>
+                </v-col>
+
             </v-row>
+
           </v-form>
         </ValidationObserver>
       </v-col>
