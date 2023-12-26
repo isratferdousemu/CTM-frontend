@@ -1,4 +1,4 @@
-version: '4'
+version: '3.5'
 services:
    frontend:
      container_name: ctm-frontend
@@ -6,7 +6,7 @@ services:
      environment:
             - TZ=Asia/Dhaka
      ports:
-       - 3007:8080
+       - 3000:8080
      restart: always
      build:
          context: "./"
