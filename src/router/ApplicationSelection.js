@@ -59,6 +59,15 @@ const ApplicationSelectionRoutes = [
     },
     component: () => import("../pages/ApplicationSelection/PMTScoring/SubVariable/Index.vue")
   },
+  {
+    path: "/application-management/mobile-operator/",
+    name: "mobile-operator",
+    meta: {
+      requiresAuth: true,
+      permission: "application-selection-list",
+    },
+    component: () => import("../pages/ApplicationSelection/MobileOperator/Index.vue")
+  },
 ];
 
 export default ApplicationSelectionRoutes;

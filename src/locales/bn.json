@@ -490,6 +490,13 @@
                 "account": "হিসাব নাম্বার",
                 "nominee_relation_with_beneficiary":" নমিনী সাথে সম্পর্ক"
             },
+            "mobile_operator": {
+                "list": "মোবাইল অপারেটরের তালিকা",
+                "operator": "অপারেটর",
+                "add_new_mobile_operator": "নতুন মোবাইল অপারেটর যোগ করুন",
+                "delete": "মোবাইল অপারেটো মুছুন",
+                "delete_alert": "আপনি এই মোবাইল অপারেটর মুছে ফেলার বিষয়ে নিশ্চিত?"
+            },
             "sub_variable": {
                 "sub_variable": "Sub Variable",
                 "list": "সাব ভেরিয়েবল লিস্ট",
