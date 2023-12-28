@@ -12,7 +12,7 @@
          <v-card>
                         <v-card-text class="mt-10 text-center">
                             <p style="font-size: 40px" class="green--text mt-5">Application Submitted Successfully</p>
-                              <p style="font-size: 20px" class=" mt-5">Downlod the Applicant's Copy</p>
+                              <!-- <p style="font-size: 20px" class=" mt-5">Downlod the Applicant's Copy</p> -->
                         </v-card-text>
                     </v-card>
     </v-col>
