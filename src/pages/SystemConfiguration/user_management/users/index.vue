@@ -97,7 +97,7 @@
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
-                              v-can="'update-post'"
+                              v-can="'user-edit'"
                               fab
                               x-small
                               v-on="on"
@@ -113,24 +113,48 @@
                           </span>
                         </v-tooltip>
 
+
+
+
+                        <v-tooltip top v-if="!item.status">
+                          <template v-slot:activator="{ on }">
+                            <v-btn
+                                v-can="'user-edit'"
+                                fab
+                                x-small
+                                v-on="on"
+                                color="primary"
+                                elevation="0"
+                                @click="approveAlert(item.id)"
+                            >
+                              <v-icon> mdi-account-check</v-icon>
+                            </v-btn>
+                          </template>
+                          <span>
+                            {{ $t("container.list.approve") }}
+                          </span>
+                        </v-tooltip>
+
+
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
-                              :disabled="item.user_type == 1"
-                              v-can="'user-destroy'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="grey"
-                              class="ml-3 white--text"
-                              elevation="0"
-                              @click="deleteAlert(item.id)"
+                                :disabled="item.user_type == 1"
+                                v-can="'user-delete'"
+                                fab
+                                x-small
+                                v-on="on"
+                                color="red"
+                                class="ml-3 white--text"
+                                elevation="0"
+                                @click="deleteAlert(item.id)"
                             >
                               <v-icon> mdi-delete </v-icon>
                             </v-btn>
                           </template>
                           <span> {{ $t("container.list.delete") }}</span>
                         </v-tooltip>
+
                       </template>
                       <!-- End Action Button -->
 
@@ -297,7 +321,7 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12">
+<!--                  <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                         name="Status"
                         vid="status"
@@ -322,7 +346,7 @@
                           :error-messages="errors[0]"
                       ></v-select>
                     </ValidationProvider>
-                  </v-col>
+                  </v-col>-->
                   <v-col lg="6" md="6" cols="12" v-if="data.user_type === 1">
                     <ValidationProvider
                       name="Role"
@@ -1047,7 +1071,7 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12">
+<!--                  <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                         name="Status"
                         vid="status"
@@ -1072,7 +1096,7 @@
                           :error-messages="errors[0]"
                       ></v-select>
                     </ValidationProvider>
-                  </v-col>
+                  </v-col>-->
                   <v-col lg="6" md="6" cols="12" v-if="data.user_type === 1">
                     <ValidationProvider
                         name="Role"
@@ -1706,6 +1730,44 @@
         </v-card>
       </v-dialog>
       <!-- delete modal  -->
+
+
+      <!-- Approve modal  -->
+      <v-dialog v-model="approveDialog" width="350">
+        <v-card style="justify-content: center; text-align: center">
+          <v-card-title class="font-weight-bold justify-center">
+            {{ $t("container.system_config.demo_graphic.user.approve") }}
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            <div class="subtitle-1 font-weight-medium mt-5">
+              {{ $t("container.system_config.demo_graphic.user.approve_alert") }}
+            </div>
+          </v-card-text>
+          <v-card-actions style="display: block">
+            <v-row class="mx-0 my-0 py-2" justify="center">
+              <v-btn
+                  text
+                  @click="approveDialog = false"
+                  outlined
+                  class="custom-btn-width py-2 mr-10"
+              >
+                {{ $t("container.list.cancel") }}
+              </v-btn>
+              <v-btn
+                  text
+                  @click="approveUser()"
+                  color="white"
+                  :loading="delete_loading"
+                  class="custom-btn-width warning white--text py-2"
+              >
+                {{ $t("container.list.approve") }}
+              </v-btn>
+            </v-row>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <!-- Approve modal  -->
     </v-row>
   </div>
 </template>
@@ -1749,6 +1811,7 @@ export default {
       isCityCorporationHidden: false,
       dialogAdd: false,
       deleteDialog: false,
+      approveDialog: false,
       dialogEdit: false,
       delete_loading: false,
       loading: false,
@@ -1808,15 +1871,15 @@ export default {
           value: "username",
         },
         {
-          text: 'Email',
+          text: this.$t("container.system_config.demo_graphic.user.email_label"),
           value: "email",
         },
         {
-          text: 'Mobile',
+          text: this.$t("container.system_config.demo_graphic.user.mobile_label"),
           value: "mobile",
         },
         {
-          text: 'Office/Committee',
+          text: this.$t("container.system_config.demo_graphic.user.office_committee"),
           value: "office.name_en",
         },
         {
@@ -1824,7 +1887,7 @@ export default {
           value: "status",
         },
         {
-          text: 'Location Assign',
+          text: this.$t("container.system_config.demo_graphic.user.location"),
           value: "assign_location.name_en",
         },
         {
@@ -2181,12 +2244,47 @@ export default {
           this.$toast.error(err?.response?.data?.message);
         });
     },
+
+
     deleteAlert(id) {
       this.data.id = id;
       // alert(JSON.stringify(id));
       this.deleteDialog = true;
       this.delete_id = id;
     },
+
+
+    approveUser: async function () {
+      this.$axios
+          .get("/admin/user/approve/" + this.data.id, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((res) => {
+            this.approveDialog = false;
+            // check if the request was successful
+            if (res?.data?.success) {
+              this.$toast.success(res.data.message);
+            } else {
+              this.$toast.error(res.response.data.message);
+            }
+            this.getUsers();
+          })
+          .catch((err) => {
+            console.log(err, "error");
+            console.log(err.response);
+            this.$toast.error(err?.response?.data?.message);
+          });
+    },
+
+    approveAlert(id) {
+      this.data.id = id;
+      // alert(JSON.stringify(id));
+      this.approveDialog = true;
+    },
+
     updateHeaderTitle() {
       const title = this.$t(
         "container.system_config.demo_graphic.user.listTitle"
@@ -2462,49 +2560,6 @@ export default {
     },
 
 
-    // async onChangeDivision(event) {
-    //   await this.$axios
-    //     .get(`/admin/district/get/${event}`, {
-    //       headers: {
-    //         Authorization: "Bearer " + this.$store.state.token,
-    //         "Content-Type": "multipart/form-data",
-    //       },
-    //     })
-    //     .then((result) => {
-    //       this.districts = result.data.data;
-    //       this.isDistrictHidden = true;
-    //     });
-    // },
-    // async onChangeDistrict(event) {
-    //   event = 3; //Lookup.id = 3 , Look.name_en = 'City Corporation'
-    //   const payload = {
-    //     district_id: this.data.district_id,
-    //     lookup_id: "3",
-    //   };
-    //   console.log(JSON.stringify(payload));
-    //   // return;
-    //   if (
-    //     this.office_type_id == 8 ||
-    //     this.office_type_id == 10 ||
-    //     this.office_type_id == 11
-    //   ) {
-    //     console.log("load Upazila");
-    //     this.GetAllUpazila(this.data.district_id);
-    //   } else {
-    //     console.log("load City Corporation");
-    //     await this.$axios
-    //       .get(`/admin/city/get/` + this.data.district_id + "/" + event, {
-    //         headers: {
-    //           Authorization: "Bearer " + this.$store.state.token,
-    //           "Content-Type": "multipart/form-data",
-    //         },
-    //       })
-    //       .then((result) => {
-    //         this.city = result.data.data;
-    //         console.log(this.city, "onChangeDistrict");
-    //       });
-    //   }
-    // },
     async GetAllUpazila(id) {
       console.log('get thana')
       if (this.data.office_type != null) {
@@ -2603,6 +2658,7 @@ export default {
       this.data.office_id = null;
       this.data.committee_id = null
       this.committees = []
+      // this.data.role_id = []
     },
 
 
@@ -2610,6 +2666,16 @@ export default {
   },
   watch: {
     "$i18n.locale": "updateHeaderTitle",
+
+    dialogEdit: function (val, old) {
+      if (!val) {
+        for (const key in this.data) {
+          this.data[key] = key == 'role_id' ? []
+              : (key == 'status' ? 0 : null)
+        }
+      }
+    }
+
   },
   created() {
     this.GetAllCommitteeType();

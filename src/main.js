@@ -21,7 +21,7 @@ import i18n from "./i18n";
 Vue.directive('can', {
   bind(el, binding, vnode) {
 
-    // console.log(el,binding, vnode,'directive')
+    // console.log('directive', el,binding, vnode)
         if (binding.value != 'common' 
         && store.state 
         && store.state.userData 
