@@ -46,7 +46,6 @@
             "preview":"Preview",
             "approve":"Approve",
             "remove":"Remove"
-            
         },
         "system_config": {
             "demo_graphic": {
@@ -339,13 +338,19 @@
                     "office_id": "Office",
                     "office": "Office",
                     "delete": "User Delete",
+                    "approve": "Approve User",
                     "division_id": "Select Division",
                     "district_id": "Select District",
                     "thana_id": "Select Thana",
                     "city_corpo_id": "Select City Corporation",
                     "add_new": "Add New User",
                     "delete_alert": "Are you sure to delete this User?.",
-                    "search": "Search User"
+                    "approve_alert": "Are you sure to approve this User?",
+                    "search": "Search User",
+                    "email_label":"Email",
+                    "mobile_label":"Mobile",
+                    "office_committee":"Office/Committee",
+                    "location":"Assigned Location"
                 },
                 "financial_year": {
                     "financial_year": "Financial Year",
