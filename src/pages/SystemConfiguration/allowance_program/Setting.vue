@@ -81,7 +81,7 @@ export default {
       return [
         v => !!v || "Maximum value is required",
         v => /^\d+$/.test(v) || 'Maximum Age must be a number',
-        v => (v >= 5 && v <= 115) || 'Age must be between 5 and 115',
+        // v => (v >= 5 && v <= 115) || 'Age must be between 5 and 115',
         v => {
           const invalidValue = this.updateAllowanceAge.some(item => parseInt(v) < parseInt(item.min_age));
           return invalidValue ? 'Maximum value cannot be less than the minimum value' : true;
@@ -271,7 +271,9 @@ export default {
     },
 
     updateAllowanceProgram: async function(){
+    console.log(this.editAllowanceProgram.is_active,'this.editAllowanceProgram.is_active')
       try {
+        console.log(this.updateAllowanceAge,"updateAllowanceAge")
         console.log('hello')
         let id = this.$route.params.id;
 
@@ -284,6 +286,9 @@ export default {
         formData.append('marital_status', this.editAllowanceProgram.marital_status);
 
         formData.append('is_active', this.editAllowanceProgram.is_active);
+        formData.append('system_status', this.editAllowanceProgram.system_status);
+        formData.append('pmt_status', this.editAllowanceProgram.pmt_status);
+       
 
         formData.append('is_disable_class', this.editAllowanceProgram.is_disable_class);
 
@@ -344,6 +349,8 @@ export default {
       }catch (e) {
         console.log(e);
       }
+      // add function here
+      
     },
 
     updateHeaderTitle() {
@@ -377,13 +384,14 @@ export default {
                     <v-col cols="12" class="d-flex">
                       <v-row wrap>
                         <v-col cols="12" sm="6" lg="6">
-                          <ValidationProvider name="name english" vid="name_en" rules="required" v-slot="{ errors }">
+                          <ValidationProvider name="name english" vid="name_en" rules="required"  v-slot="{ errors }">
                             <v-text-field
                                 v-model="editAllowanceProgram.name_en"
                                 :label="$t('container.system_config.allowance_program.name_en')"
                                 menu-props="auto"
                                 persistent-hint
                                 outlined
+                            
                                 :error="errors[0] ? true : false"
                                 :error-messages="errors[0]"
                                 required
@@ -399,6 +407,7 @@ export default {
                                 menu-props="auto"
                                 persistent-hint
                                 outlined
+                                
                                 :error="errors[0] ? true : false"
                                 :error-messages="errors[0]"
                                 required
@@ -482,8 +491,10 @@ export default {
                             </v-col>
                           </v-row>
                         </v-col>
-
-                        <v-col cols="12" sm="6" lg="6">
+                        <!-- <v-col cols="12" sm="6" lg="6">
+                            <v-checkbox v-model="editAllowanceProgram.system_status" :label="$t('container.system_config.allowance_program.system_status')"></v-checkbox>
+                          </v-col> -->
+                        <v-col cols="12" sm="6" lg="6" v-if="editAllowanceProgram.system_status ==1">
                           <v-checkbox v-model="editAllowanceProgram.is_active" :label="$t('container.system_config.allowance_program.is_active')"></v-checkbox>
                         </v-col>
                       </v-row>
@@ -688,6 +699,7 @@ export default {
                   <v-card-text>
                     <v-col cols="12" class="d-flex">
                       <v-row wrap>
+                            
                         <v-col cols="12" sm="4" lg="4" v-for="(field, index) in additionalFields" :key="field.id">
                           <ValidationProvider name="add_field_id" vid="add_field_id" rules="required" v-slot="{ errors }">
                             <v-checkbox
@@ -700,6 +712,9 @@ export default {
                             ></v-checkbox>
                           </ValidationProvider>
                         </v-col>
+                        <v-col cols="12" sm="4" lg="4">
+                                <v-checkbox v-model="editAllowanceProgram.pmt_status" :label="$t('container.system_config.allowance_program.is_pmt_toggle')"></v-checkbox>
+                              </v-col>
                       </v-row>
                     </v-col>
                   </v-card-text>
