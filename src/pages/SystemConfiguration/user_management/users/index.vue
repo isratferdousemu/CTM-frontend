@@ -26,7 +26,7 @@
                 >
                   <div class="d-flex justify-sm-end flex-wrap">
                     <v-text-field
-                      @keyup.native="GetDivision"
+                      @keyup.native="getUsers"
                       outlined
                       dense
                       v-model="search"
@@ -2193,7 +2193,7 @@ export default {
         })
         .then((result) => {
           this.users = result.data.data;
-          console.log(this.users, "getUsers");
+          console.log("getUsers", this.users);
           this.pagination.current = result.data.current_page;
           this.pagination.total = result.data.last_page;
           this.pagination.grand_total = result.data.total;
@@ -2674,7 +2674,13 @@ export default {
               : (key == 'status' ? 0 : null)
         }
       }
-    }
+    },
+
+    // search: {
+    //   handler () {
+    //     this.getUsers()
+    //   },
+    // },
 
   },
   created() {
