@@ -1,0 +1,23 @@
+version: '3.5'
+
+networks:
+   web-ctm-app-net:
+       name: my-ctm-web-app-net
+       driver: bridge
+
+services:
+   frontend:
+     container_name: ctm-frontend
+     image: 'ctm-app-frontend'
+     environment:
+            - TZ=Asia/Dhaka
+     ports:
+       - 80:80
+     restart: always
+     build:
+         context: "./"
+         dockerfile: "Dockerfile"
+ 
+     networks:
+       - web-ctm-app-net
+##End of Scripts
