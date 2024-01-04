@@ -57,21 +57,7 @@ export default {
 
     methods: {
             deviceActivate: async function ({ id, system_status }) {
-                // console.log(id, system_status,"data")
-            // try {
-            //     await this.$store.dispatch("Device_registration/ActivateDevice", id).then(() => {
-
-            //         if (device_status == 0) {
-            //             this.$toast.success(this.message);
-            //         } else {
-            //             this.$toast.warning(this.message);
-            //         }
-
-            //         this.getAllowance();
-            //     })
-            // } catch (e) {
-            //     console.log(e);
-            // }
+         
             this.$axios
                 .get(`admin/allowance/status/${id}`, {
                     headers: {

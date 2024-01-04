@@ -469,6 +469,7 @@ export default {
                     params: queryParams,
                 })
                 .then((result) => {
+                    console.log(result,'result')
                     this.operators = result.data.data;
                     this.pagination.current = result.data.meta.current_page;
                     this.pagination.total = result.data.meta.last_page;

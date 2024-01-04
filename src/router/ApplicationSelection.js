@@ -24,7 +24,25 @@ const ApplicationSelectionRoutes = [
   },
   
   {
-    path: "/application-management/poverty-cut-off-score/",
+    path: "/application-management/poverty-cut-off-score/create",
+    name: "selection_list",
+    meta: {
+      requiresAuth: true,
+      permission: "application-selection-list",
+    },
+    component: () => import("../pages/ApplicationSelection/PMTScoring/PovertyCutOff/Create.vue")
+  },
+  {
+    path: "/application-management/poverty-cut-off-score/edit/:param1/:param2",
+    name: "edit_cutoff",
+    meta: {
+      requiresAuth: true,
+      permission: "application-selection-list",
+    },
+    component: () => import("../pages/ApplicationSelection/PMTScoring/PovertyCutOff/Edit.vue")
+  },
+  {
+    path: "/application-management/poverty-cut-off-score",
     name: "selection_list",
     meta: {
       requiresAuth: true,
@@ -48,7 +66,7 @@ const ApplicationSelectionRoutes = [
       requiresAuth: true,
       permission: "application-selection-list",
     },
-    component: () => import("../pages/ApplicationSelection/PMTScoring/Variable/Index.vue")
+    component: () => import("../pages/ApplicationSelection/PMTScoring/Variable/Index_v1.vue")
   },
   {
     path: "/application-management/sub-variable/",
