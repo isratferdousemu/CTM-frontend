@@ -1309,7 +1309,7 @@
                             <!-- :disabled="invalid" -->
                             <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
                               class="custom-btn-width black white--text py-2">
-                              {{ $t("container.list.submit") }}
+                            submit
                             </v-btn>
 
                           </div>
@@ -1920,6 +1920,7 @@ export default {
                 }
                 this.$refs.form.setErrors(errs);
                 this.$toast.error(err.response.data.message);
+             
 
               }
               else if (err.response.data.error_code == "applicant_gender_type") {
@@ -1928,6 +1929,8 @@ export default {
                 }
                 this.$refs.form.setErrors(errs);
                 this.$toast.error(err.response.data.message);
+            
+            
 
               }
               else if (err.response.data.error_code == "applicant_age_limit") {
@@ -1939,13 +1942,14 @@ export default {
               this.$toast.error(err.response.data.message);
              
                this.errors = err.response.data.errors
-                const firstErrorField = Object.keys(this.errors)[0];
-             
+              
+            
 
             }
           }
         });
     },
+  
     async getProgramName() {
       // if (this.data.program != null && this.programs.length > 0) {
       console.log(this.programs, "check");

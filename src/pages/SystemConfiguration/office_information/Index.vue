@@ -139,7 +139,7 @@
                         @input="onChangeDistrict($event)" :label="$t(
                           'container.system_config.demo_graphic.district.district'
                         )
-                          " :items="districts" item-text="name_en" item-value="id`" required
+                          " :items="districts" item-text="name_en" item-value="id" required
                         :readonly="((selectedWards.length > 0) && (data.office_type === 35)) || ((selectedWards_UCDUpazila.length > 0) && (data.office_type === 10))"
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
@@ -1791,14 +1791,17 @@ export default {
 
       if ($event === 35) {
         this.location_type = 3;
+        console.log(this.location_type,"this.location_type")
 
       }
       if ($event === 8 || $event === 10) {
         this.location_type = 2;
+         console.log(this.location_type, "this.location_type")
 
       }
       if ($event === 9) {
         this.location_type = 1;
+         console.log(this.location_type, "this.location_type")
 
       }
 
@@ -1814,12 +1817,9 @@ export default {
             .then((result) => {
               this.upazilas = result.data.data;
               this.cities = [];
-
-
-
-
-
               this.dist_pouros = [];
+                 console.log(this.data.district_id, "this.data.district_id");
+              console.log(this.upazilas,"this.upazilas");
 
 
 
