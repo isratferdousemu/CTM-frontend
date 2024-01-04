@@ -130,7 +130,7 @@ export default {
                             v-slot="{ errors }">
                             <v-select
                               :items="users"
-                              item-text="user_id"
+                              item-text="username"
                               item-value="user_id"
                               :label="$t('container.system_config.device.user_id')"
                               menu-props="auto"

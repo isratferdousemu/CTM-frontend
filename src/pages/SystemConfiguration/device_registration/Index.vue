@@ -50,7 +50,7 @@ export default {
     headers() {
       return [
         { text: this.$t('container.list.sl'), value: "id", align: "start", sortable: false },
-        { text: this.$t('container.system_config.device.user_id'), value: "user_id" },
+        { text: this.$t('container.system_config.device.user_id'), value: "user.username" },
         { text: this.$t('container.system_config.device.user_name'), value: "name" },
         { text: this.$t('container.system_config.device.device_type'), value: "device_type" },
         { text: this.$t('container.system_config.device.ip_address'), value: "ip_address" },
