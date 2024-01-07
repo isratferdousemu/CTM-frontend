@@ -56,26 +56,32 @@
 
 
 
-                                                <v-text-field @keyup.native="onChangeFilter()" v-if="data.type !== 0"
+                                                <!-- <v-text-field 
                                                     outlined dense clearable v-model="search"
                                                     prepend-inner-icon="mdi-magnify"
                                                     class="my-sm-0 my-3 mx-0v -input--horizontal " flat variant="outlined"
                                                     :label="$t(
                                                         'container.application_selection.poverty_cut_off.search'
                                                     )
-                                                        " hide-details color="primary">
+                                                        ">
 
-                                                </v-text-field>
+                                                </v-text-field> -->
 
 
                                             </div>
                                             <v-col cols="12">
-                                                <v-data-table :loading="loading" item-key="id" :headers="headers"
-                                                    :items="filters" :items-per-page="pagination.perPage"
-                                                    hide-default-footer class="elevation-0 transparent row-pointer">
+                                                <v-data-table   :loading="loading"
+        :headers="headers"
+        :items="filters"
+        dense
+        class="elevation-1 transparent row-pointer"
+        :page.sync="page.current"
+        :items-per-page.sync="page.perPage"
+        :total-items="page.total"
+        @update:options="onOptionsUpdate">
                                                     <template v-slot:item.id="{ item, index }">
                                                         {{
-                                                            (pagination.current - 1) * pagination.perPage +
+                                                            (page.current - 1) * page.perPage +
                                                             index +
                                                             1
                                                         }}
@@ -92,7 +98,7 @@
                                                                 type="number"></v-text-field>
                                                         </ValidationProvider>
 
-                                                        <!-- {{ item.score }} -->
+                                                      
                                                     </template>
                                                     <template v-slot:item.name_bn="{ item }">
                                                         {{ item.name_bn }}
@@ -100,7 +106,7 @@
 
 
 
-                                                    <template v-slot:footer="item">
+                                                    <!-- <template v-slot:footer="item">
                                                         <div class="text-center pt-2 v-data-footer justify-center pb-2">
                                                             <v-select style="
                               position: absolute;
@@ -114,7 +120,7 @@
                                                                 :total-visible="11"
                                                                 class="custom-pagination-item"></v-pagination>
                                                         </div>
-                                                    </template>
+                                                    </template> -->
                                                 </v-data-table>
 
                                             </v-col>
@@ -123,7 +129,7 @@
                     {{ $t('container.list.back') }}
                 </v-btn>
 
-                                                <v-btn flat color="success" type="submit" class="mr-5  custom-btn " :disabled="invalid">
+                                                <v-btn flat color="success" type="submit" class="mr-5  custom-btn "  :disabled="!allInputsProvided || !data.financial_year_id || invalid" >
                 {{ $t('container.list.submit') }}
             </v-btn>
 
@@ -158,7 +164,20 @@ export default {
                 type: null,
                 score: null,
             },
+             pagination: {
+                current: 1,
+                perPage: 10, // You can set the desired default page size
+                total: 0,
+            },
+               page: {
+                current: 1,
+                perPage: 10, // You can set the desired default page size
+                total: 0,
+            },
             filters: [],
+            options:{},
+            allInputsProvided: false,
+             
             dialogAdd: false,
             deleteDialog: false,
             dialogEdit: false,
@@ -191,11 +210,7 @@ export default {
             financial_years: [],
             errors: {},
             error_status: {},
-            pagination: {
-                current: 1,
-                total: 0,
-                perPage: 10,
-            },
+        
             items: [5, 10, 15, 20, 40, 50, 100],
         };
     },
@@ -223,12 +238,14 @@ export default {
                         "container.application_selection.poverty_cut_off.name_en"
                     ),
                     value: "division_or_district_cut_off",
+                      sortable: false,
                 },
                 {
                     text: this.$t(
                         "container.application_selection.poverty_cut_off.score"
                     ),
                     value: "score",
+                    sortable: false,
                 },
 
             ];
@@ -243,6 +260,23 @@ export default {
     },
 
     methods: {
+          onOptionsUpdate(options) {
+           console.log("Options updated:", options);
+
+            // Check if the pagination values have actually changed
+          
+                // Update pagination properties
+                this.page.current = options.page;
+                this.page.perPage = options.itemsPerPage;
+
+                // // Log additional information for debugging
+                console.log("Current Page:", this.page.current);
+                console.log("Items Per Page:", this.page.perPage);
+
+                // // Fetch data using your API call based on the updated pagination properties
+                // this.onChangeFilter();
+        },
+       
         navigateTolist(){
               this.$router.push("/application-management/poverty-cut-off-score");
         },
@@ -426,18 +460,14 @@ export default {
             this.errors = {};
         },
 
-        onPageChange($event) {
-            // this.pagination.current = $event;
-            this.onChangeFilter();
-        },
+     
         async onChangeFilter() {
             this.filters = [];
             const queryParams = {
 
                 type: this.data.type,
                 searchText: this.search,
-                perPage: this.pagination.perPage,
-                page: this.pagination.current,
+            
             };
 
             this.$axios
@@ -450,66 +480,16 @@ export default {
                 })
                 .then((result) => {
                     this.filters = result.data.data;
-                    console.log(this.cut_off);
-                    this.pagination.current = result.data.current_page;
-                    this.pagination.total = result.data.last_page;
-                    this.pagination.grand_total = result.data.total;
+                    // this.pagination.total= result.data.total;
+                  
+                    
+                   
+              
                 });
 
-            // const filterData = {
-            //   financial_year_id: this.financial_year_id,
-            //   type: this.location_type_id,
-            // };
-            // console.log(filterData, "onChangeFilter");
-            // // return;
-            // let fd = new FormData();
-            // for (const [key, value] of Object.entries(filterData)) {
-            //   if (value !== null) {
-            //     fd.append(key, value);
-            //   }
-            // }
-
-            // try {
-            //   this.$store
-            //     .dispatch("ApplicationSelection/filterCutOff", fd)
-            //     .then((result) => {
-            //       console.log(result, "filterCutOff");
-            //       this.cut_off = result.data.data;
-            //       this.pagination.current = result.data.current_page;
-            //       this.pagination.total = result.data.last_page;
-            //       this.pagination.grand_total = result.data.total;
-            //     });
-            // } catch (e) {
-            //   console.log(e);
-            // }
+           
         },
-        async GetPovertyCutOff() {
-            const queryParams = {
-                financial: this.data.financial_year_id,
-                location: this.data.location_id,
-                type: this.data.type,
-
-                searchText: this.search,
-                perPage: this.pagination.perPage,
-                page: this.pagination.current,
-            };
-
-            this.$axios
-                .get("/admin/poverty/get", {
-                    headers: {
-                        Authorization: "Bearer " + this.$store.state.token,
-                        "Content-Type": "multipart/form-data",
-                    },
-                    params: queryParams,
-                })
-                .then((result) => {
-                    this.cut_off = result.data.data;
-                    console.log(this.cut_off);
-                    this.pagination.current = result.data.current_page;
-                    this.pagination.total = result.data.last_page;
-                    this.pagination.grand_total = result.data.total;
-                });
-        },
+   
         async GetFinancialYear() {
             this.$axios
                 .get("/admin/financial-year/get", {
@@ -561,6 +541,12 @@ export default {
     },
     watch: {
         "$i18n.locale": "updateHeaderTitle",
+        filters: {
+            handler(newFilters) {
+                this.allInputsProvided = newFilters.every(item => item.inputScore !== undefined && item.inputScore !== null);
+            },
+            deep: true,
+        },
     },
     created() {
         this.GetFinancialYear();

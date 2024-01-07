@@ -19,13 +19,13 @@
                <v-row class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
                                       justify="center" justify-lg="space-between">
                                       <div class="d-flex justify-sm-end flex-wrap">
-                                          <v-text-field @keyup.native="GetAllotmentSetup" outlined dense v-model="search"
+                                          <!-- <v-text-field @keyup.native="GetAllotmentSetup" outlined dense v-model="search"
                                               prepend-inner-icon="mdi-magnify" class="my-sm-0 my-3 mx-0v -input--horizontal"
                                               flat variant="outlined" :label="$t(
                                                 'container.list.search'
                                               )
                                                 " hide-details color="primary">
-                                          </v-text-field>
+                                          </v-text-field> -->
                                       </div>
                                       <v-btn @click="navigateToPovertyScore" flat color="primary"
                                           prepend-icon="mdi-account-multiple-plus">
@@ -487,6 +487,7 @@ export default {
 
       this.deleteDialog = true;
       this.delete_item = item;
+      console.log(this.delete_item,"  this.delete_item ")
 
     },
     updateHeaderTitle() {

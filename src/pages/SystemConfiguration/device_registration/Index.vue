@@ -194,7 +194,7 @@ export default {
                       :server-items-length="totalDevices"
                       :loading="loading"
                       :footer-props="{
-                          'items-per-page-options': [10,20,30,40,50]
+                          'items-per-page-options': [5,10,20,30,40,50]
                       }"
                       dense
                       class="elevation-1 transparent row-pointer"
