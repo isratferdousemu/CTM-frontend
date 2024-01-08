@@ -26,6 +26,21 @@
                                               )
                                                 " hide-details color="primary">
                                           </v-text-field> -->
+                                         
+
+                                                      <v-autocomplete class="mr-5" v-model="data.financial_year_id"  @input="GetPovertyCutOff()"
+                                                          :items="financial_years" :label="$t('container.system_config.demo_graphic.financial_year.financial_year')" outlined clearable
+                                                          dense item-text="financial_year" item-value="id"
+                                                          :error="errors[0] ? true : false"
+                                                          :error-messages="errors[0]"></v-autocomplete>
+                                                
+
+                                                      <v-select @input="GetPovertyCutOff()" class="mr-5" v-model="data.type"
+                                                          :items="location_types" :label="$t('container.application_selection.poverty_cut_off.poverty_cut_off')" outlined clearable
+                                                          dense item-text="name_en" item-value="id"
+                                                          :error="errors[0] ? true : false"
+                                                          :error-messages="errors[0]"></v-select>
+                                                
                                       </div>
                                       <v-btn @click="navigateToPovertyScore" flat color="primary"
                                           prepend-icon="mdi-account-multiple-plus">
@@ -170,10 +185,7 @@ export default {
       location_type: null,
       location_type_id: null,
       location_types: [
-        {
-          id: 0,
-          name_en: "All",
-        },
+     
         {
           id: 1,
           name_en: "Division",
@@ -223,10 +235,11 @@ export default {
         // },
         {
           text: this.$t(
-            "container.application_selection.poverty_cut_off.name_en"
+            "container.application_selection.poverty_cut_off.poverty_cut_off"
           ),
           align: "start",
           value: "division_or_district_cut_off",
+          sortable: false,
         },
         {
           text: this.$t(
@@ -418,7 +431,8 @@ export default {
     async GetPovertyCutOff() {
       const queryParams = {
 
-
+        financial_year_id:this.data.financial_year_id,
+        type:this.data.type,
         searchText: this.search,
         perPage: this.pagination.perPage,
         page: this.pagination.current,

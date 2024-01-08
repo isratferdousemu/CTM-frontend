@@ -434,13 +434,7 @@ export default {
 
                 },
 
-                {
-                    text: this.$t(
-                        "container.application_selection.variable.field_type"
-                    ),
-                    value: "type",
-
-                },
+           
 
                 {
                     text: this.$t("container.list.action"),
