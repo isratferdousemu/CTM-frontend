@@ -26,7 +26,7 @@
                 >
                   <div class="d-flex justify-sm-end flex-wrap">
                     <v-text-field
-                      @keyup.native="GetDivision"
+                      @keyup.native="getUsers"
                       outlined
                       dense
                       v-model="search"
@@ -752,7 +752,8 @@
                       data.office_type == 8 ||
                       data.office_type == 9 ||
                       data.office_type == 10 ||
-                      data.office_type == 11
+                      data.office_type == 11 ||
+                      data.office_type == 35
                     "
                   >
                     <ValidationProvider
@@ -789,7 +790,8 @@
                       data.office_type == 8 ||
                       data.office_type == 9 ||
                       data.office_type == 10 ||
-                      data.office_type == 11
+                      data.office_type == 11 ||
+                      data.office_type == 35
                     "
                   >
                     <ValidationProvider
@@ -817,6 +819,40 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
+
+
+                  <v-col
+                      lg="6"
+                      md="6"
+                      cols="12"
+                      v-if="data.office_type == 35"
+                  >
+                    <ValidationProvider
+                        name="union"
+                        vid="paurashava_id"
+                        rules="required"
+                        v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                          :hide-details="errors[0] ? false : true"
+                          @input="onChangeDistrictPauroshava($event)"
+                          v-model="data.paurashava_id"
+                          outlined
+                          :label="
+                          $t(
+                            'container.system_config.demo_graphic.committee.pouro'
+                          )
+                        "
+                          :items="unions"
+                          item-text="name_en"
+                          item-value="id"
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+
                   <v-col
                     lg="6"
                     md="6"
@@ -890,7 +926,8 @@
                       data.office_type == 9 ||
                       data.office_type == 8 ||
                       data.office_type == 10 ||
-                      data.office_type == 11
+                      data.office_type == 11 ||
+                      data.office_type == 35
                     "
                   >
                     <ValidationProvider
@@ -1500,7 +1537,8 @@
                       data.office_type == 8 ||
                       data.office_type == 9 ||
                       data.office_type == 10 ||
-                      data.office_type == 11
+                      data.office_type == 11 ||
+                      data.office_type == 35
                     "
                   >
                     <ValidationProvider
@@ -1537,7 +1575,8 @@
                       data.office_type == 8 ||
                       data.office_type == 9 ||
                       data.office_type == 10 ||
-                      data.office_type == 11
+                      data.office_type == 11 ||
+                      data.office_type == 35
                     "
                   >
                     <ValidationProvider
@@ -1625,6 +1664,40 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
+
+
+                  <v-col
+                      lg="6"
+                      md="6"
+                      cols="12"
+                      v-if="data.office_type == 35"
+                  >
+                    <ValidationProvider
+                        name="union"
+                        vid="paurashava_id"
+                        rules="required"
+                        v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                          :hide-details="errors[0] ? false : true"
+                          @input="onChangeDistrictPauroshava($event)"
+                          v-model="data.paurashava_id"
+                          outlined
+                          :label="
+                          $t(
+                            'container.system_config.demo_graphic.committee.pouro'
+                          )
+                        "
+                          :items="unions"
+                          item-text="name_en"
+                          item-value="id"
+                          required
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+
                   <v-col
                       lg="6"
                       md="6"
@@ -1638,7 +1711,8 @@
                       data.office_type == 9 ||
                       data.office_type == 8 ||
                       data.office_type == 10 ||
-                      data.office_type == 11
+                      data.office_type == 11 ||
+                      data.office_type == 35
                     "
                   >
                     <ValidationProvider
@@ -2193,7 +2267,7 @@ export default {
         })
         .then((result) => {
           this.users = result.data.data;
-          console.log(this.users, "getUsers");
+          console.log("getUsers", this.users);
           this.pagination.current = result.data.current_page;
           this.pagination.total = result.data.last_page;
           this.pagination.grand_total = result.data.total;
@@ -2340,8 +2414,8 @@ export default {
 
 
 
-      if (this.data.office_type != null) {
-        this.getOfficeByLocation(this.data.office_type, event);
+      if (this.data.office_type === 6 ) {
+        return this.getOfficeByLocation(this.data.office_type, event);
       }
       await this.$axios
           .get(`/admin/district/get/${event}`, {
@@ -2380,20 +2454,22 @@ export default {
       this.data.committee_id = null;
 
 
-      if (this.data.office_type != null) {
-        this.getOfficeByLocation(this.data.office_type, event);
+      if (this.data.office_type === 7) {
+        return this.getOfficeByLocation(this.data.office_type, event);
       }
+      //upazila = 8; ucd upazila = 10; social circle = 11 | union committee=12; upazila committee=14
       if ([8, 10, 11].includes(this.data.office_type) || [12, 14].includes(this.data.committee_type)) {
         this.GetAllUpazila(this.data.district_id);
-      }
-      else {
+      } else {
         /*
-          if committee_type == 16 (district pourosova)
+        if office/committee
+          district pourosova (committee) == 16
+          UCD district pourosova (office) == 35
           then lookUpType = 1 (District Pouroshava)
           else lookUpType = 3 (City)
         */
 
-        const lookupType = this.data.committee_type == 16 ? 1 : 3
+        const lookupType = this.data.committee_type == 16 || this.data.office_type == 35 ? 1 : 3
 
         await this.$axios
             .get(`/admin/city/get/` + this.data.district_id + "/" + lookupType, {
@@ -2434,8 +2510,8 @@ export default {
       this.data.committee_id = null;
 
 
-      if (this.data.office_type != null) {
-        this.getOfficeByLocation(this.data.office_type, event);
+      if (this.data.office_type === 8 || this.data.office_type === 10 || this.data.office_type === 11 ) {
+        return this.getOfficeByLocation(this.data.office_type, event);
       }
 
       await this.$axios
@@ -2472,8 +2548,8 @@ export default {
 
 
 
-      if (this.data.office_type != null) {
-        this.getOfficeByLocation(this.data.office_type, event);
+      if (this.data.office_type === 9) {
+        return this.getOfficeByLocation(this.data.office_type, event);
       }
 
       await this.$axios
@@ -2528,6 +2604,12 @@ export default {
 
     async onChangeDistrictPauroshava(event) {
       console.log('pouro',event, this.data.paurashava_id)
+
+      if (this.data.office_type === 35) {
+        this.data.office_id = null
+        return this.getOfficeByLocation(this.data.office_type, event);
+      }
+
       if (this.data.committee_type === 16) {
         return this.getCommittees(this.data.paurashava_id)
       }
@@ -2674,7 +2756,13 @@ export default {
               : (key == 'status' ? 0 : null)
         }
       }
-    }
+    },
+
+    // search: {
+    //   handler () {
+    //     this.getUsers()
+    //   },
+    // },
 
   },
   created() {
