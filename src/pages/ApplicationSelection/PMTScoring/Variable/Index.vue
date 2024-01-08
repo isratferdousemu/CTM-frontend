@@ -617,17 +617,25 @@ export default {
         await this.$store
           .dispatch("ApplicationSelection/DestroyVariable", data)
           .then((res) => {
+            console.log(res,"res")
+              if (res?.data?.fail) {
+              this.$toast.error(res.data.message);
+            
+            }
             // check if the request was successful
             if (res?.data?.success) {
               this.$toast.success(res.data.message);
+              //  this.deleteDialog = false;
+              this.GetVariable();
             } else {
-              this.$toast.error(res.response.data.message);
+              this.$toast.error(res.data.error);
             }
-            this.deleteDialog = false;
-            this.GetVariable();
+           
           })
           .catch((error) => {
-            console.log(error, "error");
+             this.$toast.error(error);
+              console.log(error.response.data.message,'message');
+                         console.log(error.response, "erro")
           });
       } catch (e) {
         console.log(e);

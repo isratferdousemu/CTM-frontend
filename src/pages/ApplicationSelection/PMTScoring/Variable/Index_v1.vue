@@ -718,13 +718,22 @@ export default {
                     },
                 })
                 .then((res) => {
-                    if (res?.data?.success) {
-                        this.$toast.error(res.data.message);
-                    } else {
+                    console.log(res.data,"res.data")
+                       if (res?.data?.success == true) {
                         this.$toast.success(res.data.message);
+                             this.deleteDialog = false;
+                        this.GetVariable();
                     }
-                    this.deleteDialog = false;
-                    this.GetVariable();
+                    if (res?.data?.success == false) {
+                        this.$toast.error(res.data.message);
+                     } 
+                    //  else {
+                        // this.$toast.success(res.data.message);
+                        //     this.deleteDialog = false;
+                        // this.GetVariable();
+                    // }
+                  
+                
                 })
                 .catch((error) => {
                     console.log(error, "error");
