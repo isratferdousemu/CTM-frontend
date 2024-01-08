@@ -42,7 +42,7 @@
                                                 </ValidationProvider>
                                                
 
-                                                <v-text-field @keyup.native="onChangeFilter()" outlined dense clearable
+                                                <!-- <v-text-field @keyup.native="onChangeFilter()" outlined dense clearable
                                                     v-model="search" prepend-inner-icon="mdi-magnify"
                                                     class="my-sm-0 my-3 mx-0v -input--horizontal" flat variant="outlined"
                                                     :label="$t(
@@ -50,17 +50,23 @@
                                                     )
                                                         " hide-details color="primary">
 
-                                                </v-text-field>
+                                                </v-text-field> -->
 
 
                                             </div>
                                             <v-col cols="12">
-                                                <v-data-table :loading="loading" item-key="id" :headers="headers"
-                                                    :items="filters" :items-per-page="pagination.perPage"
-                                                    hide-default-footer class="elevation-0 transparent row-pointer">
+                                                    <v-data-table   :loading="loading"
+            :headers="headers"
+            :items="filters"
+            dense
+            class="elevation-1 transparent row-pointer"
+            :page.sync="page.current"
+            :items-per-page.sync="page.perPage"
+            :total-items="page.total"
+            @update:options="onOptionsUpdate">
                                                     <template v-slot:item.id="{ item, index }">
                                                         {{
-                                                            (pagination.current - 1) * pagination.perPage +
+                                                            (page.current - 1) * page.perPage +
                                                             index +
                                                             1
                                                         }}
@@ -107,8 +113,8 @@
                 {{ $t('container.list.back') }}
             </v-btn>
 
-                                            <v-btn flat color="success" type="submit" class="mr-5  custom-btn " :disabled="invalid">
-            {{ $t('container.list.submit') }}
+                                            <v-btn flat color="success" type="submit" class="mr-5  custom-btn" :disabled="invalid">
+            {{ $t('container.list.update') }}
         </v-btn>
 
         
@@ -170,6 +176,11 @@ export default {
             financial: null,
             location: null,
             type: null,
+            page: {
+                current: 1,
+                perPage: 10, // You can set the desired default page size
+                total: 0,
+            },
 
             search: "",
             delete_id: "",
@@ -210,12 +221,14 @@ export default {
                         "container.application_selection.poverty_cut_off.name_en"
                     ),
                     value: "division_or_district_cut_off",
+                     sortable: false,
                 },
                 {
                     text: this.$t(
                         "container.application_selection.poverty_cut_off.score"
                     ),
                     value: "score",
+                     sortable: false,
                 },
 
             ];
@@ -243,8 +256,31 @@ watch: {
         },
     },
      "$i18n.locale": "updateHeaderTitle",
+      filters: {
+            handler(newFilters) {
+                this.allInputsProvided = newFilters.every(item => item.inputScore !== undefined && item.inputScore !== null);
+            },
+            deep: true,
+        },
 },
     methods: {
+     onOptionsUpdate(options) {
+            console.log("Options updated:", options);
+
+            // Check if the pagination values have actually changed
+
+            // Update pagination properties
+            this.page.current = options.page;
+            this.page.perPage = options.itemsPerPage;
+             this.sortBy = options.sortBy[0];  // Assuming single column sorting
+            this.sortDesc = options.sortDesc[0];
+
+            // // Log additional information for debugging
+       
+
+            // // Fetch data using your API call based on the updated pagination properties
+            // this.onChangeFilter();
+        },
          navigateTolist() {
             this.$router.push("/application-management/poverty-cut-off-score");
         },
@@ -412,9 +448,7 @@ watch: {
                 .then((result) => {
                     this.filters = result.data.data;
                    
-                    this.pagination.current = result.data.current_page;
-                    this.pagination.total = result.data.last_page;
-                    this.pagination.grand_total = result.data.total;
+                
                 });
 
          

@@ -14,7 +14,7 @@
                                 <v-row class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
                                     justify="center" justify-lg="space-between">
                                     <div class="d-flex justify-sm-end flex-wrap">
-                                        <v-text-field @keyup.native="GetVariable" outlined dense v-model="search"
+                                        <v-text-field @keyup.native="GetOffices" outlined dense v-model="search"
                                             prepend-inner-icon="mdi-magnify" class="my-sm-0 my-3 mx-0v -input--horizontal"
                                             flat variant="outlined" :label="$t('container.application_selection.variable.search')
                                                 " hide-details color="primary">
@@ -24,66 +24,72 @@
                                         prepend-icon="mdi-account-multiple-plus">
                                         {{ $t("container.list.add_new") }}
                                     </v-btn>
-                      
                                     <v-col cols="12">
-                                       <v-data-table
-                          :headers="headers"
-                          :items="variables"
-                          :search="search"
-                          :options.sync="options"
-                          :server-items-length="totalvariables"
-                          :loading="loading"
-                          :footer-props="{
-                              'items-per-page-options': [5,10, 20, 30, 40, 50]
-                          }"
-                          dense
-                          class="elevation-1 transparent row-pointer"
-                      >
+                                        <v-data-table :loading="loading" item-key="id" :headers="headers" :items="variables"
+                                            :items-per-page="pagination.perPage" hide-default-footer
+                                            class="elevation-0 transparent row-pointer">
+                                            <template v-slot:item.id="{ item, index }">
+                                                {{
+                                                    (pagination.current - 1) * pagination.perPage +
+                                                    index +
+                                                    1
+                                                }}
+                                            </template>
+                                            <template v-slot:item.name_en="{ item }">
+                                                {{ item.name_en }}
+                                            </template>
 
-                    
+                                            <template v-slot:item.type="{ item }">
+                                                <span v-if="item?.field_type == '1' && item?.score == null"> Single Choice
+                                                    Dropdown </span>
+                                                <span v-if="item?.field_type == '1' && item?.score != null"> Checkbox
+                                                </span>
+                                                <span v-if="item?.field_type == '2'"> Multiple Choice Dropdown </span>
 
-                       <template v-slot:item.id="{ item, index }">
-        {{ (currentPage - 1) * itemsPerPage + index + 1 }}
-    </template>
+                                            </template>
 
-                        <template v-slot:[`item.actions`]="{ item }" style="padding: 10px;">
-                          <v-tooltip top>
-                            <template v-slot:activator="{ on }">
-                              <v-btn
-                             
-                                  fab
-                                
-                                  x-small
-                                  color="success"
-                                  v-on="on"
-                                   @click="editDialog(item)"
-                              >
-                              <v-icon>mdi-account-edit-outline</v-icon>
-                              </v-btn>
-                            </template>
-                            <span>{{ $t('container.list.edit') }}</span>
-                          </v-tooltip>
+                                            <!-- Action Button -->
+                                            <template v-slot:item.actions="{ item }">
+                                                <v-tooltip top>
+                                                    <template v-slot:activator="{ on }">
+                                                        <v-btn fab x-small v-on="on" color="success" elevation="0"
+                                                            @click="editDialog(item)">
+                                                            <v-icon> mdi-account-edit-outline </v-icon>
+                                                        </v-btn>
+                                                    </template>
+                                                    <span>
+                                                        {{ $t("container.list.edit") }}
+                                                    </span>
+                                                </v-tooltip>
 
-                     
+                                                <v-tooltip top>
+                                                    <template v-slot:activator="{ on }">
+                                                        <v-btn v-can="'delete-division'" fab x-small v-on="on" color="grey"
+                                                            class="ml-3 white--text" elevation="0"
+                                                            @click="deleteAlert(item)">
+                                                            <v-icon> mdi-delete </v-icon>
+                                                        </v-btn>
+                                                    </template>
+                                                    <span> {{ $t("container.list.delete") }}</span>
+                                                </v-tooltip>
+                                            </template>
+                                            <!-- End Action Button -->
 
-                          <v-tooltip top>
-                            <template v-slot:activator="{ on }">
-                              <v-btn
-                                  :disabled="item.default === 1"
-                                  fab
-                                  x-small
-                                  color="grey"
-                                  class="ml-3 white--text"
-                                  v-on="on"
-                                  @click="deleteAlert(item.id)"
-                              >
-                                <v-icon>mdi-delete</v-icon>
-                              </v-btn>
-                            </template>
-                        <span>{{ $t('container.list.delete') }}</span>
-                          </v-tooltip>
-                        </template>
-                      </v-data-table>
+                                            <template v-slot:footer="item">
+                                                <div class="text-center pt-2 v-data-footer justify-center pb-2">
+                                                    <v-select style="
+                              position: absolute;
+                              right: 25px;
+                              width: 149px;
+                              transform: translate(0px, 0px);
+                            " :items="items" hide-details dense outlined @change="onPageChange"
+                                                        v-model="pagination.perPage"></v-select>
+                                                    <v-pagination circle primary v-model="pagination.current"
+                                                        :length="pagination.total" @input="onPageChange" :total-visible="11"
+                                                        class="custom-pagination-item"></v-pagination>
+                                                </div>
+                                            </template>
+                                        </v-data-table>
                                     </v-col>
                                 </v-row>
                             </v-card-text>
@@ -131,40 +137,40 @@
                                         :error-messages="errors[0]"></v-text-field>
                                 </ValidationProvider>
 
-                                  <v-data-table :headers="header_field_value" :items="data.field_value"
-                                        v-if="data.field_type == 1 || data.field_type == 2" hide-default-footer>
-                                        <template v-slot:item.id="{ item, index }">
-                                            {{ index + 1 }}
-                                        </template>
+                                <v-data-table :headers="header_field_value" :items="data.field_value"
+                                    v-if="data.field_type == 1 || data.field_type == 2" hide-default-footer>
+                                    <template v-slot:item.id="{ item, index }">
+                                        {{ index + 1 }}
+                                    </template>
 
-                                        <template v-slot:item.value="{ item }">
+                                    <template v-slot:item.value="{ item }">
 
 
 
-                                            <ValidationProvider name="Value" vid="value" rules="required" v-slot="{ errors }">
-                                                <v-text-field outlined dense hide-details v-model="item.value"></v-text-field>
-                                            </ValidationProvider>
-                                        </template>
-                                        <template v-slot:item.score="{ item }">
-                                            <ValidationProvider name="Score" vid="score" rules="required" v-slot="{ errors }">
-                                                <v-text-field outlined dense hide-details v-model="item.score"></v-text-field>
-                                            </ValidationProvider>
-                                        </template>
+                                        <ValidationProvider name="Value" vid="value" rules="required" v-slot="{ errors }">
+                                            <v-text-field outlined dense hide-details v-model="item.value"></v-text-field>
+                                        </ValidationProvider>
+                                    </template>
+                                    <template v-slot:item.score="{ item }">
+                                        <ValidationProvider name="Score" vid="score" rules="required" v-slot="{ errors }">
+                                            <v-text-field outlined dense hide-details v-model="item.score"></v-text-field>
+                                        </ValidationProvider>
+                                    </template>
 
-                                        <template v-slot:item.action="{ item }">
-                                            <v-tooltip top>
-                                                <template v-slot:activator="{ on }">
-                                                    <v-btn fab dense x-small v-on="on" class="danger" elevation="0"
-                                                        @click="removeRow(item.id)">
-                                                        <v-icon style="color: red">mdi-trash-can-outline</v-icon>
-                                                    </v-btn>
-                                                </template>
-                                                <span>
-                                                    {{ $t("container.list.remove") }}
-                                                </span>
-                                            </v-tooltip>
-                                        </template>
-                                    </v-data-table>
+                                    <template v-slot:item.action="{ item }">
+                                        <v-tooltip top>
+                                            <template v-slot:activator="{ on }">
+                                                <v-btn fab dense x-small v-on="on" class="danger" elevation="0"
+                                                    @click="removeRow(item.id)">
+                                                    <v-icon style="color: red">mdi-trash-can-outline</v-icon>
+                                                </v-btn>
+                                            </template>
+                                            <span>
+                                                {{ $t("container.list.remove") }}
+                                            </span>
+                                        </v-tooltip>
+                                    </template>
+                                </v-data-table>
                                 <v-btn v-if="data.field_type == 1 || data.field_type == 2" fab color="primary" class="m-4"
                                     @click="addRow">
                                     <v-icon>mdi-plus</v-icon>
@@ -329,7 +335,7 @@ extend("required", required);
 
 export default {
     name: "Index",
-    title: "CTM - Variable",
+    title: "CTM - Additional Field",
     data() {
         return {
             data: {
@@ -359,12 +365,19 @@ export default {
 
 
             ],
-          
-          
+            additional_field_value: [],
+
+
+            additional_fields: [],
+            // office_type_id: null,
+            //extra work for city
+            // Selected wards
+            edit: [],
 
             message: null,
-         
-         
+            districts: [],
+            cities: [],
+            additional_fields: [],
             field_value: [
                 { value: null },
                 { score: null }
@@ -376,14 +389,16 @@ export default {
             loading: false,
             errors: {},
             error_status: {},
-            totalvariables: 0,
-            variables: [],
-            loading: true,
-            options: {},
-            search: '',
-            page: 1,
+            search: "",
             delete_id: "",
-           
+            pagination: {
+                current: 1,
+                total: 0,
+                perPage: 15,
+            },
+            sortBy: "name_en",
+            sortDesc: false, //ASC
+            items: [5, 10, 15, 20, 40, 50, 100],
         };
     },
     components: {
@@ -434,7 +449,13 @@ export default {
 
                 },
 
-           
+                {
+                    text: this.$t(
+                        "container.application_selection.variable.field_type"
+                    ),
+                    value: "type",
+
+                },
 
                 {
                     text: this.$t("container.list.action"),
@@ -449,7 +470,12 @@ export default {
         ...mapState({
             divisions: (state) => state.Division.divisions,
         }),
-       
+        filteredOptions() {
+            // Apply your filter logic here, e.g., filtering out options with 'Option 2' label
+            return this.locationType.filter(
+                (option) => option.value_en !== "District Pouroshava"
+            );
+        },
     },
     methods: {
 
@@ -601,7 +627,7 @@ export default {
         deleteAlert(item) {
             console.log(item, "item ")
             this.deleteDialog = true;
-            this.delete_id = item;
+            this.delete_id = item.id;
             console.log(this.delete_id, "this.delete_id ")
 
         },
@@ -654,7 +680,11 @@ export default {
         // console.log(store.state.userData.location, ' -> userData')
 
         async GetVariable() {
-           const { sortBy, sortDesc, page, itemsPerPage } = this.options
+            const queryParams = {
+                searchText: this.search,
+                perPage: this.pagination.perPage,
+                page: this.pagination.current,
+            };
 
             this.$axios
                 .get("/admin/poverty/get/variable", {
@@ -662,24 +692,23 @@ export default {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
                     },
-                    params: {
-                        sortBy: sortBy[0],
-                        sortDesc: sortDesc[0],
-                        page: page,
-                        itemsPerPage: itemsPerPage,
-                        search: this.search
-                    }
+                    params: queryParams,
                 })
                 .then((result) => {
-              
-                   this.variables = result.data.data;
-                    this.totalvariables = result.data.meta.total;
-                   this.currentPage= result.data.meta.current_page;
-                    this.itemsPerPage = result.data.meta.per_page;
-                    this.loading = false;
+                    // console.log(result, "additional_fields");
+                    this.variables = result.data.data;
+
+                    this.pagination.current = result.data.meta.current_page;
+                    this.pagination.total = result.data.meta.last_page;
+                    this.pagination.grand_total = result.data.meta.total;
                 })
                 .catch((err) => {
-                    console.log(err);
+                    console.log(err, "error");
+                    if (err.response?.data?.errors) {
+                        this.$refs.form.setErrors(err.response.data.errors);
+                    }
+                    console.log(err.response);
+                    this.$toast.error(err?.response?.data?.message);
                 });
         },
         deleteField: async function () {
@@ -718,26 +747,21 @@ export default {
                     },
                 })
                 .then((res) => {
-                    console.log(res.data,"res.data")
-                       if (res?.data?.success == true) {
-                        this.$toast.success(res.data.message);
-                             this.deleteDialog = false;
-                        this.GetVariable();
-                    }
-                    if (res?.data?.success == false) {
+                    if (res?.data?.success) {
                         this.$toast.error(res.data.message);
-                     } 
-                    //  else {
-                        // this.$toast.success(res.data.message);
-                        //     this.deleteDialog = false;
-                        // this.GetVariable();
-                    // }
-                  
-                
+                    } else {
+                        this.$toast.success(res.data.message);
+                    }
+                    this.deleteDialog = false;
+                    this.GetOffices();
                 })
                 .catch((error) => {
                     console.log(error, "error");
-                   
+                    if (error.response?.data?.errors) {
+                        this.$refs.form.setErrors(error.response.data.errors);
+                    }
+                    console.log(error.response);
+                    this.$toast.error(error?.response?.data?.message);
                 });
         },
         resetData() {
@@ -747,7 +771,7 @@ export default {
             this.data.field_value = [
 
             ];
-this.errors={}
+
 
 
         },
@@ -768,19 +792,6 @@ this.errors={}
     },
     watch: {
         "$i18n.locale": "updateHeaderTitle",
-        options: {
-            handler() {
-                this.GetVariable()
-            },
-            deep: true,
-        },
-
-        search: {
-            handler() {
-                this.page = this.options.page;
-                this.GetVariable()
-            },
-        },
     },
     beforeMount() {
         this.updateHeaderTitle();
