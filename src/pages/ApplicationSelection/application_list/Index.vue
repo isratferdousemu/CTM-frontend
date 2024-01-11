@@ -4,6 +4,7 @@
             <v-col cols="12">
                 <v-row>
                     <v-col cols="12">
+
                         <!-- Expantion panels start -->
                         <v-expansion-panels>
                             <v-expansion-panel class="ma-2">
@@ -18,18 +19,19 @@
                                             <v-row>
                                                 <v-col lg="3" md="3" cols="12">
 
-                                                    <v-autocomplete outlined  clearable
-                                                        class="no-arrow-icon" v-model="data.program_id"
-                                                        :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
-                                                        :items="allowances" item-text="name_en" item-value="id"
+                                                    <v-autocomplete outlined clearable class="no-arrow-icon"
+                                                        v-model="data.program_id" :append-icon-cb="appendIconCallback"
+                                                        append-icon="mdi-plus" :items="allowances" item-text="name_en"
+                                                        item-value="id"
                                                         :label="$t('container.application_selection.application.program')">
                                                     </v-autocomplete>
                                                 </v-col>
+                                               
                                                 <v-col lg="3" md="3" cols="12">
                                                     <ValidationProvider name="Location Type" vid="location_type"
                                                         v-slot="{ errors }">
                                                         <v-autocomplete @input="LocationType($event)"
-                                                        :readonly="userData.office !== null && userData.office.office_type === 8 || userData.office !== null && userData.office.office_type === 9|| userData.office !== null && userData.office.office_type === 10"
+                                                           
                                                             v-model="data.location_type" class="no-arrow-icon"
                                                             :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
                                                             :hide-details="errors[0] ? false : true" outlined
@@ -42,9 +44,10 @@
                                                 </v-col>
                                                 <v-col lg="3" md="3" cols="12">
                                                     <ValidationProvider name="Division" vid="division" v-slot="{ errors }">
-                                                        <v-autocomplete :readonly="data.division_id !== null"
+                                                        <v-autocomplete 
                                                             :hide-details="errors[0] ? false : true"
                                                             @input="onChangeDivision($event)" v-model="data.division_id"
+                                                           
                                                             outlined :label="$t(
                                                                 'container.system_config.demo_graphic.division.division'
                                                             )
@@ -57,7 +60,7 @@
                                                 </v-col>
                                                 <v-col lg="3" md="3" cols="12">
                                                     <ValidationProvider name="District" vid="district" v-slot="{ errors }">
-                                                        <v-autocomplete :readonly="userData.location !== null"
+                                                        <v-autocomplete 
                                                             :hide-details="errors[0] ? false : true" outlined
                                                             v-model="data.district_id" @input="onChangeDistrict($event)"
                                                             :label="$t(
@@ -75,24 +78,29 @@
                                                         <v-autocomplete :hide-details="errors[0] ? false : true"
                                                             v-model="data.thana_id" outlined :label="$t('container.system_config.demo_graphic.ward.upazila')
                                                                 " @change="onChangeUpazila($event)" :items="thanas"
-                                                            item-text="name_en" item-value="id"
-                                                            :error="errors[0] ? true : false" :error-messages="errors[0]"
-                                                            class="no-arrow-icon" :append-icon-cb="appendIconCallback"
+                                                            item-text="name_en"
+                                                            item-value="id" :error="errors[0] ? true : false"
+                                                            :error-messages="errors[0]" class="no-arrow-icon"
+                                                            :append-icon-cb="appendIconCallback"
                                                             append-icon="mdi-plus"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
                                                 <v-col v-if="data.location_type == 2" lg="3" md="3" cols="12">
+                                                    <!-- :readonly="data.sub_location_type !== null &&  this.permissions?.user?.committee_type_id == 12 -->
+                                                   
                                                     <ValidationProvider name="subLocationType" vid="subLocationType"
                                                         v-slot="{ errors }">
                                                         <v-autocomplete @input="onChangeSubLocationType($event)"
+                                                        "
+
                                                             v-model="data.sub_location_type" outlined :label="$t(
                                                                 'container.system_config.demo_graphic.ward.subLocation_type'
                                                             )
                                                                 " :items="subLocationType" item-text="value_en"
                                                             item-value="id" :error="errors[0] ? true : false"
                                                             :error-messages="errors[0]"
-                                                            :hide-details="errors[0] ? false : true" :readonly="false"
-                                                            class="no-arrow-icon" :append-icon-cb="appendIconCallback"
+                                                            :hide-details="errors[0] ? false : true" class="no-arrow-icon"
+                                                            :append-icon-cb="appendIconCallback"
                                                             append-icon="mdi-plus"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
@@ -105,43 +113,49 @@
                                                         )
                                                             " :items="pouros" item-text="name_en" item-value="id"
                                                             :error="errors[0] ? true : false" :error-messages="errors[0]"
-                                                            :hide-details="errors[0] ? false : true" :readonly="false"
-                                                            class="no-arrow-icon" :append-icon-cb="appendIconCallback"
+                                                            :hide-details="errors[0] ? false : true" class="no-arrow-icon"
+                                                            
+                                                            :append-icon-cb="appendIconCallback"
                                                             append-icon="mdi-plus"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
+                                                 <!-- :readonly="permissions?.user?.committee_type_id == 12 && data.pouro_id != null" -->
 
                                                 <v-col v-if="data.sub_location_type == 2 && data.location_type == 2" lg="3"
                                                     md="3" cols="12">
                                                     <ValidationProvider name="unions" vid="unions" v-slot="{ errors }">
-                                                        <v-autocomplete @input="onChangeUnionGetWard($event)"
+                                                        <v-autocomplete @input="onChangeUnionGetWard($event)" 
                                                             v-model="data.union_id" outlined :label="$t(
                                                                 'container.system_config.demo_graphic.ward.union'
                                                             )
                                                                 " :items="unions" item-text="name_en" item-value="id"
+                                                              
+                                                                 
                                                             :error="errors[0] ? true : false" :error-messages="errors[0]"
-                                                            :hide-details="errors[0] ? false : true" :readonly="false"
+                                                            :hide-details="errors[0] ? false : true" 
                                                             class="no-arrow-icon" :append-icon-cb="appendIconCallback"
                                                             append-icon="mdi-plus"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
+                                                 <!-- :readonly="permissions?.user?.committee_type_id == 12 && data.union_id !=null"  -->
 
 
                                                 <v-col v-if="data.location_type == 3" lg="3" md="3" cols="12">
                                                     <ValidationProvider name="city" vid="city_id" v-slot="{ errors }">
                                                         <v-autocomplete :hide-details="errors[0] ? false : true"
-                                                            v-model="data.city_id" @change="onChangeCity($event)" outlined
-                                                            :label="$t('container.system_config.demo_graphic.ward.city')
+                                                           
+                                                            @change="onChangeCity($event)" outlined :label="$t('container.system_config.demo_graphic.ward.city')
                                                                 " :items="cities" item-text="name_en" item-value="id"
                                                             :error="errors[0] ? true : false" :error-messages="errors[0]"
                                                             class="no-arrow-icon" :append-icon-cb="appendIconCallback"
                                                             append-icon="mdi-plus"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
+                                                 <!-- :readonly="data.city_id !== null" v-model="data.city_id" -->
                                                 <v-col v-if="data.location_type == 3" lg="3" md="3" cols="12">
                                                     <ValidationProvider name="thana" vid="city_thana_id"
                                                         v-slot="{ errors }">
-                                                        <v-autocomplete @input="onChangeThanaGetWard($event)"
+                                                        <v-autocomplete @input="onChangeThanaGetWard($event)" :readonly="permissions?.user?.committee_type_id == 13"
                                                             :hide-details="errors[0] ? false : true"
                                                             v-model="data.city_thana_id" outlined :label="$t('container.system_config.demo_graphic.ward.thana')
                                                                 " :items="city_thanas" item-text="name_en"
@@ -152,11 +166,13 @@
                                                     </ValidationProvider>
                                                 </v-col>
                                                 <v-col v-if="data.location_type == 1" lg="3" md="3" cols="12">
+
                                                     <ValidationProvider name="thana" vid="district_pouro_id"
                                                         v-slot="{ errors }">
                                                         <v-autocomplete @input="onChangeDistrictPouroGetWard($event)"
+                                                            :readonly="data.district_pouro_id !== null"
                                                             :hide-details="errors[0] ? false : true"
-                                                            v-model="data.district_pouro_id" outlined :label="$t('container.system_config.demo_graphic.ward.pouro')
+                                                            v-model="data.district_pouro_id" outlined :label="$t('container.system_config.demo_graphic.ward.dist_pouro')
                                                                 " :items="district_poros" item-text="name_en"
                                                             item-value="id" :error="errors[0] ? true : false"
                                                             :error-messages="errors[0]" class="no-arrow-icon"
@@ -166,121 +182,17 @@
                                                 </v-col>
                                                 <v-col v-if="data.location_type" lg="3" md="3" cols="12">
                                                     <ValidationProvider name="Ward" vid="ward_id" v-slot="{ errors }">
-                                                        <v-autocomplete :hide-details="errors[0] ? false : true"
+                                                        <v-autocomplete :hide-details="errors[0] ? false : true"  
                                                             v-model="data.ward_id" outlined :label="$t('container.system_config.demo_graphic.ward.ward')
-                                                                " :items="wards" item-text="name_en"
-                                                            item-value="id" :error="errors[0] ? true : false"
-                                                            :error-messages="errors[0]" class="no-arrow-icon"
-                                                            :append-icon-cb="appendIconCallback"
+                                                                " :items="wards" item-text="name_en" item-value="id"
+                                                            :error="errors[0] ? true : false" :error-messages="errors[0]"
+                                                            class="no-arrow-icon" :append-icon-cb="appendIconCallback"
                                                             append-icon="mdi-plus"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
 
-
-                                                <!-- purano start -->
-                                                <!-- 
-                                                <v-col lg="3" md="3" cols="12">
-                                                    <ValidationProvider name="Division" vid="division" rules="required"
-                                                        v-slot="{ errors }">
-                                                        <v-autocomplete outlined clearable @input="onChangeDivision($event)"
-                                                            :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
-                                                            v-model="data.division_id" :label="$t(
-                                                                'container.system_config.demo_graphic.division.division'
-                                                            )
-                                                                " :items="divisions" item-text="name_en"
-                                                            item-value="id" required :error="errors[0] ? true : false"
-                                                            :error-messages="errors[0]">
-                                                        </v-autocomplete>
-                                                    </ValidationProvider>
-                                                </v-col>
-                                                <v-col lg="3" md="3" cols="12">
-                                                    <ValidationProvider name="District" vid="district" rules="required"
-                                                        v-slot="{ errors }">
-                                                        <v-autocomplete outlined :append-icon-cb="appendIconCallback"
-                                                            append-icon="mdi-plus" v-model="data.district_id"
-                                                            @input="onChangeDistrict($event)" :label="$t(
-                                                                'container.system_config.demo_graphic.district.district'
-                                                            )
-                                                                " :items="districts" item-text="name_en"
-                                                            item-value="id" required :error="errors[0] ? true : false"
-                                                            :error-messages="errors[0]"></v-autocomplete>
-                                                    </ValidationProvider>
-                                                </v-col>
-                                                <v-col lg="3" md="3" cols="12">
-                                                    <ValidationProvider name="Location Type" vid="location_type"
-                                                        rules="required" v-slot="{ errors }">
-                                                        <v-autocomplete :append-icon-cb="appendIconCallback"
-                                                            append-icon="mdi-plus" @input="LocationType($event)"
-                                                            v-model="data.location_type" outlined
-                                                            :label="$t('container.list.location_type')"
-                                                            :items="locationType" item-text="value_en" item-value="id"
-                                                            required :error="errors[0] ? true : false"
-                                                            :error-messages="errors[0]"></v-autocomplete>
-                                                    </ValidationProvider>
-                                                </v-col>
-                                                <v-col v-if="data.location_type == 1" lg="3" md="3" cols="12">
-                                                    <ValidationProvider name="thana" vid="district_pouro_id"
-                                                        rules="required" v-slot="{ errors }">
-                                                        <v-autocomplete :append-icon="appendIcon"
-                                                            :append-icon-cb="appendIconCallback"
-                                                            prepend-inner-icon="mdi-plus" v-model="data.district_pouro_id"
-                                                            outlined :label="$t('container.system_config.demo_graphic.ward.pouro')
-                                                                " :items="district_pouros" item-text="name_en"
-                                                            item-value="id" required :error="errors[0] ? true : false"
-                                                            :error-messages="errors[0]"></v-autocomplete>
-                                                    </ValidationProvider>
-                                                </v-col>
-                                                <v-col v-if="data.location_type == 2" lg="3" md="3" cols="12">
-                                                    <ValidationProvider name="Upazila" vid="thana_id" rules="required"
-                                                        v-slot="{ errors }">
-                                                        <v-autocomplete :append-icon="appendIcon"
-                                                            :append-icon-cb="appendIconCallback"
-                                                            prepend-inner-icon="mdi-plus" v-model="data.thana_id" outlined
-                                                            :label="$t('container.system_config.demo_graphic.thana.thana')
-                                                                " @change="onChangeUpazila($event)" :items="thanas"
-                                                            item-text="name_en" item-value="id" required
-                                                            :error="errors[0] ? true : false"
-                                                            :error-messages="errors[0]"></v-autocomplete>
-                                                    </ValidationProvider>
-                                                </v-col>
-                                                <v-col v-if="data.location_type == 2" lg="3" md="3" cols="12">
-                                                    <ValidationProvider name="union" vid="union_id" rules="required"
-                                                        v-slot="{ errors }">
-                                                        <v-autocomplete :append-icon="appendIcon"
-                                                            :append-icon-cb="appendIconCallback"
-                                                            prepend-inner-icon="mdi-plus" v-model="data.union_id" outlined
-                                                            :label="$t('container.system_config.demo_graphic.ward.union')
-                                                                " :items="unions" item-text="name_en" item-value="id"
-                                                            required :error="errors[0] ? true : false"
-                                                            :error-messages="errors[0]"></v-autocomplete>
-                                                    </ValidationProvider>
-                                                </v-col>
-
-                                                <v-col v-if="data.location_type == 3" lg="3" md="3" cols="12">
-                                                    <ValidationProvider name="city" vid="city_id" rules="required"
-                                                        v-slot="{ errors }">
-                                                        <v-autocomplete :append-icon="appendIcon"
-                                                            :append-icon-cb="appendIconCallback"
-                                                            prepend-inner-icon="mdi-plus" v-model="data.city_id"
-                                                            @change="onChangeCity($event)" outlined :label="$t('container.system_config.demo_graphic.ward.city')
-                                                                " :items="cities" item-text="name_en" item-value="id"
-                                                            required :error="errors[0] ? true : false"
-                                                            :error-messages="errors[0]"></v-autocomplete>
-                                                    </ValidationProvider>
-                                                </v-col>
-
-                                                <v-col v-if="data.location_type == 3" lg="3" md="3" cols="12">
-                                                    <ValidationProvider name="thana" vid="city_thana_id" rules="required"
-                                                        v-slot="{ errors }">
-                                                        <v-autocomplete :append-icon="appendIcon"
-                                                            :append-icon-cb="appendIconCallback"
-                                                            prepend-inner-icon="mdi-plus" v-model="data.city_thana_id"
-                                                            outlined :label="$t('container.system_config.demo_graphic.ward.thana')
-                                                                " :items="city_thanas" item-text="name_en"
-                                                            item-value="id" required :error="errors[0] ? true : false"
-                                                            :error-messages="errors[0]"></v-autocomplete>
-                                                    </ValidationProvider>
-                                                </v-col> -->
+    <!-- :readonly="permissions?.user?.committee_type_id== 13 && data.ward_id !=null" -->
+                                             
 
 
                                             </v-row>
@@ -328,7 +240,7 @@
                                             <div class="d-inline d-flex justify-end ">
                                                 <v-btn elevation="2" type="submit" class="btn mr-2" color="success">{{
                                                     $t("container.list.search") }}</v-btn>
-                                                <v-btn elevation="2" class="btn">{{ $t("container.list.reset") }}</v-btn>
+                                                <v-btn elevation="2" class="btn" @click="resetForm()">{{ $t("container.list.reset") }}</v-btn>
                                             </div>
                                         </form>
                                     </ValidationObserver>
@@ -349,8 +261,8 @@
 
                                             </v-text-field>
                                         </v-col>
-                                        <v-col lg="6" md="6" cols="12">
-                                            <v-select outlined clearable>
+                                        <v-col lg="6" md="6" cols="12"  v-if="this.permissions?.permission?.forward">
+                                            <v-select outlined clearable :items="committe" item-text="name" item-value="id">
                                                 <template v-slot:label>
                                                     <label> {{
                                                         $t("container.application_selection.application.forward_to_committee")
@@ -362,14 +274,18 @@
                                         </v-col>
                                     </v-row>
                                     <div class="d-inline d-flex justify-end ">
-                                        <v-btn elevation="2" class="btn mr-2" color="success">{{
-                                            $t("container.list.approve") }}</v-btn>
-                                        <v-btn elevation="2" class="btn mr-2" color="success">{{
-                                            $t("container.list.forward") }}</v-btn>
-                                        <v-btn elevation="2" class="btn mr-2" color="warning">{{
-                                            $t("container.list.waiting") }}</v-btn>
-                                        <v-btn elevation="2" class="btn mr-2 error">{{ $t("container.list.reject")
-                                        }}</v-btn>
+                                        <v-btn elevation="2" class="btn mr-2" color="success"
+                                            v-if="this.permissions?.permission?.approve">{{
+                                                $t("container.list.approve") }}</v-btn>
+                                        <v-btn elevation="2" class="btn mr-2" color="success"
+                                            v-if="this.permissions?.permission?.forward">{{
+                                                $t("container.list.forward") }}</v-btn>
+                                        <v-btn elevation="2" class="btn mr-2" color="warning"
+                                            v-if="this.permissions?.permission?.waiting">{{
+                                                $t("container.list.waiting") }}</v-btn>
+                                        <v-btn elevation="2" class="btn mr-2 error"
+                                            v-if="this.permissions?.permission?.reject">{{ $t("container.list.reject")
+                                            }}</v-btn>
                                     </div>
 
                                 </v-expansion-panel-content>
@@ -409,7 +325,7 @@
 
                                     <v-col cols="12">
 
-   
+
                                         <v-data-table :headers="visibleHeaders" :items="applications" :loading="loading"
                                             item-key="id" :items-per-page="pagination.perPage" hide-default-footer
                                             class="elevation-0 transparent row-pointer">
@@ -422,53 +338,88 @@
                                             </template>
                                             <template v-slot:item.division="{ item }">
                                                 <span v-if="item?.permanent_location.location_type == '1'">
-                                                    {{ item?.permanent_location?.parent?.parent?.name_en }}
+                                                    {{ item?.permanent_location?.parent?.parent?.parent?.name_en }}
                                                 </span>
 
                                                 <span
                                                     v-if="item?.permanent_location.location_type == '2' || item?.permanent_location.location_type == '3'">
-                                                    {{ item?.permanent_location.parent?.parent?.parent?.parent.name_en }}
+                                                    {{ item?.permanent_location.parent?.parent?.parent?.parent?.name_en }}
                                                 </span>
 
-                                                <span v-if="item?.permanent_location?.type == 'union' ||
+                                                <!-- <span v-if="item?.permanent_location?.type == 'union' ||
                                                     item?.parent?.type == 'thana'
                                                     ">
                                                     {{ item?.permanent_location?.parent?.parent?.parent?.name_en }}
-                                                </span>
+                                                </span> -->
                                             </template>
                                             <template v-slot:item.district="{ item }">
                                                 <span v-if="item?.permanent_location.location_type == '1'">
-                                                    {{ item?.permanent_location?.parent?.name_en }}
+                                                    {{ item?.permanent_location?.parent?.parent?. name_en }}
                                                 </span>
 
                                                 <span
                                                     v-if="item?.permanent_location.location_type == '2' || item?.permanent_location.location_type == '3'">
-                                                    {{ item?.permanent_location.parent?.parent?.parent.name_en }}
+                                                    {{ item?.permanent_location.parent?.parent?.parent?.name_en }}
                                                 </span>
 
-                                                <span v-if="item?.permanent_location?.type == 'union' ||
+                                                <!-- <span v-if="item?.permanent_location?.type == 'union' ||
                                                     item?.parent?.type == 'thana' || item?.parent?.type == 'pourashava'
                                                     ">
-                                                 {{ item?.permanent_location?.parent?.parent?.name_en }}
-                                                </span>
+                                                    {{ item?.permanent_location?.parent?.parent?.name_en }}
+                                                </span> -->
                                             </template>
+                                                 <template v-slot:item.location="{ item }">
+                                                    <span v-if="item?.permanent_location.location_type == '1'">
+                                                        {{ item?.permanent_location?.parent?.name_en }}
+                                                    </span>
+
+                                                    <span
+                                                        v-if="item?.permanent_location.location_type == '2' || item?.permanent_location.location_type == '3'">
+                                                        {{ item?.permanent_location.parent?.parent?.name_en }}
+                                                    </span>
+
+                                               
+                                                </template>
+                                                  
+                                                     <template v-slot:item.union_pouro_city="{ item }">
+                                                      
+
+                                                        <span
+                                                            v-if="item?.permanent_location.location_type == '2' || item?.permanent_location.location_type == '3'">
+                                                            {{ item?.permanent_location.parent?.name_en }}
+                                                        </span>
+
+                                               
+                                                    </template>
+                                                 
+                                                  
+                                                         <template v-slot:item.ward="{ item }">
+                                                      
+
+                                                            <span>
+                                                             
+                                                                {{ item?.permanent_location.name_en }}
+                                                            </span>
+
+                                               
+                                                        </template>
+                                                      
 
                                             <!-- Action Button -->
                                             <template v-slot:item.actions="{ item }">
-                                      
-                                                     <v-tooltip top>
-                                                        <template v-slot:activator="{ on }">
-                                                            <v-btn fab x-small v-on="on" color="#AFB42B"
-                                                                router
-                                :to="`/application-selection/application-view/${item.id}`"
-                                                                elevation="0" class="white--text">
-                                                                <v-icon> mdi-eye </v-icon>
-                                                            </v-btn>
-                                                        </template>
-                                                        <span>
-                                                            {{ $t("container.list.view") }}
-                                                        </span>
-                                                    </v-tooltip>
+
+                                                <v-tooltip top>
+                                                    <template v-slot:activator="{ on }">
+                                                        <v-btn fab x-small v-on="on" color="#AFB42B" router
+                                                            :to="`/application-selection/application-view/${item.id}`"
+                                                            elevation="0" class="white--text">
+                                                            <v-icon> mdi-eye </v-icon>
+                                                        </v-btn>
+                                                    </template>
+                                                    <span>
+                                                        {{ $t("container.list.view") }}
+                                                    </span>
+                                                </v-tooltip>
                                             </template>
 
 
@@ -537,6 +488,8 @@ export default {
                 list_type_id: null,
                 program_id: null
             },
+            committe:[],
+            permissions: [],
             isFieldVisible: false,
             value: ["3", "100", "11", "12"], // Default selection without 'name'
             selectedHeaders: [],
@@ -584,7 +537,7 @@ export default {
         ValidationObserver,
     },
     computed: {
-     isReadonly() {
+        isReadonly() {
             const officeType = this.userData.office.office_type;
             return [8, 9, 10].includes(officeType);
         },
@@ -647,8 +600,20 @@ export default {
                     text: this.$t("container.system_config.demo_graphic.district.district"),
                     value: "district",
                 },
+                 {
+                    text: this.$t("container.system_config.demo_graphic.ward.upazila_city_district"),
+                    value: "location",
+                },
+                {
+                    text: this.$t("container.system_config.demo_graphic.ward.union_pouro_city"),
+                    value: "union_pouro_city",
+                },
+                   {
+                    text: this.$t("container.system_config.demo_graphic.ward.ward"),
+                    value: "ward",
+                },
 
-
+                
 
                 {
                     text: this.$t("container.application_selection.application.father_name_en"),
@@ -705,20 +670,205 @@ export default {
     },
 
     methods: {
-        getNestedValue(propertyName) {
-            const keys = propertyName.split('.');
-            let value = this;
+         Division(){
+            this.data.division_id!=null;
 
-            for (const key of keys) {
-                value = value[key];
-
-                if (value === undefined || value === null) {
-                    break;
-                }
-            }
-
-            return value;
+         },
+        resetForm() {
+         
+           
+         
+                this.data.division_id= null;
+                this.data.district_id= null;
+                this.data.thana_id= null;
+                this.data.union_id= null;
+                this.data.city_id=null;
+                this.data.city_thana_id= null;
+                this.data.district_pouro_id= null;
+                this.data.pouro_id= null;
+                this.data.ward_id= null;
+                this.data.location_type =null;
+                this.data.sub_location_type= null;
+                this.data.application_id= null;
+                this.data.nominee_name= null;
+                this.data.account_no= null;
+                this.data.list_type_id= null;
+                this.data.program_id= null;
+              
+          
+            this.GetApplication();
+  
         },
+        GetPermissions() {
+            http().get('/admin/application/permissions', {
+
+            }).then((result) => {
+                this.permissions = result.data.data;
+                if (this.permissions?.user?.office_type == 8 || this.permissions?.user?.office_type == 9 || this.permissions?.user?.office_type == 10 || this.permissions?.user?.office_type == 11 || this.permissions?.user?.office_type == 35) {
+                    this.data.division_id = this.permissions?.user?.assign_location.parent?.parent?.id;
+                    this.onChangeDivision(this.data.division_id);
+                    this.data.district_id = this.permissions?.user?.assign_location.parent?.id;
+                    this.data.location_type = this.permissions?.user?.assign_location?.location_type;
+                    if (this.permissions?.user?.office_type == 8 || this.permissions?.user?.office_type == 10 || this.permissions?.user?.office_type == 11) {
+                        this.onChangeDistrict(this.data.district_id);
+
+                        this.data.thana_id = this.permissions?.user?.assign_location.id;
+
+
+                    }
+                    if (this.permissions?.user?.office_type == 9) {
+                        this.onChangeDistrict(this.data.district_id);
+
+                        this.data.city_id = this.permissions?.user?.assign_location.id;
+
+
+
+                    }
+                    if (this.permissions?.user?.office_type == 35) {
+                        this.onChangeDistrict(this.data.district_id);
+
+                        this.data.district_pouro_id = this.permissions?.user?.assign_location.id;
+
+                    }
+
+                }
+                if (this.permissions?.user?.office_type == 6) {
+                    this.data.division_id = this.permissions?.user?.assign_location?.id;
+                    this.onChangeDivision(this.data.division_id);
+                }
+                if (this.permissions?.user?.office_type == 7) {
+                    this.data.division_id = this.permissions?.user?.assign_location?.parent?.id;
+                    this.onChangeDivision(this.data.division_id);
+                    this.data.district_id = this.permissions?.user?.assign_location?.id;
+                }
+                //committee Logic
+                if (this.permissions?.user?.committee_type_id == 15 || this.permissions?.user?.committee_type_id == 14 || this.permissions?.user?.committee_type_id == 16) {
+                    this.data.division_id = this.permissions?.user?.assign_location.parent?.parent?.id;
+                    this.onChangeDivision(this.data.division_id);
+                    this.data.district_id = this.permissions?.user?.assign_location.parent?.id;
+                    this.data.location_type = this.permissions?.user?.assign_location?.location_type;
+                     console.log(this.data.division_id, this.data.district_id,"grpou");
+
+                    if (this.permissions?.user?.committee_type_id == 15) {
+                        this.onChangeDistrict(this.data.district_id);
+                        this.data.city_id = this.permissions?.user?.assign_location.id;
+                        this.onChangeCity(this.data.city_id);
+                        
+                        console.log(this.data.ward_id, this.data.district_id, "individual 15");
+
+
+
+
+                    }
+                    if (this.permissions?.user?.committee_type_id == 14) {
+                        this.onChangeDistrict(this.data.district_id);
+                        this.data.thana_id = this.permissions?.user?.assign_location.id;
+                         console.log(this.data.ward_id, this.data.district_id, "individual 14");
+
+
+
+
+                    }
+                    if (this.permissions?.user?.committee_type_id == 16) {
+                        this.onChangeDistrict(this.data.district_id);
+                        this.data.district_pouro_id = this.permissions?.user?.assign_location.id;
+                         console.log(this.data.ward_id, this.data.district_id, "individual 16");
+
+
+
+                    }
+                }
+                if (this.permissions?.user?.committee_type_id == 12) {
+                    this.data.division_id = this.permissions?.user?.assign_location.parent?.parent?.parent?.id;
+                    this.onChangeDivision(this.data.division_id);
+                    this.data.district_id = this.permissions?.user?.assign_location.parent?.parent?.id;
+                    this.data.location_type = this.permissions?.user?.assign_location?.location_type;
+                    console.log(this.data.location_type, "this.data.location_type  12");
+                    this.onChangeDistrict(this.data.district_id);
+                    this.data.thana_id = this.permissions?.user?.assign_location.parent?.id;
+                    this.onChangeUpazila(this.data.thana_id);
+                     console.log(this.data.division_id, this.data.district_id, "individual 12");
+                    if(this.permissions?.user?.assign_location.type == "union") {
+                        this.data.sub_location_type=2
+                        this.onChangeSubLocationType(this.data.sub_location_type);
+                        this.data.union_id = this.permissions?.user?.assign_location.id;
+                        
+                    }
+                    if (this.permissions?.user?.assign_location.type == "pouro") {
+                        this.data.sub_location_type = 1
+                        this.onChangeSubLocationType(this.data.sub_location_type);
+                        this.data.pouro_id = this.permissions?.user?.assign_location.id;
+
+                    }
+                     console.log(this.data.ward_id, this.data.district_id, "individual 12");
+                    
+
+                }
+                if (this.permissions?.user?.committee_type_id == 13 && this.permissions?.user?.assign_location?.location_type ==3) {
+                    this.data.division_id = this.permissions?.user?.assign_location.parent?.parent?.parent?.parent?.id;
+                    this.onChangeDivision(this.data.division_id);
+                    this.data.district_id = this.permissions?.user?.assign_location.parent?.parent?.parent?.id;
+                    this.data.location_type = this.permissions?.user?.assign_location?.location_type;
+                    this.onChangeDistrict(this.data.district_id);
+                    this.data.city_id = this.permissions?.user?.assign_location.parent?.parent?.id;
+                    this.onChangeCity(this.data.thana_id);
+                    this.data.city_thana_id = this.permissions?.user?.assign_location.parent?.id;
+                    this.onChangeThanaGetWard(this.data.city_thana_id);
+                    
+                     
+                        
+                  
+                        this.data.ward_id = this.permissions?.user?.assign_location.id;
+                         console.log(this.data.ward_id, this.data.ward_id, "individual 13 3");
+                
+                    
+
+                }
+                if (this.permissions?.user?.committee_type_id == 13 && this.permissions?.user?.assign_location?.location_type == 1) {
+                    this.data.division_id = this.permissions?.user?.assign_location.parent?.parent?.parent?.id;
+                    this.onChangeDivision(this.data.division_id);
+                    this.data.district_id = this.permissions?.user?.assign_location.parent?.parent?.id;
+                    this.data.location_type = this.permissions?.user?.assign_location?.location_type;
+                    this.onChangeDistrict(this.data.district_id);
+                    this.data.district_pouro_id = this.permissions?.user?.assign_location.parent?.id;
+                    this.onChangeDistrictPouroGetWard(this.data.district_pouro_id);
+                    this.data.ward_id = this.permissions?.user?.assign_location.id;
+                     
+                    console.log(this.data.ward_id, this.data.ward_id, "individual 13 3");
+
+                }
+
+                if (this.permissions?.user?.committee_type_id == 17) {
+                    this.data.division_id = this.permissions?.user?.assign_location?.parent?.id;
+                    this.onChangeDivision(this.data.division_id);
+                    this.data.district_id = this.permissions?.user?.assign_location?.id;
+                     console.log(this.data.ward_id, this.data.district_id, "individual 17");
+                }
+
+                console.log(this.data.ward_id, "ward_final");
+                console.log(this.permissions, "permi");
+                console.log(this.data, "data");
+          
+            }).catch((err) => {
+                console.log(err);
+            })
+
+
+        },
+        // getNestedValue(propertyName) {
+        //     const keys = propertyName.split('.');
+        //     let value = this;
+
+        //     for (const key of keys) {
+        //         value = value[key];
+
+        //         if (value === undefined || value === null) {
+        //             break;
+        //         }
+        //     }
+
+        //     return value;
+        // },
 
         appendIconCallback() {
             // Handle the click event for the custom append icon here
@@ -748,6 +898,18 @@ export default {
 
 
                 this.allowances = result.data.data;
+            }).catch((err) => {
+                console.log(err);
+            })
+        },
+         GetCommitte() {
+            http().get('/admin/application/committee-list', {
+
+            }).then((result) => {
+
+
+                this.committe = result.data;
+                console.log(this.committe,"called properly")
             }).catch((err) => {
                 console.log(err);
             })
@@ -952,6 +1114,9 @@ export default {
                 })
                 .then((result) => {
                     this.wards = result.data.data;
+                    this.data.ward_id = this.permissions?.user?.assign_location.id;
+                    console.log(this.wards, "wards");
+                    console.log(this.data.ward_id,"ward");
                 });
         },
         async onChangeThanaGetWard(event) {
@@ -966,6 +1131,9 @@ export default {
                 })
                 .then((result) => {
                     this.wards = result.data.data;
+                    console.log(this.wards,"thanawards")
+                      this.data.ward_id = this.permissions?.user?.assign_location_id
+                        ;
                 });
         },
 
@@ -1016,6 +1184,7 @@ export default {
         },
         submitsearch() {
             this.GetApplication();
+          
 
         },
 
@@ -1031,6 +1200,9 @@ export default {
 
     },
     created() {
+        this.GetAllDivisions();
+        this.GetPermissions();
+        this.GetCommitte()
 
 
 
@@ -1039,31 +1211,32 @@ export default {
     beforeMount() {
 
         this.updateHeaderTitle();
-        this.GetAllDivisions();
+     
 
-        if (this.userData?.location?.type == "division") {
-            this.data.division_id = this.userData.location.id;
-            this.data.location_type = this.userData.location.location_type;
-            this.onChangeDivision(this.data.division_id)
-            
 
-        }
-        if (this.userData?.location?.parent_location?.type == "division") {
-            this.data.division_id = this.userData.location.parent_location.id;
-            this.data.district_id = this.userData.location.id;
-            this.data.location_type = this.userData.location.location_type;
-            this.onChangeDivision(this.data.division_id)
-            this.onChangeDistrict(this.data.district_id)
+        // if (this.userData?.location?.type == "division") {
+        //     this.data.division_id = this.userData.location.id;
+        //     this.data.location_type = this.userData.location.location_type;
+        //     this.onChangeDivision(this.data.division_id)
 
-        }
-        if (this.userData?.location?.parent_location?.parent_location?.type == "division") {
-            this.data.division_id = this.userData.location.parent_location.parent_location.id;
-            this.data.district_id = this.userData.location.parent_location.id;
-            this.data.location_type = this.userData.location.location_type;
-            this.onChangeDivision(this.data.division_id)
-            this.onChangeDistrict(this.data.district_id)
 
-        }
+        // }
+        // if (this.userData?.location?.parent_location?.type == "division") {
+        //     this.data.division_id = this.userData.location.parent_location.id;
+        //     this.data.district_id = this.userData.location.id;
+        //     this.data.location_type = this.userData.location.location_type;
+        //     this.onChangeDivision(this.data.division_id)
+        //     this.onChangeDistrict(this.data.district_id)
+
+        // }
+        // if (this.userData?.location?.parent_location?.parent_location?.type == "division") {
+        //     this.data.division_id = this.userData.location.parent_location.parent_location.id;
+        //     this.data.district_id = this.userData.location.parent_location.id;
+        //     this.data.location_type = this.userData.location.location_type;
+        //     this.onChangeDivision(this.data.division_id)
+        //     this.onChangeDistrict(this.data.district_id)
+
+        // }
 
         this.GetApplication();
 
