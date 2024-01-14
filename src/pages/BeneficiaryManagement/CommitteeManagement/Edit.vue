@@ -112,14 +112,14 @@
                       <v-col lg="6" md="6" cols="12">
                         <ValidationProvider
                           name="CommitteeType"
-                          vid="committee_type"
+                          vid="committee_type_id"
                           rules="required"
                           v-slot="{ errors }"
                         >
                           <v-autocomplete
                             :hide-details="errors[0] ? false : true"
                             @input="onChangeCommitteeType($event)"
-                            v-model="data.committee_type"
+                            v-model="data.committee_type_id"
                             outlined
                             :label="
                               $t(
@@ -138,23 +138,23 @@
                     </v-row>
                     <v-card-title 
                            v-if="
-                          data.committee_type == 12 ||
-                          data.committee_type == 13 ||
-                          data.committee_type == 14 ||
-                          data.committee_type == 15 ||
-                          data.committee_type == 16 ||
-                          data.committee_type == 17
+                          data.committee_type_id == 12 ||
+                          data.committee_type_id == 13 ||
+                          data.committee_type_id == 14 ||
+                          data.committee_type_id == 15 ||
+                          data.committee_type_id == 16 ||
+                          data.committee_type_id == 17
                         "
                       ><h4>DSS Center</h4></v-card-title
                     >
                     <v-divider 
                            v-if="
-                          data.committee_type == 12 ||
-                          data.committee_type == 13 ||
-                          data.committee_type == 14 ||
-                          data.committee_type == 15 ||
-                          data.committee_type == 16 ||
-                          data.committee_type == 17
+                          data.committee_type_id == 12 ||
+                          data.committee_type_id == 13 ||
+                          data.committee_type_id == 14 ||
+                          data.committee_type_id == 15 ||
+                          data.committee_type_id == 16 ||
+                          data.committee_type_id == 17
                         "></v-divider>
 
                     <v-row>
@@ -163,12 +163,12 @@
                         md="6"
                         cols="12"
                         v-if="
-                          data.committee_type == 12 ||
-                          data.committee_type == 13 ||
-                          data.committee_type == 14 ||
-                          data.committee_type == 15 ||
-                          data.committee_type == 16 ||
-                          data.committee_type == 17
+                          data.committee_type_id == 12 ||
+                          data.committee_type_id == 13 ||
+                          data.committee_type_id == 14 ||
+                          data.committee_type_id == 15 ||
+                          data.committee_type_id == 16 ||
+                          data.committee_type_id == 17
                         "
                       >
                         <ValidationProvider
@@ -201,12 +201,12 @@
                         md="6"
                         cols="12"
                         v-if="
-                          data.committee_type == 12 ||
-                          data.committee_type == 13 ||
-                          data.committee_type == 14 ||
-                          data.committee_type == 15 ||
-                          data.committee_type == 16 ||
-                          data.committee_type == 17
+                          data.committee_type_id == 12 ||
+                          data.committee_type_id == 13 ||
+                          data.committee_type_id == 14 ||
+                          data.committee_type_id == 15 ||
+                          data.committee_type_id == 16 ||
+                          data.committee_type_id == 17
                         "
                       >
                         <ValidationProvider
@@ -239,9 +239,9 @@
                         md="6"
                         cols="12"
                         v-if="
-                          data.committee_type == 12 ||
-                          data.committee_type == 14 ||
-                          data.committee_type == 16
+                          data.committee_type_id == 12 ||
+                          data.committee_type_id == 14 ||
+                          data.committee_type_id == 16
                         "
                       >
                         <ValidationProvider
@@ -274,7 +274,7 @@
                         md="6"
                         cols="12"
                         v-if="
-                          data.committee_type == 13 || data.committee_type == 15
+                          data.committee_type_id == 13 || data.committee_type_id == 15
                         "
                       >
                         <ValidationProvider
@@ -307,8 +307,8 @@
                         md="6"
                         cols="12"
                         v-if="
-                          data.committee_type == 13
-                          //   || data.committee_type == 14
+                          data.committee_type_id == 13
+                          //   || data.committee_type_id == 14
                         "
                       >
                         <ValidationProvider
@@ -340,7 +340,7 @@
                         lg="6"
                         md="6"
                         cols="12"
-                        v-if="data.committee_type == 12"
+                        v-if="data.committee_type_id == 12"
                       >
                         <ValidationProvider
                           name="union"
@@ -371,7 +371,7 @@
                         lg="6"
                         md="6"
                         cols="12"
-                        v-if="data.committee_type == 16"
+                        v-if="data.committee_type_id == 16"
                       >
                         <ValidationProvider
                           name="union"
@@ -401,7 +401,7 @@
                         lg="6"
                         md="6"
                         cols="12"
-                        v-if="data.committee_type == 13"
+                        v-if="data.committee_type_id == 13"
                       >
                         <ValidationProvider
                           name="ward"
@@ -775,8 +775,9 @@ export default {
       }
 
       try {
+        const data = {formData:fd, id:this.$route.params.id}
         this.$store
-          .dispatch("BeneficiaryManagement/UpdateCommittee", fd)
+          .dispatch("BeneficiaryManagement/UpdateCommittee", data)
           .then((res) => {
             console.log(res, "submit");
             if (res.data?.success) {
@@ -890,7 +891,7 @@ export default {
             let item = res.data.data;
             this.data = res.data.data;
             this.data.program_id = res.data.data.program.id;
-            this.data.committee_type = res.data.data.committeeType.id;
+            this.data.committee_type_id = res.data.data.committeeType.id;
             
             item.members.forEach((key, value) => {
               console.log(key, 'key');
@@ -1125,7 +1126,7 @@ export default {
         });
     },
     async onChangeCommitteeType(event) {
-      this.data.committee_type = event;
+      this.data.committee_type_id = event;
     },
     async onChangeDivision(event) {
       await this.$axios
@@ -1149,9 +1150,9 @@ export default {
       console.log(JSON.stringify(payload));
       // return;
       if (
-        this.data.committee_type == 12 ||
-        this.data.committee_type == 14 ||
-        this.data.committee_type == 16
+        this.data.committee_type_id == 12 ||
+        this.data.committee_type_id == 14 ||
+        this.data.committee_type_id == 16
       ) {
         console.log("load Upazila");
         this.GetAllUpazila(this.data.district_id);
@@ -1257,7 +1258,6 @@ export default {
     this.GetCommitteeById();
     this.GetAllDivisions();
     this.GetAllDesignation();
-
     this.updateHeaderTitle();
   },
 };
