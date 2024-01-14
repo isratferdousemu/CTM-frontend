@@ -1,5 +1,6 @@
 <template>
   <div id="application">
+
     <v-app-bar color="#405c61" fixed height="80" class="px-4" dense dark>
       <v-img class="p-3 mr-4" max-height="100%" max-width="60px" position="center center"
         src="/assets/images/logo.png"></v-img>
@@ -10,6 +11,11 @@
         <ValidationObserver ref="form" v-slot="{ invalid }">
           <form @submit.prevent="submitApplication()">
             <v-card class="pa-5 px-10 mb-4">
+                 
+                    <v-btn  flat color="primary" @click="gotocheck()"
+                                class="custom-btn-width black white--text py-2">
+                              check
+                              </v-btn>
               <p class="mt-5" style="font-size: 20px">
                 New Applicant Information<span class="red--text">
                   (Those receiving allowances need not apply)</span>
@@ -1309,7 +1315,7 @@
                             <!-- :disabled="invalid" -->
                             <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
                               class="custom-btn-width black white--text py-2">
-                              {{ $t("container.list.submit") }}
+                            submit
                             </v-btn>
 
                           </div>
@@ -1659,6 +1665,24 @@ export default {
   },
 
   methods: {
+    gotocheck() {
+       this.$axios.get("/global/online-application/check", {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Accept: "application/json",
+        },
+      })
+        .then((res) => {
+          console.log(res)
+          // this.$toast.success(res.data.data);
+
+        })
+        .catch((err) => {
+          console.log(err)
+          // this.$toast.error(err.response.data.message);
+        })
+    // triggers watch and emits the updated date
+    },
     // Update the formatted date when any dropdown changes
     updateDate() {
       this.data.date_of_birth = this.formattedDate; // triggers watch and emits the updated date
@@ -1920,6 +1944,7 @@ export default {
                 }
                 this.$refs.form.setErrors(errs);
                 this.$toast.error(err.response.data.message);
+             
 
               }
               else if (err.response.data.error_code == "applicant_gender_type") {
@@ -1928,6 +1953,8 @@ export default {
                 }
                 this.$refs.form.setErrors(errs);
                 this.$toast.error(err.response.data.message);
+            
+            
 
               }
               else if (err.response.data.error_code == "applicant_age_limit") {
@@ -1939,13 +1966,14 @@ export default {
               this.$toast.error(err.response.data.message);
              
                this.errors = err.response.data.errors
-                const firstErrorField = Object.keys(this.errors)[0];
-             
+              
+            
 
             }
           }
         });
     },
+  
     async getProgramName() {
       // if (this.data.program != null && this.programs.length > 0) {
       console.log(this.programs, "check");

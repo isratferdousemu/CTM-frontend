@@ -45,7 +45,7 @@ export default {
         { text: this.$t('container.system_config.allowance_program.name_bn'), value: "name_bn" },
         { text: this.$t('container.system_config.allowance_program.payment_cycle'), value: "payment_cycle" },
         { text: this.$t('container.system_config.allowance_program.status'), value: "is_active" },
-        
+     { text: this.$t('container.system_config.allowance_program.system_status'), value: "system_status" },
         { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false },
       ]
     }
@@ -57,6 +57,37 @@ export default {
   },
 
   methods: {
+     deviceActivate: async function ({ id, system_status }) {
+
+      this.$axios
+        .get(`admin/allowance/status/${id}`, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
+          if (system_status == 0) {
+            this.$toast.success(this.message);
+          } else {
+            this.$toast.warning(this.message);
+          }
+
+          this.getAllowance();
+
+
+          // } else {
+          //     this.$refs.formAdd.setErrors(result.data.errors);
+          //     //  this.$refs.formAdd.setErrors(data.errors);
+          // }
+
+        })
+        .catch((err) => {
+          console.log(err);
+
+        });
+
+    },
     getAllowance(){
       const { sortBy, sortDesc, page, itemsPerPage } = this.options
 
@@ -189,6 +220,12 @@ export default {
                           Active
                         </span>
                       </template>
+                          <template v-slot:[`item.system_status`]="{ item }">
+                                           
+                                                  <span >
+                                                       <v-switch :input-value="item.system_status === 1 ? true : false" @change="deviceActivate({ id: item.id, system_status: item.system_status })" hide-details color="orange darken-3"></v-switch>
+                                                  </span>
+                                          </template>
 
                     <template v-slot:[`item.actions`]="{ item }" style="padding: 10px;">
                       <v-tooltip top>

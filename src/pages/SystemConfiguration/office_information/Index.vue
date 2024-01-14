@@ -113,10 +113,10 @@
                   <v-col lg="6" md="6" cols="12" v-if="data.office_type === 6 ||
                     data.office_type === 7 ||
                     data.office_type === 8 ||
-                    data.office_type === 9 ||
+                    data.office_type === 35 ||
                     data.office_type === 10 ||
                     data.office_type === 11 ||
-                    data.office_type === 35
+                    data.office_type === 9
                     ">
                     <ValidationProvider name="Division" vid="division" rules="required" v-slot="{ errors }">
                       <v-autocomplete :hide-details="errors[0] ? false : true" @input="onChangeDivision($event)"
@@ -130,16 +130,16 @@
                   </v-col>
                   <v-col lg="6" md="6" cols="12" v-if="data.office_type === 7 ||
                     data.office_type === 8 ||
-                    data.office_type === 9 ||
+                    data.office_type === 35 ||
                     data.office_type === 10 ||
                     data.office_type === 11 ||
-                    data.office_type === 35">
+                    data.office_type === 9">
                     <ValidationProvider name="District" vid="district" rules="required" v-slot="{ errors }">
                       <v-autocomplete :hide-details="errors[0] ? false : true" outlined v-model="data.district_id"
                         @input="onChangeDistrict($event)" :label="$t(
                           'container.system_config.demo_graphic.district.district'
                         )
-                          " :items="districts" item-text="name_en" item-value="id`" required
+                          " :items="districts" item-text="name_en" item-value="id" required
                         :readonly="((selectedWards.length > 0) && (data.office_type === 35)) || ((selectedWards_UCDUpazila.length > 0) && (data.office_type === 10))"
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
@@ -188,16 +188,16 @@
                     </ValidationProvider>
                   </v-col>
 
-                  <v-col lg="6" md="6" cols="12" v-if="data.office_type === 35">
+                  <v-col lg="6" md="6" cols="12" v-if="data.office_type === 9">
                     <ValidationProvider name="city" vid="city_id" rules="required" v-slot="{ errors }">
                       <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.city_id"
                         @change="onChangeCity($event)" outlined :label="$t('container.system_config.demo_graphic.office.city')
                           " :items="cities" item-text="name_en" item-value="id" required
-                        :readonly="((selectedWards.length > 0) && (data.office_type === 35)) || ((selectedWards_UCDUpazila.length > 0) && (data.office_type === 10))"
+                        :readonly="((selectedWards.length > 0) && (data.office_type === 9)) || ((selectedWards_UCDUpazila.length > 0) && (data.office_type === 10))"
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12" v-if="data.office_type === 35">
+                  <v-col lg="6" md="6" cols="12" v-if="data.office_type === 9">
                     <ValidationProvider name="city" vid="city_corpo_id" rules="required" v-slot="{ errors }">
                       <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.thana_id"
                         @change="onChangeThana($event)" outlined :label="$t('container.system_config.demo_graphic.ward.thana')
@@ -205,7 +205,7 @@
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12" v-if="data.office_type === 35">
+                  <v-col lg="6" md="6" cols="12" v-if="data.office_type === 9">
                     <ValidationProvider name="ward" vid="ward_id" rules="required" v-slot="{ errors }">
                       <v-autocomplete :hide-details="errors[0] ? false : true" v-model="selectedWards"
                         @change="onChangeWards($event)" outlined :label="$t('container.system_config.demo_graphic.ward.ward')
@@ -224,7 +224,7 @@
                   </v-col>
 
 
-                  <v-col lg="6" md="6" cols="12" v-if="data.office_type === 9">
+                  <v-col lg="6" md="6" cols="12" v-if="data.office_type === 35">
                     <ValidationProvider name="Upazila" vid="upazila" rules="required" v-slot="{ errors }">
                       <v-autocomplete :hide-details="errors[0] ? false : true" outlined v-model="data.dist_pouro_id"
                         :label="$t(
@@ -385,17 +385,17 @@
                           'container.system_config.demo_graphic.office.office_type'
                         )
                           " :items="officeType" item-text="value_en" item-value="id"
-                        :readonly="((selectedWards.length > 0) && (data.office_type === 35)) || ((selectedWards_UCDUpazila.length > 0) && (data.office_type === 10))"
+                        :readonly="((selectedWards.length > 0) && (data.office_type === 9)) || ((selectedWards_UCDUpazila.length > 0) && (data.office_type === 10))"
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12" v-if="data.office_type === 6 ||
                     data.office_type === 7 ||
                     data.office_type === 8 ||
-                    data.office_type === 9 ||
+                    data.office_type === 35 ||
                     data.office_type === 10 ||
                     data.office_type === 11 ||
-                    data.office_type === 35
+                    data.office_type === 9
                     ">
                     <ValidationProvider name="Division" vid="division" rules="required" v-slot="{ errors }">
                       <v-autocomplete :hide-details="errors[0] ? false : true" @input="onChangeDivision($event)"
@@ -403,7 +403,7 @@
                           'container.system_config.demo_graphic.division.division'
                         )
                           " :items="divisions" item-text="name_en" item-value="id" required
-                       :readonly="((selectedWards.length > 0) && (data.office_type === 35)) || ((selectedWards_UCDUpazila.length > 0) && (data.office_type === 10))"
+                       :readonly="((selectedWards.length > 0) && (data.office_type === 9)) || ((selectedWards_UCDUpazila.length > 0) && (data.office_type === 10))"
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
@@ -419,7 +419,7 @@
                           'container.system_config.demo_graphic.district.district'
                         )
                           " :items="districts" item-text="name_en" item-value="id" required
-                        :readonly="((selectedWards.length > 0) && (data.office_type === 35)) || ((selectedWards_UCDUpazila.length > 0) && (data.office_type === 10))"
+                        :readonly="((selectedWards.length > 0) && (data.office_type === 9)) || ((selectedWards_UCDUpazila.length > 0) && (data.office_type === 10))"
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
@@ -427,7 +427,7 @@
                     data.office_type === 10">
                     <ValidationProvider name="Upazila" vid="upazila" rules="required" v-slot="{ errors }">
                       <v-autocomplete :hide-details="errors[0] ? false : true" outlined
-                         :readonly="((selectedWards.length > 0) && (data.office_type === 35)) || ((selectedWards_UCDUpazila.length > 0) && (data.office_type === 10))"
+                         :readonly="((selectedWards.length > 0) && (data.office_type === 9)) || ((selectedWards_UCDUpazila.length > 0) && (data.office_type === 10))"
                         v-model="data.upazila_id" :label="$t(
                           'container.system_config.demo_graphic.office.upazila'
                         )
@@ -467,7 +467,7 @@
                     </ValidationProvider>
                   </v-col>
 
-                  <v-col lg="6" md="6" cols="12" v-if="data.office_type === 35">
+                  <v-col lg="6" md="6" cols="12" v-if="data.office_type === 9">
                     <ValidationProvider name="city" vid="city_id" rules="required" v-slot="{ errors }">
                       <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.city_id"
                         @change="onChangeCity($event)" outlined :label="$t('container.system_config.demo_graphic.office.city')
@@ -476,7 +476,7 @@
                         :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12" v-if="data.office_type === 35">
+                  <v-col lg="6" md="6" cols="12" v-if="data.office_type === 9">
                     <ValidationProvider name="city" vid="city_corpo_id" v-slot="{ errors }">
                       <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.thana_id"
                         @change="onChangeThana($event)" outlined :label="$t('container.system_config.demo_graphic.ward.thana')
@@ -484,7 +484,7 @@
                         :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12" v-if="data.office_type === 35">
+                  <v-col lg="6" md="6" cols="12" v-if="data.office_type === 9">
                     <ValidationProvider name="ward" vid="ward_id" v-slot="{ errors }">
                       <v-autocomplete :hide-details="errors[0] ? false : true" v-model="selectedWards_edit"
                         @change="onChangeWards_edit($event)" outlined :label="$t('container.system_config.demo_graphic.ward.ward')
@@ -502,7 +502,7 @@
                     </ValidationProvider>
                     <div v-if="message" class="red--text">{{ message }}</div>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12" v-if="data.office_type === 9">
+                  <v-col lg="6" md="6" cols="12" v-if="data.office_type === 35">
                     <ValidationProvider name="Upazila" vid="upazila" rules="required" v-slot="{ errors }">
                       <v-autocomplete :hide-details="errors[0] ? false : true" outlined v-model="data.dist_pouro_id"
                         :label="$t(
@@ -1494,12 +1494,12 @@ export default {
       console.log(this.selectedWards, "this.selectedWards")
 
 
-      if (this.data.office_type === 35 && this.selectedWards_edit && this.selectedWards_edit.length > 0) {
+      if (this.data.office_type === 9 && this.selectedWards_edit && this.selectedWards_edit.length > 0) {
         this.data.selectedWards = this.selectedWards_edit;
         console.log(this.selectedWards, "this.selectedWards city if")
 
       }
-      else if (this.data.office_type === 35 && this.selectedWards_edit && this.selectedWards_edit.length === 0) {
+      else if (this.data.office_type === 9 && this.selectedWards_edit && this.selectedWards_edit.length === 0) {
 
         this.data.selectedWards = this.selectedWards;
         console.log(this.selectedWards, "this.selectedWards city else")
@@ -1515,7 +1515,7 @@ export default {
         console.log(this.selectedWards, "this.selectedWards upazila else")
       }
 
-      if ((this.data.selectedWards.length === 0 && this.data.office_type === 10 )|| (this.data.selectedWards.length === 0 && this.data.office_type === 35)) {
+      if ((this.data.selectedWards.length === 0 && this.data.office_type === 10 )|| (this.data.selectedWards.length === 0 && this.data.office_type === 9)) {
         this.message = "wards need to add under this Office type"
         console.log(this.message, "this.message not null")
       }
@@ -1789,16 +1789,19 @@ export default {
     async onChangeOfficeType($event) {
 
 
-      if ($event === 35) {
+      if ($event === 9) {
         this.location_type = 3;
+        console.log(this.location_type,"this.location_type")
 
       }
       if ($event === 8 || $event === 10) {
         this.location_type = 2;
+         console.log(this.location_type, "this.location_type")
 
       }
-      if ($event === 9) {
+      if ($event === 35) {
         this.location_type = 1;
+         console.log(this.location_type, "this.location_type")
 
       }
 
@@ -1814,12 +1817,9 @@ export default {
             .then((result) => {
               this.upazilas = result.data.data;
               this.cities = [];
-
-
-
-
-
               this.dist_pouros = [];
+                 console.log(this.data.district_id, "this.data.district_id");
+              console.log(this.upazilas,"this.upazilas");
 
 
 
@@ -2109,11 +2109,7 @@ export default {
         })
         .catch((err) => {
           console.log(err, "error");
-          if (err.response?.data?.errors) {
-            this.$refs.form.setErrors(err.response.data.errors);
-          }
-          console.log(err.response);
-          this.$toast.error(err?.response?.data?.message);
+         
         });
     },
     deleteOffice: async function () {
