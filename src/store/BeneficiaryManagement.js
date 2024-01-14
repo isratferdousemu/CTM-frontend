@@ -35,7 +35,7 @@ const actions = {
   
   StoreCommittee: ({ commit }, data) => {
     return http()
-      .post("/admin/committee/insert", data)
+      .post("/admin/committee/add", data)
       .then((result) => {
         return result;
       })
@@ -47,7 +47,7 @@ const actions = {
   /*start get single menu*/
   GetSingleCommittee: ({ commit }, id) => {
     return http()
-      .get(`/admin/committee/${id}`)
+      .get(`/admin/committee/show/${id}`)
       .then((result) => {
         return result;
       })
@@ -58,7 +58,7 @@ const actions = {
 
   UpdateCommittee: ({ commit }, data) => {
     return http()
-      .post("/admin/committee/update", data)
+      .put(`/admin/committee/update/${data.id}`, data.formData)
       .then((result) => {
         return result;
       })
@@ -73,7 +73,7 @@ const actions = {
 
   DestroyCommittee: ({ commit }, id) => {
     return http()
-      .get(`/admin/committee/destroy/${id}`)
+      .delete(`/admin/committee/delete/${id}`)
       .then((result) => {
         console.log(result);
         return result

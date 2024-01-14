@@ -874,7 +874,7 @@ export default {
         page: this.pagination.current,
       };
       this.$axios
-        .get("/admin/committee/get", {
+        .get("/admin/committee/list", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
