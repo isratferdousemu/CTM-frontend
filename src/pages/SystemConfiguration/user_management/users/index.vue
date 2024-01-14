@@ -2106,9 +2106,9 @@ export default {
 
 
       if (this.data.user_type == 2) {
-        this.data.committee_type = item.committee?.committee_type
+        this.data.committee_type = item.committee_type_id
       } else {
-        this.data.office_type = item.office?.office_type
+        this.data.office_type = item.office_type
       }
 
 
