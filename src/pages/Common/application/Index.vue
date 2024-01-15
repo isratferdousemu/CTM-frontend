@@ -1783,13 +1783,13 @@ export default {
     },
 
     handleNomineeCheckboxChange(event) {
-      if (event) {
-        this.data.nominee_address = 'Division:' + this.data.permanent_division_id + 'District:'+ this.data.permanent_district_id;
-        this.data.nominee_address=this.data.permanenet_address;
-      } else {
-        this.data.nominee_address = null
+      // if (event) {
+      //   this.data.nominee_address = 'Division:' + this.data.permanent_division_id + 'District:'+ this.data.permanent_district_id;
+      //   this.data.nominee_address=this.data.permanenet_address;
+      // } else {
+        this.data.nominee_address = this.data.permanent_address
 
-      }
+      // }
     },
     handleCheckboxChange(event) {
       console.log(event)
