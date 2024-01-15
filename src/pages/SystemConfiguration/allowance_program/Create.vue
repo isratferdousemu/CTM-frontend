@@ -21,7 +21,8 @@ export default {
         add_field_id: [],
         allowance_age: [],
       },
-
+      activeSection:null,
+      selectedSection: null,
       amount_error_note: null,
       is_marital_toggle: false,
       is_age_limit: false,
@@ -129,12 +130,30 @@ export default {
       GerAllLookUpGender: "Allowance/GerAllLookUpGender",
       GerAllLookUpGenderType: "Allowance/GerAllLookUpGenderType",
     }),
+      toggleSection(section) {
+      this.selectedSection = section;
+     
+      this.activeSection = this.activeSection === section ? null : section;
+    
+      console.log(this.selectedSection,"selectedSection");
+      if (this.selectedSection=="age_limit"){
+        console.log('age-limit');
+        this.ageLimit();
+
+      }
+      if (this.selectedSection == "disable_class") {
+        console.log('disable_class');
+        this.allowanceAmount();
+
+      }
+    },
 
     maritalStatus() {
       this.is_marital_toggle = !this.is_marital_toggle;
     },
 
-    ageLimit() {
+    ageLimit( ) {
+    
       this.is_age_limit = !this.is_age_limit;
 
       if (this.is_disable_class === false) {
@@ -409,6 +428,7 @@ export default {
                         </v-col>
                       </v-row>
                     </v-col>
+                    <!-- emu -->
 
                     <!-- <v-col cols="12" class="d-flex">
                       <v-row wrap>
@@ -466,9 +486,9 @@ export default {
                           </ValidationProvider>
                         </v-col>
                       </v-row>
-                    </v-col> -->
+                    </v-col>
 
-                    <!-- <v-col cols="12" class="d-flex">
+                    <v-col cols="12" class="d-flex">
                       <v-row wrap>
                         <v-col cols="12" sm="6" lg="6">
                           <v-row wrap>
@@ -524,25 +544,28 @@ export default {
 
                         <v-col cols="12" sm="6" lg="6"> </v-col>
                       </v-row>
-                    </v-col>
-                     -->
+                    </v-col> -->
+                    
 
-
-                    <!-- <v-col cols="12" class="d-flex">
+<!-- emu 2 -->
+                   <!-- <v-col cols="12" class="d-flex">
 
                       <v-row wrap>
                         <v-col cols="12" sm="6" lg="6">
                           <v-checkbox
+                          :disabled="activeSection === 'disable_class'"
                             :label="
                               $t(
                                 'container.system_config.allowance_program.age_limit_amount'
                               )
                             "
                             :rules="getValidationRules('is_age_limit')"
-                            @click="ageLimit"
+                       
+                             @click="toggleSection('age_limit')"
                           ></v-checkbox>
+                               <!-- @click="ageLimit" -->
 
-                          <table v-if="is_age_limit === true">
+                          <!-- <table v-if="selectedSection === 'age_limit' && is_age_limit === true">
                             <thead>
                               <tr v-show="add_allowance_program.gender.length">
                                 <td>Gender</td>
@@ -674,10 +697,13 @@ export default {
                               )
                             "
                             :rules="getValidationRules('is_disable_class')"
-                            @click="allowanceAmount"
-                          ></v-checkbox>
+                              @click="toggleSection('disable_class')"
+                              :disabled="activeSection === 'age_limit'"
+                        
+                          ></v-checkbox> -->
+                              <!-- @click="allowanceAmount" -->
 
-                          <table v-if="is_disable_class === true">
+                          <!-- <table v-if="selectedSection === 'disable_class' && is_disable_class === true">
                             <thead>
                               <tr>
                                 <td>Type</td>
@@ -749,10 +775,10 @@ export default {
                     <v-col cols="12" sm="12" lg="12"> 
                       <div v-if="amount_error_note" v-html="amount_error_note" style="color: red;"/>
 
-                    </v-col> -->
+                    </v-col>  -->
             
               
-              
+            <!-- emu end -->
 
               <v-col cols="12">
                 <v-row class="justify-end mb-5 mt-2" style="margin-top: -50px">

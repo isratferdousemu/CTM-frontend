@@ -11,11 +11,11 @@
         <ValidationObserver ref="form" v-slot="{ invalid }">
           <form @submit.prevent="submitApplication()">
             <v-card class="pa-5 px-10 mb-4">
-                 
-                    <v-btn  flat color="primary" @click="gotocheck()"
+
+              <!-- <v-btn  flat color="primary" @click="gotocheck()"
                                 class="custom-btn-width black white--text py-2">
                               check
-                              </v-btn>
+                              </v-btn> -->
               <p class="mt-5" style="font-size: 20px">
                 New Applicant Information<span class="red--text">
                   (Those receiving allowances need not apply)</span>
@@ -37,7 +37,7 @@
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
                       <ValidationProvider name="program" vid="verification_type" rules="required" v-slot="{ errors }">
-                        <v-radio-group  v-model="data.verification_type" row>
+                        <v-radio-group v-model="data.verification_type" row>
                           Verification type
                           <span style="
                               margin-left: 4px;
@@ -49,7 +49,9 @@
                         </v-radio-group>
                       </ValidationProvider>
                       <V-row>
+                       
                         <v-col cols="4">
+                             <div class="validation-error">
                           <ValidationProvider name="Number" vid="verification_number" rules="checkNumber"
                             v-slot="{ errors }">
                             <label>
@@ -64,13 +66,18 @@
                               </span>
 
                             </label>
+                          
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-text-field @change="checkNum()" outlined clearable v-model="data.verification_number"
                               class="mr-2" type="text" required :error="errors[0] ? true : false"
                               :error-messages="errors[0]">
                             </v-text-field>
+                           
                           </ValidationProvider>
+   </div>
                         </v-col>
+                          
+                       
                         <v-col cols="2">
 
 
@@ -181,7 +188,7 @@
                                   " class="mb-5"></v-img>
                             <ValidationProvider v-slot="{ errors }" name="Image" rules="required" vid="image">
                               <label>Image (Image File must be under 200 KB)</label>
-                               <span style="margin-left: 4px; color: red">*</span>
+                              <span style="margin-left: 4px; color: red">*</span>
                               <v-file-input outlined show-size counter prepend-inner-icon="mdi-camera"
                                 v-model="data.image" accept="image/*" @change="previewImage"
                                 prepend-icon=""></v-file-input>
@@ -200,7 +207,7 @@
                                   " class="mb-5"></v-img>
                             <ValidationProvider v-slot="{ errors }" name="Signature" rules="required" vid="sign">
                               <label>Signature (Signature File must be under 200 KB)</label>
-                               <span style="margin-left: 4px; color: red">*</span>
+                              <span style="margin-left: 4px; color: red">*</span>
                               <v-file-input outlined show-size counter prepend-inner-icon="mdi-camera"
                                 v-model="data.signature" accept="image/*" @change="previewSign"
                                 prepend-icon=""></v-file-input>
@@ -229,7 +236,7 @@
                               v-slot="{ errors }">
                               <label>Father Name (BN)</label>
 
-                              <v-text-field v-model="data.father_name_bn" outlined  clearable
+                              <v-text-field v-model="data.father_name_bn" outlined clearable
                                 :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
@@ -238,7 +245,7 @@
                             <ValidationProvider name="Father Name in English" vid="father_name_en" rules="required"
                               v-slot="{ errors }">
                               <label>Father Name (EN)</label>
-                              <v-text-field v-model="data.father_name_en" outlined  clearable
+                              <v-text-field v-model="data.father_name_en" outlined clearable
                                 :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
@@ -246,7 +253,7 @@
                           <v-col cols="6" lg="6">
                             <ValidationProvider name="Mother Name in English" vid="mother_name_bn" v-slot="{ errors }">
                               <label>Mother Name (BN)</label>
-                              <v-text-field v-model="data.mother_name_bn" outlined  clearable
+                              <v-text-field v-model="data.mother_name_bn" outlined clearable
                                 :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
@@ -254,79 +261,89 @@
                           <v-col cols="6" lg="6">
                             <ValidationProvider name="Mother Name in English" vid="mother_name_en" v-slot="{ errors }">
                               <label>Mother Name (EN)</label>
-                              <v-text-field v-model="data.mother_name_en" outlined clearable 
+                              <v-text-field v-model="data.mother_name_en" outlined clearable
                                 :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
+                      
                           <v-col cols="6" lg="6">
-                            <ValidationProvider name="Spouse Name in Bangla" vid="spouse_name_bn" v-slot="{ errors }">
-                              <label>Spouse Name (BN)</label>
-                              <v-text-field v-model="data.spouse_name_bn" outlined clearable
-                                :error="errors[0] ? true : false" :error-messages="errors[0]">
-                              </v-text-field>
-                            </ValidationProvider>
-                          </v-col>
-                          <v-col cols="6" lg="6">
+                            <div  class="validation-error_marital">
                             <ValidationProvider name="Marital Status" vid="marital_status" v-slot="{ errors }">
                               <label>Marital Status</label>
-                              <v-select v-model="data.marital_status" outlined clearable  :items="marital_status"
-                                :error="errors[0] ? true : false" :error-messages="errors[0]">
+                              <v-select v-model="data.marital_status" outlined clearable :items="marital_status"
+                                :error="errors[0] ? true : false" :error-messages="errors[0]"
+                               >
                               </v-select>
                             </ValidationProvider>
+                            </div>
                           </v-col>
-                          <v-col cols="6" lg="6">
-                            <ValidationProvider name="Spouse Name in English" vid="spouse_name_en" v-slot="{ errors }">
-                              <label>Spouse Name (EN)</label>
-                              <v-text-field v-model="data.spouse_name_en" outlined clearable
-                                :error="errors[0] ? true : false" :error-messages="errors[0]">
-                              </v-text-field>
-                            </ValidationProvider>
-                          </v-col>
+                              <v-col cols="6" lg="6"  v-if="data.marital_status == 'Married'">
+                              <ValidationProvider name="Spouse Name in Bangla" vid="spouse_name_bn" v-slot="{ errors }">
+                                <label>Spouse Name (BN)</label>
+                                <v-text-field v-model="data.spouse_name_bn" outlined clearable
+                                  :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                </v-text-field>
+                              </ValidationProvider>
+                            </v-col>
+                               <v-col cols="6" lg="6" v-if="data.marital_status == 'Married'">
+                              <ValidationProvider name="Spouse Name in English" vid="spouse_name_en" v-slot="{ errors }">
+                                <label>Spouse Name (EN)</label>
+                                <v-text-field v-model="data.spouse_name_en" outlined clearable
+                                  :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                </v-text-field>
+                              </ValidationProvider>
+                            </v-col>
+                       
                           <v-col cols="6" lg="6">
                             <ValidationProvider name="Religion" vid="religion" v-slot="{ errors }" rules="required">
                               <label>Religion</label>
                               <span style="margin-left: 4px; color: red">*</span>
 
-                              <v-select v-model="data.religion" outlined  :items="religion"
+                              <v-select v-model="data.religion" outlined :items="religion"
                                 :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-select>
                             </ValidationProvider>
                           </v-col>
-                            <v-col>
-                              <ValidationProvider rules="checkNumberMobile" name="Mobile Number" vid="account_number" v-slot="{ errors }" >
-                                <label style="display: inline-block">Mobile Number </label><span
-                                  style="margin-left: 4px; color: red">*</span>
+                          <v-col>
+                            <div class="validation_error_mobile">
+                            <ValidationProvider rules="checkNumberMobile" name="Mobile Number" vid="mobile"
+                              v-slot="{ errors }">
+                              <label style="display: inline-block">Mobile Number </label><span
+                                style="margin-left: 4px; color: red">*</span>
 
-                                <v-text-field v-model="data.mobile" outlined type="number" clearable
-                                  :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                </v-text-field>
-                              </ValidationProvider>
-                                          </v-col>
+                              <v-text-field v-model="data.mobile" outlined type="number" clearable
+                                :error="errors[0] ? true : false" :error-messages="errors[0]">
+                              </v-text-field>
+                            </ValidationProvider>
+                            </div>
+                          </v-col>
 
                           <v-col cols="6" lg="6">
                             <ValidationProvider name="Nationality" vid="nationality" readonly v-slot="{ errors }">
                               <label>Nationality</label>
-                              <v-text-field v-model="data.nationality" outlined  :error="errors[0] ? true : false"
+                              <v-text-field v-model="data.nationality" outlined :error="errors[0] ? true : false"
                                 :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
+                            <div class="validation_error_age_limit">
                             <ValidationProvider name="Age" vid="age" v-slot="{ errors }" rules="required">
                               <label>Age</label>
                               <span style="margin-left: 4px; color: red">*</span>
-                              <v-text-field v-model="data.age" outlined type="number"  clearable
-                                :error="errors[0] ? true : false" :error-messages="errors[0]">
+                              <v-text-field v-model="data.age" outlined type="number" 
+                                clearable :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
+                            </div>
                           </v-col>
                           <v-col cols="6" lg="6">
                             <ValidationProvider name="Gender" vid="gender" v-slot="{ errors }" rules="required">
                               <label>Gender</label>
                               <span style="margin-left: 4px; color: red">*</span>
                               <v-select v-model="data.gender_id" item-text="value_en" item-value="id" outlined
-                                :items="genders"  :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                :items="genders" :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-select>
                             </ValidationProvider>
                           </v-col>
@@ -335,14 +352,15 @@
                               v-slot="{ errors }">
                               <label>Education Status</label>
                               <span style="margin-left: 4px; color: red">*</span>
-                              <v-select v-model="data.education_status" outlined 
-                                :error="errors[0] ? true : false" :error-messages="errors[0]" :items="education_status">
+                              <v-select v-model="data.education_status" outlined :error="errors[0] ? true : false"
+                                :error-messages="errors[0]" :items="education_status">
                               </v-select>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
                             <ValidationProvider name="Profession" vid="profession" v-slot="{ errors }">
                               <label>Profession</label>
+                                       <span style="margin-left: 4px; color: red">*</span>
                               <v-autocomplete v-model="data.profession" outlined clearable :items="professionType"
                                 :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-autocomplete>
@@ -384,7 +402,7 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-autocomplete :hide-details="errors[0] ? false : true" @input="onChangeDivision($event)"
                               v-model="data.division_id" outlined :items="divisions" item-text="name_en" item-value="id"
-                               :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
                         <v-col lg="6" md="6" cols="12">
@@ -394,7 +412,7 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-autocomplete :hide-details="errors[0] ? false : true" outlined v-model="data.district_id"
                               @input="onChangeDistrict($event)" :items="districts" item-text="name_en" item-value="id"
-                               :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6">
@@ -405,7 +423,7 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-autocomplete @input="LocationType($event)" v-model="data.location_type"
                               :hide-details="errors[0] ? false : true" outlined :items="locationType" item-text="value_en"
-                              item-value="id"  :error="errors[0] ? true : false"
+                              item-value="id" :error="errors[0] ? true : false"
                               :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
@@ -416,63 +434,43 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.thana_id" outlined
                               @change="onChangeUpazila($event)" :items="thanas" item-text="name_en" item-value="id"
-                               :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
-                            <v-col
-                              v-if="data.location_type == 2"
-                              lg="6"
-                              md="6"
-                              cols="6"
-                            >
-                                <label style="display: inline-block">Sub Location
-                                </label>
-                                <span style="margin-left: 4px; color: red">*</span>
-                              <ValidationProvider
-                                name="subLocationType"
-                                vid="subLocationType"
-                                v-slot="{ errors }"
-                              >
-                                <v-autocomplete
-                                  @input="onChangeSubLocationType($event)"
-                                  v-model="data.sub_location_type"
-                                  outlined
-                                
-                                  
-                                  :items="subLocationType"
-                                  item-text="value_en"
-                                  item-value="id"
-                                  :error="errors[0] ? true : false"
-                                  :error-messages="errors[0]"
-                                  :hide-details="errors[0] ? false : true"
-                                  class="no-arrow-icon"
-                             
-                                ></v-autocomplete>
-                              </ValidationProvider>
-                            </v-col>
+                        <v-col v-if="data.location_type == 2" lg="6" md="6" cols="6">
+                          <label style="display: inline-block">Sub Location
+                          </label>
+                          <span style="margin-left: 4px; color: red">*</span>
+                          <ValidationProvider name="subLocationType" vid="subLocationType" v-slot="{ errors }">
+                            <v-autocomplete @input="onChangeSubLocationType($event)" v-model="data.sub_location_type"
+                              outlined :items="subLocationType" item-text="value_en" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"
+                              :hide-details="errors[0] ? false : true" class="no-arrow-icon"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
 
-                     <v-col v-if="data.location_type == 2 && data.sub_location_type === 2"  cols="6">
-                            <ValidationProvider name="union" vid="union_id" rules="required" v-slot="{ errors }">
-                              <label style="display: inline-block">Union
-                              </label>
-                              <span style="margin-left: 4px; color: red">*</span>
-                              <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.union_id" outlined  @input="onChangeUnion($event)"
-                                :items="unions" item-text="name_en" item-value="id" 
-                                :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
-                            </ValidationProvider>
-                          </v-col>
-                           
-                             <v-col v-if="data.location_type == 2 && data.sub_location_type === 1"   cols="6">
-                              <ValidationProvider name="Pouroshava" vid="pouro_id" rules="required" v-slot="{ errors }">
-                                <label style="display: inline-block">Pourashava
-                                </label>
-                                <span style="margin-left: 4px; color: red">*</span>
-                                <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.pouro_id" @input="onChangePouro($event)"
-                                  outlined :items="pouros" item-text="name_en" item-value="id" 
-                                  :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
-                              </ValidationProvider>
-                      
-                      
+                        <v-col v-if="data.location_type == 2 && data.sub_location_type === 2" cols="6">
+                          <ValidationProvider name="union" vid="union_id" rules="required" v-slot="{ errors }">
+                            <label style="display: inline-block">Union
+                            </label>
+                            <span style="margin-left: 4px; color: red">*</span>
+                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.union_id" outlined
+                              @input="onChangeUnion($event)" :items="unions" item-text="name_en" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+
+                        <v-col v-if="data.location_type == 2 && data.sub_location_type === 1" cols="6">
+                          <ValidationProvider name="Pouroshava" vid="pouro_id" rules="required" v-slot="{ errors }">
+                            <label style="display: inline-block">Pourashava
+                            </label>
+                            <span style="margin-left: 4px; color: red">*</span>
+                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.pouro_id"
+                              @input="onChangePouro($event)" outlined :items="pouros" item-text="name_en" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                          </ValidationProvider>
+
+
                         </v-col>
                         <v-col v-if="data.location_type == 3" lg="6" md="6" cols="6">
                           <ValidationProvider name="city" vid="city_id" rules="required" v-slot="{ errors }">
@@ -481,7 +479,7 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.city_id"
                               @change="onChangeCity($event)" outlined :items="cities" item-text="name_en" item-value="id"
-                               :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 3" lg="6" md="6" cols="6">
@@ -489,8 +487,8 @@
                             <label style="display: inline-block">Thana
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.city_thana_id" outlined @input="OnChangeCityThana($event)"
-                              :items="city_thanas" item-text="name_en" item-value="id" 
+                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.city_thana_id" outlined
+                              @input="OnChangeCityThana($event)" :items="city_thanas" item-text="name_en" item-value="id"
                               :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
@@ -499,51 +497,54 @@
                             <label style="display: inline-block">District Pouroshava
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.district_pouro_id" @input="onChangeDistrictPouro"
-                              outlined :items="district_poros" item-text="name_en" item-value="id" 
+                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.district_pouro_id"
+                              @input="onChangeDistrictPouro" outlined :items="district_poros" item-text="name_en"
+                              item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col v-if="data.location_type == 3" lg="6" md="6" cols="6">
+                          <ValidationProvider name="ward_id_city" vid="ward_id_city" rules="required" v-slot="{ errors }">
+                            <label style="display: inline-block">Ward
+                            </label>
+                            <span style="margin-left: 4px; color: red">*</span>
+                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.ward_id_city" outlined
+                              :items="wards_city" item-text="name_en" item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col v-if="data.location_type == 2 && data.sub_location_type == 2" lg="6" md="6" cols="6">
+                          <ValidationProvider name="ward_id_union" vid="ward_id_union" rules="required"
+                            v-slot="{ errors }">
+                            <label style="display: inline-block">Ward
+                            </label>
+                            <span style="margin-left: 4px; color: red">*</span>
+                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.ward_id_union" outlined
+                              :items="wards_upazila_union" item-text="name_en" item-value="id"
                               :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
-                           <v-col v-if="data.location_type==3" lg="6" md="6" cols="6">
-                            <ValidationProvider name="ward_id_city" vid="ward_id_city" rules="required" v-slot="{ errors }">
-                              <label style="display: inline-block">Ward
-                              </label>
-                              <span style="margin-left: 4px; color: red">*</span>
-                              <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.ward_id_city"
-                                outlined :items="wards_city" item-text="name_en" item-value="id" 
-                                :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
-                            </ValidationProvider>
-                          </v-col>
-                              <v-col v-if="data.location_type==2 && data.sub_location_type ==2" lg="6" md="6" cols="6">
-                            <ValidationProvider name="ward_id_union" vid="ward_id_union" rules="required" v-slot="{ errors }">
-                              <label style="display: inline-block">Ward
-                              </label>
-                              <span style="margin-left: 4px; color: red">*</span>
-                              <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.ward_id_union"
-                                outlined :items="wards_upazila_union" item-text="name_en" item-value="id" 
-                                :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
-                            </ValidationProvider>
-                          </v-col>
-                           <v-col v-if="data.location_type == 2 && data.sub_location_type == 1" lg="6" md="6" cols="6">
-                              <ValidationProvider name="ward_id_union" vid="ward_id_union" rules="required" v-slot="{ errors }">
-                                <label style="display: inline-block">Ward
-                                </label>
-                                <span style="margin-left: 4px; color: red">*</span>
-                                <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.ward_id_pouro"
-                                  outlined :items="wards_upazila_pouro" item-text="name_en" item-value="id" 
-                                  :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
-                              </ValidationProvider>
-                            </v-col>
-                              <v-col v-if="data.location_type==1" lg="6" md="6" cols="6">
-                            <ValidationProvider name="ward_id_dist" vid="ward_id_dist" rules="required" v-slot="{ errors }">
-                              <label style="display: inline-block">Ward
-                              </label>
-                              <span style="margin-left: 4px; color: red">*</span>
-                              <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.ward_id_dist"
-                                outlined :items="wards_dist" item-text="name_en" item-value="id" 
-                                :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
-                            </ValidationProvider>
-                          </v-col>
+                        <v-col v-if="data.location_type == 2 && data.sub_location_type == 1" lg="6" md="6" cols="6">
+                          <ValidationProvider name="ward_id_union" vid="ward_id_union" rules="required"
+                            v-slot="{ errors }">
+                            <label style="display: inline-block">Ward
+                            </label>
+                            <span style="margin-left: 4px; color: red">*</span>
+                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.ward_id_pouro" outlined
+                              :items="wards_upazila_pouro" item-text="name_en" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col v-if="data.location_type == 1" lg="6" md="6" cols="6">
+                          <ValidationProvider name="ward_id_dist" vid="ward_id_dist" rules="required" v-slot="{ errors }">
+                            <label style="display: inline-block">Ward
+                            </label>
+                            <span style="margin-left: 4px; color: red">*</span>
+                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.ward_id_dist" outlined
+                              :items="wards_dist" item-text="name_en" item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
                         <v-col cols="6" lg="6">
                           <ValidationProvider name="Post Code" vid="post_code" rules="required" v-slot="{ errors }">
                             <label style="display: inline-block">Post Code
@@ -554,7 +555,7 @@
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
-                    
+
 
 
 
@@ -602,7 +603,7 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-autocomplete :hide-details="errors[0] ? false : true" outlined
                               v-model="data.permanent_district_id" @input="permanent_onChangeDistrict($event)"
-                              :items="permanent_districts" item-text="name_en" item-value="id" 
+                              :items="permanent_districts" item-text="name_en" item-value="id"
                               :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
@@ -614,7 +615,7 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-autocomplete @input="permanent_LocationType($event)" v-model="data.permanent_location_type"
                               :hide-details="errors[0] ? false : true" outlined :items="locationType" item-text="value_en"
-                              item-value="id"  :error="errors[0] ? true : false"
+                              item-value="id" :error="errors[0] ? true : false"
                               :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
@@ -626,61 +627,48 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.permanent_thana_id"
                               outlined @change="permanent_onChangeUpazila($event)" :items="permanent_thanas"
-                              item-text="name_en" item-value="id"  :error="errors[0] ? true : false"
+                              item-text="name_en" item-value="id" :error="errors[0] ? true : false"
                               :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
-                         <v-col
-                            v-if="data.permanent_location_type == 2"
-                           
-                            cols="6"
-                          >
-                              <label style="display: inline-block">Sub Location
-                              </label>
-                              <span style="margin-left: 4px; color: red">*</span>
-                            <ValidationProvider
-                              name="subLocationType"
-                              vid="subLocationType"
-                              v-slot="{ errors }"
-                            >
-                              <v-autocomplete
-                                @input="onChangeSubLocationTypePermanent($event)"
-                                v-model="data.permanent_sub_location_type"
-                                outlined
-                              
-                                  
-                                :items="subLocationType"
-                                item-text="value_en"
-                                item-value="id"
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                                :hide-details="errors[0] ? false : true"
-                                class="no-arrow-icon"
-                             
-                              ></v-autocomplete>
-                            </ValidationProvider>
-                          </v-col>
+                        <v-col v-if="data.permanent_location_type == 2" cols="6">
+                          <label style="display: inline-block">Sub Location
+                          </label>
+                          <span style="margin-left: 4px; color: red">*</span>
+                          <ValidationProvider name="subLocationType" vid="subLocationType" v-slot="{ errors }">
+                            <v-autocomplete @input="onChangeSubLocationTypePermanent($event)"
+                              v-model="data.permanent_sub_location_type" outlined :items="subLocationType"
+                              item-text="value_en" item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]" :hide-details="errors[0] ? false : true"
+                              class="no-arrow-icon"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
 
-                        <v-col v-if="data.permanent_location_type === 2 && data.permanent_sub_location_type === 2" lg="6" md="6" cols="12">
+                        <v-col v-if="data.permanent_location_type === 2 && data.permanent_sub_location_type === 2" lg="6"
+                          md="6" cols="12">
                           <ValidationProvider name="union" vid="permanent_union_id" rules="required" v-slot="{ errors }">
                             <label style="display: inline-block">Union
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.permanent_union_id" @input="permanent_onChangeUnion($event)"
-                              outlined :items="permanent_unions" item-text="name_en" item-value="id" 
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.permanent_union_id"
+                              @input="permanent_onChangeUnion($event)" outlined :items="permanent_unions"
+                              item-text="name_en" item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
-                           <v-col v-if="data.permanent_location_type === 2 && data.permanent_sub_location_type === 1" lg="6" md="6" cols="12">
-                            <ValidationProvider name="Pouroshava" vid="permanent_pouro_id" rules="required" v-slot="{ errors }">
-                              <label style="display: inline-block">Pourashava
-                              </label>
-                              <span style="margin-left: 4px; color: red">*</span>
-                              <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.permanent_pouro_id" @input="Permanent_onChangePouro($event)"
-                                outlined :items="permanent_pouros" item-text="name_en" item-value="id" 
-                                :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
-                            </ValidationProvider>
-                          </v-col>
+                        <v-col v-if="data.permanent_location_type === 2 && data.permanent_sub_location_type === 1" lg="6"
+                          md="6" cols="12">
+                          <ValidationProvider name="Pouroshava" vid="permanent_pouro_id" rules="required"
+                            v-slot="{ errors }">
+                            <label style="display: inline-block">Pourashava
+                            </label>
+                            <span style="margin-left: 4px; color: red">*</span>
+                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.permanent_pouro_id"
+                              @input="Permanent_onChangePouro($event)" outlined :items="permanent_pouros"
+                              item-text="name_en" item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
                         <v-col v-if="data.permanent_location_type == 3" lg="6" md="6" cols="12">
                           <ValidationProvider name="city" vid="permanent_city_id" rules="required" v-slot="{ errors }">
                             <label style="display: inline-block">City
@@ -688,7 +676,7 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.permanent_city_id"
                               @change="permanent_onChangeCity($event)" outlined :items="permanent_cities"
-                              item-text="name_en" item-value="id"  :error="errors[0] ? true : false"
+                              item-text="name_en" item-value="id" :error="errors[0] ? true : false"
                               :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
@@ -698,10 +686,10 @@
                             <label style="display: inline-block">Thana
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true"  @input="Permanent_OnChangeCityThana($event)"
-                              v-model="data.permanent_city_thana_id" outlined :items="permanent_city_thanas"
-                              item-text="name_en" item-value="id"  :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-autocomplete>
+                            <v-autocomplete :hide-details="errors[0] ? false : true"
+                              @input="Permanent_OnChangeCityThana($event)" v-model="data.permanent_city_thana_id" outlined
+                              :items="permanent_city_thanas" item-text="name_en" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type == 1" lg="6" md="6" cols="12">
@@ -710,52 +698,60 @@
                             <label style="display: inline-block">District Pouroshava
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" @input="Permanent_onChangeDistrictPouro"
-                              v-model="data.permanent_district_pouro_id" outlined :items="permanent_district_poros"
-                              item-text="name_en" item-value="id"  :error="errors[0] ? true : false"
+                            <v-autocomplete :hide-details="errors[0] ? false : true"
+                              @input="Permanent_onChangeDistrictPouro" v-model="data.permanent_district_pouro_id" outlined
+                              :items="permanent_district_poros" item-text="name_en" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col v-if="data.permanent_location_type == 3" lg="6" md="6" cols="12">
+                          <ValidationProvider name="permanent_ward_id_city" vid="permanent_ward_id_city" rules="required"
+                            v-slot="{ errors }">
+                            <label style="display: inline-block">Ward
+                            </label>
+                            <span style="margin-left: 4px; color: red">*</span>
+                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.permanent_ward_id_city"
+                              outlined :items="permanent_wards_city" item-text="name_en" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col v-if="data.permanent_location_type == 1" lg="6" md="6" cols="12">
+                          <ValidationProvider name="permanent_ward_id_dist" vid="permanent_ward_id_dist" rules="required"
+                            v-slot="{ errors }">
+                            <label style="display: inline-block">Ward
+                            </label>
+                            <span style="margin-left: 4px; color: red">*</span>
+                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.permanent_ward_id_dist"
+                              outlined :items="permanent_wards_dist" item-text="name_en" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col v-if="data.permanent_location_type === 2 && data.permanent_sub_location_type === 2" lg="6"
+                          md="6" cols="12">
+                          <ValidationProvider name="permanent_ward_id_upazila" vid="permanent_ward_id_upazila"
+                            rules="required" v-slot="{ errors }">
+                            <label style="display: inline-block">Ward
+                            </label>
+                            <span style="margin-left: 4px; color: red">*</span>
+                            <v-autocomplete :hide-details="errors[0] ? false : true"
+                              v-model="data.permanent_ward_id_union" outlined :items="permanent_wards_upazila_union"
+                              item-text="name_en" item-value="id" :error="errors[0] ? true : false"
                               :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
-                          <v-col v-if="data.permanent_location_type == 3" lg="6" md="6" cols="12">
-                              <ValidationProvider name="permanent_ward_id_city" vid="permanent_ward_id_city" rules="required" v-slot="{ errors }">
-                                <label style="display: inline-block">Ward
-                                </label>
-                                <span style="margin-left: 4px; color: red">*</span>
-                                <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.permanent_ward_id_city"
-                                  outlined :items="permanent_wards_city" item-text="name_en" item-value="id" 
-                                  :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
-                              </ValidationProvider>
-                            </v-col>
-                               <v-col v-if="data.permanent_location_type == 1" lg="6" md="6" cols="12">
-                              <ValidationProvider name="permanent_ward_id_dist" vid="permanent_ward_id_dist" rules="required" v-slot="{ errors }">
-                                <label style="display: inline-block">Ward
-                                </label>
-                                <span style="margin-left: 4px; color: red">*</span>
-                                <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.permanent_ward_id_dist"
-                                  outlined :items="permanent_wards_dist" item-text="name_en" item-value="id" 
-                                  :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
-                              </ValidationProvider>
-                            </v-col>
-                               <v-col  v-if="data.permanent_location_type === 2 && data.permanent_sub_location_type === 2" lg="6" md="6" cols="12">
-                                <ValidationProvider name="permanent_ward_id_upazila" vid="permanent_ward_id_upazila" rules="required" v-slot="{ errors }">
-                                  <label style="display: inline-block">Ward
-                                  </label>
-                                  <span style="margin-left: 4px; color: red">*</span>
-                                  <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.permanent_ward_id_union"
-                                    outlined :items="permanent_wards_upazila_union" item-text="name_en" item-value="id" 
-                                    :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
-                                </ValidationProvider>
-                              </v-col>
-                                      <v-col v-if="data.permanent_location_type === 2 && data.permanent_sub_location_type === 1" lg="6" md="6" cols="12">
-                                  <ValidationProvider name="permanent_ward_id_upazila" vid="permanent_ward_id_upazila" rules="required" v-slot="{ errors }">
-                                    <label style="display: inline-block">Ward
-                                    </label>
-                                    <span style="margin-left: 4px; color: red">*</span>
-                                    <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.permanent_ward_id_pouro"
-                                      outlined :items="permanent_wards_upazila_pouro" item-text="name_en" item-value="id" 
-                                      :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
-                                  </ValidationProvider>
-                                </v-col>
+                        <v-col v-if="data.permanent_location_type === 2 && data.permanent_sub_location_type === 1" lg="6"
+                          md="6" cols="12">
+                          <ValidationProvider name="permanent_ward_id_upazila" vid="permanent_ward_id_upazila"
+                            rules="required" v-slot="{ errors }">
+                            <label style="display: inline-block">Ward
+                            </label>
+                            <span style="margin-left: 4px; color: red">*</span>
+                            <v-autocomplete :hide-details="errors[0] ? false : true"
+                              v-model="data.permanent_ward_id_pouro" outlined :items="permanent_wards_upazila_pouro"
+                              item-text="name_en" item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
                         <v-col cols="6" lg="6">
                           <ValidationProvider name="Post Code" vid="permanent_post_code" rules="required"
                             v-slot="{ errors }">
@@ -767,7 +763,7 @@
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
-                 
+
                         <v-col cols="6" lg="6">
                           <ValidationProvider name="Village/House No.,
                                                 Road No., Block No, Section" vid="permanent_address" rules="required"
@@ -857,7 +853,7 @@
                               <ValidationProvider :name="fields.name_en"
                                 vid="allowance_program_additional_field_values_id" rules="required" v-slot="{ errors }">
                                 <v-select :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
-                                  :error-messages="errors[0]" outlined  v-model="data.application_allowance_values[index]
+                                  :error-messages="errors[0]" outlined v-model="data.application_allowance_values[index]
                                     .allowance_program_additional_field_values_id
                                     " :items="fields.name_en == 'Class'
     ? classes
@@ -894,7 +890,7 @@
                               <ValidationProvider :name="fields.name_en"
                                 vid="allowance_program_additional_field_values_id" rules="required" v-slot="{ errors }">
                                 <v-select multiple :hide-details="errors[0] ? false : true"
-                                  :error="errors[0] ? true : false" :error-messages="errors[0]" outlined  v-model="data.application_allowance_values[index]
+                                  :error="errors[0] ? true : false" :error-messages="errors[0]" outlined v-model="data.application_allowance_values[index]
                                     .allowance_program_additional_field_values_id
                                     " :items="fields.additional_field_value" item-value="id" item-text="value">
                                 </v-select>
@@ -988,7 +984,7 @@
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6" lg="6">
-                            <v-radio-group  v-model="data.account_type" row>
+                          <v-radio-group v-model="data.account_type" row>
                             Account type
                             <span style="
                               margin-left: 4px;
@@ -998,88 +994,90 @@
                             <v-radio label="Bank Account" :value="1"></v-radio>
                             <v-radio label="MFS (Mobile Financial Service)" :value="2"></v-radio>
                           </v-radio-group>
-                      </v-col>
+                        </v-col>
                         <v-col cols="6" lg="6" v-if="data.account_type === 2">
                           <ValidationProvider name="Account Ownership" vid="account_owner" v-slot="{ errors }">
                             <label style="display: inline-block">Mobile Ownership
                             </label>
-                             <span style="margin-left: 4px; color: red">*</span>
+                            <span style="margin-left: 4px; color: red">*</span>
 
                             <v-select v-model="data.account_owner" outlined clearable :items="mobile_ownership"
                               :error="errors[0] ? true : false" :error-messages="errors[0]">
                             </v-select>
                           </ValidationProvider>
                         </v-col>
-                       
-                           <v-col cols="6" lg="6" v-if="data.account_type === 1">
-                            <ValidationProvider name="Account Ownership" vid="account_owner" v-slot="{ errors }">
-                              <label style="display: inline-block">Account Ownership
-                              </label>
-                               <span style="margin-left: 4px; color: red">*</span>
 
-                              <v-select v-model="data.account_owner" outlined clearable :items="mobile_ownership"
-                                :error="errors[0] ? true : false" :error-messages="errors[0]">
-                              </v-select>
-                            </ValidationProvider>
-                          </v-col>
-                          <v-col cols="6" lg="6" v-if="data.account_type === 2">
-                         
-                          
-                              <label style="display: inline-block">Mobile operator </label><span
-                                  style="margin-left: 4px; color: red">*</span>
-                              <v-select  :items="mobile_operators" outlined item-text="operator"
-                                item-value="id" v-model="data.mobile_operator">
+                        <v-col cols="6" lg="6" v-if="data.account_type === 1">
+                          <ValidationProvider name="Account Ownership" vid="account_owner" v-slot="{ errors }">
+                            <label style="display: inline-block">Account Ownership
+                            </label>
+                            <span style="margin-left: 4px; color: red">*</span>
 
-                              </v-select>
-                            </v-col>
-                           
-
-                           <v-col cols="6" lg="6" v-if="data.account_type === 2">
-                            <ValidationProvider rules="checkMobileNumber" name="Mobile Number" vid="account_number" v-slot="{ errors }" >
-                              <label style="display: inline-block">Mobile Number </label><span
-                                style="margin-left: 4px; color: red">*</span>
-
-                              <v-text-field v-model="data.account_number" outlined type="number" clearable
-                                :error="errors[0] ? true : false" :error-messages="errors[0]">
-                              </v-text-field>
-                            </ValidationProvider>
-                          
+                            <v-select v-model="data.account_owner" outlined clearable :items="mobile_ownership"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]">
+                            </v-select>
+                          </ValidationProvider>
                         </v-col>
-                            <v-col cols="6" lg="6" v-if="data.account_type === 1">
-                            <ValidationProvider rules="required" name="Bank name" vid="bank_name" v-slot="{ errors }" >
-                              <label style="display: inline-block">Bank name </label><span
-                                style="margin-left: 4px; color: red">*</span>
+                        <v-col cols="6" lg="6" v-if="data.account_type === 2">
 
-                              <v-text-field v-model="data.bank_name" outlined  clearable
-                                :error="errors[0] ? true : false" :error-messages="errors[0]">
-                              </v-text-field>
-                            </ValidationProvider>
-                               </v-col>
-                     
-                               <v-col cols="6" lg="6" v-if="data.account_type === 1">
-                              <ValidationProvider rules="required" name="Bank name" vid="bank_name" v-slot="{ errors }" >
-                                <label style="display: inline-block">Branch name </label><span
-                                  style="margin-left: 4px; color: red">*</span>
 
-                                <v-text-field v-model="data.branch_name" outlined  clearable
-                                  :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                </v-text-field>
-                              </ValidationProvider>
-                                 </v-col>
-                                     <v-col cols="6" lg="6" v-if="data.account_type === 1">
-                                <ValidationProvider rules="required" name="Bank Account number" vid="bank_account_number" v-slot="{ errors }" >
-                                  <label style="display: inline-block">Bank Account Number </label><span
-                                    style="margin-left: 4px; color: red">*</span>
+                          <label style="display: inline-block">Mobile operator </label><span
+                            style="margin-left: 4px; color: red">*</span>
+                          <v-select :items="mobile_operators" outlined item-text="operator" item-value="id"
+                            v-model="data.mobile_operator">
 
-                                  <v-text-field v-model="data.account_number" outlined  clearable
-                                    :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                  </v-text-field>
-                                </ValidationProvider>
-                                   </v-col>
-                          <v-col cols="6" lg="6">
-                          <ValidationProvider name="Email" vid="Email"  v-slot="{ errors }">
+                          </v-select>
+                        </v-col>
+
+
+                        <v-col cols="6" lg="6" v-if="data.account_type === 2">
+                          <ValidationProvider rules="checkMobileNumber" name="Mobile Number" vid="account_number"
+                            v-slot="{ errors }">
+                            <label style="display: inline-block">Mobile Number </label><span
+                              style="margin-left: 4px; color: red">*</span>
+
+                            <v-text-field v-model="data.account_number" outlined type="number" clearable
+                              :error="errors[0] ? true : false" :error-messages="errors[0]">
+                            </v-text-field>
+                          </ValidationProvider>
+
+                        </v-col>
+                        <v-col cols="6" lg="6" v-if="data.account_type === 1">
+                          <ValidationProvider rules="required" name="Bank name" vid="bank_name" v-slot="{ errors }">
+                            <label style="display: inline-block">Bank name </label><span
+                              style="margin-left: 4px; color: red">*</span>
+
+                            <v-text-field v-model="data.bank_name" outlined clearable :error="errors[0] ? true : false"
+                              :error-messages="errors[0]">
+                            </v-text-field>
+                          </ValidationProvider>
+                        </v-col>
+
+                        <v-col cols="6" lg="6" v-if="data.account_type === 1">
+                          <ValidationProvider rules="required" name="Bank name" vid="bank_name" v-slot="{ errors }">
+                            <label style="display: inline-block">Branch name </label><span
+                              style="margin-left: 4px; color: red">*</span>
+
+                            <v-text-field v-model="data.branch_name" outlined clearable :error="errors[0] ? true : false"
+                              :error-messages="errors[0]">
+                            </v-text-field>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col cols="6" lg="6" v-if="data.account_type === 1">
+                          <ValidationProvider rules="required" name="Bank Account number" vid="bank_account_number"
+                            v-slot="{ errors }">
+                            <label style="display: inline-block">Bank Account Number </label><span
+                              style="margin-left: 4px; color: red">*</span>
+
+                            <v-text-field v-model="data.account_number" outlined clearable
+                              :error="errors[0] ? true : false" :error-messages="errors[0]" type="number">
+                            </v-text-field>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col cols="6" lg="6">
+                          <ValidationProvider name="Email" vid="Email" v-slot="{ errors }">
                             <label style="display: inline-block">Email </label>
-                            
+
 
                             <v-text-field v-model="data.email" outlined clearable type="email"
                               :error="errors[0] ? true : false" :error-messages="errors[0]">
@@ -1162,14 +1160,17 @@
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
+                            <div  class="validation_error_gender_type">
                             <ValidationProvider name="Gender of Nominee" vid="nominee_relation_with_beneficiary"
                               v-slot="{ errors }" rules="required">
                               <label>Relationship with Beneficiary</label>
                               <span style="margin-left: 4px; color: red">*</span>
                               <v-autocomplete v-model="data.nominee_relation_with_beneficiary" outlined
-                                :items="relations_with_bef" :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                :items="relations_with_bef" :error="errors[0] ? true : false"
+                                :error-messages="errors[0]">
                               </v-autocomplete>
                             </ValidationProvider>
+                            </div>
                           </v-col>
                           <v-col cols="6" lg="6">
                             <v-img :src="nomineeImageUrl" style="
@@ -1182,9 +1183,10 @@
                                     height: 200px;
                                     border: 1px solid #ccc;
                                   " class="mb-5"></v-img>
-                            <ValidationProvider v-slot="{ errors }" name="Image"  :rules="('imageSize')" rules="imageSize" vid="image">
+                            <ValidationProvider v-slot="{ errors }" name="Image" :rules="('imageSize')" rules="imageSize"
+                              vid="image">
                               <label>Image (Image File must be under 200 KB)</label>
-                               <span style="margin-left: 4px; color: red">*</span>
+                              <span style="margin-left: 4px; color: red">*</span>
 
                               <v-file-input outlined show-size counter prepend-inner-icon="mdi-camera"
                                 v-model="data.nominee_image" accept="image/*" @change="previewImageNominee"
@@ -1205,8 +1207,8 @@
                             <ValidationProvider v-slot="{ errors }" name="Signature" rules="imageSize"
                               vid="nominee_signature">
                               <label>Signature (Signature File must be under 200 KB)</label>
-                               <span style="margin-left: 4px; color: red">*</span>
-                             
+                              <span style="margin-left: 4px; color: red">*</span>
+
                               <v-file-input outlined show-size counter prepend-inner-icon="mdi-camera"
                                 v-model="data.nominee_signature" accept="image/*" @change="previewSignNominee"
                                 prepend-icon=""></v-file-input>
@@ -1277,7 +1279,7 @@
                               <ValidationProvider :name="variables.name_en" vid="sub_variables" rules="required"
                                 v-slot="{ errors }">
                                 <v-select :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
-                                  :error-messages="errors[0]" outlined 
+                                  :error-messages="errors[0]" outlined
                                   v-model="data.application_pmt[indexPMT].sub_variables" :items="variables.children"
                                   item-value="id" item-text="name_en">
                                 </v-select>
@@ -1294,7 +1296,7 @@
                               <ValidationProvider :name="variables.name_en" vid="sub_variables" rules="required"
                                 v-slot="{ errors }">
                                 <v-select multiple :hide-details="errors[0] ? false : true"
-                                  :error="errors[0] ? true : false" :error-messages="errors[0]" outlined 
+                                  :error="errors[0] ? true : false" :error-messages="errors[0]" outlined
                                   v-model="data.application_pmt[indexPMT].sub_variables" :items="variables.children"
                                   item-value="id" item-text="name_en">
                                 </v-select>
@@ -1302,7 +1304,7 @@
                             </template>
                           </v-col>
                         </v-row>
-                   
+
                       </div>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
@@ -1310,15 +1312,15 @@
 
                 </v-expansion-panels>
               </div>
-                   <div class="d-inline d-flex justify-end">
-                            <v-btn @click="resetForm()" elevation="2" class="btn mr-2" color="info">Resets</v-btn>
-                            <!-- :disabled="invalid" -->
-                            <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
-                              class="custom-btn-width black white--text py-2">
-                            submit
-                            </v-btn>
+              <div class="d-inline d-flex justify-end">
+                <v-btn @click="resetForm()" elevation="2" class="btn mr-2" color="info">Resets</v-btn>
+                <!-- :disabled="invalid" -->
+                <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
+                  class="custom-btn-width black white--text py-2">
+                  submit
+                </v-btn>
 
-                          </div>
+              </div>
               <p class="red--text mt-5">
                 If you have any objections or complaints regarding the
                 application, please contact the Upazila Social Service Officer.
@@ -1359,6 +1361,9 @@ extend("numeric", {
 
 extend("checkNumber", {
   validate: (value) => {
+     if (!value && value !== 0) {
+      return false;
+    }
     // Check if all characters are numeric and not allow special characters
     const isNumeric = /^[0-9]+$/.test(value);
 
@@ -1368,13 +1373,16 @@ extend("checkNumber", {
     // Return true if both conditions are met
     return isNumeric && isCorrectLength;
   },
-  message: "This field must be a number with either 10 or 17 characters",
+  message: "This is required field and field must be a number with either 10 or 17 characters",
 });
 extend("checkMobileNumber", {
   validate: (value) => {
+      if (!value && value !== 0) {
+      return false;
+    }
     // Check if all characters are numeric and not allow special characters
-    const isNumeric = value.length === 8 ;
- 
+    const isNumeric = value.length === 8;
+
     return isNumeric;
   },
   message: "This field must be a number with 8 characters",
@@ -1431,7 +1439,7 @@ export default {
           id: 1,
           value_en: "Pouroshava",
         },
-    
+
         {
           id: 2,
           value_en: "Union",
@@ -1495,7 +1503,7 @@ export default {
         "Other (specify)",
       ],
 
-      mobile_ownership: [ "Myself" ,"Family Memeber", "Others"],
+      mobile_ownership: ["Myself", "Family Memeber", "Others"],
       religion: ["Islam", "Hindu"],
       genders: ["Male", "Female", "3rd Gender"],
 
@@ -1515,11 +1523,11 @@ export default {
       isChecked: false,
 
       data: {
-        
+
         program_id: null,
         verification_type: 1,
         verification_number: null,
-        account_type:null,
+        account_type: null,
         age: null,
         date_of_birth: null,
         name_en: null,
@@ -1547,11 +1555,11 @@ export default {
         sub_location_type: null,
         thana_id: null,
         union_id: null,
-        pouro_id:null,
+        pouro_id: null,
         city_id: null,
         city_thana_id: null,
         district_pouro_id: null,
-        ward_id_city:null,
+        ward_id_city: null,
         ward_id_upazila_union: null,
         ward_id_upazila_pouro: null,
         ward_id_dist: null,
@@ -1590,7 +1598,7 @@ export default {
         marital_status: null,
         email: null,
         mobile_operator: null,
-        pmt_status:null
+        pmt_status: null
       },
       professionType: ['Farmer',
         'Rickshaw Puller',
@@ -1666,7 +1674,7 @@ export default {
 
   methods: {
     gotocheck() {
-       this.$axios.get("/global/online-application/check", {
+      this.$axios.get("/global/online-application/check", {
         headers: {
           "Content-Type": "multipart/form-data",
           Accept: "application/json",
@@ -1681,7 +1689,7 @@ export default {
           console.log(err)
           // this.$toast.error(err.response.data.message);
         })
-    // triggers watch and emits the updated date
+      // triggers watch and emits the updated date
     },
     // Update the formatted date when any dropdown changes
     updateDate() {
@@ -1776,7 +1784,8 @@ export default {
 
     handleNomineeCheckboxChange(event) {
       if (event) {
-        this.data.nominee_address = this.data.permanent_address
+        this.data.nominee_address = 'Division:' + this.data.permanent_division_id + 'District:'+ this.data.permanent_district_id;
+        this.data.nominee_address=this.data.permanenet_address;
       } else {
         this.data.nominee_address = null
 
@@ -1790,10 +1799,10 @@ export default {
         this.data.permanent_district_id = this.data.district_id
         this.permanent_onChangeDistrict(this.data.district_id);
         this.data.permanent_location_type = this.data.location_type
-  
+
         this.permanent_LocationType(this.data.location_type)
         this.data.permanent_sub_location_type = this.data.sub_location_type
-         this.onChangeSubLocationTypePermanent(this.data.sub_location_type)
+        this.onChangeSubLocationTypePermanent(this.data.sub_location_type)
         // this.data.permanent_upazila = this.data.upazila
         this.data.permanent_post_code = this.data.post_code
         this.data.permanent_address = this.data.address
@@ -1805,26 +1814,26 @@ export default {
         this.data.permanent_city_thana_id = this.data.city_thana_id
         this.data.permanent_district_pouro_id = this.data.district_pouro_id
         this.data.permanent_mobile = this.data.mobile
-        if(this.data.union_id){
-     
+        if (this.data.union_id) {
+
           this.permanent_onChangeUnion(this.data.union_id);
-          this.data.permanent_ward_id_union= this.data.ward_id_union
+          this.data.permanent_ward_id_union = this.data.ward_id_union
         }
         if (this.data.pouro_id) {
           this.Permanent_onChangePouro(this.data.pouro_id);
           this.data.permanent_ward_id_pouro = this.data.ward_id_pouro
         }
-         if (this.data.city_thana_id) {
-          this.data.permanent_city_thana_id= this.data.city_thana_id
+        if (this.data.city_thana_id) {
+          this.data.permanent_city_thana_id = this.data.city_thana_id
           this.Permanent_OnChangeCityThana(this.data.permanent_city_thana_id);
           this.data.permanent_ward_id_city = this.data.ward_id_city
         }
-     
-        if(this.data.district_pouro_id){
-          this.permanent_district_pouro_id=this.district_pouro_id ;
+
+        if (this.data.district_pouro_id) {
+          this.permanent_district_pouro_id = this.district_pouro_id;
           this.Permanent_onChangeDistrictPouro(this.data.permanent_district_pouro_id);
           this.data.permanent_ward_id_dist = this.data.ward_id_dist
-        } 
+        }
       }
       else {
         this.data.permanent_division_id = null
@@ -1886,11 +1895,11 @@ export default {
     },
 
     submitApplication() {
-  
-    if (this.data.mobile_operator !== null && this.data.mobile_operator !== undefined) {
-  // Convert this.data.account_number to string before concatenation
-  this.data.account_number = this.data.mobile_operator + String(this.data.account_number);
-}
+
+      if (this.data.mobile_operator !== null && this.data.mobile_operator !== undefined) {
+        // Convert this.data.account_number to string before concatenation
+        this.data.account_number = this.data.mobile_operator + String(this.data.account_number);
+      }
       console.log(this.data, "All data")
 
 
@@ -1925,8 +1934,8 @@ export default {
         // this.$toast.success("Your Application submitted Successfully");
         this.$refs.form.reset();
         this.loading = false;
-        console.log(res.data.data,"data")
-         console.log(res.data.id, "id")
+        console.log(res.data.data, "data")
+        console.log(res.data.id, "id")
         this.$router.push(`/submitted-application/${res.data.id}`);
 
       })
@@ -1944,36 +1953,102 @@ export default {
                 }
                 this.$refs.form.setErrors(errs);
                 this.$toast.error(err.response.data.message);
-             
+                //scroll to first error filed
+                const firstErrorField = document.querySelector(".validation-error_marital");
+                if (firstErrorField) {
+                  firstErrorField.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                    inline: "start",
+                  });
+                }
+
+                // end of scroll to first error filed
+
 
               }
               else if (err.response.data.error_code == "applicant_gender_type") {
                 let errs = {
                   "gender_id": [err.response.data.message]
                 }
-                this.$refs.form.setErrors(errs);
+                this.$refs.form.setErrors(err.response.data.message);
+                //scroll to first error filed
+                const firstErrorField = document.querySelector(".validation_error_gender_type");
+                if (firstErrorField) {
+                  firstErrorField.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                    inline: "nearest",
+                  });
+                }
+
+                // end of scroll to first error filed
                 this.$toast.error(err.response.data.message);
-            
-            
+
+
 
               }
               else if (err.response.data.error_code == "applicant_age_limit") {
+                this.$refs.form.setErrors(err.response.data.message);
+                //scroll to first error filed
+                const firstErrorField = document.querySelector(".validation_error_age_limit");
+                if (firstErrorField) {
+                  firstErrorField.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                    inline: "nearest",
+                  });
+                }
+
+                // end of scroll to first error filed
                 this.$toast.error(err.response.data.message);
+
               }
             } else if (err.response) {
               this.$refs.form.setErrors(err.response.data.errors);
-                
+
               this.$toast.error(err.response.data.message);
+
+              this.errors = err.response.data.errors
+
              
-               this.errors = err.response.data.errors
-              
-            
+              // if (err.response.data.error_code === "verification_number") {
+                 //scroll to first error filed
+                this.$nextTick(() => {
+                  const firstErrorField = document.querySelector(".validation-error");
+                  if (firstErrorField) {
+                    firstErrorField.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                      inline: "start",
+                    });
+                  }
+                });
+                // end of scroll to first error filed
+              // }
+              // else if (err.response.data.error_code === "mobile") {
+              //      //scroll to first error filed
+              //   this.$nextTick(() => {
+              //     const firstErrorField = document.querySelector(".validation_error_mobile");
+              //     if (firstErrorField) {
+              //       firstErrorField.scrollIntoView({
+              //         behavior: "smooth",
+              //         block: "start",
+              //         inline: "start",
+              //       });
+              //     }
+              //   });
+              //   // end of scroll to first error filed
+
+              // }
+             
+
 
             }
           }
         });
     },
-  
+
     async getProgramName() {
       // if (this.data.program != null && this.programs.length > 0) {
       console.log(this.programs, "check");
@@ -1983,7 +2058,7 @@ export default {
 
       this.programName = await programName[0]?.name_en;
       this.pmt_status = await programName[0]?.pmt_status;
-      console.log(this.pmt_status,"pmt_status");
+      console.log(this.pmt_status, "pmt_status");
       this.programDetails = await programName[0];
       if (this.programDetails != null) {
         this.data.application_allowance_values = [];
@@ -2023,7 +2098,7 @@ export default {
     getAllMobileOperator() {
       this.$axios.get("global/mobile-operator").then((res) => {
         this.mobile_operators = res.data;
- 
+
       });
     },
     getAllDivision() {
@@ -2062,7 +2137,7 @@ export default {
       // alert(event);
 
       if ($event == 1) {
-        console.log(this.data.thana_id,"this.data.thana_id")
+        console.log(this.data.thana_id, "this.data.thana_id")
         await this.$axios
           .get(`/global/union/pouro/get/${this.data.thana_id}`, {
             headers: {
@@ -2080,7 +2155,7 @@ export default {
         this.data.pouro_id = null;
       }
     },
-      async onChangeSubLocationTypePermanent(event) {
+    async onChangeSubLocationTypePermanent(event) {
       // alert(event);
 
       if (event == 1) {
@@ -2111,7 +2186,7 @@ export default {
         .then((result) => {
           this.unions = result.data.data;
           this.onChangeSubLocationType(this.data.sub_location_type)
-    
+
         });
     },
     async permanent_onChangeUpazila(event) {
@@ -2123,8 +2198,8 @@ export default {
         })
         .then((result) => {
           this.permanent_unions = result.data.data;
-           this.onChangeSubLocationTypePermanent(this.data.permanenet_sub_location_type)
-          
+          this.onChangeSubLocationTypePermanent(this.data.permanenet_sub_location_type)
+
         });
     },
     async onChangeDistrict(event) {
@@ -2199,8 +2274,8 @@ export default {
           this.permanent_ward_id_upazila = null;
         });
     },
-    async OnChangeCityThana($event){
-        await this.$axios
+    async OnChangeCityThana($event) {
+      await this.$axios
         .get(`/global/ward/get/thana/${this.data.city_thana_id}`, {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -2210,16 +2285,16 @@ export default {
           this.wards_city = result.data.data;
           this.wards_upazila = [];
           this.wards_dist = [];
-          this.ward_id_dist=null;
+          this.ward_id_dist = null;
           this.ward_id_upazila = null;
         });
 
     },
-        async Permanent_OnChangeCityThana($event) {
-        
-          
+    async Permanent_OnChangeCityThana($event) {
+
+
       await this.$axios
-       .get(`/global/ward/get/thana/${this.data.permanent_city_thana_id}`, {
+        .get(`/global/ward/get/thana/${this.data.permanent_city_thana_id}`, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -2234,9 +2309,9 @@ export default {
         });
 
     },
-   async onChangeDistrictPouro($event){
-    console.log("hi district pourashava called")
-     await this.$axios
+    async onChangeDistrictPouro($event) {
+      console.log("hi district pourashava called")
+      await this.$axios
         .get(`/global/ward/get/district_pouro/${this.data.district_pouro_id}`, {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -2252,7 +2327,7 @@ export default {
         });
 
     },
-   async Permanent_onChangeDistrictPouro($event) {
+    async Permanent_onChangeDistrictPouro($event) {
       await this.$axios
         .get(`/global/ward/get/district_pouro/${this.data.permanent_district_pouro_id}`, {
           headers: {
@@ -2408,9 +2483,9 @@ export default {
         this.nomineeSignUrl = null;
       }
     },
-      async onChangeUnion($event) {
-        console.log("hi union called")
-     
+    async onChangeUnion($event) {
+      console.log("hi union called")
+
       await this.$axios
         .get(`/admin/ward/get/${$event}`, {
           headers: {
@@ -2419,21 +2494,21 @@ export default {
           },
         })
         .then((result) => {
-          
+
           this.wards_upazila_union = result.data.data;
-          console.log(this.wards_upazila_union,"union");
-          this.wards_upazila_pouro =[];
+          console.log(this.wards_upazila_union, "union");
+          this.wards_upazila_pouro = [];
           this.wards_dist = [];
           this.wards_city = [];
           this.ward_id_dist = null;
           this.ward_id_city = null;
           this.ward_id_pouro = null;
-    
+
         });
 
     },
-       async permanent_onChangeUnion($event) {
-        await this.$axios
+    async permanent_onChangeUnion($event) {
+      await this.$axios
         .get(`/admin/ward/get/${$event}`, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
@@ -2443,7 +2518,7 @@ export default {
         .then((result) => {
 
           this.permanent_wards_upazila_union = result.data.data;
-            this.permanent_wards_dist = [];
+          this.permanent_wards_dist = [];
           this.permanent_wards_city = [];
           this.permanent_ward_id_dist = null;
           this.permanent_ward_id_city = null;
@@ -2452,10 +2527,10 @@ export default {
         });
 
     },
-      async onChangePouro($event) {
-           console.log("hi pouro called")
+    async onChangePouro($event) {
+      console.log("hi pouro called")
 
-     await this.$axios
+      await this.$axios
         .get(`/global/ward/get/pouro/${$event}`, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
@@ -2464,8 +2539,8 @@ export default {
         })
         .then((result) => {
 
-          this.wards_upazila_pouro= result.data.data;
-           this.wards_upazila_union = [];
+          this.wards_upazila_pouro = result.data.data;
+          this.wards_upazila_union = [];
           this.wards_dist = [];
           this.wards_city = [];
           this.ward_id_dist = null;
@@ -2476,8 +2551,8 @@ export default {
 
     },
     async Permanent_onChangePouro($event) {
-      console.log($event,"pouro called")
-    await this.$axios
+      console.log($event, "pouro called")
+      await this.$axios
         .get(`/global/ward/get/pouro/${$event}`, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
@@ -2488,7 +2563,7 @@ export default {
 
           this.permanent_wards_upazila_pouro = result.data.data;
           console.log(this.permanent_wards_upazila_pouro, "pouro called properly")
-          this.permanent_wards_upazila_union =[];
+          this.permanent_wards_upazila_union = [];
           this.permanent_wards_dist = [];
           this.permanent_wards_city = [];
           this.permanent_ward_id_dist = null;
@@ -2520,7 +2595,7 @@ export default {
       .dispatch("getGlobalLookupByType", 1)
       .then((res) => (this.locationType = res));
     this.getAllMobileOperator();
-       console.log(this.$el,"el");
+    console.log(this.$el, "el");
   },
 
 };
