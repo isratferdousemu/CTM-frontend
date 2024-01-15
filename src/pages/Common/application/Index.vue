@@ -1110,6 +1110,7 @@
                                     <ValidationProvider name="National Identity (NID) / Birth Registration Number"
                                       rules="checkNumber" vid="nominee_verification_number" v-slot="{ errors }">
                                       <label>National Identity (NID) / Birth Registration Number</label>
+                                      <span style="margin-left: 4px; color: red">*</span>
                                       <v-text-field v-model="data.nominee_verification_number" outlined
                                         @change="checkNum()" clearable type="text" :error="errors[0] ? true : false"
                                         :error-messages="errors[0]">
