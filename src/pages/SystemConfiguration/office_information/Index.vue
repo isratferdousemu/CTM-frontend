@@ -1794,7 +1794,7 @@ export default {
         console.log(this.location_type,"this.location_type")
 
       }
-      if ($event === 8 || $event === 10) {
+      if ($event === 8 || $event === 10 || $event === 11) {
         this.location_type = 2;
          console.log(this.location_type, "this.location_type")
 
