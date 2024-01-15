@@ -204,8 +204,8 @@
                         <td colspan="3">{{ data.committee_type_name }}</td>
                       </tr>
                       <!-- ////////////////////////// -->
-                      <tr 
-                      v-if="
+                      <tr
+                        v-if="
                           data.committee_type == 12 ||
                           data.committee_type == 13 ||
                           data.committee_type == 14 ||
@@ -237,8 +237,7 @@
                         <td><h4>District</h4></td>
                         <td>{{ data.district_name }}</td>
                       </tr>
-                      
-                      
+
                       <!-- Paurashava Committee 16 WARD -->
                       <tr v-if="data.committee_type == 16">
                         <td><h4>Upazila</h4></td>
@@ -254,37 +253,36 @@
                         <td colspan="3">{{ data.city_corpo_name }}</td>
                       </tr>
                       <!-- City Corporation Committee -->
-                      
+
                       <!-- Upazila Committee 14 WARD -->
                       <tr v-if="data.committee_type == 14">
-                        <td><h4>Upazila</h4> </td>
+                        <td><h4>Upazila</h4></td>
                         <td colspan="3">{{ data.upazila_name }}</td>
                       </tr>
                       <!-- Upazila Committee -->
 
                       <!-- UNion Committee 12 WARD -->
                       <tr v-if="data.committee_type == 12">
-                        <td><h4>Upazila</h4> </td>
+                        <td><h4>Upazila</h4></td>
                         <td>{{ data.upazila_name }}</td>
-                        <td><h4>Union</h4> </td>
+                        <td><h4>Union</h4></td>
                         <td>{{ data.union_name }}</td>
                       </tr>
                       <!-- Union Committee -->
-                      
+
                       <!-- Committee 13 WARD -->
                       <tr v-if="data.committee_type == 13">
-                        <td><h4>City Corporation</h4> </td>
+                        <td><h4>City Corporation</h4></td>
                         <td>{{ data.city_corpo_name }}</td>
-                        <td><h4>Thana</h4> </td>
+                        <td><h4>Thana</h4></td>
                         <td>{{ data.city_thana_name }}</td>
                       </tr>
                       <tr v-if="data.committee_type == 13">
-                        <td><h4>Ward</h4> </td>
-                        <td colspan="3">{{ data.ward_name }}</td>                        
+                        <td><h4>Ward</h4></td>
+                        <td colspan="3">{{ data.ward_name }}</td>
                       </tr>
                       <!-- WARD -->
-                      
-                      
+
                       <!-- ////////////////////////// -->
                       <tr>
                         <td
@@ -471,7 +469,7 @@ export default {
       dialogView: false,
       deleteDialog: false,
       delete_loading: false,
-      loading: false,
+      loading: true,
       errors: {},
       error_status: {},
       search: "",
@@ -491,12 +489,49 @@ export default {
   computed: {
     headers() {
       return [
-        { text: "#Sl", value: "id", align: "start", sortable: true },
-        { text: "Code", value: "code" },
-        { text: "Name", value: "name" },
-        { text: "Program", value: "program.name_en" },
-        { text: "Details", value: "details" },
-        { text: "Actions", value: "actions", align: "center", sortable: false },
+        {
+          text: this.$t("container.list.sl"),
+          value: "id",
+          align: "start",
+          sortable: false,
+        },
+        {
+          align: 'center',
+          text: this.$t(
+            "container.system_config.demo_graphic.committee.list_table.Code"
+          ),
+          value: "code",
+        },
+        {
+          align: 'center',
+          text: this.$t(
+            "container.system_config.demo_graphic.committee.list_table.Name"
+          ),
+          value: "name",
+        },
+        {
+          align: 'center',
+          text: this.$t(
+            "container.system_config.demo_graphic.committee.list_table.Program"
+          ),
+          value: "program.name_en",
+        },
+        {
+          align: 'center',
+          text: this.$t(
+            "container.system_config.demo_graphic.committee.list_table.Details"
+          ),
+          value: "details",
+        },
+        {
+          align: 'center',
+          text: this.$t(
+            "container.system_config.demo_graphic.committee.list_table.Action"
+          ),
+          value: "actions",
+          align: "center",
+          sortable: false,
+        },
       ];
     },
     headers_member() {
@@ -743,7 +778,7 @@ export default {
               this.data.division_name = item?.location?.parent?.parent?.name_en; //Division
               this.onChangeDivision(this.data.division_id);
               this.data.district_id = item?.location?.parent?.id; //District
-              this.data.district_name = item?.location?.parent?.name_en //District
+              this.data.district_name = item?.location?.parent?.name_en; //District
               this.onChangeDistrict(this.data.district_id);
               this.data.city_corpo_id = item?.location?.id; //City
               this.data.city_corpo_name = item?.location?.name_en; //City
@@ -767,7 +802,7 @@ export default {
 
               this.onChangeDivision(this.data.division_id);
               this.data.district_id = item?.location?.parent?.parent?.id; //District
-              this.data.district_name = item?.location?.parent?.parent?.name_en //District
+              this.data.district_name = item?.location?.parent?.parent?.name_en; //District
 
               this.onChangeDistrict(this.data.district_id);
 
@@ -886,6 +921,8 @@ export default {
           this.pagination.current = result.data.meta.current_page;
           this.pagination.total = result.data.meta.last_page;
           this.pagination.grand_total = result.data.meta.total;
+
+          this.loading = false;
         });
     },
 

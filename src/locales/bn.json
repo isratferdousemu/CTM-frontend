@@ -248,6 +248,8 @@
                     "committee_type": "কমিটির ধরন",
                     "ward": "ওয়ার্ড",
                     "add_new": "নতুন কমিটি যোগ করুন",
+                    "add": "কমিটি যোগ করুন",
+                    "add_more_member":"কমিটির আরো সদস্যের তথ্য যোগ করুন",
                     "search": "অনুসন্ধান কমিটি",
                     "edit": "কমিটি সম্পাদনা করুন",
                     "delete": "কমিটি মুছুন",
@@ -270,7 +272,15 @@
                     "member_designation": "পদবী",
                     "member_address": "ঠিকানা",
                     "member_email": "ইমেইল",
-                    "member_phone": "ফোন"
+                    "member_phone": "ফোন",
+                    "list_table":{
+                        "SL":"ক্রমিক নং",
+                        "Code":"কোড",
+                        "Name":"নাম",
+                        "Program":"প্রোগ্রাম",
+                        "Details":"বিস্তারিত",
+                        "Action":"অ্যাকশন"
+                    }
                 },
 
                 "committeePermission": {

@@ -254,6 +254,8 @@
                     "committee_type": "Committee Type",
                     "ward": "Ward",
                     "add_new": "Add New Committee",
+                    "add": "Add Committee",
+                    "add_more_member":"Add More Committee Member Info",
                     "search": "Search Committee",
                     "edit": "Edit Committee",
                     "delete": "Delete Committee",
@@ -276,7 +278,15 @@
                     "member_designation": "Designation",
                     "member_address": "Address",
                     "member_email": "Email",
-                    "member_phone": "Phone"
+                    "member_phone": "Phone",
+                    "list_table":{
+                        "SL":"SL",
+                        "Code":"Code",
+                        "Name":"Name",
+                        "Program":"Program",
+                        "Details":"Deatails",
+                        "Action":"Action"
+                    }
                 },
                 "committeePermission": {
                     "committee": "Committee Permission ",

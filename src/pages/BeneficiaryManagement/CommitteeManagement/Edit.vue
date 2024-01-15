@@ -6,7 +6,9 @@
         <v-row>
           <v-col cols="12">
             <v-card>
-              <v-card-title><h3>Edit Committee</h3></v-card-title>
+              <v-card-title><h3>
+                {{ $t("container.system_config.demo_graphic.committee.edit") }}
+              </h3></v-card-title>
 
               <v-divider></v-divider>
 
@@ -430,7 +432,9 @@
                     </v-row>
 
                     <v-card-title
-                      ><h4>Add More Committee Member Info</h4></v-card-title
+                      ><h4>
+                        {{ $t("container.system_config.demo_graphic.committee.add_more_member") }}
+                      </h4></v-card-title
                     >
                     <v-divider></v-divider>
 
