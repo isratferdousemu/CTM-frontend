@@ -145,7 +145,7 @@
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12" v-if="data.office_type === 8 ||
-                    data.office_type === 10">
+                    data.office_type === 10 || data.office_type === 11">
                     <ValidationProvider name="Upazila" vid="upazila" rules="required" v-slot="{ errors }">
                       <v-autocomplete :hide-details="errors[0] ? false : true" outlined
                         :readonly="((selectedWards.length > 0) && (data.office_type === 35)) || ((selectedWards_UCDUpazila.length > 0) && (data.office_type === 10))"
