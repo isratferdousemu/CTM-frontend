@@ -5,15 +5,14 @@
                 <ValidationObserver ref="form" v-slot="{ invalid }">
                     <form @submit.prevent="submitApplication()">
                         <v-card class="pa-5 px-10 mb-4">
-                
+
 
                             <ValidationProvider name="program" vid="program" rules="required" v-slot="{ errors }">
                                 <label>Program </label>
                                 <span style="margin-left: 4px; color: red">*</span>
-                                <v-select outlined :items="data?.program" item-text="name_en"
-                                    item-value="id" v-model="data.program_id" required :error="errors[0] ? true : false"
-                                    :error-messages="errors[0]"
-                                    readonly>
+                                <v-select outlined :items="data?.program" item-text="name_en" item-value="id"
+                                    v-model="data.program_id" required :error="errors[0] ? true : false"
+                                    :error-messages="errors[0]" readonly>
                                 </v-select>
                             </ValidationProvider>
                             <div>
@@ -24,25 +23,21 @@
                                             <h3 class="white--text">Applicant Verification</h3>
                                         </v-expansion-panel-header>
                                         <v-expansion-panel-content class="mt-5">
-                          <template>
-      <ValidationProvider
-        name="program"
-        vid="verification_type"
-        rules="required"
-        v-slot="{ errors }"
-      >
-        <v-radio-group
-          :readonly="isRadioGroupReadonly"
-          v-model="data.verification_type"
-          row
-        >
-          Verification type
-          <span style="margin-left: 4px; margin-right: 4px; color: red;">*</span>
-          <v-radio label="National Identity (NID)" :value="1"   v-if="!isRadioGroupReadonly"></v-radio>
-          <v-radio label="Birth Registration Number" :value="2"   v-if="!isRadioGroupReadonly"></v-radio>
-        </v-radio-group>
-      </ValidationProvider>
-    </template>
+                                            <template>
+                                                <ValidationProvider name="program" vid="verification_type" rules="required"
+                                                    v-slot="{ errors }">
+                                                    <v-radio-group :readonly="isRadioGroupReadonly"
+                                                        v-model="data.verification_type" row>
+                                                        Verification type
+                                                        <span
+                                                            style="margin-left: 4px; margin-right: 4px; color: red;">*</span>
+                                                        <v-radio label="National Identity (NID)" :value="1"
+                                                            v-if="!isRadioGroupReadonly"></v-radio>
+                                                        <v-radio label="Birth Registration Number" :value="2"
+                                                            v-if="!isRadioGroupReadonly"></v-radio>
+                                                    </v-radio-group>
+                                                </ValidationProvider>
+                                            </template>
                                             <V-row>
                                                 <v-col>
                                                     <ValidationProvider name="Number" vid="verification_number"
@@ -797,8 +792,8 @@
                                                         <v-autocomplete :hide-details="errors[0] ? false : true"
                                                             v-model="data.permanent_district_pouro_id" outlined
                                                             :items="permanent_district_poros" item-text="name_en"
-                                                            item-value="id" required :error="errors[0] ? true : false" readonly
-                                                            :error-messages="errors[0]"></v-autocomplete>
+                                                            item-value="id" required :error="errors[0] ? true : false"
+                                                            readonly :error-messages="errors[0]"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
                                                 <v-col cols="6" lg="6">
@@ -1000,7 +995,7 @@ Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }"
                                     height: 80px;
                                     border: 1px solid #ccc;
                                   " class="mb-5" v-if="nomineeSignUrl"></v-img>
-                                                        <v-img :src="imageUrlFetch"  style="
+                                                        <v-img :src="imageUrlFetch" style="
                                     width: 200px;
                                     height: 80px;
                                     border: 1px solid #ccc;
@@ -1010,13 +1005,13 @@ Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }"
                                                             <label>Signature</label>
                                                             <v-file-input outlined show-size counter
                                                                 prepend-inner-icon="mdi-camera"
-                                                                v-model="data.nominee_signature" 
+                                                                v-model="data.nominee_signature"
                                                                 prepend-icon=""></v-file-input>
                                                         </ValidationProvider>
                                                     </v-col>
                                                     <v-col cols="12" lg="12">
                                                         <v-checkbox v-model="checkboxNomineeAddress"
-                                                        @change="handleNomineeCheckboxChange"
+                                                            @change="handleNomineeCheckboxChange"
                                                             label="Same Address"></v-checkbox>
                                                     </v-col>
                                                     <v-col cols="12" lg="12">
@@ -1042,7 +1037,7 @@ Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }"
                                             </h3>
                                         </v-expansion-panel-header>
                                         <v-expansion-panel-content class="mt-5">
-                                                 <!-- <div class="pa-2 mb-4">
+                                            <!-- <div class="pa-2 mb-4">
                                                      <v-row>
                                                            <v-col cols="12" lg="6" md="6" v-for="(variable,indexPMT) in  data.poverty_score" :key='indexPMT'>
         <v-select outlined readonly :label="variable.name_en" :items="variable.children" item-text="name_en"></v-select>
@@ -1050,9 +1045,9 @@ Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }"
 
                                         </v-row>
                                                  </div> -->
-                                   
-                                         
-                              <!-- <div class="pa-2 mb-4">
+
+
+                                            <!-- <div class="pa-2 mb-4">
                                                 <v-row>
                                                     <v-col v-for="(variables, indexPMT) in data.poverty_score" cols="6" lg="6"
                                                         :key='indexPMT'>
@@ -1126,7 +1121,7 @@ Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }"
                                                 <div class="d-inline d-flex justify-end">
                                                     <v-btn elevation="2" class="btn mr-2" color="info">Reset</v-btn>
                                                :disabled="invalid" -->
-                                                    <!-- <v-btn type="submit" flat color="primary" :loading="loading"
+                                            <!-- <v-btn type="submit" flat color="primary" :loading="loading"
                                                         class="custom-btn-width black white--text py-2">
                                                         {{ $t("container.list.submit") }}
                                                     </v-btn>
@@ -1139,7 +1134,7 @@ Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }"
 
                                 </v-expansion-panels>
                             </div>
-                       
+
                         </v-card>
                     </form>
                 </ValidationObserver>
@@ -1162,7 +1157,7 @@ export default {
     title: "CTM - Online Application",
     data() {
         return {
-            applications:[],
+            applications: [],
             panel: [0, 1, 2, 3, 4, 5, 6],
             programs: [],
             classes: [],
@@ -1184,10 +1179,10 @@ export default {
             permanent_district_poros: [],
             permanent_city_thanas: [],
             permanent_locationType: [],
-            imageUrlFetch:null,
+            imageUrlFetch: null,
             // imageUrlFetch,
             // imageUrlFetch,
-             UrlFetch:null,
+            UrlFetch: null,
             education_status: [
                 "Illiterate",
                 "Literate",
@@ -1313,7 +1308,7 @@ export default {
             //     marital_status: null,
             //     email: 'null@gmail.com',
             // },
-            data:[],
+            data: [],
 
             checkbox: false,
             checkboxNomineeAddress: false,
@@ -1328,13 +1323,13 @@ export default {
 
         };
     },
-     computed: {
+    computed: {
         isRadioGroupReadonly() {
             return this.data.verification_type !== null;
         },
-     
+
     },
-    
+
 
     components: {
         ValidationProvider,
@@ -1348,27 +1343,27 @@ export default {
     },
 
     methods: {
-  async  getApplicationById(){
-        
-                  this.$axios
+        async getApplicationById() {
+
+            this.$axios
                 .get(`/admin/application/get/${this.$route.params.id}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
                     },
-                  
+
                 })
                 .then((result) => {
 
                     this.data = result.data.application;
-              
-                  
+
+
                 });
 
         },
 
     },
-    
+
 
     created() {
         this.getApplicationById();
@@ -1381,8 +1376,8 @@ export default {
         this.$store
             .dispatch("getGlobalLookupByType", 1)
             .then((res) => (this.locationType = res));
-  
-      
+
+
     },
 };
 </script>
