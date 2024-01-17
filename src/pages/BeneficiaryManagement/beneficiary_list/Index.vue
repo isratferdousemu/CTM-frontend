@@ -309,7 +309,8 @@
 
                       <v-row v-if="advanch_search">
                         <v-col lg="3" md="3" cols="12">
-                          <v-select
+
+                          <v-text-field
                             outlined
                             clearable
                             :label="
@@ -317,8 +318,9 @@
                                 'container.beneficiary_management.beneficiary_list.beneficiary_id'
                               )
                             "
+                            v-model="data.beneficiary_id"
                           >
-                          </v-select>
+                          </v-text-field>
                         </v-col>
                         <v-col lg="3" md="3" cols="12">
                           <v-text-field
@@ -329,7 +331,7 @@
                                 'container.beneficiary_management.beneficiary_list.nominee'
                               )
                             "
-                             v-model="data.nominee_name"
+                            v-model="data.nominee_name"
                           >
                           </v-text-field>
                         </v-col>
@@ -342,7 +344,7 @@
                                 'container.beneficiary_management.beneficiary_list.account_no'
                               )
                             "
-                              v-model="data.account_number"
+                            v-model="data.account_number"
                           >
                           </v-text-field>
                         </v-col>
@@ -355,16 +357,12 @@
                                 'container.beneficiary_management.beneficiary_list.nid'
                               )
                             "
-                             v-model="data.nid"
+                            v-model="data.nid"
                           >
                           </v-text-field>
                         </v-col>
 
-                        <v-col
-                          lg="3"
-                          md="3"
-                          cols="12"
-                        >
+                        <v-col lg="3" md="3" cols="12">
                           <ValidationProvider
                             name="status"
                             vid="status_id"
@@ -373,11 +371,7 @@
                             <v-autocomplete
                               v-model="data.status"
                               outlined
-                              :label="
-                                $t(
-                                  'container.list.status'
-                                )
-                              "
+                              :label="$t('container.list.status')"
                               :items="ben_status"
                               item-text="value"
                               item-value="id"
@@ -392,9 +386,13 @@
                       </v-row>
 
                       <div class="d-inline d-flex justify-end">
-                        <v-btn elevation="2" class="btn mr-2" color="success"   type="submit">{{
-                          $t("container.list.search")
-                        }}</v-btn>
+                        <v-btn
+                          elevation="2"
+                          class="btn mr-2"
+                          color="success"
+                          type="submit"
+                          >{{ $t("container.list.search") }}</v-btn
+                        >
                         <v-btn elevation="2" class="btn" @click="resetSearch">{{
                           $t("container.list.reset")
                         }}</v-btn>
@@ -550,8 +548,6 @@
                               v-on="on"
                               color="#795548"
                               class="mr-3 white--text"
-                              router
-                              to="/beneficiary-management/switch-program"
                               elevation="0"
                             >
                               <v-icon> mdi mdi-swap-horizontal </v-icon>
@@ -571,6 +567,7 @@
                               color="#AFB42B"
                               elevation="0"
                               class="white--text"
+                              @click="GetBeneficiaryById(item)"
                             >
                               <v-icon> mdi-eye </v-icon>
                             </v-btn>
@@ -606,8 +603,6 @@
                               x-small
                               v-on="on"
                               color="#827717"
-                              router
-                              to="/beneficiary-management/beneficiary-replacement"
                               class="ml-3 white--text"
                               elevation="0"
                             >
@@ -624,8 +619,6 @@
                               x-small
                               v-on="on"
                               color="#546E7A"
-                              router
-                              to="/beneficiary-management/beneficiary-journey"
                               class="ml-3 white--text"
                               elevation="0"
                             >
@@ -675,6 +668,47 @@
           </v-col>
         </v-row>
       </v-col>
+
+      <!-- Committee View modal  -->
+      <v-dialog v-model="dialogView" width="80%">
+        <v-card style="justify-content: left; text-align: left">
+          <v-card-title class="font-weight-bold justify-center">
+            Beneficiary View
+            <!-- {{ $t("container.system_config.demo_graphic.committee.view") }} -->
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            <ValidationObserver ref="form" v-slot="{ invalid }">
+              <form @submit.prevent="update()">
+                <v-simple-table>
+                  <template v-if="beneficiaryItem">
+                    <tbody>
+                      <tr>
+                        <td><h4>Program Name</h4></td>
+                        <td>{{ beneficiaryItem.program.name_en }}</td>
+                        <td><h4>Application Id</h4></td>
+                        <td>{{ beneficiaryItem.application_id }}</td>
+                      </tr>
+                      <tr>
+                        <td><h4>Name</h4></td>
+                        <td>{{ beneficiaryItem.name_en }}</td>
+                        <td><h4>Father Name</h4></td>
+                        <td>{{ beneficiaryItem.father_name_en }}</td>
+                      </tr>
+                      <tr>
+                        <td><h4>Mother Name</h4></td>
+                        <td>{{ beneficiaryItem.mother_name_en }}</td>
+                        <td><h4>Mobile</h4></td>
+                        <td>{{ beneficiaryItem.mobile }}</td>
+                      </tr>
+                    </tbody>
+                  </template>
+                </v-simple-table>
+              </form>
+            </ValidationObserver>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
     </v-row>
   </div>
 </template>
@@ -698,27 +732,28 @@ export default {
         city_thana_id: null,
         union_id: null,
         thana_id: null,
-        nominee_name:null,
-        account_number:null,
-        nid:null,
-        status:null
+        beneficiary_id:null,
+        nominee_name: null,
+        account_number: null,
+        nid: null,
+        status: null,
       },
-      ben_status:[
+      ben_status: [
         {
-          id:1,
-          value:"forward"
+          id: 1,
+          value: this.$t("container.list.forward"),
         },
         {
-          id:2,
-          value:"approve"
+          id: 2,
+          value: this.$t("container.list.approve"),
         },
         {
-          id:3,
-          value:"waiting"
+          id: 3,
+          value: this.$t("container.list.waiting"),
         },
         {
-          id:4,
-          value:"reject"
+          id: 4,
+          value:  this.$t("container.list.reject"),
         },
       ],
 
@@ -747,11 +782,13 @@ export default {
         },
       ], // Default selection without 'name'
       selectedHeaders: [],
+      dialogView:false,
+      beneficiaryItem:{},
       loading: true,
       search: "",
       delete_id: "",
       applications: [],
-      beneficiaries:[],
+      beneficiaries: [],
       programs: [],
       divisions: [],
       districts: [],
@@ -766,7 +803,7 @@ export default {
       pagination: {
         current: 1,
         total: 0,
-        perPage: 5,
+        perPage: 10,
       },
       sortBy: "created_at",
       sortDesc: "desc", //DESC
@@ -899,29 +936,28 @@ export default {
 
   methods: {
     resetSearch() {
-      console.log('reset __________--')
-        this.data.program_id = null,
-        this.data.division_id= null,
-        this.data.district_id= null,
-        this.data.city_id= null,
-        this.data.city_thana_id= null,
-        this.data.union_id= null,
-        this.data.thana_id= null,
-        this.data.nominee_name=null,
-        this.data.account_number=null,
-        this.data.nid=null,
-        this.data.status=null
+      console.log("reset __________--");
+      (this.data.program_id = null),
+        (this.data.division_id = null),
+        (this.data.district_id = null),
+        (this.data.city_id = null),
+        (this.data.city_thana_id = null),
+        (this.data.union_id = null),
+        (this.data.thana_id = null),
+        (this.data.beneficiary_id = null),
+        (this.data.nominee_name = null),
+        (this.data.account_number = null),
+        (this.data.nid = null),
+        (this.data.status = null);
 
-        this.districts = null;
-        this.thanas = null,
-        this.district_pouros = null,
-        this.unions = null
-        this.cities = null
-        this.city_thanas = null
+      this.districts = null;
+      (this.thanas = null), (this.district_pouros = null), (this.unions = null);
+      this.cities = null;
+      this.city_thanas = null;
 
       this.GetApplication();
     },
-    
+
     async GetAllProgram() {
       try {
         this.$axios
@@ -1078,6 +1114,7 @@ export default {
 
     onPageChange($event) {
       // this.pagination.current = $event;
+      this.loading = true;
       this.GetApplication();
     },
 
@@ -1093,10 +1130,11 @@ export default {
         union_id: this.data.union_id,
         thana_id: this.data.thana_id,
 
-        nominee_name:this.data.nominee_name,
-        account_number:this.data.account_number,
-        nid:this.data.nid,
-        status:this.data.status,
+        beneficiary_id: this.data.beneficiary_id,
+        nominee_name: this.data.nominee_name,
+        account_number: this.data.account_number,
+        nid: this.data.nid,
+        status: this.data.status,
 
         perPage: this.pagination.perPage,
         page: this.pagination.current,
@@ -1127,14 +1165,18 @@ export default {
       );
       this.$store.commit("setHeaderTitle", title);
     },
+
+    async GetBeneficiaryById(item){
+      this.dialogView = true;
+      this.beneficiaryItem = item;
+      console.log( this.beneficiaryItem)
+
+    }
   },
   watch: {
     "$i18n.locale": "updateHeaderTitle",
-    value(val, prv) {
+    value(val) {
       // this.selectedHeaders = val;
-
-      console.log("watch_val", val);
-      console.log("watch_prev", prv);
 
       this.selectedHeaders = [
         { text: this.$t("container.list.sl"), value: "sl" },
