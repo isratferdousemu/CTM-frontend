@@ -6,9 +6,9 @@ networks:
        driver: bridge
 
 services:
-   frontend:
-     container_name: ctm-frontend
-     image: 'ctm-app-frontend'
+   frontend-stage:
+     container_name: ctm-frontend-stage
+     image: 'ctm-app-frontend-stage'
      environment:
             - TZ=Asia/Dhaka
      ports:
