@@ -12,7 +12,7 @@ services:
      environment:
             - TZ=Asia/Dhaka
      ports:
-       - 8080:80
+       - 8060:80
      restart: always
      build:
          context: "./"
