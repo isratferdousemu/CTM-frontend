@@ -100,15 +100,15 @@ const BeneficiaryManagementRoutes = [
     },
     component: () => import("../pages/BeneficiaryManagement/DigitalIDCard/Index.vue")
   },
-  // {
-  //   path: "/beneficiary-management/digital-id-card",
-  //   name: "digital-id-card",
-  //   meta: {
-  //     requiresAuth: true,
-  //     permission: "digital-id-card",
-  //   },
-  //   component: () => import("../pages/BeneficiaryManagement/DigitalIDCard/DigitalIDCard.vue")
-  // },
+  {
+    path: "/beneficiary-management/digital-id-card",
+    name: "digital-id-card",
+    meta: {
+      requiresAuth: true,
+      permission: "digital-id-card",
+    },
+    component: () => import("../pages/BeneficiaryManagement/DigitalIDCard/DigitalIDCard.vue")
+  },
   {
     path: "/beneficiary-management/beneficiary-exit",
     name: "beneficiary-exit",

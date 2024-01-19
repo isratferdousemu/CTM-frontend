@@ -20,7 +20,7 @@
                   class="elevation-0 transparent mt-10"
                 >
                   <ValidationObserver ref="form" v-slot="{ invalid }">
-                    <form @submit.prevent="GetApplication()">
+                    <form @submit.prevent="onSearch()">
                       <v-row>
                         <v-col lg="3" md="3" cols="12">
                           <ValidationProvider
@@ -278,6 +278,41 @@
                             ></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
+
+                        <v-col
+                          v-if="
+                            data.location_type == 1 ||
+                            data.location_type == 2 ||
+                            data.location_type == 3
+                          "
+                          lg="3"
+                          md="3"
+                          cols="12"
+                        >
+                          <ValidationProvider
+                            name="ward"
+                            vid="ward_id"
+                            v-slot="{ errors }"
+                          >
+                            <v-autocomplete
+                              v-model="data.ward_id"
+                              outlined
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.ward.ward'
+                                )
+                              "
+                              :items="wards"
+                              item-text="name_en"
+                              item-value="id"
+                              class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback"
+                              append-icon="mdi-plus"
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                            ></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
                         <!-- <v-col lg="3" md="3" cols="12">
                           <v-select
                             outlined
@@ -309,7 +344,6 @@
 
                       <v-row v-if="advanch_search">
                         <v-col lg="3" md="3" cols="12">
-
                           <v-text-field
                             outlined
                             clearable
@@ -728,11 +762,13 @@ export default {
         program_id: null,
         division_id: null,
         district_id: null,
+        location_type: null,
         city_id: null,
         city_thana_id: null,
         union_id: null,
+        ward_id: null,
         thana_id: null,
-        beneficiary_id:null,
+        beneficiary_id: null,
         nominee_name: null,
         account_number: null,
         nid: null,
@@ -753,7 +789,7 @@ export default {
         },
         {
           id: 4,
-          value:  this.$t("container.list.reject"),
+          value: this.$t("container.list.reject"),
         },
       ],
 
@@ -782,8 +818,8 @@ export default {
         },
       ], // Default selection without 'name'
       selectedHeaders: [],
-      dialogView:false,
-      beneficiaryItem:{},
+      dialogView: false,
+      beneficiaryItem: {},
       loading: true,
       search: "",
       delete_id: "",
@@ -796,6 +832,7 @@ export default {
       thanas: [],
       cities: [],
       unions: [],
+      wards: [],
       city_thanas: [],
       district_pouros: [],
       advanch_search: false,
@@ -806,7 +843,7 @@ export default {
         perPage: 10,
       },
       sortBy: "created_at",
-      sortDesc: "desc", //DESC
+      sortDesc: "desc",
       items: [5, 10, 15, 20, 40, 50, 100],
     };
   },
@@ -937,21 +974,23 @@ export default {
   methods: {
     resetSearch() {
       console.log("reset __________--");
-      (this.data.program_id = null),
-        (this.data.division_id = null),
-        (this.data.district_id = null),
-        (this.data.city_id = null),
-        (this.data.city_thana_id = null),
-        (this.data.union_id = null),
-        (this.data.thana_id = null),
-        (this.data.beneficiary_id = null),
-        (this.data.nominee_name = null),
-        (this.data.account_number = null),
-        (this.data.nid = null),
-        (this.data.status = null);
+      this.data.program_id = null;
+      this.data.division_id = null;
+      this.data.district_id = null;
+      this.data.city_id = null;
+      this.data.city_thana_id = null;
+      this.data.union_id = null;
+      this.data.thana_id = null;
+      this.data.beneficiary_id = null;
+      this.data.nominee_name = null;
+      this.data.account_number = null;
+      this.data.nid = null;
+      this.data.status = null;
 
       this.districts = null;
-      (this.thanas = null), (this.district_pouros = null), (this.unions = null);
+      this.thanas = null;
+      this.district_pouros = null;
+      this.unions = null;
       this.cities = null;
       this.city_thanas = null;
 
@@ -1036,6 +1075,7 @@ export default {
 
     async LocationType($event) {
       if (this.data.district_id != null && this.data.location_type != null) {
+        console.log("LocationType", $event);
         if ($event === 2) {
           await this.$axios
             .get(`/admin/thana/get/${this.data.district_id}`, {
@@ -1117,18 +1157,27 @@ export default {
       this.loading = true;
       this.GetApplication();
     },
-
+    onSearch() {
+      this.loading = true;
+      this.pagination = {
+        ...this.pagination,
+        current: 1,
+      };
+      this.GetApplication();
+    },
     async GetApplication() {
       const queryParams = {
         // searchText: this.search,
         // location_type: this.data.locationType,
         program_id: this.data.program_id,
         division_id: this.data.division_id,
-        district_id: this.district_id_search,
-        city_id: this.data.city_id,
-        city_thana_id: this.data.city_thana_id,
+        district_id: this.district_id,
+        city_corp_id: this.data.city_id,
+        district_pourashava_id: this.district_pouros,
+        pourashava_id: this.district_pouros,
         union_id: this.data.union_id,
-        thana_id: this.data.thana_id,
+        upazila_id: this.data.thana_id,
+        ward_id: this.data.ward_id,
 
         beneficiary_id: this.data.beneficiary_id,
         nominee_name: this.data.nominee_name,
@@ -1166,12 +1215,11 @@ export default {
       this.$store.commit("setHeaderTitle", title);
     },
 
-    async GetBeneficiaryById(item){
+    async GetBeneficiaryById(item) {
       this.dialogView = true;
       this.beneficiaryItem = item;
-      console.log( this.beneficiaryItem)
-
-    }
+      console.log(this.beneficiaryItem);
+    },
   },
   watch: {
     "$i18n.locale": "updateHeaderTitle",
@@ -1183,6 +1231,16 @@ export default {
         ...val,
         { text: this.$t("container.list.action"), value: "actions" },
       ];
+    },
+    advanch_search(val) {
+      this.data = {
+        ...this.data,
+        beneficiary_id: null,
+        nominee_name: null,
+        account_number: null,
+        nid: null,
+        status: null,
+      };
     },
   },
   created() {
