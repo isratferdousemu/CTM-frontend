@@ -37,45 +37,51 @@
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
                       <ValidationProvider name="program" vid="verification_type" rules="required" v-slot="{ errors }">
-                        <v-radio-group v-model="data.verification_type" row>
-                          Verification type
-                          <span style="
+
+                        <div class="validation-error validation_error_age_limit">
+                          <v-radio-group v-model="data.verification_type" row>
+                            Verification type
+                            <span style="
                               margin-left: 4px;
                               margin-right: 4px;
                               color: red;
                             ">*</span>
-                          <v-radio label="National Identity (NID)" :value="1"></v-radio>
-                          <v-radio label="Birth Registration Number" :value="2"></v-radio>
-                        </v-radio-group>
+                            <v-radio label="National Identity (NID)" :value="1"></v-radio>
+                            <v-radio label="Birth Registration Number" :value="2"></v-radio>
+                          </v-radio-group>
+                        </div>
                       </ValidationProvider>
+
                       <V-row>
 
                         <v-col cols="4">
-                          <div class="validation-error">
-                            <ValidationProvider name="Number" vid="verification_number" rules="checkNumber"
-                              v-slot="{ errors }">
-                              <label>
-                                <span v-if="data.verification_type == 1">
-                                  NID No
-                                </span>
-                                <span v-else-if="data.verification_type == 2">
-                                  BRN No
-                                </span>
-                                <span v-else>
-                                  NID / BRN No
-                                </span>
 
-                              </label>
+                          <ValidationProvider name="Number" vid="verification_number" rules="checkNumber"
+                            v-slot="{ errors }">
+                            <label>
+                              <span v-if="data.verification_type == 1">
+                                NID No
+                              </span>
+                              <span v-else-if="data.verification_type == 2">
+                                BRN No
+                              </span>
+                              <span v-else>
+                                NID / BRN No
+                              </span>
 
-                              <span style="margin-left: 4px; color: red">*</span>
-                              <v-text-field @change="checkNum()" outlined clearable v-model="data.verification_number"
-                                class="mr-2" type="text" required :error="errors[0] ? true : false"
-                                :error-messages="errors[0]">
-                              </v-text-field>
+                            </label>
 
-                            </ValidationProvider>
-                          </div>
+                            <span style="margin-left: 4px; color: red">*</span>
+                            <v-text-field @change="checkNum()" outlined clearable v-model="data.verification_number"
+                              class="mr-2" type="text" required :error="errors[0] ? true : false"
+                              :error-messages="errors[0]">
+                            </v-text-field>
+                            
+
+                          </ValidationProvider>
+
                         </v-col>
+
 
 
                         <v-col cols="2">
@@ -104,8 +110,10 @@
                         <v-col cols="2">
                           <label>Year </label>
                           <span style="margin-left: 4px; color: red">*</span>
-                          <v-select clearable v-model="selectedYear" :items="years" outlined
-                            @change="updateDate"></v-select>
+                          <ValidationProvider name="Age" vid="age" v-slot="{ errors }" rules="required">
+                            <v-select clearable v-model="selectedYear" :items="years" outlined
+                              @change="updateDate"></v-select>
+                          </ValidationProvider>
 
                         </v-col>
 
@@ -251,21 +259,43 @@
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider name="Mother Name in English" vid="mother_name_bn" v-slot="{ errors }">
-                              <label>Mother Name (BN)</label>
-                              <v-text-field v-model="data.mother_name_bn" outlined clearable
-                                :error="errors[0] ? true : false" :error-messages="errors[0]">
-                              </v-text-field>
-                            </ValidationProvider>
+                            <div class="validation-error-mobile">
+                              <ValidationProvider name="Mother Name in English" vid="mother_name_bn" v-slot="{ errors }">
+                                <label>Mother Name (BN)</label>
+                                <v-text-field v-model="data.mother_name_bn" outlined clearable
+                                  :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                </v-text-field>
+                              </ValidationProvider>
+                            </div>
                           </v-col>
+
                           <v-col cols="6" lg="6">
+
                             <ValidationProvider name="Mother Name in English" vid="mother_name_en" v-slot="{ errors }">
                               <label>Mother Name (EN)</label>
                               <v-text-field v-model="data.mother_name_en" outlined clearable
                                 :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
+
                           </v-col>
+
+                          <v-col cols="6" lg="6">
+
+
+                            <ValidationProvider rules="checkNumberMobile" name="Mobile Number" vid="mobile"
+                              v-slot="{ errors }">
+                              <label style="display: inline-block">Mobile Number </label><span
+                                style="margin-left: 4px; color: red">*</span>
+
+                              <v-text-field v-model="data.mobile" outlined type="number" clearable
+                                :error="errors[0] ? true : false" :error-messages="errors[0]">
+                              </v-text-field>
+                            </ValidationProvider>
+
+
+                          </v-col>
+
 
                           <v-col cols="6" lg="6">
                             <div class="validation-error_marital">
@@ -304,38 +334,28 @@
                               </v-select>
                             </ValidationProvider>
                           </v-col>
-                          <v-col>
-                            <div class="validation_error_mobile">
-                              <ValidationProvider rules="checkNumberMobile" name="Mobile Number" vid="mobile"
-                                v-slot="{ errors }">
-                                <label style="display: inline-block">Mobile Number </label><span
-                                  style="margin-left: 4px; color: red">*</span>
 
-                                <v-text-field v-model="data.mobile" outlined type="number" clearable
-                                  :error="errors[0] ? true : false" :error-messages="errors[0]">
+
+                          <v-col cols="6" lg="6">
+                            <div class="validation_error_gender_type">
+                              <ValidationProvider name="Nationality" vid="nationality" readonly v-slot="{ errors }">
+                                <label>Nationality</label>
+                                <v-text-field v-model="data.nationality" outlined :error="errors[0] ? true : false"
+                                  :error-messages="errors[0]">
                                 </v-text-field>
                               </ValidationProvider>
                             </div>
                           </v-col>
-
                           <v-col cols="6" lg="6">
-                            <ValidationProvider name="Nationality" vid="nationality" readonly v-slot="{ errors }">
-                              <label>Nationality</label>
-                              <v-text-field v-model="data.nationality" outlined :error="errors[0] ? true : false"
-                                :error-messages="errors[0]">
+                            <!-- <div class="validation_error_age_limit"> -->
+                            <ValidationProvider name="Age" vid="age" v-slot="{ errors }" rules="required">
+                              <label>Age</label>
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-text-field v-model="data.age" outlined type="number" clearable
+                                :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
-                          </v-col>
-                          <v-col cols="6" lg="6">
-                            <div class="validation_error_age_limit">
-                              <ValidationProvider name="Age" vid="age" v-slot="{ errors }" rules="required">
-                                <label>Age</label>
-                                <span style="margin-left: 4px; color: red">*</span>
-                                <v-text-field v-model="data.age" outlined type="number" clearable
-                                  :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                </v-text-field>
-                              </ValidationProvider>
-                            </div>
+                            <!-- </div> -->
                           </v-col>
                           <v-col cols="6" lg="6">
                             <ValidationProvider name="Gender" vid="gender" v-slot="{ errors }" rules="required">
@@ -1330,7 +1350,7 @@
 
           </form>
         </ValidationObserver>
-          <!-- delete modal  -->
+        <!-- delete modal  -->
         <v-dialog v-model="deleteDialog" width="350">
           <v-card style="justify-content: center; text-align: center">
             <v-card-title class="font-weight-bold justify-center">
@@ -1339,20 +1359,15 @@
             <v-divider></v-divider>
             <v-card-text>
               <div class="subtitle-1 font-weight-medium mt-5">
-               Select Permanent Contact Information Properly
+                Select Permanent Contact Information Properly
               </div>
             </v-card-text>
             <v-card-actions style="display: block">
               <v-row class="mx-0 my-0 py-2" justify="center">
-                <v-btn
-                  text
-                  @click="deleteDialog = false"
-                  outlined
-                  class="custom-btn-width py-2 mr-10"
-                >
+                <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
                   {{ $t("container.list.cancel") }}
                 </v-btn>
-              
+
               </v-row>
             </v-card-actions>
           </v-card>
@@ -1550,7 +1565,7 @@ export default {
       date: null,
       menu: false,
       isChecked: false,
-      deleteDialog:false,
+      deleteDialog: false,
       data: {
 
         program_id: null,
@@ -1788,7 +1803,7 @@ export default {
       this.data.email = null;
     },
     checkNum() {
-      this.$refs.observer.validate();
+      // this.$refs.observer.validate();
     },
     checkIsHaveDIS() {
       if (this.programDetails != null) {
@@ -1820,35 +1835,35 @@ export default {
 
           // }
           // else{ 
-            const selectedDivisionObj = this.permanent_divisions.find(div => div.id === this.data.permanent_division_id);
+          const selectedDivisionObj = this.permanent_divisions.find(div => div.id === this.data.permanent_division_id);
           const selectedDistrictObj = this.permanent_districts.find(dis => dis.id === this.data.permanent_district_id);
           const selectedCityObj = this.permanent_cities.find(city => city.id === this.data.permanent_city_id);
           const selectedThanaObj = this.permanent_city_thanas.find(thana => thana.id === this.data.permanent_city_thana_id);
           const selectedWardsCityObj = this.permanent_wards_city.find(ward_city => ward_city.id === this.data.permanent_ward_id_city);
-          this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ',' + ' District: ' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + ' City: ' + (selectedCityObj ? selectedCityObj.name_en : '') + ',' + ' Thana: ' + (selectedThanaObj ? selectedThanaObj.name_en : '') + ',' + (selectedWardsCityObj ? selectedWardsCityObj.name_en : '') + ','+ ' Post Code: ' + this.data.permanent_post_code + ',' + this.data.permanent_address; 
+          this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ',' + ' District: ' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + ' City: ' + (selectedCityObj ? selectedCityObj.name_en : '') + ',' + ' Thana: ' + (selectedThanaObj ? selectedThanaObj.name_en : '') + ',' + (selectedWardsCityObj ? selectedWardsCityObj.name_en : '') + ',' + ' Post Code: ' + this.data.permanent_post_code + ',' + this.data.permanent_address;
 
           // }
-         
+
 
         }
         if (this.data.permanent_location_type == 2) {
           const selectedDivisionObj = this.permanent_divisions.find(div => div.id === this.data.permanent_division_id);
           const selectedDistrictObj = this.permanent_districts.find(dis => dis.id === this.data.permanent_district_id);
           const selectedUpazilaObj = this.permanent_thanas.find(upazila => upazila.id === this.data.permanent_thana_id);
-          
+
 
           var selectedUnionObj = this.permanent_unions.find(union => union.id === this.data.permanent_union_id);
           var selectedPouroObj = this.permanent_pouros.find(pouro => pouro.id === this.data.permanent_pouro_id);
           var selectedWardUnionObj = this.permanent_wards_upazila_union.find(ward_union => ward_union.id === this.data.permanent_ward_id_union);
           var selectedWardPouroObj = this.permanent_wards_upazila_pouro.find(ward_pouro => ward_pouro.id === this.data.permanent_ward_id_pouro);
 
-          this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ',' + ' District: ' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + ' Upazila: ' + (selectedUpazilaObj ? selectedUpazilaObj.name_en : '') + ',' + ' Union/Pourashava: ' + (selectedUnionObj ? selectedUnionObj.name_en : '') + '' + (selectedPouroObj ? selectedPouroObj.name_en : '') + ','  + (selectedWardUnionObj ? selectedWardUnionObj.name_en : '') + '' + (selectedWardPouroObj ? selectedWardPouroObj.name_en : '') +',' + ' Post Code: ' + this.data.permanent_post_code +',' + this.data.permanent_address ;
-          selectedUnionObj='';
-          selectedPouroObj='';
+          this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ',' + ' District: ' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + ' Upazila: ' + (selectedUpazilaObj ? selectedUpazilaObj.name_en : '') + ',' + ' Union/Pourashava: ' + (selectedUnionObj ? selectedUnionObj.name_en : '') + '' + (selectedPouroObj ? selectedPouroObj.name_en : '') + ',' + (selectedWardUnionObj ? selectedWardUnionObj.name_en : '') + '' + (selectedWardPouroObj ? selectedWardPouroObj.name_en : '') + ',' + ' Post Code: ' + this.data.permanent_post_code + ',' + this.data.permanent_address;
+          selectedUnionObj = '';
+          selectedPouroObj = '';
           selectedWardUnionObj = '';
           selectedWardPouroObj = '';
-          console.log(selectedWardUnionObj, selectedWardPouroObj,"ward")
-          
+          console.log(selectedWardUnionObj, selectedWardPouroObj, "ward")
+
 
         }
         if (this.data.permanent_location_type == 1) {
@@ -1856,7 +1871,7 @@ export default {
           const selectedDistrictObj = this.permanent_districts.find(dis => dis.id === this.data.permanent_district_id);
           const selectedDistObj = this.permanent_district_poros.find(dist => dist.id === this.data.permanent_district_pouro_id);
           const selectedDistWardObj = this.permanent_wards_dist.find(ward_dist => ward_dist.id === this.data.permanent_ward_id_dist);
-          this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ',' + ' District: ' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + ' District Pourashava: ' + (selectedDistObj ? selectedDistObj.name_en : '') + ','  + (selectedDistWardObj ? selectedDistWardObj.name_en : '') +  ',' + ' Post Code: ' + this.data.permanent_post_code +','+ this.data.permanent_address;
+          this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ',' + ' District: ' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + ' District Pourashava: ' + (selectedDistObj ? selectedDistObj.name_en : '') + ',' + (selectedDistWardObj ? selectedDistWardObj.name_en : '') + ',' + ' Post Code: ' + this.data.permanent_post_code + ',' + this.data.permanent_address;
 
         }
 
@@ -2028,7 +2043,7 @@ export default {
 
           if (err.response) {
             if (err.response.data.success == false) {
-              //     this.$refs.form.setErrors(err.response.data.errors);
+              // this.$refs.form.setErrors(err.response.data.errors);
               // this.$toast.error(err.response.data.message);
               if (err.response.data.error_code == "applicant_marital_status") {
                 let errs = {
@@ -2090,24 +2105,50 @@ export default {
             } else if (err.response) {
               this.$refs.form.setErrors(err.response.data.errors);
 
-              this.$toast.error(err.response.data.message);
+              // this.$toast.error(err.response.data.message);
+              this.$toast.error(
+                (err?.response?.data?.errors?.verification_number?.[0] ?? '') +
+                '\n' +
+                (err?.response?.data?.errors?.mobile?.[0] ?? '')
+              );
 
               this.errors = err.response.data.errors
 
 
               // if (err.response.data.error_code === "verification_number") {
-              //scroll to first error filed
-              this.$nextTick(() => {
-                const firstErrorField = document.querySelector(".validation-error");
-                if (firstErrorField) {
-                  firstErrorField.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start",
-                    inline: "start",
-                  });
-                }
-              });
-              // end of scroll to first error filed
+              if (err?.response?.data?.errors?.mobile?.[0]) {
+                //scroll to first error filed
+                this.$nextTick(() => {
+                  const firstErrorField2 = document.querySelector(".validation-error-mobile");
+                  if (firstErrorField2) {
+                    firstErrorField2.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                      inline: "start",
+                    });
+                  }
+                });
+                // end of scroll to first error filed
+
+              }
+
+              if (err?.response?.data?.errors?.verification_number?.[0]) {
+                //scroll to first error filed
+                this.$nextTick(() => {
+                  const firstErrorField1 = document.querySelector(".validation-error");
+                  if (firstErrorField1) {
+                    firstErrorField1.scrollIntoView({
+                      behavior: "smooth",
+                      block: "start",
+                      inline: "start",
+                    });
+                  }
+                });
+                // end of scroll to first error filed
+
+              }
+
+
               // }
               // else if (err.response.data.error_code === "mobile") {
               //      //scroll to first error filed
