@@ -92,7 +92,6 @@
                                                         v-slot="{ errors }">
                                                         <v-autocomplete @input="onChangeSubLocationType($event)"
 
-
                                                             v-model="data.sub_location_type" outlined :label="$t(
                                                                 'container.system_config.demo_graphic.ward.subLocation_type'
                                                             )

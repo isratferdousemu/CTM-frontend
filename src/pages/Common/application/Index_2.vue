@@ -1245,7 +1245,7 @@ export default {
             ],
 
             mobile_ownership: ["No Mobile Phone", "Family Memeber", "Others"],
-            religion: ["Islam", "Hindu"],
+            religion: ["Islam", "Hindu", "Buddhist", "Christian"],
             genders: ["Male", "Female", "3rd Gender"],
 
             yes_no: ["Yes ", "No"],

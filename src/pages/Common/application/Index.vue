@@ -49,35 +49,35 @@
                         </v-radio-group>
                       </ValidationProvider>
                       <V-row>
-                       
-                        <v-col cols="4">
-                             <div class="validation-error">
-                          <ValidationProvider name="Number" vid="verification_number" rules="checkNumber"
-                            v-slot="{ errors }">
-                            <label>
-                              <span v-if="data.verification_type == 1">
-                                NID No
-                              </span>
-                              <span v-else-if="data.verification_type == 2">
-                                BRN No
-                              </span>
-                              <span v-else>
-                                NID / BRN No
-                              </span>
 
-                            </label>
-                          
-                            <span style="margin-left: 4px; color: red">*</span>
-                            <v-text-field @change="checkNum()" outlined clearable v-model="data.verification_number"
-                              class="mr-2" type="text" required :error="errors[0] ? true : false"
-                              :error-messages="errors[0]">
-                            </v-text-field>
-                           
-                          </ValidationProvider>
-   </div>
+                        <v-col cols="4">
+                          <div class="validation-error">
+                            <ValidationProvider name="Number" vid="verification_number" rules="checkNumber"
+                              v-slot="{ errors }">
+                              <label>
+                                <span v-if="data.verification_type == 1">
+                                  NID No
+                                </span>
+                                <span v-else-if="data.verification_type == 2">
+                                  BRN No
+                                </span>
+                                <span v-else>
+                                  NID / BRN No
+                                </span>
+
+                              </label>
+
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-text-field @change="checkNum()" outlined clearable v-model="data.verification_number"
+                                class="mr-2" type="text" required :error="errors[0] ? true : false"
+                                :error-messages="errors[0]">
+                              </v-text-field>
+
+                            </ValidationProvider>
+                          </div>
                         </v-col>
-                          
-                       
+
+
                         <v-col cols="2">
 
 
@@ -266,35 +266,34 @@
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
-                      
+
                           <v-col cols="6" lg="6">
-                            <div  class="validation-error_marital">
-                            <ValidationProvider name="Marital Status" vid="marital_status" v-slot="{ errors }">
-                              <label>Marital Status</label>
-                              <v-select v-model="data.marital_status" outlined clearable :items="marital_status"
-                                :error="errors[0] ? true : false" :error-messages="errors[0]"
-                               >
-                              </v-select>
-                            </ValidationProvider>
+                            <div class="validation-error_marital">
+                              <ValidationProvider name="Marital Status" vid="marital_status" v-slot="{ errors }">
+                                <label>Marital Status</label>
+                                <v-select v-model="data.marital_status" outlined clearable :items="marital_status"
+                                  :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                </v-select>
+                              </ValidationProvider>
                             </div>
                           </v-col>
-                              <v-col cols="6" lg="6"  v-if="data.marital_status == 'Married'">
-                              <ValidationProvider name="Spouse Name in Bangla" vid="spouse_name_bn" v-slot="{ errors }">
-                                <label>Spouse Name (BN)</label>
-                                <v-text-field v-model="data.spouse_name_bn" outlined clearable
-                                  :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                </v-text-field>
-                              </ValidationProvider>
-                            </v-col>
-                               <v-col cols="6" lg="6" v-if="data.marital_status == 'Married'">
-                              <ValidationProvider name="Spouse Name in English" vid="spouse_name_en" v-slot="{ errors }">
-                                <label>Spouse Name (EN)</label>
-                                <v-text-field v-model="data.spouse_name_en" outlined clearable
-                                  :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                </v-text-field>
-                              </ValidationProvider>
-                            </v-col>
-                       
+                          <v-col cols="6" lg="6" v-if="data.marital_status == 'Married'">
+                            <ValidationProvider name="Spouse Name in Bangla" vid="spouse_name_bn" v-slot="{ errors }">
+                              <label>Spouse Name (BN)</label>
+                              <v-text-field v-model="data.spouse_name_bn" outlined clearable
+                                :error="errors[0] ? true : false" :error-messages="errors[0]">
+                              </v-text-field>
+                            </ValidationProvider>
+                          </v-col>
+                          <v-col cols="6" lg="6" v-if="data.marital_status == 'Married'">
+                            <ValidationProvider name="Spouse Name in English" vid="spouse_name_en" v-slot="{ errors }">
+                              <label>Spouse Name (EN)</label>
+                              <v-text-field v-model="data.spouse_name_en" outlined clearable
+                                :error="errors[0] ? true : false" :error-messages="errors[0]">
+                              </v-text-field>
+                            </ValidationProvider>
+                          </v-col>
+
                           <v-col cols="6" lg="6">
                             <ValidationProvider name="Religion" vid="religion" v-slot="{ errors }" rules="required">
                               <label>Religion</label>
@@ -307,15 +306,15 @@
                           </v-col>
                           <v-col>
                             <div class="validation_error_mobile">
-                            <ValidationProvider rules="checkNumberMobile" name="Mobile Number" vid="mobile"
-                              v-slot="{ errors }">
-                              <label style="display: inline-block">Mobile Number </label><span
-                                style="margin-left: 4px; color: red">*</span>
+                              <ValidationProvider rules="checkNumberMobile" name="Mobile Number" vid="mobile"
+                                v-slot="{ errors }">
+                                <label style="display: inline-block">Mobile Number </label><span
+                                  style="margin-left: 4px; color: red">*</span>
 
-                              <v-text-field v-model="data.mobile" outlined type="number" clearable
-                                :error="errors[0] ? true : false" :error-messages="errors[0]">
-                              </v-text-field>
-                            </ValidationProvider>
+                                <v-text-field v-model="data.mobile" outlined type="number" clearable
+                                  :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                </v-text-field>
+                              </ValidationProvider>
                             </div>
                           </v-col>
 
@@ -329,13 +328,13 @@
                           </v-col>
                           <v-col cols="6" lg="6">
                             <div class="validation_error_age_limit">
-                            <ValidationProvider name="Age" vid="age" v-slot="{ errors }" rules="required">
-                              <label>Age</label>
-                              <span style="margin-left: 4px; color: red">*</span>
-                              <v-text-field v-model="data.age" outlined type="number" 
-                                clearable :error="errors[0] ? true : false" :error-messages="errors[0]">
-                              </v-text-field>
-                            </ValidationProvider>
+                              <ValidationProvider name="Age" vid="age" v-slot="{ errors }" rules="required">
+                                <label>Age</label>
+                                <span style="margin-left: 4px; color: red">*</span>
+                                <v-text-field v-model="data.age" outlined type="number" clearable
+                                  :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                </v-text-field>
+                              </ValidationProvider>
                             </div>
                           </v-col>
                           <v-col cols="6" lg="6">
@@ -360,7 +359,7 @@
                           <v-col cols="6" lg="6">
                             <ValidationProvider name="Profession" vid="profession" v-slot="{ errors }">
                               <label>Profession</label>
-                                       <span style="margin-left: 4px; color: red">*</span>
+                              <span style="margin-left: 4px; color: red">*</span>
                               <v-autocomplete v-model="data.profession" outlined clearable :items="professionType"
                                 :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-autocomplete>
@@ -567,7 +566,7 @@
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-text-field v-model="data.address" outlined clearable :error="errors[0] ? true : false"
-                              :error-messages="errors[0]">
+                              handleCheckboxChangsa :error-messages="errors[0]">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
@@ -1161,16 +1160,16 @@
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <div  class="validation_error_gender_type">
-                            <ValidationProvider name="Gender of Nominee" vid="nominee_relation_with_beneficiary"
-                              v-slot="{ errors }" rules="required">
-                              <label>Relationship with Beneficiary</label>
-                              <span style="margin-left: 4px; color: red">*</span>
-                              <v-autocomplete v-model="data.nominee_relation_with_beneficiary" outlined
-                                :items="relations_with_bef" :error="errors[0] ? true : false"
-                                :error-messages="errors[0]">
-                              </v-autocomplete>
-                            </ValidationProvider>
+                            <div class="validation_error_gender_type">
+                              <ValidationProvider name="Gender of Nominee" vid="nominee_relation_with_beneficiary"
+                                v-slot="{ errors }" rules="required">
+                                <label>Relationship with Beneficiary</label>
+                                <span style="margin-left: 4px; color: red">*</span>
+                                <v-autocomplete v-model="data.nominee_relation_with_beneficiary" outlined
+                                  :items="relations_with_bef" :error="errors[0] ? true : false"
+                                  :error-messages="errors[0]">
+                                </v-autocomplete>
+                              </ValidationProvider>
                             </div>
                           </v-col>
                           <v-col cols="6" lg="6">
@@ -1328,8 +1327,37 @@
                 *
               </p>
             </v-card>
+
           </form>
         </ValidationObserver>
+          <!-- delete modal  -->
+        <v-dialog v-model="deleteDialog" width="350">
+          <v-card style="justify-content: center; text-align: center">
+            <v-card-title class="font-weight-bold justify-center">
+              {{ $t("container.system_config.demo_graphic.division.delete") }}
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-card-text>
+              <div class="subtitle-1 font-weight-medium mt-5">
+               Select Permanent Contact Information Properly
+              </div>
+            </v-card-text>
+            <v-card-actions style="display: block">
+              <v-row class="mx-0 my-0 py-2" justify="center">
+                <v-btn
+                  text
+                  @click="deleteDialog = false"
+                  outlined
+                  class="custom-btn-width py-2 mr-10"
+                >
+                  {{ $t("container.list.cancel") }}
+                </v-btn>
+              
+              </v-row>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <!-- delete modal  -->
       </v-col>
     </v-row>
 
@@ -1362,7 +1390,7 @@ extend("numeric", {
 
 extend("checkNumber", {
   validate: (value) => {
-     if (!value && value !== 0) {
+    if (!value && value !== 0) {
       return false;
     }
     // Check if all characters are numeric and not allow special characters
@@ -1378,7 +1406,7 @@ extend("checkNumber", {
 });
 extend("checkMobileNumber", {
   validate: (value) => {
-      if (!value && value !== 0) {
+    if (!value && value !== 0) {
       return false;
     }
     // Check if all characters are numeric and not allow special characters
@@ -1505,7 +1533,7 @@ export default {
       ],
 
       mobile_ownership: ["Myself", "Family Memeber", "Others"],
-      religion: ["Islam", "Hindu"],
+      religion: ["Islam", "Hindu", "Buddhist", "Christian", "Other"],
       genders: ["Male", "Female", "3rd Gender"],
 
       yes_no: ["Yes ", "No"],
@@ -1522,7 +1550,7 @@ export default {
       date: null,
       menu: false,
       isChecked: false,
-
+      deleteDialog:false,
       data: {
 
         program_id: null,
@@ -1735,7 +1763,7 @@ export default {
       this.data.permanent_district_id = null;
       this.data.permanent_upazila = null;
       this.data.permanent_post_code = null;
-      this.data.permanent_address = null;
+      this.data.permanent_address = '';
       this.data.permanent_location_type = null;
       this.data.permanent_thana_id = null;
       this.data.permanent_union_id = null;
@@ -1784,13 +1812,67 @@ export default {
     },
 
     handleNomineeCheckboxChange(event) {
-      // if (event) {
-      //   this.data.nominee_address = 'Division:' + this.data.permanent_division_id + 'District:'+ this.data.permanent_district_id;
-      //   this.data.nominee_address=this.data.permanenet_address;
-      // } else {
-        this.data.nominee_address = this.data.permanent_address
+      if (event == true) {
+        if (this.data.permanent_location_type == 3) {
+          // if( this.data.permanent_division_id ==null && this.data.permanent_division_id ==null &&  this.data.permanent_city_id == null && this.data.permanent_city_thana_id == null && this.data.permanent_ward_id_city == null){
+          //   deleteDialog=true;
 
-      // }
+
+          // }
+          // else{ 
+            const selectedDivisionObj = this.permanent_divisions.find(div => div.id === this.data.permanent_division_id);
+          const selectedDistrictObj = this.permanent_districts.find(dis => dis.id === this.data.permanent_district_id);
+          const selectedCityObj = this.permanent_cities.find(city => city.id === this.data.permanent_city_id);
+          const selectedThanaObj = this.permanent_city_thanas.find(thana => thana.id === this.data.permanent_city_thana_id);
+          const selectedWardsCityObj = this.permanent_wards_city.find(ward_city => ward_city.id === this.data.permanent_ward_id_city);
+          this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ',' + ' District: ' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + ' City: ' + (selectedCityObj ? selectedCityObj.name_en : '') + ',' + ' Thana: ' + (selectedThanaObj ? selectedThanaObj.name_en : '') + ',' + (selectedWardsCityObj ? selectedWardsCityObj.name_en : '') + ','+ ' Post Code: ' + this.data.permanent_post_code + ',' + this.data.permanent_address; 
+
+          // }
+         
+
+        }
+        if (this.data.permanent_location_type == 2) {
+          const selectedDivisionObj = this.permanent_divisions.find(div => div.id === this.data.permanent_division_id);
+          const selectedDistrictObj = this.permanent_districts.find(dis => dis.id === this.data.permanent_district_id);
+          const selectedUpazilaObj = this.permanent_thanas.find(upazila => upazila.id === this.data.permanent_thana_id);
+          
+
+          var selectedUnionObj = this.permanent_unions.find(union => union.id === this.data.permanent_union_id);
+          var selectedPouroObj = this.permanent_pouros.find(pouro => pouro.id === this.data.permanent_pouro_id);
+          var selectedWardUnionObj = this.permanent_wards_upazila_union.find(ward_union => ward_union.id === this.data.permanent_ward_id_union);
+          var selectedWardPouroObj = this.permanent_wards_upazila_pouro.find(ward_pouro => ward_pouro.id === this.data.permanent_ward_id_pouro);
+
+          this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ',' + ' District: ' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + ' Upazila: ' + (selectedUpazilaObj ? selectedUpazilaObj.name_en : '') + ',' + ' Union/Pourashava: ' + (selectedUnionObj ? selectedUnionObj.name_en : '') + '' + (selectedPouroObj ? selectedPouroObj.name_en : '') + ','  + (selectedWardUnionObj ? selectedWardUnionObj.name_en : '') + '' + (selectedWardPouroObj ? selectedWardPouroObj.name_en : '') +',' + ' Post Code: ' + this.data.permanent_post_code +',' + this.data.permanent_address ;
+          selectedUnionObj='';
+          selectedPouroObj='';
+          selectedWardUnionObj = '';
+          selectedWardPouroObj = '';
+          console.log(selectedWardUnionObj, selectedWardPouroObj,"ward")
+          
+
+        }
+        if (this.data.permanent_location_type == 1) {
+          const selectedDivisionObj = this.permanent_divisions.find(div => div.id === this.data.permanent_division_id);
+          const selectedDistrictObj = this.permanent_districts.find(dis => dis.id === this.data.permanent_district_id);
+          const selectedDistObj = this.permanent_district_poros.find(dist => dist.id === this.data.permanent_district_pouro_id);
+          const selectedDistWardObj = this.permanent_wards_dist.find(ward_dist => ward_dist.id === this.data.permanent_ward_id_dist);
+          this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ',' + ' District: ' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + ' District Pourashava: ' + (selectedDistObj ? selectedDistObj.name_en : '') + ','  + (selectedDistWardObj ? selectedDistWardObj.name_en : '') +  ',' + ' Post Code: ' + this.data.permanent_post_code +','+ this.data.permanent_address;
+
+        }
+
+
+
+
+
+
+
+        // this.data.nominee_address = 'Division:' + this.data.permanent_division_id + 'District:'+ this.data.permanent_district_id;
+        // this.data.nominee_address=this.data.permanent_address;
+        //  this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ' District: ' + this.data.permanent_district_id;
+      } else {
+        this.data.nominee_address = null;
+
+      }
     },
     handleCheckboxChange(event) {
       console.log(event)
@@ -2012,20 +2094,20 @@ export default {
 
               this.errors = err.response.data.errors
 
-             
+
               // if (err.response.data.error_code === "verification_number") {
-                 //scroll to first error filed
-                this.$nextTick(() => {
-                  const firstErrorField = document.querySelector(".validation-error");
-                  if (firstErrorField) {
-                    firstErrorField.scrollIntoView({
-                      behavior: "smooth",
-                      block: "start",
-                      inline: "start",
-                    });
-                  }
-                });
-                // end of scroll to first error filed
+              //scroll to first error filed
+              this.$nextTick(() => {
+                const firstErrorField = document.querySelector(".validation-error");
+                if (firstErrorField) {
+                  firstErrorField.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                    inline: "start",
+                  });
+                }
+              });
+              // end of scroll to first error filed
               // }
               // else if (err.response.data.error_code === "mobile") {
               //      //scroll to first error filed
@@ -2042,7 +2124,7 @@ export default {
               //   // end of scroll to first error filed
 
               // }
-             
+
 
 
             }
@@ -2199,7 +2281,7 @@ export default {
         })
         .then((result) => {
           this.permanent_unions = result.data.data;
-          this.onChangeSubLocationTypePermanent(this.data.permanenet_sub_location_type)
+          this.onChangeSubLocationTypePermanent(this.data.permanent_sub_location_type)
 
         });
     },
