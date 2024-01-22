@@ -583,6 +583,8 @@
                               color="#795548"
                               class="mr-3 white--text"
                               elevation="0"
+                              router
+                              to="/beneficiary-management/switch-program"
                             >
                               <v-icon> mdi mdi-swap-horizontal </v-icon>
                             </v-btn>
@@ -601,7 +603,8 @@
                               color="#AFB42B"
                               elevation="0"
                               class="white--text"
-                              @click="GetBeneficiaryById(item)"
+                              router
+                              :to="`/beneficiary-management/beneficiary-info/details/${item.id}`"
                             >
                               <v-icon> mdi-eye </v-icon>
                             </v-btn>
@@ -620,6 +623,8 @@
                               color="success"
                               elevation="0"
                               class="ml-3"
+                              router
+                              :to="`/beneficiary-management/beneficiary-info/edit/${item.id}`"
                             >
                               <v-icon> mdi-account-edit-outline </v-icon>
                             </v-btn>
@@ -639,6 +644,8 @@
                               color="#827717"
                               class="ml-3 white--text"
                               elevation="0"
+                              router 
+                              :to="`/beneficiary-management/beneficiary-replacement/${item.id}`"
                             >
                               <v-icon> mdi mdi-file-replace </v-icon>
                             </v-btn>
@@ -655,6 +662,8 @@
                               color="#546E7A"
                               class="ml-3 white--text"
                               elevation="0"
+                              router 
+                              to="/beneficiary-management/beneficiary-journey"
                             >
                               <v-icon> mdi mdi-history </v-icon>
                             </v-btn>
@@ -777,19 +786,15 @@ export default {
       ben_status: [
         {
           id: 1,
-          value: this.$t("container.list.forward"),
+          value: this.$t("container.list.active"),
         },
         {
           id: 2,
-          value: this.$t("container.list.approve"),
+          value: this.$t("container.list.inactive"),
         },
         {
           id: 3,
           value: this.$t("container.list.waiting"),
-        },
-        {
-          id: 4,
-          value: this.$t("container.list.reject"),
         },
       ],
 
@@ -961,6 +966,8 @@ export default {
         {
           text: this.$t("container.list.status"),
           value: "status",
+          // value: item => `${item.name.first} ${item.name.last}`,
+          // this.headers = this.headers.filter(header => header.key !== key)
         },
         {
           text: this.$t("container.list.action"),
@@ -1200,7 +1207,16 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          this.beneficiaries = result.data.data;
+          // this.beneficiaries = result.data.data;
+          var results = result.data.data;
+          console.log("results", results);
+
+          this.beneficiaries = results.map((item) => {
+            return (item = {
+              ...item,
+              status: this.ben_status[item.status - 1].value,
+            });
+          });
           this.pagination.current = result.data.meta.current_page;
           this.pagination.total = result.data.meta.last_page;
           this.pagination.grand_total = result.data.meta.total;

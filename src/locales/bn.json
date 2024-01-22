@@ -5,8 +5,8 @@
     "container": {
         "list": {
             "sl": "ক্রমিক নং ",
-            "active": "Active",
-            "inactive": "Inactive",
+            "active": "সক্রিয়",
+            "inactive": "নিষ্ক্রিয়",
             "action": "অ্যাকশন ",
             "submit": "সাবমিট ",
             "cancel": "বাতিল",
@@ -41,6 +41,8 @@
             "reason_details": "কারণ বিবরণ",
             "mobile": "মোবাইল",
             "beneficiary_journey": "সুবিধাভোগী যাত্রা",
+            "beneficiary_details": "সুবিধাভোগীর বিবরণ",
+            "beneficiary_edit": "সুবিধাভোগীর সম্পাদনা করুন",
             "change_tracking_details": "ট্র্যাকিং বিবরণ পরিবর্তন করুন",
             "exit": "প্রোগ্রাম থেকে প্রস্থান করুন",
             "preview": "প্রিভিউ",
