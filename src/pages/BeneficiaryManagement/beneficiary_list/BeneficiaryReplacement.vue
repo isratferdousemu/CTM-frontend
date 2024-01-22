@@ -171,6 +171,7 @@
                   hide-default-footer
                   class="elevation-0 transparent row-pointer"
                   show-select
+                  v-model="selected"
                 >
                   <template v-slot:item.id="{ item, index }">
                     {{
@@ -183,9 +184,9 @@
                   <template v-slot:item.name_bn="{ item }">
                     {{ item.name_bn }}
                   </template>
-
+                 
                   <!-- Action Button -->
-                  <!-- <template v-slot:item.actions="{ item }">
+                  <template v-slot:item.actions="{ item }">
                     <v-tooltip top>
                       <template v-slot:activator="{ on }">
                         <v-btn
@@ -197,15 +198,15 @@
                           elevation="0"
                           @click="editDialog(item)"
                         >
-                          <v-icon> mdi-account-edit-outline </v-icon>
+                          <v-icon> mdi-eye </v-icon>
                         </v-btn>
                       </template>
                       <span>
-                        {{ $t("container.list.edit") }}
+                        {{ $t("container.list.view") }}
                       </span>
                     </v-tooltip>
 
-                    <v-tooltip top>
+                    <!-- <v-tooltip top>
                       <template v-slot:activator="{ on }">
                         <v-btn
                           v-can="'delete-division'"
@@ -221,8 +222,8 @@
                         </v-btn>
                       </template>
                       <span> {{ $t("container.list.delete") }}</span>
-                    </v-tooltip>
-                  </template> -->
+                    </v-tooltip> -->
+                  </template>
                   <!-- End Action Button -->
                   <template v-slot:footer="item">
                     <div
@@ -362,8 +363,7 @@ export default {
             this.$toast.error(err?.response?.data?.message);
           });
       } catch (e) {
-        console.log('beneficiary__replaceList',e);
-        
+        console.log("beneficiary__replaceList", e);
       }
     },
   },
@@ -375,7 +375,12 @@ export default {
 
     headers() {
       return [
-      { text: this.$t("container.list.sl"), value: "sl" },
+        {
+          text: this.$t("container.list.sl"),
+          value: "id",
+          align: "start",
+          sortable: false,
+        },
         {
           text: this.$t(
             "container.beneficiary_management.beneficiary_list.beneficiary_id"
@@ -388,14 +393,9 @@ export default {
         },
         {
           text: this.$t(
-            // "container.beneficiary_management.beneficiary_list.beneficiary_id"
             "container.application_selection.application.father_name_en"
           ),
           value: "father_name_en",
-        },
-        {
-          text: this.$t("container.application_selection.application.program"),
-          value: "program.name_en",
         },
         {
           text: this.$t("container.application_selection.application.mobile"),
@@ -408,7 +408,8 @@ export default {
         {
           text: this.$t("container.list.action"),
           value: "actions",
-          width: "25%",
+          align: "center",
+          sortable: false,
         },
       ];
     },
@@ -423,11 +424,9 @@ export default {
   created() {},
   beforeMount() {
     this.updateHeaderTitle();
-   this.GetBeneficiaryDetails(this.$route.params.id);
+    this.GetBeneficiaryDetails(this.$route.params.id);
     this.GetReplaceList();
   },
-  mounted() {
-   
-  },
+  mounted() {},
 };
 </script>
