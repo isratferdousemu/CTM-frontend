@@ -248,7 +248,8 @@
                                     <v-row>
                                         <v-col lg="6" md="6" cols="12">
                                             <v-text-field outlined
-                                                :label="$t('container.application_selection.application.remark')" v-model="forward.remark">
+                                                :label="$t('container.application_selection.application.remark')"
+                                                v-model="forward.remark">
 
                                             </v-text-field>
                                         </v-col>
@@ -266,21 +267,19 @@
                                         </v-col>
                                     </v-row>
                                     <div class="d-inline d-flex justify-end ">
-                                        <v-btn elevation="2" class="btn mr-2" color="success"
-                                        @click="SubmitApproved()" :disabled="isButtonDisabled"
-                                            v-if="this.permissions?.permission?.approve">{{
+                                        <v-btn elevation="2" class="btn mr-2" color="success" @click="SubmitApproved()"
+                                            :disabled="isButtonDisabled" v-if="this.permissions?.permission?.approve">{{
                                                 $t("container.list.approve") }}</v-btn>
-                                        <v-btn elevation="2" class="btn mr-2" color="blue" @click="SubmitForward()" :disabled="isForwardButtonDisabled"
+                                        <v-btn elevation="2" class="btn mr-2" color="blue" @click="SubmitForward()"
+                                            :disabled="isForwardButtonDisabled"
                                             v-if="this.permissions?.permission?.forward">{{
                                                 $t("container.list.forward") }}</v-btn>
-                                        <v-btn elevation="2" class="btn mr-2" color="warning"
-                                          @click="SubmitWaiting()" :disabled="isButtonDisabled"
-                                            
-                                         v-if="this.permissions?.permission?.waiting">{{
+                                        <v-btn elevation="2" class="btn mr-2" color="warning" @click="SubmitWaiting()"
+                                            :disabled="isButtonDisabled" v-if="this.permissions?.permission?.waiting">{{
                                                 $t("container.list.waiting") }}</v-btn>
-                                        <v-btn elevation="2" class="btn mr-2 error"
-                                         @click="SubmitReject()" :disabled="
-                                          isButtonDisabled" v-if="this.permissions?.permission?.reject">{{ $t("container.list.reject")
+                                        <v-btn elevation="2" class="btn mr-2 error" @click="SubmitReject()"
+                                            :disabled="isButtonDisabled" v-if="this.permissions?.permission?.reject">{{
+                                                $t("container.list.reject")
                                             }}</v-btn>
                                     </div>
 
@@ -328,7 +327,8 @@
 
                                             <template v-slot:item.id="{ item, index }">
 
-                                                <v-checkbox v-model="forward.applications_id" :value="item.id" :disabled="unselectedItem(item)"></v-checkbox>
+                                                <v-checkbox v-model="forward.applications_id" :value="item.id"
+                                                    :disabled="unselectedItem(item)"></v-checkbox>
 
 
                                             </template>
@@ -400,32 +400,21 @@
                                             </template>
                                             <template v-slot:item.status="{ item }">
 
-
-                                                <span v-if="item.status == 0" >
-
-                                                    Not Selected
-                                                </span>
-                                                <span v-if="item.status == 1">
-
-                                                    Forwarded
-                                                </span>
-
-                                                <span v-if="item.status == 2">
-
-                                                    Approved
-                                                </span>
-
-                                                <span v-if="item.status == 3">
-
-                                                    Waiting
-                                                </span>
-
-                                                <span v-if="item.status == 4">
-
-                                                    Rejected
-                                                </span>
-
-
+   <span v-if="item.status == 0" class="not-selected" style="background-color: lightgray; padding: 5px;">
+      Not Selected
+    </span>
+    <span v-if="item.status == 1" class="forwarded" style="background-color: #4CAF50; color: white; padding: 5px;">
+      Forwarded
+    </span>
+    <span v-if="item.status == 2" class="approved" style="background-color: #008000; color: white; padding: 5px;">
+      Approved
+    </span>
+    <span v-if="item.status == 3" class="waiting" style="background-color: #FFD700; padding: 5px;">
+      Waiting
+    </span>
+    <span v-if="item.status == 4" class="rejected" style="background-color: #FF0000; color: white; padding: 5px;">
+      Rejected
+    </span>
 
                                             </template>
 
@@ -513,15 +502,15 @@ export default {
                 list_type_id: null,
                 program_id: null
             },
-           
-            forward:{
+
+            forward: {
                 committee_id: null,
-                 remark: null,
+                remark: null,
                 status: null,
-                 applications_id: [],
+                applications_id: [],
             },
-            
-           
+
+
             committe: [],
             permissions: [],
             isFieldVisible: false,
@@ -575,17 +564,17 @@ export default {
             const officeType = this.userData.office.office_type;
             return [8, 9, 10].includes(officeType);
         },
-    
-      isForwardButtonDisabled() {
+
+        isForwardButtonDisabled() {
             // Disable the button if no applications are selected
             return !(this.forward.applications_id && this.forward.applications_id.length > 0 && this.forward.committee_id !== null);
         },
-        isButtonDisabled(){
-             return !(this.forward.applications_id && this.forward.applications_id.length > 0);
+        isButtonDisabled() {
+            return !(this.forward.applications_id && this.forward.applications_id.length > 0);
         },
 
-        
-        
+
+
         ...mapState({
             divisions: (state) => state.Division.divisions,
             userData: (state) => state.userData
@@ -632,12 +621,12 @@ export default {
                     value: "status",
 
                 },
-                  {
+                {
                     text: this.$t("container.application_selection.variable.score"),
                     value: "score",
 
                 },
-              
+
                 {
                     text: this.$t("container.beneficiary_management.beneficiary_list.account_no"),
                     value: "account_number",
@@ -731,14 +720,14 @@ export default {
             this.data.division_id != null;
 
         },
-      unselectedItem(item) {
+        unselectedItem(item) {
             if (this.permissions?.user?.office_type !== null) {
                 return item.status !== 0;
-                
-            } 
-             if (this.permissions?.user?.committee_type_id !== null) {
+
+            }
+            if (this.permissions?.user?.committee_type_id !== null) {
                 return item.status == 2 && item.status == 4;
-                
+
             }
             return false;
         },
@@ -747,14 +736,14 @@ export default {
             console.log('Selected Items:', this.forward.applications_id);
             console.log('status:', this.forward.status);
             console.log('committee:', this.forward.committee_id);
-               let fd = new FormData();
+            let fd = new FormData();
             for (const [key, value] of Object.entries(this.forward)) {
-             
+
                 if (value !== null) {
                     fd.append(key, value);
-                    console.log(key, value,"fd values");
+                    console.log(key, value, "fd values");
                     if (key == "applications_id") {
-                          console.log(key, value, " values");
+                        console.log(key, value, " values");
                         for (let i = 0; i < value.length; i++) {
                             fd.append("applications_id[" + i + "]", value[i]);
                             console.log(key, value, "applications values");
@@ -765,31 +754,31 @@ export default {
 
                 }
             }
-            
-                this.$axios
-                    .post("admin/application/update-status", fd, {
-                        headers: {
-                            Authorization: "Bearer " + this.$store.state.token,
-                            "Content-Type": "multipart/form-data",
-                        },
-                    })
-                    .then((result) => {
-                    
-                         
+
+            this.$axios
+                .post("admin/application/update-status", fd, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((result) => {
+
+
                     this.GetApplication();
 
-                       
-                    })
-                    .catch((err) => {
+
+                })
+                .catch((err) => {
 
 
-                    });
+                });
 
-            
+
 
         },
-        SubmitApproved(){
-             this.forward.status = 2;
+        SubmitApproved() {
+            this.forward.status = 2;
             console.log('Selected Items:', this.forward.applications_id);
             console.log('status:', this.forward.status);
             console.log('committee:', this.forward.committee_id);
@@ -833,8 +822,8 @@ export default {
 
 
         },
-        SubmitWaiting(){
-                   this.forward.status = 3;
+        SubmitWaiting() {
+            this.forward.status = 3;
             console.log('Selected Items:', this.forward.applications_id);
             console.log('status:', this.forward.status);
             console.log('committee:', this.forward.committee_id);
@@ -877,7 +866,7 @@ export default {
                 });
 
         },
-            SubmitReject() {
+        SubmitReject() {
             this.forward.status = 4;
             console.log('Selected Items:', this.forward.applications_id);
             console.log('status:', this.forward.status);
@@ -1517,5 +1506,4 @@ export default {
 .no-arrow-icon .v-input__icon--append {
     font-weight: bold;
 
-}
-</style>
+}</style>
