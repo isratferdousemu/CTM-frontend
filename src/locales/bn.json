@@ -474,6 +474,7 @@
         },
         "application_selection": {
             "application": {
+                "select": "সিলেক্ট",
                 "application": "আবেদন",
                 "list": "আবেদনের তালিকা ",
                 "search": "আবেদন খুঁজন",

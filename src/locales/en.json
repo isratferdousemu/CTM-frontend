@@ -476,6 +476,7 @@
         },
         "application_selection": {
             "application": {
+                "select": "Select",
                 "application": "Application",
                 "list": "Application List",
                 "search": "Application List Search",

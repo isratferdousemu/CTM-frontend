@@ -26,12 +26,11 @@
                                                         :label="$t('container.application_selection.application.program')">
                                                     </v-autocomplete>
                                                 </v-col>
-                                               
+
                                                 <v-col lg="3" md="3" cols="12">
                                                     <ValidationProvider name="Location Type" vid="location_type"
                                                         v-slot="{ errors }">
                                                         <v-autocomplete @input="LocationType($event)"
-                                                           
                                                             v-model="data.location_type" class="no-arrow-icon"
                                                             :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
                                                             :hide-details="errors[0] ? false : true" outlined
@@ -44,10 +43,8 @@
                                                 </v-col>
                                                 <v-col lg="3" md="3" cols="12">
                                                     <ValidationProvider name="Division" vid="division" v-slot="{ errors }">
-                                                        <v-autocomplete 
-                                                            :hide-details="errors[0] ? false : true"
+                                                        <v-autocomplete :hide-details="errors[0] ? false : true"
                                                             @input="onChangeDivision($event)" v-model="data.division_id"
-                                                           
                                                             outlined :label="$t(
                                                                 'container.system_config.demo_graphic.division.division'
                                                             )
@@ -60,8 +57,7 @@
                                                 </v-col>
                                                 <v-col lg="3" md="3" cols="12">
                                                     <ValidationProvider name="District" vid="district" v-slot="{ errors }">
-                                                        <v-autocomplete 
-                                                            :hide-details="errors[0] ? false : true" outlined
+                                                        <v-autocomplete :hide-details="errors[0] ? false : true" outlined
                                                             v-model="data.district_id" @input="onChangeDistrict($event)"
                                                             :label="$t(
                                                                 'container.system_config.demo_graphic.district.district'
@@ -78,20 +74,18 @@
                                                         <v-autocomplete :hide-details="errors[0] ? false : true"
                                                             v-model="data.thana_id" outlined :label="$t('container.system_config.demo_graphic.ward.upazila')
                                                                 " @change="onChangeUpazila($event)" :items="thanas"
-                                                            item-text="name_en"
-                                                            item-value="id" :error="errors[0] ? true : false"
-                                                            :error-messages="errors[0]" class="no-arrow-icon"
-                                                            :append-icon-cb="appendIconCallback"
+                                                            item-text="name_en" item-value="id"
+                                                            :error="errors[0] ? true : false" :error-messages="errors[0]"
+                                                            class="no-arrow-icon" :append-icon-cb="appendIconCallback"
                                                             append-icon="mdi-plus"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
                                                 <v-col v-if="data.location_type == 2" lg="3" md="3" cols="12">
                                                     <!-- :readonly="data.sub_location_type !== null &&  this.permissions?.user?.committee_type_id == 12 -->
-                                                   
+
                                                     <ValidationProvider name="subLocationType" vid="subLocationType"
                                                         v-slot="{ errors }">
                                                         <v-autocomplete @input="onChangeSubLocationType($event)"
-
                                                             v-model="data.sub_location_type" outlined :label="$t(
                                                                 'container.system_config.demo_graphic.ward.subLocation_type'
                                                             )
@@ -113,36 +107,32 @@
                                                             " :items="pouros" item-text="name_en" item-value="id"
                                                             :error="errors[0] ? true : false" :error-messages="errors[0]"
                                                             :hide-details="errors[0] ? false : true" class="no-arrow-icon"
-                                                            
                                                             :append-icon-cb="appendIconCallback"
                                                             append-icon="mdi-plus"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
-                                                 <!-- :readonly="permissions?.user?.committee_type_id == 12 && data.pouro_id != null" -->
+                                                <!-- :readonly="permissions?.user?.committee_type_id == 12 && data.pouro_id != null" -->
 
                                                 <v-col v-if="data.sub_location_type == 2 && data.location_type == 2" lg="3"
                                                     md="3" cols="12">
                                                     <ValidationProvider name="unions" vid="unions" v-slot="{ errors }">
-                                                        <v-autocomplete @input="onChangeUnionGetWard($event)" 
+                                                        <v-autocomplete @input="onChangeUnionGetWard($event)"
                                                             v-model="data.union_id" outlined :label="$t(
                                                                 'container.system_config.demo_graphic.ward.union'
                                                             )
                                                                 " :items="unions" item-text="name_en" item-value="id"
-                                                              
-                                                                 
                                                             :error="errors[0] ? true : false" :error-messages="errors[0]"
-                                                            :hide-details="errors[0] ? false : true" 
-                                                            class="no-arrow-icon" :append-icon-cb="appendIconCallback"
+                                                            :hide-details="errors[0] ? false : true" class="no-arrow-icon"
+                                                            :append-icon-cb="appendIconCallback"
                                                             append-icon="mdi-plus"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
-                                                 <!-- :readonly="permissions?.user?.committee_type_id == 12 && data.union_id !=null"  -->
+                                                <!-- :readonly="permissions?.user?.committee_type_id == 12 && data.union_id !=null"  -->
 
 
                                                 <v-col v-if="data.location_type == 3" lg="3" md="3" cols="12">
                                                     <ValidationProvider name="city" vid="city_id" v-slot="{ errors }">
                                                         <v-autocomplete :hide-details="errors[0] ? false : true"
-                                                           
                                                             @change="onChangeCity($event)" outlined :label="$t('container.system_config.demo_graphic.ward.city')
                                                                 " :items="cities" item-text="name_en" item-value="id"
                                                             :error="errors[0] ? true : false" :error-messages="errors[0]"
@@ -150,11 +140,12 @@
                                                             append-icon="mdi-plus"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
-                                                 <!-- :readonly="data.city_id !== null" v-model="data.city_id" -->
+                                                <!-- :readonly="data.city_id !== null" v-model="data.city_id" -->
                                                 <v-col v-if="data.location_type == 3" lg="3" md="3" cols="12">
                                                     <ValidationProvider name="thana" vid="city_thana_id"
                                                         v-slot="{ errors }">
-                                                        <v-autocomplete @input="onChangeThanaGetWard($event)" :readonly="permissions?.user?.committee_type_id == 13"
+                                                        <v-autocomplete @input="onChangeThanaGetWard($event)"
+                                                            :readonly="permissions?.user?.committee_type_id == 13"
                                                             :hide-details="errors[0] ? false : true"
                                                             v-model="data.city_thana_id" outlined :label="$t('container.system_config.demo_graphic.ward.thana')
                                                                 " :items="city_thanas" item-text="name_en"
@@ -181,7 +172,7 @@
                                                 </v-col>
                                                 <v-col v-if="data.location_type" lg="3" md="3" cols="12">
                                                     <ValidationProvider name="Ward" vid="ward_id" v-slot="{ errors }">
-                                                        <v-autocomplete :hide-details="errors[0] ? false : true"  
+                                                        <v-autocomplete :hide-details="errors[0] ? false : true"
                                                             v-model="data.ward_id" outlined :label="$t('container.system_config.demo_graphic.ward.ward')
                                                                 " :items="wards" item-text="name_en" item-value="id"
                                                             :error="errors[0] ? true : false" :error-messages="errors[0]"
@@ -190,8 +181,8 @@
                                                     </ValidationProvider>
                                                 </v-col>
 
-    <!-- :readonly="permissions?.user?.committee_type_id== 13 && data.ward_id !=null" -->
-                                             
+                                                <!-- :readonly="permissions?.user?.committee_type_id== 13 && data.ward_id !=null" -->
+
 
 
                                             </v-row>
@@ -239,7 +230,8 @@
                                             <div class="d-inline d-flex justify-end ">
                                                 <v-btn elevation="2" type="submit" class="btn mr-2" color="success">{{
                                                     $t("container.list.search") }}</v-btn>
-                                                <v-btn elevation="2" class="btn" @click="resetForm()">{{ $t("container.list.reset") }}</v-btn>
+                                                <v-btn elevation="2" class="btn" @click="resetForm()">{{
+                                                    $t("container.list.reset") }}</v-btn>
                                             </div>
                                         </form>
                                     </ValidationObserver>
@@ -256,12 +248,13 @@
                                     <v-row>
                                         <v-col lg="6" md="6" cols="12">
                                             <v-text-field outlined
-                                                :label="$t('container.application_selection.application.remark')">
+                                                :label="$t('container.application_selection.application.remark')" v-model="forward.remark">
 
                                             </v-text-field>
                                         </v-col>
-                                        <v-col lg="6" md="6" cols="12"  v-if="this.permissions?.permission?.forward">
-                                            <v-select outlined clearable :items="committe" item-text="name" item-value="id">
+                                        <v-col lg="6" md="6" cols="12" v-if="this.permissions?.permission?.forward">
+                                            <v-select outlined clearable :items="committe" item-text="name" item-value="id"
+                                                v-model="forward.committee_id">
                                                 <template v-slot:label>
                                                     <label> {{
                                                         $t("container.application_selection.application.forward_to_committee")
@@ -274,16 +267,20 @@
                                     </v-row>
                                     <div class="d-inline d-flex justify-end ">
                                         <v-btn elevation="2" class="btn mr-2" color="success"
+                                        @click="SubmitApproved()" :disabled="isButtonDisabled"
                                             v-if="this.permissions?.permission?.approve">{{
                                                 $t("container.list.approve") }}</v-btn>
-                                        <v-btn elevation="2" class="btn mr-2" color="success"
+                                        <v-btn elevation="2" class="btn mr-2" color="blue" @click="SubmitForward()" :disabled="isForwardButtonDisabled"
                                             v-if="this.permissions?.permission?.forward">{{
                                                 $t("container.list.forward") }}</v-btn>
                                         <v-btn elevation="2" class="btn mr-2" color="warning"
-                                            v-if="this.permissions?.permission?.waiting">{{
+                                          @click="SubmitWaiting()" :disabled="isButtonDisabled"
+                                            
+                                         v-if="this.permissions?.permission?.waiting">{{
                                                 $t("container.list.waiting") }}</v-btn>
                                         <v-btn elevation="2" class="btn mr-2 error"
-                                            v-if="this.permissions?.permission?.reject">{{ $t("container.list.reject")
+                                         @click="SubmitReject()" :disabled="
+                                          isButtonDisabled" v-if="this.permissions?.permission?.reject">{{ $t("container.list.reject")
                                             }}</v-btn>
                                     </div>
 
@@ -328,6 +325,13 @@
                                         <v-data-table :headers="visibleHeaders" :items="applications" :loading="loading"
                                             item-key="id" :items-per-page="pagination.perPage" hide-default-footer
                                             class="elevation-0 transparent row-pointer">
+
+                                            <template v-slot:item.id="{ item, index }">
+
+                                                <v-checkbox v-model="forward.applications_id" :value="item.id" :disabled="unselectedItem(item)"></v-checkbox>
+
+
+                                            </template>
                                             <template v-slot:item.sl="{ item, index }">
                                                 {{
                                                     (pagination.current - 1) * pagination.perPage +
@@ -345,15 +349,11 @@
                                                     {{ item?.permanent_location.parent?.parent?.parent?.parent?.name_en }}
                                                 </span>
 
-                                                <!-- <span v-if="item?.permanent_location?.type == 'union' ||
-                                                    item?.parent?.type == 'thana'
-                                                    ">
-                                                    {{ item?.permanent_location?.parent?.parent?.parent?.name_en }}
-                                                </span> -->
+
                                             </template>
                                             <template v-slot:item.district="{ item }">
                                                 <span v-if="item?.permanent_location.location_type == '1'">
-                                                    {{ item?.permanent_location?.parent?.parent?. name_en }}
+                                                    {{ item?.permanent_location?.parent?.parent?.name_en }}
                                                 </span>
 
                                                 <span
@@ -361,48 +361,74 @@
                                                     {{ item?.permanent_location.parent?.parent?.parent?.name_en }}
                                                 </span>
 
-                                                <!-- <span v-if="item?.permanent_location?.type == 'union' ||
-                                                    item?.parent?.type == 'thana' || item?.parent?.type == 'pourashava'
-                                                    ">
-                                                    {{ item?.permanent_location?.parent?.parent?.name_en }}
-                                                </span> -->
+
                                             </template>
-                                                 <template v-slot:item.location="{ item }">
-                                                    <span v-if="item?.permanent_location.location_type == '1'">
-                                                        {{ item?.permanent_location?.parent?.name_en }}
-                                                    </span>
+                                            <template v-slot:item.location="{ item }">
+                                                <span v-if="item?.permanent_location.location_type == '1'">
+                                                    {{ item?.permanent_location?.parent?.name_en }}
+                                                </span>
 
-                                                    <span
-                                                        v-if="item?.permanent_location.location_type == '2' || item?.permanent_location.location_type == '3'">
-                                                        {{ item?.permanent_location.parent?.parent?.name_en }}
-                                                    </span>
+                                                <span
+                                                    v-if="item?.permanent_location.location_type == '2' || item?.permanent_location.location_type == '3'">
+                                                    {{ item?.permanent_location.parent?.parent?.name_en }}
+                                                </span>
 
-                                               
-                                                </template>
-                                                  
-                                                     <template v-slot:item.union_pouro_city="{ item }">
-                                                      
 
-                                                        <span
-                                                            v-if="item?.permanent_location.location_type == '2' || item?.permanent_location.location_type == '3'">
-                                                            {{ item?.permanent_location.parent?.name_en }}
-                                                        </span>
+                                            </template>
 
-                                               
-                                                    </template>
-                                                 
-                                                  
-                                                         <template v-slot:item.ward="{ item }">
-                                                      
+                                            <template v-slot:item.union_pouro_city="{ item }">
 
-                                                            <span>
-                                                             
-                                                                {{ item?.permanent_location.name_en }}
-                                                            </span>
 
-                                               
-                                                        </template>
-                                                      
+                                                <span
+                                                    v-if="item?.permanent_location.location_type == '2' || item?.permanent_location.location_type == '3'">
+                                                    {{ item?.permanent_location.parent?.name_en }}
+                                                </span>
+
+
+                                            </template>
+
+
+                                            <template v-slot:item.ward="{ item }">
+
+
+                                                <span>
+
+                                                    {{ item?.permanent_location.name_en }}
+                                                </span>
+
+
+                                            </template>
+                                            <template v-slot:item.status="{ item }">
+
+
+                                                <span v-if="item.status == 0" >
+
+                                                    Not Selected
+                                                </span>
+                                                <span v-if="item.status == 1">
+
+                                                    Forwarded
+                                                </span>
+
+                                                <span v-if="item.status == 2">
+
+                                                    Approved
+                                                </span>
+
+                                                <span v-if="item.status == 3">
+
+                                                    Waiting
+                                                </span>
+
+                                                <span v-if="item.status == 4">
+
+                                                    Rejected
+                                                </span>
+
+
+
+                                            </template>
+
 
                                             <!-- Action Button -->
                                             <template v-slot:item.actions="{ item }">
@@ -487,7 +513,16 @@ export default {
                 list_type_id: null,
                 program_id: null
             },
-            committe:[],
+           
+            forward:{
+                committee_id: null,
+                 remark: null,
+                status: null,
+                 applications_id: [],
+            },
+            
+           
+            committe: [],
             permissions: [],
             isFieldVisible: false,
             value: ["3", "100", "11", "12"], // Default selection without 'name'
@@ -524,9 +559,9 @@ export default {
             },
             items: [5, 10, 15, 20, 40, 50, 100],
 
-            selectedColumns: ['name_en', 'program.name_en', 'application_id'],  // Initially, first 6 columns are selected
+            selectedColumns: ['name_en', 'program.name_en', 'application_id', 'status'],  // Initially, first 6 columns are selected
 
-            fixedColumns: ['sl', 'actions'],  // Two columns that will always remain visible
+            fixedColumns: ['id', 'sl', 'actions'],  // Two columns that will always remain visible
 
 
         };
@@ -540,6 +575,17 @@ export default {
             const officeType = this.userData.office.office_type;
             return [8, 9, 10].includes(officeType);
         },
+    
+      isForwardButtonDisabled() {
+            // Disable the button if no applications are selected
+            return !(this.forward.applications_id && this.forward.applications_id.length > 0 && this.forward.committee_id !== null);
+        },
+        isButtonDisabled(){
+             return !(this.forward.applications_id && this.forward.applications_id.length > 0);
+        },
+
+        
+        
         ...mapState({
             divisions: (state) => state.Division.divisions,
             userData: (state) => state.userData
@@ -561,6 +607,7 @@ export default {
         },
         headers() {
             return [
+                { text: this.$t("container.application_selection.application.select"), value: "id", fixed: true },
                 { text: this.$t("container.list.sl"), value: "sl", fixed: true },
 
                 {
@@ -581,6 +628,17 @@ export default {
 
                 },
                 {
+                    text: this.$t("container.list.status"),
+                    value: "status",
+
+                },
+                  {
+                    text: this.$t("container.application_selection.variable.score"),
+                    value: "score",
+
+                },
+              
+                {
                     text: this.$t("container.beneficiary_management.beneficiary_list.account_no"),
                     value: "account_number",
 
@@ -599,7 +657,7 @@ export default {
                     text: this.$t("container.system_config.demo_graphic.district.district"),
                     value: "district",
                 },
-                 {
+                {
                     text: this.$t("container.system_config.demo_graphic.ward.upazila_city_district"),
                     value: "location",
                 },
@@ -607,12 +665,12 @@ export default {
                     text: this.$t("container.system_config.demo_graphic.ward.union_pouro_city"),
                     value: "union_pouro_city",
                 },
-                   {
+                {
                     text: this.$t("container.system_config.demo_graphic.ward.ward"),
                     value: "ward",
                 },
 
-                
+
 
                 {
                     text: this.$t("container.application_selection.application.father_name_en"),
@@ -669,34 +727,224 @@ export default {
     },
 
     methods: {
-         Division(){
-            this.data.division_id!=null;
+        Division() {
+            this.data.division_id != null;
 
-         },
+        },
+      unselectedItem(item) {
+            if (this.permissions?.user?.office_type !== null) {
+                return item.status !== 0;
+                
+            } 
+             if (this.permissions?.user?.committee_type_id !== null) {
+                return item.status == 2 && item.status == 4;
+                
+            }
+            return false;
+        },
+        SubmitForward() {
+            this.forward.status = 1;
+            console.log('Selected Items:', this.forward.applications_id);
+            console.log('status:', this.forward.status);
+            console.log('committee:', this.forward.committee_id);
+               let fd = new FormData();
+            for (const [key, value] of Object.entries(this.forward)) {
+             
+                if (value !== null) {
+                    fd.append(key, value);
+                    console.log(key, value,"fd values");
+                    if (key == "applications_id") {
+                          console.log(key, value, " values");
+                        for (let i = 0; i < value.length; i++) {
+                            fd.append("applications_id[" + i + "]", value[i]);
+                            console.log(key, value, "applications values");
+                        }
+                    } else {
+                        fd.append(key, value);
+                    }
+
+                }
+            }
+            
+                this.$axios
+                    .post("admin/application/update-status", fd, {
+                        headers: {
+                            Authorization: "Bearer " + this.$store.state.token,
+                            "Content-Type": "multipart/form-data",
+                        },
+                    })
+                    .then((result) => {
+                    
+                         
+                    this.GetApplication();
+
+                       
+                    })
+                    .catch((err) => {
+
+
+                    });
+
+            
+
+        },
+        SubmitApproved(){
+             this.forward.status = 2;
+            console.log('Selected Items:', this.forward.applications_id);
+            console.log('status:', this.forward.status);
+            console.log('committee:', this.forward.committee_id);
+            let fd = new FormData();
+            for (const [key, value] of Object.entries(this.forward)) {
+
+                if (value !== null) {
+                    fd.append(key, value);
+                    console.log(key, value, "fd values");
+                    if (key == "applications_id") {
+                        console.log(key, value, " values");
+                        for (let i = 0; i < value.length; i++) {
+                            fd.append("applications_id[" + i + "]", value[i]);
+                            console.log(key, value, "applications values");
+                        }
+                    } else {
+                        fd.append(key, value);
+                    }
+
+                }
+            }
+
+            this.$axios
+                .post("admin/application/update-status", fd, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((result) => {
+
+
+                    this.GetApplication();
+
+
+                })
+                .catch((err) => {
+
+
+                });
+
+
+        },
+        SubmitWaiting(){
+                   this.forward.status = 3;
+            console.log('Selected Items:', this.forward.applications_id);
+            console.log('status:', this.forward.status);
+            console.log('committee:', this.forward.committee_id);
+            let fd = new FormData();
+            for (const [key, value] of Object.entries(this.forward)) {
+
+                if (value !== null) {
+                    fd.append(key, value);
+                    console.log(key, value, "fd values");
+                    if (key == "applications_id") {
+                        console.log(key, value, " values");
+                        for (let i = 0; i < value.length; i++) {
+                            fd.append("applications_id[" + i + "]", value[i]);
+                            console.log(key, value, "applications values");
+                        }
+                    } else {
+                        fd.append(key, value);
+                    }
+
+                }
+            }
+
+            this.$axios
+                .post("admin/application/update-status", fd, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((result) => {
+
+
+                    this.GetApplication();
+
+
+                })
+                .catch((err) => {
+
+
+                });
+
+        },
+            SubmitReject() {
+            this.forward.status = 4;
+            console.log('Selected Items:', this.forward.applications_id);
+            console.log('status:', this.forward.status);
+            console.log('committee:', this.forward.committee_id);
+            let fd = new FormData();
+            for (const [key, value] of Object.entries(this.forward)) {
+
+                if (value !== null) {
+                    fd.append(key, value);
+                    console.log(key, value, "fd values");
+                    if (key == "applications_id") {
+                        console.log(key, value, " values");
+                        for (let i = 0; i < value.length; i++) {
+                            fd.append("applications_id[" + i + "]", value[i]);
+                            console.log(key, value, "applications values");
+                        }
+                    } else {
+                        fd.append(key, value);
+                    }
+
+                }
+            }
+
+            this.$axios
+                .post("admin/application/update-status", fd, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((result) => {
+
+
+                    this.GetApplication();
+
+
+                })
+                .catch((err) => {
+
+
+                });
+
+        },
         resetForm() {
-         
-           
-         
-                this.data.division_id= null;
-                this.data.district_id= null;
-                this.data.thana_id= null;
-                this.data.union_id= null;
-                this.data.city_id=null;
-                this.data.city_thana_id= null;
-                this.data.district_pouro_id= null;
-                this.data.pouro_id= null;
-                this.data.ward_id= null;
-                this.data.location_type =null;
-                this.data.sub_location_type= null;
-                this.data.application_id= null;
-                this.data.nominee_name= null;
-                this.data.account_no= null;
-                this.data.list_type_id= null;
-                this.data.program_id= null;
-              
-          
+
+
+
+            this.data.division_id = null;
+            this.data.district_id = null;
+            this.data.thana_id = null;
+            this.data.union_id = null;
+            this.data.city_id = null;
+            this.data.city_thana_id = null;
+            this.data.district_pouro_id = null;
+            this.data.pouro_id = null;
+            this.data.ward_id = null;
+            this.data.location_type = null;
+            this.data.sub_location_type = null;
+            this.data.application_id = null;
+            this.data.nominee_name = null;
+            this.data.account_no = null;
+            this.data.list_type_id = null;
+            this.data.program_id = null;
+
+
             this.GetApplication();
-  
+
         },
         GetPermissions() {
             http().get('/admin/application/permissions', {
@@ -746,13 +994,13 @@ export default {
                     this.onChangeDivision(this.data.division_id);
                     this.data.district_id = this.permissions?.user?.assign_location.parent?.id;
                     this.data.location_type = this.permissions?.user?.assign_location?.location_type;
-                     console.log(this.data.division_id, this.data.district_id,"grpou");
+                    console.log(this.data.division_id, this.data.district_id, "grpou");
 
                     if (this.permissions?.user?.committee_type_id == 15) {
                         this.onChangeDistrict(this.data.district_id);
                         this.data.city_id = this.permissions?.user?.assign_location.id;
                         this.onChangeCity(this.data.city_id);
-                        
+
                         console.log(this.data.ward_id, this.data.district_id, "individual 15");
 
 
@@ -762,7 +1010,7 @@ export default {
                     if (this.permissions?.user?.committee_type_id == 14) {
                         this.onChangeDistrict(this.data.district_id);
                         this.data.thana_id = this.permissions?.user?.assign_location.id;
-                         console.log(this.data.ward_id, this.data.district_id, "individual 14");
+                        console.log(this.data.ward_id, this.data.district_id, "individual 14");
 
 
 
@@ -771,7 +1019,7 @@ export default {
                     if (this.permissions?.user?.committee_type_id == 16) {
                         this.onChangeDistrict(this.data.district_id);
                         this.data.district_pouro_id = this.permissions?.user?.assign_location.id;
-                         console.log(this.data.ward_id, this.data.district_id, "individual 16");
+                        console.log(this.data.ward_id, this.data.district_id, "individual 16");
 
 
 
@@ -786,12 +1034,12 @@ export default {
                     this.onChangeDistrict(this.data.district_id);
                     this.data.thana_id = this.permissions?.user?.assign_location.parent?.id;
                     this.onChangeUpazila(this.data.thana_id);
-                     console.log(this.data.division_id, this.data.district_id, "individual 12");
-                    if(this.permissions?.user?.assign_location.type == "union") {
-                        this.data.sub_location_type=2
+                    console.log(this.data.division_id, this.data.district_id, "individual 12");
+                    if (this.permissions?.user?.assign_location.type == "union") {
+                        this.data.sub_location_type = 2
                         this.onChangeSubLocationType(this.data.sub_location_type);
                         this.data.union_id = this.permissions?.user?.assign_location.id;
-                        
+
                     }
                     if (this.permissions?.user?.assign_location.type == "pouro") {
                         this.data.sub_location_type = 1
@@ -799,11 +1047,11 @@ export default {
                         this.data.pouro_id = this.permissions?.user?.assign_location.id;
 
                     }
-                     console.log(this.data.ward_id, this.data.district_id, "individual 12");
-                    
+                    console.log(this.data.ward_id, this.data.district_id, "individual 12");
+
 
                 }
-                if (this.permissions?.user?.committee_type_id == 13 && this.permissions?.user?.assign_location?.location_type ==3) {
+                if (this.permissions?.user?.committee_type_id == 13 && this.permissions?.user?.assign_location?.location_type == 3) {
                     this.data.division_id = this.permissions?.user?.assign_location.parent?.parent?.parent?.parent?.id;
                     this.onChangeDivision(this.data.division_id);
                     this.data.district_id = this.permissions?.user?.assign_location.parent?.parent?.parent?.id;
@@ -813,14 +1061,14 @@ export default {
                     this.onChangeCity(this.data.thana_id);
                     this.data.city_thana_id = this.permissions?.user?.assign_location.parent?.id;
                     this.onChangeThanaGetWard(this.data.city_thana_id);
-                    
-                     
-                        
-                  
-                        this.data.ward_id = this.permissions?.user?.assign_location.id;
-                         console.log(this.data.ward_id, this.data.ward_id, "individual 13 3");
-                
-                    
+
+
+
+
+                    this.data.ward_id = this.permissions?.user?.assign_location.id;
+                    console.log(this.data.ward_id, this.data.ward_id, "individual 13 3");
+
+
 
                 }
                 if (this.permissions?.user?.committee_type_id == 13 && this.permissions?.user?.assign_location?.location_type == 1) {
@@ -832,7 +1080,7 @@ export default {
                     this.data.district_pouro_id = this.permissions?.user?.assign_location.parent?.id;
                     this.onChangeDistrictPouroGetWard(this.data.district_pouro_id);
                     this.data.ward_id = this.permissions?.user?.assign_location.id;
-                     
+
                     console.log(this.data.ward_id, this.data.ward_id, "individual 13 3");
 
                 }
@@ -841,13 +1089,13 @@ export default {
                     this.data.division_id = this.permissions?.user?.assign_location?.parent?.id;
                     this.onChangeDivision(this.data.division_id);
                     this.data.district_id = this.permissions?.user?.assign_location?.id;
-                     console.log(this.data.ward_id, this.data.district_id, "individual 17");
+                    console.log(this.data.ward_id, this.data.district_id, "individual 17");
                 }
 
                 console.log(this.data.ward_id, "ward_final");
                 console.log(this.permissions, "permi");
                 console.log(this.data, "data");
-          
+
             }).catch((err) => {
                 console.log(err);
             })
@@ -901,14 +1149,14 @@ export default {
                 console.log(err);
             })
         },
-         GetCommitte() {
+        GetCommitte() {
             http().get('/admin/application/committee-list', {
 
             }).then((result) => {
 
 
                 this.committe = result.data;
-                console.log(this.committe,"called properly")
+                console.log(this.committe, "called properly")
             }).catch((err) => {
                 console.log(err);
             })
@@ -1115,7 +1363,7 @@ export default {
                     this.wards = result.data.data;
                     this.data.ward_id = this.permissions?.user?.assign_location.id;
                     console.log(this.wards, "wards");
-                    console.log(this.data.ward_id,"ward");
+                    console.log(this.data.ward_id, "ward");
                 });
         },
         async onChangeThanaGetWard(event) {
@@ -1130,8 +1378,8 @@ export default {
                 })
                 .then((result) => {
                     this.wards = result.data.data;
-                    console.log(this.wards,"thanawards")
-                      this.data.ward_id = this.permissions?.user?.assign_location_id
+                    console.log(this.wards, "thanawards")
+                    this.data.ward_id = this.permissions?.user?.assign_location_id
                         ;
                 });
         },
@@ -1158,7 +1406,8 @@ export default {
                 city_id: this.data.city_id,
                 city_thana_id: this.data.city_thana_id,
                 district_pouro_id: this.data.district_pouro_id,
-                // pouro_id: this.data.pouro_id,
+                pouro_id: this.data.pouro_id,
+                sub_location_type: this.data.sub_location_type,
                 ward_id: this.data.ward_id,
                 perPage: this.pagination.perPage,
                 page: this.pagination.current,
@@ -1183,7 +1432,7 @@ export default {
         },
         submitsearch() {
             this.GetApplication();
-          
+
 
         },
 
@@ -1210,7 +1459,7 @@ export default {
     beforeMount() {
 
         this.updateHeaderTitle();
-     
+
 
 
         // if (this.userData?.location?.type == "division") {
