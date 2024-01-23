@@ -6,7 +6,11 @@
         <v-row>
           <v-col cols="12">
             <v-card>
-              <v-card-title><h3>Add Committee</h3></v-card-title>
+              <v-card-title
+                ><h3>
+                  {{ $t("container.system_config.demo_graphic.committee.add") }}
+                </h3></v-card-title
+              >
 
               <v-divider></v-divider>
 
@@ -110,14 +114,14 @@
                       <v-col lg="6" md="6" cols="12">
                         <ValidationProvider
                           name="CommitteeType"
-                          vid="committee_type"
+                          vid="committee_type_id"
                           rules="required"
                           v-slot="{ errors }"
                         >
                           <v-autocomplete
                             :hide-details="errors[0] ? false : true"
                             @input="onChangeCommitteeType($event)"
-                            v-model="data.committee_type"
+                            v-model="data.committee_type_id"
                             outlined
                             :label="
                               $t(
@@ -134,27 +138,27 @@
                         </ValidationProvider>
                       </v-col>
                     </v-row>
-                    <v-card-title 
-                    
-                           v-if="
-                          data.committee_type == 12 ||
-                          data.committee_type == 13 ||
-                          data.committee_type == 14 ||
-                          data.committee_type == 15 ||
-                          data.committee_type == 16 ||
-                          data.committee_type == 17
-                        "
+                    <v-card-title
+                      v-if="
+                        data.committee_type_id == 12 ||
+                        data.committee_type_id == 13 ||
+                        data.committee_type_id == 14 ||
+                        data.committee_type_id == 15 ||
+                        data.committee_type_id == 16 ||
+                        data.committee_type_id == 17
+                      "
                       ><h4>DSS Center</h4></v-card-title
                     >
-                    <v-divider 
-                           v-if="
-                          data.committee_type == 12 ||
-                          data.committee_type == 13 ||
-                          data.committee_type == 14 ||
-                          data.committee_type == 15 ||
-                          data.committee_type == 16 ||
-                          data.committee_type == 17
-                        "></v-divider>
+                    <v-divider
+                      v-if="
+                        data.committee_type_id == 12 ||
+                        data.committee_type_id == 13 ||
+                        data.committee_type_id == 14 ||
+                        data.committee_type_id == 15 ||
+                        data.committee_type_id == 16 ||
+                        data.committee_type_id == 17
+                      "
+                    ></v-divider>
 
                     <v-row>
                       <v-col
@@ -162,12 +166,12 @@
                         md="6"
                         cols="12"
                         v-if="
-                          data.committee_type == 12 ||
-                          data.committee_type == 13 ||
-                          data.committee_type == 14 ||
-                          data.committee_type == 15 ||
-                          data.committee_type == 16 ||
-                          data.committee_type == 17
+                          data.committee_type_id == 12 ||
+                          data.committee_type_id == 13 ||
+                          data.committee_type_id == 14 ||
+                          data.committee_type_id == 15 ||
+                          data.committee_type_id == 16 ||
+                          data.committee_type_id == 17
                         "
                       >
                         <ValidationProvider
@@ -200,12 +204,12 @@
                         md="6"
                         cols="12"
                         v-if="
-                          data.committee_type == 12 ||
-                          data.committee_type == 13 ||
-                          data.committee_type == 14 ||
-                          data.committee_type == 15 ||
-                          data.committee_type == 16 ||
-                          data.committee_type == 17
+                          data.committee_type_id == 12 ||
+                          data.committee_type_id == 13 ||
+                          data.committee_type_id == 14 ||
+                          data.committee_type_id == 15 ||
+                          data.committee_type_id == 16 ||
+                          data.committee_type_id == 17
                         "
                       >
                         <ValidationProvider
@@ -238,8 +242,8 @@
                         md="6"
                         cols="12"
                         v-if="
-                          data.committee_type == 12 ||
-                          data.committee_type == 14
+                          data.committee_type_id == 12 ||
+                          data.committee_type_id == 14
                         "
                       >
                         <ValidationProvider
@@ -272,14 +276,14 @@
                         md="6"
                         cols="12"
                         v-if="
-                          data.committee_type == 13 || data.committee_type == 15
+                          data.committee_type_id == 13 ||
+                          data.committee_type_id == 15
                         "
                       >
                         <ValidationProvider
                           name="city"
                           vid="city_corpo_id"
                           rules="required"
-                          
                           v-slot="{ errors }"
                         >
                           <v-autocomplete
@@ -306,8 +310,8 @@
                         md="6"
                         cols="12"
                         v-if="
-                          data.committee_type == 13
-                          //   || data.committee_type == 14
+                          data.committee_type_id == 13
+                          //   || data.committee_type_id == 14
                         "
                       >
                         <ValidationProvider
@@ -339,7 +343,7 @@
                         lg="6"
                         md="6"
                         cols="12"
-                        v-if="data.committee_type == 12"
+                        v-if="data.committee_type_id == 12"
                       >
                         <ValidationProvider
                           name="union"
@@ -369,7 +373,7 @@
                         lg="6"
                         md="6"
                         cols="12"
-                        v-if="data.committee_type == 16"
+                        v-if="data.committee_type_id == 16"
                       >
                         <ValidationProvider
                           name="union"
@@ -399,7 +403,7 @@
                         lg="6"
                         md="6"
                         cols="12"
-                        v-if="data.committee_type == 13"
+                        v-if="data.committee_type_id == 13"
                       >
                         <ValidationProvider
                           name="ward"
@@ -428,7 +432,13 @@
                     </v-row>
 
                     <v-card-title
-                      ><h4>Add More Committee Member Info</h4></v-card-title
+                      ><h4>
+                        {{
+                          $t(
+                            "container.system_config.demo_graphic.committee.add_more_member"
+                          )
+                        }}
+                      </h4></v-card-title
                     >
                     <v-divider></v-divider>
                     <div class="wrapper mt-5">
@@ -445,7 +455,11 @@
                                 rules="required"
                               >
                                 <v-text-field
-                                  :label="$t('container.system_config.demo_graphic.committee.member_name')"
+                                  :label="
+                                    $t(
+                                      'container.system_config.demo_graphic.committee.member_name'
+                                    )
+                                  "
                                   v-model="data.members[index]['member_name']"
                                   required
                                   outlined
@@ -656,8 +670,6 @@ export default {
         paurashava_id: null,
         members: [
           {
-
-            
             member_name: null,
             designation: null,
             address: null,
@@ -825,7 +837,7 @@ export default {
               //   this.$toast.error(res.response.data.message);
             }
             console.log(this.$refs);
-            console.log(this.errors, 'this.errors');
+            console.log(this.errors, "this.errors");
             //   if (data == null) {
             //     this.$toast.success("Data Inserted Successfully");
             //     this.dialogAdd = false;
@@ -1052,7 +1064,7 @@ export default {
     async onChangeThana(event) {
       // alert(event, "thana, upazila");
       //   if (
-      //     this.data.committee_type == 13 // only load wards
+      //     this.data.committee_type_id == 13 // only load wards
       //   ) {
       await this.$axios
         .get(`/admin/ward/get/thana/${event}`, {
@@ -1092,7 +1104,7 @@ export default {
         });
     },
     async onChangeCommitteeType(event) {
-      this.data.committee_type = event;
+      this.data.committee_type_id = event;
     },
     async onChangeDivision(event) {
       await this.$axios
@@ -1109,19 +1121,20 @@ export default {
     },
     async onChangeDistrict(event) {
       if (
-        this.data.committee_type == 12 ||
-        this.data.committee_type == 14
+        this.data.committee_type_id == 12 ||
+        this.data.committee_type_id == 14
       ) {
         console.log("load Upazila");
+        this.upazilas = [];
         this.GetAllUpazila(this.data.district_id);
       } else {
         /*
-          if committee_type = 16 (district pourosova)
+          if committee_type_id = 16 (district pourosova)
           then lookUpType = 1 (District Pouroshava)
           else lookUpType = 3 (City)
         */
         console.log("load City Corporation/District Pourosova");
-        const lookupType = this.data.committee_type === 16 ? 1 : 3
+        const lookupType = this.data.committee_type_id === 16 ? 1 : 3;
 
         await this.$axios
           .get(`/admin/city/get/` + this.data.district_id + "/" + lookupType, {
@@ -1131,8 +1144,8 @@ export default {
             },
           })
           .then((result) => {
-            this.unions = lookupType === 1 ? result.data.data : []
-            this.city = lookupType === 3 ? result.data.data : []
+            this.unions = lookupType === 1 ? result.data.data : [];
+            this.city = lookupType === 3 ? result.data.data : [];
           });
       }
     },
