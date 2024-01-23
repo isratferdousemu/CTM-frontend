@@ -135,6 +135,7 @@
                   :disabled="invalid"
                   :loading="loading"
                   class="custom-btn-width success white--text py-2"
+                  @click="onReplaceSubmit()"
                 >
                   {{ $t("container.list.replace") }}
                 </v-btn>
@@ -170,8 +171,6 @@
                   :items-per-page="pagination.perPage"
                   hide-default-footer
                   class="elevation-0 transparent row-pointer"
-                  show-select
-                  v-model="selected"
                 >
                   <template v-slot:item.id="{ item, index }">
                     {{
@@ -184,7 +183,16 @@
                   <template v-slot:item.name_bn="{ item }">
                     {{ item.name_bn }}
                   </template>
-                 
+
+                  <template v-slot:item.id="{ item }">
+                    <td>
+                      <v-checkbox
+                        :value="item.id === selectedId"
+                        @change="onCheckboxChange(item.id)"
+                      />
+                    </td>
+                  </template>
+
                   <!-- Action Button -->
                   <template v-slot:item.actions="{ item }">
                     <v-tooltip top>
@@ -196,7 +204,8 @@
                           v-on="on"
                           color="success"
                           elevation="0"
-                          @click="editDialog(item)"
+                          router
+                          :to="`/beneficiary-management/beneficiary-info/details/${item.id}`"
                         >
                           <v-icon> mdi-eye </v-icon>
                         </v-btn>
@@ -205,24 +214,6 @@
                         {{ $t("container.list.view") }}
                       </span>
                     </v-tooltip>
-
-                    <!-- <v-tooltip top>
-                      <template v-slot:activator="{ on }">
-                        <v-btn
-                          v-can="'delete-division'"
-                          fab
-                          x-small
-                          v-on="on"
-                          color="grey"
-                          class="ml-3 white--text"
-                          elevation="0"
-                          @click="deleteAlert(item.id)"
-                        >
-                          <v-icon> mdi-delete </v-icon>
-                        </v-btn>
-                      </template>
-                      <span> {{ $t("container.list.delete") }}</span>
-                    </v-tooltip> -->
                   </template>
                   <!-- End Action Button -->
                   <template v-slot:footer="item">
@@ -304,6 +295,8 @@ export default {
       beneficiary: {},
       replaceList: [],
       selected: [],
+      cb: {},
+      selectedId: null,
     };
   },
   methods: {
@@ -366,6 +359,51 @@ export default {
         console.log("beneficiary__replaceList", e);
       }
     },
+    onCheckboxChange(id) {
+      this.selectedId = id;
+    },
+    onReplaceSubmit() {
+      try {
+        let fd = new FormData();
+
+        fd.append("replace_with_ben_id", this.selectedId);
+        fd.append("cause_id",1);
+        fd.append("cause_detail","cause_detail");
+        fd.append("cause_date", "2024-01-22");
+        fd.append("cause_id",null);
+        
+        // const queryParams = {
+        //   replace_with_ben_id: this.selectedId,
+        //   cause_id: 1,
+        //   cause_detail: "cause detail",
+        //   cause_date: "2024-01-22",
+        //   cause_proof_doc: null,
+        // };
+
+        this.$axios
+          .put(`/admin/beneficiary/replace/${this.$route.params.id}`, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+            // params: queryParams,
+          },fd)
+          .then((result) => {
+
+            // this.replaceList = result.data.data;
+            console.log("beneficiary__replace", result);
+          })
+          .catch((err) => {
+            if (err.response?.data?.errors) {
+              this.$refs.form.setErrors(err.response.data.errors);
+            }
+            console.log(err.response);
+            this.$toast.error(err?.response?.data?.message);
+          });
+      } catch (e) {
+        console.log("beneficiary__replace", e);
+      }
+    },
   },
 
   computed: {
@@ -373,10 +411,20 @@ export default {
       return this.formatDate(this.date);
     },
 
+    checked() {
+      var obj = Object.entries(this.cb) // [key, value]
+        .filter((o) => o[1]) // filter by truthy values
+        .map((o) => o[0]); // map the keys
+
+      console.log("checked__", obj.length);
+
+      return obj;
+    },
+
     headers() {
       return [
         {
-          text: this.$t("container.list.sl"),
+          text: this.$t("container.list.single_select"),
           value: "id",
           align: "start",
           sortable: false,
@@ -400,10 +448,6 @@ export default {
         {
           text: this.$t("container.application_selection.application.mobile"),
           value: "mobile",
-        },
-        {
-          text: this.$t("container.list.status"),
-          value: "status",
         },
         {
           text: this.$t("container.list.action"),

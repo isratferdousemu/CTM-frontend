@@ -47,7 +47,8 @@
             "exit": "প্রোগ্রাম থেকে প্রস্থান করুন",
             "preview": "প্রিভিউ",
             "approve": "অনুমোদন করুন",
-            "remove": "অপসারণ"
+            "remove": "অপসারণ",
+            "single_select":"একক নির্বাচন করুন"
         },
         "system_config": {
             "demo_graphic": {

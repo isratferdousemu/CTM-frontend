@@ -18,7 +18,7 @@
       "reset": "Reset",
       "back": "Back",
       "forward": "Forward",
-      "waiting": "waiting",
+      "waiting": "Waiting",
       "reject": "Reject",
       "status": "Status",
       "code": "Code",
@@ -47,7 +47,8 @@
       "exit": "Exit Program",
       "preview": "Preview",
       "approve": "Approve",
-      "remove": "Remove"
+      "remove": "Remove",
+      "single_select":"Single Select"
     },
     "system_config": {
       "demo_graphic": {

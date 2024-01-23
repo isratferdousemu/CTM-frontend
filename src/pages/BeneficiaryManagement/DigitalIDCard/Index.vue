@@ -412,6 +412,20 @@ export default {
       },
 
       value: ["name_bn"],
+      ben_status: [
+        {
+          id: 1,
+          value: this.$t("container.list.active"),
+        },
+        {
+          id: 2,
+          value: this.$t("container.list.inactive"),
+        },
+        {
+          id: 3,
+          value: this.$t("container.list.waiting"),
+        },
+      ],
       selectedHeaders: [
         { text: this.$t("container.list.sl"), value: "sl" },
         {
@@ -705,7 +719,14 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          this.beneficiaries = result.data.data;
+          var results = result.data.data;
+          this.beneficiaries = results.map((item) => {
+            return (item = {
+              ...item,
+              status: this.ben_status[item.status - 1].value,
+            });
+          });
+
           this.pagination.current = result.data.meta.current_page;
           this.pagination.total = result.data.meta.last_page;
           this.pagination.grand_total = result.data.meta.total;
