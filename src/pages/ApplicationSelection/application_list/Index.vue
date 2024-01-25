@@ -34,6 +34,7 @@
                                                             v-model="data.location_type" class="no-arrow-icon"
                                                             :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
                                                             :hide-details="errors[0] ? false : true" outlined
+                                                            :readonly="isReadonlyLocationType()"
                                                             :label="$t('container.list.location_type')"
                                                             :items="locationType" item-text="value_en" item-value="id"
                                                             :error="errors[0] ? true : false"
@@ -50,6 +51,8 @@
                                                             )
                                                                 " :items="divisions" item-text="name_en"
                                                             item-value="id" :error="errors[0] ? true : false"
+                                                            :readonly="isReadonlyDivision()"
+                                                           
                                                             :error-messages="errors[0]" class="no-arrow-icon"
                                                             :append-icon-cb="appendIconCallback"
                                                             append-icon="mdi-plus"></v-autocomplete>
@@ -64,6 +67,7 @@
                                                             )
                                                                 " :items="districts" item-text="name_en"
                                                             item-value="id" :error="errors[0] ? true : false"
+                                                            :readonly="isReadonlyDistrict()"
                                                             :error-messages="errors[0]" class="no-arrow-icon"
                                                             :append-icon-cb="appendIconCallback"
                                                             append-icon="mdi-plus"></v-autocomplete>
@@ -71,13 +75,22 @@
                                                 </v-col>
                                                 <v-col v-if="data.location_type == 2" lg="3" md="3" cols="12">
                                                     <ValidationProvider name="Upazila" vid="thana_id" v-slot="{ errors }">
-                                                        <v-autocomplete :hide-details="errors[0] ? false : true"
-                                                            v-model="data.thana_id" outlined :label="$t('container.system_config.demo_graphic.ward.upazila')
-                                                                " @change="onChangeUpazila($event)" :items="thanas"
-                                                            item-text="name_en" item-value="id"
-                                                            :error="errors[0] ? true : false" :error-messages="errors[0]"
-                                                            class="no-arrow-icon" :append-icon-cb="appendIconCallback"
-                                                            append-icon="mdi-plus"></v-autocomplete>
+                                                        <v-autocomplete
+      :hide-details="errors[0] ? false : true"
+      v-model="data.thana_id"
+      outlined
+      :label="$t('container.system_config.demo_graphic.ward.upazila')"
+      @change="onChangeUpazila($event)"
+      :items="thanas"
+      item-text="name_en"
+      item-value="id"
+      :error="errors[0] ? true : false"
+      :error-messages="errors[0]"
+      class="no-arrow-icon" 
+      :readonly="isReadonlyUpazila()"
+      :append-icon-cb="appendIconCallback"
+      append-icon="mdi-plus"
+    ></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
                                                 <v-col v-if="data.location_type == 2" lg="3" md="3" cols="12">
@@ -91,6 +104,7 @@
                                                             )
                                                                 " :items="subLocationType" item-text="value_en"
                                                             item-value="id" :error="errors[0] ? true : false"
+                                                            :readonly="isReadonlySubLocation()"
                                                             :error-messages="errors[0]"
                                                             :hide-details="errors[0] ? false : true" class="no-arrow-icon"
                                                             :append-icon-cb="appendIconCallback"
@@ -105,8 +119,10 @@
                                                             'container.system_config.demo_graphic.ward.pouro'
                                                         )
                                                             " :items="pouros" item-text="name_en" item-value="id"
+                                                             @input="onChangePouroGetWard($event)"
                                                             :error="errors[0] ? true : false" :error-messages="errors[0]"
                                                             :hide-details="errors[0] ? false : true" class="no-arrow-icon"
+                                                             :readonly="isReadonlyPouro()"
                                                             :append-icon-cb="appendIconCallback"
                                                             append-icon="mdi-plus"></v-autocomplete>
                                                     </ValidationProvider>
@@ -121,7 +137,9 @@
                                                                 'container.system_config.demo_graphic.ward.union'
                                                             )
                                                                 " :items="unions" item-text="name_en" item-value="id"
-                                                            :error="errors[0] ? true : false" :error-messages="errors[0]"
+                                                            :error="errors[0] ? true : false" 
+                                                            :readonly="isReadonlyUnion()"
+                                                            :error-messages="errors[0]"
                                                             :hide-details="errors[0] ? false : true" class="no-arrow-icon"
                                                             :append-icon-cb="appendIconCallback"
                                                             append-icon="mdi-plus"></v-autocomplete>
@@ -136,7 +154,10 @@
                                                             @change="onChangeCity($event)" outlined :label="$t('container.system_config.demo_graphic.ward.city')
                                                                 " :items="cities" item-text="name_en" item-value="id"
                                                             :error="errors[0] ? true : false" :error-messages="errors[0]"
-                                                            class="no-arrow-icon" :append-icon-cb="appendIconCallback"
+                                                            class="no-arrow-icon" 
+                                                             :readonly="isReadonlyCity()"
+                                                            v-model="data.city_id"
+                                                            :append-icon-cb="appendIconCallback"
                                                             append-icon="mdi-plus"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
@@ -155,12 +176,13 @@
                                                             append-icon="mdi-plus"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
+                                               
                                                 <v-col v-if="data.location_type == 1" lg="3" md="3" cols="12">
 
                                                     <ValidationProvider name="thana" vid="district_pouro_id"
                                                         v-slot="{ errors }">
                                                         <v-autocomplete @input="onChangeDistrictPouroGetWard($event)"
-                                                            :readonly="data.district_pouro_id !== null"
+                                                            :readonly="isReadonlyDistPouro()"
                                                             :hide-details="errors[0] ? false : true"
                                                             v-model="data.district_pouro_id" outlined :label="$t('container.system_config.demo_graphic.ward.dist_pouro')
                                                                 " :items="district_poros" item-text="name_en"
@@ -170,11 +192,13 @@
                                                             append-icon="mdi-plus"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
+                                              
                                                 <v-col v-if="data.location_type" lg="3" md="3" cols="12">
                                                     <ValidationProvider name="Ward" vid="ward_id" v-slot="{ errors }">
                                                         <v-autocomplete :hide-details="errors[0] ? false : true"
                                                             v-model="data.ward_id" outlined :label="$t('container.system_config.demo_graphic.ward.ward')
                                                                 " :items="wards" item-text="name_en" item-value="id"
+                                                                  :readonly="permissions?.user?.committee_type_id==13"
                                                             :error="errors[0] ? true : false" :error-messages="errors[0]"
                                                             class="no-arrow-icon" :append-icon-cb="appendIconCallback"
                                                             append-icon="mdi-plus"></v-autocomplete>
@@ -220,9 +244,12 @@
                                                 </v-col>
 
                                                 <v-col lg="3" md="3" cols="12">
-                                                    <v-select v-model="list_type_id" outlined clearable
-                                                        append-icon="mdi-plus" :append-icon-cb="appendIconCallback"
-                                                        :label="$t('container.application_selection.application.list_type')">
+                                                    <v-select  outlined clearable
+                                                        append-icon="mdi-plus" 
+                                                        :items="lists" item-text="name_en" item-value="id"
+                                                        v-model="data.status_list"
+                                                        :append-icon-cb="appendIconCallback"
+                                                        :label="$t('container.list.status')">
                                                     </v-select>
                                                 </v-col>
                                             </v-row>
@@ -298,32 +325,50 @@
                                 </h3>
                             </v-card-title>
                             <v-card-text>
-                                <v-row justify="end">
+                               <template>
+      <v-row justify="space-between" align="center">
+        <!-- Checkbox on the left -->
+        <v-col lg="3" md="3" cols="12">
+           
+          <v-checkbox :label="$t('container.application_selection.application.select_all')" v-model="selectAll" @change="toggleSelectAll"></v-checkbox>
+        </v-col>
 
-                                    <v-col lg="3" md="3" cols="12">
-
-                                        <!-- selected columns -->
-                                        <v-select v-model="selectedColumns" :items="selectableColumns"
-                                            :label="$t('container.application_selection.application.select_column')"
-                                            multiple v-on:change="updateVisibleColumns" outlined menu-props="top">
-                                            <template v-slot:selection="{ item, index }">
-
-                                            </template>
-
-                                        </v-select>
-                                        <!-- Select column End -->
-
-                                    </v-col>
-                                </v-row>
+        <!-- Dropdown on the right -->
+        <v-col lg="3" md="3" cols="12">
+          <v-select
+            v-model="selectedColumns"
+            :items="selectableColumns"
+            :label="$t('container.application_selection.application.select_column')"
+            multiple
+            @change="updateVisibleColumns"
+            outlined
+            menu-props="top"
+          >
+            <template v-slot:selection="{ item, index }"></template>
+          </v-select>
+        </v-col>
+      </v-row>
+    </template>
                                 <v-row class="ma-0  white round-border d-flex justify-space-between align-center"
                                     justify="center" justify-lg="space-between">
-
+                                         
+                                           
+                                   
+    
                                     <v-col cols="12">
 
 
-                                        <v-data-table :headers="visibleHeaders" :items="applications" :loading="loading"
-                                            item-key="id" :items-per-page="pagination.perPage" hide-default-footer
-                                            class="elevation-0 transparent row-pointer">
+                                        <v-data-table
+      :headers="visibleHeaders"
+      :items="applications"
+      :loading="loading"
+      item-key="id"
+      :items-per-page="pagination.perPage"
+      hide-default-footer
+      class="elevation-0 transparent row-pointer"
+    >
+                                            <!-- Header slot -->
+        
 
                                             <template v-slot:item.id="{ item, index }">
 
@@ -400,22 +445,26 @@
                                             </template>
                                             <template v-slot:item.status="{ item }">
 
-   <span v-if="item.status == 0" class="not-selected" style="background-color: lightgray; padding: 5px;">
-      Not Selected
-    </span>
-    <span v-if="item.status == 1" class="forwarded" style="background-color: #4CAF50; color: white; padding: 5px;">
-      Forwarded
-    </span>
-    <span v-if="item.status == 2" class="approved" style="background-color: #008000; color: white; padding: 5px;">
-      Approved
-    </span>
-    <span v-if="item.status == 3" class="waiting" style="background-color: #FFD700; padding: 5px;">
-      Waiting
-    </span>
-    <span v-if="item.status == 4" class="rejected" style="background-color: #FF0000; color: white; padding: 5px;">
-      Rejected
-    </span>
-
+                                                <span v-if="item.status == 0" class="not-selected"
+                                                    style="background-color: lightgray; padding: 5px; width: 100px;">
+                                                    Not Selected
+                                                </span>
+                                                <span v-if="item.status == 1" class="forwarded"
+                                                    style="background-color: #4CAF50; color: white; padding: 5px; width: 100px;">
+                                                    Forwarded
+                                                </span>
+                                                <span v-if="item.status == 2" class="approved"
+                                                    style="background-color: #008000; color: white; padding: 5px; width: 100px;">
+                                                    Approved
+                                                </span>
+                                                <span v-if="item.status == 3" class="waiting"
+                                                    style="background-color: #FFD700; padding: 5px; width: 100px;">
+                                                    Waiting
+                                                </span>
+                                                <span v-if="item.status == 4" class="rejected"
+                                                    style="background-color: #FF0000; color: white; padding: 5px; width: 100px;">
+                                                    Rejected
+                                                </span>
                                             </template>
 
 
@@ -499,7 +548,7 @@ export default {
                 application_id: null,
                 nominee_name: null,
                 account_no: null,
-                list_type_id: null,
+                status_list: null,
                 program_id: null
             },
 
@@ -509,8 +558,17 @@ export default {
                 status: null,
                 applications_id: [],
             },
+            lists:[
+                { id: 2, name_en: "Approved" },
+                 { id: 1, name_en: "Forwarded" },
+                {id:0,name_en:"Not Selected"},
+               
+                { id: 4, name_en: "Rejected" },
+                { id:3, name_en: "Waiting" },
+             
+            ],
 
-
+            selectAll:null,
             committe: [],
             permissions: [],
             isFieldVisible: false,
@@ -526,6 +584,7 @@ export default {
             city_thanas: [],
             unions: [],
             pouros: [],
+            wards: [],
             locationType: [],
             subLocationType: [
                 {
@@ -560,10 +619,7 @@ export default {
         ValidationObserver,
     },
     computed: {
-        isReadonly() {
-            const officeType = this.userData.office.office_type;
-            return [8, 9, 10].includes(officeType);
-        },
+      
 
         isForwardButtonDisabled() {
             // Disable the button if no applications are selected
@@ -596,6 +652,7 @@ export default {
         },
         headers() {
             return [
+            
                 { text: this.$t("container.application_selection.application.select"), value: "id", fixed: true },
                 { text: this.$t("container.list.sl"), value: "sl", fixed: true },
 
@@ -720,14 +777,139 @@ export default {
             this.data.division_id != null;
 
         },
-        unselectedItem(item) {
+        toggleSelectAll() {
+            // Toggle the state of selectAll
+            if (this.selectAll) {
+                // Select all items based on the unselectedItem logic
+                this.forward.applications_id = this.applications
+                    .filter(item => !this.unselectedItem(item))
+                    .map(app => app.id);
+            } else {
+                // Deselect all items
+                this.forward.applications_id = [];
+            }
+            console.log(this.forward.applications_id, "applications")
+
+        },
+          isReadonlyDivision() {
+            if (this.permissions?.user?.office_type){
+                const officeType = this.permissions?.user?.office_type;
+                return [6,7,8,9,10,11,35].includes(officeType);
+
+            }
+             if (this.permissions?.user?.committee_type_id) {
+               const CommitteeType = this.permissions?.user?.committee_type_id;
+                return [12,13, 14,15,16,17].includes(CommitteeType);
+            }
+            return false;
+            
+        },
+         isReadonlyDistrict() {
             if (this.permissions?.user?.office_type !== null) {
+                const officeType = this.permissions?.user?.office_type;
+                return [7, 8, 9, 10, 11,35].includes(officeType);
+
+            }
+            if (this.permissions?.user?.committee_type_id !== null) {
+                const CommitteeType = this.permissions?.user?.committee_type_id;
+                return [12, 13, 14, 15, 16, 17].includes(CommitteeType);
+            }
+            return false;
+
+        },
+        isReadonlyLocationType(){
+              if (this.permissions?.user?.office_type ) {
+                const officeType = this.permissions?.user?.office_type;
+                return [8, 9, 10, 11,35].includes(officeType);
+
+            }
+            if (this.permissions?.user?.committee_type_id) {
+                const CommitteeType = this.permissions?.user?.committee_type_id;
+                return [12, 13, 14, 15, 16].includes(CommitteeType);
+            }
+            return false;
+
+        },
+        isReadonlyUpazila(){
+             if (this.permissions?.user?.office_type) {
+                const officeType = this.permissions?.user?.office_type;
+                return [8,10,11].includes(officeType);
+
+            }
+            if (this.permissions?.user?.committee_type_id ) {
+                const CommitteeType = this.permissions?.user?.committee_type_id;
+                return [12,14].includes(CommitteeType);
+            }
+            return false;
+
+        },
+        isReadonlySubLocation(){
+          
+            if (this.permissions?.user?.committee_type_id) {
+                const CommitteeType = this.permissions?.user?.committee_type_id;
+                return [12].includes(CommitteeType);
+            }
+            return false;
+
+        },
+        isReadonlyPouro(){
+              if (this.permissions?.user?.committee_type_id) {
+                const CommitteeType = this.permissions?.user?.committee_type_id;
+                return [12].includes(CommitteeType);
+            }
+            return false;
+
+        },
+        isReadonlyUnion() {
+              if (this.permissions?.user?.committee_type_id) {
+                const CommitteeType = this.permissions?.user?.committee_type_id;
+                return [12].includes(CommitteeType);
+            }
+            return false;
+
+        },
+            isReadonlyCity() {
+              if (this.permissions?.user?.office_type) {
+                const officeType = this.permissions?.user?.office_type;
+                return [9].includes(officeType);
+
+            }
+            if (this.permissions?.user?.committee_type_id ) {
+                const CommitteeType = this.permissions?.user?.committee_type_id;
+                return [15, 13].includes(CommitteeType);
+            }
+            return false;
+
+        },
+        isReadonlyDistPouro() {
+            if (this.permissions?.user?.office_type) {
+                const officeType = this.permissions?.user?.office_type;
+                return [35].includes(officeType);
+
+            }
+            if (this.permissions?.user?.committee_type_id) {
+                const CommitteeType = this.permissions?.user?.committee_type_id;
+                return [16, 13].includes(CommitteeType);
+            }
+            return false;
+
+        },
+        // isReadonlyWard(){
+           
+        //     if (this.permissions?.user?.committee_type_id !== null) {
+        //         const CommitteeType = this.permissions?.user?.committee_type_id;
+        //         return [13,0].includes(CommitteeType);
+        //     }
+        //     return false;
+
+        // },
+        unselectedItem(item) {
+            if (this.permissions?.user?.office_type !== null && this.permissions?.user?.committee_type_id == null) {
                 return item.status !== 0;
 
             }
             if (this.permissions?.user?.committee_type_id !== null) {
-                return item.status == 2 && item.status == 4;
-
+                return item.status == 2 || item.status == 4;
             }
             return false;
         },
@@ -763,8 +945,9 @@ export default {
                     },
                 })
                 .then((result) => {
-
-
+                    this.forward=[];
+                    this.forward.applications_id = [];
+                    this.selectAll = false;
                     this.GetApplication();
 
 
@@ -810,7 +993,9 @@ export default {
                 })
                 .then((result) => {
 
-
+                    this.forward = [];
+                      this.selectAll = false;
+                     this.forward.applications_id = [];
                     this.GetApplication();
 
 
@@ -855,7 +1040,10 @@ export default {
                 })
                 .then((result) => {
 
-
+                    this.forward = [];
+                    this.selectAll=false;
+                    console.log(this.selectAll,"select_all");
+                    this.forward.applications_id = [];
                     this.GetApplication();
 
 
@@ -899,8 +1087,10 @@ export default {
                 })
                 .then((result) => {
 
-
+                    this.forward=[];
+                    this.forward.applications_id = [];
                     this.GetApplication();
+                    this.selectAll = false;
 
 
                 })
@@ -928,10 +1118,14 @@ export default {
             this.data.application_id = null;
             this.data.nominee_name = null;
             this.data.account_no = null;
-            this.data.list_type_id = null;
+            this.data.nid_no = null;
+
+            this.data.status_list = null;
             this.data.program_id = null;
+        
+        
 
-
+            this.GetPermissions();
             this.GetApplication();
 
         },
@@ -954,8 +1148,11 @@ export default {
                     }
                     if (this.permissions?.user?.office_type == 9) {
                         this.onChangeDistrict(this.data.district_id);
-
+                        this.LocationType(3);
+                        
+                    
                         this.data.city_id = this.permissions?.user?.assign_location.id;
+                       this.onChangeCity(this.data.city_id);
 
 
 
@@ -964,6 +1161,8 @@ export default {
                         this.onChangeDistrict(this.data.district_id);
 
                         this.data.district_pouro_id = this.permissions?.user?.assign_location.id;
+                        this.onChangeDistrictPouroGetWard(this.data.district_pouro_id);
+                        console.log(this.wards,"wards in permission 35");
 
                     }
 
@@ -971,11 +1170,13 @@ export default {
                 if (this.permissions?.user?.office_type == 6) {
                     this.data.division_id = this.permissions?.user?.assign_location?.id;
                     this.onChangeDivision(this.data.division_id);
+                    console.log(this.wards, "wards in permission 6");
                 }
                 if (this.permissions?.user?.office_type == 7) {
                     this.data.division_id = this.permissions?.user?.assign_location?.parent?.id;
                     this.onChangeDivision(this.data.division_id);
                     this.data.district_id = this.permissions?.user?.assign_location?.id;
+                    console.log(this.wards, "wards in permission 7");
                 }
                 //committee Logic
                 if (this.permissions?.user?.committee_type_id == 15 || this.permissions?.user?.committee_type_id == 14 || this.permissions?.user?.committee_type_id == 16) {
@@ -1008,6 +1209,7 @@ export default {
                     if (this.permissions?.user?.committee_type_id == 16) {
                         this.onChangeDistrict(this.data.district_id);
                         this.data.district_pouro_id = this.permissions?.user?.assign_location.id;
+                        this.onChangeDistrictPouroGetWard(this.data.district_pouro_id);
                         console.log(this.data.ward_id, this.data.district_id, "individual 16");
 
 
@@ -1028,12 +1230,14 @@ export default {
                         this.data.sub_location_type = 2
                         this.onChangeSubLocationType(this.data.sub_location_type);
                         this.data.union_id = this.permissions?.user?.assign_location.id;
+                        this.onChangeUnionGetWard(this.data.union_id);
 
                     }
                     if (this.permissions?.user?.assign_location.type == "pouro") {
                         this.data.sub_location_type = 1
                         this.onChangeSubLocationType(this.data.sub_location_type);
                         this.data.pouro_id = this.permissions?.user?.assign_location.id;
+                         this.onChangePouroGetWard(this.data.pouro_id);
 
                     }
                     console.log(this.data.ward_id, this.data.district_id, "individual 12");
@@ -1057,7 +1261,7 @@ export default {
                     this.data.ward_id = this.permissions?.user?.assign_location.id;
                     console.log(this.data.ward_id, this.data.ward_id, "individual 13 3");
 
-
+                    console.log(this.wards, "wards in permission committee 13 3");
 
                 }
                 if (this.permissions?.user?.committee_type_id == 13 && this.permissions?.user?.assign_location?.location_type == 1) {
@@ -1071,6 +1275,7 @@ export default {
                     this.data.ward_id = this.permissions?.user?.assign_location.id;
 
                     console.log(this.data.ward_id, this.data.ward_id, "individual 13 3");
+                       console.log(this.wards, "wards in permission committee 13 1");
 
                 }
 
@@ -1080,10 +1285,11 @@ export default {
                     this.data.district_id = this.permissions?.user?.assign_location?.id;
                     console.log(this.data.ward_id, this.data.district_id, "individual 17");
                 }
-
+                console.log(this.cities, " this.cities");
                 console.log(this.data.ward_id, "ward_final");
                 console.log(this.permissions, "permi");
                 console.log(this.data, "data");
+                     console.log(this.wards, "wards_final");
 
             }).catch((err) => {
                 console.log(err);
@@ -1153,7 +1359,7 @@ export default {
 
         async LocationType($event) {
 
-
+            this.wards = [];
             if ($event === 1 || $event === 3) {
                 this.data.sub_location_type = null;
             }
@@ -1170,7 +1376,8 @@ export default {
                         })
                         .then((result) => {
                             this.thanas = result.data.data;
-                            this.wards = [];
+                            //emu
+                            // this.wards = [];
                             this.data.ward_id = null;
                             this.cities = [];
                             this.district_poros = [];
@@ -1178,7 +1385,8 @@ export default {
                             this.data.city_id = null;
                             this.data.city_thana_id = null;
                             this.data.district_pouro_id = null;
-                            this.wards = [];
+                            //emu
+                            // this.wards = [];
                             this.ward_id = null;
 
 
@@ -1196,6 +1404,7 @@ export default {
                         })
                         .then((result) => {
                             this.cities = result.data.data;
+                            //emu
                             this.wards = [];
                             this.data.ward_id = null;
                             this.thanas = [];
@@ -1204,7 +1413,8 @@ export default {
                             this.data.union_id = null;
                             this.data.district_pouro_id = null;
                             this.data.pouro_id = null;
-                            this.wards = [];
+                            //emu
+                            // this.wards = [];
                             this.ward_id = null;
 
                         });
@@ -1220,7 +1430,8 @@ export default {
                         })
                         .then((result) => {
                             this.district_poros = result.data.data;
-                            this.wards = [];
+                            //emu
+                            // this.wards = [];
                             this.data.ward_id = null;
                             this.cities = [];
                             this.thanas = [];
@@ -1324,7 +1535,8 @@ export default {
                 });
         },
         async onChangeUnionGetWard(event) {
-            this.wards = [];
+            //emu
+            // this.wards = [];
             this.data.ward_id = null;
             await this.$axios
                 .get(`/admin/ward/get/${event}`, {
@@ -1337,9 +1549,9 @@ export default {
                     this.wards = result.data.data;
                 });
         },
-
-        async onChangeDistrictPouroGetWard(event) {
-            this.wards = [];
+         async onChangePouroGetWard(event) {
+            //emu
+            // this.wards = [];
             this.data.ward_id = null;
             await this.$axios
                 .get(`/admin/ward/get/pouro/${event}`, {
@@ -1350,14 +1562,31 @@ export default {
                 })
                 .then((result) => {
                     this.wards = result.data.data;
-                    this.data.ward_id = this.permissions?.user?.assign_location.id;
-                    console.log(this.wards, "wards");
+                });
+        },
+        
+
+        async onChangeDistrictPouroGetWard(event) {
+            //emu
+            // this.wards = [];
+            // this.data.ward_id = null;
+            await this.$axios
+                .get(`/admin/ward/get/pouro/${this.data.district_pouro_id}`, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((result) => {
+                    this.wards = result.data.data;
+                    console.log(this.wards, "wards in function dist");
                     console.log(this.data.ward_id, "ward");
                 });
         },
         async onChangeThanaGetWard(event) {
-            this.wards = [];
-            this.data.ward_id = null;
+            //emu
+            // this.wards = [];
+            // this.data.ward_id = null;
             await this.$axios
                 .get(`/admin/ward/get/thana/${event}`, {
                     headers: {
@@ -1384,7 +1613,7 @@ export default {
                 application_id: this.data.application_id,
                 nominee_name: this.data.nominee_name,
                 account_no: this.data.account_no,
-                list_type_id: this.data.list_type_id,
+                status: this.data.status,
                 program_id: this.data.program_id,
                 nid_no: this.data.nid_no,
                 division_id: this.data.division_id,
@@ -1398,6 +1627,7 @@ export default {
                 pouro_id: this.data.pouro_id,
                 sub_location_type: this.data.sub_location_type,
                 ward_id: this.data.ward_id,
+                status: this.data.status_list,
                 perPage: this.pagination.perPage,
                 page: this.pagination.current,
             };
@@ -1506,4 +1736,5 @@ export default {
 .no-arrow-icon .v-input__icon--append {
     font-weight: bold;
 
-}</style>
+}
+</style>
