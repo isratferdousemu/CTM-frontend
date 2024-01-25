@@ -1274,7 +1274,7 @@ export default {
                     this.onChangeDistrictPouroGetWard(this.data.district_pouro_id);
                     this.data.ward_id = this.permissions?.user?.assign_location.id;
 
-                    console.log(this.data.ward_id, this.data.ward_id, "individual 13 3");
+                    console.log(this.data.ward_id, this.data.ward_id, "individual 13 1");
                        console.log(this.wards, "wards in permission committee 13 1");
 
                 }
@@ -1378,7 +1378,7 @@ export default {
                             this.thanas = result.data.data;
                             //emu
                             // this.wards = [];
-                            this.data.ward_id = null;
+                            // this.data.ward_id = null;
                             this.cities = [];
                             this.district_poros = [];
 
@@ -1387,7 +1387,7 @@ export default {
                             this.data.district_pouro_id = null;
                             //emu
                             // this.wards = [];
-                            this.ward_id = null;
+                            // this.ward_id = null;
 
 
 
@@ -1405,8 +1405,8 @@ export default {
                         .then((result) => {
                             this.cities = result.data.data;
                             //emu
-                            this.wards = [];
-                            this.data.ward_id = null;
+                            // this.wards = [];
+                            // this.data.ward_id = null;
                             this.thanas = [];
                             this.district_poros = [];
                             this.data.thana_id = null;
@@ -1415,7 +1415,7 @@ export default {
                             this.data.pouro_id = null;
                             //emu
                             // this.wards = [];
-                            this.ward_id = null;
+                            // this.ward_id = null;
 
                         });
                 }
@@ -1448,6 +1448,7 @@ export default {
         },
         async onChangeSubLocationType(event) {
             // alert(event);
+             this.data.ward_id = null;
 
             if (event == 1) {
                 await this.$axios
@@ -1537,7 +1538,7 @@ export default {
         async onChangeUnionGetWard(event) {
             //emu
             // this.wards = [];
-            this.data.ward_id = null;
+            // this.data.ward_id = null;
             await this.$axios
                 .get(`/admin/ward/get/${event}`, {
                     headers: {
@@ -1552,7 +1553,7 @@ export default {
          async onChangePouroGetWard(event) {
             //emu
             // this.wards = [];
-            this.data.ward_id = null;
+            // this.data.ward_id = null;
             await this.$axios
                 .get(`/admin/ward/get/pouro/${event}`, {
                     headers: {
@@ -1597,8 +1598,7 @@ export default {
                 .then((result) => {
                     this.wards = result.data.data;
                     console.log(this.wards, "thanawards")
-                    this.data.ward_id = this.permissions?.user?.assign_location_id
-                        ;
+                  
                 });
         },
 
