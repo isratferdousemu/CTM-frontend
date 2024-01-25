@@ -215,7 +215,9 @@
                     "union_ward": "ইউনিয়ন/ওয়ার্ড",
                     "subLocation_type": "Sub Location",
                     "dist_pouro": "জেলা পৌরসভা",
-                    "union_pouro": "ইউনিয়ন /পৌরসভা"
+                    "union_pouro": "ইউনিয়ন /পৌরসভা",
+                    "post_code":"পোস্ট কোড",
+                    "address":"গ্রাম/বাড়ি নং, রোড নং, ব্লক নং, সেকশন"
                 },
                 "office": {
                     "office": "অফিস",

@@ -367,39 +367,27 @@ export default {
         let fd = new FormData();
 
         fd.append("replace_with_ben_id", this.selectedId);
-        fd.append("cause_id",1);
-        fd.append("cause_detail","cause_detail");
+        fd.append("cause_id", 1);
+        fd.append("cause_detail", "cause_detail");
         fd.append("cause_date", "2024-01-22");
-        fd.append("cause_id",null);
-        
-        // const queryParams = {
-        //   replace_with_ben_id: this.selectedId,
-        //   cause_id: 1,
-        //   cause_detail: "cause detail",
-        //   cause_date: "2024-01-22",
-        //   cause_proof_doc: null,
-        // };
 
-        this.$axios
-          .put(`/admin/beneficiary/replace/${this.$route.params.id}`, {
-            headers: {
-              Authorization: "Bearer " + this.$store.state.token,
-              "Content-Type": "multipart/form-data",
-            },
-            // params: queryParams,
-          },fd)
-          .then((result) => {
+        const data = { formData: fd, id: this.$route.params.id };
 
-            // this.replaceList = result.data.data;
-            console.log("beneficiary__replace", result);
-          })
-          .catch((err) => {
-            if (err.response?.data?.errors) {
-              this.$refs.form.setErrors(err.response.data.errors);
+        this.$store
+          .dispatch("BeneficiaryManagement/BeneficiaryReplacement", data)
+          .then((res) => {
+            console.log(res, "submit__");
+            if (res.data?.success) {
+              this.$toast.success("Beneficiary Replace Successfully");
+              // this.resetData();
+              // this.dialogAdd = false;
+              this.$router.push({ name: "Beneficiary_List" });
+            } else if (res.response?.data?.errors) {
+              this.$refs.form.setErrors(res.response.data.errors);
+              this.errors = res.response.data.errors;
             }
-            console.log(err.response);
-            this.$toast.error(err?.response?.data?.message);
           });
+
       } catch (e) {
         console.log("beneficiary__replace", e);
       }

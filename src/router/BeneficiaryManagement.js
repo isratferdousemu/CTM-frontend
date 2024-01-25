@@ -48,7 +48,7 @@ const BeneficiaryManagementRoutes = [
       },
     {
       path: "/beneficiary-management/beneficiary-info",
-        name: "beneficiary_list",
+        name: "Beneficiary_List",
         meta: {
             requiresAuth: true,
             permission: "beneficiary-list",
