@@ -27,10 +27,11 @@
                                                     </v-autocomplete>
                                                 </v-col>
 
-                                                <v-col lg="3" md="3" cols="12">
+                                                <v-col lg="3" md="3" cols="12" v-if="!isReadonlyLocationType()">
                                                     <ValidationProvider name="Location Type" vid="location_type"
                                                         v-slot="{ errors }">
                                                         <v-autocomplete @input="LocationType($event)"
+                                                           
                                                             v-model="data.location_type" class="no-arrow-icon"
                                                             :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
                                                             :hide-details="errors[0] ? false : true" outlined
@@ -42,7 +43,7 @@
 
                                                     </ValidationProvider>
                                                 </v-col>
-                                                <v-col lg="3" md="3" cols="12">
+                                                <v-col lg="3" md="3" cols="12"   v-if="!isReadonlyDivision()">
                                                     <ValidationProvider name="Division" vid="division" v-slot="{ errors }">
                                                         <v-autocomplete :hide-details="errors[0] ? false : true"
                                                             @input="onChangeDivision($event)" v-model="data.division_id"
@@ -53,12 +54,13 @@
                                                             item-value="id" :error="errors[0] ? true : false"
                                                             :readonly="isReadonlyDivision()"
                                                            
+                                                           
                                                             :error-messages="errors[0]" class="no-arrow-icon"
                                                             :append-icon-cb="appendIconCallback"
                                                             append-icon="mdi-plus"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
-                                                <v-col lg="3" md="3" cols="12">
+                                                <v-col lg="3" md="3" cols="12"    v-if="!isReadonlyDistrict()">
                                                     <ValidationProvider name="District" vid="district" v-slot="{ errors }">
                                                         <v-autocomplete :hide-details="errors[0] ? false : true" outlined
                                                             v-model="data.district_id" @input="onChangeDistrict($event)"
@@ -68,14 +70,15 @@
                                                                 " :items="districts" item-text="name_en"
                                                             item-value="id" :error="errors[0] ? true : false"
                                                             :readonly="isReadonlyDistrict()"
+                                                         
                                                             :error-messages="errors[0]" class="no-arrow-icon"
                                                             :append-icon-cb="appendIconCallback"
                                                             append-icon="mdi-plus"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
-                                                <v-col v-if="data.location_type == 2" lg="3" md="3" cols="12">
+                                                <v-col v-if="data.location_type == 2 &&  !isReadonlyUpazila()" lg="3" md="3" cols="12" >
                                                     <ValidationProvider name="Upazila" vid="thana_id" v-slot="{ errors }">
-                                                        <v-autocomplete
+                                                        <v-autocomplete 
       :hide-details="errors[0] ? false : true"
       v-model="data.thana_id"
       outlined
@@ -88,12 +91,13 @@
       :error-messages="errors[0]"
       class="no-arrow-icon" 
       :readonly="isReadonlyUpazila()"
+     
       :append-icon-cb="appendIconCallback"
       append-icon="mdi-plus"
     ></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
-                                                <v-col v-if="data.location_type == 2" lg="3" md="3" cols="12">
+                                                <v-col v-if="data.location_type == 2 && !isReadonlySubLocation()" lg="3" md="3" cols="12">
                                                     <!-- :readonly="data.sub_location_type !== null &&  this.permissions?.user?.committee_type_id == 12 -->
 
                                                     <ValidationProvider name="subLocationType" vid="subLocationType"
@@ -105,6 +109,7 @@
                                                                 " :items="subLocationType" item-text="value_en"
                                                             item-value="id" :error="errors[0] ? true : false"
                                                             :readonly="isReadonlySubLocation()"
+                                                          
                                                             :error-messages="errors[0]"
                                                             :hide-details="errors[0] ? false : true" class="no-arrow-icon"
                                                             :append-icon-cb="appendIconCallback"
@@ -112,8 +117,8 @@
                                                     </ValidationProvider>
                                                 </v-col>
 
-                                                <v-col v-if="data.location_type == 2 && data.sub_location_type == 1" lg="3"
-                                                    md="3" cols="12">
+                                                <v-col v-if="data.location_type == 2 && data.sub_location_type == 1 && !isReadonlyPouro()" lg="3"
+                                                    md="3" cols="12" >
                                                     <ValidationProvider name="pouros" vid="pouros" v-slot="{ errors }">
                                                         <v-autocomplete v-model="data.pouro_id" outlined :label="$t(
                                                             'container.system_config.demo_graphic.ward.pouro'
@@ -123,13 +128,14 @@
                                                             :error="errors[0] ? true : false" :error-messages="errors[0]"
                                                             :hide-details="errors[0] ? false : true" class="no-arrow-icon"
                                                              :readonly="isReadonlyPouro()"
+                                                            
                                                             :append-icon-cb="appendIconCallback"
                                                             append-icon="mdi-plus"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
                                                 <!-- :readonly="permissions?.user?.committee_type_id == 12 && data.pouro_id != null" -->
 
-                                                <v-col v-if="data.sub_location_type == 2 && data.location_type == 2" lg="3"
+                                                <v-col v-if="data.sub_location_type == 2 && data.location_type == 2  && !isReadonlyUnion()" lg="3"
                                                     md="3" cols="12">
                                                     <ValidationProvider name="unions" vid="unions" v-slot="{ errors }">
                                                         <v-autocomplete @input="onChangeUnionGetWard($event)"
@@ -139,6 +145,7 @@
                                                                 " :items="unions" item-text="name_en" item-value="id"
                                                             :error="errors[0] ? true : false" 
                                                             :readonly="isReadonlyUnion()"
+                                                            
                                                             :error-messages="errors[0]"
                                                             :hide-details="errors[0] ? false : true" class="no-arrow-icon"
                                                             :append-icon-cb="appendIconCallback"
@@ -148,7 +155,7 @@
                                                 <!-- :readonly="permissions?.user?.committee_type_id == 12 && data.union_id !=null"  -->
 
 
-                                                <v-col v-if="data.location_type == 3" lg="3" md="3" cols="12">
+                                                <v-col v-if="data.location_type == 3 && !isReadonlyCity()" lg="3" md="3" cols="12">
                                                     <ValidationProvider name="city" vid="city_id" v-slot="{ errors }">
                                                         <v-autocomplete :hide-details="errors[0] ? false : true"
                                                             @change="onChangeCity($event)" outlined :label="$t('container.system_config.demo_graphic.ward.city')
@@ -156,17 +163,19 @@
                                                             :error="errors[0] ? true : false" :error-messages="errors[0]"
                                                             class="no-arrow-icon" 
                                                              :readonly="isReadonlyCity()"
+                                                             
                                                             v-model="data.city_id"
                                                             :append-icon-cb="appendIconCallback"
                                                             append-icon="mdi-plus"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
                                                 <!-- :readonly="data.city_id !== null" v-model="data.city_id" -->
-                                                <v-col v-if="data.location_type == 3" lg="3" md="3" cols="12">
+                                                <v-col v-if="data.location_type == 3 && permissions?.user?.committee_type_id != 13" lg="3" md="3" cols="12">
                                                     <ValidationProvider name="thana" vid="city_thana_id"
                                                         v-slot="{ errors }">
                                                         <v-autocomplete @input="onChangeThanaGetWard($event)"
                                                             :readonly="permissions?.user?.committee_type_id == 13"
+                                                            
                                                             :hide-details="errors[0] ? false : true"
                                                             v-model="data.city_thana_id" outlined :label="$t('container.system_config.demo_graphic.ward.thana')
                                                                 " :items="city_thanas" item-text="name_en"
@@ -177,12 +186,14 @@
                                                     </ValidationProvider>
                                                 </v-col>
                                                
-                                                <v-col v-if="data.location_type == 1" lg="3" md="3" cols="12">
+                                                <v-col v-if="data.location_type == 1 && !isReadonlyDistPouro()" lg="3" md="3" cols="12">
 
                                                     <ValidationProvider name="thana" vid="district_pouro_id"
                                                         v-slot="{ errors }">
                                                         <v-autocomplete @input="onChangeDistrictPouroGetWard($event)"
                                                             :readonly="isReadonlyDistPouro()"
+                                                            
+
                                                             :hide-details="errors[0] ? false : true"
                                                             v-model="data.district_pouro_id" outlined :label="$t('container.system_config.demo_graphic.ward.dist_pouro')
                                                                 " :items="district_poros" item-text="name_en"
@@ -193,14 +204,16 @@
                                                     </ValidationProvider>
                                                 </v-col>
                                               
-                                                <v-col v-if="data.location_type" lg="3" md="3" cols="12">
+                                                <v-col v-if="data.location_type && permissions?.user?.committee_type_id != 13" lg="3" md="3" cols="12">
                                                     <ValidationProvider name="Ward" vid="ward_id" v-slot="{ errors }">
                                                         <v-autocomplete :hide-details="errors[0] ? false : true"
                                                             v-model="data.ward_id" outlined :label="$t('container.system_config.demo_graphic.ward.ward')
                                                                 " :items="wards" item-text="name_en" item-value="id"
                                                                   :readonly="permissions?.user?.committee_type_id==13"
                                                             :error="errors[0] ? true : false" :error-messages="errors[0]"
-                                                            class="no-arrow-icon" :append-icon-cb="appendIconCallback"
+                                                            class="no-arrow-icon" 
+                                                            
+                                                            :append-icon-cb="appendIconCallback"
                                                             append-icon="mdi-plus"></v-autocomplete>
                                                     </ValidationProvider>
                                                 </v-col>
@@ -1668,7 +1681,7 @@ export default {
     },
     created() {
         this.GetAllDivisions();
-        this.GetPermissions();
+   
         this.GetCommitte()
 
 
@@ -1678,6 +1691,7 @@ export default {
     beforeMount() {
 
         this.updateHeaderTitle();
+        this.GetPermissions();
 
 
 
