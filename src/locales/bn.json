@@ -5,8 +5,8 @@
     "container": {
         "list": {
             "sl": "ক্রমিক নং ",
-            "active": "Active",
-            "inactive": "Inactive",
+            "active": "সক্রিয়",
+            "inactive": "নিষ্ক্রিয়",
             "action": "অ্যাকশন ",
             "submit": "সাবমিট ",
             "cancel": "বাতিল",
@@ -41,11 +41,14 @@
             "reason_details": "কারণ বিবরণ",
             "mobile": "মোবাইল",
             "beneficiary_journey": "সুবিধাভোগী যাত্রা",
+            "beneficiary_details": "সুবিধাভোগীর বিবরণ",
+            "beneficiary_edit": "সুবিধাভোগীর সম্পাদনা করুন",
             "change_tracking_details": "ট্র্যাকিং বিবরণ পরিবর্তন করুন",
             "exit": "প্রোগ্রাম থেকে প্রস্থান করুন",
             "preview": "প্রিভিউ",
             "approve": "অনুমোদন করুন",
-            "remove": "অপসারণ"
+            "remove": "অপসারণ",
+            "single_select":"একক নির্বাচন করুন"
         },
         "system_config": {
             "demo_graphic": {
@@ -248,6 +251,8 @@
                     "committee_type": "কমিটির ধরন",
                     "ward": "ওয়ার্ড",
                     "add_new": "নতুন কমিটি যোগ করুন",
+                    "add": "কমিটি যোগ করুন",
+                    "add_more_member":"কমিটির আরো সদস্যের তথ্য যোগ করুন",
                     "search": "অনুসন্ধান কমিটি",
                     "edit": "কমিটি সম্পাদনা করুন",
                     "delete": "কমিটি মুছুন",
@@ -270,7 +275,15 @@
                     "member_designation": "পদবী",
                     "member_address": "ঠিকানা",
                     "member_email": "ইমেইল",
-                    "member_phone": "ফোন"
+                    "member_phone": "ফোন",
+                    "list_table":{
+                        "SL":"ক্রমিক নং",
+                        "Code":"কোড",
+                        "Name":"নাম",
+                        "Program":"প্রোগ্রাম",
+                        "Details":"বিস্তারিত",
+                        "Action":"অ্যাকশন"
+                    }
                 },
 
                 "committeePermission": {
