@@ -297,7 +297,7 @@ import { required } from "vee-validate/dist/rules";
 extend("required", required);
 export default {
   name: "Index",
-  title: "CTM - Application List",
+  title: "CTM - Application View",
   data() {
     return {
       data: {

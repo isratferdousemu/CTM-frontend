@@ -56,6 +56,24 @@ const BeneficiaryManagementRoutes = [
         component: () => import("../pages/BeneficiaryManagement/beneficiary_list/Index.vue")
     },
     {
+      path: "/beneficiary-management/beneficiary-info/details/:id",
+      name: "beneficiary_details",
+      meta: {
+          requiresAuth: true,
+          permission: "beneficiary-list",
+      },
+      component: () => import("../pages/BeneficiaryManagement/beneficiary_list/BeneficiaeyDetails.vue")
+    },
+    {
+      path: "/beneficiary-management/beneficiary-info/edit/:id",
+      name: "beneficiary_edit",
+      meta: {
+          requiresAuth: true,
+          permission: "beneficiary-list",
+      },
+      component: () => import("../pages/BeneficiaryManagement/beneficiary_list/BeneficiaryEdit.vue")
+    },
+    {
         path: "/beneficiary-management/switch-program",
         name: "beneficiary_list",
         meta: {
@@ -65,7 +83,7 @@ const BeneficiaryManagementRoutes = [
         component: () => import("../pages/BeneficiaryManagement/beneficiary_list/SwitchProgram.vue")
     },
     {
-        path: "/beneficiary-management/beneficiary-replacement",
+        path: "/beneficiary-management/beneficiary-replacement/:id",
         name: "beneficiary_replacement",
         meta: {
             requiresAuth: true,
