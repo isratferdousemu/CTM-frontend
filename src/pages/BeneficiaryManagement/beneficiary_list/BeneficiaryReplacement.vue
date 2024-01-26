@@ -12,8 +12,30 @@
               }}
             </v-expansion-panel-header>
             <v-expansion-panel-content>
-              <v-row class="mt-10">
-                <v-col lg="6" md="6" cols="12">
+              <v-row class="mt-5">
+                <v-col lg="6" md="6" cols="12" class="ma-1">
+                  <v-card justify="center"  elevation="16">
+                    <v-card-title> Beneficiary Info</v-card-title>
+                    <v-card-text>
+                      <table>
+                        <tr>
+                          <td>{}</td>
+                          <td>: 1235</td>
+                        </tr>
+                        <tr>
+                          <td>Name</td>
+                          <td>: Radur Rahim</td>
+                        </tr>
+                        <tr>
+                          <td>Address</td>
+                          <td>: Naogaon sadar, Naogaon</td>
+                        </tr>
+                      </table>
+                    </v-card-text>
+                  </v-card>
+                </v-col>
+
+                <!-- <v-col lg="6" md="6" cols="12">
                   <v-text-field
                     :label="
                       $t(
@@ -21,7 +43,7 @@
                       )
                     "
                     outlined
-                    clearable
+                    disabled
                     v-model="beneficiary.name_en"
                   >
                   </v-text-field>
@@ -34,10 +56,51 @@
                       )
                     "
                     outlined
-                    clearable
+                    disabled
                     v-model="beneficiary.current_address"
                   >
                   </v-text-field>
+                </v-col>
+
+                <v-col lg="6" md="6" cols="12">
+                  <v-text-field
+                    :label="
+                      $t(
+                        'container.beneficiary_management.beneficiary_list.replacement_with'
+                      )
+                    "
+                    outlined
+                    disabled
+                    v-model="beneficiary.name_en"
+                  >
+                  </v-text-field>
+                </v-col>
+                <v-col lg="6" md="6" cols="12">
+                  <v-text-field
+                    :label="
+                      $t(
+                        'container.beneficiary_management.beneficiary_list.beneficiary_details'
+                      )
+                    "
+                    outlined
+                    disabled
+                    v-model="beneficiary.current_address"
+                  >
+                  </v-text-field>
+                </v-col> -->
+
+                <v-col lg="6" md="6" cols="12">
+                  <v-select
+                    outlined
+                    menu-props="top"
+                    clearable
+                    :label="
+                      $t(
+                        'container.beneficiary_management.beneficiary_list.replacement_cause'
+                      )
+                    "
+                  >
+                  </v-select>
                 </v-col>
 
                 <v-col lg="6" md="6" cols="12">
@@ -53,19 +116,7 @@
                   </v-textarea>
                 </v-col>
 
-                <v-col lg="6" md="6" cols="12">
-                  <v-select
-                    outlined
-                    menu-props="top"
-                    clearable
-                    :label="
-                      $t(
-                        'container.beneficiary_management.beneficiary_list.replacement_cause'
-                      )
-                    "
-                  >
-                  </v-select>
-                </v-col>
+
 
                 <v-col lg="6" md="6" cols="12">
                   <v-menu
@@ -387,7 +438,6 @@ export default {
               this.errors = res.response.data.errors;
             }
           });
-
       } catch (e) {
         console.log("beneficiary__replace", e);
       }
