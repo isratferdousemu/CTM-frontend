@@ -148,6 +148,16 @@ const actions = {
         return err;
       });
   },
+  BeneficiaryExit: ({ commit }, data) => {
+    return http()
+      .post("/admin/beneficiary/exit", data)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        return err;
+      });
+  },
 
 };
 /* -------------------------------------------------------------------------- */

@@ -573,7 +573,7 @@
                       </template>
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }" width="50%">
-                        <v-tooltip top>
+                        <!-- <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
                               v-can="'update-post'"
@@ -592,7 +592,7 @@
                           <span>
                             {{ $t("container.list.switch_program") }}
                           </span>
-                        </v-tooltip>
+                        </v-tooltip> -->
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn

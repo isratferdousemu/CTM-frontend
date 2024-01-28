@@ -627,6 +627,8 @@
         "beneficiary_mother_name": "Beneficiary Mother Name",
         "beneficiary_dob": "Beneficiary Date of Birth",
         "replacement_cause": "Replacement Reason",
+        "replacement_detail": "Replacement Deatil",
+        "replacement_file":"File Attachment",
         "cause_date": "Date of Impact",
         "reason_provision": "reason provision",
         "beneficiary_replacement_list": "Beneficiary Replacement List",

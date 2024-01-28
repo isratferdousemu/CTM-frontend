@@ -316,8 +316,8 @@
                     }}</v-btn>
                   </div>
                 </form>
-              </ValidationObserver> </v-expansion-panel-content
-            >
+              </ValidationObserver>
+            </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
         <!-- Expantion panels end -->
