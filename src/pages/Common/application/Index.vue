@@ -565,7 +565,7 @@
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6" lg="6">
-                          <ValidationProvider name="Post Code" vid="post_code" rules="required" v-slot="{ errors }">
+                          <ValidationProvider name="Post Code" vid="post_code" rules="CheckPostCode" v-slot="{ errors }">
                             <label style="display: inline-block">Post Code
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
@@ -1403,6 +1403,22 @@ extend("numeric", {
 // message: "This field must be a number",
 // });
 
+extend("CheckPostCode", {
+  validate: (value) => {
+    if (!value && value !== 0) {
+      return false;
+    }
+    // Check if all characters are numeric and not allow special characters
+    const isNumeric = /^[0-9]+$/.test(value);
+
+    // Check if the length is either 10 or 17 characters
+    const isCorrectLength = value.length === 4 ;
+
+    // Return true if both conditions are met
+    return isNumeric && isCorrectLength;
+  },
+  message: "Please provide a valid 4-digit number to proceed",
+});
 extend("checkNumber", {
   validate: (value) => {
     if (!value && value !== 0) {
@@ -1521,11 +1537,12 @@ export default {
         "Other (specify)",
       ],
       marital_status: ["Married", "UnMarried", "Widow",
-        "Widower",
-        "Husband Abondoner",
-        "Divorced",
-        "Spouse Separated",
-        "Polygamy"
+        // "Widower",
+        // "Husband Abondoner",
+        // "Divorced",
+        // "Spouse Separated",
+        // "Polygamy",
+        "other"
       ],
       health_status: [
         "Totally Disabled",
@@ -1662,7 +1679,8 @@ export default {
         'Street Sweeper',
         'Security Guard',
         'Rural Artisan',
-        'Fisherwoman',],
+        'Fisherwoman',
+        'Other',],
       checkbox: false,
       checkboxNomineeAddress: false,
       imageUrl: null,
@@ -1840,7 +1858,9 @@ export default {
           const selectedCityObj = this.permanent_cities.find(city => city.id === this.data.permanent_city_id);
           const selectedThanaObj = this.permanent_city_thanas.find(thana => thana.id === this.data.permanent_city_thana_id);
           const selectedWardsCityObj = this.permanent_wards_city.find(ward_city => ward_city.id === this.data.permanent_ward_id_city);
-          this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ',' + ' District: ' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + ' City: ' + (selectedCityObj ? selectedCityObj.name_en : '') + ',' + ' Thana: ' + (selectedThanaObj ? selectedThanaObj.name_en : '') + ',' + (selectedWardsCityObj ? selectedWardsCityObj.name_en : '') + ',' + ' Post Code: ' + this.data.permanent_post_code + ',' + this.data.permanent_address;
+          // this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ',' + ' District: ' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + ' City: ' + (selectedCityObj ? selectedCityObj.name_en : '') + ',' + ' Thana: ' + (selectedThanaObj ? selectedThanaObj.name_en : '') + ',' + (selectedWardsCityObj ? selectedWardsCityObj.name_en : '') + ',' + ' Post Code: ' + this.data.permanent_post_code + ',' + this.data.permanent_address;
+
+          this.data.nominee_address = this.data.permanent_address + ','+ (selectedThanaObj ? selectedThanaObj.name_en : '') +','+ (selectedCityObj ? selectedCityObj.name_en : '')+','+ (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + '-' + this.data.permanent_post_code ;
 
           // }
 
@@ -1855,14 +1875,18 @@ export default {
           var selectedUnionObj = this.permanent_unions.find(union => union.id === this.data.permanent_union_id);
           var selectedPouroObj = this.permanent_pouros.find(pouro => pouro.id === this.data.permanent_pouro_id);
           var selectedWardUnionObj = this.permanent_wards_upazila_union.find(ward_union => ward_union.id === this.data.permanent_ward_id_union);
-          var selectedWardPouroObj = this.permanent_wards_upazila_pouro.find(ward_pouro => ward_pouro.id === this.data.permanent_ward_id_pouro);
+          var selectedWardPouroObj = this.permanent_wards_upazila_pouro ? this.permanent_wards_upazila_pouro.find(ward_pouro => ward_pouro.id === this.data.permanent_ward_id_pouro): null;
+          // const selectedUpazilaObj = this.permanent_thanas ? this.permanent_thanas.find(upazila => upazila.id === this.data.permanent_thana_id) : null;
 
-          this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ',' + ' District: ' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + ' Upazila: ' + (selectedUpazilaObj ? selectedUpazilaObj.name_en : '') + ',' + ' Union/Pourashava: ' + (selectedUnionObj ? selectedUnionObj.name_en : '') + '' + (selectedPouroObj ? selectedPouroObj.name_en : '') + ',' + (selectedWardUnionObj ? selectedWardUnionObj.name_en : '') + '' + (selectedWardPouroObj ? selectedWardPouroObj.name_en : '') + ',' + ' Post Code: ' + this.data.permanent_post_code + ',' + this.data.permanent_address;
-          selectedUnionObj = '';
-          selectedPouroObj = '';
-          selectedWardUnionObj = '';
-          selectedWardPouroObj = '';
-          console.log(selectedWardUnionObj, selectedWardPouroObj, "ward")
+          // this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ',' + ' District: ' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + ' Upazila: ' + (selectedUpazilaObj ? selectedUpazilaObj.name_en : '') + ',' + ' Union/Pourashava: ' + (selectedUnionObj ? selectedUnionObj.name_en : '') + '' + (selectedPouroObj ? selectedPouroObj.name_en : '') + ',' + (selectedWardUnionObj ? selectedWardUnionObj.name_en : '') + '' + (selectedWardPouroObj ? selectedWardPouroObj.name_en : '') + ',' + ' Post Code: ' + this.data.permanent_post_code + ',' + this.data.permanent_address;
+
+           this.data.nominee_address =  this.data.permanent_address+','+ (selectedWardUnionObj ? selectedWardUnionObj.name_en : '') + '' + (selectedWardPouroObj ? selectedWardPouroObj.name_en : '') + ','+ (selectedUnionObj ? selectedUnionObj.name_en : '') + '' + (selectedPouroObj ? selectedPouroObj.name_en : '')+ ',' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') +','+ (selectedDivisionObj ? selectedDivisionObj.name_en : '') + '-' + this.data.permanent_post_code; 
+
+            selectedUnionObj = '';
+            selectedPouroObj = '';
+            selectedWardUnionObj = '';
+            selectedWardPouroObj = '';
+          
 
 
         }
@@ -1871,7 +1895,10 @@ export default {
           const selectedDistrictObj = this.permanent_districts.find(dis => dis.id === this.data.permanent_district_id);
           const selectedDistObj = this.permanent_district_poros.find(dist => dist.id === this.data.permanent_district_pouro_id);
           const selectedDistWardObj = this.permanent_wards_dist.find(ward_dist => ward_dist.id === this.data.permanent_ward_id_dist);
-          this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ',' + ' District: ' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + ' District Pourashava: ' + (selectedDistObj ? selectedDistObj.name_en : '') + ',' + (selectedDistWardObj ? selectedDistWardObj.name_en : '') + ',' + ' Post Code: ' + this.data.permanent_post_code + ',' + this.data.permanent_address;
+
+          this.data.nominee_address = this.data.permanent_address+ (selectedDistWardObj ? selectedDistWardObj.name_en : '') + ','  +(selectedDistObj ? selectedDistObj.name_en : '') + ',' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') +  '-' +this.data.permanent_post_code ;
+
+          // this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ',' + ' District: ' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + ' District Pourashava: ' + (selectedDistObj ? selectedDistObj.name_en : '') + ',' + (selectedDistWardObj ? selectedDistWardObj.name_en : '') + ',' + ' Post Code: ' + this.data.permanent_post_code + ',' + this.data.permanent_address;
 
         }
 
@@ -2633,7 +2660,7 @@ export default {
     },
     async permanent_onChangeUnion($event) {
       await this.$axios
-        .get(`/admin/ward/get/${$event}`, {
+        .get(`/global/ward/get/${$event}`, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -2644,9 +2671,9 @@ export default {
           this.permanent_wards_upazila_union = result.data.data;
           this.permanent_wards_dist = [];
           this.permanent_wards_city = [];
-          this.permanent_ward_id_dist = null;
-          this.permanent_ward_id_city = null;
-          this.permanent_ward_id_pouro = null;
+          this.data.permanent_ward_id_dist = null;
+          this.data.permanent_ward_id_city = null;
+          this.data.permanent_ward_id_pouro = null;
 
         });
 
@@ -2667,9 +2694,9 @@ export default {
           this.wards_upazila_union = [];
           this.wards_dist = [];
           this.wards_city = [];
-          this.ward_id_dist = null;
-          this.ward_id_city = null;
-          this.ward_id_union = null;
+          this.data.ward_id_dist = null;
+          this.data.ward_id_city = null;
+          this.data.ward_id_union = null;
 
         });
 
@@ -2690,9 +2717,9 @@ export default {
           this.permanent_wards_upazila_union = [];
           this.permanent_wards_dist = [];
           this.permanent_wards_city = [];
-          this.permanent_ward_id_dist = null;
-          this.permanent_ward_id_city = null;
-          this.permanent_ward_id_union = null;
+          this.data.permanent_ward_id_dist = null;
+          this.data.permanent_ward_id_city = null;
+          this.data.permanent_ward_id_union = null;
 
         });
 
