@@ -12,6 +12,17 @@
               theme="light"
               class="mb-8"
             >
+
+              <v-btn
+                  @click="generatePdf"
+                  flat
+                  color="primary"
+                  prepend-icon="mdi-account-multiple-plus"
+              >
+                {{ $t("container.list.add_new") }}
+              </v-btn>
+
+
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
                   {{ $t("container.system_config.demo_graphic.division.list") }}
@@ -722,6 +733,26 @@ export default {
       );
       this.$store.commit("setHeaderTitle", title);
     },
+
+    generatePdf() {
+
+      this.$axios
+          .get("global/pdf", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then(response => {
+            console.log(response.data, 'pdf')
+            // Handle the successful response, e.g., open the generated PDF in a new tab
+            window.open(response.data.data.url, '_blank');
+
+          })
+          .catch(error => {
+            console.error('Error generating PDF:', error);
+          });
+    }
   },
   mounted() {
     this.setInitialHeader();
