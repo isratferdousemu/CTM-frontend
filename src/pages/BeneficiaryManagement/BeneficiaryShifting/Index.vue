@@ -35,6 +35,7 @@
                                   @click:append="onFindBeneficary"
                                   :error="errors[0] ? true : false"
                                   :error-messages="errors[0]"
+                                  @keydown.enter.prevent="onFindBeneficary"
                                 >
                                 </v-text-field>
                               </ValidationProvider>
@@ -76,7 +77,7 @@
                           <div class="d-inline d-flex justify-end">
                             <v-btn
                               elevation="2"
-                              class="btn mr-2 mb-2"
+                              class="btn mr-2 mb-1"
                               color="success"
                               type="submit"
                               flat
@@ -112,7 +113,6 @@
                     >
                       <v-autocomplete
                         :hide-details="errors[0] ? false : true"
-                        @input="onChangeProgramName($event)"
                         v-model="submit_data.to_program_id"
                         clearable
                         outlined
@@ -188,6 +188,45 @@
                     </v-textarea>
                   </v-col>
                 </v-row>
+                <v-card>
+                  <v-card-title class="font-weight-bold justify-center">
+                    {{
+                      $t(
+                        "container.beneficiary_management.beneficiary_shifting.title"
+                      )
+                    }}
+                  </v-card-title>
+                  <v-data-table
+                    item-key="id"
+                    :headers="headers"
+                    :items="beneficiariesList"
+                    class="elevation-0 transparent row-pointer mt-5"
+                    hide-default-footer
+                  >
+                    <!-- Action Button -->
+                    <template v-slot:item.actions="{ item }">
+                      <v-tooltip top>
+                        <template v-slot:activator="{ on }">
+                          <v-btn
+                            v-can="'update-post'"
+                            fab
+                            x-small
+                            v-on="on"
+                            color="#AFB42B"
+                            elevation="0"
+                            class="white--text"
+                            @click="removeByBeneficiaryFromTable(item.id)"
+                          >
+                            <v-icon> mdi-delete </v-icon>
+                          </v-btn>
+                        </template>
+                        <span>
+                          {{ $t("container.list.delete") }}
+                        </span>
+                      </v-tooltip>
+                    </template>
+                  </v-data-table>
+                </v-card>
                 <div class="d-inline d-flex justify-end mt-5">
                   <v-btn elevation="2" class="btn mr-2">{{
                     $t("container.list.reset")
@@ -204,44 +243,6 @@
               </form>
             </ValidationObserver>
           </v-card-text>
-        </v-card>
-
-        <v-card>
-          <v-card-title class="font-weight-bold justify-center">
-            {{
-              $t("container.beneficiary_management.beneficiary_shifting.title")
-            }}
-          </v-card-title>
-          <v-data-table
-            item-key="id"
-            :headers="headers"
-            :items="beneficiariesList"
-            class="elevation-0 transparent row-pointer mt-5"
-            hide-default-footer
-          >
-            <!-- Action Button -->
-            <template v-slot:item.actions="{ item }">
-              <v-tooltip top>
-                <template v-slot:activator="{ on }">
-                  <v-btn
-                    v-can="'update-post'"
-                    fab
-                    x-small
-                    v-on="on"
-                    color="#AFB42B"
-                    elevation="0"
-                    class="white--text"
-                    @click="removeByBeneficiaryFromTable(item.id)"
-                  >
-                    <v-icon> mdi-delete </v-icon>
-                  </v-btn>
-                </template>
-                <span>
-                  {{ $t("container.list.delete") }}
-                </span>
-              </v-tooltip>
-            </template>
-          </v-data-table>
         </v-card>
       </v-col>
     </v-row>
@@ -364,9 +365,14 @@ export default {
               this.data.father_name_en = res.father_name_en;
               this.data.mother_name_en = res.mother_name_en;
               this.data.mobile = res.mobile;
-            } else {
+            } else  {
+              this.$refs.form.setErrors(res.response.data.errors);
+              this.errors = res.response.data.errors;
+              // this.$toast.error(res.response.data.message);
               this.$toast.success("Please Search with Valid Beneficiary ID");
             }
+             
+            
           });
       } else {
         this.$toast.success("Please Search with Valid Beneficiary ID");
@@ -397,30 +403,54 @@ export default {
             from_program_id: item.program_id,
           };
           this.submit_data.beneficiaries.push(submitData);
+
+          this.ben_search_id = null;
+          this.data.beneficiary_id = null;
+
         }
       }
     },
     removeByBeneficiaryFromTable(rowId) {
-        console.log('row_id_1',rowId);
-		let dl = [...this.beneficiariesList]
-        console.log('row_id_2',dl);
-		dl.splice(
-			dl.findIndex((t) => t.id === rowId),
-			1
-		)
-		// dl.forEach((t, i) => {
-		// 	t.serialNo = i + 1
-		// })
-        console.log('row_id_3',dl);
-		this.beneficiariesList(dl)
-	},
+       //remove from table data
+      let dl = [...this.beneficiariesList];
+      dl.splice(
+        dl.findIndex((t) => t.id === rowId),
+        1
+      );
+      // dl.forEach((t, i) => {
+      // 	t.serialNo = i + 1
+      // })
+      this.beneficiariesList = dl;
+
+      //remove from submit json
+      let data = [...this.submit_data.beneficiaries];
+      data.splice(
+        dl.findIndex((t) => t.id === rowId),
+        1
+      );
+      this.submit_data.beneficiaries = data;
+    },
     submitBeneficiaryShifting() {
       let fd = new FormData();
 
       fd.append("to_program_id", this.submit_data.to_program_id);
       fd.append("shifting_cause", this.submit_data.shifting_cause);
       fd.append("activation_date", this.submit_data.activation_date);
-      fd.append("beneficiaries", this.submit_data.beneficiaries);
+
+      console.log("bene___", this.submit_data.beneficiaries);
+
+      // Convert each object in the beneficiaries array to a JSON string
+      this.submit_data.beneficiaries.forEach((beneficiary, index) => {
+        //   fd.append(`beneficiaries[${index}]`, JSON.stringify(beneficiary));
+        fd.append(
+          `beneficiaries[${index}][beneficiary_id]`,
+          beneficiary.beneficiary_id
+        );
+        fd.append(
+          `beneficiaries[${index}][from_program_id]`,
+          beneficiary.from_program_id
+        );
+      });
 
       try {
         this.$store
@@ -430,9 +460,7 @@ export default {
             if (res.data?.success) {
               console.log(res.data?.success, "submit__");
               this.$toast.success("Beneficiary Shifting Successfully");
-              this.resetData();
-              this.dialogAdd = false;
-              this.$router.push({ name: "Committee-List" });
+              this.$router.push({ name: "Beneficiary_List" });
             } else if (res.response?.data?.errors) {
               this.$refs.form.setErrors(res.response.data.errors);
               this.errors = res.response.data.errors;

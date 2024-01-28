@@ -337,7 +337,6 @@ export default {
       );
       this.$store.commit("setHeaderTitle", title);
     },
-
     async GetBeneficiaryDetails(id) {
       try {
         this.$axios

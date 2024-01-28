@@ -348,7 +348,7 @@
                 color="success"
                 elevation="0"
                 router
-                to="/beneficiary-management/digital-id-card"
+                :to="`/beneficiary-management/digital-id-card/${item.id}`"
               >
                 {{
                   $t(
