@@ -159,6 +159,17 @@ const actions = {
       });
   },
 
+  BeneficiaryShifting: ({ commit }, data) => {
+    return http()
+      .post("/admin/beneficiary/shift", data)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        return err;
+      });
+  },
+
 };
 /* -------------------------------------------------------------------------- */
 /*                               Getters Define                               */
