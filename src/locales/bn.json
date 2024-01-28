@@ -48,7 +48,10 @@
             "preview": "প্রিভিউ",
             "approve": "অনুমোদন করুন",
             "remove": "অপসারণ",
-            "single_select":"একক নির্বাচন করুন"
+            "single_select":"একক নির্বাচন করুন",
+            "total": "মোট",
+            "excel": "এক্সেল",
+            "pdf": "পিডিএফ"
         },
         "system_config": {
             "demo_graphic": {
