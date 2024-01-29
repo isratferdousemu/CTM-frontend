@@ -306,22 +306,7 @@
                                             </v-select>
                                         </v-col>
                                     </v-row>
-                                    <div class="d-inline d-flex justify-end ">
-                                        <v-btn elevation="2" class="btn mr-2" color="success" @click="SubmitApproved()"
-                                            :disabled="isButtonDisabled" v-if="this.permissions?.permission?.approve">{{
-                                                $t("container.list.approve") }}</v-btn>
-                                        <v-btn elevation="2" class="btn mr-2" color="blue" @click="SubmitForward()"
-                                            :disabled="isForwardButtonDisabled"
-                                            v-if="this.permissions?.permission?.forward">{{
-                                                $t("container.list.forward") }}</v-btn>
-                                        <v-btn elevation="2" class="btn mr-2" color="warning" @click="SubmitWaiting()"
-                                            :disabled="isButtonDisabled" v-if="this.permissions?.permission?.waiting">{{
-                                                $t("container.list.waiting") }}</v-btn>
-                                        <v-btn elevation="2" class="btn mr-2 error" @click="SubmitReject()"
-                                            :disabled="isButtonDisabled" v-if="this.permissions?.permission?.reject">{{
-                                                $t("container.list.reject")
-                                            }}</v-btn>
-                                    </div>
+                                   
 
                                 </v-expansion-panel-content>
                             </v-expansion-panel>
@@ -338,6 +323,21 @@
                                 </h3>
                             </v-card-title>
                             <v-card-text>
+                                 <div class="d-inline d-flex justify-end ">
+                                      
+                                                  <v-select
+                v-model="selectedColumns"
+                :items="selectableColumns"
+                :label="$t('container.application_selection.application.select_column')"
+                multiple
+                @change="updateVisibleColumns"
+                outlined
+                menu-props="top"
+              >
+                <template v-slot:selection="{ item, index }">
+                </template>
+              </v-select>
+                                        </div>
                                <template>
       <v-row justify="space-between" align="center">
         <!-- Checkbox on the left -->
@@ -347,20 +347,43 @@
         </v-col>
 
         <!-- Dropdown on the right -->
-        <v-col lg="3" md="3" cols="12">
-          <v-select
-            v-model="selectedColumns"
-            :items="selectableColumns"
-            :label="$t('container.application_selection.application.select_column')"
-            multiple
-            @change="updateVisibleColumns"
-            outlined
-            menu-props="top"
-          >
-            <template v-slot:selection="{ item, index }"></template>
-          </v-select>
+        <v-col lg="4" md="4" cols="12" class="text-right">
+        
+          <v-btn elevation="2" class="btn mr-2" color="success" @click="SubmitApproved()"
+                                                :disabled="isButtonDisabled" v-if="this.permissions?.permission?.approve">{{
+                                                    $t("container.list.approve") }}</v-btn>
+                                            <v-btn elevation="2" class="btn mr-2" color="blue" @click="SubmitForward()"
+                                                :disabled="isForwardButtonDisabled"
+                                                v-if="this.permissions?.permission?.forward">{{
+                                                    $t("container.list.forward") }}</v-btn>
+                                            <v-btn elevation="2" class="btn mr-2" color="warning" @click="SubmitWaiting()"
+                                                :disabled="isButtonDisabled" v-if="this.permissions?.permission?.waiting">{{
+                                                    $t("container.list.waiting") }}</v-btn>
+                                            <v-btn elevation="2" class="btn mr-2 error" @click="SubmitReject()"
+                                                :disabled="isButtonDisabled" v-if="this.permissions?.permission?.reject">{{
+                                                    $t("container.list.reject")
+                                                }}</v-btn>
         </v-col>
       </v-row>
+      <v-row justify="space-between" align="center">
+            <!-- Checkbox on the left -->
+            <v-col lg="3" md="3" cols="12">
+           
+             {{  $t('container.list.total') }}:{{this.total}}
+            </v-col>
+
+            <!-- Dropdown on the right -->
+            <v-col lg="4" md="4" cols="12" class="text-right">
+        
+              <v-btn elevation="2" class="btn mr-2" color="success" @click="GeneratePDF()"
+                                                    >{{
+                                                        $t("container.list.PDF") }}</v-btn>
+                                                <v-btn elevation="2" class="btn mr-2" color="blue" @click="GenerateExcel()"
+                                                    >{{
+                                                        $t("container.list.excel") }}</v-btn>
+                                               
+            </v-col>
+          </v-row>
     </template>
                                 <v-row class="ma-0  white round-border d-flex justify-space-between align-center"
                                     justify="center" justify-lg="space-between">
@@ -564,6 +587,7 @@ export default {
                 status_list: null,
                 program_id: null
             },
+            total:null,
 
             forward: {
                 committee_id: null,
@@ -1655,9 +1679,32 @@ export default {
                 .then((result) => {
 
                     this.applications = result.data.data;
+                    this.total = result.data.total;
                     this.pagination.current = result.data.current_page;
                     this.pagination.total = result.data.last_page;
                     this.pagination.grand_total = result.data.total;
+                });
+
+
+        },
+            async GeneratePDF() {
+            const queryParams = {
+                selectedColumns: this.selectedColumns,
+               
+            };
+            this.$axios
+                .get("/global/pdf", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                    params: queryParams,
+                })
+                .then((result) => {
+                    window.open(result.data.data.url, '_blank');
+               })
+                .catch(error => {
+                    console.error('Error generating PDF:', error);
                 });
 
 
