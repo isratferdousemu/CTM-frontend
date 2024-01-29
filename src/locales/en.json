@@ -48,7 +48,10 @@
       "preview": "Preview",
       "approve": "Approve",
       "remove": "Remove",
-      "single_select":"Single Select"
+      "single_select":"Single Select",
+      "total":"Total Result",
+      "PDF":"PDF",
+      "excel":"Excel"
     },
     "system_config": {
       "demo_graphic": {
