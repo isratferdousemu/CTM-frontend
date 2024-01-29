@@ -224,7 +224,7 @@
 
                                             </v-row>
                                             <v-row>
-                                                <v-btn elevation="2" class="btn ml-3 mt-3" color="blue"
+                                                <v-btn elevation="2" class="btn ml-3 mt-3 white--text" color="blue"
                                                     @click="toggleFieldVisibility">{{
                                                         $t("container.beneficiary_management.beneficiary_list.advance_search")
                                                     }}</v-btn>
@@ -306,22 +306,7 @@
                                             </v-select>
                                         </v-col>
                                     </v-row>
-                                    <div class="d-inline d-flex justify-end ">
-                                        <v-btn elevation="2" class="btn mr-2" color="success" @click="SubmitApproved()"
-                                            :disabled="isButtonDisabled" v-if="this.permissions?.permission?.approve">{{
-                                                $t("container.list.approve") }}</v-btn>
-                                        <v-btn elevation="2" class="btn mr-2" color="blue" @click="SubmitForward()"
-                                            :disabled="isForwardButtonDisabled"
-                                            v-if="this.permissions?.permission?.forward">{{
-                                                $t("container.list.forward") }}</v-btn>
-                                        <v-btn elevation="2" class="btn mr-2" color="warning" @click="SubmitWaiting()"
-                                            :disabled="isButtonDisabled" v-if="this.permissions?.permission?.waiting">{{
-                                                $t("container.list.waiting") }}</v-btn>
-                                        <v-btn elevation="2" class="btn mr-2 error" @click="SubmitReject()"
-                                            :disabled="isButtonDisabled" v-if="this.permissions?.permission?.reject">{{
-                                                $t("container.list.reject")
-                                            }}</v-btn>
-                                    </div>
+                                   
 
                                 </v-expansion-panel-content>
                             </v-expansion-panel>
@@ -338,8 +323,33 @@
                                 </h3>
                             </v-card-title>
                             <v-card-text>
+                           
+                                    <v-row justify="space-between" align="center" >
+                                                            <v-col lg="3" md="3" cols="12" >
+                                                 
+                                      
+                                                   
+                  </v-col>
+                                         <v-col lg="3" md="3" cols="12" class="text-right">
+                                                 
+                                      
+                                                  <v-select
+                v-model="selectedColumns"
+                :items="selectableColumns"
+                :label="$t('container.application_selection.application.select_column')"
+                multiple
+                @change="updateVisibleColumns"
+                outlined
+                menu-props="top"
+              >
+                <template v-slot:selection="{ item, index }">
+                </template>
+              </v-select>
+              </v-col>
+              </v-row>
+                                        <!-- </div> -->
                                <template>
-      <v-row justify="space-between" align="center">
+      <v-row justify="space-between" align="center" class="mx-4">
         <!-- Checkbox on the left -->
         <v-col lg="3" md="3" cols="12">
            
@@ -347,20 +357,43 @@
         </v-col>
 
         <!-- Dropdown on the right -->
-        <v-col lg="3" md="3" cols="12">
-          <v-select
-            v-model="selectedColumns"
-            :items="selectableColumns"
-            :label="$t('container.application_selection.application.select_column')"
-            multiple
-            @change="updateVisibleColumns"
-            outlined
-            menu-props="top"
-          >
-            <template v-slot:selection="{ item, index }"></template>
-          </v-select>
+        <v-col lg="4" md="4" cols="12" class="text-right">
+        
+          <v-btn elevation="2" class="btn mr-2" color="success" @click="SubmitApproved()"
+                                                :disabled="isButtonDisabled" v-if="this.permissions?.permission?.approve">{{
+                                                    $t("container.list.approve") }}</v-btn>
+                                            <v-btn elevation="2" class="btn mr-2 white--text" color="blue" @click="SubmitForward()"
+                                                :disabled="isForwardButtonDisabled"
+                                                v-if="this.permissions?.permission?.forward">{{
+                                                    $t("container.list.forward") }}</v-btn>
+                                            <v-btn elevation="2" class="btn mr-2" color="warning" @click="SubmitWaiting()"
+                                                :disabled="isButtonDisabled" v-if="this.permissions?.permission?.waiting">{{
+                                                    $t("container.list.waiting") }}</v-btn>
+                                            <v-btn elevation="2" class="btn mr-2 error" @click="SubmitReject()"
+                                                :disabled="isButtonDisabled" v-if="this.permissions?.permission?.reject">{{
+                                                    $t("container.list.reject")
+                                                }}</v-btn>
         </v-col>
       </v-row>
+      <v-row justify="space-between" align="center" class="mx-4">
+            <!-- Checkbox on the left -->
+            <v-col lg="3" md="3" cols="12">
+           
+             {{  $t('container.list.total') }}:{{this.total}}
+            </v-col>
+
+            <!-- Dropdown on the right -->
+            <v-col lg="4" md="4" cols="12" class="text-right">
+        
+              <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="GeneratePDF()"
+                                                    >{{
+                                                        $t("container.list.PDF") }}</v-btn>
+                                                <v-btn elevation="2" class="btn mr-2  white--text" color="teal darken-2" @click="GenerateExcel()"
+                                                    >{{
+                                                        $t("container.list.excel") }}</v-btn>
+                                               
+            </v-col>
+          </v-row>
     </template>
                                 <v-row class="ma-0  white round-border d-flex justify-space-between align-center"
                                     justify="center" justify-lg="space-between">
@@ -564,6 +597,7 @@ export default {
                 status_list: null,
                 program_id: null
             },
+            total:null,
 
             forward: {
                 committee_id: null,
@@ -573,9 +607,8 @@ export default {
             },
             lists:[
                 { id: 2, name_en: "Approved" },
-                 { id: 1, name_en: "Forwarded" },
+                { id: 1, name_en: "Forwarded" },
                 {id:0,name_en:"Not Selected"},
-               
                 { id: 4, name_en: "Rejected" },
                 { id:3, name_en: "Waiting" },
              
@@ -1347,7 +1380,7 @@ export default {
             this.visibleHeaders = this.headers.filter(column => this.selectedColumns.includes(column.value));
         },
         GetAllowance() {
-            http().get('/admin/allowance/get', {
+            http().get('/global/program', {
 
             }).then((result) => {
 
@@ -1381,7 +1414,7 @@ export default {
             if (this.data.district_id != null && this.data.location_type != null) {
                 if ($event === 2) {
                     await this.$axios
-                        .get(`/admin/thana/get/${this.data.district_id}`, {
+                        .get(`/global/thana/get/${this.data.district_id}`, {
                             headers: {
                                 Authorization: "Bearer " + this.$store.state.token,
                                 "Content-Type": "multipart/form-data",
@@ -1409,7 +1442,7 @@ export default {
                 if ($event === 3) {
 
                     await this.$axios
-                        .get("/admin/city/get/" + this.data.district_id + "/" + $event, {
+                        .get("/global/city/get/" + this.data.district_id + "/" + $event, {
                             headers: {
                                 Authorization: "Bearer " + this.$store.state.token,
                                 "Content-Type": "multipart/form-data",
@@ -1435,7 +1468,7 @@ export default {
                 if ($event === 1) {
 
                     await this.$axios
-                        .get("/admin/city/get/" + this.data.district_id + "/" + $event, {
+                        .get("/global/city/get/" + this.data.district_id + "/" + $event, {
                             headers: {
                                 Authorization: "Bearer " + this.$store.state.token,
                                 "Content-Type": "multipart/form-data",
@@ -1465,7 +1498,7 @@ export default {
 
             if (event == 1) {
                 await this.$axios
-                    .get(`/admin/union/pouro/get/${this.data.thana_id}`, {
+                    .get(`/global/union/pouro/get/${this.data.thana_id}`, {
                         headers: {
                             Authorization: "Bearer " + this.$store.state.token,
                             "Content-Type": "multipart/form-data",
@@ -1486,7 +1519,7 @@ export default {
                 this.onChangeSubLocationType(1);
             } else {
                 await this.$axios
-                    .get(`/admin/union/get/${this.data.thana_id}`, {
+                    .get(`/global/union/get/${this.data.thana_id}`, {
                         headers: {
                             Authorization: "Bearer " + this.$store.state.token,
                             "Content-Type": "multipart/form-data",
@@ -1501,7 +1534,7 @@ export default {
 
         async onChangeDivision(event) {
             await this.$axios
-                .get(`/admin/district/get/${event}`, {
+                .get(`/global/district/get/${event}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -1513,7 +1546,7 @@ export default {
         },
         async onChangeDistrict(event) {
             await this.$axios
-                .get(`/admin/thana/get/${event}`, {
+                .get(`/global/thana/get/${event}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -1526,7 +1559,7 @@ export default {
         },
         async onChangeThana(event) {
             await this.$axios
-                .get(`/admin/union/get/${event}`, {
+                .get(`/global/union/get/${event}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -1538,7 +1571,7 @@ export default {
         },
         async onChangeCity(event) {
             await this.$axios
-                .get(`/admin/thana/get/city/${this.data.city_id}`, {
+                .get(`/global/thana/get/city/${this.data.city_id}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -1553,7 +1586,7 @@ export default {
             // this.wards = [];
             // this.data.ward_id = null;
             await this.$axios
-                .get(`/admin/ward/get/${event}`, {
+                .get(`/global/ward/get/${event}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -1568,7 +1601,7 @@ export default {
             // this.wards = [];
             // this.data.ward_id = null;
             await this.$axios
-                .get(`/admin/ward/get/pouro/${event}`, {
+                .get(`/global/ward/get/pouro/${event}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -1585,7 +1618,7 @@ export default {
             // this.wards = [];
             // this.data.ward_id = null;
             await this.$axios
-                .get(`/admin/ward/get/pouro/${this.data.district_pouro_id}`, {
+                .get(`/global/ward/get/pouro/${this.data.district_pouro_id}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -1602,7 +1635,7 @@ export default {
             // this.wards = [];
             // this.data.ward_id = null;
             await this.$axios
-                .get(`/admin/ward/get/thana/${event}`, {
+                .get(`/global/ward/get/thana/${event}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -1655,9 +1688,51 @@ export default {
                 .then((result) => {
 
                     this.applications = result.data.data;
+                    this.total = result.data.total;
                     this.pagination.current = result.data.current_page;
                     this.pagination.total = result.data.last_page;
                     this.pagination.grand_total = result.data.total;
+                });
+
+
+        },
+            async GeneratePDF() {
+            const queryParams = {
+                selectedColumns: this.selectedColumns,
+                searchText: this.search,
+                application_id: this.data.application_id,
+                nominee_name: this.data.nominee_name,
+                account_no: this.data.account_no,
+                status: this.data.status,
+                program_id: this.data.program_id,
+                nid_no: this.data.nid_no,
+                division_id: this.data.division_id,
+                district_id: this.data.district_id,
+                location_type_id: this.data.location_type,
+                thana_id: this.data.thana_id,
+                union_id: this.data.union_id,
+                city_id: this.data.city_id,
+                city_thana_id: this.data.city_thana_id,
+                district_pouro_id: this.data.district_pouro_id,
+                pouro_id: this.data.pouro_id,
+                sub_location_type: this.data.sub_location_type,
+                ward_id: this.data.ward_id,
+                status: this.data.status_list,
+               
+            };
+            this.$axios
+                .get("/admin/application/generate-pdf", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                    params: queryParams,
+                })
+                .then((result) => {
+                    window.open(result.data.data.url, '_blank');
+               })
+                .catch(error => {
+                    console.error('Error generating PDF:', error);
                 });
 
 
@@ -1730,8 +1805,11 @@ export default {
 
         this.GetAllowance();
 
-        this.$store
-            .dispatch("getLookupByType", 1)
+        // this.$store
+        //     .dispatch("getLookupByType", 1)
+        //     .then((res) => (this.locationType = res));
+               this.$store
+            .dispatch("getGlobalLookupByType", 1)
             .then((res) => (this.locationType = res));
     }
 };
