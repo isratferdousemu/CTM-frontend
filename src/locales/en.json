@@ -670,6 +670,7 @@
         "date_of_exit": "Date of Exit"
       },
       "beneficiary_shifting": {
+        "list":"Beneficiary List",
         "title": "Beneficiary Shifting",
         "cause": "Cause",
         "activation_date": "Activation Date"

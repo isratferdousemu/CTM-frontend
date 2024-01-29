@@ -21,22 +21,12 @@
                           <v-row>
                             <v-col lg="6" md="6" cols="12">
                               <ValidationProvider v-slot="{ errors }">
-                                <v-text-field
-                                  outlined
-                                  clearable
-                                  v-model="ben_search_id"
-                                  :label="
-                                    $t(
-                                      'container.beneficiary_management.beneficiary_list.beneficiary_id'
-                                    )
-                                  "
-                                  required
-                                  :append-icon="'mdi-file-find'"
-                                  @click:append="onFindBeneficary"
-                                  :error="errors[0] ? true : false"
-                                  :error-messages="errors[0]"
-                                  @keydown.enter.prevent="onFindBeneficary"
-                                >
+                                <v-text-field outlined clearable v-model="ben_search_id" :label="$t(
+                                  'container.beneficiary_management.beneficiary_list.beneficiary_id'
+                                )
+                                  " required :append-icon="'mdi-file-find'" @click:append="onFindBeneficary"
+                                  :error="errors[0] ? true : false" :error-messages="errors[0]"
+                                  @keydown.enter.prevent="onFindBeneficary">
                                 </v-text-field>
                               </ValidationProvider>
                             </v-col>
@@ -75,15 +65,8 @@
                             </v-col>
                           </v-row>
                           <div class="d-inline d-flex justify-end">
-                            <v-btn
-                              elevation="2"
-                              class="btn mr-2 mb-1"
-                              color="success"
-                              type="submit"
-                              flat
-                              :disabled="invalid"
-                              >{{ $t("container.list.add") }}</v-btn
-                            >
+                            <v-btn elevation="2" class="btn mr-2 mb-1" color="success" type="submit" flat
+                              :disabled="invalid">{{ $t("container.list.add") }}</v-btn>
                           </div>
                         </v-card-text>
                       </v-card>
@@ -105,70 +88,31 @@
               <form @submit.prevent="submitBeneficiaryShifting()">
                 <v-row>
                   <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="ProgramName"
-                      vid="program_id"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        :hide-details="errors[0] ? false : true"
-                        v-model="submit_data.to_program_id"
-                        clearable
-                        outlined
-                        :label="
-                          $t(
-                            'container.application_selection.application.program'
-                          )
-                        "
-                        :items="programs"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-autocomplete>
+                    <ValidationProvider name="ProgramName" vid="program_id" rules="required" v-slot="{ errors }">
+                      <v-autocomplete :hide-details="errors[0] ? false : true" v-model="submit_data.to_program_id"
+                        clearable outlined :label="$t(
+                          'container.application_selection.application.program'
+                        )
+                          " :items="programs" item-text="name_en" item-value="id" required
+                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12">
-                    <v-menu
-                      ref="menu"
-                      v-model="menu"
-                      :close-on-content-click="false"
-                      :return-value.sync="date"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="auto"
-                    >
+                    <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="date"
+                      transition="scale-transition" offset-y min-width="auto">
                       <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                          v-model="submit_data.activation_date"
-                          :label="
-                            $t(
-                              'container.beneficiary_management.beneficiary_shifting.activation_date'
-                            )
-                          "
-                          prepend-inner-icon="mdi-calendar"
-                          readonly
-                          v-bind="attrs"
-                          v-on="on"
-                          outlined
-                        ></v-text-field>
+                        <v-text-field v-model="submit_data.activation_date" :label="$t(
+                          'container.beneficiary_management.beneficiary_shifting.activation_date'
+                        )
+                          " prepend-inner-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"
+                          outlined></v-text-field>
                       </template>
-                      <v-date-picker
-                        v-model="submit_data.activation_date"
-                        no-title
-                        scrollable
-                      >
+                      <v-date-picker v-model="submit_data.activation_date" no-title scrollable>
                         <v-spacer></v-spacer>
                         <v-btn text color="primary" @click="menu = false">
                           Cancel
                         </v-btn>
-                        <v-btn
-                          text
-                          color="primary"
-                          @click="$refs.menu.save(submit_data.activation_date)"
-                        >
+                        <v-btn text color="primary" @click="$refs.menu.save(submit_data.activation_date)">
                           OK
                         </v-btn>
                       </v-date-picker>
@@ -176,15 +120,10 @@
                   </v-col>
 
                   <v-col lg="6" md="6" cols="12">
-                    <v-textarea
-                      :label="
-                        $t(
-                          'container.beneficiary_management.beneficiary_shifting.cause'
-                        )
-                      "
-                      outlined
-                      v-model="submit_data.shifting_cause"
-                    >
+                    <v-textarea :label="$t(
+                      'container.beneficiary_management.beneficiary_shifting.cause'
+                    )
+                      " outlined v-model="submit_data.shifting_cause">
                     </v-textarea>
                   </v-col>
                 </v-row>
@@ -192,31 +131,18 @@
                   <v-card-title class="font-weight-bold justify-center">
                     {{
                       $t(
-                        "container.beneficiary_management.beneficiary_shifting.title"
+                        "container.beneficiary_management.beneficiary_shifting.list"
                       )
                     }}
                   </v-card-title>
-                  <v-data-table
-                    item-key="id"
-                    :headers="headers"
-                    :items="beneficiariesList"
-                    class="elevation-0 transparent row-pointer mt-5"
-                    hide-default-footer
-                  >
+                  <v-data-table item-key="id" :headers="headers" :items="beneficiariesList"
+                    class="elevation-0 transparent row-pointer mt-5" hide-default-footer>
                     <!-- Action Button -->
                     <template v-slot:item.actions="{ item }">
                       <v-tooltip top>
                         <template v-slot:activator="{ on }">
-                          <v-btn
-                            v-can="'update-post'"
-                            fab
-                            x-small
-                            v-on="on"
-                            color="#AFB42B"
-                            elevation="0"
-                            class="white--text"
-                            @click="removeByBeneficiaryFromTable(item.id)"
-                          >
+                          <v-btn v-can="'update-post'" fab x-small v-on="on" color="#AFB42B" elevation="0"
+                            class="white--text" @click="removeByBeneficiaryFromTable(item.id)">
                             <v-icon> mdi-delete </v-icon>
                           </v-btn>
                         </template>
@@ -231,14 +157,8 @@
                   <v-btn elevation="2" class="btn mr-2">{{
                     $t("container.list.reset")
                   }}</v-btn>
-                  <v-btn
-                    elevation="2"
-                    class="btn mr-2"
-                    color="success"
-                    type="submit"
-                    :disabled="invalid"
-                    >{{ $t("container.list.exit") }}</v-btn
-                  >
+                  <v-btn elevation="2" class="btn mr-2" color="success" type="submit" :disabled="invalid">{{
+                    $t("container.list.exit") }}</v-btn>
                 </div>
               </form>
             </ValidationObserver>
@@ -268,6 +188,7 @@ export default {
       search: "",
       programs: [],
       panel: [0],
+      table_serial: 1,
 
       ben_search_id: null,
       beneficiaries: [],
@@ -353,6 +274,7 @@ export default {
             },
           })
           .then((result) => {
+            // alert(result);
             if (result.data?.success) {
               const res = result.data.data;
               console.log("BEN_DET__1", res);
@@ -365,14 +287,15 @@ export default {
               this.data.father_name_en = res.father_name_en;
               this.data.mother_name_en = res.mother_name_en;
               this.data.mobile = res.mobile;
-            } else  {
-              this.$refs.form.setErrors(res.response.data.errors);
-              this.errors = res.response.data.errors;
+            } else {
+              // this.$refs.form.setErrors(result.response.data.errors);
+              // this.errors = result.response.data.errors;
               // this.$toast.error(res.response.data.message);
-              this.$toast.success("Please Search with Valid Beneficiary ID");
+              this.$toast.error("Please Search with Valid Beneficiary ID");
+              this.data.beneficiary_id = null;
             }
-             
-            
+
+
           });
       } else {
         this.$toast.success("Please Search with Valid Beneficiary ID");
@@ -381,20 +304,22 @@ export default {
     addByBeneficiaryInTable() {
       var item = this.data;
       if (this.data.beneficiary_id !== null) {
-        let data = {
-          id: item.id,
-          beneficiary_id: item.beneficiary_id,
-          name_en: item.name_en,
-          program_name: item.program_name,
-          father_name_en: item.father_name_en,
-          mobile: item.mobile,
-        };
+
         var result = this.beneficiariesList.filter(
-          (beneficiary) => beneficiary.beneficiary_id === data.beneficiary_id
+          (beneficiary) => beneficiary.beneficiary_id === item.beneficiary_id
         );
 
         //item already loaded in list
         if (result.length === 0) {
+          let data = {
+            id: this.table_serial++,
+            beneficiary_id: item.beneficiary_id,
+            name_en: item.name_en,
+            program_name: item.program_name,
+            father_name_en: item.father_name_en,
+            mobile: item.mobile,
+          };
+
           this.beneficiariesList.push(data);
 
           //submit data prepare
@@ -403,23 +328,21 @@ export default {
             from_program_id: item.program_id,
           };
           this.submit_data.beneficiaries.push(submitData);
-
-          this.ben_search_id = null;
-          this.data.beneficiary_id = null;
-
         }
+        this.ben_search_id = null;
+        this.data.beneficiary_id = null;
       }
     },
     removeByBeneficiaryFromTable(rowId) {
-       //remove from table data
+      //remove from table data
       let dl = [...this.beneficiariesList];
       dl.splice(
         dl.findIndex((t) => t.id === rowId),
         1
       );
-      // dl.forEach((t, i) => {
-      // 	t.serialNo = i + 1
-      // })
+      dl.forEach((t, i) => {
+        t.id = i + 1
+      })
       this.beneficiariesList = dl;
 
       //remove from submit json
@@ -507,7 +430,7 @@ export default {
   },
   watch: {
     "$i18n.locale": "updateHeaderTitle",
-    value(val) {},
+    value(val) { },
   },
 
   beforeMount() {

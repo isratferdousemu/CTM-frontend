@@ -674,6 +674,7 @@
                 "date_of_exit": "প্রস্থানের তারিখ"
             },
             "beneficiary_shifting": {
+                "list":"সুবিধাভোগী তালিকা",
                 "title": "সুবিধাভোগী স্থানান্তর",
                 "cause": "কারণ",
                 "activation_date": "সক্রিয়করণের তারিখ"
