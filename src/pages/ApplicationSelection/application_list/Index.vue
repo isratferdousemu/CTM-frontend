@@ -607,9 +607,8 @@ export default {
             },
             lists:[
                 { id: 2, name_en: "Approved" },
-                 { id: 1, name_en: "Forwarded" },
+                { id: 1, name_en: "Forwarded" },
                 {id:0,name_en:"Not Selected"},
-               
                 { id: 4, name_en: "Rejected" },
                 { id:3, name_en: "Waiting" },
              
@@ -1722,7 +1721,7 @@ export default {
                
             };
             this.$axios
-                .get("/global/pdf", {
+                .get("/admin/application/generate-pdf", {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
