@@ -49,6 +49,7 @@
       "preview": "Preview",
       "approve": "Approve",
       "remove": "Remove",
+      "select":"Select",
       "single_select":"Single Select",
       "total":"Total Result",
       "PDF":"PDF",
@@ -226,7 +227,8 @@
           "dist_pouro": "Distrcit Pouroshava",
           "union_pouro": "Union /Pouroshava",
           "post_code":"Post Code",
-          "address":"Village/House No., Road No., Block No, Section*"
+          "address":"Village/House No., Road No., Block No, Section*",
+          "mobile":"Mobile"
         },
         "office": {
           "office": "Office",
