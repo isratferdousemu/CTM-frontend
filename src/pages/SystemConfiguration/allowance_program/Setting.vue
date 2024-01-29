@@ -26,7 +26,7 @@ export default {
             age_limit: false,
             disable_class: false,
 
-            marital_items: [{ name: "Married" }, { name: "UnMarried" }, { name: "Widow" }, { name: "Single" }, { name: "None" }, { name: "Other" }],
+            marital_items: [{ name: "Married" }, { name: "UnMarried" }, { name: "Widow" }, { name: "Other" }],
             payment_cycle_items: [{ name: "Monthly" }, { name: "Quarterly" }, { name: "Half Yearly" }, { name: "Yearly" }],
 
             index: 0,

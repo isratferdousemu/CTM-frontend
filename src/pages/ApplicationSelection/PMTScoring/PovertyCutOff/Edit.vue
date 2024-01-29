@@ -80,8 +80,11 @@
                                                         <ValidationProvider v-slot="{ errors }" name="Weight/Score"
                                                             vid="inputScore" rules="required">
                                                             <v-text-field v-model="item.score" outlined clearable
-                                                                type="number"></v-text-field>
+                                                                type="text"></v-text-field>
                                                         </ValidationProvider>
+                                                          <!-- <ValidationProvider v-slot="{ errors }" name="Weight/Score" vid="inputScore" rules="required|decimal|numeric|min_value:-999999999|max_value:999999999">
+            <v-text-field v-model="item.inputScore" outlined clearable type="text"></v-text-field>
+        </ValidationProvider> -->
 
                                                         <!-- {{ item.score }} -->
                                                     </template>
