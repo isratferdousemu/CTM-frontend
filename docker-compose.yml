@@ -4,6 +4,7 @@ networks:
    web-ctm-app-net:
        name: my-ctm-web-app-net
        driver: bridge
+       external: true
 
 services:
    frontend-stage:
