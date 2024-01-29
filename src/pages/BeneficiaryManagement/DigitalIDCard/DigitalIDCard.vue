@@ -66,13 +66,11 @@
               </table>
             </div>
 
-            <!-- <v-img
+            <v-img
               src="/assets/images/qr_code.png"
               class="mt-8"
               style="width: 50px; height: 50px"
-            ></v-img> -->
-
-            <qrcode-vue :value="value" :size="size" level="H" />
+            ></v-img>
 
             <v-spacer></v-spacer>
 
@@ -103,7 +101,6 @@
 </template>
 
 <script>
-import QrcodeVue from "qrcode.vue";
 export default {
   name: "dDigitalIDCard",
   title: "CTM - Digital ID Card",
@@ -114,12 +111,7 @@ export default {
         imageUrl: null,
         signUrl: null,
       },
-      value: "https://osapsnew.bou.ac.bd/",
-      size: 1000,
     };
-  },
-  components: {
-    QrcodeVue,
   },
   mounted() {},
 
