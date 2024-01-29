@@ -73,7 +73,7 @@
                   </v-col>
                 </v-row> -->
                 <!-- First row -->
-  <v-row justify="space-between" align="center" class="mx-4">
+  <v-row justify="space-between" align="center"  class="mx-5">
       <!-- Checkbox on the left -->
       <v-col lg="3" md="3" cols="12">
           <v-text-field
@@ -85,7 +85,7 @@
               class="my-sm-0 my-3 mx-0v -input--horizontal"
               flat
               variant="outlined"
-              :label="$t('container.system_config.demo_graphic.division.search')"
+              :label="$t('container.list.search')"
               hide-details
               color="primary"
           ></v-text-field>
@@ -105,7 +105,7 @@
   </v-row>
 
   <!-- Second row without gap -->
-  <v-row justify="space-between" align="center" class="mx-4 my-0">
+  <v-row justify="space-between" align="center" class="mx-5">
       <!-- Checkbox on the left -->
       <v-col lg="3" md="3" cols="12">
           {{ $t('container.list.total') }} &nbsp;:&nbsp;{{ this.total }}
@@ -116,9 +116,9 @@
           <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4" @click="GeneratePDF()">
               {{ $t("container.list.PDF") }}
           </v-btn>
-          <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
+          <!-- <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
               {{ $t("container.list.excel") }}
-          </v-btn>
+          </v-btn> -->
       </v-col>
   </v-row>
 

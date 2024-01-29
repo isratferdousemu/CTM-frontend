@@ -388,9 +388,9 @@
               <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="GeneratePDF()"
                                                     >{{
                                                         $t("container.list.PDF") }}</v-btn>
-                                                <v-btn elevation="2" class="btn mr-2  white--text" color="teal darken-2" @click="GenerateExcel()"
+                                                <!-- <v-btn elevation="2" class="btn mr-2  white--text" color="teal darken-2" @click="GenerateExcel()"
                                                     >{{
-                                                        $t("container.list.excel") }}</v-btn>
+                                                        $t("container.list.excel") }}</v-btn> -->
                                                
             </v-col>
           </v-row>

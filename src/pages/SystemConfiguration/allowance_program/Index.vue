@@ -15,7 +15,9 @@ export default {
       loading: true,
       options: {},
       search: '',
-      page: 1
+      page: 1,
+      total:null
+
     }
   },
 
@@ -57,6 +59,27 @@ export default {
   },
 
   methods: {
+     GeneratePDF() {
+      const queryParams = {
+
+        searchText: this.search,
+      };
+      this.$axios
+        .get("/admin/allowance/generate-pdf", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          window.open(result.data.data.url, '_blank');
+        })
+        .catch(error => {
+          console.error('Error generating PDF:', error);
+        });
+
+    },
      deviceActivate: async function ({ id, system_status }) {
 
       this.$axios
@@ -102,6 +125,7 @@ export default {
       }).then((result) => {
         this.allowances = result.data.data;
         this.totalAllowances = result.data.total;
+        this.total = result.data.total;
         this.loading = false;
       }).catch((err) => {
         console.log(err);
@@ -179,12 +203,30 @@ export default {
                       color="primary"
                       router
                       to="/system-configuration/allowance-program/create"
+                      class=" mr-5"
                   >
                     <v-icon small left>mdi-plus</v-icon>
                     <span>{{$t('container.list.add_new')}}</span>
                   </v-btn>
                 </v-card-title>
+                
+                
+        <v-row justify="space-between" align="center" class="mx-3">
+            <!-- Checkbox on the left -->
+            <v-col lg="3" md="3" cols="12">
+                {{ $t('container.list.total') }} &nbsp;:&nbsp;{{ this.total }}
+            </v-col>
 
+            <!-- Dropdown on the right -->
+            <v-col lg="4" md="4" cols="12" class="text-right">
+                <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4" @click="GeneratePDF()">
+                    {{ $t("container.list.PDF") }}
+                </v-btn>
+                <!-- <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
+              {{ $t("container.list.excel") }}
+          </v-btn> -->
+            </v-col>
+        </v-row>
                 <v-card-subtitle>
                   <v-data-table
                       :headers="headers"
