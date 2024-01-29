@@ -29,6 +29,7 @@
       "keyword": "Keyword",
       "location_type": "Location Type",
       "add_new": "Add New",
+      "add": "Add",
       "update": "Update",
       "delete": "Delete",
       "saved": "Data saved Successfully",
@@ -223,7 +224,9 @@
           "subLocation_type": "Sub Location",
           "pouroshava": "Pouroshava",
           "dist_pouro": "Distrcit Pouroshava",
-          "union_pouro": "Union /Pouroshava"
+          "union_pouro": "Union /Pouroshava",
+          "post_code":"Post Code",
+          "address":"Village/House No., Road No., Block No, Section*"
         },
         "office": {
           "office": "Office",
@@ -624,7 +627,12 @@
         "beneficiary_replacement": "Beneficiary Replacement",
         "replacement_with": "Replacement With",
         "beneficiary_details": "Beneficiary Details",
+        "beneficiary_father_name": "Beneficiary Father Name",
+        "beneficiary_mother_name": "Beneficiary Mother Name",
+        "beneficiary_dob": "Beneficiary Date of Birth",
         "replacement_cause": "Replacement Reason",
+        "replacement_detail": "Replacement Deatil",
+        "replacement_file":"File Attachment",
         "cause_date": "Date of Impact",
         "reason_provision": "reason provision",
         "beneficiary_replacement_list": "Beneficiary Replacement List",
@@ -665,6 +673,7 @@
         "date_of_exit": "Date of Exit"
       },
       "beneficiary_shifting": {
+        "list":"Beneficiary List",
         "title": "Beneficiary Shifting",
         "cause": "Cause",
         "activation_date": "Activation Date"
