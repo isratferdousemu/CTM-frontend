@@ -49,9 +49,9 @@
       "approve": "Approve",
       "remove": "Remove",
       "single_select":"Single Select",
-      "total":"Total",
-      "excel":"Excel",
-      "pdf": "PDF"
+      "total":"Total Result",
+      "PDF":"PDF",
+      "excel":"Excel"
     },
     "system_config": {
       "demo_graphic": {

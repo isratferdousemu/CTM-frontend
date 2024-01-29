@@ -34,9 +34,7 @@ export default {
             //     "None"
             // ],
 
-            marital_items: [{ name: "Married" }, { name: "UnMarried" }, { name: "Widow" }, 
-            // { name: "Widower" }, { name: "Husband Abondoner" }, { name: "Divorced" }, { name: "Spouse Separated" }, { name: "Polygamy" },
-             { name: "None" }],
+            marital_items: [{ name: "Married" }, { name: "UnMarried" }, { name: "Widow" }, { name: "Other" }],
             payment_cycle_items: [{ name: "Monthly" }, { name: "Quarterly" }, { name: "Half Yearly" }, { name: "Yearly" }],
 
             index: 0,

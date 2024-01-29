@@ -565,7 +565,7 @@
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6" lg="6">
-                          <ValidationProvider name="Post Code" vid="post_code" rules="CheckPostCode" v-slot="{ errors }">
+                          <ValidationProvider name="Post Code" vid="post_code" rules="CheckPost" v-slot="{ errors }">
                             <label style="display: inline-block">Post Code
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
@@ -772,7 +772,7 @@
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6" lg="6">
-                          <ValidationProvider name="Post Code" vid="permanent_post_code" rules="required"
+                          <ValidationProvider name="Post Code" vid="permanent_post_code" rules="CheckPost"
                             v-slot="{ errors }">
                             <label style="display: inline-block">Post Code
                             </label>
@@ -1403,22 +1403,7 @@ extend("numeric", {
 // message: "This field must be a number",
 // });
 
-extend("CheckPostCode", {
-  validate: (value) => {
-    if (!value && value !== 0) {
-      return false;
-    }
-    // Check if all characters are numeric and not allow special characters
-    const isNumeric = /^[0-9]+$/.test(value);
 
-    // Check if the length is either 10 or 17 characters
-    const isCorrectLength = value.length === 4 ;
-
-    // Return true if both conditions are met
-    return isNumeric && isCorrectLength;
-  },
-  message: "Please provide a valid 4-digit number to proceed",
-});
 extend("checkNumber", {
   validate: (value) => {
     if (!value && value !== 0) {
@@ -1434,6 +1419,22 @@ extend("checkNumber", {
     return isNumeric && isCorrectLength;
   },
   message: "This is required field and field must be a number with either 10 or 17 characters",
+});
+extend("CheckPost", {
+  validate: (value) => {
+    if (!value && value !== 0) {
+      return false;
+    }
+    // Check if all characters are numeric and not allow special characters
+    const isNumeric = /^[0-9]+$/.test(value);
+
+    // Check if the length is either 10 or 17 characters
+    const isCorrectLength = value.length === 4 ;
+
+    // Return true if both conditions are met
+    return isNumeric && isCorrectLength;
+  },
+  message: "Please provide 4 digit post code",
 });
 extend("checkMobileNumber", {
   validate: (value) => {
@@ -1537,12 +1538,8 @@ export default {
         "Other (specify)",
       ],
       marital_status: ["Married", "UnMarried", "Widow",
-        // "Widower",
-        // "Husband Abondoner",
-        // "Divorced",
-        // "Spouse Separated",
-        // "Polygamy",
-        "other"
+        "Other",
+       
       ],
       health_status: [
         "Totally Disabled",
@@ -1680,7 +1677,7 @@ export default {
         'Security Guard',
         'Rural Artisan',
         'Fisherwoman',
-        'Other',],
+        'Other'],
       checkbox: false,
       checkboxNomineeAddress: false,
       imageUrl: null,
@@ -1858,9 +1855,11 @@ export default {
           const selectedCityObj = this.permanent_cities.find(city => city.id === this.data.permanent_city_id);
           const selectedThanaObj = this.permanent_city_thanas.find(thana => thana.id === this.data.permanent_city_thana_id);
           const selectedWardsCityObj = this.permanent_wards_city.find(ward_city => ward_city.id === this.data.permanent_ward_id_city);
+
           // this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ',' + ' District: ' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + ' City: ' + (selectedCityObj ? selectedCityObj.name_en : '') + ',' + ' Thana: ' + (selectedThanaObj ? selectedThanaObj.name_en : '') + ',' + (selectedWardsCityObj ? selectedWardsCityObj.name_en : '') + ',' + ' Post Code: ' + this.data.permanent_post_code + ',' + this.data.permanent_address;
 
-          this.data.nominee_address = this.data.permanent_address + ','+ (selectedThanaObj ? selectedThanaObj.name_en : '') +','+ (selectedCityObj ? selectedCityObj.name_en : '')+','+ (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + '-' + this.data.permanent_post_code ;
+            this.data.nominee_address = this.data.permanent_address + ',' +(selectedThanaObj ? selectedThanaObj.name_en : '') + ',' + (selectedCityObj ? selectedCityObj.name_en : '') + ',' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + '-' + this.data.permanent_post_code;
+
 
           // }
 
@@ -1879,14 +1878,13 @@ export default {
           // const selectedUpazilaObj = this.permanent_thanas ? this.permanent_thanas.find(upazila => upazila.id === this.data.permanent_thana_id) : null;
 
           // this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ',' + ' District: ' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + ' Upazila: ' + (selectedUpazilaObj ? selectedUpazilaObj.name_en : '') + ',' + ' Union/Pourashava: ' + (selectedUnionObj ? selectedUnionObj.name_en : '') + '' + (selectedPouroObj ? selectedPouroObj.name_en : '') + ',' + (selectedWardUnionObj ? selectedWardUnionObj.name_en : '') + '' + (selectedWardPouroObj ? selectedWardPouroObj.name_en : '') + ',' + ' Post Code: ' + this.data.permanent_post_code + ',' + this.data.permanent_address;
+          this.data.nominee_address = this.data.permanent_address + ',' + (selectedWardUnionObj ? selectedWardUnionObj.name_en : '') + '' + (selectedWardPouroObj ? selectedWardPouroObj.name_en : '') + ',' + (selectedUnionObj ? selectedUnionObj.name_en : '') + '' + (selectedPouroObj ? selectedPouroObj.name_en : '') + ',' + (selectedUpazilaObj ? selectedUpazilaObj.name_en : '') + ',' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + '-' + this.data.permanent_post_code;
 
-           this.data.nominee_address =  this.data.permanent_address+','+ (selectedWardUnionObj ? selectedWardUnionObj.name_en : '') + '' + (selectedWardPouroObj ? selectedWardPouroObj.name_en : '') + ','+ (selectedUnionObj ? selectedUnionObj.name_en : '') + '' + (selectedPouroObj ? selectedPouroObj.name_en : '')+ ',' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') +','+ (selectedDivisionObj ? selectedDivisionObj.name_en : '') + '-' + this.data.permanent_post_code; 
-
-            selectedUnionObj = '';
-            selectedPouroObj = '';
-            selectedWardUnionObj = '';
-            selectedWardPouroObj = '';
-          
+          selectedUnionObj = '';
+          selectedPouroObj = '';
+          selectedWardUnionObj = '';
+          selectedWardPouroObj = '';
+          console.log(selectedWardUnionObj, selectedWardPouroObj, "ward")
 
 
         }
@@ -1895,10 +1893,9 @@ export default {
           const selectedDistrictObj = this.permanent_districts.find(dis => dis.id === this.data.permanent_district_id);
           const selectedDistObj = this.permanent_district_poros.find(dist => dist.id === this.data.permanent_district_pouro_id);
           const selectedDistWardObj = this.permanent_wards_dist.find(ward_dist => ward_dist.id === this.data.permanent_ward_id_dist);
-
-          this.data.nominee_address = this.data.permanent_address+ (selectedDistWardObj ? selectedDistWardObj.name_en : '') + ','  +(selectedDistObj ? selectedDistObj.name_en : '') + ',' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') +  '-' +this.data.permanent_post_code ;
-
           // this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ',' + ' District: ' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + ' District Pourashava: ' + (selectedDistObj ? selectedDistObj.name_en : '') + ',' + (selectedDistWardObj ? selectedDistWardObj.name_en : '') + ',' + ' Post Code: ' + this.data.permanent_post_code + ',' + this.data.permanent_address;
+
+          this.data.nominee_address =  this.data.permanent_address + ',' + (selectedDistWardObj ? selectedDistWardObj.name_en : '') + ',' + (selectedDistObj ? selectedDistObj.name_en : '') + ',' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + '-' +this.data.permanent_post_code;
 
         }
 
@@ -2651,9 +2648,9 @@ export default {
           this.wards_upazila_pouro = [];
           this.wards_dist = [];
           this.wards_city = [];
-          this.ward_id_dist = null;
-          this.ward_id_city = null;
-          this.ward_id_pouro = null;
+          this.data.ward_id_dist = null;
+          this.data.ward_id_city = null;
+          this.data.ward_id_pouro = null;
 
         });
 
