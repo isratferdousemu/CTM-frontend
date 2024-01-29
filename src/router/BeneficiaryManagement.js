@@ -119,7 +119,7 @@ const BeneficiaryManagementRoutes = [
     component: () => import("../pages/BeneficiaryManagement/DigitalIDCard/Index.vue")
   },
   {
-    path: "/beneficiary-management/digital-id-card",
+    path: "/beneficiary-management/digital-id-card/:id",
     name: "digital-id-card",
     meta: {
       requiresAuth: true,

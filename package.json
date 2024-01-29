@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "fingerprintjs2": "^2.1.4",
+    "qrcode.vue": "^3.4.1",
     "vee-validate": "^3.4.5",
     "vform": "^2.1.2",
     "vue": "^2.6.11",
