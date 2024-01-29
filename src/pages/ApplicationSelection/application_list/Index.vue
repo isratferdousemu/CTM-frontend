@@ -1381,7 +1381,7 @@ export default {
             this.visibleHeaders = this.headers.filter(column => this.selectedColumns.includes(column.value));
         },
         GetAllowance() {
-            http().get('/admin/allowance/get', {
+            http().get('/global/program', {
 
             }).then((result) => {
 
@@ -1415,7 +1415,7 @@ export default {
             if (this.data.district_id != null && this.data.location_type != null) {
                 if ($event === 2) {
                     await this.$axios
-                        .get(`/admin/thana/get/${this.data.district_id}`, {
+                        .get(`/global/thana/get/${this.data.district_id}`, {
                             headers: {
                                 Authorization: "Bearer " + this.$store.state.token,
                                 "Content-Type": "multipart/form-data",
@@ -1443,7 +1443,7 @@ export default {
                 if ($event === 3) {
 
                     await this.$axios
-                        .get("/admin/city/get/" + this.data.district_id + "/" + $event, {
+                        .get("/global/city/get/" + this.data.district_id + "/" + $event, {
                             headers: {
                                 Authorization: "Bearer " + this.$store.state.token,
                                 "Content-Type": "multipart/form-data",
@@ -1469,7 +1469,7 @@ export default {
                 if ($event === 1) {
 
                     await this.$axios
-                        .get("/admin/city/get/" + this.data.district_id + "/" + $event, {
+                        .get("/global/city/get/" + this.data.district_id + "/" + $event, {
                             headers: {
                                 Authorization: "Bearer " + this.$store.state.token,
                                 "Content-Type": "multipart/form-data",
@@ -1499,7 +1499,7 @@ export default {
 
             if (event == 1) {
                 await this.$axios
-                    .get(`/admin/union/pouro/get/${this.data.thana_id}`, {
+                    .get(`/global/union/pouro/get/${this.data.thana_id}`, {
                         headers: {
                             Authorization: "Bearer " + this.$store.state.token,
                             "Content-Type": "multipart/form-data",
@@ -1520,7 +1520,7 @@ export default {
                 this.onChangeSubLocationType(1);
             } else {
                 await this.$axios
-                    .get(`/admin/union/get/${this.data.thana_id}`, {
+                    .get(`/global/union/get/${this.data.thana_id}`, {
                         headers: {
                             Authorization: "Bearer " + this.$store.state.token,
                             "Content-Type": "multipart/form-data",
@@ -1535,7 +1535,7 @@ export default {
 
         async onChangeDivision(event) {
             await this.$axios
-                .get(`/admin/district/get/${event}`, {
+                .get(`/global/district/get/${event}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -1547,7 +1547,7 @@ export default {
         },
         async onChangeDistrict(event) {
             await this.$axios
-                .get(`/admin/thana/get/${event}`, {
+                .get(`/global/thana/get/${event}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -1560,7 +1560,7 @@ export default {
         },
         async onChangeThana(event) {
             await this.$axios
-                .get(`/admin/union/get/${event}`, {
+                .get(`/global/union/get/${event}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -1572,7 +1572,7 @@ export default {
         },
         async onChangeCity(event) {
             await this.$axios
-                .get(`/admin/thana/get/city/${this.data.city_id}`, {
+                .get(`/global/thana/get/city/${this.data.city_id}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -1587,7 +1587,7 @@ export default {
             // this.wards = [];
             // this.data.ward_id = null;
             await this.$axios
-                .get(`/admin/ward/get/${event}`, {
+                .get(`/global/ward/get/${event}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -1602,7 +1602,7 @@ export default {
             // this.wards = [];
             // this.data.ward_id = null;
             await this.$axios
-                .get(`/admin/ward/get/pouro/${event}`, {
+                .get(`/global/ward/get/pouro/${event}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -1619,7 +1619,7 @@ export default {
             // this.wards = [];
             // this.data.ward_id = null;
             await this.$axios
-                .get(`/admin/ward/get/pouro/${this.data.district_pouro_id}`, {
+                .get(`/global/ward/get/pouro/${this.data.district_pouro_id}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -1636,7 +1636,7 @@ export default {
             // this.wards = [];
             // this.data.ward_id = null;
             await this.$axios
-                .get(`/admin/ward/get/thana/${event}`, {
+                .get(`/global/ward/get/thana/${event}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -1806,8 +1806,11 @@ export default {
 
         this.GetAllowance();
 
-        this.$store
-            .dispatch("getLookupByType", 1)
+        // this.$store
+        //     .dispatch("getLookupByType", 1)
+        //     .then((res) => (this.locationType = res));
+               this.$store
+            .dispatch("getGlobalLookupByType", 1)
             .then((res) => (this.locationType = res));
     }
 };
