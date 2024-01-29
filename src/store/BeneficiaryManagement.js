@@ -120,6 +120,56 @@ const actions = {
         });
   },
 
+  UpdateBeneficiaryDetails: ({ commit }, data) => {
+    return http()
+      .put(`/admin/beneficiary/update/${data.id}`, data.formData)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        const data = {
+          errors: err.response.data.errors,
+          error_status: err.response.message,
+        };
+        return err;
+      });
+  },
+  BeneficiaryReplacement: ({ commit }, data) => {
+    return http()
+      .put(`/admin/beneficiary/replace/${data.id}`, data.formData)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        const data = {
+          errors: err.response.data.errors,
+          error_status: err.response.message,
+        };
+        return err;
+      });
+  },
+  BeneficiaryExit: ({ commit }, data) => {
+    return http()
+      .post("/admin/beneficiary/exit", data)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        return err;
+      });
+  },
+
+  BeneficiaryShifting: ({ commit }, data) => {
+    return http()
+      .post("/admin/beneficiary/shift", data)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        return err;
+      });
+  },
+
 };
 /* -------------------------------------------------------------------------- */
 /*                               Getters Define                               */
