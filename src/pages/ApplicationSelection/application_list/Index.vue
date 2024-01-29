@@ -224,7 +224,7 @@
 
                                             </v-row>
                                             <v-row>
-                                                <v-btn elevation="2" class="btn ml-3 mt-3" color="blue"
+                                                <v-btn elevation="2" class="btn ml-3 mt-3 white--text" color="blue"
                                                     @click="toggleFieldVisibility">{{
                                                         $t("container.beneficiary_management.beneficiary_list.advance_search")
                                                     }}</v-btn>
@@ -323,7 +323,15 @@
                                 </h3>
                             </v-card-title>
                             <v-card-text>
-                                 <div class="d-inline d-flex justify-end ">
+                           
+                                    <v-row justify="space-between" align="center" >
+                                                            <v-col lg="3" md="3" cols="12" >
+                                                 
+                                      
+                                                   
+                  </v-col>
+                                         <v-col lg="3" md="3" cols="12" class="text-right">
+                                                 
                                       
                                                   <v-select
                 v-model="selectedColumns"
@@ -337,9 +345,11 @@
                 <template v-slot:selection="{ item, index }">
                 </template>
               </v-select>
-                                        </div>
+              </v-col>
+              </v-row>
+                                        <!-- </div> -->
                                <template>
-      <v-row justify="space-between" align="center">
+      <v-row justify="space-between" align="center" class="mx-4">
         <!-- Checkbox on the left -->
         <v-col lg="3" md="3" cols="12">
            
@@ -352,7 +362,7 @@
           <v-btn elevation="2" class="btn mr-2" color="success" @click="SubmitApproved()"
                                                 :disabled="isButtonDisabled" v-if="this.permissions?.permission?.approve">{{
                                                     $t("container.list.approve") }}</v-btn>
-                                            <v-btn elevation="2" class="btn mr-2" color="blue" @click="SubmitForward()"
+                                            <v-btn elevation="2" class="btn mr-2 white--text" color="blue" @click="SubmitForward()"
                                                 :disabled="isForwardButtonDisabled"
                                                 v-if="this.permissions?.permission?.forward">{{
                                                     $t("container.list.forward") }}</v-btn>
@@ -365,7 +375,7 @@
                                                 }}</v-btn>
         </v-col>
       </v-row>
-      <v-row justify="space-between" align="center">
+      <v-row justify="space-between" align="center" class="mx-4">
             <!-- Checkbox on the left -->
             <v-col lg="3" md="3" cols="12">
            
@@ -375,10 +385,10 @@
             <!-- Dropdown on the right -->
             <v-col lg="4" md="4" cols="12" class="text-right">
         
-              <v-btn elevation="2" class="btn mr-2" color="success" @click="GeneratePDF()"
+              <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="GeneratePDF()"
                                                     >{{
                                                         $t("container.list.PDF") }}</v-btn>
-                                                <v-btn elevation="2" class="btn mr-2" color="blue" @click="GenerateExcel()"
+                                                <v-btn elevation="2" class="btn mr-2  white--text" color="teal darken-2" @click="GenerateExcel()"
                                                     >{{
                                                         $t("container.list.excel") }}</v-btn>
                                                
@@ -1690,6 +1700,25 @@ export default {
             async GeneratePDF() {
             const queryParams = {
                 selectedColumns: this.selectedColumns,
+                searchText: this.search,
+                application_id: this.data.application_id,
+                nominee_name: this.data.nominee_name,
+                account_no: this.data.account_no,
+                status: this.data.status,
+                program_id: this.data.program_id,
+                nid_no: this.data.nid_no,
+                division_id: this.data.division_id,
+                district_id: this.data.district_id,
+                location_type_id: this.data.location_type,
+                thana_id: this.data.thana_id,
+                union_id: this.data.union_id,
+                city_id: this.data.city_id,
+                city_thana_id: this.data.city_thana_id,
+                district_pouro_id: this.data.district_pouro_id,
+                pouro_id: this.data.pouro_id,
+                sub_location_type: this.data.sub_location_type,
+                ward_id: this.data.ward_id,
+                status: this.data.status_list,
                
             };
             this.$axios
