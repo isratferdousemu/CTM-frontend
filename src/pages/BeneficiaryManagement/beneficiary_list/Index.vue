@@ -143,7 +143,6 @@
                                   'container.system_config.demo_graphic.ward.pouro'
                                 )
                               "
-                              @change="onChangeDistrictPouro($event)"
                               :items="district_pouros"
                               item-text="name_en"
                               item-value="id"
@@ -205,7 +204,6 @@
                                   'container.system_config.demo_graphic.ward.union'
                                 )
                               "
-                              @change="onChangeUnion($event)"
                               :items="unions"
                               item-text="name_en"
                               item-value="id"
@@ -258,19 +256,18 @@
                         >
                           <ValidationProvider
                             name="thana"
-                            vid="thana_id"
+                            vid="city_thana_id"
                             v-slot="{ errors }"
                           >
                             <v-autocomplete
-                              v-model="data.thana_id"
+                              v-model="data.city_thana_id"
                               outlined
                               :label="
                                 $t(
                                   'container.system_config.demo_graphic.ward.thana'
                                 )
                               "
-                              @change="onChangeThana($event)"
-                              :items="thanas"
+                              :items="city_thanas"
                               item-text="name_en"
                               item-value="id"
                               class="no-arrow-icon"
@@ -576,7 +573,7 @@
                       </template>
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }" width="50%">
-                        <!-- <v-tooltip top>
+                        <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
                               v-can="'update-post'"
@@ -595,7 +592,7 @@
                           <span>
                             {{ $t("container.list.switch_program") }}
                           </span>
-                        </v-tooltip> -->
+                        </v-tooltip>
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
@@ -776,11 +773,10 @@ export default {
         district_id: null,
         location_type: null,
         city_id: null,
-        // city_thana_id: null,
-        district_pouro_id: null,
-        thana_id: null,
+        city_thana_id: null,
         union_id: null,
         ward_id: null,
+        thana_id: null,
         beneficiary_id: null,
         nominee_name: null,
         account_number: null,
@@ -803,10 +799,6 @@ export default {
       ],
 
       value: [
-        {
-          text: this.$t("container.beneficiary_management.beneficiary_list.beneficiary_id"),
-          value: "application_id",
-        },
         {
           text: this.$t("container.list.name_en"),
           value: "name_en",
@@ -846,7 +838,7 @@ export default {
       cities: [],
       unions: [],
       wards: [],
-      // city_thanas: [],
+      city_thanas: [],
       district_pouros: [],
       advanch_search: false,
 
@@ -868,8 +860,10 @@ export default {
     headers() {
       return [
         {
-          text: this.$t("container.beneficiary_management.beneficiary_list.beneficiary_id"),
-          value: "application_id",
+          text: this.$t(
+            "container.beneficiary_management.beneficiary_list.beneficiary_id"
+          ),
+          value: "id",
         },
         {
           text: this.$t("container.list.name_en"),
@@ -923,20 +917,20 @@ export default {
           ),
           value: "spouse_name_bn",
         },
-        // {
-        //   text: this.$t(
-        //     "container.application_selection.application.union_pourashava"
-        //   ),
-        //   value: "union_pourashava",
-        // },
-        // {
-        //   text: this.$t("container.system_config.demo_graphic.ward.ward"),
-        //   value: "ward",
-        // },
-        // {
-        //   text: this.$t("container.application_selection.application.village"),
-        //   value: "village",
-        // },
+        {
+          text: this.$t(
+            "container.application_selection.application.union_pourashava"
+          ),
+          value: "union_pourashava",
+        },
+        {
+          text: this.$t("container.system_config.demo_graphic.ward.ward"),
+          value: "ward",
+        },
+        {
+          text: this.$t("container.application_selection.application.village"),
+          value: "village",
+        },
         {
           text: this.$t("container.application_selection.application.mobile"),
           value: "mobile",
@@ -950,10 +944,6 @@ export default {
     headers_start() {
       return [
         { text: this.$t("container.list.sl"), value: "sl" },
-        {
-          text: this.$t("container.beneficiary_management.beneficiary_list.beneficiary_id"),
-          value: "application_id",
-        },
         {
           text: this.$t("container.list.name_en"),
           value: "name_en",
@@ -982,7 +972,7 @@ export default {
         {
           text: this.$t("container.list.action"),
           value: "actions",
-          width: "200",
+          width: "25%",
         },
       ];
     },
@@ -995,10 +985,9 @@ export default {
       this.data.division_id = null;
       this.data.district_id = null;
       this.data.city_id = null;
-      this.data.district_pouro_id = null;
-      this.data.thana_id = null;
+      this.data.city_thana_id = null;
       this.data.union_id = null;
-      this.data.ward_id = null;
+      this.data.thana_id = null;
       this.data.beneficiary_id = null;
       this.data.nominee_name = null;
       this.data.account_number = null;
@@ -1010,8 +999,7 @@ export default {
       this.district_pouros = null;
       this.unions = null;
       this.cities = null;
-      this.wards = null;
-      // this.city_thanas = null;
+      this.city_thanas = null;
 
       this.GetApplication();
     },
@@ -1093,20 +1081,32 @@ export default {
     },
 
     async LocationType($event) {
-      this.data.city_id = null;
-      this.district_pouro_id = null;
-      this.thana_id = null;
-      this.data.union_id = null;
-      this.ward_id = null;
-
-      this.cities = null;
-      this.district_pouros = null;
-      this.thanas = null;
-      this.unions = null;
-      this.wards = null;
-      
       if (this.data.district_id != null && this.data.location_type != null) {
         console.log("LocationType", $event);
+        if ($event === 2) {
+          await this.$axios
+            .get(`/admin/thana/get/${this.data.district_id}`, {
+              headers: {
+                Authorization: "Bearer " + this.$store.state.token,
+                "Content-Type": "multipart/form-data",
+              },
+            })
+            .then((result) => {
+              this.thanas = result.data.data;
+            });
+        }
+        if ($event === 3) {
+          await this.$axios
+            .get("/admin/city/get/" + this.data.district_id + "/" + $event, {
+              headers: {
+                Authorization: "Bearer " + this.$store.state.token,
+                "Content-Type": "multipart/form-data",
+              },
+            })
+            .then((result) => {
+              this.cities = result.data.data;
+            });
+        }
         if ($event === 1) {
           await this.$axios
             .get("/admin/city/get/" + this.data.district_id + "/" + $event, {
@@ -1119,34 +1119,33 @@ export default {
               this.district_pouros = result.data.data;
             });
         }
-        else if ($event === 2) {
-          await this.$axios
-            .get(`/admin/thana/get/${this.data.district_id}`, {
-              headers: {
-                Authorization: "Bearer " + this.$store.state.token,
-                "Content-Type": "multipart/form-data",
-              },
-            })
-            .then((result) => {
-              this.thanas = result.data.data;
-            });
-        }
-        else if ($event === 3) {
-          await this.$axios
-            .get("/admin/city/get/" + this.data.district_id + "/" + $event, {
-              headers: {
-                Authorization: "Bearer " + this.$store.state.token,
-                "Content-Type": "multipart/form-data",
-              },
-            })
-            .then((result) => {
-              this.cities = result.data.data;
-            });
-        }
-        
       }
     },
 
+    async onChangeThana(event) {
+      await this.$axios
+        .get(`/admin/union/get/${event}`, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
+          this.unions = result.data.data;
+        });
+    },
+    async onChangeCity(event) {
+      await this.$axios
+        .get(`/admin/thana/get/city/${this.data.city_id}`, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
+          this.city_thanas = result.data.data;
+        });
+    },
     async onChangeUpazila(event) {
       await this.$axios
         .get(`/admin/union/get/${this.data.thana_id}`, {
@@ -1159,55 +1158,6 @@ export default {
           this.unions = result.data.data;
         });
     },
-    async onChangeUnion(event) {
-      await this.$axios
-        .get(`/admin/ward/get/${this.data.union_id}`, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((result) => {
-          this.wards = result.data.data;
-        });
-    },
-    async onChangeCity(event) {
-      await this.$axios
-        .get(`/admin/thana/get/city/${this.data.city_id}`, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((result) => {
-          this.thanas = result.data.data;
-        });
-    },
-    async onChangeThana(event) {
-      await this.$axios
-        .get(`/admin/ward/get/thana/${this.data.thana_id}`, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((result) => {
-          this.wards = result.data.data;
-        });
-    },
-    async onChangeDistrictPouro(event) {
-      await this.$axios
-        .get(`/admin/ward/get/district_pouro/${this.data.district_pouro_id}`, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((result) => {
-          this.wards = result.data.data;
-        });
-    },
-    
 
     onPageChange($event) {
       // this.pagination.current = $event;
@@ -1228,12 +1178,12 @@ export default {
         // location_type: this.data.locationType,
         program_id: this.data.program_id,
         division_id: this.data.division_id,
-        district_id: this.data.district_id,
+        district_id: this.district_id,
         city_corp_id: this.data.city_id,
-        district_pourashava_id: this.data.district_pouro_id,
-        // pourashava_id: this.district_pouros,
+        district_pourashava_id: this.district_pouros,
+        pourashava_id: this.district_pouros,
         union_id: this.data.union_id,
-        thana_id: this.data.thana_id,
+        upazila_id: this.data.thana_id,
         ward_id: this.data.ward_id,
 
         beneficiary_id: this.data.beneficiary_id,
@@ -1295,11 +1245,7 @@ export default {
       this.selectedHeaders = [
         { text: this.$t("container.list.sl"), value: "sl" },
         ...val,
-        {
-          text: this.$t("container.list.action"),
-          value: "actions",
-          width: "200",
-        },
+        { text: this.$t("container.list.action"), value: "actions" },
       ];
     },
     advanch_search(val) {

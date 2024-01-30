@@ -29,7 +29,6 @@
             "keyword": "কীওয়ার্ড",
             "location_type": "অবস্থানের ধরন",
             "add_new": "যোগ করুন",
-            "add": "যোগ করুন",
             "update": "আপডেট",
             "delete": "মুছে ফেলুন",
             "saved": "ডেটা সফলভাবে সংরক্ষিত হয়েছে",
@@ -219,9 +218,7 @@
                     "union_ward": "ইউনিয়ন/ওয়ার্ড",
                     "subLocation_type": "Sub Location",
                     "dist_pouro": "জেলা পৌরসভা",
-                    "union_pouro": "ইউনিয়ন /পৌরসভা",
-                    "post_code":"পোস্ট কোড",
-                    "address":"গ্রাম/বাড়ি নং, রোড নং, ব্লক নং, সেকশন"
+                    "union_pouro": "ইউনিয়ন /পৌরসভা"
                 },
                 "office": {
                     "office": "অফিস",
@@ -632,12 +629,7 @@
                 "beneficiary_replacement": "সুবিধাভোগী প্রতিস্থাপন",
                 "replacement_with": "সঙ্গে প্রতিস্থাপন",
                 "beneficiary_details": "সুবিধাভোগীর বিবরণ",
-                "beneficiary_father_name": "সুবিধাভোগীর পিতার নাম",
-                "beneficiary_mother_name": "সুবিধাভোগীর মাতার নাম",
-                "beneficiary_dob": "সুবিধাভোগীর জন্ম তারিখ",
                 "replacement_cause": "প্রতিস্থাপনের কারণ",
-                "replacement_detail": "প্রতিস্থাপনের বিবরণ",
-                "replacement_file":"ফাইল সংযুক্ত করুন",
                 "cause_date": "প্রভাবের তারিখ",
                 "reason_provision": "কারণ বিধান",
                 "beneficiary_replacement_list": "সুবিধাভোগী প্রতিস্থাপন তালিকা",
@@ -677,7 +669,6 @@
                 "date_of_exit": "প্রস্থানের তারিখ"
             },
             "beneficiary_shifting": {
-                "list":"সুবিধাভোগী তালিকা",
                 "title": "সুবিধাভোগী স্থানান্তর",
                 "cause": "কারণ",
                 "activation_date": "সক্রিয়করণের তারিখ"
