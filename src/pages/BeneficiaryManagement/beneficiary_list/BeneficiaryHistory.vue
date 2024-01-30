@@ -10,19 +10,35 @@
                 <v-card-text>
                   <table>
                     <tr>
-                      <td>Beneficiary ID</td>
+                      <td>{{
+                      $t(
+                        "container.beneficiary_management.beneficiary_list.beneficiary_id"
+                      )
+                    }}</td>
                       <td>: {{ data.application_id }}</td>
                     </tr>
                     <tr>
-                      <td>Name</td>
+                      <td>{{
+                      $t(
+                        "container.beneficiary_management.beneficiary_list.beneficiary_name"
+                      )
+                    }}</td>
                       <td>: {{ data.name_en }}</td>
                     </tr>
                     <tr>
-                      <td>Mobile</td>
+                      <td>{{
+                      $t(
+                        "container.beneficiary_management.beneficiary_list.beneficiary_mobile"
+                      )
+                    }}</td>
                       <td>: {{ data.mobile }}</td>
                     </tr>
                     <tr>
-                      <td>Program</td>
+                      <td>{{
+                      $t(
+                        "container.beneficiary_management.beneficiary_list.program"
+                      )
+                    }}</td>
                       <td>: {{ data.program.name_en }}</td>
                     </tr>
                   </table>
@@ -455,7 +471,7 @@
                         }}
                       </template>
                       <!-- Action Button -->
-                      <template v-slot:item.actions="{ item }">
+                      <!-- <template v-slot:item.actions="{ item }">
                         <v-btn
                           v-on="on"
                           color="success"
@@ -465,7 +481,7 @@
                         >
                           {{ $t("container.list.change_tracking_details") }}
                         </v-btn>
-                      </template>
+                      </template> -->
                       <!-- End Action Button -->
 
                       <template v-slot:footer="item">
@@ -721,7 +737,7 @@ export default {
           ),
           value: "name_en",
         },
-        { text: this.$t("container.list.action"), value: "actions" },
+        // { text: this.$t("container.list.action"), value: "actions" },
       ];
     },
   },
