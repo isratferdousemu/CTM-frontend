@@ -594,7 +594,7 @@
                               class="ml-3 white--text"
                               elevation="0"
                               router 
-                              to="/beneficiary-management/beneficiary-journey"
+                              :to="`/beneficiary-management/beneficiary-journey/${item.id}`"
                             >
                               <v-icon> mdi mdi-history </v-icon>
                             </v-btn>

@@ -2469,12 +2469,19 @@ export default {
     FooterBar,
   },
   watch: {
+    "$i18n.locale": "updateHeaderTitle",
     menu(val) {
       val && setTimeout(() => (this.activePicker = "YEAR"));
     },
   },
 
   methods: {
+    updateHeaderTitle() {
+      const title = this.$t(
+        "container.beneficiary_management.beneficiary_list.beneficiary_edit"
+      );
+      this.$store.commit("setHeaderTitle", title);
+    },
     async submitApplication() {
       try {
         let id = this.$route.params.id;
@@ -2883,7 +2890,9 @@ export default {
         });
     },
   },
-
+  beforeMount() {
+    this.updateHeaderTitle();
+  },
   created() {
     // this.getApplicationById();
     this.GetAllDivisions();
