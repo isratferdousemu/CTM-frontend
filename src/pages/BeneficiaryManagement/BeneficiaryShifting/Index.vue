@@ -439,7 +439,7 @@ export default {
   mounted() {
     this.GetAllProgram();
     this.$store
-      .dispatch("getLookupByType", 1)
+      .dispatch("getLookupByType", 22)
       .then((res) => (this.locationType = res));
   },
 };

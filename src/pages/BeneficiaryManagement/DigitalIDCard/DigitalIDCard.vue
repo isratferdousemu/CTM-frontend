@@ -2,17 +2,14 @@
   <div id="digital_id">
     <v-row justify="center" class="mt-5 mb-5">
       <v-col lg="6" md="6" cols="12">
-
-
-        <v-card
-          width="400"
-          class="mx-5"
-        >
-          <v-card-text style="
-            background: url('/assets/images/top_line.jpg') no-repeat left top;
-            background-size: 80%;
-            position: relative;
-          ">
+        <v-card width="400" class="mx-5">
+          <v-card-text
+            style="
+              background: url('/assets/images/top_line.jpg') no-repeat left top;
+              background-size: 80%;
+              position: relative;
+            "
+          >
             <v-img
               class="top-left-image"
               style="width: 80px; height: 80px"
@@ -65,40 +62,41 @@
               </table>
             </div>
 
-            
             <v-row class="mt-5">
               <v-col>
                 <qr-code
                   v-if="this.beneficiary.qrCode"
                   :text="this.beneficiary.qrCode"
-                  size="70"
+                  size="100"
                 >
                 </qr-code>
               </v-col>
               <v-col class="justify-end">
                 <v-img
-                class="bottom-right-image"
-                src="/assets/images/signature.png"
-                :width="200"
-              ></v-img>
-              <div
-              class="d-flex justify-end my-2"
-              style="text-decoration: overline"
-            >
-              Authorized Signature
-            </div>
+                  class="bottom-right-image"
+                  src="/assets/images/signature.png"
+                  :width="200"
+                ></v-img>
+                <div
+                  class="d-flex justify-end my-2"
+                  style="text-decoration: overline"
+                >
+                  Authorized Signature
+                </div>
               </v-col>
             </v-row>
-            
           </v-card-text>
-          <v-card-actions class="py-5" style="
-            background: url('/assets/images/bottom_line.jpg') no-repeat right bottom;
-            background-size: 90%;
-            position: relative;
-          ">&nbsp;</v-card-actions>
+          <v-card-actions
+            class="py-5"
+            style="
+              background: url('/assets/images/bottom_line.jpg') no-repeat right
+                bottom;
+              background-size: 90%;
+              position: relative;
+            "
+            >&nbsp;</v-card-actions
+          >
         </v-card>
-   
-        
       </v-col>
     </v-row>
   </div>
@@ -145,8 +143,7 @@ export default {
             //this.beneficiary.imageUrl = item?.image;
             //this.beneficiary.signUrl = item?.signature;
 
-            this.beneficiary.qrCode =  `Beneficiary Name: ${item?.name_en}, Beneficiary ID : ${item?.application_id}`
-             
+            this.beneficiary.qrCode = `Beneficiary Name: ${item?.name_en}, Beneficiary ID : ${item?.application_id}`;
           })
           .catch((err) => {
             if (err.response?.data?.errors) {
