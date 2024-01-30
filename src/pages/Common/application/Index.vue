@@ -1665,7 +1665,6 @@ export default {
         'Fisherman',
         'Construction Worker',
         'Domestic Worker',
-        'Garment Worker',
         'Tea Garden Laborer',
         'Auto Rickshaw Driver',
         'Migrant Worker',
