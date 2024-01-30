@@ -299,9 +299,10 @@
 
                           <v-col cols="6" lg="6">
                             <div class="validation-error_marital">
-                              <ValidationProvider name="Marital Status" vid="marital_status" v-slot="{ errors }">
+                              <ValidationProvider name="Marital Status" rules="required" vid="marital_status" v-slot="{ errors }">
+                                  <span style="margin-left: 4px; color: red">*</span>
                                 <label>Marital Status</label>
-                                <v-select v-model="data.marital_status" outlined clearable :items="marital_status"
+                                <v-select v-model="data.marital_status" outlined clearable :items="marital_status" 
                                   :error="errors[0] ? true : false" :error-messages="errors[0]">
                                 </v-select>
                               </ValidationProvider>

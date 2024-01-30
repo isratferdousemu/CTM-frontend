@@ -377,10 +377,9 @@
       </v-row>
       <v-row justify="space-between" align="center" class="mx-4">
             <!-- Checkbox on the left -->
-            <v-col lg="3" md="3" cols="12">
-           
-             {{  $t('container.list.total') }}:{{this.total}}
-            </v-col>
+           <v-col lg="3" md="3" cols="12">
+    {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">{{ this.total }}</span>
+  </v-col>
 
             <!-- Dropdown on the right -->
             <v-col lg="4" md="4" cols="12" class="text-right">
@@ -515,7 +514,7 @@
 
 
                                             <!-- Action Button -->
-                                            <template v-slot:item.actions="{ item }">
+                                            <!-- <template v-slot:item.actions="{ item }">
 
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
@@ -529,7 +528,7 @@
                                                         {{ $t("container.list.view") }}
                                                     </span>
                                                 </v-tooltip>
-                                            </template>
+                                            </template> -->
 
 
 
@@ -808,7 +807,7 @@ export default {
                 },
 
 
-                { text: this.$t("container.list.action"), value: "actions", fixed: true },
+                // { text: this.$t("container.list.action"), value: "actions", fixed: true },
 
             ];
         },
