@@ -388,9 +388,9 @@
               <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="GeneratePDF()"
                                                     >{{
                                                         $t("container.list.PDF") }}</v-btn>
-                                                <v-btn elevation="2" class="btn mr-2  white--text" color="teal darken-2" @click="GenerateExcel()"
+                                                <!-- <v-btn elevation="2" class="btn mr-2  white--text" color="teal darken-2" @click="GenerateExcel()"
                                                     >{{
-                                                        $t("container.list.excel") }}</v-btn>
+                                                        $t("container.list.excel") }}</v-btn> -->
                                                
             </v-col>
           </v-row>
@@ -1655,6 +1655,7 @@ export default {
 
         async GetApplication() {
             const queryParams = {
+                
                 searchText: this.search,
                 application_id: this.data.application_id,
                 nominee_name: this.data.nominee_name,
@@ -1697,7 +1698,11 @@ export default {
 
         },
             async GeneratePDF() {
+            // console.log('Current Locale:', this.$i18n.locale);
+            // const translatedText = this.$t('container.list.sl');
+            // console.log('Translated Text:', translatedText);
             const queryParams = {
+                 language: this.$i18n.locale,
                 selectedColumns: this.selectedColumns,
                 searchText: this.search,
                 application_id: this.data.application_id,
