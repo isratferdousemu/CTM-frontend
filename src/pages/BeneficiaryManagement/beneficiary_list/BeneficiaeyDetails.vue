@@ -3,7 +3,7 @@
     <v-row class="mx-5 my-5 mt-5">
       <v-col class="mt-5" cols="12">
         <ValidationObserver ref="form" v-slot="{ invalid }">
-          <form @submit.prevent="submitApplication()">
+          <form @submit.prevent="">
             <v-card class="pa-5 px-10 mb-4">
               <ValidationProvider
                 name="program"
@@ -48,13 +48,13 @@
                           >
                             <v-radio
                               label="National Identity (NID)"
-                              :value="1"
-                              v-if="!isRadioGroupReadonly"
+                              value="1"
+                              v-if="isRadioGroupReadonly"
                             ></v-radio>
                             <v-radio
                               label="Birth Registration Number"
-                              :value="2"
-                              v-if="!isRadioGroupReadonly"
+                              value="2"
+                              v-if="isRadioGroupReadonly"
                             ></v-radio>
                           </v-radio-group>
                         </ValidationProvider>
@@ -104,12 +104,6 @@
                           </v-text-field>
                         </v-col>
                       </V-row>
-
-                      <!-- <div class="d-inline d-flex justify-end">
-                                              <v-btn @click="verifyCard()" elevation="2"
-                                                  :disabled="data.date_of_birth == null || data.verification_number == null || data.verification_type == null || data.date_of_birth == '' || data.verification_number == '' || data.verification_type == ''"
-                                                  class="btn" color="primary">Verify</v-btn>
-                                          </div> -->
                     </v-expansion-panel-content>
                   </v-expansion-panel>
                   <!-- Applicant Verification end -->
@@ -273,17 +267,45 @@
                         </v-col>
                       </V-row>
                       <V-row>
-                        <v-col>
+                        <v-col md="2" lg="2" cols="12">
                           <label>
                             Health Status : (Apply Where Applicable)</label
                           >
                           <span style="margin-left: 4px; color: red">*</span>
                         </v-col>
-
-                        <v-col v-for="i in 6" :key="i">
+                        <v-col md="2" lg="2" cols="12">
                           <v-checkbox
-                            :label="health_status[i - 1]"
-                            :value="health_status[i - 1]"
+                            disabled
+                            v-model="health_status_value.totally_disabled"
+                            :label="health_status[0]"
+                          ></v-checkbox>
+                        </v-col>
+                        <v-col md="2" lg="2" cols="12">
+                          <v-checkbox
+                            disabled
+                            v-model="health_status_value.sick"
+                            :label="health_status[1]"
+                          ></v-checkbox>
+                        </v-col>
+                        <v-col md="2" lg="2" cols="12">
+                          <v-checkbox
+                            disabled
+                            v-model="health_status_value.insane"
+                            :label="health_status[2]"
+                          ></v-checkbox>
+                        </v-col>
+                        <v-col md="2" lg="2" cols="12">
+                          <v-checkbox
+                            disabled
+                            v-model="health_status_value.disabled"
+                            :label="health_status[3]"
+                          ></v-checkbox>
+                        </v-col>
+                        <v-col md="2" lg="2" cols="12">
+                          <v-checkbox
+                            disabled
+                            v-model="health_status_value.partially_powerless"
+                            :label="health_status[4]"
                           ></v-checkbox>
                         </v-col>
                       </V-row>
@@ -373,15 +395,14 @@
                       </V-row>
                       <V-row>
                         <v-col>
-                          <label>
-                            Health Status : (Apply Where Applicable)</label
-                          >
+                          <label> PMT Scoring</label>
                           <span style="margin-left: 4px; color: red">*</span>
                         </v-col>
                       </V-row>
                       <V-row>
                         <v-col v-for="i in 5" :key="i">
                           <v-checkbox
+                            readonly
                             :label="health_status[i - 1]"
                             :value="health_status[i - 1]"
                           ></v-checkbox>
@@ -396,23 +417,23 @@
                     <v-expansion-panel-header color="primary">
                       <h3 class="white--text">Personal Information</h3>
                     </v-expansion-panel-header>
-                    <v-expansion-panel-content>
+                    <v-expansion-panel-content class="mt-5">
                       <div class="pa-2 mb-4">
                         <v-row>
                           <v-col cols="6" lg="6">
                             <v-img
-                              :src="imageUrl"
+                              :src="data.imageUrl"
                               style="
                                 width: 200px;
                                 height: 200px;
                                 border: 1px solid #ccc;
                               "
                               class="mb-5"
-                              v-if="imageUrl"
+                              v-if="data.imageUrl"
                             ></v-img>
                             <v-img
                               src="/assets/images/profile.png"
-                              v-if="!imageUrl"
+                              v-if="!data.imageUrl"
                               style="
                                 width: 150px;
                                 height: 150px;
@@ -426,33 +447,23 @@
                               rules="required"
                               vid="image"
                             >
-                              <label>Image</label>
-                              <v-file-input
-                                outlined
-                                show-size
-                                counter
-                                prepend-inner-icon="mdi-camera"
-                                v-model="data.image"
-                                accept="image/*"
-                                @change="previewImage"
-                                prepend-icon=""
-                              ></v-file-input>
+                              <h3>Image</h3>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" align-self="end" lg="6">
                             <v-img
-                              :src="signUrl"
+                              :src="data.signUrl"
                               style="
                                 width: 200px;
                                 height: 80px;
                                 border: 1px solid #ccc;
                               "
                               class="mb-5"
-                              v-if="signUrl"
+                              v-if="data.signUrl"
                             ></v-img>
                             <v-img
                               src="/assets/images/sign.png"
-                              v-if="!signUrl"
+                              v-if="!data.signUrl"
                               style="
                                 width: 200px;
                                 height: 80px;
@@ -466,17 +477,7 @@
                               rules="required"
                               vid="sign"
                             >
-                              <label>Signature</label>
-                              <v-file-input
-                                outlined
-                                show-size
-                                counter
-                                prepend-inner-icon="mdi-camera"
-                                v-model="data.signature"
-                                accept="image/*"
-                                @change="previewSign"
-                                prepend-icon=""
-                              ></v-file-input>
+                              <h3>Signature</h3>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
@@ -487,9 +488,6 @@
                               v-slot="{ errors }"
                             >
                               <label>Name (BN) </label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
                               <v-text-field
                                 v-model="data.name_bn"
                                 outlined
@@ -508,9 +506,6 @@
                               v-slot="{ errors }"
                             >
                               <label>Name (EN) </label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
                               <v-text-field
                                 v-model="data.name_en"
                                 outlined
@@ -620,16 +615,14 @@
                               v-slot="{ errors }"
                             >
                               <label>Marital Status</label>
-                              <v-select
+                              <v-text-field
                                 v-model="data.marital_status"
                                 outlined
                                 readonly
-                                required
-                                :items="marital_status"
                                 :error="errors[0] ? true : false"
                                 :error-messages="errors[0]"
                               >
-                              </v-select>
+                              </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
@@ -657,19 +650,14 @@
                               rules="required"
                             >
                               <label>Religion</label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-
-                              <v-select
+                              <v-text-field
                                 v-model="data.religion"
                                 outlined
-                                required
-                                :items="religion"
+                                readonly
                                 :error="errors[0] ? true : false"
                                 :error-messages="errors[0]"
                               >
-                              </v-select>
+                              </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
@@ -682,9 +670,6 @@
                               <label style="display: inline-block"
                                 >Mobile Number
                               </label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
                               <v-text-field
                                 v-model="data.mobile"
                                 outlined
@@ -723,9 +708,6 @@
                               rules="required"
                             >
                               <label>Age</label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
                               <v-text-field
                                 v-model="data.age"
                                 outlined
@@ -746,21 +728,15 @@
                               rules="required"
                             >
                               <label>Gender</label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-select
-                                v-model="data.gender.id"
-                                item-text="value_en"
-                                item-value="id"
+                              <v-text-field
+                                v-model="data.gender.value_en"
                                 outlined
-                                :items="data.gender"
                                 required
+                                readonly
                                 :error="errors[0] ? true : false"
                                 :error-messages="errors[0]"
-                                readonly
                               >
-                              </v-select>
+                              </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
@@ -771,19 +747,6 @@
                               v-slot="{ errors }"
                             >
                               <label>Education Status</label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <!-- <v-select
-                                v-model="data.education_status"
-                                outlined
-                                required
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                                :items="education_status"
-                                readonly
-                              >
-                              </v-select> -->
                               <v-text-field
                                 v-model="data.education_status"
                                 outlined
@@ -844,177 +807,212 @@
                       <v-row>
                         <v-col cols="12" class="text-center">
                           <v-chip color="success" class="text-uppercase" label
-                            >Present Address</v-chip>
+                            >Present Address</v-chip
+                          >
                         </v-col>
                         <!-- {{ permanent_location }}  -->
-                        <v-col lg="6" md="6" cols="12">
-                          <label style="display: inline-block">Division </label>
-                          <span style="margin-left: 4px; color: red">*</span>
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.currentDivision"
+                        >
                           <v-text-field
-                            v-model="data.division_id"
-                            readonly
+                            v-model="data.currentDivision.name_en"
                             outlined
-                          ></v-text-field>
-                        </v-col>
-                        <v-col lg="6" md="6" cols="12">
-                          <label style="display: inline-block">District </label>
-                          <v-text-field
-                            v-model="data.district_id"
                             readonly
-                            outlined
-                          ></v-text-field>
-                        </v-col>
-                        <v-col lg="6" md="6" cols="12">
-                          <ValidationProvider
-                            name="Location Type"
-                            vid="location_type"
-                            rules="required"
-                            v-slot="{ errors }"
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.division.division'
+                              )
+                            "
                           >
-                            <label style="display: inline-block"
-                              >Location Type
-                            </label>
-                            <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete
-                              @input="LocationType($event)"
-                              v-model="data.location_type"
-                              :hide-details="errors[0] ? false : true"
-                              outlined
-                              :items="locationType"
-                              item-text="value_en"
-                              item-value="id"
-                              readonly
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            ></v-autocomplete>
-                          </ValidationProvider>
+                          </v-text-field>
                         </v-col>
                         <v-col
-                          v-if="data.location_type == 2"
                           lg="6"
                           md="6"
                           cols="12"
+                          v-if="data.currentDistrict"
                         >
-                          <label style="display: inline-block">Upazila </label>
-                          <span style="margin-left: 4px; color: red">*</span>
                           <v-text-field
-                            v-model="data.thana_id"
+                            v-model="data.currentDistrict.name_en"
                             outlined
                             readonly
-                          ></v-text-field>
-                        </v-col>
-                        <v-col
-                          v-if="data.location_type == 2"
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <label style="display: inline-block"
-                            >Union/Pouroshava
-                          </label>
-                          <span style="margin-left: 4px; color: red">*</span>
-                          <v-text-field
-                            v-model="data.union_id"
-                            outlined
-                            readonly
-                          ></v-text-field>
-                        </v-col>
-                        <v-col
-                          v-if="data.location_type == 3"
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <label style="display: inline-block">City </label>
-                          <span style="margin-left: 4px; color: red">*</span>
-                          <v-text-field
-                            v-model="data.city_id"
-                            outlined
-                            readonly
-                          ></v-text-field>
-                        </v-col>
-                        <v-col
-                          v-if="data.location_type == 3"
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <label style="display: inline-block">Thana </label>
-                          <span style="margin-left: 4px; color: red">*</span>
-                          <v-text-field
-                            v-model="data.city_thana_id"
-                            outlined
-                            readonly
-                          ></v-text-field>
-                        </v-col>
-                        <v-col
-                          v-if="data.location_type == 1"
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <label style="display: inline-block"
-                            >District Pouroshava
-                          </label>
-                          <v-text-field
-                            v-model="data.district_pouro_id"
-                            outlined
-                            readonly
-                          ></v-text-field>
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.district.district'
+                              )
+                            "
+                          >
+                          </v-text-field>
                         </v-col>
 
-                        <v-col lg="6" md="6" cols="6">
-                          <label style="display: inline-block">Ward </label>
-                          <span style="margin-left: 4px; color: red">*</span>
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.currentUpazila"
+                        >
                           <v-text-field
-                            v-model="data.ward_id"
+                            v-model="data.currentUpazila.name_en"
                             outlined
                             readonly
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="6" lg="6">
-                          <ValidationProvider
-                            name="Post Code"
-                            vid="post_code"
-                            rules="required"
-                            v-slot="{ errors }"
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.upazila'
+                              )
+                            "
                           >
-                            <label style="display: inline-block"
-                              >Post Code
-                            </label>
-                            <span style="margin-left: 4px; color: red">*</span>
-                            <v-text-field
-                              v-model="data.post_code"
-                              outlined
-                              readonly
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            >
-                            </v-text-field>
-                          </ValidationProvider>
+                          </v-text-field>
                         </v-col>
 
-                        <v-col cols="6" lg="6">
-                          <ValidationProvider
-                            name="Village/House No.,
-                                                      Road No., Block No, Section"
-                            vid="address"
-                            rules="required"
-                            v-slot="{ errors }"
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.currentCityCorporation"
+                        >
+                          <v-text-field
+                            v-model="data.currentCityCorporation.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.city'
+                              )
+                            "
                           >
-                            <label style="display: inline-block"
-                              >Village/House No., Road No., Block No, Section
-                            </label>
-                            <span style="margin-left: 4px; color: red">*</span>
-                            <v-text-field
-                              v-model="data.address"
-                              outlined
-                              readonly
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            >
-                            </v-text-field>
-                          </ValidationProvider>
+                          </v-text-field>
+                        </v-col>
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.currentDistrictPourashava"
+                        >
+                          <v-text-field
+                            v-model="data.currentDistrictPourashava.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.dist_pouro'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col lg="6" md="6" cols="12" v-if="data.currentThana">
+                          <v-text-field
+                            v-model="data.currentThana.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.thana'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.currentPourashava"
+                        >
+                          <v-text-field
+                            v-model="data.currentPourashava.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.pouro'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col lg="6" md="6" cols="12" v-if="data.currentUnion">
+                          <v-text-field
+                            v-model="data.currentUnion.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.union'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+                        <v-col lg="6" md="6" cols="12" v-if="data.currentWard">
+                          <v-text-field
+                            v-model="data.currentWard.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.ward'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.current_post_code"
+                        >
+                          <v-text-field
+                            v-model="data.current_post_code"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.post_code'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.current_address"
+                        >
+                          <v-text-field
+                            v-model="data.current_address"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.address'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+                        <v-col lg="6" md="6" cols="12" v-if="data.mobile">
+                          <v-text-field
+                            v-model="data.mobile"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.mobile'
+                              )
+                            "
+                          >
+                          </v-text-field>
                         </v-col>
                       </v-row>
 
@@ -1025,174 +1023,229 @@
                           >
                         </v-col>
 
-                        <v-col lg="6" md="6" cols="12">
-                          <label style="display: inline-block">Division </label>
-                          <span style="margin-left: 4px; color: red">*</span>
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.permanentDivision"
+                        >
                           <v-text-field
-                            v-model="data.division_id"
-                            readonly
+                            v-model="data.permanentDivision.name_en"
                             outlined
-                          ></v-text-field>
-                        </v-col>
-                        <v-col lg="6" md="6" cols="12">
-                          <label style="display: inline-block">District </label>
-                          <v-text-field
-                            v-model="data.permanent_district_id"
                             readonly
-                            outlined
-                          ></v-text-field>
-                        </v-col>
-                        <v-col lg="6" md="6" cols="12">
-                          <ValidationProvider
-                            name="Location Type"
-                            vid="location_type"
-                            rules="required"
-                            v-slot="{ errors }"
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.division.division'
+                              )
+                            "
                           >
-                            <label style="display: inline-block"
-                              >Location Type
-                            </label>
-                            <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete
-                              @input="LocationType($event)"
-                              v-model="data.permanent_location_type"
-                              :hide-details="errors[0] ? false : true"
-                              outlined
-                              :items="locationType"
-                              item-text="value_en"
-                              item-value="id"
-                              readonly
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            ></v-autocomplete>
-                          </ValidationProvider>
+                          </v-text-field>
                         </v-col>
                         <v-col
-                          v-if="data.permanent_location_type == 2"
                           lg="6"
                           md="6"
                           cols="12"
+                          v-if="data.permanentDistrict"
                         >
-                          <label style="display: inline-block">Upazila </label>
-                          <span style="margin-left: 4px; color: red">*</span>
                           <v-text-field
-                            v-model="data.permanent_thana_id"
+                            v-model="data.permanentDistrict.name_en"
                             outlined
                             readonly
-                          ></v-text-field>
-                        </v-col>
-                        <v-col
-                          v-if="data.permanent_location_type == 2"
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <label style="display: inline-block"
-                            >Union/Pouroshava
-                          </label>
-                          <span style="margin-left: 4px; color: red">*</span>
-                          <v-text-field
-                            v-model="data.permanent_union_id"
-                            outlined
-                            readonly
-                          ></v-text-field>
-                        </v-col>
-                        <v-col
-                          v-if="data.permanent_location_type == 3"
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <label style="display: inline-block">City </label>
-                          <span style="margin-left: 4px; color: red">*</span>
-                          <v-text-field
-                            v-model="data.permanent_city_id"
-                            outlined
-                            readonly
-                          ></v-text-field>
-                        </v-col>
-                        <v-col
-                          v-if="data.permanent_location_type == 3"
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <label style="display: inline-block">Thana </label>
-                          <span style="margin-left: 4px; color: red">*</span>
-                          <v-text-field
-                            v-model="data.permanent_city_thana_id"
-                            outlined
-                            readonly
-                          ></v-text-field>
-                        </v-col>
-                        <v-col
-                          v-if="data.permanent_location_type == 1"
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <label style="display: inline-block"
-                            >District Pouroshava
-                          </label>
-                          <v-text-field
-                            v-model="data.permanent_district_pouro_id"
-                            outlined
-                            readonly
-                          ></v-text-field>
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.district.district'
+                              )
+                            "
+                          >
+                          </v-text-field>
                         </v-col>
 
-                        <v-col lg="6" md="6" cols="6">
-                          <label style="display: inline-block">Ward </label>
-                          <span style="margin-left: 4px; color: red">*</span>
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.permanentUpazila"
+                        >
                           <v-text-field
-                            v-model="data.permanent_ward_id"
+                            v-model="data.permanentUpazila.name_en"
                             outlined
                             readonly
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="6" lg="6">
-                          <ValidationProvider
-                            name="Post Code"
-                            vid="post_code"
-                            rules="required"
-                            v-slot="{ errors }"
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.upazila'
+                              )
+                            "
                           >
-                            <label style="display: inline-block"
-                              >Post Code
-                            </label>
-                            <span style="margin-left: 4px; color: red">*</span>
-                            <v-text-field
-                              v-model="data.permanent_post_code"
-                              outlined
-                              readonly
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            >
-                            </v-text-field>
-                          </ValidationProvider>
+                          </v-text-field>
                         </v-col>
 
-                        <v-col cols="6" lg="6">
-                          <ValidationProvider
-                            name="Village/House No.,
-                                                      Road No., Block No, Section"
-                            vid="address"
-                            rules="required"
-                            v-slot="{ errors }"
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.permanentCityCorporation"
+                        >
+                          <v-text-field
+                            v-model="data.permanentCityCorporation.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.city'
+                              )
+                            "
                           >
-                            <label style="display: inline-block"
-                              >Village/House No., Road No., Block No, Section
-                            </label>
-                            <span style="margin-left: 4px; color: red">*</span>
-                            <v-text-field
-                              v-model="data.permanent_address"
-                              outlined
-                              readonly
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            >
-                            </v-text-field>
-                          </ValidationProvider>
+                          </v-text-field>
+                        </v-col>
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.permanentDistrictPourashava"
+                        >
+                          <v-text-field
+                            v-model="data.permanentDistrictPourashava.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.dist_pouro'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.permanentThana"
+                        >
+                          <v-text-field
+                            v-model="data.permanentThana.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.thana'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.permanentPourashava"
+                        >
+                          <v-text-field
+                            v-model="data.permanentPourashava.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.pouro'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.permanentUnion"
+                        >
+                          <v-text-field
+                            v-model="data.permanentUnion.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.union'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.permanentWard"
+                        >
+                          <v-text-field
+                            v-model="data.permanentWard.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.ward'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.permanent_post_code"
+                        >
+                          <v-text-field
+                            v-model="data.permanent_post_code"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.post_code'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.permanent_address"
+                        >
+                          <v-text-field
+                            v-model="data.permanent_address"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.address'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.permanent_mobile"
+                        >
+                          <v-text-field
+                            v-model="data.permanent_mobile"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.mobile'
+                              )
+                            "
+                          >
+                          </v-text-field>
                         </v-col>
                       </v-row>
                     </v-expansion-panel-content>
@@ -1207,126 +1260,104 @@
                     <v-expansion-panel-content class="mt-5">
                       <div class="pa-2 mb-4">
                         <v-row>
-                          <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Nominee Name (BN)"
-                              vid="nominee_bn"
-                              rules="required"
-                              v-slot="{ errors }"
+                          <v-col lg="6" md="6" cols="12" v-if="data.nominee_en">
+                            <v-text-field
+                              v-model="data.nominee_en"
+                              outlined
+                              readonly
+                              :label="$t('Name (EN)')"
                             >
-                              <label style="display: inline-block"
-                                >Name (BN)
-                              </label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-text-field
-                                v-model="data.nominee_bn"
-                                outlined
-                                readonly
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
-                              </v-text-field>
-                            </ValidationProvider>
+                            </v-text-field>
                           </v-col>
-                          <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Nominee Name (EN)"
-                              vid="nominee_en"
-                              rules="required"
-                              v-slot="{ errors }"
+
+                          <v-col lg="6" md="6" cols="12" v-if="data.nominee_bn">
+                            <v-text-field
+                              v-model="data.nominee_bn"
+                              outlined
+                              readonly
+                              :label="$t('Name (BN)')"
                             >
-                              <label style="display: inline-block"
-                                >Name (EN)
-                              </label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-text-field
-                                v-model="data.nominee_en"
-                                outlined
-                                readonly
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
-                              </v-text-field>
-                            </ValidationProvider>
+                            </v-text-field>
                           </v-col>
-                          <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="National Identity (NID) / Birth Registration Number"
-                              vid="nominee_verification_number"
-                              v-slot="{ errors }"
+
+                          <v-col
+                            lg="6"
+                            md="6"
+                            cols="12"
+                            v-if="data.nominee_verification_number"
+                          >
+                            <v-text-field
+                              v-model="data.nominee_verification_number"
+                              outlined
+                              readonly
+                              :label="
+                                $t(
+                                  'National Identity (NID) / Birth RegistrationNumber'
+                                )
+                              "
                             >
-                              <label
-                                >National Identity (NID) / Birth Registration
-                                Number
-                              </label>
-                              <v-text-field
-                                v-model="data.nominee_verification_number"
-                                outlined
-                                readonly
-                                type="number"
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
-                              </v-text-field>
-                            </ValidationProvider>
+                            </v-text-field>
                           </v-col>
-                          <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Nominee Natinality"
-                              vid="nominee_nationality"
-                              v-slot="{ errors }"
+
+                          <v-col
+                            lg="6"
+                            md="6"
+                            cols="12"
+                            v-if="data.nominee_nationality"
+                          >
+                            <v-text-field
+                              v-model="data.nominee_nationality"
+                              outlined
+                              readonly
+                              :label="$t('Nationality')"
                             >
-                              <label>Nationality </label>
-                              <v-text-field
-                                v-model="data.nominee_nationality"
-                                outlined
-                                readonly
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
-                              </v-text-field>
-                            </ValidationProvider>
+                            </v-text-field>
                           </v-col>
-                          <v-col cols="12" lg="12">
-                            <ValidationProvider
-                              name="Gender of Nominee"
-                              vid="nominee_relation_with_beneficiary"
-                              v-slot="{ errors }"
-                              rules="required"
+
+                          <v-col
+                            lg="6"
+                            md="6"
+                            cols="12"
+                            v-if="data.nominee_relation_with_beneficiary"
+                          >
+                            <v-text-field
+                              v-model="data.nominee_relation_with_beneficiary"
+                              outlined
+                              readonly
+                              :label="$t('Relationship with Beneficiary')"
                             >
-                              <label>Relationship with Beneficiary</label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-autocomplete
-                                v-model="data.nominee_relation_with_beneficiary"
-                                outlined
-                                :items="relations_with_bef"
-                                readonly
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
-                              </v-autocomplete>
-                            </ValidationProvider>
+                            </v-text-field>
                           </v-col>
-                          <v-col cols="6" lg="6">
+
+                          <v-col
+                            lg="6"
+                            md="6"
+                            cols="12"
+                            v-if="data.nominee_address"
+                          >
+                            <v-text-field
+                              v-model="data.nominee_address"
+                              outlined
+                              readonly
+                              :label="$t('Address')"
+                            >
+                            </v-text-field>
+                          </v-col>
+
+                          <v-col cols="6" lg="6" md="6">
                             <v-img
-                              :src="nomineeImageUrl"
+                              :src="data.nomineeImageUrl"
                               style="
                                 width: 150px;
                                 height: 150px;
                                 border: 1px solid #ccc;
                               "
                               class="mb-5"
-                              v-if="nomineeImageUrl"
+                              v-if="data.nomineeImageUrl"
                             ></v-img>
                             <v-img
-                              src="/assets/images/profile.png"
-                              v-if="!nomineeImageUrl"
+                              src="data.nomineeImageUrl"
+                              v-if="!data.nomineeImageUrl"
                               style="
                                 width: 200px;
                                 height: 200px;
@@ -1334,39 +1365,22 @@
                               "
                               class="mb-5"
                             ></v-img>
-                            <ValidationProvider
-                              v-slot="{ errors }"
-                              name="Image"
-                              rules="required"
-                              vid="image"
-                            >
-                              <label>Image</label>
-
-                              <v-file-input
-                                outlined
-                                show-size
-                                counter
-                                prepend-inner-icon="mdi-camera"
-                                v-model="data.nominee_image"
-                                accept="image/*"
-                                @change="previewImageNominee"
-                                prepend-icon=""
-                              ></v-file-input>
-                            </ValidationProvider>
+                            <h3>Image</h3>
                           </v-col>
                           <v-col cols="6" align-self="end" lg="6">
                             <v-img
-                              :src="nomineeSignUrl"
+                              :src="data.nomineeSignUrl"
                               style="
                                 width: 150px;
                                 height: 80px;
                                 border: 1px solid #ccc;
                               "
                               class="mb-5"
-                              v-if="nomineeSignUrl"
+                              v-if="data.nomineeSignUrl"
                             ></v-img>
                             <v-img
-                              :src="imageUrlFetch"
+                              v-if="!data.nomineeImageUrl"
+                              :src="data.nomineeSignUrl"
                               style="
                                 width: 200px;
                                 height: 80px;
@@ -1374,40 +1388,7 @@
                               "
                               class="mb-5"
                             ></v-img>
-                            <ValidationProvider
-                              v-slot="{ errors }"
-                              name="Signature"
-                              rules="required"
-                              vid="nominee_signature"
-                            >
-                              <label>Signature</label>
-                              <v-file-input
-                                outlined
-                                show-size
-                                counter
-                                prepend-inner-icon="mdi-camera"
-                                v-model="data.nominee_signature"
-                                prepend-icon=""
-                              ></v-file-input>
-                            </ValidationProvider>
-                          </v-col>
-
-                          <v-col cols="12" lg="12">
-                            <ValidationProvider
-                              name="Address of Nominee"
-                              vid="nominee_address"
-                              v-slot="{ errors }"
-                              rules="required"
-                            >
-                              <label>Address</label>
-                              <v-textarea
-                                v-model="data.nominee_address"
-                                outlined
-                                readonly
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              ></v-textarea>
-                            </ValidationProvider>
+                            <h3>Signeture</h3>
                           </v-col>
                         </v-row>
                       </div>
@@ -1421,197 +1402,82 @@
                       <h3 class="white--text">For Office Use</h3>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
-                      <!-- <v-expansion-panel-content class="mt-5">
-                                          <div v-if="programDetails" class="py-2 ma-4">
-                                              <v-row>
-                                                  <template v-if="checkIsHaveDIS()">
-                                                      <v-col cols="6" lg="6">
-                                                          <template>
-                                                              <label>{{ programDetails?.additional_field[keyGetByName("DIS
-                                                                                                                                  No.")].name_en }}
-                                                                  <span style="
-                                margin-left: 4px;
-                                margin-right: 4px;
-                                color: red;
-                              ">*</span></label>
-                                                              <ValidationProvider
-                                                                  :name="programDetails?.additional_field[`${keyGetByName('DIS No.')}`].name_en"
-                                                                  vid="value" rules="required" v-slot="{ errors }">
-                                                                  <v-text-field
-                                                                      v-model="data.application_allowance_values[`${keyGetByName('DIS No.')}`].value"
-                                                                      :hide-details="errors[0] ? false : true"
-                                                                      :error="errors[0] ? true : false"
-                                                                      :error-messages="errors[0]" type="number" outlined>
-                                                                  </v-text-field>
-                                                              </ValidationProvider>
-                                                          </template>
+                      <div class="pa-2 mb-4">
+                        <v-row>
+                          <v-col
+                            lg="6"
+                            md="6"
+                            cols="12"
+                            v-if="data.account_number"
+                          >
+                            <v-text-field
+                              v-model="data.account_number"
+                              outlined
+                              readonly
+                              :label="$t('Beneficiary Bank Account Number')"
+                            >
+                            </v-text-field>
+                          </v-col>
+                          <v-col
+                            lg="6"
+                            md="6"
+                            cols="12"
+                            v-if="data.account_name"
+                          >
+                            <v-text-field
+                              v-model="data.account_name"
+                              outlined
+                              readonly
+                              :label="$t('Account Name')"
+                            >
+                            </v-text-field>
+                          </v-col>
 
-                                                      </v-col>
-                                                      <v-col cols="6" lg="6">
-                                                          <template>
-                                                              <label>{{
-                                                                  programDetails?.additional_field[keyGetByName("Disability
-                                                                                                                                  Type")].name_en }}
-                                                                  <span style="
-                                margin-left: 4px;
-                                margin-right: 4px;
-                                color: red;
-                              ">*</span></label>
-                                                              <ValidationProvider
-                                                                  :name="programDetails?.additional_field[`${keyGetByName('Disability Type')}`].name_en"
-                                                                  vid="value" rules="required" v-slot="{ errors }">
-                                                                  <v-text-field
-                                                                      v-model="data.application_allowance_values[`${keyGetByName('Disability Type')}`].value"
-                                                                      :hide-details="errors[0] ? false : true"
-                                                                      :error="errors[0] ? true : false"
-                                                                      :error-messages="errors[0]" type="text" disabled
-                                                                      outlined>
-                                                                  </v-text-field>
-                                                              </ValidationProvider>
-                                                          </template>
-                                                      </v-col>
-                                                      <v-col cols="12" lg="12">
-                                                          <div class="d-inline d-flex justify-end">
-                                                              <v-btn @click="verifyDISCard()" elevation="2"
-                                                                  :disabled="data.application_allowance_values[`${keyGetByName('DIS No.')}`].value == null || data.application_allowance_values[`${keyGetByName('DIS No.')}`].value == ''"
-                                                                  class="btn" color="primary">Verify</v-btn>
-                                                          </div>
-                                                      </v-col>
-                                                  </template>
-                                                  <v-col v-for="(
-                            fields, index
-                          ) in programDetails.additional_field" :key="index" cols="6" lg="6"
-                                                      v-if="programDetails?.additional_field.length != 0 && keyGetByName('DIS No.') != index && keyGetByName('Disability Type') != index">
-                                                      <template v-if="fields.type == 'dropdown'">
-                                                          <label>{{ fields.name_en }}
-                                                              <span style="
-                                  margin-left: 4px;
-                                  margin-right: 4px;
-                                  color: red;
-                                ">*</span></label>
-                                                          <ValidationProvider :name="fields.name_en"
-                                                              vid="allowance_program_additional_field_values_id"
-                                                              rules="required" v-slot="{ errors }">
-                                                              <v-select :hide-details="errors[0] ? false : true"
-                                                                  :error="errors[0] ? true : false"
-                                                                  :error-messages="errors[0]" outlined required v-model="data.application_allowance_values[index]
-                                                                          .allowance_program_additional_field_values_id
-                                                                      " :items="fields.name_en == 'Class'
-          ? classes
-          : fields.additional_field_value
-      " item-value="id" :item-text="fields.name_en == 'Class'
-          ? 'value_en'
-          : 'value'
-      ">
-                                                              </v-select>
-                                                          </ValidationProvider>
-                                                      </template>
-                                                      <template v-if="fields.type == 'number'">
-                                                          <label>{{ fields.name_en }}
-                                                              <span style="
-                                  margin-left: 4px;
-                                  margin-right: 4px;
-                                  color: red;
-                                ">*</span></label>
-                                                          <ValidationProvider :name="fields.name_en" vid="value"
-                                                              rules="required" v-slot="{ errors }">
-                                                              <v-text-field v-model="data.application_allowance_values[index]
-                                                                      .value
-                                                                  " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
-                                                                  :error-messages="errors[0]" type="number" outlined>
-                                                              </v-text-field>
-                                                          </ValidationProvider>
-                                                      </template>
-                                                      <template v-if="fields.type == 'checkbox'">
-                                                          <label>{{ fields.name_en
-                                                          }}<span style="
-                                  margin-left: 4px;
-                                  margin-right: 4px;
-                                  color: red;
-                                ">*</span></label>
-                                                          <ValidationProvider :name="fields.name_en"
-                                                              vid="allowance_program_additional_field_values_id"
-                                                              rules="required" v-slot="{ errors }">
-                                                              <v-select multiple :hide-details="errors[0] ? false : true"
-                                                                  :error="errors[0] ? true : false"
-                                                                  :error-messages="errors[0]" outlined required v-model="data.application_allowance_values[index]
-                                                                          .allowance_program_additional_field_values_id
-                                                                      " :items="fields.additional_field_value" item-value="id" item-text="value">
-                                                              </v-select>
-                                                          </ValidationProvider>
-                                                      </template>
-                                                      <template v-if="fields.type == 'file'">
-                                                          <label>{{ fields.name_en
-                                                          }}<span style="
-                                  margin-left: 4px;
-                                  margin-right: 4px;
-                                  color: red;
-                                ">*</span></label>
-                                                          <ValidationProvider :name="fields.name_en" vid="value"
-                                                              v-slot="{ errors }">
-                                                              <v-file-input v-model="data.application_allowance_values[index]
-                                                                      .value
-                                                                  " @change="addPreviewFile($event, index)" placeholder="Select your files"
-                                                                  prepend-icon prepend-inner-icon="mdi-paperclip" outlined
-                                                                  :hide-details="errors[0] ? false : true"
-                                                                  :error="errors[0] ? true : false"
-                                                                  :error-messages="errors[0]" :show-size="1000">
-                                                              </v-file-input>
-                                                          </ValidationProvider>
-                                                      </template>
+                          <v-col
+                            lg="6"
+                            md="6"
+                            cols="12"
+                            v-if="data.account_owner"
+                          >
+                            <v-text-field
+                              v-model="data.account_owner"
+                              outlined
+                              readonly
+                              :label="$t('Account Owner')"
+                            >
+                            </v-text-field>
+                          </v-col>
+                          <v-col
+                            lg="6"
+                            md="6"
+                            cols="12"
+                            v-if="data.account_owner"
+                          >
+                            <v-text-field
+                              value="10000"
+                              outlined
+                              readonly
+                              :label="$t('Monthly Honorarium Amount')"
+                            >
+                            </v-text-field>
+                          </v-col>
 
-                                                      <template v-if="fields.type == 'date'">
-                                                          <label>{{ fields.name_en
-                                                          }}<span style="
-                                  margin-left: 4px;
-                                  margin-right: 4px;
-                                  color: red;
-                                ">*</span></label>
-                                                          <ValidationProvider :name="fields.name_en" vid="value"
-                                                              rules="required" v-slot="{ errors }">
-                                                              <v-text-field v-model="data.application_allowance_values[index]
-                                                                      .value
-                                                                  " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
-                                                                  :error-messages="errors[0]" type="date" outlined>
-                                                              </v-text-field>
-                                                          </ValidationProvider>
-                                                      </template>
-                                                      <template v-if="fields.type == 'disabled'">
-                                                          <label>{{ fields.name_en
-                                                          }}<span style="
-                                  margin-left: 4px;
-                                  margin-right: 4px;
-                                  color: red;
-                                ">*</span></label>
-                                                          <ValidationProvider :name="fields.name_en" vid="value"
-                                                              rules="required" v-slot="{ errors }">
-                                                              <v-text-field v-model="data.application_allowance_values[index]
-                                                                      .value
-                                                                  " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
-                                                                  :error-messages="errors[0]" disabled type="text"
-                                                                  outlined>
-                                                              </v-text-field>
-                                                          </ValidationProvider>
-                                                      </template>
-                                                      <template v-if="fields.type == 'text'">
-                                                          <label>{{ fields.name_en
-                                                          }}<span style="
-                                  margin-left: 4px;
-                                  margin-right: 4px;
-                                  color: red;
-                                ">*</span></label>
-                                                          <ValidationProvider :name="fields.name_en" vid="value"
-                                                              rules="required" v-slot="{ errors }">
-                                                              <v-text-field v-model="data.application_allowance_values[index]
-                                                                      .value
-                                                                  " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
-                                                                  :error-messages="errors[0]" type="text" outlined>
-                                                              </v-text-field>
-                                                          </ValidationProvider>
-                                                      </template>
-                                                  </v-col>
-                                              </v-row>
-                                          </div> -->
+                          <v-col
+                            lg="6"
+                            md="6"
+                            cols="12"
+                            v-if="data.account_owner"
+                          >
+                            <v-text-field
+                              value="2022-23"
+                              outlined
+                              readonly
+                              :label="$t('Financeial Year')"
+                            >
+                            </v-text-field>
+                          </v-col>
+                        </v-row>
+                      </div>
 
                       <v-row>
                         <v-col
@@ -1829,21 +1695,6 @@
                             </template>
                           </v-col>
                         </v-row>
-                        <div class="d-inline d-flex justify-end">
-                          <!-- <v-btn elevation="2" class="btn mr-2" color="info"
-                            >Reset</v-btn
-                          > -->
-                          <!-- :disabled="invalid" -->
-                          <v-btn
-                            type="submit"
-                            flat
-                            color="primary"
-                            :loading="loading"
-                            class="custom-btn-width black white--text py-2"
-                          >
-                            {{ $t("container.list.submit") }}
-                          </v-btn>
-                        </div>
                       </div>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
@@ -1861,9 +1712,9 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
 import FooterBar from "@/components/Common/FooterBar.vue";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
-import { mapState } from "vuex";
 import axios from "axios";
 import { required } from "vee-validate/dist/rules";
 import Form from "vform";
@@ -1877,7 +1728,7 @@ export default {
       programs: [],
       classes: [],
       loading: false,
-      divisions: [],
+      // divisions: [],
       districts: [],
       thanas: [],
       cities: [],
@@ -1885,6 +1736,17 @@ export default {
       district_poros: [],
       city_thanas: [],
       locationType: [],
+      subLocationType: [
+        {
+          id: 1,
+          value_en: "Pouroshava",
+        },
+
+        {
+          id: 2,
+          value_en: "Union",
+        },
+      ],
 
       permanent_divisions: [],
       permanent_districts: [],
@@ -1934,7 +1796,14 @@ export default {
         "Partially Powerless",
         "Other (specify)",
       ],
-
+      health_status_value: {
+        totally_disabled: true,
+        sick: false,
+        insane: true,
+        disabled: false,
+        partially_powerless: false,
+        other_specify: false,
+      },
       financial_status: ["Poor", "Refugee", "Landless"],
       social_status: ["Widow", "Widower", "Divorced"],
       house_status: ["Homeless", "Self", "Rent", "Others"],
@@ -1968,85 +1837,48 @@ export default {
       current_location: [],
       allowance_filed: [],
 
-      // data: {
-      //     location_type: null,
-      //     program_id: null,
-      //     verification_type: 1,
-      //     verification_number: 123345678,
-      //     age: 24,
-      //     date_of_birth: "1999-11-11",
-      //     name_en: 'null',
-      //     name_bn: 'null',
-      //     father_name_en: 'null',
-      //     father_name_bn: 'null',
-      //     mother_name_en: 'null',
-      //     mother_name_bn: 'null',
-      //     spouse_name_en: 'null',
-      //     spouse_name_bn: 'null',
-      //     identification_mark: 'null',
-      //     image: null,
-      //     signature: null,
-      //     nationality: 'null',
-      //     gender_id: null,
-      //     education_status: null,
-      //     profession: 'null',
-      //     religion: null,
-      //     division_id: null,
-      //     district_id: null,
-      //     upazila: null,
-      //     post_code: null,
-      //     address: 'null',
-      //     location_type: null,
-      //     thana_id: null,
-      //     union_id: null,
-      //     city_id: null,
-      //     city_thana_id: null,
-      //     district_pouro_id: null,
-      //     mobile: '01877678899',
-      //     permanent_division_id: null,
-      //     permanent_district_id: null,
-      //     permanent_upazila: null,
-      //     permanent_post_code: null,
-      //     permanent_address: 'null',
-      //     permanent_location_type: null,
-      //     permanent_thana_id: null,
-      //     permanent_union_id: null,
-      //     permanent_city_id: null,
-      //     permanent_city_thana_id: null,
-      //     permanent_district_pouro_id: null,
-      //     permanent_mobile: null,
-      //     nominee_en: 'null',
-      //     nominee_bn: 'null',
-      //     nominee_verification_number: 2212121,
-      //     nominee_address: 'null',
-      //     nominee_image: null,
-      //     nominee_signature: null,
-      //     nominee_relation_with_beneficiary: null,
-      //     nominee_nationality: 'null',
-      //     account_name: 'null',
-      //     account_owner: null,
-      //     account_number: '01877678899',
-      //     application_allowance_values: [],
-      //     application_pmt: [],
-      //     marital_status: null,
-      //     email: 'null@gmail.com',
-      // },
-      data: [],
+      data: {
+        verification_type: null,
+
+        division_id: null,
+        district_id: null,
+        thana_id: null,
+        union_id: null,
+        city_id: null,
+        city_thana_id: null,
+        district_pouro_id: null,
+        pouro_id: null,
+        ward_id: null,
+        location_type: null,
+        sub_location_type: null,
+        permanent_district_pouro_id: null,
+        current_post_code: null,
+        current_address: null,
+        imageUrl: null,
+        signUrl: null,
+        nomineeImageUrl: null,
+        nomineeSignUrl: null,
+        accountNumber: null,
+        accountName: null,
+        accountOwner: null,
+      },
 
       permanent_location: [],
 
       checkbox: false,
       checkboxNomineeAddress: false,
-      imageUrl: null,
-      signUrl: null,
-      nomineeImageUrl: null,
+      // nomineeImageUrl: null,
       programName: null,
-      nomineeSignUrl: null,
+      // nomineeSignUrl: null,
       programDetails: null,
       PMTVariables: [],
     };
   },
   computed: {
+    ...mapState({
+      divisions: (state) => state.Division.divisions,
+    }),
+
     isRadioGroupReadonly() {
       return this.data.verification_type !== null;
     },
@@ -2058,14 +1890,20 @@ export default {
     FooterBar,
   },
   watch: {
+    "$i18n.locale": "updateHeaderTitle",
     menu(val) {
       val && setTimeout(() => (this.activePicker = "YEAR"));
     },
   },
 
   methods: {
+    updateHeaderTitle() {
+      const title = this.$t(
+        "container.beneficiary_management.beneficiary_list.beneficiary_details"
+      );
+      this.$store.commit("setHeaderTitle", title);
+    },
     async getBeneficiaryDetailsById() {
-      console.log("beneficiary__");
       try {
         this.$axios
           .get(`/admin/beneficiary/show/${this.$route.params.id}`, {
@@ -2074,12 +1912,19 @@ export default {
               "Content-Type": "multipart/form-data",
             },
           })
-          .then((result) => {
-            console.log(result, "beneficiary__");
-            this.data = result.data.data;
+          .then((res) => {
+            let item = res.data.data;
+            this.data = res.data.data;
+
+            this.data.imageUrl = item?.image;
+            this.data.signUrl = item?.signature;
+
+            this.data.nomineeImageUrl = item?.nominee_image;
+            this.data.nomineeSignUrl = item?.nominee_signature;
+
+            console.log("division_id__", this.data.division_id);
           })
           .catch((err) => {
-            console.log(err, "beneficiary__");
             if (err.response?.data?.errors) {
               this.$refs.form.setErrors(err.response.data.errors);
             }
@@ -2090,124 +1935,19 @@ export default {
         console.log(e);
       }
     },
-
-    async getApplicationById() {
-      this.$axios
-        .get(`/admin/application/get/${this.$route.params.id}`, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((result) => {
-          this.data = result.data.application;
-
-          this.current_location = result?.data?.application?.current_location;
-          this.permanent_location =
-            result?.data?.application?.permanent_location;
-          this.allowance_filed = result?.data?.unique_additional_fields;
-          console.log(this.allowance_filed, "this.allowance_filed");
-          console.log(this.permanent_location, "this.permanent_location");
-          if (this.current_location?.location_type == 3) {
-            this.data.division_id =
-              this.current_location?.parent?.parent?.parent?.parent?.name_en;
-            this.data.district_id =
-              this.current_location?.parent?.parent?.parent?.name_en;
-            this.data.location_type = this.current_location.location_type;
-            this.data.city_id = this.current_location?.parent?.parent?.name_en;
-            this.data.city_thana_id = this.current_location?.parent?.name_en;
-            this.data.ward_id = this.current_location?.name_en;
-            this.data.post_code = this.data?.current_post_code;
-            this.data.address = this.data?.current_address;
-          }
-          if (this.current_location?.location_type == 2) {
-            this.data.division_id =
-              this.current_location?.parent?.parent?.parent?.parent?.name_en;
-            this.data.district_id =
-              this.current_location?.parent?.parent?.parent?.name_en;
-            this.data.location_type = this.current_location.location_type;
-            this.data.thana_id = this.current_location?.parent?.parent?.name_en;
-            this.data.union_id = this.current_location?.parent?.name_en;
-            this.data.ward_id = this.current_location?.name_en;
-            this.data.post_code = this.data?.current_post_code;
-            this.data.address = this.data?.current_address;
-          }
-          if (this.current_location?.location_type == 1) {
-            this.data.division_id =
-              this.current_location?.parent?.parent?.parent?.name_en;
-            this.data.district_id =
-              this.current_location?.parent?.parent?.name_en;
-            this.data.location_type = this.current_location.location_type;
-            this.data.district_pouro_id =
-              this.current_location?.parent?.name_en;
-
-            this.data.ward_id = this.current_location?.name_en;
-            this.data.post_code = this.data?.current_post_code;
-            this.data.address = this.data?.current_address;
-          }
-          if (this.permanent_location?.location_type == 3) {
-            this.data.permanent_division_id = 
-              this.permanent_location?.parent?.parent?.parent?.parent?.name_en;
-            this.data.permanent_district_id =
-              this.permanent_location?.parent?.parent?.parent?.name_en;
-            this.data.permanent_location_type =
-              this.permanent_location.location_type;
-            this.data.permanent_city_id =
-              this.permanent_location?.parent?.parent?.name_en;
-            this.data.permanent_city_thana_id =
-              this.permanent_location?.parent?.name_en;
-            this.data.permanent_ward_id = this.permanent_location?.name_en;
-            this.data.permanent_post_code = this.data?.permanent_post_code;
-            this.data.permanent_address = this.data?.permanent_address;
-          }
-          if (this.permanent_location?.location_type == 2) {
-            this.data.permanent_division_id =
-              this.permanent_location?.parent?.parent?.parent?.parent?.name_en;
-            this.data.permanent_district_id =
-              this.permanent_location?.parent?.parent?.parent?.name_en;
-            this.data.permanent_location_type =
-              this.permanent_location.location_type;
-            this.data.permanent_thana_id =
-              this.permanent_location?.parent?.parent?.name_en;
-            this.data.permanent_union_id =
-              this.permanent_location?.parent?.name_en;
-            this.data.permanent_ward_id = this.permanent_location?.name_en;
-            this.data.permanent_post_code = this.data?.permanent_post_code;
-            this.data.permanent_address = this.data?.permanent_address;
-          }
-          if (this.permanent_location?.location_type == 1) {
-            this.data.permanent_division_id =
-              this.permanent_location?.parent?.parent?.parent?.name_en;
-            this.data.permanent_district_id =
-              this.permanent_location?.parent?.parent?.name_en;
-            this.data.permanent_location_type =
-              this.permanent_location.location_type;
-            this.data.permanent_district_pouro_id =
-              this.permanent_location?.parent?.name_en;
-
-            this.data.permanent_ward_id = this.permanent_location?.name_en;
-            this.data.permanent_post_code = this.data?.permanent_post_code;
-            this.data.permanent_address = this.data?.permanent_address;
-          }
-        });
-    },
     concatenateCheckboxValues(checkboxValues) {
       return checkboxValues.map((value) => value.value).join(", ");
     },
+    ...mapActions({
+      GetAllDivisions: "Division/GetAllDivisions",
+    }),
   },
-
+  beforeMount() {
+    this.updateHeaderTitle();
+  },
   created() {
-    // this.getApplicationById();
+    this.GetAllDivisions();
     this.getBeneficiaryDetailsById();
-    this.$store
-      .dispatch("getGlobalLookupByType", 20)
-      .then((res) => (this.classes = res));
-    this.$store
-      .dispatch("getGlobalLookupByType", 2)
-      .then((res) => (this.genders = res));
-    this.$store
-      .dispatch("getGlobalLookupByType", 1)
-      .then((res) => (this.locationType = res));
   },
 };
 </script>

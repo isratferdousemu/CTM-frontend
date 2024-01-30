@@ -438,79 +438,7 @@
                   </ValidationObserver>
                 </v-expansion-panel-content>
               </v-expansion-panel>
-              <!-- <v-expansion-panel class="ma-2">
-                <v-expansion-panel-header color="#8C9EFF">
-                  <h3 class="white--text">
-                    {{
-                      $t(
-                        "container.beneficiary_management.beneficiary_list.advance_search"
-                      )
-                    }}
-                  </h3>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content
-                  class="elevation-0 transparent mt-10"
-                >
-                  <v-row>
-                    <v-col lg="6" md="6" cols="12">
-                      <v-select
-                        outlined
-                        clearable
-                        :label="
-                          $t(
-                            'container.beneficiary_management.beneficiary_list.beneficiary_id'
-                          )
-                        "
-                      >
-                      </v-select>
-                    </v-col>
-                    <v-col lg="6" md="6" cols="12">
-                      <v-text-field
-                        outlined
-                        clearable
-                        :label="
-                          $t(
-                            'container.beneficiary_management.beneficiary_list.nominee'
-                          )
-                        "
-                      >
-                      </v-text-field>
-                    </v-col>
-                    <v-col lg="6" md="6" cols="12">
-                      <v-text-field
-                        outlined
-                        clearable
-                        :label="
-                          $t(
-                            'container.beneficiary_management.beneficiary_list.account_no'
-                          )
-                        "
-                      >
-                      </v-text-field>
-                    </v-col>
-                    <v-col lg="6" md="6" cols="12">
-                      <v-text-field
-                        outlined
-                        clearable
-                        :label="
-                          $t(
-                            'container.beneficiary_management.beneficiary_list.nid'
-                          )
-                        "
-                      >
-                      </v-text-field>
-                    </v-col>
-                  </v-row>
-                  <div class="d-inline d-flex justify-end">
-                    <v-btn elevation="2" class="btn mr-2" color="success">{{
-                      $t("container.list.search")
-                    }}</v-btn>
-                    <v-btn elevation="2" class="btn">{{
-                      $t("container.list.reset")
-                    }}</v-btn>
-                  </div>
-                </v-expansion-panel-content>
-              </v-expansion-panel> -->
+              
             </v-expansion-panels>
             <!-- Expantion panels end -->
             <!-- Application list -->
@@ -1207,8 +1135,6 @@ export default {
           this.wards = result.data.data;
         });
     },
-    
-
     onPageChange($event) {
       // this.pagination.current = $event;
       this.loading = true;

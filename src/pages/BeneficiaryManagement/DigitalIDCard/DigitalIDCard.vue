@@ -72,14 +72,20 @@
               style="width: 50px; height: 50px"
             ></v-img> -->
 
-            <qrcode-vue :value="value" :size="size" level="H" />
+            <qr-code
+              v-if="this.beneficiary.qrCode"
+              class="mt-5 mb-5"
+              :text="this.beneficiary.qrCode"
+              size="100"
+            >
+            </qr-code>
 
             <v-spacer></v-spacer>
 
             <div class="d-flex justify-end">
               <v-img
                 :src="beneficiary.signature"
-                style="width: 100px; height: 20px"
+                style="width: 20px; height: 20px"
                 v-if="beneficiary.signature"
               ></v-img>
               <v-img
@@ -103,7 +109,9 @@
 </template>
 
 <script>
-import QrcodeVue from "qrcode.vue";
+import Vue from "vue";
+import VueQRCodeComponent from "vue-qrcode-component";
+Vue.component("qr-code", VueQRCodeComponent);
 export default {
   name: "dDigitalIDCard",
   title: "CTM - Digital ID Card",
@@ -113,13 +121,9 @@ export default {
       beneficiary: {
         imageUrl: null,
         signUrl: null,
+        qrCode: null,
       },
-      value: "https://osapsnew.bou.ac.bd/",
-      size: 1000,
     };
-  },
-  components: {
-    QrcodeVue,
   },
   mounted() {},
 
@@ -144,6 +148,9 @@ export default {
             this.beneficiary = item;
             //this.beneficiary.imageUrl = item?.image;
             //this.beneficiary.signUrl = item?.signature;
+
+            this.beneficiary.qrCode =  `Beneficiary Name: ${item?.name_en}, Beneficiary ID : ${item?.application_id}`
+             
           })
           .catch((err) => {
             if (err.response?.data?.errors) {
