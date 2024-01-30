@@ -414,10 +414,10 @@
                 ></v-text-field>
             </v-col>
 
-            <!-- Dropdown on the right -->
+            
             <v-col lg="3" md="3" cols="12" class="text-right ">
                 <v-btn
-                    @click="createDialog"
+                    @click="dialogOpen"
                     flat
                     color="primary"
                     prepend-icon="mdi-account-multiple-plus"
@@ -427,19 +427,17 @@
             </v-col>
         </v-row>
         <v-row justify="space-between" align="center" class="mx-4">
-            <!-- Checkbox on the left -->
+            
             <v-col lg="3" md="3" cols="12">
-                {{ $t('container.list.total') }} &nbsp;:&nbsp;{{ this.total }}
-            </v-col>
+      {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">{{ this.total }}</span>
+    </v-col>
 
-            <!-- Dropdown on the right -->
+            
             <v-col lg="4" md="4" cols="12" class="text-right">
                 <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4" @click="GeneratePDF()">
                     {{ $t("container.list.PDF") }}
                 </v-btn>
-                <!-- <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
-              {{ $t("container.list.excel") }}
-          </v-btn> -->
+            
             </v-col>
         </v-row>
                 <v-row

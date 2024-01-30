@@ -50,7 +50,7 @@
       "remove": "Remove",
       "single_select":"Single Select",
       "total":"Total Result",
-      "PDF":"PDF",
+      "PDF":" Download PDF",
       "excel":"Excel"
     },
     "system_config": {
@@ -514,6 +514,15 @@
         "account": "Account No",
         "nominee_relation_with_beneficiary": " Relationship with Nominee"
       },
+        "mobile_operator": {
+          "list": "Mobile Operator List",
+          "operator": "Operator", 
+          "add_new_mobile_operator": "Add New Mobile Operator",
+          "delete": "Delete Mobile operator",
+          "delete_alert": "Are you sure to delete this Mobile Operator?."
+        
+        },
+        
       "poverty_cut_off": {
         "poverty_cut_off": "Cut Off",
         "list": "Cut Off List",

@@ -124,7 +124,7 @@
           <!-- Checkbox on the left -->
           <v-col lg="3" md="3" cols="12">
               <v-text-field
-                  @keyup.native="GetDistrict"
+                  @keyup.native="GetCity"
                   outlined
                   dense
                   v-model="search"
