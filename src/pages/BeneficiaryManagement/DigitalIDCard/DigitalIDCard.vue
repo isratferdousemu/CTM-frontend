@@ -1,25 +1,20 @@
 <template>
   <div id="digital_id">
-    <v-row justify="center" class="mt-5">
+    <v-row justify="center" class="mt-5 mb-5">
       <v-col lg="6" md="6" cols="12">
+
+
         <v-card
           width="400"
           class="mx-5"
-          height="700"
-          style="
-            background: url('/assets/images/digital_id_background.jpg') center
-              center / cover;
-            position: relative;
-          "
         >
-          <div></div>
-
-          <div></div>
-          <div></div>
-          <v-card-title></v-card-title>
-          <v-card-text>
+          <v-card-text style="
+            background: url('/assets/images/top_line.jpg') no-repeat left top;
+            background-size: 80%;
+            position: relative;
+          ">
             <v-img
-              class="absolute top-0 mb-5"
+              class="top-left-image"
               style="width: 80px; height: 80px"
               src="/assets/images/logo.png"
             ></v-img>
@@ -33,76 +28,77 @@
                 <v-col>
                   <v-img
                     :src="beneficiary.image"
-                    style="width: 230px; height: 230px"
+                    :width="230"
+                    :height="230"
+                    class="rounded-circle"
                     v-if="beneficiary.image"
                   ></v-img>
                   <v-img
                     v-if="!beneficiary.image"
-                    src="/assets/images/profile_female.png"
-                    style="width: 230px; height: 230px"
+                    src="/assets/images/profile.png"
+                    :width="230"
+                    :height="230"
+                    class="rounded-circle"
                   ></v-img>
                 </v-col>
               </div>
             </v-row>
 
-            <div justify-center>
+            <div class="mt-4">
               <table>
                 <tr>
-                  <td>Beneficiary's Name</td>
+                  <th class="text-left" width="50%">Beneficiary's Name</th>
                   <td>: {{ beneficiary.name_en }}</td>
                 </tr>
                 <tr>
-                  <td>Beneficiary ID</td>
+                  <th class="text-left">Beneficiary ID</th>
                   <td>: {{ beneficiary.application_id }}</td>
                 </tr>
                 <tr>
-                  <td>Date of Birth</td>
+                  <th class="text-left">Date of Birth</th>
                   <td>: {{ beneficiary.date_of_birth }}</td>
                 </tr>
                 <tr>
-                  <td>Address</td>
+                  <th class="text-left">Address</th>
                   <td>: {{ beneficiary.current_address }}</td>
                 </tr>
               </table>
             </div>
 
-            <!-- <v-img
-              src="/assets/images/qr_code.png"
-              class="mt-8"
-              style="width: 50px; height: 50px"
-            ></v-img> -->
-
-            <qr-code
-              v-if="this.beneficiary.qrCode"
-              class="mt-5 mb-5"
-              :text="this.beneficiary.qrCode"
-              size="100"
-            >
-            </qr-code>
-
-            <v-spacer></v-spacer>
-
-            <div class="d-flex justify-end">
-              <v-img
-                :src="beneficiary.signature"
-                style="width: 20px; height: 20px"
-                v-if="beneficiary.signature"
+            
+            <v-row class="mt-5">
+              <v-col>
+                <qr-code
+                  v-if="this.beneficiary.qrCode"
+                  :text="this.beneficiary.qrCode"
+                  size="70"
+                >
+                </qr-code>
+              </v-col>
+              <v-col class="justify-end">
+                <v-img
+                class="bottom-right-image"
+                src="/assets/images/signature.png"
+                :width="200"
               ></v-img>
-              <v-img
-                v-if="!beneficiary.signature"
-                src="/assets/images/qr_code.png"
-                style="width: 100px; height: 20px"
-              ></v-img>
-            </div>
-
-            <div
-              class="d-flex justify-end my-5"
+              <div
+              class="d-flex justify-end my-2"
               style="text-decoration: overline"
             >
               Authorized Signature
             </div>
+              </v-col>
+            </v-row>
+            
           </v-card-text>
+          <v-card-actions class="py-5" style="
+            background: url('/assets/images/bottom_line.jpg') no-repeat right bottom;
+            background-size: 90%;
+            position: relative;
+          ">&nbsp;</v-card-actions>
         </v-card>
+   
+        
       </v-col>
     </v-row>
   </div>
