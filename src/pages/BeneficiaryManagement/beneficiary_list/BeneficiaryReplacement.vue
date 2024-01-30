@@ -32,12 +32,12 @@
                       <v-text-field
                         :label="
                           $t(
-                            'container.beneficiary_management.beneficiary_list.beneficiary_details'
+                            'container.beneficiary_management.beneficiary_list.contract_number'
                           )
                         "
                         outlined
                         disabled
-                        v-model="beneficiary.current_address"
+                        v-model="beneficiary.mobile"
                       >
                       </v-text-field>
                     </v-col>
@@ -130,7 +130,7 @@
                         prepend-inner-icon="mdi mdi-file-account-outline"
                         :label="
                               $t(
-                                'container.beneficiary_management.beneficiary_list.replacement_file'
+                                'container.beneficiary_management.beneficiary_list.cause_provement'
                               )
                             "
                         accept="image/*"
@@ -142,9 +142,8 @@
 
                   <v-row class="mx-0 my-0 py-2" justify="end">
                     <v-btn
-                      type="submit"
+                      @click="resetBeneficiary"
                       flat
-                      :disabled="invalid"
                       :loading="loading"
                       class="custom-btn-width py-2 mr-2"
                     >
@@ -410,8 +409,6 @@ export default {
             console.log(res, "submit__");
             if (res.data?.success) {
               this.$toast.success("Beneficiary Replace Successfully");
-              // this.resetData();
-              // this.dialogAdd = false;
               this.$router.push({ name: "Beneficiary_List" });
             } else if (res.response?.data?.errors) {
               this.$refs.form.setErrors(res.response.data.errors);
@@ -427,7 +424,7 @@ export default {
     },
     async GetAllCommitteeType() {
       try {
-        this.$store.dispatch("getLookupByType", 17).then((data) => {
+        this.$store.dispatch("getLookupByType", 21).then((data) => {
           this.cause_types = data;
           console.log(this.cause_types, "Cause_type");
         });
@@ -435,6 +432,12 @@ export default {
         console.log(e);
       }
     },
+    resetBeneficiary(){
+        this.data.cause_type = null;
+        this.data.cause_details = null;
+        this.data.date_of_impact = null;
+        this.data.file = null;
+    }
   },
   components: {
     ValidationProvider,
