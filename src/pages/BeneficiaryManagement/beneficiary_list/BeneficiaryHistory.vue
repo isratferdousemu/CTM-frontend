@@ -11,15 +11,19 @@
                   <table>
                     <tr>
                       <td>Beneficiary ID</td>
-                      <td>: 1235</td>
+                      <td>: {{ data.application_id }}</td>
                     </tr>
                     <tr>
                       <td>Name</td>
-                      <td>: Radur Rahim</td>
+                      <td>: {{ data.name_en }}</td>
                     </tr>
                     <tr>
-                      <td>Address</td>
-                      <td>: Naogaon sadar, Naogaon</td>
+                      <td>Mobile</td>
+                      <td>: {{ data.mobile }}</td>
+                    </tr>
+                    <tr>
+                      <td>Program</td>
+                      <td>: {{ data.program.name_en }}</td>
                     </tr>
                   </table>
                 </v-card-text>
@@ -572,6 +576,32 @@ export default {
     ...mapActions({
       GetAllDivisions: "Division/GetAllDivisions",
     }),
+    async getBeneficiaryDetailsById() {
+      try {
+        this.$axios
+          .get(`/admin/beneficiary/show/${this.$route.params.id}`, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((res) => {
+            let item = res.data.data;
+            this.data = res.data.data;
+
+            console.log("BEN___", this.data);
+          })
+          .catch((err) => {
+            if (err.response?.data?.errors) {
+              this.$refs.form.setErrors(err.response.data.errors);
+            }
+            console.log(err.response);
+            this.$toast.error(err?.response?.data?.message);
+          });
+      } catch (e) {
+        console.log(e);
+      }
+    },
   },
 
   computed: {
@@ -708,6 +738,9 @@ export default {
   },
   mounted() {
     this.GetAllDivisions();
+  },
+  created() {
+    this.getBeneficiaryDetailsById();
   },
 };
 </script>

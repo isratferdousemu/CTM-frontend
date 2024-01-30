@@ -92,7 +92,7 @@ const BeneficiaryManagementRoutes = [
         component: () => import("../pages/BeneficiaryManagement/beneficiary_list/BeneficiaryReplacement.vue")
     },
     {
-        path: "/beneficiary-management/beneficiary-journey",
+        path: "/beneficiary-management/beneficiary-journey/:id",
         name: "beneficiary_journey",
         meta: {
             requiresAuth: true,
