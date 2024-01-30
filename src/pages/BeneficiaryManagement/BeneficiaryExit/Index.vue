@@ -967,7 +967,7 @@ export default {
     },
     async GetAllCommitteeType() {
       try {
-        this.$store.dispatch("getLookupByType", 17).then((data) => {
+        this.$store.dispatch("getLookupByType", 22).then((data) => {
           this.cause_types = data;
           console.log(this.cause_types, "Cause_type");
         });

@@ -7,7 +7,7 @@
           <v-expansion-panel>
             <v-expansion-panel-header color="#8C9EFF">
               <h3 class="white--text">
-                {{ $t("container.list.search") }}
+                {{ $t("container.beneficiary_management.digital_id.digital_id_card") }}
               </h3>
             </v-expansion-panel-header>
             <v-expansion-panel-content class="elevation-0 transparent mt-10">
@@ -741,16 +741,16 @@ export default {
       this.$store.commit("setHeaderTitle", title);
     },
   },
-  // watch: {
-  //   "$i18n.locale": "updateHeaderTitle",
-  //   value(val) {
-  //     this.selectedHeaders = [
-  //       { text: this.$t("container.list.sl"), value: "sl" },
-  //       ...val,
-  //       { text: this.$t("container.list.action"), value: "actions" },
-  //     ];
-  //   },
-  // },
+  watch: {
+    "$i18n.locale": "updateHeaderTitle",
+    // value(val) {
+    //   this.selectedHeaders = [
+    //     { text: this.$t("container.list.sl"), value: "sl" },
+    //     ...val,
+    //     { text: this.$t("container.list.action"), value: "actions" },
+    //   ];
+    // },
+  },
 
   beforeMount() {
     this.updateHeaderTitle();

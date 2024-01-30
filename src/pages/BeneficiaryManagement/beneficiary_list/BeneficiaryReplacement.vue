@@ -46,7 +46,7 @@
                       <v-textarea
                         :label="
                           $t(
-                            'container.beneficiary_management.beneficiary_list.replacement_cause'
+                            'container.beneficiary_management.beneficiary_list.replacement_cause_details'
                           )
                         "
                         outlined

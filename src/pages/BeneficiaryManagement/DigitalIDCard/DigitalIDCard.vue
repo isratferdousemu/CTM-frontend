@@ -44,19 +44,35 @@
             <div class="mt-4">
               <table>
                 <tr>
-                  <th class="text-left" width="50%">Beneficiary's Name</th>
+                  <th class="text-left" width="50%">{{
+                      $t(
+                        "container.beneficiary_management.beneficiary_list.beneficiary_name"
+                      )
+                    }}</th>
                   <td>: {{ beneficiary.name_en }}</td>
                 </tr>
                 <tr>
-                  <th class="text-left">Beneficiary ID</th>
+                  <th class="text-left">{{
+                      $t(
+                        "container.beneficiary_management.beneficiary_list.beneficiary_id"
+                      )
+                    }}</th>
                   <td>: {{ beneficiary.application_id }}</td>
                 </tr>
                 <tr>
-                  <th class="text-left">Date of Birth</th>
+                  <th class="text-left">{{
+                      $t(
+                        "container.beneficiary_management.beneficiary_list.beneficiary_date_of_birth"
+                      )
+                    }}</th>
                   <td>: {{ beneficiary.date_of_birth }}</td>
                 </tr>
                 <tr>
-                  <th class="text-left">Address</th>
+                  <th class="text-left">{{
+                      $t(
+                        "container.beneficiary_management.beneficiary_list.beneficiary_addess"
+                      )
+                    }}</th>
                   <td>: {{ beneficiary.current_address }}</td>
                 </tr>
               </table>
@@ -81,7 +97,11 @@
                   class="d-flex justify-end my-2"
                   style="text-decoration: overline"
                 >
-                  Authorized Signature
+                {{
+                      $t(
+                        "container.beneficiary_management.beneficiary_list.authorize_singneture"
+                      )
+                    }}
                 </div>
               </v-col>
             </v-row>
