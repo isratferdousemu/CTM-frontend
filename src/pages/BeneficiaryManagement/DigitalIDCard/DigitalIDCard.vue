@@ -87,14 +87,14 @@
                 >
                 </qr-code>
               </v-col>
-              <v-col class="justify-end">
+              <v-col class="justify">
                 <v-img
                   class="bottom-right-image"
                   src="/assets/images/signature.png"
                   :width="200"
                 ></v-img>
                 <div
-                  class="d-flex justify-end my-2"
+                  class="d-flex justify-center my-2"
                   style="text-decoration: overline"
                 >
                 {{
@@ -125,6 +125,8 @@
 <script>
 import Vue from "vue";
 import VueQRCodeComponent from "vue-qrcode-component";
+// APi Base Url
+const apiUrl = process.env.VUE_APP_BASE_API_URL_BACKEND;
 Vue.component("qr-code", VueQRCodeComponent);
 export default {
   name: "dDigitalIDCard",
