@@ -51,7 +51,8 @@
       "single_select":"Single Select",
       "total":"Total Result",
       "PDF":" Download PDF",
-      "excel":"Excel"
+      "excel":"Excel",
+      "confirm":"Confirm"
     },
     "system_config": {
       "demo_graphic": {
