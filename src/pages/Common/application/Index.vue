@@ -300,8 +300,9 @@
                           <v-col cols="6" lg="6">
                             <div class="validation-error_marital">
                               <ValidationProvider name="Marital Status" rules="required" vid="marital_status" v-slot="{ errors }">
-                                  <span style="margin-left: 4px; color: red">*</span>
+                                 
                                 <label>Marital Status</label>
+                                 <span style="margin-left: 4px; color: red">*</span>
                                 <v-select v-model="data.marital_status" outlined clearable :items="marital_status" 
                                   :error="errors[0] ? true : false" :error-messages="errors[0]">
                                 </v-select>
@@ -1336,7 +1337,7 @@
               <div class="d-inline d-flex justify-end">
                 <v-btn @click="resetForm()" elevation="2" class="btn mr-2" color="info">Resets</v-btn>
                 <!-- :disabled="invalid" -->
-                <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
+                <v-btn @click="confirmDialog=true"  flat color="primary" :disabled="invalid" :loading="loading"
                   class="custom-btn-width black white--text py-2">
                   submit
                 </v-btn>
@@ -1351,28 +1352,56 @@
 
           </form>
         </ValidationObserver>
-        <!-- delete modal  -->
-        <v-dialog v-model="deleteDialog" width="350">
+        <!-- confirm modal  -->
+        <!-- <v-dialog v-model="confirmDialog" width="350">
           <v-card style="justify-content: center; text-align: center">
-            <v-card-title class="font-weight-bold justify-center">
-              {{ $t("container.system_config.demo_graphic.division.delete") }}
-            </v-card-title>
-            <v-divider></v-divider>
+          
             <v-card-text>
               <div class="subtitle-1 font-weight-medium mt-5">
-                Select Permanent Contact Information Properly
+              Do you want to submit the application ?
               </div>
             </v-card-text>
             <v-card-actions style="display: block">
               <v-row class="mx-0 my-0 py-2" justify="center">
-                <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
+                <v-btn text @click="confirmDialog = false" outlined class="custom-btn-width py-2 mr-10">
+                    {{ $t("container.list.confirm") }}
+                  </v-btn>
+                <v-btn text @click="confirmDialog = false" outlined class="custom-btn-width py-2 mr-10">
                   {{ $t("container.list.cancel") }}
                 </v-btn>
 
               </v-row>
             </v-card-actions>
           </v-card>
-        </v-dialog>
+        </v-dialog> -->
+ <template>
+    <v-dialog v-model="confirmDialog" max-width="700" max-height="500">
+      <v-card>
+        <v-card-title  class="font-weight-bold justify-center">
+          Form Submission Confirmation
+        </v-card-title>
+     
+
+        <!-- Add a divider after the title -->
+        <v-divider></v-divider>
+
+        <v-card-text class="text-center">
+          <div class="subtitle-1 font-weight-medium mt-5">
+            Do you want to submit the application?
+          </div>
+        </v-card-text>
+
+        <v-card-actions class="d-flex justify-center">
+          <v-btn text @click="confirmDialog = false" outlined class="custom-btn-width">
+            {{ $t("container.list.cancel") }}
+          </v-btn>
+          <v-btn text  flat color="primary" @click="submitApplication()" :loading="loading" type="submit" class="custom-btn-width success white--text py-2">
+            {{ $t("container.list.confirm") }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </template>
         <!-- delete modal  -->
       </v-col>
     </v-row>
@@ -1581,6 +1610,7 @@ export default {
       menu: false,
       isChecked: false,
       deleteDialog: false,
+      confirmDialog:false,
       data: {
 
         program_id: null,
@@ -2022,6 +2052,7 @@ export default {
         // Convert this.data.account_number to string before concatenation
         this.data.account_number = this.data.mobile_operator + String(this.data.account_number);
       }
+      this.confirmDialog = false
       console.log(this.data, "All data")
 
 
@@ -2058,7 +2089,12 @@ export default {
         this.loading = false;
         console.log(res.data.data, "data")
         console.log(res.data.id, "id")
-        this.$router.push(`/submitted-application/${res.data.id}`);
+        this.$store.commit('ApplicationSelection/setSuccessId', res.data.id);
+            console.log(res.data.id, " after store id")
+        // this.$router.push({ name: 'SuccessView' });
+        // this.$router.push({ name: 'SuccessView', query: { id: res.data.id } });
+        this.$router.push("/submitted-application");
+          console.log(res.data.id, " after pushing id")
 
       })
         .catch((err) => {

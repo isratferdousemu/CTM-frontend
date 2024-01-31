@@ -51,7 +51,8 @@
             "single_select":"একক নির্বাচন করুন",
             "total": "মোট ফলাফল",
             "PDF": "পিডিএফ ডাউনলোড করুন",
-            "excel": "এক্সেল"
+            "excel": "এক্সেল",
+            "confirm": "নিশ্চিত"
         },
         "system_config": {
             "demo_graphic": {
