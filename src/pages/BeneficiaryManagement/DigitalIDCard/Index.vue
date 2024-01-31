@@ -706,7 +706,7 @@ export default {
         union_id: this.data.union_id,
         upazila_id: this.data.thana_id,
         ward_id: this.data.ward_id,
-
+        status: 1, // only active beneficiaries
         perPage: this.pagination.perPage,
         page: this.pagination.current,
       };
