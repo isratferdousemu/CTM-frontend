@@ -107,7 +107,11 @@
                             outlined
                           ></v-text-field>
                         </template>
-                        <v-date-picker v-model="data.date_of_impact" no-title scrollable>
+                        <v-date-picker
+                          v-model="data.date_of_impact"
+                          no-title
+                          scrollable
+                        >
                           <v-spacer></v-spacer>
                           <v-btn text color="primary" @click="menu = false">
                             Cancel
@@ -129,10 +133,10 @@
                         counter
                         prepend-inner-icon="mdi mdi-file-account-outline"
                         :label="
-                              $t(
-                                'container.beneficiary_management.beneficiary_list.cause_provement'
-                              )
-                            "
+                          $t(
+                            'container.beneficiary_management.beneficiary_list.cause_provement'
+                          )
+                        "
                         accept="image/*"
                         prepend-icon=""
                         v-model="data.file"
@@ -302,9 +306,9 @@ export default {
     return {
       data: {
         cause_type: null,
-        cause_details:null,
-        date_of_impact:null,
-        file:null
+        cause_details: "",
+        date_of_impact: "",
+        file: "",
       },
 
       date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
@@ -389,33 +393,40 @@ export default {
       }
     },
     onCheckboxChange(id) {
-      this.selectedId = id;
+      console.log("CHECK_BOX_ID", id);
+      if (this.selectedId === id) {
+        this.selectedId = null;
+      }else{
+        this.selectedId = id;
+      }
+      
     },
     submit() {
       try {
         let fd = new FormData();
-        if(this.selectedId){
+        if (this.selectedId) {
+          fd.append("replace_with_ben_id", this.selectedId);
+          fd.append("cause_id", this.data.cause_type);
+          fd.append("cause_detail", this.data.cause_details);
+          fd.append("cause_date", this.data.date_of_impact);
+          fd.append("cause_proof_doc", this.data.file);
 
-        fd.append("replace_with_ben_id", this.selectedId);
-        fd.append("cause_id", this.data.cause_type);
-        fd.append("cause_detail", this.data.cause_details);
-        fd.append("cause_date", this.data.date_of_impact);
-        fd.append("cause_proof_doc", this.data.file);
-
-        const data = { formData: fd, id: this.$route.params.id };
-        this.$store
-          .dispatch("BeneficiaryManagement/BeneficiaryReplacement", data)
-          .then((res) => {
-            console.log(res, "submit__");
-            if (res.data?.success) {
-              this.$toast.success("Beneficiary Replace Successfully");
-              this.$router.push({ name: "Beneficiary_List" });
-            } else if (res.response?.data?.errors) {
-              this.$refs.form.setErrors(res.response.data.errors);
-              this.errors = res.response.data.errors;
-            }
-          });
-        }else{
+          const data = { formData: fd, id: this.$route.params.id };
+          this.$store
+            .dispatch("BeneficiaryManagement/BeneficiaryReplacement", data)
+            .then((res) => {
+              console.log(res, "submit__");
+              if (res.data?.success) {
+                this.$toast.success("Beneficiary Replace Successfully");
+                this.$router.push({ name: "Beneficiary_List" });
+              } else {
+                console.log('ERROR__',res?.message);
+                 this.$refs.form.setErrors(res?.message);
+                 this.errors = res?.message;
+                 this.$toast.error(res?.message);
+              }
+            });
+        } else {
           this.$toast.success("Please select a Replacement Item");
         }
       } catch (e) {
@@ -432,12 +443,12 @@ export default {
         console.log(e);
       }
     },
-    resetBeneficiary(){
-        this.data.cause_type = null;
-        this.data.cause_details = null;
-        this.data.date_of_impact = null;
-        this.data.file = null;
-    }
+    resetBeneficiary() {
+      this.data.cause_type = null;
+      this.data.cause_details = null;
+      this.data.date_of_impact = null;
+      this.data.file = null;
+    },
   },
   components: {
     ValidationProvider,
