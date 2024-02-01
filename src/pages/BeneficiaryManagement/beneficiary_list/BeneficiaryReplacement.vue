@@ -12,46 +12,48 @@
               }}
             </v-expansion-panel-header>
             <v-expansion-panel-content>
-              <v-row class="mt-10">
-                <v-col lg="6" md="6" cols="12">
-                  <v-text-field
-                    :label="
-                      $t(
-                        'container.beneficiary_management.beneficiary_list.replacement_with'
-                      )
-                    "
-                    outlined
-                    clearable
-                    v-model="beneficiary.name_en"
-                  >
-                  </v-text-field>
-                </v-col>
-                <v-col lg="6" md="6" cols="12">
-                  <v-text-field
-                    :label="
-                      $t(
-                        'container.beneficiary_management.beneficiary_list.beneficiary_details'
-                      )
-                    "
-                    outlined
-                    clearable
-                    v-model="beneficiary.current_address"
-                  >
-                  </v-text-field>
-                </v-col>
+              <ValidationObserver ref="form" v-slot="{ invalid }">
+                <form @submit.prevent="submit()">
+                  <v-row class="mt-10">
+                    <v-col lg="6" md="6" cols="12">
+                      <v-text-field
+                        :label="
+                          $t(
+                            'container.beneficiary_management.beneficiary_list.replacement_with'
+                          )
+                        "
+                        outlined
+                        disabled
+                        v-model="beneficiary.name_en"
+                      >
+                      </v-text-field>
+                    </v-col>
+                    <v-col lg="6" md="6" cols="12">
+                      <v-text-field
+                        :label="
+                          $t(
+                            'container.beneficiary_management.beneficiary_list.contract_number'
+                          )
+                        "
+                        outlined
+                        disabled
+                        v-model="beneficiary.mobile"
+                      >
+                      </v-text-field>
+                    </v-col>
 
-                <v-col lg="6" md="6" cols="12">
-                  <v-textarea
-                    :label="
-                      $t(
-                        'container.beneficiary_management.beneficiary_list.beneficiary_details'
-                      )
-                    "
-                    outlined
-                    clearable
-                  >
-                  </v-textarea>
-                </v-col>
+                    <v-col lg="6" md="6" cols="12">
+                      <v-textarea
+                        :label="
+                          $t(
+                            'container.beneficiary_management.beneficiary_list.replacement_cause_details'
+                          )
+                        "
+                        outlined
+                        v-model="data.cause_details"
+                      >
+                      </v-textarea>
+                    </v-col>
 
                 <v-col lg="6" md="6" cols="12">
                   <v-select
@@ -67,79 +69,89 @@
                   </v-select>
                 </v-col>
 
-                <v-col lg="6" md="6" cols="12">
-                  <v-menu
-                    ref="menu"
-                    v-model="menu"
-                    :close-on-content-click="false"
-                    :return-value.sync="date"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="auto"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                        v-model="date"
+                    <v-col lg="6" md="6" cols="12">
+                      <v-menu
+                        ref="menu"
+                        v-model="menu"
+                        :close-on-content-click="false"
+                        :return-value.sync="date"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            v-model="data.date_of_impact"
+                            :label="
+                              $t(
+                                'container.beneficiary_management.beneficiary_list.cause_date'
+                              )
+                            "
+                            prepend-inner-icon="mdi-calendar"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                            outlined
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker
+                          v-model="data.date_of_impact"
+                          no-title
+                          scrollable
+                        >
+                          <v-spacer></v-spacer>
+                          <v-btn text color="primary" @click="menu = false">
+                            Cancel
+                          </v-btn>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="$refs.menu.save(data.date_of_impact)"
+                          >
+                            OK
+                          </v-btn>
+                        </v-date-picker>
+                      </v-menu>
+                    </v-col>
+                    <v-col lg="6" md="6" cols="12">
+                      <v-file-input
+                        outlined
+                        show-size
+                        counter
+                        prepend-inner-icon="mdi mdi-file-account-outline"
                         :label="
                           $t(
-                            'container.beneficiary_management.beneficiary_list.cause_date'
+                            'container.beneficiary_management.beneficiary_list.cause_provement'
                           )
                         "
-                        prepend-inner-icon="mdi-calendar"
-                        readonly
-                        v-bind="attrs"
-                        v-on="on"
-                        outlined
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker v-model="date" no-title scrollable>
-                      <v-spacer></v-spacer>
-                      <v-btn text color="primary" @click="menu = false">
-                        Cancel
-                      </v-btn>
-                      <v-btn
-                        text
-                        color="primary"
-                        @click="$refs.menu.save(date)"
-                      >
-                        OK
-                      </v-btn>
-                    </v-date-picker>
-                  </v-menu>
-                </v-col>
-                <v-col lg="6" md="6" cols="12">
-                  <v-file-input
-                    outlined
-                    show-size
-                    counter
-                    prepend-inner-icon="mdi mdi-file-account-outline"
-                    accept="image/*"
-                    prepend-icon=""
-                  ></v-file-input>
-                </v-col>
-              </v-row>
+                        accept="image/*"
+                        prepend-icon=""
+                        v-model="data.file"
+                      ></v-file-input>
+                    </v-col>
+                  </v-row>
 
-              <v-row class="mx-0 my-0 py-2" justify="end">
-                <v-btn
-                  type="submit"
-                  flat
-                  :disabled="invalid"
-                  :loading="loading"
-                  class="custom-btn-width py-2 mr-2"
-                >
-                  {{ $t("container.list.reset") }}
-                </v-btn>
-                <v-btn
-                  type="submit"
-                  flat
-                  :disabled="invalid"
-                  :loading="loading"
-                  class="custom-btn-width success white--text py-2"
-                  @click="onReplaceSubmit()"
-                >
-                  {{ $t("container.list.replace") }}
-                </v-btn>
-              </v-row>
+                  <v-row class="mx-0 my-0 py-2" justify="end">
+                    <v-btn
+                      @click="resetBeneficiary"
+                      flat
+                      :loading="loading"
+                      class="custom-btn-width py-2 mr-2"
+                    >
+                      {{ $t("container.list.reset") }}
+                    </v-btn>
+                    <v-btn
+                      type="submit"
+                      flat
+                      :disabled="invalid"
+                      :loading="loading"
+                      class="custom-btn-width success white--text py-2"
+                    >
+                      {{ $t("container.list.replace") }}
+                    </v-btn>
+                  </v-row>
+                </form>
+              </ValidationObserver>
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
@@ -279,6 +291,13 @@ export default {
   title: "CTM - Beneficiary Replacement",
   data() {
     return {
+      data: {
+        cause_type: null,
+        cause_details: "",
+        date_of_impact: "",
+        file: "",
+      },
+
       date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
         .toISOString()
         .substr(0, 10),
@@ -360,52 +379,67 @@ export default {
       }
     },
     onCheckboxChange(id) {
-      this.selectedId = id;
+      console.log("CHECK_BOX_ID", id);
+      if (this.selectedId === id) {
+        this.selectedId = null;
+      }else{
+        this.selectedId = id;
+      }
+      
     },
     onReplaceSubmit() {
       try {
         let fd = new FormData();
+        if (this.selectedId) {
+          fd.append("replace_with_ben_id", this.selectedId);
+          fd.append("cause_id", this.data.cause_type);
+          fd.append("cause_detail", this.data.cause_details);
+          fd.append("cause_date", this.data.date_of_impact);
+          fd.append("cause_proof_doc", this.data.file);
 
-        fd.append("replace_with_ben_id", this.selectedId);
-        fd.append("cause_id",1);
-        fd.append("cause_detail","cause_detail");
-        fd.append("cause_date", "2024-01-22");
-        fd.append("cause_id",null);
-        
-        // const queryParams = {
-        //   replace_with_ben_id: this.selectedId,
-        //   cause_id: 1,
-        //   cause_detail: "cause detail",
-        //   cause_date: "2024-01-22",
-        //   cause_proof_doc: null,
-        // };
-
-        this.$axios
-          .put(`/admin/beneficiary/replace/${this.$route.params.id}`, {
-            headers: {
-              Authorization: "Bearer " + this.$store.state.token,
-              "Content-Type": "multipart/form-data",
-            },
-            // params: queryParams,
-          },fd)
-          .then((result) => {
-
-            // this.replaceList = result.data.data;
-            console.log("beneficiary__replace", result);
-          })
-          .catch((err) => {
-            if (err.response?.data?.errors) {
-              this.$refs.form.setErrors(err.response.data.errors);
-            }
-            console.log(err.response);
-            this.$toast.error(err?.response?.data?.message);
-          });
+          const data = { formData: fd, id: this.$route.params.id };
+          this.$store
+            .dispatch("BeneficiaryManagement/BeneficiaryReplacement", data)
+            .then((res) => {
+              console.log(res, "submit__");
+              if (res.data?.success) {
+                this.$toast.success("Beneficiary Replace Successfully");
+                this.$router.push({ name: "Beneficiary_List" });
+              } else {
+                console.log('ERROR__',res?.message);
+                 this.$refs.form.setErrors(res?.message);
+                 this.errors = res?.message;
+                 this.$toast.error(res?.message);
+              }
+            });
+        } else {
+          this.$toast.success("Please select a Replacement Item");
+        }
       } catch (e) {
-        console.log("beneficiary__replace", e);
+        console.log("submit__", e);
       }
     },
+    async GetAllCommitteeType() {
+      try {
+        this.$store.dispatch("getLookupByType", 21).then((data) => {
+          this.cause_types = data;
+          console.log(this.cause_types, "Cause_type");
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    resetBeneficiary() {
+      this.data.cause_type = null;
+      this.data.cause_details = null;
+      this.data.date_of_impact = null;
+      this.data.file = null;
+    },
   },
-
+  components: {
+    ValidationProvider,
+    ValidationObserver,
+  },
   computed: {
     computedDateFormatted() {
       return this.formatDate(this.date);

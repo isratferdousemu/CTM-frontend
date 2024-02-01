@@ -1,41 +1,50 @@
 <template>
-    <div id="aplication_list">
-        <v-row class="mx-5 mt-4">
-            <v-col cols="12">
-                <v-card>
-                    <v-row>
-
-                        <v-col lg="6" md="6" cols="12" class="ma-5">
-                            <v-card justify="center">
-                                <v-card-title>
-
-                                </v-card-title>
-                                <v-card-text>
-                                    <table >
-                                        <tr>
-                                            <td>Beneficiary ID</td>
-                                            <td>: 1235</td>
-                                           
-                                        </tr>
-                                        <tr>
-                                             <td> Name</td>
-                                                <td>: Radur Rahim</td>
-                                        </tr>
-                                          <tr>
-                                                 <td> Address</td>
-                                                    <td>: Naogaon sadar, Naogaon</td>
-                                            </tr>
-
-                                    </table>
-
-                                    
-
-                                </v-card-text>
-
-
-
-                            </v-card>
-                        </v-col>
+  <div id="aplication_list">
+    <v-row class="mx-5 mt-4">
+      <v-col cols="12">
+        <v-card>
+          <v-row>
+            <v-col lg="6" md="6" cols="12" class="ma-5">
+              <v-card justify="center">
+                <v-card-title> </v-card-title>
+                <v-card-text>
+                  <table>
+                    <tr>
+                      <td>{{
+                      $t(
+                        "container.beneficiary_management.beneficiary_list.beneficiary_id"
+                      )
+                    }}</td>
+                      <td>: {{ data.application_id }}</td>
+                    </tr>
+                    <tr>
+                      <td>{{
+                      $t(
+                        "container.beneficiary_management.beneficiary_list.beneficiary_name"
+                      )
+                    }}</td>
+                      <td>: {{ data.name_en }}</td>
+                    </tr>
+                    <tr>
+                      <td>{{
+                      $t(
+                        "container.beneficiary_management.beneficiary_list.beneficiary_mobile"
+                      )
+                    }}</td>
+                      <td>: {{ data.mobile }}</td>
+                    </tr>
+                    <tr>
+                      <td>{{
+                      $t(
+                        "container.beneficiary_management.beneficiary_list.program"
+                      )
+                    }}</td>
+                      <td>: {{ data.program.name_en }}</td>
+                    </tr>
+                  </table>
+                </v-card-text>
+              </v-card>
+            </v-col>
 
                         <v-col cols="12" >
 
@@ -304,73 +313,90 @@
                               right: 25px;
                               width: 149px;
                               transform: translate(0px, 0px);
-                            " :items="items" hide-details dense outlined @change="onPageChange"
-                                                        v-model="pagination.perPage"></v-select>
-                                                    <v-pagination circle primary v-model="pagination.current"
-                                                        :length="pagination.total" @input="onPageChange" :total-visible="11"
-                                                        class="custom-pagination-item"></v-pagination>
-                                                </div>
-                                            </template>
-                                        </v-data-table>
-                                    </v-col>
+                            "
+                            :items="items"
+                            hide-details
+                            dense
+                            outlined
+                            @change="onPageChange"
+                            v-model="pagination.perPage"
+                          ></v-select>
+                          <v-pagination
+                            circle
+                            primary
+                            v-model="pagination.current"
+                            :length="pagination.total"
+                            @input="onPageChange"
+                            :total-visible="11"
+                            class="custom-pagination-item"
+                          ></v-pagination>
+                        </div>
+                      </template>
+                    </v-data-table>
+                  </v-col>
 
-
-
-
-                                    <v-row class="mx-0 my-0 py-2" justify="center">
-                                        <v-btn flat @click="grievance_modal = false" outlined
-                                            class="custom-btn-width py-2 mr-10">
-                                            {{ $t("container.list.cancel") }}
-                                        </v-btn>
-                                        <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
-                                            class="custom-btn-width  white--text py-2">
-                                            {{ $t("container.list.print") }}
-                                        </v-btn>
-                                    </v-row>
-
-
-                                </v-card-text>
-                            </v-card>
-                        </v-dialog>
-                        <!-- Grievance History Modal  -->
-                        <!-- Change Tracking Modal -->
-                        <v-dialog v-model="tracking_modal" >
-                            <v-card style="justify-content: center; text-align: center">
-                                <v-card-title class="font-weight-bold justify-center">
-                                    {{ $t("container.beneficiary_management.beneficiary_list.Change_tracking") }}
-                                </v-card-title>
-                                <v-divider></v-divider>
-                                <v-card-text class="mt-7">
-
-
-                                    <v-col cols="12">
-
-                                        <v-data-table :headers="headers_tracking" :items="divisions"
-                                            class="elevation-0 transparent row-pointer">
-                                            <template v-slot:item.sl="{ item, index }">
-                                                {{
-                                                    (pagination.current - 1) * pagination.perPage +
-                                                    index +
-                                                    1
-                                                }}
-                                            </template>
-                                               <!-- Action Button -->
-                          <template v-slot:item.actions="{ item }">
-                       
-                                <v-btn
-                                
-                                  v-on="on"
-                                  color="success"
-                                  elevation="0"
-                                  router to="/beneficiary-management/information-tracking"
-                            
-                                >
-                                         {{ $t("container.list.change_tracking_details") }}
-                                </v-btn>
-                         
-                    
-                          </template>
-                          <!-- End Action Button -->
+                  <v-row class="mx-0 my-0 py-2" justify="center">
+                    <v-btn
+                      flat
+                      @click="grievance_modal = false"
+                      outlined
+                      class="custom-btn-width py-2 mr-10"
+                    >
+                      {{ $t("container.list.cancel") }}
+                    </v-btn>
+                    <v-btn
+                      type="submit"
+                      flat
+                      color="primary"
+                      :disabled="invalid"
+                      :loading="loading"
+                      class="custom-btn-width white--text py-2"
+                    >
+                      {{ $t("container.list.print") }}
+                    </v-btn>
+                  </v-row>
+                </v-card-text>
+              </v-card>
+            </v-dialog>
+            <!-- Grievance History Modal  -->
+            <!-- Change Tracking Modal -->
+            <v-dialog v-model="tracking_modal">
+              <v-card style="justify-content: center; text-align: center">
+                <v-card-title class="font-weight-bold justify-center">
+                  {{
+                    $t(
+                      "container.beneficiary_management.beneficiary_list.Change_tracking"
+                    )
+                  }}
+                </v-card-title>
+                <v-divider></v-divider>
+                <v-card-text class="mt-7">
+                  <v-col cols="12">
+                    <v-data-table
+                      :headers="headers_tracking"
+                      :items="divisions"
+                      class="elevation-0 transparent row-pointer"
+                    >
+                      <template v-slot:item.sl="{ item, index }">
+                        {{
+                          (pagination.current - 1) * pagination.perPage +
+                          index +
+                          1
+                        }}
+                      </template>
+                      <!-- Action Button -->
+                      <!-- <template v-slot:item.actions="{ item }">
+                        <v-btn
+                          v-on="on"
+                          color="success"
+                          elevation="0"
+                          router
+                          to="/beneficiary-management/information-tracking"
+                        >
+                          {{ $t("container.list.change_tracking_details") }}
+                        </v-btn>
+                      </template> -->
+                      <!-- End Action Button -->
 
                                             <template v-slot:footer="item">
                                                 <div class="text-center pt-2 v-data-footer justify-center pb-2">
@@ -450,19 +476,41 @@ export default {
         }
     },
 
-    methods: {
-        updateHeaderTitle() {
-            const title = this.$t(
-                "container.list.beneficiary_journey"
-            );
-            this.$store.commit("setHeaderTitle", title);
-        },
-           ...mapActions({
-            GetAllDivisions: "Division/GetAllDivisions",
-   
-        }),
-
+  methods: {
+    updateHeaderTitle() {
+      const title = this.$t("container.list.beneficiary_journey");
+      this.$store.commit("setHeaderTitle", title);
     },
+    ...mapActions({
+      GetAllDivisions: "Division/GetAllDivisions",
+    }),
+    async getBeneficiaryDetailsById() {
+      try {
+        this.$axios
+          .get(`/admin/beneficiary/show/${this.$route.params.id}`, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((res) => {
+            let item = res.data.data;
+            this.data = res.data.data;
+
+            console.log("BEN___", this.data);
+          })
+          .catch((err) => {
+            if (err.response?.data?.errors) {
+              this.$refs.form.setErrors(err.response.data.errors);
+            }
+            console.log(err.response);
+            this.$toast.error(err?.response?.data?.message);
+          });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+  },
 
     computed: {
            ...mapState({
@@ -492,37 +540,67 @@ export default {
                 { text: this.$t("container.beneficiary_management.beneficiary_list.resolved_by"), value: "5" },
                 { text: this.$t("container.beneficiary_management.beneficiary_list.resolve_comment"), value: "6" },
 
-                { text: this.$t("container.beneficiary_management.beneficiary_list.resolve_date"), value: "7" },
-            ];
+        {
+          text: this.$t(
+            "container.beneficiary_management.beneficiary_list.resolve_date"
+          ),
+          value: "7",
         },
-          headers_tracking() {
-            return [
-                { text: this.$t("container.list.sl"), value: "sl" },
-                { text: this.$t("container.beneficiary_management.beneficiary_list.change_tracking_type"), value: "1" },
-                { text: this.$t("container.beneficiary_management.beneficiary_list.change_count"), value: "2" },
-                { text: this.$t("container.beneficiary_management.beneficiary_list.successful_change"), value: "3" },
-                { text: this.$t("container.beneficiary_management.beneficiary_list.unsuccessful_change"), value: "4" },
-                { text: this.$t("container.beneficiary_management.beneficiary_list.resolved_by"), value: "name_en" },
-                { text: this.$t("container.list.action"), value: "actions" },
-               
-            ];
+      ];
+    },
+    headers_tracking() {
+      return [
+        { text: this.$t("container.list.sl"), value: "sl" },
+        {
+          text: this.$t(
+            "container.beneficiary_management.beneficiary_list.change_tracking_type"
+          ),
+          value: "1",
         },
-
-    },
-
-    watch: {
-        "$i18n.locale": "updateHeaderTitle",
-        date(val) {
-            this.dateFormatted = this.formatDate(this.date)
+        {
+          text: this.$t(
+            "container.beneficiary_management.beneficiary_list.change_count"
+          ),
+          value: "2",
         },
+        {
+          text: this.$t(
+            "container.beneficiary_management.beneficiary_list.successful_change"
+          ),
+          value: "3",
+        },
+        {
+          text: this.$t(
+            "container.beneficiary_management.beneficiary_list.unsuccessful_change"
+          ),
+          value: "4",
+        },
+        {
+          text: this.$t(
+            "container.beneficiary_management.beneficiary_list.resolved_by"
+          ),
+          value: "name_en",
+        },
+        // { text: this.$t("container.list.action"), value: "actions" },
+      ];
     },
-  
-    beforeMount() {
-        this.updateHeaderTitle();
-    },
-    mounted() {
-        this.GetAllDivisions();
+  },
 
-    }
+  watch: {
+    "$i18n.locale": "updateHeaderTitle",
+    date(val) {
+      this.dateFormatted = this.formatDate(this.date);
+    },
+  },
+
+  beforeMount() {
+    this.updateHeaderTitle();
+  },
+  mounted() {
+    this.GetAllDivisions();
+  },
+  created() {
+    this.getBeneficiaryDetailsById();
+  },
 };
 </script>

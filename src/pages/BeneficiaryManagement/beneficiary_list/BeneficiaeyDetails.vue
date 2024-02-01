@@ -1,56 +1,147 @@
 <template>
-  <div id="aplication_list">
-    <v-row class="mx-5 mt-4">
-      <v-col cols="12">
-        <v-card>
-          <v-row>
-            <v-col lg="6" md="6" cols="12" class="ma-5">
-              <v-card justify="center">
-                <v-card-title> </v-card-title>
-                <v-card-text>
-                  <table>
-                    <tr>
-                      <td>Beneficiary ID</td>
-                      <td>: {{beneficiary.application_id}}</td>
-                    </tr>
-                    <tr>
-                      <td>Program Name: </td>
-                      <td>: {{beneficiary.program.name_en}}</td>
-                    </tr>
-                    <tr>
-                      <td>Father Name</td>
-                      <td>: {{beneficiary.father_name_en}}</td>
-                    </tr>
-                  </table>
-                </v-card-text>
-              </v-card>
-            </v-col>
-
-            <v-col cols="12">
-              <v-expansion-panels>
-                <v-expansion-panel>
-                  <v-expansion-panel-header color="#8C9EFF" class="white--text">
-                    {{
-                      $t(
-                        "container.beneficiary_management.beneficiary_list.payment_history"
-                      )
-                    }}
-                  </v-expansion-panel-header>
-                  <v-expansion-panel-content class="mt-5">
-                    <v-row>
-                      <v-col lg="6" md="6" cols="12">
-                        <v-text-field
-                          v-model="data.total_receive"
-                          :label="
-                            $t(
-                              'container.beneficiary_management.beneficiary_list.total_receive'
-                            )
-                          "
-                          outlined
-                          clearable
+  <div id="application_view">
+    <v-row class="mx-5 my-5 mt-5">
+      <v-col class="mt-5" cols="12">
+        <ValidationObserver ref="form" v-slot="{ invalid }">
+          <form @submit.prevent="">
+            <v-card class="pa-5 px-10 mb-4">
+              <ValidationProvider
+                name="program"
+                vid="program"
+                rules="required"
+                v-slot="{ errors }"
+              >
+                <label>Program </label>
+                <span style="margin-left: 4px; color: red">*</span>
+                <v-select
+                  outlined
+                  :items="data?.program"
+                  item-text="name_en"
+                  item-value="id"
+                  v-model="data.program.id"
+                  required
+                  :error="errors[0] ? true : false"
+                  :error-messages="errors[0]"
+                  readonly
+                >
+                </v-select>
+              </ValidationProvider>
+              <div>
+                <v-expansion-panels v-model="panel" multiple>
+                  <!-- Applicant Verification -->
+                  <v-expansion-panel>
+                    <v-expansion-panel-header color="primary">
+                      <h3 class="white--text">Applicant Verification</h3>
+                    </v-expansion-panel-header>
+                    <v-expansion-panel-content class="mt-5">
+                      <template>
+                        <ValidationProvider
+                          name="program"
+                          vid="verification_type"
+                          rules="required"
+                          v-slot="{ errors }"
                         >
-                        </v-text-field>
-                      </v-col>
+                          <v-radio-group
+                            :readonly="isRadioGroupReadonly"
+                            v-model="data.verification_type"
+                            row
+                          >
+                            <v-radio
+                              label="National Identity (NID)"
+                              value="1"
+                              v-if="isRadioGroupReadonly"
+                            ></v-radio>
+                            <v-radio
+                              label="Birth Registration Number"
+                              value="2"
+                              v-if="isRadioGroupReadonly"
+                            ></v-radio>
+                          </v-radio-group>
+                        </ValidationProvider>
+                      </template>
+                      <V-row>
+                        <v-col>
+                          <ValidationProvider
+                            name="Number"
+                            vid="verification_number"
+                            rules="required"
+                            v-slot="{ errors }"
+                          >
+                            <label>
+                              <span v-if="data.verification_type == 1">
+                                NID No
+                              </span>
+                              <span v-else-if="data.verification_type == 2">
+                                BRN No
+                              </span>
+                              <span v-else> NID / BRN No </span>
+                            </label>
+                            <span style="margin-left: 4px; color: red">*</span>
+                            <v-text-field
+                              outlined
+                              readonly
+                              v-model="data.verification_number"
+                              class="mr-2"
+                              type="number"
+                              required
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                            >
+                            </v-text-field>
+                          </ValidationProvider>
+                        </v-col>
+
+                        <v-col>
+                          <label>Date of Birth </label>
+
+                          <span style="margin-left: 4px; color: red">*</span>
+
+                          <v-text-field
+                            v-model="data.date_of_birth"
+                            readonly
+                            outlined
+                          >
+                          </v-text-field>
+                        </v-col>
+                      </V-row>
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
+                  <!-- Applicant Verification end -->
+
+                  <!-- 2nd Expansion panel -->
+                  <!-- Information According to the Old Allowance -->
+                  <v-expansion-panel class="mt-5" v-model="panel" multiple>
+                    <v-expansion-panel-header color="primary">
+                      <h3 class="white--text">
+                        Information According to the Old Allowance
+                      </h3>
+                    </v-expansion-panel-header>
+                    <v-expansion-panel-content class="mt-5">
+                      <V-row>
+                        <v-col>
+                          <ValidationProvider
+                            name="Number"
+                            vid="verification_number"
+                            rules="required"
+                            v-slot="{ errors }"
+                          >
+                            <label>
+                              <span> Yearly Income </span>
+                            </label>
+                            <span style="margin-left: 4px; color: red">*</span>
+                            <v-text-field
+                              outlined
+                              readonly
+                              v-model="data.verification_number"
+                              class="mr-2"
+                              type="number"
+                              required
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                            >
+                            </v-text-field>
+                          </ValidationProvider>
+                        </v-col>
 
                       <v-col lg="6" md="6" cols="12">
                         <v-menu
@@ -118,410 +209,1448 @@
                               elevation="0"
                               class="white--text"
                             >
-                              <v-icon> mdi-eye </v-icon>
-                            </v-btn>
-                          </template>
-                          <span>
-                            {{ $t("container.list.view") }}
-                          </span>
-                        </v-tooltip>
-                      </v-col>
-                    </v-row>
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
-              </v-expansion-panels>
-            </v-col>
-            <v-col cols="12">
-              <v-expansion-panels>
-                <v-expansion-panel>
-                  <v-expansion-panel-header color="#8C9EFF" class="white--text">
-                    {{
-                      $t(
-                        "container.beneficiary_management.beneficiary_list.grievance_history"
-                      )
-                    }}
-                  </v-expansion-panel-header>
-                  <v-expansion-panel-content class="mt-5">
-                    <v-row>
-                      <v-col lg="6" md="6" cols="12">
-                        <v-text-field
-                          v-model="data.total_receive"
-                          readonly
-                          :label="
-                            $t(
-                              'container.beneficiary_management.beneficiary_list.total_grievance'
-                            )
-                          "
-                          outlined
-                        >
-                        </v-text-field>
-                      </v-col>
-
-                      <v-col lg="6" md="6" cols="12">
-                        <v-text-field
-                          v-model="data.last_grievance_type"
-                          :label="
-                            $t(
-                              'container.beneficiary_management.beneficiary_list.last_grievance_type'
-                            )
-                          "
-                          outlined
-                        >
-                        </v-text-field>
-                      </v-col>
-                      <v-col lg="6" md="6" cols="12">
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'update-post'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="#AFB42B"
-                              elevation="0"
-                              @click="grievance_modal = true"
-                              class="white--text"
+                            </v-text-field>
+                          </ValidationProvider>
+                        </v-col>
+                      </V-row>
+                      <V-row>
+                        <v-col md="2" lg="2" cols="12">
+                          <label>
+                            Health Status : (Apply Where Applicable)</label
+                          >
+                          <span style="margin-left: 4px; color: red">*</span>
+                        </v-col>
+                        <v-col md="2" lg="2" cols="12">
+                          <v-checkbox
+                            disabled
+                            v-model="health_status_value.totally_disabled"
+                            :label="health_status[0]"
+                          ></v-checkbox>
+                        </v-col>
+                        <v-col md="2" lg="2" cols="12">
+                          <v-checkbox
+                            disabled
+                            v-model="health_status_value.sick"
+                            :label="health_status[1]"
+                          ></v-checkbox>
+                        </v-col>
+                        <v-col md="2" lg="2" cols="12">
+                          <v-checkbox
+                            disabled
+                            v-model="health_status_value.insane"
+                            :label="health_status[2]"
+                          ></v-checkbox>
+                        </v-col>
+                        <v-col md="2" lg="2" cols="12">
+                          <v-checkbox
+                            disabled
+                            v-model="health_status_value.disabled"
+                            :label="health_status[3]"
+                          ></v-checkbox>
+                        </v-col>
+                        <v-col md="2" lg="2" cols="12">
+                          <v-checkbox
+                            disabled
+                            v-model="health_status_value.partially_powerless"
+                            :label="health_status[4]"
+                          ></v-checkbox>
+                        </v-col>
+                      </V-row>
+                      <v-row>
+                        <v-col cols="12" class="text-center">
+                          <v-chip color="success" label
+                            >Socio Economic Infromation</v-chip
+                          >
+                        </v-col>
+                      </v-row>
+                      <V-row>
+                        <v-col>
+                          <ValidationProvider
+                            name="program"
+                            vid="program"
+                            rules="required"
+                            v-slot="{ errors }"
+                          >
+                            <label>Financial Status </label>
+                            <span style="margin-left: 4px; color: red">*</span>
+                            <v-select
+                              outlined
+                              :items="data?.program"
+                              item-text="name_en"
+                              item-value="id"
+                              v-model="data.program.id"
+                              required
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                              readonly
                             >
-                              <v-icon> mdi-eye </v-icon>
-                            </v-btn>
-                          </template>
-                          <span>
-                            {{ $t("container.list.view") }}
-                          </span>
-                        </v-tooltip>
-                      </v-col>
-                    </v-row>
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
-              </v-expansion-panels>
-            </v-col>
-            <v-col cols="12">
-              <v-expansion-panels>
-                <v-expansion-panel>
-                  <v-expansion-panel-header color="#8C9EFF" class="white--text">
-                    {{
-                      $t(
-                        "container.beneficiary_management.beneficiary_list.Change_tracking"
-                      )
-                    }}
-                  </v-expansion-panel-header>
-                  <v-expansion-panel-content class="mt-5">
-                    <v-row>
-                      <v-col lg="6" md="6" cols="12">
-                        <v-text-field
-                          v-model="data.total_receive"
-                          readonly
-                          :label="
-                            $t(
-                              'container.beneficiary_management.beneficiary_list.total_change'
-                            )
-                          "
-                          outlined
-                        >
-                        </v-text-field>
-                      </v-col>
+                            </v-select>
+                          </ValidationProvider>
+                        </v-col>
 
-                      <v-col lg="6" md="6" cols="12">
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'update-post'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="#AFB42B"
-                              elevation="0"
-                              @click="tracking_modal = true"
-                              class="white--text"
+                        <v-col>
+                          <ValidationProvider
+                            name="program"
+                            vid="program"
+                            rules="required"
+                            v-slot="{ errors }"
+                          >
+                            <label>Social Status</label>
+                            <span style="margin-left: 4px; color: red">*</span>
+                            <v-select
+                              outlined
+                              :items="data?.program"
+                              item-text="name_en"
+                              item-value="id"
+                              v-model="data.program.id"
+                              required
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                              readonly
                             >
-                              <v-icon> mdi-eye </v-icon>
-                            </v-btn>
+                            </v-select>
+                          </ValidationProvider>
+                        </v-col>
+                      </V-row>
+                      <V-row>
+                        <v-col>
+                          <ValidationProvider
+                            name="Number"
+                            vid="verification_number"
+                            rules="required"
+                            v-slot="{ errors }"
+                          >
+                            <label>
+                              <span> Land Ownership </span>
+                            </label>
+                            <span style="margin-left: 4px; color: red">*</span>
+                            <v-text-field
+                              outlined
+                              readonly
+                              v-model="data.verification_number"
+                              class="mr-2"
+                              type="number"
+                              required
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                            >
+                            </v-text-field>
+                          </ValidationProvider>
+                        </v-col>
+
+                        <v-col> </v-col>
+                      </V-row>
+                      <V-row>
+                        <v-col>
+                          <label> PMT Scoring</label>
+                          <span style="margin-left: 4px; color: red">*</span>
+                        </v-col>
+                      </V-row>
+                      <V-row>
+                        <v-col v-for="i in 5" :key="i">
+                          <v-checkbox
+                            readonly
+                            :label="health_status[i - 1]"
+                            :value="health_status[i - 1]"
+                          ></v-checkbox>
+                        </v-col>
+                      </V-row>
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
+
+                  <!-- 3rd Expansion panel -->
+                  <!-- Personal Information  -->
+                  <v-expansion-panel class="mt-5">
+                    <v-expansion-panel-header color="primary">
+                      <h3 class="white--text">Personal Information</h3>
+                    </v-expansion-panel-header>
+                    <v-expansion-panel-content class="mt-5">
+                      <div class="pa-2 mb-4">
+                        <v-row>
+                          <v-col cols="6" lg="6">
+                            <v-img
+                              :src="data.imageUrl"
+                              style="
+                                width: 200px;
+                                height: 200px;
+                                border: 1px solid #ccc;
+                              "
+                              class="mb-5"
+                              v-if="data.imageUrl"
+                            ></v-img>
+                            <v-img
+                              src="/assets/images/profile.png"
+                              v-if="!data.imageUrl"
+                              style="
+                                width: 150px;
+                                height: 150px;
+                                border: 1px solid #ccc;
+                              "
+                              class="mb-5"
+                            ></v-img>
+                            <ValidationProvider
+                              v-slot="{ errors }"
+                              name="Image"
+                              rules="required"
+                              vid="image"
+                            >
+                              <h3>Image</h3>
+                            </ValidationProvider>
+                          </v-col>
+                          <v-col cols="6" align-self="end" lg="6">
+                            <v-img
+                              :src="data.signUrl"
+                              style="
+                                width: 200px;
+                                height: 80px;
+                                border: 1px solid #ccc;
+                              "
+                              class="mb-5"
+                              v-if="data.signUrl"
+                            ></v-img>
+                            <v-img
+                              src="/assets/images/sign.png"
+                              v-if="!data.signUrl"
+                              style="
+                                width: 200px;
+                                height: 80px;
+                                border: 1px solid #ccc;
+                              "
+                              class="mb-5"
+                            ></v-img>
+                            <ValidationProvider
+                              v-slot="{ errors }"
+                              name="Signature"
+                              rules="required"
+                              vid="sign"
+                            >
+                              <h3>Signature</h3>
+                            </ValidationProvider>
+                          </v-col>
+                          <v-col cols="6" lg="6">
+                            <ValidationProvider
+                              name="Name in Bangla"
+                              vid="name_bn"
+                              rules="required"
+                              v-slot="{ errors }"
+                            >
+                              <label>Name (BN) </label>
+                              <v-text-field
+                                v-model="data.name_bn"
+                                outlined
+                                readonly
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                              >
+                              </v-text-field>
+                            </ValidationProvider>
+                          </v-col>
+                          <v-col cols="6" lg="6">
+                            <ValidationProvider
+                              name="Name in English"
+                              vid="name_en"
+                              rules="required"
+                              v-slot="{ errors }"
+                            >
+                              <label>Name (EN) </label>
+                              <v-text-field
+                                v-model="data.name_en"
+                                outlined
+                                readonly
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                              >
+                              </v-text-field>
+                            </ValidationProvider>
+                          </v-col>
+                          <v-col cols="6" lg="6">
+                            <ValidationProvider
+                              name="Father Name in Bangla"
+                              vid="father_name_bn"
+                              rules="required"
+                              v-slot="{ errors }"
+                            >
+                              <label>Father Name (BN)</label>
+
+                              <v-text-field
+                                v-model="data.father_name_bn"
+                                outlined
+                                required
+                                readonly
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                              >
+                              </v-text-field>
+                            </ValidationProvider>
+                          </v-col>
+                          <v-col cols="6" lg="6">
+                            <ValidationProvider
+                              name="Father Name in English"
+                              vid="father_name_en"
+                              rules="required"
+                              v-slot="{ errors }"
+                            >
+                              <label>Father Name (EN)</label>
+                              <v-text-field
+                                v-model="data.father_name_en"
+                                outlined
+                                required
+                                readonly
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                              >
+                              </v-text-field>
+                            </ValidationProvider>
+                          </v-col>
+                          <v-col cols="6" lg="6">
+                            <ValidationProvider
+                              name="Mother Name in English"
+                              vid="mother_name_bn"
+                              v-slot="{ errors }"
+                            >
+                              <label>Mother Name (BN)</label>
+                              <v-text-field
+                                v-model="data.mother_name_bn"
+                                outlined
+                                required
+                                readonly
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                              >
+                              </v-text-field>
+                            </ValidationProvider>
+                          </v-col>
+                          <v-col cols="6" lg="6">
+                            <ValidationProvider
+                              name="Mother Name in English"
+                              vid="mother_name_en"
+                              v-slot="{ errors }"
+                            >
+                              <label>Mother Name (EN)</label>
+                              <v-text-field
+                                v-model="data.mother_name_en"
+                                outlined
+                                readonly
+                                required
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                              >
+                              </v-text-field>
+                            </ValidationProvider>
+                          </v-col>
+                          <v-col cols="6" lg="6">
+                            <ValidationProvider
+                              name="Spouse Name in Bangla"
+                              vid="spouse_name_bn"
+                              v-slot="{ errors }"
+                            >
+                              <label>Spouse Name (BN)</label>
+                              <v-text-field
+                                v-model="data.spouse_name_bn"
+                                outlined
+                                readonly
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                              >
+                              </v-text-field>
+                            </ValidationProvider>
+                          </v-col>
+                          <v-col cols="6" lg="6">
+                            <ValidationProvider
+                              name="Marital Status"
+                              vid="marital_status"
+                              v-slot="{ errors }"
+                            >
+                              <label>Marital Status</label>
+                              <v-text-field
+                                v-model="data.marital_status"
+                                outlined
+                                readonly
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                              >
+                              </v-text-field>
+                            </ValidationProvider>
+                          </v-col>
+                          <v-col cols="6" lg="6">
+                            <ValidationProvider
+                              name="Spouse Name in English"
+                              vid="spouse_name_en"
+                              v-slot="{ errors }"
+                            >
+                              <label>Spouse Name (EN)</label>
+                              <v-text-field
+                                v-model="data.spouse_name_en"
+                                outlined
+                                readonly
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                              >
+                              </v-text-field>
+                            </ValidationProvider>
+                          </v-col>
+                          <v-col cols="6" lg="6">
+                            <ValidationProvider
+                              name="Religion"
+                              vid="religion"
+                              v-slot="{ errors }"
+                              rules="required"
+                            >
+                              <label>Religion</label>
+                              <v-text-field
+                                v-model="data.religion"
+                                outlined
+                                readonly
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                              >
+                              </v-text-field>
+                            </ValidationProvider>
+                          </v-col>
+                          <v-col cols="6" lg="6">
+                            <ValidationProvider
+                              name="Mobile Number"
+                              vid="mobile"
+                              rules="required"
+                              v-slot="{ errors }"
+                            >
+                              <label style="display: inline-block"
+                                >Mobile Number
+                              </label>
+                              <v-text-field
+                                v-model="data.mobile"
+                                outlined
+                                readonly
+                                type="Number"
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                              >
+                              </v-text-field>
+                            </ValidationProvider>
+                          </v-col>
+
+                          <v-col cols="6" lg="6">
+                            <ValidationProvider
+                              name="Nationality"
+                              vid="nationality"
+                              v-slot="{ errors }"
+                            >
+                              <label>Nationality</label>
+                              <v-text-field
+                                v-model="data.nationality"
+                                outlined
+                                required
+                                readonly
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                              >
+                              </v-text-field>
+                            </ValidationProvider>
+                          </v-col>
+                          <v-col cols="6" lg="6">
+                            <ValidationProvider
+                              name="Age"
+                              vid="age"
+                              v-slot="{ errors }"
+                              rules="required"
+                            >
+                              <label>Age</label>
+                              <v-text-field
+                                v-model="data.age"
+                                outlined
+                                type="number"
+                                required
+                                readonly
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                              >
+                              </v-text-field>
+                            </ValidationProvider>
+                          </v-col>
+                          <v-col cols="6" lg="6">
+                            <ValidationProvider
+                              name="Gender"
+                              vid="gender"
+                              v-slot="{ errors }"
+                              rules="required"
+                            >
+                              <label>Gender</label>
+                              <v-text-field
+                                v-model="data.gender.value_en"
+                                outlined
+                                required
+                                readonly
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                              >
+                              </v-text-field>
+                            </ValidationProvider>
+                          </v-col>
+                          <v-col cols="6" lg="6">
+                            <ValidationProvider
+                              name="Education Status"
+                              vid="education_status"
+                              rules="required"
+                              v-slot="{ errors }"
+                            >
+                              <label>Education Status</label>
+                              <v-text-field
+                                v-model="data.education_status"
+                                outlined
+                                readonly
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                              >
+                              </v-text-field>
+                            </ValidationProvider>
+                          </v-col>
+                          <v-col cols="6" lg="6">
+                            <ValidationProvider
+                              name="Profession"
+                              vid="profession"
+                              v-slot="{ errors }"
+                            >
+                              <label>Profession</label>
+                              <v-text-field
+                                v-model="data.profession"
+                                outlined
+                                readonly
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                              >
+                              </v-text-field>
+                            </ValidationProvider>
+                          </v-col>
+                          <v-col cols="6" lg="6">
+                            <ValidationProvider
+                              name="Identification Mark"
+                              vid="identification_mark"
+                              v-slot="{ errors }"
+                            >
+                              <label>Identification Mark</label>
+                              <v-text-field
+                                v-model="data.identification_mark"
+                                outlined
+                                readonly
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                              >
+                              </v-text-field>
+                            </ValidationProvider>
+                          </v-col>
+                        </v-row>
+                      </div>
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
+                  <!-- Personal Information end-->
+
+                  <!-- 3rd Expansion panel -->
+                  <!-- Contact Information -->
+                  <v-expansion-panel class="mt-4">
+                    <v-expansion-panel-header color="primary">
+                      <h3 class="white--text">Contact Information</h3>
+                    </v-expansion-panel-header>
+                    <v-expansion-panel-content class="mt-5">
+                      <v-row>
+                        <v-col cols="12" class="text-center">
+                          <v-chip color="success" class="text-uppercase" label
+                            >Present Address</v-chip
+                          >
+                        </v-col>
+                        <!-- {{ permanent_location }}  -->
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.currentDivision"
+                        >
+                          <v-text-field
+                            v-model="data.currentDivision.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.division.division'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.currentDistrict"
+                        >
+                          <v-text-field
+                            v-model="data.currentDistrict.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.district.district'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.currentUpazila"
+                        >
+                          <v-text-field
+                            v-model="data.currentUpazila.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.upazila'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.currentCityCorporation"
+                        >
+                          <v-text-field
+                            v-model="data.currentCityCorporation.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.city'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.currentDistrictPourashava"
+                        >
+                          <v-text-field
+                            v-model="data.currentDistrictPourashava.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.dist_pouro'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col lg="6" md="6" cols="12" v-if="data.currentThana">
+                          <v-text-field
+                            v-model="data.currentThana.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.thana'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.currentPourashava"
+                        >
+                          <v-text-field
+                            v-model="data.currentPourashava.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.pouro'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col lg="6" md="6" cols="12" v-if="data.currentUnion">
+                          <v-text-field
+                            v-model="data.currentUnion.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.union'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+                        <v-col lg="6" md="6" cols="12" v-if="data.currentWard">
+                          <v-text-field
+                            v-model="data.currentWard.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.ward'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.current_post_code"
+                        >
+                          <v-text-field
+                            v-model="data.current_post_code"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.post_code'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.current_address"
+                        >
+                          <v-text-field
+                            v-model="data.current_address"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.address'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+                        <v-col lg="6" md="6" cols="12" v-if="data.mobile">
+                          <v-text-field
+                            v-model="data.mobile"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.mobile'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+                      </v-row>
+
+                      <v-row>
+                        <v-col cols="12" class="text-center">
+                          <v-chip color="success" class="text-uppercase" label
+                            >Permanent Address</v-chip
+                          >
+                        </v-col>
+
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.permanentDivision"
+                        >
+                          <v-text-field
+                            v-model="data.permanentDivision.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.division.division'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.permanentDistrict"
+                        >
+                          <v-text-field
+                            v-model="data.permanentDistrict.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.district.district'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.permanentUpazila"
+                        >
+                          <v-text-field
+                            v-model="data.permanentUpazila.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.upazila'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.permanentCityCorporation"
+                        >
+                          <v-text-field
+                            v-model="data.permanentCityCorporation.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.city'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.permanentDistrictPourashava"
+                        >
+                          <v-text-field
+                            v-model="data.permanentDistrictPourashava.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.dist_pouro'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.permanentThana"
+                        >
+                          <v-text-field
+                            v-model="data.permanentThana.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.thana'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.permanentPourashava"
+                        >
+                          <v-text-field
+                            v-model="data.permanentPourashava.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.pouro'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.permanentUnion"
+                        >
+                          <v-text-field
+                            v-model="data.permanentUnion.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.union'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.permanentWard"
+                        >
+                          <v-text-field
+                            v-model="data.permanentWard.name_en"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.ward'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.permanent_post_code"
+                        >
+                          <v-text-field
+                            v-model="data.permanent_post_code"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.post_code'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.permanent_address"
+                        >
+                          <v-text-field
+                            v-model="data.permanent_address"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.address'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="data.permanent_mobile"
+                        >
+                          <v-text-field
+                            v-model="data.permanent_mobile"
+                            outlined
+                            readonly
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.mobile'
+                              )
+                            "
+                          >
+                          </v-text-field>
+                        </v-col>
+                      </v-row>
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
+                  <!-- Contact Information End -->
+                  <!-- Expansion panel 5 End -->
+                  <!-- Nominee Information -->
+                  <v-expansion-panel class="mb-4">
+                    <v-expansion-panel-header color="primary">
+                      <h3 class="white--text">Nominee Information</h3>
+                    </v-expansion-panel-header>
+                    <v-expansion-panel-content class="mt-5">
+                      <div class="pa-2 mb-4">
+                        <v-row>
+                          <v-col lg="6" md="6" cols="12" v-if="data.nominee_en">
+                            <v-text-field
+                              v-model="data.nominee_en"
+                              outlined
+                              readonly
+                              :label="$t('Name (EN)')"
+                            >
+                            </v-text-field>
+                          </v-col>
+
+                          <v-col lg="6" md="6" cols="12" v-if="data.nominee_bn">
+                            <v-text-field
+                              v-model="data.nominee_bn"
+                              outlined
+                              readonly
+                              :label="$t('Name (BN)')"
+                            >
+                            </v-text-field>
+                          </v-col>
+
+                          <v-col
+                            lg="6"
+                            md="6"
+                            cols="12"
+                            v-if="data.nominee_verification_number"
+                          >
+                            <v-text-field
+                              v-model="data.nominee_verification_number"
+                              outlined
+                              readonly
+                              :label="
+                                $t(
+                                  'National Identity (NID) / Birth RegistrationNumber'
+                                )
+                              "
+                            >
+                            </v-text-field>
+                          </v-col>
+
+                          <v-col
+                            lg="6"
+                            md="6"
+                            cols="12"
+                            v-if="data.nominee_nationality"
+                          >
+                            <v-text-field
+                              v-model="data.nominee_nationality"
+                              outlined
+                              readonly
+                              :label="$t('Nationality')"
+                            >
+                            </v-text-field>
+                          </v-col>
+
+                          <v-col
+                            lg="6"
+                            md="6"
+                            cols="12"
+                            v-if="data.nominee_relation_with_beneficiary"
+                          >
+                            <v-text-field
+                              v-model="data.nominee_relation_with_beneficiary"
+                              outlined
+                              readonly
+                              :label="$t('Relationship with Beneficiary')"
+                            >
+                            </v-text-field>
+                          </v-col>
+
+                          <v-col
+                            lg="6"
+                            md="6"
+                            cols="12"
+                            v-if="data.nominee_address"
+                          >
+                            <v-text-field
+                              v-model="data.nominee_address"
+                              outlined
+                              readonly
+                              :label="$t('Address')"
+                            >
+                            </v-text-field>
+                          </v-col>
+
+                          <v-col cols="6" lg="6" md="6">
+                            <v-img
+                              :src="data.nomineeImageUrl"
+                              style="
+                                width: 150px;
+                                height: 150px;
+                                border: 1px solid #ccc;
+                              "
+                              class="mb-5"
+                              v-if="data.nomineeImageUrl"
+                            ></v-img>
+                            <v-img
+                              src="data.nomineeImageUrl"
+                              v-if="!data.nomineeImageUrl"
+                              style="
+                                width: 200px;
+                                height: 200px;
+                                border: 1px solid #ccc;
+                              "
+                              class="mb-5"
+                            ></v-img>
+                            <h3>Image</h3>
+                          </v-col>
+                          <v-col cols="6" align-self="end" lg="6">
+                            <v-img
+                              :src="data.nomineeSignUrl"
+                              style="
+                                width: 150px;
+                                height: 80px;
+                                border: 1px solid #ccc;
+                              "
+                              class="mb-5"
+                              v-if="data.nomineeSignUrl"
+                            ></v-img>
+                            <v-img
+                              v-if="!data.nomineeImageUrl"
+                              :src="data.nomineeSignUrl"
+                              style="
+                                width: 200px;
+                                height: 80px;
+                                border: 1px solid #ccc;
+                              "
+                              class="mb-5"
+                            ></v-img>
+                            <h3>Signeture</h3>
+                          </v-col>
+                        </v-row>
+                      </div>
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
+                  <!-- Nominee Information End -->
+                  <!-- 4th Expansion panel -->
+                  <!-- For Office Use -->
+                  <v-expansion-panel class="ma-4">
+                    <v-expansion-panel-header color="primary">
+                      <h3 class="white--text">For Office Use</h3>
+                    </v-expansion-panel-header>
+                    <v-expansion-panel-content class="mt-5">
+                      <div class="pa-2 mb-4">
+                        <v-row>
+                          <v-col
+                            lg="6"
+                            md="6"
+                            cols="12"
+                            v-if="data.account_number"
+                          >
+                            <v-text-field
+                              v-model="data.account_number"
+                              outlined
+                              readonly
+                              :label="$t('Beneficiary Bank Account Number')"
+                            >
+                            </v-text-field>
+                          </v-col>
+                          <v-col
+                            lg="6"
+                            md="6"
+                            cols="12"
+                            v-if="data.account_name"
+                          >
+                            <v-text-field
+                              v-model="data.account_name"
+                              outlined
+                              readonly
+                              :label="$t('Account Name')"
+                            >
+                            </v-text-field>
+                          </v-col>
+
+                          <v-col
+                            lg="6"
+                            md="6"
+                            cols="12"
+                            v-if="data.account_owner"
+                          >
+                            <v-text-field
+                              v-model="data.account_owner"
+                              outlined
+                              readonly
+                              :label="$t('Account Owner')"
+                            >
+                            </v-text-field>
+                          </v-col>
+                          <v-col
+                            lg="6"
+                            md="6"
+                            cols="12"
+                            v-if="data.account_owner"
+                          >
+                            <v-text-field
+                              value="10000"
+                              outlined
+                              readonly
+                              :label="$t('Monthly Honorarium Amount')"
+                            >
+                            </v-text-field>
+                          </v-col>
+
+                          <v-col
+                            lg="6"
+                            md="6"
+                            cols="12"
+                            v-if="data.account_owner"
+                          >
+                            <v-text-field
+                              value="2022-23"
+                              outlined
+                              readonly
+                              :label="$t('Financeial Year')"
+                            >
+                            </v-text-field>
+                          </v-col>
+                        </v-row>
+                      </div>
+
+                      <v-row>
+                        <v-col
+                          v-for="(field, index) in allowance_filed"
+                          :key="index"
+                          cols="6"
+                          lg="6"
+                        >
+                          <template
+                            v-if="
+                              field.type === 'number' || field.type === 'text'
+                            "
+                          >
+                            <label>{{ field.name_en }}</label>
+                            <v-text-field
+                              v-model="field.pivot.value"
+                              outlined
+                              readonly
+                            >
+                            </v-text-field>
                           </template>
-                          <span>
-                            {{ $t("container.list.view") }}
-                          </span>
-                        </v-tooltip>
-                      </v-col>
-                    </v-row>
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
-              </v-expansion-panels>
-              <v-row class="mx-0 my-0 py-2 mt-5" justify="end">
-                <v-btn
-                  type="submit"
-                  flat
-                  router
-                  to="/beneficiary-management/beneficiary-info"
-                  :disabled="invalid"
-                  :loading="loading"
-                  class="custom-btn-width py-2 mr-2"
-                >
-                  {{ $t("container.list.back") }}
-                </v-btn>
-              </v-row>
-            </v-col>
-            <!-- payment Modal -->
-            <v-dialog v-model="payment_modal" width="800">
-              <v-card style="justify-content: center; text-align: center">
-                <v-card-title class="font-weight-bold justify-center">
-                  {{
-                    $t(
-                      "container.beneficiary_management.beneficiary_list.payment_history"
-                    )
-                  }}
-                </v-card-title>
-                <v-divider></v-divider>
-                <v-card-text class="mt-7">
-                  <v-col cols="12">
-                    <v-data-table
-                      :headers="headers"
-                      :items="applications"
-                      class="elevation-0 transparent row-pointer"
-                    >
-                      <template v-slot:item.sl="{ item, index }">
-                        {{
-                          (pagination.current - 1) * pagination.perPage +
-                          index +
-                          1
-                        }}
-                      </template>
+                          <template v-if="field.type === 'dropdown'">
+                            <label>{{ field.name_en }}</label>
+                            <v-text-field
+                              v-model="field.allow_addi_field_values[0].value"
+                              outlined
+                              readonly
+                            >
+                            </v-text-field>
+                          </template>
+                          <template v-if="field.type === 'checkbox'">
+                            <label>{{ field.name_en }}</label>
+                            <v-text-field
+                              :value="
+                                concatenateCheckboxValues(
+                                  field.allow_addi_field_values
+                                )
+                              "
+                              outlined
+                              readonly
+                            ></v-text-field>
+                          </template>
+                        </v-col>
+                      </v-row>
 
-                      <template v-slot:footer="item">
-                        <div
-                          class="text-center pt-2 v-data-footer justify-center pb-2"
-                        >
-                          <v-select
-                            style="
-                              position: absolute;
-                              right: 25px;
-                              width: 149px;
-                              transform: translate(0px, 0px);
-                            "
-                            :items="items"
-                            hide-details
-                            dense
-                            outlined
-                            @change="onPageChange"
-                            v-model="pagination.perPage"
-                          ></v-select>
-                          <v-pagination
-                            circle
-                            primary
-                            v-model="pagination.current"
-                            :length="pagination.total"
-                            @input="onPageChange"
-                            :total-visible="11"
-                            class="custom-pagination-item"
-                          ></v-pagination>
-                        </div>
-                      </template>
-                    </v-data-table>
-                  </v-col>
+                      <!-- <template v-else-if="field.type === 'checkbox'">
+            <v-checkbox
+              v-for="(value, valueIndex) in field.allow_addi_field_values"
+              :key="valueIndex"
+              :label="value.value"
+              v-model="fieldValues[field.id]"
+            ></v-checkbox>
+          </template>
+          <template v-else-if="field.type === 'dropdown'">
+            <v-select
+              v-model="fieldValues[field.id]"
+              :items="field.allow_addi_field_values.map(item => item.value)"
+              label="Select"
+            ></v-select>
+          </template> -->
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
+                  <!-- For Office Use End -->
+                  <!-- 5th Expansion panel -->
+                  <!-- Other Information of Eligibility -->
+                  <v-expansion-panel class="mb-4">
+                    <v-expansion-panel-header color="primary">
+                      <h3 class="white--text">
+                        Other Information of Eligibility
+                      </h3>
+                    </v-expansion-panel-header>
+                    <v-expansion-panel-content class="mt-5">
+                      <div class="pa-2 mb-4">
+                        <v-row>
+                          <v-col
+                            cols="12"
+                            lg="6"
+                            md="6"
+                            v-for="(variable, indexPMT) in data.poverty_score"
+                            :key="indexPMT"
+                          >
+                            <v-select
+                              outlined
+                              readonly
+                              :label="variable.name_en"
+                              :items="variable.children"
+                              item-text="name_en"
+                            ></v-select>
+                          </v-col>
+                        </v-row>
+                      </div>
 
-                  <v-row class="mx-0 my-0 py-2" justify="center">
-                    <v-btn
-                      flat
-                      @click="payment_modal = false"
-                      outlined
-                      class="custom-btn-width py-2 mr-10"
-                    >
-                      {{ $t("container.list.cancel") }}
-                    </v-btn>
-                    <v-btn
-                      type="submit"
-                      flat
-                      color="primary"
-                      :disabled="invalid"
-                      :loading="loading"
-                      class="custom-btn-width white--text py-2"
-                    >
-                      {{ $t("container.list.print") }}
-                    </v-btn>
-                  </v-row>
-                </v-card-text>
-              </v-card>
-            </v-dialog>
-            <!-- payment History Modal  -->
+                      <div class="pa-2 mb-4">
+                        <v-row>
+                          <v-col
+                            v-for="(variables, indexPMT) in data.poverty_score"
+                            cols="6"
+                            lg="6"
+                            :key="indexPMT"
+                          >
+                            <template v-if="variables.children.length == 0">
+                              <label
+                                >{{ variables.name_en }}
+                                <span
+                                  style="
+                                    margin-left: 4px;
+                                    margin-right: 4px;
+                                    color: red;
+                                  "
+                                  >*</span
+                                ></label
+                              >
+                              <ValidationProvider
+                                :name="variables.name_en"
+                                vid="sub_variables"
+                                rules="required"
+                                v-slot="{ errors }"
+                              >
+                                <v-select
+                                  :hide-details="errors[0] ? false : true"
+                                  :error="errors[0] ? true : false"
+                                  :error-messages="errors[0]"
+                                  outlined
+                                  required
+                                  v-model="
+                                    data.application_pmt[indexPMT].sub_variables
+                                  "
+                                  :items="[
+                                    {
+                                      id: variables.id,
+                                      name_en: 'Yes',
+                                      name_bn: 'হ্যাঁ',
+                                    },
+                                    {
+                                      id: 0,
+                                      name_en: 'No',
+                                      name_bn: 'না',
+                                    },
+                                  ]"
+                                  item-value="id"
+                                  item-text="name_en"
+                                >
+                                </v-select>
+                              </ValidationProvider>
+                            </template>
+                            <template v-else-if="variables.field_type == 1">
+                              <label
+                                >{{ variables.name_en }}
+                                <span
+                                  style="
+                                    margin-left: 4px;
+                                    margin-right: 4px;
+                                    color: red;
+                                  "
+                                  >*</span
+                                ></label
+                              >
+                              <ValidationProvider
+                                :name="variables.name_en"
+                                vid="sub_variables"
+                                rules="required"
+                                v-slot="{ errors }"
+                              >
+                                <v-select
+                                  :hide-details="errors[0] ? false : true"
+                                  :error="errors[0] ? true : false"
+                                  :error-messages="errors[0]"
+                                  outlined
+                                  required
+                                  v-model="
+                                    data.application_pmt[indexPMT].sub_variables
+                                  "
+                                  :items="variables.children"
+                                  item-value="id"
+                                  item-text="name_en"
+                                >
+                                </v-select>
+                              </ValidationProvider>
+                            </template>
 
-            <!-- Grievance Modal -->
-            <v-dialog v-model="grievance_modal" width="800">
-              <v-card style="justify-content: center; text-align: center">
-                <v-card-title class="font-weight-bold justify-center">
-                  {{
-                    $t(
-                      "container.beneficiary_management.beneficiary_list.grievance_history"
-                    )
-                  }}
-                </v-card-title>
-                <v-divider></v-divider>
-                <v-card-text class="mt-7">
-                  <v-col cols="12">
-                    <v-data-table
-                      :headers="headers_grievance"
-                      :items="applications"
-                      class="elevation-0 transparent row-pointer"
-                    >
-                      <template v-slot:item.sl="{ item, index }">
-                        {{
-                          (pagination.current - 1) * pagination.perPage +
-                          index +
-                          1
-                        }}
-                      </template>
-
-                      <template v-slot:footer="item">
-                        <div
-                          class="text-center pt-2 v-data-footer justify-center pb-2"
-                        >
-                          <v-select
-                            style="
-                              position: absolute;
-                              right: 25px;
-                              width: 149px;
-                              transform: translate(0px, 0px);
-                            "
-                            :items="items"
-                            hide-details
-                            dense
-                            outlined
-                            @change="onPageChange"
-                            v-model="pagination.perPage"
-                          ></v-select>
-                          <v-pagination
-                            circle
-                            primary
-                            v-model="pagination.current"
-                            :length="pagination.total"
-                            @input="onPageChange"
-                            :total-visible="11"
-                            class="custom-pagination-item"
-                          ></v-pagination>
-                        </div>
-                      </template>
-                    </v-data-table>
-                  </v-col>
-
-                  <v-row class="mx-0 my-0 py-2" justify="center">
-                    <v-btn
-                      flat
-                      @click="grievance_modal = false"
-                      outlined
-                      class="custom-btn-width py-2 mr-10"
-                    >
-                      {{ $t("container.list.cancel") }}
-                    </v-btn>
-                    <v-btn
-                      type="submit"
-                      flat
-                      color="primary"
-                      :disabled="invalid"
-                      :loading="loading"
-                      class="custom-btn-width white--text py-2"
-                    >
-                      {{ $t("container.list.print") }}
-                    </v-btn>
-                  </v-row>
-                </v-card-text>
-              </v-card>
-            </v-dialog>
-            <!-- Grievance History Modal  -->
-            <!-- Change Tracking Modal -->
-            <v-dialog v-model="tracking_modal">
-              <v-card style="justify-content: center; text-align: center">
-                <v-card-title class="font-weight-bold justify-center">
-                  {{
-                    $t(
-                      "container.beneficiary_management.beneficiary_list.Change_tracking"
-                    )
-                  }}
-                </v-card-title>
-                <v-divider></v-divider>
-                <v-card-text class="mt-7">
-                  <v-col cols="12">
-                    <v-data-table
-                      :headers="headers_tracking"
-                      :items="divisions"
-                      class="elevation-0 transparent row-pointer"
-                    >
-                      <template v-slot:item.sl="{ item, index }">
-                        {{
-                          (pagination.current - 1) * pagination.perPage +
-                          index +
-                          1
-                        }}
-                      </template>
-                      <!-- Action Button -->
-                      <template v-slot:item.actions="{ item }">
-                        <v-btn
-                          v-on="on"
-                          color="success"
-                          elevation="0"
-                          router
-                          to="/beneficiary-management/information-tracking"
-                        >
-                          {{ $t("container.list.change_tracking_details") }}
-                        </v-btn>
-                      </template>
-                      <!-- End Action Button -->
-
-                      <template v-slot:footer="item">
-                        <div
-                          class="text-center pt-2 v-data-footer justify-center pb-2"
-                        >
-                          <v-select
-                            style="
-                              position: absolute;
-                              right: 25px;
-                              width: 149px;
-                              transform: translate(0px, 0px);
-                            "
-                            :items="items"
-                            hide-details
-                            dense
-                            outlined
-                            @change="onPageChange"
-                            v-model="pagination.perPage"
-                          ></v-select>
-                          <v-pagination
-                            circle
-                            primary
-                            v-model="pagination.current"
-                            :length="pagination.total"
-                            @input="onPageChange"
-                            :total-visible="11"
-                            class="custom-pagination-item"
-                          ></v-pagination>
-                        </div>
-                      </template>
-                    </v-data-table>
-                  </v-col>
-
-                  <v-row class="mx-0 my-0 py-2" justify="center">
-                    <v-btn
-                      flat
-                      @click="tracking_modal = false"
-                      outlined
-                      class="custom-btn-width py-2 mr-10"
-                    >
-                      {{ $t("container.list.cancel") }}
-                    </v-btn>
-                    <v-btn
-                      type="submit"
-                      flat
-                      color="primary"
-                      :disabled="invalid"
-                      :loading="loading"
-                      class="custom-btn-width white--text py-2"
-                    >
-                      {{ $t("container.list.print") }}
-                    </v-btn>
-                  </v-row>
-                </v-card-text>
-              </v-card>
-            </v-dialog>
-            <!-- Change Tracking Modal  -->
-          </v-row>
-        </v-card>
+                            <template v-else-if="variables.field_type == 2">
+                              <label
+                                >{{ variables.name_en
+                                }}<span
+                                  style="
+                                    margin-left: 4px;
+                                    margin-right: 4px;
+                                    color: red;
+                                  "
+                                  >*</span
+                                ></label
+                              >
+                              <ValidationProvider
+                                :name="variables.name_en"
+                                vid="sub_variables"
+                                rules="required"
+                                v-slot="{ errors }"
+                              >
+                                <v-select
+                                  multiple
+                                  :hide-details="errors[0] ? false : true"
+                                  :error="errors[0] ? true : false"
+                                  :error-messages="errors[0]"
+                                  outlined
+                                  required
+                                  v-model="
+                                    data.application_pmt[indexPMT].sub_variables
+                                  "
+                                  :items="variables.children"
+                                  item-value="id"
+                                  item-text="name_en"
+                                >
+                                </v-select>
+                              </ValidationProvider>
+                            </template>
+                          </v-col>
+                        </v-row>
+                      </div>
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
+                  <!-- Other Information of Eligibility end-->
+                </v-expansion-panels>
+              </div>
+            </v-card>
+          </form>
+        </ValidationObserver>
       </v-col>
     </v-row>
   </div>
@@ -529,7 +1658,9 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
+import FooterBar from "@/components/Common/FooterBar.vue";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
+import axios from "axios";
 import { required } from "vee-validate/dist/rules";
 
 extend("required", required);
@@ -538,43 +1669,187 @@ export default {
   title: "CTM - Beneficiary History",
   data() {
     return {
-      date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-        .toISOString()
-        .substr(0, 10),
+      applications: [],
+      panel: [0, 1, 2, 3, 4, 5, 6],
+      programs: [],
+      classes: [],
+      loading: false,
+      // divisions: [],
+      districts: [],
+      thanas: [],
+      cities: [],
+      unions: [],
+      district_poros: [],
+      city_thanas: [],
+      locationType: [],
+      subLocationType: [
+        {
+          id: 1,
+          value_en: "Pouroshava",
+        },
+
+        {
+          id: 2,
+          value_en: "Union",
+        },
+      ],
+
+      permanent_divisions: [],
+      permanent_districts: [],
+      permanent_thanas: [],
+      permanent_cities: [],
+      permanent_unions: [],
+      permanent_district_poros: [],
+      permanent_city_thanas: [],
+      permanent_locationType: [],
+      imageUrlFetch: null,
+      // imageUrlFetch,
+      // imageUrlFetch,
+      UrlFetch: null,
+      education_status: [
+        "Illiterate",
+        "Literate",
+        "JSC",
+        "SSC",
+        "HSC",
+        "Graduate",
+        "Post Graduate",
+        "Other",
+      ],
+      govt_programs: [
+        "Old Age Allowance Program",
+        "Disability Allowance Program",
+        "Widow And Husband Adopted Allowance program",
+        "Freedom Fighter Honorary Allowance",
+        "No Allowance",
+        "Other (specify)",
+      ],
+      marital_status: [
+        "Married",
+        "UnMarried",
+        "Widow",
+        "Widower",
+        "Husband Abondoner",
+        "Divorced",
+        "Spouse Separated",
+        "Polygamy",
+      ],
+      health_status: [
+        "Totally Disabled",
+        "Sick",
+        "Insane",
+        "Disabled",
+        "Partially Powerless",
+        "Other (specify)",
+      ],
+      health_status_value: {
+        totally_disabled: true,
+        sick: false,
+        insane: true,
+        disabled: false,
+        partially_powerless: false,
+        other_specify: false,
+      },
+      financial_status: ["Poor", "Refugee", "Landless"],
+      social_status: ["Widow", "Widower", "Divorced"],
+      house_status: ["Homeless", "Self", "Rent", "Others"],
+      land_ownership: [
+        "Habitatless",
+        "Below 0.5 acre",
+        "Up to 1 acre",
+        "Above 1 acre",
+        "Other (specify)",
+      ],
+
+      mobile_ownership: ["No Mobile Phone", "Family Memeber", "Others"],
+      religion: ["Islam", "Hindu", "Buddhist", "Christian"],
+      genders: ["Male", "Female", "3rd Gender"],
+
+      yes_no: ["Yes ", "No"],
+
+      relations_with_bef: [
+        "Spouse",
+        "Family member",
+        "Close relative",
+        "Spouse",
+        "Parent",
+      ],
+
+      activePicker: null,
+      date: null,
       menu: false,
-      modal: false,
-      menu2: false,
-      payment_modal: false,
-      grievance_modal: false,
-      tracking_modal: false,
+      isChecked: false,
+      permanent_location: [],
+      current_location: [],
+      allowance_filed: [],
 
       data: {
-        summary:
-          "Beneficiary ID: 1235, Name: Radur Rahim, Address: Naogaon sadar, Naogaon",
-        total_receive: 10,
-        last_payment_ammount: 1000,
-        last_grievance_type: "Fraud  Case",
+        verification_type: null,
+
+        division_id: null,
+        district_id: null,
+        thana_id: null,
+        union_id: null,
+        city_id: null,
+        city_thana_id: null,
+        district_pouro_id: null,
+        pouro_id: null,
+        ward_id: null,
+        location_type: null,
+        sub_location_type: null,
+        permanent_district_pouro_id: null,
+        current_post_code: null,
+        current_address: null,
+        imageUrl: null,
+        signUrl: null,
+        nomineeImageUrl: null,
+        nomineeSignUrl: null,
+        accountNumber: null,
+        accountName: null,
+        accountOwner: null,
       },
-      beneficiary:{},
-      pagination: {
-        current: 1,
-        total: 0,
-        perPage: 10,
-      },
-      items: [5, 10, 15, 20, 40, 50, 100],
+
+      permanent_location: [],
+
+      checkbox: false,
+      checkboxNomineeAddress: false,
+      // nomineeImageUrl: null,
+      programName: null,
+      // nomineeSignUrl: null,
+      programDetails: null,
+      PMTVariables: [],
     };
+  },
+  computed: {
+    ...mapState({
+      divisions: (state) => state.Division.divisions,
+    }),
+
+    isRadioGroupReadonly() {
+      return this.data.verification_type !== null;
+    },
+  },
+
+  components: {
+    ValidationProvider,
+    ValidationObserver,
+    FooterBar,
+  },
+  watch: {
+    "$i18n.locale": "updateHeaderTitle",
+    menu(val) {
+      val && setTimeout(() => (this.activePicker = "YEAR"));
+    },
   },
 
   methods: {
     updateHeaderTitle() {
-      const title = this.$t("container.list.beneficiary_details");
+      const title = this.$t(
+        "container.beneficiary_management.beneficiary_list.beneficiary_details"
+      );
       this.$store.commit("setHeaderTitle", title);
     },
-    ...mapActions({
-      GetAllDivisions: "Division/GetAllDivisions",
-    }),
-    async GetBeneficiaryDetails(id) {
-        console.log("beneficiary__");
+    async getBeneficiaryDetailsById() {
       try {
         this.$axios
         .get(`/admin/beneficiary/show/${id}` , {
@@ -583,12 +1858,19 @@ export default {
               "Content-Type": "multipart/form-data",
             },
           })
-          .then((result) => {
-            console.log(result, "beneficiary__");
-            this.beneficiary = result.data.data;
+          .then((res) => {
+            let item = res.data.data;
+            this.data = res.data.data;
+
+            this.data.imageUrl = item?.image;
+            this.data.signUrl = item?.signature;
+
+            this.data.nomineeImageUrl = item?.nominee_image;
+            this.data.nomineeSignUrl = item?.nominee_signature;
+
+            console.log("division_id__", this.data.division_id);
           })
           .catch((err) => {
-            console.log(err, "beneficiary__");
             if (err.response?.data?.errors) {
               this.$refs.form.setErrors(err.response.data.errors);
             }
@@ -599,144 +1881,19 @@ export default {
         console.log(e);
       }
     },
-  },
-
-  computed: {
-    ...mapState({
-      divisions: (state) => state.Division.divisions,
+    concatenateCheckboxValues(checkboxValues) {
+      return checkboxValues.map((value) => value.value).join(", ");
+    },
+    ...mapActions({
+      GetAllDivisions: "Division/GetAllDivisions",
     }),
-    computedDateFormatted() {
-      return this.formatDate(this.date);
-    },
-    headers() {
-      return [
-        { text: this.$t("container.list.sl"), value: "sl" },
-        {
-          text: this.$t(
-            "container.beneficiary_management.beneficiary_list.payment_disbursed_date"
-          ),
-          value: "1",
-        },
-        {
-          text: this.$t(
-            "container.beneficiary_management.beneficiary_list.ammount"
-          ),
-          value: "2",
-        },
-        {
-          text: this.$t(
-            "container.beneficiary_management.beneficiary_list.fiscal_year"
-          ),
-          value: "3",
-        },
-        {
-          text: this.$t(
-            "container.beneficiary_management.beneficiary_list.due"
-          ),
-          value: "4",
-        },
-      ];
-    },
-    headers_grievance() {
-      return [
-        { text: this.$t("container.list.sl"), value: "sl" },
-        {
-          text: this.$t(
-            "container.beneficiary_management.beneficiary_list.type"
-          ),
-          value: "1",
-        },
-        {
-          text: this.$t(
-            "container.beneficiary_management.beneficiary_list.subject"
-          ),
-          value: "2",
-        },
-        {
-          text: this.$t(
-            "container.beneficiary_management.beneficiary_list.details"
-          ),
-          value: "3",
-        },
-        {
-          text: this.$t(
-            "container.beneficiary_management.beneficiary_list.allotment_distribution"
-          ),
-          value: "4",
-        },
-        {
-          text: this.$t(
-            "container.beneficiary_management.beneficiary_list.resolved_by"
-          ),
-          value: "5",
-        },
-        {
-          text: this.$t(
-            "container.beneficiary_management.beneficiary_list.resolve_comment"
-          ),
-          value: "6",
-        },
-
-        {
-          text: this.$t(
-            "container.beneficiary_management.beneficiary_list.resolve_date"
-          ),
-          value: "7",
-        },
-      ];
-    },
-    headers_tracking() {
-      return [
-        { text: this.$t("container.list.sl"), value: "sl" },
-        {
-          text: this.$t(
-            "container.beneficiary_management.beneficiary_list.change_tracking_type"
-          ),
-          value: "1",
-        },
-        {
-          text: this.$t(
-            "container.beneficiary_management.beneficiary_list.change_count"
-          ),
-          value: "2",
-        },
-        {
-          text: this.$t(
-            "container.beneficiary_management.beneficiary_list.successful_change"
-          ),
-          value: "3",
-        },
-        {
-          text: this.$t(
-            "container.beneficiary_management.beneficiary_list.unsuccessful_change"
-          ),
-          value: "4",
-        },
-        {
-          text: this.$t(
-            "container.beneficiary_management.beneficiary_list.resolved_by"
-          ),
-          value: "name_en",
-        },
-        { text: this.$t("container.list.action"), value: "actions" },
-      ];
-    },
   },
-
-  watch: {
-    "$i18n.locale": "updateHeaderTitle",
-    date(val) {
-      this.dateFormatted = this.formatDate(this.date);
-    },
-  },
-
   beforeMount() {
     this.updateHeaderTitle();
   },
-  mounted() {
-    console.log('paramsID',this.$route.params.id)
+  created() {
     this.GetAllDivisions();
-    this.GetBeneficiaryDetails(this.$route.params.id);
+    this.getBeneficiaryDetailsById();
   },
 };
 </script>
