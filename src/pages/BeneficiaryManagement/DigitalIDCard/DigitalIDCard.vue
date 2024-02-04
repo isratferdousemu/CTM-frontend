@@ -2,7 +2,7 @@
   <div id="digital_id">
     <v-row justify="center" class="mt-5 mb-5">
       <v-col lg="6" md="6" cols="12">
-        <v-card ref="card" width="400" class="mx-5">
+        <v-card width="400" class="mx-5">
           <v-card-text
             style="
               background: url('/assets/images/top_line.jpg') no-repeat left top;
@@ -44,43 +44,35 @@
             <div class="mt-4">
               <table>
                 <tr>
-                  <th class="text-left" width="50%">
-                    {{
+                  <th class="text-left" width="50%">{{
                       $t(
                         "container.beneficiary_management.beneficiary_list.beneficiary_name"
                       )
-                    }}
-                  </th>
+                    }}</th>
                   <td>: {{ beneficiary.name_en }}</td>
                 </tr>
                 <tr>
-                  <th class="text-left">
-                    {{
+                  <th class="text-left">{{
                       $t(
                         "container.beneficiary_management.beneficiary_list.beneficiary_id"
                       )
-                    }}
-                  </th>
+                    }}</th>
                   <td>: {{ beneficiary.application_id }}</td>
                 </tr>
                 <tr>
-                  <th class="text-left">
-                    {{
+                  <th class="text-left">{{
                       $t(
                         "container.beneficiary_management.beneficiary_list.beneficiary_date_of_birth"
                       )
-                    }}
-                  </th>
+                    }}</th>
                   <td>: {{ beneficiary.date_of_birth }}</td>
                 </tr>
                 <tr>
-                  <th class="text-left">
-                    {{
+                  <th class="text-left">{{
                       $t(
                         "container.beneficiary_management.beneficiary_list.beneficiary_addess"
                       )
-                    }}
-                  </th>
+                    }}</th>
                   <td>: {{ beneficiary.current_address }}</td>
                 </tr>
               </table>
@@ -105,11 +97,11 @@
                   class="d-flex justify-center my-2"
                   style="text-decoration: overline"
                 >
-                  {{
-                    $t(
-                      "container.beneficiary_management.beneficiary_list.authorize_singneture"
-                    )
-                  }}
+                {{
+                      $t(
+                        "container.beneficiary_management.beneficiary_list.authorize_singneture"
+                      )
+                    }}
                 </div>
               </v-col>
             </v-row>
@@ -125,21 +117,13 @@
             >&nbsp;</v-card-actions
           >
         </v-card>
-        <div class="d-inline d-flex justify-center mt-2">
-          <v-btn elevation="2" class="justify-center" @click="pritIdCard">
-            Print
-          </v-btn>
-        </div>
       </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
-import { Printd } from "printd";
 import Vue from "vue";
-// const card = ref(null);
 import VueQRCodeComponent from "vue-qrcode-component";
 // APi Base Url
 const apiUrl = process.env.VUE_APP_BASE_API_URL_BACKEND;
@@ -155,13 +139,6 @@ export default {
         signUrl: null,
         qrCode: null,
       },
-      // card : ref(),
-
-      cssText: `
-  h1 {
-    color: black;
-    font-family: sans-serif;
-  }`,
     };
   },
   mounted() {},
@@ -200,18 +177,6 @@ export default {
       } catch (e) {
         console.log(e);
       }
-    },
-    pritIdCard() {
-      // alert("Hello Print card");
-
-      const d = new Printd();
-      d.print([ this.cssText ]);
-
-      // if (this.$refs.card) {
-      //   console.log("card_ref", this.$refs.card);
-      //   const d = new Printd();
-      //   d.print(this.$refs.card);
-      // }
     },
   },
   watch: {

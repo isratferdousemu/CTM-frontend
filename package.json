@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "fingerprintjs2": "^2.1.4",
-    "printd": "^1.6.0",
     "vee-validate": "^3.4.5",
     "vform": "^2.1.2",
     "vue": "^2.6.11",
