@@ -186,6 +186,7 @@
                             ></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
+
                         <v-col
                           v-if="data.location_type == 2"
                           lg="3"
@@ -193,11 +194,82 @@
                           cols="12"
                         >
                           <ValidationProvider
-                            name="union"
-                            vid="union_id"
+                            name="subLocationType"
+                            vid="subLocationType"
                             v-slot="{ errors }"
                           >
                             <v-autocomplete
+                              @input="onChangeSubLocationType($event)"
+                              v-model="data.sub_location_type"
+                              outlined
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.ward.subLocation_type'
+                                )
+                              "
+                              :items="subLocationType"
+                              item-text="value_en"
+                              item-value="id"
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                              :hide-details="errors[0] ? false : true"
+                              class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback"
+                              append-icon="mdi-plus"
+                            ></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col
+                          v-if="
+                            data.location_type == 2 &&
+                            data.sub_location_type == 1
+                          "
+                          lg="3"
+                          md="3"
+                          cols="12"
+                        >
+                          <ValidationProvider
+                            name="pouros"
+                            vid="pouros"
+                            v-slot="{ errors }"
+                          >
+                            <v-autocomplete
+                              v-model="data.pouro_id"
+                              outlined
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.ward.pouro'
+                                )
+                              "
+                              :items="pouros"
+                              item-text="name_en"
+                              item-value="id"
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                              :hide-details="errors[0] ? false : true"
+                              class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback"
+                              append-icon="mdi-plus"
+                            ></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+
+                        <v-col
+                          v-if="
+                            data.sub_location_type == 2 &&
+                            data.location_type == 2
+                          "
+                          lg="3"
+                          md="3"
+                          cols="12"
+                        >
+                          <ValidationProvider
+                            name="unions"
+                            vid="unions"
+                            v-slot="{ errors }"
+                          >
+                            <v-autocomplete
+                              @input="onChangeUnionGetWard($event)"
                               v-model="data.union_id"
                               outlined
                               :label="
@@ -205,15 +277,15 @@
                                   'container.system_config.demo_graphic.ward.union'
                                 )
                               "
-                              @change="onChangeUnion($event)"
                               :items="unions"
                               item-text="name_en"
                               item-value="id"
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                              :hide-details="errors[0] ? false : true"
                               class="no-arrow-icon"
                               :append-icon-cb="appendIconCallback"
                               append-icon="mdi-plus"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
                             ></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
@@ -438,7 +510,6 @@
                   </ValidationObserver>
                 </v-expansion-panel-content>
               </v-expansion-panel>
-              
             </v-expansion-panels>
             <!-- Expantion panels end -->
             <!-- Application list -->
@@ -478,6 +549,25 @@
                       <template v-slot:selection="{ item, index }"> </template>
                     </v-select>
                     <!-- Select column End -->
+                  </v-col>
+                </v-row>
+                <v-row justify="end" align="center" class="mx-4">
+                  <!-- Dropdown on the right -->
+                  <v-col lg="4" md="4" cols="12" class="text-right">
+                    <v-btn
+                      elevation="2"
+                      class="btn mr-2 white--text"
+                      color="red darken-4"
+                      @click="GeneratePDF()"
+                      >{{ $t("container.list.PDF") }}</v-btn
+                    >
+                    <!-- <v-btn
+                      elevation="2"
+                      class="btn mr-2 white--text"
+                      color="teal darken-2"
+                      @click="GenerateExcel()"
+                      >{{ $t("container.list.excel") }}</v-btn
+                    > -->
                   </v-col>
                 </v-row>
                 <v-row
@@ -575,7 +665,7 @@
                               color="#827717"
                               class="ml-3 white--text"
                               elevation="0"
-                              router 
+                              router
                               :to="`/beneficiary-management/beneficiary-replacement/${item.id}`"
                             >
                               <v-icon> mdi mdi-file-replace </v-icon>
@@ -593,7 +683,7 @@
                               color="#546E7A"
                               class="ml-3 white--text"
                               elevation="0"
-                              router 
+                              router
                               :to="`/beneficiary-management/beneficiary-journey/${item.id}`"
                             >
                               <v-icon> mdi mdi-history </v-icon>
@@ -695,7 +785,7 @@ import { required } from "vee-validate/dist/rules";
 extend("required", required);
 export default {
   name: "Index",
-  title: "CTM - Application List",
+  title: "CTM - Beneficiary List",
   data() {
     return {
       data: {
@@ -703,6 +793,7 @@ export default {
         division_id: null,
         district_id: null,
         location_type: null,
+        sub_location_type: null,
         city_id: null,
         // city_thana_id: null,
         district_pouro_id: null,
@@ -732,7 +823,9 @@ export default {
 
       value: [
         {
-          text: this.$t("container.beneficiary_management.beneficiary_list.beneficiary_id"),
+          text: this.$t(
+            "container.beneficiary_management.beneficiary_list.beneficiary_id"
+          ),
           value: "application_id",
         },
         {
@@ -767,9 +860,19 @@ export default {
       applications: [],
       beneficiaries: [],
       programs: [],
-      divisions: [],
       districts: [],
       locationType: [],
+      subLocationType: [
+        {
+          id: 1,
+          value_en: "Pouroshava",
+        },
+
+        {
+          id: 2,
+          value_en: "Union",
+        },
+      ],
       thanas: [],
       cities: [],
       unions: [],
@@ -793,10 +896,16 @@ export default {
     ValidationObserver,
   },
   computed: {
+    ...mapState({
+      divisions: (state) => state.Division.divisions,
+      userData: (state) => state.userData,
+    }),
     headers() {
       return [
         {
-          text: this.$t("container.beneficiary_management.beneficiary_list.beneficiary_id"),
+          text: this.$t(
+            "container.beneficiary_management.beneficiary_list.beneficiary_id"
+          ),
           value: "application_id",
         },
         {
@@ -879,7 +988,9 @@ export default {
       return [
         { text: this.$t("container.list.sl"), value: "sl" },
         {
-          text: this.$t("container.beneficiary_management.beneficiary_list.beneficiary_id"),
+          text: this.$t(
+            "container.beneficiary_management.beneficiary_list.beneficiary_id"
+          ),
           value: "application_id",
         },
         {
@@ -917,6 +1028,9 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      GetAllDivisions: "Division/GetAllDivisions",
+    }),
     resetSearch() {
       console.log("reset __________--");
       this.data.program_id = null;
@@ -969,18 +1083,18 @@ export default {
         console.log(e);
       }
     },
-    async GetAllDivisions() {
+    async GetUserPermission() {
       try {
         this.$axios
-          .get("/admin/division/get", {
+          .get("/admin/beneficiary/getUserLocation", {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
             },
           })
           .then((result) => {
-            console.log(result, "programs");
-            this.divisions = result.data.data;
+            console.log(result, "user_permission");
+            //  this.programs = result.data.data;
           })
           .catch((err) => {
             console.log(err, "error");
@@ -1032,7 +1146,7 @@ export default {
       this.thanas = null;
       this.unions = null;
       this.wards = null;
-      
+
       if (this.data.district_id != null && this.data.location_type != null) {
         console.log("LocationType", $event);
         if ($event === 1) {
@@ -1046,8 +1160,7 @@ export default {
             .then((result) => {
               this.district_pouros = result.data.data;
             });
-        }
-        else if ($event === 2) {
+        } else if ($event === 2) {
           await this.$axios
             .get(`/admin/thana/get/${this.data.district_id}`, {
               headers: {
@@ -1058,8 +1171,7 @@ export default {
             .then((result) => {
               this.thanas = result.data.data;
             });
-        }
-        else if ($event === 3) {
+        } else if ($event === 3) {
           await this.$axios
             .get("/admin/city/get/" + this.data.district_id + "/" + $event, {
               headers: {
@@ -1071,7 +1183,6 @@ export default {
               this.cities = result.data.data;
             });
         }
-        
       }
     },
 
@@ -1085,6 +1196,44 @@ export default {
         })
         .then((result) => {
           this.unions = result.data.data;
+        });
+    },
+    async onChangeSubLocationType(event) {
+      if (event == 1) {
+        await this.$axios
+          .get(`/admin/union/pouro/get/${this.data.thana_id}`, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((result) => {
+            this.pouros = result.data.data;
+
+            //clear data
+            this.data.pouro_id = null;
+            this.data.union_id = null;
+            this.data.ward_id = null;
+          });
+        this.data.union_id = null;
+      }
+      if (event == 2) {
+        this.onChangeUpazila(this.data.thana_id);
+        this.data.pouro_id = null;
+      }
+    },
+    async onChangeUnionGetWard(event) {
+      this.wards = [];
+      this.data.ward_id = null;
+      await this.$axios
+        .get(`/admin/ward/get/${event}`, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
+          this.wards = result.data.data;
         });
     },
     async onChangeUnion(event) {
@@ -1151,13 +1300,19 @@ export default {
     async GetApplication() {
       const queryParams = {
         // searchText: this.search,
-        // location_type: this.data.locationType,
+        location_type: this.data.locationType,
         program_id: this.data.program_id,
         division_id: this.data.division_id,
         district_id: this.data.district_id,
         city_corp_id: this.data.city_id,
         district_pourashava_id: this.data.district_pouro_id,
         // pourashava_id: this.district_pouros,
+        city_id: this.data.city_id,
+        city_thana_id: this.data.city_thana_id,
+        district_pouro_id: this.data.district_pouro_id,
+
+        sub_location_type: this.sub_location_type,
+        pouro_id: this.data.pouro_id,
         union_id: this.data.union_id,
         thana_id: this.data.thana_id,
         ward_id: this.data.ward_id,
@@ -1199,18 +1354,48 @@ export default {
           this.loading = false;
         });
     },
-
     updateHeaderTitle() {
       const title = this.$t(
         "container.beneficiary_management.beneficiary_list.list"
       );
       this.$store.commit("setHeaderTitle", title);
     },
-
     async GetBeneficiaryById(item) {
       this.dialogView = true;
       this.beneficiaryItem = item;
       console.log(this.beneficiaryItem);
+    },
+    async GeneratePDF() {
+      const queryParams = {
+        program_id: this.data.program_id,
+        division_id: this.data.division_id,
+        district_id: this.data.district_id,
+        city_corp_id: this.data.city_id,
+        // district_pourashava_id: this.data.district_pouro_id,
+        // pourashava_id: this.district_pouros,
+        // city_id: this.data.city_id,
+        city_thana_id: this.data.city_thana_id,
+        district_pouro_id: this.data.district_pouro_id,
+
+        pouro_id: this.data.pouro_id,
+        union_id: this.data.union_id,
+        thana_id: this.data.thana_id,
+        ward_id: this.data.ward_id,
+      };
+      this.$axios
+        .get("/admin/beneficiary/getBeneficiaryListPdf", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          window.open(result.data.data.url, "_blank");
+        })
+        .catch((error) => {
+          console.error("Error generating PDF:", error);
+        });
     },
   },
   watch: {
@@ -1240,6 +1425,8 @@ export default {
     },
   },
   created() {
+    this.GetAllDivisions();
+
     this.GetApplication();
   },
   beforeMount() {
@@ -1248,7 +1435,7 @@ export default {
   mounted() {
     this.selectedHeaders = this.headers_start;
     this.GetAllProgram();
-    this.GetAllDivisions();
+    this.GetUserPermission();
     this.$store
       .dispatch("getLookupByType", 1)
       .then((res) => (this.locationType = res));
