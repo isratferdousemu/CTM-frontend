@@ -514,7 +514,7 @@
 
 
                                             <!-- Action Button -->
-                                            <!-- <template v-slot:item.actions="{ item }">
+                                            <template v-slot:item.actions="{ item }">
 
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
@@ -528,7 +528,7 @@
                                                         {{ $t("container.list.view") }}
                                                     </span>
                                                 </v-tooltip>
-                                            </template> -->
+                                            </template>
 
 
 
@@ -807,7 +807,7 @@ export default {
                 },
 
 
-                // { text: this.$t("container.list.action"), value: "actions", fixed: true },
+                { text: this.$t("container.list.action"), value: "actions", fixed: true },
 
             ];
         },
