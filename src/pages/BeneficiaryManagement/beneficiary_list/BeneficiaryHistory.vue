@@ -10,16 +10,36 @@
                 <v-card-text>
                   <table>
                     <tr>
-                      <td>Beneficiary ID</td>
-                      <td>: 1235</td>
+                      <td>{{
+                      $t(
+                        "container.beneficiary_management.beneficiary_list.beneficiary_id"
+                      )
+                    }}</td>
+                      <td>: {{ data.application_id }}</td>
                     </tr>
                     <tr>
-                      <td>Name</td>
-                      <td>: Radur Rahim</td>
+                      <td>{{
+                      $t(
+                        "container.beneficiary_management.beneficiary_list.beneficiary_name"
+                      )
+                    }}</td>
+                      <td>: {{ data.name_en }}</td>
                     </tr>
                     <tr>
-                      <td>Address</td>
-                      <td>: Naogaon sadar, Naogaon</td>
+                      <td>{{
+                      $t(
+                        "container.beneficiary_management.beneficiary_list.beneficiary_mobile"
+                      )
+                    }}</td>
+                      <td>: {{ data.mobile }}</td>
+                    </tr>
+                    <tr>
+                      <td>{{
+                      $t(
+                        "container.beneficiary_management.beneficiary_list.program"
+                      )
+                    }}</td>
+                      <td>: {{ data.program.name_en }}</td>
                     </tr>
                   </table>
                 </v-card-text>
@@ -451,7 +471,7 @@
                         }}
                       </template>
                       <!-- Action Button -->
-                      <template v-slot:item.actions="{ item }">
+                      <!-- <template v-slot:item.actions="{ item }">
                         <v-btn
                           v-on="on"
                           color="success"
@@ -461,7 +481,7 @@
                         >
                           {{ $t("container.list.change_tracking_details") }}
                         </v-btn>
-                      </template>
+                      </template> -->
                       <!-- End Action Button -->
 
                       <template v-slot:footer="item">
@@ -572,6 +592,32 @@ export default {
     ...mapActions({
       GetAllDivisions: "Division/GetAllDivisions",
     }),
+    async getBeneficiaryDetailsById() {
+      try {
+        this.$axios
+          .get(`/admin/beneficiary/show/${this.$route.params.id}`, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((res) => {
+            let item = res.data.data;
+            this.data = res.data.data;
+
+            console.log("BEN___", this.data);
+          })
+          .catch((err) => {
+            if (err.response?.data?.errors) {
+              this.$refs.form.setErrors(err.response.data.errors);
+            }
+            console.log(err.response);
+            this.$toast.error(err?.response?.data?.message);
+          });
+      } catch (e) {
+        console.log(e);
+      }
+    },
   },
 
   computed: {
@@ -691,7 +737,7 @@ export default {
           ),
           value: "name_en",
         },
-        { text: this.$t("container.list.action"), value: "actions" },
+        // { text: this.$t("container.list.action"), value: "actions" },
       ];
     },
   },
@@ -708,6 +754,9 @@ export default {
   },
   mounted() {
     this.GetAllDivisions();
+  },
+  created() {
+    this.getBeneficiaryDetailsById();
   },
 };
 </script>

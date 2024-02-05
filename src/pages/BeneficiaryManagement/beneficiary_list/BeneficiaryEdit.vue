@@ -388,20 +388,6 @@
 
                         <v-col> </v-col>
                       </V-row>
-                      <V-row>
-                        <v-col>
-                          <label> PMT Scoring</label>
-                          <span style="margin-left: 4px; color: red">*</span>
-                        </v-col>
-                      </V-row>
-                      <V-row>
-                        <v-col v-for="i in 5" :key="i">
-                          <v-checkbox
-                            :label="health_status[i - 1]"
-                            :value="health_status[i - 1]"
-                          ></v-checkbox>
-                        </v-col>
-                      </V-row>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
 
@@ -1746,46 +1732,7 @@
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
-                          <v-col lg="6" md="6" cols="12">
-                            <v-menu
-                              ref="menu"
-                              v-model="menu"
-                              :close-on-content-click="false"
-                              :return-value.sync="date"
-                              transition="scale-transition"
-                              offset-y
-                              min-width="auto"
-                            >
-                              <template v-slot:activator="{ on, attrs }">
-                                <v-text-field
-                                  v-model="date"
-                                  :label="$t('Financeial Year')"
-                                  prepend-inner-icon="mdi-calendar"
-                                  readonly
-                                  v-bind="attrs"
-                                  v-on="on"
-                                  outlined
-                                ></v-text-field>
-                              </template>
-                              <v-date-picker v-model="date" no-title scrollable>
-                                <v-spacer></v-spacer>
-                                <v-btn
-                                  text
-                                  color="primary"
-                                  @click="menu = false"
-                                >
-                                  Cancel
-                                </v-btn>
-                                <v-btn
-                                  text
-                                  color="primary"
-                                  @click="$refs.menu.save(date)"
-                                >
-                                  OK
-                                </v-btn>
-                              </v-date-picker>
-                            </v-menu>
-                          </v-col>
+                       
                         </v-row>
                       </div>
                       <!-- <v-expansion-panel-content class="mt-5">
@@ -2469,12 +2416,19 @@ export default {
     FooterBar,
   },
   watch: {
+    "$i18n.locale": "updateHeaderTitle",
     menu(val) {
       val && setTimeout(() => (this.activePicker = "YEAR"));
     },
   },
 
   methods: {
+    updateHeaderTitle() {
+      const title = this.$t(
+        "container.beneficiary_management.beneficiary_list.beneficiary_edit"
+      );
+      this.$store.commit("setHeaderTitle", title);
+    },
     async submitApplication() {
       try {
         let id = this.$route.params.id;
@@ -2883,7 +2837,9 @@ export default {
         });
     },
   },
-
+  beforeMount() {
+    this.updateHeaderTitle();
+  },
   created() {
     // this.getApplicationById();
     this.GetAllDivisions();
