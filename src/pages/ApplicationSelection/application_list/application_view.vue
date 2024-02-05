@@ -852,10 +852,8 @@
                                                         </label>
                                                         <span style="margin-left: 4px; color: red">*</span>
 
-                                                        <v-select v-model="data.account_owner" outlined clearable
-                                                            :items="mobile_ownership" :error="errors[0] ? true : false"
-                                                            :error-messages="errors[0]">
-                                                        </v-select>
+                                                               <v-text-field v-model="data.account_owner" outlined readonly>
+                                                        </v-text-field>
                                                     </ValidationProvider>
                                                 </v-col>
 
@@ -1179,7 +1177,13 @@ Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }"
 
                                 </v-expansion-panels>
                             </div>
+    <div style="display: flex; justify-content: flex-end;">
+        <!-- Other content on the left -->
 
+        <v-btn flat color="gray" type="submit" @click="navigateTolist" class="custom-btn">
+            {{ $t('container.list.back') }}
+        </v-btn>
+    </div>
                         </v-card>
                     </form>
                 </ValidationObserver>
@@ -1402,6 +1406,9 @@ export default {
     },
 
     methods: {
+        navigateTolist() {
+            this.$router.push("/application-management/application");
+        },
         async getApplicationById() {
 
             this.$axios
