@@ -945,6 +945,24 @@ export default {
     this.registerCustomRules();
   },
   methods: {
+    GeneratePDF() {
+        
+        this.$axios
+          .get("/admin/union/generate-pdf", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+            params: queryParams,
+          })
+          .then((result) => {
+            window.open(result.data.data.url, '_blank');
+          })
+          .catch(error => {
+            console.error('Error generating PDF:', error);
+          });
+
+      },
     registerCustomRules() {
       extend('codeRules', (value) => {
         return (value.toString().length <= 6) || this.$t("container.system_config.demo_graphic.ward.code")+' can have maximum 6 digit';

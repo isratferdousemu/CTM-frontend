@@ -397,54 +397,50 @@
                 </h3>
               </v-card-title>
               <v-card-text>
-                             <v-row justify="space-between" align="center"  class="mx-5">
-          <!-- Checkbox on the left -->
-          <v-col lg="3" md="3" cols="12">
-              <v-text-field
-                  @keyup.native="GetWard"
-                  outlined
-                  dense
-                  v-model="search"
-                  prepend-inner-icon="mdi-magnify"
-                  class="my-sm-0 my-3 mx-0v -input--horizontal"
-                  flat
-                  variant="outlined"
-                  :label="$t('container.list.search')"
-                  hide-details
-                  color="primary"
-              ></v-text-field>
-          </v-col>
+                                <v-row justify="space-between" align="center" class="mx-5">
+            <!-- Checkbox on the left -->
+            <v-col lg="3" md="3" cols="12">
+                <v-text-field
+                    @keyup.native="GetWard"
+                    outlined
+                    dense
+                    v-model="search"
+                    prepend-inner-icon="mdi-magnify"
+                    class="my-sm-0 my-3 mx-0v -input--horizontal"
+                    flat
+                    variant="outlined"
+                    :label="$t('container.list.search')"
+                    hide-details
+                    color="primary"
+                ></v-text-field>
+            </v-col>
 
-          <!-- Dropdown on the right -->
-          <v-col lg="3" md="3" cols="12" class="text-right my-10">
-              <v-btn
-                  @click="createDialog"
-                  flat
-                  color="primary"
-                  prepend-icon="mdi-account-multiple-plus"
-              >
-                  {{ $t("container.list.add_new") }}
-              </v-btn>
-          </v-col>
-      </v-row>
+            
+            <v-col lg="3" md="3" cols="12" class="text-right ">
+                <v-btn
+                    @click="dialogOpen"
+                    flat
+                    color="primary"
+                    prepend-icon="mdi-account-multiple-plus"
+                >
+                    {{ $t("container.list.add_new") }}
+                </v-btn>
+            </v-col>
+        </v-row>
+        <v-row justify="space-between" align="center" class="mx-4">
+            
+            <v-col lg="3" md="3" cols="12">
+      {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">{{ this.total }}</span>
+    </v-col>
 
-      <!-- Second row without gap -->
-      <v-row justify="space-between" align="center" class="mx-5">
-          <!-- Checkbox on the left -->
-          <v-col lg="3" md="3" cols="12">
-              {{ $t('container.list.total') }} &nbsp;:&nbsp;{{ this.total }}
-          </v-col>
-
-          <!-- Dropdown on the right -->
-          <v-col lg="4" md="4" cols="12" class="text-right">
-              <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4" @click="GeneratePDF()">
-                  {{ $t("container.list.PDF") }}
-              </v-btn>
-              <!-- <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
-              {{ $t("container.list.excel") }}
-          </v-btn> -->
-          </v-col>
-      </v-row>
+            
+            <v-col lg="4" md="4" cols="12" class="text-right">
+                <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4" @click="GeneratePDF()">
+                    {{ $t("container.list.PDF") }}
+                </v-btn>
+            
+            </v-col>
+        </v-row>
                 <v-row
                   class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
                   justify="center"
@@ -476,6 +472,7 @@
                   >
                     {{ $t("container.list.add_new") }}
                   </v-btn> -->
+                    
                   <v-col cols="12">
                     <v-data-table
                       :loading="loading"
@@ -1824,7 +1821,6 @@ export default {
         sub_location_type: null,
       },
       total:null,
-
       districts: [],
       cities: [],
       thanas: [],
@@ -1968,11 +1964,101 @@ export default {
     this.customCode();
   },
   methods: {
-        GeneratePDF() {
-      const queryParams = {
-
+    GeneratePDF() {
+     
+       const queryParams = {
+        language: this.$i18n.locale,
         searchText: this.search,
+        location_type: this.location_type_search,
+        division_id: this.division_id_search,
+        district_id: this.district_id_search,
+
+        ////////////City Corporation////////////////
+        city_id_search: this.city_id_search,
+        city_thana_id_search: this.city_thana_id_search,
+        ////////////City Corporation////////////////
+
+        ////////////Upazila Corporation////////////////
+        upazila_id_search: this.upazila_id_search,
+        union_id_search: this.union_id_search,
+        ////////////Upazila Corporation////////////////
+
+        ////////////Upazila Corporation////////////////
+        district_pouro_id_search: this.district_pouro_id_search,
+        ////////////Upazila Corporation////////////////
+
+        perPage: this.pagination.perPage,
+        page: this.pagination.current,
+        sortBy: this.sortBy,
+        orderBy: this.sortDesc,
       };
+
+      if (this.division_id != null) {
+        delete queryParams.upazila_id_search;
+        delete queryParams.union_id_search;
+        delete queryParams.city_id_search;
+        delete queryParams.city_thana_id_search;
+        delete queryParams.district_id;
+        delete queryParams.district_pouro_id_search;
+
+        queryParams.division_id = this.division_id_search;
+      }
+      if (this.district_id_search != null) {
+        delete queryParams.upazila_id_search;
+        delete queryParams.union_id_search;
+        delete queryParams.city_id_search;
+        delete queryParams.city_thana_id_search;
+        delete queryParams.division_id;
+        delete queryParams.district_pouro_id_search;
+
+        queryParams.district_id = this.district_id_search;
+      }
+      if (this.district_pouro_id_search != null) {
+        delete queryParams.upazila_id_search;
+        delete queryParams.union_id_search;
+        delete queryParams.city_id_search;
+        delete queryParams.city_thana_id_search;
+        delete queryParams.district_id;
+        delete queryParams.division_id;
+        queryParams.district_pouro_id_search = this.district_pouro_id_search;
+      }
+      if (this.city_id_search != null) {
+        delete queryParams.district_pouro_id_search;
+        delete queryParams.upazila_id_search;
+        delete queryParams.union_id_search;
+        delete queryParams.district_id;
+        delete queryParams.division_id;
+        delete queryParams.city_thana_id_search;
+        queryParams.city_id_search = this.city_id_search;
+      }
+      if (this.city_thana_id_search != null) {
+        delete queryParams.district_pouro_id_search;
+        delete queryParams.upazila_id_search;
+        delete queryParams.union_id_search;
+        delete queryParams.district_id;
+        delete queryParams.division_id;
+        delete queryParams.city_id_search;
+        queryParams.city_thana_id_search = this.city_thana_id_search;
+      }
+      if (this.upazila_id_search != null) {
+        delete queryParams.district_pouro_id_search;
+        delete queryParams.city_id_search;
+        delete queryParams.city_thana_id_search;
+        delete queryParams.district_id;
+        delete queryParams.division_id;
+        queryParams.upazila_id_search = this.upazila_id_search;
+        queryParams.union_id_search = this.union_id_search;
+      }
+      if (this.union_id_search != null) {
+        delete queryParams.district_pouro_id_search;
+        delete queryParams.city_id_search;
+        delete queryParams.city_thana_id_search;
+        delete queryParams.district_id;
+        delete queryParams.division_id;
+        delete queryParams.upazila_id_search;
+        queryParams.union_id_search = this.union_id_search;
+      }
+
       this.$axios
         .get("/admin/ward/generate-pdf", {
           headers: {

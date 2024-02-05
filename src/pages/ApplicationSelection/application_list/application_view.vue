@@ -1,4 +1,4 @@
-<template>
+]<template>
     <div id="application_view">
         <v-row class="mx-5 my-5 mt-5">
             <v-col class="mt-5" cols="12">
@@ -8,7 +8,7 @@
 
 
                             <ValidationProvider name="program" vid="program" rules="required" v-slot="{ errors }">
-                                <label>Program </label>
+                                <label>{{ $t('container.application_selection.application.program') }} </label>
                                 <span style="margin-left: 4px; color: red">*</span>
                                 <v-select outlined :items="data?.program" item-text="name_en" item-value="id"
                                     v-model="data.program_id" required :error="errors[0] ? true : false"
@@ -20,7 +20,7 @@
                                     <!-- Applicant Verification -->
                                     <v-expansion-panel>
                                         <v-expansion-panel-header color="primary">
-                                            <h3 class="white--text">Applicant Verification</h3>
+                                            <h3 class="white--text">{{ $t('container.application_selection.application.applicant_verification') }}</h3>
                                         </v-expansion-panel-header>
                                         <v-expansion-panel-content class="mt-5">
                                             <template>
@@ -41,13 +41,13 @@
                                                         rules="required" v-slot="{ errors }">
                                                         <label>
                                                             <span v-if="data.verification_type == 1">
-                                                                NID No
+                                                               {{ $t('container.application_selection.application.nid') }}
                                                             </span>
                                                             <span v-else-if="data.verification_type == 2">
-                                                                BRN No
+                                                             {{ $t('container.application_selection.application.brn') }}
                                                             </span>
                                                             <span v-else>
-                                                                NID / BRN No
+                                                               {{ $t('container.beneficiary_management.beneficiary_list.nid') }}
                                                             </span>
 
                                                         </label>
@@ -94,44 +94,44 @@
                                             <div class="pa-2 mb-4">
                                                 <v-row>
                                                     <v-col cols="6" lg="6">
-                                                        <v-img :src="imageUrl" style="
+                                                        <v-img :src="image" style="
                                     width: 200px;
                                     height: 200px;
                                     border: 1px solid #ccc;
-                                  " class="mb-5" v-if="imageUrl"></v-img>
-                                                        <v-img src="/assets/images/profile.png" v-if="!imageUrl" style="
+                                  " class="mb-5"></v-img>
+                                                        <!-- <v-img :src="image" v-if="!imageUrl" style="
                                     width: 150px;
                                     height: 150px;
                                     border: 1px solid #ccc;
-                                  " class="mb-5"></v-img>
-                                                        <ValidationProvider v-slot="{ errors }" name="Image"
+                                  " class="mb-5"></v-img> -->
+                                                        <!-- <ValidationProvider v-slot="{ errors }" name="Image"
                                                             rules="required" vid="image">
                                                             <label>Image</label>
                                                             <v-file-input outlined show-size counter
                                                                 prepend-inner-icon="mdi-camera" v-model="data.image"
                                                                 accept="image/*" @change="previewImage"
                                                                 prepend-icon=""></v-file-input>
-                                                        </ValidationProvider>
+                                                        </ValidationProvider> -->
                                                     </v-col>
                                                     <v-col cols="6" align-self="end" lg="6">
-                                                        <v-img :src="signUrl" style="
+                                                        <!-- <v-img :src="signature" style="
                                     width: 200px;
                                     height: 80px;
                                     border: 1px solid #ccc;
-                                  " class="mb-5" v-if="signUrl"></v-img>
-                                                        <v-img src="/assets/images/sign.png" v-if="!signUrl" style="
+                                  " class="mb-5" ></v-img> -->
+                                                        <v-img :src="signature" style="
                                     width: 200px;
                                     height: 80px;
                                     border: 1px solid #ccc;
                                   " class="mb-5"></v-img>
-                                                        <ValidationProvider v-slot="{ errors }" name="Signature"
+                                                        <!-- <ValidationProvider v-slot="{ errors }" name="Signature"
                                                             rules="required" vid="sign">
                                                             <label>Signature</label>
                                                             <v-file-input outlined show-size counter
                                                                 prepend-inner-icon="mdi-camera" v-model="data.signature"
                                                                 accept="image/*" @change="previewSign"
                                                                 prepend-icon=""></v-file-input>
-                                                        </ValidationProvider>
+                                                        </ValidationProvider> -->
                                                     </v-col>
                                                     <v-col cols="6" lg="6">
                                                         <ValidationProvider name="Name in Bangla" vid="name_bn"
@@ -571,7 +571,7 @@
                                     <v-expansion-panel class="ma-4">
                                         <v-expansion-panel-header color="primary">
                                             <h3 class="white--text">
-                                                Information According to the {{ programName }}
+                                                Information According to the {{ program_name }}
                                             </h3>
                                         </v-expansion-panel-header>
                                         <v-expansion-panel-content class="mt-5">
@@ -766,7 +766,7 @@
                                                     </v-col>
                                                 </v-row>
                                             </div> -->
-
+                                            <!-- {{ allowance_filed }} -->
 
                                             <v-row>
                                                 <v-col v-for="(field, index) in allowance_filed" :key="index" cols="6"
@@ -840,8 +840,8 @@
                               margin-right: 4px;
                               color: red;
                             ">*</span>
-                                                        <v-radio label="Bank Account" :value="1"></v-radio>
-                                                        <v-radio label="MFS (Mobile Financial Service)"
+                                                        <v-radio readonly label="Bank Account" :value="1"></v-radio>
+                                                        <v-radio readonly label="MFS (Mobile Financial Service)"
                                                             :value="2"></v-radio>
                                                     </v-radio-group>
                                                 </v-col>
@@ -852,23 +852,20 @@
                                                         </label>
                                                         <span style="margin-left: 4px; color: red">*</span>
 
-                                                        <v-select v-model="data.account_owner" outlined clearable
-                                                            :items="mobile_ownership" :error="errors[0] ? true : false"
-                                                            :error-messages="errors[0]">
-                                                        </v-select>
+                                                               <v-text-field v-model="data.account_owner" outlined readonly>
+                                                        </v-text-field>
                                                     </ValidationProvider>
                                                 </v-col>
 
                                                 <v-col cols="6" lg="6" v-if="data.account_type === 1">
-                                                  
-                                                        <label style="display: inline-block">Account Ownership
-                                                        </label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
 
-                                                        <v-text-field v-model="data.account_owner" outlined  readonly
-                                                           >
-                                                        </v-text-field>
-                                                   
+                                                    <label style="display: inline-block">Account Ownership
+                                                    </label>
+                                                    <span style="margin-left: 4px; color: red">*</span>
+
+                                                    <v-text-field v-model="data.account_owner" outlined readonly>
+                                                    </v-text-field>
+
                                                 </v-col>
                                                 <!-- <v-col cols="6" lg="6" v-if="data.account_type === 2">
 
@@ -896,41 +893,41 @@
 
                                                 </v-col>
                                                 <v-col cols="6" lg="6" v-if="data.account_type === 1">
-                                                   
-                                                        <label style="display: inline-block">Bank name </label><span
-                                                            style="margin-left: 4px; color: red">*</span>
 
-                                                        <v-text-field v-model="data.bank_name" outlined readonly>
-                                                        </v-text-field>
-                                                 
+                                                    <label style="display: inline-block">Bank name </label><span
+                                                        style="margin-left: 4px; color: red">*</span>
+
+                                                    <v-text-field v-model="data.bank_name" outlined readonly>
+                                                    </v-text-field>
+
                                                 </v-col>
 
                                                 <v-col cols="6" lg="6" v-if="data.account_type === 1">
-                                                 
-                                                        <label style="display: inline-block">Branch name </label><span
-                                                            style="margin-left: 4px; color: red">*</span>
 
-                                                        <v-text-field v-model="data.branch_name" outlined readonly>
-                                                        </v-text-field>
-                                                
+                                                    <label style="display: inline-block">Branch name </label><span
+                                                        style="margin-left: 4px; color: red">*</span>
+
+                                                    <v-text-field v-model="data.branch_name" outlined readonly>
+                                                    </v-text-field>
+
                                                 </v-col>
                                                 <v-col cols="6" lg="6" v-if="data.account_type === 1">
-                                                  
-                                                        <label style="display: inline-block">Bank Account Number
-                                                        </label><span style="margin-left: 4px; color: red">*</span>
 
-                                                        <v-text-field v-model="data.account_number" outlined readonly>
-                                                        </v-text-field>
-                                                 
+                                                    <label style="display: inline-block">Bank Account Number
+                                                    </label><span style="margin-left: 4px; color: red">*</span>
+
+                                                    <v-text-field v-model="data.account_number" outlined readonly>
+                                                    </v-text-field>
+
                                                 </v-col>
                                                 <v-col cols="6" lg="6">
-                                                
-                                                        <label style="display: inline-block">Email </label>
+
+                                                    <label style="display: inline-block">Email </label>
 
 
-                                                        <v-text-field v-model="data.email" outlined clearable readonly>
-                                                        </v-text-field>
-                                               
+                                                    <v-text-field v-model="data.email" outlined clearable readonly>
+                                                    </v-text-field>
+
                                                 </v-col>
                                             </v-row>
                                             <!-- <p class="red--text mt-2">
@@ -1009,18 +1006,14 @@ Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }"
                                                         </ValidationProvider>
                                                     </v-col>
                                                     <v-col cols="6" lg="6">
-                                                        <v-img :src="nomineeImageUrl" style="
-                                    width: 150px;
-                                    height: 150px;
-                                    border: 1px solid #ccc;
-                                  " class="mb-5" v-if="nomineeImageUrl"></v-img>
-                                                        <v-img src="/assets/images/profile.png" v-if="!nomineeImageUrl"
-                                                            style="
+
+
+                                                        <v-img :src="nominee_image" style="
                                     width: 200px;
                                     height: 200px;
                                     border: 1px solid #ccc;
                                   " class="mb-5"></v-img>
-                                                        <ValidationProvider v-slot="{ errors }" name="Image"
+                                                        <!-- <ValidationProvider v-slot="{ errors }" name="Image"
                                                             rules="required" vid="image">
                                                             <label>Image</label>
 
@@ -1028,15 +1021,15 @@ Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }"
                                                                 prepend-inner-icon="mdi-camera" v-model="data.nominee_image"
                                                                 accept="image/*" @change="previewImageNominee"
                                                                 prepend-icon=""></v-file-input>
-                                                        </ValidationProvider>
+                                                        </ValidationProvider> -->
                                                     </v-col>
                                                     <v-col cols="6" align-self="end" lg="6">
-                                                        <v-img :src="nomineeSignUrl" style="
+                                                        <!-- <v-img :src="nominee_image"  style="
                                     width: 150px;
                                     height: 80px;
                                     border: 1px solid #ccc;
-                                  " class="mb-5" v-if="nomineeSignUrl"></v-img>
-                                                        <v-img :src="imageUrlFetch" style="
+                                  " class="mb-5"></v-img> -->
+                                                        <v-img :src="nominee_image" style="
                                     width: 200px;
                                     height: 80px;
                                     border: 1px solid #ccc;
@@ -1064,16 +1057,29 @@ Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }"
                                             </div>
                                         </v-expansion-panel-content>
                                     </v-expansion-panel>
+
                                     <!-- Nominee Information End -->
                                     <!-- 5th Expansion panel -->
                                     <!-- Other Information of Eligibility -->
-                                    <v-expansion-panel class="mb-4">
+                                    <v-expansion-panel class="mb-4" >
                                         <v-expansion-panel-header color="primary">
                                             <h3 class="white--text">
                                                 Other Information of Eligibility
                                             </h3>
                                         </v-expansion-panel-header>
                                         <v-expansion-panel-content class="mt-5">
+                                            <v-row>
+                                                <v-col v-for="(field, index) in variable" :key="index" cols="6" lg="6">
+
+                                                       <template>
+            <label>{{ field.parent ? field.parent.name_en : '' }}</label>
+            <v-text-field v-model="field.name_en" outlined readonly></v-text-field>
+        </template>
+
+                                                </v-col>
+
+
+                                            </v-row>
                                             <!-- <div class="pa-2 mb-4">
                                                      <v-row>
                                                            <v-col cols="12" lg="6" md="6" v-for="(variable,indexPMT) in  data.poverty_score" :key='indexPMT'>
@@ -1171,7 +1177,13 @@ Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }"
 
                                 </v-expansion-panels>
                             </div>
+    <div style="display: flex; justify-content: flex-end;">
+        <!-- Other content on the left -->
 
+        <v-btn flat color="gray" type="submit" @click="navigateTolist" class="custom-btn">
+            {{ $t('container.list.back') }}
+        </v-btn>
+    </div>
                         </v-card>
                     </form>
                 </ValidationObserver>
@@ -1264,7 +1276,7 @@ export default {
             ],
 
             mobile_ownership: ["No Mobile Phone", "Family Memeber", "Others"],
-            religion: ["Islam", "Hindu","Buddhist","Christian"],
+            religion: ["Islam", "Hindu", "Buddhist", "Christian"],
             genders: ["Male", "Female", "3rd Gender"],
 
             yes_no: ["Yes ", "No"],
@@ -1284,6 +1296,7 @@ export default {
             permanent_location: [],
             current_location: [],
             allowance_filed: [],
+            program_name: null,
 
 
 
@@ -1351,7 +1364,12 @@ export default {
             //     marital_status: null,
             //     email: 'null@gmail.com',
             // },
+            variable: [],
             data: [],
+            image: null,
+            signature: null,
+            nominee_image: null,
+            nominee_signature: null,
 
             permanent_location: [],
 
@@ -1388,6 +1406,9 @@ export default {
     },
 
     methods: {
+        navigateTolist() {
+            this.$router.push("/application-management/application");
+        },
         async getApplicationById() {
 
             this.$axios
@@ -1404,7 +1425,15 @@ export default {
 
                     this.current_location = result?.data?.application?.current_location;
                     this.permanent_location = result?.data?.application?.permanent_location;
-                    this.allowance_filed = result?.data?.unique_additional_fields;
+                    this.variable = result?.data?.application?.subvariable;
+                    this.allowance_filed = result?.data?.unique_additional_fields
+                    this.program_name = this.data?.program.name_en;
+                    this.image = result?.data?.image
+                    this.signature = result?.data?.signature;
+                    this.nominee_image = result?.data?.nominee_image;
+                    this.nominee_signature = result?.data?.nominee_signature;
+
+
                     console.log(this.allowance_filed, "this.allowance_filed")
                     console.log(this.permanent_location, "this.permanent_location")
                     if (this.current_location?.location_type == 3) {
@@ -1530,4 +1559,5 @@ body.my-app {
 .no-calendar-icon .v-input__icon {
     display: none;
     /* Hide the default calendar icon */
-}</style>
+}
+</style>

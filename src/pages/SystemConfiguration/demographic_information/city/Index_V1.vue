@@ -120,54 +120,52 @@
                 </h3>
               </v-card-title>
               <v-card-text>
-                    <v-row justify="space-between" align="center"  class="mx-5">
-            <!-- Checkbox on the left -->
-            <v-col lg="3" md="3" cols="12">
-                <v-text-field
-                    @keyup.native="GetCity"
-                    outlined
-                    dense
-                    v-model="search"
-                    prepend-inner-icon="mdi-magnify"
-                    class="my-sm-0 my-3 mx-0v -input--horizontal"
-                    flat
-                    variant="outlined"
-                    :label="$t('container.system_config.demo_graphic.district.search')"
-                    hide-details
-                    color="primary"
-                ></v-text-field>
-            </v-col>
+                           <v-row justify="space-between" align="center" class="mx-5">
+          <!-- Checkbox on the left -->
+          <v-col lg="3" md="3" cols="12">
+              <v-text-field
+                  @keyup.native="GetCity"
+                  outlined
+                  dense
+                  v-model="search"
+                  prepend-inner-icon="mdi-magnify"
+                  class="my-sm-0 my-3 mx-0v -input--horizontal"
+                  flat
+                  variant="outlined"
+                  :label="$t('container.list.search')"
+                  hide-details
+                  color="primary"
+              ></v-text-field>
+          </v-col>
 
-            <!-- Dropdown on the right -->
-            <v-col lg="3" md="3" cols="12" class="text-right my-10">
-                <v-btn
-                    @click="createDialog"
-                    flat
-                    color="primary"
-                    prepend-icon="mdi-account-multiple-plus"
-                >
-                    {{ $t("container.list.add_new") }}
-                </v-btn>
-            </v-col>
-        </v-row>
+          <!-- Dropdown on the right -->
+          <v-col lg="3" md="3" cols="12" class="text-right ">
+              <v-btn
+                  @click="createDialog"
+                  flat
+                  color="primary"
+                  prepend-icon="mdi-account-multiple-plus"
+              >
+                  {{ $t("container.list.add_new") }}
+              </v-btn>
+          </v-col>
+      </v-row>
+      <v-row justify="space-between" align="center" class="mx-4">
+          <!-- Checkbox on the left -->
+          <v-col lg="3" md="3" cols="12">
+              {{ $t('container.list.total') }} &nbsp;:&nbsp;{{ this.total }}
+          </v-col>
 
-        <!-- Second row without gap -->
-        <v-row justify="space-between" align="center" class="mx-5">
-            <!-- Checkbox on the left -->
-            <v-col lg="3" md="3" cols="12">
-                {{ $t('container.list.total') }} &nbsp;:&nbsp;{{ this.total }}
-            </v-col>
-
-            <!-- Dropdown on the right -->
-            <v-col lg="4" md="4" cols="12" class="text-right">
-                <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4" @click="GeneratePDF()">
-                    {{ $t("container.list.PDF") }}
-                </v-btn>
-                <!-- <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
+          <!-- Dropdown on the right -->
+          <v-col lg="4" md="4" cols="12" class="text-right">
+              <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4" @click="GeneratePDF()">
+                  {{ $t("container.list.PDF") }}
+              </v-btn>
+              <!-- <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
               {{ $t("container.list.excel") }}
           </v-btn> -->
-            </v-col>
-        </v-row>
+          </v-col>
+      </v-row>
                 <v-row
                   class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
                   justify="center"
@@ -890,9 +888,13 @@ export default {
   },
   methods: {
      GeneratePDF() {
-      const queryParams = {
-
+     const queryParams = {
+      language: this.$i18n.locale,
         searchText: this.search,
+        location_type: this.location_type_search,
+        division_id: this.division_id_search,
+        district_id: this.district_id_search,
+      
       };
       this.$axios
         .get("/admin/city/generate-pdf", {
@@ -1186,7 +1188,7 @@ export default {
           this.pagination.current = result.data.current_page;
           this.pagination.total = result.data.last_page;
           this.pagination.grand_total = result.data.total;
-             this.total = result.data.total;
+          this.total = result.data.total;
           console.log(queryParams, "params123");
           console.log(this.city, "city");
         });

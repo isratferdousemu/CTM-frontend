@@ -31,7 +31,7 @@ const CommonRoutes = [
     component: ApplicationView,
   },
   {
-    path: "/submitted-application/:id",
+    path: "/submitted-application",
     name: "SuccessView",
     component: SuccessView,
   },

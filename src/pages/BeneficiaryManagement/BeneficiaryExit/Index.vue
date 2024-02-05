@@ -400,116 +400,102 @@
                 </v-col>
               </v-row>
 
-              <div class="d-inline d-flex justify-end">
-                <v-btn elevation="2" class="btn mr-2 mb-2">{{
-                  $t("container.list.reset")
-                }}</v-btn>
-                <v-btn
-                  elevation="2"
-                  class="btn mr-2 mb-2"
-                  color="success"
-                  type="submit"
-                  flat
-                  :disabled="invalid"
-                  >{{ $t("container.list.exit") }}</v-btn
-                >
-              </div>
-            </form>
-          </ValidationObserver>
-        </v-card>
-        <v-card>
-          <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.beneficiary_management.beneficiary_exit.title") }}
-          </v-card-title>
+                                    <div class="d-inline d-flex justify-end ">
+                                         <v-btn elevation="2" class="btn mr-2">{{ $t("container.list.reset") }}</v-btn>
+                                        <v-btn elevation="2" class="btn mr-2" color="success">{{
+                                            $t("container.list.exit") }}</v-btn>
+                                       
+                                    </div>
+                                </form>
+                            </ValidationObserver>
 
-          <v-data-table
-            :loading="loading"
-            item-key="id"
-            :headers="headers"
-            :items="beneficiaries"
-            :items-per-page="pagination.perPage"
-            hide-default-footer
-            class="elevation-0 transparent row-pointer"
-          >
-            <template v-slot:item.sl="{ item, index }">
-              {{ (pagination.current - 1) * pagination.perPage + index + 1 }}
-            </template>
-            <template v-slot:item.name_en="{ item }">
-              {{ item.name_en }}
-            </template>
-            <template v-slot:item.name_bn="{ item }">
-              {{ item.name_bn }}
-            </template>
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
 
-            <template v-slot:item.id="{ item }">
-              <td>
-                <v-checkbox v-model="cb[item.id]" />
-              </td>
-            </template>
+                </v-expansion-panels>
+                <!-- Expantion panels end -->
 
-            <!-- Action Button -->
-            <template v-slot:item.actions="{ item }">
-              <v-tooltip top>
-                <template v-slot:activator="{ on }">
-                  <v-btn
-                    v-can="'update-post'"
-                    fab
-                    x-small
-                    v-on="on"
-                    color="#AFB42B"
-                    elevation="0"
-                    class="white--text"
-                  >
-                    <v-icon> mdi-eye </v-icon>
-                  </v-btn>
-                </template>
-                <span>
-                  {{ $t("container.list.view") }}
-                </span>
-              </v-tooltip>
-            </template>
-            <!-- End Action Button -->
 
-            <template v-slot:footer="item">
-              <div class="text-center pt-2 v-data-footer justify-center pb-2">
-                <v-select
-                  style="
-                    position: absolute;
-                    right: 25px;
-                    width: 149px;
-                    transform: translate(0px, 0px);
-                  "
-                  :items="items"
-                  hide-details
-                  dense
-                  outlined
-                  @change="onPageChange"
-                  v-model="pagination.perPage"
-                ></v-select>
-                <v-pagination
-                  circle
-                  primary
-                  v-model="pagination.current"
-                  :length="pagination.total"
-                  @input="onPageChange"
-                  :total-visible="11"
-                  class="custom-pagination-item"
-                ></v-pagination>
-              </div>
-            </template>
-          </v-data-table>
-        </v-card>
-      </v-col>
-    </v-row>
-  </div>
+            </v-col>
+
+
+
+            <v-col cols="12">
+                <v-card>
+                    <v-card-title class="font-weight-bold justify-center">
+                        {{ $t("container.beneficiary_management.beneficiary_exit.title")
+                        }}
+                    </v-card-title>
+                    <v-data-table :loading="loading" item-key="id" :headers="headers" :items="divisions"
+                        :items-per-page="pagination.perPage" hide-default-footer
+                        class="elevation-0 transparent row-pointer">
+                        <template v-slot:item.id="{ item, index }">
+                            {{
+                                (pagination.current - 1) * pagination.perPage +
+                                index +
+                                1
+                            }}
+                        </template>
+                        <template v-slot:item.name_en="{ item }">
+                            {{ item.name_en }}
+                        </template>
+                        <template v-slot:item.name_bn="{ item }">
+                            {{ item.name_bn }}
+                        </template>
+
+                        <!-- Action Button -->
+                        <template v-slot:item.actions="{ item }">
+
+                           <v-tooltip top>
+                                                        <template v-slot:activator="{ on }">
+                                                            <v-btn v-can="'update-post'" fab x-small v-on="on" color="#AFB42B"
+                                                                elevation="0" class="white--text">
+                                                                <v-icon> mdi-eye </v-icon>
+                                                            </v-btn>
+                                                        </template>
+                                                        <span>
+                                                            {{ $t("container.list.view") }}
+                                                        </span>
+                                                    </v-tooltip>
+
+
+                        </template>
+                        <!-- End Action Button -->
+
+                        <template v-slot:footer="item">
+                            <div class="text-center pt-2 v-data-footer justify-center pb-2">
+                                <v-select style="
+                              position: absolute;
+                              right: 25px;
+                              width: 149px;
+                              transform: translate(0px, 0px);
+                            " :items="items" hide-details dense outlined @change="onPageChange"
+                                    v-model="pagination.perPage"></v-select>
+                                <v-pagination circle primary v-model="pagination.current" :length="pagination.total"
+                                    @input="onPageChange" :total-visible="11" class="custom-pagination-item"></v-pagination>
+                            </div>
+                        </template>
+                    </v-data-table>
+                </v-card>
+            </v-col>
+
+
+
+
+
+
+
+        </v-row>
+
+    </div>
 </template>
 <script>
 import { mapState, mapActions } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 export default {
-  name: "DigitalIndex",
-  title: "CTM - Beneficiary Exit",
+    name: 'DigitalIndex',
+    title: "CTM - Digital ID Card",
 
   data() {
     return {
@@ -531,28 +517,22 @@ export default {
         beneficiaries: [],
       },
 
-      date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-        .toISOString()
-        .substr(0, 10),
-      menu: false,
-      modal: false,
-      menu2: false,
+            date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+            menu: false,
+            modal: false,
+            menu2: false,
 
-      loading: false,
-      search: "",
-      beneficiaries: [],
-      cause_types: [],
-      loading: true,
-      programs: [],
-      divisions: [],
-      districts: [],
-      locationType: [],
-      thanas: [],
-      cities: [],
-      unions: [],
-      city_thanas: [],
-      district_pouros: [],
-      cb: {},
+            loading: false,
+            search: "",
+            divisions: [],
+            districts: [],
+            locationType: [],
+            thanas: [],
+            cities: [],
+            unions: [],
+            city_thanas: [],
+            district_pouros: [],
+
 
       pagination: {
         current: 1,

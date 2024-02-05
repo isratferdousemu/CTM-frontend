@@ -55,32 +55,19 @@
                       </v-textarea>
                     </v-col>
 
-                    <v-col lg="6" md="6" cols="12">
-                      <ValidationProvider
-                        name="CauseType"
-                        vid="data.cause_type"
-                        rules="required"
-                        v-slot="{ errors }"
-                      >
-                        <v-autocomplete
-                          :hide-details="errors[0] ? false : true"
-                          v-model="data.cause_type"
-                          outlined
-                          :label="
-                            $t(
-                              'container.beneficiary_management.beneficiary_list.replacement_cause'
-                            )
-                          "
-                          :items="cause_types"
-                          item-text="value_en"
-                          item-value="id"
-                          required
-                          clearable
-                          :error="errors[0] ? true : false"
-                          :error-messages="errors[0]"
-                        ></v-autocomplete>
-                      </ValidationProvider>
-                    </v-col>
+                <v-col lg="6" md="6" cols="12">
+                  <v-select
+                    outlined
+                    menu-props="top"
+                    clearable
+                    :label="
+                      $t(
+                        'container.beneficiary_management.beneficiary_list.replacement_cause'
+                      )
+                    "
+                  >
+                  </v-select>
+                </v-col>
 
                     <v-col lg="6" md="6" cols="12">
                       <v-menu
@@ -327,8 +314,6 @@ export default {
       beneficiary: {},
       replaceList: [],
       selected: [],
-      cause_types: [],
-
       cb: {},
       selectedId: null,
     };
@@ -340,6 +325,7 @@ export default {
       );
       this.$store.commit("setHeaderTitle", title);
     },
+
     async GetBeneficiaryDetails(id) {
       try {
         this.$axios
@@ -401,7 +387,7 @@ export default {
       }
       
     },
-    submit() {
+    onReplaceSubmit() {
       try {
         let fd = new FormData();
         if (this.selectedId) {
@@ -518,7 +504,6 @@ export default {
     this.updateHeaderTitle();
     this.GetBeneficiaryDetails(this.$route.params.id);
     this.GetReplaceList();
-    this.GetAllCommitteeType();
   },
   mounted() {},
 };

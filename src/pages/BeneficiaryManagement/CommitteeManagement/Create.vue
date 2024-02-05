@@ -825,9 +825,8 @@ export default {
         this.$store
           .dispatch("BeneficiaryManagement/StoreCommittee", fd)
           .then((res) => {
-            console.log(res, "submit__");
+            console.log(res, "submit");
             if (res.data?.success) {
-              console.log(res.data?.success, "submit__");
               this.$toast.success("Data Inserted Successfully");
               this.resetData();
               this.dialogAdd = false;

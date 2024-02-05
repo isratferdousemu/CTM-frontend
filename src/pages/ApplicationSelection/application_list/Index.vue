@@ -1,44 +1,31 @@
 <template>
-  <div id="aplication_list">
-    <v-row class="mx-5 mt-4">
-      <v-col cols="12">
-        <v-row>
-          <v-col cols="12">
-            <!-- Expantion panels start -->
-            <v-expansion-panels>
-              <v-expansion-panel class="ma-2">
-                <v-expansion-panel-header color="#8C9EFF">
-                  <h3 class="white--text">
-                    {{
-                      $t("container.application_selection.application.search")
-                    }}
-                  </h3>
-                </v-expansion-panel-header>
-                <v-expansion-panel-content
-                  class="elevation-0 transparent mt-10"
-                >
-                  <ValidationObserver ref="formsearch" v-slot="{ invalid }">
-                    <form @submit.prevent="submitsearch()">
-                      <v-row>
-                        <v-col lg="3" md="3" cols="12">
-                          <v-autocomplete
-                            outlined
-                            clearable
-                            class="no-arrow-icon"
-                            v-model="data.program_id"
-                            :append-icon-cb="appendIconCallback"
-                            append-icon="mdi-plus"
-                            :items="allowances"
-                            item-text="name_en"
-                            item-value="id"
-                            :label="
-                              $t(
-                                'container.application_selection.application.program'
-                              )
-                            "
-                          >
-                          </v-autocomplete>
-                        </v-col>
+    <div id="aplication_list">
+        <v-row class="mx-5 mt-4">
+            <v-col cols="12">
+                <v-row>
+                    <v-col cols="12">
+
+                        <!-- Expantion panels start -->
+                        <v-expansion-panels>
+                            <v-expansion-panel class="ma-2">
+                                <v-expansion-panel-header color=#8C9EFF>
+                                    <h3 class="white--text ">
+                                        {{ $t("container.application_selection.application.search") }}
+                                    </h3>
+                                </v-expansion-panel-header>
+                                <v-expansion-panel-content class="elevation-0 transparent mt-10">
+                                    <ValidationObserver ref="formsearch" v-slot="{ invalid }">
+                                        <form @submit.prevent="submitsearch()">
+                                            <v-row>
+                                                <v-col lg="3" md="3" cols="12">
+
+                                                    <v-autocomplete outlined clearable class="no-arrow-icon"
+                                                        v-model="data.program_id" :append-icon-cb="appendIconCallback"
+                                                        append-icon="mdi-plus" :items="allowances" item-text="name_en"
+                                                        item-value="id"
+                                                        :label="$t('container.application_selection.application.program')">
+                                                    </v-autocomplete>
+                                                </v-col>
 
                                                 <v-col lg="3" md="3" cols="12" v-if="!isReadonlyLocationType()">
                                                     <ValidationProvider name="Location Type" vid="location_type"
@@ -390,10 +377,9 @@
       </v-row>
       <v-row justify="space-between" align="center" class="mx-4">
             <!-- Checkbox on the left -->
-            <v-col lg="3" md="3" cols="12">
-           
-             {{  $t('container.list.total') }}:{{this.total}}
-            </v-col>
+           <v-col lg="3" md="3" cols="12">
+    {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">{{ this.total }}</span>
+  </v-col>
 
             <!-- Dropdown on the right -->
             <v-col lg="4" md="4" cols="12" class="text-right">
@@ -448,66 +434,49 @@
                                                     {{ item?.permanent_location?.parent?.parent?.parent?.name_en }}
                                                 </span>
 
-                        <span
-                          v-if="
-                            item?.permanent_location.location_type == '2' ||
-                            item?.permanent_location.location_type == '3'
-                          "
-                        >
-                          {{
-                            item?.permanent_location.parent?.parent?.parent
-                              ?.parent?.name_en
-                          }}
-                        </span>
-                      </template>
-                      <template v-slot:item.district="{ item }">
-                        <span
-                          v-if="item?.permanent_location.location_type == '1'"
-                        >
-                          {{
-                            item?.permanent_location?.parent?.parent?.name_en
-                          }}
-                        </span>
+                                                <span
+                                                    v-if="item?.permanent_location.location_type == '2' || item?.permanent_location.location_type == '3'">
+                                                    {{ item?.permanent_location.parent?.parent?.parent?.parent?.name_en }}
+                                                </span>
 
-                        <span
-                          v-if="
-                            item?.permanent_location.location_type == '2' ||
-                            item?.permanent_location.location_type == '3'
-                          "
-                        >
-                          {{
-                            item?.permanent_location.parent?.parent?.parent
-                              ?.name_en
-                          }}
-                        </span>
-                      </template>
-                      <template v-slot:item.location="{ item }">
-                        <span
-                          v-if="item?.permanent_location.location_type == '1'"
-                        >
-                          {{ item?.permanent_location?.parent?.name_en }}
-                        </span>
 
-                        <span
-                          v-if="
-                            item?.permanent_location.location_type == '2' ||
-                            item?.permanent_location.location_type == '3'
-                          "
-                        >
-                          {{ item?.permanent_location.parent?.parent?.name_en }}
-                        </span>
-                      </template>
+                                            </template>
+                                            <template v-slot:item.district="{ item }">
+                                                <span v-if="item?.permanent_location.location_type == '1'">
+                                                    {{ item?.permanent_location?.parent?.parent?.name_en }}
+                                                </span>
 
-                      <template v-slot:item.union_pouro_city="{ item }">
-                        <span
-                          v-if="
-                            item?.permanent_location.location_type == '2' ||
-                            item?.permanent_location.location_type == '3'
-                          "
-                        >
-                          {{ item?.permanent_location.parent?.name_en }}
-                        </span>
-                      </template>
+                                                <span
+                                                    v-if="item?.permanent_location.location_type == '2' || item?.permanent_location.location_type == '3'">
+                                                    {{ item?.permanent_location.parent?.parent?.parent?.name_en }}
+                                                </span>
+
+
+                                            </template>
+                                            <template v-slot:item.location="{ item }">
+                                                <span v-if="item?.permanent_location.location_type == '1'">
+                                                    {{ item?.permanent_location?.parent?.name_en }}
+                                                </span>
+
+                                                <span
+                                                    v-if="item?.permanent_location.location_type == '2' || item?.permanent_location.location_type == '3'">
+                                                    {{ item?.permanent_location.parent?.parent?.name_en }}
+                                                </span>
+
+
+                                            </template>
+
+                                            <template v-slot:item.union_pouro_city="{ item }">
+
+
+                                                <span
+                                                    v-if="item?.permanent_location.location_type == '2' || item?.permanent_location.location_type == '3'">
+                                                    {{ item?.permanent_location.parent?.name_en }}
+                                                </span>
+
+
+                                            </template>
+
 
                                             <template v-slot:item.ward="{ item }">
 
@@ -544,69 +513,53 @@
                                             </template>
 
 
-                      <!-- Action Button -->
-                      <template v-slot:item.actions="{ item }">
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn
-                              fab
-                              x-small
-                              v-on="on"
-                              color="#AFB42B"
-                              router
-                              :to="`/application-selection/application-view/${item.id}`"
-                              elevation="0"
-                              class="white--text"
-                            >
-                              <v-icon> mdi-eye </v-icon>
-                            </v-btn>
-                          </template>
-                          <span>
-                            {{ $t("container.list.view") }}
-                          </span>
-                        </v-tooltip>
-                      </template>
+                                            <!-- Action Button -->
+                                            <template v-slot:item.actions="{ item }">
 
-                      <!-- End Action Button -->
-                      <template v-slot:footer="item">
-                        <div
-                          class="text-center pt-2 v-data-footer justify-center pb-2"
-                        >
-                          <v-select
-                            style="
+                                                <v-tooltip top>
+                                                    <template v-slot:activator="{ on }">
+                                                        <v-btn fab x-small v-on="on" color="#AFB42B" router
+                                                            :to="`/application-selection/application-view/${item.id}`"
+                                                            elevation="0" class="white--text">
+                                                            <v-icon> mdi-eye </v-icon>
+                                                        </v-btn>
+                                                    </template>
+                                                    <span>
+                                                        {{ $t("container.list.view") }}
+                                                    </span>
+                                                </v-tooltip>
+                                            </template>
+
+
+
+
+                                            <!-- End Action Button -->
+                                            <template v-slot:footer="item">
+                                                <div class="text-center pt-2 v-data-footer justify-center pb-2">
+                                                    <v-select style="
                               position: absolute;
                               right: 25px;
                               width: 149px;
                               transform: translate(0px, 0px);
-                            "
-                            :items="items"
-                            hide-details
-                            dense
-                            outlined
-                            @change="onPageChange"
-                            v-model="pagination.perPage"
-                          ></v-select>
-                          <v-pagination
-                            circle
-                            primary
-                            v-model="pagination.current"
-                            :length="pagination.total"
-                            @input="onPageChange"
-                            :total-visible="11"
-                            class="custom-pagination-item"
-                          ></v-pagination>
-                        </div>
-                      </template>
-                    </v-data-table>
-                  </v-col>
+                            " :items="items" hide-details dense outlined @change="onPageChange"
+                                                        v-model="pagination.perPage"></v-select>
+                                                    <v-pagination circle primary v-model="pagination.current"
+                                                        :length="pagination.total" @input="onPageChange" :total-visible="11"
+                                                        class="custom-pagination-item"></v-pagination>
+                                                </div>
+                                            </template>
+                                        </v-data-table>
+                                    </v-col>
+                                </v-row>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
                 </v-row>
-              </v-card-text>
-            </v-card>
-          </v-col>
+            </v-col>
+
+
         </v-row>
-      </v-col>
-    </v-row>
-  </div>
+    </div>
 </template>
 
 <script>
@@ -684,26 +637,22 @@ export default {
                     value_en: "Pouroshava",
                 },
 
-        {
-          id: 2,
-          value_en: "Union",
-        },
-      ],
-      allowances: [],
+                {
+                    id: 2,
+                    value_en: "Union",
+                },
+            ],
+            allowances: [],
 
-      pagination: {
-        current: 1,
-        total: 0,
-        perPage: 10,
-      },
-      items: [5, 10, 15, 20, 40, 50, 100],
 
-      selectedColumns: [
-        "name_en",
-        "program.name_en",
-        "application_id",
-        "status",
-      ], // Initially, first 6 columns are selected
+            pagination: {
+                current: 1,
+                total: 0,
+                perPage: 10,
+            },
+            items: [5, 10, 15, 20, 40, 50, 100],
+
+            selectedColumns: ['name_en', 'program.name_en', 'application_id', 'status'],  // Initially, first 6 columns are selected
 
             fixedColumns: ['id', 'sl', 'actions'],  // Two columns that will always remain visible
 
@@ -717,33 +666,27 @@ export default {
     computed: {
       
 
-    isForwardButtonDisabled() {
-      // Disable the button if no applications are selected
-      return !(
-        this.forward.applications_id &&
-        this.forward.applications_id.length > 0 &&
-        this.forward.committee_id !== null
-      );
-    },
-    isButtonDisabled() {
-      return !(
-        this.forward.applications_id && this.forward.applications_id.length > 0
-      );
-    },
+        isForwardButtonDisabled() {
+            // Disable the button if no applications are selected
+            return !(this.forward.applications_id && this.forward.applications_id.length > 0 && this.forward.committee_id !== null);
+        },
+        isButtonDisabled() {
+            return !(this.forward.applications_id && this.forward.applications_id.length > 0);
+        },
 
-    ...mapState({
-      divisions: (state) => state.Division.divisions,
-      userData: (state) => state.userData,
-    }),
-    userRoleNames() {
-      // Extract the 'name' property from each role object
-      return this.userData.roles
-        ? this.userData.roles.map((role) => role.name)
-        : [];
-    },
-    visibleHeaders() {
-      // Combine fixed columns and selected columns
-      const allVisibleColumns = [...this.fixedColumns, ...this.selectedColumns];
+
+
+        ...mapState({
+            divisions: (state) => state.Division.divisions,
+            userData: (state) => state.userData
+        }),
+        userRoleNames() {
+            // Extract the 'name' property from each role object
+            return this.userData.roles ? this.userData.roles.map(role => role.name) : [];
+        },
+        visibleHeaders() {
+            // Combine fixed columns and selected columns
+            const allVisibleColumns = [...this.fixedColumns, ...this.selectedColumns];
 
             // Filter the headers based on the visible columns
             return this.headers.filter(column => allVisibleColumns.includes(column.value));
@@ -758,124 +701,121 @@ export default {
                 { text: this.$t("container.application_selection.application.select"), value: "id", fixed: true },
                 { text: this.$t("container.list.sl"), value: "sl", fixed: true },
 
-        {
-          text: this.$t(
-            "container.application_selection.application.applicant_id"
-          ),
-          value: "application_id",
-        },
-        {
-          text: this.$t("container.application_selection.application.program"),
-          value: "program.name_en",
-        },
-        {
-          text: this.$t("container.list.name_en"),
-          value: "name_en",
-        },
-        {
-          text: this.$t("container.list.status"),
-          value: "status",
-        },
-        {
-          text: this.$t("container.application_selection.variable.score"),
-          value: "score",
+                {
+                    text: this.$t(
+                        "container.application_selection.application.applicant_id"
+                    ),
+                    value: "application_id",
+                },
+                {
+                    text: this.$t(
+                        "container.application_selection.application.program"
+                    ),
+                    value: "program.name_en",
+                },
+                {
+                    text: this.$t("container.list.name_en"),
+                    value: "name_en",
+
+                },
+                {
+                    text: this.$t("container.list.status"),
+                    value: "status",
+
+                },
+                {
+                    text: this.$t("container.application_selection.variable.score"),
+                    value: "score",
+
+                },
+
+                {
+                    text: this.$t("container.beneficiary_management.beneficiary_list.account_no"),
+                    value: "account_number",
+
+                },
+                {
+                    text: this.$t("container.beneficiary_management.beneficiary_list.nid"),
+                    value: "verification_number",
+
+                },
+
+                {
+                    text: this.$t("container.system_config.demo_graphic.division.division"),
+                    value: "division",
+                },
+                {
+                    text: this.$t("container.system_config.demo_graphic.district.district"),
+                    value: "district",
+                },
+                {
+                    text: this.$t("container.system_config.demo_graphic.ward.upazila_city_district"),
+                    value: "location",
+                },
+                {
+                    text: this.$t("container.system_config.demo_graphic.ward.union_pouro_city"),
+                    value: "union_pouro_city",
+                },
+                {
+                    text: this.$t("container.system_config.demo_graphic.ward.ward"),
+                    value: "ward",
+                },
+
+
+
+                {
+                    text: this.$t("container.application_selection.application.father_name_en"),
+                    value: "father_name_en",
+
+                },
+
+                {
+                    text: this.$t("container.application_selection.application.mother_name_en"),
+                    value: "mother_name_en",
+
+                },
+
+                {
+                    text: this.$t("container.system_config.allowance_program.marital_status"),
+                    value: "marital_status",
+
+                },
+                {
+                    text: this.$t("container.application_selection.application.spouse_name_en"),
+                    value: "spouse_name_en",
+
+                },
+
+
+                {
+                    text: this.$t("container.beneficiary_management.beneficiary_list.nominee"),
+                    value: "nominee_en",
+
+                },
+                {
+                    text: this.$t("container.application_selection.application.nominee_relation_with_beneficiary"),
+                    value: "nominee_relation_with_beneficiary",
+
+                },
+
+
+
+                {
+                    text: this.$t("container.application_selection.application.mobile"),
+                    value: "mobile",
+
+                },
+
+
+                { text: this.$t("container.list.action"), value: "actions", fixed: true },
+
+            ];
         },
 
-        {
-          text: this.$t(
-            "container.beneficiary_management.beneficiary_list.account_no"
-          ),
-          value: "account_number",
-        },
-        {
-          text: this.$t(
-            "container.beneficiary_management.beneficiary_list.nid"
-          ),
-          value: "verification_number",
-        },
 
-        {
-          text: this.$t(
-            "container.system_config.demo_graphic.division.division"
-          ),
-          value: "division",
-        },
-        {
-          text: this.$t(
-            "container.system_config.demo_graphic.district.district"
-          ),
-          value: "district",
-        },
-        {
-          text: this.$t(
-            "container.system_config.demo_graphic.ward.upazila_city_district"
-          ),
-          value: "location",
-        },
-        {
-          text: this.$t(
-            "container.system_config.demo_graphic.ward.union_pouro_city"
-          ),
-          value: "union_pouro_city",
-        },
-        {
-          text: this.$t("container.system_config.demo_graphic.ward.ward"),
-          value: "ward",
-        },
 
-        {
-          text: this.$t(
-            "container.application_selection.application.father_name_en"
-          ),
-          value: "father_name_en",
-        },
 
-        {
-          text: this.$t(
-            "container.application_selection.application.mother_name_en"
-          ),
-          value: "mother_name_en",
-        },
-
-        {
-          text: this.$t(
-            "container.system_config.allowance_program.marital_status"
-          ),
-          value: "marital_status",
-        },
-        {
-          text: this.$t(
-            "container.application_selection.application.spouse_name_en"
-          ),
-          value: "spouse_name_en",
-        },
-
-        {
-          text: this.$t(
-            "container.beneficiary_management.beneficiary_list.nominee"
-          ),
-          value: "nominee_en",
-        },
-        {
-          text: this.$t(
-            "container.application_selection.application.nominee_relation_with_beneficiary"
-          ),
-          value: "nominee_relation_with_beneficiary",
-        },
-
-        {
-          text: this.$t("container.application_selection.application.mobile"),
-          value: "mobile",
-        },
-
-        {
-          text: this.$t("container.list.action"),
-          value: "actions",
-          fixed: true,
-        },
-      ];
     },
-  },
 
     methods: {
         Division() {
@@ -1291,10 +1231,10 @@ export default {
                     this.data.location_type = this.permissions?.user?.assign_location?.location_type;
                     console.log(this.data.division_id, this.data.district_id, "grpou");
 
-            if (this.permissions?.user?.committee_type_id == 15) {
-              this.onChangeDistrict(this.data.district_id);
-              this.data.city_id = this.permissions?.user?.assign_location.id;
-              this.onChangeCity(this.data.city_id);
+                    if (this.permissions?.user?.committee_type_id == 15) {
+                        this.onChangeDistrict(this.data.district_id);
+                        this.data.city_id = this.permissions?.user?.assign_location.id;
+                        this.onChangeCity(this.data.city_id);
 
                         console.log(this.data.ward_id, this.data.district_id, "individual 15");
 
@@ -1406,16 +1346,16 @@ export default {
         //     const keys = propertyName.split('.');
         //     let value = this;
 
-    //     for (const key of keys) {
-    //         value = value[key];
+        //     for (const key of keys) {
+        //         value = value[key];
 
-    //         if (value === undefined || value === null) {
-    //             break;
-    //         }
-    //     }
+        //         if (value === undefined || value === null) {
+        //             break;
+        //         }
+        //     }
 
-    //     return value;
-    // },
+        //     return value;
+        // },
 
         appendIconCallback() {
             // Handle the click event for the custom append icon here
@@ -1707,13 +1647,14 @@ export default {
                 });
         },
 
-    onPageChange($event) {
-      // this.pagination.current = $event;
-      this.GetApplication();
-    },
+        onPageChange($event) {
+            // this.pagination.current = $event;
+            this.GetApplication();
+        },
 
         async GetApplication() {
             const queryParams = {
+                
                 searchText: this.search,
                 application_id: this.data.application_id,
                 nominee_name: this.data.nominee_name,
@@ -1756,7 +1697,11 @@ export default {
 
         },
             async GeneratePDF() {
+            // console.log('Current Locale:', this.$i18n.locale);
+            // const translatedText = this.$t('container.list.sl');
+            // console.log('Translated Text:', translatedText);
             const queryParams = {
+                 language: this.$i18n.locale,
                 selectedColumns: this.selectedColumns,
                 searchText: this.search,
                 application_id: this.data.application_id,
@@ -1829,33 +1774,40 @@ export default {
 
 
 
-    // if (this.userData?.location?.type == "division") {
-    //     this.data.division_id = this.userData.location.id;
-    //     this.data.location_type = this.userData.location.location_type;
-    //     this.onChangeDivision(this.data.division_id)
+        // if (this.userData?.location?.type == "division") {
+        //     this.data.division_id = this.userData.location.id;
+        //     this.data.location_type = this.userData.location.location_type;
+        //     this.onChangeDivision(this.data.division_id)
 
-    // }
-    // if (this.userData?.location?.parent_location?.type == "division") {
-    //     this.data.division_id = this.userData.location.parent_location.id;
-    //     this.data.district_id = this.userData.location.id;
-    //     this.data.location_type = this.userData.location.location_type;
-    //     this.onChangeDivision(this.data.division_id)
-    //     this.onChangeDistrict(this.data.district_id)
 
-    // }
-    // if (this.userData?.location?.parent_location?.parent_location?.type == "division") {
-    //     this.data.division_id = this.userData.location.parent_location.parent_location.id;
-    //     this.data.district_id = this.userData.location.parent_location.id;
-    //     this.data.location_type = this.userData.location.location_type;
-    //     this.onChangeDivision(this.data.division_id)
-    //     this.onChangeDistrict(this.data.district_id)
+        // }
+        // if (this.userData?.location?.parent_location?.type == "division") {
+        //     this.data.division_id = this.userData.location.parent_location.id;
+        //     this.data.district_id = this.userData.location.id;
+        //     this.data.location_type = this.userData.location.location_type;
+        //     this.onChangeDivision(this.data.division_id)
+        //     this.onChangeDistrict(this.data.district_id)
 
-    // }
+        // }
+        // if (this.userData?.location?.parent_location?.parent_location?.type == "division") {
+        //     this.data.division_id = this.userData.location.parent_location.parent_location.id;
+        //     this.data.district_id = this.userData.location.parent_location.id;
+        //     this.data.location_type = this.userData.location.location_type;
+        //     this.onChangeDivision(this.data.division_id)
+        //     this.onChangeDistrict(this.data.district_id)
 
-    this.GetApplication();
-  },
-  mounted() {
-    this.GetAllowance();
+        // }
+
+        this.GetApplication();
+
+
+
+
+
+    },
+    mounted() {
+
+        this.GetAllowance();
 
         // this.$store
         //     .dispatch("getLookupByType", 1)
@@ -1868,12 +1820,13 @@ export default {
 </script>
 <style >
 .no-arrow-icon .v-input__icon--clear {
-  display: none;
+    display: none;
+
 }
 
 .v-input__icon--append .v-icon {
-  color: purple;
-  font-weight: bold;
+    color: purple;
+    font-weight: bold;
 }
 
 .no-arrow-icon .v-input__icon--append {

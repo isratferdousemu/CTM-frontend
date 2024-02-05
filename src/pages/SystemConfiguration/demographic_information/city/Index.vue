@@ -18,11 +18,11 @@
                 </h3>
               </v-card-title>
               <v-card-text>
-                       <v-row justify="space-between" align="center"  class="mx-5">
+                           <v-row justify="space-between" align="center" class="mx-5">
           <!-- Checkbox on the left -->
           <v-col lg="3" md="3" cols="12">
               <v-text-field
-                  @keyup.native="GetCity"
+                  @keyup.native="Getcity"
                   outlined
                   dense
                   v-model="search"
@@ -37,7 +37,7 @@
           </v-col>
 
           <!-- Dropdown on the right -->
-          <v-col lg="3" md="3" cols="12" class="text-right my-10">
+          <v-col lg="3" md="3" cols="12" class="text-right ">
               <v-btn
                   @click="createDialog"
                   flat
@@ -48,9 +48,7 @@
               </v-btn>
           </v-col>
       </v-row>
-
-      <!-- Second row without gap -->
-      <v-row justify="space-between" align="center" class="mx-5">
+      <v-row justify="space-between" align="center" class="mx-4">
           <!-- Checkbox on the left -->
           <v-col lg="3" md="3" cols="12">
               {{ $t('container.list.total') }} &nbsp;:&nbsp;{{ this.total }}
@@ -89,7 +87,7 @@
                     >
                     </v-text-field>
                   </div>
-                  <v-btn
+                  <v-btn -->
                     @click="createDialog"
                     flat
                     color="primary"
@@ -866,6 +864,7 @@ export default {
           this.pagination.current = result.data.meta.current_page;
           this.pagination.total = result.data.meta.last_page;
           this.pagination.grand_total = result.data.meta.total;
+          this.total = result.data.meta.total;
         });
     },
     deleteCity: async function () {

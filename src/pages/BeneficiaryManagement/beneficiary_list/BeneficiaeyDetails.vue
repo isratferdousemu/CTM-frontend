@@ -143,124 +143,71 @@
                           </ValidationProvider>
                         </v-col>
 
-                        <v-col>
-                          <ValidationProvider
-                            name="Number"
-                            vid="verification_number"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label>
-                              <span> Govt/Private Beneficiary Details </span>
-                            </label>
-                            <span style="margin-left: 4px; color: red">*</span>
+                      <v-col lg="6" md="6" cols="12">
+                        <v-menu
+                          ref="menu"
+                          v-model="menu"
+                          :close-on-content-click="false"
+                          :return-value.sync="date"
+                          transition="scale-transition"
+                          offset-y
+                          min-width="auto"
+                        >
+                          <template v-slot:activator="{ on, attrs }">
                             <v-text-field
-                              outlined
+                              v-model="date"
+                              :label="
+                                $t(
+                                  'container.beneficiary_management.beneficiary_list.cause_date'
+                                )
+                              "
+                              prepend-inner-icon="mdi-calendar"
                               readonly
-                              v-model="data.verification_number"
-                              class="mr-2"
-                              type="number"
-                              required
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
+                              v-bind="attrs"
+                              v-on="on"
+                              outlined
+                            ></v-text-field>
+                          </template>
+                          <v-date-picker v-model="date" no-title scrollable>
+                            <v-spacer></v-spacer>
+                            <v-btn text color="primary" @click="menu = false">
+                              Cancel
+                            </v-btn>
+                            <v-btn
+                              text
+                              color="primary"
+                              @click="$refs.menu.save(date)"
                             >
-                            </v-text-field>
-                          </ValidationProvider>
-                        </v-col>
-                      </V-row>
-                      <V-row>
-                        <v-col>
-                          <ValidationProvider
-                            name="Number"
-                            vid="verification_number"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label>
-                              <span> Total No. of Family Member </span>
-                            </label>
-                            <span style="margin-left: 4px; color: red">*</span>
-                            <v-text-field
-                              outlined
-                              readonly
-                              v-model="data.verification_number"
-                              class="mr-2"
-                              type="number"
-                              required
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            >
-                            </v-text-field>
-                          </ValidationProvider>
-                        </v-col>
-                        <v-col>
-                          <ValidationProvider
-                            name="Number"
-                            vid="verification_number"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label>
-                              <span> Male </span>
-                            </label>
-                            <span style="margin-left: 4px; color: red">*</span>
-                            <v-text-field
-                              outlined
-                              readonly
-                              v-model="data.verification_number"
-                              class="mr-2"
-                              type="number"
-                              required
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            >
-                            </v-text-field>
-                          </ValidationProvider>
-                        </v-col>
-                        <v-col>
-                          <ValidationProvider
-                            name="Number"
-                            vid="verification_number"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label>
-                              <span> Female </span>
-                            </label>
-                            <span style="margin-left: 4px; color: red">*</span>
-                            <v-text-field
-                              outlined
-                              readonly
-                              v-model="data.verification_number"
-                              class="mr-2"
-                              type="number"
-                              required
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            >
-                            </v-text-field>
-                          </ValidationProvider>
-                        </v-col>
-                        <v-col>
-                          <ValidationProvider
-                            name="Number"
-                            vid="verification_number"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <label>
-                              <span> Children </span>
-                            </label>
-                            <span style="margin-left: 4px; color: red">*</span>
-                            <v-text-field
-                              outlined
-                              readonly
-                              v-model="data.verification_number"
-                              class="mr-2"
-                              type="number"
-                              required
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
+                              OK
+                            </v-btn>
+                          </v-date-picker>
+                        </v-menu>
+                      </v-col>
+                      <v-col lg="6" md="6" cols="12">
+                        <v-text-field
+                          v-model="data.last_payment_ammount"
+                          :label="
+                            $t(
+                              'container.beneficiary_management.beneficiary_list.last_payment_amount'
+                            )
+                          "
+                          outlined
+                          clearable
+                        >
+                        </v-text-field>
+                      </v-col>
+                      <v-col lg="6" md="6" cols="12">
+                        <v-tooltip top>
+                          <template v-slot:activator="{ on }">
+                            <v-btn
+                              v-can="'update-post'"
+                              fab
+                              x-small
+                              v-on="on"
+                              color="#AFB42B"
+                              @click="payment_modal = true"
+                              elevation="0"
+                              class="white--text"
                             >
                             </v-text-field>
                           </ValidationProvider>
@@ -1706,8 +1653,6 @@
         </ValidationObserver>
       </v-col>
     </v-row>
-
-    <FooterBar />
   </div>
 </template>
 
@@ -1717,10 +1662,11 @@ import FooterBar from "@/components/Common/FooterBar.vue";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import axios from "axios";
 import { required } from "vee-validate/dist/rules";
-import Form from "vform";
 
+extend("required", required);
 export default {
-  title: "CTM - Online Application",
+  name: "Index",
+  title: "CTM - Beneficiary History",
   data() {
     return {
       applications: [],
@@ -1906,7 +1852,7 @@ export default {
     async getBeneficiaryDetailsById() {
       try {
         this.$axios
-          .get(`/admin/beneficiary/show/${this.$route.params.id}`, {
+        .get(`/admin/beneficiary/show/${id}` , {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
@@ -1951,29 +1897,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-html.my-app,
-body.my-app {
-  overflow: hidden !important;
-}
-
-.centered-text {
-  text-align: center !important;
-}
-
-.v-label-with-asterisk::after {
-  content: " *";
-  color: red;
-  /* You can customize the asterisk color */
-}
-
-.align-end {
-  align-self: flex-end;
-}
-
-.no-calendar-icon .v-input__icon {
-  display: none;
-  /* Hide the default calendar icon */
-}
-</style>

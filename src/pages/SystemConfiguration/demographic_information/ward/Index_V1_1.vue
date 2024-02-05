@@ -49,6 +49,7 @@
                   >
                     {{ $t("container.list.add_new") }}
                   </v-btn>
+                  hi
                   <v-col cols="12">
                     <v-data-table
                       :loading="loading"
