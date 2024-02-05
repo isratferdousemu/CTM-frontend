@@ -1,114 +1,114 @@
 const BeneficiaryManagementRoutes = [
-    {
-        path: "/beneficiary-management/committee",
-        name: "Committee-List",
-        meta: {
-          requiresAuth: true,
-          permission: "thana-list",
-        },
-        component: () =>
-          import(
-            "../pages/BeneficiaryManagement/CommitteeManagement/Index.vue"
-          ),
-      }, {
-        path: "/beneficiary-management/committee-permission",
-        name: "Committee-Permission",
-        meta: {
-          requiresAuth: true,
-          permission: "thana-list",
-        },
-        component: () =>
-          import(
-            "../pages/BeneficiaryManagement/CommitteeManagement/CommitteePermission/Index.vue"
-          ),
-      },
-    {
-        path: "/beneficiary-management/committee/create",
-        name: "Committee-Create",
-        meta: {
-          requiresAuth: true,
-          permission: "thana-list",
-        },
-        component: () =>
-          import(
-            "../pages/BeneficiaryManagement/CommitteeManagement/Create.vue"
-          ),
-      },
-    {
-        path: "/beneficiary-management/committee/edit/:id",
-        name: "Committee-Edit",
-        meta: {
-          requiresAuth: true,
-          permission: "thana-list",
-        },
-        component: () =>
-          import(
-            "../pages/BeneficiaryManagement/CommitteeManagement/Edit.vue"
-          ),
-      },
-    {
-      path: "/beneficiary-management/beneficiary-info",
-        name: "beneficiary_list",
-        meta: {
-            requiresAuth: true,
-            permission: "beneficiary-list",
-        },
-        component: () => import("../pages/BeneficiaryManagement/beneficiary_list/Index.vue")
+  {
+    path: "/beneficiary-management/committee",
+    name: "Committee-List",
+    meta: {
+      requiresAuth: true,
+      permission: "thana-list",
     },
-    {
-      path: "/beneficiary-management/beneficiary-info/details/:id",
-      name: "beneficiary_details",
-      meta: {
-          requiresAuth: true,
-          permission: "beneficiary-list",
-      },
-      component: () => import("../pages/BeneficiaryManagement/beneficiary_list/BeneficiaeyDetails.vue")
+    component: () =>
+      import(
+        "../pages/BeneficiaryManagement/CommitteeManagement/Index.vue"
+      ),
+  }, {
+    path: "/beneficiary-management/committee-permission",
+    name: "Committee-Permission",
+    meta: {
+      requiresAuth: true,
+      permission: "thana-list",
     },
-    {
-      path: "/beneficiary-management/beneficiary-info/edit/:id",
-      name: "beneficiary_edit",
-      meta: {
-          requiresAuth: true,
-          permission: "beneficiary-list",
-      },
-      component: () => import("../pages/BeneficiaryManagement/beneficiary_list/BeneficiaryEdit.vue")
+    component: () =>
+      import(
+        "../pages/BeneficiaryManagement/CommitteeManagement/CommitteePermission/Index.vue"
+      ),
+  },
+  {
+    path: "/beneficiary-management/committee/create",
+    name: "Committee-Create",
+    meta: {
+      requiresAuth: true,
+      permission: "thana-list",
     },
-    {
-      path: "/beneficiary-management/dashboard",
-        name: "Beneficiary_Dashboard",
-        meta: {
-            requiresAuth: true,
-            permission: "beneficiary-dashboard",
-        },
-        component: () => import("../pages/BeneficiaryManagement/BeneficiaryDashboard/Dashboard.vue")
+    component: () =>
+      import(
+        "../pages/BeneficiaryManagement/CommitteeManagement/Create.vue"
+      ),
+  },
+  {
+    path: "/beneficiary-management/committee/edit/:id",
+    name: "Committee-Edit",
+    meta: {
+      requiresAuth: true,
+      permission: "thana-list",
     },
-    {
-        path: "/beneficiary-management/switch-program",
-        name: "beneficiary_list",
-        meta: {
-            requiresAuth: true,
-            permission: "beneficiary-list",
-        },
-        component: () => import("../pages/BeneficiaryManagement/beneficiary_list/SwitchProgram.vue")
+    component: () =>
+      import(
+        "../pages/BeneficiaryManagement/CommitteeManagement/Edit.vue"
+      ),
+  },
+  {
+    path: "/beneficiary-management/beneficiary-info",
+    name: "Beneficiary_List",
+    meta: {
+      requiresAuth: true,
+      permission: "beneficiary-list",
     },
-    {
-        path: "/beneficiary-management/beneficiary-replacement/:id",
-        name: "beneficiary_replacement",
-        meta: {
-            requiresAuth: true,
-          permission: "beneficiary-replacement",
-        },
-        component: () => import("../pages/BeneficiaryManagement/beneficiary_list/BeneficiaryReplacement.vue")
+    component: () => import("../pages/BeneficiaryManagement/beneficiary_list/Index.vue")
+  },
+  {
+    path: "/beneficiary-management/beneficiary-info/details/:id",
+    name: "beneficiary_details",
+    meta: {
+      requiresAuth: true,
+      permission: "beneficiary-list",
     },
-    {
-        path: "/beneficiary-management/beneficiary-journey/:id",
-        name: "beneficiary_journey",
-        meta: {
-            requiresAuth: true,
-            permission: "beneficiary-journey",
-        },
-        component: () => import("../pages/BeneficiaryManagement/beneficiary_list/BeneficiaryHistory.vue")
+    component: () => import("../pages/BeneficiaryManagement/beneficiary_list/BeneficiaeyDetails.vue")
+  },
+  {
+    path: "/beneficiary-management/beneficiary-info/edit/:id",
+    name: "beneficiary_edit",
+    meta: {
+      requiresAuth: true,
+      permission: "beneficiary-list",
     },
+    component: () => import("../pages/BeneficiaryManagement/beneficiary_list/BeneficiaryEdit.vue")
+  },
+  {
+    path: "/beneficiary-management/dashboard",
+    name: "Beneficiary_Dashboard",
+    meta: {
+      requiresAuth: true,
+      permission: "beneficiary-dashboard",
+    },
+    component: () => import("../pages/BeneficiaryManagement/BeneficiaryDashboard/Dashboard.vue")
+  },
+  {
+    path: "/beneficiary-management/switch-program",
+    name: "beneficiary_list",
+    meta: {
+      requiresAuth: true,
+      permission: "beneficiary-list",
+    },
+    component: () => import("../pages/BeneficiaryManagement/beneficiary_list/SwitchProgram.vue")
+  },
+  {
+    path: "/beneficiary-management/beneficiary-replacement/:id",
+    name: "beneficiary_replacement",
+    meta: {
+      requiresAuth: true,
+      permission: "beneficiary-replacement",
+    },
+    component: () => import("../pages/BeneficiaryManagement/beneficiary_list/BeneficiaryReplacement.vue")
+  },
+  {
+    path: "/beneficiary-management/beneficiary-journey/:id",
+    name: "beneficiary_journey",
+    meta: {
+      requiresAuth: true,
+      permission: "beneficiary-journey",
+    },
+    component: () => import("../pages/BeneficiaryManagement/beneficiary_list/BeneficiaryHistory.vue")
+  },
   {
     path: "/beneficiary-management/information-tracking",
     name: "information-tracking",
@@ -128,7 +128,7 @@ const BeneficiaryManagementRoutes = [
     component: () => import("../pages/BeneficiaryManagement/DigitalIDCard/Index.vue")
   },
   {
-    path: "/beneficiary-management/digital-id-card",
+    path: "/beneficiary-management/digital-id-card/:id",
     name: "digital-id-card",
     meta: {
       requiresAuth: true,
@@ -154,7 +154,7 @@ const BeneficiaryManagementRoutes = [
     },
     component: () => import("../pages/BeneficiaryManagement/BeneficiaryShifting/Index.vue")
   },
-  
+
 ];
 
 export default BeneficiaryManagementRoutes;
