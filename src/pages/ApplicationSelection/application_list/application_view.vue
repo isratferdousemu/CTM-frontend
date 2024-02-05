@@ -8,7 +8,7 @@
 
 
                             <ValidationProvider name="program" vid="program" rules="required" v-slot="{ errors }">
-                                <label>Program </label>
+                                <label>{{ $t('container.application_selection.application.program') }} </label>
                                 <span style="margin-left: 4px; color: red">*</span>
                                 <v-select outlined :items="data?.program" item-text="name_en" item-value="id"
                                     v-model="data.program_id" required :error="errors[0] ? true : false"
@@ -20,7 +20,7 @@
                                     <!-- Applicant Verification -->
                                     <v-expansion-panel>
                                         <v-expansion-panel-header color="primary">
-                                            <h3 class="white--text">Applicant Verification</h3>
+                                            <h3 class="white--text">{{ $t('container.application_selection.application.applicant_verification') }}</h3>
                                         </v-expansion-panel-header>
                                         <v-expansion-panel-content class="mt-5">
                                             <template>
@@ -41,13 +41,13 @@
                                                         rules="required" v-slot="{ errors }">
                                                         <label>
                                                             <span v-if="data.verification_type == 1">
-                                                                NID No
+                                                               {{ $t('container.application_selection.application.nid') }}
                                                             </span>
                                                             <span v-else-if="data.verification_type == 2">
-                                                                BRN No
+                                                             {{ $t('container.application_selection.application.brn') }}
                                                             </span>
                                                             <span v-else>
-                                                                NID / BRN No
+                                                               {{ $t('container.beneficiary_management.beneficiary_list.nid') }}
                                                             </span>
 
                                                         </label>
