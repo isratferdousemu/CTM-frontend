@@ -55,7 +55,20 @@
                             vid="division"
                             v-slot="{ errors }"
                           >
+                            <v-text-field
+                              outlined
+                              readonly
+                              v-model="user_permission.division.name_en"
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.division.division'
+                                )
+                              "
+                              v-if="user_permission.division"
+                            >
+                            </v-text-field>
                             <v-autocomplete
+                              v-if="!user_permission.division"
                               outlined
                               @input="onChangeDivision($event)"
                               v-model="data.division_id"
@@ -82,7 +95,20 @@
                             vid="district"
                             v-slot="{ errors }"
                           >
+                            <v-text-field
+                              outlined
+                              readonly
+                              v-model="user_permission.division.name_en"
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.district.district'
+                                )
+                              "
+                              v-if="user_permission.district"
+                            >
+                            </v-text-field>
                             <v-autocomplete
+                              v-if="!user_permission.district"
                               outlined
                               v-model="data.district_id"
                               @input="onChangeDistrict($event)"
@@ -108,7 +134,16 @@
                             vid="location_type"
                             v-slot="{ errors }"
                           >
+                            <v-text-field
+                              outlined
+                              readonly
+                              v-model="user_permission.location_type.value_en"
+                              :label="$t('container.list.location_type')"
+                              v-if="user_permission.location_type"
+                            >
+                            </v-text-field>
                             <v-autocomplete
+                              v-if="!user_permission.location_type"
                               @input="LocationType($event)"
                               v-model="data.location_type"
                               outlined
@@ -135,7 +170,22 @@
                             vid="district_pouro_id"
                             v-slot="{ errors }"
                           >
+                            <v-text-field
+                              outlined
+                              readonly
+                              v-model="
+                                user_permission.district_pourashava.name_en
+                              "
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.ward.pouro'
+                                )
+                              "
+                              v-if="user_permission.location_type"
+                            >
+                            </v-text-field>
                             <v-autocomplete
+                              v-if="!user_permission.district_pourashava"
                               v-model="data.district_pouro_id"
                               outlined
                               :label="
@@ -166,7 +216,20 @@
                             vid="thana_id"
                             v-slot="{ errors }"
                           >
+                            <v-text-field
+                              outlined
+                              readonly
+                              v-model="user_permission.upazila.name_en"
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.thana.thana'
+                                )
+                              "
+                              v-if="user_permission.upazila"
+                            >
+                            </v-text-field>
                             <v-autocomplete
+                              v-if="!user_permission.upazila"
                               v-model="data.thana_id"
                               outlined
                               :label="
@@ -301,7 +364,20 @@
                             vid="city_id"
                             v-slot="{ errors }"
                           >
+                            <v-text-field
+                              outlined
+                              readonly
+                              v-model="user_permission.city_corp.name_en"
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.ward.city'
+                                )
+                              "
+                              v-if="user_permission.city_corp"
+                            >
+                            </v-text-field>
                             <v-autocomplete
+                              v-if="!user_permission.city_corp"
                               v-model="data.city_id"
                               @change="onChangeCity($event)"
                               outlined
@@ -388,18 +464,6 @@
                             ></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
-                        <!-- <v-col lg="3" md="3" cols="12">
-                          <v-select
-                            outlined
-                            clearable
-                            :label="
-                              $t(
-                                'container.beneficiary_management.beneficiary_list.search_by'
-                              )
-                            "
-                          >
-                          </v-select>
-                        </v-col> -->
                       </v-row>
                       <v-row>
                         <v-col lg="6" md="6" cols="12">
@@ -795,7 +859,6 @@ export default {
         location_type: null,
         sub_location_type: null,
         city_id: null,
-        // city_thana_id: null,
         district_pouro_id: null,
         thana_id: null,
         union_id: null,
@@ -862,6 +925,12 @@ export default {
       programs: [],
       districts: [],
       locationType: [],
+      thanas: [],
+      cities: [],
+      unions: [],
+      wards: [],
+      district_pouros: [],
+      advanch_search: false,
       subLocationType: [
         {
           id: 1,
@@ -873,14 +942,14 @@ export default {
           value_en: "Union",
         },
       ],
-      thanas: [],
-      cities: [],
-      unions: [],
-      wards: [],
-      // city_thanas: [],
-      district_pouros: [],
-      advanch_search: false,
-
+      user_permission: {
+        division: null,
+        district: null,
+        location_type: null,
+        upazila: null,
+        city_corp: null,
+        district_pourashava: null,
+      },
       pagination: {
         current: 1,
         total: 0,
@@ -960,20 +1029,6 @@ export default {
           ),
           value: "spouse_name_bn",
         },
-        // {
-        //   text: this.$t(
-        //     "container.application_selection.application.union_pourashava"
-        //   ),
-        //   value: "union_pourashava",
-        // },
-        // {
-        //   text: this.$t("container.system_config.demo_graphic.ward.ward"),
-        //   value: "ward",
-        // },
-        // {
-        //   text: this.$t("container.application_selection.application.village"),
-        //   value: "village",
-        // },
         {
           text: this.$t("container.application_selection.application.mobile"),
           value: "mobile",
@@ -999,7 +1054,6 @@ export default {
         },
         {
           text: this.$t(
-            // "container.beneficiary_management.beneficiary_list.beneficiary_id"
             "container.application_selection.application.father_name_en"
           ),
           value: "father_name_en",
@@ -1015,8 +1069,6 @@ export default {
         {
           text: this.$t("container.list.status"),
           value: "status",
-          // value: item => `${item.name.first} ${item.name.last}`,
-          // this.headers = this.headers.filter(header => header.key !== key)
         },
         {
           text: this.$t("container.list.action"),
@@ -1026,19 +1078,30 @@ export default {
       ];
     },
   },
-
   methods: {
     ...mapActions({
       GetAllDivisions: "Division/GetAllDivisions",
     }),
     resetSearch() {
-      console.log("reset __________--");
+      if (!this.user_permission.division) {
+        this.data.division_id = null;
+      }
+      if (!this.user_permission.district) {
+        this.data.district_id = null;
+      }
+      if (!this.user_permission.city_corp) {
+        this.data.city_id = null;
+      }
+      if (!this.user_permission.upazila) {
+        this.data.thana_id = null;
+      }
+      if (!this.user_permission.pouro_id) {
+        this.data.district_pouro_id = null;
+      }
+      if (!this.user_permission.location_type) {
+        this.data.location_type = null;
+      }
       this.data.program_id = null;
-      this.data.division_id = null;
-      this.data.district_id = null;
-      this.data.city_id = null;
-      this.data.district_pouro_id = null;
-      this.data.thana_id = null;
       this.data.union_id = null;
       this.data.ward_id = null;
       this.data.beneficiary_id = null;
@@ -1046,14 +1109,6 @@ export default {
       this.data.account_number = null;
       this.data.nid = null;
       this.data.status = null;
-
-      this.districts = null;
-      this.thanas = null;
-      this.district_pouros = null;
-      this.unions = null;
-      this.cities = null;
-      this.wards = null;
-      // this.city_thanas = null;
 
       this.GetApplication();
     },
@@ -1093,8 +1148,39 @@ export default {
             },
           })
           .then((result) => {
-            console.log(result, "user_permission");
-            //  this.programs = result.data.data;
+            console.log(result.data.data, "user_permission");
+            let item = result.data.data;
+            // User Permission Set
+            if (item?.division) {
+              this.data.division_id = item?.division?.id;
+              this.user_permission.division = item?.division;
+              if (!item?.district) {
+                this.onChangeDivision(item?.division?.id);
+              } else {
+                this.data.district_id = item?.district?.id;
+                this.user_permission.district = item?.district;
+              }
+            }
+            if (item?.location_type) {
+              this.user_permission.location_type = item?.location_type;
+              this.data.location_type = item?.location_type?.id;
+            }
+            if (item?.district_pourashava) {
+              this.data.district_pouro_id = item?.district_pourashava?.id;
+              this.user_permission.district_pourashava =
+                item?.district_pourashava;
+              this.onChangeDistrictPouro(item?.district_pourashava?.id);
+            }
+            if (item?.upazila) {
+              this.user_permission.upazila = item?.upazila;
+              this.data.thana_id = item?.upazila?.id;
+            }
+            if (item?.city_corp) {
+              this.data.city_id = item?.city_corp?.id;
+              this.user_permission.city_corp = item?.city_corp;
+              this.onChangeCity(item?.city_corp?.id);
+            }
+            this.GetApplication();
           })
           .catch((err) => {
             console.log(err, "error");
@@ -1133,7 +1219,6 @@ export default {
           this.thanas = result.data.data;
         });
     },
-
     async LocationType($event) {
       this.data.city_id = null;
       this.district_pouro_id = null;
@@ -1250,7 +1335,7 @@ export default {
     },
     async onChangeCity(event) {
       await this.$axios
-        .get(`/admin/thana/get/city/${this.data.city_id}`, {
+        .get(`/admin/thana/get/city/${event}`, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -1274,7 +1359,7 @@ export default {
     },
     async onChangeDistrictPouro(event) {
       await this.$axios
-        .get(`/admin/ward/get/district_pouro/${this.data.district_pouro_id}`, {
+        .get(`/admin/ward/get/district_pouro/${event}`, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -1285,7 +1370,6 @@ export default {
         });
     },
     onPageChange($event) {
-      // this.pagination.current = $event;
       this.loading = true;
       this.GetApplication();
     },
@@ -1300,21 +1384,18 @@ export default {
     async GetApplication() {
       const queryParams = {
         // searchText: this.search,
-        location_type: this.data.locationType,
+        location_type: this.data.location_type,
         program_id: this.data.program_id,
         division_id: this.data.division_id,
         district_id: this.data.district_id,
         city_corp_id: this.data.city_id,
-        district_pourashava_id: this.data.district_pouro_id,
-        // pourashava_id: this.district_pouros,
-        city_id: this.data.city_id,
-        city_thana_id: this.data.city_thana_id,
+        thana_id: this.data.thana_id,
         district_pouro_id: this.data.district_pouro_id,
 
+        city_thana_id: this.data.city_thana_id,
         sub_location_type: this.sub_location_type,
         pouro_id: this.data.pouro_id,
         union_id: this.data.union_id,
-        thana_id: this.data.thana_id,
         ward_id: this.data.ward_id,
 
         beneficiary_id: this.data.beneficiary_id,
@@ -1328,7 +1409,6 @@ export default {
         sortBy: this.sortBy,
         orderBy: this.sortDesc,
       };
-
       this.$axios
         .get("/admin/beneficiary/list", {
           headers: {
@@ -1371,9 +1451,6 @@ export default {
         division_id: this.data.division_id,
         district_id: this.data.district_id,
         city_corp_id: this.data.city_id,
-        // district_pourashava_id: this.data.district_pouro_id,
-        // pourashava_id: this.district_pouros,
-        // city_id: this.data.city_id,
         city_thana_id: this.data.city_thana_id,
         district_pouro_id: this.data.district_pouro_id,
 
@@ -1426,16 +1503,14 @@ export default {
   },
   created() {
     this.GetAllDivisions();
-
-    this.GetApplication();
+    this.GetAllProgram();
+    this.GetUserPermission();
   },
   beforeMount() {
     this.updateHeaderTitle();
   },
   mounted() {
     this.selectedHeaders = this.headers_start;
-    this.GetAllProgram();
-    this.GetUserPermission();
     this.$store
       .dispatch("getLookupByType", 1)
       .then((res) => (this.locationType = res));
