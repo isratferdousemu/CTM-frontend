@@ -3,6 +3,7 @@
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
         <v-row>
+          <Spinner :loading="isLoading" />
           <v-col cols="12">
             <v-expansion-panels>
               <v-expansion-panel>
@@ -259,13 +260,14 @@
 
 
               <!-- Dropdown on the right -->
-              <v-col lg="4" md="4" cols="12" class="text-right">
+              <v-col lg="4" md="6" cols="12" class="text-right">
                   <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4" @click="GeneratePDF()">
-                      {{ $t("container.list.PDF") }}
+                    <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
                   </v-btn>
-                  <!-- <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
-              {{ $t("container.list.excel") }}
-          </v-btn> -->
+                  <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
+                    <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                    {{ $t("container.list.excel") }}
+                  </v-btn>
               </v-col>
           </v-row>
                 <v-row
@@ -1293,6 +1295,8 @@
 import { mapState, mapActions } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
+import Spinner from "@/components/Common/Spinner.vue";
+
 
 extend("required", required);
 export default {
@@ -1312,7 +1316,7 @@ export default {
         location_type: null,
       },
       total:null,
-
+      isLoading:false,
       locationType: [
         {
           id: 1,
@@ -1362,6 +1366,7 @@ export default {
   components: {
     ValidationProvider,
     ValidationObserver,
+    Spinner,
   },
   computed: {
     headers() {
@@ -1467,7 +1472,8 @@ export default {
     this.registerCustomRules();
   },
   methods: {
-    GeneratePDF() {
+   GeneratePDF() {
+   this.isLoading = true;
    const queryParams = {
     language: this.$i18n.locale,
         searchText: this.search,
@@ -1498,16 +1504,114 @@ export default {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
           },
+          responseType: 'arraybuffer',
           params: queryParams,
         })
-        .then((result) => {
-          window.open(result.data.data.url, '_blank');
-        })
+          .then((response) => {
+            const blob = new Blob([response.data], { type: 'application/pdf' });
+            const url = window.URL.createObjectURL(blob);
+            window.open(url, '_blank');
+            this.isLoading = false;
+          })
+        // .then((result) => {
+        //   window.open(result.data.data.url, '_blank');
+        // })
         .catch(error => {
+          this.isLoading = false;
           console.error('Error generating PDF:', error);
         });
 
     },
+
+    GenerateExcel(){
+
+      this.isLoading = true;
+      const queryParams = {
+        language: this.$i18n.locale,
+        searchText: this.search,
+        location_type: this.location_type_search,
+        division_id: this.division_id_search,
+        district_id: this.district_id_search,
+
+      };
+
+
+      if (this.city_id_search != null) {
+        delete queryParams.district_pouro_id_search;
+        delete queryParams.upazila_id_search;
+        queryParams.city_id = this.city_id_search;
+      }
+      if (this.upazila_id_search != null) {
+        delete queryParams.district_pouro_id_search;
+        delete queryParams.city_id;
+        queryParams.upazila_id = this.upazila_id_search;
+      }
+
+      this.$axios
+          .get("/admin/union/generate-excel", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+            params: queryParams,
+          })
+          .then((response) => {
+            import('@/plugins/Export2Excel').then((excel) => {
+              const OBJ = response.data.data
+
+              const CustomInfo = OBJ.map(i => {
+                return {
+                  "geo_code" : i.code,
+                  "union_name_en" : i.name_en,
+                  "union_name_bn" : i.name_bn,
+                  // "thana_name_en" : i.parent.name_en,
+                  "thana_name" : queryParams.language == 'en' ? i.parent.name_en : i.parent.name_bn,
+                  // "district_name_en" : i.parent.parent.name_en,
+                  "district_name" :queryParams.language == 'en' ? i.parent.parent.name_en : i.parent.parent.name_bn,
+                  // "division_name_en" : i.parent.parent.parent.name_en,
+                  "division_name" : queryParams.language == 'en' ? i.parent.parent.parent.name_en : i.parent.parent.parent.name_bn,
+                }
+
+              });
+
+              const Header = [
+                    this.$t("container.system_config.demo_graphic.union.custom_code"),
+                    this.$t("container.system_config.demo_graphic.division.division"),
+                    this.$t("container.system_config.demo_graphic.district.district"),
+                    this.$t("container.system_config.demo_graphic.thana.thana"),
+                    this.$t("container.system_config.demo_graphic.union.name_en"),
+                    this.$t("container.system_config.demo_graphic.union.name_bn"),
+                  ]
+
+              const Field = ['geo_code','division_name','district_name','thana_name', 'union_name_en','union_name_bn']
+
+              const Data = this.FormatJson(Field, CustomInfo)
+
+              excel.export_json_to_excel({
+                header: Header,
+                data: Data,
+                sheetName:"demo",
+                filename:this.$t("container.system_config.demo_graphic.union1.customtitle"),
+                autoWidth:true,
+                bookType : "xlsx"
+              })
+            })
+            this.isLoading = false;
+          })
+
+          .catch(error => {
+            this.isLoading = false;
+            console.error('Error generating PDF:', error);
+          });
+    },
+
+    FormatJson(FilterData,JsonData){
+     return JsonData.map((v) =>
+       FilterData.map((j => {
+         return v[j];
+       })))
+    },
+
     appendIconCallback() {
       // Handle the click event for the custom append icon here
     },

@@ -51,7 +51,7 @@
       "select":"Select",
       "single_select":"Select",
       "total":"Total Result",
-      "PDF":" Download PDF",
+      "PDF":"PDF",
       "excel":"Excel",
       "confirm":"Confirm"
     },
