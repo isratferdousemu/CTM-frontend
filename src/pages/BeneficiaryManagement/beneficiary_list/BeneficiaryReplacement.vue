@@ -370,7 +370,7 @@ export default {
           program_id: null,
         };
         this.$axios
-          .get(`/admin/beneficiary/replaceList`, {
+          .get(`/admin/beneficiary/getListForReplace`, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
