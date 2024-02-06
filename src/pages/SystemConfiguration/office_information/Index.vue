@@ -2103,9 +2103,9 @@ export default {
           console.log(result, "office");
           this.offices = result.data.data;
           console.log(this.offices, "Get Office");
-          this.pagination.current = result.data.meta.current_page;
-          this.pagination.total = result.data.meta.last_page;
-          this.pagination.grand_total = result.data.meta.total;
+          this.pagination.current = result.data.current_page;
+          this.pagination.total = result.data.last_page;
+          this.pagination.grand_total = result.data.total;
         })
         .catch((err) => {
           console.log(err, "error");
