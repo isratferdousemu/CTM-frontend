@@ -92,6 +92,15 @@ const BeneficiaryManagementRoutes = [
         component: () => import("../pages/BeneficiaryManagement/beneficiary_list/SwitchProgram.vue")
     },
     {
+      path: "/beneficiary-management/beneficiary-replacement",
+      name: "beneficiary_replacement_list",
+      meta: {
+          requiresAuth: true,
+        permission: "beneficiary-replacement-list",
+      },
+      component: () => import("../pages/BeneficiaryManagement/BeneficiaryReplacement/Index.vue")
+  },
+    {
         path: "/beneficiary-management/beneficiary-replacement/:id",
         name: "beneficiary_replacement",
         meta: {
@@ -137,6 +146,15 @@ const BeneficiaryManagementRoutes = [
     component: () => import("../pages/BeneficiaryManagement/DigitalIDCard/DigitalIDCard.vue")
   },
   {
+    path: "/beneficiary-management/beneficiary-exit-list",
+    name: "beneficiary_exit_list",
+    meta: {
+      requiresAuth: true,
+      permission: "beneficiary-exit-list",
+    },
+    component: () => import("../pages/BeneficiaryManagement/BeneficiaryExit/ExitList.vue")
+  },
+  {
     path: "/beneficiary-management/beneficiary-exit",
     name: "beneficiary-exit",
     meta: {
@@ -153,6 +171,15 @@ const BeneficiaryManagementRoutes = [
       permission: "beneficiary-shifting",
     },
     component: () => import("../pages/BeneficiaryManagement/BeneficiaryShifting/Index.vue")
+  },
+  {
+    path: "/beneficiary-management/beneficiary-shifting-list",
+    name: "beneficiary_shifting_list",
+    meta: {
+      requiresAuth: true,
+      permission: "beneficiary-shifting-list",
+    },
+    component: () => import("../pages/BeneficiaryManagement/BeneficiaryShifting/ShiftingList.vue")
   },
   
 ];

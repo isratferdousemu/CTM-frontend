@@ -53,7 +53,8 @@
       "single_select":"Select",
       "total":"Total Result",
       "PDF":"PDF",
-      "excel":"Excel"
+      "excel":"Excel",
+      "shifting":"Shifting"
     },
     "system_config": {
       "demo_graphic": {
@@ -517,7 +518,15 @@
         "village": "Village",
         "mobile": "Mobile",
         "account": "Account No",
-        "nominee_relation_with_beneficiary": " Relationship with Nominee"
+        "nominee_relation_with_beneficiary": " Relationship with Nominee",
+        "exit_reason":"Exit Reason",
+        "exit_date":"Exit Date",
+        "replace_with_application_id":"Replace With Applicant Id",
+        "replace_with_name_en":"Replace With Applicant Name",
+        "from_program_name":"From Program Name",
+        "to_program_name":"To Program Name",
+        "shifting_cause":"Shifting Cause",
+        "activation_date":"Activation Date"
       },
       "poverty_cut_off": {
         "poverty_cut_off": "Cut Off",
@@ -639,6 +648,7 @@
         "beneficiary_father_name": "Beneficiary Father Name",
         "beneficiary_mother_name": "Beneficiary Mother Name",
         "beneficiary_dob": "Beneficiary Date of Birth",
+        "replace_list": "Beneficiary Replacement List",
         "replacement_cause": "Replacement Cause",
         "replacement_cause_details": "Replacement Cause Deatils",
         "replacement_detail": "Replacement Deatil",
@@ -681,10 +691,12 @@
       },
       "beneficiary_exit": {
         "title": "Beneficiary Exit and Adiition Management ",
-        "date_of_exit": "Date of Exit"
+        "date_of_exit": "Date of Exit",
+        "list":"Beneficiary Exit List"
       },
       "beneficiary_shifting": {
         "list":"Beneficiary List",
+        "shitfing_list":"Beneficiary Shifting List",
         "title": "Beneficiary Shifting",
         "cause": "Cause",
         "activation_date": "Activation Date"

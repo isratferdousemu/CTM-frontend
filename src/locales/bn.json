@@ -53,7 +53,8 @@
             "single_select":"নির্বাচন করুন",
             "total": "মোট ফলাফল",
             "PDF": "পিডিএফ",
-            "excel": "এক্সেল"
+            "excel": "এক্সেল",
+            "shifting":"স্থানান্তর"
         },
         "system_config": {
             "demo_graphic": {
@@ -517,7 +518,15 @@
                 "village": "গ্রাম",
                 "mobile": "মোবাইল",
                 "account": "হিসাব নাম্বার",
-                "nominee_relation_with_beneficiary":" নমিনী সাথে সম্পর্ক"
+                "nominee_relation_with_beneficiary":" নমিনী সাথে সম্পর্ক",
+                "exit_reason":"প্রস্থানের কারণ",
+                "exit_date":"প্রস্থানের তারিখ",
+                "replace_with_application_id":"আবেদনকারীর প্রতিস্থাপন আইডি",
+                "replace_with_name_en":"আবেদনকারীর প্রতিস্থাপন নাম",
+                "from_program_name":"যে প্রোগ্রাম থেকে স্থানান্তর হয়েছে",
+                "to_program_name":"যে প্রোগ্রামে এসেছে",
+                "shifting_cause":"স্থানান্তরের কারণ",
+                "activation_date":"সক্রিয়করণের তারিখ"
             },
             "mobile_operator": {
                 "list": "মোবাইল অপারেটরের তালিকা",
@@ -638,6 +647,7 @@
                 "account_no": "হিসাব নাম্বার",
                 "nid": "এনআইডি",
                 "beneficiary_summary": "সুবিধাভোগী সারসংক্ষেপে ",
+                "replace_list": "সুবিধাভোগী প্রতিস্থাপন তালিকা",
                 "beneficiary_replacement": "সুবিধাভোগী প্রতিস্থাপন",
                 "replacement_with": "সঙ্গে প্রতিস্থাপন",
                 "beneficiary_details": "সুবিধাভোগীর বিবরণ",
@@ -686,10 +696,12 @@
             },
             "beneficiary_exit": {
                 "title": "সুবিধাভোগী প্রস্থান এবং এডিশন ব্যবস্থাপনা",
-                "date_of_exit": "প্রস্থানের তারিখ"
+                "date_of_exit": "প্রস্থানের তারিখ",
+                "list":"সুবিধাভোগী প্রস্থান তালিকা"
             },
             "beneficiary_shifting": {
                 "list":"সুবিধাভোগী তালিকা",
+                "shitfing_list":"সুবিধাভোগী স্থানান্তর তালিকা",
                 "title": "সুবিধাভোগী স্থানান্তর",
                 "cause": "কারণ",
                 "activation_date": "সক্রিয়করণের তারিখ"
