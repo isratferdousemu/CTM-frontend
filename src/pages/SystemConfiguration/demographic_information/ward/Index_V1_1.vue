@@ -4,6 +4,7 @@
       <v-col cols="12">
         <v-row>
           <v-col cols="12">
+          
             <v-card
               elevation="10"
               color="white"
@@ -48,6 +49,7 @@
                   >
                     {{ $t("container.list.add_new") }}
                   </v-btn>
+                  hi
                   <v-col cols="12">
                     <v-data-table
                       :loading="loading"

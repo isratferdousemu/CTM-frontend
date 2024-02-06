@@ -4,9 +4,10 @@ networks:
    web-ctm-app-net:
        name: my-ctm-web-app-net
        driver: bridge
+       
 
 services:
-   frontend:
+   frontend-stage:
      container_name: ctm-frontend
      image: 'ctm-app-frontend'
      environment:

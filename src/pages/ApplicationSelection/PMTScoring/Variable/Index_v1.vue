@@ -131,8 +131,16 @@
                                         :error-messages="errors[0]"></v-text-field>
                                 </ValidationProvider>
 
-                                  <v-data-table :headers="header_field_value" :items="data.field_value"
-                                        v-if="data.field_type == 1 || data.field_type == 2" hide-default-footer>
+                                  <!-- <v-data-table :headers="header_field_value" :items="data.field_value"
+                                        v-if="data.field_type == 1 || data.field_type == 2" hide-default-footer> -->
+    <v-data-table
+      :headers="header_field_value"
+      :items="data.field_value"
+      v-if="data.field_type == 1 || data.field_type == 2"
+      :items-per-page="100" 
+      hide-default-footer
+      no-data-text=""
+    > 
                                         <template v-slot:item.id="{ item, index }">
                                             {{ index + 1 }}
                                         </template>
@@ -225,8 +233,16 @@
                                         :error-messages="errors[0]"></v-text-field>
                                 </ValidationProvider>
 
-                                <v-data-table :headers="header_field_value" :items="data.field_value"
-                                    v-if="data.field_type == 1 || data.field_type == 2" hide-default-footer>
+                                <!-- <v-data-table :headers="header_field_value" :items="data.field_value"
+                                    v-if="data.field_type == 1 || data.field_type == 2" hide-default-footer> -->
+                                     <v-data-table
+          :headers="header_field_value"
+          :items="data.field_value"
+          v-if="data.field_type == 1 || data.field_type == 2"
+          :items-per-page="100" 
+          hide-default-footer
+          no-data-text=""
+        > 
                                     <template v-slot:item.id="{ item, index }">
                                         {{ index + 1 }}
                                     </template>
@@ -554,22 +570,60 @@ export default {
             this.dialogEdit = true;
         },
 
-        addRow() {
+        // addRow() {
 
 
 
-            if (!Array.isArray(this.data.field_value)) {
-                this.$set(this.data, 'field_value', []);
-            }
+        //     if (!Array.isArray(this.data.field_value)) {
+        //         this.$set(this.data, 'field_value', []);
+        //     }
 
-            // Create a new row with default values
-            const newRow = {
-                value: null,
-                score: null
-            };
+        //     // Create a new row with default values
+        //     const newRow = {
+        //         value: null,
+        //         score: null
+        //     };
 
-            // Push the new row to the field_value array
-            this.data.field_value.push(newRow);
+        //     // Push the new row to the field_value array
+        //     this.data.field_value.push(newRow);
+        // },
+        // addRow() {
+        //     // Ensure that field_value is an array
+        //     if (!Array.isArray(this.data.field_value)) {
+        //         this.$set(this.data, 'field_value', []);
+        //     }
+
+        //     // Create a new row with default values
+        //     const newRow = {
+        //         value: null,
+        //         score: null
+        //     };
+
+        //     // Push the new row to the field_value array
+        //     this.data.field_value.push(newRow);
+        // },
+      
+            // Ensure that field_value is an array
+          addRow() {
+                console.log('Entering addRow function');
+                console.log('Before adding row:', this.data.field_value);
+
+                // Ensure that field_value is an array
+                if (!Array.isArray(this.data.field_value)) {
+                    this.$set(this.data, 'field_value', []);
+                }
+
+                // Create a new row with default values
+                const newRow = {
+                    value: null,
+                    score: null
+                };
+                console.log('New row:', newRow);
+
+                // Push the new row to the field_value array
+                this.data.field_value.push(newRow);
+                console.log('After adding row:', this.data.field_value);
+           
         },
         removeRow(id) {
             // Find the index of the row with the given id

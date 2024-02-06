@@ -6,6 +6,7 @@ import { http } from "@/hooks/httpService";
 const state = {
   // Module-specific state
   someValue: 0,
+  successId: null,
 };
 
 /* -------------------------------------------------------------------------- */
@@ -16,6 +17,9 @@ const mutations = {
   // Module-specific mutations
   incrementValue(state) {
     state.someValue++;
+  },
+  setSuccessId(state, id) {
+    state.successId = id;
   },
 };
 /* -------------------------------------------------------------------------- */

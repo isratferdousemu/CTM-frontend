@@ -299,9 +299,11 @@
 
                           <v-col cols="6" lg="6">
                             <div class="validation-error_marital">
-                              <ValidationProvider name="Marital Status" vid="marital_status" v-slot="{ errors }">
+                              <ValidationProvider name="Marital Status" rules="required" vid="marital_status" v-slot="{ errors }">
+                                 
                                 <label>Marital Status</label>
-                                <v-select v-model="data.marital_status" outlined clearable :items="marital_status"
+                                 <span style="margin-left: 4px; color: red">*</span>
+                                <v-select v-model="data.marital_status" outlined clearable :items="marital_status" 
                                   :error="errors[0] ? true : false" :error-messages="errors[0]">
                                 </v-select>
                               </ValidationProvider>
@@ -565,7 +567,7 @@
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6" lg="6">
-                          <ValidationProvider name="Post Code" vid="post_code" rules="required" v-slot="{ errors }">
+                          <ValidationProvider name="Post Code" vid="post_code" rules="CheckPost" v-slot="{ errors }">
                             <label style="display: inline-block">Post Code
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
@@ -772,7 +774,7 @@
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6" lg="6">
-                          <ValidationProvider name="Post Code" vid="permanent_post_code" rules="required"
+                          <ValidationProvider name="Post Code" vid="permanent_post_code" rules="CheckPost"
                             v-slot="{ errors }">
                             <label style="display: inline-block">Post Code
                             </label>
@@ -1335,7 +1337,7 @@
               <div class="d-inline d-flex justify-end">
                 <v-btn @click="resetForm()" elevation="2" class="btn mr-2" color="info">Resets</v-btn>
                 <!-- :disabled="invalid" -->
-                <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
+                <v-btn @click="confirmDialog=true"  flat color="primary" :disabled="invalid" :loading="loading"
                   class="custom-btn-width black white--text py-2">
                   submit
                 </v-btn>
@@ -1350,28 +1352,56 @@
 
           </form>
         </ValidationObserver>
-        <!-- delete modal  -->
-        <v-dialog v-model="deleteDialog" width="350">
+        <!-- confirm modal  -->
+        <!-- <v-dialog v-model="confirmDialog" width="350">
           <v-card style="justify-content: center; text-align: center">
-            <v-card-title class="font-weight-bold justify-center">
-              {{ $t("container.system_config.demo_graphic.division.delete") }}
-            </v-card-title>
-            <v-divider></v-divider>
+          
             <v-card-text>
               <div class="subtitle-1 font-weight-medium mt-5">
-                Select Permanent Contact Information Properly
+              Do you want to submit the application ?
               </div>
             </v-card-text>
             <v-card-actions style="display: block">
               <v-row class="mx-0 my-0 py-2" justify="center">
-                <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
+                <v-btn text @click="confirmDialog = false" outlined class="custom-btn-width py-2 mr-10">
+                    {{ $t("container.list.confirm") }}
+                  </v-btn>
+                <v-btn text @click="confirmDialog = false" outlined class="custom-btn-width py-2 mr-10">
                   {{ $t("container.list.cancel") }}
                 </v-btn>
 
               </v-row>
             </v-card-actions>
           </v-card>
-        </v-dialog>
+        </v-dialog> -->
+ <template>
+    <v-dialog v-model="confirmDialog" max-width="700" max-height="500">
+      <v-card>
+        <v-card-title  class="font-weight-bold justify-center">
+          Form Submission Confirmation
+        </v-card-title>
+     
+
+        <!-- Add a divider after the title -->
+        <v-divider></v-divider>
+
+        <v-card-text class="text-center">
+          <div class="subtitle-1 font-weight-medium mt-5">
+            Do you want to submit the application?
+          </div>
+        </v-card-text>
+
+        <v-card-actions class="d-flex justify-center">
+          <v-btn text @click="confirmDialog = false" outlined class="custom-btn-width">
+            {{ $t("container.list.cancel") }}
+          </v-btn>
+          <v-btn text  flat color="primary" @click="submitApplication()" :loading="loading" type="submit" class="custom-btn-width success white--text py-2">
+            {{ $t("container.list.confirm") }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </template>
         <!-- delete modal  -->
       </v-col>
     </v-row>
@@ -1403,6 +1433,7 @@ extend("numeric", {
 // message: "This field must be a number",
 // });
 
+
 extend("checkNumber", {
   validate: (value) => {
     if (!value && value !== 0) {
@@ -1418,6 +1449,22 @@ extend("checkNumber", {
     return isNumeric && isCorrectLength;
   },
   message: "This is required field and field must be a number with either 10 or 17 characters",
+});
+extend("CheckPost", {
+  validate: (value) => {
+    if (!value && value !== 0) {
+      return false;
+    }
+    // Check if all characters are numeric and not allow special characters
+    const isNumeric = /^[0-9]+$/.test(value);
+
+    // Check if the length is either 10 or 17 characters
+    const isCorrectLength = value.length === 4 ;
+
+    // Return true if both conditions are met
+    return isNumeric && isCorrectLength;
+  },
+  message: "Please provide 4 digit post code",
 });
 extend("checkMobileNumber", {
   validate: (value) => {
@@ -1521,11 +1568,8 @@ export default {
         "Other (specify)",
       ],
       marital_status: ["Married", "UnMarried", "Widow",
-        "Widower",
-        "Husband Abondoner",
-        "Divorced",
-        "Spouse Separated",
-        "Polygamy"
+        "Other",
+       
       ],
       health_status: [
         "Totally Disabled",
@@ -1566,6 +1610,7 @@ export default {
       menu: false,
       isChecked: false,
       deleteDialog: false,
+      confirmDialog:false,
       data: {
 
         program_id: null,
@@ -1651,7 +1696,6 @@ export default {
         'Fisherman',
         'Construction Worker',
         'Domestic Worker',
-        'Garment Worker',
         'Tea Garden Laborer',
         'Auto Rickshaw Driver',
         'Migrant Worker',
@@ -1662,7 +1706,8 @@ export default {
         'Street Sweeper',
         'Security Guard',
         'Rural Artisan',
-        'Fisherwoman',],
+        'Fisherwoman',
+        'Other'],
       checkbox: false,
       checkboxNomineeAddress: false,
       imageUrl: null,
@@ -1840,7 +1885,11 @@ export default {
           const selectedCityObj = this.permanent_cities.find(city => city.id === this.data.permanent_city_id);
           const selectedThanaObj = this.permanent_city_thanas.find(thana => thana.id === this.data.permanent_city_thana_id);
           const selectedWardsCityObj = this.permanent_wards_city.find(ward_city => ward_city.id === this.data.permanent_ward_id_city);
-          this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ',' + ' District: ' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + ' City: ' + (selectedCityObj ? selectedCityObj.name_en : '') + ',' + ' Thana: ' + (selectedThanaObj ? selectedThanaObj.name_en : '') + ',' + (selectedWardsCityObj ? selectedWardsCityObj.name_en : '') + ',' + ' Post Code: ' + this.data.permanent_post_code + ',' + this.data.permanent_address;
+
+          // this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ',' + ' District: ' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + ' City: ' + (selectedCityObj ? selectedCityObj.name_en : '') + ',' + ' Thana: ' + (selectedThanaObj ? selectedThanaObj.name_en : '') + ',' + (selectedWardsCityObj ? selectedWardsCityObj.name_en : '') + ',' + ' Post Code: ' + this.data.permanent_post_code + ',' + this.data.permanent_address;
+
+            this.data.nominee_address = this.data.permanent_address + ',' +(selectedThanaObj ? selectedThanaObj.name_en : '') + ',' + (selectedCityObj ? selectedCityObj.name_en : '') + ',' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + '-' + this.data.permanent_post_code;
+
 
           // }
 
@@ -1857,7 +1906,9 @@ export default {
           var selectedWardUnionObj = this.permanent_wards_upazila_union.find(ward_union => ward_union.id === this.data.permanent_ward_id_union);
           var selectedWardPouroObj = this.permanent_wards_upazila_pouro.find(ward_pouro => ward_pouro.id === this.data.permanent_ward_id_pouro);
 
-          this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ',' + ' District: ' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + ' Upazila: ' + (selectedUpazilaObj ? selectedUpazilaObj.name_en : '') + ',' + ' Union/Pourashava: ' + (selectedUnionObj ? selectedUnionObj.name_en : '') + '' + (selectedPouroObj ? selectedPouroObj.name_en : '') + ',' + (selectedWardUnionObj ? selectedWardUnionObj.name_en : '') + '' + (selectedWardPouroObj ? selectedWardPouroObj.name_en : '') + ',' + ' Post Code: ' + this.data.permanent_post_code + ',' + this.data.permanent_address;
+          // this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ',' + ' District: ' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + ' Upazila: ' + (selectedUpazilaObj ? selectedUpazilaObj.name_en : '') + ',' + ' Union/Pourashava: ' + (selectedUnionObj ? selectedUnionObj.name_en : '') + '' + (selectedPouroObj ? selectedPouroObj.name_en : '') + ',' + (selectedWardUnionObj ? selectedWardUnionObj.name_en : '') + '' + (selectedWardPouroObj ? selectedWardPouroObj.name_en : '') + ',' + ' Post Code: ' + this.data.permanent_post_code + ',' + this.data.permanent_address;
+          this.data.nominee_address = this.data.permanent_address + ',' + (selectedWardUnionObj ? selectedWardUnionObj.name_en : '') + '' + (selectedWardPouroObj ? selectedWardPouroObj.name_en : '') + ',' + (selectedUnionObj ? selectedUnionObj.name_en : '') + '' + (selectedPouroObj ? selectedPouroObj.name_en : '') + ',' + (selectedUpazilaObj ? selectedUpazilaObj.name_en : '') + ',' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + '-' + this.data.permanent_post_code;
+
           selectedUnionObj = '';
           selectedPouroObj = '';
           selectedWardUnionObj = '';
@@ -1871,7 +1922,9 @@ export default {
           const selectedDistrictObj = this.permanent_districts.find(dis => dis.id === this.data.permanent_district_id);
           const selectedDistObj = this.permanent_district_poros.find(dist => dist.id === this.data.permanent_district_pouro_id);
           const selectedDistWardObj = this.permanent_wards_dist.find(ward_dist => ward_dist.id === this.data.permanent_ward_id_dist);
-          this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ',' + ' District: ' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + ' District Pourashava: ' + (selectedDistObj ? selectedDistObj.name_en : '') + ',' + (selectedDistWardObj ? selectedDistWardObj.name_en : '') + ',' + ' Post Code: ' + this.data.permanent_post_code + ',' + this.data.permanent_address;
+          // this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ',' + ' District: ' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + ' District Pourashava: ' + (selectedDistObj ? selectedDistObj.name_en : '') + ',' + (selectedDistWardObj ? selectedDistWardObj.name_en : '') + ',' + ' Post Code: ' + this.data.permanent_post_code + ',' + this.data.permanent_address;
+
+          this.data.nominee_address =  this.data.permanent_address + ',' + (selectedDistWardObj ? selectedDistWardObj.name_en : '') + ',' + (selectedDistObj ? selectedDistObj.name_en : '') + ',' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + '-' +this.data.permanent_post_code;
 
         }
 
@@ -1998,6 +2051,7 @@ export default {
         // Convert this.data.account_number to string before concatenation
         this.data.account_number = this.data.mobile_operator + String(this.data.account_number);
       }
+      this.confirmDialog = false
       console.log(this.data, "All data")
 
 
@@ -2034,7 +2088,12 @@ export default {
         this.loading = false;
         console.log(res.data.data, "data")
         console.log(res.data.id, "id")
-        this.$router.push(`/submitted-application/${res.data.id}`);
+        this.$store.commit('ApplicationSelection/setSuccessId', res.data.id);
+            console.log(res.data.id, " after store id")
+        // this.$router.push({ name: 'SuccessView' });
+        // this.$router.push({ name: 'SuccessView', query: { id: res.data.id } });
+        this.$router.push("/submitted-application");
+          console.log(res.data.id, " after pushing id")
 
       })
         .catch((err) => {
@@ -2624,9 +2683,9 @@ export default {
           this.wards_upazila_pouro = [];
           this.wards_dist = [];
           this.wards_city = [];
-          this.ward_id_dist = null;
-          this.ward_id_city = null;
-          this.ward_id_pouro = null;
+          this.data.ward_id_dist = null;
+          this.data.ward_id_city = null;
+          this.data.ward_id_pouro = null;
 
         });
 
@@ -2644,9 +2703,9 @@ export default {
           this.permanent_wards_upazila_union = result.data.data;
           this.permanent_wards_dist = [];
           this.permanent_wards_city = [];
-          this.permanent_ward_id_dist = null;
-          this.permanent_ward_id_city = null;
-          this.permanent_ward_id_pouro = null;
+          this.data.permanent_ward_id_dist = null;
+          this.data.permanent_ward_id_city = null;
+          this.data.permanent_ward_id_pouro = null;
 
         });
 
@@ -2667,9 +2726,9 @@ export default {
           this.wards_upazila_union = [];
           this.wards_dist = [];
           this.wards_city = [];
-          this.ward_id_dist = null;
-          this.ward_id_city = null;
-          this.ward_id_union = null;
+          this.data.ward_id_dist = null;
+          this.data.ward_id_city = null;
+          this.data.ward_id_union = null;
 
         });
 
@@ -2690,9 +2749,9 @@ export default {
           this.permanent_wards_upazila_union = [];
           this.permanent_wards_dist = [];
           this.permanent_wards_city = [];
-          this.permanent_ward_id_dist = null;
-          this.permanent_ward_id_city = null;
-          this.permanent_ward_id_union = null;
+          this.data.permanent_ward_id_dist = null;
+          this.data.permanent_ward_id_city = null;
+          this.data.permanent_ward_id_union = null;
 
         });
 

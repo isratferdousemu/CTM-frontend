@@ -107,14 +107,14 @@ export default new Vuex.Store({
     getAppLanguage: state => state.appLanguage,
     GetUserPermissions: function (state) {
       return state.userPermissions;
-    }, 
+    },
   },
 
   /* -------------------------------------------------------------------------- */
   /*                               Actions Define                               */
   /* -------------------------------------------------------------------------- */
   actions: {
- 
+
     sendOtpForgetPassword: ({ commit, state }, data) => {
       return http()
         .post("admin/forgot-password", data)
@@ -131,7 +131,7 @@ export default new Vuex.Store({
           return data;
           // console.log(err);
           // commit("setforgotPasswordErrors", err.response.data.errors);
-          
+
         });
     },
     forgotPasswordSubmit: ({ commit, state }, data) => {
@@ -209,7 +209,7 @@ export default new Vuex.Store({
       return http()
         .get("/admin/menu/get-all")
         .then((result) => {
-      commit('setMenus', result.data.data);
+          commit('setMenus', result.data.data);
         })
         .catch((err) => {
           state.errors = err.response.data.errors;
@@ -358,7 +358,7 @@ export default new Vuex.Store({
   },
   plugins: [
     createPersistedState({
-      paths: ["userData", "token", "userPermissions", "loginData", "appLanguage","menus"],
+      paths: ["userData", "token", "userPermissions", "loginData", "appLanguage", "menus"],
     }),
   ],
 });

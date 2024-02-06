@@ -48,7 +48,12 @@
       "preview": "Preview",
       "approve": "Approve",
       "remove": "Remove",
-      "single_select":"Single Select"
+      "select":"Select",
+      "single_select":"Select",
+      "total":"Total Result",
+      "PDF":" Download PDF",
+      "excel":"Excel",
+      "confirm":"Confirm"
     },
     "system_config": {
       "demo_graphic": {
@@ -220,7 +225,10 @@
           "subLocation_type": "Sub Location",
           "pouroshava": "Pouroshava",
           "dist_pouro": "Distrcit Pouroshava",
-          "union_pouro": "Union /Pouroshava"
+          "union_pouro": "Union /Pouroshava",
+          "post_code":"Post Code",
+          "address":"Village/House No., Road No., Block No, Section*",
+          "mobile":"Mobile"
         },
         "office": {
           "office": "Office",
@@ -509,8 +517,19 @@
         "village": "Village",
         "mobile": "Mobile",
         "account": "Account No",
-        "nominee_relation_with_beneficiary": " Relationship with Nominee"
+        "nominee_relation_with_beneficiary": " Relationship with Nominee",
+          "nid": "NID",
+          "brn": "Birth Registration No"
       },
+        "mobile_operator": {
+          "list": "Mobile Operator List",
+          "operator": "Operator", 
+          "add_new_mobile_operator": "Add New Mobile Operator",
+          "delete": "Delete Mobile operator",
+          "delete_alert": "Are you sure to delete this Mobile Operator?."
+        
+        },
+        
       "poverty_cut_off": {
         "poverty_cut_off": "Cut Off",
         "list": "Cut Off List",
@@ -610,7 +629,13 @@
         "beneficiary": "Beneficiary",
         "list": "Beneficiary Information List",
         "program": "Program",
-        "beneficiary_id": "Beneficiary ID",
+        "beneficiary_id": "Beneficiary's ID",
+        "beneficiary_name": "Beneficiary's Name",
+        "beneficiary_date_of_birth": "Date of Birth",
+        "beneficiary_mobile": "Mobile",
+        "beneficiary_addess": "Address",
+        "authorize_singneture":"Authorized Signature",
+        "contract_number":"Contract Number",
         "select_column": "Select Column",
         "advance_search": "Advance Search",
         "search_by": "Search By",
@@ -621,8 +646,16 @@
         "beneficiary_replacement": "Beneficiary Replacement",
         "replacement_with": "Replacement With",
         "beneficiary_details": "Beneficiary Details",
-        "replacement_cause": "Replacement Reason",
-        "cause_date": "Date of Impact",
+        "beneficiary_edit": "Beneficiary Edit",
+        "beneficiary_father_name": "Beneficiary Father Name",
+        "beneficiary_mother_name": "Beneficiary Mother Name",
+        "beneficiary_dob": "Beneficiary Date of Birth",
+        "replacement_cause": "Replacement Cause",
+        "replacement_cause_details": "Replacement Cause Deatils",
+        "replacement_detail": "Replacement Deatil",
+        "replacement_file":"File Attachment",
+        "cause_provement":"Cause Provement",
+        "cause_date": "Cause Date",
         "reason_provision": "reason provision",
         "beneficiary_replacement_list": "Beneficiary Replacement List",
         "payment_history": "Payment History",

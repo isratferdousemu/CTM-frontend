@@ -7,7 +7,7 @@
           <v-expansion-panel>
             <v-expansion-panel-header color="#8C9EFF">
               <h3 class="white--text">
-                {{ $t("container.list.search") }}
+                {{ $t("container.beneficiary_management.digital_id.digital_id_card") }}
               </h3>
             </v-expansion-panel-header>
             <v-expansion-panel-content class="elevation-0 transparent mt-10">
@@ -316,8 +316,8 @@
                     }}</v-btn>
                   </div>
                 </form>
-              </ValidationObserver> </v-expansion-panel-content
-            >
+              </ValidationObserver>
+            </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
         <!-- Expantion panels end -->
@@ -348,7 +348,7 @@
                 color="success"
                 elevation="0"
                 router
-                to="/beneficiary-management/digital-id-card"
+                :to="`/beneficiary-management/digital-id-card/${item.id}`"
               >
                 {{
                   $t(
@@ -706,7 +706,7 @@ export default {
         union_id: this.data.union_id,
         upazila_id: this.data.thana_id,
         ward_id: this.data.ward_id,
-
+        status: 1, // only active beneficiaries
         perPage: this.pagination.perPage,
         page: this.pagination.current,
       };
@@ -741,16 +741,16 @@ export default {
       this.$store.commit("setHeaderTitle", title);
     },
   },
-  // watch: {
-  //   "$i18n.locale": "updateHeaderTitle",
-  //   value(val) {
-  //     this.selectedHeaders = [
-  //       { text: this.$t("container.list.sl"), value: "sl" },
-  //       ...val,
-  //       { text: this.$t("container.list.action"), value: "actions" },
-  //     ];
-  //   },
-  // },
+  watch: {
+    "$i18n.locale": "updateHeaderTitle",
+    // value(val) {
+    //   this.selectedHeaders = [
+    //     { text: this.$t("container.list.sl"), value: "sl" },
+    //     ...val,
+    //     { text: this.$t("container.list.action"), value: "actions" },
+    //   ];
+    // },
+  },
 
   beforeMount() {
     this.updateHeaderTitle();

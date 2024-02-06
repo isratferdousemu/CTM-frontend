@@ -1,21 +1,17 @@
 <template>
   <div id="digital_id">
-    <v-row justify="center" class="mt-5">
+    <v-row justify="center" class="mt-5 mb-5">
       <v-col lg="6" md="6" cols="12">
-        <v-card
-          width="400"
-          class="mx-5"
-          height="700"
-          style="
-            background: url('/assets/images/digital_id_background.jpg') center
-              center / cover;
-            position: relative;
-          "
-        >
-          <v-card-title></v-card-title>
-          <v-card-text>
+        <v-card width="400" class="mx-5">
+          <v-card-text
+            style="
+              background: url('/assets/images/top_line.jpg') no-repeat left top;
+              background-size: 80%;
+              position: relative;
+            "
+          >
             <v-img
-              class="absolute top-0 mb-5"
+              class="top-left-image"
               style="width: 80px; height: 80px"
               src="/assets/images/logo.png"
             ></v-img>
@@ -28,52 +24,98 @@
               <div justify-center>
                 <v-col>
                   <v-img
-                    src="/assets/images/profile_female.png"
-                    style="width: 230px; height: 230px"
+                    :src="beneficiary.image"
+                    :width="230"
+                    :height="230"
+                    class="rounded-circle"
+                    v-if="beneficiary.image"
+                  ></v-img>
+                  <v-img
+                    v-if="!beneficiary.image"
+                    src="/assets/images/profile.png"
+                    :width="230"
+                    :height="230"
+                    class="rounded-circle"
                   ></v-img>
                 </v-col>
               </div>
             </v-row>
 
-            <div justify-center>
+            <div class="mt-4">
               <table>
                 <tr>
-                  <td>Beneficiary's Name</td>
-                  <td>: Mousumi Akter</td>
+                  <th class="text-left" width="50%">{{
+                      $t(
+                        "container.beneficiary_management.beneficiary_list.beneficiary_name"
+                      )
+                    }}</th>
+                  <td>: {{ beneficiary.name_en }}</td>
                 </tr>
                 <tr>
-                  <td>Beneficiary ID</td>
-                  <td>:</td>
+                  <th class="text-left">{{
+                      $t(
+                        "container.beneficiary_management.beneficiary_list.beneficiary_id"
+                      )
+                    }}</th>
+                  <td>: {{ beneficiary.application_id }}</td>
                 </tr>
                 <tr>
-                  <td>Date of Birth</td>
-                  <td>:</td>
+                  <th class="text-left">{{
+                      $t(
+                        "container.beneficiary_management.beneficiary_list.beneficiary_date_of_birth"
+                      )
+                    }}</th>
+                  <td>: {{ beneficiary.date_of_birth }}</td>
                 </tr>
                 <tr>
-                  <td>Address</td>
-                  <td>
-                    :House- 6/2, (Level: 4 & 6) Kazi Nazrul Islam Road, Block-
-                    F, Dhaka 1207
-                  </td>
+                  <th class="text-left">{{
+                      $t(
+                        "container.beneficiary_management.beneficiary_list.beneficiary_addess"
+                      )
+                    }}</th>
+                  <td>: {{ beneficiary.current_address }}</td>
                 </tr>
               </table>
             </div>
 
-            <v-img
-              src="/assets/images/qr_code.png"
-              class="mt-8"
-              style="width: 50px; height: 50px"
-            ></v-img>
-
-            <v-spacer></v-spacer>
-
-            <div
-              class="d-flex justify-end my-5"
-              style="text-decoration: overline"
-            >
-              Authorized Signature
-            </div>
+            <v-row class="mt-5">
+              <v-col>
+                <qr-code
+                  v-if="this.beneficiary.qrCode"
+                  :text="this.beneficiary.qrCode"
+                  size="100"
+                >
+                </qr-code>
+              </v-col>
+              <v-col class="justify">
+                <v-img
+                  class="bottom-right-image"
+                  src="/assets/images/signature.png"
+                  :width="200"
+                ></v-img>
+                <div
+                  class="d-flex justify-center my-2"
+                  style="text-decoration: overline"
+                >
+                {{
+                      $t(
+                        "container.beneficiary_management.beneficiary_list.authorize_singneture"
+                      )
+                    }}
+                </div>
+              </v-col>
+            </v-row>
           </v-card-text>
+          <v-card-actions
+            class="py-5"
+            style="
+              background: url('/assets/images/bottom_line.jpg') no-repeat right
+                bottom;
+              background-size: 90%;
+              position: relative;
+            "
+            >&nbsp;</v-card-actions
+          >
         </v-card>
       </v-col>
     </v-row>
@@ -81,17 +123,70 @@
 </template>
 
 <script>
+import Vue from "vue";
+import VueQRCodeComponent from "vue-qrcode-component";
+// APi Base Url
+const apiUrl = process.env.VUE_APP_BASE_API_URL_BACKEND;
+Vue.component("qr-code", VueQRCodeComponent);
 export default {
   name: "dDigitalIDCard",
   title: "CTM - Digital ID Card",
 
   data() {
-    return {};
+    return {
+      beneficiary: {
+        imageUrl: null,
+        signUrl: null,
+        qrCode: null,
+      },
+    };
   },
-
   mounted() {},
 
-  methods: {},
+  methods: {
+    updateHeaderTitle() {
+      const title = this.$t(
+        "container.beneficiary_management.digital_id.digital_id_card"
+      );
+      this.$store.commit("setHeaderTitle", title);
+    },
+    async GetBeneficiaryDetails(id) {
+      try {
+        this.$axios
+          .get(`/admin/beneficiary/show/${id}`, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((result) => {
+            let item = result.data.data;
+            this.beneficiary = item;
+            //this.beneficiary.imageUrl = item?.image;
+            //this.beneficiary.signUrl = item?.signature;
+
+            this.beneficiary.qrCode = `Beneficiary Name: ${item?.name_en}, Beneficiary ID : ${item?.application_id}`;
+          })
+          .catch((err) => {
+            if (err.response?.data?.errors) {
+              this.$refs.form.setErrors(err.response.data.errors);
+            }
+            console.log(err.response);
+            this.$toast.error(err?.response?.data?.message);
+          });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+  },
+  watch: {
+    "$i18n.locale": "updateHeaderTitle",
+  },
+  created() {},
+  beforeMount() {
+    this.updateHeaderTitle();
+    this.GetBeneficiaryDetails(this.$route.params.id);
+  },
 };
 </script>
 <style >
