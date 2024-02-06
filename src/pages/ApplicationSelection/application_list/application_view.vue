@@ -209,11 +209,9 @@
                                                             v-slot="{ errors }">
                                                             
                                                             <label>{{ $t('container.system_config.allowance_program.marital_status') }}</label>
-                                                            <v-select v-model="data.marital_status" outlined readonly
-                                                                required :items="marital_status"
-                                                                :error="errors[0] ? true : false"
-                                                                :error-messages="errors[0]">
-                                                            </v-select>
+                                                            <v-text-field v-model="data.marital_status" outlined readonly
+                                                                 >
+                                                            </v-text-field>
                                                         </ValidationProvider>
                                                     </v-col>
                                                     <v-col cols="6" lg="6">
@@ -232,10 +230,9 @@
                                                             <label>{{ $t('container.application_selection.application.religion') }}</label>
                                                          
 
-                                                            <v-select v-model="data.religion" outlined required
-                                                                :items="religion" :error="errors[0] ? true : false"
-                                                                :error-messages="errors[0]">
-                                                            </v-select>
+                                                            <v-text-field v-model="data.religion" outlined required readonly
+                                                               >
+                                                            </v-text-field>
                                                         </ValidationProvider>
                                                     </v-col>
                                                     <v-col cols="6" lg="6">
@@ -273,16 +270,12 @@
                                                         </ValidationProvider>
                                                     </v-col>
                                                     <v-col cols="6" lg="6">
-                                                        <ValidationProvider name="Gender" vid="gender" v-slot="{ errors }"
-                                                            rules="required">
+                                                     
                                                             <label>{{ $t('container.system_config.allowance_program.gender') }}</label>
                                                           
-                                                            <v-select v-model="data.gender_id" item-text="value_en"
-                                                                item-value="id" outlined :items="genders" required
-                                                                :error="errors[0] ? true : false"
-                                                                :error-messages="errors[0]" readonly>
-                                                            </v-select>
-                                                        </ValidationProvider>
+                                                            <v-text-field v-model="genderName"  outlined readonly>
+                                                            </v-text-field>
+                                                   
                                                     </v-col>
                                                     <v-col cols="6" lg="6">
                                                         <ValidationProvider name="Education Status" vid="education_status"
@@ -728,7 +721,7 @@
                                                             rules="required" v-slot="{ errors }">
                                                             <label style="display: inline-block">  {{ $t('container.application_selection.application.name_bn') }}
                                                             </label>
-                                                            <span style="margin-left: 4px; color: red">*</span>
+                                                        
                                                             <v-text-field v-model="data.nominee_bn" outlined readonly
                                                                 :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
@@ -740,7 +733,7 @@
                                                             rules="required" v-slot="{ errors }">
                                                             <label style="display: inline-block">{{ $t('container.application_selection.application.name_en') }}
                                                             </label>
-                                                            <span style="margin-left: 4px; color: red">*</span>
+                                                       
                                                             <v-text-field v-model="data.nominee_en" outlined readonly
                                                                 :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
@@ -774,13 +767,11 @@ Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }"
                                                             vid="nominee_relation_with_beneficiary" v-slot="{ errors }"
                                                             rules="required">
                                                             <label>{{ $t('container.application_selection.application.relationship') }} </label>
-                                                                <v-text-field v-</label>
-                                                            <span style="margin-left: 4px; color: red">*</span>
-                                                            <v-autocomplete v-model="data.nominee_relation_with_beneficiary"
-                                                                outlined :items="relations_with_bef" readonly
-                                                                :error="errors[0] ? true : false"
-                                                                :error-messages="errors[0]">
-                                                            </v-autocomplete>
+                                                            
+                                                         
+                                                            <v-text-field v-model="data.nominee_relation_with_beneficiary"
+                                                                outlined readonly>
+                                                            </v-text-field>
                                                         </ValidationProvider>
                                                     </v-col>
                                                     <v-col cols="6" lg="6">
@@ -847,14 +838,17 @@ Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }"
                                             </h3>
                                         </v-expansion-panel-header> -->
                                         <v-card-title style="background-color: #1976D2; color: white;">
-         {{ $t('container.application_selection.application.eligiblity') }}
+         {{ $t('container.application_selection.application.eligiblity_info') }}
             </v-card-title>
                                         <v-card-text class="mt-5">
                                             <v-row>
                                                 <v-col v-for="(field, index) in variable" :key="index" cols="6" lg="6">
 
                                                        <template>
-            <label>{{ field.parent ? field.parent.name_en : '' }}</label>
+            <label>
+                {{ field.parent ? field.parent.name_en : '' }}
+                <!-- {{ field.parent ? (language === 'bn' ? field.parent.name_bn : field.parent.name_en) : (language === 'bn' ? field.name_bn : field.name_en) }} -->
+    </label>
             <v-text-field v-model="field.name_en" outlined readonly></v-text-field>
         </template>
 
@@ -990,6 +984,7 @@ export default {
             allowance_filed: [],
             program_name: null,
             whole_program:[],
+            genderName:null,
 
 
 
@@ -1120,6 +1115,29 @@ export default {
                 .then((result) => {
 
                     this.data = result.data.application;
+                  
+                    const genderArray = this.genders;
+                    
+                    // Now you can use nameEnOfId23 as needed
+                    
+
+                    // Find the object with id 23
+                    const genderObject = genderArray.find(gender => gender.id === this.data.gender_id
+
+                    );
+
+                    // Check if the object with id 23 was found
+                 
+                        // Access the name_en property of the found object
+                        this.genderName = genderObject.value_en;
+                       
+
+                        // Now you can use nameEnOfId23 as needed
+                       
+             
+                        // Handle the case where the object with id 23 was not found
+                  
+                  
 
                     this.current_location = result?.data?.application?.current_location;
                     this.permanent_location = result?.data?.application?.permanent_location;
