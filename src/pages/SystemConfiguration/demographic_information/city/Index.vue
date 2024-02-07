@@ -94,7 +94,7 @@
                     prepend-icon="mdi-account-multiple-plus"
                   >
                     {{ $t("container.list.add_new") }}
-                  </v-btn>
+                  </v-btn> -->
                   <v-col cols="12">
                     <v-data-table
                       :loading="loading"
@@ -664,6 +664,27 @@ export default {
     },
   },
   methods: {
+     GeneratePDF() {
+      const queryParams = {
+
+        searchText: this.search,
+      };
+      this.$axios
+        .get("/admin/city/generate-pdf", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          window.open(result.data.data.url, '_blank');
+        })
+        .catch(error => {
+          console.error('Error generating PDF:', error);
+        });
+
+    },
     registerCustomRules() {
       extend('codeRules', (value) => {
         return (value.toString().length <= 6) || this.$t("container.system_config.demo_graphic.city.code")+' can have maximum 6 digit';

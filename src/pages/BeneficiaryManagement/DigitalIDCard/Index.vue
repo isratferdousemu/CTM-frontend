@@ -316,8 +316,8 @@
                     }}</v-btn>
                   </div>
                 </form>
-              </ValidationObserver> </v-expansion-panel-content
-            >
+              </ValidationObserver>
+            </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
         <!-- Expantion panels end -->
@@ -348,7 +348,7 @@
                 color="success"
                 elevation="0"
                 router
-                to="/beneficiary-management/digital-id-card"
+                :to="`/beneficiary-management/digital-id-card/${item.id}`"
               >
                 {{
                   $t(

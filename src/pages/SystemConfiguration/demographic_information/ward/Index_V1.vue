@@ -15,6 +15,7 @@
                 <v-expansion-panel-content
                   class="elevation-0 transparent mt-10"
                 >
+                
                   <ValidationObserver ref="formsearch" v-slot="{ invalid }">
                     <form @submit.prevent="GetWard()">
                       <v-row>

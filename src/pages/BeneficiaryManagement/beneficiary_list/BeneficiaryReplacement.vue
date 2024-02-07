@@ -314,6 +314,8 @@ export default {
       beneficiary: {},
       replaceList: [],
       selected: [],
+      cause_types: [],
+
       cb: {},
       selectedId: null,
     };
@@ -325,7 +327,6 @@ export default {
       );
       this.$store.commit("setHeaderTitle", title);
     },
-
     async GetBeneficiaryDetails(id) {
       try {
         this.$axios
@@ -387,7 +388,7 @@ export default {
       }
       
     },
-    onReplaceSubmit() {
+    submit() {
       try {
         let fd = new FormData();
         if (this.selectedId) {
@@ -504,6 +505,7 @@ export default {
     this.updateHeaderTitle();
     this.GetBeneficiaryDetails(this.$route.params.id);
     this.GetReplaceList();
+    this.GetAllCommitteeType();
   },
   mounted() {},
 };

@@ -700,6 +700,7 @@ export default {
         locationType: null,
         location_type: null,
       },
+      total:null,
       locationType: [],
       districts: [],
       isDisabled: true,

@@ -11,6 +11,7 @@
               theme="light"
               class="mb-8"
             >
+         
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
                   {{ $t("container.system_config.demo_graphic.ward.list") }}

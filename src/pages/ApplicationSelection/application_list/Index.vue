@@ -489,12 +489,12 @@
 
 
                                             <!-- Action Button -->
-                                            <!-- <template v-slot:item.actions="{ item }">
+                                            <template v-slot:item.actions="{ item }">
 
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
                                                         <v-btn fab x-small v-on="on" color="#AFB42B" router
-                                                            :to="`/application-selection/application-view/${item.id}`"
+                                                            :to="`/application-selection/application-view/${item.application_id}`"
                                                             elevation="0" class="white--text">
                                                             <v-icon> mdi-eye </v-icon>
                                                         </v-btn>
@@ -503,7 +503,7 @@
                                                         {{ $t("container.list.view") }}
                                                     </span>
                                                 </v-tooltip>
-                                            </template> -->
+                                            </template>
 
 
 
@@ -782,7 +782,7 @@ export default {
                 },
 
 
-                // { text: this.$t("container.list.action"), value: "actions", fixed: true },
+                { text: this.$t("container.list.action"), value: "actions", fixed: true },
 
             ];
         },
