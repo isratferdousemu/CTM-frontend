@@ -2,6 +2,11 @@
   <div id="aplication_list">
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
+        <div class="d-block text-right">
+          <v-btn elevation="2" class="btn my-2" color="primary" router to="/beneficiary-management/beneficiary-replacement-list">
+            {{ $t("container.list.view-list") }}
+          </v-btn>
+        </div>
         <v-expansion-panels v-model="panel" multiple>
           <v-expansion-panel>
             <v-expansion-panel-header color="#8C9EFF">
@@ -357,7 +362,7 @@ export default {
           program_id: null,
         };
         this.$axios
-          .get(`/admin/beneficiary/replaceList`, {
+          .get(`/admin/beneficiary/getListForReplace`, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
