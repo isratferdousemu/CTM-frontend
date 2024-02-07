@@ -29,6 +29,7 @@
       "keyword": "Keyword",
       "location_type": "Location Type",
       "add_new": "Add New",
+      "add": "Add",
       "update": "Update",
       "delete": "Delete",
       "saved": "Data saved Successfully",
