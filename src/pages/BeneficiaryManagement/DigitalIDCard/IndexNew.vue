@@ -500,25 +500,6 @@
                 </h3>
               </v-card-title>
               <v-card-text>
-                <v-row justify="end" align="center" class="mx-4">
-                  <!-- Dropdown on the right -->
-                  <v-col lg="4" md="4" cols="12" class="text-right">
-                    <v-btn
-                      elevation="2"
-                      class="btn mr-2 white--text"
-                      color="red darken-4"
-                      @click="GeneratePDF()"
-                      >{{ $t("container.list.PDF") }}</v-btn
-                    >
-                    <!-- <v-btn
-                        elevation="2"
-                        class="btn mr-2 white--text"
-                        color="teal darken-2"
-                        @click="GenerateExcel()"
-                        >{{ $t("container.list.excel") }}</v-btn
-                      > -->
-                  </v-col>
-                </v-row>
                 <v-row
                   class="ma-0 white round-border d-flex justify-space-between align-center"
                   justify="center"
@@ -1077,36 +1058,6 @@ export default {
         "container.beneficiary_management.digital_id.digital_id_card"
       );
       this.$store.commit("setHeaderTitle", title);
-    },
-    async GeneratePDF() {
-      const queryParams = {
-        program_id: this.data.program_id,
-        division_id: this.data.division_id,
-        district_id: this.data.district_id,
-        city_corp_id: this.data.city_id,
-        city_thana_id: this.data.city_thana_id,
-        district_pouro_id: this.data.district_pouro_id,
-        location_type: this.data.location_type,
-
-        pouro_id: this.data.pouro_id,
-        union_id: this.data.union_id,
-        thana_id: this.data.thana_id,
-        ward_id: this.data.ward_id,
-      };
-      this.$axios
-        .get("/admin/beneficiary/getBeneficiaryListPdf", {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-          params: queryParams,
-        })
-        .then((result) => {
-          window.open(result.data.data.url, "_blank");
-        })
-        .catch((error) => {
-          console.error("Error generating PDF:", error);
-        });
     },
   },
   watch: {

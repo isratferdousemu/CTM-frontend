@@ -4,6 +4,17 @@
         <v-col cols="12">
           <v-row>
             <v-col cols="12">
+              <div class="d-block text-right">
+              <v-btn
+                elevation="2"
+                class="btn my-2"
+                color="primary"
+                router
+                to="/beneficiary-management/beneficiary-shifting"
+              >
+                {{ $t("container.list.add") }}
+              </v-btn>
+            </div>
               <!-- Expantion panels start -->
               <v-expansion-panels>
                 <v-expansion-panel class="ma-2">
@@ -526,7 +537,7 @@
                   >
                     <v-col cols="12">
                       <v-data-table
-                        :headers="header"
+                        :headers="headers"
                         :items="beneficiaries"
                         :loading="loading"
                         item-key="id"
@@ -554,7 +565,7 @@
                                 elevation="0"
                                 class="white--text"
                                 router
-                                :to="`/beneficiary-management/beneficiary-info/details/${item.id}`"
+                                :to="`/beneficiary-management/beneficiary-info/details/${item.beneficiary_id}`"
                               >
                                 <v-icon> mdi-eye </v-icon>
                               </v-btn>
@@ -562,24 +573,6 @@
                             <span>
                               {{ $t("container.list.view") }}
                             </span>
-                          </v-tooltip>
-                          <v-tooltip top>
-                            <template v-slot:activator="{ on }">
-                              <v-btn
-                                v-can="'delete-division'"
-                                fab
-                                x-small
-                                v-on="on"
-                                color="#827717"
-                                class="ml-3 white--text"
-                                elevation="0"
-                                router
-                                :to="`/beneficiary-management/beneficiary-shifting`"
-                              >
-                                <v-icon> mdi mdi-swap-horizontal </v-icon>
-                              </v-btn>
-                            </template>
-                            <span> {{ $t("container.list.shifting") }}</span>
                           </v-tooltip>
                         </template>
                         <!-- End Action Button -->
@@ -632,7 +625,7 @@
   extend("required", required);
   export default {
     name: "Index",
-    title: "CTM - Beneficiary Replacement List",
+    title: "CTM - Beneficiary Shifting List",
     data() {
       return {
         data: {
@@ -714,7 +707,7 @@
         divisions: (state) => state.Division.divisions,
         userData: (state) => state.userData,
       }),
-      header() {
+      headers() {
         return [
           { text: this.$t("container.list.sl"), value: "sl",  align: 'start' },
           {
@@ -752,7 +745,7 @@
           {
             text: this.$t("container.list.action"),
             value: "actions",
-            width: "200",
+            width: "100",
             align: 'end',
           },
         ];
