@@ -158,7 +158,6 @@ const actions = {
         return err;
       });
   },
-
   BeneficiaryShifting: ({ commit }, data) => {
     return http()
       .post("/admin/beneficiary/shift", data)
