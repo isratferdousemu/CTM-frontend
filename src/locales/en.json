@@ -54,7 +54,8 @@
       "total":"Total Result",
       "PDF":"PDF",
       "excel":"Excel",
-      "shifting":"Shifting"
+      "shifting":"Shifting",
+      "view-list":"View List"
     },
     "system_config": {
       "demo_graphic": {

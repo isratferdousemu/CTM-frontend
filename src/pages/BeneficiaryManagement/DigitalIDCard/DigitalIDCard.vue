@@ -1,141 +1,100 @@
 <template>
   <div id="digital_id">
-    <v-row justify="center" class="mt-5 mb-5">
-      <v-col lg="6" md="6" cols="12" style="position: relative">
-        <v-card id="divToPrint" ref="card" width="400" class="mx-5">
-          <v-card-text
-            style="
+    <div class="d-flex justify-center my-5">
+      <v-card id="printIDCard" ref="card" width="400" class="mx-5">
+        <v-card-text style="
               background: url('/assets/images/top_line.jpg') no-repeat left top;
               background-size: 80%;
               position: relative;
-            "
-          >
-            <v-img
-              class="top-left-image"
-              style="width: 80px; height: 80px"
-              src="/assets/images/logo.png"
-            ></v-img>
-            <v-img
-              class="top-right-image"
-              style="width: 80px; height: 80px"
-              src="/assets/images/bangladesh-govt-logo.png"
-            ></v-img>
-            <v-row justify="center">
-              <div justify-center>
-                <v-col>
-                  <v-img
-                    :src="beneficiary.image"
-                    :width="230"
-                    :height="230"
-                    class="rounded-circle"
-                    v-if="beneficiary.image"
-                  ></v-img>
-                  <v-img
-                    v-if="!beneficiary.image"
-                    src="/assets/images/profile.png"
-                    :width="230"
-                    :height="230"
-                    class="rounded-circle"
-                  ></v-img>
-                </v-col>
-              </div>
-            </v-row>
-
-            <div class="mt-4">
-              <table>
-                <tr>
-                  <th class="text-left" width="50%">
-                    {{
-                      $t(
-                        "container.beneficiary_management.beneficiary_list.beneficiary_name"
-                      )
-                    }}
-                  </th>
-                  <td>: {{ beneficiary.name_en }}</td>
-                </tr>
-                <tr>
-                  <th class="text-left">
-                    {{
-                      $t(
-                        "container.beneficiary_management.beneficiary_list.beneficiary_id"
-                      )
-                    }}
-                  </th>
-                  <td>: {{ beneficiary.application_id }}</td>
-                </tr>
-                <tr>
-                  <th class="text-left">
-                    {{
-                      $t(
-                        "container.beneficiary_management.beneficiary_list.beneficiary_date_of_birth"
-                      )
-                    }}
-                  </th>
-                  <td>: {{ beneficiary.date_of_birth }}</td>
-                </tr>
-                <tr>
-                  <th class="text-left">
-                    {{
-                      $t(
-                        "container.beneficiary_management.beneficiary_list.beneficiary_addess"
-                      )
-                    }}
-                  </th>
-                  <td>: {{ beneficiary.current_address }}</td>
-                </tr>
-              </table>
-            </div>
-
-            <v-row class="mt-5">
+            ">
+          <v-img class="top-left-image" style="width: 80px; height: 80px" src="/assets/images/logo.png"></v-img>
+          <v-img class="top-right-image" style="width: 80px; height: 80px"
+            src="/assets/images/bangladesh-govt-logo.png"></v-img>
+          <v-row justify="center">
+            <div justify-center>
               <v-col>
-                <qr-code
-                  v-if="this.beneficiary.qrCode"
-                  :text="this.beneficiary.qrCode"
-                  size="100"
-                >
-                </qr-code>
+                <v-img :src="beneficiary.image" :width="230" :height="230" class="rounded-circle"
+                  v-if="beneficiary.image"></v-img>
+                <v-img v-if="!beneficiary.image" src="/assets/images/profile.png" :width="230" :height="230"
+                  class="rounded-circle"></v-img>
               </v-col>
-              <v-col class="justify">
-                <v-img
-                  class="bottom-right-image"
-                  src="/assets/images/signature.png"
-                  :width="200"
-                ></v-img>
-                <div
-                  class="d-flex justify-center my-2"
-                  style="text-decoration: overline"
-                >
+            </div>
+          </v-row>
+
+          <div class="mt-4">
+            <table>
+              <tr>
+                <th class="text-left" width="50%">
                   {{
                     $t(
-                      "container.beneficiary_management.beneficiary_list.authorize_singneture"
+                      "container.beneficiary_management.beneficiary_list.beneficiary_name"
                     )
                   }}
-                </div>
-              </v-col>
-            </v-row>
-          </v-card-text>
-          <v-card-actions
-            class="py-5"
-            style="
+                </th>
+                <td>: {{ beneficiary.name_en }}</td>
+              </tr>
+              <tr>
+                <th class="text-left">
+                  {{
+                    $t(
+                      "container.beneficiary_management.beneficiary_list.beneficiary_id"
+                    )
+                  }}
+                </th>
+                <td>: {{ beneficiary.application_id }}</td>
+              </tr>
+              <tr>
+                <th class="text-left">
+                  {{
+                    $t(
+                      "container.beneficiary_management.beneficiary_list.beneficiary_date_of_birth"
+                    )
+                  }}
+                </th>
+                <td>: {{ beneficiary.date_of_birth }}</td>
+              </tr>
+              <tr>
+                <th class="text-left">
+                  {{
+                    $t(
+                      "container.beneficiary_management.beneficiary_list.beneficiary_addess"
+                    )
+                  }}
+                </th>
+                <td>: {{ beneficiary.current_address }}</td>
+              </tr>
+            </table>
+          </div>
+
+          <v-row class="mt-5">
+            <v-col>
+              <qr-code v-if="this.beneficiary.qrCode" :text="this.beneficiary.qrCode" size="100">
+              </qr-code>
+            </v-col>
+            <v-col class="justify">
+              <v-img class="bottom-right-image" src="/assets/images/signature.png" :width="200"></v-img>
+              <div class="d-flex justify-center my-2" style="text-decoration: overline">
+                {{
+                  $t(
+                    "container.beneficiary_management.beneficiary_list.authorize_singneture"
+                  )
+                }}
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+        <v-card-actions class="py-5" style="
               background: url('/assets/images/bottom_line.jpg') no-repeat right
                 bottom;
               background-size: 90%;
               position: relative;
-            "
-            >&nbsp;</v-card-actions
-          >
-        </v-card>
-        <div class="d-inline d-flex justify-center mt-2">
-          <v-btn
-            elevation="2"
-            class="btn mr-2 justify-center"
-            color="success"
-            @click="pritIdCard('divToPrint')"
-            >{{ $t("Print") }}</v-btn
-          >
-        </div>
-      </v-col>
-    </v-row>
+            ">&nbsp;</v-card-actions>
+      </v-card>
+    </div>
+    <div class="d-flex justify-center mb-10">
+      <v-btn elevation="2" class="btn mr-2 justify-center" color="success" @click="pritIdCard()">{{
+        $t("Print") }}</v-btn>
+    </div>
   </div>
 </template>
 
@@ -159,7 +118,7 @@ export default {
       },
     };
   },
-  mounted() {},
+  mounted() { },
 
   methods: {
     updateHeaderTitle() {
@@ -193,14 +152,29 @@ export default {
         console.log(e);
       }
     },
-    pritIdCard(divId) {
-      window.print(divId);
+    pritIdCard() {
+      // var divToPrint = document.getElementById('printIDCard');
+      // var popupWin = window.open('', '_blank', 'width=500');
+      // popupWin.document.open();
+      // popupWin.document.write('<html><body onload="window.print()">' + divToPrint.innerHTML + '</html>');
+      // popupWin.document.close();
+      var panel = document.getElementById("printIDCard");
+            var printWindow = window.open('', '', 'height=500,width=800');
+            printWindow.document.write('<html><head><title>DIV Contents</title>');
+            printWindow.document.write('</head><body >');
+            printWindow.document.write(panel.innerHTML);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            setTimeout(function () {
+                printWindow.print();
+            }, 500);
+            return false;
     },
   },
   watch: {
     "$i18n.locale": "updateHeaderTitle",
   },
-  created() {},
+  created() { },
   beforeMount() {
     this.updateHeaderTitle();
     this.GetBeneficiaryDetails(this.$route.params.id);
@@ -216,10 +190,12 @@ export default {
   margin: 25px;
   /* Adjust the margin as needed */
 }
+
 @media print {
   body {
     visibility: hidden;
   }
+
   #divToPrint {
     visibility: visible;
     position: absolute;
