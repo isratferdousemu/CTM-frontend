@@ -1115,6 +1115,7 @@
           city_corp_id: this.data.city_id,
           city_thana_id: this.data.city_thana_id,
           district_pouro_id: this.data.district_pouro_id,
+          location_type: this.data.location_type,
   
           pouro_id: this.data.pouro_id,
           union_id: this.data.union_id,

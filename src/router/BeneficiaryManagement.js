@@ -134,7 +134,7 @@ const BeneficiaryManagementRoutes = [
       requiresAuth: true,
       permission: "beneficiary-card",
     },
-    component: () => import("../pages/BeneficiaryManagement/DigitalIDCard/Index.vue")
+    component: () => import("../pages/BeneficiaryManagement/DigitalIDCard/IndexNew.vue")
   },
   {
     path: "/beneficiary-management/digital-id-card/:id",
