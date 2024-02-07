@@ -716,6 +716,7 @@
                                         <v-card-text class="mt-5">
                                             <div class="pa-2 mb-4">
                                                 <v-row>
+                                                    
                                                     <v-col cols="6" lg="6">
                                                         <ValidationProvider name="Nominee Name (BN)" vid="nominee_bn"
                                                             rules="required" v-slot="{ errors }">
