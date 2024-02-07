@@ -2,6 +2,11 @@
   <div id="information_tracking">
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
+        <div class="d-block text-right">
+          <v-btn elevation="2" class="btn my-2" color="primary" router to="/beneficiary-management/beneficiary-shifting-list">
+            {{ $t("container.list.view-list") }}
+          </v-btn>
+        </div>
         <!-- Expantion panels start -->
         <v-expansion-panels v-model="panel" multiple>
           <v-expansion-panel v-model="panel" multiple>

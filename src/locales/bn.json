@@ -54,7 +54,8 @@
             "total": "মোট ফলাফল",
             "PDF": "পিডিএফ",
             "excel": "এক্সেল",
-            "shifting":"স্থানান্তর"
+            "shifting":"স্থানান্তর",
+            "view-list":"লিস্ট দেখুন"
         },
         "system_config": {
             "demo_graphic": {
