@@ -54,7 +54,9 @@
       "PDF":"PDF",
       "excel":"Excel",
       "confirm":"Confirm",
-      "verify":"Verify"
+      "verify":"Verify",
+      "shifting":"Shifting",
+      "view-list":"View List"
     },
     "system_config": {
       "demo_graphic": {
@@ -588,6 +590,7 @@
         
         },
         
+        
       "poverty_cut_off": {
         "poverty_cut_off": "Cut Off",
         "list": "Cut Off List",
@@ -708,6 +711,7 @@
         "beneficiary_father_name": "Beneficiary Father Name",
         "beneficiary_mother_name": "Beneficiary Mother Name",
         "beneficiary_dob": "Beneficiary Date of Birth",
+        "replace_list": "Beneficiary Replacement List",
         "replacement_cause": "Replacement Cause",
         "replacement_cause_details": "Replacement Cause Deatils",
         "replacement_detail": "Replacement Deatil",
@@ -750,9 +754,12 @@
       },
       "beneficiary_exit": {
         "title": "Beneficiary Exit and Adiition Management ",
-        "date_of_exit": "Date of Exit"
+        "date_of_exit": "Date of Exit",
+        "list":"Beneficiary Exit List"
       },
       "beneficiary_shifting": {
+        "list":"Beneficiary List",
+        "shitfing_list":"Beneficiary Shifting List",
         "title": "Beneficiary Shifting",
         "cause": "Cause",
         "activation_date": "Activation Date"

@@ -4,6 +4,17 @@
       <v-col cols="12">
         <v-row>
           <v-col cols="12">
+            <div class="d-block text-right">
+              <v-btn
+                elevation="2"
+                class="btn my-2"
+                color="primary"
+                router
+                to="/beneficiary-management/beneficiary-exit"
+              >
+                {{ $t("container.list.add") }}
+              </v-btn>
+            </div>
             <!-- Expantion panels start -->
             <v-expansion-panels>
               <v-expansion-panel class="ma-2">
@@ -11,7 +22,7 @@
                   <h3 class="white--text">
                     {{
                       $t(
-                        "container.beneficiary_management.beneficiary_list.list"
+                        "container.beneficiary_management.beneficiary_exit.list"
                       )
                     }}
                   </h3>
@@ -465,98 +476,6 @@
                           </ValidationProvider>
                         </v-col>
                       </v-row>
-                      <v-row>
-                        <v-col lg="6" md="6" cols="12">
-                          <v-switch
-                            v-model="advanch_search"
-                            color="primary"
-                            :label="
-                              $t(
-                                'container.beneficiary_management.beneficiary_list.advance_search'
-                              )
-                            "
-                            :value="!advanch_search"
-                            hide-details
-                          ></v-switch>
-                        </v-col>
-                      </v-row>
-
-                      <v-row v-if="advanch_search">
-                        <v-col lg="3" md="3" cols="12">
-                          <v-text-field
-                            outlined
-                            clearable
-                            :label="
-                              $t(
-                                'container.beneficiary_management.beneficiary_list.beneficiary_id'
-                              )
-                            "
-                            v-model="data.beneficiary_id"
-                          >
-                          </v-text-field>
-                        </v-col>
-                        <v-col lg="3" md="3" cols="12">
-                          <v-text-field
-                            outlined
-                            clearable
-                            :label="
-                              $t(
-                                'container.beneficiary_management.beneficiary_list.nominee'
-                              )
-                            "
-                            v-model="data.nominee_name"
-                          >
-                          </v-text-field>
-                        </v-col>
-                        <v-col lg="3" md="3" cols="12">
-                          <v-text-field
-                            outlined
-                            clearable
-                            :label="
-                              $t(
-                                'container.beneficiary_management.beneficiary_list.account_no'
-                              )
-                            "
-                            v-model="data.account_number"
-                          >
-                          </v-text-field>
-                        </v-col>
-                        <v-col lg="3" md="3" cols="12">
-                          <v-text-field
-                            outlined
-                            clearable
-                            :label="
-                              $t(
-                                'container.beneficiary_management.beneficiary_list.nid'
-                              )
-                            "
-                            v-model="data.nid"
-                          >
-                          </v-text-field>
-                        </v-col>
-
-                        <v-col lg="3" md="3" cols="12">
-                          <ValidationProvider
-                            name="status"
-                            vid="status_id"
-                            v-slot="{ errors }"
-                          >
-                            <v-autocomplete
-                              v-model="data.status"
-                              outlined
-                              :label="$t('container.list.status')"
-                              :items="ben_status"
-                              item-text="value"
-                              item-value="id"
-                              class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            ></v-autocomplete>
-                          </ValidationProvider>
-                        </v-col>
-                      </v-row>
 
                       <div class="d-inline d-flex justify-end">
                         <v-btn
@@ -587,34 +506,11 @@
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
                   {{
-                    $t("container.beneficiary_management.beneficiary_list.list")
+                    $t("container.beneficiary_management.beneficiary_exit.list")
                   }}
                 </h3>
               </v-card-title>
               <v-card-text>
-                <v-row>
-                  <v-col> </v-col>
-                  <v-col> </v-col>
-                  <v-col>
-                    <!-- selected columns -->
-                    <v-select
-                      v-model="value"
-                      :items="headers"
-                      :label="
-                        $t(
-                          'container.application_selection.application.select_column'
-                        )
-                      "
-                      multiple
-                      return-object
-                      outlined
-                      menu-props="top"
-                    >
-                      <template v-slot:selection="{ item, index }"> </template>
-                    </v-select>
-                    <!-- Select column End -->
-                  </v-col>
-                </v-row>
                 <v-row justify="end" align="center" class="mx-4">
                   <!-- Dropdown on the right -->
                   <v-col lg="4" md="4" cols="12" class="text-right">
@@ -626,12 +522,12 @@
                       >{{ $t("container.list.PDF") }}</v-btn
                     >
                     <!-- <v-btn
-                      elevation="2"
-                      class="btn mr-2 white--text"
-                      color="teal darken-2"
-                      @click="GenerateExcel()"
-                      >{{ $t("container.list.excel") }}</v-btn
-                    > -->
+                        elevation="2"
+                        class="btn mr-2 white--text"
+                        color="teal darken-2"
+                        @click="GenerateExcel()"
+                        >{{ $t("container.list.excel") }}</v-btn
+                      > -->
                   </v-col>
                 </v-row>
                 <v-row
@@ -641,7 +537,7 @@
                 >
                   <v-col cols="12">
                     <v-data-table
-                      :headers="selectedHeaders"
+                      :headers="headers"
                       :items="beneficiaries"
                       :loading="loading"
                       item-key="id"
@@ -658,26 +554,6 @@
                       </template>
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }" width="50%">
-                        <!-- <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'update-post'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="#795548"
-                              class="mr-3 white--text"
-                              elevation="0"
-                              router
-                              to="/beneficiary-management/switch-program"
-                            >
-                              <v-icon> mdi mdi-swap-horizontal </v-icon>
-                            </v-btn>
-                          </template>
-                          <span>
-                            {{ $t("container.list.switch_program") }}
-                          </span>
-                        </v-tooltip> -->
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
@@ -698,65 +574,24 @@
                             {{ $t("container.list.view") }}
                           </span>
                         </v-tooltip>
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'update-post'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="success"
-                              elevation="0"
-                              class="ml-3"
-                              router
-                              :to="`/beneficiary-management/beneficiary-info/edit/${item.id}`"
-                            >
-                              <v-icon> mdi-account-edit-outline </v-icon>
-                            </v-btn>
-                          </template>
-                          <span>
-                            {{ $t("container.list.edit") }}
-                          </span>
-                        </v-tooltip>
-
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'delete-division'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="#827717"
-                              class="ml-3 white--text"
-                              elevation="0"
-                              router
-                              :to="`/beneficiary-management/beneficiary-replacement/${item.id}`"
-                            >
-                              <v-icon> mdi mdi-file-replace </v-icon>
-                            </v-btn>
-                          </template>
-                          <span> {{ $t("container.list.replace") }}</span>
-                        </v-tooltip>
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'delete-division'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="#546E7A"
-                              class="ml-3 white--text"
-                              elevation="0"
-                              router
-                              :to="`/beneficiary-management/beneficiary-journey/${item.id}`"
-                            >
-                              <v-icon> mdi mdi-history </v-icon>
-                            </v-btn>
-                          </template>
-                          <span>
-                            {{ $t("container.list.beneficiary_journey") }}</span
-                          >
-                        </v-tooltip>
+                        <!-- <v-tooltip top>
+                            <template v-slot:activator="{ on }">
+                              <v-btn
+                                v-can="'delete-division'"
+                                fab
+                                x-small
+                                v-on="on"
+                                color="#827717"
+                                class="ml-3 white--text"
+                                elevation="0"
+                                router
+                                :to="`/beneficiary-management/beneficiary-exit`"
+                              >
+                                <v-icon> mdi mdi-exit-to-app </v-icon>
+                              </v-btn>
+                            </template>
+                            <span> {{ $t("container.list.exit") }}</span>
+                          </v-tooltip> -->
                       </template>
                       <!-- End Action Button -->
                       <template v-slot:footer="item">
@@ -796,52 +631,11 @@
           </v-col>
         </v-row>
       </v-col>
-
-      <!-- Committee View modal  -->
-      <v-dialog v-model="dialogView" width="80%">
-        <v-card style="justify-content: left; text-align: left">
-          <v-card-title class="font-weight-bold justify-center">
-            Beneficiary View
-            <!-- {{ $t("container.system_config.demo_graphic.committee.view") }} -->
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <ValidationObserver ref="form" v-slot="{ invalid }">
-              <form @submit.prevent="update()">
-                <v-simple-table>
-                  <template v-if="beneficiaryItem">
-                    <tbody>
-                      <tr>
-                        <td><h4>Program Name</h4></td>
-                        <td>{{ beneficiaryItem.program.name_en }}</td>
-                        <td><h4>Application Id</h4></td>
-                        <td>{{ beneficiaryItem.application_id }}</td>
-                      </tr>
-                      <tr>
-                        <td><h4>Name</h4></td>
-                        <td>{{ beneficiaryItem.name_en }}</td>
-                        <td><h4>Father Name</h4></td>
-                        <td>{{ beneficiaryItem.father_name_en }}</td>
-                      </tr>
-                      <tr>
-                        <td><h4>Mother Name</h4></td>
-                        <td>{{ beneficiaryItem.mother_name_en }}</td>
-                        <td><h4>Mobile</h4></td>
-                        <td>{{ beneficiaryItem.mobile }}</td>
-                      </tr>
-                    </tbody>
-                  </template>
-                </v-simple-table>
-              </form>
-            </ValidationObserver>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
     </v-row>
   </div>
 </template>
-
-<script>
+  
+  <script>
 import { mapState, mapActions } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
@@ -863,11 +657,6 @@ export default {
         thana_id: null,
         union_id: null,
         ward_id: null,
-        beneficiary_id: null,
-        nominee_name: null,
-        account_number: null,
-        nid: null,
-        status: null,
       },
       ben_status: [
         {
@@ -884,38 +673,6 @@ export default {
         },
       ],
 
-      value: [
-        {
-          text: this.$t(
-            "container.beneficiary_management.beneficiary_list.beneficiary_id"
-          ),
-          value: "application_id",
-        },
-        {
-          text: this.$t("container.list.name_en"),
-          value: "name_en",
-        },
-        {
-          text: this.$t(
-            "container.application_selection.application.father_name_en"
-          ),
-          value: "father_name_en",
-        },
-        {
-          text: this.$t("container.application_selection.application.program"),
-          value: "program.name_en",
-        },
-        {
-          text: this.$t("container.application_selection.application.mobile"),
-          value: "mobile",
-        },
-        {
-          text: this.$t("container.list.status"),
-          value: "status",
-        },
-      ], // Default selection without 'name'
-      selectedHeaders: [],
-      dialogView: false,
       beneficiaryItem: {},
       loading: true,
       search: "",
@@ -930,7 +687,6 @@ export default {
       unions: [],
       wards: [],
       district_pouros: [],
-      advanch_search: false,
       subLocationType: [
         {
           id: 1,
@@ -971,77 +727,7 @@ export default {
     }),
     headers() {
       return [
-        {
-          text: this.$t(
-            "container.beneficiary_management.beneficiary_list.beneficiary_id"
-          ),
-          value: "application_id",
-        },
-        {
-          text: this.$t("container.list.name_en"),
-          value: "name_en",
-        },
-        {
-          text: this.$t("container.application_selection.application.program"),
-          value: "program.name_en",
-        },
-        {
-          text: this.$t("container.list.name_en"),
-          value: "name_en",
-        },
-        {
-          text: this.$t("container.list.name_bn"),
-          value: "name_bn",
-        },
-        {
-          text: this.$t(
-            "container.application_selection.application.father_name_en"
-          ),
-          value: "father_name_en",
-        },
-        {
-          text: this.$t(
-            "container.application_selection.application.father_name_bn"
-          ),
-          value: "father_name_bn",
-        },
-        {
-          text: this.$t(
-            "container.application_selection.application.mother_name_en"
-          ),
-          value: "mother_name_en",
-        },
-        {
-          text: this.$t(
-            "container.application_selection.application.mother_name_bn"
-          ),
-          value: "mother_name_bn",
-        },
-        {
-          text: this.$t(
-            "container.application_selection.application.spouse_name_en"
-          ),
-          value: "spouse_name_en",
-        },
-        {
-          text: this.$t(
-            "container.application_selection.application.spouse_name_bn"
-          ),
-          value: "spouse_name_bn",
-        },
-        {
-          text: this.$t("container.application_selection.application.mobile"),
-          value: "mobile",
-        },
-        {
-          text: this.$t("container.list.status"),
-          value: "status",
-        },
-      ];
-    },
-    headers_start() {
-      return [
-        { text: this.$t("container.list.sl"), value: "sl" },
+        { text: this.$t("container.list.sl"), value: "sl", align: "start" },
         {
           text: this.$t(
             "container.beneficiary_management.beneficiary_list.beneficiary_id"
@@ -1060,20 +746,25 @@ export default {
         },
         {
           text: this.$t("container.application_selection.application.program"),
-          value: "program.name_en",
+          value: "program_name_en",
         },
         {
-          text: this.$t("container.application_selection.application.mobile"),
-          value: "mobile",
+          text: this.$t(
+            "container.application_selection.application.exit_reason"
+          ),
+          value: "exit_reason_en",
         },
         {
-          text: this.$t("container.list.status"),
-          value: "status",
+          text: this.$t(
+            "container.application_selection.application.exit_date"
+          ),
+          value: "exit_date",
         },
         {
           text: this.$t("container.list.action"),
           value: "actions",
-          width: "200",
+          width: "100",
+          align: "end",
         },
       ];
     },
@@ -1104,11 +795,6 @@ export default {
       this.data.program_id = null;
       this.data.union_id = null;
       this.data.ward_id = null;
-      this.data.beneficiary_id = null;
-      this.data.nominee_name = null;
-      this.data.account_number = null;
-      this.data.nid = null;
-      this.data.status = null;
 
       this.GetApplication();
     },
@@ -1398,19 +1084,13 @@ export default {
         union_id: this.data.union_id,
         ward_id: this.data.ward_id,
 
-        beneficiary_id: this.data.beneficiary_id,
-        nominee_name: this.data.nominee_name,
-        account_number: this.data.account_number,
-        nid: this.data.nid,
-        status: this.data.status,
-
         perPage: this.pagination.perPage,
         page: this.pagination.current,
-        sortBy: this.sortBy,
-        orderBy: this.sortDesc,
+        //   sortBy: this.sortBy,
+        //   orderBy: this.sortDesc,
       };
       this.$axios
-        .get("/admin/beneficiary/list", {
+        .get("/admin/beneficiary/exitList", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -1418,16 +1098,14 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          // this.beneficiaries = result.data.data;
-          var results = result.data.data;
-          console.log("results", results);
+          this.beneficiaries = result.data.data;
 
-          this.beneficiaries = results.map((item) => {
-            return (item = {
-              ...item,
-              status: this.ben_status[item.status - 1].value,
-            });
-          });
+          // this.beneficiaries = results.map((item) => {
+          //   return (item = {
+          //     ...item,
+          //     status: this.ben_status[item.status - 1].value,
+          //   });
+          // });
           this.pagination.current = result.data.meta.current_page;
           this.pagination.total = result.data.meta.last_page;
           this.pagination.grand_total = result.data.meta.total;
@@ -1436,14 +1114,9 @@ export default {
     },
     updateHeaderTitle() {
       const title = this.$t(
-        "container.beneficiary_management.beneficiary_list.list"
+        "container.beneficiary_management.beneficiary_exit.list"
       );
       this.$store.commit("setHeaderTitle", title);
-    },
-    async GetBeneficiaryById(item) {
-      this.dialogView = true;
-      this.beneficiaryItem = item;
-      console.log(this.beneficiaryItem);
     },
     async GeneratePDF() {
       const queryParams = {
@@ -1461,7 +1134,7 @@ export default {
         ward_id: this.data.ward_id,
       };
       this.$axios
-        .get("/admin/beneficiary/getBeneficiaryListPdf", {
+        .get("/admin/beneficiary/getBeneficiaryExitListPdf", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -1478,29 +1151,6 @@ export default {
   },
   watch: {
     "$i18n.locale": "updateHeaderTitle",
-    value(val) {
-      // this.selectedHeaders = val;
-
-      this.selectedHeaders = [
-        { text: this.$t("container.list.sl"), value: "sl" },
-        ...val,
-        {
-          text: this.$t("container.list.action"),
-          value: "actions",
-          width: "200",
-        },
-      ];
-    },
-    advanch_search(val) {
-      this.data = {
-        ...this.data,
-        beneficiary_id: null,
-        nominee_name: null,
-        account_number: null,
-        nid: null,
-        status: null,
-      };
-    },
   },
   created() {
     this.GetAllDivisions();
@@ -1511,7 +1161,6 @@ export default {
     this.updateHeaderTitle();
   },
   mounted() {
-    this.selectedHeaders = this.headers_start;
     this.$store
       .dispatch("getLookupByType", 1)
       .then((res) => (this.locationType = res));
