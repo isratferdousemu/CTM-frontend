@@ -9,20 +9,22 @@
 
                             <ValidationProvider name="program" vid="program" rules="required" v-slot="{ errors }">
                                 <label>{{ $t('container.application_selection.application.program') }} </label>
-                                <span style="margin-left: 4px; color: red">*</span>
-                                <v-select outlined :items="data?.program" item-text="name_en" item-value="id"
-                                    v-model="data.program_id" required :error="errors[0] ? true : false"
-                                    :error-messages="errors[0]" readonly>
-                                </v-select>
+                             
+                                <v-text-field  outlined 
+                                  required :error="errors[0] ? true : false" v-model="program_name"
+                                     readonly>
+                                </v-text-field >
                             </ValidationProvider>
                             <div>
-                                <v-expansion-panels v-model="panel" multiple>
+                        
                                     <!-- Applicant Verification -->
-                                    <v-expansion-panel>
-                                        <v-expansion-panel-header color="primary">
-                                            <h3 class="white--text">{{ $t('container.application_selection.application.applicant_verification') }}</h3>
-                                        </v-expansion-panel-header>
-                                        <v-expansion-panel-content class="mt-5">
+                                    <v-card>
+                                    <v-card-title style="background-color: #1976D2; color: white;">
+      {{ $t('container.application_selection.application.applicant_verification') }} 
+    </v-card-title>
+                                     
+                                        <v-card-text class="mt-5">
+                                           
                                             <template>
                                                 <ValidationProvider name="program" vid="verification_type" rules="required"
                                                     v-slot="{ errors }">
@@ -51,7 +53,7 @@
                                                             </span>
 
                                                         </label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
+                                                     
                                                         <v-text-field outlined readonly v-model="data.verification_number"
                                                             class="mr-2" type="number" required
                                                             :error="errors[0] ? true : false" :error-messages="errors[0]">
@@ -60,9 +62,9 @@
                                                 </v-col>
 
                                                 <v-col>
-                                                    <label>Date of Birth </label>
+                                                    <label>{{ $t('container.application_selection.application.date_of_birth') }} </label>
 
-                                                    <span style="margin-left: 4px; color: red">*</span>
+                                               
 
 
                                                     <v-text-field v-model="data.date_of_birth" readonly outlined>
@@ -77,20 +79,16 @@
                                                     :disabled="data.date_of_birth == null || data.verification_number == null || data.verification_type == null || data.date_of_birth == '' || data.verification_number == '' || data.verification_type == ''"
                                                     class="btn" color="primary">Verify</v-btn>
                                             </div> -->
-                                        </v-expansion-panel-content>
-                                    </v-expansion-panel>
-                                    <!-- Applicant Verification end -->
-
-                                    <!-- 2nd Expansion panel -->
-
-
-                                    <!-- 3rd Expansion panel -->
-                                    <!-- Personal Information  -->
-                                    <v-expansion-panel class="mt-5">
-                                        <v-expansion-panel-header color="primary">
-                                            <h3 class="white--text">Personal Information</h3>
-                                        </v-expansion-panel-header>
-                                        <v-expansion-panel-content>
+                                        </v-card-text>
+                                    </v-card>
+                                                            <v-card class="mt-5">
+                                        <v-card-title style="background-color: #1976D2; color: white;">
+     {{ $t('container.application_selection.application.personal_info') }}
+        </v-card-title>
+                                     
+                                            <v-card-text class="mt-5">
+                              
+                                      
                                             <div class="pa-2 mb-4">
                                                 <v-row>
                                                     <v-col cols="6" lg="6">
@@ -136,8 +134,8 @@
                                                     <v-col cols="6" lg="6">
                                                         <ValidationProvider name="Name in Bangla" vid="name_bn"
                                                             rules="required" v-slot="{ errors }">
-                                                            <label>Name (BN) </label>
-                                                            <span style="margin-left: 4px; color: red">*</span>
+                                                            <label>{{$t('container.application_selection.application.name_bn') }} </label>
+                                                        
                                                             <v-text-field v-model="data.name_bn" outlined readonly
                                                                 :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
@@ -147,8 +145,8 @@
                                                     <v-col cols="6" lg="6">
                                                         <ValidationProvider name="Name in English" vid="name_en"
                                                             rules="required" v-slot="{ errors }">
-                                                            <label>Name (EN) </label>
-                                                            <span style="margin-left: 4px; color: red">*</span>
+                                                            <label>{{ $t('container.application_selection.application.name_en') }} </label>
+                                                           
                                                             <v-text-field v-model="data.name_en" outlined readonly
                                                                 :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
@@ -158,7 +156,7 @@
                                                     <v-col cols="6" lg="6">
                                                         <ValidationProvider name="Father Name in Bangla"
                                                             vid="father_name_bn" rules="required" v-slot="{ errors }">
-                                                            <label>Father Name (BN)</label>
+                                                            <label>{{ $t('container.application_selection.application.father_name_bn') }}</label>
 
                                                             <v-text-field v-model="data.father_name_bn" outlined required
                                                                 readonly :error="errors[0] ? true : false"
@@ -169,7 +167,7 @@
                                                     <v-col cols="6" lg="6">
                                                         <ValidationProvider name="Father Name in English"
                                                             vid="father_name_en" rules="required" v-slot="{ errors }">
-                                                            <label>Father Name (EN)</label>
+                                                            <label>{{ $t('container.application_selection.application.father_name_en') }}</label>
                                                             <v-text-field v-model="data.father_name_en" outlined required
                                                                 readonly :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
@@ -179,7 +177,7 @@
                                                     <v-col cols="6" lg="6">
                                                         <ValidationProvider name="Mother Name in English"
                                                             vid="mother_name_bn" v-slot="{ errors }">
-                                                            <label>Mother Name (BN)</label>
+                                                            <label>{{ $t('container.application_selection.application.mother_name_bn') }}</label>
                                                             <v-text-field v-model="data.mother_name_bn" outlined required
                                                                 readonly :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
@@ -189,7 +187,7 @@
                                                     <v-col cols="6" lg="6">
                                                         <ValidationProvider name="Mother Name in English"
                                                             vid="mother_name_en" v-slot="{ errors }">
-                                                            <label>Mother Name (EN)</label>
+                                                            <label>{{ $t('container.application_selection.application.mother_name_en') }}</label>
                                                             <v-text-field v-model="data.mother_name_en" outlined readonly
                                                                 required :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
@@ -199,7 +197,7 @@
                                                     <v-col cols="6" lg="6">
                                                         <ValidationProvider name="Spouse Name in Bangla"
                                                             vid="spouse_name_bn" v-slot="{ errors }">
-                                                            <label>Spouse Name (BN)</label>
+                                                            <label>{{ $t('container.application_selection.application.spouse_name_bn') }}</label>
                                                             <v-text-field v-model="data.spouse_name_bn" outlined readonly
                                                                 :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
@@ -209,18 +207,17 @@
                                                     <v-col cols="6" lg="6">
                                                         <ValidationProvider name="Marital Status" vid="marital_status"
                                                             v-slot="{ errors }">
-                                                            <label>Marital Status</label>
-                                                            <v-select v-model="data.marital_status" outlined readonly
-                                                                required :items="marital_status"
-                                                                :error="errors[0] ? true : false"
-                                                                :error-messages="errors[0]">
-                                                            </v-select>
+                                                            
+                                                            <label>{{ $t('container.system_config.allowance_program.marital_status') }}</label>
+                                                            <v-text-field v-model="data.marital_status" outlined readonly
+                                                                 >
+                                                            </v-text-field>
                                                         </ValidationProvider>
                                                     </v-col>
                                                     <v-col cols="6" lg="6">
                                                         <ValidationProvider name="Spouse Name in English"
                                                             vid="spouse_name_en" v-slot="{ errors }">
-                                                            <label>Spouse Name (EN)</label>
+                                                            <label>{{ $t('container.application_selection.application.spouse_name_en') }}</label>
                                                             <v-text-field v-model="data.spouse_name_en" outlined readonly
                                                                 :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
@@ -230,21 +227,20 @@
                                                     <v-col cols="6" lg="6">
                                                         <ValidationProvider name="Religion" vid="religion"
                                                             v-slot="{ errors }" rules="required">
-                                                            <label>Religion</label>
-                                                            <span style="margin-left: 4px; color: red">*</span>
+                                                            <label>{{ $t('container.application_selection.application.religion') }}</label>
+                                                         
 
-                                                            <v-select v-model="data.religion" outlined required
-                                                                :items="religion" :error="errors[0] ? true : false"
-                                                                :error-messages="errors[0]">
-                                                            </v-select>
+                                                            <v-text-field v-model="data.religion" outlined required readonly
+                                                               >
+                                                            </v-text-field>
                                                         </ValidationProvider>
                                                     </v-col>
                                                     <v-col cols="6" lg="6">
                                                         <ValidationProvider name="Mobile Number" vid="mobile"
                                                             rules="required" v-slot="{ errors }">
-                                                            <label style="display: inline-block">Mobile Number
+                                                            <label style="display: inline-block">{{ $t('container.application_selection.application.mobile') }}
                                                             </label>
-                                                            <span style="margin-left: 4px; color: red">*</span>
+                                                          
                                                             <v-text-field v-model="data.mobile" outlined readonly
                                                                 type="Number" :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
@@ -255,7 +251,7 @@
                                                     <v-col cols="6" lg="6">
                                                         <ValidationProvider name="Nationality" vid="nationality"
                                                             v-slot="{ errors }">
-                                                            <label>Nationality</label>
+                                                            <label>{{ $t('container.application_selection.application.nationality') }}</label>
                                                             <v-text-field v-model="data.nationality" outlined required
                                                                 readonly :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
@@ -265,8 +261,8 @@
                                                     <v-col cols="6" lg="6">
                                                         <ValidationProvider name="Age" vid="age" v-slot="{ errors }"
                                                             rules="required">
-                                                            <label>Age</label>
-                                                            <span style="margin-left: 4px; color: red">*</span>
+                                                            <label>{{ $t('container.application_selection.application.age') }}</label>
+                                                          
                                                             <v-text-field v-model="data.age" outlined type="number" required
                                                                 readonly :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
@@ -274,22 +270,18 @@
                                                         </ValidationProvider>
                                                     </v-col>
                                                     <v-col cols="6" lg="6">
-                                                        <ValidationProvider name="Gender" vid="gender" v-slot="{ errors }"
-                                                            rules="required">
-                                                            <label>Gender</label>
-                                                            <span style="margin-left: 4px; color: red">*</span>
-                                                            <v-select v-model="data.gender_id" item-text="value_en"
-                                                                item-value="id" outlined :items="genders" required
-                                                                :error="errors[0] ? true : false"
-                                                                :error-messages="errors[0]" readonly>
-                                                            </v-select>
-                                                        </ValidationProvider>
+                                                     
+                                                            <label>{{ $t('container.system_config.allowance_program.gender') }}</label>
+                                                          
+                                                            <v-text-field v-model="genderName"  outlined readonly>
+                                                            </v-text-field>
+                                                   
                                                     </v-col>
                                                     <v-col cols="6" lg="6">
                                                         <ValidationProvider name="Education Status" vid="education_status"
                                                             rules="required" v-slot="{ errors }">
-                                                            <label>Education Status</label>
-                                                            <span style="margin-left: 4px; color: red">*</span>
+                                                            <label>{{ $t('container.application_selection.application.education_status') }}</label>
+                                                            
                                                             <v-select v-model="data.education_status" outlined required
                                                                 :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]" :items="education_status"
@@ -300,7 +292,7 @@
                                                     <v-col cols="6" lg="6">
                                                         <ValidationProvider name="Profession" vid="profession"
                                                             v-slot="{ errors }">
-                                                            <label>Profession</label>
+                                                            <label>{{ $t('container.application_selection.application.profession') }}</label>
                                                             <v-text-field v-model="data.profession" outlined readonly
                                                                 :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
@@ -310,7 +302,7 @@
                                                     <v-col cols="6" lg="6">
                                                         <ValidationProvider name="Identification Mark"
                                                             vid="identification_mark" v-slot="{ errors }">
-                                                            <label>Identification Mark</label>
+                                                            <label>{{ $t('container.application_selection.application.identification_mark') }}</label>
                                                             <v-text-field v-model="data.identification_mark" outlined
                                                                 readonly :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
@@ -319,37 +311,38 @@
                                                     </v-col>
                                                 </v-row>
                                             </div>
-                                        </v-expansion-panel-content>
-                                    </v-expansion-panel>
+                                        </v-card-text >
+                                    </v-card>
                                     <!-- Personal Information end-->
 
                                     <!-- 3rd Expansion panel -->
                                     <!-- Contact Information -->
-                                    <v-expansion-panel class="mt-4">
-                                        <v-expansion-panel-header color="primary">
-                                            <h3 class="white--text">Contact Information</h3>
-                                        </v-expansion-panel-header>
-                                        <v-expansion-panel-content class="mt-5">
+                                    
+                                    <v-card class="mt-5">
+                                                     <v-card-title style="background-color: #1976D2; color: white;">
+         {{ $t('container.application_selection.application.contact_info') }}
+            </v-card-title>
+                                     
+                                        <v-card-text class="mt-5">
 
 
                                             <v-row>
                                                 <v-col cols="12" class="text-center">
-                                                    <v-chip color="success" class="text-uppercase" label>Present
-                                                        Address</v-chip>
+                                                    <v-chip color="success" class="text-uppercase" label>{{ $t('container.application_selection.application.present_address') }}</v-chip>
                                                 </v-col>
                                                 <!-- {{ permanent_location }}  -->
                                                 <v-col lg="6" md="6" cols="12">
 
-                                                    <label style="display: inline-block">Division
+                                                    <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.division.division') }}
                                                     </label>
-                                                    <span style="margin-left: 4px; color: red">*</span>
+                                                
                                                     <v-text-field v-model="data.division_id" readonly
                                                         outlined></v-text-field>
 
                                                 </v-col>
                                                 <v-col lg="6" md="6" cols="12">
 
-                                                    <label style="display: inline-block">District
+                                                    <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.district.district') }}
                                                     </label>
                                                     <v-text-field v-model="data.district_id" readonly
                                                         outlined></v-text-field>
@@ -357,9 +350,9 @@
                                                 <v-col lg="6" md="6" cols="12">
                                                     <ValidationProvider name="Location Type" vid="location_type"
                                                         rules="required" v-slot="{ errors }">
-                                                        <label style="display: inline-block">Location Type
+                                                        <label style="display: inline-block">{{ $t('container.list.location_type') }}
                                                         </label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
+                                                     
                                                         <v-autocomplete @input="LocationType($event)"
                                                             v-model="data.location_type"
                                                             :hide-details="errors[0] ? false : true" outlined
@@ -370,15 +363,15 @@
                                                 </v-col>
                                                 <v-col v-if="data.location_type == 2" lg="6" md="6" cols="12">
 
-                                                    <label style="display: inline-block">Upazila
+                                                    <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.upazila') }}
                                                     </label>
-                                                    <span style="margin-left: 4px; color: red">*</span>
+                                           
                                                     <v-text-field v-model="data.thana_id" outlined readonly></v-text-field>
 
                                                 </v-col>
                                                 <v-col v-if="data.location_type == 2" lg="6" md="6" cols="12">
 
-                                                    <label style="display: inline-block">Union/Pouroshava
+                                                    <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.union_pouro') }}
                                                     </label>
                                                     <span style="margin-left: 4px; color: red">*</span>
                                                     <v-text-field v-model="data.union_id" outlined readonly></v-text-field>
@@ -386,22 +379,22 @@
                                                 </v-col>
                                                 <v-col v-if="data.location_type == 3" lg="6" md="6" cols="12">
 
-                                                    <label style="display: inline-block">City
+                                                    <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.city') }}
                                                     </label>
-                                                    <span style="margin-left: 4px; color: red">*</span>
+                                                 
                                                     <v-text-field v-model="data.city_id" outlined readonly></v-text-field>
 
                                                 </v-col>
                                                 <v-col v-if="data.location_type == 3" lg="6" md="6" cols="12">
-                                                    <label style="display: inline-block">Thana
+                                                    <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.thana') }}
                                                     </label>
-                                                    <span style="margin-left: 4px; color: red">*</span>
+                                                  
                                                     <v-text-field v-model="data.city_thana_id" outlined
                                                         readonly></v-text-field>
                                                 </v-col>
                                                 <v-col v-if="data.location_type == 1" lg="6" md="6" cols="12">
 
-                                                    <label style="display: inline-block">District Pouroshava
+                                                    <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.dist_pouro') }}
                                                     </label>
                                                     <v-text-field v-model="data.district_pouro_id" outlined
                                                         readonly></v-text-field>
@@ -409,7 +402,7 @@
 
                                                 <v-col lg="6" md="6" cols="6">
 
-                                                    <label style="display: inline-block">Ward
+                                                    <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.ward') }}
                                                     </label>
                                                     <span style="margin-left: 4px; color: red">*</span>
                                                     <v-text-field v-model="data.ward_id" outlined readonly></v-text-field>
@@ -418,9 +411,9 @@
                                                 <v-col cols="6" lg="6">
                                                     <ValidationProvider name="Post Code" vid="post_code" rules="required"
                                                         v-slot="{ errors }">
-                                                        <label style="display: inline-block">Post Code
+                                                        <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.post_code') }}
                                                         </label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
+                                                      
                                                         <v-text-field v-model="data.post_code" outlined readonly
                                                             :error="errors[0] ? true : false" :error-messages="errors[0]">
                                                         </v-text-field>
@@ -434,8 +427,7 @@
                                                     <ValidationProvider name="Village/House No.,
                                                         Road No., Block No, Section" vid="address" rules="required"
                                                         v-slot="{ errors }">
-                                                        <label style="display: inline-block">Village/House No., Road No.,
-                                                            Block No, Section
+                                                        <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.address') }}
                                                         </label>
                                                         <span style="margin-left: 4px; color: red">*</span>
                                                         <v-text-field v-model="data.address" outlined readonly
@@ -448,23 +440,23 @@
 
                                             <v-row>
                                                 <v-col cols="12" class="text-center">
-                                                    <v-chip color="success" class="text-uppercase" label>Permanent
-                                                        Address</v-chip>
+                                                    <v-chip color="success" class="text-uppercase" label>{{ $t('container.application_selection.application.permanent_address') }}
+                                                </v-chip>
                                                 </v-col>
 
 
                                                 <v-col lg="6" md="6" cols="12">
 
-                                                    <label style="display: inline-block">Division
+                                                    <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.division.division') }}
                                                     </label>
-                                                    <span style="margin-left: 4px; color: red">*</span>
+                                                   
                                                     <v-text-field v-model="data.division_id" readonly
                                                         outlined></v-text-field>
 
                                                 </v-col>
                                                 <v-col lg="6" md="6" cols="12">
 
-                                                    <label style="display: inline-block">District
+                                                    <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.district.district') }}
                                                     </label>
                                                     <v-text-field v-model="data.permanent_district_id" readonly
                                                         outlined></v-text-field>
@@ -472,9 +464,9 @@
                                                 <v-col lg="6" md="6" cols="12">
                                                     <ValidationProvider name="Location Type" vid="location_type"
                                                         rules="required" v-slot="{ errors }">
-                                                        <label style="display: inline-block">Location Type
+                                                        <label style="display: inline-block">{{ $t('container.list.location_type') }}
                                                         </label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
+                                                       
                                                         <v-autocomplete @input="LocationType($event)"
                                                             v-model="data.permanent_location_type"
                                                             :hide-details="errors[0] ? false : true" outlined
@@ -485,41 +477,41 @@
                                                 </v-col>
                                                 <v-col v-if="data.permanent_location_type == 2" lg="6" md="6" cols="12">
 
-                                                    <label style="display: inline-block">Upazila
+                                                    <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.upazila') }}
                                                     </label>
-                                                    <span style="margin-left: 4px; color: red">*</span>
+                                                  
                                                     <v-text-field v-model="data.permanent_thana_id" outlined
                                                         readonly></v-text-field>
 
                                                 </v-col>
                                                 <v-col v-if="data.permanent_location_type == 2" lg="6" md="6" cols="12">
 
-                                                    <label style="display: inline-block">Union/Pouroshava
+                                                    <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.union_pouro') }}
                                                     </label>
-                                                    <span style="margin-left: 4px; color: red">*</span>
+                                                 
                                                     <v-text-field v-model="data.permanent_union_id" outlined
                                                         readonly></v-text-field>
 
                                                 </v-col>
                                                 <v-col v-if="data.permanent_location_type == 3" lg="6" md="6" cols="12">
 
-                                                    <label style="display: inline-block">City
+                                                    <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.city') }}
                                                     </label>
-                                                    <span style="margin-left: 4px; color: red">*</span>
+                                                
                                                     <v-text-field v-model="data.permanent_city_id" outlined
                                                         readonly></v-text-field>
 
                                                 </v-col>
                                                 <v-col v-if="data.permanent_location_type == 3" lg="6" md="6" cols="12">
-                                                    <label style="display: inline-block">Thana
+                                                    <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.thana') }}
                                                     </label>
-                                                    <span style="margin-left: 4px; color: red">*</span>
+                                                   
                                                     <v-text-field v-model="data.permanent_city_thana_id" outlined
                                                         readonly></v-text-field>
                                                 </v-col>
                                                 <v-col v-if="data.permanent_location_type == 1" lg="6" md="6" cols="12">
 
-                                                    <label style="display: inline-block">District Pouroshava
+                                                    <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.dist_pouro') }}
                                                     </label>
                                                     <v-text-field v-model="data.permanent_district_pouro_id" outlined
                                                         readonly></v-text-field>
@@ -527,9 +519,9 @@
 
                                                 <v-col lg="6" md="6" cols="6">
 
-                                                    <label style="display: inline-block">Ward
+                                                    <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.ward') }}
                                                     </label>
-                                                    <span style="margin-left: 4px; color: red">*</span>
+                                                   
                                                     <v-text-field v-model="data.permanent_ward_id" outlined
                                                         readonly></v-text-field>
 
@@ -537,9 +529,9 @@
                                                 <v-col cols="6" lg="6">
                                                     <ValidationProvider name="Post Code" vid="post_code" rules="required"
                                                         v-slot="{ errors }">
-                                                        <label style="display: inline-block">Post Code
+                                                        <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.post_code') }}
                                                         </label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
+                                                     
                                                         <v-text-field v-model="data.permanent_post_code" outlined readonly
                                                             :error="errors[0] ? true : false" :error-messages="errors[0]">
                                                         </v-text-field>
@@ -553,8 +545,7 @@
                                                     <ValidationProvider name="Village/House No.,
                                                         Road No., Block No, Section" vid="address" rules="required"
                                                         v-slot="{ errors }">
-                                                        <label style="display: inline-block">Village/House No., Road No.,
-                                                            Block No, Section
+                                                        <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.address') }}
                                                         </label>
                                                         <span style="margin-left: 4px; color: red">*</span>
                                                         <v-text-field v-model="data.permanent_address" outlined readonly
@@ -563,228 +554,35 @@
                                                     </ValidationProvider>
                                                 </v-col>
                                             </v-row>
-                                        </v-expansion-panel-content>
-                                    </v-expansion-panel>
+                                        </v-card-text>
+                                    </v-card>
                                     <!-- Contact Information End -->
                                     <!-- 4th Expansion panel -->
                                     <!-- Information According to the Program -->
-                                    <v-expansion-panel class="ma-4">
-                                        <v-expansion-panel-header color="primary">
-                                            <h3 class="white--text">
-                                                Information According to the {{ program_name }}
-                                            </h3>
-                                        </v-expansion-panel-header>
-                                        <v-expansion-panel-content class="mt-5">
-                                            <!-- <v-expansion-panel-content class="mt-5">
-                                            <div v-if="programDetails" class="py-2 ma-4">
-                                                <v-row>
-                                                    <template v-if="checkIsHaveDIS()">
-                                                        <v-col cols="6" lg="6">
-                                                            <template>
-                                                                <label>{{ programDetails?.additional_field[keyGetByName("DIS
-                                                                                                                                    No.")].name_en }}
-                                                                    <span style="
-                                  margin-left: 4px;
-                                  margin-right: 4px;
-                                  color: red;
-                                ">*</span></label>
-                                                                <ValidationProvider
-                                                                    :name="programDetails?.additional_field[`${keyGetByName('DIS No.')}`].name_en"
-                                                                    vid="value" rules="required" v-slot="{ errors }">
-                                                                    <v-text-field
-                                                                        v-model="data.application_allowance_values[`${keyGetByName('DIS No.')}`].value"
-                                                                        :hide-details="errors[0] ? false : true"
-                                                                        :error="errors[0] ? true : false"
-                                                                        :error-messages="errors[0]" type="number" outlined>
-                                                                    </v-text-field>
-                                                                </ValidationProvider>
-                                                            </template>
-
-                                                        </v-col>
-                                                        <v-col cols="6" lg="6">
-                                                            <template>
-                                                                <label>{{
-                                                                    programDetails?.additional_field[keyGetByName("Disability
-                                                                                                                                    Type")].name_en }}
-                                                                    <span style="
-                                  margin-left: 4px;
-                                  margin-right: 4px;
-                                  color: red;
-                                ">*</span></label>
-                                                                <ValidationProvider
-                                                                    :name="programDetails?.additional_field[`${keyGetByName('Disability Type')}`].name_en"
-                                                                    vid="value" rules="required" v-slot="{ errors }">
-                                                                    <v-text-field
-                                                                        v-model="data.application_allowance_values[`${keyGetByName('Disability Type')}`].value"
-                                                                        :hide-details="errors[0] ? false : true"
-                                                                        :error="errors[0] ? true : false"
-                                                                        :error-messages="errors[0]" type="text" disabled
-                                                                        outlined>
-                                                                    </v-text-field>
-                                                                </ValidationProvider>
-                                                            </template>
-                                                        </v-col>
-                                                        <v-col cols="12" lg="12">
-                                                            <div class="d-inline d-flex justify-end">
-                                                                <v-btn @click="verifyDISCard()" elevation="2"
-                                                                    :disabled="data.application_allowance_values[`${keyGetByName('DIS No.')}`].value == null || data.application_allowance_values[`${keyGetByName('DIS No.')}`].value == ''"
-                                                                    class="btn" color="primary">Verify</v-btn>
-                                                            </div>
-                                                        </v-col>
-                                                    </template>
-                                                    <v-col v-for="(
-                              fields, index
-                            ) in programDetails.additional_field" :key="index" cols="6" lg="6"
-                                                        v-if="programDetails?.additional_field.length != 0 && keyGetByName('DIS No.') != index && keyGetByName('Disability Type') != index">
-                                                        <template v-if="fields.type == 'dropdown'">
-                                                            <label>{{ fields.name_en }}
-                                                                <span style="
-                                    margin-left: 4px;
-                                    margin-right: 4px;
-                                    color: red;
-                                  ">*</span></label>
-                                                            <ValidationProvider :name="fields.name_en"
-                                                                vid="allowance_program_additional_field_values_id"
-                                                                rules="required" v-slot="{ errors }">
-                                                                <v-select :hide-details="errors[0] ? false : true"
-                                                                    :error="errors[0] ? true : false"
-                                                                    :error-messages="errors[0]" outlined required v-model="data.application_allowance_values[index]
-                                                                            .allowance_program_additional_field_values_id
-                                                                        " :items="fields.name_en == 'Class'
-            ? classes
-            : fields.additional_field_value
-        " item-value="id" :item-text="fields.name_en == 'Class'
-            ? 'value_en'
-            : 'value'
-        ">
-                                                                </v-select>
-                                                            </ValidationProvider>
-                                                        </template>
-                                                        <template v-if="fields.type == 'number'">
-                                                            <label>{{ fields.name_en }}
-                                                                <span style="
-                                    margin-left: 4px;
-                                    margin-right: 4px;
-                                    color: red;
-                                  ">*</span></label>
-                                                            <ValidationProvider :name="fields.name_en" vid="value"
-                                                                rules="required" v-slot="{ errors }">
-                                                                <v-text-field v-model="data.application_allowance_values[index]
-                                                                        .value
-                                                                    " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
-                                                                    :error-messages="errors[0]" type="number" outlined>
-                                                                </v-text-field>
-                                                            </ValidationProvider>
-                                                        </template>
-                                                        <template v-if="fields.type == 'checkbox'">
-                                                            <label>{{ fields.name_en
-                                                            }}<span style="
-                                    margin-left: 4px;
-                                    margin-right: 4px;
-                                    color: red;
-                                  ">*</span></label>
-                                                            <ValidationProvider :name="fields.name_en"
-                                                                vid="allowance_program_additional_field_values_id"
-                                                                rules="required" v-slot="{ errors }">
-                                                                <v-select multiple :hide-details="errors[0] ? false : true"
-                                                                    :error="errors[0] ? true : false"
-                                                                    :error-messages="errors[0]" outlined required v-model="data.application_allowance_values[index]
-                                                                            .allowance_program_additional_field_values_id
-                                                                        " :items="fields.additional_field_value" item-value="id" item-text="value">
-                                                                </v-select>
-                                                            </ValidationProvider>
-                                                        </template>
-                                                        <template v-if="fields.type == 'file'">
-                                                            <label>{{ fields.name_en
-                                                            }}<span style="
-                                    margin-left: 4px;
-                                    margin-right: 4px;
-                                    color: red;
-                                  ">*</span></label>
-                                                            <ValidationProvider :name="fields.name_en" vid="value"
-                                                                v-slot="{ errors }">
-                                                                <v-file-input v-model="data.application_allowance_values[index]
-                                                                        .value
-                                                                    " @change="addPreviewFile($event, index)" placeholder="Select your files"
-                                                                    prepend-icon prepend-inner-icon="mdi-paperclip" outlined
-                                                                    :hide-details="errors[0] ? false : true"
-                                                                    :error="errors[0] ? true : false"
-                                                                    :error-messages="errors[0]" :show-size="1000">
-                                                                </v-file-input>
-                                                            </ValidationProvider>
-                                                        </template>
-
-                                                        <template v-if="fields.type == 'date'">
-                                                            <label>{{ fields.name_en
-                                                            }}<span style="
-                                    margin-left: 4px;
-                                    margin-right: 4px;
-                                    color: red;
-                                  ">*</span></label>
-                                                            <ValidationProvider :name="fields.name_en" vid="value"
-                                                                rules="required" v-slot="{ errors }">
-                                                                <v-text-field v-model="data.application_allowance_values[index]
-                                                                        .value
-                                                                    " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
-                                                                    :error-messages="errors[0]" type="date" outlined>
-                                                                </v-text-field>
-                                                            </ValidationProvider>
-                                                        </template>
-                                                        <template v-if="fields.type == 'disabled'">
-                                                            <label>{{ fields.name_en
-                                                            }}<span style="
-                                    margin-left: 4px;
-                                    margin-right: 4px;
-                                    color: red;
-                                  ">*</span></label>
-                                                            <ValidationProvider :name="fields.name_en" vid="value"
-                                                                rules="required" v-slot="{ errors }">
-                                                                <v-text-field v-model="data.application_allowance_values[index]
-                                                                        .value
-                                                                    " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
-                                                                    :error-messages="errors[0]" disabled type="text"
-                                                                    outlined>
-                                                                </v-text-field>
-                                                            </ValidationProvider>
-                                                        </template>
-                                                        <template v-if="fields.type == 'text'">
-                                                            <label>{{ fields.name_en
-                                                            }}<span style="
-                                    margin-left: 4px;
-                                    margin-right: 4px;
-                                    color: red;
-                                  ">*</span></label>
-                                                            <ValidationProvider :name="fields.name_en" vid="value"
-                                                                rules="required" v-slot="{ errors }">
-                                                                <v-text-field v-model="data.application_allowance_values[index]
-                                                                        .value
-                                                                    " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
-                                                                    :error-messages="errors[0]" type="text" outlined>
-                                                                </v-text-field>
-                                                            </ValidationProvider>
-                                                        </template>
-                                                    </v-col>
-                                                </v-row>
-                                            </div> -->
-                                            <!-- {{ allowance_filed }} -->
-
+                                    <v-card class="mt-5">
+                                     
+                                         <v-card-title style="background-color: #1976D2; color: white;">
+              {{ language == 'bn' ? whole_program.name_bn : whole_program.name_en }} {{ $t('container.application_selection.application.info') }}
+                </v-card-title>
+                                        <v-card-text class="mt-5">
+                                         
                                             <v-row>
                                                 <v-col v-for="(field, index) in allowance_filed" :key="index" cols="6"
                                                     lg="6">
 
                                                     <template v-if="field.type === 'number' || field.type === 'text'">
-                                                        <label>{{ field.name_en }}</label>
+                                                        <label>{{ language == 'bn' ? field.name_bn : field.name_en  }}</label>
                                                         <v-text-field v-model="field.pivot.value" outlined readonly>
                                                         </v-text-field>
                                                     </template>
                                                     <template v-if="field.type === 'dropdown'">
-                                                        <label>{{ field.name_en }}</label>
+                                                        <label>{{ language == 'bn' ? field.name_bn : field.name_en }}</label>
                                                         <v-text-field v-model="field.allow_addi_field_values[0].value"
                                                             outlined readonly>
                                                         </v-text-field>
                                                     </template>
                                                     <template v-if="field.type === 'checkbox'">
-                                                        <label>{{ field.name_en }}</label>
+                                                        <label>{{ language == 'bn' ? field.name_bn : field.name_en }}</label>
                                                         <v-text-field
                                                             :value="concatenateCheckboxValues(field.allow_addi_field_values)"
                                                             outlined readonly></v-text-field>
@@ -794,39 +592,26 @@
 
                                             </v-row>
 
-                                            <!-- <template v-else-if="field.type === 'checkbox'">
-              <v-checkbox
-                v-for="(value, valueIndex) in field.allow_addi_field_values"
-                :key="valueIndex"
-                :label="value.value"
-                v-model="fieldValues[field.id]"
-              ></v-checkbox>
-            </template>
-            <template v-else-if="field.type === 'dropdown'">
-              <v-select
-                v-model="fieldValues[field.id]"
-                :items="field.allow_addi_field_values.map(item => item.value)"
-                label="Select"
-              ></v-select>
-            </template> -->
 
-                                        </v-expansion-panel-content>
-                                    </v-expansion-panel>
+                                        </v-card-text>
+                                    </v-card>
                                     <!-- Information According to the Program End -->
                                     <!-- Expansion panel 5 start-->
                                     <!-- Bank/MFS Information -->
-                                    <v-expansion-panel class="mb-4">
-                                        <v-expansion-panel-header color="primary">
-                                            <h3 class="white--text">Bank/MFS Information</h3>
-                                        </v-expansion-panel-header>
-                                        <v-expansion-panel-content class="mt-5">
+                                  
+                                    <v-card class="mt-5">
+                                                               <v-card-title style="background-color: #1976D2; color: white;">
+             {{ $t('container.application_selection.application.bank') }}
+                </v-card-title>
+                                     
+                                        <v-card-text class="mt-5">
                                             <v-row>
                                                 <v-col cols="6" lg="6">
                                                     <ValidationProvider name="Account Name" vid="account_name"
                                                         rules="required" v-slot="{ errors }">
-                                                        <label style="display: inline-block">Account Name
+                                                        <label style="display: inline-block">     {{ $t('container.application_selection.application.account_name') }}
                                                         </label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
+                                                    
                                                         <v-text-field v-model="data.account_name" outlined clearable
                                                             :error="errors[0] ? true : false" :error-messages="errors[0]">
                                                         </v-text-field>
@@ -834,23 +619,19 @@
                                                 </v-col>
                                                 <v-col cols="6" lg="6">
                                                     <v-radio-group v-model="data.account_type" row>
-                                                        Account type
-                                                        <span style="
-                              margin-left: 4px;
-                              margin-right: 4px;
-                              color: red;
-                            ">*</span>
-                                                        <v-radio readonly label="Bank Account" :value="1"></v-radio>
-                                                        <v-radio readonly label="MFS (Mobile Financial Service)"
+                                                        {{ $t('container.application_selection.application.account_type') }}
+                                                        
+                                                        <v-radio v-if="data.account_type === 1" readonly :label="$t('container.application_selection.application.bank_account')" :value="1"></v-radio>
+                                                        <v-radio  v-if="data.account_type === 2" readonly :label="$t('container.application_selection.application.mobile_account')"
                                                             :value="2"></v-radio>
                                                     </v-radio-group>
                                                 </v-col>
                                                 <v-col cols="6" lg="6" v-if="data.account_type === 2">
                                                     <ValidationProvider name="Account Ownership" vid="account_owner"
                                                         v-slot="{ errors }">
-                                                        <label style="display: inline-block">Mobile Ownership
+                                                        <label style="display: inline-block">  {{ $t('container.application_selection.application.mobile_ownership') }}
                                                         </label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
+                                                  
 
                                                                <v-text-field v-model="data.account_owner" outlined readonly>
                                                         </v-text-field>
@@ -859,31 +640,21 @@
 
                                                 <v-col cols="6" lg="6" v-if="data.account_type === 1">
 
-                                                    <label style="display: inline-block">Account Ownership
+                                                    <label style="display: inline-block">{{ $t('container.application_selection.application.account_ownership') }}
                                                     </label>
-                                                    <span style="margin-left: 4px; color: red">*</span>
+                                                 
 
                                                     <v-text-field v-model="data.account_owner" outlined readonly>
                                                     </v-text-field>
 
                                                 </v-col>
-                                                <!-- <v-col cols="6" lg="6" v-if="data.account_type === 2">
-
-
-                                                    <label style="display: inline-block">Mobile operator </label><span
-                                                        style="margin-left: 4px; color: red">*</span>
-                                                    <v-select :items="mobile_operators" outlined item-text="operator"
-                                                        item-value="id" v-model="data.mobile_operator">
-
-                                                    </v-select>
-                                                </v-col> -->
+                                             
 
 
                                                 <v-col cols="6" lg="6" v-if="data.account_type === 2">
                                                     <ValidationProvider rules="checkMobileNumber" name="Mobile Number"
                                                         vid="account_number" v-slot="{ errors }">
-                                                        <label style="display: inline-block">Mobile Number </label><span
-                                                            style="margin-left: 4px; color: red">*</span>
+                                                        <label style="display: inline-block">{{ $t('container.application_selection.application.mobile') }} </label>
 
                                                         <v-text-field v-model="data.account_number" outlined type="number"
                                                             clearable :error="errors[0] ? true : false"
@@ -894,8 +665,7 @@
                                                 </v-col>
                                                 <v-col cols="6" lg="6" v-if="data.account_type === 1">
 
-                                                    <label style="display: inline-block">Bank name </label><span
-                                                        style="margin-left: 4px; color: red">*</span>
+                                                    <label style="display: inline-block">{{ $t('container.application_selection.application.bank_name') }} </label>
 
                                                     <v-text-field v-model="data.bank_name" outlined readonly>
                                                     </v-text-field>
@@ -904,8 +674,7 @@
 
                                                 <v-col cols="6" lg="6" v-if="data.account_type === 1">
 
-                                                    <label style="display: inline-block">Branch name </label><span
-                                                        style="margin-left: 4px; color: red">*</span>
+                                                    <label style="display: inline-block">{{ $t('container.application_selection.application.branch_name') }}</label>
 
                                                     <v-text-field v-model="data.branch_name" outlined readonly>
                                                     </v-text-field>
@@ -913,8 +682,8 @@
                                                 </v-col>
                                                 <v-col cols="6" lg="6" v-if="data.account_type === 1">
 
-                                                    <label style="display: inline-block">Bank Account Number
-                                                    </label><span style="margin-left: 4px; color: red">*</span>
+                                                    <label style="display: inline-block">{{ $t('container.application_selection.application.bank_account_number') }}
+                                                    </label>
 
                                                     <v-text-field v-model="data.account_number" outlined readonly>
                                                     </v-text-field>
@@ -922,7 +691,7 @@
                                                 </v-col>
                                                 <v-col cols="6" lg="6">
 
-                                                    <label style="display: inline-block">Email </label>
+                                                    <label style="display: inline-block">{{ $t('container.application_selection.application.email') }} </label>
 
 
                                                     <v-text-field v-model="data.email" outlined clearable readonly>
@@ -933,24 +702,27 @@
                                             <!-- <p class="red--text mt-2">
                                                 Must have active Nagad / Bkash account where applicable.
                                             </p> -->
-                                        </v-expansion-panel-content>
-                                    </v-expansion-panel>
+                                        </v-card-text>
+                                    </v-card>
                                     <!-- Bank/MFS Information End -->
                                     <!-- Expansion panel 5 End -->
                                     <!-- Nominee Information -->
-                                    <v-expansion-panel class="mb-4">
-                                        <v-expansion-panel-header color="primary">
-                                            <h3 class="white--text">Nominee Information</h3>
-                                        </v-expansion-panel-header>
-                                        <v-expansion-panel-content class="mt-5">
+                                      
+                                    <v-card class="mt-5">
+                                                                <v-card-title style="background-color: #1976D2; color: white;">
+             {{ $t('container.application_selection.application.nominee_info') }}
+                </v-card-title>
+                                      
+                                        <v-card-text class="mt-5">
                                             <div class="pa-2 mb-4">
                                                 <v-row>
+                                                    
                                                     <v-col cols="6" lg="6">
                                                         <ValidationProvider name="Nominee Name (BN)" vid="nominee_bn"
                                                             rules="required" v-slot="{ errors }">
-                                                            <label style="display: inline-block">Name (BN)
+                                                            <label style="display: inline-block">  {{ $t('container.application_selection.application.name_bn') }}
                                                             </label>
-                                                            <span style="margin-left: 4px; color: red">*</span>
+                                                        
                                                             <v-text-field v-model="data.nominee_bn" outlined readonly
                                                                 :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
@@ -960,9 +732,9 @@
                                                     <v-col cols="6" lg="6">
                                                         <ValidationProvider name="Nominee Name (EN)" vid="nominee_en"
                                                             rules="required" v-slot="{ errors }">
-                                                            <label style="display: inline-block">Name (EN)
+                                                            <label style="display: inline-block">{{ $t('container.application_selection.application.name_en') }}
                                                             </label>
-                                                            <span style="margin-left: 4px; color: red">*</span>
+                                                       
                                                             <v-text-field v-model="data.nominee_en" outlined readonly
                                                                 :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
@@ -972,8 +744,7 @@
                                                     <v-col cols="6" lg="6">
                                                         <ValidationProvider name="National Identity (NID) /
 Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }">
-                                                            <label>National Identity (NID) / Birth Registration
-                                                                Number
+                                                            <label>{{ $t('container.application_selection.application.nid_brn') }}
                                                             </label>
                                                             <v-text-field v-model="data.nominee_verification_number"
                                                                 outlined readonly type="number"
@@ -985,7 +756,7 @@ Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }"
                                                     <v-col cols="6" lg="6">
                                                         <ValidationProvider name="Nominee Natinality"
                                                             vid="nominee_nationality" v-slot="{ errors }">
-                                                            <label>Nationality </label>
+                                                            <label>{{ $t('container.application_selection.application.nationality') }} </label>
                                                             <v-text-field v-model="data.nominee_nationality" outlined
                                                                 readonly :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]">
@@ -996,13 +767,12 @@ Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }"
                                                         <ValidationProvider name="Gender of Nominee"
                                                             vid="nominee_relation_with_beneficiary" v-slot="{ errors }"
                                                             rules="required">
-                                                            <label>Relationship with Beneficiary</label>
-                                                            <span style="margin-left: 4px; color: red">*</span>
-                                                            <v-autocomplete v-model="data.nominee_relation_with_beneficiary"
-                                                                outlined :items="relations_with_bef" readonly
-                                                                :error="errors[0] ? true : false"
-                                                                :error-messages="errors[0]">
-                                                            </v-autocomplete>
+                                                            <label>{{ $t('container.application_selection.application.relationship') }} </label>
+                                                            
+                                                         
+                                                            <v-text-field v-model="data.nominee_relation_with_beneficiary"
+                                                                outlined readonly>
+                                                            </v-text-field>
                                                         </ValidationProvider>
                                                     </v-col>
                                                     <v-col cols="6" lg="6">
@@ -1034,20 +804,20 @@ Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }"
                                     height: 80px;
                                     border: 1px solid #ccc;
                                   " class="mb-5"></v-img>
-                                                        <ValidationProvider v-slot="{ errors }" name="Signature"
+                                                        <!-- <ValidationProvider v-slot="{ errors }" name="Signature"
                                                             rules="required" vid="nominee_signature">
                                                             <label>Signature</label>
                                                             <v-file-input outlined show-size counter
                                                                 prepend-inner-icon="mdi-camera"
                                                                 v-model="data.nominee_signature"
                                                                 prepend-icon=""></v-file-input>
-                                                        </ValidationProvider>
+                                                        </ValidationProvider> -->
                                                     </v-col>
 
                                                     <v-col cols="12" lg="12">
                                                         <ValidationProvider name="Address of Nominee" vid="nominee_address"
                                                             v-slot="{ errors }" rules="required">
-                                                            <label>Address</label>
+                                                            <label>{{ $t('container.application_selection.application.nominee_address') }}</label>
                                                             <v-textarea v-model="data.nominee_address" outlined readonly
                                                                 :error="errors[0] ? true : false"
                                                                 :error-messages="errors[0]"></v-textarea>
@@ -1055,24 +825,31 @@ Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }"
                                                     </v-col>
                                                 </v-row>
                                             </div>
-                                        </v-expansion-panel-content>
-                                    </v-expansion-panel>
+                                        </v-card-text>
+                                    </v-card>
 
                                     <!-- Nominee Information End -->
                                     <!-- 5th Expansion panel -->
                                     <!-- Other Information of Eligibility -->
-                                    <v-expansion-panel class="mb-4" >
-                                        <v-expansion-panel-header color="primary">
+                                  
+                                    <v-card class="mt-5" >
+                                        <!-- <v-card-text color="primary">
                                             <h3 class="white--text">
                                                 Other Information of Eligibility
                                             </h3>
-                                        </v-expansion-panel-header>
-                                        <v-expansion-panel-content class="mt-5">
+                                        </v-expansion-panel-header> -->
+                                        <v-card-title style="background-color: #1976D2; color: white;">
+         {{ $t('container.application_selection.application.eligiblity_info') }}
+            </v-card-title>
+                                        <v-card-text class="mt-5">
                                             <v-row>
                                                 <v-col v-for="(field, index) in variable" :key="index" cols="6" lg="6">
 
                                                        <template>
-            <label>{{ field.parent ? field.parent.name_en : '' }}</label>
+            <label>
+                {{ field.parent ? field.parent.name_en : '' }}
+                <!-- {{ field.parent ? (language === 'bn' ? field.parent.name_bn : field.parent.name_en) : (language === 'bn' ? field.name_bn : field.name_en) }} -->
+    </label>
             <v-text-field v-model="field.name_en" outlined readonly></v-text-field>
         </template>
 
@@ -1080,104 +857,14 @@ Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }"
 
 
                                             </v-row>
-                                            <!-- <div class="pa-2 mb-4">
-                                                     <v-row>
-                                                           <v-col cols="12" lg="6" md="6" v-for="(variable,indexPMT) in  data.poverty_score" :key='indexPMT'>
-        <v-select outlined readonly :label="variable.name_en" :items="variable.children" item-text="name_en"></v-select>
-                                            </v-col>
-
-                                        </v-row>
-                                                 </div> -->
-
-
-                                            <!-- <div class="pa-2 mb-4">
-                                                <v-row>
-                                                    <v-col v-for="(variables, indexPMT) in data.poverty_score" cols="6" lg="6"
-                                                        :key='indexPMT'>
-                                                        <template v-if="variables.children.length == 0">
-                                                            <label>{{ variables.name_en }}
-                                                                <span style="
-                                  margin-left: 4px;
-                                  margin-right: 4px;
-                                  color: red;
-                                ">*</span></label>
-                                                            <ValidationProvider :name="variables.name_en"
-                                                                vid="sub_variables" rules="required" v-slot="{ errors }">
-                                                                <v-select :hide-details="errors[0] ? false : true"
-                                                                    :error="errors[0] ? true : false"
-                                                                    :error-messages="errors[0]" outlined required
-                                                                    v-model="data.application_pmt[indexPMT].sub_variables"
-                                                                    :items="[
-                                                                        {
-                                                                            id: variables.id,
-                                                                            name_en: 'Yes',
-                                                                            name_bn: 'হ্যাঁ',
-                                                                        },
-                                                                        {
-                                                                            id: 0,
-                                                                            name_en: 'No',
-                                                                            name_bn: 'না',
-                                                                        },
-                                                                    ]" item-value="id" item-text="name_en">
-                                                                </v-select>
-                                                            </ValidationProvider>
-                                                        </template>
-                                                        <template v-else-if="variables.field_type == 1">
-                                                            <label>{{ variables.name_en }}
-                                                                <span style="
-                                  margin-left: 4px;
-                                  margin-right: 4px;
-                                  color: red;
-                                ">*</span></label>
-                                                            <ValidationProvider :name="variables.name_en"
-                                                                vid="sub_variables" rules="required" v-slot="{ errors }">
-                                                                <v-select :hide-details="errors[0] ? false : true"
-                                                                    :error="errors[0] ? true : false"
-                                                                    :error-messages="errors[0]" outlined required
-                                                                    v-model="data.application_pmt[indexPMT].sub_variables"
-                                                                    :items="variables.children" item-value="id"
-                                                                    item-text="name_en">
-                                                                </v-select>
-                                                            </ValidationProvider>
-                                                        </template>
-
-                                                        <template v-else-if="variables.field_type == 2">
-                                                            <label>{{ variables.name_en
-                                                            }}<span style="
-                                  margin-left: 4px;
-                                  margin-right: 4px;
-                                  color: red;
-                                ">*</span></label>
-                                                            <ValidationProvider :name="variables.name_en"
-                                                                vid="sub_variables" rules="required" v-slot="{ errors }">
-                                                                <v-select multiple :hide-details="errors[0] ? false : true"
-                                                                    :error="errors[0] ? true : false"
-                                                                    :error-messages="errors[0]" outlined required
-                                                                    v-model="data.application_pmt[indexPMT].sub_variables"
-                                                                    :items="variables.children" item-value="id"
-                                                                    item-text="name_en">
-                                                                </v-select>
-                                                            </ValidationProvider>
-                                                        </template>
-                                                    </v-col>
-                                                </v-row>
-                                                <div class="d-inline d-flex justify-end">
-                                                    <v-btn elevation="2" class="btn mr-2" color="info">Reset</v-btn>
-                                               :disabled="invalid" -->
-                                            <!-- <v-btn type="submit" flat color="primary" :loading="loading"
-                                                        class="custom-btn-width black white--text py-2">
-                                                        {{ $t("container.list.submit") }}
-                                                    </v-btn>
-
-                                                </div>
-                                            </div>  -->
-                                        </v-expansion-panel-content>
-                                    </v-expansion-panel>
+                                           
+                                        </v-card-text>
+                                    </v-card>
                                     <!-- Other Information of Eligibility end-->
 
-                                </v-expansion-panels>
+                          
                             </div>
-    <div style="display: flex; justify-content: flex-end;">
+    <div style="display: flex; justify-content: flex-end;" class="mt-5">
         <!-- Other content on the left -->
 
         <v-btn flat color="gray" type="submit" @click="navigateTolist" class="custom-btn">
@@ -1297,6 +984,8 @@ export default {
             current_location: [],
             allowance_filed: [],
             program_name: null,
+            whole_program:[],
+            genderName:null,
 
 
 
@@ -1390,6 +1079,11 @@ export default {
         isRadioGroupReadonly() {
             return this.data.verification_type !== null;
         },
+         language: {
+            get() {
+                return this.$store.getters.getAppLanguage;
+            },
+        },
 
     },
 
@@ -1422,12 +1116,36 @@ export default {
                 .then((result) => {
 
                     this.data = result.data.application;
+                  
+                    const genderArray = this.genders;
+                    
+                    // Now you can use nameEnOfId23 as needed
+                    
+
+                    // Find the object with id 23
+                    const genderObject = genderArray.find(gender => gender.id === this.data.gender_id
+
+                    );
+
+                    // Check if the object with id 23 was found
+                 
+                        // Access the name_en property of the found object
+                        this.genderName = genderObject.value_en;
+                       
+
+                        // Now you can use nameEnOfId23 as needed
+                       
+             
+                        // Handle the case where the object with id 23 was not found
+                  
+                  
 
                     this.current_location = result?.data?.application?.current_location;
                     this.permanent_location = result?.data?.application?.permanent_location;
                     this.variable = result?.data?.application?.subvariable;
                     this.allowance_filed = result?.data?.unique_additional_fields
                     this.program_name = this.data?.program.name_en;
+                    this.whole_program = this.data?.program;
                     this.image = result?.data?.image
                     this.signature = result?.data?.signature;
                     this.nominee_image = result?.data?.nominee_image;
