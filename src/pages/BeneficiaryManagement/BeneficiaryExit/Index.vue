@@ -686,7 +686,7 @@ export default {
             if (res.data?.success) {
               console.log(res.data?.success, "submit__");
               this.$toast.success("Beneficiary Exit Successfully");
-              this.$router.push({ name: "Beneficiary_List" });
+              this.$router.push({ name: "beneficiary_exit_list" });
             } else if (res.response?.data?.errors) {
               this.$refs.form.setErrors(res.response.data.errors);
               this.errors = res.response.data.errors;

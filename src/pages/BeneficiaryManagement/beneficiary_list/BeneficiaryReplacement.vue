@@ -423,7 +423,7 @@ export default {
               console.log(res, "submit__");
               if (res.data?.success) {
                 this.$toast.success("Beneficiary Replace Successfully");
-                this.$router.push({ name: "Beneficiary_List" });
+                this.$router.push({ name: "beneficiary_replacement_list" });
               } else {
                 console.log('ERROR__',res?.message);
                  this.$refs.form.setErrors(res?.message);
