@@ -1586,12 +1586,14 @@ export default {
               const Field = ['geo_code','division_name','district_name','thana_name', 'union_name_en','union_name_bn']
 
               const Data = this.FormatJson(Field, CustomInfo)
+              const currentDate = new Date().toISOString().slice(0, 10); //
+              const filenameWithDate = `${currentDate}_${this.$t("container.system_config.demo_graphic.union1.pouroshava")}`;
 
               excel.export_json_to_excel({
                 header: Header,
                 data: Data,
-                sheetName:"demo",
-                filename:this.$t("container.system_config.demo_graphic.union1.customtitle"),
+                sheetName:filenameWithDate,
+                filename:filenameWithDate,
                 autoWidth:true,
                 bookType : "xlsx"
               })
