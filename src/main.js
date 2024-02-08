@@ -13,6 +13,7 @@ import axios from "axios";
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import HeaderMixins from "./mixins/HeaderMixins";
+import Helpers from "@/helpers/helpers";
 // import VueTablerIcons from "vue-tabler-icons";
 
 // Vue.use(VueTablerIcons);
@@ -110,6 +111,13 @@ Vue.use(Toast, options);
 //mixins import
 Vue.mixin(HeaderMixins);
 
+const plugins = {
+  install() {
+    Vue.helpers = Helpers;
+    Vue.prototype.$helpers = Helpers;
+  }
+}
+Vue.use(plugins);
 
 axios.defaults.baseURL = process.env.VUE_APP_BASE_API_URL_BACKEND;
 // axios.defaults.baseURL = `http://127.0.0.1:8000/api/v1`;
