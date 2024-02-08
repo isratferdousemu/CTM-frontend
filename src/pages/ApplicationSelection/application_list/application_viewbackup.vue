@@ -11,11 +11,7 @@
                                 <label>{{ $t('container.application_selection.application.program') }} </label>
                              
                                 <v-text-field  outlined 
-                                  required :error="errors[0] ? true : false" v-model=" 
-                                //   language == 'bn' ?
-                                //    whole_program.name_en 
-                                    whole_program.name_en"
-                                   
+                                  required :error="errors[0] ? true : false" v-model="program_name"
                                      readonly>
                                 </v-text-field >
                             </ValidationProvider>
@@ -569,62 +565,29 @@
               {{ language == 'bn' ? whole_program.name_bn : whole_program.name_en }} {{ $t('container.application_selection.application.info') }}
                 </v-card-title>
                                         <v-card-text class="mt-5">
-                                      
-                                            
                                          
                                             <v-row>
-                                                      <v-col v-for="(field, index) in formattedAllowanceValues" :key="index" cols="6" lg="6">
-          <label>{{ language == 'bn' ? field.label
-              .name_bn : field.label
-                  .name_en }}</label><v-text-field v-model="field.value"
-                                                                        outlined readonly>
-                                                                    </v-text-field>
+                                                <v-col v-for="(field, index) in allowance_filed" :key="index" cols="6"
+                                                    lg="6">
+
+                                                    <template v-if="field.type === 'number' || field.type === 'text'">
+                                                        <label>{{ language == 'bn' ? field.name_bn : field.name_en  }}</label>
+                                                        <v-text-field v-model="field.pivot.value" outlined readonly>
+                                                        </v-text-field>
+                                                    </template>
+                                                    <template v-if="field.type === 'dropdown'">
+                                                        <label>{{ language == 'bn' ? field.name_bn : field.name_en }}</label>
+                                                        <v-text-field v-model="field.allow_addi_field_values[0].value"
+                                                            outlined readonly>
+                                                        </v-text-field>
+                                                    </template>
+                                                    <template v-if="field.type === 'checkbox'">
+                                                        <label>{{ language == 'bn' ? field.name_bn : field.name_en }}</label>
+                                                        <v-text-field
+                                                            :value="concatenateCheckboxValues(field.allow_addi_field_values)"
+                                                            outlined readonly></v-text-field>
+                                                    </template>
                                                 </v-col>
-                                                         <v-col v-for="(field, index) in allowance_filed" :key="index" cols="6" lg="6" v-if="field.type == 'text'">
-                                                            
-                                                                    <label>{{ language == 'bn' ? field
-                                                                        .name_bn : field.name_en }}</label><v-text-field v-model="field.pivot.value"
-                                                                                outlined readonly>
-                                                                            </v-text-field>
-
-                                                            
-          
-                                                    </v-col>
-                                                     <v-col v-for="(field, index) in allowance_filed" :key="index" cols="6" lg="6" v-if="field.type == 'number'">
-                                                            
-                                                                        <label>{{ language == 'bn' ? field
-                                                                            .name_bn : field.name_en }}</label><v-text-field v-model="field.pivot.value"
-                                                                                    outlined readonly>
-                                                                                </v-text-field>
-
-                                                            
-          
-                                                        </v-col>
-                                                              <v-col v-for="(field, index) in allowance_filed" :key="index" cols="6" lg="6" v-if="field.type == 'date'">
-                                                            
-                                                                            <label>{{ language == 'bn' ? field
-                                                                                .name_bn : field.name_en }}</label><v-text-field v-model="field.pivot.value"
-                                                                                        outlined readonly>
-                                                                                    </v-text-field>
-
-                                                            
-          
-                                                            </v-col>
-                                                
-                                               
-                                                <!-- new One -->
-                                                 <!-- <v-col v-for="(field, index) in allowance_values" :key="index" cols="6"
-                                                        lg="6">
-
-                                                   
-                                                            <label>{{ language == 'bn' ? field.allow_addi_field
-                                                                .name_bn  : field.allow_addi_field
-                                                                    .name_en }}</label>
-                                                            <v-text-field v-model="field.value"
-                                                                outlined readonly>
-                                                            </v-text-field>
-                                                   
-                                                    </v-col> -->
 
 
                                             </v-row>
@@ -869,8 +832,7 @@ Birth Registration Number" vid="nominee_verification_number" v-slot="{ errors }"
                                     <!-- 5th Expansion panel -->
                                     <!-- Other Information of Eligibility -->
                                   
-                                    <v-card class="mt-5" v-if="variable && variable.length > 0">
-                                    
+                                    <v-card class="mt-5" >
                                         <!-- <v-card-text color="primary">
                                             <h3 class="white--text">
                                                 Other Information of Eligibility
@@ -932,7 +894,6 @@ export default {
     data() {
         return {
             applications: [],
-            allowance_values:[],
             panel: [0, 1, 2, 3, 4, 5, 6],
             programs: [],
             classes: [],
@@ -1123,34 +1084,6 @@ export default {
                 return this.$store.getters.getAppLanguage;
             },
         },
-            checkboxData() {
-            return this.allowance_values.filter(item => item.type === "checkbox").map(item => {
-                const labelName = item.name_en || item.name_bn;
-                const values = item.allow_addi_field_values.map(value => value.value).join(", ");
-                return { label_name: labelName, values: values };
-            });
-        },
-        formattedAllowanceValues() {
-            const formattedValues = {};
-
-            // Iterate through the allowance_values array
-            this.allowance_values.forEach(value => {
-                // Check if the id already exists in formattedValues
-                if (formattedValues[value.additional_field_id]) {
-                    // Concatenate the value with comma
-                    formattedValues[value.additional_field_id].value += `, ${value.value}`;
-                } else {
-                    // Create a new entry with the label as the key and the value as an object
-                    formattedValues[value.additional_field_id] = {
-                        label: value.allow_addi_field, // Assuming English label is used
-                        value: value.value
-                    };
-                }
-            });
-
-            // Convert object to array
-            return Object.values(formattedValues);
-        }
 
     },
 
@@ -1184,20 +1117,20 @@ export default {
 
                     this.data = result.data.application;
                   
-                    const genderArray = this.genders;
+                    // const genderArray = this.genders;
                     
                     // Now you can use nameEnOfId23 as needed
                     
 
                     // Find the object with id 23
-                    const genderObject = genderArray.find(gender => gender.id === this.data.gender_id
+                    // const genderObject = genderArray.find(gender => gender.id === this.data.gender_id
 
-                    );
+                    // );
 
                     // Check if the object with id 23 was found
                  
                         // Access the name_en property of the found object
-                        this.genderName = genderObject.value_en;
+                        // this.genderName = genderObject.value_en;
                        
 
                         // Now you can use nameEnOfId23 as needed
@@ -1210,8 +1143,7 @@ export default {
                     this.current_location = result?.data?.application?.current_location;
                     this.permanent_location = result?.data?.application?.permanent_location;
                     this.variable = result?.data?.application?.subvariable;
-                    this.allowance_filed = result?.data?.application?.allow_addi_fields;
-                    this.allowance_values = result?.data?.application?.allow_addi_field_value;
+                    this.allowance_filed = result?.data?.unique_additional_fields
                     this.program_name = this.data?.program.name_en;
                     this.whole_program = this.data?.program;
                     this.image = result?.data?.image
@@ -1224,7 +1156,7 @@ export default {
                     console.log(this.permanent_location, "this.permanent_location")
                     if (this.current_location?.location_type == 3) {
 
-                        this.data.division_id = this.current_location?.parent?.parent?.parent?.parent.name_en;
+                        this.data.division_id = this.current_location?.parent?.parent?.parent?.parent?.name_en;
                         this.data.district_id = this.current_location?.parent?.parent?.parent?.name_en;
                         this.data.location_type = this.current_location.location_type
                         this.data.city_id = this.current_location?.parent?.parent?.name_en;

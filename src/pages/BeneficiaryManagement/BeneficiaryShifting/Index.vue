@@ -163,7 +163,7 @@
                     $t("container.list.reset")
                   }}</v-btn>
                   <v-btn elevation="2" class="btn mr-2" color="success" type="submit" :disabled="invalid">{{
-                    $t("container.list.exit") }}</v-btn>
+                    $t("container.list.shift") }}</v-btn>
                 </div>
               </form>
             </ValidationObserver>
@@ -388,7 +388,7 @@ export default {
             if (res.data?.success) {
               console.log(res.data?.success, "submit__");
               this.$toast.success("Beneficiary Shifting Successfully");
-              this.$router.push({ name: "Beneficiary_List" });
+              this.$router.push({ name: "beneficiary_shifting_list" });
             } else if (res.response?.data?.errors) {
               this.$refs.form.setErrors(res.response.data.errors);
               this.errors = res.response.data.errors;

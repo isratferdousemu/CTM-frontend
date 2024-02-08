@@ -29,6 +29,7 @@
       "keyword": "Keyword",
       "location_type": "Location Type",
       "add_new": "Add New",
+      "add": "Add",
       "update": "Update",
       "delete": "Delete",
       "saved": "Data saved Successfully",
@@ -45,6 +46,7 @@
       "beneficiary_edit": "Beneficiary Edit",
       "change_tracking_details": "Change Tracking Details",
       "exit": "Exit Program",
+      "shift": "Shift Program",
       "preview": "Preview",
       "approve": "Approve",
       "remove": "Remove",
@@ -748,7 +750,8 @@
       },
       "beneficiary_exit": {
         "title": "Beneficiary Exit and Adiition Management ",
-        "date_of_exit": "Date of Exit"
+        "date_of_exit": "Date of Exit",
+        "list":"Beneficiary Exit List"
       },
       "beneficiary_shifting": {
         "list":"Beneficiary List",
