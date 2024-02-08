@@ -165,6 +165,7 @@
         "union1": {
           "union": "Union",
           "customtitle": "Thana/ Union/ Pouroshava",
+          "pouroshava": "Pouroshava",
           "list": "Union List",
           "code": "Union Geo Code",
           "name_en": "Union Name English",
@@ -234,6 +235,7 @@
           "office": "Office",
           "list": "Office List",
           "code": "Office Code",
+          "office_name": "Office Name",
           "name_en": "Office Name English",
           "name_bn": "Office Name Bangla",
           "add_new": "Add New Office",

@@ -10,6 +10,7 @@
                                     {{ $t("container.system_config.demo_graphic.financial_year.list") }}
                                 </h3>
                             </v-card-title>
+
                             <v-card-text>
                                 <v-row class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
                                     justify="center" justify-lg="space-between">
@@ -21,7 +22,20 @@
                                             )
                                                 " hide-details color="primary">
                                         </v-text-field>
+
                                     </div>
+                                  <!-- Dropdown on the right -->
+
+                                  <v-col lg="4" md="6" cols="12" class="text-right">
+                                    <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4">
+                                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
+                                    </v-btn>
+                                    <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
+                                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                                      {{ $t("container.list.excel") }}
+                                    </v-btn>
+                                  </v-col>
+
                                     <v-col cols="12">
                                         <v-data-table :loading="loading" item-key="id" :headers="headers" :items="financial_years"
                                             :items-per-page="pagination.perPage" hide-default-footer
@@ -93,7 +107,7 @@ export default {
                 name_en: null,
                 name_bn: null,
             },
-          
+
             loading: false,
             search: "",
             financial_years: [],
@@ -142,32 +156,73 @@ export default {
                     ),
                     value: "status",
                 },
-           
+
             ];
         },
 
-   
+
     },
 
     methods: {
-       
-  
-        
-    
-      
+
+
+      GenerateExcel(){
+
+        // this.isLoading = true;
+        const queryParams = {
+          language: this.$i18n.locale,
+        };
+
+              import('@/plugins/Export2Excel').then((excel) => {
+                const OBJ = this.GetFinancialYear();
+
+                const Header = [
+                  this.$t("container.system_config.demo_graphic.union.custom_code"),
+                  this.$t("container.system_config.demo_graphic.division.division"),
+                  this.$t("container.system_config.demo_graphic.district.district"),
+                  this.$t("container.system_config.demo_graphic.thana.thana"),
+                  this.$t("container.system_config.demo_graphic.union.name_en"),
+                  this.$t("container.system_config.demo_graphic.union.name_bn"),
+                ]
+
+                const Field = ['geo_code','division_name','district_name','thana_name', 'union_name_en','union_name_bn']
+
+                const Data = this.FormatJson(Field, OBJ)
+
+                excel.export_json_to_excel({
+                  header: Header,
+                  data: Data,
+                  sheetName:"demo",
+                  filename:this.$t("container.system_config.demo_graphic.union1.customtitle"),
+                  autoWidth:true,
+                  bookType : "xlsx"
+                })
+              })
+              this.isLoading = false;
+
+      },
+
+      FormatJson(FilterData,JsonData){
+        return JsonData.map((v) =>
+            FilterData.map((j => {
+              return v[j];
+            })))
+      },
+
+
         onPageChange($event) {
             // this.pagination.current = $event;
             this.GetFinancialYear();
         },
 
         async GetFinancialYear() {
-       
+
             const queryParams = {
                 searchText: this.search,
                 perPage: this.pagination.perPage,
                 page: this.pagination.current,
             };
-                 
+
             this.$axios
                 .get("/admin/financial-year/get", {
                     headers: {
@@ -182,9 +237,10 @@ export default {
                     this.pagination.total = result.data.meta.last_page;
                     this.pagination.grand_total = result.data.meta.total;
                     console.log(queryParams)
+                    console.log(result.data.data,77)
                 });
         },
-       
+
         updateHeaderTitle() {
             const title = this.$t(
                 "container.system_config.demo_graphic.financial_year.list"
