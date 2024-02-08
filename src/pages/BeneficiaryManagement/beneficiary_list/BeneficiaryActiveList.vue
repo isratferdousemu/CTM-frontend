@@ -11,7 +11,7 @@
                   <h3 class="white--text">
                     {{
                       $t(
-                        "container.beneficiary_management.beneficiary_list.list"
+                        "container.beneficiary_management.beneficiary_list.list_active"
                       )
                     }}
                   </h3>
@@ -534,28 +534,6 @@
                           >
                           </v-text-field>
                         </v-col>
-
-                        <v-col lg="3" md="3" cols="12">
-                          <ValidationProvider
-                            name="status"
-                            vid="status_id"
-                            v-slot="{ errors }"
-                          >
-                            <v-autocomplete
-                              v-model="data.status"
-                              outlined
-                              :label="$t('container.list.status')"
-                              :items="ben_status"
-                              item-text="value"
-                              item-value="id"
-                              class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            ></v-autocomplete>
-                          </ValidationProvider>
-                        </v-col>
                       </v-row>
 
                       <div class="d-inline d-flex justify-end">
@@ -587,7 +565,7 @@
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
                   {{
-                    $t("container.beneficiary_management.beneficiary_list.list")
+                    $t("container.beneficiary_management.beneficiary_list.list_active")
                   }}
                 </h3>
               </v-card-title>
@@ -785,47 +763,6 @@
           </v-col>
         </v-row>
       </v-col>
-
-      <!-- Committee View modal  -->
-      <v-dialog v-model="dialogView" width="80%">
-        <v-card style="justify-content: left; text-align: left">
-          <v-card-title class="font-weight-bold justify-center">
-            Beneficiary View
-            <!-- {{ $t("container.system_config.demo_graphic.committee.view") }} -->
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <ValidationObserver ref="form" v-slot="{ invalid }">
-              <form @submit.prevent="update()">
-                <v-simple-table>
-                  <template v-if="beneficiaryItem">
-                    <tbody>
-                      <tr>
-                        <td><h4>Program Name</h4></td>
-                        <td>{{ beneficiaryItem.program.name_en }}</td>
-                        <td><h4>Application Id</h4></td>
-                        <td>{{ beneficiaryItem.application_id }}</td>
-                      </tr>
-                      <tr>
-                        <td><h4>Name</h4></td>
-                        <td>{{ beneficiaryItem.name_en }}</td>
-                        <td><h4>Father Name</h4></td>
-                        <td>{{ beneficiaryItem.father_name_en }}</td>
-                      </tr>
-                      <tr>
-                        <td><h4>Mother Name</h4></td>
-                        <td>{{ beneficiaryItem.mother_name_en }}</td>
-                        <td><h4>Mobile</h4></td>
-                        <td>{{ beneficiaryItem.mobile }}</td>
-                      </tr>
-                    </tbody>
-                  </template>
-                </v-simple-table>
-              </form>
-            </ValidationObserver>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
     </v-row>
   </div>
 </template>
@@ -837,8 +774,8 @@ import { required } from "vee-validate/dist/rules";
 
 extend("required", required);
 export default {
-  name: "Index",
-  title: "CTM - Beneficiary List",
+  name: "ActiveIndex",
+  title: "CTM - Beneficiary(Active) List",
   data() {
     return {
       data: {
@@ -904,7 +841,6 @@ export default {
         },
       ], // Default selection without 'name'
       selectedHeaders: [],
-      dialogView: false,
       beneficiaryItem: {},
       loading: true,
       search: "",
@@ -1391,7 +1327,7 @@ export default {
         nominee_name: this.data.nominee_name,
         account_number: this.data.account_number,
         nid: this.data.nid,
-        status: this.data.status,
+        status: 1, //Active list 
 
         perPage: this.pagination.perPage,
         page: this.pagination.current,
@@ -1425,14 +1361,9 @@ export default {
     },
     updateHeaderTitle() {
       const title = this.$t(
-        "container.beneficiary_management.beneficiary_list.list"
+        "container.beneficiary_management.beneficiary_list.list_active"
       );
       this.$store.commit("setHeaderTitle", title);
-    },
-    async GetBeneficiaryById(item) {
-      this.dialogView = true;
-      this.beneficiaryItem = item;
-      console.log(this.beneficiaryItem);
     },
     async GeneratePDF() {
       const queryParams = {

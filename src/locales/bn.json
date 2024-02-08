@@ -687,6 +687,11 @@
             "beneficiary_list": {
                 "beneficiary": "সুবিধাভোগী",
                 "list": "সুবিধাভোগী তথ্যের তালিকা",
+                "list_active": "সুবিধাভোগী তথ্যের(সক্রিয়) তালিকা",
+                "list_inactive": "সুবিধাভোগী তথ্যের(মৃত এবং নিষ্ক্রিয়) তালিকা",
+                "list_waiting": "সুবিধাভোগী তথ্যের(অপেক্ষমান) তালিকা",
+                "list_delete": "সুবিধাভোগী তথ্যের(মুছে ফেলা) তালিকা",
+                "list_replacement": "সুবিধাভোগী তথ্যের(প্রতিস্থাপন) তালিকা",
                 "program": "কর্মসূচী",
                 "beneficiary_id": "সুবিধাভোগীর আইডি",
                 "beneficiary_name": "সুবিধাভোগীর নাম",
@@ -743,7 +748,8 @@
                 "unsuccessful_change": "অসফল পরিবর্তন",
                 "information_tracking": "ইনফরমেশন ট্র্যাকিং",
                 "tracking_type": "ট্র্যাকিং টাইপ",
-                "address": "ঠিকানা"
+                "address": "ঠিকানা",
+                "rollback":"রোলব্যাক"
             },
             "digital_id": {
                 "digital_id_card": "ডিজিটাল আইডি কার্ড"

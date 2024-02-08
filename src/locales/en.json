@@ -687,6 +687,11 @@
       "beneficiary_list": {
         "beneficiary": "Beneficiary",
         "list": "Beneficiary Information List",
+        "list_active": "Beneficiary Information(Active) List",
+        "list_inactive": "Beneficiary Information(Dead & Inactive) List",
+        "list_waiting": "Beneficiary Information(Waiting) List",
+        "list_delete": "Beneficiary Information(Delete Log) List",
+        "list_replacement": "Beneficiary Information(Replacement Log) List",
         "program": "Program",
         "beneficiary_id": "Beneficiary's ID",
         "beneficiary_name": "Beneficiary's Name",
@@ -745,7 +750,8 @@
         "information_tracking": "Information Tracking",
         "tracking_type": "Tracking Type",
         "address": "Address",
-        "account_no": "Account No"
+        "account_no": "Account No",
+        "rollback":"Rollback"
       },
       "digital_id": {
         "digital_id_card": "Digital ID Card"

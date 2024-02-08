@@ -11,7 +11,7 @@
                   <h3 class="white--text">
                     {{
                       $t(
-                        "container.beneficiary_management.beneficiary_list.list"
+                        "container.beneficiary_management.beneficiary_list.list_delete"
                       )
                     }}
                   </h3>
@@ -534,28 +534,6 @@
                           >
                           </v-text-field>
                         </v-col>
-
-                        <v-col lg="3" md="3" cols="12">
-                          <ValidationProvider
-                            name="status"
-                            vid="status_id"
-                            v-slot="{ errors }"
-                          >
-                            <v-autocomplete
-                              v-model="data.status"
-                              outlined
-                              :label="$t('container.list.status')"
-                              :items="ben_status"
-                              item-text="value"
-                              item-value="id"
-                              class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            ></v-autocomplete>
-                          </ValidationProvider>
-                        </v-col>
                       </v-row>
 
                       <div class="d-inline d-flex justify-end">
@@ -587,7 +565,7 @@
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
                   {{
-                    $t("container.beneficiary_management.beneficiary_list.list")
+                    $t("container.beneficiary_management.beneficiary_list.list_delete")
                   }}
                 </h3>
               </v-card-title>
@@ -618,9 +596,16 @@
                 <v-row justify="end" align="center" class="mx-4">
                   <!-- Dropdown on the right -->
                   <v-col lg="4" md="4" cols="12" class="text-right">
-                    <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4" @click="GeneratePDF()">
-                    <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
-                  </v-btn>
+                    <v-btn
+                      elevation="2"
+                      class="btn mr-2 white--text"
+                      flat
+                      color="red darken-4"
+                      @click="GeneratePDF()"
+                    >
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                      {{ $t("container.list.PDF") }}
+                    </v-btn>
                   </v-col>
                 </v-row>
                 <v-row
@@ -646,106 +631,15 @@
                         }}
                       </template>
                       <!-- Action Button -->
-                      <template v-slot:item.actions="{ item }" width="50%">
-                        <!-- <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'update-post'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="#795548"
-                              class="mr-3 white--text"
-                              elevation="0"
-                              router
-                              to="/beneficiary-management/switch-program"
-                            >
-                              <v-icon> mdi mdi-swap-horizontal </v-icon>
-                            </v-btn>
-                          </template>
-                          <span>
-                            {{ $t("container.list.switch_program") }}
-                          </span>
-                        </v-tooltip> -->
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'update-post'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="#AFB42B"
-                              elevation="0"
-                              class="white--text"
-                              router
-                              :to="`/beneficiary-management/beneficiary-info/details/${item.id}`"
-                            >
-                              <v-icon> mdi-eye </v-icon>
-                            </v-btn>
-                          </template>
-                          <span>
-                            {{ $t("container.list.view") }}
-                          </span>
-                        </v-tooltip>
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'update-post'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="success"
-                              elevation="0"
-                              class="ml-3"
-                              router
-                              :to="`/beneficiary-management/beneficiary-info/edit/${item.id}`"
-                            >
-                              <v-icon> mdi-account-edit-outline </v-icon>
-                            </v-btn>
-                          </template>
-                          <span>
-                            {{ $t("container.list.edit") }}
-                          </span>
-                        </v-tooltip>
-
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'delete-division'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="#827717"
-                              class="ml-3 white--text"
-                              elevation="0"
-                              router
-                              :to="`/beneficiary-management/beneficiary-replacement/${item.id}`"
-                            >
-                              <v-icon> mdi mdi-file-replace </v-icon>
-                            </v-btn>
-                          </template>
-                          <span> {{ $t("container.list.replace") }}</span>
-                        </v-tooltip>
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'delete-division'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="#546E7A"
-                              class="ml-3 white--text"
-                              elevation="0"
-                              router
-                              :to="`/beneficiary-management/beneficiary-journey/${item.id}`"
-                            >
-                              <v-icon> mdi mdi-history </v-icon>
-                            </v-btn>
-                          </template>
-                          <span>
-                            {{ $t("container.list.beneficiary_journey") }}</span
-                          >
-                        </v-tooltip>
+                      <!-- Action Button -->
+                      <template v-slot:item.actions="{ item }">
+                        <v-btn v-on="on" color="success" elevation="0">
+                          {{
+                            $t(
+                              "container.beneficiary_management.beneficiary_list.rollback"
+                            )
+                          }}
+                        </v-btn>
                       </template>
                       <!-- End Action Button -->
                       <template v-slot:footer="item">
@@ -786,59 +680,19 @@
         </v-row>
       </v-col>
 
-      <!-- Committee View modal  -->
-      <v-dialog v-model="dialogView" width="80%">
-        <v-card style="justify-content: left; text-align: left">
-          <v-card-title class="font-weight-bold justify-center">
-            Beneficiary View
-            <!-- {{ $t("container.system_config.demo_graphic.committee.view") }} -->
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <ValidationObserver ref="form" v-slot="{ invalid }">
-              <form @submit.prevent="update()">
-                <v-simple-table>
-                  <template v-if="beneficiaryItem">
-                    <tbody>
-                      <tr>
-                        <td><h4>Program Name</h4></td>
-                        <td>{{ beneficiaryItem.program.name_en }}</td>
-                        <td><h4>Application Id</h4></td>
-                        <td>{{ beneficiaryItem.application_id }}</td>
-                      </tr>
-                      <tr>
-                        <td><h4>Name</h4></td>
-                        <td>{{ beneficiaryItem.name_en }}</td>
-                        <td><h4>Father Name</h4></td>
-                        <td>{{ beneficiaryItem.father_name_en }}</td>
-                      </tr>
-                      <tr>
-                        <td><h4>Mother Name</h4></td>
-                        <td>{{ beneficiaryItem.mother_name_en }}</td>
-                        <td><h4>Mobile</h4></td>
-                        <td>{{ beneficiaryItem.mobile }}</td>
-                      </tr>
-                    </tbody>
-                  </template>
-                </v-simple-table>
-              </form>
-            </ValidationObserver>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
     </v-row>
   </div>
 </template>
-
-<script>
+  
+  <script>
 import { mapState, mapActions } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 
 extend("required", required);
 export default {
-  name: "Index",
-  title: "CTM - Beneficiary List",
+  name: "DeleteIndex",
+  title: "CTM - Beneficiary (Delete) List",
   data() {
     return {
       data: {
@@ -904,7 +758,6 @@ export default {
         },
       ], // Default selection without 'name'
       selectedHeaders: [],
-      dialogView: false,
       beneficiaryItem: {},
       loading: true,
       search: "",
@@ -1063,6 +916,7 @@ export default {
           text: this.$t("container.list.action"),
           value: "actions",
           width: "200",
+          align: "center",
         },
       ];
     },
@@ -1425,14 +1279,9 @@ export default {
     },
     updateHeaderTitle() {
       const title = this.$t(
-        "container.beneficiary_management.beneficiary_list.list"
+        "container.beneficiary_management.beneficiary_list.list_delete"
       );
       this.$store.commit("setHeaderTitle", title);
-    },
-    async GetBeneficiaryById(item) {
-      this.dialogView = true;
-      this.beneficiaryItem = item;
-      console.log(this.beneficiaryItem);
     },
     async GeneratePDF() {
       const queryParams = {
@@ -1477,6 +1326,7 @@ export default {
           text: this.$t("container.list.action"),
           value: "actions",
           width: "200",
+          align: "center",
         },
       ];
     },
