@@ -749,7 +749,8 @@
                 "information_tracking": "ইনফরমেশন ট্র্যাকিং",
                 "tracking_type": "ট্র্যাকিং টাইপ",
                 "address": "ঠিকানা",
-                "rollback":"রোলব্যাক"
+                "rollback":"রোলব্যাক",
+                "applicant_verification":"আবেদনকারী যাচাইকরণ"
             },
             "digital_id": {
                 "digital_id_card": "ডিজিটাল আইডি কার্ড"
