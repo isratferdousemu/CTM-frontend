@@ -11,7 +11,13 @@
                 rules="required"
                 v-slot="{ errors }"
               >
-                <label>Program </label>
+                <label
+                  >{{
+                    $t(
+                      "container.beneficiary_management.beneficiary_list.program"
+                    )
+                  }}
+                </label>
                 <span style="margin-left: 4px; color: red">*</span>
                 <v-select
                   outlined
@@ -31,7 +37,13 @@
                   <!-- Applicant Verification -->
                   <v-expansion-panel>
                     <v-expansion-panel-header color="primary">
-                      <h3 class="white--text">Applicant Verification</h3>
+                      <h3 class="white--text">
+                        {{
+                          $t(
+                            "container.beneficiary_management.beneficiary_list.applicant_verification"
+                          )
+                        }}
+                      </h3>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
                       <template>
@@ -47,12 +59,12 @@
                             row
                           >
                             <v-radio
-                              label="National Identity (NID)"
+                              :label="$t('container.beneficiary_management.beneficiary_list.national_identity')"
                               value="1"
                               v-if="isRadioGroupReadonly"
                             ></v-radio>
                             <v-radio
-                              label="Birth Registration Number"
+                            :label="$t('container.beneficiary_management.beneficiary_list.birth_registration')"
                               value="2"
                               v-if="isRadioGroupReadonly"
                             ></v-radio>
@@ -69,12 +81,12 @@
                           >
                             <label>
                               <span v-if="data.verification_type == 1">
-                                NID No
+                                {{$t("container.beneficiary_management.beneficiary_list.nid_no")}}
                               </span>
                               <span v-else-if="data.verification_type == 2">
-                                BRN No
+                                {{$t("container.beneficiary_management.beneficiary_list.brn_no")}}
                               </span>
-                              <span v-else> NID / BRN No </span>
+                              <span v-else>{{$t("container.beneficiary_management.beneficiary_list.nid_or_brn_no")}} </span>
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-text-field
@@ -92,7 +104,7 @@
                         </v-col>
 
                         <v-col>
-                          <label>Date of Birth </label>
+                          <label> <label>{{$t("container.beneficiary_management.beneficiary_list.date_of_birth")}} </label> </label>
 
                           <span style="margin-left: 4px; color: red">*</span>
 
@@ -113,7 +125,7 @@
                   <v-expansion-panel class="mt-5" v-model="panel" multiple>
                     <v-expansion-panel-header color="primary">
                       <h3 class="white--text">
-                        Information According to the Old Allowance
+                        {{$t("container.beneficiary_management.beneficiary_list.information_according_to_the_old")}}
                       </h3>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
@@ -126,7 +138,7 @@
                             v-slot="{ errors }"
                           >
                             <label>
-                              <span> Yearly Income </span>
+                              <span> {{$t("container.beneficiary_management.beneficiary_list.yearly_income")}} </span>
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-text-field
@@ -151,7 +163,7 @@
                             v-slot="{ errors }"
                           >
                             <label>
-                              <span> Govt/Private Beneficiary Details </span>
+                              <span> {{$t("container.beneficiary_management.beneficiary_list.govt_private_ben_details")}} </span>
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-text-field
@@ -177,7 +189,7 @@
                             v-slot="{ errors }"
                           >
                             <label>
-                              <span> Total No. of Family Member </span>
+                              <span> {{$t("container.beneficiary_management.beneficiary_list.total_no_of_family_member")}} </span>
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-text-field
@@ -201,7 +213,7 @@
                             v-slot="{ errors }"
                           >
                             <label>
-                              <span> Male </span>
+                              <span> {{$t("container.beneficiary_management.beneficiary_list.male")}} </span>
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-text-field
@@ -225,7 +237,7 @@
                             v-slot="{ errors }"
                           >
                             <label>
-                              <span> Female </span>
+                              <span> {{$t("container.beneficiary_management.beneficiary_list.female")}} </span>
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-text-field
@@ -249,7 +261,7 @@
                             v-slot="{ errors }"
                           >
                             <label>
-                              <span> Children </span>
+                              <span> {{$t("container.beneficiary_management.beneficiary_list.children")}} </span>
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-text-field
@@ -268,9 +280,7 @@
                       </V-row>
                       <V-row>
                         <v-col md="2" lg="2" cols="12">
-                          <label>
-                            Health Status : (Apply Where Applicable)</label
-                          >
+                          <label>{{$t("container.beneficiary_management.beneficiary_list.health_status")}}</label>
                           <span style="margin-left: 4px; color: red">*</span>
                         </v-col>
                         <v-col md="2" lg="2" cols="12">
@@ -324,7 +334,7 @@
                             rules="required"
                             v-slot="{ errors }"
                           >
-                            <label>Financial Status </label>
+                          <label>{{$t("container.beneficiary_management.beneficiary_list.financial_status")}}</label>
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-select
                               outlined
@@ -348,7 +358,7 @@
                             rules="required"
                             v-slot="{ errors }"
                           >
-                            <label>Social Status</label>
+                          <label>{{$t("container.beneficiary_management.beneficiary_list.social_status")}}</label>
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-select
                               outlined
@@ -374,7 +384,7 @@
                             v-slot="{ errors }"
                           >
                             <label>
-                              <span> Land Ownership </span>
+                              <span> {{$t("container.beneficiary_management.beneficiary_list.land_ownership")}} </span>
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-text-field
@@ -415,7 +425,7 @@
                   <!-- Personal Information  -->
                   <v-expansion-panel class="mt-5">
                     <v-expansion-panel-header color="primary">
-                      <h3 class="white--text">Personal Information</h3>
+                      <h3 class="white--text">{{$t("container.beneficiary_management.beneficiary_list.personal_info")}}</h3>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
                       <div class="pa-2 mb-4">
@@ -447,7 +457,7 @@
                               rules="required"
                               vid="image"
                             >
-                              <h3>Image</h3>
+                              <h3>{{$t("container.beneficiary_management.beneficiary_list.image")}}</h3>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" align-self="end" lg="6">
@@ -477,7 +487,7 @@
                               rules="required"
                               vid="sign"
                             >
-                              <h3>Signature</h3>
+                              <h3>{{$t("container.beneficiary_management.beneficiary_list.signature")}}</h3>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
@@ -487,7 +497,7 @@
                               rules="required"
                               v-slot="{ errors }"
                             >
-                              <label>Name (BN) </label>
+                            <label>{{$t("container.beneficiary_management.beneficiary_list.name_bn")}} </label>
                               <v-text-field
                                 v-model="data.name_bn"
                                 outlined
@@ -505,7 +515,7 @@
                               rules="required"
                               v-slot="{ errors }"
                             >
-                              <label>Name (EN) </label>
+                            <label>{{$t("container.beneficiary_management.beneficiary_list.name_en")}} </label>
                               <v-text-field
                                 v-model="data.name_en"
                                 outlined
@@ -523,8 +533,7 @@
                               rules="required"
                               v-slot="{ errors }"
                             >
-                              <label>Father Name (BN)</label>
-
+                            <label>{{$t("container.beneficiary_management.beneficiary_list.father_name_bn")}} </label>
                               <v-text-field
                                 v-model="data.father_name_bn"
                                 outlined
@@ -543,7 +552,7 @@
                               rules="required"
                               v-slot="{ errors }"
                             >
-                              <label>Father Name (EN)</label>
+                            <label>{{$t("container.beneficiary_management.beneficiary_list.father_name_en")}} </label>
                               <v-text-field
                                 v-model="data.father_name_en"
                                 outlined
@@ -561,7 +570,7 @@
                               vid="mother_name_bn"
                               v-slot="{ errors }"
                             >
-                              <label>Mother Name (BN)</label>
+                            <label>{{$t("container.beneficiary_management.beneficiary_list.mother_name_bn")}} </label>
                               <v-text-field
                                 v-model="data.mother_name_bn"
                                 outlined
@@ -579,7 +588,7 @@
                               vid="mother_name_en"
                               v-slot="{ errors }"
                             >
-                              <label>Mother Name (EN)</label>
+                            <label>{{$t("container.beneficiary_management.beneficiary_list.mother_name_en")}} </label>
                               <v-text-field
                                 v-model="data.mother_name_en"
                                 outlined
@@ -597,7 +606,7 @@
                               vid="spouse_name_bn"
                               v-slot="{ errors }"
                             >
-                              <label>Spouse Name (BN)</label>
+                            <label>{{$t("container.beneficiary_management.beneficiary_list.spouse_name_bn")}} </label>
                               <v-text-field
                                 v-model="data.spouse_name_bn"
                                 outlined
@@ -614,7 +623,7 @@
                               vid="marital_status"
                               v-slot="{ errors }"
                             >
-                              <label>Marital Status</label>
+                            <label>{{$t("container.beneficiary_management.beneficiary_list.marital_status")}} </label>
                               <v-text-field
                                 v-model="data.marital_status"
                                 outlined
@@ -631,7 +640,7 @@
                               vid="spouse_name_en"
                               v-slot="{ errors }"
                             >
-                              <label>Spouse Name (EN)</label>
+                            <label>{{$t("container.beneficiary_management.beneficiary_list.spouse_name_en")}} </label>
                               <v-text-field
                                 v-model="data.spouse_name_en"
                                 outlined
@@ -649,7 +658,7 @@
                               v-slot="{ errors }"
                               rules="required"
                             >
-                              <label>Religion</label>
+                            <label>{{$t("container.beneficiary_management.beneficiary_list.religion")}} </label>
                               <v-text-field
                                 v-model="data.religion"
                                 outlined
@@ -667,9 +676,7 @@
                               rules="required"
                               v-slot="{ errors }"
                             >
-                              <label style="display: inline-block"
-                                >Mobile Number
-                              </label>
+                            <label>{{$t("container.beneficiary_management.beneficiary_list.mobile_number")}} </label>
                               <v-text-field
                                 v-model="data.mobile"
                                 outlined
@@ -688,7 +695,7 @@
                               vid="nationality"
                               v-slot="{ errors }"
                             >
-                              <label>Nationality</label>
+                            <label>{{$t("container.beneficiary_management.beneficiary_list.nationality")}} </label>
                               <v-text-field
                                 v-model="data.nationality"
                                 outlined
@@ -707,7 +714,7 @@
                               v-slot="{ errors }"
                               rules="required"
                             >
-                              <label>Age</label>
+                            <label>{{$t("container.beneficiary_management.beneficiary_list.age")}} </label>
                               <v-text-field
                                 v-model="data.age"
                                 outlined
@@ -727,7 +734,7 @@
                               v-slot="{ errors }"
                               rules="required"
                             >
-                              <label>Gender</label>
+                            <label>{{$t("container.beneficiary_management.beneficiary_list.gender")}} </label>
                               <v-text-field
                                 v-model="data.gender.value_en"
                                 outlined
@@ -746,7 +753,7 @@
                               rules="required"
                               v-slot="{ errors }"
                             >
-                              <label>Education Status</label>
+                            <label>{{$t("container.beneficiary_management.beneficiary_list.education_status")}} </label>
                               <v-text-field
                                 v-model="data.education_status"
                                 outlined
@@ -763,7 +770,7 @@
                               vid="profession"
                               v-slot="{ errors }"
                             >
-                              <label>Profession</label>
+                            <label>{{$t("container.beneficiary_management.beneficiary_list.profession")}} </label>
                               <v-text-field
                                 v-model="data.profession"
                                 outlined
@@ -780,7 +787,7 @@
                               vid="identification_mark"
                               v-slot="{ errors }"
                             >
-                              <label>Identification Mark</label>
+                            <label>{{$t("container.beneficiary_management.beneficiary_list.identification_mark")}} </label>
                               <v-text-field
                                 v-model="data.identification_mark"
                                 outlined
@@ -801,13 +808,13 @@
                   <!-- Contact Information -->
                   <v-expansion-panel class="mt-4">
                     <v-expansion-panel-header color="primary">
-                      <h3 class="white--text">Contact Information</h3>
+                      <h3 class="white--text">{{$t("container.beneficiary_management.beneficiary_list.contact_info")}}</h3>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
                       <v-row>
                         <v-col cols="12" class="text-center">
                           <v-chip color="success" class="text-uppercase" label
-                            >Present Address</v-chip
+                            >{{$t("container.beneficiary_management.beneficiary_list.present_address")}}</v-chip
                           >
                         </v-col>
                         <!-- {{ permanent_location }}  -->
@@ -1019,7 +1026,7 @@
                       <v-row>
                         <v-col cols="12" class="text-center">
                           <v-chip color="success" class="text-uppercase" label
-                            >Permanent Address</v-chip
+                            >{{$t("container.beneficiary_management.beneficiary_list.permanent_address")}}</v-chip
                           >
                         </v-col>
 
@@ -1255,7 +1262,7 @@
                   <!-- Nominee Information -->
                   <v-expansion-panel class="mb-4">
                     <v-expansion-panel-header color="primary">
-                      <h3 class="white--text">Nominee Information</h3>
+                      <h3 class="white--text">{{$t("container.beneficiary_management.beneficiary_list.nominee_info")}}</h3>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
                       <div class="pa-2 mb-4">
@@ -1265,7 +1272,7 @@
                               v-model="data.nominee_en"
                               outlined
                               readonly
-                              :label="$t('Name (EN)')"
+                              :label="$t('container.beneficiary_management.beneficiary_list.nominee_name_en')"
                             >
                             </v-text-field>
                           </v-col>
@@ -1275,7 +1282,7 @@
                               v-model="data.nominee_bn"
                               outlined
                               readonly
-                              :label="$t('Name (BN)')"
+                              :label="$t('container.beneficiary_management.beneficiary_list.nominee_name_bn')"
                             >
                             </v-text-field>
                           </v-col>
@@ -1292,7 +1299,7 @@
                               readonly
                               :label="
                                 $t(
-                                  'National Identity (NID) / Birth RegistrationNumber'
+                                  'container.beneficiary_management.beneficiary_list.nid_or_brn_number'
                                 )
                               "
                             >
@@ -1309,7 +1316,7 @@
                               v-model="data.nominee_nationality"
                               outlined
                               readonly
-                              :label="$t('Nationality')"
+                              :label="$t('container.beneficiary_management.beneficiary_list.nationality')"
                             >
                             </v-text-field>
                           </v-col>
@@ -1324,7 +1331,7 @@
                               v-model="data.nominee_relation_with_beneficiary"
                               outlined
                               readonly
-                              :label="$t('Relationship with Beneficiary')"
+                              :label="$t('container.beneficiary_management.beneficiary_list.relationship_with_beneficiary')"
                             >
                             </v-text-field>
                           </v-col>
@@ -1339,7 +1346,7 @@
                               v-model="data.nominee_address"
                               outlined
                               readonly
-                              :label="$t('Address')"
+                              :label="$t('container.beneficiary_management.beneficiary_list.address')"
                             >
                             </v-text-field>
                           </v-col>
@@ -1365,7 +1372,7 @@
                               "
                               class="mb-5"
                             ></v-img>
-                            <h3>Image</h3>
+                            <h3>{{$t("container.beneficiary_management.beneficiary_list.image")}}</h3>
                           </v-col>
                           <v-col cols="6" align-self="end" lg="6">
                             <v-img
@@ -1388,7 +1395,7 @@
                               "
                               class="mb-5"
                             ></v-img>
-                            <h3>Signeture</h3>
+                            <h3>{{$t("container.beneficiary_management.beneficiary_list.signature")}}</h3>
                           </v-col>
                         </v-row>
                       </div>
@@ -1399,7 +1406,7 @@
                   <!-- For Office Use -->
                   <v-expansion-panel class="ma-4">
                     <v-expansion-panel-header color="primary">
-                      <h3 class="white--text">For Office Use</h3>
+                      <h3 class="white--text">{{$t("container.beneficiary_management.beneficiary_list.for_office_use")}}</h3>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
                       <div class="pa-2 mb-4">
@@ -1414,7 +1421,7 @@
                               v-model="data.account_number"
                               outlined
                               readonly
-                              :label="$t('Beneficiary Bank Account Number')"
+                              :label="$t('container.beneficiary_management.beneficiary_list.beneficary_bank_acc_number')"
                             >
                             </v-text-field>
                           </v-col>
@@ -1428,7 +1435,7 @@
                               v-model="data.account_name"
                               outlined
                               readonly
-                              :label="$t('Account Name')"
+                              :label="$t('container.beneficiary_management.beneficiary_list.account_name')"
                             >
                             </v-text-field>
                           </v-col>
@@ -1443,7 +1450,7 @@
                               v-model="data.account_owner"
                               outlined
                               readonly
-                              :label="$t('Account Owner')"
+                              :label="$t('container.beneficiary_management.beneficiary_list.account_owner')"
                             >
                             </v-text-field>
                           </v-col>
@@ -1457,7 +1464,7 @@
                               value="10000"
                               outlined
                               readonly
-                              :label="$t('Monthly Honorarium Amount')"
+                              :label="$t('container.beneficiary_management.beneficiary_list.monthly_honorarium_amount')"
                             >
                             </v-text-field>
                           </v-col>
@@ -1472,7 +1479,7 @@
                               value="2022-23"
                               outlined
                               readonly
-                              :label="$t('Financeial Year')"
+                              :label="$t('container.beneficiary_management.beneficiary_list.financial_year')"
                             >
                             </v-text-field>
                           </v-col>
@@ -1546,7 +1553,7 @@
                   <v-expansion-panel class="mb-4">
                     <v-expansion-panel-header color="primary">
                       <h3 class="white--text">
-                        Other Information of Eligibility
+                        {{$t("container.beneficiary_management.beneficiary_list.other_info_of_eligibility")}}
                       </h3>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
@@ -1700,6 +1707,18 @@
                   </v-expansion-panel>
                   <!-- Other Information of Eligibility end-->
                 </v-expansion-panels>
+              </div>
+              <div class="d-inline d-flex justify-end">
+                <v-btn
+                  type="submit"
+                  flat
+                  router
+                  to="/beneficiary-management/beneficiary-info"
+                  :loading="loading"
+                  class="custom-btn-width py-2 mr-2"
+                >
+                  {{ $t("container.list.back") }}
+                </v-btn>
               </div>
             </v-card>
           </form>
