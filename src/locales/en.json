@@ -789,7 +789,25 @@
         "gender":"Gender",
         "education_status":"Education Status",
         "profession":"Profession",
-        "identification_mark":"Identification Mark"
+        "identification_mark":"Identification Mark",
+        "contact_info":"Contact Information",
+        "present_address":"Present Address",
+        "permanent_address":"Permanent Address",
+        "nominee_info":"Nominne Information",
+        "nominee_name_en":"Name (EN)",
+        "nominee_name_bn":"Name (BN)",
+        "nid_or_brn_number":"National Identity (NID) / Birth Registration Number",
+        "relationship_with_beneficiary":"Relationship with Beneficiary",
+        "image_size":"Image (Image File must be under 200 KB)",
+        "for_office_use":"For Office Use",
+        "beneficary_bank_acc_number":"Beneficiary Bank Account Number",
+        "account_name":"Account Name",
+        "account_owner":"Account Owner",
+        "monthly_honorarium_amount":"Monthly Honorarium Amount",
+        "financial_year":"Financial Year",
+        "other_info_of_eligibility":"Other Information of Eligibility"
+        
+
 
       },
       "digital_id": {
