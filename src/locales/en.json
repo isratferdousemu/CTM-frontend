@@ -384,7 +384,7 @@
         }
       },
       "device": {
-        "list": "Device Registration Lists",
+        "list": "Device Lists",
         "user_id": "User ID",
         "user_name": "User Name",
         "device_type": "Device Type",
