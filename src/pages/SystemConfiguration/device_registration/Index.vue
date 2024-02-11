@@ -66,11 +66,118 @@ export default {
   },
 
   mounted() {
-    console.log("First Loading")
     this.updateHeaderTitle();
   },
 
   methods: {
+
+    GeneratePdf(){
+
+      const HeaderInfo = [
+        this.$t("container.list.sl"),
+        this.$t('container.system_config.device.user_name'),
+        this.$t('container.system_config.device.device_type'),
+        this.$t('container.system_config.device.unique_id'),
+        this.$t('container.system_config.device.pupose_of_use'),
+      ]
+
+      const queryParams = {
+        language: this.$i18n.locale,
+        // data:CustomInfo,
+        header:HeaderInfo,
+        fileName:this.$t("container.system_config.device.list"),
+      };
+
+      this.$axios
+          .get("/admin/device/generate-pdf", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+            responseType: 'arraybuffer',
+            params: queryParams,
+          })
+          .then((response) => {
+            const blob = new Blob([response.data], { type: 'application/pdf' });
+            const url = window.URL.createObjectURL(blob);
+            window.open(url, '_blank');
+            this.isLoading = false;
+          })
+          .catch(error => {
+            this.isLoading = false;
+            console.error('Error generating PDF:', error);
+          });
+    },
+
+    GenerateExcel(){
+      const queryParams = {
+        language: this.$i18n.locale,
+        searchText: this.search,
+      };
+
+      this.$axios
+          .get("/admin/device/generate-excel", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+            params: queryParams,
+          })
+          .then((response) => {
+            import('@/plugins/Export2Excel').then((excel) => {
+              const OBJinfo = response.data
+              const deviceTypeMap = {};
+              this.device_types.forEach(device => {
+                deviceTypeMap[device.id] = device.name;
+              });
+              const CustomInfo = OBJinfo.map(i => {
+                return {
+                  "user_name": i.user.username,
+                  "device_type": deviceTypeMap[i.device_type],
+                  "device_id": i.device_id,
+                  "purpose_use": i.purpose_use,
+                }
+
+              });
+
+              const Header = [
+                this.$t('container.system_config.device.user_name'),
+                this.$t('container.system_config.device.device_type'),
+                this.$t('container.system_config.device.unique_id'),
+                this.$t('container.system_config.device.pupose_of_use'),
+              ]
+
+              const Field = ['user_name','device_type','device_id','purpose_use']
+
+              const Data = this.FormatJson(Field, CustomInfo)
+              const currentDate = new Date().toISOString().slice(0, 10); //
+              const filenameWithDate = `${currentDate}_${this.$t("container.system_config.device.list")}`;
+
+              excel.export_json_to_excel({
+                header: Header,
+                data: Data,
+                sheetName:filenameWithDate,
+                filename:filenameWithDate,
+                autoWidth:true,
+                bookType : "xlsx"
+              })
+            })
+            this.isLoading = false;
+          })
+
+          .catch(error => {
+            this.isLoading = false;
+            console.error('Error generating PDF:', error);
+          });
+    },
+
+    FormatJson(FilterData,JsonData){
+      return JsonData.map((v) =>
+          FilterData.map((j => {
+            return v[j];
+          })))
+    },
+
     getAllDevices(){
       const { sortBy, sortDesc, page, itemsPerPage } = this.options
 
@@ -171,6 +278,16 @@ export default {
                   </div>
 
                   <v-spacer></v-spacer>
+
+                  <v-col lg="4" md="6" cols="12" class="text-right">
+                    <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4" @click="GeneratePdf()">
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
+                    </v-btn>
+                    <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                      {{ $t("container.list.excel") }}
+                    </v-btn>
+                  </v-col>
 
                   <v-btn
                       medium
