@@ -1222,7 +1222,7 @@
                                                 </v-col>
                                                 <v-col cols="6" align-self="end" lg="6">
 
-                                                    <v-img :src="nominee_image" style="
+                                                    <v-img :src="nominee_signature" style="
                                     width: 200px;
                                     height: 80px;
                                     border: 1px solid #ccc;
@@ -1738,17 +1738,17 @@ export default {
                     this.allowance_values = result?.data?.application?.allow_addi_field_value;
                     this.program_name = this.data?.program.name_en;
                     this.whole_program = this.data?.program;
-                    this.image = 'http://' + result?.data?.image.replace(/\/public\//, '/');
+                    this.image =  result?.data?.image;
                     //  this.image = this.image.replace(/\\\//g, '/');
                     console.log(this.image, "image");
 
-                    this.signature = 'http://' + result?.data?.signature.replace(/\/public\//, '/');
+                    this.signature =  result?.data?.signature;
                     //   this.signature = this.signature.replace(/\\\//g, '/');
-                    this.nominee_image = 'http://' + result?.data?.nominee_image.replace(/\/public\//, '/');
+                    this.nominee_image = result?.data?.nominee_image;
                     //  this.nominee_image = this.nominee_image.replace(/\\\//g, '/');
-                    this.nominee_signature = 'http://' + result?.data?.nominee_signature.replace(/\/public\//, '/');
+                    this.nominee_signature =  result?.data?.nominee_signature;
                     //  this.nominee_signature = this.nominee_signature.replace(/\\\//g, '/');
-
+                    console.log(this.nominee_signature, "nominee_signature");
 
                     console.log(this.allowance_filed, "this.allowance_filed")
                     console.log(this.permanent_location, "this.permanent_location")
