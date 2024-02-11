@@ -5,31 +5,16 @@
         <ValidationObserver ref="form" v-slot="{ invalid }">
           <form @submit.prevent="submitApplication()">
             <v-card class="pa-5 px-10 mb-4">
-              <ValidationProvider
-                name="program"
-                vid="program"
-                rules="required"
-                v-slot="{ errors }"
-              >
-                <label
-                  >{{
-                    $t(
-                      "container.beneficiary_management.beneficiary_list.program"
-                    )
-                  }}
+              <ValidationProvider name="program" vid="program" rules="required" v-slot="{ errors }">
+                <label>{{
+                  $t(
+                    "container.beneficiary_management.beneficiary_list.program"
+                  )
+                }}
                 </label>
                 <span style="margin-left: 4px; color: red">*</span>
-                <v-select
-                  outlined
-                  :items="data?.program"
-                  item-text="name_en"
-                  item-value="id"
-                  v-model="data.program.id"
-                  required
-                  :error="errors[0] ? true : false"
-                  :error-messages="errors[0]"
-                  readonly
-                >
+                <v-select outlined :items="data?.program" item-text="name_en" item-value="id" v-model="data.program.id"
+                  required :error="errors[0] ? true : false" :error-messages="errors[0]" readonly>
                 </v-select>
               </ValidationProvider>
               <div>
@@ -47,46 +32,23 @@
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
                       <template>
-                        <ValidationProvider
-                          name="program"
-                          vid="verification_type"
-                          rules="required"
-                          v-slot="{ errors }"
-                        >
-                          <v-radio-group
-                            :readonly="isRadioGroupReadonly"
-                            v-model="data.verification_type"
-                            row
-                          >
-                            <v-radio
-                              :label="
-                                $t(
-                                  'container.beneficiary_management.beneficiary_list.national_identity'
-                                )
-                              "
-                              value="1"
-                              v-if="isRadioGroupReadonly"
-                            ></v-radio>
-                            <v-radio
-                              :label="
-                                $t(
-                                  'container.beneficiary_management.beneficiary_list.birth_registration'
-                                )
-                              "
-                              value="2"
-                              v-if="isRadioGroupReadonly"
-                            ></v-radio>
+                        <ValidationProvider name="program" vid="verification_type" rules="required" v-slot="{ errors }">
+                          <v-radio-group :readonly="isRadioGroupReadonly" v-model="data.verification_type" row>
+                            <v-radio :label="$t(
+                              'container.beneficiary_management.beneficiary_list.national_identity'
+                            )
+                              " value="1" v-if="isRadioGroupReadonly"></v-radio>
+                            <v-radio :label="$t(
+                              'container.beneficiary_management.beneficiary_list.birth_registration'
+                            )
+                              " value="2" v-if="isRadioGroupReadonly"></v-radio>
                           </v-radio-group>
                         </ValidationProvider>
                       </template>
                       <V-row>
                         <v-col>
-                          <ValidationProvider
-                            name="Number"
-                            vid="verification_number"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
+                          <ValidationProvider name="Number" vid="verification_number" rules="required"
+                            v-slot="{ errors }">
                             <label>
                               <span v-if="data.verification_type == 1">
                                 {{
@@ -111,36 +73,23 @@
                               </span>
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-text-field
-                              outlined
-                              readonly
-                              v-model="data.verification_number"
-                              class="mr-2"
-                              type="number"
-                              required
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            >
+                            <v-text-field outlined readonly v-model="data.verification_number" class="mr-2" type="number"
+                              required :error="errors[0] ? true : false" :error-messages="errors[0]">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
 
                         <v-col>
-                          <label
-                            >{{
-                              $t(
-                                "container.beneficiary_management.beneficiary_list.date_of_birth"
-                              )
-                            }}
+                          <label>{{
+                            $t(
+                              "container.beneficiary_management.beneficiary_list.date_of_birth"
+                            )
+                          }}
                           </label>
 
                           <span style="margin-left: 4px; color: red">*</span>
 
-                          <v-text-field
-                            v-model="data.date_of_birth"
-                            readonly
-                            outlined
-                          >
+                          <v-text-field v-model="data.date_of_birth" readonly outlined>
                           </v-text-field>
                         </v-col>
                       </V-row>
@@ -163,12 +112,8 @@
                     <v-expansion-panel-content class="mt-5">
                       <V-row>
                         <v-col>
-                          <ValidationProvider
-                            name="Number"
-                            vid="verification_number"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
+                          <ValidationProvider name="Number" vid="verification_number" rules="required"
+                            v-slot="{ errors }">
                             <label>
                               <span>
                                 {{
@@ -179,27 +124,15 @@
                               </span>
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-text-field
-                              outlined
-                              readonly
-                              v-model="data.verification_number"
-                              class="mr-2"
-                              type="number"
-                              required
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            >
+                            <v-text-field outlined readonly v-model="data.verification_number" class="mr-2" type="number"
+                              required :error="errors[0] ? true : false" :error-messages="errors[0]">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
 
                         <v-col>
-                          <ValidationProvider
-                            name="Number"
-                            vid="verification_number"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
+                          <ValidationProvider name="Number" vid="verification_number" rules="required"
+                            v-slot="{ errors }">
                             <label>
                               <span>
                                 {{
@@ -210,28 +143,16 @@
                               </span>
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-text-field
-                              outlined
-                              readonly
-                              v-model="data.verification_number"
-                              class="mr-2"
-                              type="number"
-                              required
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            >
+                            <v-text-field outlined readonly v-model="data.verification_number" class="mr-2" type="number"
+                              required :error="errors[0] ? true : false" :error-messages="errors[0]">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
                       </V-row>
                       <V-row>
                         <v-col>
-                          <ValidationProvider
-                            name="Number"
-                            vid="verification_number"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
+                          <ValidationProvider name="Number" vid="verification_number" rules="required"
+                            v-slot="{ errors }">
                             <label>
                               <span>
                                 {{
@@ -242,26 +163,14 @@
                               </span>
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-text-field
-                              outlined
-                              readonly
-                              v-model="data.verification_number"
-                              class="mr-2"
-                              type="number"
-                              required
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            >
+                            <v-text-field outlined readonly v-model="data.verification_number" class="mr-2" type="number"
+                              required :error="errors[0] ? true : false" :error-messages="errors[0]">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
                         <v-col>
-                          <ValidationProvider
-                            name="Number"
-                            vid="verification_number"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
+                          <ValidationProvider name="Number" vid="verification_number" rules="required"
+                            v-slot="{ errors }">
                             <label>
                               <span>
                                 {{
@@ -272,26 +181,14 @@
                               </span>
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-text-field
-                              outlined
-                              readonly
-                              v-model="data.verification_number"
-                              class="mr-2"
-                              type="number"
-                              required
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            >
+                            <v-text-field outlined readonly v-model="data.verification_number" class="mr-2" type="number"
+                              required :error="errors[0] ? true : false" :error-messages="errors[0]">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
                         <v-col>
-                          <ValidationProvider
-                            name="Number"
-                            vid="verification_number"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
+                          <ValidationProvider name="Number" vid="verification_number" rules="required"
+                            v-slot="{ errors }">
                             <label>
                               <span>
                                 {{
@@ -302,26 +199,14 @@
                               </span>
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-text-field
-                              outlined
-                              readonly
-                              v-model="data.verification_number"
-                              class="mr-2"
-                              type="number"
-                              required
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            >
+                            <v-text-field outlined readonly v-model="data.verification_number" class="mr-2" type="number"
+                              required :error="errors[0] ? true : false" :error-messages="errors[0]">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
                         <v-col>
-                          <ValidationProvider
-                            name="Number"
-                            vid="verification_number"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
+                          <ValidationProvider name="Number" vid="verification_number" rules="required"
+                            v-slot="{ errors }">
                             <label>
                               <span>
                                 {{
@@ -332,16 +217,8 @@
                               </span>
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-text-field
-                              outlined
-                              readonly
-                              v-model="data.verification_number"
-                              class="mr-2"
-                              type="number"
-                              required
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            >
+                            <v-text-field outlined readonly v-model="data.verification_number" class="mr-2" type="number"
+                              required :error="errors[0] ? true : false" :error-messages="errors[0]">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
@@ -356,108 +233,63 @@
                           <span style="margin-left: 4px; color: red">*</span>
                         </v-col>
                         <v-col md="2" lg="2" cols="12">
-                          <v-checkbox
-                            v-model="health_status_value.totally_disabled"
-                            :label="health_status[0]"
-                          ></v-checkbox>
+                          <v-checkbox v-model="health_status_value.totally_disabled"
+                            :label="health_status[0]"></v-checkbox>
                         </v-col>
                         <v-col md="2" lg="2" cols="12">
-                          <v-checkbox
-                            v-model="health_status_value.sick"
-                            :label="health_status[1]"
-                          ></v-checkbox>
+                          <v-checkbox v-model="health_status_value.sick" :label="health_status[1]"></v-checkbox>
                         </v-col>
                         <v-col md="2" lg="2" cols="12">
-                          <v-checkbox
-                            v-model="health_status_value.insane"
-                            :label="health_status[2]"
-                          ></v-checkbox>
+                          <v-checkbox v-model="health_status_value.insane" :label="health_status[2]"></v-checkbox>
                         </v-col>
                         <v-col md="2" lg="2" cols="12">
-                          <v-checkbox
-                            v-model="health_status_value.disabled"
-                            :label="health_status[3]"
-                          ></v-checkbox>
+                          <v-checkbox v-model="health_status_value.disabled" :label="health_status[3]"></v-checkbox>
                         </v-col>
                         <v-col md="2" lg="2" cols="12">
-                          <v-checkbox
-                            v-model="health_status_value.partially_powerless"
-                            :label="health_status[4]"
-                          ></v-checkbox>
+                          <v-checkbox v-model="health_status_value.partially_powerless"
+                            :label="health_status[4]"></v-checkbox>
                         </v-col>
                       </V-row>
                       <v-row>
                         <v-col cols="12" class="text-center">
-                          <v-chip color="success" label
-                            >Socio Economic Infromation</v-chip
-                          >
+                          <v-chip color="success" label>Socio Economic Infromation</v-chip>
                         </v-col>
                       </v-row>
                       <V-row>
                         <v-col>
-                          <ValidationProvider
-                            name="program"
-                            vid="program"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
+                          <ValidationProvider name="program" vid="program" rules="required" v-slot="{ errors }">
                             <label>{{
                               $t(
                                 "container.beneficiary_management.beneficiary_list.financial_status"
                               )
                             }}</label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-select
-                              outlined
-                              :items="data?.program"
-                              item-text="name_en"
-                              item-value="id"
-                              v-model="data.program.id"
-                              required
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                              readonly
-                            >
+                            <v-select outlined :items="data?.program" item-text="name_en" item-value="id"
+                              v-model="data.program.id" required :error="errors[0] ? true : false"
+                              :error-messages="errors[0]" readonly>
                             </v-select>
                           </ValidationProvider>
                         </v-col>
 
                         <v-col>
-                          <ValidationProvider
-                            name="program"
-                            vid="program"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
+                          <ValidationProvider name="program" vid="program" rules="required" v-slot="{ errors }">
                             <label>{{
                               $t(
                                 "container.beneficiary_management.beneficiary_list.social_status"
                               )
                             }}</label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-select
-                              outlined
-                              :items="data?.program"
-                              item-text="name_en"
-                              item-value="id"
-                              v-model="data.program.id"
-                              required
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                              readonly
-                            >
+                            <v-select outlined :items="data?.program" item-text="name_en" item-value="id"
+                              v-model="data.program.id" required :error="errors[0] ? true : false"
+                              :error-messages="errors[0]" readonly>
                             </v-select>
                           </ValidationProvider>
                         </v-col>
                       </V-row>
                       <V-row>
                         <v-col>
-                          <ValidationProvider
-                            name="Number"
-                            vid="verification_number"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
+                          <ValidationProvider name="Number" vid="verification_number" rules="required"
+                            v-slot="{ errors }">
                             <label>
                               <span>
                                 {{
@@ -468,16 +300,8 @@
                               </span>
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-text-field
-                              outlined
-                              readonly
-                              v-model="data.verification_number"
-                              class="mr-2"
-                              type="number"
-                              required
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            >
+                            <v-text-field outlined readonly v-model="data.verification_number" class="mr-2" type="number"
+                              required :error="errors[0] ? true : false" :error-messages="errors[0]">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
@@ -503,32 +327,17 @@
                       <div class="pa-2 mb-4">
                         <v-row>
                           <v-col cols="6" lg="6">
-                            <v-img
-                              :src="data.imageUrl"
-                              style="
+                            <v-img :src="data.imageUrl" style="
                                 width: 200px;
                                 height: 200px;
                                 border: 1px solid #ccc;
-                              "
-                              class="mb-5"
-                              v-if="data.imageUrl"
-                            ></v-img>
-                            <v-img
-                              src="/assets/images/profile.png"
-                              v-if="!data.imageUrl"
-                              style="
+                              " class="mb-5" v-if="data.imageUrl"></v-img>
+                            <v-img src="/assets/images/profile.png" v-if="!data.imageUrl" style="
                                 width: 150px;
                                 height: 150px;
                                 border: 1px solid #ccc;
-                              "
-                              class="mb-5"
-                            ></v-img>
-                            <ValidationProvider
-                              v-slot="{ errors }"
-                              name="Image"
-                              rules="required"
-                              vid="image"
-                            >
+                              " class="mb-5"></v-img>
+                            <ValidationProvider v-slot="{ errors }" name="Image" rules="required" vid="image">
                               <h3>
                                 {{
                                   $t(
@@ -549,32 +358,17 @@
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" align-self="end" lg="6">
-                            <v-img
-                              :src="data.signUrl"
-                              style="
+                            <v-img :src="data.signUrl" style="
                                 width: 200px;
                                 height: 80px;
                                 border: 1px solid #ccc;
-                              "
-                              class="mb-5"
-                              v-if="data.signUrl"
-                            ></v-img>
-                            <v-img
-                              src="/assets/images/sign.png"
-                              v-if="!data.signUrl"
-                              style="
+                              " class="mb-5" v-if="data.signUrl"></v-img>
+                            <v-img src="/assets/images/sign.png" v-if="!data.signUrl" style="
                                 width: 200px;
                                 height: 80px;
                                 border: 1px solid #ccc;
-                              "
-                              class="mb-5"
-                            ></v-img>
-                            <ValidationProvider
-                              v-slot="{ errors }"
-                              name="Signature"
-                              rules="required"
-                              vid="sign"
-                            >
+                              " class="mb-5"></v-img>
+                            <ValidationProvider v-slot="{ errors }" name="Signature" rules="required" vid="sign">
                               <h3>
                                 {{
                                   $t(
@@ -595,380 +389,207 @@
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Name in Bangla"
-                              vid="name_bn"
-                              rules="required"
-                              v-slot="{ errors }"
-                            >
-                              <label
-                                >{{
-                                  $t(
-                                    "container.beneficiary_management.beneficiary_list.name_bn"
-                                  )
-                                }}
+                            <ValidationProvider name="Name in Bangla" vid="name_bn" rules="required" v-slot="{ errors }">
+                              <label>{{
+                                $t(
+                                  "container.beneficiary_management.beneficiary_list.name_bn"
+                                )
+                              }}
                               </label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-text-field
-                                v-model="data.name_bn"
-                                outlined
-                                readonly
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-text-field v-model="data.name_bn" outlined readonly :error="errors[0] ? true : false"
+                                :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Name in English"
-                              vid="name_en"
-                              rules="required"
-                              v-slot="{ errors }"
-                            >
-                              <label
-                                >{{
-                                  $t(
-                                    "container.beneficiary_management.beneficiary_list.name_en"
-                                  )
-                                }}
+                            <ValidationProvider name="Name in English" vid="name_en" rules="required" v-slot="{ errors }">
+                              <label>{{
+                                $t(
+                                  "container.beneficiary_management.beneficiary_list.name_en"
+                                )
+                              }}
                               </label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-text-field
-                                v-model="data.name_en"
-                                outlined
-                                readonly
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-text-field v-model="data.name_en" outlined readonly :error="errors[0] ? true : false"
+                                :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Father Name in Bangla"
-                              vid="father_name_bn"
-                              rules="required"
-                              v-slot="{ errors }"
-                            >
-                              <label
-                                >{{
-                                  $t(
-                                    "container.beneficiary_management.beneficiary_list.father_name_bn"
-                                  )
-                                }}
+                            <ValidationProvider name="Father Name in Bangla" vid="father_name_bn" rules="required"
+                              v-slot="{ errors }">
+                              <label>{{
+                                $t(
+                                  "container.beneficiary_management.beneficiary_list.father_name_bn"
+                                )
+                              }}
                               </label>
 
-                              <v-text-field
-                                v-model="data.father_name_bn"
-                                outlined
-                                required
-                                readonly
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
+                              <v-text-field v-model="data.father_name_bn" outlined required readonly
+                                :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Father Name in English"
-                              vid="father_name_en"
-                              rules="required"
-                              v-slot="{ errors }"
-                            >
-                              <label
-                                >{{
-                                  $t(
-                                    "container.beneficiary_management.beneficiary_list.father_name_en"
-                                  )
-                                }}
+                            <ValidationProvider name="Father Name in English" vid="father_name_en" rules="required"
+                              v-slot="{ errors }">
+                              <label>{{
+                                $t(
+                                  "container.beneficiary_management.beneficiary_list.father_name_en"
+                                )
+                              }}
                               </label>
-                              <v-text-field
-                                v-model="data.father_name_en"
-                                outlined
-                                required
-                                readonly
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
+                              <v-text-field v-model="data.father_name_en" outlined required readonly
+                                :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Mother Name in English"
-                              vid="mother_name_bn"
-                              v-slot="{ errors }"
-                            >
-                              <label
-                                >{{
-                                  $t(
-                                    "container.beneficiary_management.beneficiary_list.mother_name_bn"
-                                  )
-                                }}
+                            <ValidationProvider name="Mother Name in English" vid="mother_name_bn" v-slot="{ errors }">
+                              <label>{{
+                                $t(
+                                  "container.beneficiary_management.beneficiary_list.mother_name_bn"
+                                )
+                              }}
                               </label>
-                              <v-text-field
-                                v-model="data.mother_name_bn"
-                                outlined
-                                required
-                                readonly
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
+                              <v-text-field v-model="data.mother_name_bn" outlined required readonly
+                                :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Mother Name in English"
-                              vid="mother_name_en"
-                              v-slot="{ errors }"
-                            >
-                              <label
-                                >{{
-                                  $t(
-                                    "container.beneficiary_management.beneficiary_list.mother_name_en"
-                                  )
-                                }}
+                            <ValidationProvider name="Mother Name in English" vid="mother_name_en" v-slot="{ errors }">
+                              <label>{{
+                                $t(
+                                  "container.beneficiary_management.beneficiary_list.mother_name_en"
+                                )
+                              }}
                               </label>
-                              <v-text-field
-                                v-model="data.mother_name_en"
-                                outlined
-                                readonly
-                                required
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
+                              <v-text-field v-model="data.mother_name_en" outlined readonly required
+                                :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Spouse Name in Bangla"
-                              vid="spouse_name_bn"
-                              v-slot="{ errors }"
-                            >
-                              <label
-                                >{{
-                                  $t(
-                                    "container.beneficiary_management.beneficiary_list.spouse_name_bn"
-                                  )
-                                }}
+                            <ValidationProvider name="Spouse Name in Bangla" vid="spouse_name_bn" v-slot="{ errors }">
+                              <label>{{
+                                $t(
+                                  "container.beneficiary_management.beneficiary_list.spouse_name_bn"
+                                )
+                              }}
                               </label>
-                              <v-text-field
-                                v-model="data.spouse_name_bn"
-                                outlined
-                                readonly
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
+                              <v-text-field v-model="data.spouse_name_bn" outlined readonly
+                                :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Marital Status"
-                              vid="marital_status"
-                              v-slot="{ errors }"
-                            >
-                              <label
-                                >{{
-                                  $t(
-                                    "container.beneficiary_management.beneficiary_list.marital_status"
-                                  )
-                                }}
+                            <ValidationProvider name="Marital Status" vid="marital_status" v-slot="{ errors }">
+                              <label>{{
+                                $t(
+                                  "container.beneficiary_management.beneficiary_list.marital_status"
+                                )
+                              }}
                               </label>
-                              <v-text-field
-                                v-model="data.marital_status"
-                                outlined
-                                readonly
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
+                              <v-text-field v-model="data.marital_status" outlined readonly
+                                :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Spouse Name in English"
-                              vid="spouse_name_en"
-                              v-slot="{ errors }"
-                            >
-                              <label
-                                >{{
-                                  $t(
-                                    "container.beneficiary_management.beneficiary_list.spouse_name_en"
-                                  )
-                                }}
+                            <ValidationProvider name="Spouse Name in English" vid="spouse_name_en" v-slot="{ errors }">
+                              <label>{{
+                                $t(
+                                  "container.beneficiary_management.beneficiary_list.spouse_name_en"
+                                )
+                              }}
                               </label>
-                              <v-text-field
-                                v-model="data.spouse_name_en"
-                                outlined
-                                readonly
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
+                              <v-text-field v-model="data.spouse_name_en" outlined readonly
+                                :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Religion"
-                              vid="religion"
-                              v-slot="{ errors }"
-                              rules="required"
-                            >
-                              <label
-                                >{{
-                                  $t(
-                                    "container.beneficiary_management.beneficiary_list.religion"
-                                  )
-                                }}
+                            <ValidationProvider name="Religion" vid="religion" v-slot="{ errors }" rules="required">
+                              <label>{{
+                                $t(
+                                  "container.beneficiary_management.beneficiary_list.religion"
+                                )
+                              }}
                               </label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-text-field
-                                v-model="data.religion"
-                                outlined
-                                readonly
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-text-field v-model="data.religion" outlined readonly :error="errors[0] ? true : false"
+                                :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Mobile Number"
-                              vid="mobile"
-                              rules="required"
-                              v-slot="{ errors }"
-                            >
-                              <label
-                                >{{
-                                  $t(
-                                    "container.beneficiary_management.beneficiary_list.mobile_number"
-                                  )
-                                }}
+                            <ValidationProvider name="Mobile Number" vid="mobile" rules="required" v-slot="{ errors }">
+                              <label>{{
+                                $t(
+                                  "container.beneficiary_management.beneficiary_list.mobile_number"
+                                )
+                              }}
                               </label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-text-field
-                                v-model="data.mobile"
-                                outlined
-                                readonly
-                                type="Number"
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-text-field v-model="data.mobile" outlined readonly type="Number"
+                                :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
 
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Nationality"
-                              vid="nationality"
-                              v-slot="{ errors }"
-                            >
-                              <label
-                                >{{
-                                  $t(
-                                    "container.beneficiary_management.beneficiary_list.nationality"
-                                  )
-                                }}
+                            <ValidationProvider name="Nationality" vid="nationality" v-slot="{ errors }">
+                              <label>{{
+                                $t(
+                                  "container.beneficiary_management.beneficiary_list.nationality"
+                                )
+                              }}
                               </label>
-                              <v-text-field
-                                v-model="data.nationality"
-                                outlined
-                                required
-                                readonly
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
+                              <v-text-field v-model="data.nationality" outlined required readonly
+                                :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Age"
-                              vid="age"
-                              v-slot="{ errors }"
-                              rules="required"
-                            >
-                              <label
-                                >{{
-                                  $t(
-                                    "container.beneficiary_management.beneficiary_list.age"
-                                  )
-                                }}
+                            <ValidationProvider name="Age" vid="age" v-slot="{ errors }" rules="required">
+                              <label>{{
+                                $t(
+                                  "container.beneficiary_management.beneficiary_list.age"
+                                )
+                              }}
                               </label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-text-field
-                                v-model="data.age"
-                                outlined
-                                type="number"
-                                required
-                                readonly
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-text-field v-model="data.age" outlined type="number" required readonly
+                                :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Gender"
-                              vid="gender"
-                              v-slot="{ errors }"
-                              rules="required"
-                            >
-                              <label
-                                >{{
-                                  $t(
-                                    "container.beneficiary_management.beneficiary_list.gender"
-                                  )
-                                }}
+                            <ValidationProvider name="Gender" vid="gender" v-slot="{ errors }" rules="required">
+                              <label>{{
+                                $t(
+                                  "container.beneficiary_management.beneficiary_list.gender"
+                                )
+                              }}
                               </label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-text-field
-                                v-model="data.gender.value_en"
-                                outlined
-                                readonly
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-text-field v-model="data.gender.value_en" outlined readonly
+                                :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Education Status"
-                              vid="education_status"
-                              rules="required"
-                              v-slot="{ errors }"
-                            >
-                              <label
-                                >{{
-                                  $t(
-                                    "container.beneficiary_management.beneficiary_list.education_status"
-                                  )
-                                }}
+                            <ValidationProvider name="Education Status" vid="education_status" rules="required"
+                              v-slot="{ errors }">
+                              <label>{{
+                                $t(
+                                  "container.beneficiary_management.beneficiary_list.education_status"
+                                )
+                              }}
                               </label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
+                              <span style="margin-left: 4px; color: red">*</span>
                               <!-- <v-select
                                 v-model="data.education_status"
                                 outlined
@@ -979,59 +600,34 @@
                                 readonly
                               >
                               </v-select> -->
-                              <v-text-field
-                                v-model="data.education_status"
-                                outlined
-                                readonly
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
+                              <v-text-field v-model="data.education_status" outlined readonly
+                                :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Profession"
-                              vid="profession"
-                              v-slot="{ errors }"
-                            >
-                              <label
-                                >{{
-                                  $t(
-                                    "container.beneficiary_management.beneficiary_list.profession"
-                                  )
-                                }}
+                            <ValidationProvider name="Profession" vid="profession" v-slot="{ errors }">
+                              <label>{{
+                                $t(
+                                  "container.beneficiary_management.beneficiary_list.profession"
+                                )
+                              }}
                               </label>
-                              <v-text-field
-                                v-model="data.profession"
-                                outlined
-                                readonly
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
+                              <v-text-field v-model="data.profession" outlined readonly :error="errors[0] ? true : false"
+                                :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Identification Mark"
-                              vid="identification_mark"
-                              v-slot="{ errors }"
-                            >
-                              <label
-                                >{{
-                                  $t(
-                                    "container.beneficiary_management.beneficiary_list.identification_mark"
-                                  )
-                                }}
+                            <ValidationProvider name="Identification Mark" vid="identification_mark" v-slot="{ errors }">
+                              <label>{{
+                                $t(
+                                  "container.beneficiary_management.beneficiary_list.identification_mark"
+                                )
+                              }}
                               </label>
-                              <v-text-field
-                                v-model="data.identification_mark"
-                                outlined
-                                readonly
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
+                              <v-text-field v-model="data.identification_mark" outlined readonly
+                                :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
@@ -1056,459 +652,205 @@
                     <v-expansion-panel-content class="mt-5">
                       <v-row>
                         <v-col cols="12" class="text-center">
-                          <v-chip
-                            color="success"
-                            class="text-uppercase"
-                            label
-                            >{{
-                              $t(
-                                "container.beneficiary_management.beneficiary_list.present_address"
-                              )
-                            }}</v-chip
-                          >
+                          <v-chip color="success" class="text-uppercase" label>{{
+                            $t(
+                              "container.beneficiary_management.beneficiary_list.present_address"
+                            )
+                          }}</v-chip>
                         </v-col>
                         <!-- {{ permanent_location }}  -->
-                        <v-col
-                          lg="6"
-                          md="6"
-                          cols="12"
-                          v-if="data.currentDivision"
-                        >
-                          <v-text-field
-                            v-model="data.currentDivision.name_en"
-                            outlined
-                            readonly
-                            :label="
-                              $t(
-                                'container.system_config.demo_graphic.division.division'
-                              )
-                            "
-                          >
+                        <v-col lg="6" md="6" cols="12" v-if="data.currentDivision">
+                          <v-text-field v-model="data.currentDivision.name_en" outlined readonly :label="$t(
+                            'container.system_config.demo_graphic.division.division'
+                          )
+                            ">
                           </v-text-field>
                         </v-col>
-                        <v-col
-                          lg="6"
-                          md="6"
-                          cols="12"
-                          v-if="data.currentDistrict"
-                        >
-                          <v-text-field
-                            v-model="data.currentDistrict.name_en"
-                            outlined
-                            readonly
-                            :label="
-                              $t(
-                                'container.system_config.demo_graphic.district.district'
-                              )
-                            "
-                          >
+                        <v-col lg="6" md="6" cols="12" v-if="data.currentDistrict">
+                          <v-text-field v-model="data.currentDistrict.name_en" outlined readonly :label="$t(
+                            'container.system_config.demo_graphic.district.district'
+                          )
+                            ">
                           </v-text-field>
                         </v-col>
 
-                        <v-col
-                          lg="6"
-                          md="6"
-                          cols="12"
-                          v-if="data.currentUpazila"
-                        >
-                          <v-text-field
-                            v-model="data.currentUpazila.name_en"
-                            outlined
-                            readonly
-                            :label="
-                              $t(
-                                'container.system_config.demo_graphic.ward.upazila'
-                              )
-                            "
-                          >
+                        <v-col lg="6" md="6" cols="12" v-if="data.currentUpazila">
+                          <v-text-field v-model="data.currentUpazila.name_en" outlined readonly :label="$t(
+                            'container.system_config.demo_graphic.ward.upazila'
+                          )
+                            ">
                           </v-text-field>
                         </v-col>
 
-                        <v-col
-                          lg="6"
-                          md="6"
-                          cols="12"
-                          v-if="data.currentCityCorporation"
-                        >
-                          <v-text-field
-                            v-model="data.currentCityCorporation.name_en"
-                            outlined
-                            readonly
-                            :label="
-                              $t(
-                                'container.system_config.demo_graphic.ward.city'
-                              )
-                            "
-                          >
+                        <v-col lg="6" md="6" cols="12" v-if="data.currentCityCorporation">
+                          <v-text-field v-model="data.currentCityCorporation.name_en" outlined readonly :label="$t(
+                            'container.system_config.demo_graphic.ward.city'
+                          )
+                            ">
                           </v-text-field>
                         </v-col>
-                        <v-col
-                          lg="6"
-                          md="6"
-                          cols="12"
-                          v-if="data.currentDistrictPourashava"
-                        >
-                          <v-text-field
-                            v-model="data.currentDistrictPourashava.name_en"
-                            outlined
-                            readonly
-                            :label="
-                              $t(
-                                'container.system_config.demo_graphic.ward.dist_pouro'
-                              )
-                            "
-                          >
+                        <v-col lg="6" md="6" cols="12" v-if="data.currentDistrictPourashava">
+                          <v-text-field v-model="data.currentDistrictPourashava.name_en" outlined readonly :label="$t(
+                            'container.system_config.demo_graphic.ward.dist_pouro'
+                          )
+                            ">
                           </v-text-field>
                         </v-col>
 
                         <v-col lg="6" md="6" cols="12" v-if="data.currentThana">
-                          <v-text-field
-                            v-model="data.currentThana.name_en"
-                            outlined
-                            readonly
-                            :label="
-                              $t(
-                                'container.system_config.demo_graphic.ward.thana'
-                              )
-                            "
-                          >
+                          <v-text-field v-model="data.currentThana.name_en" outlined readonly :label="$t(
+                            'container.system_config.demo_graphic.ward.thana'
+                          )
+                            ">
                           </v-text-field>
                         </v-col>
 
-                        <v-col
-                          lg="6"
-                          md="6"
-                          cols="12"
-                          v-if="data.currentPourashava"
-                        >
-                          <v-text-field
-                            v-model="data.currentPourashava.name_en"
-                            outlined
-                            readonly
-                            :label="
-                              $t(
-                                'container.system_config.demo_graphic.ward.pouro'
-                              )
-                            "
-                          >
+                        <v-col lg="6" md="6" cols="12" v-if="data.currentPourashava">
+                          <v-text-field v-model="data.currentPourashava.name_en" outlined readonly :label="$t(
+                            'container.system_config.demo_graphic.ward.pouro'
+                          )
+                            ">
                           </v-text-field>
                         </v-col>
 
                         <v-col lg="6" md="6" cols="12" v-if="data.currentUnion">
-                          <v-text-field
-                            v-model="data.currentUnion.name_en"
-                            outlined
-                            readonly
-                            :label="
-                              $t(
-                                'container.system_config.demo_graphic.ward.union'
-                              )
-                            "
-                          >
+                          <v-text-field v-model="data.currentUnion.name_en" outlined readonly :label="$t(
+                            'container.system_config.demo_graphic.ward.union'
+                          )
+                            ">
                           </v-text-field>
                         </v-col>
                         <v-col lg="6" md="6" cols="12" v-if="data.currentWard">
-                          <v-text-field
-                            v-model="data.currentWard.name_en"
-                            outlined
-                            readonly
-                            :label="
-                              $t(
-                                'container.system_config.demo_graphic.ward.ward'
-                              )
-                            "
-                          >
+                          <v-text-field v-model="data.currentWard.name_en" outlined readonly :label="$t(
+                            'container.system_config.demo_graphic.ward.ward'
+                          )
+                            ">
                           </v-text-field>
                         </v-col>
 
-                        <v-col
-                          lg="6"
-                          md="6"
-                          cols="12"
-                          v-if="data.current_post_code"
-                        >
-                          <v-text-field
-                            v-model="data.current_post_code"
-                            outlined
-                            readonly
-                            :label="
-                              $t(
-                                'container.system_config.demo_graphic.ward.post_code'
-                              )
-                            "
-                          >
+                        <v-col lg="6" md="6" cols="12" v-if="data.current_post_code">
+                          <v-text-field v-model="data.current_post_code" outlined readonly :label="$t(
+                            'container.system_config.demo_graphic.ward.post_code'
+                          )
+                            ">
                           </v-text-field>
                         </v-col>
 
-                        <v-col
-                          lg="6"
-                          md="6"
-                          cols="12"
-                          v-if="data.current_address"
-                        >
-                          <v-text-field
-                            v-model="data.current_address"
-                            outlined
-                            readonly
-                            :label="
-                              $t(
-                                'container.system_config.demo_graphic.ward.address'
-                              )
-                            "
-                          >
+                        <v-col lg="6" md="6" cols="12" v-if="data.current_address">
+                          <v-text-field v-model="data.current_address" outlined readonly :label="$t(
+                            'container.system_config.demo_graphic.ward.address'
+                          )
+                            ">
                           </v-text-field>
                         </v-col>
                         <v-col lg="6" md="6" cols="12" v-if="data.mobile">
-                          <v-text-field
-                            v-model="data.mobile"
-                            outlined
-                            readonly
-                            :label="
-                              $t(
-                                'container.system_config.demo_graphic.ward.mobile'
-                              )
-                            "
-                          >
+                          <v-text-field v-model="data.mobile" outlined readonly :label="$t(
+                            'container.system_config.demo_graphic.ward.mobile'
+                          )
+                            ">
                           </v-text-field>
                         </v-col>
                       </v-row>
 
                       <v-row>
                         <v-col cols="12" class="text-center">
-                          <v-chip
-                            color="success"
-                            class="text-uppercase"
-                            label
-                            >{{
-                              $t(
-                                "container.beneficiary_management.beneficiary_list.permanent_address"
-                              )
-                            }}</v-chip
-                          >
+                          <v-chip color="success" class="text-uppercase" label>{{
+                            $t(
+                              "container.beneficiary_management.beneficiary_list.permanent_address"
+                            )
+                          }}</v-chip>
                         </v-col>
 
-                        <v-col
-                          lg="6"
-                          md="6"
-                          cols="12"
-                          v-if="data.permanentDivision"
-                        >
-                          <v-text-field
-                            v-model="data.permanentDivision.name_en"
-                            outlined
-                            readonly
-                            :label="
-                              $t(
-                                'container.system_config.demo_graphic.division.division'
-                              )
-                            "
-                          >
+                        <v-col lg="6" md="6" cols="12" v-if="data.permanentDivision">
+                          <v-text-field v-model="data.permanentDivision.name_en" outlined readonly :label="$t(
+                            'container.system_config.demo_graphic.division.division'
+                          )
+                            ">
                           </v-text-field>
                         </v-col>
-                        <v-col
-                          lg="6"
-                          md="6"
-                          cols="12"
-                          v-if="data.permanentDistrict"
-                        >
-                          <v-text-field
-                            v-model="data.permanentDistrict.name_en"
-                            outlined
-                            readonly
-                            :label="
-                              $t(
-                                'container.system_config.demo_graphic.district.district'
-                              )
-                            "
-                          >
+                        <v-col lg="6" md="6" cols="12" v-if="data.permanentDistrict">
+                          <v-text-field v-model="data.permanentDistrict.name_en" outlined readonly :label="$t(
+                            'container.system_config.demo_graphic.district.district'
+                          )
+                            ">
                           </v-text-field>
                         </v-col>
 
-                        <v-col
-                          lg="6"
-                          md="6"
-                          cols="12"
-                          v-if="data.permanentUpazila"
-                        >
-                          <v-text-field
-                            v-model="data.permanentUpazila.name_en"
-                            outlined
-                            readonly
-                            :label="
-                              $t(
-                                'container.system_config.demo_graphic.ward.upazila'
-                              )
-                            "
-                          >
+                        <v-col lg="6" md="6" cols="12" v-if="data.permanentUpazila">
+                          <v-text-field v-model="data.permanentUpazila.name_en" outlined readonly :label="$t(
+                            'container.system_config.demo_graphic.ward.upazila'
+                          )
+                            ">
                           </v-text-field>
                         </v-col>
 
-                        <v-col
-                          lg="6"
-                          md="6"
-                          cols="12"
-                          v-if="data.permanentCityCorporation"
-                        >
-                          <v-text-field
-                            v-model="data.permanentCityCorporation.name_en"
-                            outlined
-                            readonly
-                            :label="
-                              $t(
-                                'container.system_config.demo_graphic.ward.city'
-                              )
-                            "
-                          >
+                        <v-col lg="6" md="6" cols="12" v-if="data.permanentCityCorporation">
+                          <v-text-field v-model="data.permanentCityCorporation.name_en" outlined readonly :label="$t(
+                            'container.system_config.demo_graphic.ward.city'
+                          )
+                            ">
                           </v-text-field>
                         </v-col>
-                        <v-col
-                          lg="6"
-                          md="6"
-                          cols="12"
-                          v-if="data.permanentDistrictPourashava"
-                        >
-                          <v-text-field
-                            v-model="data.permanentDistrictPourashava.name_en"
-                            outlined
-                            readonly
-                            :label="
-                              $t(
-                                'container.system_config.demo_graphic.ward.dist_pouro'
-                              )
-                            "
-                          >
+                        <v-col lg="6" md="6" cols="12" v-if="data.permanentDistrictPourashava">
+                          <v-text-field v-model="data.permanentDistrictPourashava.name_en" outlined readonly :label="$t(
+                            'container.system_config.demo_graphic.ward.dist_pouro'
+                          )
+                            ">
                           </v-text-field>
                         </v-col>
 
-                        <v-col
-                          lg="6"
-                          md="6"
-                          cols="12"
-                          v-if="data.permanentThana"
-                        >
-                          <v-text-field
-                            v-model="data.permanentThana.name_en"
-                            outlined
-                            readonly
-                            :label="
-                              $t(
-                                'container.system_config.demo_graphic.ward.thana'
-                              )
-                            "
-                          >
+                        <v-col lg="6" md="6" cols="12" v-if="data.permanentThana">
+                          <v-text-field v-model="data.permanentThana.name_en" outlined readonly :label="$t(
+                            'container.system_config.demo_graphic.ward.thana'
+                          )
+                            ">
                           </v-text-field>
                         </v-col>
 
-                        <v-col
-                          lg="6"
-                          md="6"
-                          cols="12"
-                          v-if="data.permanentPourashava"
-                        >
-                          <v-text-field
-                            v-model="data.permanentPourashava.name_en"
-                            outlined
-                            readonly
-                            :label="
-                              $t(
-                                'container.system_config.demo_graphic.ward.pouro'
-                              )
-                            "
-                          >
+                        <v-col lg="6" md="6" cols="12" v-if="data.permanentPourashava">
+                          <v-text-field v-model="data.permanentPourashava.name_en" outlined readonly :label="$t(
+                            'container.system_config.demo_graphic.ward.pouro'
+                          )
+                            ">
                           </v-text-field>
                         </v-col>
 
-                        <v-col
-                          lg="6"
-                          md="6"
-                          cols="12"
-                          v-if="data.permanentUnion"
-                        >
-                          <v-text-field
-                            v-model="data.permanentUnion.name_en"
-                            outlined
-                            readonly
-                            :label="
-                              $t(
-                                'container.system_config.demo_graphic.ward.union'
-                              )
-                            "
-                          >
+                        <v-col lg="6" md="6" cols="12" v-if="data.permanentUnion">
+                          <v-text-field v-model="data.permanentUnion.name_en" outlined readonly :label="$t(
+                            'container.system_config.demo_graphic.ward.union'
+                          )
+                            ">
                           </v-text-field>
                         </v-col>
-                        <v-col
-                          lg="6"
-                          md="6"
-                          cols="12"
-                          v-if="data.permanentWard"
-                        >
-                          <v-text-field
-                            v-model="data.permanentWard.name_en"
-                            outlined
-                            readonly
-                            :label="
-                              $t(
-                                'container.system_config.demo_graphic.ward.ward'
-                              )
-                            "
-                          >
+                        <v-col lg="6" md="6" cols="12" v-if="data.permanentWard">
+                          <v-text-field v-model="data.permanentWard.name_en" outlined readonly :label="$t(
+                            'container.system_config.demo_graphic.ward.ward'
+                          )
+                            ">
                           </v-text-field>
                         </v-col>
 
-                        <v-col
-                          lg="6"
-                          md="6"
-                          cols="12"
-                          v-if="data.permanent_post_code"
-                        >
-                          <v-text-field
-                            v-model="data.permanent_post_code"
-                            outlined
-                            readonly
-                            :label="
-                              $t(
-                                'container.system_config.demo_graphic.ward.post_code'
-                              )
-                            "
-                          >
+                        <v-col lg="6" md="6" cols="12" v-if="data.permanent_post_code">
+                          <v-text-field v-model="data.permanent_post_code" outlined readonly :label="$t(
+                            'container.system_config.demo_graphic.ward.post_code'
+                          )
+                            ">
                           </v-text-field>
                         </v-col>
 
-                        <v-col
-                          lg="6"
-                          md="6"
-                          cols="12"
-                          v-if="data.permanent_address"
-                        >
-                          <v-text-field
-                            v-model="data.permanent_address"
-                            outlined
-                            readonly
-                            :label="
-                              $t(
-                                'container.system_config.demo_graphic.ward.address'
-                              )
-                            "
-                          >
+                        <v-col lg="6" md="6" cols="12" v-if="data.permanent_address">
+                          <v-text-field v-model="data.permanent_address" outlined readonly :label="$t(
+                            'container.system_config.demo_graphic.ward.address'
+                          )
+                            ">
                           </v-text-field>
                         </v-col>
 
-                        <v-col
-                          lg="6"
-                          md="6"
-                          cols="12"
-                          v-if="data.permanent_mobile"
-                        >
-                          <v-text-field
-                            v-model="data.permanent_mobile"
-                            outlined
-                            readonly
-                            :label="
-                              $t(
-                                'container.system_config.demo_graphic.ward.mobile'
-                              )
-                            "
-                          >
+                        <v-col lg="6" md="6" cols="12" v-if="data.permanent_mobile">
+                          <v-text-field v-model="data.permanent_mobile" outlined readonly :label="$t(
+                            'container.system_config.demo_graphic.ward.mobile'
+                          )
+                            ">
                           </v-text-field>
                         </v-col>
                       </v-row>
@@ -1531,254 +873,139 @@
                       <div class="pa-2 mb-4">
                         <v-row>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Nominee Name (BN)"
-                              vid="nominee_bn"
-                              rules="required"
-                              v-slot="{ errors }"
-                            >
-                              <label style="display: inline-block"
-                                >{{
-                                  $t(
-                                    "container.beneficiary_management.beneficiary_list.nominee_name_bn"
-                                  )
-                                }}
+                            <ValidationProvider name="Nominee Name (BN)" vid="nominee_bn" rules="required"
+                              v-slot="{ errors }">
+                              <label style="display: inline-block">{{
+                                $t(
+                                  "container.beneficiary_management.beneficiary_list.nominee_name_bn"
+                                )
+                              }}
                               </label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-text-field
-                                v-model="data.nominee_bn"
-                                outlined
-                                clearable
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-text-field v-model="data.nominee_bn" outlined clearable :error="errors[0] ? true : false"
+                                :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Nominee Name (EN)"
-                              vid="nominee_en"
-                              rules="required"
-                              v-slot="{ errors }"
-                            >
-                              <label style="display: inline-block"
-                                >{{
-                                  $t(
-                                    "container.beneficiary_management.beneficiary_list.nominee_name_en"
-                                  )
-                                }}
+                            <ValidationProvider name="Nominee Name (EN)" vid="nominee_en" rules="required"
+                              v-slot="{ errors }">
+                              <label style="display: inline-block">{{
+                                $t(
+                                  "container.beneficiary_management.beneficiary_list.nominee_name_en"
+                                )
+                              }}
                               </label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-text-field
-                                v-model="data.nominee_en"
-                                outlined
-                                clearable
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-text-field v-model="data.nominee_en" outlined clearable :error="errors[0] ? true : false"
+                                :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="National Identity (NID) / Birth Registration Number"
-                              vid="nominee_verification_number"
-                              v-slot="{ errors }"
-                            >
-                              <label
-                                >{{
-                                  $t(
-                                    "container.beneficiary_management.beneficiary_list.nid_or_brn_number"
-                                  )
-                                }}
+                            <ValidationProvider name="National Identity (NID) / Birth Registration Number"
+                              vid="nominee_verification_number" v-slot="{ errors }">
+                              <label>{{
+                                $t(
+                                  "container.beneficiary_management.beneficiary_list.nid_or_brn_number"
+                                )
+                              }}
                               </label>
-                              <v-text-field
-                                v-model="data.nominee_verification_number"
-                                outlined
-                                clearable
-                                type="number"
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
+                              <v-text-field v-model="data.nominee_verification_number" outlined clearable type="number"
+                                :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Nominee Natinality"
-                              vid="nominee_nationality"
-                              v-slot="{ errors }"
-                            >
-                              <label
-                                >{{
-                                  $t(
-                                    "container.beneficiary_management.beneficiary_list.nationality"
-                                  )
-                                }}
+                            <ValidationProvider name="Nominee Natinality" vid="nominee_nationality" v-slot="{ errors }">
+                              <label>{{
+                                $t(
+                                  "container.beneficiary_management.beneficiary_list.nationality"
+                                )
+                              }}
                               </label>
-                              <v-text-field
-                                v-model="data.nominee_nationality"
-                                outlined
-                                clearable
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
+                              <v-text-field v-model="data.nominee_nationality" outlined clearable
+                                :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="12" lg="12">
-                            <ValidationProvider
-                              name="Gender of Nominee"
-                              vid="nominee_relation_with_beneficiary"
-                              v-slot="{ errors }"
-                              rules="required"
-                            >
+                            <ValidationProvider name="Gender of Nominee" vid="nominee_relation_with_beneficiary"
+                              v-slot="{ errors }" rules="required">
                               <label>{{
                                 $t(
                                   "container.beneficiary_management.beneficiary_list.relationship_with_beneficiary"
                                 )
                               }}</label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-text-field
-                                v-model="data.nominee_relation_with_beneficiary"
-                                outlined
-                                clearable
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-text-field v-model="data.nominee_relation_with_beneficiary" outlined clearable
+                                :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
 
                           <v-col cols="6" lg="6">
-                            <v-img
-                              :src="data.nomineeImageUrl"
-                              style="
+                            <v-img :src="data.nomineeImageUrl" style="
                                 width: 150px;
                                 height: 150px;
                                 border: 1px solid #ccc;
-                              "
-                              class="mb-5"
-                              v-if="data.nomineeImageUrl"
-                            ></v-img>
-                            <v-img
-                              src="/assets/images/profile.png"
-                              v-if="!data.nomineeImageUrl"
-                              style="
+                              " class="mb-5" v-if="data.nomineeImageUrl"></v-img>
+                            <v-img src="/assets/images/profile.png" v-if="!data.nomineeImageUrl" style="
                                 width: 200px;
                                 height: 200px;
                                 border: 1px solid #ccc;
-                              "
-                              class="mb-5"
-                            ></v-img>
-                            <ValidationProvider
-                              v-slot="{ errors }"
-                              name="Image"
-                              rules="imageSize"
-                              vid="image"
-                            >
+                              " class="mb-5"></v-img>
+                            <ValidationProvider v-slot="{ errors }" name="Image" rules="imageSize" vid="image">
                               <label>
                                 {{
                                   $t(
                                     "container.beneficiary_management.beneficiary_list.image_size"
                                   )
-                                }}</label
-                              >
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-file-input
-                                outlined
-                                show-size
-                                counter
-                                prepend-inner-icon="mdi-camera"
-                                v-model="data.nominee_image"
-                                accept="image/*"
-                                @change="previewImageNominee"
-                                prepend-icon=""
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              ></v-file-input>
+                                }}</label>
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-file-input outlined show-size counter prepend-inner-icon="mdi-camera"
+                                v-model="data.nominee_image" accept="image/*" @change="previewImageNominee"
+                                prepend-icon="" :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"></v-file-input>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" align-self="end" lg="6">
-                            <v-img
-                              :src="data.nomineeSignUrl"
-                              style="
+                            <v-img :src="data.nomineeSignUrl" style="
                                 width: 150px;
                                 height: 80px;
                                 border: 1px solid #ccc;
-                              "
-                              class="mb-5"
-                              v-if="data.nomineeSignUrl"
-                            ></v-img>
-                            <v-img
-                              src="/assets/images/sign.png"
-                              v-if="!data.nomineeSignUrl"
-                              style="
+                              " class="mb-5" v-if="data.nomineeSignUrl"></v-img>
+                            <v-img src="/assets/images/sign.png" v-if="!data.nomineeSignUrl" style="
                                 width: 200px;
                                 height: 80px;
                                 border: 1px solid #ccc;
-                              "
-                              class="mb-5"
-                            ></v-img>
-                            <ValidationProvider
-                              v-slot="{ errors }"
-                              name="Signature"
-                              rules="imageSize"
-                              vid="nominee_signature"
-                            >
+                              " class="mb-5"></v-img>
+                            <ValidationProvider v-slot="{ errors }" name="Signature" rules="imageSize"
+                              vid="nominee_signature">
                               <label>
                                 {{
                                   $t(
                                     "container.beneficiary_management.beneficiary_list.image_size"
                                   )
-                                }}</label
-                              >
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-file-input
-                                outlined
-                                show-size
-                                counter
-                                prepend-inner-icon="mdi-camera"
-                                v-model="data.nominee_signature"
-                                accept="image/*"
-                                @change="previewSignNominee"
-                                prepend-icon=""
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              ></v-file-input>
+                                }}</label>
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-file-input outlined show-size counter prepend-inner-icon="mdi-camera"
+                                v-model="data.nominee_signature" accept="image/*" @change="previewSignNominee"
+                                prepend-icon="" :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"></v-file-input>
                             </ValidationProvider>
                           </v-col>
 
                           <v-col cols="12" lg="12">
-                            <ValidationProvider
-                              name="Address of Nominee"
-                              vid="nominee_address"
-                              v-slot="{ errors }"
-                              rules="required"
-                            >
+                            <ValidationProvider name="Address of Nominee" vid="nominee_address" v-slot="{ errors }"
+                              rules="required">
                               <label>{{
                                 $t(
                                   "container.beneficiary_management.beneficiary_list.address"
                                 )
                               }}</label>
-                              <v-textarea
-                                v-model="data.nominee_address"
-                                outlined
-                                clearable
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              ></v-textarea>
+                              <v-textarea v-model="data.nominee_address" outlined clearable
+                                :error="errors[0] ? true : false" :error-messages="errors[0]"></v-textarea>
                             </ValidationProvider>
                           </v-col>
                         </v-row>
@@ -1802,138 +1029,79 @@
                       <div class="pa-2 mb-4">
                         <v-row>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Beneficiary Bank Account Number"
-                              vid="account_number"
-                              rules="required"
-                              v-slot="{ errors }"
-                            >
-                              <label style="display: inline-block"
-                                >{{
-                                  $t(
-                                    "container.beneficiary_management.beneficiary_list.beneficary_bank_acc_number"
-                                  )
-                                }}
+                            <ValidationProvider name="Beneficiary Bank Account Number" vid="account_number"
+                              rules="required" v-slot="{ errors }">
+                              <label style="display: inline-block">{{
+                                $t(
+                                  "container.beneficiary_management.beneficiary_list.beneficary_bank_acc_number"
+                                )
+                              }}
                               </label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-text-field
-                                v-model="data.account_number"
-                                outlined
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-text-field v-model="data.account_number" outlined :error="errors[0] ? true : false"
+                                :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Account Name"
-                              vid="account_name"
-                              rules="required"
-                              v-slot="{ errors }"
-                            >
-                              <label style="display: inline-block"
-                                >{{
-                                  $t(
-                                    "container.beneficiary_management.beneficiary_list.account_name"
-                                  )
-                                }}
+                            <ValidationProvider name="Account Name" vid="account_name" rules="required"
+                              v-slot="{ errors }">
+                              <label style="display: inline-block">{{
+                                $t(
+                                  "container.beneficiary_management.beneficiary_list.account_name"
+                                )
+                              }}
                               </label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-text-field
-                                v-model="data.account_name"
-                                outlined
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-text-field v-model="data.account_name" outlined :error="errors[0] ? true : false"
+                                :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Account Owner"
-                              vid="accountOwner"
-                              rules="required"
-                              v-slot="{ errors }"
-                            >
-                              <label
-                                >{{
-                                  $t(
-                                    "container.beneficiary_management.beneficiary_list.account_owner"
-                                  )
-                                }}
+                            <ValidationProvider name="Account Owner" vid="accountOwner" rules="required"
+                              v-slot="{ errors }">
+                              <label>{{
+                                $t(
+                                  "container.beneficiary_management.beneficiary_list.account_owner"
+                                )
+                              }}
                               </label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-text-field
-                                v-model="data.account_owner"
-                                outlined
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-text-field v-model="data.account_owner" outlined :error="errors[0] ? true : false"
+                                :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Monthly Honorarium Amount"
-                              vid="monthly_honorarium"
-                              rules="required"
-                              v-slot="{ errors }"
-                            >
-                              <label
-                                >{{
-                                  $t(
-                                    "container.beneficiary_management.beneficiary_list.monthly_honorarium_amount"
-                                  )
-                                }}
+                            <ValidationProvider name="Monthly Honorarium Amount" vid="monthly_allowance" rules="required"
+                              v-slot="{ errors }">
+                              <label>{{
+                                $t(
+                                  "container.beneficiary_management.beneficiary_list.monthly_allowance_amount"
+                                )
+                              }}
                               </label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-text-field
-                                v-model="data.monthly_honorarium"
-                                outlined
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-text-field v-model="data.monthly_allowance" outlined :error="errors[0] ? true : false"
+                                :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col lg="6" md="6" cols="12">
-                            <ValidationProvider
-                              name="Financial Year"
-                              vid="financial_year_id"
-                              rules="required"
-                              v-slot="{ errors }"
-                            >
-                              <label
-                                >{{
-                                  $t(
-                                    "container.beneficiary_management.beneficiary_list.financial_year"
-                                  )
-                                }}
+                            <ValidationProvider name="Financial Year" vid="financial_year_id" rules="required"
+                              v-slot="{ errors }">
+                              <label>{{
+                                $t(
+                                  "container.beneficiary_management.beneficiary_list.financial_year"
+                                )
+                              }}
                               </label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-autocomplete
-                                :hide-details="errors[0] ? false : true"
-                                v-model="data.financial_year_id"
-                                outlined
-                                :items="financial_years"
-                                item-text="financial_year"
-                                item-value="id"
-                                class="no-arrow-icon"
-                                clearable
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              ></v-autocomplete>
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.financial_year_id"
+                                outlined :items="financial_years" item-text="financial_year" item-value="id"
+                                class="no-arrow-icon" clearable :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"></v-autocomplete>
                             </ValidationProvider>
                           </v-col>
                         </v-row>
@@ -2131,45 +1299,24 @@
                                           </div> -->
 
                       <v-row>
-                        <v-col
-                          v-for="(field, index) in allowance_filed"
-                          :key="index"
-                          cols="6"
-                          lg="6"
-                        >
-                          <template
-                            v-if="
-                              field.type === 'number' || field.type === 'text'
-                            "
-                          >
+                        <v-col v-for="(field, index) in allowance_filed" :key="index" cols="6" lg="6">
+                          <template v-if="field.type === 'number' || field.type === 'text'
+                            ">
                             <label>{{ field.name_en }}</label>
-                            <v-text-field
-                              v-model="field.pivot.value"
-                              outlined
-                              readonly
-                            >
+                            <v-text-field v-model="field.pivot.value" outlined readonly>
                             </v-text-field>
                           </template>
                           <template v-if="field.type === 'dropdown'">
                             <label>{{ field.name_en }}</label>
-                            <v-text-field
-                              v-model="field.allow_addi_field_values[0].value"
-                              outlined
-                              readonly
-                            >
+                            <v-text-field v-model="field.allow_addi_field_values[0].value" outlined readonly>
                             </v-text-field>
                           </template>
                           <template v-if="field.type === 'checkbox'">
                             <label>{{ field.name_en }}</label>
-                            <v-text-field
-                              :value="
-                                concatenateCheckboxValues(
-                                  field.allow_addi_field_values
-                                )
-                              "
-                              outlined
-                              readonly
-                            ></v-text-field>
+                            <v-text-field :value="concatenateCheckboxValues(
+                              field.allow_addi_field_values
+                            )
+                              " outlined readonly></v-text-field>
                           </template>
                         </v-col>
                       </v-row>
@@ -2194,7 +1341,7 @@
                   <!-- For Office Use End -->
                   <!-- 5th Expansion panel -->
                   <!-- Other Information of Eligibility -->
-                  <v-expansion-panel class="mb-4">
+                  <!-- <v-expansion-panel class="mb-4">
                     <v-expansion-panel-header color="primary">
                       <h3 class="white--text">
                         {{
@@ -2207,144 +1354,71 @@
                     <v-expansion-panel-content class="mt-5">
                       <div class="pa-2 mb-4">
                         <v-row>
-                          <v-col
-                            cols="12"
-                            lg="6"
-                            md="6"
-                            v-for="(variable, indexPMT) in data.poverty_score"
-                            :key="indexPMT"
-                          >
-                            <v-select
-                              outlined
-                              readonly
-                              :label="variable.name_en"
-                              :items="variable.children"
-                              item-text="name_en"
-                            ></v-select>
+                          <v-col cols="12" lg="6" md="6" v-for="(variable, indexPMT) in data.poverty_score"
+                            :key="indexPMT">
+                            <v-select outlined readonly :label="variable.name_en" :items="variable.children"
+                              item-text="name_en"></v-select>
                           </v-col>
                         </v-row>
                       </div>
 
                       <div class="pa-2 mb-4">
                         <v-row>
-                          <v-col
-                            v-for="(variables, indexPMT) in data.poverty_score"
-                            cols="6"
-                            lg="6"
-                            :key="indexPMT"
-                          >
+                          <v-col v-for="(variables, indexPMT) in data.poverty_score" cols="6" lg="6" :key="indexPMT">
                             <template v-if="variables.children.length == 0">
-                              <label
-                                >{{ variables.name_en }}
-                                <span
-                                  style="
+                              <label>{{ variables.name_en }}
+                                <span style="
                                     margin-left: 4px;
                                     margin-right: 4px;
                                     color: red;
-                                  "
-                                  >*</span
-                                ></label
-                              >
-                              <ValidationProvider
-                                :name="variables.name_en"
-                                vid="sub_variables"
-                                rules="required"
-                                v-slot="{ errors }"
-                              >
-                                <v-select
-                                  :hide-details="errors[0] ? false : true"
-                                  :error="errors[0] ? true : false"
-                                  :error-messages="errors[0]"
-                                  outlined
-                                  required
-                                  v-model="
-                                    data.application_pmt[indexPMT].sub_variables
-                                  "
-                                  :items="[
-                                    {
-                                      id: variables.id,
-                                      name_en: 'Yes',
-                                      name_bn: 'হ্যাঁ',
-                                    },
-                                    {
-                                      id: 0,
-                                      name_en: 'No',
-                                      name_bn: 'না',
-                                    },
-                                  ]"
-                                  item-value="id"
-                                  item-text="name_en"
-                                >
+                                  ">*</span></label>
+                              <ValidationProvider :name="variables.name_en" vid="sub_variables" rules="required"
+                                v-slot="{ errors }">
+                                <v-select :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+                                  :error-messages="errors[0]" outlined required v-model="data.application_pmt[indexPMT].sub_variables
+                                    " :items="[
+    {
+      id: variables.id,
+      name_en: 'Yes',
+      name_bn: 'হ্যাঁ',
+    },
+    {
+      id: 0,
+      name_en: 'No',
+      name_bn: 'না',
+    },
+  ]" item-value="id" item-text="name_en">
                                 </v-select>
                               </ValidationProvider>
                             </template>
                             <template v-else-if="variables.field_type == 1">
-                              <label
-                                >{{ variables.name_en }}
-                                <span
-                                  style="
+                              <label>{{ variables.name_en }}
+                                <span style="
                                     margin-left: 4px;
                                     margin-right: 4px;
                                     color: red;
-                                  "
-                                  >*</span
-                                ></label
-                              >
-                              <ValidationProvider
-                                :name="variables.name_en"
-                                vid="sub_variables"
-                                rules="required"
-                                v-slot="{ errors }"
-                              >
-                                <v-select
-                                  :hide-details="errors[0] ? false : true"
-                                  :error="errors[0] ? true : false"
-                                  :error-messages="errors[0]"
-                                  outlined
-                                  required
-                                  v-model="
-                                    data.application_pmt[indexPMT].sub_variables
-                                  "
-                                  :items="variables.children"
-                                  item-value="id"
-                                  item-text="name_en"
-                                >
+                                  ">*</span></label>
+                              <ValidationProvider :name="variables.name_en" vid="sub_variables" rules="required"
+                                v-slot="{ errors }">
+                                <v-select :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+                                  :error-messages="errors[0]" outlined required v-model="data.application_pmt[indexPMT].sub_variables
+                                    " :items="variables.children" item-value="id" item-text="name_en">
                                 </v-select>
                               </ValidationProvider>
                             </template>
 
                             <template v-else-if="variables.field_type == 2">
-                              <label
-                                >{{ variables.name_en
-                                }}<span
-                                  style="
+                              <label>{{ variables.name_en
+                              }}<span style="
                                     margin-left: 4px;
                                     margin-right: 4px;
                                     color: red;
-                                  "
-                                  >*</span
-                                ></label
-                              >
-                              <ValidationProvider
-                                :name="variables.name_en"
-                                vid="sub_variables"
-                                rules="required"
-                                v-slot="{ errors }"
-                              >
-                                <v-select
-                                  multiple
-                                  :hide-details="errors[0] ? false : true"
-                                  :error="errors[0] ? true : false"
-                                  :error-messages="errors[0]"
-                                  outlined
-                                  required
-                                  v-model="
-                                    data.application_pmt[indexPMT].sub_variables
-                                  "
-                                  :items="variables.children"
-                                  item-value="id"
-                                  item-text="name_en"
-                                >
+                                  ">*</span></label>
+                              <ValidationProvider :name="variables.name_en" vid="sub_variables" rules="required"
+                                v-slot="{ errors }">
+                                <v-select multiple :hide-details="errors[0] ? false : true"
+                                  :error="errors[0] ? true : false" :error-messages="errors[0]" outlined required v-model="data.application_pmt[indexPMT].sub_variables
+                                    " :items="variables.children" item-value="id" item-text="name_en">
                                 </v-select>
                               </ValidationProvider>
                             </template>
@@ -2352,29 +1426,17 @@
                         </v-row>
                       </div>
                     </v-expansion-panel-content>
-                  </v-expansion-panel>
+                  </v-expansion-panel> -->
                   <!-- Other Information of Eligibility end-->
                 </v-expansion-panels>
               </div>
               <div class="d-inline d-flex justify-end">
-                <v-btn
-                  type="submit"
-                  flat
-                  router
-                  to="/beneficiary-management/beneficiary-info"
-                  :loading="loading"
-                  class="custom-btn-width py-2 mr-2"
-                >
+                <v-btn type="submit" flat router to="/beneficiary-management/beneficiary-info" :loading="loading"
+                  class="custom-btn-width py-2 mr-2">
                   {{ $t("container.list.back") }}
                 </v-btn>
-                <v-btn
-                  type="submit"
-                  flat
-                  color="primary"
-                  :loading="loading"
-                  :disabled="invalid"
-                  class="custom-btn-width black white--text py-2"
-                >
+                <v-btn type="submit" flat color="primary" :loading="loading" :disabled="invalid"
+                  class="custom-btn-width black white--text py-2">
                   {{ $t("container.list.submit") }}
                 </v-btn>
               </div>
@@ -2545,7 +1607,7 @@ export default {
         account_number: null,
         account_name: null,
         account_owner: null,
-        monthly_honorarium: null,
+        monthly_allowance: null,
         financial_year_id: null,
       },
 
@@ -2641,7 +1703,7 @@ export default {
         formData.append("account_name", this.data.account_name);
         formData.append("account_number", this.data.account_number);
         formData.append("account_owner", this.data.account_owner);
-        // formData.append("monthly_honorarium", this.data.monthly_honorarium);
+        formData.append("monthly_allowance", this.data.monthly_allowance);
         formData.append("financial_year_id", this.data.financial_year_id);
 
         const data = { formData: formData, id: this.$route.params.id };
@@ -2674,21 +1736,26 @@ export default {
             },
           })
           .then((res) => {
-            let item = res.data.data;
-            this.data = res.data.data;
+            if (res.data?.success) {
+              let item = res.data.data;
+              this.data = res.data.data;
 
-            this.data.imageUrl = item?.image;
-            this.data.signUrl = item?.signature;
+              this.data.imageUrl = item?.image;
+              this.data.signUrl = item?.signature;
 
-            this.data.nomineeImageUrl = item?.nominee_image;
-            this.data.nominee_image = new File([""], item?.nominee_image);
-            this.data.nomineeSignUrl = item?.nominee_signature;
-            this.data.nominee_signature = new File(
-              [""],
-              item?.nominee_signature
-            );
+              this.data.nomineeImageUrl = item?.nominee_image;
+              this.data.nominee_image = new File([""], item?.nominee_image);
+              this.data.nomineeSignUrl = item?.nominee_signature;
+              this.data.nominee_signature = new File(
+                [""],
+                item?.nominee_signature
+              );
 
-            console.log("nominee_image__", this.data.nominee_image);
+              console.log("nominee_image__", this.data.nominee_image);
+            } else {
+              this.$toast.error("Record not found!");
+              this.$router.push({ name: "Beneficiary_List" });
+            }
           })
           .catch((err) => {
             if (err.response?.data?.errors) {

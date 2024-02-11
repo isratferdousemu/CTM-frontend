@@ -234,6 +234,7 @@ export default new Vuex.Store({
         return result.data.data
       });
     },
+  
 
     /*start get all City*/
     GetAllCityByDistrict: ({ commit }, data) => {

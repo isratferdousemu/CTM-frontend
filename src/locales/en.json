@@ -384,7 +384,7 @@
         }
       },
       "device": {
-        "list": "Device Registration Lists",
+        "list": "Device Lists",
         "user_id": "User ID",
         "user_name": "User Name",
         "device_type": "Device Type",
@@ -803,7 +803,7 @@
         "beneficary_bank_acc_number":"Beneficiary Bank Account Number",
         "account_name":"Account Name",
         "account_owner":"Account Owner",
-        "monthly_honorarium_amount":"Monthly Honorarium Amount",
+        "monthly_allowance_amount":"Monthly Allowance Amount",
         "financial_year":"Financial Year",
         "other_info_of_eligibility":"Other Information of Eligibility"
         

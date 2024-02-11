@@ -383,7 +383,7 @@
                 }
             },
             "device": {
-                "list": "ডিভাইস নিবন্ধন তালিকা",
+                "list": "ডিভাইস তালিকা",
                 "user_id": "ব্যবহারকারী আইডি",
                 "user_name": "ব্যবহারকারীর নাম",
                 "device_type": "ডিভাইসের ধরন",
@@ -801,7 +801,7 @@
                 "beneficary_bank_acc_number":"সুবিধাভোগী ব্যাংক অ্যাকাউন্ট নম্বর",
                 "account_name":"হিসাবের নাম",
                 "account_owner":"অ্যাকাউন্ট মালিক",
-                "monthly_honorarium_amount":"মাসিক সম্মানী পরিমাণ",
+                "monthly_allowance_amount":"মাসিক ভাতার পরিমাণ",
                 "financial_year":"আর্থিক বর্ষ",
                 "other_info_of_eligibility":"যোগ্যতার অন্যান্য তথ্য"
             },
