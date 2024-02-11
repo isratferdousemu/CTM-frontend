@@ -823,6 +823,7 @@
             }
         },
         "manage_allotment": {
+            "id":"আইডি",
             "list": "বরাদ্দ তালিকা",
             "program": "বরাদ্দ বিতরণ কর্মসূচি",
             "regular_payment": "নিয়মিত অর্থপ্রদান",
@@ -836,6 +837,16 @@
             "setupdelete": "বরাদ্দ এলাকা মুছুন ",
             "setupdelete_alert": "আপনি কি এই বরাদ্দ এলাকা মুছে ফেলার বিষয়ে নিশ্চিত??"
         },
+        "budget_management":{
+            "budget_info":"বাজেটের তথ্য",
+            "budget_info_list":"বাজেটের তথ্য তালিকা",
+            "add_new":"নতুন যোগ করুন",
+            "id":"আইডি",
+            "program_name":"প্রোগ্রামের নাম",
+            "calculation_type":"গণনার ধরন",
+            "financial_year":"আর্থিক বর্ষ",
+            "action":"অ্যাকশন"
+          },
         "payroll_management": {
             "list": "পেমেন্ট প্রসেসর",
             "add_new": "নতুন পেমেন্ট প্রসেসর যোগ করুন",

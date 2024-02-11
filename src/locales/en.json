@@ -828,6 +828,7 @@
       }
     },
     "manage_allotment": {
+      "id":"ID",
       "list": "Allotment List",
       "program": "Allotment Distribution Program",
       "regular_payment": "Regular Payment",
@@ -840,6 +841,17 @@
       "add_new_setup": "Update Allotment  Setup",
       "setupdelete": "Delete Allotment Area ",
       "setupdelete_alert": "Are you sure to delete this Allotment Area?"
+    },
+    "budget_management":{
+      "budget_info":"Budget Info",
+      "budget_info_list":"Budget Info List",
+      "add_new":"Add New",
+      "id":"ID",
+      "program_name":"Program Name",
+      "calculation_type":"Calculation Type",
+      "financial_year":"Financial Year",
+      "action":"Action",
+      "budget_create":"Budget Create"
     },
     "payroll_management": {
       "list": "Payment Processor",
