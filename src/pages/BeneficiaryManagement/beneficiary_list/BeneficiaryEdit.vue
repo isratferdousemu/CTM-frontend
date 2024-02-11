@@ -1074,16 +1074,16 @@
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider name="Monthly Honorarium Amount" vid="monthly_honorarium" rules="required"
+                            <ValidationProvider name="Monthly Honorarium Amount" vid="monthly_allowance" rules="required"
                               v-slot="{ errors }">
                               <label>{{
                                 $t(
-                                  "container.beneficiary_management.beneficiary_list.monthly_honorarium_amount"
+                                  "container.beneficiary_management.beneficiary_list.monthly_allowance_amount"
                                 )
                               }}
                               </label>
                               <span style="margin-left: 4px; color: red">*</span>
-                              <v-text-field v-model="data.monthly_honorarium" outlined :error="errors[0] ? true : false"
+                              <v-text-field v-model="data.monthly_allowance" outlined :error="errors[0] ? true : false"
                                 :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
@@ -1341,7 +1341,7 @@
                   <!-- For Office Use End -->
                   <!-- 5th Expansion panel -->
                   <!-- Other Information of Eligibility -->
-                  <v-expansion-panel class="mb-4">
+                  <!-- <v-expansion-panel class="mb-4">
                     <v-expansion-panel-header color="primary">
                       <h3 class="white--text">
                         {{
@@ -1426,7 +1426,7 @@
                         </v-row>
                       </div>
                     </v-expansion-panel-content>
-                  </v-expansion-panel>
+                  </v-expansion-panel> -->
                   <!-- Other Information of Eligibility end-->
                 </v-expansion-panels>
               </div>
@@ -1607,7 +1607,7 @@ export default {
         account_number: null,
         account_name: null,
         account_owner: null,
-        monthly_honorarium: null,
+        monthly_allowance: null,
         financial_year_id: null,
       },
 
@@ -1703,7 +1703,7 @@ export default {
         formData.append("account_name", this.data.account_name);
         formData.append("account_number", this.data.account_number);
         formData.append("account_owner", this.data.account_owner);
-        // formData.append("monthly_honorarium", this.data.monthly_honorarium);
+        formData.append("monthly_allowance", this.data.monthly_allowance);
         formData.append("financial_year_id", this.data.financial_year_id);
 
         const data = { formData: formData, id: this.$route.params.id };

@@ -805,7 +805,7 @@
                   <!-- For Office Use End -->
                   <!-- 5th Expansion panel -->
                   <!-- Other Information of Eligibility -->
-                  <v-expansion-panel class="mb-4">
+                  <!-- <v-expansion-panel class="mb-4">
                     <v-expansion-panel-header color="primary">
                       <h3 class="white--text">
                         {{ $t("container.beneficiary_management.beneficiary_list.other_info_of_eligibility") }}
@@ -886,7 +886,7 @@
                         </v-row>
                       </div>
                     </v-expansion-panel-content>
-                  </v-expansion-panel>
+                  </v-expansion-panel> -->
                   <!-- Other Information of Eligibility end-->
                 </v-expansion-panels>
               </div>
