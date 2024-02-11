@@ -565,7 +565,9 @@
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
                   {{
-                    $t("container.beneficiary_management.beneficiary_list.list_delete")
+                    $t(
+                      "container.beneficiary_management.beneficiary_list.list_delete"
+                    )
                   }}
                 </h3>
               </v-card-title>
@@ -593,21 +595,6 @@
                     <!-- Select column End -->
                   </v-col>
                 </v-row>
-                <v-row justify="end" align="center" class="mx-4">
-                  <!-- Dropdown on the right -->
-                  <v-col lg="4" md="4" cols="12" class="text-right">
-                    <v-btn
-                      elevation="2"
-                      class="btn mr-2 white--text"
-                      flat
-                      color="red darken-4"
-                      @click="GeneratePDF()"
-                    >
-                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
-                      {{ $t("container.list.PDF") }}
-                    </v-btn>
-                  </v-col>
-                </v-row>
                 <v-row
                   class="ma-0 white round-border d-flex justify-space-between align-center"
                   justify="center"
@@ -633,7 +620,12 @@
                       <!-- Action Button -->
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
-                        <v-btn v-on="on" color="success" elevation="0">
+                        <v-btn
+                          v-on="on"
+                          color="success"
+                          elevation="0"
+                          @click="rollBackBeneficiary(item.id)"
+                        >
                           {{
                             $t(
                               "container.beneficiary_management.beneficiary_list.rollback"
@@ -679,7 +671,49 @@
           </v-col>
         </v-row>
       </v-col>
-
+      <!-- Beneficiary RollBack modal  -->
+      <v-dialog v-model="dialogRollBack" width="400">
+        <v-card style="justify-content: center; text-align: center">
+          <v-card-title class="font-weight-bold justify-center">
+            {{
+              $t(
+                "container.list.attention"
+              )
+            }}
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text class="mt-2">
+            <h3>
+              {{
+                $t(
+                  "container.beneficiary_management.beneficiary_list.rollback_message"
+                )
+              }}
+            </h3>
+            <v-row class="mx-0 my-0 py-2 mt-5 mb-2" justify="end">
+              <v-btn
+                flat
+                @click="dialogRollBack = false"
+                outlined
+                class="custom-btn-width py-2 mr-10"
+              >
+                {{ $t("container.list.no") }}
+              </v-btn>
+              <v-btn
+                flat
+                @click="beneficiaryRollBack"
+                color="primary"
+                :disabled="invalid"
+                :loading="loading"
+                class="custom-btn-width warning white--text py-2"
+              >
+                {{ $t("container.list.yes") }}
+              </v-btn>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+      <!-- Beneficiary RollBack modal  -->
     </v-row>
   </div>
 </template>
@@ -773,6 +807,8 @@ export default {
       wards: [],
       district_pouros: [],
       advanch_search: false,
+      dialogRollBack: false,
+      rollBack_id: null,
       subLocationType: [
         {
           id: 1,
@@ -1253,7 +1289,7 @@ export default {
         orderBy: this.sortDesc,
       };
       this.$axios
-        .get("/admin/beneficiary/list", {
+        .get("/admin/beneficiary/deletedList", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -1262,6 +1298,7 @@ export default {
         })
         .then((result) => {
           // this.beneficiaries = result.data.data;
+          this.loading = false;
           var results = result.data.data;
           console.log("results", results);
 
@@ -1274,7 +1311,6 @@ export default {
           this.pagination.current = result.data.meta.current_page;
           this.pagination.total = result.data.meta.last_page;
           this.pagination.grand_total = result.data.meta.total;
-          this.loading = false;
         });
     },
     updateHeaderTitle() {
@@ -1283,35 +1319,31 @@ export default {
       );
       this.$store.commit("setHeaderTitle", title);
     },
-    async GeneratePDF() {
-      const queryParams = {
-        program_id: this.data.program_id,
-        division_id: this.data.division_id,
-        district_id: this.data.district_id,
-        city_corp_id: this.data.city_id,
-        city_thana_id: this.data.city_thana_id,
-        district_pouro_id: this.data.district_pouro_id,
-        location_type: this.data.location_type,
-
-        pouro_id: this.data.pouro_id,
-        union_id: this.data.union_id,
-        thana_id: this.data.thana_id,
-        ward_id: this.data.ward_id,
-      };
-      this.$axios
-        .get("/admin/beneficiary/getBeneficiaryListPdf", {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-          params: queryParams,
-        })
-        .then((result) => {
-          window.open(result.data.data.url, "_blank");
-        })
-        .catch((error) => {
-          console.error("Error generating PDF:", error);
-        });
+    rollBackBeneficiary(event) {
+      this.dialogRollBack = true;
+      this.rollBack_id = event;
+    },
+    beneficiaryRollBack() {
+      if (!this.rollBack_id) {
+        return;
+      }
+      try {
+        this.$store
+          .dispatch("BeneficiaryManagement/RollBackBeneficiary", this.rollBack_id)
+          .then((res) => {
+            console.log(res, "submit__");
+            if (res.data?.success) {
+              this.$toast.success("Data RollBack Successfully");
+              this.dialogRollBack = false;
+              this.GetApplication();
+            } else if (res.response?.data?.errors) {
+              this.$refs.form.setErrors(res.response.data.errors);
+              this.errors = res.response.data.errors;
+            }
+          });
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
   watch: {
