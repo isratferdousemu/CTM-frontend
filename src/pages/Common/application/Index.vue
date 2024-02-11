@@ -900,11 +900,42 @@
                           </template> -->
                           <v-col v-for="(
                               fields, index
-                            ) in programDetails.additional_field" :key="index" cols="6" lg="6"
-                            v-if="programDetails?.additional_field.length != 0 && keyGetByName('DIS No.') != index && keyGetByName('Disability Type') != index">
+                            ) in programDetails.additional_field" :key="index" cols="6" lg="6">
+                            
+
+                            <!-- v-if="programDetails?.additional_field.length != 0 && keyGetByName('DIS No.') != index && keyGetByName('Disability Type') != index"> -->
+                              <template v-if="fields.type == 'number'">
+                                <v-row>
+                                  <v-col cols="10" lg="10">
+                                        <label>  {{ language == 'bn' ? fields.name_bn : fields.name_en }}
+                                    <span style="
+                                    margin-left: 4px;
+                                    margin-right: 4px;
+                                    color: red;
+                                  ">*</span></label>
+                                  <ValidationProvider :name="fields.name_en" vid="value" rules="required" v-slot="{ errors }">
+                                    <v-text-field v-model="data.application_allowance_values[index]
+                                      .value
+                                      " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+                                      :error-messages="errors[0]" type="number" outlined>
+                                    </v-text-field>
+                                  </ValidationProvider>
+
+                                  </v-col>
+                                    <v-col cols="2" lg="2" class="text-right">
+                                           <v-btn v-if="fields.verified === 1" class="btn mt-5" color="primary" style="height: 56px;"
+                                          :disabled="data.application_allowance_values[index]
+                                            .value == null">{{ $t('container.list.verify') }}</v-btn>
+                                    
+                                    </v-col>
+                                </v-row>
+                            
+                           
+                              
+                              </template>
                             <template v-if="fields.type == 'dropdown'">
                               <label>
-                                <!-- {{ fields.name_en }}     -->
+                       
                                 {{ language == 'bn' ? fields.name_bn : fields.name_en }} 
                                 <span style="
                                     margin-left: 4px;
@@ -926,21 +957,7 @@
                                 </v-select>
                               </ValidationProvider>
                             </template>
-                            <template v-if="fields.type == 'number'">
-                              <label>  {{ language == 'bn' ? fields.name_bn : fields.name_en }}
-                                <span style="
-                                    margin-left: 4px;
-                                    margin-right: 4px;
-                                    color: red;
-                                  ">*</span></label>
-                              <ValidationProvider :name="fields.name_en" vid="value" rules="required" v-slot="{ errors }">
-                                <v-text-field v-model="data.application_allowance_values[index]
-                                  .value
-                                  " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
-                                  :error-messages="errors[0]" type="number" outlined>
-                                </v-text-field>
-                              </ValidationProvider>
-                            </template>
+                          
                             <template v-if="fields.type == 'checkbox'">
                               <label>  {{ language == 'bn' ? fields.name_bn : fields.name_en }}<span style="
                                     margin-left: 4px;
@@ -957,8 +974,7 @@
                               </ValidationProvider>
                             </template>
                             <template v-if="fields.type == 'file'">
-                              <label>{{ fields.name_en
-                              }}<span style="
+                              <label> {{ language == 'bn' ? fields.name_bn : fields.name_en }}<span style="
                                     margin-left: 4px;
                                     margin-right: 4px;
                                     color: red;
@@ -975,8 +991,7 @@
                             </template>
 
                             <template v-if="fields.type == 'date'">
-                              <label>{{ fields.name_en
-                              }}<span style="
+                              <label> {{ language == 'bn' ? fields.name_bn : fields.name_en }}<span style="
                                     margin-left: 4px;
                                     margin-right: 4px;
                                     color: red;
@@ -1170,7 +1185,7 @@
                                 <v-row>
                                   <v-col cols="10" lg="10">
                                     <ValidationProvider name="National Identity (NID) / Birth Registration Number"
-                                      rules="checkNumber" vid="nominee_verification_number" v-slot="{ errors }">
+                                      rules="required|numeric|checkNumber" vid="nominee_verification_number" v-slot="{ errors }">
                                       <label>{{ $t('container.application_selection.application.nid_brn') }}</label>
                                       <span style="margin-left: 4px; color: red">*</span>
                                       <v-text-field v-model="data.nominee_verification_number" outlined
@@ -1463,17 +1478,6 @@ extend("numeric", {
   ...numeric,
   message: "This field must be a number"
 });
-
-// add custom rule  checkNumber
-//extend("checkNumber", {
-//  validate: (value) => {
-// check all carecter in numric not allow spacial carecter
-// const regex = /^[0-9]+$/;
-// check all carecter in numric not allow spacial carecter
-// return regex.test(value);
-// },
-// message: "This field must be a number",
-// });
 
 
 extend("checkNumber", {
