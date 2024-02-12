@@ -99,6 +99,18 @@ const BeneficiaryManagementRoutes = [
         "../pages/BeneficiaryManagement/beneficiary_list/BeneficiaryDeleteList.vue"
       ),
   },
+  // {
+  //   path: "/beneficiary-management/beneficiary-info-replacement",
+  //   name: "Beneficiary_List_Replacement",
+  //   meta: {
+  //     requiresAuth: true,
+  //     permission: "beneficiary-list-replacement",
+  //   },
+  //   component: () =>
+  //     import(
+  //       "../pages/BeneficiaryManagement/beneficiary_list/BeneficiaryReplacementList.vue"
+  //     ),
+  // },
   {
     path: "/beneficiary-management/beneficiary-info/details/:id",
     name: "beneficiary_details",
