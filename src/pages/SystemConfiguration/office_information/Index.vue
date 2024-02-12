@@ -25,7 +25,7 @@
                     <!-- Dropdown on the right -->
 
                     <v-col lg="4" md="6" cols="12" class="text-right">
-                      <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4">
+                      <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4" @click="GeneratePdf()">
                         <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
                       </v-btn>
                       <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
@@ -1162,6 +1162,56 @@
     },
     methods: {
 
+      GeneratePdf(){
+
+        const HeaderInfo = [
+          this.$t("container.list.sl"),
+          this.$t("container.system_config.demo_graphic.office.code"),
+          this.$t("container.system_config.demo_graphic.office.office_type"),
+          this.$t("container.system_config.demo_graphic.office.office_name"),
+          this.$t("container.system_config.demo_graphic.division.division"),
+          this.$t("container.system_config.demo_graphic.district.district"),
+        ]
+
+        const OBJ = this.offices;
+        const CustomInfo = OBJ.map((((i,index) => {
+          return [
+            this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+            this.$i18n.locale == 'en' ? i.assign_location.id : this.$helpers.englishToBangla(i.assign_location.id),
+            this.$i18n.locale == 'en' ? i.office_type.value_en : i.office_type.value_bn,
+            this.$i18n.locale == 'en' ? i.name_en : i.name_bn,
+            this.$i18n.locale == 'en' ? i.assign_location.parent.name_en : i.assign_location.parent.name_bn,
+            this.$i18n.locale == 'en' ? i.assign_location.parent.parent.name_en : i.assign_location.parent.parent.name_bn,
+          ]
+        })));
+
+        const queryParams = {
+          language: this.$i18n.locale,
+          // data:CustomInfo,
+          header:HeaderInfo,
+          fileName:this.$t("container.system_config.demo_graphic.office.list"),
+        };
+
+        this.$axios
+            .get("/admin/office/generate-pdf", {
+              headers: {
+                Authorization: "Bearer " + this.$store.state.token,
+                "Content-Type": "multipart/form-data",
+              },
+              responseType: 'arraybuffer',
+              params: queryParams,
+            })
+            .then((response) => {
+              const blob = new Blob([response.data], { type: 'application/pdf' });
+              const url = window.URL.createObjectURL(blob);
+              window.open(url, '_blank');
+              this.isLoading = false;
+            })
+            .catch(error => {
+              this.isLoading = false;
+              console.error('Error generating PDF:', error);
+            });
+      },
 
       GenerateExcel() {
         this.isLoading = true;
@@ -2183,7 +2233,6 @@
           .then((result) => {
 
             this.offices = result.data.data;
-            console.log(this.offices, "Get Office");
             this.pagination.current = result.data.current_page;
             this.pagination.total = result.data.last_page;
             this.pagination.grand_total = result.data.total;

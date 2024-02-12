@@ -57,7 +57,10 @@
             "excel": "এক্সেল",
             "confirm": "নিশ্চিত",
             "verify": "যাচাই",
-            "view-list":"লিস্ট দেখুন"
+            "view-list":"লিস্ট দেখুন",
+            "yes":"হ্যা",
+            "no":"না",
+            "attention":"দৃষ্টি আকর্ষন!!!"
         },
         "system_config": {
             "demo_graphic": {
@@ -383,7 +386,7 @@
                 }
             },
             "device": {
-                "list": "ডিভাইস নিবন্ধন তালিকা",
+                "list": "ডিভাইস তালিকা",
                 "user_id": "ব্যবহারকারী আইডি",
                 "user_name": "ব্যবহারকারীর নাম",
                 "device_type": "ডিভাইসের ধরন",
@@ -693,6 +696,8 @@
                 "list_delete": "সুবিধাভোগী তথ্যের(মুছে ফেলা) তালিকা",
                 "list_replacement": "সুবিধাভোগী তথ্যের(প্রতিস্থাপন) তালিকা",
                 "program": "কর্মসূচী",
+                "beneficiary_delete": "সুবিধাভোগী মুছুন",
+                "delete_cause":"মুছে ফেলার কারণ",
                 "beneficiary_id": "সুবিধাভোগীর আইডি",
                 "beneficiary_name": "সুবিধাভোগীর নাম",
                 "beneficiary_mobile": "মোবাইল",
@@ -802,8 +807,10 @@
                 "account_name":"হিসাবের নাম",
                 "account_owner":"অ্যাকাউন্ট মালিক",
                 "monthly_allowance_amount":"মাসিক ভাতার পরিমাণ",
+                "monthly_honorarium_amount":"মাসিক সম্মানী পরিমাণ",
                 "financial_year":"আর্থিক বর্ষ",
-                "other_info_of_eligibility":"যোগ্যতার অন্যান্য তথ্য"
+                "other_info_of_eligibility":"যোগ্যতার অন্যান্য তথ্য",
+                "rollback_message":"আপনি রোলব্যাক করতে চান?"
             },
             "digital_id": {
                 "digital_id_card": "ডিজিটাল আইডি কার্ড"
@@ -823,6 +830,7 @@
             }
         },
         "manage_allotment": {
+            "id":"আইডি",
             "list": "বরাদ্দ তালিকা",
             "program": "বরাদ্দ বিতরণ কর্মসূচি",
             "regular_payment": "নিয়মিত অর্থপ্রদান",
@@ -836,6 +844,16 @@
             "setupdelete": "বরাদ্দ এলাকা মুছুন ",
             "setupdelete_alert": "আপনি কি এই বরাদ্দ এলাকা মুছে ফেলার বিষয়ে নিশ্চিত??"
         },
+        "budget_management":{
+            "budget_info":"বাজেটের তথ্য",
+            "budget_info_list":"বাজেটের তথ্য তালিকা",
+            "add_new":"নতুন যোগ করুন",
+            "id":"আইডি",
+            "program_name":"প্রোগ্রামের নাম",
+            "calculation_type":"গণনার ধরন",
+            "financial_year":"আর্থিক বর্ষ",
+            "action":"অ্যাকশন"
+          },
         "payroll_management": {
             "list": "পেমেন্ট প্রসেসর",
             "add_new": "নতুন পেমেন্ট প্রসেসর যোগ করুন",
