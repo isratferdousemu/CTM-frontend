@@ -740,7 +740,7 @@
                               fab
                               x-small
                               v-on="on"
-                              color="#795548"
+                              color="#b71c1c"
                               class="ml-3 white--text"
                               elevation="0"
                               @click="deleteBeneficiaryItem(item.id)"
@@ -841,10 +841,10 @@
                   <v-btn
                     type="submit"
                     flat
-                    color="primary"
+                    color="#b71c1c"
                     :disabled="invalid"
                     :loading="loading"
-                    class="custom-btn-width warning white--text py-2"
+                    class="custom-btn-width white--text py-2"
                   >
                     {{ $t("container.list.submit") }}
                   </v-btn>

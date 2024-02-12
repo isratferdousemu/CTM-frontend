@@ -150,7 +150,7 @@ const actions = {
   },
   RollBackBeneficiary: ({ commit }, id) => {
     return http()
-      .put(`/admin/beneficiary/restore/${id}`)
+      .get(`/admin/beneficiary/restore/${id}`)
       .then((result) => {
         return result;
       })
