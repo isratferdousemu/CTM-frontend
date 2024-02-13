@@ -3,6 +3,7 @@
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
         <v-row>
+          <Spinner :loading="isLoading" />
           <v-col cols="12">
             <v-expansion-panels>
               <v-expansion-panel>
@@ -157,14 +158,15 @@
           </v-col>
 
           <!-- Dropdown on the right -->
-          <v-col lg="4" md="4" cols="12" class="text-right">
-              <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4" @click="GeneratePDF()">
-                  {{ $t("container.list.PDF") }}
-              </v-btn>
-              <!-- <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
-              {{ $t("container.list.excel") }}
-          </v-btn> -->
-          </v-col>
+        <v-col lg="4" md="6" cols="12" class="text-right">
+          <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4" @click="GeneratePdf()">
+            <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
+          </v-btn>
+          <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
+            <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+            {{ $t("container.list.excel") }}
+          </v-btn>
+        </v-col>
       </v-row>
                 <v-row
                   class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
@@ -683,6 +685,7 @@
 import { mapState } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
+import Spinner from "@/components/Common/Spinner.vue";
 
 extend("required", required);
 export default {
@@ -701,8 +704,10 @@ export default {
         location_type: null,
       },
       total:null,
+      isLoading:false,
       locationType: [],
       districts: [],
+      Allupazila: [],
       isDisabled: true,
       dialogAdd: false,
       deleteDialog: false,
@@ -753,6 +758,7 @@ export default {
     };
   },
   components: {
+    Spinner,
     ValidationProvider,
     ValidationObserver,
   },
@@ -887,31 +893,170 @@ export default {
     // },
   },
   methods: {
-     GeneratePDF() {
-     const queryParams = {
-      language: this.$i18n.locale,
+
+    async GeneratePdf(){
+      this.isLoading = true;
+      const queryParams = {
+        language: this.$i18n.locale,
         searchText: this.search,
         location_type: this.location_type_search,
         division_id: this.division_id_search,
         district_id: this.district_id_search,
-      
+        perPage: this.search.trim() === '' ? this.total : this.total,
+        page: this.pagination.current,
+        sortBy: this.sortBy,
+        orderBy: this.sortDesc,
       };
-      this.$axios
-        .get("/admin/city/generate-pdf", {
+
+      await this.$axios
+          .get("/admin/city/get", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+            params: queryParams,
+          })
+          .then((result) => {
+            this.Allupazila = result.data.data;
+          })
+          .catch((err) => {
+            console.log(err, "error");
+
+          });
+
+      const HeaderInfo = [
+        this.$t("container.list.sl"),
+        this.$t("container.system_config.demo_graphic.division.division"),
+        this.$t("container.system_config.demo_graphic.district.district"),
+        this.$t("container.system_config.demo_graphic.upazila.code"),
+        this.$t("container.system_config.demo_graphic.upazila.thana"),
+      ]
+
+      const OBJ = this.Allupazila;
+
+      const CustomInfo = OBJ.map((((i,index) => {
+        return [
+          this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+          this.$i18n.locale == 'en' ? i.parent.parent?.name_en : i.parent.parent?.name_bn,
+          this.$i18n.locale == 'en' ? i.parent?.name_en : i.parent?.name_bn,
+          this.$i18n.locale == 'en' ? i.code : this.$helpers.englishToBangla(i.code),
+          this.$i18n.locale == 'en' ? i.name_en : i.name_bn,
+        ]
+      })));
+
+
+      const queryParam = {
+        language: this.$i18n.locale,
+        data: CustomInfo,
+        header: HeaderInfo,
+        fileName: this.$t("container.system_config.demo_graphic.upazila.list"),
+      };
+
+      try {
+        const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json", // Set content type to JSON
           },
-          params: queryParams,
-        })
-        .then((result) => {
-          window.open(result.data.data.url, '_blank');
-        })
-        .catch(error => {
-          console.error('Error generating PDF:', error);
+          responseType: 'arraybuffer',
         });
 
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        window.open(url, '_blank');
+        this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
+        console.error('Error generating PDF:', error);
+      }
+
     },
+
+    async GenerateExcel() {
+      this.isLoading = true;
+      const queryParams = {
+        language: this.$i18n.locale,
+        searchText: this.search,
+        location_type: this.location_type_search,
+        division_id: this.division_id_search,
+        district_id: this.district_id_search,
+        perPage: this.search.trim() === '' ? this.total : this.total,
+        page: this.pagination.current,
+        sortBy: this.sortBy,
+        orderBy: this.sortDesc,
+      };
+
+      await this.$axios
+          .get("/admin/city/get", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+            params: queryParams,
+          })
+          .then((result) => {
+            this.Allupazila = result.data.data;
+          })
+          .catch((err) => {
+            console.log(err, "error");
+
+          });
+
+      try {
+        import('@/plugins/Export2Excel').then((excel) => {
+          const OBJ = this.Allupazila;
+
+          const CustomInfo = OBJ.map(((i,index) => {
+            return {
+              "sl": queryParams.language == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+              "division_name": queryParams.language == 'en' ? i.parent.parent?.name_en : i.parent.parent?.name_bn,
+              "district_name": queryParams.language == 'en' ? i.parent?.name_en : i.parent?.name_bn,
+              "code": queryParams.language == 'en' ? i.code : this.$helpers.englishToBangla(i.code),
+              "thana_name": queryParams.language == 'en' ? i.name_en : i.name_bn,
+            }
+          }));
+
+          const Header = [
+            this.$t("container.list.sl"),
+            this.$t("container.system_config.demo_graphic.division.division"),
+            this.$t("container.system_config.demo_graphic.district.district"),
+            this.$t("container.system_config.demo_graphic.upazila.code"),
+            this.$t("container.system_config.demo_graphic.upazila.thana"),
+          ]
+
+          const Field = ['sl','division_name', 'district_name', 'code', 'thana_name']
+
+          const Data = this.FormatJson(Field, CustomInfo)
+          const currentDate = new Date().toISOString().slice(0, 10); //
+          let dateinfo = queryParams.language == 'en' ? currentDate : this.$helpers.englishToBangla(currentDate)
+
+          const filenameWithDate = `${dateinfo}_${this.$t("container.system_config.demo_graphic.upazila.list")}`;
+
+          excel.export_json_to_excel({
+            header: Header,
+            data: Data,
+            sheetName: filenameWithDate,
+            filename: filenameWithDate,
+            autoWidth: true,
+            bookType: "xlsx"
+          })
+        })
+      } catch (error) {
+        // Handle any errors here
+        console.error("An error occurred:", error);
+        this.isLoading = false;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    FormatJson(FilterData,JsonData){
+      return JsonData.map((v) =>
+          FilterData.map((j => {
+            return v[j];
+          })))
+    },
+
     resetSearch() {
       this.location_type_search = null;
       this.division_id_search = null;
