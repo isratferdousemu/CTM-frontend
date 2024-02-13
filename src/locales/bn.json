@@ -374,7 +374,10 @@
                     "email_label": "ইমেইল",
                     "mobile_label": "মোবাইল নম্বর",
                     "office_committee": "অফিস/কমিটি",
-                    "location": "নির্ধারিত স্থান"
+                    "location": "নির্ধারিত স্থান",
+                    "login_id" : "লগইন আইডি",
+                    "role" : "রোল",
+                    "user_id" : "ব্যবহারকারী আইডি"
                 },
                 "financial_year": {
                     "financial_year": "আর্থিক বর্ষ",
