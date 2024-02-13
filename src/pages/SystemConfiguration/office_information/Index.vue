@@ -25,7 +25,7 @@
                     <!-- Dropdown on the right -->
 
                     <v-col lg="4" md="6" cols="12" class="text-right">
-                      <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4">
+                      <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4" @click="GeneratePdf()">
                         <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
                       </v-btn>
                       <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
@@ -915,6 +915,7 @@
         districts: [],
         cities: [],
         offices: [],
+        Alloffices: [],
         officeType: [],
         upazilas: [],
         cities: [],
@@ -1162,27 +1163,125 @@
     },
     methods: {
 
+      async GeneratePdf(){
 
-      GenerateExcel() {
-        this.isLoading = true;
         const queryParams = {
+          searchText: this.search,
+          perPage: this.search.trim() === '' ? this.pagination.grand_total : this.pagination.grand_total,
+          page: this.pagination.current,
+          sortBy: this.sortBy,
+          sortDesc: this.sortDesc,
+          user_id: this.$store.state.userData.id,
+        };
+        await this.$axios
+            .get("/admin/office/get", {
+              headers: {
+                Authorization: "Bearer " + this.$store.state.token,
+                "Content-Type": "multipart/form-data",
+              },
+              params: queryParams,
+            })
+            .then((result) => {
+              this.Alloffices = result.data.data;
+              this.pagination.grand_total = result.data.total;
+            })
+            .catch((err) => {
+              console.log(err, "error");
+
+            });
+
+        const HeaderInfo = [
+          this.$t("container.list.sl"),
+          this.$t("container.system_config.demo_graphic.office.code"),
+          this.$t("container.system_config.demo_graphic.office.office_type"),
+          this.$t("container.system_config.demo_graphic.office.office_name"),
+          this.$t("container.system_config.demo_graphic.division.division"),
+          this.$t("container.system_config.demo_graphic.district.district"),
+        ]
+
+        const OBJ = this.Alloffices;
+
+        const CustomInfo = OBJ.map((((i,index) => {
+          return [
+            this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+            this.$i18n.locale == 'en' ? i.assign_location_id : this.$helpers.englishToBangla(i.assign_location_id),
+            this.$i18n.locale == 'en' ? i.office_type?.value_en : i.office_type?.value_bn,
+            this.$i18n.locale == 'en' ? i.name_en : i.name_bn,
+            this.$i18n.locale == 'en' ? i.assign_location.parent.parent?.name_en : i.assign_location.parent.parent?.name_bn,
+            this.$i18n.locale == 'en' ? i.assign_location.parent?.name_en : i.assign_location.parent?.name_bn,
+          ]
+        })));
+
+        const queryParam = {
           language: this.$i18n.locale,
+          data:CustomInfo,
+          header:HeaderInfo,
+          fileName:this.$t("container.system_config.demo_graphic.office.list"),
         };
 
         try {
-          import('@/plugins/Export2Excel').then((excel) => {
-            const OBJ = this.offices;
-            const CustomInfo = OBJ.map(i => {
-              return {
-                "office_id": queryParams.language == 'en' ? i.assign_location.id : this.$helpers.englishToBangla(i.assign_location.id),
-                "office_type": queryParams.language == 'en' ? i.office_type.value_en : i.office_type.value_bn,
-                "office_name": queryParams.language == 'en' ? i.name_en : i.name_bn,
-                "district_name": queryParams.language == 'en' ? i.assign_location.parent.name_en : i.assign_location.parent.name_bn,
-                "division_name": queryParams.language == 'en' ? i.assign_location.parent.parent.name_en : i.assign_location.parent.parent.name_bn,
-              }
+          const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "application/json", // Set content type to JSON
+            },
+            responseType: 'arraybuffer',
+          });
+
+          const blob = new Blob([response.data], { type: 'application/pdf' });
+          const url = window.URL.createObjectURL(blob);
+          window.open(url, '_blank');
+          this.isLoading = false;
+        } catch (error) {
+          this.isLoading = false;
+          console.error('Error generating PDF:', error);
+        }
+      },
+
+      async GenerateExcel() {
+        // this.isLoading = true;
+        const queryParams = {
+          language: this.$i18n.locale,
+          searchText: this.search,
+          perPage: this.search.trim() === '' ? this.pagination.grand_total : this.pagination.grand_total,
+          page: this.pagination.current,
+          sortBy: this.sortBy,
+          sortDesc: this.sortDesc,
+          user_id: this.$store.state.userData.id,
+        };
+
+        await this.$axios
+            .get("/admin/office/get", {
+              headers: {
+                Authorization: "Bearer " + this.$store.state.token,
+                "Content-Type": "multipart/form-data",
+              },
+              params: queryParams,
+            })
+            .then((result) => {
+              this.Alloffices = result.data.data;
+            })
+            .catch(error => {
+              this.isLoading = false;
             });
 
+        try {
+          import('@/plugins/Export2Excel').then((excel) => {
+            const OBJ = this.Alloffices;
+
+            const CustomInfo = OBJ.map(((i,index) => {
+              return {
+                "sl" : queryParams.language == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+                "office_id": queryParams.language == 'en' ? i.assign_location_id : this.$helpers.englishToBangla(i.assign_location_id),
+                "office_type": queryParams.language == 'en' ? i.office_type?.value_en : i.office_type?.value_bn,
+                "office_name": queryParams.language == 'en' ? i.name_en : i.name_bn,
+                "division_name": queryParams.language == 'en' ? i.assign_location.parent.parent?.name_en : i.assign_location.parent.parent?.name_bn,
+                "district_name": queryParams.language == 'en' ? i.assign_location.parent?.name_en : i.assign_location.parent?.name_bn,
+              }
+            }));
+
             const Header = [
+              this.$t("container.list.sl"),
               this.$t("container.system_config.demo_graphic.office.code"),
               this.$t("container.system_config.demo_graphic.office.office_type"),
               this.$t("container.system_config.demo_graphic.office.office_name"),
@@ -1190,7 +1289,7 @@
               this.$t("container.system_config.demo_graphic.district.district"),
             ]
 
-            const Field = ['office_id', 'office_type', 'office_name', 'district_name', 'division_name']
+            const Field = ['sl','office_id', 'office_type', 'office_name', 'division_name', 'district_name']
 
             const Data = this.FormatJson(Field, CustomInfo)
             const currentDate = new Date().toISOString().slice(0, 10); //
@@ -1215,7 +1314,6 @@
           this.isLoading = false;
         }
       },
-
 
       FormatJson(FilterData,JsonData){
         return JsonData.map((v) =>
@@ -2183,7 +2281,6 @@
           .then((result) => {
 
             this.offices = result.data.data;
-            console.log(this.offices, "Get Office");
             this.pagination.current = result.data.current_page;
             this.pagination.total = result.data.last_page;
             this.pagination.grand_total = result.data.total;

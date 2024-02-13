@@ -7,16 +7,16 @@
               background-size: 80%;
               position: relative;
             ">
-          <v-img class="top-left-image" style="width: 80px; height: 80px" src="/assets/images/logo.png"></v-img>
-          <v-img class="top-right-image" style="width: 80px; height: 80px"
-            src="/assets/images/bangladesh-govt-logo.png"></v-img>
+          <img class="top-left-image" style="width: 80px; height: 80px" src="/assets/images/logo.png"/>
+          <img class="top-right-image" style="width: 80px; height: 80px"
+            src="/assets/images/bangladesh-govt-logo.png"/>
           <v-row justify="center">
             <div justify-center>
               <v-col>
-                <v-img :src="beneficiary.image" :width="230" :height="230" class="rounded-circle"
-                  v-if="beneficiary.image"></v-img>
-                <v-img v-if="!beneficiary.image" src="/assets/images/profile.png" :width="230" :height="230"
-                  class="rounded-circle"></v-img>
+                <img :src="beneficiary.image" :width="230" :height="230" class="rounded-circle"
+                  v-if="beneficiary.image"/>
+                <img v-if="!beneficiary.image" src="/assets/images/profile.png" :width="230" :height="230"
+                  class="rounded-circle"/>
               </v-col>
             </div>
           </v-row>
@@ -72,7 +72,7 @@
               </qr-code>
             </v-col>
             <v-col class="justify">
-              <v-img class="bottom-right-image" src="/assets/images/signature.png" :width="200"></v-img>
+              <img class="bottom-right-image" src="/assets/images/signature.png" :width="200"/>
               <div class="d-flex justify-center my-2" style="text-decoration: overline">
                 {{
                   $t(

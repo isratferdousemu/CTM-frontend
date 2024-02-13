@@ -4,6 +4,17 @@
       <v-col cols="12">
         <v-row>
           <v-col cols="12">
+            <div class="d-block text-right">
+              <v-btn
+                elevation="2"
+                class="btn my-2"
+                color="primary"
+                router
+                to="/budget/create"
+              >
+                {{ $t("container.budget_management.add_new") }}
+              </v-btn>
+            </div>
             <!-- Expantion panels start -->
             <v-expansion-panels>
               <v-expansion-panel class="ma-2">
@@ -46,37 +57,6 @@
                       >
                       </v-select>
                     </v-col>
-                    <v-col lg="6" md="6" cols="12">
-                      <v-autocomplete
-                        outlined
-                        clearable
-                        @input="onChangeDivision($event)"
-                        :label="
-                          $t(
-                            'container.system_config.demo_graphic.division.division'
-                          )
-                        "
-                        :items="divisions"
-                        item-text="name_en"
-                        item-value="id"
-                      >
-                      </v-autocomplete>
-                    </v-col>
-                    <v-col lg="6" md="6" cols="12">
-                      <v-autocomplete
-                        outlined
-                        clearable
-                        :label="
-                          $t(
-                            'container.system_config.demo_graphic.district.district'
-                          )
-                        "
-                        :items="districts"
-                        item-text="name_en"
-                        item-value="id"
-                      >
-                      </v-autocomplete>
-                    </v-col>
                   </v-row>
                   <div class="d-inline d-flex justify-end">
                     <v-btn elevation="2" class="btn mr-2" color="success">{{
@@ -100,7 +80,7 @@
             >
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
-                  {{ $t("container.manage_allotment.list") }}
+                  {{ $t("container.budget_management.budget_info_list") }}
                 </h3>
               </v-card-title>
               <v-card-text>
@@ -126,28 +106,6 @@
                           1
                         }}
                       </template>
-                      <!-- Download Action Button -->
-                      <template v-slot:item.download="{ item }">
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'update-post'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="#AFB42B"
-                              elevation="0"
-                              class="white--text"
-                            >
-                              <v-icon> mdi-download </v-icon>
-                            </v-btn>
-                          </template>
-                          <span>
-                            {{ $t("container.list.view") }}
-                          </span>
-                        </v-tooltip>
-                      </template>
-                      <!-- End Download Action Button -->
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
                         <v-tooltip top>
@@ -254,7 +212,7 @@ import { required } from "vee-validate/dist/rules";
 extend("required", required);
 export default {
   name: "Index",
-  title: "CTM - Allotment List",
+  title: "CTM - Budget List",
   data() {
     return {
       data: {},
@@ -266,21 +224,15 @@ export default {
       allotments: [
         {
           id: "1001",
+          program_name: "Old Age Allowance Programme",
+          calculation_type: "Percentage of Amount",
           financial_year: "2022-2023",
-          program: "Disability Allowance Program",
-          division: "Dhaka",
-          district: "Gopalganj",
-          regular_payment: "8400000",
-          additional_payment: "0",
         },
         {
           id: "1002",
+          program_name: "Tea Workers Allowance Programme",
+          calculation_type: "Fixed Amount",
           financial_year: "2022-2023",
-          program: "Education Special Scholarship for Dolito, Horizon & Bede",
-          division: "Dhaka",
-          district: "Narayanganj",
-          regular_payment: "4200000",
-          additional_payment: "0",
         },
       ],
       allowances: [],
@@ -304,45 +256,18 @@ export default {
     headers() {
       return [
         { text: this.$t("container.list.sl"), value: "sl" },
+        { text: this.$t("container.budget_management.id"), value: "id" },
         {
-          text: this.$t("container.manage_allotment.id"),
-          value: "id",
+          text: this.$t("container.budget_management.program_name"),
+          value: "program_name",
         },
         {
-          text: this.$t(
-            "container.system_config.demo_graphic.financial_year.financial_year"
-          ),
+          text: this.$t("container.budget_management.calculation_type"),
+          value: "calculation_type",
+        },
+        {
+          text: this.$t("container.budget_management.financial_year"),
           value: "financial_year",
-        },
-        {
-          text: this.$t("container.manage_allotment.program"),
-          value: "program",
-        },
-        {
-          text: this.$t(
-            "container.system_config.demo_graphic.division.division"
-          ),
-          value: "division",
-        },
-        {
-          text: this.$t(
-            "container.system_config.demo_graphic.district.district"
-          ),
-          value: "district",
-        },
-        {
-          text: this.$t("container.manage_allotment.regular_payment"),
-          value: "regular_payment",
-        },
-        {
-          text: this.$t("container.manage_allotment.additional"),
-          value: "additional_payment",
-          align: "center",
-        },
-        {
-          text: this.$t("container.manage_allotment.download"),
-          value: "download",
-          align: "center",
         },
         {
           text: this.$t("container.list.action"),
@@ -410,7 +335,7 @@ export default {
     },
 
     updateHeaderTitle() {
-      const title = this.$t("container.manage_allotment.list");
+      const title = this.$t("container.budget_management.budget_info");
       this.$store.commit("setHeaderTitle", title);
     },
   },
@@ -424,7 +349,7 @@ export default {
     this.updateHeaderTitle();
   },
   mounted() {
-    this.GetAllDivisions();
+    // this.GetAllDivisions();
     this.GetAllowance();
     this.GetFinancial_Year();
   },
