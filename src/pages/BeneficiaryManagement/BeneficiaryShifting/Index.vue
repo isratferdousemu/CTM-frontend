@@ -17,11 +17,12 @@
           <form @submit.prevent="addByBeneficiaryInTable">
             <v-row>
               <v-col cols="12">
-                <v-card elevation="3" outlined>
-                  <v-row>
+                <v-card elevation="3" outlined >
+                  <v-row >
                     <v-col col="6">
                       <v-card-title
-                        ><h5>
+                      class="page-header"
+                        ><h5 class="white--text">
                           {{
                             $t(
                               "container.beneficiary_management.beneficiary_shifting.title"
@@ -598,3 +599,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+.page-header {
+  background-color: #8C9EFF;
+  color: #000;
+}
+</style>
