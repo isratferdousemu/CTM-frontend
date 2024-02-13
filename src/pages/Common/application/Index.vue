@@ -2121,6 +2121,7 @@ export default {
             console.log(key, value);
             fd.append(key, value);
           }
+          console.log(key, value,"z");
 
         }
       }

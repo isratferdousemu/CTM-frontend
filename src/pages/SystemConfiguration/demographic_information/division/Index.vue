@@ -3,7 +3,7 @@
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
         <v-row>
-          
+          <Spinner :loading="isLoading" />
           <v-col cols="12">
             <v-card
               elevation="10"
@@ -15,7 +15,6 @@
 
               <v-btn
                   @click="generatePdf"
-                  flat
                   color="primary"
                   prepend-icon="mdi-account-multiple-plus"
               >
@@ -40,7 +39,7 @@
                         v-model="search"
                         prepend-inner-icon="mdi-magnify"
                         class="my-sm-0 my-3 mx-0v -input--horizontal"
-                        flat
+
                         variant="outlined"
                         :label="$t(
                           'container.system_config.demo_graphic.division.search'
@@ -56,7 +55,7 @@
                 <v-col lg="3" md="3" cols="12" class="text-right my-10" >
          <v-btn
                       @click="createDialog"
-                      flat
+
                       color="primary"
                       prepend-icon="mdi-account-multiple-plus"
                     >
@@ -74,10 +73,10 @@
         
                   <v-col lg="4" md="4" cols="12" class="text-right">
         
-                    <v-btn elevation="2" class="btn mr-2 white--text"  flat color="red darken-4" @click="GeneratePDF()"
+                    <v-btn elevation="2" class="btn mr-2 white--text"  color="red darken-4" @click="GeneratePDF()"
                                                           >{{
                                                             $t("container.list.PDF") }}</v-btn>
-                                                      <v-btn elevation="2"  flat class="btn mr-2  white--text" color="teal darken-2" @click="GenerateExcel()"
+                                                      <v-btn elevation="2"  class="btn mr-2  white--text" color="teal darken-2" @click="GenerateExcel()"
                                                           >{{
                                                             $t("container.list.excel") }}</v-btn>
                                                
@@ -94,7 +93,6 @@
               v-model="search"
               prepend-inner-icon="mdi-magnify"
               class="my-sm-0 my-3 mx-0v -input--horizontal"
-              flat
               variant="outlined"
               :label="$t('container.list.search')"
               hide-details
@@ -106,7 +104,6 @@
       <v-col lg="3" md="3" cols="12" class="text-right ">
           <v-btn
               @click="createDialog"
-              flat
               color="primary"
               prepend-icon="mdi-account-multiple-plus"
           >
@@ -123,12 +120,15 @@
   </v-col>
 
       <!-- Dropdown on the right -->
-      <v-col lg="4" md="4" cols="12" class="text-right">
-          <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4" @click="GeneratePDF()">
-              {{ $t("container.list.PDF") }}
-          </v-btn>
-    
-      </v-col>
+    <v-col lg="4" md="6" cols="12" class="text-right">
+      <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="GeneratePDF()">
+        <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
+      </v-btn>
+      <v-btn elevation="2" class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
+        <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+        {{ $t("container.list.excel") }}
+      </v-btn>
+    </v-col>
   </v-row>
 
                 <v-row
@@ -144,7 +144,7 @@
                       v-model="search"
                       prepend-inner-icon="mdi-magnify"
                       class="my-sm-0 my-3 mx-0v -input--horizontal"
-                      flat
+
                       variant="outlined"
                       :label="
                         $t(
@@ -158,7 +158,7 @@
                   </div>
                   <v-btn
                     @click="createDialog"
-                    flat
+
                     color="primary"
                     prepend-icon="mdi-account-multiple-plus"
                   >
@@ -352,7 +352,6 @@
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
                   <v-btn
-                    flat
                     @click="dialogAdd = false"
                     outlined
                     class="custom-btn-width py-2 mr-10"
@@ -361,7 +360,6 @@
                   </v-btn>
                   <v-btn
                     type="submit"
-                    flat
                     color="primary"
                     :disabled="invalid"
                     :loading="loading"
@@ -451,7 +449,6 @@
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
                   <v-btn
-                    flat
                     @click="dialogEdit = false"
                     outlined
                     class="custom-btn-width py-2 mr-10"
@@ -460,7 +457,6 @@
                   </v-btn>
                   <v-btn
                     type="submit"
-                    flat
                     color="primary"
                     :disabled="invalid"
                     :loading="loading"
@@ -523,6 +519,7 @@ import { mapState } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 import { http } from "@/hooks/httpService";
+import Spinner from "@/components/Common/Spinner.vue";
 
 extend("required", required);
 export default {
@@ -537,6 +534,7 @@ export default {
         name_bn: null,
       },
       total:null,
+      isLoading:false,
       dialogAdd: false,
       deleteDialog: false,
       dialogEdit: false,
@@ -545,6 +543,7 @@ export default {
       search: "",
       delete_id: "",
       divisions: [],
+      Alldivisions: [],
       errors: {},
       error_status: {},
       pagination: {
@@ -564,6 +563,7 @@ export default {
   },
 
   components: {
+    Spinner,
     ValidationProvider,
     ValidationObserver,
   },
@@ -610,27 +610,153 @@ export default {
     }),
   },
   methods: {
-    GeneratePDF(){
+
+    async GeneratePDF() {
+      this.isLoading = true;
+      let page;
+      if(!this.sortBy){
+        page = this.pagination.current;
+      }
       const queryParams = {
-         language: this.$i18n.locale,
+        language: this.$i18n.locale,
         searchText: this.search,
+        perPage: this.search.trim() === '' ? this.total : this.total,
+        page: this.pagination.current,
+        sortBy: this.sortBy,
+        orderBy: this.sortDesc,
       };
-      this.$axios
-        .get("/admin/division/generate-pdf", {
+
+      await this.$axios
+          .get("/admin/division/get", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+            params: queryParams,
+          })
+          .then((result) => {
+            this.Alldivisions = result.data.data;
+          });
+
+      const HeaderInfo = [
+        this.$t("container.list.sl"),
+        this.$t("container.system_config.demo_graphic.division.code"),
+        this.$t("container.system_config.demo_graphic.division.division"),
+      ]
+
+      const CustomInfo = this.Alldivisions.map(((i,index) => {
+        return [
+          this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+          this.$i18n.locale == 'en' ? i.code : this.$helpers.englishToBangla(i.code),
+          this.$i18n.locale == 'en' ? i.name_en : i.name_bn ,
+        ]
+      }));
+
+      const queryParam = {
+        language: this.$i18n.locale,
+        data:CustomInfo,
+        header:HeaderInfo,
+        fileName:this.$t("container.system_config.demo_graphic.division.list"),
+      };
+      try {
+        const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json", // Set content type to JSON
           },
-          params: queryParams,
-        })
-        .then((result) => {
-          window.open(result.data.data.url, '_blank');
-        })
-        .catch(error => {
-          console.error('Error generating PDF:', error);
+          responseType: 'arraybuffer',
         });
 
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        window.open(url, '_blank');
+        this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
+        console.error('Error generating PDF:', error);
+      }
     },
+
+    async GenerateExcel(){
+      this.isLoading = true;
+      let page;
+      if(!this.sortBy){
+        page = this.pagination.current;
+      }
+      const queryParams = {
+        language: this.$i18n.locale,
+        searchText: this.search,
+        perPage: this.search.trim() === '' ? this.total : this.total,
+        page: this.pagination.current,
+        sortBy: this.sortBy,
+        orderBy: this.sortDesc,
+      };
+
+      await this.$axios
+          .get("/admin/division/get", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+            params: queryParams,
+          })
+          .then((result) => {
+            this.Alldivisions = result.data.data;
+          })
+          .catch(error => {
+            this.isLoading = false;
+          });
+
+      try {
+        import('@/plugins/Export2Excel').then((excel) => {
+
+          const HeaderInfo = [
+            this.$t("container.list.sl"),
+            this.$t("container.system_config.demo_graphic.district.code"),
+            this.$t("container.system_config.demo_graphic.division.division"),
+          ]
+
+          const CustomInfo = this.Alldivisions.map(((i,index) => {
+            return {
+              "sl" : this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+              "code" :this.$i18n.locale == 'en' ? i.code : this.$helpers.englishToBangla(i.code),
+              "division" :this.$i18n.locale == 'en' ? i.name_en : i.name_bn ,
+            }
+          }));
+
+          const Field = ['sl','code', 'division']
+
+          const Data = this.FormatJson(Field, CustomInfo)
+          const currentDate = new Date().toISOString().slice(0, 10); //
+          let dateinfo = queryParams.language == 'en' ? currentDate : this.$helpers.englishToBangla(currentDate)
+
+          const filenameWithDate = `${dateinfo}_${this.$t("container.system_config.demo_graphic.division.list")}`;
+
+          excel.export_json_to_excel({
+            header: HeaderInfo,
+            data: Data,
+            sheetName: filenameWithDate,
+            filename: filenameWithDate,
+            autoWidth: true,
+            bookType: "xlsx"
+          })
+        })
+      } catch (error) {
+        // Handle any errors here
+        this.isLoading = false;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    FormatJson(FilterData,JsonData){
+      return JsonData.map((v) =>
+          FilterData.map((j => {
+            return v[j];
+          })))
+    },
+
+
     registerCustomRules() {
       extend("codeRules", (value) => {
         return (
@@ -650,9 +776,6 @@ export default {
     checkLanguage() {
       let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
       let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
-
-      console.log(checkLanguageEnglish);
-      console.log(checkLanguageBangla);
       let errs = {};
 
       if (
@@ -703,12 +826,10 @@ export default {
               this.dialogAdd = false;
               this.GetDivision();
             } else if (res.response?.data?.errors) {
-              console.log(res.response.data.errors);
               this.$refs.formAdd.setErrors(res.response.data.errors);
             }
           });
       } catch (e) {
-        console.log(e);
       }
     },
     editDialog(item) {
@@ -728,7 +849,6 @@ export default {
         this.$store
           .dispatch("Division/UpdateDivision", this.validator())
           .then((data) => {
-            console.log(data, "update");
             if (data == null) {
               this.$toast.success("Data Updated Successfully");
               this.dialogEdit = false;
@@ -739,7 +859,6 @@ export default {
             }
           });
       } catch (e) {
-        console.log(e);
       }
     },
     resetForm() {
@@ -761,26 +880,19 @@ export default {
       for (let i = 0; i < this.headers.length; i++) {
         if (this.headers[i].value == "name_en") {
           this.headers[i].class = "highlight-column";
-          console.log(this.headers[i], "headers after");
         } else {
           this.headers[i].class = "";
         }
       }
     },
     handleOptionsUpdate({ sortBy, sortDesc }) {
-      console.log(this.headers, sortBy, sortDesc);
       for (let i = 0; i < this.headers.length; i++) {
-        console.log(this.headers[i]);
-
         if (this.headers[i].value == sortBy) {
           this.headers[i].class = "highlight-column";
-          console.log(this.headers[i], "headers after");
         } else {
           this.headers[i].class = "";
         }
       }
-
-      console.log(sortBy, sortDesc);
       this.sortBy = "name_en";
       this.sortDesc = "asc";
       if (sortBy.length === 0 || sortDesc.length === 0) {
@@ -808,7 +920,6 @@ export default {
         sortBy: this.sortBy,
         sortDesc: this.sortDesc,
       };
-      console.log(this.$store.state.token, "div token");
       this.$axios
         .get("/admin/division/get", {
           headers: {
@@ -869,7 +980,6 @@ export default {
             },
           })
           .then(response => {
-            console.log(response.data, 'pdf')
             // Handle the successful response, e.g., open the generated PDF in a new tab
             window.open(response.data.data.url, '_blank');
 

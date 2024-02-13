@@ -11,7 +11,7 @@
                   <h3 class="white--text">
                     {{
                       $t(
-                        "container.beneficiary_management.beneficiary_list.list"
+                        "container.beneficiary_management.beneficiary_list.list_active"
                       )
                     }}
                   </h3>
@@ -534,28 +534,6 @@
                           >
                           </v-text-field>
                         </v-col>
-
-                        <v-col lg="3" md="3" cols="12">
-                          <ValidationProvider
-                            name="status"
-                            vid="status_id"
-                            v-slot="{ errors }"
-                          >
-                            <v-autocomplete
-                              v-model="data.status"
-                              outlined
-                              :label="$t('container.list.status')"
-                              :items="ben_status"
-                              item-text="value"
-                              item-value="id"
-                              class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            ></v-autocomplete>
-                          </ValidationProvider>
-                        </v-col>
                       </v-row>
 
                       <div class="d-inline d-flex justify-end">
@@ -587,7 +565,7 @@
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
                   {{
-                    $t("container.beneficiary_management.beneficiary_list.list")
+                    $t("container.beneficiary_management.beneficiary_list.list_active")
                   }}
                 </h3>
               </v-card-title>
@@ -618,16 +596,9 @@
                 <v-row justify="end" align="center" class="mx-4">
                   <!-- Dropdown on the right -->
                   <v-col lg="4" md="4" cols="12" class="text-right">
-                    <v-btn
-                      elevation="2"
-                      class="btn mr-2 white--text"
-                      flat
-                      color="red darken-4"
-                      @click="GeneratePDF()"
-                    >
-                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
-                      {{ $t("container.list.PDF") }}
-                    </v-btn>
+                    <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4" @click="GeneratePDF()">
+                    <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
+                  </v-btn>
                   </v-col>
                 </v-row>
                 <v-row
@@ -654,6 +625,26 @@
                       </template>
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }" width="50%">
+                        <!-- <v-tooltip top>
+                          <template v-slot:activator="{ on }">
+                            <v-btn
+                              v-can="'update-post'"
+                              fab
+                              x-small
+                              v-on="on"
+                              color="#795548"
+                              class="mr-3 white--text"
+                              elevation="0"
+                              router
+                              to="/beneficiary-management/switch-program"
+                            >
+                              <v-icon> mdi mdi-swap-horizontal </v-icon>
+                            </v-btn>
+                          </template>
+                          <span>
+                            {{ $t("container.list.switch_program") }}
+                          </span>
+                        </v-tooltip> -->
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
@@ -733,25 +724,6 @@
                             {{ $t("container.list.beneficiary_journey") }}</span
                           >
                         </v-tooltip>
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'update-post'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="#b71c1c"
-                              class="ml-3 white--text"
-                              elevation="0"
-                              @click="deleteBeneficiaryItem(item.id)"
-                            >
-                              <v-icon> mdi mdi-delete </v-icon>
-                            </v-btn>
-                          </template>
-                          <span>
-                            {{ $t("container.list.delete") }}
-                          </span>
-                        </v-tooltip>
                       </template>
                       <!-- End Action Button -->
                       <template v-slot:footer="item">
@@ -791,70 +763,6 @@
           </v-col>
         </v-row>
       </v-col>
-
-      <!-- Beneficiary Delete modal  -->
-      <v-dialog v-model="dialogDelete" width="650">
-        <v-card style="justify-content: center; text-align: center">
-          <v-card-title class="font-weight-bold justify-center">
-            {{
-              $t(
-                "container.beneficiary_management.beneficiary_list.beneficiary_delete"
-              )
-            }}
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text class="mt-7">
-            <ValidationObserver ref="formDelete" v-slot="{ invalid }">
-              <form @submit.prevent="deleteBeneficiary()">
-                <!-- {{errors.code}}
-                  {{errors.name_en}} -->
-                <ValidationProvider
-                  v-slot="{ errors }"
-                  name="Name English"
-                  vid="name_en"
-                  rules="required"
-                >
-                  <v-text-field
-                    outlined
-                    type="text"
-                    v-model="delete_cause"
-                    :label="
-                      $t(
-                        'container.beneficiary_management.beneficiary_list.delete_cause'
-                      )
-                    "
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                    ></v-text-field
-                  >
-                </ValidationProvider>
-                <v-row class="mx-0 my-0 py-2" justify="center">
-                  <v-btn
-                    flat
-                    @click="dialogDelete = false"
-                    outlined
-                    class="custom-btn-width py-2 mr-10"
-                  >
-                    {{ $t("container.list.cancel") }}
-                  </v-btn>
-                  <v-btn
-                    type="submit"
-                    flat
-                    color="#b71c1c"
-                    :disabled="invalid"
-                    :loading="loading"
-                    class="custom-btn-width white--text py-2"
-                  >
-                    {{ $t("container.list.submit") }}
-                  </v-btn>
-                </v-row>
-              </form>
-            </ValidationObserver>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
-      <!-- Beneficiary Delete modal  -->
     </v-row>
   </div>
 </template>
@@ -866,8 +774,8 @@ import { required } from "vee-validate/dist/rules";
 
 extend("required", required);
 export default {
-  name: "Index",
-  title: "CTM - Beneficiary List",
+  name: "ActiveIndex",
+  title: "CTM - Beneficiary(Active) List",
   data() {
     return {
       data: {
@@ -933,7 +841,6 @@ export default {
         },
       ], // Default selection without 'name'
       selectedHeaders: [],
-      dialogView: false,
       beneficiaryItem: {},
       loading: true,
       search: "",
@@ -949,9 +856,6 @@ export default {
       wards: [],
       district_pouros: [],
       advanch_search: false,
-      dialogDelete: false,
-      ben_delete_id: null,
-      delete_cause: null,
       subLocationType: [
         {
           id: 1,
@@ -1094,8 +998,7 @@ export default {
         {
           text: this.$t("container.list.action"),
           value: "actions",
-          align: "center",
-          width: "250",
+          width: "200",
         },
       ];
     },
@@ -1424,7 +1327,7 @@ export default {
         nominee_name: this.data.nominee_name,
         account_number: this.data.account_number,
         nid: this.data.nid,
-        status: this.data.status,
+        status: 1, //Active list 
 
         perPage: this.pagination.perPage,
         page: this.pagination.current,
@@ -1458,14 +1361,9 @@ export default {
     },
     updateHeaderTitle() {
       const title = this.$t(
-        "container.beneficiary_management.beneficiary_list.list"
+        "container.beneficiary_management.beneficiary_list.list_active"
       );
       this.$store.commit("setHeaderTitle", title);
-    },
-    async GetBeneficiaryById(item) {
-      this.dialogView = true;
-      this.beneficiaryItem = item;
-      console.log(this.beneficiaryItem);
     },
     async GeneratePDF() {
       const queryParams = {
@@ -1497,42 +1395,6 @@ export default {
           console.error("Error generating PDF:", error);
         });
     },
-    deleteBeneficiaryItem(event) {
-      if (this.$refs.formDelete) {
-        this.$refs.formDelete.reset();
-      }
-      this.delete_cause = null;
-      this.ben_delete_id = event;
-      this.dialogDelete = true;
-    },
-
-    deleteBeneficiary() {
-      if (!this.ben_delete_id) {
-        return;
-      }
-      try {
-        let formData = new FormData();
-        formData.append("delete_cause", this.delete_cause);
-
-        const data = { formData: formData, id: this.ben_delete_id };
-
-        this.$store
-          .dispatch("BeneficiaryManagement/DeleteBeneficiary", data)
-          .then((res) => {
-            console.log(res, "submit__");
-            if (res.data?.success) {
-              this.$toast.success("Data Deleted Successfully");
-              this.dialogDelete = false;
-              this.GetApplication();
-            } else if (res.response?.data?.errors) {
-              this.$refs.form.setErrors(res.response.data.errors);
-              this.errors = res.response.data.errors;
-            }
-          });
-      } catch (e) {
-        console.log(e);
-      }
-    },
   },
   watch: {
     "$i18n.locale": "updateHeaderTitle",
@@ -1545,8 +1407,7 @@ export default {
         {
           text: this.$t("container.list.action"),
           value: "actions",
-          align: "center",
-          width: "250",
+          width: "200",
         },
       ];
     },

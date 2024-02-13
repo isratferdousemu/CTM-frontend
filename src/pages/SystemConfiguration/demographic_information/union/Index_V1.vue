@@ -1353,6 +1353,7 @@ export default {
       search: "",
       delete_id: "",
       unions: [],
+      Allunions: [],
       pagination: {
         current: 1,
         total: 0,
@@ -1472,55 +1473,103 @@ export default {
     this.registerCustomRules();
   },
   methods: {
-   GeneratePDF() {
+   async GeneratePDF() {
    this.isLoading = true;
-   const queryParams = {
-    language: this.$i18n.locale,
-        searchText: this.search,
-        location_type: this.location_type_search,
-        division_id: this.division_id_search,
-        district_id: this.district_id_search,
-      
-      };
+     let page;
+     if (!this.sortBy) {
+       page = this.pagination.current;
+     }
+     const queryParams = {
+       searchText: this.search,
+       location_type: this.location_type_search,
+       division_id: this.division_id_search,
+       district_id: this.district_id_search,
+       perPage: this.total,
+       page: this.pagination.current,
+       sortBy: this.sortBy,
+       orderBy: this.sortDesc,
+     };
 
-      // if (this.district_pouro_id_search != null) {
-      //   queryParams.district_pouro_id = this.district_pouro_id_search;
-      //   delete queryParams.city_id;
-      //   delete queryParams.upazila_id_search;
-      // }
-      if (this.city_id_search != null) {
-        delete queryParams.district_pouro_id_search;
-        delete queryParams.upazila_id_search;
-        queryParams.city_id = this.city_id_search;
-      }
-      if (this.upazila_id_search != null) {
-        delete queryParams.district_pouro_id_search;
-        delete queryParams.city_id;
-        queryParams.upazila_id = this.upazila_id_search;
-      }
-      this.$axios
-        .get("/admin/union/generate-pdf", {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-          responseType: 'arraybuffer',
-          params: queryParams,
-        })
-          .then((response) => {
-            const blob = new Blob([response.data], { type: 'application/pdf' });
-            const url = window.URL.createObjectURL(blob);
-            window.open(url, '_blank');
-            this.isLoading = false;
-          })
-        // .then((result) => {
-        //   window.open(result.data.data.url, '_blank');
-        // })
-        .catch(error => {
-          this.isLoading = false;
-          console.error('Error generating PDF:', error);
-        });
+     if (this.city_id_search != null) {
+       delete queryParams.district_pouro_id_search;
+       delete queryParams.upazila_id_search;
+       queryParams.city_id = this.city_id_search;
+     }
+     if (this.upazila_id_search != null) {
+       delete queryParams.district_pouro_id_search;
+       delete queryParams.city_id;
+       queryParams.upazila_id = this.upazila_id_search;
+     }
 
+     await this.$axios
+         .get("/admin/union/get", {
+           headers: {
+             Authorization: "Bearer " + this.$store.state.token,
+             "Content-Type": "multipart/form-data",
+           },
+           params: queryParams,
+         })
+         .then((result) => {
+           this.Allunions = result.data.data;
+         });
+
+     const HeaderInfo = [
+       // this.$t("container.list.sl"),
+       // this.$t("container.system_config.demo_graphic.division.division"),
+       // this.$t("container.system_config.demo_graphic.district.district"),
+       // this.$t("container.system_config.demo_graphic.ward.city"),
+       // this.$t("container.system_config.demo_graphic.thana1.code"),
+       // this.$t("container.system_config.demo_graphic.thana.thana"),
+       this.$t("container.list.sl"),
+       this.$t("container.system_config.demo_graphic.division.division"),
+       this.$t("container.system_config.demo_graphic.district.district"),
+       this.$t("container.system_config.demo_graphic.thana.thana"),
+       this.$t("container.system_config.demo_graphic.union.custom_code"),
+       this.$t("container.system_config.demo_graphic.union.name_en"),
+       this.$t("container.system_config.demo_graphic.union.name_bn"),
+     ]
+
+
+
+     const OBJ = this.Allunions;
+
+     const CustomInfo = OBJ.map((((i,index) => {
+       return [
+
+         this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+         this.$i18n.locale == 'en' ? i.parent?.parent?.parent?.name_en : i.parent?.parent?.parent?.name_bn,
+         this.$i18n.locale == 'en' ? i.parent?.parent?.name_en : i.parent?.parent?.name_bn,
+         this.$i18n.locale == 'en' ? i.parent.name_en : i.parent.name_bn,
+         this.$i18n.locale == 'en' ? i.code : this.$helpers.englishToBangla(i.code),
+          i.name_en,
+         i.name_bn
+       ]
+     })));
+
+     const queryParam = {
+       language: this.$i18n.locale,
+       data:CustomInfo,
+       header:HeaderInfo,
+       fileName:this.$t("container.system_config.demo_graphic.union1.pouroshava"),
+     };
+
+     try {
+       const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
+         headers: {
+           Authorization: "Bearer " + this.$store.state.token,
+           "Content-Type": "application/json", // Set content type to JSON
+         },
+         responseType: 'arraybuffer',
+       });
+
+       const blob = new Blob([response.data], { type: 'application/pdf' });
+       const url = window.URL.createObjectURL(blob);
+       window.open(url, '_blank');
+       this.isLoading = false;
+     } catch (error) {
+       this.isLoading = false;
+       console.error('Error generating PDF:', error);
+     }
     },
 
     GenerateExcel(){
@@ -1559,39 +1608,41 @@ export default {
             import('@/plugins/Export2Excel').then((excel) => {
               const OBJ = response.data.data
 
-              const CustomInfo = OBJ.map(i => {
+              const CustomInfo = OBJ.map(((i,index) => {
                 return {
+                  "sl" : queryParams.language == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+                  "division_name" : queryParams.language == 'en' ? i.parent?.parent?.parent?.name_en : i.parent?.parent?.parent?.name_bn,
+                  "district_name" :queryParams.language == 'en' ? i.parent?.parent?.name_en : i.parent?.parent?.name_bn,
+                  "thana_name" : queryParams.language == 'en' ? i.parent?.name_en : i.parent?.name_bn,
                   "geo_code" : i.code,
                   "union_name_en" : i.name_en,
                   "union_name_bn" : i.name_bn,
-                  // "thana_name_en" : i.parent.name_en,
-                  "thana_name" : queryParams.language == 'en' ? i.parent.name_en : i.parent.name_bn,
-                  // "district_name_en" : i.parent.parent.name_en,
-                  "district_name" :queryParams.language == 'en' ? i.parent.parent.name_en : i.parent.parent.name_bn,
-                  // "division_name_en" : i.parent.parent.parent.name_en,
-                  "division_name" : queryParams.language == 'en' ? i.parent.parent.parent.name_en : i.parent.parent.parent.name_bn,
                 }
-
-              });
+              }));
 
               const Header = [
-                    this.$t("container.system_config.demo_graphic.union.custom_code"),
-                    this.$t("container.system_config.demo_graphic.division.division"),
-                    this.$t("container.system_config.demo_graphic.district.district"),
-                    this.$t("container.system_config.demo_graphic.thana.thana"),
-                    this.$t("container.system_config.demo_graphic.union.name_en"),
-                    this.$t("container.system_config.demo_graphic.union.name_bn"),
+
+                this.$t("container.list.sl"),
+                this.$t("container.system_config.demo_graphic.division.division"),
+                this.$t("container.system_config.demo_graphic.district.district"),
+                this.$t("container.system_config.demo_graphic.thana.thana"),
+                this.$t("container.system_config.demo_graphic.union.custom_code"),
+                this.$t("container.system_config.demo_graphic.union.name_en"),
+                this.$t("container.system_config.demo_graphic.union.name_bn"),
+
                   ]
 
-              const Field = ['geo_code','division_name','district_name','thana_name', 'union_name_en','union_name_bn']
+              const Field = ['sl','division_name','district_name','thana_name', 'geo_code','union_name_en','union_name_bn']
 
               const Data = this.FormatJson(Field, CustomInfo)
+              const currentDate = new Date().toISOString().slice(0, 10); //
+              const filenameWithDate = `${currentDate}_${this.$t("container.system_config.demo_graphic.union1.pouroshava")}`;
 
               excel.export_json_to_excel({
                 header: Header,
                 data: Data,
-                sheetName:"demo",
-                filename:this.$t("container.system_config.demo_graphic.union1.customtitle"),
+                sheetName:filenameWithDate,
+                filename:filenameWithDate,
                 autoWidth:true,
                 bookType : "xlsx"
               })
