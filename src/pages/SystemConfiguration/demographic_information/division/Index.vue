@@ -13,14 +13,7 @@
               class="mb-8"
             >
 
-              <v-btn
-                  @click="generatePdf"
-                  flat
-                  color="primary"
-                  prepend-icon="mdi-account-multiple-plus"
-              >
-                {{ $t("container.list.add_new") }}
-              </v-btn>
+           
 
 
               <v-card-title class="justify-center" tag="div">
