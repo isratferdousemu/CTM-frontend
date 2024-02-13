@@ -163,7 +163,7 @@ export default {
       printWindow.document.close();
       setTimeout(function () {
         printWindow.print();
-      }, 500);
+      }, 3000);
     },
   },
   watch: {
