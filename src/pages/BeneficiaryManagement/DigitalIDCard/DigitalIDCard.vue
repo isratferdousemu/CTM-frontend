@@ -153,22 +153,17 @@ export default {
       }
     },
     pritIdCard() {
-      // var divToPrint = document.getElementById('printIDCard');
-      // var popupWin = window.open('', '_blank', 'width=500');
-      // popupWin.document.open();
-      // popupWin.document.write('<html><body onload="window.print()">' + divToPrint.innerHTML + '</html>');
-      // popupWin.document.close();
-      var panel = document.getElementById("printIDCard");
-            var printWindow = window.open('', '', 'height=500,width=800');
-            printWindow.document.write('<html><head><title>DIV Contents</title>');
-            printWindow.document.write('</head><body >');
-            printWindow.document.write(panel.innerHTML);
-            printWindow.document.write('</body></html>');
-            printWindow.document.close();
-            setTimeout(function () {
-                printWindow.print();
-            }, 500);
-            return false;
+      var content = document.getElementById("printIDCard");
+      var printWindow = window.open('', '_blank');
+      printWindow.document.write('<html><head><title>Print</title>');
+      printWindow.document.write('</head><body>');
+      printWindow.document.write('<style>@media print {body {-webkit-print-color-adjust: exact;}}</style>');
+      printWindow.document.write(content.outerHTML);
+      printWindow.document.write('</body></html>');
+      printWindow.document.close();
+      setTimeout(function () {
+        printWindow.print();
+      }, 500);
     },
   },
   watch: {
