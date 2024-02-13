@@ -1,11 +1,11 @@
 <template>
   <div id="information_tracking">
-    <v-row class="mx-5 mt-4">
+    <v-row class="mx-5 mt-2">
       <v-col cols="12">
-        <div class="d-block text-right">
+        <div class="d-block text-right mb-2">
           <v-btn
             elevation="2"
-            class="btn my-2"
+            class="btn"
             color="primary"
             router
             to="/beneficiary-management/beneficiary-shifting-list"
@@ -13,231 +13,225 @@
             {{ $t("container.list.view-list") }}
           </v-btn>
         </div>
-        <!-- Expantion panels start -->
-        <v-expansion-panels v-model="panel" multiple>
-          <v-expansion-panel v-model="panel" multiple>
-            <v-expansion-panel-header color="#8C9EFF">
-              <h3 class="white--text">
-                {{ $t("container.list.search") }}
-              </h3>
-            </v-expansion-panel-header>
-            <v-expansion-panel-content class="elevation-0 transparent mt-2">
-              <ValidationObserver ref="form" v-slot="{ invalid }">
-                <form @submit.prevent="addByBeneficiaryInTable">
+        <ValidationObserver ref="form" v-slot="{ invalid }">
+          <form @submit.prevent="addByBeneficiaryInTable">
+            <v-row>
+              <v-col cols="12">
+                <v-card elevation="3" outlined>
                   <v-row>
-                    <v-col cols="12">
-                      <v-card elevation="1" outlined>
-                        <v-card-title> </v-card-title>
-                        <v-card-text>
-                          <v-row>
-                            <v-col lg="6" md="6" cols="12">
-                              <ValidationProvider
-                                name="Beneficiary ID"
-                                vid="beneficiary_id"
-                                rules="required"
-                                v-slot="{ errors }"
-                              >
-                                <v-autocomplete
-                                  :hide-details="errors[0] ? false : true"
-                                  v-model="ben_search_id"
-                                  clearable
-                                  outlined
-                                  :label="
-                                    $t(
-                                      'container.beneficiary_management.beneficiary_list.beneficiary_id'
-                                    )
-                                  "
-                                  :items="beneficiary_ids"
-                                  item-text="application_id"
-                                  item-value="id"
-                                  required
-                                  :error="errors[0] ? true : false"
-                                  :error-messages="errors[0]"
-                                  @change="GetBeneficaryDetails($event)"
-
-                                ></v-autocomplete>
-                              </ValidationProvider>
-                            </v-col>
-                            <v-col lg="6" md="6" cols="12">
-                              <v-card
-                                class="mb-2"
-                                elevation="2"
-                                shaped
-                                outlined
-                              >
-                                <v-card-text>
-                                  <table>
-                                    <tr>
-                                      <td>
-                                        {{
-                                          $t(
-                                            "container.beneficiary_management.beneficiary_list.beneficiary_id"
-                                          )
-                                        }}
-                                      </td>
-                                      <td>
-                                        :
-                                        {{ beneficiary_details.application_id }}
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td>
-                                        {{
-                                          $t(
-                                            "container.beneficiary_management.beneficiary_list.beneficiary_name"
-                                          )
-                                        }}
-                                      </td>
-                                      <td>
-                                        : {{ beneficiary_details.name_en }}
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td>
-                                        {{
-                                          $t(
-                                            "container.beneficiary_management.beneficiary_list.beneficiary_mobile"
-                                          )
-                                        }}
-                                      </td>
-                                      <td>
-                                        : {{ beneficiary_details.mobile }}
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td>
-                                        {{
-                                          $t(
-                                            "container.beneficiary_management.beneficiary_list.beneficiary_addess"
-                                          )
-                                        }}
-                                      </td>
-                                      <td>
-                                        :
-                                        {{
-                                          beneficiary_details.permanent_address
-                                        }}
-                                      </td>
-                                    </tr>
-                                  </table>
-                                </v-card-text>
-                              </v-card>
-                            </v-col>
-                          </v-row>
-                          <div class="d-inline d-flex justify-end">
-                            <v-btn
-                              elevation="2"
-                              class="btn mr-2 mb-1"
-                              color="success"
-                              type="submit"
-                              flat
-                              :disabled="invalid"
-                              >{{ $t("container.list.add") }}</v-btn
-                            >
-                          </div>
-                        </v-card-text>
-                      </v-card>
+                    <v-col col="6">
+                      <v-card-title
+                        ><h5>
+                          {{
+                            $t(
+                              "container.beneficiary_management.beneficiary_shifting.title"
+                            )
+                          }}
+                        </h5></v-card-title
+                      >
                     </v-col>
                   </v-row>
-                </form>
-              </ValidationObserver>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
-        <!-- Expantion panels end -->
+                  <v-divider></v-divider>
+                  <v-card-text>
+                    <v-row>
+                      <v-col lg="6" md="6" cols="12">
+                        <ValidationProvider
+                          name="Beneficiary ID"
+                          vid="beneficiary_id"
+                          v-slot="{ errors }"
+                        >
+                          <v-autocomplete
+                            :hide-details="errors[0] ? false : true"
+                            v-model="ben_search_id"
+                            clearable
+                            outlined
+                            :label="
+                              $t(
+                                'container.beneficiary_management.beneficiary_list.beneficiary_id'
+                              )
+                            "
+                            :items="beneficiary_ids"
+                            item-text="application_id"
+                            item-value="id"
+                            required
+                            :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"
+                            @change="GetBeneficaryDetails($event)"
+                          ></v-autocomplete>
+                        </ValidationProvider>
+                      </v-col>
+                      <v-col lg="6" md="6" cols="12">
+                        <v-card class="mb-2" elevation="2" shaped outlined>
+                          <v-card-text>
+                            <table>
+                              <tr>
+                                <td>
+                                  {{
+                                    $t(
+                                      "container.beneficiary_management.beneficiary_list.beneficiary_id"
+                                    )
+                                  }}
+                                </td>
+                                <td>
+                                  :
+                                  {{ beneficiary_details.application_id }}
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  {{
+                                    $t(
+                                      "container.beneficiary_management.beneficiary_list.beneficiary_name"
+                                    )
+                                  }}
+                                </td>
+                                <td>: {{ beneficiary_details.name_en }}</td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  {{
+                                    $t(
+                                      "container.beneficiary_management.beneficiary_list.beneficiary_mobile"
+                                    )
+                                  }}
+                                </td>
+                                <td>: {{ beneficiary_details.mobile }}</td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  {{
+                                    $t(
+                                      "container.beneficiary_management.beneficiary_list.beneficiary_addess"
+                                    )
+                                  }}
+                                </td>
+                                <td>
+                                  :
+                                  {{ beneficiary_details.permanent_address }}
+                                </td>
+                              </tr>
+                            </table>
+                          </v-card-text>
+                        </v-card>
+                      </v-col>
+                    </v-row>
+                    <div class="d-inline d-flex justify-end">
+                      <v-btn
+                        elevation="2"
+                        class="btn mr-2 mb-1"
+                        color="success"
+                        type="submit"
+                        flat
+                        :disabled="ben_search_id ? false : true"
+                        >{{ $t("container.list.add") }}</v-btn
+                      >
+                    </div>
+                  </v-card-text>
+                </v-card>
+                <v-divider></v-divider>
+                <v-card outlined>
+                  <v-card-text out v-if="beneficiariesList.length > 0">
+                    <v-col cols="12" class="d-flex">
+                      <v-row wrap>
+                        <v-col cols="12" class="d-flex">
+                          <v-row wrap>
+                            <v-col cols="12" sm="6" lg="6">
+                              <v-autocomplete
+                                v-model="submit_data.to_program_id"
+                                clearable
+                                outlined
+                                :label="
+                                  $t(
+                                    'container.application_selection.application.program'
+                                  )
+                                "
+                                :items="programs"
+                                item-text="name_en"
+                                item-value="id"
+                              ></v-autocomplete>
+
+                              <v-menu
+                                ref="menu"
+                                v-model="menu"
+                                :close-on-content-click="false"
+                                :return-value.sync="date"
+                                transition="scale-transition"
+                                offset-y
+                                min-width="auto"
+                              >
+                                <template v-slot:activator="{ on, attrs }">
+                                  <v-text-field
+                                    v-model="submit_data.activation_date"
+                                    :label="
+                                      $t(
+                                        'container.beneficiary_management.beneficiary_shifting.activation_date'
+                                      )
+                                    "
+                                    prepend-inner-icon="mdi-calendar"
+                                    readonly
+                                    v-bind="attrs"
+                                    v-on="on"
+                                    outlined
+                                  ></v-text-field>
+                                </template>
+                                <v-date-picker
+                                  v-model="submit_data.activation_date"
+                                  no-title
+                                  scrollable
+                                >
+                                  <v-spacer></v-spacer>
+                                  <v-btn
+                                    text
+                                    color="primary"
+                                    @click="menu = false"
+                                  >
+                                    Cancel
+                                  </v-btn>
+                                  <v-btn
+                                    text
+                                    color="primary"
+                                    @click="
+                                      $refs.menu.save(
+                                        submit_data.activation_date
+                                      )
+                                    "
+                                  >
+                                    OK
+                                  </v-btn>
+                                </v-date-picker>
+                              </v-menu>
+                            </v-col>
+
+                            <v-col cols="12" sm="6" lg="6">
+                              <v-textarea
+                                :label="
+                                  $t(
+                                    'container.beneficiary_management.beneficiary_shifting.cause'
+                                  )
+                                "
+                                outlined
+                                v-model="submit_data.shifting_cause"
+                              >
+                              </v-textarea>
+                            </v-col>
+                          </v-row>
+                        </v-col>
+                      </v-row>
+                    </v-col>
+                  </v-card-text>
+                </v-card>
+              </v-col>
+            </v-row>
+          </form>
+        </ValidationObserver>
       </v-col>
 
       <v-col cols="12" v-if="beneficiariesList.length > 0">
-        <v-card elevation="1" outlined class="mb-2">
+        <v-card elevation="1" outlined>
           <v-card-title> </v-card-title>
           <v-card-text>
             <ValidationObserver ref="form" v-slot="{ invalid }">
               <form @submit.prevent="submitBeneficiaryShifting()">
-                <v-row>
-                  <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="ProgramName"
-                      vid="program_id"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        :hide-details="errors[0] ? false : true"
-                        v-model="submit_data.to_program_id"
-                        clearable
-                        outlined
-                        :label="
-                          $t(
-                            'container.application_selection.application.program'
-                          )
-                        "
-                        :items="programs"
-                        item-text="name_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-autocomplete>
-                    </ValidationProvider>
-                  </v-col>
-                  <v-col lg="6" md="6" cols="12">
-                    <v-menu
-                      ref="menu"
-                      v-model="menu"
-                      :close-on-content-click="false"
-                      :return-value.sync="date"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="auto"
-                    >
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                          v-model="submit_data.activation_date"
-                          :label="
-                            $t(
-                              'container.beneficiary_management.beneficiary_shifting.activation_date'
-                            )
-                          "
-                          prepend-inner-icon="mdi-calendar"
-                          readonly
-                          v-bind="attrs"
-                          v-on="on"
-                          outlined
-                        ></v-text-field>
-                      </template>
-                      <v-date-picker
-                        v-model="submit_data.activation_date"
-                        no-title
-                        scrollable
-                      >
-                        <v-spacer></v-spacer>
-                        <v-btn text color="primary" @click="menu = false">
-                          Cancel
-                        </v-btn>
-                        <v-btn
-                          text
-                          color="primary"
-                          @click="$refs.menu.save(submit_data.activation_date)"
-                        >
-                          OK
-                        </v-btn>
-                      </v-date-picker>
-                    </v-menu>
-                  </v-col>
-
-                  <v-col lg="6" md="6" cols="12">
-                    <v-textarea
-                      :label="
-                        $t(
-                          'container.beneficiary_management.beneficiary_shifting.cause'
-                        )
-                      "
-                      outlined
-                      v-model="submit_data.shifting_cause"
-                    >
-                    </v-textarea>
-                  </v-col>
-                </v-row>
                 <v-card>
                   <v-card-title class="font-weight-bold justify-center">
                     {{
@@ -262,7 +256,7 @@
                             fab
                             x-small
                             v-on="on"
-                            color="#AFB42B"
+                            color="#b71c1c"
                             elevation="0"
                             class="white--text"
                             @click="removeByBeneficiaryFromTable(item.id)"
@@ -278,7 +272,7 @@
                   </v-data-table>
                 </v-card>
                 <div class="d-inline d-flex justify-end mt-5">
-                  <v-btn elevation="2" class="btn mr-2">{{
+                  <v-btn elevation="2" class="btn mr-2" @click="resetForm">{{
                     $t("container.list.reset")
                   }}</v-btn>
                   <v-btn
@@ -286,7 +280,7 @@
                     class="btn mr-2"
                     color="success"
                     type="submit"
-                    :disabled="invalid"
+                    :disabled="submit_data.to_program_id &&submit_data.activation_date  ? false : true"
                     >{{ $t("container.list.shift") }}</v-btn
                   >
                 </div>
@@ -316,11 +310,11 @@ export default {
       menu2: false,
 
       search: "",
+      keyup_native:"",
       programs: [],
       panel: [0],
       table_serial: 1,
-
-      ben_search_id: '',
+      ben_search_id: "",
       beneficiaries: [],
       beneficiary_ids: [],
       beneficiariesList: [],
@@ -384,7 +378,7 @@ export default {
           text: this.$t("container.application_selection.application.program"),
           value: "program_name",
         },
-        
+
         {
           text: this.$t("container.application_selection.application.mobile"),
           value: "mobile",
@@ -401,58 +395,59 @@ export default {
 
   methods: {
     async GetBeneficaryDetails(event) {
-      if(event){
-      try {
-        this.$axios
-          .get(`/admin/beneficiary/show/${event}`, {
-            headers: {
-              Authorization: "Bearer " + this.$store.state.token,
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then((res) => {
-            if (res.data?.success) {
-              this.beneficiary_details = res.data.data;
-              this.data = res.data.data;
-            } else {
-              this.$toast.error("Record not found!");
-              // this.$router.push({ name: "Beneficiary_List" });
-            }
-          })
-          .catch((err) => {
-            if (err.response?.data?.errors) {
-              this.$refs.form.setErrors(err.response.data.errors);
-            }
-            console.log(err.response);
-            this.$toast.error(err?.response?.data?.message);
-          });
-      } catch (e) {
-        console.log(e);
+      if (event) {
+        try {
+          this.$axios
+            .get(`/admin/beneficiary/show/${event}`, {
+              headers: {
+                Authorization: "Bearer " + this.$store.state.token,
+                "Content-Type": "multipart/form-data",
+              },
+            })
+            .then((res) => {
+              if (res.data?.success) {
+                this.beneficiary_details = res.data.data;
+                this.data = res.data.data;
+              } else {
+                this.$toast.error("Record not found!");
+                // this.$router.push({ name: "Beneficiary_List" });
+              }
+            })
+            .catch((err) => {
+              if (err.response?.data?.errors) {
+                this.$refs.form.setErrors(err.response.data.errors);
+              }
+              console.log(err.response);
+              this.$toast.error(err?.response?.data?.message);
+            });
+        } catch (e) {
+          console.log(e);
+        }
+      } else {
+        this.beneficiary_details = {};
       }
-    }else{
-      this.beneficiary_details = {};
-    }
-
     },
-
+    // GetKeyUpNative(event){
+    //   this.keyup_native = this.keyup_native + event.key;    
+    //   this.ben_search_id =  this.keyup_native
+    //   console.log('keyup_native__',this.ben_search_id);
+    //   if(this.ben_search_id)
+    //   this.GetBeneficiaryIds();
+    // },
     async GetBeneficiaryIds() {
+      const queryParams = {
+        searchText: this.ben_search_id,
+      };
       this.$axios
-        .get(`/admin/beneficiary/listDropDown?srcText=${this.ben_search_id}`, {
+        .get("/admin/beneficiary/listDropDown", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
           },
+          params: queryParams,
         })
         .then((result) => {
-          // alert(result);
-          if (result.data?.success) {
-            const res = result.data.data;
-            console.log("BEN_DET__1", res);
-            this.beneficiary_ids = res;
-          } else {
-            this.$toast.error("Please Search with Valid Beneficiary ID");
-           // this.data.beneficiary_id = null;
-          }
+          this.beneficiary_ids = result.data.data;
         });
     },
     addByBeneficiaryInTable() {
@@ -483,7 +478,7 @@ export default {
           };
           this.submit_data.beneficiaries.push(submitData);
         }
-        this.ben_search_id = '';
+        this.ben_search_id = "";
         // this.data.beneficiary_id = null;
         this.beneficiary_details = {};
       }
@@ -508,7 +503,6 @@ export default {
       );
       this.submit_data.beneficiaries = data;
     },
-
     submitBeneficiaryShifting() {
       let fd = new FormData();
 
@@ -551,6 +545,9 @@ export default {
       } catch (e) {
         console.log(e);
       }
+    },
+    resetForm(){
+      this.submit_data={};
     },
     async GetAllProgram() {
       try {
