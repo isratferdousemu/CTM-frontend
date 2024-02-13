@@ -88,7 +88,7 @@
                                 </td>
                                 <td>: {{ beneficiary_details.name_en }}</td>
                               </tr>
-                              <tr>
+                              <!-- <tr>
                                 <td>
                                   {{
                                     $t(
@@ -97,7 +97,7 @@
                                   }}
                                 </td>
                                 <td>: {{ beneficiary_details.mobile }}</td>
-                              </tr>
+                              </tr> -->
                               <tr>
                                 <td>
                                   {{
@@ -108,7 +108,7 @@
                                 </td>
                                 <td>
                                   :
-                                  {{ beneficiary_details.permanent_address }}
+                                  {{ beneficiary_details.beneficiary_address }}
                                 </td>
                               </tr>
                             </table>
@@ -281,7 +281,7 @@
                     class="btn mr-2"
                     color="success"
                     type="submit"
-                    :disabled="submit_data.to_program_id &&submit_data.activation_date  ? false : true"
+                    :disabled="submit_data.to_program_id  ? false : true"
                     >{{ $t("container.list.shift") }}</v-btn
                   >
                 </div>
@@ -334,8 +334,8 @@ export default {
       beneficiary_details: {},
       submit_data: {
         to_program_id: null,
-        shifting_cause: null,
-        activation_date: null,
+        shifting_cause: '',
+        activation_date: '',
         beneficiaries: [],
       },
     };
@@ -593,9 +593,9 @@ export default {
   mounted() {
     this.GetBeneficiaryIds();
     this.GetAllProgram();
-    this.$store
-      .dispatch("getLookupByType", 1)
-      .then((res) => (this.locationType = res));
+    // this.$store
+    //   .dispatch("getLookupByType", 1)
+    //   .then((res) => (this.locationType = res));
   },
 };
 </script>
