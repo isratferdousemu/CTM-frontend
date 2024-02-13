@@ -24,6 +24,7 @@
                             name="Location Type"
                             vid="location_type"
                             v-slot="{ errors }"
+                            rules="required"
                           >
                             <v-autocomplete
                               @input="LocationTypeChange($event)"
@@ -47,6 +48,7 @@
                             name="Division"
                             vid="division"
                             v-slot="{ errors }"
+                            rules="required"
                           >
                             <v-autocomplete
                               :hide-details="errors[0] ? false : true"
@@ -74,6 +76,7 @@
                             name="District"
                             vid="district"
                             v-slot="{ errors }"
+                             rules="required"
                           >
                             <v-autocomplete
                               :hide-details="errors[0] ? false : true"
@@ -106,6 +109,7 @@
                             name="Upazila"
                             vid="thana_id"
                             v-slot="{ errors }"
+                             rules="required"
                           >
                             <v-autocomplete
                               :hide-details="errors[0] ? false : true"
@@ -138,6 +142,7 @@
                             name="subLocationType"
                             vid="subLocationType"
                             v-slot="{ errors }"
+                             rules="required"
                           >
                             <v-autocomplete
                               @input="onChangeSubLocationTypeChange($event)"
@@ -174,6 +179,7 @@
                             name="pouros"
                             vid="pouros"
                             v-slot="{ errors }"
+                             rules="required"
                           >
                             <v-autocomplete
                               v-model="data.pouro_id"
@@ -209,6 +215,7 @@
                             name="unions"
                             vid="unions"
                             v-slot="{ errors }"
+                             rules="required"
                           >
                             <v-autocomplete
                               @input="onChangeUnionGetWardChange($event)"
@@ -242,6 +249,7 @@
                             name="city"
                             vid="city_id"
                             v-slot="{ errors }"
+                             rules="required"
                           >
                             <v-autocomplete
                               :hide-details="errors[0] ? false : true"
@@ -274,6 +282,7 @@
                             name="thana"
                             vid="city_thana_id"
                             v-slot="{ errors }"
+                             rules="required"
                           >
                             <v-autocomplete
                               @input="onChangeThanaGetWardSearch($event)"
@@ -306,6 +315,7 @@
                             name="thana"
                             vid="district_pouro_id"
                             v-slot="{ errors }"
+                             rules="required"
                           >
                             <v-autocomplete
                               @input="
@@ -371,6 +381,7 @@
                         <v-btn
                           elevation="2"
                           type="submit"
+                            :disabled="invalid"
                           class="btn ml-2"
                           color="success"
                           >{{ $t("container.list.filter") }}</v-btn
@@ -1001,7 +1012,7 @@
                       <v-col cols="12" md="6" lg="6">
                         <ValidationProvider
                           name="Suffix"
-                          vid="name_en"
+                          vid="suffix_b"
                           v-slot="{ errors }"
                         >
                           <v-text-field
@@ -1439,7 +1450,7 @@
                       <v-col cols="12" md="6" lg="6">
                         <ValidationProvider
                           name="Suffix"
-                          vid="name_en"
+                          vid="suffix_b"
                           v-slot="{ errors }"
                         >
                           <v-text-field
@@ -2148,14 +2159,14 @@ export default {
     },
     async submitWard() {
       this.data.name_en =
-        this.data.ward + " " + " " + this.data.code + " " + this.data.suffix;
+        this.data.ward + " " + this.data.code + " " + this.data.suffix;
       this.data.name_bn =
         this.data.ward_b +
-        " " +
         " " +
         this.data.code_b +
         " " +
         this.data.suffix_b;
+        console.log(this.data.name_en, this.data.name_bn,"name_en")
 
       try {
         let fd = new FormData();
@@ -2190,6 +2201,7 @@ export default {
         this.data.ward + " " + this.data.code + " " + this.data.suffix;
       this.data.name_bn =
         this.data.ward_b + " " + this.data.code_b + " " + this.data.suffix_b;
+        console.log(this.data.name_en, this.data.name_bn, "name_en")
       try {
         let fd = new FormData();
         for (const [key, value] of Object.entries(this.data)) {
@@ -2207,7 +2219,7 @@ export default {
             this.GetWard();
           } else if (res.response?.data?.errors) {
             this.$refs.formEdit.setErrors(res.response.data.errors);
-            // this.$toast.error(res.response.data.message);
+            this.$toast.error(res.response.data.message);
           }
         });
       } catch (e) {
@@ -2623,27 +2635,44 @@ export default {
       this.data.name_en = item.name_en;
       this.data.name_bn = item.name_bn;
       this.data.code = item.code;
-      const inputString = item.name_en;
-      // Extracting components
-      const parts = inputString.split(" ");
-      const wardNo = parts[0] + " " + parts[1] + " " + parts[2]; // "Ward No -"
-      const twoDigitNumber = parts[3]; // "01"
-      const restOfString = parts.slice(4).join(" "); // "suffix"
 
-      this.data.ward = wardNo;
-      this.data.code = twoDigitNumber;
-      this.data.suffix = restOfString;
+      const inputString = item.name_en;
+     
+        const parts = inputString.split(" ");
+         console.log(parts, 'parts');
+           console.log(parts.length, 'parts');
+    
+       
+        const wardNo = parts[0] + " " + parts[1];// "Ward No -"
+        const twoDigitNumber = parts[2]; // "01"
+        const restOfString = parts.slice(3).join(" ");
+        this.data.ward = wardNo;
+        this.data.code = twoDigitNumber;
+        this.data.suffix = restOfString; 
+
+   
+   
+
+   
+      
+
+
 
       const inputString_b = item.name_bn;
       // Extracting components
       const parts_b = inputString_b.split(" ");
-      const wardNo_b = parts_b[0] + " " + parts_b[1] + " " + parts_b[2]; // "Ward No -"
-      const twoDigitNumber_b = parts_b[3]; // "01"
-      const restOfString_b = parts_b.slice(4).join(" "); // "suffix"
+    
+          const wardNo_b = parts_b[0] + " " + parts_b[1]; // "Ward No -"
+        const twoDigitNumber_b = parts_b[2]; // "01"
+        const restOfString_b = parts_b.slice(3).join(" "); // "suffix"
 
-      this.data.ward_b = wardNo_b;
-      this.data.code_b = twoDigitNumber_b;
-      this.data.suffix_b = restOfString_b;
+        this.data.ward_b = wardNo_b;
+        this.data.code_b = twoDigitNumber_b;
+        this.data.suffix_b = restOfString_b;
+
+        
+
+
 
       if (item?.parent?.parent?.parent.type == "division") {
         this.data.division_id = item?.parent?.parent?.parent.id;

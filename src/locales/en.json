@@ -375,7 +375,10 @@
           "email_label": "Email",
           "mobile_label": "Mobile",
           "office_committee": "Office/Committee",
-          "location": "Assigned Location"
+          "location": "Assigned Location",
+          "login_id" : "Login ID",
+          "role" : "Role",
+          "user_id" : "User ID"
         },
         "financial_year": {
           "financial_year": "Financial Year",

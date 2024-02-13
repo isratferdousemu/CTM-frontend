@@ -21,6 +21,7 @@ export default {
       deleted_id: '',
       totalDevices: 0,
       devices: [],
+      Alldevices: [],
       loading: true,
       options: {},
       search: '',
@@ -71,7 +72,24 @@ export default {
 
   methods: {
 
-    GeneratePdf(){
+    async GeneratePdf() {
+      this.isLoading = true;
+      const { sortBy, sortDesc, page, itemsPerPage } = this.options
+
+      await http().get('/admin/device/get', {
+        params: {
+          sortBy: sortBy[0],
+          sortDesc: sortDesc[0],
+          page: page,
+          itemsPerPage: this.totalDevices,
+          search: this.search
+        }
+      }).then((result) => {
+        this.Alldevices = result.data.data;
+        this.loading = false;
+      }).catch((err) => {
+        console.log(err);
+      })
 
       const HeaderInfo = [
         this.$t("container.list.sl"),
@@ -81,94 +99,110 @@ export default {
         this.$t('container.system_config.device.pupose_of_use'),
       ]
 
-      const queryParams = {
+      const OBJ = this.Alldevices;
+
+      const deviceTypeMap = {};
+      this.device_types.forEach(device => {
+        deviceTypeMap[device.id] = device.name;
+      });
+
+      const CustomInfo = OBJ.map((((i,index) => {
+        return [
+          this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+           i.user?.username,
+          deviceTypeMap[i.device_type],
+          i.device_id,
+          i.purpose_use,
+        ]
+      })));
+
+      const queryParam = {
         language: this.$i18n.locale,
-        // data:CustomInfo,
+        data:CustomInfo,
         header:HeaderInfo,
         fileName:this.$t("container.system_config.device.list"),
       };
 
-      this.$axios
-          .get("/admin/device/generate-pdf", {
-            headers: {
-              Authorization: "Bearer " + this.$store.state.token,
-              "Content-Type": "multipart/form-data",
-            },
-            responseType: 'arraybuffer',
-            params: queryParams,
-          })
-          .then((response) => {
-            const blob = new Blob([response.data], { type: 'application/pdf' });
-            const url = window.URL.createObjectURL(blob);
-            window.open(url, '_blank');
-            this.isLoading = false;
-          })
-          .catch(error => {
-            this.isLoading = false;
-            console.error('Error generating PDF:', error);
-          });
+      try {
+        const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "application/json", // Set content type to JSON
+          },
+          responseType: 'arraybuffer',
+        });
+
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        window.open(url, '_blank');
+        this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
+        console.error('Error generating PDF:', error);
+      }
     },
 
-    GenerateExcel(){
-      const queryParams = {
-        language: this.$i18n.locale,
-        searchText: this.search,
-      };
+    async GenerateExcel(){
 
-      this.$axios
-          .get("/admin/device/generate-excel", {
-            headers: {
-              Authorization: "Bearer " + this.$store.state.token,
-              "Content-Type": "multipart/form-data",
-            },
-            params: queryParams,
-          })
-          .then((response) => {
-            import('@/plugins/Export2Excel').then((excel) => {
-              const OBJinfo = response.data
-              const deviceTypeMap = {};
-              this.device_types.forEach(device => {
-                deviceTypeMap[device.id] = device.name;
-              });
-              const CustomInfo = OBJinfo.map(i => {
-                return {
-                  "user_name": i.user.username,
-                  "device_type": deviceTypeMap[i.device_type],
-                  "device_id": i.device_id,
-                  "purpose_use": i.purpose_use,
-                }
+      const { sortBy, sortDesc, page, itemsPerPage } = this.options
 
-              });
+      await http().get('/admin/device/get', {
+        params: {
+          sortBy: sortBy[0],
+          sortDesc: sortDesc[0],
+          page: page,
+          itemsPerPage: this.totalDevices,
+          search: this.search,
+          language: this.$i18n.locale,
+        }
+      }).then((result) => {
+        this.Alldevices = result.data.data;
+        this.loading = false;
 
-              const Header = [
-                this.$t('container.system_config.device.user_name'),
-                this.$t('container.system_config.device.device_type'),
-                this.$t('container.system_config.device.unique_id'),
-                this.$t('container.system_config.device.pupose_of_use'),
-              ]
-
-              const Field = ['user_name','device_type','device_id','purpose_use']
-
-              const Data = this.FormatJson(Field, CustomInfo)
-              const currentDate = new Date().toISOString().slice(0, 10); //
-              const filenameWithDate = `${currentDate}_${this.$t("container.system_config.device.list")}`;
-
-              excel.export_json_to_excel({
-                header: Header,
-                data: Data,
-                sheetName:filenameWithDate,
-                filename:filenameWithDate,
-                autoWidth:true,
-                bookType : "xlsx"
-              })
-            })
-            this.isLoading = false;
-          })
-
-          .catch(error => {
-            this.isLoading = false;
-            console.error('Error generating PDF:', error);
+        import('@/plugins/Export2Excel').then((excel) => {
+          const OBJinfo = this.Alldevices
+          const deviceTypeMap = {};
+          this.device_types.forEach(device => {
+            deviceTypeMap[device.id] = device.name;
           });
+          const CustomInfo = OBJinfo.map(((i,index) => {
+            return {
+              "sl" : this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+              "user_name": i.user.username,
+              "device_type": deviceTypeMap[i.device_type],
+              "device_id": i.device_id,
+              "purpose_use": i.purpose_use,
+            }
+
+          }));
+
+          const Header = [
+            this.$t("container.list.sl"),
+            this.$t('container.system_config.device.user_name'),
+            this.$t('container.system_config.device.device_type'),
+            this.$t('container.system_config.device.unique_id'),
+            this.$t('container.system_config.device.pupose_of_use'),
+          ]
+
+          const Field = ['sl','user_name','device_type','device_id','purpose_use']
+
+          const Data = this.FormatJson(Field, CustomInfo)
+          const currentDate = new Date().toISOString().slice(0, 10); //
+          const filenameWithDate = `${currentDate}_${this.$t("container.system_config.device.list")}`;
+
+          excel.export_json_to_excel({
+            header: Header,
+            data: Data,
+            sheetName:filenameWithDate,
+            filename:filenameWithDate,
+            autoWidth:true,
+            bookType : "xlsx"
+          })
+        })
+
+      }).catch((err) => {
+        console.log(err);
+      })
     },
 
     FormatJson(FilterData,JsonData){

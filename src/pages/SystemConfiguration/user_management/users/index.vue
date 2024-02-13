@@ -32,7 +32,6 @@
                       v-model="search"
                       prepend-inner-icon="mdi-magnify"
                       class="my-sm-0 my-3 mx-0v -input--horizontal"
-                      flat
                       variant="outlined"
                       :label="
                         $t('container.system_config.demo_graphic.user.search')
@@ -42,9 +41,19 @@
                     >
                     </v-text-field>
                   </div>
+
+                  <v-col lg="4" md="6" cols="12" class="text-right">
+                    <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="GeneratePdf()">
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
+                    </v-btn>
+                    <v-btn elevation="2" class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                      {{ $t("container.list.excel") }}
+                    </v-btn>
+                  </v-col>
+
                   <v-btn
                     @click="createDialog"
-                    flat
                     color="primary"
                     prepend-icon="mdi-account-multiple-plus"
                   >
@@ -958,7 +967,6 @@
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
                   <v-btn
-                    flat
                     @click="dialogAdd = false"
                     outlined
                     class="custom-btn-width py-2 mr-10"
@@ -967,7 +975,6 @@
                   </v-btn>
                   <v-btn
                     type="submit"
-                    flat
                     color="primary"
                     :disabled="invalid"
                     :loading="loading"
@@ -1743,7 +1750,6 @@
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
                   <v-btn
-                      flat
                       @click="dialogEdit = false"
                       outlined
                       class="custom-btn-width py-2 mr-10"
@@ -1752,7 +1758,6 @@
                   </v-btn>
                   <v-btn
                       type="submit"
-                      flat
                       color="primary"
                       :disabled="invalid"
                       :loading="loading"
@@ -1901,6 +1906,7 @@ export default {
       wards: [],
       roles: [],
       users: [],
+      Allusers: [],
       committees: [],
       userType_id: null,
       userType: [
@@ -1980,6 +1986,165 @@ export default {
   },
 
   methods: {
+
+    async GeneratePdf(){
+
+      const queryParams = {
+        searchText: this.search,
+        perPage: this.search.trim() === '' ? this.pagination.grand_total : this.pagination.grand_total,
+        page: this.pagination.current,
+        user_id: this.$store.state.userData.id,
+      };
+      await this.$axios
+          .get("/admin/user/get", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+            params: queryParams,
+          })
+          .then((result) => {
+            this.Allusers = result.data.data;
+          })
+          .catch((err) => {
+            console.log(err, "error");
+          });
+
+
+      const HeaderInfo = [
+        this.$t("container.list.sl"),
+        this.$t("container.system_config.demo_graphic.user.user_id"),
+        this.$t("container.system_config.demo_graphic.user.user_type"),
+        this.$t("container.system_config.demo_graphic.user.login_id"),
+        this.$t("container.system_config.demo_graphic.user.office_committee"),
+        this.$t("container.system_config.demo_graphic.user.role"),
+        this.$t("container.system_config.demo_graphic.user.mobile_label"),
+      ]
+
+      const OBJ = this.Allusers;
+
+      const CustomInfo = OBJ.map((((i,index) => {
+        const roleNames = i.roles.map(role => this.$i18n.locale == 'en' ? role.name_en : role.name_bn);
+        const joinedRoleNames = roleNames.join(', ');
+        return [
+          this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+          this.$i18n.locale == 'en' ? i.user_id : this.$helpers.englishToBangla(i.user_id),
+          i.user_type == 1 ? "Super Admin" : "General",
+          i.username,
+          i.committee?.name ?? i.office?.name,
+          joinedRoleNames,
+          this.$i18n.locale == 'en' ? i.mobile : this.$helpers.englishToBangla(i.mobile),
+        ]
+      })));
+
+      const queryParam = {
+        language: this.$i18n.locale,
+        data:CustomInfo,
+        header:HeaderInfo,
+        fileName:this.$t("container.system_config.demo_graphic.user.listTitle"),
+      };
+
+      try {
+        const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "application/json", // Set content type to JSON
+          },
+          responseType: 'arraybuffer',
+        });
+
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        window.open(url, '_blank');
+        this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
+        console.error('Error generating PDF:', error);
+      }
+    },
+
+    async GenerateExcel(){
+
+      // this.isLoading = true;
+      const queryParams = {
+        language: this.$i18n.locale,
+        searchText: this.search,
+        perPage: this.search.trim() === '' ? this.pagination.grand_total : this.pagination.grand_total,
+        page: this.pagination.current,
+        user_id: this.$store.state.userData.id,
+      };
+      await this.$axios
+          .get("/admin/user/get", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+            params: queryParams,
+          })
+          .then((result) => {
+            this.Allusers = result.data.data;
+
+            import('@/plugins/Export2Excel').then((excel) => {
+              const OBJ = this.Allusers;
+
+              const CustomInfo = OBJ.map((((i,index) => {
+                const roleNames = i.roles.map(role => this.$i18n.locale == 'en' ? role.name_en : role.name_bn);
+                const joinedRoleNames = roleNames.join(', ');
+                return {
+                  "SL": this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+                  "user_id": this.$i18n.locale == 'en' ? i.user_id : this.$helpers.englishToBangla(i.user_id),
+                  "user_type": i.user_type == 1 ? "Super Admin" : "General",
+                  "user_name": i.username,
+                  "committee": i.committee?.name ?? i.office?.name,
+                  "role": joinedRoleNames,
+                  "mobile": this.$i18n.locale == 'en' ? i.mobile : this.$helpers.englishToBangla(i.mobile),
+                }
+              })));
+
+              const Header = [
+                this.$t("container.list.sl"),
+                this.$t("container.system_config.demo_graphic.user.user_id"),
+                this.$t("container.system_config.demo_graphic.user.user_type"),
+                this.$t("container.system_config.demo_graphic.user.login_id"),
+                this.$t("container.system_config.demo_graphic.user.office_committee"),
+                this.$t("container.system_config.demo_graphic.user.role"),
+                this.$t("container.system_config.demo_graphic.user.mobile_label"),
+              ]
+
+              const Field = ['SL','user_id','user_type','user_name', 'committee','role','mobile']
+
+              const Data = this.FormatJson(Field, CustomInfo)
+              const currentDate = new Date().toISOString().slice(0, 10); //
+              let dateinfo = queryParams.language == 'en' ? currentDate : this.$helpers.englishToBangla(currentDate)
+
+              const filenameWithDate = `${dateinfo}_${this.$t("container.system_config.demo_graphic.user.listTitle")}`;
+
+              excel.export_json_to_excel({
+                header: Header,
+                data: Data,
+                sheetName: filenameWithDate,
+                filename: filenameWithDate,
+                autoWidth: true,
+                bookType: "xlsx"
+              })
+            })
+            this.isLoading = false;
+
+          })
+          .catch((err) => {
+            console.log(err, "error");
+          });
+
+    },
+
+    FormatJson(FilterData,JsonData){
+      return JsonData.map((v) =>
+          FilterData.map((j => {
+            return v[j];
+          })))
+    },
+
+
     createDialog() {
       if (this.$refs.formAdd) {
         this.$refs.formAdd.reset();
@@ -2011,10 +2176,6 @@ export default {
         })
         .then((res) => {
 
-
-          console.log(res.data)
-
-
           this.$toast.success("Data Inserted Successfully");
           this.dialogAdd = false;
           this.getUsers();
@@ -2030,7 +2191,6 @@ export default {
         });
     },
     updateUser() {
-      console.log(this.data, "edit");
       this.loading = true;
       let fd = new FormData();
 
@@ -2062,7 +2222,6 @@ export default {
           },
         })
         .then((res) => {
-          console.log(res.data);
           this.$toast.success("Data updated Successfully");
           this.getUsers();
           this.$refs.formEdit.reset();
@@ -2091,10 +2250,7 @@ export default {
       if (this.$refs.formEdit) {
         this.$refs.formEdit.reset();
       }
-      console.log('userEdit', item);
       this.dialogEdit = true;
-      // console.log(item.roles[0].id, "roles id");
-      console.log(item, "editDialog");
       this.data.id = item.id;
       this.data.full_name = item.full_name;
       this.data.username = item.username;
@@ -2110,10 +2266,6 @@ export default {
       } else {
         this.data.office_type = item.office_type
       }
-
-
-      console.log('office type', item)
-
 
       this.data.role_id = [];
       item.roles.forEach((role) => {
@@ -2217,7 +2369,6 @@ export default {
         this.$store
           .dispatch("Division/UpdateDivision", this.data)
           .then((data) => {
-            console.log(data, "update");
             if (data == null) {
               this.$toast.success("Data Updated Successfully");
               this.dialogEdit = false;
@@ -2244,7 +2395,6 @@ export default {
       try {
         this.$store.dispatch("getLookupByType", 3).then((data) => {
           this.officeType = data;
-          console.log(this.officeType);
         });
       } catch (e) {
         console.log(e);
@@ -2267,7 +2417,6 @@ export default {
         })
         .then((result) => {
           this.users = result.data.data;
-          console.log("getUsers", this.users);
           this.pagination.current = result.data.current_page;
           this.pagination.total = result.data.last_page;
           this.pagination.grand_total = result.data.total;
@@ -2438,7 +2587,6 @@ export default {
 
 
     async onChangeDistrict(event) {
-      console.log('district change')
 
       if (this.data.committee_type === 17) {
         return this.getCommittees(this.data.district_id)
@@ -2484,15 +2632,12 @@ export default {
               this.thanas = []
               this.wards = []
               this.committees = []
-
-              console.log(this.city, "onChangeDistrict");
             });
       }
     },
 
 
     async onChangeUpazila(event) {
-      console.log('upazila change')
 
       if (this.data.committee_type === 14) {
         return this.getCommittees(this.data.upazila_id)
@@ -2526,14 +2671,11 @@ export default {
             this.thanas = []
             this.wards = []
             this.committees = []
-            console.log(this.unions, "unions");
           });
     },
 
 
     async onChangeCity(event) {
-      console.log('City change')
-
       //City corporation
       if (this.data.committee_type === 15) {
         return this.getCommittees(this.data.city_corpo_id)
@@ -2570,9 +2712,6 @@ export default {
 
 
     async onChangeThana(event) {
-
-      console.log('thana change')
-
       this.data.union_id = null;
       this.data.paurashava_id = null;
       this.data.ward_id = null;
@@ -2590,7 +2729,6 @@ export default {
           .then((result) => {
             this.wards = result.data.data;
             this.committees = []
-            console.log(this.wards, "wards");
           });
     },
 
@@ -2603,8 +2741,6 @@ export default {
     },
 
     async onChangeDistrictPauroshava(event) {
-      console.log('pouro',event, this.data.paurashava_id)
-
       if (this.data.office_type === 35) {
         this.data.office_id = null
         return this.getOfficeByLocation(this.data.office_type, event);
@@ -2616,7 +2752,6 @@ export default {
     },
 
     async onChangeWard(event) {
-      console.log(event, this.data.ward_id, 'wards')
       if (this.data.committee_type === 13) {
         return this.getCommittees(this.data.ward_id)
       }
@@ -2626,8 +2761,6 @@ export default {
 
     async getCommittees(locationId) {
       this.data.committee_id = null;
-
-      console.log('get commitees')
       await this.$axios
           .get(`/admin/committee/${this.data.committee_type}/${locationId}`, {
             headers: {
@@ -2636,14 +2769,12 @@ export default {
             },
           })
           .then((result) => {
-            console.log(result)
             this.committees = result.data.data;
           });
     },
 
 
     async GetAllUpazila(id) {
-      console.log('get thana')
       if (this.data.office_type != null) {
         this.getOfficeByLocation(this.data.office_type, id);
       }
@@ -2677,7 +2808,6 @@ export default {
         office_type_id: office_type_id,
         location_type_id: location_type_id,
       };
-      console.log(data, "getOfficeByLocation");
       let fd = new FormData();
       for (const [key, value] of Object.entries(data)) {
         if (value !== null) {
@@ -2693,8 +2823,6 @@ export default {
         })
         .then((result) => {
           this.offices = result.data.data;
-          console.log(this.offices, "this.offices");
-          // console.log(result, "result");
         })
         .catch((err) => {
           console.log(err);
@@ -2704,7 +2832,6 @@ export default {
       try {
         this.$store.dispatch("getLookupByType", 17).then((data) => {
           this.committee_types = data;
-          console.log(this.committee_types);
         });
       } catch (e) {
         console.log(e);
