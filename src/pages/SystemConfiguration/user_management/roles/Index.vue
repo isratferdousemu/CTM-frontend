@@ -13,6 +13,7 @@ export default {
       deleted_id: '',
       totalRoles: 0,
       roles: [],
+      Allroles: [],
       loading: true,
       options: {},
       search: '',
@@ -60,6 +61,143 @@ export default {
   },
 
   methods: {
+
+    async GeneratePdf(){
+      this.loading = false;
+      const { sortBy, sortDesc, page, itemsPerPage } = this.options
+      await http().get('/admin/role/get', {
+        params: {
+          sortBy: sortBy[0],
+          sortDesc: sortDesc[0],
+          page: page,
+          itemsPerPage: this.totalRoles,
+          search: this.search
+        }
+      }).then((result) => {
+        this.Allroles = result.data.data;
+        this.loading = false;
+      }).catch((err) => {
+        console.log(err);
+      })
+
+      const HeaderInfo = [
+        this.$t('container.list.sl'),
+        this.$t('container.system_config.demo_graphic.role.code'),
+        this.$t('container.system_config.demo_graphic.role.name_en'),
+        this.$t('container.system_config.demo_graphic.role.name_bn'),
+        this.$t('container.system_config.demo_graphic.role.comment'),
+        this.$t('container.system_config.demo_graphic.role.status')
+      ]
+
+      const OBJ = this.Allroles;
+      const CustomInfo = OBJ.map((((i,index) => {
+        return [
+          this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+          this.$i18n.locale == 'en' ? i.code : this.$helpers.englishToBangla(i.code),
+           i.name_en ,
+          i.name_bn,
+          i.comment,
+          this.$i18n.locale == 'en' ? i.status : this.$helpers.englishToBangla(i.status),
+         ]
+      })));
+
+      const queryParam = {
+        language: this.$i18n.locale,
+        data:CustomInfo,
+        header:HeaderInfo,
+        fileName:this.$t("container.system_config.demo_graphic.role.list"),
+      };
+
+      try {
+        const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "application/json", // Set content type to JSON
+          },
+          responseType: 'arraybuffer',
+        });
+
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        window.open(url, '_blank');
+        this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
+        console.error('Error generating PDF:', error);
+      }
+    },
+
+    async GenerateExcel() {
+      // this.isLoading = true;
+
+      const { sortBy, sortDesc, page, itemsPerPage } = this.options
+      await http().get('/admin/role/get', {
+        params: {
+          sortBy: sortBy[0],
+          sortDesc: sortDesc[0],
+          page: page,
+          itemsPerPage: this.totalRoles,
+          search: this.search
+        }
+      }).then((result) => {
+        this.Allroles = result.data.data;
+
+        import('@/plugins/Export2Excel').then((excel) => {
+          const OBJ = this.Allroles;
+
+          const CustomInfo = OBJ.map(((i,index) => {
+            return {
+              "sl":this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+              "code":this.$i18n.locale == 'en' ? i.code : this.$helpers.englishToBangla(i.code),
+              "name_en":i.name_en ,
+              "name_bn":i.name_bn,
+              "comment":i.comment,
+              "status":this.$i18n.locale == 'en' ? i.status : this.$helpers.englishToBangla(i.status),
+
+            }
+          }));
+
+          const Header = [
+            this.$t('container.list.sl'),
+            this.$t('container.system_config.demo_graphic.role.code'),
+            this.$t('container.system_config.demo_graphic.role.name_en'),
+            this.$t('container.system_config.demo_graphic.role.name_bn'),
+            this.$t('container.system_config.demo_graphic.role.comment'),
+            this.$t('container.system_config.demo_graphic.role.status')
+          ]
+
+          const Field = ['sl','code', 'name_en', 'name_bn', 'comment', 'status']
+
+          const Data = this.FormatJson(Field, CustomInfo)
+          const currentDate = new Date().toISOString().slice(0, 10); //
+          let dateinfo = this.$i18n.locale == 'en' ? currentDate : this.$helpers.englishToBangla(currentDate)
+
+          const filenameWithDate = `${dateinfo}_${this.$t("container.system_config.demo_graphic.role.list")}`;
+
+          excel.export_json_to_excel({
+            header: Header,
+            data: Data,
+            sheetName: filenameWithDate,
+            filename: filenameWithDate,
+            autoWidth: true,
+            bookType: "xlsx"
+          })
+        })
+
+        this.loading = false;
+      }).catch((err) => {
+        console.log(err);
+      })
+
+    },
+
+    FormatJson(FilterData,JsonData){
+      return JsonData.map((v) =>
+          FilterData.map((j => {
+            return v[j];
+          })))
+    },
+
     getAllRoles(){
       const { sortBy, sortDesc, page, itemsPerPage } = this.options
 
@@ -136,6 +274,16 @@ export default {
                   </div>
 
                   <v-spacer></v-spacer>
+
+                  <v-col lg="4" md="6" cols="12" class="text-right">
+                    <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4" @click="GeneratePdf()">
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
+                    </v-btn>
+                    <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                      {{ $t("container.list.excel") }}
+                    </v-btn>
+                  </v-col>
 
                   <v-btn
                       medium

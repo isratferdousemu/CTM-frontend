@@ -10,36 +10,54 @@
                 <v-card-text>
                   <table>
                     <tr>
-                      <td>{{
-                      $t(
-                        "container.beneficiary_management.beneficiary_list.beneficiary_id"
-                      )
-                    }}</td>
+                      <td>
+                        {{
+                          $t(
+                            "container.beneficiary_management.beneficiary_list.beneficiary_id"
+                          )
+                        }}
+                      </td>
                       <td>: {{ data.application_id }}</td>
                     </tr>
                     <tr>
-                      <td>{{
-                      $t(
-                        "container.beneficiary_management.beneficiary_list.beneficiary_name"
-                      )
-                    }}</td>
+                      <td>
+                        {{
+                          $t(
+                            "container.beneficiary_management.beneficiary_list.name"
+                          )
+                        }}
+                      </td>
                       <td>: {{ data.name_en }}</td>
                     </tr>
                     <tr>
-                      <td>{{
-                      $t(
-                        "container.beneficiary_management.beneficiary_list.beneficiary_mobile"
-                      )
-                    }}</td>
-                      <td>: {{ data.mobile }}</td>
+                      <td>
+                        {{
+                          $t(
+                            "container.beneficiary_management.beneficiary_list.address"
+                          )
+                        }}
+                      </td>
+                      <td>: {{ data.beneficiary_address }}</td>
                     </tr>
                     <tr>
-                      <td>{{
-                      $t(
-                        "container.beneficiary_management.beneficiary_list.program"
-                      )
-                    }}</td>
-                      <td>: {{ data.program.name_en }}</td>
+                      <td>
+                        {{
+                          $t(
+                            "container.beneficiary_management.beneficiary_list.application_date"
+                          )
+                        }}
+                      </td>
+                      <td>: {{ CustomDateFormat(data.application_date)  }}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        {{
+                          $t(
+                            "container.beneficiary_management.beneficiary_list.approval_date"
+                          )
+                        }}
+                      </td>
+                      <td>: {{ CustomDateFormat(data.approve_date) }}</td>
                     </tr>
                   </table>
                 </v-card-text>
@@ -47,7 +65,7 @@
             </v-col>
 
             <v-col cols="12">
-              <v-expansion-panels>
+              <v-expansion-panels v-model="panel" multiple>
                 <v-expansion-panel>
                   <v-expansion-panel-header color="#8C9EFF" class="white--text">
                     {{
@@ -60,14 +78,14 @@
                     <v-row>
                       <v-col lg="6" md="6" cols="12">
                         <v-text-field
-                          v-model="data.total_receive"
                           :label="
                             $t(
-                              'container.beneficiary_management.beneficiary_list.total_receive'
+                              'container.beneficiary_management.beneficiary_list.total_installment'
                             )
                           "
                           outlined
-                          clearable
+                          readonly
+                          value="8"
                         >
                         </v-text-field>
                       </v-col>
@@ -87,7 +105,7 @@
                               v-model="date"
                               :label="
                                 $t(
-                                  'container.beneficiary_management.beneficiary_list.cause_date'
+                                  'container.beneficiary_management.beneficiary_list.last_payment_date'
                                 )
                               "
                               prepend-inner-icon="mdi-calendar"
@@ -97,7 +115,7 @@
                               outlined
                             ></v-text-field>
                           </template>
-                          <v-date-picker v-model="date" no-title scrollable>
+                          <!-- <v-date-picker v-model="date" no-title scrollable>
                             <v-spacer></v-spacer>
                             <v-btn text color="primary" @click="menu = false">
                               Cancel
@@ -109,19 +127,32 @@
                             >
                               OK
                             </v-btn>
-                          </v-date-picker>
+                          </v-date-picker> -->
                         </v-menu>
                       </v-col>
                       <v-col lg="6" md="6" cols="12">
                         <v-text-field
-                          v-model="data.last_payment_ammount"
+                          value="1000000"
+                          :label="
+                            $t(
+                              'container.beneficiary_management.beneficiary_list.last_payment_receive'
+                            )
+                          "
+                          outlined
+                          readonly
+                        >
+                        </v-text-field>
+                      </v-col>
+                      <v-col lg="6" md="6" cols="12">
+                        <v-text-field
+                          value="10000"
                           :label="
                             $t(
                               'container.beneficiary_management.beneficiary_list.last_payment_amount'
                             )
                           "
                           outlined
-                          clearable
+                          readonly
                         >
                         </v-text-field>
                       </v-col>
@@ -152,7 +183,7 @@
               </v-expansion-panels>
             </v-col>
             <v-col cols="12">
-              <v-expansion-panels>
+              <v-expansion-panels v-model="panel" multiple>
                 <v-expansion-panel>
                   <v-expansion-panel-header color="#8C9EFF" class="white--text">
                     {{
@@ -165,7 +196,7 @@
                     <v-row>
                       <v-col lg="6" md="6" cols="12">
                         <v-text-field
-                          v-model="data.total_receive"
+                          value="25"
                           readonly
                           :label="
                             $t(
@@ -179,12 +210,13 @@
 
                       <v-col lg="6" md="6" cols="12">
                         <v-text-field
-                          v-model="data.last_grievance_type"
+                          value="Application"
                           :label="
                             $t(
                               'container.beneficiary_management.beneficiary_list.last_grievance_type'
                             )
                           "
+                          readonly
                           outlined
                         >
                         </v-text-field>
@@ -216,7 +248,7 @@
               </v-expansion-panels>
             </v-col>
             <v-col cols="12">
-              <v-expansion-panels>
+              <v-expansion-panels v-model="panel" multiple>
                 <v-expansion-panel>
                   <v-expansion-panel-header color="#8C9EFF" class="white--text">
                     {{
@@ -229,7 +261,7 @@
                     <v-row>
                       <v-col lg="6" md="6" cols="12">
                         <v-text-field
-                          v-model="data.total_receive"
+                          value="12"
                           readonly
                           :label="
                             $t(
@@ -281,7 +313,7 @@
               </v-row>
             </v-col>
             <!-- payment Modal -->
-            <v-dialog v-model="payment_modal" width="800">
+            <v-dialog v-model="payment_modal" width="900">
               <v-card style="justify-content: center; text-align: center">
                 <v-card-title class="font-weight-bold justify-center">
                   {{
@@ -295,7 +327,7 @@
                   <v-col cols="12">
                     <v-data-table
                       :headers="headers"
-                      :items="applications"
+                      :items="payment_histories"
                       class="elevation-0 transparent row-pointer"
                     >
                       <template v-slot:item.sl="{ item, index }">
@@ -364,7 +396,7 @@
             <!-- payment History Modal  -->
 
             <!-- Grievance Modal -->
-            <v-dialog v-model="grievance_modal" width="800">
+            <v-dialog v-model="grievance_modal" width="900">
               <v-card style="justify-content: center; text-align: center">
                 <v-card-title class="font-weight-bold justify-center">
                   {{
@@ -378,7 +410,7 @@
                   <v-col cols="12">
                     <v-data-table
                       :headers="headers_grievance"
-                      :items="applications"
+                      :items="grievance_histories"
                       class="elevation-0 transparent row-pointer"
                     >
                       <template v-slot:item.sl="{ item, index }">
@@ -446,7 +478,7 @@
             </v-dialog>
             <!-- Grievance History Modal  -->
             <!-- Change Tracking Modal -->
-            <v-dialog v-model="tracking_modal">
+            <v-dialog v-model="tracking_modal" width="900">
               <v-card style="justify-content: center; text-align: center">
                 <v-card-title class="font-weight-bold justify-center">
                   {{
@@ -460,7 +492,7 @@
                   <v-col cols="12">
                     <v-data-table
                       :headers="headers_tracking"
-                      :items="divisions"
+                      :items="change_tracking"
                       class="elevation-0 transparent row-pointer"
                     >
                       <template v-slot:item.sl="{ item, index }">
@@ -551,6 +583,7 @@
 import { mapState, mapActions } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
+import moment from 'moment';
 
 extend("required", required);
 export default {
@@ -567,14 +600,64 @@ export default {
       payment_modal: false,
       grievance_modal: false,
       tracking_modal: false,
+      panel: [0, 1, 2],
 
       data: {
-        summary:
-          "Beneficiary ID: 1235, Name: Radur Rahim, Address: Naogaon sadar, Naogaon",
-        total_receive: 10,
-        last_payment_ammount: 1000,
-        last_grievance_type: "Fraud  Case",
       },
+      payment_histories: [
+        {
+          payment_disbursed_date: "15-09-2023",
+          amount: "500",
+          acoount_no: "01784512363",
+          fiscal_year: "2023-2024",
+          due_payment: "No",
+        },
+        {
+          payment_disbursed_date: "15-09-2023",
+          amount: "500",
+          acoount_no: "01784512363",
+          fiscal_year: "2023-2024",
+          due_payment: "No",
+        },
+      ],
+      grievance_histories: [
+        {
+          grievance_type: "Application",
+          grievance_subject:
+            "I was not informed when, where and how to submit the application.",
+          grievance_details:
+            "I was not informed when, where and how to submit the application.",
+          grievance_raise_date: "10-10-2023",
+          resolved_by: "Upazila UCD",
+          resolve_comment: "Solved",
+          resolve_date: "20-09-2023",
+        },
+        {
+          grievance_type: "Other Complaints",
+          grievance_subject: "I could not submit the application.",
+          grievance_details: "I could not submit the application.",
+          grievance_raise_date: "12-10-2023",
+          resolved_by: "Head Office",
+          resolve_comment: "N/A",
+          resolve_date: "18-10-2023",
+        },
+      ],
+
+      change_tracking: [
+        {
+          change_tracking_type: "Change Account",
+          change_count: "3",
+          successful_change: "2",
+          unsuccessful_change: "1",
+        },
+        {
+          change_tracking_type: "Changed Nominee",
+          change_count: "5",
+          successful_change: "4",
+          unsuccessful_change: "1",
+        },
+      ],
+
       pagination: {
         current: 1,
         total: 0,
@@ -589,9 +672,6 @@ export default {
       const title = this.$t("container.list.beneficiary_journey");
       this.$store.commit("setHeaderTitle", title);
     },
-    ...mapActions({
-      GetAllDivisions: "Division/GetAllDivisions",
-    }),
     async getBeneficiaryDetailsById() {
       try {
         this.$axios
@@ -618,12 +698,14 @@ export default {
         console.log(e);
       }
     },
+    CustomDateFormat(value){
+      if (value) {
+        return moment(String(value)).format('DD-MM-YYYY')
+    }
+    }
   },
 
   computed: {
-    ...mapState({
-      divisions: (state) => state.Division.divisions,
-    }),
     computedDateFormatted() {
       return this.formatDate(this.date);
     },
@@ -634,25 +716,32 @@ export default {
           text: this.$t(
             "container.beneficiary_management.beneficiary_list.payment_disbursed_date"
           ),
-          value: "1",
+          value: "payment_disbursed_date",
         },
         {
           text: this.$t(
             "container.beneficiary_management.beneficiary_list.ammount"
           ),
-          value: "2",
+          value: "amount",
+        },
+        {
+          text: this.$t(
+            "container.beneficiary_management.beneficiary_list.acoount_no"
+          ),
+          value: "acoount_no",
         },
         {
           text: this.$t(
             "container.beneficiary_management.beneficiary_list.fiscal_year"
           ),
-          value: "3",
+          value: "fiscal_year",
         },
         {
           text: this.$t(
             "container.beneficiary_management.beneficiary_list.due"
           ),
-          value: "4",
+          value: "due_payment",
+          align: "center",
         },
       ];
     },
@@ -661,46 +750,46 @@ export default {
         { text: this.$t("container.list.sl"), value: "sl" },
         {
           text: this.$t(
-            "container.beneficiary_management.beneficiary_list.type"
+            "container.beneficiary_management.beneficiary_list.grievance_type"
           ),
-          value: "1",
+          value: "grievance_type",
         },
         {
           text: this.$t(
-            "container.beneficiary_management.beneficiary_list.subject"
+            "container.beneficiary_management.beneficiary_list.grievance_subject"
           ),
-          value: "2",
+          value: "grievance_subject",
         },
         {
           text: this.$t(
-            "container.beneficiary_management.beneficiary_list.details"
+            "container.beneficiary_management.beneficiary_list.grievance_details"
           ),
-          value: "3",
+          value: "grievance_details",
         },
         {
           text: this.$t(
-            "container.beneficiary_management.beneficiary_list.allotment_distribution"
+            "container.beneficiary_management.beneficiary_list.grievance_raise_date"
           ),
-          value: "4",
+          value: "grievance_raise_date",
         },
         {
           text: this.$t(
             "container.beneficiary_management.beneficiary_list.resolved_by"
           ),
-          value: "5",
+          value: "resolved_by",
         },
         {
           text: this.$t(
             "container.beneficiary_management.beneficiary_list.resolve_comment"
           ),
-          value: "6",
+          value: "resolve_comment",
         },
 
         {
           text: this.$t(
             "container.beneficiary_management.beneficiary_list.resolve_date"
           ),
-          value: "7",
+          value: "resolve_date",
         },
       ];
     },
@@ -711,33 +800,30 @@ export default {
           text: this.$t(
             "container.beneficiary_management.beneficiary_list.change_tracking_type"
           ),
-          value: "1",
+          value: "change_tracking_type",
+          align:'center'
         },
         {
           text: this.$t(
             "container.beneficiary_management.beneficiary_list.change_count"
           ),
-          value: "2",
+          value: "change_count",
+          align:'center'
         },
         {
           text: this.$t(
             "container.beneficiary_management.beneficiary_list.successful_change"
           ),
-          value: "3",
+          value: "successful_change",
+          align:'center'
         },
         {
           text: this.$t(
             "container.beneficiary_management.beneficiary_list.unsuccessful_change"
           ),
-          value: "4",
+          value: "unsuccessful_change",
+          align:'center'
         },
-        {
-          text: this.$t(
-            "container.beneficiary_management.beneficiary_list.resolved_by"
-          ),
-          value: "name_en",
-        },
-        // { text: this.$t("container.list.action"), value: "actions" },
       ];
     },
   },
@@ -752,9 +838,7 @@ export default {
   beforeMount() {
     this.updateHeaderTitle();
   },
-  mounted() {
-    this.GetAllDivisions();
-  },
+  mounted() {},
   created() {
     this.getBeneficiaryDetailsById();
   },
