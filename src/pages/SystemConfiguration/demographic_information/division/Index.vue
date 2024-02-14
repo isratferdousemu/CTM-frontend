@@ -69,6 +69,8 @@
         
                     <v-btn elevation="2" class="btn mr-2 white--text"  flat color="red darken-4" @click="GeneratePDF()"
                                                           >{{
+
+                                                            
                                                             $t("container.list.PDF") }}</v-btn>
                                                       <v-btn elevation="2"  flat class="btn mr-2  white--text" color="teal darken-2" @click="GenerateExcel()"
                                                           >{{
