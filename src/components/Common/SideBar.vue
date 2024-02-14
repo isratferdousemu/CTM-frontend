@@ -8,18 +8,8 @@
     fixed
     app
     class="mr-9 ml-3 my-3 nav-height rounded-lg nav-left-custom">
-    <div class="pa-2 text-center ma-auto">
-      <v-img
-        class="text-center ma-auto"
-        max-height="100%"
-        max-width="80px"
-        position="center center"
-        src="/assets/images/logo.png"
-      ></v-img>
-      <!-- <Logo class="ml-7" /> -->
-    </div>
     <v-divider></v-divider>
-    <v-list two-line  class="white--text left-sidebar">
+    <v-list two-line  class="white--text left-sidebar p-0">
         <template v-for="(menu,index) in menus">
             <v-list-item  class="white--text" v-if="menu.children.length==0"
             router
