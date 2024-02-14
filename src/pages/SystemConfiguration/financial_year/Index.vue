@@ -27,10 +27,10 @@
                                   <!-- Dropdown on the right -->
 
                                   <v-col lg="4" md="6" cols="12" class="text-right">
-                                    <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4">
+                                    <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="GeneratePdf()">
                                       <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
                                     </v-btn>
-                                    <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
+                                    <v-btn elevation="2" class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
                                       <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
                                       {{ $t("container.list.excel") }}
                                     </v-btn>
@@ -111,6 +111,7 @@ export default {
             loading: false,
             search: "",
             financial_years: [],
+            Allfinancial_years: [],
             pagination: {
                 current: 1,
                 total: 0,
@@ -165,40 +166,141 @@ export default {
 
     methods: {
 
+      async GeneratePdf(){
 
-      GenerateExcel(){
+        const queryParams = {
+          searchText: this.search,
+          page: this.pagination.current,
+          perPage: this.search.trim() === '' ? this.pagination.grand_total : this.pagination.grand_total,
+
+        };
+        await this.$axios
+            .get("/admin/financial-year/get", {
+              headers: {
+                Authorization: "Bearer " + this.$store.state.token,
+                "Content-Type": "multipart/form-data",
+              },
+              params: queryParams,
+            })
+            .then((result) => {
+              this.Allfinancial_years = result.data.data;
+            })
+            .catch((err) => {
+              console.log(err, "error");
+
+            });
+
+        const HeaderInfo = [
+          this.$t("container.list.sl"),
+          this.$t("container.system_config.demo_graphic.financial_year.financial_year"),
+          this.$t("container.system_config.demo_graphic.financial_year.start_date"),
+          this.$t("container.system_config.demo_graphic.financial_year.end_date"),
+          this.$t("container.system_config.demo_graphic.financial_year.status"),
+        ]
+
+        const OBJ = this.Allfinancial_years;
+
+        const CustomInfo = OBJ.map((((i,index) => {
+          return [
+            this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+            this.$i18n.locale == 'en' ? i.financial_year:this.$helpers.englishToBangla(i.financial_year),
+            this.$i18n.locale == 'en' ? i.start_date:this.$helpers.englishToBangla(i.start_date),
+            this.$i18n.locale == 'en' ? i.end_date:this.$helpers.englishToBangla(i.end_date),
+            this.$i18n.locale == 'en' ? i.status:this.$helpers.englishToBangla(i.status),
+          ]
+        })));
+
+        const queryParam = {
+          language: this.$i18n.locale,
+          data:CustomInfo,
+          header:HeaderInfo,
+          fileName:this.$t("container.system_config.demo_graphic.financial_year.list"),
+        };
+
+        try {
+          const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "application/json", // Set content type to JSON
+            },
+            responseType: 'arraybuffer',
+          });
+
+          const blob = new Blob([response.data], { type: 'application/pdf' });
+          const url = window.URL.createObjectURL(blob);
+          window.open(url, '_blank');
+          this.isLoading = false;
+        } catch (error) {
+          this.isLoading = false;
+          console.error('Error generating PDF:', error);
+        }
+      },
+
+      async GenerateExcel(){
 
         // this.isLoading = true;
         const queryParams = {
           language: this.$i18n.locale,
+          searchText: this.search,
+          page: this.pagination.current,
+          perPage: this.search.trim() === '' ? this.pagination.grand_total : this.pagination.grand_total,
+
         };
+        await this.$axios
+            .get("/admin/financial-year/get", {
+              headers: {
+                Authorization: "Bearer " + this.$store.state.token,
+                "Content-Type": "multipart/form-data",
+              },
+              params: queryParams,
+            })
+            .then((result) => {
+              this.Allfinancial_years = result.data.data;
 
               import('@/plugins/Export2Excel').then((excel) => {
-                const OBJ = this.GetFinancialYear();
+                const OBJ = this.Allfinancial_years;
+
+                const CustomInfo = OBJ.map((((i,index) => {
+                  return {
+                    "SL":this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+                    "financial_year":this.$i18n.locale == 'en' ? i.financial_year : this.$helpers.englishToBangla(i.financial_year),
+                    "start_date":this.$i18n.locale == 'en' ? i.start_date : this.$helpers.englishToBangla(i.start_date),
+                    "end_date":this.$i18n.locale == 'en' ? i.end_date : this.$helpers.englishToBangla(i.end_date),
+                    "status":this.$i18n.locale == 'en' ? i.status : this.$helpers.englishToBangla(i.status),
+                  }
+                })));
 
                 const Header = [
-                  this.$t("container.system_config.demo_graphic.union.custom_code"),
-                  this.$t("container.system_config.demo_graphic.division.division"),
-                  this.$t("container.system_config.demo_graphic.district.district"),
-                  this.$t("container.system_config.demo_graphic.thana.thana"),
-                  this.$t("container.system_config.demo_graphic.union.name_en"),
-                  this.$t("container.system_config.demo_graphic.union.name_bn"),
+                  this.$t("container.list.sl"),
+                  this.$t("container.system_config.demo_graphic.financial_year.financial_year"),
+                  this.$t("container.system_config.demo_graphic.financial_year.start_date"),
+                  this.$t("container.system_config.demo_graphic.financial_year.end_date"),
+                  this.$t("container.system_config.demo_graphic.financial_year.status"),
                 ]
 
-                const Field = ['geo_code','division_name','district_name','thana_name', 'union_name_en','union_name_bn']
+                const Field = ['SL','financial_year','start_date','end_date', 'status']
 
-                const Data = this.FormatJson(Field, OBJ)
+                const Data = this.FormatJson(Field, CustomInfo)
+                const currentDate = new Date().toISOString().slice(0, 10); //
+                let dateinfo = queryParams.language == 'en' ? currentDate : this.$helpers.englishToBangla(currentDate)
+
+                const filenameWithDate = `${dateinfo}_${this.$t("container.system_config.demo_graphic.financial_year.financial_year")}`;
 
                 excel.export_json_to_excel({
                   header: Header,
                   data: Data,
-                  sheetName:"demo",
-                  filename:this.$t("container.system_config.demo_graphic.union1.customtitle"),
-                  autoWidth:true,
-                  bookType : "xlsx"
+                  sheetName: filenameWithDate,
+                  filename: filenameWithDate,
+                  autoWidth: true,
+                  bookType: "xlsx"
                 })
               })
               this.isLoading = false;
+
+            })
+            .catch((err) => {
+              console.log(err, "error");
+            });
 
       },
 
@@ -236,8 +338,7 @@ export default {
                     this.pagination.current = result.data.meta.current_page;
                     this.pagination.total = result.data.meta.last_page;
                     this.pagination.grand_total = result.data.meta.total;
-                    console.log(queryParams)
-                    console.log(result.data.data,77)
+
                 });
         },
 
