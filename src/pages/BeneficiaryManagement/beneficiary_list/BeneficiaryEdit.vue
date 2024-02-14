@@ -2542,15 +2542,9 @@ export default {
     },
     async submitApplication() {
       try {
-        console.log('Nominee_image__',this.data.nominee_image);
-        console.log('Nominee_image__2',this.data.nominee_signature);
-        if (!this.data.nominee_image) {
-          this.$toast.error("Please select Nominee Image");
-          return;
-        } else if (!this.data.nominee_signature) {
-          this.$toast.error("Please select Nominee Signeture");
-          return;
-        }
+        console.log('Nominee_image',this.data.nominee_image);
+        console.log('Nominee_signeture',this.data.nominee_signature);
+
         let formData = new FormData();
         formData.append("nominee_en", this.data.nominee_en);
         formData.append("nominee_bn", this.data.nominee_bn);
@@ -2581,8 +2575,6 @@ export default {
             console.log(res, "submit__");
             if (res.data?.success) {
               this.$toast.success("Data Updated Successfully");
-              // this.resetData();
-              // this.dialogAdd = false;
               this.$router.push({ name: "Beneficiary_List" });
             } else if (res.response?.data?.errors) {
               this.$refs.form.setErrors(res.response.data.errors);
@@ -2611,11 +2603,10 @@ export default {
               this.data.signUrl = item?.signature;
 
               this.data.nomineeImageUrl = item?.nominee_image;
-              this.data.nominee_image = new File([""]);
+              this.data.nominee_image = new File([""],'');
               this.data.nomineeSignUrl = item?.nominee_signature;
-              this.data.nominee_signature = new File([""]);
+              this.data.nominee_signature = new File([""],'');
 
-              console.log("nominee_image__", this.data.nominee_image);
             } else {
               this.$toast.error("Record not found!");
               this.$router.push({ name: "Beneficiary_List" });
