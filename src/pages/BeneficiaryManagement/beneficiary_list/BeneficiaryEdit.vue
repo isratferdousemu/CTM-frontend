@@ -2542,8 +2542,8 @@ export default {
     },
     async submitApplication() {
       try {
-        console.log('Nominee_image',this.data.nominee_image);
-        console.log('Nominee_signeture',this.data.nominee_signature);
+        console.log("Nominee_image", this.data.nominee_image);
+        console.log("Nominee_signeture", this.data.nominee_signature);
 
         let formData = new FormData();
         formData.append("nominee_en", this.data.nominee_en);
@@ -2567,12 +2567,28 @@ export default {
         formData.append("monthly_allowance", this.data.monthly_allowance);
         formData.append("financial_year_id", this.data.financial_year_id);
 
-        const data = { formData: formData, id: this.$route.params.id };
+        // const data = { formData: formData, id: this.$route.params.id };
+        // this.$store
+        //   .dispatch("BeneficiaryManagement/UpdateBeneficiaryDetails", data)
+        //   .then((res) => {
+        //     console.log(res, "submit__");
+        //     if (res.data?.success) {
+        //       this.$toast.success("Data Updated Successfully");
+        //       this.$router.push({ name: "Beneficiary_List" });
+        //     } else if (res.response?.data?.errors) {
+        //       this.$refs.form.setErrors(res.response.data.errors);
+        //       this.errors = res.response.data.errors;
+        //     }
+        //   });
 
-        this.$store
-          .dispatch("BeneficiaryManagement/UpdateBeneficiaryDetails", data)
+        this.$axios
+          .put(`/admin/beneficiary/update/${this.$route.params.id}`, formData, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
           .then((res) => {
-            console.log(res, "submit__");
             if (res.data?.success) {
               this.$toast.success("Data Updated Successfully");
               this.$router.push({ name: "Beneficiary_List" });
@@ -2603,10 +2619,9 @@ export default {
               this.data.signUrl = item?.signature;
 
               this.data.nomineeImageUrl = item?.nominee_image;
-              this.data.nominee_image = new File([""],'');
+              this.data.nominee_image = new File([""], "");
               this.data.nomineeSignUrl = item?.nominee_signature;
-              this.data.nominee_signature = new File([""],'');
-
+              this.data.nominee_signature = new File([""], "");
             } else {
               this.$toast.error("Record not found!");
               this.$router.push({ name: "Beneficiary_List" });
