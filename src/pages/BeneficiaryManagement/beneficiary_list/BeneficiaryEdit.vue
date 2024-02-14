@@ -1681,7 +1681,7 @@
                             <ValidationProvider
                               v-slot="{ errors }"
                               name="Image"
-                              
+                              rules="imageSize"
                               vid="image"
                             >
                               <label>
