@@ -1,6 +1,14 @@
 {
+  "topSidebar": {
+    "title": "Social Security Program - Social Service Department"
+  },
   "sidebar": {
     "dashboard": "Dashboard"
+  },
+  "footer": {
+    "copyright": "Copyright",
+    "dss": "DSS",
+    "designDevelopedBy": "Design & Developed By IBCS-PRIMAX Software (Bangladesh) Ltd."
   },
   "container": {
     "list": {
