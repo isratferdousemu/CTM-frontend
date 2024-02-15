@@ -1,6 +1,14 @@
 {
+  "topSidebar": {
+    "title": "Social Security Program - Social Service Department"
+  },
   "sidebar": {
     "dashboard": "Dashboard"
+  },
+  "footer": {
+    "copyright": "Copyright",
+    "dss": "DSS",
+    "designDevelopedBy": "Design & Developed By IBCS-PRIMAX Software (Bangladesh) Ltd."
   },
   "container": {
     "list": {
@@ -375,7 +383,10 @@
           "email_label": "Email",
           "mobile_label": "Mobile",
           "office_committee": "Office/Committee",
-          "location": "Assigned Location"
+          "location": "Assigned Location",
+          "login_id" : "Login ID",
+          "role" : "Role",
+          "user_id" : "User ID"
         },
         "financial_year": {
           "financial_year": "Financial Year",
@@ -700,6 +711,7 @@
         "delete_cause":"Delete Cause",
         "beneficiary_id": "Beneficiary's ID",
         "beneficiary_name": "Beneficiary's Name",
+        "name":"Name",
         "beneficiary_date_of_birth": "Date of Birth",
         "beneficiary_mobile": "Mobile",
         "beneficiary_addess": "Address",
@@ -732,22 +744,28 @@
         "grievance_history": "Grievance History",
         "Change_tracking": "Change Tracking",
         "total_receive": "Total Receive",
+        "total_installment":"Total Installment",
+        "last_payment_date": "Last Payment Date",
+        "last_payment_receive": "Last Payment Receive",
         "last_payment_amount": "Last Payment Amount",
         "total_grievance": "Total Grievance",
         "last_grievance_type": "Last Grievance Type",
         "total_change": "Total Change",
         "payment_disbursed_date": "Payment Disbursed Date",
-        "ammount": "Ammount",
+        "ammount": "Amount",
         "fiscal_year": "Fiscal Year",
         "due": "Due Payment (if any)",
         "type": "Type",
         "subject": "Subject",
         "details": "Deatails",
+        "grievance_type": "Grievance Type",
+        "grievance_subject": "Grievance Subject",
+        "grievance_details": "Grievance Deatails",
         "grievance_raise_date": "Grievance Raise Date",
-        "allotment_distribution": "Correction of Allotment Distribution",
         "resolved_by": "Resolve By",
         "resolve_comment": "Resolve Comment",
         "resolve_date": "Resolve Date",
+        "allotment_distribution": "Correction of Allotment Distribution",
         "change_tracking_type": "Change Tracking Type",
         "change_count": "Change Count",
         "successful_change": "Successful Change",
@@ -812,7 +830,9 @@
         "monthly_honorarium_amount":"Monthly Honorarium Amount",
         "financial_year":"Financial Year",
         "other_info_of_eligibility":"Other Information of Eligibility",
-        "rollback_message":"Do you want to Rollback?"
+        "rollback_message":"Do you want to Rollback?",
+        "application_date":"Application Date",
+        "approval_date":"Approval Date"
       },
       "digital_id": {
         "digital_id_card": "Digital ID Card"

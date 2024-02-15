@@ -1,6 +1,14 @@
 {
+    "topSidebar": {
+        "title": "সামাজিক নিরাপত্তা কর্মসূচি - সমাজসেবা অধিদফতর"
+    },
     "sidebar": {
         "dashboard": "ড্যাশবোর্ড"
+    },
+    "footer": {
+        "copyright": "কপিরাইট",
+        "dss": "ডিএসএস",
+        "designDevelopedBy":"ডিজাইন ও ডেভেলপ করেছে আইবিসিএস-প্রায়মাক্স (বাংলাদেশ) লিমিটেড ।"
     },
     "container": {
         "list": {
@@ -374,7 +382,10 @@
                     "email_label": "ইমেইল",
                     "mobile_label": "মোবাইল নম্বর",
                     "office_committee": "অফিস/কমিটি",
-                    "location": "নির্ধারিত স্থান"
+                    "location": "নির্ধারিত স্থান",
+                    "login_id" : "লগইন আইডি",
+                    "role" : "রোল",
+                    "user_id" : "ব্যবহারকারী আইডি"
                 },
                 "financial_year": {
                     "financial_year": "আর্থিক বর্ষ",
@@ -700,6 +711,7 @@
                 "delete_cause":"মুছে ফেলার কারণ",
                 "beneficiary_id": "সুবিধাভোগীর আইডি",
                 "beneficiary_name": "সুবিধাভোগীর নাম",
+                "name":"নাম",
                 "beneficiary_mobile": "মোবাইল",
                 "beneficiary_addess": "ঠিকানা",
                 "authorize_singneture": "অনুমোদিত স্বাক্ষর",
@@ -731,6 +743,9 @@
                 "grievance_history": "অভিযোগের ইতিহাস",
                 "Change_tracking": "ট্র্যাকিং পরিবর্তন",
                 "total_receive": "মোট প্রাপ্তি",
+                "total_installment":"মোট কিস্তি",
+                "last_payment_date": "শেষ অর্থপ্রদানের তারিখ",
+                "last_payment_receive": "শেষ অর্থপ্রদানের প্রাপ্তি",
                 "last_payment_amount": "শেষ অর্থপ্রদানের পরিমাণ",
                 "total_grievance": "মোট অভিযোগ",
                 "last_grievance_type": "শেষ অভিযোগের ধরন",
@@ -742,6 +757,9 @@
                 "type": "ধরণ ",
                 "subject": "বিষয়",
                 "details": "বিবরণ",
+                "grievance_type": "Grievance Type",
+                "grievance_subject": "Grievance Subject",
+                "grievance_details": "Grievance Deatails",
                 "grievance_raise_date": "অভিযোগ উত্থাপনের তারিখ",
                 "allotment_distribution": "বরাদ্দ বিতরণের সংশোধন",
                 "resolved_by": "সমাধান করা হয়েছে",
@@ -810,7 +828,9 @@
                 "monthly_honorarium_amount":"মাসিক সম্মানী পরিমাণ",
                 "financial_year":"আর্থিক বর্ষ",
                 "other_info_of_eligibility":"যোগ্যতার অন্যান্য তথ্য",
-                "rollback_message":"আপনি রোলব্যাক করতে চান?"
+                "rollback_message":"আপনি রোলব্যাক করতে চান?",
+                "application_date":"আবেদনের তারিখ",
+                "approval_date":"অনুমোদন তারিখ"
             },
             "digital_id": {
                 "digital_id_card": "ডিজিটাল আইডি কার্ড"

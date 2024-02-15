@@ -1207,8 +1207,8 @@
             this.$i18n.locale == 'en' ? i.assign_location_id : this.$helpers.englishToBangla(i.assign_location_id),
             this.$i18n.locale == 'en' ? i.office_type?.value_en : i.office_type?.value_bn,
             this.$i18n.locale == 'en' ? i.name_en : i.name_bn,
-            this.$i18n.locale == 'en' ? i.assign_location.parent.parent?.name_en : i.assign_location.parent.parent?.name_bn,
-            this.$i18n.locale == 'en' ? i.assign_location.parent?.name_en : i.assign_location.parent?.name_bn,
+            this.$i18n.locale == 'en' ? i.assign_location?.parent?.parent?.name_en : i.assign_location?.parent?.parent?.name_bn,
+            this.$i18n.locale == 'en' ? i.assign_location?.parent?.name_en : i.assign_location?.parent?.name_bn,
           ]
         })));
 
@@ -1275,8 +1275,8 @@
                 "office_id": queryParams.language == 'en' ? i.assign_location_id : this.$helpers.englishToBangla(i.assign_location_id),
                 "office_type": queryParams.language == 'en' ? i.office_type?.value_en : i.office_type?.value_bn,
                 "office_name": queryParams.language == 'en' ? i.name_en : i.name_bn,
-                "division_name": queryParams.language == 'en' ? i.assign_location.parent.parent?.name_en : i.assign_location.parent.parent?.name_bn,
-                "district_name": queryParams.language == 'en' ? i.assign_location.parent?.name_en : i.assign_location.parent?.name_bn,
+                "division_name": queryParams.language == 'en' ? i.assign_location?.parent?.parent?.name_en : i.assign_location?.parent?.parent?.name_bn,
+                "district_name": queryParams.language == 'en' ? i.assign_location?.parent?.name_en : i.assign_location?.parent?.name_bn,
               }
             }));
 
