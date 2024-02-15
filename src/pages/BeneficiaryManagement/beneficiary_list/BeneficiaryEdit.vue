@@ -1681,7 +1681,7 @@
                             <ValidationProvider
                               v-slot="{ errors }"
                               name="Image"
-                              
+                              rules="imageSize"
                               vid="image"
                             >
                               <label>
@@ -2542,15 +2542,9 @@ export default {
     },
     async submitApplication() {
       try {
-        console.log('Nominee_image__',this.data.nominee_image);
-        console.log('Nominee_image__2',this.data.nominee_signature);
-        if (!this.data.nominee_image) {
-          this.$toast.error("Please select Nominee Image");
-          return;
-        } else if (!this.data.nominee_signature) {
-          this.$toast.error("Please select Nominee Signeture");
-          return;
-        }
+        console.log("Nominee_image", this.data.nominee_image);
+        console.log("Nominee_signeture", this.data.nominee_signature);
+
         let formData = new FormData();
         formData.append("nominee_en", this.data.nominee_en);
         formData.append("nominee_bn", this.data.nominee_bn);
@@ -2574,21 +2568,35 @@ export default {
         formData.append("financial_year_id", this.data.financial_year_id);
 
         const data = { formData: formData, id: this.$route.params.id };
-
         this.$store
           .dispatch("BeneficiaryManagement/UpdateBeneficiaryDetails", data)
           .then((res) => {
             console.log(res, "submit__");
             if (res.data?.success) {
               this.$toast.success("Data Updated Successfully");
-              // this.resetData();
-              // this.dialogAdd = false;
               this.$router.push({ name: "Beneficiary_List" });
             } else if (res.response?.data?.errors) {
               this.$refs.form.setErrors(res.response.data.errors);
               this.errors = res.response.data.errors;
             }
           });
+
+        // this.$axios
+        //   .put(`/admin/beneficiary/update/${this.$route.params.id}`, formData, {
+        //     headers: {
+        //       Authorization: "Bearer " + this.$store.state.token,
+        //       "Content-Type": "multipart/form-data",
+        //     },
+        //   })
+        //   .then((res) => {
+        //     if (res.data?.success) {
+        //       this.$toast.success("Data Updated Successfully");
+        //       this.$router.push({ name: "Beneficiary_List" });
+        //     } else if (res.response?.data?.errors) {
+        //       this.$refs.form.setErrors(res.response.data.errors);
+        //       this.errors = res.response.data.errors;
+        //     }
+        //   });
       } catch (e) {
         console.log(e);
       }
@@ -2611,11 +2619,9 @@ export default {
               this.data.signUrl = item?.signature;
 
               this.data.nomineeImageUrl = item?.nominee_image;
-              this.data.nominee_image = new File([""]);
+              this.data.nominee_image = new File([""], "");
               this.data.nomineeSignUrl = item?.nominee_signature;
-              this.data.nominee_signature = new File([""]);
-
-              console.log("nominee_image__", this.data.nominee_image);
+              this.data.nominee_signature = new File([""], "");
             } else {
               this.$toast.error("Record not found!");
               this.$router.push({ name: "Beneficiary_List" });

@@ -1202,7 +1202,7 @@
 
 
                                 <v-row>
-                                  <v-col cols="10" lg="10">
+                                  <v-col cols="4" lg="4">
                                     <ValidationProvider name="National Identity (NID) / Birth Registration Number"
                                       rules="checkNumber||required" vid="nominee_verification_number" v-slot="{ errors }">
                                       <label>{{ $t('container.application_selection.application.nid_brn') }}</label>
@@ -1214,11 +1214,60 @@
                                     </ValidationProvider>
                                   </v-col>
 
-                                  <v-col cols="2" lg="2">
-                                    <!-- Add margin-top to create space between the text field and the button -->
+                                  <!-- <v-col cols="2" lg="2">
                                     <v-btn class="btn mt-5" color="primary" style="height: 56px;"
                                       :disabled="data.nominee_verification_number == null">{{ $t('container.list.verify') }}</v-btn>
-                                  </v-col>
+                                  </v-col> -->
+                                  
+                          <v-col cols="2">
+
+
+                            <!-- Day Dropdown -->
+                            <label>{{ $t('container.application_selection.application.day') }} </label>
+                            <span style="margin-left: 4px; color: red">*</span>
+
+                            <v-select v-model="selectedDayNominee" :items="twoDigitDays" clearable outlined
+                              @change="updateDateNominee"></v-select>
+
+                          </v-col>
+                          <!-- Month Dropdown -->
+
+                          <v-col cols="2">
+                            <label>{{ $t('container.application_selection.application.month') }}  </label>
+                            <span style="margin-left: 4px; color: red">*</span>
+                            <v-select clearable v-model="selectedMonthNominee" :items="months" outlined
+                              @change="updateDateNominee"></v-select>
+                          </v-col>
+                    
+
+
+
+
+                          <!-- Year Dropdown -->
+                          <v-col cols="2">
+                            <label>{{ $t('container.application_selection.application.year') }} </label>
+                            <span style="margin-left: 4px; color: red">*</span>
+                            <ValidationProvider name="Age" vid="age" v-slot="{ errors }" rules="required">
+                              <v-select clearable v-model="selectedYearNominee" :items="years" outlined
+                                @change="updateDateNominee"></v-select>
+                            </ValidationProvider>
+
+                          </v-col>
+                                   <v-col cols="2">
+
+                              <label>{{ $t('container.application_selection.application.date_of_birth') }}  </label>
+                              <span style="margin-left: 4px; color: red">*</span>
+                               <ValidationProvider name="Date of Birth" vid="date_of_birth" v-slot="{ errors }" rules="required">
+
+                              <v-text-field v-model="data.nominee_date_of_birth" readonly :value="formattedDateNominee"
+                                outlined></v-text-field>
+                                </ValidationProvider>
+
+
+
+
+                            </v-col>
+
                                 </v-row>
                               </v-card-text>
                             </v-card>
@@ -1740,6 +1789,7 @@ export default {
         nominee_en: null,
         nominee_bn: null,
         nominee_verification_number: null,
+        nominee_date_of_birth:null,
         nominee_address: null,
         nominee_image: null,
         nominee_signature: null,
@@ -1787,6 +1837,9 @@ export default {
       selectedDay: null,
       selectedMonth: null,
       selectedYear: null,
+      selectedDayNominee: null,
+      selectedMonthNominee: null,
+      selectedYearNominee: null,
       // days: Array.from({ length: 31 }, (_, i) => i + 1),
       months: [
         "January", "February", "March", "April", "May", "June",
@@ -1830,6 +1883,14 @@ export default {
       }
       return null;
     },
+       formattedDateNominee() {
+      if (this.selectedDayNominee && this.selectedMonthNominee && this.selectedYearNominee) {
+        const monthIndex = this.months.indexOf(this.selectedMonthNominee) + 1;
+        const formattedMonth = monthIndex < 10 ? `0${monthIndex}` : `${monthIndex}`;
+        return `${this.selectedYearNominee}-${formattedMonth}-${this.selectedDayNominee}`;
+      }
+      return null;
+    },
 
   },
 
@@ -1855,6 +1916,9 @@ export default {
     // Update the formatted date when any dropdown changes
     updateDate() {
       this.data.date_of_birth = this.formattedDate; // triggers watch and emits the updated date
+    },
+     updateDateNominee() {
+      this.data.nominee_date_of_birth = this.formattedDateNominee; // triggers watch and emits the updated date
     },
     resetForm() {
       this.data.location_type = null;
