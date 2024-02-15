@@ -491,10 +491,10 @@
                                                     <v-col cols="8" lg="8">
                                                         :<template>
                                                             <span style="20px">
-                                                                {{
+                                                                <!-- {{
 
                                                                     language == 'bn' ? LocationName.value_bn :
-                                                                    LocationName.value_en }}
+                                                                    LocationName.value_en }} -->
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -714,9 +714,9 @@
                                                     <v-col cols="8" lg="8">
                                                         :<template>
                                                             <span style="20px">
-                                                                {{
+                                                                <!-- {{
                                                                     language == 'bn' ? permanentLocationName.value_bn :
-                                                                    permanentLocationName.value_en }}
+                                                                    permanentLocationName.value_en }} -->
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -1764,6 +1764,7 @@ export default {
                         );
 
                         this.LocationName = locationObject
+                        console.log(this.LocationName,"location");
                         this.data.city_id = this.current_location?.parent?.parent;
                         this.data.city_thana_id = this.current_location?.parent;
                         this.data.ward_id = this.current_location;
@@ -1876,7 +1877,7 @@ export default {
 
 
     created() {
-        this.getApplicationById();
+    
         this.$store
             .dispatch("getGlobalLookupByType", 20)
             .then((res) => (this.classes = res));
@@ -1887,7 +1888,7 @@ export default {
             .dispatch("getGlobalLookupByType", 1)
             .then((res) => (this.locationType = res));
         console.log(this.locationType, "l")
-
+        this.getApplicationById();
 
     },
 };
