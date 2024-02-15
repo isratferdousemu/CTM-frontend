@@ -1694,7 +1694,7 @@
                               <span style="margin-left: 4px; color: red"
                                 >*</span
                               >
-                              <!-- <v-file-input
+                              <v-file-input
                                 outlined
                                 show-size
                                 counter
@@ -1705,13 +1705,7 @@
                                 prepend-icon=""
                                 :error="errors[0] ? true : false"
                                 :error-messages="errors[0]"
-                              ></v-file-input> -->
-
-                              <input
-                                outline
-                                type="file"
-                                @change="handleNomineeImageChange"
-                              />
+                              ></v-file-input>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" align-self="end" lg="6">
@@ -1751,7 +1745,7 @@
                               <span style="margin-left: 4px; color: red"
                                 >*</span
                               >
-                              <!-- <v-file-input
+                              <v-file-input
                                 outlined
                                 show-size
                                 counter
@@ -1762,13 +1756,7 @@
                                 prepend-icon=""
                                 :error="errors[0] ? true : false"
                                 :error-messages="errors[0]"
-                              ></v-file-input> -->
-
-                              <input
-                                outline
-                                type="file"
-                                @change="handleNomineeSignChange"
-                              />
+                              ></v-file-input>
                             </ValidationProvider>
                           </v-col>
 
@@ -2552,12 +2540,6 @@ export default {
         this.data.nomineeSignUrl = null;
       }
     },
-    handleNomineeImageChange(event) {
-      this.data.nominee_image = event.target.files[0];
-    },
-    handleNomineeSignChange(event) {
-      this.data.nominee_signature = event.target.files[0];
-    },
     async submitApplication() {
       try {
         console.log("Nominee_image", this.data.nominee_image);
@@ -2585,34 +2567,9 @@ export default {
         formData.append("monthly_allowance", this.data.monthly_allowance);
         formData.append("financial_year_id", this.data.financial_year_id);
 
-<<<<<<< HEAD
-        // const data = { formData: formData, id: this.$route.params.id };
-        // this.$store
-        //   .dispatch("BeneficiaryManagement/UpdateBeneficiaryDetails", data)
-        //   .then((res) => {
-        //     console.log(res, "submit__");
-        //     if (res.data?.success) {
-        //       this.$toast.success("Data Updated Successfully");
-        //       this.$router.push({ name: "Beneficiary_List" });
-        //     } else if (res.response?.data?.errors) {
-        //       this.$refs.form.setErrors(res.response.data.errors);
-        //       this.errors = res.response.data.errors;
-        //     }
-        //   });
-
-        this.$axios
-          .put(`/admin/beneficiary/update/${this.$route.params.id}`, formData, {
-            headers: {
-              Authorization: "Bearer " + this.$store.state.token,
-              "Application": "application/json",
-              "Content-Type": "multipart/form-data",
-            },
-          })
-=======
         const data = { formData: formData, id: this.$route.params.id };
         this.$store
           .dispatch("BeneficiaryManagement/UpdateBeneficiaryDetails", data)
->>>>>>> 2dac9453520266426a5b1202c9ea13b6c5c80407
           .then((res) => {
             console.log(res, "submit__");
             if (res.data?.success) {
