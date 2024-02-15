@@ -309,16 +309,6 @@ export default {
 
                   <v-spacer></v-spacer>
 
-                  <v-col lg="4" md="6" cols="12" class="text-right">
-                    <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="GeneratePDF()">
-                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
-                    </v-btn>
-                    <v-btn elevation="2" class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
-                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
-                      {{ $t("container.list.excel") }}
-                    </v-btn>
-                  </v-col>
-
                   <v-btn
                       medium
                       flat
@@ -339,7 +329,15 @@ export default {
                 {{ $t('container.list.total') }} &nbsp;:&nbsp;{{ this.total }}
             </v-col>
 
-
+          <v-col lg="4" md="6" cols="12" class="text-right">
+            <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="GeneratePDF()">
+              <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
+            </v-btn>
+            <v-btn elevation="2" class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
+              <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+              {{ $t("container.list.excel") }}
+            </v-btn>
+          </v-col>
         </v-row>
                 <v-card-subtitle>
                   <v-data-table
