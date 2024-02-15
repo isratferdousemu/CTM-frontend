@@ -791,7 +791,6 @@
           </v-col>
         </v-row>
       </v-col>
-
       <!-- Beneficiary Delete modal  -->
       <v-dialog v-model="dialogDelete" width="650">
         <v-card style="justify-content: center; text-align: center">
