@@ -2585,6 +2585,7 @@ export default {
         formData.append("monthly_allowance", this.data.monthly_allowance);
         formData.append("financial_year_id", this.data.financial_year_id);
 
+<<<<<<< HEAD
         // const data = { formData: formData, id: this.$route.params.id };
         // this.$store
         //   .dispatch("BeneficiaryManagement/UpdateBeneficiaryDetails", data)
@@ -2607,7 +2608,13 @@ export default {
               "Content-Type": "multipart/form-data",
             },
           })
+=======
+        const data = { formData: formData, id: this.$route.params.id };
+        this.$store
+          .dispatch("BeneficiaryManagement/UpdateBeneficiaryDetails", data)
+>>>>>>> 2dac9453520266426a5b1202c9ea13b6c5c80407
           .then((res) => {
+            console.log(res, "submit__");
             if (res.data?.success) {
               this.$toast.success("Data Updated Successfully");
               this.$router.push({ name: "Beneficiary_List" });
@@ -2616,6 +2623,23 @@ export default {
               this.errors = res.response.data.errors;
             }
           });
+
+        // this.$axios
+        //   .put(`/admin/beneficiary/update/${this.$route.params.id}`, formData, {
+        //     headers: {
+        //       Authorization: "Bearer " + this.$store.state.token,
+        //       "Content-Type": "multipart/form-data",
+        //     },
+        //   })
+        //   .then((res) => {
+        //     if (res.data?.success) {
+        //       this.$toast.success("Data Updated Successfully");
+        //       this.$router.push({ name: "Beneficiary_List" });
+        //     } else if (res.response?.data?.errors) {
+        //       this.$refs.form.setErrors(res.response.data.errors);
+        //       this.errors = res.response.data.errors;
+        //     }
+        //   });
       } catch (e) {
         console.log(e);
       }

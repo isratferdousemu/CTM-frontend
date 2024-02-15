@@ -40,6 +40,18 @@
                     >
                     </v-text-field>
                   </div>
+
+                  <v-col lg="4" md="6" cols="12" class="text-right">
+                    <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4" @click="GeneratePdf()">
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
+                    </v-btn>
+                    <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                      {{ $t("container.list.excel") }}
+                    </v-btn>
+                  </v-col>
+
+
                   <v-btn
                     @click="createDialog"
                     flat
@@ -48,6 +60,11 @@
                   >
                     {{ $t("container.list.add_new") }}
                   </v-btn>
+
+
+
+
+
                   <v-col cols="12">
                     <v-data-table
                       :loading="loading"
@@ -299,7 +316,7 @@
               $t(
                 "container.system_config.allowance_program_additiona_field.edit"
               )
-            }}       
+            }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
@@ -346,12 +363,12 @@
                       :error-messages="errors[0]"
                     ></v-text-field>
                   </ValidationProvider>
-                    
+
 
                 <ValidationProvider
                   name="Field Type"
                   vid="field_type"
-                 
+
                   v-slot="{ errors }"
                 >
                   <v-select
@@ -373,7 +390,7 @@
                  <ValidationProvider
                         name="Date"
                         vid="date"
-                    
+
                         v-slot="{ errors }"
                       >
                         <v-text-field
@@ -393,7 +410,7 @@
                        <ValidationProvider
                         name="Number"
                         vid="number"
-                       
+
                         v-slot="{ errors }"
                       >
                         <v-text-field
@@ -413,7 +430,7 @@
                        <ValidationProvider
                         name="Text"
                         vid="text"
-                       
+
                         v-slot="{ errors }"
                       >
                         <v-text-field
@@ -549,12 +566,13 @@
     </v-row>
   </div>
 </template>
-  
+
 
 <script>
 import { mapState, mapActions } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
+import {http} from "@/hooks/httpService";
 
 extend("required", required);
 
@@ -576,26 +594,26 @@ export default {
         checkbox: null,
       },
       field_types: [
-       
+
         { id: 2, value: "Dropdown" },
         { id: 3, value: "Date" },
         { id: 4, value: "Number" },
         { id: 5, value: "Text" },
-      
+
       ],
       additional_field_value: [],
-      
-      
+
+
       additional_fields: [],
       // office_type_id: null,
       //extra work for city
       // Selected wards
       edit: [],
-     
+
       message: null,
       districts: [],
       cities: [],
-      additional_fields: [],
+      all_additional_fields: [],
       field_value: [],
       dialogAdd: false,
       dialogEdit: false,
@@ -839,6 +857,163 @@ export default {
     },
   },
   methods: {
+
+    async GeneratePdf(){
+      // this.loading = false;
+      const queryParams = {
+        searchText: this.search,
+        perPage: this.all_additional_fields.length ?? 0,
+        page: this.pagination.current,
+        sortBy: this.sortBy,
+        sortDesc: this.sortDesc,
+        user_id: this.$store.state.userData.id,
+      };
+
+      await this.$axios
+          .get("/admin/allowance/get_additional_field", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+            params: queryParams,
+          })
+          .then((result) => {
+            this.all_additional_fields = result.data.data;
+          })
+          .catch((err) => {
+            console.log(err, "error");
+            if (err.response?.data?.errors) {
+              this.$refs.form.setErrors(err.response.data.errors);
+            }
+            console.log(err.response);
+            this.$toast.error(err?.response?.data?.message);
+          });
+
+      const HeaderInfo = [
+        this.$t('container.list.sl'),
+        this.$t("container.system_config.allowance_program_additiona_field.name_en"),
+        this.$t("container.system_config.allowance_program_additiona_field.name_bn"),
+        this.$t("container.system_config.allowance_program_additiona_field.field_type")
+      ]
+
+      const OBJ = this.all_additional_fields;
+      const CustomInfo = OBJ.map((((i,index) => {
+        return [
+          this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+           i.name_en ,
+          i.name_bn,
+          i.type
+        ]
+      })));
+
+      const queryParam = {
+        language: this.$i18n.locale,
+        data:CustomInfo,
+        header:HeaderInfo,
+        fileName:this.$t("container.system_config.allowance_program_additiona_field.list"),
+      };
+
+      try {
+        const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "application/json", // Set content type to JSON
+          },
+          responseType: 'arraybuffer',
+        });
+
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        window.open(url, '_blank');
+        this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
+        console.error('Error generating PDF:', error);
+      }
+    },
+
+    async GenerateExcel() {
+      // this.isLoading = true;
+
+      const queryParams = {
+        searchText: this.search,
+        perPage: this.all_additional_fields.length ?? 0,
+        page: this.pagination.current,
+        sortBy: this.sortBy,
+        sortDesc: this.sortDesc,
+        user_id: this.$store.state.userData.id,
+      };
+
+      await this.$axios
+          .get("/admin/allowance/get_additional_field", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+            params: queryParams,
+          })
+          .then((result) => {
+            this.all_additional_fields = result.data.data;
+
+            import('@/plugins/Export2Excel').then((excel) => {
+              const OBJ = this.all_additional_fields;
+
+              const CustomInfo = OBJ.map(((i,index) => {
+                return {
+                  "sl":this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+                  "name_en":i.name_en ,
+                  "name_bn":i.name_bn,
+                  "type":i.type,
+                }
+              }));
+
+              const Header = [
+                this.$t('container.list.sl'),
+                this.$t("container.system_config.allowance_program_additiona_field.name_en"),
+                this.$t("container.system_config.allowance_program_additiona_field.name_bn"),
+                this.$t("container.system_config.allowance_program_additiona_field.field_type")
+              ]
+
+              const Field = ['sl','name_en', 'name_bn', 'type']
+
+              const Data = this.FormatJson(Field, CustomInfo)
+              const currentDate = new Date().toISOString().slice(0, 10); //
+              let dateinfo = this.$i18n.locale == 'en' ? currentDate : this.$helpers.englishToBangla(currentDate)
+
+              const filenameWithDate = `${dateinfo}_${this.$t("container.system_config.allowance_program_additiona_field.list")}`;
+
+              excel.export_json_to_excel({
+                header: Header,
+                data: Data,
+                sheetName: '',
+                filename: filenameWithDate,
+                autoWidth: true,
+                bookType: "xlsx"
+              })
+            })
+
+            this.loading = false;
+
+          })
+          .catch((err) => {
+            console.log(err, "error");
+            if (err.response?.data?.errors) {
+              this.$refs.form.setErrors(err.response.data.errors);
+            }
+            console.log(err.response);
+            this.$toast.error(err?.response?.data?.message);
+          });
+
+    },
+
+    FormatJson(FilterData,JsonData){
+      return JsonData.map((v) =>
+          FilterData.map((j => {
+            return v[j];
+          })))
+    },
+
+
     submitField(){
         if (this.data.type === 1) {
         this.data.field_value = [];
@@ -912,9 +1087,9 @@ export default {
         });
 
     },
-   
+
     updateField() {
-   
+
    if (this.data.type === 1) {
       this.data.field_value = [];
       this.data.number = null;
@@ -929,7 +1104,7 @@ export default {
         this.data.text = null;
         this.data.date = null;
         this.data.type = "dropdown" ;
-     
+
 
       }
       if (this.data.type == 3 ) {
@@ -939,7 +1114,7 @@ export default {
         this.data.number = null;
         this.data.text = null;
         this.data.checkbox = null;
-     
+
       }
       if (this.data.type == 4 ) {
         this.data.type = "number";
@@ -958,27 +1133,25 @@ export default {
 
         this.data.type = "text";
       }
-    
-         console.log(this.data, "this.data")
       let fd = new FormData();
       for (const [key, value] of Object.entries(this.data)) {
-       
+
         if (value !== null) {
           if (key == "field_value") {
-         
+
             for (let i = 0; i < value.length; i++) {
-              
+
               fd.append("field_value[" + i + "].value", value[i].value);
-             
+
             }
           } else {
             fd.append(key, value);
-         
+
           }
-           console.log(key, value);
+
         }
       }
-   
+
        this.$axios
         .post("admin/allowance/allowance-additional-field/update", fd, {
           headers: {
@@ -988,13 +1161,13 @@ export default {
         })
         .then((result) => {
           this.loading = false;
-         
+
           if (result.data.success == true) {
             this.$toast.success("Data Updated Successfully");
             this.dialogEdit = false;
             this.resetData();
             this.GetOffices();
-          
+
 
           } else {
             this.$refs.formEdit.setErrors(result.data.errors);
@@ -1006,10 +1179,10 @@ export default {
 
 
         });
-  
+
     },
-    
-    
+
+
     editDialog(item) {
     this.resetData();
       this.dialogEdit = true;
@@ -1017,28 +1190,28 @@ export default {
       this.data.name_en = item.name_en;
        this.data.name_bn = item.name_bn;
       if(item.type == "checkbox"){
-      
+
          this.data.type= 1;
       }
        if (item.type == "dropdown") {
         this.data.type = 2;
         this.data.field_value = item?.additional_field_value;
-      
-         
+
+
       }
        if (item.type == "date") {
-       
+
         this.data.type = 3;
         this.data.date = item?.additional_field_value[0].value;
-       
+
       }
       if (item.type == "number") {
         this.data.type = 4;
         this.data.number = item?.additional_field_value[0].value;;
-     
+
       }
        if (item.type == "text") {
-        
+
         this.data.type = 5;
          this.data.text = item?.additional_field_value[0].value;;
       }
@@ -1046,14 +1219,14 @@ export default {
 
         this.data.type = 6;
       }
- 
-      
-      
-     
+
+
+
+
       this.data.id = item.id;
       this.errors = {};
     },
-  
+
     addRow() {
       // Find the maximum id in the current array
       const maxId = Math.max(
@@ -1080,7 +1253,7 @@ export default {
       // } else {
         // Optionally, you can show a message or handle this case differently
                 // this.$toast.success("Atleast One input Needed");
-        
+
       // }
     },
     createDialog() {
@@ -1112,14 +1285,11 @@ export default {
       this.errors = {};
     },
 
-    
-  
+
+
     deleteAlert(item) {
-      console.log(item, "item ")
       this.deleteDialog = true;
        this.delete_id = item.id;
-      console.log(this.delete_id,"this.delete_id ")
-     
     },
     onPageChange($event) {
       // this.pagination.current = $event;
@@ -1129,26 +1299,19 @@ export default {
       for (let i = 0; i < this.headers.length; i++) {
         if (this.headers[i].value == "name_en") {
           this.headers[i].class = "highlight-column";
-          console.log(this.headers[i], "headers after");
         } else {
           this.headers[i].class = "";
         }
       }
     },
     handleOptionsUpdate({ sortBy, sortDesc }) {
-      console.log(this.headers, sortBy, sortDesc);
       for (let i = 0; i < this.headers.length; i++) {
-        console.log(this.headers[i]);
-
         if (this.headers[i].value == sortBy) {
           this.headers[i].class = "highlight-column";
-          console.log(this.headers[i], "headers after");
         } else {
           this.headers[i].class = "";
         }
       }
-
-      console.log(sortBy, sortDesc);
       this.sortBy = "name_en";
       this.sortDesc = "asc";
       if (sortBy.length === 0 || sortDesc.length === 0) {
@@ -1164,10 +1327,7 @@ export default {
         sortBy: this.sortBy,
         orderBy: this.sortDesc,
       };
-
-      // alert(JSON.stringify(queryParams));
     },
-    // console.log(store.state.userData.location, ' -> userData')
 
     async GetOffices() {
       const queryParams = {
@@ -1178,8 +1338,7 @@ export default {
         sortDesc: this.sortDesc,
         user_id: this.$store.state.userData.id,
       };
-      console.log(queryParams);
-      console.log(this.$store.state.token, "token");
+
       this.$axios
         .get("/admin/allowance/get_additional_field", {
           headers: {
@@ -1189,12 +1348,10 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          // console.log(result, "additional_fields");
           this.additional_fields = result.data.data;
-          console.log(this.additional_fields, "get additional_fields");
-          this.pagination.current = result.data.meta.current_page;
-          this.pagination.total = result.data.meta.last_page;
-          this.pagination.grand_total = result.data.meta.total;
+          this.pagination.current = result.data.current_page;
+          this.pagination.total = result.data.last_page;
+          this.pagination.grand_total = result.data.total;
         })
         .catch((err) => {
           console.log(err, "error");
@@ -1215,7 +1372,6 @@ export default {
 
         })
         .then((res) => {
-          // console.log(res);
           // check if the request was successful
           if (res?.data?.success) {
             this.$toast.error(res.data.message);
@@ -1235,7 +1391,7 @@ export default {
         });
     },
     resetData() {
-  
+
       this.data.id = null;
       this.data.name_en = null;
       this.data.name_bn = null;
@@ -1245,8 +1401,8 @@ export default {
       this.data.number = null;
       this.data.text = null;
       this.data.checkbox = null;
-       
-    
+
+
     },
 
     updateHeaderTitle() {
@@ -1258,16 +1414,9 @@ export default {
     this.setInitialHeader();
     this.$store.dispatch("getLookupByType", 3).then((data) => {
       this.officeType = data;
-      console.log(this.officeType, "Office");
     });
-    // this.GetOffices();
     this.GetAllDivisions();
-    // this.GetLocationType();
     this.GetAllUpazila();
-    // this.GetCityCorporation();
-    // this.$store
-    //   .dispatch("getLookupByType", 1)
-    //   .then((res) => (this.locationType = res));
   },
   watch: {
     "$i18n.locale": "updateHeaderTitle",

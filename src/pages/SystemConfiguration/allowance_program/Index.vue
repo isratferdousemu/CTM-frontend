@@ -59,27 +59,139 @@ export default {
   },
 
   methods: {
-     GeneratePDF() {
-      const queryParams = {
 
-        searchText: this.search,
+    async GeneratePDF() {
+      // this.isLoading = true;
+      const { sortBy, sortDesc, page, itemsPerPage } = this.options
+
+      await http().get('/admin/allowance/get', {
+        params: {
+          sortBy: sortBy[0],
+          sortDesc: sortDesc[0],
+          page: page,
+          itemsPerPage: this.total,
+          search: this.search
+        }
+      }).then((result) => {
+        this.allowances = result.data.data;
+        this.loading = false;
+      }).catch((err) => {
+        console.log(err);
+      })
+
+      const HeaderInfo = [
+        this.$t("container.list.sl"),
+        this.$t('container.system_config.allowance_program.name_en'),
+        this.$t('container.system_config.allowance_program.name_bn'),
+        this.$t('container.system_config.allowance_program.payment_cycle'),
+        this.$t('container.system_config.allowance_program.status')
+      ]
+
+      const CustomInfo = this.allowances.map(((i,index) => {
+        return [
+          this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+          i.name_en,
+          i.name_bn,
+          i.payment_cycle,
+          this.$i18n.locale == 'en' ? i.pmt_status : this.$helpers.englishToBangla(i.pmt_status),
+        ]
+      }));
+
+      const queryParam = {
+        language: this.$i18n.locale,
+        data:CustomInfo,
+        header:HeaderInfo,
+        fileName:this.$t('container.system_config.allowance_program.list'),
       };
-      this.$axios
-        .get("/admin/allowance/generate-pdf", {
+      try {
+        const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json", // Set content type to JSON
           },
-          params: queryParams,
-        })
-        .then((result) => {
-          window.open(result.data.data.url, '_blank');
-        })
-        .catch(error => {
-          console.error('Error generating PDF:', error);
+          responseType: 'arraybuffer',
         });
 
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        window.open(url, '_blank');
+        this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
+        console.error('Error generating PDF:', error);
+      }
     },
+
+    async GenerateExcel(){
+
+      const { sortBy, sortDesc, page, itemsPerPage } = this.options
+
+      await http().get('/admin/allowance/get', {
+        params: {
+          sortBy: sortBy[0],
+          sortDesc: sortDesc[0],
+          page: page,
+          itemsPerPage: this.total,
+          search: this.search
+        }
+      }).then((result) => {
+        this.allowances = result.data.data;
+
+        import('@/plugins/Export2Excel').then((excel) => {
+
+          const HeaderInfo = [
+            this.$t("container.list.sl"),
+            this.$t('container.system_config.allowance_program.name_en'),
+            this.$t('container.system_config.allowance_program.name_bn'),
+            this.$t('container.system_config.allowance_program.payment_cycle'),
+            this.$t('container.system_config.allowance_program.status')
+          ]
+
+          const CustomInfo = this.allowances.map(((i,index) => {
+            return {
+              "sl" : this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+              "name_en" :i.name_en,
+              "name_bn" :i.name_bn,
+              "payment_cycle" :i.payment_cycle,
+              "status" :this.$i18n.locale == 'en' ? i.pmt_status : this.$helpers.englishToBangla(i.pmt_status),
+            }
+          }));
+
+          const Field = ['sl','name_en', 'name_bn','payment_cycle','status']
+
+          const Data = this.FormatJson(Field, CustomInfo)
+          const currentDate = new Date().toISOString().slice(0, 10); //
+          let dateinfo = this.$i18n.locale == 'en' ? currentDate : this.$helpers.englishToBangla(currentDate)
+
+          const filenameWithDate = `${dateinfo}_${this.$t("container.system_config.allowance_program.list")}`;
+
+          excel.export_json_to_excel({
+            header: HeaderInfo,
+            data: Data,
+            sheetName: '',
+            filename: filenameWithDate,
+            autoWidth: true,
+            bookType: "xlsx"
+          })
+        })
+
+        this.loading = false;
+      }).catch((err) => {
+        console.log(err);
+      })
+
+      // this.isLoading = true;
+
+    },
+
+    FormatJson(FilterData,JsonData){
+      return JsonData.map((v) =>
+          FilterData.map((j => {
+            return v[j];
+          })))
+    },
+
+
      deviceActivate: async function ({ id, system_status }) {
 
       this.$axios
@@ -217,15 +329,15 @@ export default {
                 {{ $t('container.list.total') }} &nbsp;:&nbsp;{{ this.total }}
             </v-col>
 
-            <!-- Dropdown on the right -->
-            <v-col lg="4" md="4" cols="12" class="text-right">
-                <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4" @click="GeneratePDF()">
-                    {{ $t("container.list.PDF") }}
-                </v-btn>
-                <!-- <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
+          <v-col lg="4" md="6" cols="12" class="text-right">
+            <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="GeneratePDF()">
+              <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
+            </v-btn>
+            <v-btn elevation="2" class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
+              <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
               {{ $t("container.list.excel") }}
-          </v-btn> -->
-            </v-col>
+            </v-btn>
+          </v-col>
         </v-row>
                 <v-card-subtitle>
                   <v-data-table
