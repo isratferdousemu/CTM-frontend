@@ -128,9 +128,9 @@ export default {
                             vid="user_id"
                             rules="required"
                             v-slot="{ errors }">
-                            <v-select
+                            <v-autocomplete
                               :items="users"
-                              item-text="username"
+                              item-text="user_id"
                               item-value="user_id"
                               :label="$t('container.system_config.device.user_id')"
                               menu-props="auto"
@@ -142,7 +142,7 @@ export default {
                               required
                               v-model="add_device.user_id"
                               @change="getUserName(add_device.user_id)"
-                            ></v-select>
+                            ></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
 

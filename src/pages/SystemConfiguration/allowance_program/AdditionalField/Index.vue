@@ -60,6 +60,11 @@
                   >
                     {{ $t("container.list.add_new") }}
                   </v-btn>
+
+
+
+
+
                   <v-col cols="12">
                     <v-data-table
                       :loading="loading"
@@ -608,7 +613,6 @@ export default {
       message: null,
       districts: [],
       cities: [],
-      additional_fields: [],
       all_additional_fields: [],
       field_value: [],
       dialogAdd: false,
