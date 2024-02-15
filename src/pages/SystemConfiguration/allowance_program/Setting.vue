@@ -164,13 +164,32 @@ export default {
             }
         },
 
-        allowanceAmount(amount) {
-            if (amount === true) {
-                this.disable_class = true;
-            } else {
-                this.disable_class = false;
-            }
-        },
+
+      allowanceAmount(amount){
+        this.is_disable_class = !this.is_disable_class
+
+        // if (amount === true) {
+        //   this.editAllowanceProgram.is_age_limit = false
+        //   this.age_limit = false
+        // }
+
+
+        // this.genderUpdatevalue = []
+
+        this.updateAllowanceAmount = [];
+        if (this.is_disable_class === true && this.updateAllowanceAmount.length)
+        {
+          let disable_class = {
+            id: '',
+            name: '',
+            type_id: '',
+            amount: '',
+          }
+
+          this.updateAllowanceAmount.push(disable_class);
+        }
+      },
+
 
         removeGender(event) {
             console.log(event);
