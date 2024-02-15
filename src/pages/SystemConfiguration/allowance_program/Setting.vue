@@ -39,6 +39,8 @@ export default {
 
             index: 0,
 
+            divs: [],
+
             number: 0,
             numberRule: val => {
                 if (val < 0) return 'Please enter a positive number'
@@ -165,20 +167,40 @@ export default {
         },
 
         ageLimit(age) {
-            if (age === true) {
-                this.age_limit = true;
-            } else {
-                this.age_limit = false;
-            }
+          this.age_limit = !this.age_limit;
+
+            // if (age === true) {
+            //   this.editAllowanceProgram.is_disable_class = false
+            //   this.is_disable_class = false
+            // }
         },
 
-        allowanceAmount(amount) {
-            if (amount === true) {
-                this.disable_class = true;
-            } else {
-                this.disable_class = false;
-            }
-        },
+
+      allowanceAmount(amount){
+        this.is_disable_class = !this.is_disable_class
+
+        // if (amount === true) {
+        //   this.editAllowanceProgram.is_age_limit = false
+        //   this.age_limit = false
+        // }
+
+
+        // this.genderUpdatevalue = []
+
+        this.updateAllowanceAmount = [];
+        if (this.is_disable_class === true && this.updateAllowanceAmount.length)
+        {
+          let disable_class = {
+            id: '',
+            name: '',
+            type_id: '',
+            amount: '',
+          }
+
+          this.updateAllowanceAmount.push(disable_class);
+        }
+      },
+
 
         removeGender(event) {
             console.log(event);
@@ -283,17 +305,17 @@ export default {
                 formData.append('name_en', this.editAllowanceProgram.name_en);
                 formData.append('name_bn', this.editAllowanceProgram.name_bn);
                 formData.append('payment_cycle', this.editAllowanceProgram.payment_cycle);
-                formData.append('is_marital', this.editAllowanceProgram.is_marital);
+                formData.append('is_marital', !!this.editAllowanceProgram.is_marital);
                 formData.append('marital_status', this.editAllowanceProgram.marital_status);
 
-                formData.append('is_active', this.editAllowanceProgram.is_active);
+                formData.append('is_active', !!this.editAllowanceProgram.is_active);
                 formData.append('system_status', this.editAllowanceProgram.system_status);
                 formData.append('pmt_status', this.editAllowanceProgram.pmt_status);
 
 
-                formData.append('is_disable_class', this.editAllowanceProgram.is_disable_class);
+                formData.append('is_disable_class', !!this.editAllowanceProgram.is_disable_class);
 
-                formData.append('is_age_limit', this.editAllowanceProgram.is_age_limit);
+                formData.append('is_age_limit', !!this.editAllowanceProgram.is_age_limit);
 
                 if (this.updateAllowanceAge !== null) {
                     this.updateAllowanceAge.forEach((item, index) => {
@@ -477,7 +499,6 @@ export default {
                                             <v-row wrap>
                                                 <v-col cols="12" sm="6" lg="6">
                                                     <v-checkbox v-model="editAllowanceProgram.is_age_limit"
-                                                        :disabled="editAllowanceProgram.is_age_limit === 1 ? true : false"
                                                         :label="$t('container.system_config.allowance_program.age_limit_amount')"
                                                         @click="ageLimit(editAllowanceProgram.is_age_limit)"></v-checkbox>
 
@@ -489,8 +510,7 @@ export default {
                                                                 <td>Min Age</td>
                                                                 <td>Max Age</td>
                                                                 <td>
-                                                                    <span
-                                                                        v-if="editAllowanceProgram.is_disable_class === 0">
+                                                                    <span>
                                                                         Amount
                                                                     </span>
 
@@ -532,7 +552,7 @@ export default {
                                                                     </ValidationProvider>
                                                                 </td>
                                                                 <td>
-                                                                    <div v-if="editAllowanceProgram.is_disable_class === 0">
+                                                                    <div>
                                                                         <ValidationProvider name="amount" vid="amount"
                                                                             rules="required" v-slot="{ errors }">
                                                                             <v-text-field v-model="g.amount" type="number"
@@ -553,25 +573,23 @@ export default {
                                                 </v-col>
 
                                                 <v-col cols="12" sm="6" lg="6">
-                                                    <div v-show="editAllowanceProgram.is_disable_class === 1">
-                                                        <v-checkbox v-model="editAllowanceProgram.is_disable_class"
-                                                            :disabled="editAllowanceProgram.is_disable_class === 1 ? true : false"
-                                                            :label="$t('container.system_config.allowance_program.class_wise_amount')"
-                                                            @click="allowanceAmount(editAllowanceProgram.is_disable_class)"></v-checkbox>
-                                                    </div>
+                                                  <v-checkbox v-model="editAllowanceProgram.is_disable_class"
+                                                              :label="$t('container.system_config.allowance_program.class_wise_amount')"
+                                                              @click="allowanceAmount(editAllowanceProgram.is_disable_class)"></v-checkbox>
+
 
 
                                                     <table
-                                                        v-if="editAllowanceProgram.is_disable_class === 1 || disable_class === true">
+                                                        v-if="editAllowanceProgram.is_disable_class">
                                                         <thead>
                                                             <tr v-show="updateAllowanceAmount.length">
-                                                                <td>Type</td>
+                                                                <td>Class</td>
                                                                 <td>Amount</td>
                                                                 <td>Add/Remove</td>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr v-show="updateAllowanceAmount.length"
+                                                            <tr v-if="updateAllowanceAmount.length"
                                                                 v-for="(aa, index) in updateAllowanceAmount" :key="aa.id">
                                                                 <td>
                                                                     <ValidationProvider name="education class" vid="type_id"
@@ -610,9 +628,6 @@ export default {
                                                                 </td>
                                                             </tr>
 
-                                                            <tr v-show="!updateAllowanceAmount.length">
-                                                                <td colspan="3">No Data Found</td>
-                                                            </tr>
                                                         </tbody>
                                                     </table>
                                                 </v-col>

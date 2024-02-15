@@ -11,8 +11,14 @@
     <v-btn icon @click.stop="Drawer = !Drawer">
       <v-icon>mdi-menu</v-icon>
     </v-btn>
-
-    <b>{{ headerTitle }}</b>
+    <v-img
+        class="text-center ma-auto"
+        max-height="100%"
+        max-width="50px"
+        position="center center"
+        src="/assets/images/logo.png"
+      ></v-img>
+    <b>  <p style="margin-left:15px; margin-top:15px">{{  this.$t("topSidebar.title") }}</p> </b>
 
 
     <v-spacer />
