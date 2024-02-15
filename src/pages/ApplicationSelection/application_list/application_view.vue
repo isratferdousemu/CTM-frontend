@@ -491,10 +491,10 @@
                                                     <v-col cols="8" lg="8">
                                                         :<template>
                                                             <span style="20px">
-                                                                <!-- {{
+                                                                {{
 
                                                                     language == 'bn' ? LocationName.value_bn :
-                                                                    LocationName.value_en }} -->
+                                                                    LocationName.value_en }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -714,9 +714,9 @@
                                                     <v-col cols="8" lg="8">
                                                         :<template>
                                                             <span style="20px">
-                                                                <!-- {{
+                                                                {{
                                                                     language == 'bn' ? permanentLocationName.value_bn :
-                                                                    permanentLocationName.value_en }} -->
+                                                                    permanentLocationName.value_en }}
                                                             </span>
                                                         </template>
                                                     </v-col>
