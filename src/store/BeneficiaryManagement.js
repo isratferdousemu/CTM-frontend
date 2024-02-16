@@ -1,4 +1,5 @@
 import { http } from "@/hooks/httpService";
+import { httpFile } from "../hooks/httpService";
 
 /* -------------------------------------------------------------------------- */
 /*                                states Define                               */
@@ -121,8 +122,8 @@ const actions = {
   },
 
   UpdateBeneficiaryDetails: ({ commit }, data) => {
-    return http()
-      .put(`/admin/beneficiary/update/${data.id}`, data.formData)
+    return httpFile()
+      .post(`/admin/beneficiary/update/${data.id}`, data.formData)
       .then((result) => {
         return result;
       })
