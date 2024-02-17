@@ -209,19 +209,31 @@ const BeneficiaryManagementRoutes = [
     },
     component: () =>
       import(
-        "../pages/BeneficiaryManagement/DigitalIDCard/DigitalIDCardV1.vue"
+        "../pages/BeneficiaryManagement/DigitalIDCard/DigitalIdCard_V2.vue"
       ),
   },
-  // {
-  //   path: "/beneficiary-management/beneficiary-exit-list",
-  //   name: "beneficiary_exit_list",
-  //   meta: {
-  //     requiresAuth: true,
-  //     permission: "beneficiary-exit-list",
-  //   },
-  //   component: () =>
-  //     import("../pages/BeneficiaryManagement/BeneficiaryExit/ExitList.vue"),
-  // },
+  {
+    path: "/beneficiary-management/digital-id/:id",
+    name: "digital-id-card",
+    meta: {
+      requiresAuth: true,
+      permission: "digital-id-card",
+    },
+    component: () =>
+      import(
+        "../pages/BeneficiaryManagement/DigitalIDCard/DigitalIDCard.vue"
+      ),
+  },
+  {
+    path: "/beneficiary-management/beneficiary-exit-list",
+    name: "beneficiary_exit_list",
+    meta: {
+      requiresAuth: true,
+      permission: "beneficiary-exit-list",
+    },
+    component: () =>
+      import("../pages/BeneficiaryManagement/BeneficiaryExit/ExitList.vue"),
+  },
   {
     path: "/beneficiary-management/beneficiary-exit",
     name: "beneficiary-exit",

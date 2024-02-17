@@ -1712,7 +1712,7 @@
                             <v-img
                               :src="data.nomineeSignUrl"
                               style="
-                                width: 150px;
+                                width: 200px;
                                 height: 80px;
                                 border: 1px solid #ccc;
                               "

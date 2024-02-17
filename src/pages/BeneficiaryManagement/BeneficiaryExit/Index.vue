@@ -2,7 +2,7 @@
   <div id="information_tracking">
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
-        <!-- <div class="d-block text-right">
+        <div class="d-block text-right">
           <v-btn
             elevation="2"
             class="btn my-2"
@@ -12,7 +12,7 @@
           >
             {{ $t("container.list.view-list") }}
           </v-btn>
-        </div> -->
+        </div>
         <!-- Expantion panels start -->
         <v-expansion-panels>
           <v-expansion-panel>

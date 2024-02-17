@@ -35,7 +35,7 @@
                         "
                         outlined
                         disabled
-                        v-model="beneficiary.name_en"
+                        v-model="ben_id_with_name"
                       >
                       </v-text-field>
                     </v-col>
@@ -321,6 +321,7 @@ export default {
       items: [5, 10, 15, 20, 40, 50, 100],
       panel: [0],
       beneficiary: {},
+      ben_id_with_name:"",
       replaceList: [],
       selected: [],
       cause_types: [],
@@ -347,7 +348,7 @@ export default {
           })
           .then((result) => {
             this.beneficiary = result.data.data;
-            console.log("beneficiary__", this.beneficiary);
+            this.ben_id_with_name  = this.beneficiary.application_id.concat("_", this.beneficiary.name_en);            
           })
           .catch((err) => {
             if (err.response?.data?.errors) {
@@ -377,7 +378,6 @@ export default {
           .then((result) => {
             this.replaceList = result.data.data;
             this.loading = false;
-            console.log("beneficiary__replaceList", this.replaceList);
           })
           .catch((err) => {
             if (err.response?.data?.errors) {
