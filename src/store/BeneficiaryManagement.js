@@ -33,7 +33,7 @@ const actions = {
       console.error("Error fetching data:", error);
     }
   },
-  
+
   StoreCommittee: ({ commit }, data) => {
     return http()
       .post("/admin/committee/add", data)
@@ -44,7 +44,7 @@ const actions = {
         return err;
       });
   },
-  
+
   /*start get single menu*/
   GetSingleCommittee: ({ commit }, id) => {
     return http()
@@ -77,48 +77,45 @@ const actions = {
       .delete(`/admin/committee/delete/${id}`)
       .then((result) => {
         console.log(result);
-        return result
+        return result;
       })
       .catch((err) => {
-        return err
+        return err;
       });
   },
 
-
   StoreCommitteePermission: ({ commit }, data) => {
     return http()
-        .post("/admin/committee-permissions", data)
-        .then((result) => {
-          return result;
-        })
-        .catch((err) => {
-          const data = {
-            errors: err.response.data.errors,
-            error_status: err.response.message,
-          };
-          return err;
-        });
+      .post("/admin/committee-permissions", data)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        const data = {
+          errors: err.response.data.errors,
+          error_status: err.response.message,
+        };
+        return err;
+      });
   },
 
   DeleteCommitteePermission: ({ commit }, id) => {
     return http()
-        .delete(`/admin/committee-permissions/${id}`)
-        .then((result) => {
+      .delete(`/admin/committee-permissions/${id}`)
+      .then((result) => {
+        console.log("called", result);
 
-          console.log('called', result)
+        return result;
+      })
+      .catch((err) => {
+        console.log(err.response);
 
-          return result;
-        })
-        .catch((err) => {
-
-          console.log(err.response)
-
-          const data = {
-            errors: err.response.data.errors,
-            error_status: err.response.message,
-          };
-          return err;
-        });
+        const data = {
+          errors: err.response.data.errors,
+          error_status: err.response.message,
+        };
+        return err;
+      });
   },
 
   UpdateBeneficiaryDetails: ({ commit }, data) => {
@@ -152,6 +149,34 @@ const actions = {
   RollBackBeneficiary: ({ commit }, id) => {
     return http()
       .get(`/admin/beneficiary/restore/${id}`)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        const data = {
+          errors: err.response.data.errors,
+          error_status: err.response.message,
+        };
+        return err;
+      });
+  },
+  RollBackReplaceBeneficiary: ({ commit }, id) => {
+    return http()
+      .get(`/admin/beneficiary/restore-replace/${id}`)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        const data = {
+          errors: err.response.data.errors,
+          error_status: err.response.message,
+        };
+        return err;
+      });
+  },
+  RollBackInactiveBeneficiary: ({ commit }, id) => {
+    return http()
+      .get(`/admin/beneficiary/restore-inactive/${id}`)
       .then((result) => {
         return result;
       })
@@ -197,7 +222,6 @@ const actions = {
         return err;
       });
   },
-
 };
 /* -------------------------------------------------------------------------- */
 /*                               Getters Define                               */

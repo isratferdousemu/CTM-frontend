@@ -508,10 +508,13 @@
                     <v-btn
                       elevation="2"
                       class="btn mr-2 white--text"
+                      flat
                       color="red darken-4"
                       @click="GeneratePDF()"
-                      >{{ $t("container.list.PDF") }}</v-btn
                     >
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                      {{ $t("container.list.PDF") }}
+                    </v-btn>
                     <!-- <v-btn
                         elevation="2"
                         class="btn mr-2 white--text"
@@ -544,37 +547,19 @@
                         }}
                       </template>
                       <!-- Action Button -->
-                      <template v-slot:item.actions="{ item }" width="50%">
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'update-post'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="#AFB42B"
-                              elevation="0"
-                              class="white--text"
-                              router
-                              :to="`/beneficiary-management/beneficiary-info/details/${item.beneficiary_id}`"
-                            >
-                              <v-icon> mdi-eye </v-icon>
-                            </v-btn>
-                          </template>
-                          <span>
-                            {{ $t("container.list.view") }}
-                          </span>
-                        </v-tooltip>
-                        <!-- <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn v-can="'delete-division'" fab x-small v-on="on" color="#827717"
-                              class="ml-3 white--text" elevation="0" router
-                              :to="`/beneficiary-management/beneficiary-replacement/${item.id}`">
-                              <v-icon> mdi mdi-file-replace </v-icon>
-                            </v-btn>
-                          </template>
-                          <span> {{ $t("container.list.replace") }}</span>
-                        </v-tooltip> -->
+                      <template v-slot:item.actions="{ item }">
+                        <v-btn
+                          v-on="on"
+                          color="success"
+                          elevation="0"
+                          @click="rollBackBeneficiary(item.id)"
+                        >
+                          {{
+                            $t(
+                              "container.beneficiary_management.beneficiary_list.rollback"
+                            )
+                          }}
+                        </v-btn>
                       </template>
                       <!-- End Action Button -->
                       <template v-slot:footer="item">
@@ -614,6 +599,45 @@
           </v-col>
         </v-row>
       </v-col>
+      <!-- Beneficiary RollBack modal  -->
+      <v-dialog v-model="dialogRollBack" width="400">
+        <v-card style="justify-content: center; text-align: center">
+          <v-card-title class="font-weight-bold justify-center">
+            {{ $t("container.list.attention") }}
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text class="mt-2">
+            <h3>
+              {{
+                $t(
+                  "container.beneficiary_management.beneficiary_list.rollback_message"
+                )
+              }}
+            </h3>
+            <v-row class="mx-0 my-0 py-2 mt-5 mb-2" justify="end">
+              <v-btn
+                flat
+                @click="dialogRollBack = false"
+                outlined
+                class="custom-btn-width py-2 mr-10"
+              >
+                {{ $t("container.list.no") }}
+              </v-btn>
+              <v-btn
+                flat
+                @click="beneficiaryRollBack"
+                color="primary"
+                :disabled="invalid"
+                :loading="loading"
+                class="custom-btn-width warning white--text py-2"
+              >
+                {{ $t("container.list.yes") }}
+              </v-btn>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+      <!-- Beneficiary RollBack modal  -->
     </v-row>
   </div>
 </template>
@@ -670,6 +694,8 @@ export default {
       unions: [],
       wards: [],
       district_pouros: [],
+      dialogRollBack: false,
+      rollBack_id: null,
       subLocationType: [
         {
           id: 1,
@@ -1100,6 +1126,35 @@ export default {
         "container.beneficiary_management.beneficiary_list.replace_list"
       );
       this.$store.commit("setHeaderTitle", title);
+    },
+    rollBackBeneficiary(event) {
+      this.dialogRollBack = true;
+      this.rollBack_id = event;
+    },
+    beneficiaryRollBack() {
+      if (!this.rollBack_id) {
+        return;
+      }
+      try {
+        this.$store
+          .dispatch(
+            "BeneficiaryManagement/RollBackReplaceBeneficiary",
+            this.rollBack_id
+          )
+          .then((res) => {
+            console.log(res, "submit__");
+            if (res.data?.success) {
+              this.$toast.success("RollBack Successfully");
+              this.dialogRollBack = false;
+              this.GetApplication();
+            } else if (res.response?.data?.errors) {
+              this.$refs.form.setErrors(res.response.data.errors);
+              this.errors = res.response.data.errors;
+            }
+          });
+      } catch (e) {
+        console.log(e);
+      }
     },
     async GeneratePDF() {
       const queryParams = {
