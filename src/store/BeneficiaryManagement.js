@@ -164,8 +164,8 @@ const actions = {
       });
   },
   BeneficiaryReplacement: ({ commit }, data) => {
-    return http()
-      .put(`/admin/beneficiary/replace/${data.id}`, data.formData)
+    return httpFile()
+      .post(`/admin/beneficiary/replace/${data.id}`, data.formData)
       .then((result) => {
         return result;
       })
