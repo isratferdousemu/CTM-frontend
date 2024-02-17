@@ -95,16 +95,17 @@
 
                     <v-col lg="6" md="6" cols="12">
                       <v-menu
-                        ref="menu"
-                        v-model="menu"
+                        v-model="menu2"
                         :close-on-content-click="false"
-                        :return-value.sync="date"
+                        :nudge-right="40"
                         transition="scale-transition"
                         offset-y
                         min-width="auto"
                       >
                         <template v-slot:activator="{ on, attrs }">
                           <v-text-field
+                            outlined
+                            clearable
                             v-model="data.date_of_impact"
                             :label="
                               $t(
@@ -115,26 +116,12 @@
                             readonly
                             v-bind="attrs"
                             v-on="on"
-                            outlined
                           ></v-text-field>
                         </template>
                         <v-date-picker
                           v-model="data.date_of_impact"
-                          no-title
-                          scrollable
-                        >
-                          <v-spacer></v-spacer>
-                          <v-btn text color="primary" @click="menu = false">
-                            Cancel
-                          </v-btn>
-                          <v-btn
-                            text
-                            color="primary"
-                            @click="$refs.menu.save(data.date_of_impact)"
-                          >
-                            OK
-                          </v-btn>
-                        </v-date-picker>
+                          @input="menu2 = false"
+                        ></v-date-picker>
                       </v-menu>
                     </v-col>
                     <v-col lg="6" md="6" cols="12">
@@ -389,7 +376,7 @@ export default {
           })
           .then((result) => {
             this.replaceList = result.data.data;
-           this.loading = false;
+            this.loading = false;
             console.log("beneficiary__replaceList", this.replaceList);
           })
           .catch((err) => {

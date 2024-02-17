@@ -857,11 +857,9 @@ export default {
 
     onPageChange($event) {
       // this.pagination.current = $event;
-      this.loading = true;
       this.GetBeneficiary();
     },
     onSearch() {
-      this.loading = true;
       this.pagination = {
         ...this.pagination,
         current: 1,
@@ -869,6 +867,7 @@ export default {
       this.GetBeneficiary();
     },
     async GetBeneficiary() {
+      this.loading = true;
       const queryParams = {
         program_id: this.data.program_id,
         division_id: this.data.division_id,
