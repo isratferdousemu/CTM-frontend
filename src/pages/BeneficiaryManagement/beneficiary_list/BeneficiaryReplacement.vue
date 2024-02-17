@@ -194,7 +194,7 @@ export default {
         cause_type: null,
         cause_details: "",
         date_of_impact: "",
-        file: null,
+        file: "",
       },
 
       date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
