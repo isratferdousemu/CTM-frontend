@@ -237,7 +237,7 @@
                     </v-tooltip>
                   </template>
                   <!-- End Action Button -->
-                  <!-- <template v-slot:footer="item">
+                  <template v-slot:footer="item">
                     <div
                       class="text-center pt-2 v-data-footer justify-center pb-2"
                     >
@@ -265,7 +265,7 @@
                         class="custom-pagination-item"
                       ></v-pagination>
                     </div>
-                  </template> -->
+                  </template>
                 </v-data-table>
               </v-col>
             </v-row>
