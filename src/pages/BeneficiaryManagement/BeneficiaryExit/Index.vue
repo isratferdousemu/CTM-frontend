@@ -877,6 +877,7 @@ export default {
         union_id: this.data.union_id,
         thana_id: this.data.thana_id,
         ward_id: this.data.ward_id,
+        status: 1, //Active list 
 
         perPage: this.pagination.perPage,
         page: this.pagination.current,

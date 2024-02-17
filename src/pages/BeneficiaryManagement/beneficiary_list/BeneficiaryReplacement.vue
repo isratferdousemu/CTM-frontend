@@ -135,7 +135,7 @@
                             'container.beneficiary_management.beneficiary_list.cause_provement'
                           )
                         "
-                        accept="image/*"
+                        accept="image/*, application/pdf"
                         prepend-icon=""
                         v-model="data.file"
                       ></v-file-input>
