@@ -659,7 +659,6 @@
                             {{ $t("container.list.edit") }}
                           </span>
                         </v-tooltip>
-
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
@@ -697,6 +696,25 @@
                           <span>
                             {{ $t("container.list.beneficiary_journey") }}</span
                           >
+                        </v-tooltip>
+                        <v-tooltip top>
+                          <template v-slot:activator="{ on }">
+                            <v-btn
+                              v-can="'update-post'"
+                              fab
+                              x-small
+                              v-on="on"
+                              color="#b71c1c"
+                              class="ml-3 white--text"
+                              elevation="0"
+                              @click="deleteBeneficiaryItem(item.id)"
+                            >
+                              <v-icon> mdi mdi-delete </v-icon>
+                            </v-btn>
+                          </template>
+                          <span>
+                            {{ $t("container.list.delete") }}
+                          </span>
                         </v-tooltip>
                       </template>
                       <!-- End Action Button -->
@@ -737,6 +755,69 @@
           </v-col>
         </v-row>
       </v-col>
+        <!-- Beneficiary Delete modal  -->
+        <v-dialog v-model="dialogDelete" width="650">
+        <v-card style="justify-content: center; text-align: center">
+          <v-card-title class="font-weight-bold justify-center">
+            {{
+              $t(
+                "container.beneficiary_management.beneficiary_list.beneficiary_delete"
+              )
+            }}
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text class="mt-7">
+            <ValidationObserver ref="formDelete" v-slot="{ invalid }">
+              <form @submit.prevent="deleteBeneficiary()">
+                <!-- {{errors.code}}
+                  {{errors.name_en}} -->
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  name="Name English"
+                  vid="name_en"
+                  rules="required"
+                >
+                  <v-text-field
+                    outlined
+                    type="text"
+                    v-model="delete_cause"
+                    :label="
+                      $t(
+                        'container.beneficiary_management.beneficiary_list.delete_cause'
+                      )
+                    "
+                    required
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
+                    ></v-text-field
+                  >
+                </ValidationProvider>
+                <v-row class="mx-0 my-0 py-2" justify="center">
+                  <v-btn
+                    flat
+                    @click="dialogDelete = false"
+                    outlined
+                    class="custom-btn-width py-2 mr-10"
+                  >
+                    {{ $t("container.list.cancel") }}
+                  </v-btn>
+                  <v-btn
+                    type="submit"
+                    flat
+                    color="#b71c1c"
+                    :disabled="invalid"
+                    :loading="loading"
+                    class="custom-btn-width white--text py-2"
+                  >
+                    {{ $t("container.list.submit") }}
+                  </v-btn>
+                </v-row>
+              </form>
+            </ValidationObserver>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+      <!-- Beneficiary Delete modal  -->
     </v-row>
   </div>
 </template>
@@ -830,6 +911,9 @@ export default {
       wards: [],
       district_pouros: [],
       advanch_search: false,
+      dialogDelete: false,
+      ben_delete_id: null,
+      delete_cause: null,
       subLocationType: [
         {
           id: 1,
@@ -972,7 +1056,8 @@ export default {
         {
           text: this.$t("container.list.action"),
           value: "actions",
-          width: "200",
+          align: "center",
+          width: "250",
         },
       ];
     },
@@ -1339,6 +1424,42 @@ export default {
       );
       this.$store.commit("setHeaderTitle", title);
     },
+    deleteBeneficiaryItem(event) {
+      if (this.$refs.formDelete) {
+        this.$refs.formDelete.reset();
+      }
+      this.delete_cause = null;
+      this.ben_delete_id = event;
+      this.dialogDelete = true;
+    },
+
+    deleteBeneficiary() {
+      if (!this.ben_delete_id) {
+        return;
+      }
+      try {
+        let formData = new FormData();
+        formData.append("delete_cause", this.delete_cause);
+
+        const data = { formData: formData, id: this.ben_delete_id };
+
+        this.$store
+          .dispatch("BeneficiaryManagement/DeleteBeneficiary", data)
+          .then((res) => {
+            console.log(res, "submit__");
+            if (res.data?.success) {
+              this.$toast.success("Data Deleted Successfully");
+              this.dialogDelete = false;
+              this.GetApplication();
+            } else if (res.response?.data?.errors) {
+              this.$refs.form.setErrors(res.response.data.errors);
+              this.errors = res.response.data.errors;
+            }
+          });
+      } catch (e) {
+        console.log(e);
+      }
+    },
   },
   watch: {
     "$i18n.locale": "updateHeaderTitle",
@@ -1351,7 +1472,8 @@ export default {
         {
           text: this.$t("container.list.action"),
           value: "actions",
-          width: "200",
+          align: "center",
+          width: "250",
         },
       ];
     },

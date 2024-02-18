@@ -1,28 +1,24 @@
 <template>
   <div id="digital_id">
     <div class="d-flex justify-center my-5">
-      <v-card id="printIDCard" ref="card" width="400" class="mx-5">
-        <v-card-text style="
-              background: url('/assets/images/top_line.jpg') no-repeat left top;
-              background-size: 80%;
-              position: relative;
-            ">
-          <img class="top-left-image" style="width: 80px; height: 80px" src="/assets/images/logo.png"/>
-          <img class="top-right-image" style="width: 80px; height: 80px"
-            src="/assets/images/bangladesh-govt-logo.png"/>
-          <v-row justify="center">
-            <div justify-center>
-              <v-col>
-                <img :src="beneficiary.image" :width="230" :height="230" class="rounded-circle"
-                  v-if="beneficiary.image"/>
-                <img v-if="!beneficiary.image" src="/assets/images/profile.png" :width="230" :height="230"
-                  class="rounded-circle"/>
-              </v-col>
-            </div>
-          </v-row>
-
-          <div class="mt-4">
-            <table>
+      
+      <div class="ic-content" id="printIDCard">
+    <div class="ic-header">
+      <div class="ic-header-logo clearfix">
+        <div class="ic-header-logo-left">
+          <img src="/assets/images/logo.png" alt="" class="ic-logo-left"/>
+        </div>
+        <div class="ic-header-logo-right">
+          <img src="/assets/images/bangladesh-govt-logo.png" alt="" class="ic-logo-right"/>
+        </div>
+      </div>
+      <div class="ic-header-avatar">
+        <img v-if="beneficiary.image" :src="beneficiary.image" alt="" class="ic-avatar"/>
+        <img v-if="!beneficiary.image" src="/assets/images/blank-profile-picture-300x300.png" alt="" class="ic-avatar"/>
+      </div>
+    </div>
+    <div class="ic-body">
+      <table>
               <tr>
                 <th class="text-left" width="50%">
                   {{
@@ -64,32 +60,30 @@
                 <td>: {{ beneficiary.current_address }}</td>
               </tr>
             </table>
-          </div>
-
-          <v-row class="mt-5">
-            <v-col>
-              <qr-code v-if="this.beneficiary.qrCode" :text="this.beneficiary.qrCode" size="100">
-              </qr-code>
-            </v-col>
-            <v-col class="justify">
-              <img class="bottom-right-image" src="/assets/images/signature.png" :width="200"/>
-              <div class="d-flex justify-center my-2" style="text-decoration: overline">
-                {{
+      <table>
+        <tr>
+          <td width="40%">
+            <qr-code v-if="this.beneficiary.qrCode" :text="this.beneficiary.qrCode" size="100"></qr-code>
+            <img v-if="!this.beneficiary.qrCode" src="/assets/images/qr_code.PNG" alt="" class="ic-qrcode"/>
+          </td>
+          <td>
+            <div class="ic-body-signature">
+              <img src="/assets/images/signature.png" alt="" class="ic-signature"/>
+            </div>
+            <div class="ic-body-signatory">
+              {{
                   $t(
                     "container.beneficiary_management.beneficiary_list.authorize_singneture"
                   )
                 }}
-              </div>
-            </v-col>
-          </v-row>
-        </v-card-text>
-        <v-card-actions class="py-5" style="
-              background: url('/assets/images/bottom_line.jpg') no-repeat right
-                bottom;
-              background-size: 90%;
-              position: relative;
-            ">&nbsp;</v-card-actions>
-      </v-card>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="ic-footer">&nbsp;</div>
+  </div>
+
     </div>
     <div class="d-flex justify-center mb-10">
       <v-btn elevation="2" class="btn mr-2 justify-center" color="success" @click="printIDCard()">{{
@@ -99,6 +93,7 @@
 </template>
 
 <script>
+import '/public/assets/css/style.css';
 import Vue from "vue";
 // const card = ref(null);
 import VueQRCodeComponent from "vue-qrcode-component";
@@ -156,7 +151,7 @@ export default {
       var content = document.getElementById("printIDCard");
       var printWindow = window.open('', '_blank','left=0,top=0');
       printWindow.document.write('<html><head><title>Print - Beneficiary ID Card</title>');
-      printWindow.document.write('<link rel="stylesheet" href="/assets/css/print.css" type="text/css"/>');
+      printWindow.document.write('<link rel="stylesheet" href="/assets/css/style.css" type="text/css"/>');
       printWindow.document.write('</head><body>');
       printWindow.document.write(content.outerHTML);
       printWindow.document.write('</body></html>');
@@ -176,26 +171,3 @@ export default {
   },
 };
 </script>
-<style >
-/* Add custom styles for the bottom-right image */
-.top-right-image {
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 25px;
-  /* Adjust the margin as needed */
-}
-
-@media print {
-  body {
-    visibility: hidden;
-  }
-
-  #divToPrint {
-    visibility: visible;
-    position: absolute;
-    left: 0;
-    top: 0;
-  }
-}
-</style>
