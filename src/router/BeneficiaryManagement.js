@@ -209,7 +209,7 @@ const BeneficiaryManagementRoutes = [
     },
     component: () =>
       import(
-        "../pages/BeneficiaryManagement/DigitalIDCard/DigitalIdCard_V2.vue"
+        "../pages/BeneficiaryManagement/DigitalIDCard/DigitalIDCardV3.vue"
       ),
   },
   {
