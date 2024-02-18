@@ -38,11 +38,13 @@
                             class="mr-5"
                             v-model="data.financial_year_id"
                             :items="financial_years"
-                            label="Financial Year"
+                           :label="$t('container.system_config.demo_graphic.financial_year.financial_year')"
+                            :append-icon-cb="appendIconCallback"
+                            append-icon="mdi-plus" 
                             outlined
                             clearable
                             dense
-                            item-text="financial_year"
+                            :item-text="getItemText_financial"
                             item-value="id"
                             :error="errors[0] ? true : false"
                             :error-messages="errors[0]"
@@ -59,11 +61,13 @@
                             class="mr-5"
                             v-model="data.type"
                             :items="location_types"
-                            label="Location Type"
+                          :label="$t('container.list.location_type')" 
                             outlined
                             clearable
+                            :append-icon-cb="appendIconCallback"
+                            append-icon="mdi-plus" 
                             dense
-                            item-text="name_en"
+                            :item-text="getItemText"
                             item-value="id"
                             :error="errors[0] ? true : false"
                             :error-messages="errors[0]"
@@ -107,7 +111,7 @@
 
                                                 </v-text-field> -->
                       </div>
-                      <v-col cols="12">
+                      <v-col cols="12" v-if="filters">
                         <v-data-table
                           :loading="loading"
                           :headers="headers"
@@ -120,13 +124,16 @@
                           @update:options="onOptionsUpdate"
                         >
                           <template v-slot:item.id="{ item, index }">
-                            {{ (page.current - 1) * page.perPage + index + 1 }}
+                            {{language === 'bn' ? $helpers.englishToBangla((page.current - 1) * page.perPage + index + 1) : (page.current - 1) * page.perPage + index + 1 }}
+                            <!-- {{ (page.current - 1) * page.perPage + index + 1 }} -->
                           </template>
                           <template
                             v-slot:item.division_or_district_cut_off="{ item }"
                           >
-                            {{ item.name_en }}
+                            {{ language === 'bn' ? item.name_bn :  item.name_en }}
+                            <!-- {{ item.name_en }} -->
                           </template>
+           
                           <template v-slot:item.score="{ item }">
                             <ValidationProvider
                               v-slot="{ errors }"
@@ -141,9 +148,7 @@
                                 type="text"
                               ></v-text-field>
                             </ValidationProvider>
-                            <!-- <ValidationProvider v-slot="{ errors }" name="Weight/Score" vid="inputScore" rules="required|decimal|numeric|min_value:-999999999|max_value:999999999">
-        <v-text-field v-model="item.inputScore" outlined clearable type="text"></v-text-field>
-    </ValidationProvider> -->
+                   
                           </template>
                           <template v-slot:item.name_bn="{ item }">
                             {{ item.name_bn }}
@@ -241,18 +246,18 @@ export default {
       loading: false,
       location_type: null,
       location_type_id: null,
-      location_types: [
+        location_types: [
         {
           id: 0,
-          name_en: "All",
+          name_en: "All", name_bn: 'সব',
         },
         {
           id: 1,
-          name_en: "Division",
+          name_en: "Division", name_bn: 'বিভাগ',
         },
         {
           id: 2,
-          name_en: "District",
+          name_en: "District", name_bn: 'জেলা',
         },
       ],
       financial: null,
@@ -275,6 +280,11 @@ export default {
     ValidationObserver,
   },
   computed: {
+      language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      },
+    },
     headers() {
       return [
         {
@@ -290,9 +300,7 @@ export default {
         //   value: "financial_year",
         // },
         {
-          text: this.$t(
-            "container.application_selection.poverty_cut_off.name_en"
-          ),
+          text: this.data.type == '1' ? this.$t("container.system_config.demo_graphic.division.division") : this.$t("container.system_config.demo_graphic.district.district"),
           value: "division_or_district_cut_off",
           sortable: false,
         },
@@ -315,6 +323,13 @@ export default {
   },
 
   methods: {
+       getItemText(item) {
+      return this.language === 'bn' ? item.name_bn : item.name_en;
+    },
+    getItemText_financial(item) {
+      return this.language === 'bn' ? this.$helpers.englishToBangla(item.financial_year) : item.financial_year;
+
+    },
     onOptionsUpdate(options) {
       console.log("Options updated:", options);
 

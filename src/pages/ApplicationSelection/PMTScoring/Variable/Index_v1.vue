@@ -43,7 +43,14 @@
                     
 
                        <template v-slot:item.id="{ item, index }">
-        {{ (currentPage - 1) * itemsPerPage + index + 1 }}
+        <!-- {{ (currentPage - 1) * itemsPerPage + index + 1 }} -->
+           {{
+
+               language === 'bn' ? $helpers.englishToBangla(
+                   (currentPage - 1) * itemsPerPage + index + 1) : (currentPage - 1) * itemsPerPage + index + 1
+
+
+                                                      }}
     </template>
 
                         <template v-slot:[`item.actions`]="{ item }" style="padding: 10px;">
@@ -107,18 +114,23 @@
                         <ValidationObserver ref="formAdd" v-slot="{ invalid }">
                             <form @submit.prevent="submitVariable()">
 
-                                <ValidationProvider name="Name English" vid="name_en" rules="required" v-slot="{ errors }">
+                                <ValidationProvider name="Name in English" vid="name_en" rules="required" v-slot="{ errors }">
                                     <v-text-field outlined type="text" v-model="data.name_en" :label="$t(
                                         'container.application_selection.variable.name_en'
                                     )
                                         " required :error="errors[0] ? true : false"
                                         :error-messages="errors[0]"></v-text-field>
                                 </ValidationProvider>
-                                <ValidationProvider name="Field Type" vid="field_type" rules="required" v-slot="{ errors }">
-                                    <v-select outlined v-model="data.field_type" :items="field_types" item-text="value"
-                                        item-value="id" :label="$t('container.application_selection.variable.field_type')
+                                       <ValidationProvider name="Name in Bangla" vid="name_bn" rules="required" v-slot="{ errors }">
+                                        <v-text-field outlined type="text" v-model="data.name_bn" :label="$t(
+                                            'container.application_selection.variable.name_bn'
+                                        )
                                             " required :error="errors[0] ? true : false"
-                                        :error-messages="errors[0]"></v-select>
+                                            :error-messages="errors[0]"></v-text-field>
+                                    </ValidationProvider>
+                                <ValidationProvider name="Field Type" vid="field_type" rules="required" v-slot="{ errors }">
+                                    <v-select outlined v-model="data.field_type" :items="field_types" :item-text="getItemText" item-value="id" :label="$t('container.application_selection.variable.field_type')" required :error="errors[0] ? true : false" :error-messages="errors[0]">
+    </v-select>
                                 </ValidationProvider>
 
 
@@ -145,14 +157,22 @@
                                             {{ index + 1 }}
                                         </template>
 
-                                        <template v-slot:item.value="{ item }">
+                                        <template v-slot:item.value_en="{ item }">
 
 
 
-                                            <ValidationProvider name="Value" vid="value" rules="required" v-slot="{ errors }">
-                                                <v-text-field outlined dense hide-details v-model="item.value"></v-text-field>
+                                            <ValidationProvider name="Subvariable Name in English" vid="value_en" rules="required" v-slot="{ errors }">
+                                                <v-text-field outlined dense hide-details v-model="item.value_en"></v-text-field>
                                             </ValidationProvider>
-                                        </template>
+                                                 </template>
+                                                  <template v-slot:item.value_bn="{ item }">
+                                                    <ValidationProvider name="Subvariable Name in Bangla" vid="value_bn" rules="required" v-slot="{ errors }">
+                                                        <v-text-field outlined dense hide-details v-model="item.value_bn"></v-text-field>
+                                                    </ValidationProvider>
+
+                                                </template>
+                                            
+                                   
                                         <template v-slot:item.score="{ item }">
                                             <ValidationProvider name="Score" vid="score" rules="required" v-slot="{ errors }">
                                                 <v-text-field outlined dense hide-details v-model="item.score"></v-text-field>
@@ -200,7 +220,7 @@
                     <v-card-title class="font-weight-bold justify-center">
                         {{
                             $t(
-                                "container.application_selection.variable.add_new"
+                                "container.application_selection.variable.edit"
                             )
                         }}
                     </v-card-title>
@@ -209,18 +229,23 @@
                         <ValidationObserver ref="formAdd" v-slot="{ invalid }">
                             <form @submit.prevent="updateVariable()">
 
-                                <ValidationProvider name="Name English" vid="name_en" rules="required" v-slot="{ errors }">
+                                <ValidationProvider name="Name in English" vid="name_en" rules="required" v-slot="{ errors }">
                                     <v-text-field outlined type="text" v-model="data.name_en" :label="$t(
                                         'container.application_selection.variable.name_en'
                                     )
                                         " required :error="errors[0] ? true : false"
                                         :error-messages="errors[0]"></v-text-field>
                                 </ValidationProvider>
-                                <ValidationProvider name="Field Type" vid="field_type" rules="required" v-slot="{ errors }">
-                                    <v-select outlined v-model="data.field_type" :items="field_types" item-text="value"
-                                        item-value="id" :label="$t('container.application_selection.variable.field_type')
+                                 <ValidationProvider name="Name in Bangla" vid="name_bn" rules="required" v-slot="{ errors }">
+                                        <v-text-field outlined type="text" v-model="data.name_bn" :label="$t(
+                                            'container.application_selection.variable.name_en'
+                                        )
                                             " required :error="errors[0] ? true : false"
-                                        :error-messages="errors[0]"></v-select>
+                                            :error-messages="errors[0]"></v-text-field>
+                                    </ValidationProvider>
+                                <ValidationProvider name="Field Type" vid="field_type" rules="required" v-slot="{ errors }">
+                                     <v-select outlined v-model="data.field_type" :items="field_types" :item-text="getItemText" item-value="id" :label="$t('container.application_selection.variable.field_type')" required :error="errors[0] ? true : false" :error-messages="errors[0]">
+        </v-select>
                                 </ValidationProvider>
 
 
@@ -247,13 +272,19 @@
                                         {{ index + 1 }}
                                     </template>
 
-                                    <template v-slot:item.value="{ item }">
+                                    <template v-slot:item.value_en="{ item }">
 
 
 
                                         <ValidationProvider name="Value" vid="value" rules="required" v-slot="{ errors }">
-                                            <v-text-field outlined dense hide-details v-model="item.value"></v-text-field>
+                                            <v-text-field outlined dense hide-details v-model="item.value_en"></v-text-field>
                                         </ValidationProvider>
+                                      
+                                    </template>
+                                    <template v-slot:item.value_bn="{ item }">
+                                            <ValidationProvider name="Value" vid="value" rules="required" v-slot="{ errors }">
+                                                    <v-text-field outlined dense hide-details v-model="item.value_bn"></v-text-field>
+                                                </ValidationProvider>
                                     </template>
                                     <template v-slot:item.score="{ item }">
                                         <ValidationProvider name="Score" vid="score" rules="required" v-slot="{ errors }">
@@ -352,13 +383,15 @@ export default {
                 id: null,
 
                 name_en: null,
+                name_bn: null,
 
                 score: null,
                 // field_value: [],
 
                 field_value: [
                     {
-                        value: null,
+                        value_en: null,
+                        value_bn: null,
                         score: null
                     },
                 ],
@@ -369,9 +402,9 @@ export default {
             },
             field_types: [
 
-                { id: 1, value: "Single Choice Dropdown" },
-                { id: 2, value: "Multiple Choice Dropdown" },
-                { id: 3, value: "Chechbox" },
+                { id: 1, value_en: "Single Choice Dropdown", value_bn: "সিঙ্গেল চয়েস ড্রপডাউন " },
+                { id: 2, value_en: "Multiple Choice Dropdown",value_bn: "মাল্টিপল চয়েস ড্রপডাউন" },
+                { id: 3, value_en: "Chechbox", value_bn: "চেকবক্স " },
 
 
             ],
@@ -407,6 +440,11 @@ export default {
         ValidationObserver,
     },
     computed: {
+         language: {
+            get() {
+                return this.$store.getters.getAppLanguage;
+            },
+        },
         header_field_value() {
             return [
                 {
@@ -419,7 +457,13 @@ export default {
                     text: this.$t(
                         "container.application_selection.sub_variable.name_en"
                     ),
-                    value: "value",
+                    value: "value_en",
+                },
+                   {
+                    text: this.$t(
+                        "container.application_selection.sub_variable.name_bn"
+                    ),
+                    value: "value_bn",
                 },
                 {
                     text: this.$t(
@@ -449,6 +493,12 @@ export default {
                     value: "name_en",
 
                 },
+                   {
+                    text: this.$t("container.application_selection.variable.name_bn"),
+                    value: "name_bn",
+
+                },
+
 
            
 
@@ -468,6 +518,9 @@ export default {
        
     },
     methods: {
+         getItemText(item) {
+            return this.language === 'bn' ? item.value_bn : item.value_en;
+        },
 
         submitVariable() {
             if (this.data.field_type === 3) {
@@ -514,7 +567,7 @@ export default {
                 this.data.field_value = [];
 
             }
-
+console.log(this.data,"update_variable")
 
             this.$axios
                 .post("admin/poverty/variable/update", this.data, {
@@ -555,11 +608,13 @@ export default {
 
             this.data.id = item.id;
             this.data.name_en = item.name_en;
+            this.data.name_bn = item.name_bn;
             this.data.field_type = item.field_type;
             this.errors = {};
             this.data.field_value = item.children.map(child => {
                 return {
-                    value: child.name_en,
+                    value_en: child.name_en,
+                    value_bn: child.name_bn,
                     score: child.score
                 };
             });
@@ -615,7 +670,8 @@ export default {
 
                 // Create a new row with default values
                 const newRow = {
-                    value: null,
+                    value_en: null,
+                    value_bn: null,
                     score: null
                 };
                 console.log('New row:', newRow);
@@ -797,6 +853,7 @@ export default {
         resetData() {
 
             this.data.name_en = null;
+            this.data.name_bn = null;
             this.data.field_type = null;
             this.data.field_value = [
 
