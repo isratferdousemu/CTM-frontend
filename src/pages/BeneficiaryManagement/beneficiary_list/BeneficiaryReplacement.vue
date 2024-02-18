@@ -3,7 +3,13 @@
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
         <div class="d-block text-right">
-          <v-btn elevation="2" class="btn my-2" color="primary" router to="/beneficiary-management/beneficiary-replacement-list">
+          <v-btn
+            elevation="2"
+            class="btn my-2"
+            color="primary"
+            router
+            to="/beneficiary-management/beneficiary-replacement-list"
+          >
             {{ $t("container.list.view-list") }}
           </v-btn>
         </div>
@@ -29,7 +35,7 @@
                         "
                         outlined
                         disabled
-                        v-model="beneficiary.name_en"
+                        v-model="ben_id_with_name"
                       >
                       </v-text-field>
                     </v-col>
@@ -89,16 +95,17 @@
 
                     <v-col lg="6" md="6" cols="12">
                       <v-menu
-                        ref="menu"
-                        v-model="menu"
+                        v-model="menu2"
                         :close-on-content-click="false"
-                        :return-value.sync="date"
+                        :nudge-right="40"
                         transition="scale-transition"
                         offset-y
                         min-width="auto"
                       >
                         <template v-slot:activator="{ on, attrs }">
                           <v-text-field
+                            outlined
+                            clearable
                             v-model="data.date_of_impact"
                             :label="
                               $t(
@@ -109,26 +116,12 @@
                             readonly
                             v-bind="attrs"
                             v-on="on"
-                            outlined
                           ></v-text-field>
                         </template>
                         <v-date-picker
                           v-model="data.date_of_impact"
-                          no-title
-                          scrollable
-                        >
-                          <v-spacer></v-spacer>
-                          <v-btn text color="primary" @click="menu = false">
-                            Cancel
-                          </v-btn>
-                          <v-btn
-                            text
-                            color="primary"
-                            @click="$refs.menu.save(data.date_of_impact)"
-                          >
-                            OK
-                          </v-btn>
-                        </v-date-picker>
+                          @input="menu2 = false"
+                        ></v-date-picker>
                       </v-menu>
                     </v-col>
                     <v-col lg="6" md="6" cols="12">
@@ -142,7 +135,7 @@
                             'container.beneficiary_management.beneficiary_list.cause_provement'
                           )
                         "
-                        accept="image/*"
+                        accept="image/*, application/pdf"
                         prepend-icon=""
                         v-model="data.file"
                       ></v-file-input>
@@ -153,7 +146,6 @@
                     <v-btn
                       @click="resetBeneficiary"
                       flat
-                      :loading="loading"
                       class="custom-btn-width py-2 mr-2"
                     >
                       {{ $t("container.list.reset") }}
@@ -162,7 +154,6 @@
                       type="submit"
                       flat
                       :disabled="invalid"
-                      :loading="loading"
                       class="custom-btn-width success white--text py-2"
                     >
                       {{ $t("container.list.replace") }}
@@ -285,7 +276,6 @@
                 router
                 to="/beneficiary-management/beneficiary-info"
                 :disabled="invalid"
-                :loading="loading"
                 class="custom-btn-width py-2 mr-2"
               >
                 {{ $t("container.list.back") }}
@@ -322,6 +312,7 @@ export default {
       menu: false,
       modal: false,
       menu2: false,
+      loading: false,
       pagination: {
         current: 1,
         total: 0,
@@ -330,6 +321,7 @@ export default {
       items: [5, 10, 15, 20, 40, 50, 100],
       panel: [0],
       beneficiary: {},
+      ben_id_with_name:"",
       replaceList: [],
       selected: [],
       cause_types: [],
@@ -356,7 +348,7 @@ export default {
           })
           .then((result) => {
             this.beneficiary = result.data.data;
-            console.log("beneficiary__", this.beneficiary);
+            this.ben_id_with_name  = this.beneficiary.application_id.concat("_", this.beneficiary.name_en);            
           })
           .catch((err) => {
             if (err.response?.data?.errors) {
@@ -370,6 +362,7 @@ export default {
       }
     },
     async GetReplaceList() {
+      this.loading = true;
       try {
         const queryParams = {
           program_id: null,
@@ -384,7 +377,7 @@ export default {
           })
           .then((result) => {
             this.replaceList = result.data.data;
-            console.log("beneficiary__replaceList", this.replaceList);
+            this.loading = false;
           })
           .catch((err) => {
             if (err.response?.data?.errors) {
@@ -401,10 +394,9 @@ export default {
       console.log("CHECK_BOX_ID", id);
       if (this.selectedId === id) {
         this.selectedId = null;
-      }else{
+      } else {
         this.selectedId = id;
       }
-      
     },
     submit() {
       try {
@@ -425,10 +417,10 @@ export default {
                 this.$toast.success("Beneficiary Replace Successfully");
                 this.$router.push({ name: "beneficiary_replacement_list" });
               } else {
-                console.log('ERROR__',res?.message);
-                 this.$refs.form.setErrors(res?.message);
-                 this.errors = res?.message;
-                 this.$toast.error(res?.message);
+                console.log("ERROR__", res?.message);
+                this.$refs.form.setErrors(res?.message);
+                this.errors = res?.message;
+                this.$toast.error(res?.message);
               }
             });
         } else {

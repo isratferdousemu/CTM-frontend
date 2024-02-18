@@ -15,7 +15,7 @@
                 <v-expansion-panel-content
                   class="elevation-0 transparent mt-10"
                 >
-                
+
                   <ValidationObserver ref="formsearch" v-slot="{ invalid }">
                     <form @submit.prevent="GetWard()">
                       <v-row>
@@ -340,7 +340,7 @@
                             ></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
-                        <!--                         
+                        <!--
                         <v-col
                           v-if="data.location_type"
                           lg="4"
@@ -426,7 +426,6 @@
                 ></v-text-field>
             </v-col>
 
-            
             <v-col lg="3" md="3" cols="12" class="text-right ">
                 <v-btn
                     @click="dialogOpen"
@@ -439,18 +438,20 @@
             </v-col>
         </v-row>
         <v-row justify="space-between" align="center" class="mx-4">
-            
+
             <v-col lg="3" md="3" cols="12">
       {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">{{ this.total }}</span>
     </v-col>
-
-            
-            <v-col lg="4" md="4" cols="12" class="text-right">
-                <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4" @click="GeneratePDF()">
-                    {{ $t("container.list.PDF") }}
-                </v-btn>
-            
-            </v-col>
+          <!-- Dropdown on the right -->
+          <v-col lg="4" md="6" cols="12" class="text-right">
+            <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="GeneratePDF()">
+              <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
+            </v-btn>
+            <v-btn elevation="2" class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
+              <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+              {{ $t("container.list.excel") }}
+            </v-btn>
+          </v-col>
         </v-row>
                 <v-row
                   class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
@@ -483,7 +484,7 @@
                   >
                     {{ $t("container.list.add_new") }}
                   </v-btn> -->
-                    
+
                   <v-col cols="12">
                     <v-data-table
                       :loading="loading"
@@ -910,7 +911,7 @@
                   </v-col>
                   <!-- <v-col lg="12" md="12" cols="12">
                     <ValidationProvider name="Code" vid="code" rules="codeRules||required" v-slot="{ errors }">
-                      <v-text-field :hide-details="errors[0] ? false : true" outlined type="text" v-model="data.code" 
+                      <v-text-field :hide-details="errors[0] ? false : true" outlined type="text" v-model="data.code"
                         :label="$t('container.system_config.demo_graphic.ward.code')
                           "  :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
                     </ValidationProvider>
@@ -987,7 +988,7 @@
                               )
                             "
                             required
-                         
+
                           ></v-text-field>
                         </ValidationProvider>
                       </v-col>
@@ -1793,7 +1794,7 @@
     </v-row>
   </div>
 </template>
-  
+
 <script>
 import { mapState, mapActions } from "vuex";
 import {
@@ -1882,7 +1883,7 @@ export default {
       search: "",
       delete_id: "",
       wards: [],
-      wards: [],
+      all_wards: [],
       pagination: {
         current: 1,
         total: 0,
@@ -1975,10 +1976,10 @@ export default {
     this.customCode();
   },
   methods: {
-    GeneratePDF() {
-     
-       const queryParams = {
-        language: this.$i18n.locale,
+
+    async GeneratePDF() {
+      // this.isLoading = true;
+      const queryParams = {
         searchText: this.search,
         location_type: this.location_type_search,
         division_id: this.division_id_search,
@@ -1998,7 +1999,7 @@ export default {
         district_pouro_id_search: this.district_pouro_id_search,
         ////////////Upazila Corporation////////////////
 
-        perPage: this.pagination.perPage,
+        perPage: this.total,
         page: this.pagination.current,
         sortBy: this.sortBy,
         orderBy: this.sortDesc,
@@ -2070,22 +2071,221 @@ export default {
         queryParams.union_id_search = this.union_id_search;
       }
 
-      this.$axios
-        .get("/admin/ward/generate-pdf", {
+      await this.$axios
+          .get("/admin/ward/get", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+            params: queryParams,
+          })
+          .then((result) => {
+            this.all_wards = result.data.data;
+          });
+
+      const HeaderInfo = [
+        this.$t("container.list.sl"),
+        this.$t("container.system_config.demo_graphic.division.division"),
+        this.$t("container.system_config.demo_graphic.district.district"),
+        this.$t("container.system_config.demo_graphic.city_corporation.customtitle"),
+        this.$t("container.system_config.demo_graphic.union1.customtitle"),
+        this.$t("container.system_config.demo_graphic.ward.ward"),
+      ]
+
+      const CustomInfo = this.all_wards.map(((i,index) => {
+        return [
+          this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+          this.$i18n.locale == 'en' ? i.parent?.parent?.parent?.parent?.name_en : i.parent?.parent?.parent?.parent?.name_bn,
+          this.$i18n.locale == 'en' ? i.parent?.parent?.parent?.name_en : i.parent?.parent?.parent?.name_bn,
+          this.$i18n.locale == 'en' ? i.parent?.parent?.name_en : i.parent?.parent?.name_bn,
+          this.$i18n.locale == 'en' ? i.parent?.name_en : i.parent?.name_bn,
+          this.$i18n.locale == 'en' ? i.name_en : i.name_bn,
+        ]
+      }));
+
+      const queryParam = {
+        language: this.$i18n.locale,
+        data:CustomInfo,
+        header:HeaderInfo,
+        fileName:this.$t("container.system_config.demo_graphic.ward.list"),
+      };
+      try {
+        const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json", // Set content type to JSON
           },
-          params: queryParams,
-        })
-        .then((result) => {
-          window.open(result.data.data.url, '_blank');
-        })
-        .catch(error => {
-          console.error('Error generating PDF:', error);
+          responseType: 'arraybuffer',
         });
 
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        window.open(url, '_blank');
+        this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
+        console.error('Error generating PDF:', error);
+      }
     },
+
+    async GenerateExcel(){
+      // this.isLoading = true;
+
+      const queryParams = {
+        searchText: this.search,
+        location_type: this.location_type_search,
+        division_id: this.division_id_search,
+        district_id: this.district_id_search,
+
+        ////////////City Corporation////////////////
+        city_id_search: this.city_id_search,
+        city_thana_id_search: this.city_thana_id_search,
+        ////////////City Corporation////////////////
+
+        ////////////Upazila Corporation////////////////
+        upazila_id_search: this.upazila_id_search,
+        union_id_search: this.union_id_search,
+        ////////////Upazila Corporation////////////////
+
+        ////////////Upazila Corporation////////////////
+        district_pouro_id_search: this.district_pouro_id_search,
+        ////////////Upazila Corporation////////////////
+
+        perPage: this.total,
+        page: this.pagination.current,
+        sortBy: this.sortBy,
+        orderBy: this.sortDesc,
+      };
+
+      if (this.division_id != null) {
+        delete queryParams.upazila_id_search;
+        delete queryParams.union_id_search;
+        delete queryParams.city_id_search;
+        delete queryParams.city_thana_id_search;
+        delete queryParams.district_id;
+        delete queryParams.district_pouro_id_search;
+
+        queryParams.division_id = this.division_id_search;
+      }
+      if (this.district_id_search != null) {
+        delete queryParams.upazila_id_search;
+        delete queryParams.union_id_search;
+        delete queryParams.city_id_search;
+        delete queryParams.city_thana_id_search;
+        delete queryParams.division_id;
+        delete queryParams.district_pouro_id_search;
+
+        queryParams.district_id = this.district_id_search;
+      }
+      if (this.district_pouro_id_search != null) {
+        delete queryParams.upazila_id_search;
+        delete queryParams.union_id_search;
+        delete queryParams.city_id_search;
+        delete queryParams.city_thana_id_search;
+        delete queryParams.district_id;
+        delete queryParams.division_id;
+        queryParams.district_pouro_id_search = this.district_pouro_id_search;
+      }
+      if (this.city_id_search != null) {
+        delete queryParams.district_pouro_id_search;
+        delete queryParams.upazila_id_search;
+        delete queryParams.union_id_search;
+        delete queryParams.district_id;
+        delete queryParams.division_id;
+        delete queryParams.city_thana_id_search;
+        queryParams.city_id_search = this.city_id_search;
+      }
+      if (this.city_thana_id_search != null) {
+        delete queryParams.district_pouro_id_search;
+        delete queryParams.upazila_id_search;
+        delete queryParams.union_id_search;
+        delete queryParams.district_id;
+        delete queryParams.division_id;
+        delete queryParams.city_id_search;
+        queryParams.city_thana_id_search = this.city_thana_id_search;
+      }
+      if (this.upazila_id_search != null) {
+        delete queryParams.district_pouro_id_search;
+        delete queryParams.city_id_search;
+        delete queryParams.city_thana_id_search;
+        delete queryParams.district_id;
+        delete queryParams.division_id;
+        queryParams.upazila_id_search = this.upazila_id_search;
+        queryParams.union_id_search = this.union_id_search;
+      }
+      if (this.union_id_search != null) {
+        delete queryParams.district_pouro_id_search;
+        delete queryParams.city_id_search;
+        delete queryParams.city_thana_id_search;
+        delete queryParams.district_id;
+        delete queryParams.division_id;
+        delete queryParams.upazila_id_search;
+        queryParams.union_id_search = this.union_id_search;
+      }
+
+      await this.$axios
+          .get("/admin/ward/get", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+            params: queryParams,
+          })
+          .then((result) => {
+            this.all_wards = result.data.data;
+
+            import('@/plugins/Export2Excel').then((excel) => {
+
+              const HeaderInfo = [
+                this.$t("container.list.sl"),
+                this.$t("container.system_config.demo_graphic.division.division"),
+                this.$t("container.system_config.demo_graphic.district.district"),
+                this.$t("container.system_config.demo_graphic.city_corporation.customtitle"),
+                this.$t("container.system_config.demo_graphic.union1.customtitle"),
+                this.$t("container.system_config.demo_graphic.ward.ward"),
+              ]
+
+              const CustomInfo = this.all_wards.map(((i,index) => {
+                return {
+                  "SL" : this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+                  "division" : this.$i18n.locale == 'en' ? i.parent?.parent?.parent?.parent?.name_en : i.parent?.parent?.parent?.parent?.name_bn,
+                  "district":this.$i18n.locale == 'en' ? i.parent?.parent?.parent?.name_en : i.parent?.parent?.parent?.name_bn,
+                  "upazila":this.$i18n.locale == 'en' ? i.parent?.parent?.name_en : i.parent?.parent?.name_bn,
+                  "thana":this.$i18n.locale == 'en' ? i.parent?.name_en : i.parent?.name_bn,
+                  "ward":this.$i18n.locale == 'en' ? i.name_en : i.name_bn,
+                }
+              }));
+
+              const Field = ['SL','division', 'district','upazila','thana','ward']
+
+              const Data = this.FormatJson(Field, CustomInfo)
+              const currentDate = new Date().toISOString().slice(0, 10); //
+              let dateinfo = queryParams.language == 'en' ? currentDate : this.$helpers.englishToBangla(currentDate)
+
+              const filenameWithDate = `${dateinfo}_${this.$t("container.system_config.demo_graphic.ward.list")}`;
+
+              excel.export_json_to_excel({
+                header: HeaderInfo,
+                data: Data,
+                sheetName: "",
+                filename: filenameWithDate,
+                autoWidth: true,
+                bookType: "xlsx"
+              })
+            })
+
+          });
+
+    },
+
+    FormatJson(FilterData,JsonData){
+      return JsonData.map((v) =>
+          FilterData.map((j => {
+            return v[j];
+          })))
+    },
+
+
     getValue(location_type) {
       if (location_type == "Upazila") {
         return "parent.parent.name_en";
@@ -2150,11 +2350,8 @@ export default {
       if (data && data.length === 2 && /^\d+$/.test(data)) {
         const banglaDigits = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
         this.data.code_b = banglaDigits[data[0]] + banglaDigits[data[1]];
-
-        console.log(this.data.code_b, "code accepted");
       } else {
         this.data.code_b = "";
-        console.log(this.data.code_b, "code invalid");
       }
     },
     async submitWard() {
@@ -2166,22 +2363,18 @@ export default {
         this.data.code_b +
         " " +
         this.data.suffix_b;
-        console.log(this.data.name_en, this.data.name_bn,"name_en")
+
 
       try {
         let fd = new FormData();
-        console.log("------------");
 
         for (const [key, value] of Object.entries(this.data)) {
           if (value !== null) {
             fd.append(key, value);
-            console.log(key, value);
           }
         }
-        // console.log(this.data);
-        // return;
+
         this.$store.dispatch("Ward/StoreWard", fd).then((res) => {
-          console.log(res, "res");
           if (res.data?.success) {
             this.$toast.success("Data Inserted Successfully");
             this.resetData();
@@ -2201,7 +2394,7 @@ export default {
         this.data.ward + " " + this.data.code + " " + this.data.suffix;
       this.data.name_bn =
         this.data.ward_b + " " + this.data.code_b + " " + this.data.suffix_b;
-        console.log(this.data.name_en, this.data.name_bn, "name_en")
+
       try {
         let fd = new FormData();
         for (const [key, value] of Object.entries(this.data)) {
@@ -2209,9 +2402,9 @@ export default {
             fd.append(key, value);
           }
         }
-        console.log(this.data, "update data");
+
         this.$store.dispatch("Ward/UpdateWard", fd).then((res) => {
-          console.log(res, "update rest");
+
           if (res?.data?.success) {
             this.$toast.success("Data Updated Successfully");
             this.dialogEdit = false;
@@ -2430,7 +2623,6 @@ export default {
       for (let i = 0; i < this.headers.length; i++) {
         if (this.headers[i].value == "name_en") {
           this.headers[i].class = "highlight-column";
-          console.log(this.headers[i], "headers after");
         } else {
           this.headers[i].class = "";
         }
@@ -2439,11 +2631,8 @@ export default {
     handleOptionsUpdate({ sortBy, sortDesc }) {
       console.log(this.headers, sortBy, sortDesc);
       for (let i = 0; i < this.headers.length; i++) {
-        console.log(this.headers[i]);
-
         if (this.headers[i].value == sortBy) {
           this.headers[i].class = "highlight-column";
-          console.log(this.headers[i], "headers after");
         } else {
           this.headers[i].class = "";
         }
@@ -2570,12 +2759,10 @@ export default {
         })
         .then((result) => {
           this.wards = result.data.data;
-          console.log(this.wards);
           this.pagination.current = result.data.current_page;
           this.pagination.total = result.data.last_page;
           this.pagination.grand_total = result.data.total;
           this.total = result.data.total;
-          console.log(queryParams, "queryParams");
         });
     },
 
@@ -2585,7 +2772,6 @@ export default {
           .dispatch("Ward/DestroyWard", this.delete_id)
           .then((res) => {
             // check if the request was successful
-            console.log(res, "DestroyWard");
             if (res?.data?.success) {
               this.$toast.success(res.data.message);
             } else {
@@ -2627,7 +2813,6 @@ export default {
       if (this.$refs.formEdit) {
         this.$refs.formEdit.reset();
       }
-      console.log(item, "editWard");
       const update_error_value = null;
       this.updateError("update_error_value");
 
@@ -2637,31 +2822,26 @@ export default {
       this.data.code = item.code;
 
       const inputString = item.name_en;
-     
         const parts = inputString.split(" ");
-         console.log(parts, 'parts');
-           console.log(parts.length, 'parts');
-    
-       
         const wardNo = parts[0] + " " + parts[1];// "Ward No -"
         const twoDigitNumber = parts[2]; // "01"
         const restOfString = parts.slice(3).join(" ");
         this.data.ward = wardNo;
         this.data.code = twoDigitNumber;
-        this.data.suffix = restOfString; 
+        this.data.suffix = restOfString;
 
-   
-   
 
-   
-      
+
+
+
+
 
 
 
       const inputString_b = item.name_bn;
       // Extracting components
       const parts_b = inputString_b.split(" ");
-    
+
           const wardNo_b = parts_b[0] + " " + parts_b[1]; // "Ward No -"
         const twoDigitNumber_b = parts_b[2]; // "01"
         const restOfString_b = parts_b.slice(3).join(" "); // "suffix"
@@ -2670,7 +2850,7 @@ export default {
         this.data.code_b = twoDigitNumber_b;
         this.data.suffix_b = restOfString_b;
 
-        
+
 
 
 
@@ -2917,4 +3097,4 @@ export default {
   background-color: #e0eaf1;
 }
 </style>
-  
+
