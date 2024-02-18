@@ -25,9 +25,10 @@
                                                 <ValidationProvider v-slot="{ errors }" name="Financial Year"
                                                     vid="financial_year_id" rules="required">
 
-                                                    <v-autocomplete class="mr-5" v-model="data.financial_year_id" readonly
-                                                        :items="financial_years" label="Financial Year" outlined 
-                                                        dense item-text="financial_year" item-value="id"
+                                                    <v-autocomplete class="mr-5" v-model="data.financial_year_id" 
+                                                        :items="financial_years" readonly :label="$t('container.system_config.demo_graphic.financial_year.financial_year')" outlined 
+                                                        dense :item-text="getItemText_financial"
+                                                        item-value="id"
                                                         :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]"></v-autocomplete>
                                                 </ValidationProvider>
@@ -35,8 +36,8 @@
                                                     rules="required">
 
                                                     <v-select @input="onChangeFilter()" class="mr-5" v-model="data.type"
-                                                        :items="location_types" label="Location Type" outlined  readonly
-                                                        dense item-text="name_en" item-value="id"
+                                                        :items="location_types"   :label="$t('container.list.location_type')"  outlined  readonly
+                                                        dense :item-text="getItemText" item-value="id"
                                                         :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]"></v-select>
                                                 </ValidationProvider>
@@ -55,6 +56,7 @@
 
                                             </div>
                                             <v-col cols="12">
+
                                                     <v-data-table   :loading="loading"
             :headers="headers"
             :items="filters"
@@ -63,17 +65,21 @@
             :page.sync="page.current"
             :items-per-page.sync="page.perPage"
             :total-items="page.total"
+            :search="search"
             @update:options="onOptionsUpdate">
+    
                                                     <template v-slot:item.id="{ item, index }">
-                                                        {{
+                                                        <!-- {{
                                                             (page.current - 1) * page.perPage +
                                                             index +
                                                             1
-                                                        }}
+                                                        }} -->
+                                                         {{ language === 'bn' ? $helpers.englishToBangla((page.current - 1) * page.perPage + index + 1) : (page.current - 1) * page.perPage + index + 1 }}
                                                     </template>
                                                     <template v-slot:item.division_or_district_cut_off="{ item }">
+                                                           {{ language === 'bn' ? item.name_bn : item.name_en }}
 
-                                                        {{ item.name_en }}
+                                                        <!-- {{ item.name_en }} -->
                                                     </template>
                                                     <template v-slot:item.score="{ item }">
 
@@ -154,6 +160,7 @@ export default {
                 type: null,
                 score: null,
             },
+        
             filters: [],
             dialogAdd: false,
             deleteDialog: false,
@@ -162,18 +169,32 @@ export default {
             loading: false,
             location_type: null,
             location_type_id: null,
-            location_types: [
+            // location_types: [
+            //     {
+            //         id: 0,
+            //         name_en: "All",
+            //     },
+            //     {
+            //         id: 1,
+            //         name_en: "Division",
+            //     },
+            //     {
+            //         id: 2,
+            //         name_en: "District",
+            //     },
+            // ],
+             location_types: [
                 {
                     id: 0,
-                    name_en: "All",
+                    name_en: "All", name_bn: 'সব',
                 },
                 {
                     id: 1,
-                    name_en: "Division",
+                    name_en: "Division", name_bn: 'বিভাগ',
                 },
                 {
                     id: 2,
-                    name_en: "District",
+                    name_en: "District", name_bn: 'জেলা',
                 },
             ],
             financial: null,
@@ -185,7 +206,7 @@ export default {
                 total: 0,
             },
 
-            search: "",
+            search: '',
             delete_id: "",
             financial_year_id: null,
             cut_off: [],
@@ -205,6 +226,12 @@ export default {
         ValidationObserver,
     },
     computed: {
+        
+            language: {
+            get() {
+                return this.$store.getters.getAppLanguage;
+            },
+        },
         headers() {
             return [
                 {
@@ -213,19 +240,18 @@ export default {
                     align: "start",
                     sortable: false,
                 },
-                // {
-                //   text: this.$t(
-                //     "container.system_config.demo_graphic.financial_year.financial_year"
-                //   ),
-                //   value: "financial_year",
-                // },
-                {
-                    text: this.$t(
-                        "container.application_selection.poverty_cut_off.name_en"
-                    ),
+                 {
+                    text: this.data.type == '1' ? this.$t("container.system_config.demo_graphic.division.division") : this.$t("container.system_config.demo_graphic.district.district"),
                     value: "division_or_district_cut_off",
-                     sortable: false,
+                    sortable: false,
                 },
+                // {
+                //     text: this.$t(
+                //         "container.application_selection.poverty_cut_off.name_en"
+                //     ),
+                //     value: "division_or_district_cut_off",
+                //      sortable: false,
+                // },
                 {
                     text: this.$t(
                         "container.application_selection.poverty_cut_off.score"
@@ -267,22 +293,22 @@ watch: {
         },
 },
     methods: {
+           getItemText(item) {
+            return this.language === 'bn' ? item.name_bn : item.name_en;
+        },
+        getItemText_financial(item) {
+            return this.language === 'bn' ? this.$helpers.englishToBangla(item.financial_year) : item.financial_year;
+
+        },
      onOptionsUpdate(options) {
             console.log("Options updated:", options);
 
-            // Check if the pagination values have actually changed
-
-            // Update pagination properties
             this.page.current = options.page;
             this.page.perPage = options.itemsPerPage;
              this.sortBy = options.sortBy[0];  // Assuming single column sorting
             this.sortDesc = options.sortDesc[0];
 
-            // // Log additional information for debugging
-       
-
-            // // Fetch data using your API call based on the updated pagination properties
-            // this.onChangeFilter();
+          
         },
          navigateTolist() {
             this.$router.push("/application-management/poverty-cut-off-score");
@@ -493,7 +519,9 @@ watch: {
                 })
                 .then((result) => {
                     this.financial_years = result.data.data;
-                    this.data.financial_year_id = this.$route.params.param1;
+                    // this.data.financial_year_id = this.$route.params.param1;
+                    // console.log(this.data.financial_year_id,"called financial");
+                    
               
                 });
         },
@@ -537,19 +565,25 @@ watch: {
  
     created() {
         this.GetFinancialYear();
-        // this.GetPovertyCutOff();
+        
         this.onChangeFilter();
+        this.data.financial_year_id = this.$route.params.param1;
+        this.data.type = this.$route.params.param2;
+        console.log("created");
+        console.log(this.data.financial_year_id, "created");
+      
     },
     beforeMount() {
-        this.data.financial_year_id=this.$route.params.param1;
-        this.data.type = this.$route.params.param2;
-        console.log(this.data.financial_year_id,"before mount");
+       
+       
         this.updateHeaderTitle();
     },
     mounted() {
         this.filters.forEach(item => {
             this.$set(item, 'inputScore', item.score);
         });
+   
     },
+    
 };
 </script>

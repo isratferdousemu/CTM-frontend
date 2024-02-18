@@ -59,11 +59,16 @@
                       class="elevation-0 transparent row-pointer"
                     >
                       <template v-slot:item.id="{ item, index }">
-                        {{
-                          (pagination.current - 1) * pagination.perPage +
-                          index +
-                          1
-                        }}
+                          {{
+
+                            language === 'bn' ? $helpers.englishToBangla(
+                              (pagination.current - 1) * pagination.perPage +
+                              index +
+                              1) : (pagination.current - 1) * pagination.perPage +
+                              index + 1
+
+
+                          }}
                       </template>
                       <template v-slot:item.name_en="{ item }">
                         {{ item.name_en }}
@@ -154,7 +159,7 @@
         </v-row>
       </v-col>
 
-      <!-- division add modal  -->
+      <!-- variable add modal  -->
       <v-dialog v-model="dialogAdd" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
@@ -168,7 +173,7 @@
                 {{errors.name_en}} -->
 
                 <ValidationProvider
-                  name="Name English"
+                  name="Namein English"
                   vid="name_en"
                   rules="required"
                   v-slot="{ errors }"
@@ -185,6 +190,23 @@
                     :error-messages="errors[0]"
                   ></v-text-field>
                 </ValidationProvider>
+                   <ValidationProvider
+                    name="Name in Bangla"
+                    vid="name_bn"
+                    rules="required"
+                    v-slot="{ errors }"
+                  >
+                    <v-text-field
+                      outlined
+                      type="text"
+                      v-model="data.name_bn"
+                      :label="$t('container.application_selection.variable.name_bn')
+                        "
+                      required
+                      :error="errors[0] ? true : false"
+                      :error-messages="errors[0]"
+                    ></v-text-field>
+                  </ValidationProvider>
 
                 <ValidationProvider
                   name="Field Type"
@@ -252,7 +274,7 @@
           </v-card-text>
         </v-card>
       </v-dialog>
-      <!-- division add modal  -->
+      <!-- variable add modal  -->
 
       <!-- division Edit modal  -->
       <v-dialog v-model="dialogEdit" width="650">
@@ -438,6 +460,10 @@ export default {
     ValidationObserver,
   },
   computed: {
+       language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      },
     headers() {
       return [
         {
