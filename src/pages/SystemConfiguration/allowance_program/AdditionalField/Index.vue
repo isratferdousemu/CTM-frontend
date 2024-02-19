@@ -94,6 +94,7 @@
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
+                                v-can="'allowance-edit'"
                               fab
                               x-small
                               v-on="on"
@@ -112,7 +113,7 @@
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
-                              v-can="'delete-division'"
+                              v-can="'allowance-delete'"
                               fab
                               x-small
                               v-on="on"
