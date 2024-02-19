@@ -68,7 +68,8 @@
       "view-list":"View List",
       "yes":"yes",
       "no":"No",
-      "attention":"Attention!!!"
+      "attention":"Attention!!!",
+      "create": "Create"
     },
     "system_config": {
       "demo_graphic": {
@@ -355,7 +356,9 @@
           "status": "Status",
           "is_active": "Is Active",
           "add": "Add Role",
-          "edit": "Edit Role"
+          "edit": "Edit Role",
+          "role_name": "Role Name",
+          "module_name": "Module Name"
         },
         "user": {
           "listTitle": "User List",
