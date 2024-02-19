@@ -238,7 +238,7 @@
                                 </ValidationProvider>
                                  <ValidationProvider name="Name in Bangla" vid="name_bn" rules="required" v-slot="{ errors }">
                                         <v-text-field outlined type="text" v-model="data.name_bn" :label="$t(
-                                            'container.application_selection.variable.name_en'
+                                            'container.application_selection.variable.name_bn'
                                         )
                                             " required :error="errors[0] ? true : false"
                                             :error-messages="errors[0]"></v-text-field>
