@@ -31,6 +31,7 @@ export default {
       roleDialog: false,
 
       validationErrors: {},
+      roleName:'',
     }
   },
 
@@ -75,7 +76,119 @@ export default {
       EditAllPermission: "Role_permission/EditAllPermission"
     }),
 
+    async GeneratePDF() {
+      const permissionsMap = {};
+      let increment= 1;
+      Object.entries(this.subModules).forEach(([category, moduleArr]) => {
+        permissionsMap[category] = [increment++,this.roleName, category, ...moduleArr.map(module => {
+          return this.rolePermissions.includes(module.id) ? "v" : "x";
+        })];
+      });
+      const HeaderInfo = [
+        this.$t("container.list.sl"),
+        this.$t("container.system_config.demo_graphic.role.role_name"),
+        this.$t("container.system_config.demo_graphic.role.module_name"),
+        this.$t("container.list.view"),
+        this.$t("container.list.create"),
+        this.$t("container.list.edit"),
+        this.$t("container.list.delete")
+      ]
+
+      const queryParam = {
+        language: this.$i18n.locale,
+        data:permissionsMap,
+        header:HeaderInfo,
+        fileName:this.$t("container.system_config.demo_graphic.role.list"),
+      };
+      try {
+        const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "application/json", // Set content type to JSON
+          },
+          responseType: 'arraybuffer',
+        });
+
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        window.open(url, '_blank');
+        this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
+        console.error('Error generating PDF:', error);
+      }
+    },
+
+    GenerateExcel(){
+      // this.isLoading = true;
+
+      try {
+        import('@/plugins/Export2Excel').then((excel) => {
+
+          const HeaderInfo = [
+            this.$t("container.system_config.demo_graphic.role.role_name"),
+            this.$t("container.system_config.demo_graphic.role.module_name"),
+            this.$t("container.list.view"),
+            this.$t("container.list.create"),
+            this.$t("container.list.edit"),
+            this.$t("container.list.delete")
+          ]
+
+          const permissionsMap = {};
+          let increment= 1;
+          Object.entries(this.subModules).forEach(([category, moduleArr]) => {
+            permissionsMap[category] = [increment++,this.roleName, category, ...moduleArr.map(module => {
+              return this.rolePermissions.includes(module.id) ? "v" : "x";
+            })];
+          });
+
+          const CustomInfo = Object.values(permissionsMap).map((i, index) => {
+           return {
+             'SL': index,
+             'role_name': i[1],
+             'module_name': i[2],
+             'view': i[3],
+             'create': i[4],
+             'edit': i[5],
+             'delete': i[6],
+           }
+          });
+
+          const Field = ['role_name', 'module_name','view','create','edit','delete']
+
+          const Data = this.FormatJson(Field, CustomInfo)
+          const currentDate = new Date().toISOString().slice(0, 10); //
+          let dateinfo = this.$i18n.locale ? currentDate : this.$helpers.englishToBangla(currentDate)
+
+          const filenameWithDate = `${dateinfo}_${this.$t("container.system_config.demo_graphic.role.list")}`;
+
+          excel.export_json_to_excel({
+            header: HeaderInfo,
+            data: Data,
+            sheetName: '',
+            filename: filenameWithDate,
+            autoWidth: true,
+            bookType: "xlsx"
+          })
+        })
+      } catch (error) {
+        // Handle any errors here
+        this.isLoading = false;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    FormatJson(FilterData,JsonData){
+      return JsonData.map((v) =>
+          FilterData.map((j => {
+            return v[j];
+          })))
+    },
+
     getRolePermission(role_id){
+      const selectedRole = this.roles.find(role => role.id === role_id);
+      this.roleName = selectedRole ? selectedRole.name : null;
       this.EditAllPermission(role_id);
     },
 
@@ -271,6 +384,19 @@ export default {
                   </v-card>
                 </v-col>
 
+                <v-row justify="end">
+                <v-col lg="4" md="6" cols="12" class="text-right">
+                  <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="GeneratePDF()">
+                    <v-icon class="pr-1">mdi-tray-arrow-down</v-icon> {{ $t("container.list.PDF") }}
+                  </v-btn>
+                  <v-btn elevation="2" class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
+                    <v-icon class="pr-1">mdi-tray-arrow-down</v-icon>
+                    {{ $t("container.list.excel") }}
+                  </v-btn>
+                </v-col>
+                </v-row>
+
+
                 <v-col cols="12" v-if="rolePermissions === null">
                   <v-card style="margin-bottom: 50px">
                     <v-card-text>
@@ -348,7 +474,6 @@ export default {
                 <v-col cols="12">
                   <v-row class="justify-end mb-5" style="margin-top: -50px">
                     <v-btn
-                        flat
                         color="primary"
                         class="custom-btn mr-2"
                         router
@@ -357,14 +482,12 @@ export default {
                     </v-btn>
 
                     <v-btn
-                        flat
                         color="orange"
                         class="custom-btn mr-2"
                         @click="forceUpdate()"
                     >Reset
                     </v-btn>
                     <v-btn
-                        flat
                         color="success"
                         type="submit"
                         class="custom-btn mr-2"
