@@ -138,8 +138,7 @@ const actions = {
 
     /*Get lookup gender type start*/
     GerAllLookUpGenderType: ({commit}) => {
-        let type = 20;
-        return http().get(`/admin/lookup/get/${type}`).then((result) => {
+        return http().get(`/global/class-list`).then((result) => {
             commit('GET_ALL_LOOKUP_GENDER_TYPE', result.data);
         }).catch((err) => {
             console.log(err);
