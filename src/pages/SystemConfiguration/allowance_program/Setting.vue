@@ -187,8 +187,8 @@ export default {
 
         // this.genderUpdatevalue = []
 
-        this.updateAllowanceAmount = [];
-        if (this.is_disable_class === true && this.updateAllowanceAmount.length)
+        // this.updateAllowanceAmount = [];
+        if (this.is_disable_class === true && !this.updateAllowanceAmount.length)
         {
           let disable_class = {
             id: '',
@@ -348,7 +348,8 @@ export default {
 
                 formData.append('_method', 'PUT');
 
-                await this.$store.dispatch("Allowance/UpdateAllowanceProgram", { id: id, data: formData }).then(() => {
+                await this.$store.dispatch("Allowance/UpdateAllowanceProgram", { id: id, data: formData })
+                    .then(() => {
                     if (this.success_status === 200) {
                         this.$refs.form.reset();
                         this.$router.push('/system-configuration/allowance-program')
@@ -503,7 +504,7 @@ export default {
                                                         @click="ageLimit(editAllowanceProgram.is_age_limit)"></v-checkbox>
 
                                                     <table
-                                                        v-if="editAllowanceProgram.is_age_limit === 1 || age_limit === true">
+                                                        v-if="editAllowanceProgram.is_age_limit">
                                                         <thead>
                                                             <tr v-show="updateAllowanceAge.length">
                                                                 <td>Gender</td>

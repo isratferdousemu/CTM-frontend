@@ -361,6 +361,7 @@
           "listTitle": "User List",
           "full_name": "Full Name",
           "username": "Username",
+          "user_id": "User Id",
           "mobile": "Enter Mobile Number",
           "email": "Enter Email Address",
           "role_id": "Select Role",
