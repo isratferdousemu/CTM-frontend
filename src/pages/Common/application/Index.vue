@@ -1518,8 +1518,8 @@
                 </v-expansion-panels>
               </div>
               <div class="d-inline d-flex justify-end">
-                <v-btn @click="resetForm()" elevation="2" class="btn mr-2" color="info">{{ $t('container.list.cancel')
-                }}</v-btn>
+                <!-- <v-btn @click="resetForm()" elevation="2" class="btn mr-2" color="info">{{ $t('container.list.cancel')
+                }}</v-btn> -->
                 <!-- :disabled="invalid" -->
                 <v-btn @click="confirmDialog = true" flat color="primary" :disabled="invalid" :loading="loading"
                   class="custom-btn-width black white--text py-2">
