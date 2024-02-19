@@ -1,22 +1,41 @@
 <template>
   <div id="digital_id">
-    <div class="d-flex justify-center my-5">
-      <v-card id="printIDCard" ref="card" width="400" class="mx-5">
-        <v-card-text style="
-              background: url('/assets/images/top_line.jpg') no-repeat left top;
-              background-size: 80%;
-              position: relative;
-            ">
-          <img class="top-left-image" style="width: 80px; height: 80px" src="/assets/images/logo.png"/>
-          <img class="top-right-image" style="width: 80px; height: 80px"
-            src="/assets/images/bangladesh-govt-logo.png"/>
+    <div id="divToPrint" class="d-flex justify-center my-5">
+      <v-card  ref="card" width="400" class="mx-5">
+        <v-card-text
+          style="
+            background: url('/assets/images/top_line.jpg') no-repeat left top;
+            background-size: 80%;
+            position: relative;
+          "
+        >
+          <v-img
+            class="top-left-image"
+            style="width: 80px; height: 80px"
+            src="/assets/images/logo.png"
+          ></v-img>
+          <v-img
+            class="top-right-image"
+            style="width: 80px; height: 80px"
+            src="/assets/images/bangladesh-govt-logo.png"
+          ></v-img>
           <v-row justify="center">
             <div justify-center>
               <v-col>
-                <img :src="beneficiary.image" :width="230" :height="230" class="rounded-circle"
-                  v-if="beneficiary.image"/>
-                <img v-if="!beneficiary.image" src="/assets/images/profile.png" :width="230" :height="230"
-                  class="rounded-circle"/>
+                <v-img
+                  :src="beneficiary.image"
+                  :width="230"
+                  :height="230"
+                  class="rounded-circle"
+                  v-if="beneficiary.image"
+                ></v-img>
+                <v-img
+                  v-if="!beneficiary.image"
+                  src="/assets/images/profile.png"
+                  :width="230"
+                  :height="230"
+                  class="rounded-circle"
+                ></v-img>
               </v-col>
             </div>
           </v-row>
@@ -68,12 +87,23 @@
 
           <v-row class="mt-5">
             <v-col>
-              <qr-code v-if="this.beneficiary.qrCode" :text="this.beneficiary.qrCode" size="100">
+              <qr-code
+                v-if="this.beneficiary.qrCode"
+                :text="this.beneficiary.qrCode"
+                size="100"
+              >
               </qr-code>
             </v-col>
             <v-col class="justify">
-              <img class="bottom-right-image" src="/assets/images/signature.png" :width="200"/>
-              <div class="d-flex justify-center my-2" style="text-decoration: overline">
+              <v-img
+                class="bottom-right-image"
+                src="/assets/images/signature.png"
+                :width="200"
+              ></v-img>
+              <div
+                class="d-flex justify-center my-2"
+                style="text-decoration: overline"
+              >
                 {{
                   $t(
                     "container.beneficiary_management.beneficiary_list.authorize_singneture"
@@ -83,22 +113,31 @@
             </v-col>
           </v-row>
         </v-card-text>
-        <v-card-actions class="py-5" style="
-              background: url('/assets/images/bottom_line.jpg') no-repeat right
-                bottom;
-              background-size: 90%;
-              position: relative;
-            ">&nbsp;</v-card-actions>
+        <v-card-actions
+          class="py-5"
+          style="
+            background: url('/assets/images/bottom_line.jpg') no-repeat right
+              bottom;
+            background-size: 90%;
+            position: relative;
+          "
+          >&nbsp;</v-card-actions
+        >
       </v-card>
     </div>
     <div class="d-flex justify-center mb-10">
-      <v-btn elevation="2" class="btn mr-2 justify-center" color="success" @click="printIDCard()">{{
-        $t("Print") }}</v-btn>
+      <v-btn
+        elevation="2"
+        class="btn mr-2 justify-center"
+        color="success"
+        @click="pritIdCard()"
+        >{{ $t("Print") }}</v-btn
+      >
     </div>
   </div>
 </template>
 
-<script>
+  <script>
 import Vue from "vue";
 // const card = ref(null);
 import VueQRCodeComponent from "vue-qrcode-component";
@@ -116,9 +155,16 @@ export default {
         signUrl: null,
         qrCode: null,
       },
+      // card : ref(),
+
+      cssText: `
+    h1 {
+      color: black;
+      font-family: sans-serif;
+    }`,
     };
   },
-  mounted() { },
+  mounted() {},
 
   methods: {
     updateHeaderTitle() {
@@ -139,6 +185,9 @@ export default {
           .then((result) => {
             let item = result.data.data;
             this.beneficiary = item;
+            //this.beneficiary.imageUrl = item?.image;
+            //this.beneficiary.signUrl = item?.signature;
+
             this.beneficiary.qrCode = `Beneficiary Name: ${item?.name_en}, Beneficiary ID : ${item?.application_id}`;
           })
           .catch((err) => {
@@ -152,31 +201,22 @@ export default {
         console.log(e);
       }
     },
-    printIDCard() {
-      var content = document.getElementById("printIDCard");
-      var printWindow = window.open('', '_blank','left=0,top=0');
-      printWindow.document.write('<html><head><title>Print - Beneficiary ID Card</title>');
-      printWindow.document.write('<link rel="stylesheet" href="/assets/css/print.css" type="text/css"/>');
-      printWindow.document.write('</head><body>');
-      printWindow.document.write(content.outerHTML);
-      printWindow.document.write('</body></html>');
-      setTimeout(function () {
-        printWindow.print();
-        printWindow.close();
-      }, 3000);
+    pritIdCard(divId) {
+      // alert("Hello Print card");
+      window.print(divId);
     },
   },
   watch: {
     "$i18n.locale": "updateHeaderTitle",
   },
-  created() { },
+  created() {},
   beforeMount() {
     this.updateHeaderTitle();
     this.GetBeneficiaryDetails(this.$route.params.id);
   },
 };
 </script>
-<style >
+  <style >
 /* Add custom styles for the bottom-right image */
 .top-right-image {
   position: absolute;
@@ -185,17 +225,19 @@ export default {
   margin: 25px;
   /* Adjust the margin as needed */
 }
-
 @media print {
-  body {
+  body * {
     visibility: hidden;
   }
-
-  #divToPrint {
+  #divToPrint, #divToPrint * {
     visibility: visible;
+  }
+  #divToPrint {
     position: absolute;
     left: 0;
     top: 0;
+    width: 100%;
   }
 }
 </style>
+  

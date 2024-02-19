@@ -1712,7 +1712,7 @@
                             <v-img
                               :src="data.nomineeSignUrl"
                               style="
-                                width: 150px;
+                                width: 200px;
                                 height: 80px;
                                 border: 1px solid #ccc;
                               "
@@ -2580,23 +2580,7 @@ export default {
               this.errors = res.response.data.errors;
             }
           });
-
-        // this.$axios
-        //   .put(`/admin/beneficiary/update/${this.$route.params.id}`, formData, {
-        //     headers: {
-        //       Authorization: "Bearer " + this.$store.state.token,
-        //       "Content-Type": "multipart/form-data",
-        //     },
-        //   })
-        //   .then((res) => {
-        //     if (res.data?.success) {
-        //       this.$toast.success("Data Updated Successfully");
-        //       this.$router.push({ name: "Beneficiary_List" });
-        //     } else if (res.response?.data?.errors) {
-        //       this.$refs.form.setErrors(res.response.data.errors);
-        //       this.errors = res.response.data.errors;
-        //     }
-        //   });
+        
       } catch (e) {
         console.log(e);
       }

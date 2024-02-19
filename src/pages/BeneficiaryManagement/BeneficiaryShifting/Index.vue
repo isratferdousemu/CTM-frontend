@@ -17,11 +17,10 @@
           <form @submit.prevent="addByBeneficiaryInTable">
             <v-row>
               <v-col cols="12">
-                <v-card elevation="3" outlined >
-                  <v-row >
+                <v-card elevation="3" outlined>
+                  <v-row>
                     <v-col col="6">
-                      <v-card-title
-                      class="page-header"
+                      <v-card-title class="page-header"
                         ><h5 class="white--text">
                           {{
                             $t(
@@ -88,16 +87,6 @@
                                 </td>
                                 <td>: {{ beneficiary_details.name_en }}</td>
                               </tr>
-                              <!-- <tr>
-                                <td>
-                                  {{
-                                    $t(
-                                      "container.beneficiary_management.beneficiary_list.beneficiary_mobile"
-                                    )
-                                  }}
-                                </td>
-                                <td>: {{ beneficiary_details.mobile }}</td>
-                              </tr> -->
                               <tr>
                                 <td>
                                   {{
@@ -152,16 +141,17 @@
                               ></v-autocomplete>
 
                               <v-menu
-                                ref="menu"
-                                v-model="menu"
+                                v-model="menu2"
                                 :close-on-content-click="false"
-                                :return-value.sync="date"
+                                :nudge-right="40"
                                 transition="scale-transition"
                                 offset-y
                                 min-width="auto"
                               >
                                 <template v-slot:activator="{ on, attrs }">
                                   <v-text-field
+                                    outlined
+                                    clearable
                                     v-model="submit_data.activation_date"
                                     :label="
                                       $t(
@@ -172,34 +162,12 @@
                                     readonly
                                     v-bind="attrs"
                                     v-on="on"
-                                    outlined
                                   ></v-text-field>
                                 </template>
                                 <v-date-picker
                                   v-model="submit_data.activation_date"
-                                  no-title
-                                  scrollable
-                                >
-                                  <v-spacer></v-spacer>
-                                  <v-btn
-                                    text
-                                    color="primary"
-                                    @click="menu = false"
-                                  >
-                                    Cancel
-                                  </v-btn>
-                                  <v-btn
-                                    text
-                                    color="primary"
-                                    @click="
-                                      $refs.menu.save(
-                                        submit_data.activation_date
-                                      )
-                                    "
-                                  >
-                                    OK
-                                  </v-btn>
-                                </v-date-picker>
+                                  @input="menu2 = false"
+                                ></v-date-picker>
                               </v-menu>
                             </v-col>
 
@@ -281,7 +249,7 @@
                     class="btn mr-2"
                     color="success"
                     type="submit"
-                    :disabled="submit_data.to_program_id  ? false : true"
+                    :disabled="submit_data.to_program_id ? false : true"
                     >{{ $t("container.list.shift") }}</v-btn
                   >
                 </div>
@@ -311,7 +279,7 @@ export default {
       menu2: false,
 
       search: "",
-      keyup_native:"",
+      keyup_native: "",
       programs: [],
       panel: [0],
       table_serial: 1,
@@ -334,8 +302,8 @@ export default {
       beneficiary_details: {},
       submit_data: {
         to_program_id: null,
-        shifting_cause: '',
-        activation_date: '',
+        shifting_cause: "",
+        activation_date: "",
         beneficiaries: [],
       },
     };
@@ -429,7 +397,7 @@ export default {
       }
     },
     // GetKeyUpNative(event){
-    //   this.keyup_native = this.keyup_native + event.key;    
+    //   this.keyup_native = this.keyup_native + event.key;
     //   this.ben_search_id =  this.keyup_native
     //   console.log('keyup_native__',this.ben_search_id);
     //   if(this.ben_search_id)
@@ -547,8 +515,8 @@ export default {
         console.log(e);
       }
     },
-    resetForm(){
-      this.submit_data={};
+    resetForm() {
+      this.submit_data = {};
     },
     async GetAllProgram() {
       try {
@@ -601,7 +569,7 @@ export default {
 </script>
 <style scoped>
 .page-header {
-  background-color: #8C9EFF;
+  background-color: #8c9eff;
   color: #000;
 }
 </style>

@@ -99,18 +99,6 @@ const BeneficiaryManagementRoutes = [
         "../pages/BeneficiaryManagement/beneficiary_list/BeneficiaryDeleteList.vue"
       ),
   },
-  // {
-  //   path: "/beneficiary-management/beneficiary-info-replacement",
-  //   name: "Beneficiary_List_Replacement",
-  //   meta: {
-  //     requiresAuth: true,
-  //     permission: "beneficiary-list-replacement",
-  //   },
-  //   component: () =>
-  //     import(
-  //       "../pages/BeneficiaryManagement/beneficiary_list/BeneficiaryReplacementList.vue"
-  //     ),
-  // },
   {
     path: "/beneficiary-management/beneficiary-info/details/:id",
     name: "beneficiary_details",
@@ -220,7 +208,21 @@ const BeneficiaryManagementRoutes = [
       permission: "digital-id-card",
     },
     component: () =>
-      import("../pages/BeneficiaryManagement/DigitalIDCard/DigitalIDCardV1.vue"),
+      import(
+        "../pages/BeneficiaryManagement/DigitalIDCard/DigitalIDCardV3.vue"
+      ),
+  },
+  {
+    path: "/beneficiary-management/digital-id/:id",
+    name: "digital-id-card",
+    meta: {
+      requiresAuth: true,
+      permission: "digital-id-card",
+    },
+    component: () =>
+      import(
+        "../pages/BeneficiaryManagement/DigitalIDCard/DigitalIDCard.vue"
+      ),
   },
   {
     path: "/beneficiary-management/beneficiary-exit-list",
