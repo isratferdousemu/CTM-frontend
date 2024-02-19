@@ -15,7 +15,6 @@
 
               <v-card-text>
 
-
                <v-row class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
                                       justify="center" justify-lg="space-between">
                                       <div class="d-flex justify-sm-end flex-wrap">
@@ -28,17 +27,21 @@
                                           </v-text-field> -->
                                          
 
-                                                      <v-autocomplete class="mr-5" v-model="data.financial_year_id"  @input="GetPovertyCutOff()"
+                                                      <v-autocomplete class="mr-5 no-arrow-icon" v-model="data.financial_year_id"  @input="GetPovertyCutOff()"
                                                           :items="financial_years" :label="$t('container.system_config.demo_graphic.financial_year.financial_year')" outlined clearable
-                                                          dense item-text="financial_year" item-value="id"
+                                                          dense :item-text="getItemText_financial" item-value="id"
+                                                          :append-icon-cb="appendIconCallback"
+                                                          append-icon="mdi-plus" 
                                                           :error="errors[0] ? true : false"
                                                           :error-messages="errors[0]"></v-autocomplete>
                                                 
 
-                                                      <v-select @input="GetPovertyCutOff()" class="mr-5" v-model="data.type"
-                                                          :items="location_types" :label="$t('container.application_selection.poverty_cut_off.poverty_cut_off')" outlined clearable
-                                                          dense item-text="name_en" item-value="id"
+                                                      <v-select @input="GetPovertyCutOff()" class="mr-5 no-arrow-icon" v-model="data.type"
+                                                          :items="location_types" :label="$t('container.list.location_type')"  outlined clearable
+                                                          dense :item-text="getItemText"  item-value="id"
                                                           :error="errors[0] ? true : false"
+                                                          :append-icon-cb="appendIconCallback"
+                                                            append-icon="mdi-plus" 
                                                           :error-messages="errors[0]"></v-select>
                                                 
                                       </div>
@@ -53,20 +56,34 @@
                       class="elevation-0 transparent row-pointer">
                       <template v-slot:item.id="{ item, index }">
                         {{
-                          (pagination.current - 1) * pagination.perPage +
-                          index +
-                          1
+                    
+    language === 'bn' ?  $helpers.englishToBangla(
+                            (pagination.current - 1) * pagination.perPage +
+                            index +
+                            1) : (pagination.current - 1) * pagination.perPage +
+                            index + 1  
+                    
+ 
                         }}
                       </template>
+                   
                       <template v-slot:item.division_or_district_cut_off="{ item }">
                         <span v-if="item.type === 1">
-                          Division
+                          {{ language === 'bn' ? 'বিভাগ' : 'Division' }}
                         </span>
                         <span v-else>
-                          District
+                          {{   language === 'bn' ? 'জেলা' : 'District' }}
+                         
+                           
                         </span>
                       </template>
-
+                         <template v-slot:item.financial_year="{ item }">
+                         
+                            {{  language === 'bn' ? $helpers.englishToBangla(item.financial_year) : item.financial_year  }}
+                         
+                          
+                        </template>
+                      
 
 
                       <!-- Action Button -->
@@ -188,11 +205,11 @@ export default {
      
         {
           id: 1,
-          name_en: "Division",
+          name_en: "Division",name_bn:'বিভাগ',
         },
         {
           id: 2,
-          name_en: "District",
+          name_en: "District",name_bn:'জেলা',
         },
       ],
       financial: null,
@@ -219,6 +236,11 @@ export default {
     ValidationObserver,
   },
   computed: {
+      language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      },
+    },
     headers() {
       return [
         {
@@ -227,12 +249,7 @@ export default {
           align: "start",
           sortable: false,
         },
-        // {
-        //   text: this.$t(
-        //     "container.system_config.demo_graphic.financial_year.financial_year"
-        //   ),
-        //   value: "financial_year",
-        // },
+      
         {
           text: this.$t(
             "container.application_selection.poverty_cut_off.poverty_cut_off"
@@ -262,6 +279,13 @@ export default {
   },
 
   methods: {
+      getItemText(item) {
+      return this.language === 'bn' ? item.name_bn : item.name_en;
+    },
+    getItemText_financial(item){
+       return this.language === 'bn' ? this.$helpers.englishToBangla(item.financial_year) : item.financial_year;
+
+    },
     navigateToPovertyScore() {
       this.$router.push("/application-management/poverty-cut-off-score/create");
     },
@@ -464,6 +488,7 @@ export default {
         })
         .then((result) => {
           this.financial_years = result.data.data;
+        
         });
     },
     deleteCutoff: async function () {
@@ -529,3 +554,8 @@ export default {
   },
 };
 </script>
+<style>
+.no-arrow-icon .v-input__icon--append {
+  font-weight: bold;
+}
+</style>
