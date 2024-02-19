@@ -1951,6 +1951,10 @@ export default {
           value: "username",
         },
         {
+          text: this.$t("container.system_config.demo_graphic.user.user_id"),
+          value: "user_id",
+        },
+        {
           text: this.$t("container.system_config.demo_graphic.user.email_label"),
           value: "email",
         },
