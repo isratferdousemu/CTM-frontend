@@ -674,24 +674,18 @@
     </template>
                                 <v-row class="ma-0  white round-border d-flex justify-space-between align-center"
                                     justify="center" justify-lg="space-between">
-                                         
-                                           
-                                   
-    
+
+
+
+
                                     <v-col cols="12">
 
 
-                                        <v-data-table
-      :headers="visibleHeaders"
-      :items="applications"
-      :loading="loading"
-      item-key="id"
-      :items-per-page="pagination.perPage"
-      hide-default-footer
-      class="elevation-0 transparent row-pointer"
-    >
+                                        <v-data-table :headers="visibleHeaders" :items="applications" :loading="loading"
+                                            item-key="id" :items-per-page="pagination.perPage" hide-default-footer
+                                            class="elevation-0 transparent row-pointer">
                                             <!-- Header slot -->
-        
+
 
                                             <template v-slot:item.id="{ item, index }">
 
@@ -941,7 +935,7 @@ export default {
         ValidationObserver,
     },
     computed: {
-      
+
 
         isForwardButtonDisabled() {
             // Disable the button if no applications are selected

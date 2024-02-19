@@ -25,6 +25,14 @@ export default {
             is_marital_toggle: false,
             age_limit: false,
             disable_class: false,
+            //     marital_status: ["Married", "UnMarried", "Widow",
+            //     "Widower",
+            //     "Husband Abondoner",
+            //     "Divorced",
+            //     "Spouse Separated",
+            //     "Polygamy",
+            //     "None"
+            // ],
 
             marital_items: [{ name: "Married" }, { name: "UnMarried" }, { name: "Widow" }, { name: "Other" }],
             payment_cycle_items: [{ name: "Monthly" }, { name: "Quarterly" }, { name: "Half Yearly" }, { name: "Yearly" }],
