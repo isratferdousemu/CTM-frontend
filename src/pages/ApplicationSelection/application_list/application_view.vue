@@ -511,7 +511,7 @@
                                                         :<template>
                                                             <span style="20px">
                                                                 {{
-                                                                    language == 'bn' ? data.hana_id.name_bn :
+                                                                    language == 'bn' ? data.thana_id.name_bn :
                                                                     data.thana_id.name_en }}
                                                             </span>
                                                         </template>
@@ -1777,7 +1777,7 @@ export default {
                         this.data.division_id = this.current_location?.parent?.parent?.parent?.parent;
                         this.data.district_id = this.current_location?.parent?.parent?.parent;
                         this.data.location_type = this.current_location.location_type
-                        const LocationArray = this.ocationType;
+                        const LocationArray = this.locationType;
 
                         const locationObject = LocationArray.find(location => location.id === 2
 
