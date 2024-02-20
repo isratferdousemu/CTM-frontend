@@ -1034,12 +1034,12 @@
                               </ValidationProvider>
                             </template>
                             <template v-if="fields.type == 'file'">
-                          
+
                               <label> {{ language == 'bn' ? fields.name_bn : fields.name_en }}<span style="
                                     margin-left: 4px;
                                     margin-right: 4px;
                                     color: red;
-                                  ">*</span></label> 
+                                  ">*</span></label>
                               <ValidationProvider :name="fields.name_en" vid="value" v-slot="{ errors }">
                                 <v-file-input v-model="data.application_allowance_values[index]
                                   .value
@@ -1050,7 +1050,7 @@
                                 </v-file-input>
                               </ValidationProvider>
                             </template>
-                        
+
 
                             <template v-if="fields.type == 'date'">
                               <label> {{ language == 'bn' ? fields.name_bn : fields.name_en }}<span style="
@@ -1523,7 +1523,7 @@
                 <!-- :disabled="invalid" -->
                 <v-btn @click="confirmDialog = true" flat color="primary" :disabled="invalid" :loading="loading"
                   class="custom-btn-width black white--text py-2">
-                  {{ $t('container.list.preview') }}
+                  {{ $t('container.list.submit') }}
                 </v-btn>
 
               </div>
@@ -1571,7 +1571,7 @@
 
               <v-card-text class="text-center">
                 <div class="subtitle-1 font-weight-medium mt-5">
-                  {{ $t('container.application_selection.application.question') }}?
+                  {{ $t('container.application_selection.application.question') }}
                 </div>
               </v-card-text>
 
@@ -2107,7 +2107,7 @@ export default {
           }
           // var selectedWardUnionObj = this.permanent_wards_upazila_union.find(ward_union => ward_union.id === this.data.permanent_ward_id_union);
           // var selectedWardPouroObj = this.permanent_wards_upazila_pouro.find(ward_pouro => ward_pouro.id === this.data.permanent_ward_id_pouro);
-   
+
           this.data.nominee_address = this.data.permanent_address + ',' + (selectedWardUnionObj ? selectedWardUnionObj.name_en : '') + '' + (selectedWardPouroObj ? selectedWardPouroObj.name_en : '') + ',' + (selectedUnionObj ? selectedUnionObj.name_en : '') + '' + (selectedPouroObj ? selectedPouroObj.name_en : '') + ',' + (selectedUpazilaObj ? selectedUpazilaObj.name_en : '') + ',' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + '-' + this.data.permanent_post_code;
 
           selectedUnionObj = '';
@@ -2146,7 +2146,7 @@ export default {
     handleCheckboxChange(event) {
       console.log(event)
       if (event) {
-         this.data.permanent_post_code = this.data.post_code
+        this.data.permanent_post_code = this.data.post_code
         this.data.permanent_address = this.data.address
         this.data.permanent_division_id = this.data.division_id
         this.permanent_onChangeDivision(this.data.division_id)
@@ -2155,17 +2155,17 @@ export default {
         this.data.permanent_location_type = this.data.location_type
 
         this.permanent_LocationType(this.data.location_type);
-         this.data.permanent_union_id = this.data.union_id
+        this.data.permanent_union_id = this.data.union_id
         this.data.permanent_pouro_id = this.data.pouro_id
-           
+
         this.data.permanent_ward_id_pouro = this.data.ward_id_pouro ?? null
-        console.log(this.data.union_id,"union_id", this.data.pouro_id,"pouro_id", this.data.permanent_ward_id_pouro)
+        console.log(this.data.union_id, "union_id", this.data.pouro_id, "pouro_id", this.data.permanent_ward_id_pouro)
 
         if (this.data.thana_id) {
           this.data.permanent_thana_id = this.data.thana_id
           this.data.permanent_sub_location_type = this.data.sub_location_type
           this.onChangeSubLocationTypePermanent(this.data.sub_location_type)
-       
+
 
 
 
@@ -2184,28 +2184,28 @@ export default {
           this.data.permanent_ward_id_dist = this.data.ward_id_dist
         }
 
-          if (this.data.union_id) {
-              this.permanent_onChangeUnion(this.data.union_id);
-               setTimeout(() => {
-                 this.data.permanent_ward_id_union = this.data.ward_id_union ?? null
+        if (this.data.union_id) {
+          this.permanent_onChangeUnion(this.data.union_id);
+          setTimeout(() => {
+            this.data.permanent_ward_id_union = this.data.ward_id_union ?? null
             console.log(this.data.permanent_ward_id_union, this.data.ward_id_union, "su")
           }, 4000);
-        
-  
 
-        
-          }
-          if (this.data.pouro_id) {
-       
-              this.Permanent_onChangePouro(this.data.permanent_pouro_id);
-      
-              this.data.permanent_ward_id_pouro = this.data.ward_id_pouro ?? null
-              
-            console.log(this.data.permanent_ward_id_pouro, this.data.ward_id_pouro, "sp")
 
-          }
 
-     
+
+        }
+        if (this.data.pouro_id) {
+
+          this.Permanent_onChangePouro(this.data.permanent_pouro_id);
+
+          this.data.permanent_ward_id_pouro = this.data.ward_id_pouro ?? null
+
+          console.log(this.data.permanent_ward_id_pouro, this.data.ward_id_pouro, "sp")
+
+        }
+
+
       }
       else {
         this.data.permanent_division_id = null
@@ -2934,7 +2934,7 @@ export default {
           this.data.permanent_ward_id_dist = null;
           this.data.permanent_ward_id_city = null;
           this.data.permanent_ward_id_pouro = null;
-          console.log(this.permanent_wards_upazila_union,"called union ward")
+          console.log(this.permanent_wards_upazila_union, "called union ward")
 
         });
 
