@@ -1745,7 +1745,7 @@
                             v-if="data.account_owner"
                           >
                             <v-text-field
-                              value="10000"
+                            v-model="data.monthly_allowance"
                               outlined
                               readonly
                               :label="
@@ -1761,10 +1761,10 @@
                             lg="6"
                             md="6"
                             cols="12"
-                            v-if="data.account_owner"
+                            v-if="data.financialYear"
                           >
                             <v-text-field
-                              value="2022-23"
+                              v-model="data.financialYear.financial_year"
                               outlined
                               readonly
                               :label="
