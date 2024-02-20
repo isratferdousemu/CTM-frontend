@@ -5,14 +5,15 @@ networks:
        name: my-ctm-web-app-net
        driver: bridge
 
+
 services:
    frontend-stage:
-     container_name: ctm-frontend-stage
-     image: 'ctm-app-frontend-stage'
+     container_name: ctm-frontend
+     image: 'ctm-app-frontend'
      environment:
             - TZ=Asia/Dhaka
      ports:
-       - 8060:80
+       - 80:80
      restart: always
      build:
          context: "./"
