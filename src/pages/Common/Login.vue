@@ -214,6 +214,16 @@ export default {
                 })
                 .catch((err) => {
                     this.loading = false;
+
+                  if(err.response?.data?.message) {
+                    this.$toast.error(err.response.data.message);
+                  }
+
+
+                  if (err.response?.data?.errors) {
+                    this.$refs.form.setErrors(err.response?.data?.errors);
+                  }
+
                     if (err.response) {
                         if (err.response.data.success == false) {
                             console.log(err.response.data, 'und');

@@ -289,7 +289,7 @@ const SystemConfigurationRoutes = [
     name: 'AllowanceProgramSetting',
     meta: {
       requiresAuth: true,
-      permission: "allowance-create",
+      permission: "allowance-view",
     },
     component: () => import("../pages/SystemConfiguration/allowance_program/AdditionalField/Index.vue")
   },

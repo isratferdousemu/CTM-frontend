@@ -25,6 +25,14 @@ export default {
             is_marital_toggle: false,
             age_limit: false,
             disable_class: false,
+            //     marital_status: ["Married", "UnMarried", "Widow",
+            //     "Widower",
+            //     "Husband Abondoner",
+            //     "Divorced",
+            //     "Spouse Separated",
+            //     "Polygamy",
+            //     "None"
+            // ],
 
             marital_items: [{ name: "Married" }, { name: "UnMarried" }, { name: "Widow" }, { name: "Other" }],
             payment_cycle_items: [{ name: "Monthly" }, { name: "Quarterly" }, { name: "Half Yearly" }, { name: "Yearly" }],
@@ -179,8 +187,8 @@ export default {
 
         // this.genderUpdatevalue = []
 
-        this.updateAllowanceAmount = [];
-        if (this.is_disable_class === true && this.updateAllowanceAmount.length)
+        // this.updateAllowanceAmount = [];
+        if (this.is_disable_class === true && !this.updateAllowanceAmount.length)
         {
           let disable_class = {
             id: '',
@@ -340,7 +348,8 @@ export default {
 
                 formData.append('_method', 'PUT');
 
-                await this.$store.dispatch("Allowance/UpdateAllowanceProgram", { id: id, data: formData }).then(() => {
+                await this.$store.dispatch("Allowance/UpdateAllowanceProgram", { id: id, data: formData })
+                    .then(() => {
                     if (this.success_status === 200) {
                         this.$refs.form.reset();
                         this.$router.push('/system-configuration/allowance-program')
@@ -495,7 +504,7 @@ export default {
                                                         @click="ageLimit(editAllowanceProgram.is_age_limit)"></v-checkbox>
 
                                                     <table
-                                                        v-if="editAllowanceProgram.is_age_limit === 1 || age_limit === true">
+                                                        v-if="editAllowanceProgram.is_age_limit">
                                                         <thead>
                                                             <tr v-show="updateAllowanceAge.length">
                                                                 <td>Gender</td>
