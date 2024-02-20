@@ -2094,7 +2094,7 @@ export default {
 
       const CustomInfo = this.all_wards.map(((i,index) => {
         if (i?.location_type?.id === '1') {
-          this.$i18n.locale == 'en' ? i?.parent?.parent?.parent?.parent?.name_en : i?.parent?.parent?.parent?.parent?.name_bn;
+          this.$i18n.locale == 'en' ? i?.parent?.parent?.parent?.name_en : i?.parent?.parent?.parent?.name_bn;
         }
         else if (i?.location_type?.id === '2' || i?.location_type?.id === '3') {
           this.$i18n.locale == 'en' ? i?.parent?.parent?.parent?.parent?.name_en : i?.parent?.parent?.parent?.parent?.name_bn;
@@ -2253,9 +2253,18 @@ export default {
               ]
 
               const CustomInfo = this.all_wards.map(((i,index) => {
+
+                let divisionName = '';
+                if (i?.location_type?.id == '1') {
+                  divisionName = this.$i18n.locale == 'en' ? i?.parent?.parent?.parent?.name_en : i?.parent?.parent?.parent?.name_bn;
+                } else if (i?.location_type?.id == '2' || i?.location_type?.id == '3') {
+                  divisionName = this.$i18n.locale == 'en' ? i?.parent?.parent?.parent?.parent?.name_en : i?.parent?.parent?.parent?.parent?.name_bn;
+                }
+
                 return {
                   "SL" : this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
-                  "division" : this.$i18n.locale == 'en' ? i.parent?.parent?.parent?.parent?.name_en : i.parent?.parent?.parent?.parent?.name_bn,
+                  "division" : divisionName,
+                  // "division" : this.$i18n.locale == 'en' ? i.parent?.parent?.parent?.parent?.name_en : i.parent?.parent?.parent?.parent?.name_bn,
                   "district":this.$i18n.locale == 'en' ? i.parent?.parent?.parent?.name_en : i.parent?.parent?.parent?.name_bn,
                   "upazila":this.$i18n.locale == 'en' ? i.parent?.parent?.name_en : i.parent?.parent?.name_bn,
                   "thana":this.$i18n.locale == 'en' ? i.parent?.name_en : i.parent?.name_bn,
