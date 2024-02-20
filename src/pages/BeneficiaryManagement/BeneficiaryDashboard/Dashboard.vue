@@ -1,226 +1,458 @@
 <template>
-  <div id="aplication_list">
-    <v-row class="mx-5 mt-4">
-      <v-col cols="12">
-        <v-row>
-          <v-col cols="12" md="3" lg="3">
+  <v-container fluid>
+    <!-- header card start -->
+    <v-table>
+      <thead>
+        <tr>
+          <td>
             <v-card
-              elevation="10"
-              color="white"
+              max-height="auto"
+              elevation="2"
               rounded="xl"
-              theme="light"
-              class="mb-8 mt-5 mx-auto "
-              outlined
+              class="ml-2 mr-2"
             >
-              <v-list-item>
+              <v-card-title>
                 <v-row>
-                  <v-col cols="auto">
-                    <v-img
-                      src="/assets/images/profile.png"
-                      :width="30"
-                      :height="30"
-                      class="rounded-circle mt-5"
-                    ></v-img>
-                  </v-col>
+                  <v-avatar color="primary" size="30" class="mt-7 ml-5">
+                    <!-- <v-icon dark>mdi-account-circle</v-icon> -->
+                    <img
+                      src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
+                      alt="Avatar"
+                    />
+                  </v-avatar>
+
                   <v-col>
-                    <v-card-title> Number of Beneficiary </v-card-title>
+                    <v-card-text style="word-break: break-word">
+                      <span class="font-weight-bold"
+                        >Total Number of Beneficiary</span
+                      >
+                      <br />
+                      <span class="headline font-weight-bold"> 1112123 </span>
+                    </v-card-text>
                   </v-col>
                 </v-row>
-              </v-list-item>
-
-              <!-- <v-list-item-title class="text-h5 justify-center">
-                    <v-text outlined rounded text> 50000 </v-text>
-                  </v-list-item-title> -->
-                  <v-card-actions class="text-h5 justify-center">
-                <v-text outlined rounded text>  50000 </v-text>
-              </v-card-actions>
-
-              <v-card-actions class="text-h9 justify-center">
-                <v-text outlined rounded text> + 5K today </v-text>
-              </v-card-actions>
-              <!-- <v-card-text> </v-card-text> -->
+              </v-card-title>
             </v-card>
-          </v-col>
-          <v-col cols="12" md="3" lg="3">
+          </td>
+          <td>
             <v-card
-              elevation="10"
-              color="white"
+              max-height="auto"
+              elevation="2"
               rounded="xl"
-              theme="light"
-              class="mb-8 mt-5 mx-auto"
-              outlined
+              class="ml-2 mr-2"
             >
-              <v-list-item>
-                <!-- <v-list-item-avatar
-                  tile
-                  size="20"
-                  color="grey"
-                ></v-list-item-avatar> -->
-
+              <v-card-title>
                 <v-row>
-                  <v-col cols="auto">
-                    <v-img
-                      src="/assets/images/profile.png"
-                      :width="30"
-                      :height="30"
-                      class="rounded-circle mt-5"
-                    ></v-img>
-                  </v-col>
+                  <v-avatar color="primary" size="30" class="mt-7 ml-5">
+                    <!-- <v-icon dark>mdi-account-circle</v-icon> -->
+                    <img
+                      src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
+                      alt="Avatar"
+                    />
+                  </v-avatar>
+
                   <v-col>
-                    <v-card-title> Number of Beneficiary </v-card-title>
+                    <v-card-text>
+                      <span class="font-weight-bold"
+                        >Number of Active Beneficiary</span
+                      >
+                      <br />
+                      <span class="headline font-weight-bold"> 1112123 </span>
+                    </v-card-text>
                   </v-col>
                 </v-row>
-                <!-- <v-list-item-content>
-                  <v-list-item-subtitle class="text-h6 mb-3">
-                    Number of Applicants
-                  </v-list-item-subtitle>
-                  <v-list-item-title class="text-h5 mb-1">
-                    2753
-                  </v-list-item-title>
-                </v-list-item-content> -->
-              </v-list-item>
-
-              <v-row>
-                <v-col cols="12" md="3" lg="3"> </v-col>
-                <v-col cols="12" md="9" lg="9">
-                  <v-list-item-title class="text-h5 mb-1">
-                    2753
-                  </v-list-item-title>
-                </v-col>
-              </v-row>
-
-              <v-card-actions class="text-h9 justify-center">
-                <v-text outlined rounded text> + 5K today </v-text>
-              </v-card-actions>
-              <!-- <v-card-text> </v-card-text> -->
+              </v-card-title>
             </v-card>
-          </v-col>
-          <v-col cols="12" md="3" lg="3">
+          </td>
+          <td>
             <v-card
-              elevation="10"
-              color="white"
+              max-height="auto"
+              elevation="2"
               rounded="xl"
-              theme="light"
-              class="mb-8 mt-5 mx-auto"
-              outlined
+              class="ml-2 mr-2"
             >
-              <v-list-item>
-                <!-- <v-list-item-avatar
-                  tile
-                  size="20"
-                  color="grey"
-                ></v-list-item-avatar> -->
-
+              <v-card-title>
                 <v-row>
-                  <v-col cols="auto">
-                    <v-img
-                      src="/assets/images/profile.png"
-                      :width="30"
-                      :height="30"
-                      class="rounded-circle mt-5"
-                    ></v-img>
-                  </v-col>
+                  <v-avatar color="primary" size="30" class="mt-7 ml-5">
+                    <!-- <v-icon dark>mdi-account-circle</v-icon> -->
+                    <img
+                      src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
+                      alt="Avatar"
+                    />
+                  </v-avatar>
+
                   <v-col>
-                    <v-card-title> Number of Beneficiary </v-card-title>
+                    <v-card-text>
+                      <span class="font-weight-bold"
+                        >Number of Inactive/Dead Beneficiary</span
+                      >
+                      <br />
+                      <span class="headline font-weight-bold"> 1112123 </span>
+                    </v-card-text>
                   </v-col>
                 </v-row>
-                <!-- <v-list-item-content>
-                  <v-list-item-subtitle class="text-h6 mb-3">
-                    Number of Applicants
-                  </v-list-item-subtitle>
-                  <v-list-item-title class="text-h5 mb-1">
-                    2753
-                  </v-list-item-title>
-                </v-list-item-content> -->
-              </v-list-item>
-
-              <v-row>
-                <v-col cols="12" md="3" lg="3"> </v-col>
-                <v-col cols="12" md="9" lg="9">
-                  <v-list-item-title class="text-h5 mb-1">
-                    2753
-                  </v-list-item-title>
-                </v-col>
-              </v-row>
-
-              <v-card-actions class="text-h9 justify-center">
-                <v-text outlined rounded text> + 5K today </v-text>
-              </v-card-actions>
-              <!-- <v-card-text> </v-card-text> -->
+              </v-card-title>
             </v-card>
-          </v-col>
-          <v-col cols="12" md="3" lg="3">
+          </td>
+          <td>
             <v-card
-              elevation="10"
-              color="white"
+              max-height="auto"
+              elevation="2"
               rounded="xl"
-              theme="light"
-              class="mb-8 mt-5 mx-auto"
-              outlined
+              class="ml-2 mr-2"
             >
-              <v-list-item>
-                <!-- <v-list-item-avatar
-                  tile
-                  size="20"
-                  color="grey"
-                ></v-list-item-avatar> -->
-
+              <v-card-title>
                 <v-row>
-                  <v-col cols="auto">
-                    <v-img
-                      src="/assets/images/profile.png"
-                      :width="30"
-                      :height="30"
-                      class="rounded-circle mt-5"
-                    ></v-img>
-                  </v-col>
+                  <v-avatar color="primary" size="30" class="mt-7 ml-5">
+                    <!-- <v-icon dark>mdi-account-circle</v-icon> -->
+                    <img
+                      src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
+                      alt="Avatar"
+                    />
+                  </v-avatar>
+
                   <v-col>
-                    <v-card-title> Number of Beneficiary </v-card-title>
+                    <v-card-text>
+                      <span class="font-weight-bold"
+                        >Number of Beneficiary in Waiting List</span
+                      >
+                      <br />
+                      <span class="headline font-weight-bold"> 1112123 </span>
+                    </v-card-text>
                   </v-col>
                 </v-row>
-                <!-- <v-list-item-content>
-                  <v-list-item-subtitle class="text-h6 mb-3">
-                    Number of Applicants
-                  </v-list-item-subtitle>
-                  <v-list-item-title class="text-h5 mb-1">
-                    2753
-                  </v-list-item-title>
-                </v-list-item-content> -->
-              </v-list-item>
-
-              <v-row>
-                <v-col cols="12" md="3" lg="3"> </v-col>
-                <v-col cols="12" md="9" lg="9">
-                  <v-list-item-title class="text-h5 mb-1">
-                    2753
-                  </v-list-item-title>
-                </v-col>
-              </v-row>
-
-              <v-card-actions class="text-h9 justify-center">
-                <v-text outlined rounded text> + 5K today </v-text>
-              </v-card-actions>
-              <!-- <v-card-text> </v-card-text> -->
+              </v-card-title>
             </v-card>
-          </v-col>
-        </v-row>
+          </td>
+          <td>
+            <v-card
+              max-height="auto"
+              elevation="2"
+              rounded="xl"
+              class="ml-2 mr-2"
+            >
+              <v-card-title>
+                <v-row>
+                  <v-avatar color="primary" size="30" class="mt-7 ml-5">
+                    <!-- <v-icon dark>mdi-account-circle</v-icon> -->
+                    <img
+                      src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
+                      alt="Avatar"
+                    />
+                  </v-avatar>
+
+                  <v-col>
+                    <v-card-text>
+                      <span class="font-weight-bold"
+                        >Number of Replaced Beneficiary</span
+                      >
+                      <br />
+                      <span class="headline font-weight-bold"> 1112123 </span>
+                    </v-card-text>
+                  </v-col>
+                </v-row>
+              </v-card-title>
+            </v-card>
+          </td>
+        </tr>
+      </thead>
+    </v-table>
+    <!-- header card end -->
+    <!-- first row chart start -->
+    <v-row class="mt-3">
+      <v-col cols="12" md="4" lg="4">
+        <v-card height="100%">
+          <v-card-text>
+            <V-row>
+              <v-col>
+                <v-row>
+                  <v-col cols="12" lg="6" md="6">
+                    <label style="color: #1976d2">
+                      <span>
+                        {{ $t("Program & Location Wise Beneficiary") }}
+                      </span>
+                    </label></v-col
+                  >
+                  <v-col cols="3" lg="3">
+                    <v-autocomplete
+                      class="mr-5"
+                      :items="months"
+                      :label="$t('Month')"
+                      dense
+                      item-text="month_name"
+                      item-value="month_name"
+                    ></v-autocomplete>
+                  </v-col>
+                  <v-col cols="3" lg="3">
+                    <v-autocomplete
+                      class="mr-5"
+                      :items="years"
+                      :label="$t('Year')"
+                      dense
+                      item-text="year_name"
+                      item-value="year_name"
+                    ></v-autocomplete>
+                  </v-col>
+                </v-row>
+
+                <v-row>
+                  <canvas id="program_location_wise_chart" class="pie"></canvas>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" lg="4" md="4"> </v-col>
+
+                  <v-col cols="12" lg="8" md="8">
+                    <v-autocomplete
+                      class="mr-5"
+                      :items="programs"
+                      :label="$t('Programs')"
+                      dense
+                      item-text="name_en"
+                      item-value="id"
+                    ></v-autocomplete>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </V-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="4" lg="4">
+        <v-card height="100%">
+          <v-card-text>
+            <V-row>
+              <v-col>
+                <v-row>
+                  <v-col cols="12" lg="6" md="6">
+                    <label style="color: #1976d2">
+                      <span>
+                        {{ $t("Gender Wise Beneficiary") }}
+                      </span>
+                    </label></v-col
+                  >
+                  <v-col cols="3" lg="3">
+                    <v-autocomplete
+                      class="mr-5"
+                      :items="months"
+                      :label="$t('Month')"
+                      dense
+                      item-text="month_name"
+                      item-value="month_name"
+                    ></v-autocomplete>
+                  </v-col>
+                  <v-col cols="3" lg="3">
+                    <v-autocomplete
+                      class="mr-5"
+                      :items="years"
+                      :label="$t('Year')"
+                      dense
+                      item-text="year_name"
+                      item-value="year_name"
+                    ></v-autocomplete>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <canvas id="piechart2"></canvas>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" lg="4" md="4"> </v-col>
+                  <v-col cols="12" lg="8" md="8">
+                    <v-autocomplete
+                      class="mr-5"
+                      :items="genders"
+                      :label="$t('Gender')"
+                      dense
+                      item-text="name_en"
+                      item-value="id"
+                    ></v-autocomplete>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </V-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
+
+      <v-col cols="12" md="4" lg="4">
+        <v-card height="100%">
+          <v-card-text>
+            <V-row>
+              <v-col>
+                <v-row>
+                  <v-col cols="12" lg="6" md="6">
+                    <label style="color: #1976d2">
+                      <span>
+                        {{
+                          $t("Year Wise Number of Waiting list of Beneficiary")
+                        }}
+                      </span>
+                    </label></v-col
+                  >
+                  <v-col cols="3" lg="3">
+                    <v-autocomplete
+                      class="mr-5"
+                      :items="months"
+                      :label="$t('Month')"
+                      dense
+                      item-text="month_name"
+                      item-value="month_name"
+                    ></v-autocomplete>
+                  </v-col>
+                  <v-col cols="3" lg="3">
+                    <v-autocomplete
+                      class="mr-5"
+                      v-model="year_name"
+                      :items="years"
+                      :label="$t('Year')"
+                      dense
+                      item-text="year_name"
+                      item-value="year_name"
+                    ></v-autocomplete>
+                  </v-col>
+                </v-row>
+
+                <v-row justify="end">
+                  <canvas id="year_wise_ben"></canvas>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" lg="4" md="4"> </v-col>
+
+                  <v-col cols="12" lg="8" md="8">
+                    <v-autocomplete
+                      class="mr-5"
+                      :items="programs"
+                      :label="$t('Programs')"
+                      dense
+                      item-text="name_en"
+                      item-value="id"
+                    ></v-autocomplete>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </V-row>
+          </v-card-text>
+        </v-card>
       </v-col>
     </v-row>
-  </div>
+    <!-- first row chart end -->
+    <!-- Second row chart start -->
+    <v-row class="mt-3">
+      <v-col cols="12" md="6" lg="6">
+        <v-card class="mx-auto">
+          <canvas id="acquisitions"></canvas>
+        </v-card>
+      </v-col>
+
+      <v-col cols="12" md="6" lg="6">
+        <v-card class="mx-auto">
+          <canvas id="linechart"></canvas>
+        </v-card>
+      </v-col>
+    </v-row>
+    <!-- Second row chart end -->
+
+    <!-- Third row chart start -->
+    <v-row class="mt-3">
+      <v-col cols="12" md="6" lg="6">
+        <v-card class="mx-auto">
+          <canvas id="linechart2"></canvas>
+        </v-card>
+      </v-col>
+      <!-- <v-col cols="12" md="6" lg="6">
+        <v-card class="mx-auto"> <canvas id="testchart"></canvas> </v-card>
+      </v-col> -->
+    </v-row>
+    <!-- Third row chart end -->
+  </v-container>
 </template>
   
   <script>
-import { mapState, mapActions } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
-
+import Chart from "chart.js/auto";
 extend("required", required);
 export default {
-  name: "Index",
-  title: "CTM - Application List",
+  name: "Dashboard",
+  title: "CTM - Beneficiary Dashboard",
   data() {
     return {
-      data: {},
+      items: [
+        {
+          title: "Total Number of Beneficiary",
+          description: "11132238",
+          imageUrl: "https://via.placeholder.com/400x200",
+        },
+        {
+          title: "Number of Active Beneficiary",
+          description: "11132238",
+          imageUrl: "https://via.placeholder.com/400x200",
+        },
+        {
+          title: "Number of Inactive / Dead Beneficiary",
+          description: "11132238",
+          imageUrl: "https://via.placeholder.com/400x200",
+        },
+        {
+          title: "Number of Beneficiary in Waiting List ",
+          description: "11132238",
+          imageUrl: "https://via.placeholder.com/400x200",
+        },
+        {
+          title: "Number of Beneficiary in Waiting List ",
+          description: "11132238",
+          imageUrl: "https://via.placeholder.com/400x200",
+        },
+      ],
+
+      items2: [
+        {
+          title: "Total Number of Beneficiary",
+          description: "11132238",
+          imageUrl: "https://via.placeholder.com/400x200",
+        },
+        {
+          title: "Number of Active Beneficiary",
+          description: "11132238",
+          imageUrl: "https://via.placeholder.com/400x200",
+        },
+        {
+          title: "Number of Inactive/Dead Beneficiary",
+          description: "11132238",
+          imageUrl: "https://via.placeholder.com/400x200",
+        },
+      ],
+      data: [
+        { year: 2010, count: 10 },
+        { year: 2011, count: 20 },
+        { year: 2012, count: 15 },
+        { year: 2013, count: 25 },
+        { year: 2014, count: 22 },
+        { year: 2015, count: 30 },
+        { year: 2016, count: 28 },
+      ],
+      months: [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ],
+      years: Array.from(
+        { length: 100 },
+        (_, i) => new Date().getFullYear() - i
+      ),
+      month_name: "",
+      year_name: "",
+      programs: [],
+      genders: ["Male", "Female", "3rd Gender"],
+      program_name: "",
     };
   },
   components: {
@@ -229,7 +461,33 @@ export default {
   },
   computed: {},
 
-  methods: {},
+  methods: {
+    async GetAllProgram() {
+      try {
+        this.$axios
+          .get("/admin/allowance/get", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((result) => {
+            console.log(result, "programs");
+            this.programs = result.data.data;
+          })
+          .catch((err) => {
+            console.log(err, "error");
+            if (err.response?.data?.errors) {
+              this.$refs.form.setErrors(err.response.data.errors);
+            }
+            console.log(err.response);
+            this.$toast.error(err?.response?.data?.message);
+          });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+  },
   watch: {
     "$i18n.locale": "updateHeaderTitle",
   },
@@ -237,6 +495,145 @@ export default {
   beforeMount() {
     this.updateHeaderTitle();
   },
-  mounted() {},
+  mounted() {
+    this.GetAllProgram();
+    // program_location_wise_chart
+    const ctxpie = document.getElementById("program_location_wise_chart");
+    new Chart(ctxpie, {
+      type: "pie",
+      data: {
+        labels: ["Dhaka", "Rajshahi", "Khula", "Sylhet", "Chattrogram"],
+        datasets: [
+          {
+            label: "My First Dataset",
+            data: [300, 50, 100, 30, 200],
+            backgroundColor: ["Blue", "Red", "Green", "Purple", "Yellow"],
+            // backgroundColor: [
+            //   "rgb(255, 99, 132)",
+            //   "rgb(54, 162, 235)",
+            //   "rgb(255, 205, 86)",
+            // ],
+            hoverOffset: 4,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+
+    const ctx = document.getElementById("year_wise_ben");
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: ["2019", "2020", "2021", "2022", "2023", "2024"],
+        datasets: [
+          {
+            label: "Yearly Beneficiaries",
+            data: [1200, 1900, 1000, 2200, 2800, 900],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+
+    new Chart(document.getElementById("acquisitions"), {
+      type: "bar",
+      data: {
+        labels: this.data.map((row) => row.year),
+        datasets: [
+          {
+            label: "Acquisitions by year",
+            data: this.data.map((row) => row.count),
+          },
+        ],
+      },
+    });
+    const ctxpie2 = document.getElementById("piechart2");
+    new Chart(ctxpie2, {
+      type: "pie",
+      data: {
+        labels: ["Male", "Female", "Hijra"],
+        datasets: [
+          {
+            label: "My First Dataset",
+            data: [300, 50, 100],
+            backgroundColor: ["Blue", "Green", "Purple"],
+            hoverBackgroundColor: [
+              "rgba(255, 99, 132, 0.8)",
+              "rgba(54, 162, 235, 0.8)",
+              "rgba(255, 206, 86, 0.8)",
+            ],
+          },
+        ],
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+    new Chart(document.getElementById("linechart"), {
+      type: "line",
+      data: {
+        // labels: Utils.months({ count: 7 }),
+        labels: ["Red", "Blue", "Yellow", "Red", "Blue", "Yellow"],
+        datasets: [
+          {
+            label: "My First Dataset",
+            data: [0, 59, 80, 81, 56, 55, 40],
+            fill: false,
+            borderColor: "rgb(75, 192, 192)",
+            tension: 0.1,
+          },
+        ],
+      },
+    });
+
+    new Chart(document.getElementById("linechart2"), {
+      type: "line",
+      data: {
+        // labels: Utils.months({ count: 7 }),
+        labels: ["Red", "Blue", "Yellow", "Red", "Blue", "Yellow"],
+        datasets: [
+          {
+            label: "My First Dataset",
+            data: [0, 59, 80, 81, 56, 55, 40],
+            fill: false,
+            borderColor: "rgb(75, 192, 192)",
+            tension: 0.1,
+          },
+        ],
+      },
+    });
+
+    new Chart(document.getElementById("testchart"), {
+      type: "bar",
+      data: {
+        // labels: Utils.months({ count: 7 }),
+        // labels: ["Red", "Blue", "Yellow", "Red", "Blue", "Yellow"],
+        labels: ["Italy", "France", "Spain", "USA", "Argentina"],
+        datasets: [
+          {
+            label: "labels",
+            data: [55, 49, 44, 24, 15],
+          },
+        ],
+      },
+    });
+  },
 };
 </script>
