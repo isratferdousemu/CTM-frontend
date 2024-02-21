@@ -311,8 +311,8 @@
                   </v-col>
                 </v-row>
 
-                <v-row justify="end">
-                  <canvas id="year_wise_ben"></canvas>
+                <v-row>
+                  <canvas height="300" id="year_wise_ben"></canvas>
                 </v-row>
                 <v-row>
                   <v-col cols="12" lg="4" md="4"> </v-col>
@@ -338,14 +338,132 @@
     <!-- Second row chart start -->
     <v-row class="mt-3">
       <v-col cols="12" md="6" lg="6">
-        <v-card class="mx-auto">
-          <canvas id="acquisitions"></canvas>
+        <v-card height="100%">
+          <v-card-text>
+            <V-row>
+              <v-col>
+                <v-row>
+                  <v-col cols="12" lg="5" md="5">
+                    <label style="color: #1976d2">
+                      <span>
+                        {{ $t("Program Wise Beneficiary") }}
+                      </span>
+                    </label></v-col
+                  >
+                  <v-col cols="3" lg="3">
+                    <v-autocomplete
+                      class="mr-5"
+                      :items="programs"
+                      :label="$t('Program')"
+                      dense
+                      item-text="name_en"
+                      item-value="id"
+                    ></v-autocomplete>
+                  </v-col>
+                  <v-col cols="2" lg="2">
+                    <v-autocomplete
+                      class="mr-5"
+                      :items="months"
+                      :label="$t('Month')"
+                      dense
+                      item-text="month_name"
+                      item-value="month_name"
+                    ></v-autocomplete>
+                  </v-col>
+                  <v-col cols="2" lg="2">
+                    <v-autocomplete
+                      class="mr-5"
+                      :items="years"
+                      :label="$t('Year')"
+                      dense
+                      item-text="year_name"
+                      item-value="year_name"
+                    ></v-autocomplete>
+                  </v-col>
+                </v-row>
+
+                <v-row>
+                  <canvas id="acquisitions"></canvas>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" lg="4" md="4"> </v-col>
+                  <v-col cols="12" lg="8" md="8">
+                    <label>
+                      <span>
+                        {{ $t("Disable Program Allowance") }}
+                      </span>
+                    </label>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </V-row>
+          </v-card-text>
         </v-card>
       </v-col>
-
       <v-col cols="12" md="6" lg="6">
-        <v-card class="mx-auto">
-          <canvas id="linechart"></canvas>
+        <v-card height="100%">
+          <v-card-text>
+            <V-row>
+              <v-col>
+                <v-row>
+                  <v-col cols="12" lg="6" md="6">
+                    <label style="color: #1976d2">
+                      <span>
+                        {{ $t("Age & Program Wise Beneficiary") }}
+                      </span>
+                    </label></v-col
+                  >
+                  <v-col cols="3" lg="3">
+                    <v-autocomplete
+                      class="mr-5"
+                      :items="months"
+                      :label="$t('Month')"
+                      dense
+                      item-text="month_name"
+                      item-value="month_name"
+                    ></v-autocomplete>
+                  </v-col>
+                  <v-col cols="3" lg="3">
+                    <v-autocomplete
+                      class="mr-5"
+                      :items="years"
+                      :label="$t('Year')"
+                      dense
+                      item-text="year_name"
+                      item-value="year_name"
+                    ></v-autocomplete>
+                  </v-col>
+                </v-row>
+
+                <v-row>
+                  <canvas id="linechart"></canvas>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" lg="6" md="6">
+                    <v-autocomplete
+                      class="mr-5"
+                      :items="programs"
+                      :label="$t('Age')"
+                      dense
+                      item-text="name_en"
+                      item-value="id"
+                    ></v-autocomplete>
+                  </v-col>
+
+                  <v-col cols="12" lg="6" md="6">
+                    <v-autocomplete
+                      class="mr-5"
+                      :items="programs"
+                      :label="$t('Programs')"
+                      dense
+                      item-text="name_en"
+                      item-value="id"
+                    ></v-autocomplete>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </V-row>
+          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
@@ -354,13 +472,127 @@
     <!-- Third row chart start -->
     <v-row class="mt-3">
       <v-col cols="12" md="6" lg="6">
-        <v-card class="mx-auto">
-          <canvas id="linechart2"></canvas>
+        <v-card height="100%">
+          <v-card-text>
+            <V-row>
+              <v-col>
+                <v-row>
+                  <v-col cols="12" lg="6" md="6">
+                    <v-autocomplete
+                      class="mr-5"
+                      :items="programs"
+                      :label="$t('To Program')"
+                      dense
+                      item-text="name_en"
+                      item-value="id"
+                    ></v-autocomplete>
+                    <v-autocomplete
+                      class="mr-5"
+                      :items="programs"
+                      :label="$t('From Program')"
+                      dense
+                      item-text="name_en"
+                      item-value="id"
+                    ></v-autocomplete>
+                  </v-col>
+                  <v-col cols="3" lg="3">
+                    <v-autocomplete
+                      class="mr-5"
+                      :items="months"
+                      :label="$t('Month')"
+                      dense
+                      item-text="month_name"
+                      item-value="month_name"
+                    ></v-autocomplete>
+                  </v-col>
+                  <v-col cols="3" lg="3">
+                    <v-autocomplete
+                      class="mr-5"
+                      :items="years"
+                      :label="$t('Year')"
+                      dense
+                      item-text="year_name"
+                      item-value="year_name"
+                    ></v-autocomplete>
+                  </v-col>
+                </v-row>
+
+                <v-row>
+                  <canvas id="linechart2"></canvas>
+                </v-row>
+                <v-row>
+                  <v-col cols="12" lg="4" md="4"> </v-col>
+                  <v-col cols="12" lg="8" md="8">
+                    <label style="color: #1976d2">
+                      <span>
+                        {{ $t("Number of Beneficiary Program Shifted") }}
+                      </span>
+                    </label>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </V-row>
+          </v-card-text>
         </v-card>
       </v-col>
-      <!-- <v-col cols="12" md="6" lg="6">
-        <v-card class="mx-auto"> <canvas id="testchart"></canvas> </v-card>
-      </v-col> -->
+      <v-col cols="12" md="6" lg="6">
+        <v-card height="100%">
+          <v-card-text>
+            <V-row>
+              <v-col>
+                <v-row>
+                  <v-col cols="12" lg="6" md="6">
+                    <label style="color: #1976d2">
+                      <span>
+                        {{
+                          $t("Total Percentage(%) of Beneficiary Location Wise")
+                        }}
+                      </span>
+                    </label>
+                  </v-col>
+                  <v-col cols="3" lg="3">
+                    <v-autocomplete
+                      class="mr-5"
+                      :items="months"
+                      :label="$t('Month')"
+                      dense
+                      item-text="month_name"
+                      item-value="month_name"
+                    ></v-autocomplete>
+                  </v-col>
+                  <v-col cols="3" lg="3">
+                    <v-autocomplete
+                      class="mr-5"
+                      :items="years"
+                      :label="$t('Year')"
+                      dense
+                      item-text="year_name"
+                      item-value="year_name"
+                    ></v-autocomplete>
+                  </v-col>
+                </v-row>
+
+                <v-row>
+                  <!-- <canvas id="linechart2"></canvas> -->
+                </v-row>
+                <v-row>
+                  <v-col cols="12" lg="4" md="4"> </v-col>
+                  <v-col cols="12" lg="8" md="8">
+                    <v-autocomplete
+                      class="mr-5"
+                      :items="programs"
+                      :label="$t('Program')"
+                      dense
+                      item-text="name_en"
+                      item-value="id"
+                    ></v-autocomplete>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </V-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
     </v-row>
     <!-- Third row chart end -->
   </v-container>
