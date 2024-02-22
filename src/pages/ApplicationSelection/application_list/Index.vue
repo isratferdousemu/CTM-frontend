@@ -338,14 +338,14 @@
                     </v-col>
 
                     <!-- Dropdown on the right -->
-                    <v-col lg="4" md="4" cols="12" class="text-right">
-
-                      <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="GeneratePDF()">{{
-                        $t("container.list.PDF") }}</v-btn>
-                      <!-- <v-btn elevation="2" class="btn mr-2  white--text" color="teal darken-2" @click="GenerateExcel()"
-                                                    >{{
-                                                        $t("container.list.excel") }}</v-btn> -->
-
+                    <v-col lg="4" md="6" cols="12" class="text-right">
+                      <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="GeneratePDF()">
+                        <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
+                      </v-btn>
+                      <v-btn elevation="2" class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
+                        <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                        {{ $t("container.list.excel") }}
+                      </v-btn>
                     </v-col>
                   </v-row>
                 </template>
@@ -1616,13 +1616,11 @@ export default {
 
 
     },
+
     async GeneratePDF() {
-      // console.log('Current Locale:', this.$i18n.locale);
-      // const translatedText = this.$t('container.list.sl');
-      // console.log('Translated Text:', translatedText);
+      // this.isLoading = true;
       const queryParams = {
-        language: this.$i18n.locale,
-        selectedColumns: this.selectedColumns,
+
         searchText: this.search,
         application_id: this.data.application_id,
         nominee_name: this.data.nominee_name,
@@ -1642,25 +1640,282 @@ export default {
         sub_location_type: this.data.sub_location_type,
         ward_id: this.data.ward_id,
         status: this.data.status_list,
+        perPage: this.total,
+        // perPage: this.pagination.perPage,
+        page: this.pagination.current,
+        language: this.$i18n.locale,
+        selectedColumns: this.selectedColumns,
 
       };
-      this.$axios
-        .get("/admin/application/generate-pdf", {
+      await this.$axios
+          .get("/admin/application/get", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+            params: queryParams,
+          })
+          .then((result) => {
+            this.applications = result.data.data;
+          });
+
+      const CustomInfo = this.applications.map(((i,index) => {
+        let divisionName = '';
+        let districtName = '';
+        let location = '';
+        let union_pouro_city = '';
+        let status = '';
+        if (i) {
+          if (i.status === 0) {
+            status = "Not Selected"
+          } else if (i.status === 1) {
+            status = "Forwarded"
+          } else if (i.status === 2) {
+            status = "Approved"
+          } else if (i.status === 3) {
+            status = "Waiting"
+          } else if (i.status === 4) {
+            status = "Rejected"
+          }
+        }
+
+        if (i?.permanent_location_type_id == '1') {
+          divisionName = this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.parent?.name_bn;
+          districtName = this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.name_bn;
+          location = this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.name_en : i?.permanent_location?.parent?.name_bn;
+        } else if (i?.permanent_location_type_id == '2' || i?.permanent_location_type_id == '3') {
+          divisionName = this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.parent?.parent?.name_bn;
+          districtName = this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.parent?.name_bn;
+          location = this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.name_bn;
+          union_pouro_city = this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.name_en : i?.permanent_location?.parent?.name_bn;
+        }
+
+        return {
+          'sl': this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+          'application_id': i?.application_id,
+          'program.name_en': this.$i18n.locale == 'en' ? i?.program?.name_en : i?.program?.name_bn,
+          'name_en':  i?.name_en,
+          'status': status,
+          // 'status': i?.status,
+          'score': i?.score,
+          'account_number': i?.account_number,
+          'verification_number': i?.verification_number,
+          'division': divisionName,
+          'district': districtName,
+          // 'division': this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.parent?.parent?.name_bn,
+          // 'district': this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.parent?.name_bn,
+          // 'union_pouro_city': this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.name_bn,
+          'union_pouro_city': union_pouro_city,
+          'location': location,
+          // 'location': this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.name_en : i?.permanent_location?.parent?.name_bn,
+          'ward': this.$i18n.locale == 'en' ? i?.permanent_location?.name_en : i?.permanent_location?.name_bn,
+          'father_name_en': this.$i18n.locale == 'en' ? i?.father_name_en : i?.father_name_bn,
+          'mother_name_en': this.$i18n.locale == 'en' ? i?.mother_name_en : i?.mother_name_bn,
+          'marital_status': i?.marital_status,
+          'spouse_name_en': i?.spouse_name_en,
+          'nominee_en': i?.nominee_en,
+          'nominee_relation_with_beneficiary': i?.nominee_relation_with_beneficiary,
+          'mobile': i?.mobile,
+        }
+      }));
+
+      const filteredTexts = this.headers
+          .filter(header => this.selectedColumns.includes(header.value))
+          .map(header => header.text);
+
+      const filteredValue = this.headers
+          .filter(header => this.selectedColumns.includes(header.value))
+          .map(header => header.value);
+
+      const HeaderInfo = [this.$t("container.list.sl"),...filteredTexts];
+
+      const selectColumn = ['sl',...filteredValue]
+
+      const Info = CustomInfo.map(application => {
+        const filteredValues = selectColumn.map(header => application[header]);
+        return filteredValues;
+      });
+
+      const queryParam = {
+        language: this.$i18n.locale,
+        data:Info,
+        header:HeaderInfo,
+        fileName:this.$t("container.application_selection.application.list"),
+      };
+      try {
+        const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json", // Set content type to JSON
           },
-          params: queryParams,
-        })
-        .then((result) => {
-          window.open(result.data.data.url, '_blank');
-        })
-        .catch(error => {
-          console.error('Error generating PDF:', error);
+          responseType: 'arraybuffer',
         });
 
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        window.open(url, '_blank');
+        this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
+        console.error('Error generating PDF:', error);
+      }
+    },
+
+    async GenerateExcel(){
+
+      const queryParams = {
+
+        searchText: this.search,
+        application_id: this.data.application_id,
+        nominee_name: this.data.nominee_name,
+        account_no: this.data.account_no,
+        status: this.data.status,
+        program_id: this.data.program_id,
+        nid_no: this.data.nid_no,
+        division_id: this.data.division_id,
+        district_id: this.data.district_id,
+        location_type_id: this.data.location_type,
+        thana_id: this.data.thana_id,
+        union_id: this.data.union_id,
+        city_id: this.data.city_id,
+        city_thana_id: this.data.city_thana_id,
+        district_pouro_id: this.data.district_pouro_id,
+        pouro_id: this.data.pouro_id,
+        sub_location_type: this.data.sub_location_type,
+        ward_id: this.data.ward_id,
+        status: this.data.status_list,
+        perPage: this.total,
+        // perPage: this.pagination.perPage,
+        page: this.pagination.current,
+        language: this.$i18n.locale,
+        selectedColumns: this.selectedColumns,
+
+      };
+      await this.$axios
+          .get("/admin/application/get", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+            params: queryParams,
+          })
+          .then((result) => {
+            this.applications = result.data.data;
+
+            const CustomInfo = this.applications.map(((i,index) => {
+              let divisionName = '';
+              let districtName = '';
+              let location = '';
+              let union_pouro_city = '';
+              let status = '';
+              if (i) {
+                if (i.status === 0) {
+                  status = "Not Selected"
+                } else if (i.status === 1) {
+                  status = "Forwarded"
+                } else if (i.status === 2) {
+                  status = "Approved"
+                } else if (i.status === 3) {
+                  status = "Waiting"
+                } else if (i.status === 4) {
+                  status = "Rejected"
+                }
+              }
+
+              if (i?.permanent_location_type_id == '1') {
+                divisionName = this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.parent?.name_bn;
+                districtName = this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.name_bn;
+                location = this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.name_en : i?.permanent_location?.parent?.name_bn;
+              } else if (i?.permanent_location_type_id == '2' || i?.permanent_location_type_id == '3') {
+                divisionName = this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.parent?.parent?.name_bn;
+                districtName = this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.parent?.name_bn;
+                location = this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.name_bn;
+                union_pouro_city = this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.name_en : i?.permanent_location?.parent?.name_bn;
+              }
+
+              return {
+                'sl': this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+                'application_id': i?.application_id,
+                'program.name_en': this.$i18n.locale == 'en' ? i?.program?.name_en : i?.program?.name_bn,
+                'name_en':  i?.name_en,
+                'status': status,
+                // 'status': i?.status,
+                'score': i?.score,
+                'account_number': i?.account_number,
+                'verification_number': i?.verification_number,
+                'division': divisionName,
+                'district': districtName,
+                // 'division': this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.parent?.parent?.name_bn,
+                // 'district': this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.parent?.name_bn,
+                // 'union_pouro_city': this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.name_bn,
+                'union_pouro_city': union_pouro_city,
+                'location': location,
+                // 'location': this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.name_en : i?.permanent_location?.parent?.name_bn,
+                'ward': this.$i18n.locale == 'en' ? i?.permanent_location?.name_en : i?.permanent_location?.name_bn,
+                'father_name_en': this.$i18n.locale == 'en' ? i?.father_name_en : i?.father_name_bn,
+                'mother_name_en': this.$i18n.locale == 'en' ? i?.mother_name_en : i?.mother_name_bn,
+                'marital_status': i?.marital_status,
+                'spouse_name_en': i?.spouse_name_en,
+                'nominee_en': i?.nominee_en,
+                'nominee_relation_with_beneficiary': i?.nominee_relation_with_beneficiary,
+                'mobile': i?.mobile,
+              }
+            }));
+
+            const filteredTexts = this.headers
+                .filter(header => this.selectedColumns.includes(header.value))
+                .map(header => header.text);
+
+            const filteredValue = this.headers
+                .filter(header => this.selectedColumns.includes(header.value))
+                .map(header => header.value);
+
+            const HeaderInfo = [this.$t("container.list.sl"),...filteredTexts];
+
+            const selectColumn = ['sl',...filteredValue]
+
+            const Info = CustomInfo.map(application => {
+              const filteredValues = selectColumn.map(header => application[header]);
+              return filteredValues;
+            });
+
+            try {
+              import('@/plugins/Export2Excel').then((excel) => {
+                const Field = selectColumn
+
+                const Data = this.FormatJson(Field, CustomInfo)
+                const currentDate = new Date().toISOString().slice(0, 10); //
+                let dateinfo = queryParams.language == 'en' ? currentDate : this.$helpers.englishToBangla(currentDate)
+
+                const filenameWithDate = `${dateinfo}_${this.$t("container.application_selection.application.list")}`;
+
+                excel.export_json_to_excel({
+                  header: HeaderInfo,
+                  data: Data,
+                  sheetName: filenameWithDate,
+                  filename: filenameWithDate,
+                  autoWidth: true,
+                  bookType: "xlsx"
+                })
+              })
+            } catch (error) {
+              // Handle any errors here
+              console.error("An error occurred:", error);
+              this.isLoading = false;
+            } finally {
+              this.isLoading = false;
+            }
+          });
 
     },
+
+    FormatJson(FilterData,JsonData){
+      return JsonData.map((v) =>
+          FilterData.map((j => {
+            return v[j];
+          })))
+    },
+
     submitsearch() {
       this.GetApplication();
 
