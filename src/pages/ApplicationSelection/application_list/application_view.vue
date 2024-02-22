@@ -1378,14 +1378,14 @@
                                         <v-row>
                                             <v-col v-for="(field, index) in variable" :key="index" cols="6" lg="6" v-if="field.parent">
                                                 <v-row>
-                                                            <v-col cols="4" lg="4"> <label> {{ field.parent ? field.parent.name_en : '' }}
+                                                            <v-col cols="4" lg="4"> <label> 
+                                                                {{ language === 'bn' ? (field.parent ? field.parent.name_bn : '') : (field.parent ? field.parent.name_en : '') }}
+                                                                
                                                                 </label></v-col>
                                                             <v-col cols="8" lg="8">
                                                                 :<template>
                                                                     <span style="20px">
-                                                                        {{
-
-                                                                           field.name_en }}
+                                                                       {{ language === 'bn' ? field.name_bn : field.name_en }}
                                                                     </span>
                                                                 </template>
                                                             </v-col>
@@ -1395,12 +1395,13 @@
                                             </v-col>
                                             <v-col v-for="(field, index) in variable" :key="index" cols="6" lg="6" v-if="field.parent == null">
                                                     <v-row>
-                                                                <v-col cols="4" lg="4"> <label> {{ field.name_en }}
+                                                                <v-col cols="4" lg="4"> <label> {{ language === 'bn' ? field.name_bn : field.name_en }}
                                                                     </label></v-col>
                                                                 <v-col cols="8" lg="8">
                                                                     :<template>
                                                                         <span style="20px">
-                                                                           Yes
+                                                                            {{ language === 'bn' ? 'হ্যাঁ' :   'Yes' }}
+                                                                         
                                                                         </span>
                                                                     </template>
                                                                 </v-col>
@@ -1444,7 +1445,7 @@ import { required } from 'vee-validate/dist/rules';
 import Form from "vform";
 
 export default {
-    title: "CTM - Online Application",
+    title: "CTM -  Application View",
     data() {
         return {
             applications: [],
