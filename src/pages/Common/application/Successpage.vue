@@ -41,11 +41,11 @@
             <v-col cols="6" class="mx-auto mt-10">
                 <v-card>
                     <v-card-text class="mt-10 text-center">
-                        <p style="font-size: 20px" class="mt-5">
+                        <p style="font-size: 15px" class="mt-5">
                              {{ $t('container.application_selection.application.successfull') }} {{ successId }}
                             
                           </p>
-                        <p style="font-size: 20px" class="mt-5"> {{ $t('container.application_selection.application.tracking') }} </p>
+                        <p style="font-size: 15px" class="mt-5"> {{ $t('container.application_selection.application.tracking') }} </p>
 
                        
                         <!-- <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="generatePDF">
