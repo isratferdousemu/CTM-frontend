@@ -24,8 +24,8 @@
                   <v-col>
                     <v-card-text style="word-break: break-word">
                       <span class="font-weight-bold"
-                        >Total Number of Beneficiary</span
-                      >
+                        >Total Number of Beneficiary
+                      </span>
                       <br />
                       <span class="headline font-weight-bold"> 1112123 </span>
                     </v-card-text>
@@ -173,7 +173,7 @@
                       </span>
                     </label></v-col
                   >
-                  <v-col cols="3" lg="3">
+                  <v-col cols="3" lg="3" md="3">
                     <v-autocomplete
                       class="mr-5"
                       :items="months"
@@ -181,9 +181,11 @@
                       dense
                       item-text="month_name"
                       item-value="month_name"
+                      v-model="program_location_Wise_beneficiary.month"
+                      @input="onChangeProgramAndLocationWiseBeneficiary($event)"
                     ></v-autocomplete>
                   </v-col>
-                  <v-col cols="3" lg="3">
+                  <v-col cols="3" lg="3" md="3">
                     <v-autocomplete
                       class="mr-5"
                       :items="years"
@@ -191,12 +193,14 @@
                       dense
                       item-text="year_name"
                       item-value="year_name"
+                      v-model="program_location_Wise_beneficiary.year"
+                      @input="onChangeProgramAndLocationWiseBeneficiary($event)"
                     ></v-autocomplete>
                   </v-col>
                 </v-row>
 
                 <v-row>
-                  <canvas id="program_location_wise_chart" class="pie"></canvas>
+                  <canvas id="program_location_wise_chart"></canvas>
                 </v-row>
                 <v-row>
                   <v-col cols="12" lg="4" md="4"> </v-col>
@@ -209,6 +213,8 @@
                       dense
                       item-text="name_en"
                       item-value="id"
+                      v-model="program_location_Wise_beneficiary.program_id"
+                      @input="onChangeProgramAndLocationWiseBeneficiary($event)"
                     ></v-autocomplete>
                   </v-col>
                 </v-row>
@@ -252,7 +258,7 @@
                   </v-col>
                 </v-row>
                 <v-row>
-                  <canvas id="piechart2"></canvas>
+                  <canvas id="gender_wise_beneficiary"></canvas>
                 </v-row>
                 <v-row>
                   <v-col cols="12" lg="4" md="4"> </v-col>
@@ -383,7 +389,7 @@
                 </v-row>
 
                 <v-row>
-                  <canvas id="acquisitions"></canvas>
+                  <canvas id="program_wise_beneficiary"></canvas>
                 </v-row>
                 <v-row>
                   <v-col cols="12" lg="4" md="4"> </v-col>
@@ -436,7 +442,7 @@
                 </v-row>
 
                 <v-row>
-                  <canvas id="linechart"></canvas>
+                  <canvas id="age_program_wise_beneficiary"></canvas>
                 </v-row>
                 <v-row>
                   <v-col cols="12" lg="6" md="6">
@@ -518,7 +524,7 @@
                 </v-row>
 
                 <v-row>
-                  <canvas id="linechart2"></canvas>
+                  <canvas id="shifted_beneficiary"></canvas>
                 </v-row>
                 <v-row>
                   <v-col cols="12" lg="4" md="4"> </v-col>
@@ -608,52 +614,14 @@ export default {
   title: "CTM - Beneficiary Dashboard",
   data() {
     return {
-      items: [
-        {
-          title: "Total Number of Beneficiary",
-          description: "11132238",
-          imageUrl: "https://via.placeholder.com/400x200",
-        },
-        {
-          title: "Number of Active Beneficiary",
-          description: "11132238",
-          imageUrl: "https://via.placeholder.com/400x200",
-        },
-        {
-          title: "Number of Inactive / Dead Beneficiary",
-          description: "11132238",
-          imageUrl: "https://via.placeholder.com/400x200",
-        },
-        {
-          title: "Number of Beneficiary in Waiting List ",
-          description: "11132238",
-          imageUrl: "https://via.placeholder.com/400x200",
-        },
-        {
-          title: "Number of Beneficiary in Waiting List ",
-          description: "11132238",
-          imageUrl: "https://via.placeholder.com/400x200",
-        },
-      ],
-
-      items2: [
-        {
-          title: "Total Number of Beneficiary",
-          description: "11132238",
-          imageUrl: "https://via.placeholder.com/400x200",
-        },
-        {
-          title: "Number of Active Beneficiary",
-          description: "11132238",
-          imageUrl: "https://via.placeholder.com/400x200",
-        },
-        {
-          title: "Number of Inactive/Dead Beneficiary",
-          description: "11132238",
-          imageUrl: "https://via.placeholder.com/400x200",
-        },
-      ],
       data: [
+        { year: 2010, count: 10 },
+        { year: 2011, count: 20 },
+        { year: 2012, count: 15 },
+        { year: 2013, count: 25 },
+        { year: 2014, count: 22 },
+        { year: 2015, count: 30 },
+        { year: 2016, count: 28 },
         { year: 2010, count: 10 },
         { year: 2011, count: 20 },
         { year: 2012, count: 15 },
@@ -685,6 +653,12 @@ export default {
       programs: [],
       genders: ["Male", "Female", "3rd Gender"],
       program_name: "",
+
+      program_location_Wise_beneficiary: {
+        program_id: null,
+        month: null,
+        year: null,
+      },
     };
   },
   components: {
@@ -719,6 +693,14 @@ export default {
         console.log(e);
       }
     },
+    onChangeProgramAndLocationWiseBeneficiary(event) {
+      console.log(
+        "program_id",
+        this.program_location_Wise_beneficiary.program_id
+      );
+      console.log("month", this.program_location_Wise_beneficiary.month);
+      console.log("year", this.program_location_Wise_beneficiary.year);
+    },
   },
   watch: {
     "$i18n.locale": "updateHeaderTitle",
@@ -750,12 +732,28 @@ export default {
         ],
       },
       options: {
-        scales: {
-          y: {
-            beginAtZero: true,
+        plugins: {
+          legend: {
+            display: true,
+            position: "right",
+            align: "center",
+            // labels: {
+            //   color: "rgb(255, 99, 132)",
+            // },
+          },
+          title: {
+            display: true,
+            text: "Custom Chart Title",
           },
         },
       },
+      // options: {
+      //   scales: {
+      //     y: {
+      //       beginAtZero: true,
+      //     },
+      //   },
+      // },
     });
 
     const ctx = document.getElementById("year_wise_ben");
@@ -780,19 +778,52 @@ export default {
       },
     });
 
-    new Chart(document.getElementById("acquisitions"), {
+    new Chart(document.getElementById("program_wise_beneficiary"), {
       type: "bar",
       data: {
         labels: this.data.map((row) => row.year),
         datasets: [
           {
-            label: "Acquisitions by year",
+            barPercentage: 0.5,
+            barThickness: 6,
+            maxBarThickness: 8,
+            minBarLength: 2,
+            label: "Program Wise Beneficiary",
             data: this.data.map((row) => row.count),
+            backgroundColor: [
+              "rgba(255, 99, 132, 0.2)",
+              "rgba(255, 159, 64, 0.2)",
+              "rgba(255, 205, 86, 0.2)",
+              "rgba(75, 192, 192, 0.2)",
+              "rgba(54, 162, 235, 0.2)",
+              "rgba(153, 102, 255, 0.2)",
+              "rgba(201, 203, 207, 0.2)",
+            ],
+            borderColor: [
+              "rgb(255, 99, 132)",
+              "rgb(255, 159, 64)",
+              "rgb(255, 205, 86)",
+              "rgb(75, 192, 192)",
+              "rgb(54, 162, 235)",
+              "rgb(153, 102, 255)",
+              "rgb(201, 203, 207)",
+            ],
+            borderWidth: 1,
           },
         ],
       },
+      options: {
+        plugins: {
+          legend: {
+            display: true,
+            labels: {
+              color: "rgb(255, 99, 132)",
+            },
+          },
+        },
+      },
     });
-    const ctxpie2 = document.getElementById("piechart2");
+    const ctxpie2 = document.getElementById("gender_wise_beneficiary");
     new Chart(ctxpie2, {
       type: "pie",
       data: {
@@ -802,11 +833,11 @@ export default {
             label: "My First Dataset",
             data: [300, 50, 100],
             backgroundColor: ["Blue", "Green", "Purple"],
-            hoverBackgroundColor: [
-              "rgba(255, 99, 132, 0.8)",
-              "rgba(54, 162, 235, 0.8)",
-              "rgba(255, 206, 86, 0.8)",
-            ],
+            // hoverBackgroundColor: [
+            //   "rgba(255, 99, 132, 0.8)",
+            //   "rgba(54, 162, 235, 0.8)",
+            //   "rgba(255, 206, 86, 0.8)",
+            // ],
           },
         ],
       },
@@ -818,50 +849,79 @@ export default {
         },
       },
     });
-    new Chart(document.getElementById("linechart"), {
+    new Chart(document.getElementById("age_program_wise_beneficiary"), {
       type: "line",
       data: {
         // labels: Utils.months({ count: 7 }),
-        labels: ["Red", "Blue", "Yellow", "Red", "Blue", "Yellow"],
+        labels: [
+          "2024",
+          "2023",
+          "2022",
+          "2021",
+          "2021",
+          "2020",
+          "2019",
+          "2018",
+        ],
         datasets: [
           {
-            label: "My First Dataset",
-            data: [0, 59, 80, 81, 56, 55, 40],
+            type: "line",
+            label: "Line Dataset",
+            data: [1600, 3000, 4500, 8000, 12000, 8000, 8500, 7500, 10000],
             fill: false,
-            borderColor: "rgb(75, 192, 192)",
+            // borderColor: "rgb(75, 192, 192)",
             tension: 0.1,
+          },
+          {
+            type: "bar",
+            label: "Bar Dataset",
+            data: [1600, 3000, 4500, 8000, 12000, 8000, 8500, 7500, 10000],
+            barPercentage: 0.5,
+            barThickness: 6,
+            maxBarThickness: 8,
+            minBarLength: 2,
           },
         ],
       },
-    });
-
-    new Chart(document.getElementById("linechart2"), {
-      type: "line",
-      data: {
-        // labels: Utils.months({ count: 7 }),
-        labels: ["Red", "Blue", "Yellow", "Red", "Blue", "Yellow"],
-        datasets: [
-          {
-            label: "My First Dataset",
-            data: [0, 59, 80, 81, 56, 55, 40],
-            fill: false,
-            borderColor: "rgb(75, 192, 192)",
-            tension: 0.1,
+      options: {
+        scales: {
+          x: {
+            stacked: true,
           },
-        ],
+        },
       },
     });
 
-    new Chart(document.getElementById("testchart"), {
-      type: "bar",
+    new Chart(document.getElementById("shifted_beneficiary"), {
       data: {
         // labels: Utils.months({ count: 7 }),
-        // labels: ["Red", "Blue", "Yellow", "Red", "Blue", "Yellow"],
-        labels: ["Italy", "France", "Spain", "USA", "Argentina"],
+        labels: [
+          "2024",
+          "2023",
+          "2022",
+          "2021",
+          "2021",
+          "2020",
+          "2019",
+          "2018",
+        ],
         datasets: [
           {
-            label: "labels",
-            data: [55, 49, 44, 24, 15],
+            type: "line",
+            label: "Line Dataset",
+            data: [1600, 3000, 4500, 8000, 12000, 8000, 8500, 7500, 10000],
+            fill: false,
+            // borderColor: "rgb(75, 192, 192)",
+            tension: 0.1,
+          },
+          {
+            type: "bar",
+            label: "Bar Dataset",
+            data: [1600, 3000, 4500, 8000, 12000, 8000, 8500, 7500, 10000],
+            barPercentage: 0.5,
+            barThickness: 6,
+            maxBarThickness: 8,
+            minBarLength: 2,
           },
         ],
       },
