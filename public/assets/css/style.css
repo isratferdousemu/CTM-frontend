@@ -109,7 +109,7 @@ th {
 
 .ic-qrcode-container {
   display: flex;
-  justify-content: left;
+  justify-content: center;
   margin: 20px auto 5px;
 }
 
@@ -145,6 +145,7 @@ th {
 
 @media print {
   body {
+    print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
   }
 
@@ -259,7 +260,7 @@ th {
 
   .ic-qrcode-container {
     display: flex;
-    justify-content: left;
+    justify-content: center;
     margin: 20px auto 5px;
   }
 

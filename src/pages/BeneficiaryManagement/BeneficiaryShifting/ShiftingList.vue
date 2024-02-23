@@ -519,7 +519,10 @@
                         class="btn mr-2 white--text"
                         color="red darken-4"
                         @click="GeneratePDF()"
-                        >{{ $t("container.list.PDF") }}</v-btn
+                        >
+                        <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                        {{ $t("container.list.PDF") }}
+                        </v-btn
                       >
                       <!-- <v-btn
                         elevation="2"
