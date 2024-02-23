@@ -566,7 +566,7 @@
         "mobile_account": "MFS (Mobile Financial Service)",
         "bank_account": "Bank Account",
         "nominee_info": "Nominne Information",
-        "nid_brn": "National Identity Number / Birth Registration Number",
+        "nid_brn": "NID / Birth Registration Number",
         "relationship": "Relationship with Beneficiary",
         "nominee_address": "Address",
         "eligiblity_info": "  Other Information of Eligibility",
