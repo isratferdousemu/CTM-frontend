@@ -828,6 +828,7 @@ export default {
           // window.open(result.data.data.url, "_blank");
         })
         .catch((error) => {
+          this.isLoading = false;
           console.error("Error generating PDF:", error);
         });
     },
