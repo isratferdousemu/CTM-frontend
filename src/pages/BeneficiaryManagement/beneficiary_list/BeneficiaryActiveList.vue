@@ -3,7 +3,6 @@
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
         <Spinner :loading="isLoading" />
-        <Spinner :loading="isLoading" />
         <v-row>
           <v-col cols="12">
             <!-- Expantion panels start -->
@@ -852,8 +851,6 @@ import { mapState, mapActions } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 import Spinner from "@/components/Common/Spinner.vue";
-import Spinner from "@/components/Common/Spinner.vue";
-
 extend("required", required);
 export default {
   name: "ActiveIndex",
@@ -975,7 +972,6 @@ export default {
     };
   },
   components: {
-    Spinner,
     ValidationProvider,
     ValidationObserver,
     Spinner,
