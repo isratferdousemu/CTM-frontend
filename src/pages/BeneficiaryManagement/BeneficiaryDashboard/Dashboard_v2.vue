@@ -200,7 +200,13 @@
                 </v-row>
 
                 <v-row>
-                  <canvas id="program_location_wise_chart"></canvas>
+                  <!-- <canvas id="program_location_wise_chart"></canvas> -->
+                  <GChart
+                    type="PieChart"
+                    :data="chartData"
+                    :options="chartOptions"
+                    :resizeDebounce="1000"
+                  />
                 </v-row>
                 <v-row>
                   <v-col cols="12" lg="4" md="4"> </v-col>
@@ -318,7 +324,12 @@
                 </v-row>
 
                 <v-row>
-                  <canvas height="300" id="year_wise_ben"></canvas>
+                  <!-- <canvas height="300" id="year_wise_ben"></canvas> -->
+                  <GChart
+                    type="ColumnChart"
+                    :data="chartData"
+                    :options="chartOptions"
+                  />
                 </v-row>
                 <v-row>
                   <v-col cols="12" lg="4" md="4"> </v-col>
@@ -608,12 +619,27 @@
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 import Chart from "chart.js/auto";
+import { GChart } from "vue-google-charts/legacy";
+
 extend("required", required);
 export default {
   name: "Dashboard",
   title: "CTM - Beneficiary Dashboard",
   data() {
     return {
+      chartData: [
+        ["Year", "Sales", "Expenses", "Profit"],
+        ["2014", 10, 400, 200],
+        ["2015", 1170, 460, 250],
+        ["2016", 660, 1120, 300],
+        ["2017", 1030, 540, 350],
+      ],
+      chartOptions: {
+        chart: {
+          title: "Company Performance",
+          subtitle: "Sales, Expenses, and Profit: 2014-2017",
+        },
+      },
       data: [
         { year: 2010, count: 10 },
         { year: 2011, count: 20 },
@@ -705,6 +731,9 @@ export default {
   watch: {
     "$i18n.locale": "updateHeaderTitle",
   },
+  components: {
+    GChart,
+  },
   created() {},
   beforeMount() {
     this.updateHeaderTitle();
@@ -712,71 +741,71 @@ export default {
   mounted() {
     this.GetAllProgram();
     // program_location_wise_chart
-    const ctxpie = document.getElementById("program_location_wise_chart");
-    new Chart(ctxpie, {
-      type: "pie",
-      data: {
-        labels: ["Dhaka", "Rajshahi", "Khula", "Sylhet", "Chattrogram"],
-        datasets: [
-          {
-            label: "My First Dataset",
-            data: [300, 50, 100, 30, 200],
-            backgroundColor: ["Blue", "Red", "Green", "Purple", "Yellow"],
-            // backgroundColor: [
-            //   "rgb(255, 99, 132)",
-            //   "rgb(54, 162, 235)",
-            //   "rgb(255, 205, 86)",
-            // ],
-            hoverOffset: 4,
-          },
-        ],
-      },
-      options: {
-        plugins: {
-          legend: {
-            display: true,
-            position: "right",
-            align: "center",
-            // labels: {
-            //   color: "rgb(255, 99, 132)",
-            // },
-          },
-          title: {
-            display: true,
-            text: "Custom Chart Title",
-          },
-        },
-      },
-      // options: {
-      //   scales: {
-      //     y: {
-      //       beginAtZero: true,
-      //     },
-      //   },
-      // },
-    });
+    // const ctxpie = document.getElementById("program_location_wise_chart");
+    // new Chart(ctxpie, {
+    //   type: "pie",
+    //   data: {
+    //     labels: ["Dhaka", "Rajshahi", "Khula", "Sylhet", "Chattrogram"],
+    //     datasets: [
+    //       {
+    //         label: "My First Dataset",
+    //         data: [300, 50, 100, 30, 200],
+    //         backgroundColor: ["Blue", "Red", "Green", "Purple", "Yellow"],
+    //         // backgroundColor: [
+    //         //   "rgb(255, 99, 132)",
+    //         //   "rgb(54, 162, 235)",
+    //         //   "rgb(255, 205, 86)",
+    //         // ],
+    //         hoverOffset: 4,
+    //       },
+    //     ],
+    //   },
+    //   options: {
+    //     plugins: {
+    //       legend: {
+    //         display: true,
+    //         position: "right",
+    //         align: "center",
+    //         // labels: {
+    //         //   color: "rgb(255, 99, 132)",
+    //         // },
+    //       },
+    //       title: {
+    //         display: true,
+    //         text: "Custom Chart Title",
+    //       },
+    //     },
+    //   },
+    //   // options: {
+    //   //   scales: {
+    //   //     y: {
+    //   //       beginAtZero: true,
+    //   //     },
+    //   //   },
+    //   // },
+    // });
 
-    const ctx = document.getElementById("year_wise_ben");
-    new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: ["2019", "2020", "2021", "2022", "2023", "2024"],
-        datasets: [
-          {
-            label: "Yearly Beneficiaries",
-            data: [1200, 1900, 1000, 2200, 2800, 900],
-            borderWidth: 1,
-          },
-        ],
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-          },
-        },
-      },
-    });
+    // const ctx = document.getElementById("year_wise_ben");
+    // new Chart(ctx, {
+    //   type: "bar",
+    //   data: {
+    //     labels: ["2019", "2020", "2021", "2022", "2023", "2024"],
+    //     datasets: [
+    //       {
+    //         label: "Yearly Beneficiaries",
+    //         data: [1200, 1900, 1000, 2200, 2800, 900],
+    //         borderWidth: 1,
+    //       },
+    //     ],
+    //   },
+    //   options: {
+    //     scales: {
+    //       y: {
+    //         beginAtZero: true,
+    //       },
+    //     },
+    //   },
+    // });
 
     new Chart(document.getElementById("program_wise_beneficiary"), {
       type: "bar",
@@ -929,3 +958,8 @@ export default {
   },
 };
 </script>
+<style>
+.highlight-column {
+  background-color: #e0eaf1;
+}
+</style>

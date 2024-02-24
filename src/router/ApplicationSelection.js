@@ -4,6 +4,16 @@ const ApplicationSelectionRoutes = [
   //     name: 'Login',
   //     component: Login,
   //   },
+
+  {
+    path: "/application-management/dashboard",
+    name: "application-dashboard",
+    meta: {
+      requiresAuth: true,
+      permission: "application-dashboard",
+    },
+    component: () => import("../pages/ApplicationSelection/Dashboard/Index.vue")
+  },
   {
     path: "/application-management/application",
     name: "application-list",

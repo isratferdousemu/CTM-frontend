@@ -2,6 +2,7 @@
   <div id="division">
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
+        <Spinner :loading="isLoading" />
         <v-row>
           <v-col cols="12">
             <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8">
@@ -13,9 +14,47 @@
                 </h3>
               </v-card-title>
               <v-card-text>
+
+
+                <v-row justify="space-between" align="center" class="mx-5">
+                  <!-- Checkbox on the left -->
+                  <v-col lg="3" md="3" cols="12">
+                      <v-text-field @keyup.native="GetCommittee" outlined dense v-model="search"
+                      prepend-inner-icon="mdi-magnify" class="my-sm-0 my-3 mx-0v -input--horizontal" variant="outlined"
+                       :label="$t('container.list.search')" hide-details color="primary"></v-text-field>
+                  </v-col>
+
+                  <!-- Dropdown on the right -->
+                  <v-col lg="3" md="3" cols="12" class="text-right ">
+                    <v-btn @click="createDialog" color="primary" prepend-icon="mdi-account-multiple-plus">
+                      {{ $t("container.list.add_new") }}
+                    </v-btn>
+                  </v-col>
+                </v-row>
+
+                <!-- Second row without gap -->
+                <v-row justify="space-between" align="center" class="mx-4">
+                  <!-- Checkbox on the left -->
+                  <v-col lg="3" md="3" cols="12">
+                    <!-- {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">{{ this.total }}</span> -->
+                  </v-col>
+
+                  <!-- Dropdown on the right -->
+                  <v-col lg="4" md="6" cols="12" class="text-right">
+                    <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="GeneratePDF()">
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
+                    </v-btn>
+                    <!-- <v-btn elevation="2" class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                      {{ $t("container.list.excel") }}
+                    </v-btn> -->
+                  </v-col>
+                </v-row>
+
+
                 <v-row class="ma-0 pa-3 white round-border d-flex justify-space-between align-center" justify="center"
                   justify-lg="space-between">
-                  <div class="d-flex justify-sm-end flex-wrap">
+                  <!-- <div class="d-flex justify-sm-end flex-wrap">
                     <v-text-field @keyup.native="GetCommittee" outlined dense v-model="search"
                       prepend-inner-icon="mdi-magnify" class="my-sm-0 my-3 mx-0v -input--horizontal" flat
                       variant="outlined" :label="$t(
@@ -31,7 +70,7 @@
                   <v-btn to="/beneficiary-management/committee/create" flat color="primary"
                     prepend-icon="mdi-account-multiple-plus">
                     {{ $t("container.list.add_new") }}
-                  </v-btn>
+                  </v-btn> -->
                   <v-col cols="12">
                     <v-data-table :loading="loading" item-key="id" :headers="headers" :items="commitees"
                       :items-per-page="pagination.perPage" hide-default-footer
@@ -322,6 +361,7 @@
 import { mapState } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
+import Spinner from "@/components/Common/Spinner.vue";
 
 extend("required", required);
 export default {
@@ -408,6 +448,7 @@ export default {
       dialogView: false,
       deleteDialog: false,
       delete_loading: false,
+      isLoading: false,
       loading: true,
       errors: {},
       error_status: {},
@@ -422,6 +463,7 @@ export default {
     };
   },
   components: {
+    Spinner,
     ValidationProvider,
     ValidationObserver,
   },
@@ -865,21 +907,29 @@ export default {
         });
     },
     async GeneratePDF() {
+      this.isLoading = true;
       const queryParams = {
+        language: this.$i18n.locale,
         searchText: this.search
       };
       this.$axios
         .get("/admin/committee/getCommitteeListPdf", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
           params: queryParams,
+          responseType: 'arraybuffer',
         })
         .then((result) => {
-          window.open(result.data.data.url, "_blank");
+          const blob = new Blob([result.data], { type: 'application/pdf' });
+          const url = window.URL.createObjectURL(blob);
+          window.open(url, '_blank');
+          this.isLoading = false;
+          // window.open(result.data.data.url, "_blank");
         })
         .catch((error) => {
+          this.isLoading = false;
           console.error("Error generating PDF:", error);
         });
     },
