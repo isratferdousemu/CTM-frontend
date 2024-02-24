@@ -2,6 +2,7 @@
   <div id="aplication_list">
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
+        <Spinner :loading="isLoading" />
         <v-row>
           <v-col cols="12">
             <!-- Expantion panels start -->
@@ -565,7 +566,9 @@
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
                   {{
-                    $t("container.beneficiary_management.beneficiary_list.list_active")
+                    $t(
+                      "container.beneficiary_management.beneficiary_list.list_active"
+                    )
                   }}
                 </h3>
               </v-card-title>
@@ -596,9 +599,25 @@
                 <v-row justify="end" align="center" class="mx-4">
                   <!-- Dropdown on the right -->
                   <v-col lg="4" md="4" cols="12" class="text-right">
-                    <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4" @click="GeneratePDF()">
-                    <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
-                  </v-btn>
+                    <v-btn
+                      elevation="2"
+                      class="btn mr-2 white--text"
+                      flat
+                      color="red darken-4"
+                      @click="GeneratePDF()"
+                    >
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                      {{ $t("container.list.PDF") }}
+                    </v-btn>
+                    <v-btn
+                      elevation="2"
+                      class="btn mr-2 white--text"
+                      color="teal darken-2"
+                      @click="GenerateExcel()"
+                    >
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                      {{ $t("container.list.excel") }}
+                    </v-btn>
                   </v-col>
                 </v-row>
                 <v-row
@@ -761,8 +780,8 @@
           </v-col>
         </v-row>
       </v-col>
-        <!-- Beneficiary Delete modal  -->
-        <v-dialog v-model="dialogDelete" width="650">
+      <!-- Beneficiary Delete modal  -->
+      <v-dialog v-model="dialogDelete" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
             {{
@@ -795,8 +814,7 @@
                     required
                     :error="errors[0] ? true : false"
                     :error-messages="errors[0]"
-                    ></v-text-field
-                  >
+                  ></v-text-field>
                 </ValidationProvider>
                 <v-row class="mx-0 my-0 py-2" justify="center">
                   <v-btn
@@ -832,6 +850,7 @@
 import { mapState, mapActions } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
+import Spinner from "@/components/Common/Spinner.vue";
 
 extend("required", required);
 export default {
@@ -904,10 +923,13 @@ export default {
       selectedHeaders: [],
       beneficiaryItem: {},
       loading: true,
+      isLoading: false,
       search: "",
       delete_id: "",
       applications: [],
       beneficiaries: [],
+      beneficiary_list: [],
+      total: "",
       programs: [],
       districts: [],
       locationType: [],
@@ -952,6 +974,7 @@ export default {
   components: {
     ValidationProvider,
     ValidationObserver,
+    Spinner,
   },
   computed: {
     ...mapState({
@@ -1392,7 +1415,7 @@ export default {
         nominee_name: this.data.nominee_name,
         account_number: this.data.account_number,
         nid: this.data.nid,
-        status: 1, //Active list 
+        status: 1, //Active list
 
         perPage: this.pagination.perPage,
         page: this.pagination.current,
@@ -1408,8 +1431,8 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          // this.beneficiaries = result.data.data;
           var results = result.data.data;
+          this.total = result.data.meta.total;
           console.log("results", results);
 
           this.beneficiaries = results.map((item) => {
@@ -1431,6 +1454,7 @@ export default {
       this.$store.commit("setHeaderTitle", title);
     },
     async GeneratePDF() {
+      this.isLoading = true;
       const queryParams = {
         program_id: this.data.program_id,
         division_id: this.data.division_id,
@@ -1444,6 +1468,12 @@ export default {
         union_id: this.data.union_id,
         thana_id: this.data.thana_id,
         ward_id: this.data.ward_id,
+
+        beneficiary_id: this.data.beneficiary_id,
+        nominee_name: this.data.nominee_name,
+        account_number: this.data.account_number,
+        nid: this.data.nid,
+        status: 1, //Active list
       };
       this.$axios
         .get("/admin/beneficiary/getBeneficiaryListPdf", {
@@ -1455,10 +1485,214 @@ export default {
         })
         .then((result) => {
           window.open(result.data.data.url, "_blank");
+          this.isLoading = false;
         })
         .catch((error) => {
+          this.isLoading = false;
           console.error("Error generating PDF:", error);
         });
+    },
+    async GenerateExcel() {
+      this.isLoading = true;
+      let page;
+      if (!this.sortBy) {
+        page = this.pagination.current;
+      }
+      const queryParams = {
+        // language: this.$i18n.locale,
+        location_type: this.data.location_type,
+        program_id: this.data.program_id,
+        division_id: this.data.division_id,
+        district_id: this.data.district_id,
+        city_corp_id: this.data.city_id,
+        thana_id: this.data.thana_id,
+        district_pouro_id: this.data.district_pouro_id,
+
+        city_thana_id: this.data.city_thana_id,
+        sub_location_type: this.sub_location_type,
+        pouro_id: this.data.pouro_id,
+        union_id: this.data.union_id,
+        ward_id: this.data.ward_id,
+
+        beneficiary_id: this.data.beneficiary_id,
+        nominee_name: this.data.nominee_name,
+        account_number: this.data.account_number,
+        nid: this.data.nid,
+        status: 1, //Active list
+
+        perPage: this.total,
+        page: 1, //All data loaded
+        sortBy: this.sortBy,
+        orderBy: this.sortDesc,
+      };
+
+      await this.$axios
+        .get("/admin/beneficiary/list", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          this.beneficiary_list = result.data.data;
+        })
+        .catch((error) => {
+          this.isLoading = false;
+          console.error("Error generating Excel:", error);
+        });
+
+      try {
+        import("@/plugins/Export2Excel").then((excel) => {
+          const HeaderInfo = [
+            this.$t("container.list.sl"),
+            this.$t(
+              "container.beneficiary_management.beneficiary_list.beneficiary_id"
+            ),
+            this.$t(
+              "container.beneficiary_management.beneficiary_list.beneficiary_name"
+            ),
+            this.$t(
+              "container.beneficiary_management.beneficiary_list.father_name"
+            ),
+            this.$t(
+              "container.beneficiary_management.beneficiary_list.program_name"
+            ),
+            this.$t(
+              "container.beneficiary_management.beneficiary_list.district"
+            ),
+            this.$t(
+              "container.beneficiary_management.beneficiary_list.city_dist_upazilla"
+            ),
+            this.$t(
+              "container.beneficiary_management.beneficiary_list.thna_union_Pouro"
+            ),
+            this.$t("container.beneficiary_management.beneficiary_list.ward"),
+            this.$t(
+              "container.beneficiary_management.beneficiary_list.account_no"
+            ),
+            this.$t(
+              "container.beneficiary_management.beneficiary_list.monthly_allowance_amount"
+            ),
+          ];
+
+          console.log("Beneficiary_info__", this.beneficiary_list);
+
+          const CustomInfo = this.beneficiary_list.map((i, index) => {
+            return {
+              sl:
+                this.$i18n.locale == "en"
+                  ? index + 1
+                  : this.$helpers.englishToBangla(index + 1),
+              beneficiary_id:
+                this.$i18n.locale == "en"
+                  ? i.application_id
+                  : this.$helpers.englishToBangla(i.application_id),
+              name: this.$i18n.locale == "en" ? i.name_en : i.name_bn,
+              father_name:
+                this.$i18n.locale == "en" ? i.father_name_en : i.father_name_bn,
+              program_name:
+                this.$i18n.locale == "en"
+                  ? i.program.name_en
+                  : i.program.name_bn,
+              district:
+                this.$i18n.locale == "en"
+                  ? i.permanentDistrict.name_en
+                  : i.permanentDistrict.name_bn,
+              city_dist_upazilla:
+                this.$i18n.locale == "en"
+                  ? i.permanentUpazila
+                    ? i.permanentUpazila.name_en
+                    : i.permanentCityCorporation
+                    ? i.permanentCityCorporation.name_en
+                    : i.permanentDistrictPourashava
+                    ? i.permanentDistrictPourashava.name_en
+                    : ""
+                  : i.permanentUpazila
+                  ? i.permanentUpazila.name_bn
+                  : i.permanentCityCorporation
+                  ? i.permanentCityCorporation.name_bn
+                  : i.permanentDistrictPourashava
+                  ? i.permanentDistrictPourashava.name_bn
+                  : "",
+              thna_union_Pouro:
+                this.$i18n.locale == "en"
+                  ? i.permanentUnion
+                    ? i.permanentUnion.name_en
+                    : i.permanentThana
+                    ? i.permanentThana.name_en
+                    : i.permanentPourashava
+                    ? i.permanentPourashava.name_en
+                    : ""
+                  : i.permanentUnion
+                  ? i.permanentUnion.name_bn
+                  : i.permanentThana
+                  ? i.permanentThana.name_bn
+                  : i.permanentPourashava
+                  ? i.permanentPourashava.name_bn
+                  : "",
+              ward:
+                this.$i18n.locale == "en"
+                  ? i.permanentWard.name_en
+                  : i.permanentWard.name_bn,
+
+              account_number:
+                this.$i18n.locale == "en" ? i.account_number : i.account_number,
+              monthly_allowance:
+                this.$i18n.locale == "en"
+                  ? i.monthly_allowance
+                  : this.$helpers.englishToBangla(i.monthly_allowance),
+            };
+          });
+
+          const Field = [
+            "sl",
+            "beneficiary_id",
+            "name",
+            "father_name",
+            "program_name",
+            "district",
+            "city_dist_upazilla",
+            "thna_union_Pouro",
+            "ward",
+            "account_number",
+            "monthly_allowance",
+          ];
+
+          const Data = this.FormatJson(Field, CustomInfo);
+          const currentDate = new Date().toISOString().slice(0, 10);
+          let dateinfo =
+            queryParams.language == "en"
+              ? currentDate
+              : this.$helpers.englishToBangla(currentDate);
+
+          const filenameWithDate = `${this.$t(
+            "container.beneficiary_management.beneficiary_list.ben_list_active"
+          )}`;
+
+          excel.export_json_to_excel({
+            header: HeaderInfo,
+            data: Data,
+            sheetName: filenameWithDate,
+            filename: filenameWithDate,
+            autoWidth: true,
+            bookType: "xlsx",
+          });
+        });
+      } catch (error) {
+        // Handle any errors here
+        console.error("An error occurred:", error);
+        this.isLoading = false;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    FormatJson(FilterData, JsonData) {
+      return JsonData.map((v) =>
+        FilterData.map((j) => {
+          return v[j];
+        })
+      );
     },
     deleteBeneficiaryItem(event) {
       if (this.$refs.formDelete) {
