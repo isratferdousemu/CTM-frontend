@@ -45,6 +45,7 @@
                     flat
                     color="primary"
                     prepend-icon="mdi-account-multiple-plus"
+                    v-can="'thana-create'"
                   >
                     {{ $t("container.list.add_new") }}
                   </v-btn>
@@ -86,7 +87,7 @@
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
-                              v-can="'update-post'"
+                              v-can="'thana-edit'"
                               fab
                               x-small
                               v-on="on"
@@ -105,7 +106,7 @@
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
-                              v-can="'delete-division'"
+                              v-can="'thana-delete'"
                               fab
                               x-small
                               v-on="on"

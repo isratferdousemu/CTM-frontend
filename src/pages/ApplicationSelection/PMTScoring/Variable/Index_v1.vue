@@ -21,7 +21,9 @@
                                         </v-text-field>
                                     </div>
                                     <v-btn @click="createDialog" flat color="primary"
-                                        prepend-icon="mdi-account-multiple-plus">
+                                        prepend-icon="mdi-account-multiple-plus"
+                                           v-can="'variable-create'"
+                                    >
                                         {{ $t("container.list.add_new") }}
                                     </v-btn>
                       
@@ -64,6 +66,7 @@
                                   color="success"
                                   v-on="on"
                                    @click="editDialog(item)"
+                                  v-can="'variable-edit'"
                               >
                               <v-icon>mdi-account-edit-outline</v-icon>
                               </v-btn>
@@ -83,6 +86,7 @@
                                   class="ml-3 white--text"
                                   v-on="on"
                                   @click="deleteAlert(item.id)"
+                                  v-can="'variable-delete'"
                               >
                                 <v-icon>mdi-delete</v-icon>
                               </v-btn>

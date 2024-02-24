@@ -47,6 +47,7 @@
                     flat
                     color="primary"
                     prepend-icon="mdi-account-multiple-plus"
+                    v-can="'sub-variable-create'"
                   >
                     {{ $t("container.list.add_new") }}
                   </v-btn>
@@ -79,7 +80,7 @@
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
-                              v-can="'update-post'"
+                              v-can="'sub-variable-edit'"
                               fab
                               x-small
                               v-on="on"
@@ -98,7 +99,7 @@
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
-                              v-can="'delete-variable'"
+                              v-can="'sub-variable-delete'"
                               fab
                               x-small
                               v-on="on"

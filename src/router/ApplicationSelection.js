@@ -28,7 +28,7 @@ const ApplicationSelectionRoutes = [
     name: "selection_list",
     meta: {
       requiresAuth: true,
-      permission: "application-selection-list",
+      permission: "poverty-cut-off-score-create",
     },
     component: () => import("../pages/ApplicationSelection/PMTScoring/PovertyCutOff/Create.vue")
   },
@@ -37,7 +37,7 @@ const ApplicationSelectionRoutes = [
     name: "edit_cutoff",
     meta: {
       requiresAuth: true,
-      permission: "application-selection-list",
+      permission: "poverty-cut-off-score-edit",
     },
     component: () => import("../pages/ApplicationSelection/PMTScoring/PovertyCutOff/Edit.vue")
   },
@@ -46,7 +46,7 @@ const ApplicationSelectionRoutes = [
     name: "selection_list",
     meta: {
       requiresAuth: true,
-      permission: "application-selection-list",
+      permission: "poverty-cut-off-score-view",
     },
     component: () => import("../pages/ApplicationSelection/PMTScoring/PovertyCutOff/Index.vue")
   },
@@ -64,7 +64,7 @@ const ApplicationSelectionRoutes = [
     name: "selection_list",
     meta: {
       requiresAuth: true,
-      permission: "application-selection-list",
+      permission: "variable-view",
     },
     component: () => import("../pages/ApplicationSelection/PMTScoring/Variable/Index_v1.vue")
   },

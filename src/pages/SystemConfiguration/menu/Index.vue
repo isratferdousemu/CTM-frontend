@@ -158,6 +158,7 @@ export default {
                       color="primary"
                       router
                       to="/system-configuration/menu/create"
+                      v-can="'menu-create'"
                     >
                     <v-icon small left>mdi-plus</v-icon>
                     <span>{{$t('container.list.add_new')}}</span>
@@ -217,6 +218,7 @@ export default {
                             v-on="on"
                             router
                             :to="`/system-configuration/menu/edit/${item.id}`"
+                            v-can="'menu-edit'"
                           >
                           <v-icon>mdi-account-edit-outline</v-icon>
                           </v-btn>
@@ -233,6 +235,7 @@ export default {
                             class="ml-3 white--text"
                             v-on="on"
                             @click="deleteAlert(item.id)"
+                            v-can="'menu-delete'"
                           >
                             <v-icon>mdi-delete</v-icon>
                           </v-btn>
