@@ -2,6 +2,7 @@
   <div id="aplication_list">
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
+        <Spinner :loading="isLoading" />
         <v-row>
           <v-col cols="12">
             <!-- Expantion panels start -->
@@ -832,6 +833,7 @@
 import { mapState, mapActions } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
+import Spinner from "@/components/Common/Spinner.vue";
 
 extend("required", required);
 export default {
@@ -903,6 +905,7 @@ export default {
       ], // Default selection without 'name'
       selectedHeaders: [],
       beneficiaryItem: {},
+      isLoading: false,
       loading: true,
       search: "",
       delete_id: "",
@@ -950,6 +953,7 @@ export default {
     };
   },
   components: {
+    Spinner,
     ValidationProvider,
     ValidationObserver,
   },
@@ -1431,7 +1435,9 @@ export default {
       this.$store.commit("setHeaderTitle", title);
     },
     async GeneratePDF() {
+      this.isLoading = true;
       const queryParams = {
+        language: this.$i18n.locale,
         program_id: this.data.program_id,
         division_id: this.data.division_id,
         district_id: this.data.district_id,
@@ -1449,14 +1455,20 @@ export default {
         .get("/admin/beneficiary/getBeneficiaryListPdf", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
           params: queryParams,
+          responseType: 'arraybuffer',
         })
         .then((result) => {
-          window.open(result.data.data.url, "_blank");
+          const blob = new Blob([result.data], { type: 'application/pdf' });
+          const url = window.URL.createObjectURL(blob);
+          window.open(url, '_blank');
+          this.isLoading = false;
+          // window.open(result.data.data.url, "_blank");
         })
         .catch((error) => {
+          this.isLoading = false;
           console.error("Error generating PDF:", error);
         });
     },
