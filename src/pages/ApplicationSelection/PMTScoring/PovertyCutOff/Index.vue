@@ -46,7 +46,9 @@
                                                 
                                       </div>
                                       <v-btn @click="navigateToPovertyScore" flat color="primary"
-                                          prepend-icon="mdi-account-multiple-plus">
+                                          prepend-icon="mdi-account-multiple-plus"
+                                             v-can="'poverty-cut-off-score-create'"
+                                      >
                                           {{ $t("container.list.add_new") }}
                                       </v-btn>
 
@@ -90,7 +92,7 @@
                       <template v-slot:item.actions="{ item }">
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn v-can="'update-post'" fab x-small v-on="on" color="success" elevation="0"
+                            <v-btn v-can="'poverty-cut-off-score-edit'" fab x-small v-on="on" color="success" elevation="0"
                               @click="editDialog(item.financial_year_id, item.type)">
                               <v-icon> mdi-account-edit-outline </v-icon>
                             </v-btn>
@@ -102,7 +104,7 @@
 
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn v-can="'delete-division'" fab x-small v-on="on" color="grey" class="ml-3 white--text"
+                            <v-btn v-can="'poverty-cut-off-score-delete'" fab x-small v-on="on" color="grey" class="ml-3 white--text"
                               elevation="0" @click="deleteAlert(item)">
                               <v-icon> mdi-delete </v-icon>
                             </v-btn>

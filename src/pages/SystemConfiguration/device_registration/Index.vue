@@ -329,6 +329,7 @@ export default {
                       color="primary"
                       router
                       to="/system-configuration/device_registration/create"
+                      v-can="'device-registration-create'"
                   >
                     <v-icon small left>mdi-plus</v-icon>
                     <span>{{     
@@ -381,6 +382,7 @@ export default {
                               v-on="on"
                               router
                               :to="`/system-configuration/device_registration/edit/${item.id}`"
+                              v-can="'device-registration-edit'"
                           >
                             <v-icon>mdi-account-edit-outline</v-icon>
                           </v-btn>
@@ -397,6 +399,7 @@ export default {
                               class="ml-3 white--text"
                               v-on="on"
                               @click="deleteAlert(item.id)"
+                              v-can="'device-registration-delete'"
                           >
                             <v-icon>mdi-delete</v-icon>
                           </v-btn>

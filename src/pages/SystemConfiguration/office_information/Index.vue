@@ -34,7 +34,10 @@
                       </v-btn>
                     </v-col>
 
-                    <v-btn @click="dialogOpen" flat color="primary" prepend-icon="mdi-account-multiple-plus">
+                    <v-btn @click="dialogOpen" flat color="primary"
+                           prepend-icon="mdi-account-multiple-plus"
+                           v-can="'office-create'"
+                    >
                       {{ $t("container.list.add_new") }}
                     </v-btn>
                     <v-col cols="12">
@@ -58,7 +61,7 @@
                         <template v-slot:item.actions="{ item }">
                           <v-tooltip top>
                             <template v-slot:activator="{ on }">
-                              <v-btn fab x-small v-on="on" color="success" elevation="0" @click="editOffice(item)">
+                              <v-btn fab x-small v-on="on" color="success" elevation="0" @click="editOffice(item)" v-can="'office-edit'">
                                 <v-icon> mdi-account-edit-outline </v-icon>
                               </v-btn>
                             </template>
@@ -69,8 +72,8 @@
 
                           <v-tooltip top>
                             <template v-slot:activator="{ on }">
-                              <v-btn v-can="'delete-division'" fab x-small v-on="on" color="grey" class="ml-3 white--text"
-                                elevation="0" @click="deleteAlert(item.id)">
+                              <v-btn fab x-small v-on="on" color="grey" class="ml-3 white--text"
+                                elevation="0" @click="deleteAlert(item.id)" v-can="'office-delete'">
                                 <v-icon> mdi-delete </v-icon>
                               </v-btn>
                             </template>

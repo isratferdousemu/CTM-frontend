@@ -209,7 +209,7 @@
                       <div></div>
                       <div class="d-inline d-flex justify-end">
                         <v-btn @click="verifyCard()" elevation="2"
-                          :disabled="data.date_of_birth == null || data.verification_number == null || data.verification_type == null || data.date_of_birth == '' || data.verification_number == '' || data.verification_type == ''"
+                          :disabled="data.date_of_birth == null || data.verification_number == null || data.verification_type == null || data.verification_type == 2 || data.date_of_birth == '' || data.verification_number == '' || data.verification_type == ''"
                           class="btn" color="primary">{{ $t('container.list.verify') }}</v-btn>
                       </div>
                     </v-expansion-panel-content>
@@ -269,22 +269,21 @@
                                 prepend-icon=""></v-file-input>
                             </ValidationProvider>
                           </v-col>
-
-                          <v-col cols="6" lg="6">
-                            <ValidationProvider name="Name in English" vid="name_en" rules="required" v-slot="{ errors }">
-                              <label>{{ $t('container.application_selection.application.name_en') }}</label>
-                              <span style="margin-left: 4px; color: red">*</span>
-                              <v-text-field v-model="data.name_en" outlined clearable :error="errors[0] ? true : false"
-                                :error-messages="errors[0]">
-                              </v-text-field>
-                            </ValidationProvider>
-                          </v-col>
                           <v-col cols="6" lg="6">
                             <ValidationProvider name="Name in Bangla" vid="name_bn" rules="required" v-slot="{ errors }">
                               <label>{{ $t('container.application_selection.application.name_bn') }} </label>
                               <span style="margin-left: 4px; color: red">*</span>
                               <v-text-field v-model="data.name_bn" outlined :error="errors[0] ? true : false"
                                 :error-messages="errors[0]">
+                              </v-text-field>
+                            </ValidationProvider>
+                          </v-col>
+                          <v-col cols="6" lg="6">
+                            <ValidationProvider name="Name in English" vid="name_en" rules="required" v-slot="{ errors }">
+                              <label>{{ $t('container.application_selection.application.name_en') }}</label>
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-text-field v-model="data.name_en" outlined clearable :error="errors[0] ? true : false"
+                                            :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
@@ -406,7 +405,7 @@
                             <ValidationProvider name="Age" vid="age" v-slot="{ errors }" rules="required">
                               <label>{{ $t('container.application_selection.application.age') }}</label>
                               <span style="margin-left: 4px; color: red">*</span>
-                              <v-text-field v-model="data.age" outlined type="number" clearable
+                              <v-text-field v-model="data.age" outlined type="number" readonly
                                 :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
@@ -1122,7 +1121,8 @@
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-text-field v-model="data.account_name" outlined clearable :error="errors[0] ? true : false"
-                              :error-messages="errors[0]">
+                                          readonly
+                                          :error-messages="errors[0]">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
@@ -2283,8 +2283,12 @@ export default {
       })
         .then((res) => {
           console.log(res)
-          this.$toast.success(res.data.data);
+          this.$toast.success(res.data.message);
 
+          this.data.age = res.data.data.age
+          this.data.name_en = res.data.data.nameEn
+          this.data.name_bn = res.data.data.name
+          this.data.account_name = res.data.data.nameEn
         })
         .catch((err) => {
           console.log(err)
@@ -2887,7 +2891,7 @@ export default {
         if (this.data.image.size > maxFileSize){
           // alert("file size must be 200kb")
           // this.confirmDialog =true;
-        this.$toast.error("File size must be unser 200 KB ");// Show the alert
+        this.$toast.error("File size must be under 200 KB ");// Show the alert
           this.data.image = '';
        
           return false;

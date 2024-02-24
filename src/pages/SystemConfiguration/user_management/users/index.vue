@@ -56,6 +56,7 @@
                     @click="createDialog"
                     color="primary"
                     prepend-icon="mdi-account-multiple-plus"
+                    v-can="'user-create'"
                   >
                     {{ $t("container.list.add_new") }}
                   </v-btn>
