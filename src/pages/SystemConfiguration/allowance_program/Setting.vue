@@ -75,7 +75,7 @@ export default {
             return [
                 v => !!v || "Minimum value is required",
                 v => /^\d+$/.test(v) || 'Minimum Age must be a number',
-                v => (v >= 5 && v <= 115) || 'Age must be between 5 and 115',
+                v => (v >= 5 && v <= 150) || 'Age must be between 5 and 150',
                 v => {
                     const invalidValue = this.updateAllowanceAge.some(item => parseInt(v) > parseInt(item.max_age));
                     return invalidValue ? 'Minimum value cannot be greater than the maximum value' : true;
@@ -91,7 +91,7 @@ export default {
             return [
                 v => !!v || "Maximum value is required",
                 v => /^\d+$/.test(v) || 'Maximum Age must be a number',
-                // v => (v >= 5 && v <= 115) || 'Age must be between 5 and 115',
+                v => (v >= 5 && v <= 115) || 'Age must be between 5 and 115',
                 v => {
                     const invalidValue = this.updateAllowanceAge.some(item => parseInt(v) < parseInt(item.min_age));
                     return invalidValue ? 'Maximum value cannot be less than the minimum value' : true;

@@ -809,7 +809,7 @@
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.permanent_ward_id_city"
-                              outlined :items="permanent_wards_city" :item-text="getItemWardCity" item-value="id"
+                              outlined :items="permanent_wards_city" item-text="name_en" item-value="id"
                               :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
