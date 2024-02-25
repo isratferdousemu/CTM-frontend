@@ -17,232 +17,556 @@
                     }}
                   </h3>
                 </v-expansion-panel-header>
-                <v-expansion-panel-content class="elevation-0 transparent mt-10">
+                <v-expansion-panel-content
+                  class="elevation-0 transparent mt-10"
+                >
                   <ValidationObserver ref="form" v-slot="{ invalid }">
                     <form @submit.prevent="onSearch()">
                       <v-row>
                         <v-col lg="3" md="3" cols="12">
-                          <ValidationProvider name="ProgramName" vid="program_id" v-slot="{ errors }">
-                            <v-autocomplete :hide-details="errors[0] ? false : true" @input="onChangeProgramName($event)"
-                              v-model="data.program_id" outlined :label="$t(
-                                'container.system_config.demo_graphic.committee.program_name'
-                              )
-                                " :items="programs" item-text="name_en" item-value="id" class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                          <ValidationProvider
+                            name="ProgramName"
+                            vid="program_id"
+                            v-slot="{ errors }"
+                          >
+                            <v-autocomplete
+                              :hide-details="errors[0] ? false : true"
+                              @input="onChangeProgramName($event)"
+                              v-model="data.program_id"
+                              outlined
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.committee.program_name'
+                                )
+                              "
+                              :items="programs"
+                              item-text="name_en"
+                              item-value="id"
+                              class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback"
+                              append-icon="mdi-plus"
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                            ></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
                         <v-col lg="3" md="3" cols="12">
-                          <ValidationProvider name="Division" vid="division" v-slot="{ errors }">
-                            <v-text-field outlined readonly v-model="user_permission.division.name_en" :label="$t(
-                              'container.system_config.demo_graphic.division.division'
-                            )
-                              " v-if="user_permission.division">
+                          <ValidationProvider
+                            name="Division"
+                            vid="division"
+                            v-slot="{ errors }"
+                          >
+                            <v-text-field
+                              outlined
+                              readonly
+                              v-model="user_permission.division.name_en"
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.division.division'
+                                )
+                              "
+                              v-if="user_permission.division"
+                            >
                             </v-text-field>
-                            <v-autocomplete v-if="!user_permission.division" outlined @input="onChangeDivision($event)"
-                              v-model="data.division_id" :label="$t(
-                                'container.system_config.demo_graphic.division.division'
-                              )
-                                " :items="divisions" item-text="name_en" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]" class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus">
+                            <v-autocomplete
+                              v-if="!user_permission.division"
+                              outlined
+                              @input="onChangeDivision($event)"
+                              v-model="data.division_id"
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.division.division'
+                                )
+                              "
+                              :items="divisions"
+                              item-text="name_en"
+                              item-value="id"
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                              class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback"
+                              append-icon="mdi-plus"
+                            >
                             </v-autocomplete>
                           </ValidationProvider>
                         </v-col>
                         <v-col lg="3" md="3" cols="12">
-                          <ValidationProvider name="District" vid="district" v-slot="{ errors }">
-                            <v-text-field outlined readonly v-model="user_permission.division.name_en" :label="$t(
-                              'container.system_config.demo_graphic.district.district'
-                            )
-                              " v-if="user_permission.district">
+                          <ValidationProvider
+                            name="District"
+                            vid="district"
+                            v-slot="{ errors }"
+                          >
+                            <v-text-field
+                              outlined
+                              readonly
+                              v-model="user_permission.division.name_en"
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.district.district'
+                                )
+                              "
+                              v-if="user_permission.district"
+                            >
                             </v-text-field>
-                            <v-autocomplete v-if="!user_permission.district" outlined v-model="data.district_id"
-                              @input="onChangeDistrict($event)" :label="$t(
-                                'container.system_config.demo_graphic.district.district'
-                              )
-                                " :items="districts" item-text="name_en" item-value="id" class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            <v-autocomplete
+                              v-if="!user_permission.district"
+                              outlined
+                              v-model="data.district_id"
+                              @input="onChangeDistrict($event)"
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.district.district'
+                                )
+                              "
+                              :items="districts"
+                              item-text="name_en"
+                              item-value="id"
+                              class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback"
+                              append-icon="mdi-plus"
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                            ></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
                         <v-col lg="3" md="3" cols="12">
-                          <ValidationProvider name="Location Type" vid="location_type" v-slot="{ errors }">
-                            <v-text-field outlined readonly v-model="user_permission.location_type.value_en"
-                              :label="$t('container.list.location_type')" v-if="user_permission.location_type">
+                          <ValidationProvider
+                            name="Location Type"
+                            vid="location_type"
+                            v-slot="{ errors }"
+                          >
+                            <v-text-field
+                              outlined
+                              readonly
+                              v-model="user_permission.location_type.value_en"
+                              :label="$t('container.list.location_type')"
+                              v-if="user_permission.location_type"
+                            >
                             </v-text-field>
-                            <v-autocomplete v-if="!user_permission.location_type" @input="LocationType($event)"
-                              v-model="data.location_type" outlined :label="$t('container.list.location_type')"
-                              :items="locationType" item-text="value_en" item-value="id" class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            <v-autocomplete
+                              v-if="!user_permission.location_type"
+                              @input="LocationType($event)"
+                              v-model="data.location_type"
+                              outlined
+                              :label="$t('container.list.location_type')"
+                              :items="locationType"
+                              item-text="value_en"
+                              item-value="id"
+                              class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback"
+                              append-icon="mdi-plus"
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                            ></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
-                        <v-col v-if="data.location_type == 1" lg="3" md="3" cols="12">
-                          <ValidationProvider name="thana" vid="district_pouro_id" v-slot="{ errors }">
-                            <v-text-field outlined readonly v-model="user_permission.district_pourashava.name_en
-                              " :label="$t(
-    'container.system_config.demo_graphic.ward.pouro'
-  )
-    " v-if="user_permission.location_type">
+                        <v-col
+                          v-if="data.location_type == 1"
+                          lg="3"
+                          md="3"
+                          cols="12"
+                        >
+                          <ValidationProvider
+                            name="thana"
+                            vid="district_pouro_id"
+                            v-slot="{ errors }"
+                          >
+                            <v-text-field
+                              outlined
+                              readonly
+                              v-model="
+                                user_permission.district_pourashava.name_en
+                              "
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.ward.pouro'
+                                )
+                              "
+                              v-if="user_permission.location_type"
+                            >
                             </v-text-field>
-                            <v-autocomplete v-if="!user_permission.district_pourashava" v-model="data.district_pouro_id"
-                              outlined :label="$t(
-                                'container.system_config.demo_graphic.ward.pouro'
-                              )
-                                " @change="onChangeDistrictPouro($event)" :items="district_pouros" item-text="name_en"
-                              item-value="id" class="no-arrow-icon" :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-autocomplete>
+                            <v-autocomplete
+                              v-if="!user_permission.district_pourashava"
+                              v-model="data.district_pouro_id"
+                              outlined
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.ward.pouro'
+                                )
+                              "
+                              @change="onChangeDistrictPouro($event)"
+                              :items="district_pouros"
+                              item-text="name_en"
+                              item-value="id"
+                              class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback"
+                              append-icon="mdi-plus"
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                            ></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
-                        <v-col v-if="data.location_type == 2" lg="3" md="3" cols="12">
-                          <ValidationProvider name="Upazila" vid="thana_id" v-slot="{ errors }">
-                            <v-text-field outlined readonly v-model="user_permission.upazila.name_en" :label="$t(
-                              'container.system_config.demo_graphic.thana.thana'
-                            )
-                              " v-if="user_permission.upazila">
+                        <v-col
+                          v-if="data.location_type == 2"
+                          lg="3"
+                          md="3"
+                          cols="12"
+                        >
+                          <ValidationProvider
+                            name="Upazila"
+                            vid="thana_id"
+                            v-slot="{ errors }"
+                          >
+                            <v-text-field
+                              outlined
+                              readonly
+                              v-model="user_permission.upazila.name_en"
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.thana.thana'
+                                )
+                              "
+                              v-if="user_permission.upazila"
+                            >
                             </v-text-field>
-                            <v-autocomplete v-if="!user_permission.upazila" v-model="data.thana_id" outlined :label="$t(
-                              'container.system_config.demo_graphic.thana.thana'
-                            )
-                              " @change="onChangeUpazila($event)" :items="thanas" item-text="name_en" item-value="id"
-                              class="no-arrow-icon" :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            <v-autocomplete
+                              v-if="!user_permission.upazila"
+                              v-model="data.thana_id"
+                              outlined
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.thana.thana'
+                                )
+                              "
+                              @change="onChangeUpazila($event)"
+                              :items="thanas"
+                              item-text="name_en"
+                              item-value="id"
+                              class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback"
+                              append-icon="mdi-plus"
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                            ></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
 
-                        <v-col v-if="data.location_type == 2" lg="3" md="3" cols="12">
-                          <ValidationProvider name="subLocationType" vid="subLocationType" v-slot="{ errors }">
-                            <v-autocomplete @input="onChangeSubLocationType($event)" v-model="data.sub_location_type"
-                              outlined :label="$t(
-                                'container.system_config.demo_graphic.ward.subLocation_type'
-                              )
-                                " :items="subLocationType" item-text="value_en" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"
-                              :hide-details="errors[0] ? false : true" class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"></v-autocomplete>
+                        <v-col
+                          v-if="data.location_type == 2"
+                          lg="3"
+                          md="3"
+                          cols="12"
+                        >
+                          <ValidationProvider
+                            name="subLocationType"
+                            vid="subLocationType"
+                            v-slot="{ errors }"
+                          >
+                            <v-autocomplete
+                              @input="onChangeSubLocationType($event)"
+                              v-model="data.sub_location_type"
+                              outlined
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.ward.subLocation_type'
+                                )
+                              "
+                              :items="subLocationType"
+                              item-text="value_en"
+                              item-value="id"
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                              :hide-details="errors[0] ? false : true"
+                              class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback"
+                              append-icon="mdi-plus"
+                            ></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
-                        <v-col v-if="data.location_type == 2 &&
-                          data.sub_location_type == 1
-                          " lg="3" md="3" cols="12">
-                          <ValidationProvider name="pouros" vid="pouros" v-slot="{ errors }">
-                            <v-autocomplete v-model="data.pouro_id" outlined :label="$t(
-                              'container.system_config.demo_graphic.ward.pouro'
-                            )
-                              " :items="pouros" item-text="name_en" item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]" :hide-details="errors[0] ? false : true" class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"></v-autocomplete>
+                        <v-col
+                          v-if="
+                            data.location_type == 2 &&
+                            data.sub_location_type == 1
+                          "
+                          lg="3"
+                          md="3"
+                          cols="12"
+                        >
+                          <ValidationProvider
+                            name="pouros"
+                            vid="pouros"
+                            v-slot="{ errors }"
+                          >
+                            <v-autocomplete
+                              v-model="data.pouro_id"
+                              outlined
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.ward.pouro'
+                                )
+                              "
+                              :items="pouros"
+                              item-text="name_en"
+                              item-value="id"
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                              :hide-details="errors[0] ? false : true"
+                              class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback"
+                              append-icon="mdi-plus"
+                            ></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
 
-                        <v-col v-if="data.sub_location_type == 2 &&
-                          data.location_type == 2
-                          " lg="3" md="3" cols="12">
-                          <ValidationProvider name="unions" vid="unions" v-slot="{ errors }">
-                            <v-autocomplete @input="onChangeUnionGetWard($event)" v-model="data.union_id" outlined :label="$t(
-                              'container.system_config.demo_graphic.ward.union'
-                            )
-                              " :items="unions" item-text="name_en" item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]" :hide-details="errors[0] ? false : true" class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"></v-autocomplete>
+                        <v-col
+                          v-if="
+                            data.sub_location_type == 2 &&
+                            data.location_type == 2
+                          "
+                          lg="3"
+                          md="3"
+                          cols="12"
+                        >
+                          <ValidationProvider
+                            name="unions"
+                            vid="unions"
+                            v-slot="{ errors }"
+                          >
+                            <v-autocomplete
+                              @input="onChangeUnionGetWard($event)"
+                              v-model="data.union_id"
+                              outlined
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.ward.union'
+                                )
+                              "
+                              :items="unions"
+                              item-text="name_en"
+                              item-value="id"
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                              :hide-details="errors[0] ? false : true"
+                              class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback"
+                              append-icon="mdi-plus"
+                            ></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
 
-                        <v-col v-if="data.location_type == 3" lg="3" md="3" cols="12">
-                          <ValidationProvider name="city" vid="city_id" v-slot="{ errors }">
-                            <v-text-field outlined readonly v-model="user_permission.city_corp.name_en" :label="$t(
-                              'container.system_config.demo_graphic.ward.city'
-                            )
-                              " v-if="user_permission.city_corp">
+                        <v-col
+                          v-if="data.location_type == 3"
+                          lg="3"
+                          md="3"
+                          cols="12"
+                        >
+                          <ValidationProvider
+                            name="city"
+                            vid="city_id"
+                            v-slot="{ errors }"
+                          >
+                            <v-text-field
+                              outlined
+                              readonly
+                              v-model="user_permission.city_corp.name_en"
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.ward.city'
+                                )
+                              "
+                              v-if="user_permission.city_corp"
+                            >
                             </v-text-field>
-                            <v-autocomplete v-if="!user_permission.city_corp" v-model="data.city_id"
-                              @change="onChangeCity($event)" outlined :label="$t(
-                                'container.system_config.demo_graphic.ward.city'
-                              )
-                                " :items="cities" item-text="name_en" item-value="id" class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            <v-autocomplete
+                              v-if="!user_permission.city_corp"
+                              v-model="data.city_id"
+                              @change="onChangeCity($event)"
+                              outlined
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.ward.city'
+                                )
+                              "
+                              :items="cities"
+                              item-text="name_en"
+                              item-value="id"
+                              class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback"
+                              append-icon="mdi-plus"
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                            ></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
 
-                        <v-col v-if="data.location_type == 3" lg="3" md="3" cols="12">
-                          <ValidationProvider name="thana" vid="thana_id" v-slot="{ errors }">
-                            <v-autocomplete v-model="data.thana_id" outlined :label="$t(
-                              'container.system_config.demo_graphic.ward.thana'
-                            )
-                              " @change="onChangeThana($event)" :items="thanas" item-text="name_en" item-value="id"
-                              class="no-arrow-icon" :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                        <v-col
+                          v-if="data.location_type == 3"
+                          lg="3"
+                          md="3"
+                          cols="12"
+                        >
+                          <ValidationProvider
+                            name="thana"
+                            vid="thana_id"
+                            v-slot="{ errors }"
+                          >
+                            <v-autocomplete
+                              v-model="data.thana_id"
+                              outlined
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.ward.thana'
+                                )
+                              "
+                              @change="onChangeThana($event)"
+                              :items="thanas"
+                              item-text="name_en"
+                              item-value="id"
+                              class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback"
+                              append-icon="mdi-plus"
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                            ></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
 
-                        <v-col v-if="data.location_type == 1 ||
-                          data.location_type == 2 ||
-                          data.location_type == 3
-                          " lg="3" md="3" cols="12">
-                          <ValidationProvider name="ward" vid="ward_id" v-slot="{ errors }">
-                            <v-autocomplete v-model="data.ward_id" outlined :label="$t(
-                              'container.system_config.demo_graphic.ward.ward'
-                            )
-                              " :items="wards" item-text="name_en" item-value="id" class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                        <v-col
+                          v-if="
+                            data.location_type == 1 ||
+                            data.location_type == 2 ||
+                            data.location_type == 3
+                          "
+                          lg="3"
+                          md="3"
+                          cols="12"
+                        >
+                          <ValidationProvider
+                            name="ward"
+                            vid="ward_id"
+                            v-slot="{ errors }"
+                          >
+                            <v-autocomplete
+                              v-model="data.ward_id"
+                              outlined
+                              :label="
+                                $t(
+                                  'container.system_config.demo_graphic.ward.ward'
+                                )
+                              "
+                              :items="wards"
+                              item-text="name_en"
+                              item-value="id"
+                              class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback"
+                              append-icon="mdi-plus"
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                            ></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
                       </v-row>
                       <v-row>
                         <v-col lg="6" md="6" cols="12">
-                          <v-switch v-model="advanch_search" color="primary" :label="$t(
-                            'container.beneficiary_management.beneficiary_list.advance_search'
-                          )
-                            " :value="!advanch_search" hide-details></v-switch>
+                          <v-switch
+                            v-model="advanch_search"
+                            color="primary"
+                            :label="
+                              $t(
+                                'container.beneficiary_management.beneficiary_list.advance_search'
+                              )
+                            "
+                            :value="!advanch_search"
+                            hide-details
+                          ></v-switch>
                         </v-col>
                       </v-row>
 
                       <v-row v-if="advanch_search">
                         <v-col lg="3" md="3" cols="12">
-                          <v-text-field outlined clearable :label="$t(
-                            'container.beneficiary_management.beneficiary_list.beneficiary_id'
-                          )
-                            " v-model="data.beneficiary_id">
+                          <v-text-field
+                            outlined
+                            clearable
+                            :label="
+                              $t(
+                                'container.beneficiary_management.beneficiary_list.beneficiary_id'
+                              )
+                            "
+                            v-model="data.beneficiary_id"
+                          >
                           </v-text-field>
                         </v-col>
                         <v-col lg="3" md="3" cols="12">
-                          <v-text-field outlined clearable :label="$t(
-                            'container.beneficiary_management.beneficiary_list.nominee'
-                          )
-                            " v-model="data.nominee_name">
+                          <v-text-field
+                            outlined
+                            clearable
+                            :label="
+                              $t(
+                                'container.beneficiary_management.beneficiary_list.nominee'
+                              )
+                            "
+                            v-model="data.nominee_name"
+                          >
                           </v-text-field>
                         </v-col>
                         <v-col lg="3" md="3" cols="12">
-                          <v-text-field outlined clearable :label="$t(
-                            'container.beneficiary_management.beneficiary_list.account_no'
-                          )
-                            " v-model="data.account_number">
+                          <v-text-field
+                            outlined
+                            clearable
+                            :label="
+                              $t(
+                                'container.beneficiary_management.beneficiary_list.account_no'
+                              )
+                            "
+                            v-model="data.account_number"
+                          >
                           </v-text-field>
                         </v-col>
                         <v-col lg="3" md="3" cols="12">
-                          <v-text-field outlined clearable :label="$t(
-                            'container.beneficiary_management.beneficiary_list.nid'
-                          )
-                            " v-model="data.nid">
+                          <v-text-field
+                            outlined
+                            clearable
+                            :label="
+                              $t(
+                                'container.beneficiary_management.beneficiary_list.nid'
+                              )
+                            "
+                            v-model="data.nid"
+                          >
                           </v-text-field>
                         </v-col>
 
                         <v-col lg="3" md="3" cols="12">
-                          <ValidationProvider name="status" vid="status_id" v-slot="{ errors }">
-                            <v-autocomplete v-model="data.status" outlined :label="$t('container.list.status')"
-                              :items="ben_status" item-text="value" item-value="id" class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                          <ValidationProvider
+                            name="status"
+                            vid="status_id"
+                            v-slot="{ errors }"
+                          >
+                            <v-autocomplete
+                              v-model="data.status"
+                              outlined
+                              :label="$t('container.list.status')"
+                              :items="ben_status"
+                              item-text="value"
+                              item-value="id"
+                              class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback"
+                              append-icon="mdi-plus"
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"
+                            ></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
                       </v-row>
 
                       <div class="d-inline d-flex justify-end">
-                        <v-btn elevation="2" class="btn mr-2" color="success" type="submit">{{ $t("container.list.search")
-                        }}</v-btn>
+                        <v-btn
+                          elevation="2"
+                          class="btn mr-2"
+                          color="success"
+                          type="submit"
+                          >{{ $t("container.list.search") }}</v-btn
+                        >
                         <v-btn elevation="2" class="btn" @click="resetSearch">{{
                           $t("container.list.reset")
                         }}</v-btn>
@@ -254,7 +578,13 @@
             </v-expansion-panels>
             <!-- Expantion panels end -->
             <!-- Application list -->
-            <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8 mt-5">
+            <v-card
+              elevation="10"
+              color="white"
+              rounded="md"
+              theme="light"
+              class="mb-8 mt-5"
+            >
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
                   {{
@@ -268,10 +598,19 @@
                   <v-col> </v-col>
                   <v-col>
                     <!-- selected columns -->
-                    <v-select v-model="value" :items="headers" :label="$t(
-                      'container.application_selection.application.select_column'
-                    )
-                      " multiple return-object outlined menu-props="top">
+                    <v-select
+                      v-model="value"
+                      :items="headers"
+                      :label="
+                        $t(
+                          'container.application_selection.application.select_column'
+                        )
+                      "
+                      multiple
+                      return-object
+                      outlined
+                      menu-props="top"
+                    >
                       <template v-slot:selection="{ item, index }"> </template>
                     </v-select>
                     <!-- Select column End -->
@@ -280,18 +619,42 @@
                 <v-row justify="end" align="center" class="mx-4">
                   <!-- Dropdown on the right -->
                   <v-col lg="4" md="4" cols="12" class="text-right">
-                    <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4" @click="GeneratePDF()">
+                    <v-btn
+                      elevation="2"
+                      class="btn mr-2 white--text"
+                      flat
+                      color="red darken-4"
+                      @click="GeneratePDF()"
+                    >
                       <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
                       {{ $t("container.list.PDF") }}
                     </v-btn>
+                    <v-btn
+                      elevation="2"
+                      class="btn mr-2 white--text"
+                      color="teal darken-2"
+                      @click="GenerateExcel()"
+                    >
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                      {{ $t("container.list.excel") }}
+                    </v-btn>
                   </v-col>
                 </v-row>
-                <v-row class="ma-0 white round-border d-flex justify-space-between align-center" justify="center"
-                  justify-lg="space-between">
+                <v-row
+                  class="ma-0 white round-border d-flex justify-space-between align-center"
+                  justify="center"
+                  justify-lg="space-between"
+                >
                   <v-col cols="12">
-                    <v-data-table :headers="selectedHeaders" :items="beneficiaries" :loading="loading" item-key="id"
-                      :items-per-page="pagination.perPage" hide-default-footer
-                      class="elevation-0 transparent row-pointer">
+                    <v-data-table
+                      :headers="selectedHeaders"
+                      :items="beneficiaries"
+                      :loading="loading"
+                      item-key="id"
+                      :items-per-page="pagination.perPage"
+                      hide-default-footer
+                      class="elevation-0 transparent row-pointer"
+                    >
                       <template v-slot:item.sl="{ item, index }">
                         {{
                           (pagination.current - 1) * pagination.perPage +
@@ -303,9 +666,17 @@
                       <template v-slot:item.actions="{ item }" width="50%">
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn v-can="'update-post'" fab x-small v-on="on" color="#AFB42B" elevation="0"
-                              class="white--text" router
-                              :to="`/beneficiary-management/beneficiary-info/details/${item.id}`">
+                            <v-btn
+                              v-can="'update-post'"
+                              fab
+                              x-small
+                              v-on="on"
+                              color="#AFB42B"
+                              elevation="0"
+                              class="white--text"
+                              router
+                              :to="`/beneficiary-management/beneficiary-info/details/${item.id}`"
+                            >
                               <v-icon> mdi-eye </v-icon>
                             </v-btn>
                           </template>
@@ -315,8 +686,17 @@
                         </v-tooltip>
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn v-can="'update-post'" fab x-small v-on="on" color="success" elevation="0" class="ml-3"
-                              router :to="`/beneficiary-management/beneficiary-info/edit/${item.id}`">
+                            <v-btn
+                              v-can="'update-post'"
+                              fab
+                              x-small
+                              v-on="on"
+                              color="success"
+                              elevation="0"
+                              class="ml-3"
+                              router
+                              :to="`/beneficiary-management/beneficiary-info/edit/${item.id}`"
+                            >
                               <v-icon> mdi-account-edit-outline </v-icon>
                             </v-btn>
                           </template>
@@ -327,9 +707,17 @@
 
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn v-can="'delete-division'" fab x-small v-on="on" color="#827717"
-                              class="ml-3 white--text" elevation="0" router
-                              :to="`/beneficiary-management/beneficiary-replacement/${item.id}`">
+                            <v-btn
+                              v-can="'delete-division'"
+                              fab
+                              x-small
+                              v-on="on"
+                              color="#827717"
+                              class="ml-3 white--text"
+                              elevation="0"
+                              router
+                              :to="`/beneficiary-management/beneficiary-replacement/${item.id}`"
+                            >
                               <v-icon> mdi mdi-file-replace </v-icon>
                             </v-btn>
                           </template>
@@ -337,19 +725,36 @@
                         </v-tooltip>
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn v-can="'delete-division'" fab x-small v-on="on" color="#546E7A"
-                              class="ml-3 white--text" elevation="0" router
-                              :to="`/beneficiary-management/beneficiary-journey/${item.id}`">
+                            <v-btn
+                              v-can="'delete-division'"
+                              fab
+                              x-small
+                              v-on="on"
+                              color="#546E7A"
+                              class="ml-3 white--text"
+                              elevation="0"
+                              router
+                              :to="`/beneficiary-management/beneficiary-journey/${item.id}`"
+                            >
                               <v-icon> mdi mdi-history </v-icon>
                             </v-btn>
                           </template>
                           <span>
-                            {{ $t("container.list.beneficiary_journey") }}</span>
+                            {{ $t("container.list.beneficiary_journey") }}</span
+                          >
                         </v-tooltip>
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn v-can="'update-post'" fab x-small v-on="on" color="#b71c1c" class="ml-3 white--text"
-                              elevation="0" @click="deleteBeneficiaryItem(item.id)">
+                            <v-btn
+                              v-can="'update-post'"
+                              fab
+                              x-small
+                              v-on="on"
+                              color="#b71c1c"
+                              class="ml-3 white--text"
+                              elevation="0"
+                              @click="deleteBeneficiaryItem(item.id)"
+                            >
                               <v-icon> mdi mdi-delete </v-icon>
                             </v-btn>
                           </template>
@@ -360,16 +765,32 @@
                       </template>
                       <!-- End Action Button -->
                       <template v-slot:footer="item">
-                        <div class="text-center pt-2 v-data-footer justify-center pb-2">
-                          <v-select style="
+                        <div
+                          class="text-center pt-2 v-data-footer justify-center pb-2"
+                        >
+                          <v-select
+                            style="
                               position: absolute;
                               right: 25px;
                               width: 149px;
                               transform: translate(0px, 0px);
-                            " :items="items" hide-details dense outlined @change="onPageChange"
-                            v-model="pagination.perPage"></v-select>
-                          <v-pagination circle primary v-model="pagination.current" :length="pagination.total"
-                            @input="onPageChange" :total-visible="11" class="custom-pagination-item"></v-pagination>
+                            "
+                            :items="items"
+                            hide-details
+                            dense
+                            outlined
+                            @change="onPageChange"
+                            v-model="pagination.perPage"
+                          ></v-select>
+                          <v-pagination
+                            circle
+                            primary
+                            v-model="pagination.current"
+                            :length="pagination.total"
+                            @input="onPageChange"
+                            :total-visible="11"
+                            class="custom-pagination-item"
+                          ></v-pagination>
                         </div>
                       </template>
                     </v-data-table>
@@ -396,18 +817,43 @@
               <form @submit.prevent="deleteBeneficiary()">
                 <!-- {{errors.code}}
                   {{errors.name_en}} -->
-                <ValidationProvider v-slot="{ errors }" name="Name English" vid="name_en" rules="required">
-                  <v-text-field outlined type="text" v-model="delete_cause" :label="$t(
-                    'container.beneficiary_management.beneficiary_list.delete_cause'
-                  )
-                    " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  name="Name English"
+                  vid="name_en"
+                  rules="required"
+                >
+                  <v-text-field
+                    outlined
+                    type="text"
+                    v-model="delete_cause"
+                    :label="
+                      $t(
+                        'container.beneficiary_management.beneficiary_list.delete_cause'
+                      )
+                    "
+                    required
+                    :error="errors[0] ? true : false"
+                    :error-messages="errors[0]"
+                  ></v-text-field>
                 </ValidationProvider>
                 <v-row class="mx-0 my-0 py-2" justify="center">
-                  <v-btn flat @click="dialogDelete = false" outlined class="custom-btn-width py-2 mr-10">
+                  <v-btn
+                    flat
+                    @click="dialogDelete = false"
+                    outlined
+                    class="custom-btn-width py-2 mr-10"
+                  >
                     {{ $t("container.list.cancel") }}
                   </v-btn>
-                  <v-btn type="submit" flat color="#b71c1c" :disabled="invalid" :loading="loading"
-                    class="custom-btn-width white--text py-2">
+                  <v-btn
+                    type="submit"
+                    flat
+                    color="#b71c1c"
+                    :disabled="invalid"
+                    :loading="loading"
+                    class="custom-btn-width white--text py-2"
+                  >
                     {{ $t("container.list.submit") }}
                   </v-btn>
                 </v-row>
@@ -430,7 +876,7 @@ import Spinner from "@/components/Common/Spinner.vue";
 extend("required", required);
 export default {
   name: "Index",
-  title: "CTM - Beneficiary List",
+  title: "CTM - Beneficiary Information List",
   data() {
     return {
       data: {
@@ -504,6 +950,8 @@ export default {
       delete_id: "",
       applications: [],
       beneficiaries: [],
+      beneficiary_list: [],
+      total: "",
       programs: [],
       districts: [],
       locationType: [],
@@ -1005,9 +1453,9 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          // this.beneficiaries = result.data.data;
           var results = result.data.data;
-          console.log("results", results);
+          this.total = result.data.meta.total;
+          console.log("results_total__", this.total);
 
           this.beneficiaries = results.map((item) => {
             return (item = {
@@ -1056,12 +1504,12 @@ export default {
             "Content-Type": "application/json",
           },
           params: queryParams,
-          responseType: 'arraybuffer',
+          responseType: "arraybuffer",
         })
         .then((result) => {
-          const blob = new Blob([result.data], { type: 'application/pdf' });
+          const blob = new Blob([result.data], { type: "application/pdf" });
           const url = window.URL.createObjectURL(blob);
-          window.open(url, '_blank');
+          window.open(url, "_blank");
           this.isLoading = false;
           // window.open(result.data.data.url, "_blank");
         })
@@ -1069,6 +1517,205 @@ export default {
           this.isLoading = false;
           console.error("Error generating PDF:", error);
         });
+    },
+    async GenerateExcel() {
+      this.isLoading = true;
+      let page;
+      if (!this.sortBy) {
+        page = this.pagination.current;
+      }
+      const queryParams = {
+        // language: this.$i18n.locale,
+        location_type: this.data.location_type,
+        program_id: this.data.program_id,
+        division_id: this.data.division_id,
+        district_id: this.data.district_id,
+        city_corp_id: this.data.city_id,
+        thana_id: this.data.thana_id,
+        district_pouro_id: this.data.district_pouro_id,
+
+        city_thana_id: this.data.city_thana_id,
+        sub_location_type: this.sub_location_type,
+        pouro_id: this.data.pouro_id,
+        union_id: this.data.union_id,
+        ward_id: this.data.ward_id,
+
+        beneficiary_id: this.data.beneficiary_id,
+        nominee_name: this.data.nominee_name,
+        account_number: this.data.account_number,
+        nid: this.data.nid,
+        status: this.data.status,
+
+        perPage: this.total,
+        page: 1, // All data loaded
+        sortBy: this.sortBy,
+        orderBy: this.sortDesc,
+      };
+
+      await this.$axios
+        .get("/admin/beneficiary/list", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          this.beneficiary_list = result.data.data;
+        })
+        .catch((error) => {
+          this.isLoading = false;
+          console.error("Error generating PDF:", error);
+        });
+
+      try {
+        import("@/plugins/Export2Excel").then((excel) => {
+          const HeaderInfo = [
+            this.$t("container.list.sl"),
+            this.$t(
+              "container.beneficiary_management.beneficiary_list.beneficiary_id"
+            ),
+            this.$t(
+              "container.beneficiary_management.beneficiary_list.beneficiary_name"
+            ),
+            this.$t(
+              "container.beneficiary_management.beneficiary_list.father_name"
+            ),
+            this.$t(
+              "container.beneficiary_management.beneficiary_list.program_name"
+            ),
+            this.$t(
+              "container.beneficiary_management.beneficiary_list.district"
+            ),
+            this.$t(
+              "container.beneficiary_management.beneficiary_list.city_dist_upazilla"
+            ),
+            this.$t(
+              "container.beneficiary_management.beneficiary_list.thna_union_Pouro"
+            ),
+            this.$t("container.beneficiary_management.beneficiary_list.ward"),
+            this.$t(
+              "container.beneficiary_management.beneficiary_list.account_no"
+            ),
+            this.$t(
+              "container.beneficiary_management.beneficiary_list.monthly_allowance_amount"
+            ),
+          ];
+          const CustomInfo = this.beneficiary_list.map((i, index) => {
+            return {
+              sl:
+                this.$i18n.locale == "en"
+                  ? index + 1
+                  : this.$helpers.englishToBangla(index + 1),
+              beneficiary_id:
+                this.$i18n.locale == "en"
+                  ? i.application_id
+                  : this.$helpers.englishToBangla(i.application_id),
+              name: this.$i18n.locale == "en" ? i.name_en : i.name_bn,
+              father_name:
+                this.$i18n.locale == "en" ? i.father_name_en : i.father_name_bn,
+              program_name:
+                this.$i18n.locale == "en"
+                  ? i.program.name_en
+                  : i.program.name_bn,
+              district:
+                this.$i18n.locale == "en"
+                  ? i.permanentDistrict.name_en
+                  : i.permanentDistrict.name_bn,
+              city_dist_upazilla:
+                this.$i18n.locale == "en"
+                  ? i.permanentUpazila
+                    ? i.permanentUpazila.name_en
+                    : i.permanentCityCorporation
+                    ? i.permanentCityCorporation.name_en
+                    : i.permanentDistrictPourashava
+                    ? i.permanentDistrictPourashava.name_en
+                    : ""
+                  : i.permanentUpazila
+                  ? i.permanentUpazila.name_bn
+                  : i.permanentCityCorporation
+                  ? i.permanentCityCorporation.name_bn
+                  : i.permanentDistrictPourashava
+                  ? i.permanentDistrictPourashava.name_bn
+                  : "",
+              thna_union_Pouro:
+                this.$i18n.locale == "en"
+                  ? i.permanentUnion
+                    ? i.permanentUnion.name_en
+                    : i.permanentThana
+                    ? i.permanentThana.name_en
+                    : i.permanentPourashava
+                    ? i.permanentPourashava.name_en
+                    : ""
+                  : i.permanentUnion
+                  ? i.permanentUnion.name_bn
+                  : i.permanentThana
+                  ? i.permanentThana.name_bn
+                  : i.permanentPourashava
+                  ? i.permanentPourashava.name_bn
+                  : "",
+              ward:
+                this.$i18n.locale == "en"
+                  ? i.permanentWard.name_en
+                  : i.permanentWard.name_bn,
+
+              account_number:
+                this.$i18n.locale == "en" ? i.account_number : i.account_number,
+              monthly_allowance:
+                this.$i18n.locale == "en"
+                  ? i.monthly_allowance
+                  : this.$helpers.englishToBangla(i.monthly_allowance),
+            };
+          });
+
+          const Field = [
+            "sl",
+            "beneficiary_id",
+            "name",
+            "father_name",
+            "program_name",
+            "district",
+            "city_dist_upazilla",
+            "thna_union_Pouro",
+            "ward",
+            "account_number",
+            "monthly_allowance",
+          ];
+
+          const Data = this.FormatJson(Field, CustomInfo);
+          const currentDate = new Date().toISOString().slice(0, 10);
+          let dateinfo =
+            queryParams.language == "en"
+              ? currentDate
+              : this.$helpers.englishToBangla(currentDate);
+
+          const filenameWithDate = `${this.$t(
+            "container.beneficiary_management.beneficiary_list.list"
+          )}`;
+
+          excel.export_json_to_excel({
+            header: HeaderInfo,
+            data: Data,
+            sheetName: filenameWithDate,
+            filename: filenameWithDate,
+            autoWidth: true,
+            bookType: "xlsx",
+          });
+        });
+      } catch (error) {
+        // Handle any errors here
+        console.error("An error occurred:", error);
+        this.isLoading = false;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    FormatJson(FilterData, JsonData) {
+      return JsonData.map((v) =>
+        FilterData.map((j) => {
+          return v[j];
+        })
+      );
     },
     deleteBeneficiaryItem(event) {
       if (this.$refs.formDelete) {
@@ -1110,8 +1757,6 @@ export default {
   watch: {
     "$i18n.locale": "updateHeaderTitle",
     value(val) {
-      // this.selectedHeaders = val;
-
       this.selectedHeaders = [
         { text: this.$t("container.list.sl"), value: "sl" },
         ...val,

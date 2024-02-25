@@ -65,10 +65,10 @@
       "excel": "Excel",
       "confirm": "Confirm",
       "verify": "Verify",
-      "view-list":"View List",
-      "yes":"yes",
-      "no":"No",
-      "attention":"Attention!!!",
+      "view-list": "View List",
+      "yes": "yes",
+      "no": "No",
+      "attention": "Attention!!!",
       "create": "Create"
     },
     "system_config": {
@@ -594,11 +594,7 @@
         "exit_reason": "Exit Reason",
         "exit_date": "Exit Date",
         "replace_with_application_id": "Replaced with Beneficiary ID",
-        "replace_with_name_en": "Replaced with Beneficiary Name",
-        "from_program_name": "From Program Name",
-        "to_program_name": "To Program Name",
-        "shifting_cause": "Shifting Cause",
-        "activation_date": "Activation Date"
+        "replace_with_name_en": "Replaced with Beneficiary Name"
       },
       "mobile_operator": {
         "list": "Mobile Operator List",
@@ -704,6 +700,7 @@
     "beneficiary_management": {
       "beneficiary_list": {
         "beneficiary": "Beneficiary",
+        "ben_list": "Beneficiary List",
         "list": "Beneficiary Information List",
         "list_active": "Beneficiary Information(Active) List",
         "list_inactive": "Beneficiary Information(Dead & Inactive) List",
@@ -715,6 +712,12 @@
         "delete_cause": "Delete Cause",
         "beneficiary_id": "Beneficiary's ID",
         "beneficiary_name": "Beneficiary's Name",
+        "father_name": "Father Name",
+        "program_name": "Program Name",
+        "district": "District",
+        "city_dist_upazilla": "City/Distrcit Pourashava/Upazila",
+        "thna_union_Pouro": "Thana/Union/Poorashava",
+        "ward": "Ward",
         "name": "Name",
         "beneficiary_date_of_birth": "Date of Birth",
         "beneficiary_mobile": "Mobile",
@@ -830,13 +833,25 @@
         "beneficary_bank_acc_number": "Beneficiary Bank Account Number",
         "account_name": "Account Name",
         "account_owner": "Account Owner",
-        "monthly_allowance_amount": "Monthly Allowance Amount",
+        "monthly_allowance_amount": "Monthly Allowance (Taka)",
         "monthly_honorarium_amount": "Monthly Honorarium Amount",
         "financial_year": "Financial Year",
         "other_info_of_eligibility": "Other Information of Eligibility",
         "rollback_message": "Do you want to Rollback?",
         "application_date": "Application Date",
-        "approval_date": "Approval Date"
+        "approval_date": "Approval Date",
+        "replace_with_application_id": "Replaced with Beneficiary ID",
+        "replace_with_name_en": "Replaced with Beneficiary Name",
+        "replace_date": "Replaced Date",
+        "exit_reason": "Exit Reason",
+        "exit_date": "Exit Date",
+        "from_program_name": "From Program Name",
+        "to_program_name": "To Program Name",
+        "shifting_cause": "Shifting Cause",
+        "activation_date": "Activation Date",
+        "ben_list_active": "Beneficiary Active List",
+        "ben_list_inactive": "Beneficiary Inactive List",
+        "ben_list_waiting": "Beneficiary Waiting List"
       },
       "digital_id": {
         "digital_id_card": "Digital ID Card"
