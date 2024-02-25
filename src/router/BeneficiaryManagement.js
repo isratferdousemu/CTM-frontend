@@ -132,7 +132,7 @@ const BeneficiaryManagementRoutes = [
     },
     component: () =>
       import(
-        "../pages/BeneficiaryManagement/BeneficiaryDashboard/Dashboard.vue"
+        "../pages/BeneficiaryManagement/BeneficiaryDashboard/Dashboard_v2.vue"
       ),
   },
   // {
@@ -220,9 +220,7 @@ const BeneficiaryManagementRoutes = [
       permission: "digital-id-card",
     },
     component: () =>
-      import(
-        "../pages/BeneficiaryManagement/DigitalIDCard/DigitalIDCard.vue"
-      ),
+      import("../pages/BeneficiaryManagement/DigitalIDCard/DigitalIDCard.vue"),
   },
   {
     path: "/beneficiary-management/beneficiary-exit-list",

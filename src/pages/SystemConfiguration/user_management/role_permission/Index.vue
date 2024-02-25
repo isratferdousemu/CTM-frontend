@@ -301,10 +301,10 @@ export default {
           if (this.success_status === 200)
           {
             this.$toast.success(this.message);
-            this.add_role_permission = {};
-            this.selectedModule = null;
-            this.subModules = null;
-            this.select();
+            // this.add_role_permission = {};
+            // this.selectedModule = null;
+            // this.subModules = null;
+            // this.select();
             this.$refs.form.setErrors();
           }
 

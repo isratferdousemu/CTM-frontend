@@ -291,6 +291,7 @@ export default {
                       color="primary"
                       router
                       to="/system-configuration/role/create"
+                      v-can="'role-create'"
                   >
                     <v-icon small left>mdi-plus</v-icon>
                     <span>{{$t('container.list.add_new')}}</span>
@@ -347,6 +348,7 @@ export default {
                               v-on="on"
                               router
                               :to="`/system-configuration/role/edit/${item.id}`"
+                              v-can="'role-edit'"
                           >
                             <v-icon>mdi-account-edit-outline</v-icon>
                           </v-btn>
@@ -364,6 +366,7 @@ export default {
                               class="ml-3 white--text"
                               v-on="on"
                               @click="deleteAlert(item.id)"
+                              v-can="'role-delete'"
                           >
                             <v-icon>mdi-delete</v-icon>
                           </v-btn>

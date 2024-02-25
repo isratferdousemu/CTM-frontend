@@ -113,7 +113,7 @@ const SystemConfigurationRoutes = [
     name: "DeviceRegistration",
     meta: {
       requiresAuth: true,
-      permission: "device-view",
+      permission: "device-registration-view",
     },
     component: () => import("../pages/SystemConfiguration/device_registration/Index.vue")
   },
@@ -123,7 +123,7 @@ const SystemConfigurationRoutes = [
     name: "DeviceRegistrationCreate",
     meta: {
       requiresAuth: true,
-      permission: "device-create",
+      permission: "device-registration-create",
     },
     component: () => import("../pages/SystemConfiguration/device_registration/Create.vue")
   },
@@ -133,7 +133,7 @@ const SystemConfigurationRoutes = [
     name: "DeviceRegistrationEdit",
     meta: {
       requiresAuth: true,
-      permission: "device-edit",
+      permission: "device-registration-edit",
     },
     component: () => import("../pages/SystemConfiguration/device_registration/Edit.vue")
   },
@@ -226,7 +226,7 @@ const SystemConfigurationRoutes = [
     name: "financial_year_list",
     meta: {
       requiresAuth: true,
-      permission: "financial-year-view",
+      permission: "financial-view",
     },
     component: () => import("../pages/SystemConfiguration/financial_year/Index.vue")
   },
