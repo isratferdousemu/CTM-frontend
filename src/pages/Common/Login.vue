@@ -84,21 +84,19 @@
                             </div>
                             <ValidationObserver ref="form" class="w-100" lazy-validation v-slot="{ invalid }">
                                 <v-form @submit.prevent="submitResetPassword" class="ma-5">
-                                    <ValidationProvider name="OldPassword" vid="old_password" rules="required" v-slot="{ errors }">
+<!--                                    <ValidationProvider name="OldPassword" vid="old_password" rules="required" v-slot="{ errors }">
                                         <v-text-field type="password" label="Old Password" v-model="form.old_password" :error="errors[0] ? true : false" :error-messages="errors[0]" required></v-text-field>
-                                    </ValidationProvider>
+                                    </ValidationProvider>-->
                                     <!-- :error="errors && errors.username" :error-messages="errors ? errors.username : []"  -->
                                     <ValidationProvider name="Password" vid="password" rules="required" v-slot="{ errors }">
-                                        <v-text-field type="password" v-model="form.password" placeholder="Password" required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
+                                        <v-text-field type="password" v-model="form.password" placeholder="New Password" required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
                                     </ValidationProvider>
-                                    <v-text-field
-                                    type="password"
-                                    v-model="form.confirm_password" 
-                                    placeholder="Confirm Password"
-                                    required
-                                    :error="errors[0] ? true : false" :error-messages="errors[0]">
-                                  ></v-text-field>
- 
+
+                                  <ValidationProvider name="Confirm Password" vid="confirm_password" rules="required" v-slot="{ errors }">
+                                      <v-text-field type="password" v-model="form.confirm_password" placeholder="Confirm Password" required :error="errors[0] ? true : false" :error-messages="errors[0]">></v-text-field>
+                                  </ValidationProvider>
+
+
                                     <div class="d-inline d-flex justify-end">
                                         <v-btn color="blue" block type="submit" class="my-4 white--text" :loading="loading">Submit</v-btn>
                                     </div>
@@ -155,8 +153,8 @@ export default {
             errors: [],
             form: {
                 device_token: null,
-                username: "ctm-01",
-                password: "12345678",
+                username: "",
+                password: "",
                 confirm_password: "",
                 old_password: "",
                 otp: "",
@@ -335,8 +333,6 @@ export default {
                     this.loading = false;
                     if (err.response) {
                         if (err.response.data.success == false) {
-                            console.log(err.response.data, 'und');
-                            console.log(err.response.data.error_code, 'und');
                             if (err.response.data.error_code == "wrong_email_or_password") {
                                 let errs = {
                                     "password": [err.response.data.message]
@@ -351,7 +347,10 @@ export default {
                                  
                                 this.$toast.error(err.response.data.message);
                                  this.resetPassword=true
- 
+
+                              this.form.old_password = this.form.password
+                              this.form.password = ""
+                              this.$refs.form.reset()
                              }
                         } else if (err.response) {
                             this.$refs.form.setErrors(err.response.data.errors);
