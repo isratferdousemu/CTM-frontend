@@ -302,6 +302,10 @@
           "member_address": "ঠিকানা",
           "member_email": "ইমেইল",
           "member_phone": "ফোন",
+          "committee_code": "কমিটির কোড",
+          "committee_name": "কমিটির নাম",
+          "committee_location": "এলাকা",
+          "committee_allowance": "ভাতা নাম",
           "list_table": {
             "SL": "ক্রমিক নং",
             "Code": "কোড",

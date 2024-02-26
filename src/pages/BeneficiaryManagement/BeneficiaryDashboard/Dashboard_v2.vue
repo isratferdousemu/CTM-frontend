@@ -628,11 +628,11 @@ export default {
   data() {
     return {
       chartData: [
-        ["Year", "Sales", "Expenses", "Profit"],
-        ["2014", 10, 400, 200],
-        ["2015", 1170, 460, 250],
-        ["2016", 660, 1120, 300],
-        ["2017", 1030, 540, 350],
+        ["Location", "Beneficiaries"],
+        ["Dhaka", 1000],
+        ["Rajshahi", 1170],
+        ["Chattrogram", 660],
+        ["Sylhet", 1030],
       ],
       chartOptions: {
         chart: {

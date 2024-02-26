@@ -608,6 +608,8 @@
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 import Chart from "chart.js/auto";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+Chart.register(ChartDataLabels);
 extend("required", required);
 export default {
   name: "Dashboard",
@@ -629,6 +631,13 @@ export default {
         { year: 2014, count: 22 },
         { year: 2015, count: 30 },
         { year: 2016, count: 28 },
+      ],
+      program_location_wise_ben: [
+        { division: "Dhaka", value: 300, percentage: 50 },
+        { division: "Rajshahi", value: 50, percentage: 10 },
+        { division: "Khulna", value: 100, percentage: 20 },
+        { division: "Sylhet", value: 150, percentage: 30 },
+        { division: "Chattrogram", value: 200, percentage: 40 },
       ],
       months: [
         "January",
@@ -716,11 +725,13 @@ export default {
     new Chart(ctxpie, {
       type: "pie",
       data: {
-        labels: ["Dhaka", "Rajshahi", "Khula", "Sylhet", "Chattrogram"],
+        labels: this.program_location_wise_ben.map((row) => row.division),
+
+        percentage: this.program_location_wise_ben.map((row) => row.percentage),
         datasets: [
           {
-            label: "My First Dataset",
-            data: [300, 50, 100, 30, 200],
+            label: "Values::",
+            data: this.program_location_wise_ben.map((row) => row.value),
             backgroundColor: ["Blue", "Red", "Green", "Purple", "Yellow"],
             // backgroundColor: [
             //   "rgb(255, 99, 132)",
@@ -741,9 +752,20 @@ export default {
             //   color: "rgb(255, 99, 132)",
             // },
           },
-          title: {
-            display: true,
-            text: "Custom Chart Title",
+          // title: {
+          //   display: true,
+          //   text: "Custom Chart Title",
+          // },
+          datalabels: {
+            // color: "#ffff",
+            formatter: function (value, context) {
+              return (
+                value +
+                ", " +
+                context.chart.data.percentage[context.dataIndex] +
+                "%"
+              );
+            },
           },
         },
       },
