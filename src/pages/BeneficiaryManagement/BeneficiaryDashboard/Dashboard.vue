@@ -15,10 +15,11 @@
                 <v-row>
                   <v-avatar color="primary" size="30" class="mt-7 ml-5">
                     <!-- <v-icon dark>mdi-account-circle</v-icon> -->
-                    <img
+                    <v-icon dark>mdi mdi-account-multiple</v-icon>
+                    <!-- <img
                       src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
                       alt="Avatar"
-                    />
+                    /> -->
                   </v-avatar>
 
                   <v-col>
@@ -27,7 +28,9 @@
                         >Total Number of Beneficiary
                       </span>
                       <br />
-                      <span class="headline font-weight-bold"> 1112123 </span>
+                      <span class="headline font-weight-bold">
+                        {{ beneficiaries.totalBeneficiaries }}
+                      </span>
                     </v-card-text>
                   </v-col>
                 </v-row>
@@ -45,10 +48,11 @@
                 <v-row>
                   <v-avatar color="primary" size="30" class="mt-7 ml-5">
                     <!-- <v-icon dark>mdi-account-circle</v-icon> -->
-                    <img
+                    <v-icon dark>mdi mdi-account</v-icon>
+                    <!-- <img
                       src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
                       alt="Avatar"
-                    />
+                    /> -->
                   </v-avatar>
 
                   <v-col>
@@ -57,7 +61,9 @@
                         >Number of Active Beneficiary</span
                       >
                       <br />
-                      <span class="headline font-weight-bold"> 1112123 </span>
+                      <span class="headline font-weight-bold">
+                        {{ beneficiaries.totalActiveBeneficiaries }}
+                      </span>
                     </v-card-text>
                   </v-col>
                 </v-row>
@@ -75,10 +81,11 @@
                 <v-row>
                   <v-avatar color="primary" size="30" class="mt-7 ml-5">
                     <!-- <v-icon dark>mdi-account-circle</v-icon> -->
-                    <img
+                    <v-icon dark>mdi mdi-account-multiple</v-icon>
+                    <!-- <img
                       src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
                       alt="Avatar"
-                    />
+                    /> -->
                   </v-avatar>
 
                   <v-col>
@@ -87,7 +94,9 @@
                         >Number of Inactive/Dead Beneficiary</span
                       >
                       <br />
-                      <span class="headline font-weight-bold"> 1112123 </span>
+                      <span class="headline font-weight-bold">
+                        {{ beneficiaries.totalInactiveBeneficiaries }}
+                      </span>
                     </v-card-text>
                   </v-col>
                 </v-row>
@@ -105,10 +114,11 @@
                 <v-row>
                   <v-avatar color="primary" size="30" class="mt-7 ml-5">
                     <!-- <v-icon dark>mdi-account-circle</v-icon> -->
-                    <img
+                    <v-icon dark>mdi mdi-account</v-icon>
+                    <!-- <img
                       src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
                       alt="Avatar"
-                    />
+                    /> -->
                   </v-avatar>
 
                   <v-col>
@@ -117,7 +127,9 @@
                         >Number of Beneficiary in Waiting List</span
                       >
                       <br />
-                      <span class="headline font-weight-bold"> 1112123 </span>
+                      <span class="headline font-weight-bold">
+                        {{ beneficiaries.totalWaitingBeneficiaries }}
+                      </span>
                     </v-card-text>
                   </v-col>
                 </v-row>
@@ -134,11 +146,12 @@
               <v-card-title>
                 <v-row>
                   <v-avatar color="primary" size="30" class="mt-7 ml-5">
-                    <!-- <v-icon dark>mdi-account-circle</v-icon> -->
-                    <img
+                    <v-icon dark>mdi mdi-account</v-icon>
+                    <!-- <span class="mdi mdi-account-circle"></span> -->
+                    <!-- <img
                       src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
                       alt="Avatar"
-                    />
+                    /> -->
                   </v-avatar>
 
                   <v-col>
@@ -147,7 +160,9 @@
                         >Number of Replaced Beneficiary</span
                       >
                       <br />
-                      <span class="headline font-weight-bold"> 1112123 </span>
+                      <span class="headline font-weight-bold">
+                        {{ beneficiaries.totalReplacedBeneficiaries }}
+                      </span>
                     </v-card-text>
                   </v-col>
                 </v-row>
@@ -166,14 +181,14 @@
             <V-row>
               <v-col>
                 <v-row>
-                  <v-col cols="12" lg="6" md="6">
+                  <v-col cols="12" lg="5" md="5">
                     <label style="color: #1976d2">
                       <span>
                         {{ $t("Program & Location Wise Beneficiary") }}
                       </span>
                     </label></v-col
                   >
-                  <v-col cols="3" lg="3" md="3">
+                  <!-- <v-col cols="3" lg="3" md="3">
                     <v-autocomplete
                       class="mr-5"
                       :items="months"
@@ -196,7 +211,47 @@
                       v-model="program_location_Wise_beneficiary.year"
                       @input="onChangeProgramAndLocationWiseBeneficiary($event)"
                     ></v-autocomplete>
+                  </v-col> -->
+
+                  <v-col cols="12" md="7" lg="7">
+                    <v-menu
+                      v-model="menu2"
+                      :close-on-content-click="false"
+                      :nudge-right="40"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="auto"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          clearable
+                          v-model="dates"
+                          :label="$t('Enter Start & End Date')"
+                          prepend-inner-icon="mdi-calendar"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                        ></v-text-field>
+                      </template>
+                      <v-date-picker
+                        v-model="dates"
+                        @input="menu2 = false"
+                        range
+                      ></v-date-picker>
+                    </v-menu>
                   </v-col>
+
+                  <!-- <v-col cols="12" sm="3" lg="3">
+                    <v-date-picker v-model="dates" range></v-date-picker>
+                  </v-col>
+                  <v-col cols="12" sm="3" lg="3">
+                    <v-text-field
+                      v-model="dateRangeText"
+                      label="Date range"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                    ></v-text-field>
+                  </v-col> -->
                 </v-row>
 
                 <v-row>
@@ -660,8 +715,18 @@ export default {
       month_name: "",
       year_name: "",
       programs: [],
+      beneficiaries: [],
       genders: ["Male", "Female", "3rd Gender"],
       program_name: "",
+      my_chart: null,
+
+      // dates: ["2019-09-10", "2019-09-20"],
+      dates: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .substr(0, 10),
+      menu: false,
+      modal: false,
+      menu2: false,
 
       program_location_Wise_beneficiary: {
         program_id: null,
@@ -674,7 +739,11 @@ export default {
     ValidationProvider,
     ValidationObserver,
   },
-  computed: {},
+  computed: {
+    dateRangeText() {
+      return this.dates.join(" ~ ");
+    },
+  },
 
   methods: {
     async GetAllProgram() {
@@ -702,13 +771,75 @@ export default {
         console.log(e);
       }
     },
+    async GetTotalBeneficiaries() {
+      try {
+        this.$axios
+          .get("/admin/beneficiary-dashboard/getTotalBeneficiaries", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((result) => {
+            console.log(result, "beneficiaries__");
+            this.beneficiaries = result.data.data;
+          })
+          .catch((err) => {
+            console.log(err, "error");
+            if (err.response?.data?.errors) {
+              this.$refs.form.setErrors(err.response.data.errors);
+            }
+            console.log(err.response);
+            this.$toast.error(err?.response?.data?.message);
+          });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    async GetLocationWiseBeneficiaries() {
+      const queryParams = {
+        program_id: this.program_location_Wise_beneficiary.program_id,
+      };
+      this.$axios
+        .get("/admin/beneficiary-dashboard/getLocationWiseBeneficiaries", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          this.program_location_wise_ben = result.data.data;
+          console.log("results_total__", this.total);
+
+          this.my_chart.data.labels = this.program_location_wise_ben.map(
+            (row) => row.division
+          );
+          this.my_chart.data.percentage = this.program_location_wise_ben.map(
+            (row) => row.percentage
+          );
+          this.my_chart.data.datasets[0].data =
+            this.program_location_wise_ben.map((row) => row.value);
+          this.my_chart.update();
+        });
+    },
+
     onChangeProgramAndLocationWiseBeneficiary(event) {
       console.log(
         "program_id",
         this.program_location_Wise_beneficiary.program_id
       );
-      console.log("month", this.program_location_Wise_beneficiary.month);
-      console.log("year", this.program_location_Wise_beneficiary.year);
+
+      this.GetLocationWiseBeneficiaries();
+
+      // this.my_chart.data.labels = program_location_wise_ben.map(
+      //   (row) => row.division
+      // );
+      // this.my_chart.data.datasets[0].data = program_location_wise_ben.map(
+      //   (row) => row.value
+      // );
+      // this.my_chart.update();
     },
   },
   watch: {
@@ -719,10 +850,12 @@ export default {
     this.updateHeaderTitle();
   },
   mounted() {
+    this.GetLocationWiseBeneficiaries();
+    this.GetTotalBeneficiaries();
     this.GetAllProgram();
     // program_location_wise_chart
     const ctxpie = document.getElementById("program_location_wise_chart");
-    new Chart(ctxpie, {
+    this.my_chart = new Chart(ctxpie, {
       type: "pie",
       data: {
         labels: this.program_location_wise_ben.map((row) => row.division),
@@ -757,7 +890,7 @@ export default {
           //   text: "Custom Chart Title",
           // },
           datalabels: {
-            // color: "#ffff",
+            color: "#ffff",
             formatter: function (value, context) {
               return (
                 value +
