@@ -152,7 +152,7 @@
 
                   <!-- 2nd Expansion panel -->
                   <!-- Information According to the Old Allowance -->
-                  <v-expansion-panel class="mt-5" v-model="panel" multiple>
+                  <!-- <v-expansion-panel class="mt-5" v-model="panel" multiple>
                     <v-expansion-panel-header color="primary">
                       <h3 class="white--text">
                         {{
@@ -507,7 +507,7 @@
                         </v-col>
                       </V-row>
                     </v-expansion-panel-content>
-                  </v-expansion-panel>
+                  </v-expansion-panel> -->
 
                   <!-- 3rd Expansion panel -->
                   <!-- Personal Information  -->
@@ -1745,7 +1745,7 @@
                             v-if="data.account_owner"
                           >
                             <v-text-field
-                            v-model="data.monthly_allowance"
+                              v-model="data.monthly_allowance"
                               outlined
                               readonly
                               :label="
