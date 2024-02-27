@@ -662,6 +662,7 @@ export default {
       programs: [],
       genders: ["Male", "Female", "3rd Gender"],
       program_name: "",
+      my_chart: null,
 
       program_location_Wise_beneficiary: {
         program_id: null,
@@ -709,6 +710,20 @@ export default {
       );
       console.log("month", this.program_location_Wise_beneficiary.month);
       console.log("year", this.program_location_Wise_beneficiary.year);
+
+      let program_location_wise_ben = [
+        { division: "AA", value: 100, percentage: 20 },
+        { division: "BB", value: 150, percentage: 30 },
+        { division: "CC", value: 200, percentage: 40 },
+      ];
+
+      this.my_chart.data.labels = program_location_wise_ben.map(
+        (row) => row.division
+      );
+      this.my_chart.data.datasets[0].data = program_location_wise_ben.map(
+        (row) => row.value
+      );
+      this.my_chart.update();
     },
   },
   watch: {
@@ -722,7 +737,7 @@ export default {
     this.GetAllProgram();
     // program_location_wise_chart
     const ctxpie = document.getElementById("program_location_wise_chart");
-    new Chart(ctxpie, {
+    this.my_chart = new Chart(ctxpie, {
       type: "pie",
       data: {
         labels: this.program_location_wise_ben.map((row) => row.division),
