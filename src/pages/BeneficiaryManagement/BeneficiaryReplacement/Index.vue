@@ -1274,11 +1274,9 @@ export default {
               program_name:
                 this.$i18n.locale == "en"
                   ? i.program_name_en
-                  : i.program_name_en,
+                  : i.program_name_bn,
               beneficiary_id:
-                this.$i18n.locale == "en"
-                  ? i.application_id
-                  : this.$helpers.englishToBangla(i.application_id),
+                this.$i18n.locale == "en" ? i.application_id : i.application_id,
               name: this.$i18n.locale == "en" ? i.name_en : i.name_bn,
               father_name:
                 this.$i18n.locale == "en" ? i.father_name_en : i.father_name_bn,

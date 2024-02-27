@@ -6,9 +6,13 @@
         <v-row>
           <v-col cols="12">
             <v-card>
-              <v-card-title><h3>
-                {{ $t("container.system_config.demo_graphic.committee.edit") }}
-              </h3></v-card-title>
+              <v-card-title
+                ><h3>
+                  {{
+                    $t("container.system_config.demo_graphic.committee.edit")
+                  }}
+                </h3></v-card-title
+              >
 
               <v-divider></v-divider>
 
@@ -138,26 +142,27 @@
                         </ValidationProvider>
                       </v-col>
                     </v-row>
-                    <v-card-title 
-                           v-if="
-                          data.committee_type == 12 ||
-                          data.committee_type == 13 ||
-                          data.committee_type == 14 ||
-                          data.committee_type == 15 ||
-                          data.committee_type == 16 ||
-                          data.committee_type == 17
-                        "
+                    <v-card-title
+                      v-if="
+                        data.committee_type == 12 ||
+                        data.committee_type == 13 ||
+                        data.committee_type == 14 ||
+                        data.committee_type == 15 ||
+                        data.committee_type == 16 ||
+                        data.committee_type == 17
+                      "
                       ><h4>DSS Center</h4></v-card-title
                     >
-                    <v-divider 
-                           v-if="
-                          data.committee_type == 12 ||
-                          data.committee_type == 13 ||
-                          data.committee_type == 14 ||
-                          data.committee_type == 15 ||
-                          data.committee_type == 16 ||
-                          data.committee_type == 17
-                        "></v-divider>
+                    <v-divider
+                      v-if="
+                        data.committee_type == 12 ||
+                        data.committee_type == 13 ||
+                        data.committee_type == 14 ||
+                        data.committee_type == 15 ||
+                        data.committee_type == 16 ||
+                        data.committee_type == 17
+                      "
+                    ></v-divider>
 
                     <v-row>
                       <v-col
@@ -433,7 +438,11 @@
 
                     <v-card-title
                       ><h4>
-                        {{ $t("container.system_config.demo_graphic.committee.add_more_member") }}
+                        {{
+                          $t(
+                            "container.system_config.demo_graphic.committee.add_more_member"
+                          )
+                        }}
                       </h4></v-card-title
                     >
                     <v-divider></v-divider>
@@ -612,7 +621,7 @@ extend("required", required);
 
 export default {
   name: "Index",
-  title: "CTM - Office",
+  title: "CTM - Committe Edit",
   data() {
     return {
       data: {
@@ -767,7 +776,10 @@ export default {
             for (let i = 0; i < value.length; i++) {
               fd.append("members[" + i + "].member_name", value[i].member_name);
               fd.append("members[" + i + "].address", value[i].address);
-              fd.append("members[" + i + "].designation_id",value[i].designation_id);
+              fd.append(
+                "members[" + i + "].designation_id",
+                value[i].designation_id
+              );
               fd.append("members[" + i + "].email", value[i].email);
               fd.append("members[" + i + "].phone", value[i].phone);
             }
@@ -779,7 +791,7 @@ export default {
       }
 
       try {
-        const data = {formData:fd, id:this.$route.params.id}
+        const data = { formData: fd, id: this.$route.params.id };
         this.$store
           .dispatch("BeneficiaryManagement/UpdateCommittee", data)
           .then((res) => {
@@ -896,14 +908,14 @@ export default {
             this.data = res.data.data;
             this.data.program_id = res.data.data.program.id;
             this.data.committee_type = res.data.data.committeeType.id;
-            
+
             item.members.forEach((key, value) => {
-              console.log(key, 'key');
-              console.log(value, 'value');
+              console.log(key, "key");
+              console.log(value, "value");
               this.data.members[value].designation_id = key.designation.id;
             });
 
-            console.log(this.data.members, 'members');
+            console.log(this.data.members, "members");
             if (item?.location?.type == "division") {
               console.log("division here");
               this.data.division_id = item?.location?.id;

@@ -5,7 +5,13 @@
         <Spinner :loading="isLoading" />
         <v-row>
           <v-col cols="12">
-            <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8">
+            <v-card
+              elevation="10"
+              color="white"
+              rounded="md"
+              theme="light"
+              class="mb-8"
+            >
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
                   {{
@@ -14,19 +20,30 @@
                 </h3>
               </v-card-title>
               <v-card-text>
-
-
                 <v-row justify="space-between" align="center" class="mx-5">
                   <!-- Checkbox on the left -->
                   <v-col lg="3" md="3" cols="12">
-                      <v-text-field @keyup.native="GetCommittee" outlined dense v-model="search"
-                      prepend-inner-icon="mdi-magnify" class="my-sm-0 my-3 mx-0v -input--horizontal" variant="outlined"
-                       :label="$t('container.list.search')" hide-details color="primary"></v-text-field>
+                    <v-text-field
+                      @keyup.native="GetCommittee"
+                      outlined
+                      dense
+                      v-model="search"
+                      prepend-inner-icon="mdi-magnify"
+                      class="my-sm-0 my-3 mx-0v -input--horizontal"
+                      variant="outlined"
+                      :label="$t('container.list.search')"
+                      hide-details
+                      color="primary"
+                    ></v-text-field>
                   </v-col>
 
                   <!-- Dropdown on the right -->
-                  <v-col lg="3" md="3" cols="12" class="text-right ">
-                    <v-btn @click="createDialog" color="primary" prepend-icon="mdi-account-multiple-plus">
+                  <v-col lg="3" md="3" cols="12" class="text-right">
+                    <v-btn
+                      to="/beneficiary-management/committee/create"
+                      color="primary"
+                      prepend-icon="mdi-account-multiple-plus"
+                    >
                       {{ $t("container.list.add_new") }}
                     </v-btn>
                   </v-col>
@@ -41,19 +58,32 @@
 
                   <!-- Dropdown on the right -->
                   <v-col lg="4" md="6" cols="12" class="text-right">
-                    <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="GeneratePDF()">
-                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
+                    <v-btn
+                      elevation="2"
+                      class="btn mr-2 white--text"
+                      color="red darken-4"
+                      @click="GeneratePDF()"
+                    >
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                      {{ $t("container.list.PDF") }}
                     </v-btn>
-                    <!-- <v-btn elevation="2" class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
+                    <v-btn
+                      elevation="2"
+                      class="btn mr-2 white--text"
+                      color="teal darken-2"
+                      @click="GenerateExcel()"
+                    >
                       <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
                       {{ $t("container.list.excel") }}
-                    </v-btn> -->
+                    </v-btn>
                   </v-col>
                 </v-row>
 
-
-                <v-row class="ma-0 pa-3 white round-border d-flex justify-space-between align-center" justify="center"
-                  justify-lg="space-between">
+                <v-row
+                  class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
+                  justify="center"
+                  justify-lg="space-between"
+                >
                   <!-- <div class="d-flex justify-sm-end flex-wrap">
                     <v-text-field @keyup.native="GetCommittee" outlined dense v-model="search"
                       prepend-inner-icon="mdi-magnify" class="my-sm-0 my-3 mx-0v -input--horizontal" flat
@@ -72,9 +102,15 @@
                     {{ $t("container.list.add_new") }}
                   </v-btn> -->
                   <v-col cols="12">
-                    <v-data-table :loading="loading" item-key="id" :headers="headers" :items="commitees"
-                      :items-per-page="pagination.perPage" hide-default-footer
-                      class="elevation-0 transparent row-pointer">
+                    <v-data-table
+                      :loading="loading"
+                      item-key="id"
+                      :headers="headers"
+                      :items="commitees"
+                      :items-per-page="pagination.perPage"
+                      hide-default-footer
+                      class="elevation-0 transparent row-pointer"
+                    >
                       <template v-slot:item.id="{ item, index }">
                         {{
                           (pagination.current - 1) * pagination.perPage +
@@ -93,8 +129,15 @@
                       <template v-slot:item.actions="{ item }">
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn v-can="'update-post'" fab x-small v-on="on" color="success mr-3" elevation="0"
-                              @click="GetCommitteeById(item.id)">
+                            <v-btn
+                              v-can="'update-post'"
+                              fab
+                              x-small
+                              v-on="on"
+                              color="success mr-3"
+                              elevation="0"
+                              @click="GetCommitteeById(item.id)"
+                            >
                               <v-icon> mdi-eye-circle-outline </v-icon>
                             </v-btn>
                           </template>
@@ -104,8 +147,15 @@
                         </v-tooltip>
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn v-can="'update-post'" fab x-small v-on="on" color="success" elevation="0"
-                              :to="`/beneficiary-management/committee/edit/${item.id}`">
+                            <v-btn
+                              v-can="'update-post'"
+                              fab
+                              x-small
+                              v-on="on"
+                              color="success"
+                              elevation="0"
+                              :to="`/beneficiary-management/committee/edit/${item.id}`"
+                            >
                               <v-icon> mdi-account-edit-outline </v-icon>
                             </v-btn>
                           </template>
@@ -116,8 +166,16 @@
 
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn v-can="'delete-division'" fab x-small v-on="on" color="grey" class="ml-3 white--text"
-                              elevation="0" @click="deleteAlert(item.id)">
+                            <v-btn
+                              v-can="'delete-division'"
+                              fab
+                              x-small
+                              v-on="on"
+                              color="grey"
+                              class="ml-3 white--text"
+                              elevation="0"
+                              @click="deleteAlert(item.id)"
+                            >
                               <v-icon> mdi-delete </v-icon>
                             </v-btn>
                           </template>
@@ -127,16 +185,32 @@
                       <!-- End Action Button -->
 
                       <template v-slot:footer="item">
-                        <div class="text-center pt-2 v-data-footer justify-center pb-2">
-                          <v-select style="
+                        <div
+                          class="text-center pt-2 v-data-footer justify-center pb-2"
+                        >
+                          <v-select
+                            style="
                               position: absolute;
                               right: 25px;
                               width: 149px;
                               transform: translate(0px, 0px);
-                            " :items="items" hide-details dense outlined @change="onPageChange"
-                            v-model="pagination.perPage"></v-select>
-                          <v-pagination circle primary v-model="pagination.current" :length="pagination.total"
-                            @input="onPageChange" :total-visible="11" class="custom-pagination-item"></v-pagination>
+                            "
+                            :items="items"
+                            hide-details
+                            dense
+                            outlined
+                            @change="onPageChange"
+                            v-model="pagination.perPage"
+                          ></v-select>
+                          <v-pagination
+                            circle
+                            primary
+                            v-model="pagination.current"
+                            :length="pagination.total"
+                            @input="onPageChange"
+                            :total-visible="11"
+                            class="custom-pagination-item"
+                          ></v-pagination>
                         </div>
                       </template>
                     </v-data-table>
@@ -189,25 +263,34 @@
                         <td colspan="3">{{ data.committee_type_name }}</td>
                       </tr>
                       <!-- ////////////////////////// -->
-                      <tr v-if="data.committee_type == 12 ||
-                        data.committee_type == 13 ||
-                        data.committee_type == 14 ||
-                        data.committee_type == 15 ||
-                        data.committee_type == 16 ||
-                        data.committee_type == 17
-                        ">
-                        <td colspan="4" style="justify-content: center; text-align: center">
+                      <tr
+                        v-if="
+                          data.committee_type == 12 ||
+                          data.committee_type == 13 ||
+                          data.committee_type == 14 ||
+                          data.committee_type == 15 ||
+                          data.committee_type == 16 ||
+                          data.committee_type == 17
+                        "
+                      >
+                        <td
+                          colspan="4"
+                          style="justify-content: center; text-align: center"
+                        >
                           <h3>DSS Center</h3>
                         </td>
                       </tr>
                       <!-- ////////////////////////// -->
-                      <tr v-if="data.committee_type == 12 ||
-                        data.committee_type == 13 ||
-                        data.committee_type == 14 ||
-                        data.committee_type == 15 ||
-                        data.committee_type == 16 ||
-                        data.committee_type == 17
-                        ">
+                      <tr
+                        v-if="
+                          data.committee_type == 12 ||
+                          data.committee_type == 13 ||
+                          data.committee_type == 14 ||
+                          data.committee_type == 15 ||
+                          data.committee_type == 16 ||
+                          data.committee_type == 17
+                        "
+                      >
                         <td>
                           <h4>Division</h4>
                         </td>
@@ -283,7 +366,10 @@
 
                       <!-- ////////////////////////// -->
                       <tr>
-                        <td colspan="4" style="justify-content: center; text-align: center">
+                        <td
+                          colspan="4"
+                          style="justify-content: center; text-align: center"
+                        >
                           <h3>Members Information</h3>
                         </td>
                       </tr>
@@ -308,8 +394,15 @@
                     </tbody>
                   </template>
                 </v-simple-table>
-                <v-data-table :loading="loading" item-key="id" :headers="headers_member" :items="data.members"
-                  hide-default-footer :search="true" class="elevation-0 transparent row-pointer">
+                <v-data-table
+                  :loading="loading"
+                  item-key="id"
+                  :headers="headers_member"
+                  :items="data.members"
+                  hide-default-footer
+                  :search="true"
+                  class="elevation-0 transparent row-pointer"
+                >
                   <template v-slot:item.id="{ item, index }">
                     {{
                       (pagination.current - 1) * pagination.perPage + index + 1
@@ -341,11 +434,21 @@
           </v-card-text>
           <v-card-actions style="display: block">
             <v-row class="mx-0 my-0 py-2" justify="center">
-              <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
+              <v-btn
+                text
+                @click="deleteDialog = false"
+                outlined
+                class="custom-btn-width py-2 mr-10"
+              >
                 {{ $t("container.list.cancel") }}
               </v-btn>
-              <v-btn text @click="deleteCommittee()" color="white" :loading="delete_loading"
-                class="custom-btn-width warning white--text py-2">
+              <v-btn
+                text
+                @click="deleteCommittee()"
+                color="white"
+                :loading="delete_loading"
+                class="custom-btn-width warning white--text py-2"
+              >
                 {{ $t("container.list.delete") }}
               </v-btn>
             </v-row>
@@ -435,6 +538,8 @@ export default {
       divisions: [],
       districts: [],
       commitees: [],
+      committee_list: [],
+      total: "",
       designations: [],
       offices: [],
       unions: [],
@@ -477,35 +582,35 @@ export default {
           sortable: false,
         },
         {
-          align: 'center',
+          align: "center",
           text: this.$t(
             "container.system_config.demo_graphic.committee.list_table.Code"
           ),
           value: "code",
         },
         {
-          align: 'center',
+          align: "center",
           text: this.$t(
             "container.system_config.demo_graphic.committee.list_table.Name"
           ),
           value: "name",
         },
         {
-          align: 'center',
+          align: "center",
           text: this.$t(
             "container.system_config.demo_graphic.committee.list_table.Program"
           ),
           value: "program.name_en",
         },
         {
-          align: 'center',
+          align: "center",
           text: this.$t(
             "container.system_config.demo_graphic.committee.list_table.Details"
           ),
           value: "details",
         },
         {
-          align: 'center',
+          align: "center",
           text: this.$t(
             "container.system_config.demo_graphic.committee.list_table.Action"
           ),
@@ -898,6 +1003,7 @@ export default {
           params: queryParams,
         })
         .then((result) => {
+          this.total = result.data.meta.total;
           this.commitees = result.data.data;
           this.pagination.current = result.data.meta.current_page;
           this.pagination.total = result.data.meta.last_page;
@@ -910,7 +1016,7 @@ export default {
       this.isLoading = true;
       const queryParams = {
         language: this.$i18n.locale,
-        searchText: this.search
+        searchText: this.search,
       };
       this.$axios
         .get("/admin/committee/getCommitteeListPdf", {
@@ -919,12 +1025,12 @@ export default {
             "Content-Type": "application/json",
           },
           params: queryParams,
-          responseType: 'arraybuffer',
+          responseType: "arraybuffer",
         })
         .then((result) => {
-          const blob = new Blob([result.data], { type: 'application/pdf' });
+          const blob = new Blob([result.data], { type: "application/pdf" });
           const url = window.URL.createObjectURL(blob);
-          window.open(url, '_blank');
+          window.open(url, "_blank");
           this.isLoading = false;
           // window.open(result.data.data.url, "_blank");
         })
@@ -932,6 +1038,121 @@ export default {
           this.isLoading = false;
           console.error("Error generating PDF:", error);
         });
+    },
+    async GenerateExcel() {
+      this.isLoading = true;
+      const queryParams = {
+        language: this.$i18n.locale,
+        searchText: this.search,
+        perPage: this.total,
+        page: 1, // All data loaded
+      };
+      await this.$axios
+        .get("/admin/committee/list", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          this.committee_list = result.data.data;
+        })
+        .catch((error) => {
+          this.isLoading = false;
+          console.error("Error generating PDF:", error);
+        });
+
+      try {
+        import("@/plugins/Export2Excel").then((excel) => {
+          const HeaderInfo = [
+            this.$t("container.list.sl"),
+            this.$t(
+              "container.system_config.demo_graphic.committee.committee_code"
+            ),
+            this.$t(
+              "container.system_config.demo_graphic.committee.committee_type"
+            ),
+            this.$t(
+              "container.system_config.demo_graphic.committee.committee_name"
+            ),
+            this.$t("container.system_config.demo_graphic.committee.details"),
+            this.$t(
+              "container.system_config.demo_graphic.committee.committee_location"
+            ),
+            this.$t(
+              "container.system_config.demo_graphic.committee.committee_allowance"
+            ),
+          ];
+          const CustomInfo = this.committee_list.map((i, index) => {
+            return {
+              sl:
+                this.$i18n.locale == "en"
+                  ? index + 1
+                  : this.$helpers.englishToBangla(index + 1),
+              committee_code: this.$i18n.locale == "en" ? i.code : i.code,
+              committee_type:
+                this.$i18n.locale == "en"
+                  ? i.committeeType.value_en
+                  : i.committeeType.value_en,
+              committee_name: this.$i18n.locale == "en" ? i.name : i.name,
+              committee_details:
+                this.$i18n.locale == "en" ? i.details : i.details,
+              committee_location:
+                this.$i18n.locale == "en"
+                  ? i.location.name_en
+                  : i.location.name_bn,
+              program_name:
+                this.$i18n.locale == "en"
+                  ? i.program.name_en
+                  : i.program.name_bn,
+            };
+          });
+
+          const Field = [
+            "sl",
+            "committee_code",
+            "committee_type",
+            "committee_name",
+            "committee_details",
+            "committee_location",
+            "program_name",
+          ];
+
+          const Data = this.FormatJson(Field, CustomInfo);
+          const currentDate = new Date().toISOString().slice(0, 10);
+          let dateinfo =
+            queryParams.language == "en"
+              ? currentDate
+              : this.$helpers.englishToBangla(currentDate);
+
+          const filenameWithDate = `${this.$t(
+            "container.system_config.demo_graphic.committee.list"
+          )}`;
+
+          excel.export_json_to_excel({
+            header: HeaderInfo,
+            data: Data,
+            sheetName: filenameWithDate,
+            filename: filenameWithDate,
+            autoWidth: true,
+            bookType: "xlsx",
+          });
+        });
+      } catch (error) {
+        // Handle any errors here
+        console.error("An error occurred:", error);
+        this.isLoading = false;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    FormatJson(FilterData, JsonData) {
+      return JsonData.map((v) =>
+        FilterData.map((j) => {
+          return v[j];
+        })
+      );
     },
     /* -------------------------------------------------------------------------- */
     /*                               On Change Event                               */
@@ -1075,7 +1296,6 @@ export default {
     this.GetCommittee();
     this.GetAllProgram();
     this.GetAllCommitteeType();
-    this.GetCommitteeById();
     this.GetAllDivisions();
     this.GetAllDesignation();
   },

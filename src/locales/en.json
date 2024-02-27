@@ -303,6 +303,10 @@
           "member_address": "Address",
           "member_email": "Email",
           "member_phone": "Phone",
+          "committee_code": "Committee Code",
+          "committee_name": "Committee Name",
+          "committee_location": "Location",
+          "committee_allowance": "Allowance Name",
           "list_table": {
             "SL": "SL",
             "Code": "Code",
