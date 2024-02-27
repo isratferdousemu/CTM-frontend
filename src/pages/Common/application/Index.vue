@@ -1256,7 +1256,7 @@
                       <div class="pa-2 mb-4">
                         <v-row>
                           <v-col cols="12" lg="12">
-                            <v-card>
+                            <v-card class="validation_error_nominee">
                               <v-card-text>
 
 
@@ -1329,6 +1329,15 @@
                                   </v-col>
 
                                 </v-row>
+
+
+                                <div></div>
+                                <div class="d-inline d-flex justify-end">
+                                  <v-btn @click="verifyNomineeCard()" elevation="2"
+                                         :disabled="data.nominee_verification_number == null || data.nominee_date_of_birth == ''"
+                                         class="btn" color="primary">{{ $t('container.list.verify') }}</v-btn>
+                                </div>
+
                               </v-card-text>
                             </v-card>
 
@@ -2270,6 +2279,8 @@ export default {
     },
     verifyCard() {
       let data = {
+        program_id: this.data.program_id,
+        gender_id: this.data.gender_id,
         verification_type: this.data.verification_type,
         verification_number: this.data.verification_number,
         date_of_birth: this.data.date_of_birth,
@@ -2294,6 +2305,31 @@ export default {
           console.log(err)
           this.$toast.error(err.response.data.message);
         })
+    },
+
+    verifyNomineeCard() {
+      let data = {
+        verification_number: this.data.nominee_verification_number,
+        date_of_birth: this.data.nominee_date_of_birth,
+      };
+
+      this.$axios.post("/global/online-application/nominee-card-verification", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Accept: "application/json",
+        },
+      })
+          .then((res) => {
+            console.log(res)
+            this.$toast.success(res.data.message);
+
+            this.data.nominee_en = res.data.data.nameEn
+            this.data.nominee_bn = res.data.data.name
+          })
+          .catch((err) => {
+            console.log(err)
+            this.$toast.error(err.response.data.message);
+          })
     },
     verifyDISCard() {
       let data = {
@@ -2421,6 +2457,38 @@ export default {
                 this.$refs.form.setErrors(err.response.data.message);
                 //scroll to first error filed
                 const firstErrorField = document.querySelector(".validation_error_age_limit");
+                if (firstErrorField) {
+                  firstErrorField.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                    inline: "nearest",
+                  });
+                }
+
+                // end of scroll to first error filed
+                this.$toast.error(err.response.data.message);
+
+              }
+              else if (err.response.data.error_code == "invalid_nid") {
+                this.$refs.form.setErrors(err.response.data.message);
+                //scroll to first error filed
+                const firstErrorField = document.querySelector(".validation_error_age_limit");
+                if (firstErrorField) {
+                  firstErrorField.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                    inline: "nearest",
+                  });
+                }
+
+                // end of scroll to first error filed
+                this.$toast.error(err.response.data.message);
+
+              }
+              else if (err.response.data.error_code == "invalid_nominee_nid") {
+                this.$refs.form.setErrors(err.response.data.message);
+                //scroll to first error filed
+                const firstErrorField = document.querySelector(".validation_error_nominee");
                 if (firstErrorField) {
                   firstErrorField.scrollIntoView({
                     behavior: "smooth",

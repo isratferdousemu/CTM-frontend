@@ -150,7 +150,7 @@
 
                   <!-- 2nd Expansion panel -->
                   <!-- Information According to the Old Allowance -->
-                  <v-expansion-panel class="mt-5" v-model="panel" multiple>
+                  <!-- <v-expansion-panel class="mt-5" v-model="panel" multiple>
                     <v-expansion-panel-header color="primary">
                       <h3 class="white--text">
                         {{
@@ -485,7 +485,7 @@
                         <v-col> </v-col>
                       </V-row>
                     </v-expansion-panel-content>
-                  </v-expansion-panel>
+                  </v-expansion-panel> -->
 
                   <!-- 3rd Expansion panel -->
                   <!-- Personal Information  -->
@@ -2580,7 +2580,6 @@ export default {
               this.errors = res.response.data.errors;
             }
           });
-        
       } catch (e) {
         console.log(e);
       }
