@@ -340,7 +340,7 @@
             <V-row>
               <v-col>
                 <v-row>
-                  <v-col cols="12" lg="6" md="6">
+                  <v-col cols="12">
                     <label style="color: #1976d2">
                       <span>
                         {{
@@ -349,29 +349,49 @@
                       </span>
                     </label></v-col
                   >
-                  <v-col cols="3" lg="3">
-                    <v-autocomplete
-                      class="mr-5"
-                      :items="months"
-                      :label="$t('Month')"
-                      dense
-                      item-text="month_name"
-                      item-value="month_name"
-                    ></v-autocomplete>
-                  </v-col>
-                  <v-col cols="3" lg="3">
-                    <v-autocomplete
-                      class="mr-5"
-                      v-model="year_name"
-                      :items="years"
-                      :label="$t('Year')"
-                      dense
-                      item-text="year_name"
-                      item-value="year_name"
-                    ></v-autocomplete>
-                  </v-col>
                 </v-row>
 
+                <v-row class="ml-1 mr-1">
+                  <v-menu
+                    ref="menu2"
+                    v-model="menu2"
+                    :close-on-content-click="false"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        v-model="dateRangeTextOnGender"
+                        :value="formattedDates"
+                        :append-icon="menu2 ? 'mdi-calendar' : 'mdi-calendar'"
+                        :label="$t('Enter Start & End Date')"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker
+                      v-model="gender_wise_dates"
+                      :range="[gender_wise_dates[0], gender_wise_dates[1]]"
+                      no-title
+                      scrollable
+                      @input="onChangeGenderWiseBeneficiary($event)"
+                    >
+                      <v-spacer></v-spacer>
+                      <v-btn text color="primary" @click="menu2 = false">
+                        Cancel
+                      </v-btn>
+                      <v-btn
+                        text
+                        color="primary"
+                        @click="$refs.menu2.save(gender_wise_dates)"
+                      >
+                        OK
+                      </v-btn>
+                    </v-date-picker>
+                  </v-menu>
+                </v-row>
                 <v-row>
                   <canvas height="300" id="year_wise_ben"></canvas>
                 </v-row>
@@ -1002,13 +1022,19 @@ export default {
     });
     const ctx = document.getElementById("year_wise_ben");
     new Chart(ctx, {
-      type: "bar",
       data: {
         labels: ["2019", "2020", "2021", "2022", "2023", "2024"],
         datasets: [
           {
+            type: "bar",
             label: "Yearly Beneficiaries",
             data: [1200, 1900, 1000, 2200, 2800, 900],
+            borderWidth: 1,
+          },
+          {
+            type: "bar",
+            label: "Yearly Beneficiaries",
+            data: [600, 1000, 500, 1100, 1400, 500],
             borderWidth: 1,
           },
         ],
@@ -1029,7 +1055,7 @@ export default {
         datasets: [
           {
             barPercentage: 0.5,
-            barThickness: 6,
+            barThickness: 5,
             maxBarThickness: 8,
             minBarLength: 2,
             label: "Program Wise Beneficiary",
