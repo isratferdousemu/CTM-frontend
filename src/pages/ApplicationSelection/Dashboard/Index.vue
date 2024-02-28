@@ -1,10 +1,10 @@
 <template>
   <v-container fluid>
-<!--    <v-card-title class="justify-center" tag="div">-->
-<!--      <h5 class="text-uppercase">-->
-<!--        {{ $t("container.system_config.demo_graphic.district.list") }}-->
-<!--      </h5>-->
-<!--    </v-card-title>-->
+    <!--    <v-card-title class="justify-center" tag="div">-->
+    <!--      <h5 class="text-uppercase">-->
+    <!--        {{ $t("container.system_config.demo_graphic.district.list") }}-->
+    <!--      </h5>-->
+    <!--    </v-card-title>-->
 
     <v-row class="mt-3">
 
@@ -15,49 +15,54 @@
               <v-col>
                 <v-row>
                   <v-col cols="12">
-                    <v-menu
-                        ref="menu"
-                        v-model="menu"
-                        :close-on-content-click="false"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="auto"
-                    >
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                            v-model="dates"
-                            :value="formattedDates"
-                            :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
-                            readonly
-                            v-bind="attrs"
-                            v-on="on"
-                        ></v-text-field>
-                      </template>
-                      <v-date-picker
+                    <label style="color: #1976d2">
+                      <span>
+                        {{ $t("Total Number of Application Received Application") }}
+                      </span>
+                    </label></v-col
+                  >
+                </v-row>
+                <v-row class="ml-1 mr-1">
+                  <v-menu
+                      ref="menu"
+                      v-model="menu"
+                      :close-on-content-click="false"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="auto"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
                           v-model="dates"
-                          :range="[dates[0], dates[1]]"
-                          no-title
-                          scrollable
+                          :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
+                          :label="$t('Enter Start & End Date')"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker
+                        v-model="dates"
+                        :range="[dates[0], dates[1]]"
+                        no-title
+                        scrollable
+                        @input="OnChangeDateInfo($event,'total_received')"
+                    >
+                      <v-spacer></v-spacer>
+                      <v-btn text color="primary" @click="menu = false">
+                        Cancel
+                      </v-btn>
+                      <v-btn
+                          text
+                          color="primary"
+                          @click="$refs.menu.save(dates)"
                       >
-                        <v-spacer></v-spacer>
-                        <v-btn
-                            text
-                            color="primary"
-                            @click="menu = false"
-                        >
-                          Cancel
-                        </v-btn>
-                        <v-btn
-                            text
-                            color="primary"
-                            @click="$refs.menu.save(dates)"
-                        >
-                          OK
-                        </v-btn>
-                      </v-date-picker>
-                    </v-menu>
-
-                  </v-col>
+                        OK
+                      </v-btn>
+                    </v-date-picker>
+                  </v-menu>
+                </v-row>
+                <v-row>
                   <canvas id="total_number_of_application_received_info"></canvas>
                 </v-row>
               </v-col>
@@ -175,21 +180,11 @@ export default {
   data() {
     return {
       dates: [],
-      menu: false,
 
-      chartData: [
-        ['Year', 'Sales', 'Expenses', 'Profit'],
-        ['2014', 10, 400, 200],
-        ['2015', 1170, 460, 250],
-        ['2016', 660, 1120, 300],
-        ['2017', 1030, 540, 350]
-      ],
-      chartOptions: {
-        chart: {
-          title: 'Company Performance',
-          subtitle: 'Sales, Expenses, and Profit: 2014-2017',
-        }
-      }
+      total_number_of_application_received_chart:null,
+      total_number_of_application_received_levels:[],
+      total_number_of_application_received_datas:[],
+      total_number_of_application_received_info:[],
 
     };
   },
@@ -200,7 +195,68 @@ export default {
 
   },
   methods: {
+    async fetchTotalReceivedApplicationChartData() {
+      await this.getTotalReceivedApplication(2, '', '');
+      this.createTotalReceivedApplicentChart();
+    },
+    async getTotalReceivedApplication(status, from_date = null, to_date = null) {
+      const queryParams = {
+        status: status,
+        start_date: from_date,
+        end_date: to_date,
+      };
+      try {
+        const result = await this.$axios.get("/admin/application-dashboard/get-total-received-application", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        });
+        // Extract the data from the result and assign to variables
+        this.total_number_of_application_received_info = result.data.data;
+        this.total_number_of_application_received_levels = this.total_number_of_application_received_info.map((row) => row.program.name_en);
+        this.total_number_of_application_received_datas = this.total_number_of_application_received_info.map((row) => row.count);
+        this.isLoading = false;
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        // Handle error if necessary
+      }
+    },
+    createTotalReceivedApplicentChart() {
+      if (this.total_number_of_application_received_levels && this.total_number_of_application_received_datas) {
+        this.total_number_of_application_received_chart = new Chart(document.getElementById("total_number_of_application_received_info"), {
+          type: "doughnut",
+          data: {
+            labels: this.total_number_of_application_received_levels,
+            datasets: [{
+              label: "Received",
+              data: this.total_number_of_application_received_datas,
+              fill: false,
+              tension: 0.1,
+            }],
+          },
+          options: {
+            plugins: {
+              legend: {
+                display: true,
+                position: "right",
+                align: "center",
+              },
+            },
+          },
+        });
+      } else {
+        console.error("Data is not available to create chart.");
+      }
+    },
 
+     OnChangeDateInfo(event,type){
+      let from_date = event[0];
+      let to_date = event[1];
+       this.getTotalReceivedApplication(2,from_date, to_date)
+       this.fetchTotalReceivedApplicationChartData()
+    },
   },
 
   watch: {
@@ -211,42 +267,9 @@ export default {
 
   },
   mounted(){
-    new Chart(document.getElementById("total_number_of_application_received_info"), {
-      type: "doughnut",
-      data: {
-        // labels: Utils.months({ count: 7 }),
-        labels: [
-          "2024",
-          "2023",
-          "2022",
-        ],
-        datasets: [
-          {
-            label: "Line Dataset",
-            data: [10, 20, 30],
-            fill: false,
-            // borderColor: "rgb(75, 192, 192)",
-            tension: 0.1,
-          },
-        ],
 
-      },
-      options: {
-        plugins: {
-          legend: {
-            display: true,
-            position: "right",
-            align: "center",
-          },
-        },
-      },
-      // options: {
-      //   responsive: true,
-      //   maintainAspectRatio: false,
-      //   width: 400, // Set your desired width here
-      //   height: 400, // Set your desired height here
-      // },
-    });
+    this.fetchTotalReceivedApplicationChartData();
+
     const ctxpie = document.getElementById("total_number_of_application_approval");
     new Chart(ctxpie, {
       type: "pie",
