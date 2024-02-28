@@ -19,7 +19,9 @@
         src="/assets/images/logo.png"
       ></v-img>
     <b>  <p style="margin-left:15px; margin-top:15px">
-    {{  this.$t("topSidebar.title") }} <br v-if="userData?.office">{{ userData?.office?.office_address}}</br></p>
+    {{  this.$t("topSidebar.title") }} </br> <span v-if="userData?.office">{{ userData?.office?.office_address}}</span>
+    <span v-else>{{  this.$t("topSidebar.location") }}</span>
+    </p>
     </b>
 
 

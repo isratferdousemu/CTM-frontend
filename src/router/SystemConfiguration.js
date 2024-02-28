@@ -205,7 +205,7 @@ const SystemConfigurationRoutes = [
     name: "RolePermission",
     meta: {
       requiresAuth: true,
-      permission: "role-permission",
+      permission: "role-permission-view",
     },
     component: () => import("../pages/SystemConfiguration/user_management/role_permission/Index.vue")
   },

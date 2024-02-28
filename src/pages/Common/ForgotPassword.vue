@@ -340,7 +340,7 @@ export default {
           } else {
             if (data.success == false) {
               this.errors.message = data.message;
-              // this.$toast.error("Password Reset Failed");
+              this.$toast.error(data.message);
             } else {
               this.errors = data.errors;
               //   this.$toast.error("Password Reset Failed");
