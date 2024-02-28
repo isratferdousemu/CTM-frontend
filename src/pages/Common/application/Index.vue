@@ -382,7 +382,7 @@
                               <label>{{ $t('container.application_selection.application.religion') }}</label>
                               <span style="margin-left: 4px; color: red">*</span>
 
-                              <v-select v-model="data.religion" outlined :items="religion"
+                              <v-select v-model="data.religion" outlined :items="religion" item-value="name_en"
                               :item-text="getItemText"
                                 :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-select>
@@ -434,7 +434,7 @@
                             <ValidationProvider name="Profession" vid="profession" v-slot="{ errors }">
                               <label>{{ $t('container.application_selection.application.profession') }}</label>
                               <span style="margin-left: 4px; color: red">*</span>
-                              <v-select v-model="data.profession" outlined clearable :items="professionType" :item-text="getItemText" 
+                              <v-select v-model="data.profession" outlined clearable :items="professionType" :item-text="getItemText"   item-value="name_en"
                                 :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-select>
                             </ValidationProvider>
@@ -476,7 +476,7 @@
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-select :hide-details="errors[0] ? false : true" @input="onChangeDivision($event)"
-                              v-model="data.division_id" outlined :items="divisions" item-text="name_en" item-value="id"
+                              v-model="data.division_id" outlined :items="divisions" :item-text="getItemText" item-value="id"
                               :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
@@ -486,9 +486,9 @@
                               $t('container.system_config.demo_graphic.district.district') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" outlined v-model="data.district_id"
-                              @input="onChangeDistrict($event)" :items="districts" item-text="name_en"  item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            <v-select :hide-details="errors[0] ? false : true" outlined v-model="data.district_id"
+                              @input="onChangeDistrict($event)" :items="districts" :item-text="getItemText"  item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6">
@@ -497,10 +497,10 @@
                             <label style="display: inline-block">{{ $t('container.list.location_type') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete @input="LocationType($event)" v-model="data.location_type"
-                              :hide-details="errors[0] ? false : true" outlined :items="locationType" item-text="value_en" 
+                            <v-select @input="LocationType($event)" v-model="data.location_type"
+                              :hide-details="errors[0] ? false : true" outlined :items="locationType" :item-text="getItemValue" 
                               item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-autocomplete>
+                              :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 2" lg="6" md="6" cols="6">
@@ -509,9 +509,9 @@
                               $t('container.system_config.demo_graphic.ward.upazila') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.thana_id" outlined
-                              @change="onChangeUpazila($event)" :items="thanas"   item-text="name_en"  item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.thana_id" outlined
+                              @change="onChangeUpazila($event)" :items="thanas"  :item-text="getItemText" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 2" lg="6" md="6" cols="6">
@@ -520,10 +520,10 @@
                           </label>
                           <span style="margin-left: 4px; color: red">*</span>
                           <ValidationProvider name="subLocationType" vid="subLocationType" v-slot="{ errors }">
-                            <v-autocomplete @input="onChangeSubLocationType($event)" v-model="data.sub_location_type"
-                              outlined :items="subLocationType"   item-text="value_en"  item-value="id"
+                            <v-select @input="onChangeSubLocationType($event)" v-model="data.sub_location_type"
+                              outlined :items="subLocationType"   :item-text="getItemValue"  item-value="id"
                               :error="errors[0] ? true : false" :error-messages="errors[0]"
-                              :hide-details="errors[0] ? false : true" class="no-arrow-icon"></v-autocomplete>
+                              :hide-details="errors[0] ? false : true" class="no-arrow-icon"></v-select>
                           </ValidationProvider>
                         </v-col>
 
@@ -533,9 +533,9 @@
                             }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.union_id" outlined
-                              @input="onChangeUnion($event)" :items="unions" item-text="name_en"  item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.union_id" outlined
+                              @input="onChangeUnion($event)" :items="unions" :item-text="getItemtText"   item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
 
@@ -545,9 +545,9 @@
                             }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.pouro_id"
-                              @input="onChangePouro($event)" outlined :items="pouros" item-text="name_en"  item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.pouro_id"
+                              @input="onChangePouro($event)" outlined :items="pouros" :item-text="getItemText"  item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
 
 
@@ -558,9 +558,9 @@
                             }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.city_id"
-                              @change="onChangeCity($event)" outlined :items="cities" item-text="name_en"  item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.city_id"
+                              @change="onChangeCity($event)" outlined :items="cities" :item-text="getItemText"  item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 3" lg="6" md="6" cols="6">
@@ -569,9 +569,9 @@
                             }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.city_thana_id" outlined
-                              @input="OnChangeCityThana($event)" :items="city_thanas" item-text="name_en"  item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.city_thana_id" outlined
+                              @input="OnChangeCityThana($event)" :items="city_thanas":item-text="getItemText"  item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 1" lg="6" md="6" cols="6">
@@ -580,10 +580,10 @@
                               $t('container.system_config.demo_graphic.ward.dist_pouro') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.district_pouro_id"
-                              @input="onChangeDistrictPouro" outlined :items="district_poros" item-text="name_en" 
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.district_pouro_id"
+                              @input="onChangeDistrictPouro" outlined :items="district_poros" :item-text="getItemText" 
                               item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-autocomplete>
+                              :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 3" lg="6" md="6" cols="6">
@@ -592,9 +592,9 @@
                             }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.ward_id_city" outlined
-                              :items="wards_city" item-text="name_en"  item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-autocomplete>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.ward_id_city" outlined
+                              :items="wards_city" :item-text="getItemText" item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 2 && data.sub_location_type == 2" lg="6" md="6" cols="6">
@@ -604,9 +604,9 @@
                             }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.ward_id_union" outlined
-                              :items="wards_upazila_union" item-text="name_en" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.ward_id_union" outlined
+                              :items="wards_upazila_union" :item-text="getItemText" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 2 && data.sub_location_type == 1" lg="6" md="6" cols="6">
@@ -615,9 +615,9 @@
                             <label style="display: inline-block">Ward
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.ward_id_pouro" outlined
-                              :items="wards_upazila_pouro" item-text="name_en"  item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.ward_id_pouro" outlined
+                              :items="wards_upazila_pouro" :item-text="getItemText"  item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 1" lg="6" md="6" cols="6">
@@ -626,9 +626,9 @@
                             }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.ward_id_dist" outlined
-                              :items="wards_dist" item-text="name_en"   item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-autocomplete>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.ward_id_dist" outlined
+                              :items="wards_dist" :item-text="getItemText"   item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6" lg="6">
@@ -680,10 +680,10 @@
                               $t('container.system_config.demo_graphic.division.division') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true"
+                            <v-select :hide-details="errors[0] ? false : true"
                               @input="permanent_onChangeDivision($event)" v-model="data.permanent_division_id" outlined
-                              :items="permanent_divisions" item-text="name_en" item-value="id" required
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                              :items="permanent_divisions" :item-text="getItemText" item-value="id" required
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col lg="6" md="6" cols="12">
@@ -693,10 +693,10 @@
                               $t('container.system_config.demo_graphic.district.district') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" outlined
+                            <v-select :hide-details="errors[0] ? false : true" outlined
                               v-model="data.permanent_district_id" @input="permanent_onChangeDistrict($event)"
-                              :items="permanent_districts" item-text="name_en" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                              :items="permanent_districts" :item-text="getItemText" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6">
@@ -705,10 +705,10 @@
                             <label style="display: inline-block">{{ $t('container.list.location_type') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete @input="permanent_LocationType($event)" v-model="data.permanent_location_type"
-                              :hide-details="errors[0] ? false : true" outlined :items="locationType" item-text="value_en" 
+                            <v-select @input="permanent_LocationType($event)" v-model="data.permanent_location_type"
+                              :hide-details="errors[0] ? false : true" outlined :items="locationType" :item-text="getItemValue" 
                               item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-autocomplete>
+                              :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type == 2" lg="6" md="6" cols="12">
@@ -718,10 +718,10 @@
                               $t('container.system_config.demo_graphic.ward.upazila') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.permanent_thana_id"
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.permanent_thana_id"
                               outlined @change="permanent_onChangeUpazila($event)" :items="permanent_thanas"
-                              item-text="name_en"  item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-autocomplete>
+                              :item-text="getItemText"  item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type == 2" cols="6">
@@ -730,11 +730,11 @@
                           </label>
                           <span style="margin-left: 4px; color: red">*</span>
                           <ValidationProvider name="subLocationType" vid="subLocationType" v-slot="{ errors }">
-                            <v-autocomplete @input="onChangeSubLocationTypePermanent($event)"
+                            <v-select @input="onChangeSubLocationTypePermanent($event)"
                               v-model="data.permanent_sub_location_type" outlined :items="subLocationType"
-                            item-text="value_en"   item-value="id" :error="errors[0] ? true : false"
+                           :item-text="getItemValue"   item-value="id" :error="errors[0] ? true : false"
                               :error-messages="errors[0]" :hide-details="errors[0] ? false : true"
-                              class="no-arrow-icon"></v-autocomplete>
+                              class="no-arrow-icon"></v-select>
                           </ValidationProvider>
                         </v-col>
 
@@ -745,10 +745,10 @@
                             }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.permanent_union_id"
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.permanent_union_id"
                               @input="permanent_onChangeUnion($event)" outlined :items="permanent_unions"
-                             item-text="name_en"  item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-autocomplete>
+                             :item-text="getItemText"  item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type === 2 && data.permanent_sub_location_type === 1" lg="6"
@@ -759,10 +759,10 @@
                             }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.permanent_pouro_id"
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.permanent_pouro_id"
                               @input="Permanent_onChangePouro($event)" outlined :items="permanent_pouros"
                               item-text="name_en"  item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-autocomplete>
+                              :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type == 3" lg="6" md="6" cols="12">
@@ -770,10 +770,10 @@
                             <label style="display: inline-block">City
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.permanent_city_id"
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.permanent_city_id"
                               @change="permanent_onChangeCity($event)" outlined :items="permanent_cities"
-                              item-text="name_en"  item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-autocomplete>
+                              :item-text="getItemText"  item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type == 3" lg="6" md="6" cols="12">
@@ -783,10 +783,10 @@
                             }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true"
+                            <v-select :hide-details="errors[0] ? false : true"
                               @input="Permanent_OnChangeCityThana($event)" v-model="data.permanent_city_thana_id" outlined
-                              :items="permanent_city_thanas"   item-text="name_en" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                              :items="permanent_city_thanas"   :item-text="getItemText" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type == 1" lg="6" md="6" cols="12">
@@ -796,10 +796,10 @@
                               $t('container.system_config.demo_graphic.ward.dist_pouro') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true"
+                            <v-select :hide-details="errors[0] ? false : true"
                               @input="Permanent_onChangeDistrictPouro" v-model="data.permanent_district_pouro_id" outlined
-                              :items="permanent_district_poros" item-text="name_en"  item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                              :items="permanent_district_poros" :item-text="getItemText"  item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type == 3" lg="6" md="6" cols="12">
@@ -808,9 +808,9 @@
                             <label style="display: inline-block">Ward
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.permanent_ward_id_city"
-                              outlined :items="permanent_wards_city" item-text="name_en" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.permanent_ward_id_city"
+                              outlined :items="permanent_wards_city" :item-text="getItemText" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type == 1" lg="6" md="6" cols="12">
@@ -820,9 +820,9 @@
                             }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.permanent_ward_id_dist"
-                              outlined :items="permanent_wards_dist" item-text="name_en"  item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.permanent_ward_id_dist"
+                              outlined :items="permanent_wards_dist" :item-text="getItemText"  item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type === 2 && data.permanent_sub_location_type === 2" lg="6"
@@ -833,10 +833,10 @@
                             }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true"
+                            <v-select :hide-details="errors[0] ? false : true"
                               v-model="data.permanent_ward_id_union" outlined :items="permanent_wards_upazila_union"
-                             item-text="name_en"  item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-autocomplete>
+                             :item-text="getItemText" item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type === 2 && data.permanent_sub_location_type === 1" lg="6"
@@ -847,10 +847,10 @@
                             }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true"
+                            <v-select :hide-details="errors[0] ? false : true"
                               v-model="data.permanent_ward_id_pouro" outlined :items="permanent_wards_upazila_pouro"
-                             item-text="name_en"  item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-autocomplete>
+                            :item-text="getItemText" item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6" lg="6">
@@ -1382,7 +1382,7 @@
                                 v-slot="{ errors }" rules="required">
                                 <label>{{ $t('container.application_selection.application.relationship') }}</label>
                                 <span style="margin-left: 4px; color: red">*</span>
-                                <v-select v-model="data.nominee_relation_with_beneficiary" outlined
+                                <v-select v-model="data.nominee_relation_with_beneficiary" outlined  item-value="name_en"
                                   :items="relations_with_bef" :item-text="getItemText" :error="errors[0] ? true : false"
                                   :error-messages="errors[0]">
                                 </v-select>
@@ -1916,8 +1916,11 @@ export default {
       selectedDayNominee: null,
       selectedMonthNominee: null,
       selectedYearNominee: null,
-      // days: Array.from({ length: 31 }, (_, i) => i + 1),
+      twoDigitDays: Array.from({ length: 32 }, (_, i) => String(i).padStart(2, '0')).slice(1),
+        
+      
       months: [
+      
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
       ],
@@ -1948,10 +1951,13 @@ export default {
         return this.$store.getters.getAppLanguage;
       },
     },
+    // localizedDays() {
+    //   return this.twoDigitDays.map(day => this.localizeNumber(day));
+    // },
+    //  localizedYears() {
+    //   return this.years.map(year => this.localizeNumber(year.toString()));
+    // },
  
-    twoDigitDays() {
-      return Array.from({ length: 31 }, (_, i) => String(i + 1).padStart(2, '0'));
-    },
     formattedDate() {
       if (this.selectedDay && this.selectedMonth && this.selectedYear) {
         const monthIndex = this.months.indexOf(this.selectedMonth) + 1;
@@ -1965,15 +1971,30 @@ export default {
         const monthIndex = this.months.indexOf(this.selectedMonthNominee) + 1;
         const formattedMonth = monthIndex < 10 ? `0${monthIndex}` : `${monthIndex}`;
         return `${this.selectedYearNominee}-${formattedMonth}-${this.selectedDayNominee}`;
+        
       }
       return null;
     },
 
   },
 
-  methods: {
+  methods:
+   {
+
+    //  localizeNumber(number) {
+    //   if (this.language === 'bn') {
+    //     const bnNumbers = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+    //     return number.toString().replace(/\d/g, digit => bnNumbers[digit]);
+    //   } else {
+    //     return number;
+    //   }
+    // },
+   getItemTextYear(item) {
+      return this.language === 'bn' ? this.$helpers.englishToBangla(item.years) : item.years;
+
+    },
   
-      getItemText(item) {
+    getItemText(item) {
       return this.language === 'bn' ? item.name_bn : item.name_en;
     },
     getItemValue(item) {
@@ -2675,7 +2696,7 @@ export default {
           });
         this.data.union_id = null;
       }
-      if (event == 2) {
+      if ($event == 2) {
         this.onChangeUpazila(this.data.thana_id);
         this.data.pouro_id = null;
       }
@@ -2711,7 +2732,7 @@ export default {
         })
         .then((result) => {
           this.unions = result.data.data;
-          this.onChangeSubLocationType(this.data.sub_location_type)
+          // this.onChangeSubLocationType(this.data.sub_location_type)
 
         });
     },

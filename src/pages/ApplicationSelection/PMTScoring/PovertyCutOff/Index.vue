@@ -27,13 +27,13 @@
                                           </v-text-field> -->
                                          
 
-                                                      <v-autocomplete class="mr-5 no-arrow-icon" v-model="data.financial_year_id"  @input="GetPovertyCutOff()"
+                                                      <v-select class="mr-5 no-arrow-icon" v-model="data.financial_year_id"  @input="GetPovertyCutOff()"
                                                           :items="financial_years" :label="$t('container.system_config.demo_graphic.financial_year.financial_year')" outlined clearable
                                                           dense :item-text="getItemText_financial" item-value="id"
                                                           :append-icon-cb="appendIconCallback"
                                                           append-icon="mdi-plus" 
                                                           :error="errors[0] ? true : false"
-                                                          :error-messages="errors[0]"></v-autocomplete>
+                                                          :error-messages="errors[0]"></v-select>
                                                 
 
                                                       <v-select @input="GetPovertyCutOff()" class="mr-5 no-arrow-icon" v-model="data.type"
