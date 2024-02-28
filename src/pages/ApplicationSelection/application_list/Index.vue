@@ -279,15 +279,15 @@
 
                   </v-row>
                   <div class="d-flex justify-end">
-
+<!-- :disabled="isForwardButtonDisabled" -->
                     <v-btn elevation="2" class="btn mr-2" color="success" @click="SubmitApproved()"
-                      :disabled="isButtonDisabled" v-if="this.permissions?.permission?.approve">{{
+                      v-if="this.permissions?.permission?.approve">{{
                         $t("container.list.approve") }}</v-btn>
                     <v-btn elevation="2" class="btn mr-2 white--text" color="blue" @click="SubmitForward()"
-                      :disabled="isForwardButtonDisabled" v-if="this.permissions?.permission?.forward">{{
+                       v-if="this.permissions?.permission?.forward">{{
                         $t("container.list.forward") }}</v-btn>
                     <v-btn elevation="2" class="btn mr-2" color="warning" @click="SubmitWaiting()"
-                      :disabled="isButtonDisabled" v-if="this.permissions?.permission?.waiting">{{
+                       v-if="this.permissions?.permission?.waiting">{{
                         $t("container.list.waiting") }}</v-btn>
                     <v-btn elevation="2" class="btn mr-2 error" @click="SubmitReject()" :disabled="isButtonDisabled"
                       v-if="this.permissions?.permission?.reject">{{
