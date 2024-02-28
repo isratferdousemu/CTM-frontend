@@ -1,6 +1,7 @@
 <template>
   <v-container fluid>
     <!-- header card start -->
+    <Spinner :loading="isLoading" />
     <v-table>
       <thead>
         <tr>
@@ -181,79 +182,55 @@
             <V-row>
               <v-col>
                 <v-row>
-                  <v-col cols="12" lg="5" md="5">
+                  <v-col cols="12">
                     <label style="color: #1976d2">
                       <span>
                         {{ $t("Program & Location Wise Beneficiary") }}
                       </span>
                     </label></v-col
                   >
-                  <!-- <v-col cols="3" lg="3" md="3">
-                    <v-autocomplete
-                      class="mr-5"
-                      :items="months"
-                      :label="$t('Month')"
-                      dense
-                      item-text="month_name"
-                      item-value="month_name"
-                      v-model="program_location_Wise_beneficiary.month"
-                      @input="onChangeProgramAndLocationWiseBeneficiary($event)"
-                    ></v-autocomplete>
-                  </v-col>
-                  <v-col cols="3" lg="3" md="3">
-                    <v-autocomplete
-                      class="mr-5"
-                      :items="years"
-                      :label="$t('Year')"
-                      dense
-                      item-text="year_name"
-                      item-value="year_name"
-                      v-model="program_location_Wise_beneficiary.year"
-                      @input="onChangeProgramAndLocationWiseBeneficiary($event)"
-                    ></v-autocomplete>
-                  </v-col> -->
-
-                  <v-col cols="12" md="7" lg="7">
-                    <v-menu
-                      v-model="menu2"
-                      :close-on-content-click="false"
-                      :nudge-right="40"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="auto"
-                    >
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                          clearable
-                          v-model="dates"
-                          :label="$t('Enter Start & End Date')"
-                          prepend-inner-icon="mdi-calendar"
-                          readonly
-                          v-bind="attrs"
-                          v-on="on"
-                        ></v-text-field>
-                      </template>
-                      <v-date-picker
-                        v-model="dates"
-                        @input="menu2 = false"
-                        range
-                      ></v-date-picker>
-                    </v-menu>
-                  </v-col>
-
-                  <!-- <v-col cols="12" sm="3" lg="3">
-                    <v-date-picker v-model="dates" range></v-date-picker>
-                  </v-col>
-                  <v-col cols="12" sm="3" lg="3">
-                    <v-text-field
-                      v-model="dateRangeText"
-                      label="Date range"
-                      prepend-icon="mdi-calendar"
-                      readonly
-                    ></v-text-field>
-                  </v-col> -->
                 </v-row>
-
+                <v-row class="ml-1 mr-1">
+                  <v-menu
+                    ref="menu"
+                    v-model="menu"
+                    :close-on-content-click="false"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        v-model="dateRangeText"
+                        :value="formattedDates"
+                        :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
+                        :label="$t('Enter Start & End Date')"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker
+                      v-model="dates"
+                      :range="[dates[0], dates[1]]"
+                      no-title
+                      scrollable
+                      @input="onChangeProgramAndLocationWiseBeneficiary($event)"
+                    >
+                      <v-spacer></v-spacer>
+                      <v-btn text color="primary" @click="menu = false">
+                        Cancel
+                      </v-btn>
+                      <v-btn
+                        text
+                        color="primary"
+                        @click="$refs.menu.save(dates)"
+                      >
+                        OK
+                      </v-btn>
+                    </v-date-picker>
+                  </v-menu>
+                </v-row>
                 <v-row>
                   <canvas id="program_location_wise_chart"></canvas>
                 </v-row>
@@ -269,7 +246,7 @@
                       item-text="name_en"
                       item-value="id"
                       v-model="program_location_Wise_beneficiary.program_id"
-                      @input="onChangeProgramAndLocationWiseBeneficiary($event)"
+                      @input="GetLocationWiseBeneficiaries($event)"
                     ></v-autocomplete>
                   </v-col>
                 </v-row>
@@ -284,33 +261,54 @@
             <V-row>
               <v-col>
                 <v-row>
-                  <v-col cols="12" lg="6" md="6">
+                  <v-col cols="12">
                     <label style="color: #1976d2">
                       <span>
                         {{ $t("Gender Wise Beneficiary") }}
                       </span>
                     </label></v-col
                   >
-                  <v-col cols="3" lg="3">
-                    <v-autocomplete
-                      class="mr-5"
-                      :items="months"
-                      :label="$t('Month')"
-                      dense
-                      item-text="month_name"
-                      item-value="month_name"
-                    ></v-autocomplete>
-                  </v-col>
-                  <v-col cols="3" lg="3">
-                    <v-autocomplete
-                      class="mr-5"
-                      :items="years"
-                      :label="$t('Year')"
-                      dense
-                      item-text="year_name"
-                      item-value="year_name"
-                    ></v-autocomplete>
-                  </v-col>
+                </v-row>
+                <v-row class="ml-1 mr-1">
+                  <v-menu
+                    ref="menu2"
+                    v-model="menu2"
+                    :close-on-content-click="false"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field
+                        v-model="dateRangeTextOnGender"
+                        :value="formattedDates"
+                        :append-icon="menu2 ? 'mdi-calendar' : 'mdi-calendar'"
+                        :label="$t('Enter Start & End Date')"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker
+                      v-model="gender_wise_dates"
+                      :range="[gender_wise_dates[0], gender_wise_dates[1]]"
+                      no-title
+                      scrollable
+                      @input="onChangeGenderWiseBeneficiary($event)"
+                    >
+                      <v-spacer></v-spacer>
+                      <v-btn text color="primary" @click="menu2 = false">
+                        Cancel
+                      </v-btn>
+                      <v-btn
+                        text
+                        color="primary"
+                        @click="$refs.menu2.save(gender_wise_dates)"
+                      >
+                        OK
+                      </v-btn>
+                    </v-date-picker>
+                  </v-menu>
                 </v-row>
                 <v-row>
                   <canvas id="gender_wise_beneficiary"></canvas>
@@ -325,6 +323,8 @@
                       dense
                       item-text="name_en"
                       item-value="id"
+                      v-model="gender_Wise_beneficiary.gender_id"
+                      @input="GetGenderWiseBeneficiaries($event)"
                     ></v-autocomplete>
                   </v-col>
                 </v-row>
@@ -666,6 +666,7 @@ import Chart from "chart.js/auto";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 Chart.register(ChartDataLabels);
 extend("required", required);
+import Spinner from "@/components/Common/Spinner.vue";
 export default {
   name: "Dashboard",
   title: "CTM - Beneficiary Dashboard",
@@ -688,12 +689,13 @@ export default {
         { year: 2016, count: 28 },
       ],
       program_location_wise_ben: [
-        { division: "Dhaka", value: 300, percentage: 50 },
-        { division: "Rajshahi", value: 50, percentage: 10 },
-        { division: "Khulna", value: 100, percentage: 20 },
-        { division: "Sylhet", value: 150, percentage: 30 },
-        { division: "Chattrogram", value: 200, percentage: 40 },
+        // { division: "Dhaka", value: 300, percentage: 50 },
+        // { division: "Rajshahi", value: 50, percentage: 10 },
+        // { division: "Khulna", value: 100, percentage: 20 },
+        // { division: "Sylhet", value: 150, percentage: 30 },
+        // { division: "Chattrogram", value: 200, percentage: 40 },
       ],
+      gender_wise_ben: [],
       months: [
         "January",
         "February",
@@ -718,37 +720,47 @@ export default {
       beneficiaries: [],
       genders: ["Male", "Female", "3rd Gender"],
       program_name: "",
-      my_chart: null,
-
-      // dates: ["2019-09-10", "2019-09-20"],
-      dates: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-        .toISOString()
-        .substr(0, 10),
-      menu: false,
-      modal: false,
-      menu2: false,
-
+      //for program & location wise chart
+      program_location_chart: null,
       program_location_Wise_beneficiary: {
         program_id: null,
-        month: null,
-        year: null,
       },
+      dates: [],
+      //for gender wise chart
+      gender_wise_chart: null,
+      gender_Wise_beneficiary: {
+        gender_id: null,
+      },
+      gender_wise_dates: [],
+
+      // dates: ["2019-09-10", "2019-09-20"],
+      // dates: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+      //   .toISOString()
+      //   .substr(0, 10),
+      // menu: false,
+      // modal: false,
+      // menu2: false,
+
+      isLoading: false,
     };
   },
   components: {
     ValidationProvider,
     ValidationObserver,
+    Spinner,
   },
   computed: {
     dateRangeText() {
       return this.dates.join(" ~ ");
     },
+    dateRangeTextOnGender() {
+      return this.gender_wise_dates.join(" ~ ");
+    },
   },
-
   methods: {
     async GetAllProgram() {
       try {
-        this.$axios
+        await this.$axios
           .get("/admin/allowance/get", {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
@@ -773,7 +785,7 @@ export default {
     },
     async GetTotalBeneficiaries() {
       try {
-        this.$axios
+        await this.$axios
           .get("/admin/beneficiary-dashboard/getTotalBeneficiaries", {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
@@ -796,12 +808,14 @@ export default {
         console.log(e);
       }
     },
-
     async GetLocationWiseBeneficiaries() {
+      this.isLoading = true;
       const queryParams = {
         program_id: this.program_location_Wise_beneficiary.program_id,
+        to_date: this.dates[0],
+        from_date: this.dates[1],
       };
-      this.$axios
+      await this.$axios
         .get("/admin/beneficiary-dashboard/getLocationWiseBeneficiaries", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
@@ -813,33 +827,57 @@ export default {
           this.program_location_wise_ben = result.data.data;
           console.log("results_total__", this.total);
 
-          this.my_chart.data.labels = this.program_location_wise_ben.map(
-            (row) => row.division
-          );
-          this.my_chart.data.percentage = this.program_location_wise_ben.map(
-            (row) => row.percentage
-          );
-          this.my_chart.data.datasets[0].data =
+          this.program_location_chart.data.labels =
+            this.program_location_wise_ben.map((row) => row.division);
+          this.program_location_chart.data.percentage =
+            this.program_location_wise_ben.map((row) => row.percentage);
+          this.program_location_chart.data.datasets[0].data =
             this.program_location_wise_ben.map((row) => row.value);
-          this.my_chart.update();
+          this.program_location_chart.update();
+
+          this.isLoading = false;
         });
     },
-
     onChangeProgramAndLocationWiseBeneficiary(event) {
-      console.log(
-        "program_id",
-        this.program_location_Wise_beneficiary.program_id
-      );
-
+      if (this.dates.length < 2) {
+        return;
+      }
       this.GetLocationWiseBeneficiaries();
+    },
+    async GetGenderWiseBeneficiaries() {
+      const queryParams = {
+        gender: this.gender_Wise_beneficiary.gender_id,
+        to_date: this.gender_wise_dates[0],
+        from_date: this.gender_wise_dates[1],
+      };
+      await this.$axios
+        .get("/admin/beneficiary-dashboard/getGenderWiseBeneficiaries", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          this.gender_wise_ben = result.data.data;
+          console.log("results_total__", this.gender_wise_ben);
 
-      // this.my_chart.data.labels = program_location_wise_ben.map(
-      //   (row) => row.division
-      // );
-      // this.my_chart.data.datasets[0].data = program_location_wise_ben.map(
-      //   (row) => row.value
-      // );
-      // this.my_chart.update();
+          this.gender_wise_chart.data.labels = this.gender_wise_ben.map(
+            (row) => row.gender
+          );
+          this.gender_wise_chart.data.percentage = this.gender_wise_ben.map(
+            (row) => row.percentage
+          );
+          this.gender_wise_chart.data.datasets[0].data =
+            this.gender_wise_ben.map((row) => row.value);
+          this.gender_wise_chart.update();
+        });
+    },
+    onChangeGenderWiseBeneficiary(event) {
+      if (this.gender_wise_dates.length < 2) {
+        return;
+      }
+      this.GetGenderWiseBeneficiaries();
     },
   },
   watch: {
@@ -851,11 +889,12 @@ export default {
   },
   mounted() {
     this.GetLocationWiseBeneficiaries();
+    this.GetGenderWiseBeneficiaries();
     this.GetTotalBeneficiaries();
     this.GetAllProgram();
     // program_location_wise_chart
     const ctxpie = document.getElementById("program_location_wise_chart");
-    this.my_chart = new Chart(ctxpie, {
+    this.program_location_chart = new Chart(ctxpie, {
       type: "pie",
       data: {
         labels: this.program_location_wise_ben.map((row) => row.division),
@@ -910,7 +949,57 @@ export default {
       //   },
       // },
     });
+    const ctxpie2 = document.getElementById("gender_wise_beneficiary");
+    this.gender_wise_chart = new Chart(ctxpie2, {
+      type: "pie",
+      data: {
+        labels: this.gender_wise_ben.map((row) => row.gender),
 
+        percentage: this.gender_wise_ben.map((row) => row.percentage),
+        datasets: [
+          {
+            label: "Values:: ",
+            data: this.gender_wise_ben.map((row) => row.value),
+            backgroundColor: ["Green", "Purple", "Blue"],
+            // hoverBackgroundColor: [
+            //   "rgba(255, 99, 132, 0.8)",
+            //   "rgba(54, 162, 235, 0.8)",
+            //   "rgba(255, 206, 86, 0.8)",
+            // ],
+          },
+        ],
+      },
+      options: {
+        plugins: {
+          legend: {
+            display: true,
+            position: "right",
+            align: "center",
+            labels: {
+              // color: "rgb(255, 99, 132)",
+            },
+          },
+          datalabels: {
+            color: "#ffff",
+            formatter: function (value, context) {
+              return (
+                value +
+                ", " +
+                context.chart.data.percentage[context.dataIndex] +
+                "%"
+              );
+            },
+            labels: {
+              title: {
+                font: {
+                  weight: "bold",
+                },
+              },
+            },
+          },
+        },
+      },
+    });
     const ctx = document.getElementById("year_wise_ben");
     new Chart(ctx, {
       type: "bar",
@@ -974,32 +1063,6 @@ export default {
             labels: {
               color: "rgb(255, 99, 132)",
             },
-          },
-        },
-      },
-    });
-    const ctxpie2 = document.getElementById("gender_wise_beneficiary");
-    new Chart(ctxpie2, {
-      type: "pie",
-      data: {
-        labels: ["Male", "Female", "Hijra"],
-        datasets: [
-          {
-            label: "My First Dataset",
-            data: [300, 50, 100],
-            backgroundColor: ["Blue", "Green", "Purple"],
-            // hoverBackgroundColor: [
-            //   "rgba(255, 99, 132, 0.8)",
-            //   "rgba(54, 162, 235, 0.8)",
-            //   "rgba(255, 206, 86, 0.8)",
-            // ],
-          },
-        ],
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
           },
         },
       },
