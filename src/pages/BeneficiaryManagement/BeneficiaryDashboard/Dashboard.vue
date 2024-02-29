@@ -1023,19 +1023,51 @@ export default {
     const ctx = document.getElementById("year_wise_ben");
     new Chart(ctx, {
       data: {
-        labels: ["2019", "2020", "2021", "2022", "2023", "2024"],
+        labels: [
+          "2019",
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025",
+          "2026",
+          "2027",
+        ],
         datasets: [
           {
             type: "bar",
-            label: "Yearly Beneficiaries",
-            data: [1200, 1900, 1000, 2200, 2800, 900],
+            label: "Total Beneficiaries",
+            data: [1200, 1900, 1000, 2200, 2800, 900, 2200, 2800, 900],
             borderWidth: 1,
+            datalabels: {
+              labels: {
+                title: {
+                  // color: "red",
+                  anchor: "end",
+                  align: "top",
+                  display: "true",
+                  font: {
+                    // weight: "bold",
+                  },
+                },
+              },
+            },
           },
           {
             type: "bar",
-            label: "Yearly Beneficiaries",
+            label: "Waiting Beneficiaries",
             data: [600, 1000, 500, 1100, 1400, 500],
             borderWidth: 1,
+            datalabels: {
+              labels: {
+                title: {
+                  // color: "blue",
+                  anchor: "end",
+                  align: "top",
+                },
+              },
+            },
           },
         ],
       },
