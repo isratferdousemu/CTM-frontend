@@ -76,8 +76,8 @@ export default {
             const queryParams = {
                 // application_id: this.successId,
              
-                language: this.$i18n.locale,
-                //   application_id: "cpRZoiuiNb",
+                  language: this.$i18n.locale,
+                //   application_id: "FYXrqO6d62",
                      application_id: this.successId,
                   program: this.$t('container.application_selection.application.program'),
                   application: this.$t('container.application_selection.application.applicant_id'),
@@ -121,9 +121,16 @@ export default {
                         "Content-Type": "multipart/form-data",
                     },
                     params: queryParams,
+                    responseType: 'arraybuffer',
                 })
                 .then((result) => {
-                    window.open(result.data.data.url, '_blank');
+                    console.log(result,"result");
+                    // return false;
+                    const blob = new Blob([result.data], { type: 'application/pdf' });
+                    const url = window.URL.createObjectURL(blob);
+                    window.open(url, '_blank');
+                    // this.isLoading = false;
+                    // window.open(result.data.data.url, '_blank');
                 })
                 .catch(error => {
                     console.error('Error generating PDF:', error);
