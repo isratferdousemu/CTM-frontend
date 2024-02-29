@@ -1,7 +1,6 @@
 <template>
   <v-container fluid>
     <!-- header card start -->
-    <Spinner :loading="isLoading" />
     <v-table>
       <thead>
         <tr>
@@ -16,11 +15,10 @@
                 <v-row>
                   <v-avatar color="primary" size="30" class="mt-7 ml-5">
                     <!-- <v-icon dark>mdi-account-circle</v-icon> -->
-                    <v-icon dark>mdi mdi-account-multiple</v-icon>
-                    <!-- <img
+                    <img
                       src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
                       alt="Avatar"
-                    /> -->
+                    />
                   </v-avatar>
 
                   <v-col>
@@ -29,9 +27,7 @@
                         >Total Number of Beneficiary
                       </span>
                       <br />
-                      <span class="headline font-weight-bold">
-                        {{ beneficiaries.totalBeneficiaries }}
-                      </span>
+                      <span class="headline font-weight-bold"> 1112123 </span>
                     </v-card-text>
                   </v-col>
                 </v-row>
@@ -49,11 +45,10 @@
                 <v-row>
                   <v-avatar color="primary" size="30" class="mt-7 ml-5">
                     <!-- <v-icon dark>mdi-account-circle</v-icon> -->
-                    <v-icon dark>mdi mdi-account</v-icon>
-                    <!-- <img
+                    <img
                       src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
                       alt="Avatar"
-                    /> -->
+                    />
                   </v-avatar>
 
                   <v-col>
@@ -62,9 +57,7 @@
                         >Number of Active Beneficiary</span
                       >
                       <br />
-                      <span class="headline font-weight-bold">
-                        {{ beneficiaries.totalActiveBeneficiaries }}
-                      </span>
+                      <span class="headline font-weight-bold"> 1112123 </span>
                     </v-card-text>
                   </v-col>
                 </v-row>
@@ -82,11 +75,10 @@
                 <v-row>
                   <v-avatar color="primary" size="30" class="mt-7 ml-5">
                     <!-- <v-icon dark>mdi-account-circle</v-icon> -->
-                    <v-icon dark>mdi mdi-account-multiple</v-icon>
-                    <!-- <img
+                    <img
                       src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
                       alt="Avatar"
-                    /> -->
+                    />
                   </v-avatar>
 
                   <v-col>
@@ -95,9 +87,7 @@
                         >Number of Inactive/Dead Beneficiary</span
                       >
                       <br />
-                      <span class="headline font-weight-bold">
-                        {{ beneficiaries.totalInactiveBeneficiaries }}
-                      </span>
+                      <span class="headline font-weight-bold"> 1112123 </span>
                     </v-card-text>
                   </v-col>
                 </v-row>
@@ -115,11 +105,10 @@
                 <v-row>
                   <v-avatar color="primary" size="30" class="mt-7 ml-5">
                     <!-- <v-icon dark>mdi-account-circle</v-icon> -->
-                    <v-icon dark>mdi mdi-account</v-icon>
-                    <!-- <img
+                    <img
                       src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
                       alt="Avatar"
-                    /> -->
+                    />
                   </v-avatar>
 
                   <v-col>
@@ -128,9 +117,7 @@
                         >Number of Beneficiary in Waiting List</span
                       >
                       <br />
-                      <span class="headline font-weight-bold">
-                        {{ beneficiaries.totalWaitingBeneficiaries }}
-                      </span>
+                      <span class="headline font-weight-bold"> 1112123 </span>
                     </v-card-text>
                   </v-col>
                 </v-row>
@@ -147,12 +134,11 @@
               <v-card-title>
                 <v-row>
                   <v-avatar color="primary" size="30" class="mt-7 ml-5">
-                    <v-icon dark>mdi mdi-account</v-icon>
-                    <!-- <span class="mdi mdi-account-circle"></span> -->
-                    <!-- <img
+                    <!-- <v-icon dark>mdi-account-circle</v-icon> -->
+                    <img
                       src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
                       alt="Avatar"
-                    /> -->
+                    />
                   </v-avatar>
 
                   <v-col>
@@ -161,9 +147,7 @@
                         >Number of Replaced Beneficiary</span
                       >
                       <br />
-                      <span class="headline font-weight-bold">
-                        {{ beneficiaries.totalReplacedBeneficiaries }}
-                      </span>
+                      <span class="headline font-weight-bold"> 1112123 </span>
                     </v-card-text>
                   </v-col>
                 </v-row>
@@ -182,57 +166,47 @@
             <V-row>
               <v-col>
                 <v-row>
-                  <v-col cols="12">
+                  <v-col cols="12" lg="6" md="6">
                     <label style="color: #1976d2">
                       <span>
                         {{ $t("Program & Location Wise Beneficiary") }}
                       </span>
                     </label></v-col
                   >
-                </v-row>
-                <v-row class="ml-1 mr-1">
-                  <v-menu
-                    ref="menu"
-                    v-model="menu"
-                    :close-on-content-click="false"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="auto"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                        v-model="dateRangeText"
-                        :value="formattedDates"
-                        :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
-                        :label="$t('Enter Start & End Date')"
-                        readonly
-                        v-bind="attrs"
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker
-                      v-model="dates"
-                      :range="[dates[0], dates[1]]"
-                      no-title
-                      scrollable
+                  <v-col cols="3" lg="3" md="3">
+                    <v-autocomplete
+                      class="mr-5"
+                      :items="months"
+                      :label="$t('Month')"
+                      dense
+                      item-text="month_name"
+                      item-value="month_name"
+                      v-model="program_location_Wise_beneficiary.month"
                       @input="onChangeProgramAndLocationWiseBeneficiary($event)"
-                    >
-                      <v-spacer></v-spacer>
-                      <v-btn text color="primary" @click="menu = false">
-                        Cancel
-                      </v-btn>
-                      <v-btn
-                        text
-                        color="primary"
-                        @click="$refs.menu.save(dates)"
-                      >
-                        OK
-                      </v-btn>
-                    </v-date-picker>
-                  </v-menu>
+                    ></v-autocomplete>
+                  </v-col>
+                  <v-col cols="3" lg="3" md="3">
+                    <v-autocomplete
+                      class="mr-5"
+                      :items="years"
+                      :label="$t('Year')"
+                      dense
+                      item-text="year_name"
+                      item-value="year_name"
+                      v-model="program_location_Wise_beneficiary.year"
+                      @input="onChangeProgramAndLocationWiseBeneficiary($event)"
+                    ></v-autocomplete>
+                  </v-col>
                 </v-row>
+
                 <v-row>
-                  <canvas id="program_location_wise_chart"></canvas>
+                  <!-- <canvas id="program_location_wise_chart"></canvas> -->
+                  <GChart
+                    type="PieChart"
+                    :data="chartData"
+                    :options="chartOptions"
+                    :resizeDebounce="1000"
+                  />
                 </v-row>
                 <v-row>
                   <v-col cols="12" lg="4" md="4"> </v-col>
@@ -246,7 +220,7 @@
                       item-text="name_en"
                       item-value="id"
                       v-model="program_location_Wise_beneficiary.program_id"
-                      @input="GetLocationWiseBeneficiaries($event)"
+                      @input="onChangeProgramAndLocationWiseBeneficiary($event)"
                     ></v-autocomplete>
                   </v-col>
                 </v-row>
@@ -261,54 +235,33 @@
             <V-row>
               <v-col>
                 <v-row>
-                  <v-col cols="12">
+                  <v-col cols="12" lg="6" md="6">
                     <label style="color: #1976d2">
                       <span>
                         {{ $t("Gender Wise Beneficiary") }}
                       </span>
                     </label></v-col
                   >
-                </v-row>
-                <v-row class="ml-1 mr-1">
-                  <v-menu
-                    ref="menu2"
-                    v-model="menu2"
-                    :close-on-content-click="false"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="auto"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                        v-model="dateRangeTextOnGender"
-                        :value="formattedDates"
-                        :append-icon="menu2 ? 'mdi-calendar' : 'mdi-calendar'"
-                        :label="$t('Enter Start & End Date')"
-                        readonly
-                        v-bind="attrs"
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker
-                      v-model="gender_wise_dates"
-                      :range="[gender_wise_dates[0], gender_wise_dates[1]]"
-                      no-title
-                      scrollable
-                      @input="onChangeGenderWiseBeneficiary($event)"
-                    >
-                      <v-spacer></v-spacer>
-                      <v-btn text color="primary" @click="menu2 = false">
-                        Cancel
-                      </v-btn>
-                      <v-btn
-                        text
-                        color="primary"
-                        @click="$refs.menu2.save(gender_wise_dates)"
-                      >
-                        OK
-                      </v-btn>
-                    </v-date-picker>
-                  </v-menu>
+                  <v-col cols="3" lg="3">
+                    <v-autocomplete
+                      class="mr-5"
+                      :items="months"
+                      :label="$t('Month')"
+                      dense
+                      item-text="month_name"
+                      item-value="month_name"
+                    ></v-autocomplete>
+                  </v-col>
+                  <v-col cols="3" lg="3">
+                    <v-autocomplete
+                      class="mr-5"
+                      :items="years"
+                      :label="$t('Year')"
+                      dense
+                      item-text="year_name"
+                      item-value="year_name"
+                    ></v-autocomplete>
+                  </v-col>
                 </v-row>
                 <v-row>
                   <canvas id="gender_wise_beneficiary"></canvas>
@@ -323,8 +276,6 @@
                       dense
                       item-text="name_en"
                       item-value="id"
-                      v-model="gender_Wise_beneficiary.gender_id"
-                      @input="GetGenderWiseBeneficiaries($event)"
                     ></v-autocomplete>
                   </v-col>
                 </v-row>
@@ -373,7 +324,12 @@
                 </v-row>
 
                 <v-row>
-                  <canvas height="300" id="year_wise_ben"></canvas>
+                  <!-- <canvas height="300" id="year_wise_ben"></canvas> -->
+                  <GChart
+                    type="ColumnChart"
+                    :data="chartData"
+                    :options="chartOptions"
+                  />
                 </v-row>
                 <v-row>
                   <v-col cols="12" lg="4" md="4"> </v-col>
@@ -663,15 +619,27 @@
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 import Chart from "chart.js/auto";
-import ChartDataLabels from "chartjs-plugin-datalabels";
-Chart.register(ChartDataLabels);
+import { GChart } from "vue-google-charts/legacy";
+
 extend("required", required);
-import Spinner from "@/components/Common/Spinner.vue";
 export default {
   name: "Dashboard",
   title: "CTM - Beneficiary Dashboard",
   data() {
     return {
+      chartData: [
+        ["Location", "Beneficiaries"],
+        ["Dhaka", 1000],
+        ["Rajshahi", 1170],
+        ["Chattrogram", 660],
+        ["Sylhet", 1030],
+      ],
+      chartOptions: {
+        chart: {
+          title: "Company Performance",
+          subtitle: "Sales, Expenses, and Profit: 2014-2017",
+        },
+      },
       data: [
         { year: 2010, count: 10 },
         { year: 2011, count: 20 },
@@ -688,14 +656,6 @@ export default {
         { year: 2015, count: 30 },
         { year: 2016, count: 28 },
       ],
-      program_location_wise_ben: [
-        // { division: "Dhaka", value: 300, percentage: 50 },
-        // { division: "Rajshahi", value: 50, percentage: 10 },
-        // { division: "Khulna", value: 100, percentage: 20 },
-        // { division: "Sylhet", value: 150, percentage: 30 },
-        // { division: "Chattrogram", value: 200, percentage: 40 },
-      ],
-      gender_wise_ben: [],
       months: [
         "January",
         "February",
@@ -717,50 +677,26 @@ export default {
       month_name: "",
       year_name: "",
       programs: [],
-      beneficiaries: [],
       genders: ["Male", "Female", "3rd Gender"],
       program_name: "",
-      //for program & location wise chart
-      program_location_chart: null,
+
       program_location_Wise_beneficiary: {
         program_id: null,
+        month: null,
+        year: null,
       },
-      dates: [],
-      //for gender wise chart
-      gender_wise_chart: null,
-      gender_Wise_beneficiary: {
-        gender_id: null,
-      },
-      gender_wise_dates: [],
-
-      // dates: ["2019-09-10", "2019-09-20"],
-      // dates: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-      //   .toISOString()
-      //   .substr(0, 10),
-      // menu: false,
-      // modal: false,
-      // menu2: false,
-
-      isLoading: false,
     };
   },
   components: {
     ValidationProvider,
     ValidationObserver,
-    Spinner,
   },
-  computed: {
-    dateRangeText() {
-      return this.dates.join(" ~ ");
-    },
-    dateRangeTextOnGender() {
-      return this.gender_wise_dates.join(" ~ ");
-    },
-  },
+  computed: {},
+
   methods: {
     async GetAllProgram() {
       try {
-        await this.$axios
+        this.$axios
           .get("/admin/allowance/get", {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
@@ -783,244 +719,93 @@ export default {
         console.log(e);
       }
     },
-    async GetTotalBeneficiaries() {
-      try {
-        await this.$axios
-          .get("/admin/beneficiary-dashboard/getTotalBeneficiaries", {
-            headers: {
-              Authorization: "Bearer " + this.$store.state.token,
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then((result) => {
-            console.log(result, "beneficiaries__");
-            this.beneficiaries = result.data.data;
-          })
-          .catch((err) => {
-            console.log(err, "error");
-            if (err.response?.data?.errors) {
-              this.$refs.form.setErrors(err.response.data.errors);
-            }
-            console.log(err.response);
-            this.$toast.error(err?.response?.data?.message);
-          });
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    async GetLocationWiseBeneficiaries() {
-      this.isLoading = true;
-      const queryParams = {
-        program_id: this.program_location_Wise_beneficiary.program_id,
-        to_date: this.dates[0],
-        from_date: this.dates[1],
-      };
-      await this.$axios
-        .get("/admin/beneficiary-dashboard/getLocationWiseBeneficiaries", {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-          params: queryParams,
-        })
-        .then((result) => {
-          this.program_location_wise_ben = result.data.data;
-          console.log("results_total__", this.total);
-
-          this.program_location_chart.data.labels =
-            this.program_location_wise_ben.map((row) => row.division);
-          this.program_location_chart.data.percentage =
-            this.program_location_wise_ben.map((row) => row.percentage);
-          this.program_location_chart.data.datasets[0].data =
-            this.program_location_wise_ben.map((row) => row.value);
-          this.program_location_chart.update();
-
-          this.isLoading = false;
-        });
-    },
     onChangeProgramAndLocationWiseBeneficiary(event) {
-      if (this.dates.length < 2) {
-        return;
-      }
-      this.GetLocationWiseBeneficiaries();
-    },
-    async GetGenderWiseBeneficiaries() {
-      const queryParams = {
-        gender: this.gender_Wise_beneficiary.gender_id,
-        to_date: this.gender_wise_dates[0],
-        from_date: this.gender_wise_dates[1],
-      };
-      await this.$axios
-        .get("/admin/beneficiary-dashboard/getGenderWiseBeneficiaries", {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-          params: queryParams,
-        })
-        .then((result) => {
-          this.gender_wise_ben = result.data.data;
-          console.log("results_total__", this.gender_wise_ben);
-
-          this.gender_wise_chart.data.labels = this.gender_wise_ben.map(
-            (row) => row.gender
-          );
-          this.gender_wise_chart.data.percentage = this.gender_wise_ben.map(
-            (row) => row.percentage
-          );
-          this.gender_wise_chart.data.datasets[0].data =
-            this.gender_wise_ben.map((row) => row.value);
-          this.gender_wise_chart.update();
-        });
-    },
-    onChangeGenderWiseBeneficiary(event) {
-      if (this.gender_wise_dates.length < 2) {
-        return;
-      }
-      this.GetGenderWiseBeneficiaries();
+      console.log(
+        "program_id",
+        this.program_location_Wise_beneficiary.program_id
+      );
+      console.log("month", this.program_location_Wise_beneficiary.month);
+      console.log("year", this.program_location_Wise_beneficiary.year);
     },
   },
   watch: {
     "$i18n.locale": "updateHeaderTitle",
+  },
+  components: {
+    GChart,
   },
   created() {},
   beforeMount() {
     this.updateHeaderTitle();
   },
   mounted() {
-    this.GetLocationWiseBeneficiaries();
-    this.GetGenderWiseBeneficiaries();
-    this.GetTotalBeneficiaries();
     this.GetAllProgram();
     // program_location_wise_chart
-    const ctxpie = document.getElementById("program_location_wise_chart");
-    this.program_location_chart = new Chart(ctxpie, {
-      type: "pie",
-      data: {
-        labels: this.program_location_wise_ben.map((row) => row.division),
+    // const ctxpie = document.getElementById("program_location_wise_chart");
+    // new Chart(ctxpie, {
+    //   type: "pie",
+    //   data: {
+    //     labels: ["Dhaka", "Rajshahi", "Khula", "Sylhet", "Chattrogram"],
+    //     datasets: [
+    //       {
+    //         label: "My First Dataset",
+    //         data: [300, 50, 100, 30, 200],
+    //         backgroundColor: ["Blue", "Red", "Green", "Purple", "Yellow"],
+    //         // backgroundColor: [
+    //         //   "rgb(255, 99, 132)",
+    //         //   "rgb(54, 162, 235)",
+    //         //   "rgb(255, 205, 86)",
+    //         // ],
+    //         hoverOffset: 4,
+    //       },
+    //     ],
+    //   },
+    //   options: {
+    //     plugins: {
+    //       legend: {
+    //         display: true,
+    //         position: "right",
+    //         align: "center",
+    //         // labels: {
+    //         //   color: "rgb(255, 99, 132)",
+    //         // },
+    //       },
+    //       title: {
+    //         display: true,
+    //         text: "Custom Chart Title",
+    //       },
+    //     },
+    //   },
+    //   // options: {
+    //   //   scales: {
+    //   //     y: {
+    //   //       beginAtZero: true,
+    //   //     },
+    //   //   },
+    //   // },
+    // });
 
-        percentage: this.program_location_wise_ben.map((row) => row.percentage),
-        datasets: [
-          {
-            label: "Values::",
-            data: this.program_location_wise_ben.map((row) => row.value),
-            backgroundColor: ["Blue", "Red", "Green", "Purple", "Yellow"],
-            // backgroundColor: [
-            //   "rgb(255, 99, 132)",
-            //   "rgb(54, 162, 235)",
-            //   "rgb(255, 205, 86)",
-            // ],
-            hoverOffset: 4,
-          },
-        ],
-      },
-      options: {
-        plugins: {
-          legend: {
-            display: true,
-            position: "right",
-            align: "center",
-            // labels: {
-            //   color: "rgb(255, 99, 132)",
-            // },
-          },
-          // title: {
-          //   display: true,
-          //   text: "Custom Chart Title",
-          // },
-          datalabels: {
-            color: "#ffff",
-            formatter: function (value, context) {
-              return (
-                value +
-                ", " +
-                context.chart.data.percentage[context.dataIndex] +
-                "%"
-              );
-            },
-          },
-        },
-      },
-      // options: {
-      //   scales: {
-      //     y: {
-      //       beginAtZero: true,
-      //     },
-      //   },
-      // },
-    });
-    const ctxpie2 = document.getElementById("gender_wise_beneficiary");
-    this.gender_wise_chart = new Chart(ctxpie2, {
-      type: "pie",
-      data: {
-        labels: this.gender_wise_ben.map((row) => row.gender),
-
-        percentage: this.gender_wise_ben.map((row) => row.percentage),
-        datasets: [
-          {
-            label: "Values:: ",
-            data: this.gender_wise_ben.map((row) => row.value),
-            backgroundColor: ["Green", "Purple", "Blue"],
-            // hoverBackgroundColor: [
-            //   "rgba(255, 99, 132, 0.8)",
-            //   "rgba(54, 162, 235, 0.8)",
-            //   "rgba(255, 206, 86, 0.8)",
-            // ],
-          },
-        ],
-      },
-      options: {
-        plugins: {
-          legend: {
-            display: true,
-            position: "right",
-            align: "center",
-            labels: {
-              // color: "rgb(255, 99, 132)",
-            },
-          },
-          datalabels: {
-            color: "#ffff",
-            formatter: function (value, context) {
-              return (
-                value +
-                ", " +
-                context.chart.data.percentage[context.dataIndex] +
-                "%"
-              );
-            },
-            labels: {
-              title: {
-                font: {
-                  weight: "bold",
-                },
-              },
-            },
-          },
-        },
-      },
-    });
-    const ctx = document.getElementById("year_wise_ben");
-    new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: ["2019", "2020", "2021", "2022", "2023", "2024"],
-        datasets: [
-          {
-            label: "Yearly Beneficiaries",
-            data: [1200, 1900, 1000, 2200, 2800, 900],
-            borderWidth: 1,
-          },
-        ],
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-          },
-        },
-      },
-    });
+    // const ctx = document.getElementById("year_wise_ben");
+    // new Chart(ctx, {
+    //   type: "bar",
+    //   data: {
+    //     labels: ["2019", "2020", "2021", "2022", "2023", "2024"],
+    //     datasets: [
+    //       {
+    //         label: "Yearly Beneficiaries",
+    //         data: [1200, 1900, 1000, 2200, 2800, 900],
+    //         borderWidth: 1,
+    //       },
+    //     ],
+    //   },
+    //   options: {
+    //     scales: {
+    //       y: {
+    //         beginAtZero: true,
+    //       },
+    //     },
+    //   },
+    // });
 
     new Chart(document.getElementById("program_wise_beneficiary"), {
       type: "bar",
@@ -1063,6 +848,32 @@ export default {
             labels: {
               color: "rgb(255, 99, 132)",
             },
+          },
+        },
+      },
+    });
+    const ctxpie2 = document.getElementById("gender_wise_beneficiary");
+    new Chart(ctxpie2, {
+      type: "pie",
+      data: {
+        labels: ["Male", "Female", "Hijra"],
+        datasets: [
+          {
+            label: "My First Dataset",
+            data: [300, 50, 100],
+            backgroundColor: ["Blue", "Green", "Purple"],
+            // hoverBackgroundColor: [
+            //   "rgba(255, 99, 132, 0.8)",
+            //   "rgba(54, 162, 235, 0.8)",
+            //   "rgba(255, 206, 86, 0.8)",
+            // ],
+          },
+        ],
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
           },
         },
       },
@@ -1147,3 +958,8 @@ export default {
   },
 };
 </script>
+<style>
+.highlight-column {
+  background-color: #e0eaf1;
+}
+</style>

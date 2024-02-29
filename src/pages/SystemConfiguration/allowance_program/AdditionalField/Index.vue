@@ -57,6 +57,7 @@
                     flat
                     color="primary"
                     prepend-icon="mdi-account-multiple-plus"
+                    v-can="'allowanceField-create'"
                   >
                     {{ $t("container.list.add_new") }}
                   </v-btn>
@@ -94,7 +95,7 @@
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
-                                v-can="'allowance-edit'"
+                                v-can="'allowanceField-edit'"
                               fab
                               x-small
                               v-on="on"
@@ -113,7 +114,7 @@
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
-                              v-can="'allowance-delete'"
+                              v-can="'allowanceField-delete'"
                               fab
                               x-small
                               v-on="on"

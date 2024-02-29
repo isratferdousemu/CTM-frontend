@@ -41,16 +41,16 @@
             <v-col cols="6" class="mx-auto mt-10">
                 <v-card>
                     <v-card-text class="mt-10 text-center">
-                        <p style="font-size: 20px" class="mt-5">
+                        <p style="font-size: 15px" class="mt-5">
                              {{ $t('container.application_selection.application.successfull') }} {{ successId }}
                             
                           </p>
-                        <p style="font-size: 20px" class="mt-5"> {{ $t('container.application_selection.application.tracking') }} </p>
+                        <p style="font-size: 15px" class="mt-5"> {{ $t('container.application_selection.application.tracking') }} </p>
 
                        
-                        <!-- <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="generatePDF">
+                        <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="generatePDF">
                             {{ $t("container.list.PDF") }}
-                        </v-btn> -->
+                        </v-btn>
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -75,11 +75,44 @@ export default {
         generatePDF() {
             const queryParams = {
                 // application_id: this.successId,
-                //   application_id: this.successId,
-                language: this.$i18n.locale,
-                  application_id: "Ez0Y44jmdD",
+             
+                  language: this.$i18n.locale,
+                //   application_id: "FYXrqO6d62",
+                     application_id: this.successId,
                   program: this.$t('container.application_selection.application.program'),
-                  title: this.$t('container.application_selection.application.title')
+                  application: this.$t('container.application_selection.application.applicant_id'),
+                  title: this.$t('container.application_selection.application.title'),
+                  mobile:this.$t("container.application_selection.application.mobile"),
+                  personal_info: this.$t('container.application_selection.application.personal_info'),
+                  name_en: this.$t('container.application_selection.application.name_en'),
+                  name_bn: this.$t('container.application_selection.application.name_bn'),
+                  nid: this.$t('container.application_selection.application.nid_brn'),
+                  date_of_birth: this.$t('container.application_selection.application.date_of_birth'),
+                  father_name_en: this.$t('container.application_selection.application.father_name_en'),
+                  father_name_bn: this.$t('container.application_selection.application.father_name_bn'),
+                  mother_name_en: this.$t('container.application_selection.application.mother_name_en'),
+                  mother_name_bn: this.$t('container.application_selection.application.mother_name_bn'),
+                  spouse_name_en: this.$t('container.application_selection.application.spouse_name_en'),
+                  spouse_name_bn: this.$t('container.application_selection.application.spouse_name_bn'),
+                  religion: this.$t('container.system_config.allowance_program.religion'),
+                  gender: this.$t('container.system_config.allowance_program.gender'),
+                  marital_status: this.$t('container.system_config.allowance_program.marital_status'),
+                  present_address: this.$t('container.application_selection.application.present_address'),
+                  permanent_address: this.$t('container.application_selection.application.permanent_address'),
+                  division: this.$t('container.system_config.demo_graphic.division.division'),
+                  district: this.$t('container.system_config.demo_graphic.district.district'),
+                  union_pouro_city: this.$t('container.system_config.demo_graphic.ward.union_pouro_city'),
+                  ward: this. $t('container.system_config.demo_graphic.ward.ward'),
+                  location: this.$t('container.system_config.demo_graphic.ward.upazila_city_district'), 
+                  nominee_info: this.$t('container.application_selection.application.nominee_info'),
+                  nominee_en: this.$t('container.beneficiary_management.beneficiary_list.nominee'),
+                  nominee_address: this.$t('container.application_selection.application.nominee_address'),
+                  nationality: this.$t('container.application_selection.application.nationality'),
+                  relationship: this.$t('container.application_selection.application.relationship'),
+                 
+                  
+                  
+
             };
             this.$axios
                 .get("/global/applicants_copy", {
@@ -88,9 +121,16 @@ export default {
                         "Content-Type": "multipart/form-data",
                     },
                     params: queryParams,
+                    responseType: 'arraybuffer',
                 })
                 .then((result) => {
-                    window.open(result.data.data.url, '_blank');
+                    console.log(result,"result");
+                    // return false;
+                    const blob = new Blob([result.data], { type: 'application/pdf' });
+                    const url = window.URL.createObjectURL(blob);
+                    window.open(url, '_blank');
+                    // this.isLoading = false;
+                    // window.open(result.data.data.url, '_blank');
                 })
                 .catch(error => {
                     console.error('Error generating PDF:', error);

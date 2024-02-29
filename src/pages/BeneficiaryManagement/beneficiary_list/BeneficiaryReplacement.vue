@@ -66,19 +66,32 @@
                       </v-textarea>
                     </v-col>
 
-                <v-col lg="6" md="6" cols="12">
-                  <v-select
-                    outlined
-                    menu-props="top"
-                    clearable
-                    :label="
-                      $t(
-                        'container.beneficiary_management.beneficiary_list.replacement_cause'
-                      )
-                    "
-                  >
-                  </v-select>
-                </v-col>
+                    <v-col lg="6" md="6" cols="12">
+                      <ValidationProvider
+                        name="Reason"
+                        vid="data.exit_reason_id"
+                        rules="required"
+                        v-slot="{ errors }"
+                      >
+                        <v-autocomplete
+                          :hide-details="errors[0] ? false : true"
+                          v-model="data.cause_type"
+                          outlined
+                          :label="
+                            $t(
+                              'container.beneficiary_management.beneficiary_list.replacement_cause'
+                            )
+                          "
+                          :items="cause_types"
+                          item-text="value_en"
+                          item-value="id"
+                          required
+                          clearable
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
+                        ></v-autocomplete>
+                      </ValidationProvider>
+                    </v-col>
 
                     <v-col lg="6" md="6" cols="12">
                       <v-menu
@@ -308,7 +321,7 @@ export default {
       items: [5, 10, 15, 20, 40, 50, 100],
       panel: [0],
       beneficiary: {},
-      ben_id_with_name:"",
+      ben_id_with_name: "",
       replaceList: [],
       selected: [],
       cause_types: [],
@@ -335,7 +348,10 @@ export default {
           })
           .then((result) => {
             this.beneficiary = result.data.data;
-            this.ben_id_with_name  = this.beneficiary.application_id.concat("_", this.beneficiary.name_en);            
+            this.ben_id_with_name = this.beneficiary.application_id.concat(
+              "_",
+              this.beneficiary.name_en
+            );
           })
           .catch((err) => {
             if (err.response?.data?.errors) {

@@ -316,6 +316,7 @@ export default {
                       router
                       to="/system-configuration/allowance-program/create"
                       class=" mr-5"
+                      v-can="'allowance-create'"
                   >
                     <v-icon small left>mdi-plus</v-icon>
                     <span>{{$t('container.list.add_new')}}</span>
@@ -393,6 +394,7 @@ export default {
                               v-on="on"
                               router
                               :to="`/system-configuration/allowance-program/edit/${item.id}`"
+                              v-can="'allowance-edit'"
                           >
                           <v-icon>mdi-account-edit-outline</v-icon>
                           </v-btn>
@@ -410,6 +412,7 @@ export default {
                                 v-on="on"
                                 router
                                 :to="`/system-configuration/allowance-program/setting/${item.id}`"
+                                v-can="'allowance-edit'"
                             >
                               <v-icon>mdi-cogs</v-icon>
                               <!-- <v-icon>mdi-account-edit-outline</v-icon> -->
@@ -429,6 +432,7 @@ export default {
                               class="ml-3 white--text"
                               v-on="on"
                               @click="deleteAlert(item.id)"
+                              v-can="'allowance-delete'"
                           >
                             <v-icon>mdi-delete</v-icon>
                           </v-btn>

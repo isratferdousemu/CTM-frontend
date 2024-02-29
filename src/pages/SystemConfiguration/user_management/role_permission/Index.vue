@@ -301,10 +301,10 @@ export default {
           if (this.success_status === 200)
           {
             this.$toast.success(this.message);
-            this.add_role_permission = {};
-            this.selectedModule = null;
-            this.subModules = null;
-            this.select();
+            // this.add_role_permission = {};
+            // this.selectedModule = null;
+            // this.subModules = null;
+            // this.select();
             this.$refs.form.setErrors();
           }
 
@@ -492,6 +492,7 @@ export default {
                         type="submit"
                         class="custom-btn mr-2"
                         :disabled="invalid"
+                        v-can="'rolePermission-edit'"
                     >Submit
                     </v-btn>
                   </v-row>

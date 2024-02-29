@@ -242,8 +242,7 @@
                         md="6"
                         cols="12"
                         v-if="
-                          data.committee_type == 12 ||
-                          data.committee_type == 14
+                          data.committee_type == 12 || data.committee_type == 14
                         "
                       >
                         <ValidationProvider
@@ -276,8 +275,7 @@
                         md="6"
                         cols="12"
                         v-if="
-                          data.committee_type == 13 ||
-                          data.committee_type == 15
+                          data.committee_type == 13 || data.committee_type == 15
                         "
                       >
                         <ValidationProvider
@@ -648,7 +646,7 @@ extend("required", required);
 
 export default {
   name: "Index",
-  title: "CTM - Office",
+  title: "CTM - Committe create",
   data() {
     return {
       data: {
@@ -1121,10 +1119,7 @@ export default {
         });
     },
     async onChangeDistrict(event) {
-      if (
-        this.data.committee_type == 12 ||
-        this.data.committee_type == 14
-      ) {
+      if (this.data.committee_type == 12 || this.data.committee_type == 14) {
         console.log("load Upazila");
         this.upazilas = [];
         this.GetAllUpazila(this.data.district_id);

@@ -40,6 +40,7 @@
         </v-col>
       </v-row>
     </v-app-bar>
+   
 
     <v-row class="mx-5 my-5 mt-10">
       <v-col class="mt-10" cols="10" offset="1">
@@ -62,7 +63,7 @@
               <ValidationProvider name="program" vid="program" rules="required" v-slot="{ errors }">
                 <label>{{ $t('container.application_selection.application.program') }} </label>
                 <span style="margin-left: 4px; color: red">*</span>
-                <v-select @change="getProgramName()" outlined :items="programs" item-text="name_en" item-value="id"
+                <v-select @change="getProgramName()" outlined :items="programs" :item-text="getItemText" item-value="id"
                   v-model="data.program_id" :error="errors[0] ? true : false" :error-messages="errors[0]">
                 </v-select>
               </ValidationProvider>
@@ -131,7 +132,7 @@
                           <label>{{ $t('container.application_selection.application.day') }} </label>
                           <span style="margin-left: 4px; color: red">*</span>
 
-                          <v-select v-model="selectedDay" :items="twoDigitDays" clearable outlined
+                          <v-select v-model="selectedDay" :items="twoDigitDays"  clearable outlined
                             @change="updateDate"></v-select>
 
                         </v-col>
@@ -208,7 +209,7 @@
                       <div></div>
                       <div class="d-inline d-flex justify-end">
                         <v-btn @click="verifyCard()" elevation="2"
-                          :disabled="data.date_of_birth == null || data.verification_number == null || data.verification_type == null || data.date_of_birth == '' || data.verification_number == '' || data.verification_type == ''"
+                          :disabled="data.date_of_birth == null || data.verification_number == null || data.verification_type == null || data.verification_type == 2 || data.date_of_birth == '' || data.verification_number == '' || data.verification_type == ''"
                           class="btn" color="primary">{{ $t('container.list.verify') }}</v-btn>
                       </div>
                     </v-expansion-panel-content>
@@ -237,14 +238,16 @@
                                     height: 150px;
                                     border: 1px solid #ccc;
                                   " class="mb-5"></v-img>
-                            <ValidationProvider v-slot="{ errors }" name="Image" rules="required" vid="image">
+                          
                               <label>{{ $t('container.application_selection.application.image') }} ({{
                                 $t('container.application_selection.application.image_alert') }})</label>
                               <span style="margin-left: 4px; color: red">*</span>
-                              <v-file-input outlined show-size counter prepend-inner-icon="mdi-camera"
-                                v-model="data.image" accept="image/*" @change="previewImage"
-                                prepend-icon=""></v-file-input>
-                            </ValidationProvider>
+                               <ValidationProvider v-slot="{ errors }" name="Image" rules="required" vid="image" ref="image">
+    <v-file-input outlined show-size counter prepend-inner-icon="mdi-camera"
+      v-model="data.image" accept="image/*" @change="previewImage"
+      prepend-icon="">
+    </v-file-input>
+  </ValidationProvider>
                           </v-col>
                           <v-col cols="6" align-self="end" lg="6">
                             <v-img :src="signUrl" style="
@@ -266,22 +269,21 @@
                                 prepend-icon=""></v-file-input>
                             </ValidationProvider>
                           </v-col>
-
-                          <v-col cols="6" lg="6">
-                            <ValidationProvider name="Name in English" vid="name_en" rules="required" v-slot="{ errors }">
-                              <label>{{ $t('container.application_selection.application.name_en') }}</label>
-                              <span style="margin-left: 4px; color: red">*</span>
-                              <v-text-field v-model="data.name_en" outlined clearable :error="errors[0] ? true : false"
-                                :error-messages="errors[0]">
-                              </v-text-field>
-                            </ValidationProvider>
-                          </v-col>
                           <v-col cols="6" lg="6">
                             <ValidationProvider name="Name in Bangla" vid="name_bn" rules="required" v-slot="{ errors }">
                               <label>{{ $t('container.application_selection.application.name_bn') }} </label>
                               <span style="margin-left: 4px; color: red">*</span>
                               <v-text-field v-model="data.name_bn" outlined :error="errors[0] ? true : false"
                                 :error-messages="errors[0]">
+                              </v-text-field>
+                            </ValidationProvider>
+                          </v-col>
+                          <v-col cols="6" lg="6">
+                            <ValidationProvider name="Name in English" vid="name_en" rules="required" v-slot="{ errors }">
+                              <label>{{ $t('container.application_selection.application.name_en') }}</label>
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-text-field v-model="data.name_en" outlined clearable :error="errors[0] ? true : false"
+                                            :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
@@ -316,6 +318,7 @@
                           </v-col>
 
                           <v-col cols="6" lg="6">
+                             <div class="validation-error_marital">
 
                             <ValidationProvider name="Mother Name in English" vid="mother_name_en" v-slot="{ errors }">
                               <label>{{ $t('container.application_selection.application.mother_name_en') }}</label>
@@ -323,7 +326,7 @@
                                 :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
-
+  </div>
                           </v-col>
 
                           <v-col cols="6" lg="6">
@@ -345,17 +348,17 @@
 
 
                           <v-col cols="6" lg="6">
-                            <div class="validation-error_marital">
+                            <!-- <div class="validation-error_marital"> -->
                               <ValidationProvider name="Marital Status" rules="required" vid="marital_status"
                                 v-slot="{ errors }">
 
                                 <label>{{ $t('container.system_config.allowance_program.marital_status') }}</label>
                                 <span style="margin-left: 4px; color: red">*</span>
-                                <v-select v-model="data.marital_status" outlined clearable :items="marital_status"
+                                <v-select v-model="data.marital_status" outlined clearable :items="marital_status" item-value="name_en" :item-text="getItemText"
                                   :error="errors[0] ? true : false" :error-messages="errors[0]">
                                 </v-select>
                               </ValidationProvider>
-                            </div>
+                            <!-- </div> -->
                           </v-col>
                           <v-col cols="6" lg="6" v-if="data.marital_status == 'Married'">
                             <ValidationProvider name="Spouse Name in Bangla" vid="spouse_name_bn" v-slot="{ errors }">
@@ -379,7 +382,8 @@
                               <label>{{ $t('container.application_selection.application.religion') }}</label>
                               <span style="margin-left: 4px; color: red">*</span>
 
-                              <v-select v-model="data.religion" outlined :items="religion"
+                              <v-select v-model="data.religion" outlined :items="religion" item-value="name_en"
+                              :item-text="getItemText"
                                 :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-select>
                             </ValidationProvider>
@@ -401,7 +405,7 @@
                             <ValidationProvider name="Age" vid="age" v-slot="{ errors }" rules="required">
                               <label>{{ $t('container.application_selection.application.age') }}</label>
                               <span style="margin-left: 4px; color: red">*</span>
-                              <v-text-field v-model="data.age" outlined type="number" clearable
+                              <v-text-field v-model="data.age" outlined type="number" readonly
                                 :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
@@ -411,8 +415,8 @@
                             <ValidationProvider name="Gender" vid="gender" v-slot="{ errors }" rules="required">
                               <label>{{ $t('container.system_config.allowance_program.gender') }}</label>
                               <span style="margin-left: 4px; color: red">*</span>
-                              <v-select v-model="data.gender_id" item-text="value_en" item-value="id" outlined
-                                :items="genders" :error="errors[0] ? true : false" :error-messages="errors[0]">
+                              <v-select v-model="data.gender_id" item-value="id" outlined
+                                :items="genders" :item-text="getItemValue" :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-select>
                             </ValidationProvider>
                           </v-col>
@@ -421,7 +425,7 @@
                               v-slot="{ errors }">
                               <label>{{ $t('container.application_selection.application.education_status') }}</label>
                               <span style="margin-left: 4px; color: red">*</span>
-                              <v-select v-model="data.education_status" outlined :error="errors[0] ? true : false"
+                              <v-select v-model="data.education_status" :item-text="getItemText"  outlined :error="errors[0] ? true : false"
                                 :error-messages="errors[0]" :items="education_status">
                               </v-select>
                             </ValidationProvider>
@@ -430,9 +434,9 @@
                             <ValidationProvider name="Profession" vid="profession" v-slot="{ errors }">
                               <label>{{ $t('container.application_selection.application.profession') }}</label>
                               <span style="margin-left: 4px; color: red">*</span>
-                              <v-autocomplete v-model="data.profession" outlined clearable :items="professionType"
+                              <v-select v-model="data.profession" outlined clearable :items="professionType" :item-text="getItemText"   item-value="name_en"
                                 :error="errors[0] ? true : false" :error-messages="errors[0]">
-                              </v-autocomplete>
+                              </v-select>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
@@ -471,9 +475,9 @@
                               $t('container.system_config.demo_graphic.division.division') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" @input="onChangeDivision($event)"
-                              v-model="data.division_id" outlined :items="divisions" item-text="name_en" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            <v-select :hide-details="errors[0] ? false : true" @input="onChangeDivision($event)"
+                              v-model="data.division_id" outlined :items="divisions" :item-text="getItemText" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col lg="6" md="6" cols="12">
@@ -482,9 +486,9 @@
                               $t('container.system_config.demo_graphic.district.district') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" outlined v-model="data.district_id"
-                              @input="onChangeDistrict($event)" :items="districts" item-text="name_en" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            <v-select :hide-details="errors[0] ? false : true" outlined v-model="data.district_id"
+                              @input="onChangeDistrict($event)" :items="districts" :item-text="getItemText"  item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6">
@@ -493,10 +497,10 @@
                             <label style="display: inline-block">{{ $t('container.list.location_type') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete @input="LocationType($event)" v-model="data.location_type"
-                              :hide-details="errors[0] ? false : true" outlined :items="locationType" item-text="value_en"
+                            <v-select @input="LocationType($event)" v-model="data.location_type"
+                              :hide-details="errors[0] ? false : true" outlined :items="locationType" :item-text="getItemValue" 
                               item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-autocomplete>
+                              :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 2" lg="6" md="6" cols="6">
@@ -505,9 +509,9 @@
                               $t('container.system_config.demo_graphic.ward.upazila') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.thana_id" outlined
-                              @change="onChangeUpazila($event)" :items="thanas" item-text="name_en" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.thana_id" outlined
+                              @change="onChangeUpazila($event)" :items="thanas"  :item-text="getItemText" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 2" lg="6" md="6" cols="6">
@@ -516,10 +520,10 @@
                           </label>
                           <span style="margin-left: 4px; color: red">*</span>
                           <ValidationProvider name="subLocationType" vid="subLocationType" v-slot="{ errors }">
-                            <v-autocomplete @input="onChangeSubLocationType($event)" v-model="data.sub_location_type"
-                              outlined :items="subLocationType" item-text="value_en" item-value="id"
+                            <v-select @input="onChangeSubLocationType($event)" v-model="data.sub_location_type"
+                              outlined :items="subLocationType"   :item-text="getItemValue"  item-value="id"
                               :error="errors[0] ? true : false" :error-messages="errors[0]"
-                              :hide-details="errors[0] ? false : true" class="no-arrow-icon"></v-autocomplete>
+                              :hide-details="errors[0] ? false : true" class="no-arrow-icon"></v-select>
                           </ValidationProvider>
                         </v-col>
 
@@ -529,9 +533,9 @@
                             }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.union_id" outlined
-                              @input="onChangeUnion($event)" :items="unions" item-text="name_en" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.union_id" outlined
+                              @input="onChangeUnion($event)" :items="unions" :item-text="getItemtText"   item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
 
@@ -541,9 +545,9 @@
                             }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.pouro_id"
-                              @input="onChangePouro($event)" outlined :items="pouros" item-text="name_en" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.pouro_id"
+                              @input="onChangePouro($event)" outlined :items="pouros" :item-text="getItemText"  item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
 
 
@@ -554,9 +558,9 @@
                             }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.city_id"
-                              @change="onChangeCity($event)" outlined :items="cities" item-text="name_en" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.city_id"
+                              @change="onChangeCity($event)" outlined :items="cities" :item-text="getItemText"  item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 3" lg="6" md="6" cols="6">
@@ -565,9 +569,9 @@
                             }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.city_thana_id" outlined
-                              @input="OnChangeCityThana($event)" :items="city_thanas" item-text="name_en" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.city_thana_id" outlined
+                              @input="OnChangeCityThana($event)" :items="city_thanas":item-text="getItemText"  item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 1" lg="6" md="6" cols="6">
@@ -576,10 +580,10 @@
                               $t('container.system_config.demo_graphic.ward.dist_pouro') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.district_pouro_id"
-                              @input="onChangeDistrictPouro" outlined :items="district_poros" item-text="name_en"
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.district_pouro_id"
+                              @input="onChangeDistrictPouro" outlined :items="district_poros" :item-text="getItemText" 
                               item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-autocomplete>
+                              :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 3" lg="6" md="6" cols="6">
@@ -588,9 +592,9 @@
                             }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.ward_id_city" outlined
-                              :items="wards_city" item-text="name_en" item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-autocomplete>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.ward_id_city" outlined
+                              :items="wards_city" :item-text="getItemText" item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 2 && data.sub_location_type == 2" lg="6" md="6" cols="6">
@@ -600,9 +604,9 @@
                             }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.ward_id_union" outlined
-                              :items="wards_upazila_union" item-text="name_en" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.ward_id_union" outlined
+                              :items="wards_upazila_union" :item-text="getItemText" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 2 && data.sub_location_type == 1" lg="6" md="6" cols="6">
@@ -611,9 +615,9 @@
                             <label style="display: inline-block">Ward
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.ward_id_pouro" outlined
-                              :items="wards_upazila_pouro" item-text="name_en" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.ward_id_pouro" outlined
+                              :items="wards_upazila_pouro" :item-text="getItemText"  item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 1" lg="6" md="6" cols="6">
@@ -622,9 +626,9 @@
                             }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.ward_id_dist" outlined
-                              :items="wards_dist" item-text="name_en" item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-autocomplete>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.ward_id_dist" outlined
+                              :items="wards_dist" :item-text="getItemText"   item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6" lg="6">
@@ -676,10 +680,10 @@
                               $t('container.system_config.demo_graphic.division.division') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true"
+                            <v-select :hide-details="errors[0] ? false : true"
                               @input="permanent_onChangeDivision($event)" v-model="data.permanent_division_id" outlined
-                              :items="permanent_divisions" item-text="name_en" item-value="id" required
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                              :items="permanent_divisions" :item-text="getItemText" item-value="id" required
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col lg="6" md="6" cols="12">
@@ -689,10 +693,10 @@
                               $t('container.system_config.demo_graphic.district.district') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" outlined
+                            <v-select :hide-details="errors[0] ? false : true" outlined
                               v-model="data.permanent_district_id" @input="permanent_onChangeDistrict($event)"
-                              :items="permanent_districts" item-text="name_en" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                              :items="permanent_districts" :item-text="getItemText" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6">
@@ -701,10 +705,10 @@
                             <label style="display: inline-block">{{ $t('container.list.location_type') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete @input="permanent_LocationType($event)" v-model="data.permanent_location_type"
-                              :hide-details="errors[0] ? false : true" outlined :items="locationType" item-text="value_en"
+                            <v-select @input="permanent_LocationType($event)" v-model="data.permanent_location_type"
+                              :hide-details="errors[0] ? false : true" outlined :items="locationType" :item-text="getItemValue" 
                               item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-autocomplete>
+                              :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type == 2" lg="6" md="6" cols="12">
@@ -714,10 +718,10 @@
                               $t('container.system_config.demo_graphic.ward.upazila') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.permanent_thana_id"
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.permanent_thana_id"
                               outlined @change="permanent_onChangeUpazila($event)" :items="permanent_thanas"
-                              item-text="name_en" item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-autocomplete>
+                              :item-text="getItemText"  item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type == 2" cols="6">
@@ -726,11 +730,11 @@
                           </label>
                           <span style="margin-left: 4px; color: red">*</span>
                           <ValidationProvider name="subLocationType" vid="subLocationType" v-slot="{ errors }">
-                            <v-autocomplete @input="onChangeSubLocationTypePermanent($event)"
+                            <v-select @input="onChangeSubLocationTypePermanent($event)"
                               v-model="data.permanent_sub_location_type" outlined :items="subLocationType"
-                              item-text="value_en" item-value="id" :error="errors[0] ? true : false"
+                           :item-text="getItemValue"   item-value="id" :error="errors[0] ? true : false"
                               :error-messages="errors[0]" :hide-details="errors[0] ? false : true"
-                              class="no-arrow-icon"></v-autocomplete>
+                              class="no-arrow-icon"></v-select>
                           </ValidationProvider>
                         </v-col>
 
@@ -741,10 +745,10 @@
                             }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.permanent_union_id"
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.permanent_union_id"
                               @input="permanent_onChangeUnion($event)" outlined :items="permanent_unions"
-                              item-text="name_en" item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-autocomplete>
+                             :item-text="getItemText"  item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type === 2 && data.permanent_sub_location_type === 1" lg="6"
@@ -755,10 +759,10 @@
                             }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.permanent_pouro_id"
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.permanent_pouro_id"
                               @input="Permanent_onChangePouro($event)" outlined :items="permanent_pouros"
-                              item-text="name_en" item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-autocomplete>
+                              item-text="name_en"  item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type == 3" lg="6" md="6" cols="12">
@@ -766,10 +770,10 @@
                             <label style="display: inline-block">City
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.permanent_city_id"
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.permanent_city_id"
                               @change="permanent_onChangeCity($event)" outlined :items="permanent_cities"
-                              item-text="name_en" item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-autocomplete>
+                              :item-text="getItemText"  item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type == 3" lg="6" md="6" cols="12">
@@ -779,10 +783,10 @@
                             }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true"
+                            <v-select :hide-details="errors[0] ? false : true"
                               @input="Permanent_OnChangeCityThana($event)" v-model="data.permanent_city_thana_id" outlined
-                              :items="permanent_city_thanas" item-text="name_en" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                              :items="permanent_city_thanas"   :item-text="getItemText" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type == 1" lg="6" md="6" cols="12">
@@ -792,10 +796,10 @@
                               $t('container.system_config.demo_graphic.ward.dist_pouro') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true"
+                            <v-select :hide-details="errors[0] ? false : true"
                               @input="Permanent_onChangeDistrictPouro" v-model="data.permanent_district_pouro_id" outlined
-                              :items="permanent_district_poros" item-text="name_en" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                              :items="permanent_district_poros" :item-text="getItemText"  item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type == 3" lg="6" md="6" cols="12">
@@ -804,9 +808,9 @@
                             <label style="display: inline-block">Ward
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.permanent_ward_id_city"
-                              outlined :items="permanent_wards_city" item-text="name_en" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.permanent_ward_id_city"
+                              outlined :items="permanent_wards_city" :item-text="getItemText" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type == 1" lg="6" md="6" cols="12">
@@ -816,9 +820,9 @@
                             }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.permanent_ward_id_dist"
-                              outlined :items="permanent_wards_dist" item-text="name_en" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.permanent_ward_id_dist"
+                              outlined :items="permanent_wards_dist" :item-text="getItemText"  item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type === 2 && data.permanent_sub_location_type === 2" lg="6"
@@ -829,10 +833,10 @@
                             }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true"
+                            <v-select :hide-details="errors[0] ? false : true"
                               v-model="data.permanent_ward_id_union" outlined :items="permanent_wards_upazila_union"
-                              item-text="name_en" item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-autocomplete>
+                             :item-text="getItemText" item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type === 2 && data.permanent_sub_location_type === 1" lg="6"
@@ -843,10 +847,10 @@
                             }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete :hide-details="errors[0] ? false : true"
+                            <v-select :hide-details="errors[0] ? false : true"
                               v-model="data.permanent_ward_id_pouro" outlined :items="permanent_wards_upazila_pouro"
-                              item-text="name_en" item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-autocomplete>
+                            :item-text="getItemText" item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6" lg="6">
@@ -1117,7 +1121,8 @@
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-text-field v-model="data.account_name" outlined clearable :error="errors[0] ? true : false"
-                              :error-messages="errors[0]">
+                                          readonly
+                                          :error-messages="errors[0]">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
@@ -1133,7 +1138,7 @@
                             <v-radio :label="$t('container.application_selection.application.bank_account')"
                               :value="1"></v-radio>
                             <v-radio :label="$t('container.application_selection.application.mobile_account')"
-                              :value="2"></v-radio>
+                              :value="2" @click=mobile()></v-radio>
                           </v-radio-group>
                         </v-col>
                         <v-col cols="6" lg="6" v-if="data.account_type === 2">
@@ -1143,7 +1148,7 @@
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
 
-                            <v-select v-model="data.account_owner" outlined clearable :items="mobile_ownership"
+                            <v-select v-model="data.account_owner" outlined clearable :items="mobile_ownership" :item-text="getItemText"
                               :error="errors[0] ? true : false" :error-messages="errors[0]">
                             </v-select>
                           </ValidationProvider>
@@ -1156,12 +1161,12 @@
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
 
-                            <v-select v-model="data.account_owner" outlined clearable :items="mobile_ownership"
+                            <v-select v-model="data.account_owner" outlined clearable :items="mobile_ownership" :item-text="getItemText"
                               :error="errors[0] ? true : false" :error-messages="errors[0]">
                             </v-select>
                           </ValidationProvider>
                         </v-col>
-                        <v-col cols="6" lg="6" v-if="data.account_type === 2">
+                        <!-- <v-col cols="6" lg="6" v-if="data.account_type === 2">
 
 
                           <label style="display: inline-block">{{
@@ -1171,11 +1176,11 @@
                             v-model="data.mobile_operator">
 
                           </v-select>
-                        </v-col>
+                        </v-col> -->
 
 
                         <v-col cols="6" lg="6" v-if="data.account_type === 2">
-                          <ValidationProvider rules="checkMobileNumber" name="Mobile Number" vid="account_number"
+                          <ValidationProvider rules="checkNumberMobile" name="Mobile Number" vid="account_number"
                             v-slot="{ errors }">
                             <label style="display: inline-block">{{
                               $t('container.application_selection.application.mobile') }} </label><span
@@ -1251,7 +1256,7 @@
                       <div class="pa-2 mb-4">
                         <v-row>
                           <v-col cols="12" lg="12">
-                            <v-card>
+                            <v-card class="validation_error_nominee">
                               <v-card-text>
 
 
@@ -1324,6 +1329,15 @@
                                   </v-col>
 
                                 </v-row>
+
+
+                                <div></div>
+                                <div class="d-inline d-flex justify-end">
+                                  <v-btn @click="verifyNomineeCard()" elevation="2"
+                                         :disabled="data.nominee_verification_number == null || data.nominee_date_of_birth == ''"
+                                         class="btn" color="primary">{{ $t('container.list.verify') }}</v-btn>
+                                </div>
+
                               </v-card-text>
                             </v-card>
 
@@ -1368,10 +1382,10 @@
                                 v-slot="{ errors }" rules="required">
                                 <label>{{ $t('container.application_selection.application.relationship') }}</label>
                                 <span style="margin-left: 4px; color: red">*</span>
-                                <v-autocomplete v-model="data.nominee_relation_with_beneficiary" outlined
-                                  :items="relations_with_bef" :error="errors[0] ? true : false"
+                                <v-select v-model="data.nominee_relation_with_beneficiary" outlined  item-value="name_en"
+                                  :items="relations_with_bef" :item-text="getItemText" :error="errors[0] ? true : false"
                                   :error-messages="errors[0]">
-                                </v-autocomplete>
+                                </v-select>
                               </ValidationProvider>
                             </div>
                           </v-col>
@@ -1386,12 +1400,12 @@
                                     height: 200px;
                                     border: 1px solid #ccc;
                                   " class="mb-5"></v-img>
-                            <ValidationProvider v-slot="{ errors }" name="Image" :rules="('imageSize')" rules="imageSize"
-                              vid="image">
+                         
                               <label>{{ $t('container.application_selection.application.image') }} ({{
                                 $t('container.application_selection.application.image_alert') }})</label>
                               <span style="margin-left: 4px; color: red">*</span>
-
+     <ValidationProvider v-slot="{ errors }" name="Image" rules="required"
+                                vid="nominee_image">
                               <v-file-input outlined show-size counter prepend-inner-icon="mdi-camera"
                                 v-model="data.nominee_image" accept="image/*" @change="previewImageNominee"
                                 prepend-icon=""></v-file-input>
@@ -1408,11 +1422,12 @@
                                     height: 80px;
                                     border: 1px solid #ccc;
                                   " class="mb-5"></v-img>
-                            <ValidationProvider v-slot="{ errors }" name="Signature" rules="imageSize"
-                              vid="nominee_signature">
+                           
                               <label>{{ $t('container.application_selection.application.signature') }} ({{
                                 $t('container.application_selection.application.signature_alert') }})</label>
                               <span style="margin-left: 4px; color: red">*</span>
+                               <ValidationProvider v-slot="{ errors }" name="Signature" rules="required"
+                                vid="nominee_signature">
 
                               <v-file-input outlined show-size counter prepend-inner-icon="mdi-camera"
                                 v-model="data.nominee_signature" accept="image/*" @change="previewSignNominee"
@@ -1449,13 +1464,15 @@
                         <v-row>
                           <v-col v-for="(variables, indexPMT) in PMTVariables" cols="6" lg="6" :key='indexPMT'>
                             <template v-if="variables.children.length == 0">
-                              <label>{{ variables.name_en }}
+                              <label>
+                                <!-- {{ variables.name_en }} -->
+                                  {{ language === 'bn' ? variables.name_bn : variables.name_en }}
                                 <span style="
                                   margin-left: 4px;
                                   margin-right: 4px;
                                   color: red;
                                 ">*</span></label>
-                              <ValidationProvider :name="variables.name_en" vid="sub_variables" rules="required"
+                              <ValidationProvider :name="variables.name_en" vid="data.application_pmt[indexPMT].sub_variables" rules="required"
                                 v-slot="{ errors }">
                                 <v-select :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
                                   :error-messages="errors[0]" outlined required
@@ -1470,40 +1487,40 @@
                                       name_en: 'No',
                                       name_bn: 'না',
                                     },
-                                  ]" item-value="id" item-text="name_en">
+                                  ]" item-value="id" :item-text="getItemText">
                                 </v-select>
                               </ValidationProvider>
                             </template>
                             <template v-else-if="variables.field_type == 1">
-                              <label>{{ variables.name_en }}
+                              <label> {{ language === 'bn' ? variables.name_bn : variables.name_en }}
                                 <span style="
                                   margin-left: 4px;
                                   margin-right: 4px;
                                   color: red;
                                 ">*</span></label>
-                              <ValidationProvider :name="variables.name_en" vid="sub_variables" rules="required"
+                              <ValidationProvider :name="variables.name_en" vid="data.application_pmt[indexPMT].sub_variables" rules="required"
                                 v-slot="{ errors }">
                                 <v-select :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
                                   :error-messages="errors[0]" outlined
                                   v-model="data.application_pmt[indexPMT].sub_variables" :items="variables.children"
-                                  item-value="id" item-text="name_en">
+                                  item-value="id" :item-text="getItemText">
                                 </v-select>
                               </ValidationProvider>
                             </template>
 
                             <template v-else-if="variables.field_type == 2">
-                              <label>{{ variables.name_en
-                              }}<span style="
+                              <label> {{ language === 'bn' ? variables.name_bn : variables.name_en }}
+                              <span style="
                                   margin-left: 4px;
                                   margin-right: 4px;
                                   color: red;
                                 ">*</span></label>
-                              <ValidationProvider :name="variables.name_en" vid="sub_variables" rules="required"
+                              <ValidationProvider :name="variables.name_en" vid="data.application_pmt[indexPMT].sub_variables" rules="required"
                                 v-slot="{ errors }">
                                 <v-select multiple :hide-details="errors[0] ? false : true"
                                   :error="errors[0] ? true : false" :error-messages="errors[0]" outlined
                                   v-model="data.application_pmt[indexPMT].sub_variables" :items="variables.children"
-                                  item-value="id" item-text="name_en">
+                                  item-value="id" :item-text="getItemText">
                                 </v-select>
                               </ValidationProvider>
                             </template>
@@ -1588,6 +1605,7 @@
           </v-dialog>
         </template>
         <!-- delete modal  -->
+    
       </v-col>
     </v-row>
 
@@ -1666,19 +1684,6 @@ extend("checkNumberMobile", {
   },
   message: "This field must be an 11-digit number starting with 'correct format'",
 });
-extend('imageSize', {
-  validate: (value) => {
-    if (!value) {
-      // If no file is selected, return true (valid) or handle as needed
-      return true;
-    }
-
-    const maxFileSize = 200 * 1024; // 200 KB in bytes
-
-    return value.size <= maxFileSize;
-  },
-  message: 'Image must be under 200 KB',
-});
 
 export default {
   title: "CTM - Online Application",
@@ -1728,12 +1733,13 @@ export default {
       permanent_wards_dist: [],
 
       education_status: [
-        "Illiterate",
-        "Literate",
-        "JSC", "SSC", "HSC",
-        "Graduate",
-        "Post Graduate",
-        "Other"
+      { name_en: 'Illiterate', name_bn: 'অশিক্ষিত' },
+        { name_en: 'JSC', name_bn: 'জেএসসি' },
+        { name_en: 'SSC', name_bn: 'এসএসসি' },
+        { name_en: 'HSC', name_bn: 'এইচএসসি' },
+        { name_en: 'Graduate', name_bn: 'গ্রাজুয়েট' },
+        { name_en: 'Post Graduate', name_bn: 'পোস্ট গ্রাজুয়েট' },
+        { name_en: 'Other', name_bn: 'অন্যান্য' }
       ],
       govt_programs: [
         "Old Age Allowance Program",
@@ -1743,8 +1749,10 @@ export default {
         "No Allowance",
         "Other (specify)",
       ],
-      marital_status: ["Married", "UnMarried", "Widow",
-        "Other",
+      marital_status: [{ name_en: 'Married', name_bn: 'বিবাহিত' },
+      { name_en: 'Unmarried', name_bn: 'অবিবাহিত' },
+      { name_en: 'Widow', name_bn: 'বিধবা' },
+      { name_en: 'Other', name_bn: 'অন্যান্য' }
 
       ],
       health_status: [
@@ -1767,18 +1775,24 @@ export default {
         "Other (specify)",
       ],
 
-      mobile_ownership: ["Myself", "Family Memeber", "Others"],
-      religion: ["Islam", "Hindu", "Buddhist", "Christian", "Other"],
-      genders: ["Male", "Female", "3rd Gender"],
+      mobile_ownership:
+       [  { name_en: 'Myself', name_bn: 'নিজ' },
+            { name_en: 'Family Member', name_bn: 'পরিবারের সদস্য' },
+            { name_en: 'Other', name_bn: 'অন্যান্য' }],
+      religion: [{ name_en: 'Islam', name_bn: 'ইসলাম' },
+      { name_en: 'Hindu', name_bn: 'হিন্দু' },
+      { name_en: 'Buddhist', name_bn: 'বৌদ্ধ' },
+      { name_en: 'Christian', name_bn: 'খ্রিষ্টান' },
+      { name_en: 'Other', name_bn: 'অন্যান্য' }],
+   
 
       yes_no: ["Yes ", "No"],
 
       relations_with_bef: [
-        "Spouse",
-        "Family member",
-        "Close relative",
-        "Spouse",
-        "Parent",
+       { name_en: 'Spouse', name_bn: 'স্বামী/স্ত্রী' },
+        { name_en: 'Family member', name_bn: 'পরিবারের সদস্য' },
+        { name_en: 'Close relative', name_bn: 'নিকট আত্মীয়' },
+        { name_en: 'Parent', name_bn: 'পিতা/মাতা' },
       ],
 
       activePicker: null,
@@ -1787,6 +1801,7 @@ export default {
       isChecked: false,
       deleteDialog: false,
       confirmDialog: false,
+        showAlert: false,
       data: {
 
         program_id: null,
@@ -1866,25 +1881,25 @@ export default {
         mobile_operator: null,
         pmt_status: null
       },
-      professionType: ['Farmer',
-        'Rickshaw Puller',
-        'Day Laborer',
-        'Street Vendor',
-        'Fisherman',
-        'Construction Worker',
-        'Domestic Worker',
-        'Tea Garden Laborer',
-        'Auto Rickshaw Driver',
-        'Migrant Worker',
-        'Handicraftsman',
-        'Cycle Rickshaw Puller',
-        'Plumber',
-        'Carpenter',
-        'Street Sweeper',
-        'Security Guard',
-        'Rural Artisan',
-        'Fisherwoman',
-        'Other'],
+      professionType: [
+    
+        { name_en: 'Farmer', name_bn: 'কৃষক' },
+        { name_en: 'Rickshaw Puller', name_bn: 'রিকশাচালক' },
+        { name_en: 'Day Laborer', name_bn: 'দিন মজুর' },
+        { name_en: 'Street Vendor', name_bn: 'রাস্তার দোকানদার' },
+        { name_en: 'Fisherman', name_bn:  'জেলে'},
+        { name_en: 'Construction Worker', name_bn: 'নির্মাণ কর্মী' },
+        { name_en: 'Domestic Worker', name_bn: 'পরিবারিক কর্মচারী' },
+        { name_en: 'Tea Garden Laborer', name_bn: 'চা বাগানের শ্রমিক' },
+        { name_en: 'Auto Rickshaw Driver', name_bn: 'অটো রিকশা চালক' },
+        { name_en: 'Handicraftsman', name_bn: 'হাস্তশিল্পী' },
+        { name_en: 'Plumber', name_bn: 'প্লাম্বার' },
+        { name_en: 'Carpenter', name_bn: 'কার্পেন্টার' },
+        { name_en: 'Street Sweeper', name_bn: 'রাস্তা পরিষ্কারক' },
+        { name_en: 'Security Guard', name_bn: 'নিরাপত্তা গার্ড' },
+        { name_en: 'Rural Artisan', name_bn: 'গ্রামীণ শিল্পী' },
+        { name_en: 'Other', name_bn: 'অন্যান্য' }
+      ],
       checkbox: false,
       checkboxNomineeAddress: false,
       imageUrl: null,
@@ -1901,8 +1916,11 @@ export default {
       selectedDayNominee: null,
       selectedMonthNominee: null,
       selectedYearNominee: null,
-      // days: Array.from({ length: 31 }, (_, i) => i + 1),
+      twoDigitDays: Array.from({ length: 32 }, (_, i) => String(i).padStart(2, '0')).slice(1),
+        
+      
       months: [
+      
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
       ],
@@ -1933,9 +1951,13 @@ export default {
         return this.$store.getters.getAppLanguage;
       },
     },
-    twoDigitDays() {
-      return Array.from({ length: 31 }, (_, i) => String(i + 1).padStart(2, '0'));
-    },
+    // localizedDays() {
+    //   return this.twoDigitDays.map(day => this.localizeNumber(day));
+    // },
+    //  localizedYears() {
+    //   return this.years.map(year => this.localizeNumber(year.toString()));
+    // },
+ 
     formattedDate() {
       if (this.selectedDay && this.selectedMonth && this.selectedYear) {
         const monthIndex = this.months.indexOf(this.selectedMonth) + 1;
@@ -1949,13 +1971,67 @@ export default {
         const monthIndex = this.months.indexOf(this.selectedMonthNominee) + 1;
         const formattedMonth = monthIndex < 10 ? `0${monthIndex}` : `${monthIndex}`;
         return `${this.selectedYearNominee}-${formattedMonth}-${this.selectedDayNominee}`;
+        
       }
       return null;
     },
 
   },
 
-  methods: {
+  methods:
+   {
+
+    //  localizeNumber(number) {
+    //   if (this.language === 'bn') {
+    //     const bnNumbers = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+    //     return number.toString().replace(/\d/g, digit => bnNumbers[digit]);
+    //   } else {
+    //     return number;
+    //   }
+    // },
+   getItemTextYear(item) {
+      return this.language === 'bn' ? this.$helpers.englishToBangla(item.years) : item.years;
+
+    },
+  
+    getItemText(item) {
+      return this.language === 'bn' ? item.name_bn : item.name_en;
+    },
+    getItemValue(item) {
+      return this.language === 'bn' ? item.value_bn : item.value_en;
+    },
+   
+        getItemDivision(item) {
+      return this.language === 'bn' ? item.name_bn : item.name_en;
+    },
+      getItemDistrict(item) {
+      return this.language === 'bn' ? item.name_bn : item.name_en;
+    },
+     getItemLocation(item) {
+      return this.language === 'bn' ? item.value_bn : item.value_bn;
+    },
+    //   getItemText(item) {
+    //   return this.language === 'bn' ? item.name_bn : item.name_en;
+    // },
+    //   getItemText(item) {
+    //   return this.language === 'bn' ? item.name_bn : item.name_en;
+    // },
+    //   getItemText(item) {
+    //   return this.language === 'bn' ? item.name_bn : item.name_en;
+    // },
+    //   getItemText(item) {
+    //   return this.language === 'bn' ? item.name_bn : item.name_en;
+    // },
+    //   getItemText(item) {
+    //   return this.language === 'bn' ? item.name_bn : item.name_en;
+    // },
+    mobile(){
+      if(this.data.mobile){
+        this.data.account_number = this.data.mobile
+      }
+     
+    
+    },
     gotocheck() {
       this.$axios.get("/global/online-application/check", {
         headers: {
@@ -2224,6 +2300,8 @@ export default {
     },
     verifyCard() {
       let data = {
+        program_id: this.data.program_id,
+        gender_id: this.data.gender_id,
         verification_type: this.data.verification_type,
         verification_number: this.data.verification_number,
         date_of_birth: this.data.date_of_birth,
@@ -2237,13 +2315,42 @@ export default {
       })
         .then((res) => {
           console.log(res)
-          this.$toast.success(res.data.data);
+          this.$toast.success(res.data.message);
 
+          this.data.age = res.data.data.age
+          this.data.name_en = res.data.data.nameEn
+          this.data.name_bn = res.data.data.name
+          this.data.account_name = res.data.data.nameEn
         })
         .catch((err) => {
           console.log(err)
           this.$toast.error(err.response.data.message);
         })
+    },
+
+    verifyNomineeCard() {
+      let data = {
+        verification_number: this.data.nominee_verification_number,
+        date_of_birth: this.data.nominee_date_of_birth,
+      };
+
+      this.$axios.post("/global/online-application/nominee-card-verification", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Accept: "application/json",
+        },
+      })
+          .then((res) => {
+            console.log(res)
+            this.$toast.success(res.data.message);
+
+            this.data.nominee_en = res.data.data.nameEn
+            this.data.nominee_bn = res.data.data.name
+          })
+          .catch((err) => {
+            console.log(err)
+            this.$toast.error(err.response.data.message);
+          })
     },
     verifyDISCard() {
       let data = {
@@ -2371,6 +2478,38 @@ export default {
                 this.$refs.form.setErrors(err.response.data.message);
                 //scroll to first error filed
                 const firstErrorField = document.querySelector(".validation_error_age_limit");
+                if (firstErrorField) {
+                  firstErrorField.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                    inline: "nearest",
+                  });
+                }
+
+                // end of scroll to first error filed
+                this.$toast.error(err.response.data.message);
+
+              }
+              else if (err.response.data.error_code == "invalid_nid") {
+                this.$refs.form.setErrors(err.response.data.message);
+                //scroll to first error filed
+                const firstErrorField = document.querySelector(".validation_error_age_limit");
+                if (firstErrorField) {
+                  firstErrorField.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                    inline: "nearest",
+                  });
+                }
+
+                // end of scroll to first error filed
+                this.$toast.error(err.response.data.message);
+
+              }
+              else if (err.response.data.error_code == "invalid_nominee_nid") {
+                this.$refs.form.setErrors(err.response.data.message);
+                //scroll to first error filed
+                const firstErrorField = document.querySelector(".validation_error_nominee");
                 if (firstErrorField) {
                   firstErrorField.scrollIntoView({
                     behavior: "smooth",
@@ -2557,7 +2696,7 @@ export default {
           });
         this.data.union_id = null;
       }
-      if (event == 2) {
+      if ($event == 2) {
         this.onChangeUpazila(this.data.thana_id);
         this.data.pouro_id = null;
       }
@@ -2593,7 +2732,7 @@ export default {
         })
         .then((result) => {
           this.unions = result.data.data;
-          this.onChangeSubLocationType(this.data.sub_location_type)
+          // this.onChangeSubLocationType(this.data.sub_location_type)
 
         });
     },
@@ -2835,7 +2974,20 @@ export default {
     },
     previewImage() {
       if (this.data.image) {
-        // Read the selected file and generate a preview URL
+
+        const maxFileSize = 200 * 1024; // 200 KB in bytes
+
+        if (this.data.image.size > maxFileSize){
+          // alert("file size must be 200kb")
+          // this.confirmDialog =true;
+        this.$toast.error("File size must be under 200 KB ");// Show the alert
+          this.data.image = '';
+       
+          return false;
+        
+        }
+      
+       
         const reader = new FileReader();
         reader.onload = (e) => {
           this.imageUrl = e.target.result;
@@ -2845,6 +2997,7 @@ export default {
         // Clear the preview if no file is selected
         this.imageUrl = null;
       }
+    
     },
     addPreviewFile(event, index) {
       console.log(event, index)
@@ -2856,7 +3009,15 @@ export default {
     },
     previewSign() {
       if (this.data.signature) {
-        // Read the selected file and generate a preview URL
+     const maxFileSize = 200 * 1024;
+           if (this.data.signature.size > maxFileSize) {
+         
+          this.$toast.error("File size must be unser 200 KB ");// Show the alert
+          this.data.signature = '';
+
+          return false;
+
+        }
         const reader = new FileReader();
         reader.onload = (e) => {
           this.signUrl = e.target.result;
@@ -2868,8 +3029,18 @@ export default {
       }
     },
     previewImageNominee() {
+
       if (this.data.nominee_image) {
+        const maxFileSize = 200 * 1024;
         // Read the selected file and generate a preview URL
+         if (this.data.nominee_image.size > maxFileSize) {
+
+          this.$toast.error("File size must be unser 200 KB ");// Show the alert
+          this.data.nominee_image = '';
+
+          return false;
+
+        }
         const reader = new FileReader();
         reader.onload = (e) => {
           this.nomineeImageUrl = e.target.result;
@@ -2882,7 +3053,16 @@ export default {
     },
     previewSignNominee() {
       if (this.data.nominee_signature) {
-        // Read the selected file and generate a preview URL
+        // Read the selected file and gener
+        const maxFileSize = 200 * 1024; 
+           if (this.data.nominee_signature.size > maxFileSize) {
+
+          this.$toast.error("File size must be unser 200 KB ");// Show the alert
+          this.data.nominee_signature = '';
+
+          return false;
+
+        }
         const reader = new FileReader();
         reader.onload = (e) => {
           this.nomineeSignUrl = e.target.result;

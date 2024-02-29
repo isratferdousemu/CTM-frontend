@@ -220,9 +220,7 @@ const BeneficiaryManagementRoutes = [
       permission: "digital-id-card",
     },
     component: () =>
-      import(
-        "../pages/BeneficiaryManagement/DigitalIDCard/DigitalIDCard.vue"
-      ),
+      import("../pages/BeneficiaryManagement/DigitalIDCard/DigitalIDCard.vue"),
   },
   {
     path: "/beneficiary-management/beneficiary-exit-list",

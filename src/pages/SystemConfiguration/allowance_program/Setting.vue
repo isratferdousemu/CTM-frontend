@@ -68,14 +68,14 @@ export default {
             message: (state) => state.Allowance.success_message,
             success_status: (state) => state.Allowance.success_status,
             errors: (state) => state.Allowance.errors,
-            error_status: (state) => state.Allowance.error_status
+            error_status: (state) => state.Allowance.error_status,
         }),
 
         minValueRules() {
             return [
                 v => !!v || "Minimum value is required",
                 v => /^\d+$/.test(v) || 'Minimum Age must be a number',
-                v => (v >= 5 && v <= 115) || 'Age must be between 5 and 115',
+                v => (v >= 5 && v <= 150) || 'Age must be between 5 and 150',
                 v => {
                     const invalidValue = this.updateAllowanceAge.some(item => parseInt(v) > parseInt(item.max_age));
                     return invalidValue ? 'Minimum value cannot be greater than the maximum value' : true;
@@ -91,7 +91,7 @@ export default {
             return [
                 v => !!v || "Maximum value is required",
                 v => /^\d+$/.test(v) || 'Maximum Age must be a number',
-                // v => (v >= 5 && v <= 115) || 'Age must be between 5 and 115',
+                v => (v >= 5 && v <= 115) || 'Age must be between 5 and 115',
                 v => {
                     const invalidValue = this.updateAllowanceAge.some(item => parseInt(v) < parseInt(item.min_age));
                     return invalidValue ? 'Maximum value cannot be less than the minimum value' : true;
@@ -169,20 +169,20 @@ export default {
         ageLimit(age) {
           this.age_limit = !this.age_limit;
 
-            // if (age === true) {
-            //   this.editAllowanceProgram.is_disable_class = false
-            //   this.is_disable_class = false
-            // }
+            if (age === true) {
+              this.editAllowanceProgram.is_disable_class = false
+              this.is_disable_class = false
+            }
         },
 
 
       allowanceAmount(amount){
         this.is_disable_class = !this.is_disable_class
 
-        // if (amount === true) {
-        //   this.editAllowanceProgram.is_age_limit = false
-        //   this.age_limit = false
-        // }
+        if (amount === true) {
+          this.editAllowanceProgram.is_age_limit = false
+          this.age_limit = false
+        }
 
 
         // this.genderUpdatevalue = []

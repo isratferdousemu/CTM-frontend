@@ -3,6 +3,7 @@
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
         <v-row>
+          <Spinner :loading="isLoading" />
           <v-col cols="12">
             <div class="d-block text-right">
               <v-btn
@@ -524,13 +525,15 @@
                       <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
                       {{ $t("container.list.PDF") }}
                     </v-btn>
-                    <!-- <v-btn
-                        elevation="2"
-                        class="btn mr-2 white--text"
-                        color="teal darken-2"
-                        @click="GenerateExcel()"
-                        >{{ $t("container.list.excel") }}</v-btn
-                      > -->
+                    <v-btn
+                      elevation="2"
+                      class="btn mr-2 white--text"
+                      color="teal darken-2"
+                      @click="GenerateExcel()"
+                    >
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                      {{ $t("container.list.excel") }}
+                    </v-btn>
                   </v-col>
                 </v-row>
                 <v-row
@@ -638,10 +641,11 @@
   </div>
 </template>
   
-  <script>
+<script>
 import { mapState, mapActions } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
+import Spinner from "@/components/Common/Spinner.vue";
 
 extend("required", required);
 export default {
@@ -677,11 +681,14 @@ export default {
       ],
 
       beneficiaryItem: {},
+      isLoading: false,
       loading: true,
       search: "",
       delete_id: "",
       applications: [],
       beneficiaries: [],
+      beneficiary_exit_list: [],
+      total: "",
       programs: [],
       districts: [],
       locationType: [],
@@ -720,6 +727,7 @@ export default {
     };
   },
   components: {
+    Spinner,
     ValidationProvider,
     ValidationObserver,
   },
@@ -1101,14 +1109,8 @@ export default {
           params: queryParams,
         })
         .then((result) => {
+          this.total = result.data.meta.total;
           this.beneficiaries = result.data.data;
-
-          // this.beneficiaries = results.map((item) => {
-          //   return (item = {
-          //     ...item,
-          //     status: this.ben_status[item.status - 1].value,
-          //   });
-          // });
           this.pagination.current = result.data.meta.current_page;
           this.pagination.total = result.data.meta.last_page;
           this.pagination.grand_total = result.data.meta.total;
@@ -1122,7 +1124,9 @@ export default {
       this.$store.commit("setHeaderTitle", title);
     },
     async GeneratePDF() {
+      this.isLoading = true;
       const queryParams = {
+        // language: this.$i18n.locale,
         program_id: this.data.program_id,
         division_id: this.data.division_id,
         district_id: this.data.district_id,
@@ -1140,16 +1144,202 @@ export default {
         .get("/admin/beneficiary/getBeneficiaryExitListPdf", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "application/json",
+          },
+          params: queryParams,
+          responseType: "arraybuffer",
+        })
+        .then((result) => {
+          const blob = new Blob([result.data], { type: "application/pdf" });
+          const url = window.URL.createObjectURL(blob);
+          window.open(url, "_blank");
+          this.isLoading = false;
+          // window.open(result.data.data.url, "_blank");
+        })
+        .catch((error) => {
+          this.isLoading = false;
+          console.error("Error generating PDF:", error);
+        });
+    },
+    async GenerateExcel() {
+      this.isLoading = true;
+      const queryParams = {
+        location_type: this.data.location_type,
+        program_id: this.data.program_id,
+        division_id: this.data.division_id,
+        district_id: this.data.district_id,
+        city_corp_id: this.data.city_id,
+        thana_id: this.data.thana_id,
+        district_pouro_id: this.data.district_pouro_id,
+
+        city_thana_id: this.data.city_thana_id,
+        sub_location_type: this.sub_location_type,
+        pouro_id: this.data.pouro_id,
+        union_id: this.data.union_id,
+        ward_id: this.data.ward_id,
+
+        perPage: this.total,
+        page: 1, //All Items loaded
+      };
+      await this.$axios
+        .get("/admin/beneficiary/exitList", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
           },
           params: queryParams,
         })
         .then((result) => {
-          window.open(result.data.data.url, "_blank");
+          this.beneficiary_exit_list = result.data.data;
+          this.isLoading = false;
         })
         .catch((error) => {
+          this.isLoading = false;
           console.error("Error generating PDF:", error);
         });
+
+      try {
+        import("@/plugins/Export2Excel").then((excel) => {
+          const HeaderInfo = [
+            this.$t("container.list.sl"),
+            this.$t(
+              "container.beneficiary_management.beneficiary_list.beneficiary_id"
+            ),
+            this.$t(
+              "container.beneficiary_management.beneficiary_list.beneficiary_name"
+            ),
+            this.$t(
+              "container.beneficiary_management.beneficiary_list.father_name"
+            ),
+            this.$t(
+              "container.beneficiary_management.beneficiary_list.program_name"
+            ),
+            this.$t(
+              "container.beneficiary_management.beneficiary_list.district"
+            ),
+            this.$t(
+              "container.beneficiary_management.beneficiary_list.city_dist_upazilla"
+            ),
+            this.$t(
+              "container.beneficiary_management.beneficiary_list.thna_union_Pouro"
+            ),
+            this.$t("container.beneficiary_management.beneficiary_list.ward"),
+            this.$t(
+              "container.beneficiary_management.beneficiary_list.exit_reason"
+            ),
+            this.$t(
+              "container.beneficiary_management.beneficiary_list.exit_date"
+            ),
+          ];
+          const CustomInfo = this.beneficiary_exit_list.map((i, index) => {
+            return {
+              sl:
+                this.$i18n.locale == "en"
+                  ? index + 1
+                  : this.$helpers.englishToBangla(index + 1),
+              beneficiary_id:
+                this.$i18n.locale == "en" ? i.application_id : i.application_id,
+              name: this.$i18n.locale == "en" ? i.name_en : i.name_bn,
+              father_name:
+                this.$i18n.locale == "en" ? i.father_name_en : i.father_name_bn,
+              program_name:
+                this.$i18n.locale == "en"
+                  ? i.program_name_en
+                  : i.program_name_bn,
+              district:
+                this.$i18n.locale == "en"
+                  ? i.district_name_en
+                  : i.district_name_bn,
+              city_dist_upazilla:
+                this.$i18n.locale == "en"
+                  ? i.upazila_name_en
+                    ? i.upazila_name_en
+                    : i.city_corporation_name_en
+                    ? i.city_corporation_name_en
+                    : i.district_pourashava_name_en
+                    ? i.district_pourashava_name_en
+                    : ""
+                  : i.upazila_name_bn
+                  ? i.upazila_name_bn
+                  : i.city_corporation_name_bn
+                  ? i.city_corporation_name_bn
+                  : i.district_pourashava_name_bn
+                  ? i.district_pourashava_name_bn
+                  : "",
+              thna_union_Pouro:
+                this.$i18n.locale == "en"
+                  ? i.union_en
+                    ? i.union_en
+                    : i.thana_en
+                    ? i.thana_en
+                    : i.pourashava_name_en
+                    ? i.pourashava_name_en
+                    : ""
+                  : i.union_bn
+                  ? i.union_bn
+                  : i.thana_bn
+                  ? i.thana_bn
+                  : i.pourashava_name_bn
+                  ? i.pourashava_name_bn
+                  : "",
+              ward: this.$i18n.locale == "en" ? i.ward_en : i.ward_bn,
+              exit_reason:
+                this.$i18n.locale == "en" ? i.exit_reason_en : i.exit_reason_bn,
+              exit_date:
+                this.$i18n.locale == "en"
+                  ? i.exit_date
+                  : this.$helpers.englishToBangla(i.exit_date),
+            };
+          });
+
+          const Field = [
+            "sl",
+            "beneficiary_id",
+            "name",
+            "father_name",
+            "program_name",
+            "district",
+            "city_dist_upazilla",
+            "thna_union_Pouro",
+            "ward",
+            "exit_reason",
+            "exit_date",
+          ];
+
+          const Data = this.FormatJson(Field, CustomInfo);
+          const currentDate = new Date().toISOString().slice(0, 10);
+          let dateinfo =
+            queryParams.language == "en"
+              ? currentDate
+              : this.$helpers.englishToBangla(currentDate);
+
+          const filenameWithDate = `${this.$t(
+            "container.beneficiary_management.beneficiary_exit.list"
+          )}`;
+
+          excel.export_json_to_excel({
+            header: HeaderInfo,
+            data: Data,
+            sheetName: filenameWithDate,
+            filename: filenameWithDate,
+            autoWidth: true,
+            bookType: "xlsx",
+          });
+        });
+      } catch (error) {
+        // Handle any errors here
+        console.error("An error occurred:", error);
+        this.isLoading = false;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    FormatJson(FilterData, JsonData) {
+      return JsonData.map((v) =>
+        FilterData.map((j) => {
+          return v[j];
+        })
+      );
     },
   },
   watch: {

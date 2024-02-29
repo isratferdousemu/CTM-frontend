@@ -18,7 +18,11 @@
         position="center center"
         src="/assets/images/logo.png"
       ></v-img>
-    <b>  <p style="margin-left:15px; margin-top:15px">{{  this.$t("topSidebar.title") }}</p> </b>
+    <b>  <p style="margin-left:15px; margin-top:15px">
+    {{  this.$t("topSidebar.title") }} </br> <span v-if="userData?.office">{{ userData?.office?.office_address}}</span>
+    <span v-else>{{  this.$t("topSidebar.location") }}</span>
+    </p>
+    </b>
 
 
     <v-spacer />
@@ -177,6 +181,7 @@
 <script>
 import axios from "axios";
 import LocaleSwitcher from "@/components/Common/LocaleSwitcher"
+import {mapState} from "vuex";
 export default {
   
   components: { LocaleSwitcher },
@@ -186,6 +191,9 @@ export default {
         return this.$store.state.headerTitle;
       },
     },
+    ...mapState({
+      userData: (state) => state.userData
+    }),
     notification: {
       get() {
         return this.$store.state.notification;
