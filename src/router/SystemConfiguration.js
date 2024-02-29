@@ -205,7 +205,7 @@ const SystemConfigurationRoutes = [
     name: "RolePermission",
     meta: {
       requiresAuth: true,
-      permission: "role-permission-view",
+      permission: "rolePermission-view",
     },
     component: () => import("../pages/SystemConfiguration/user_management/role_permission/Index.vue")
   },
@@ -289,7 +289,7 @@ const SystemConfigurationRoutes = [
     name: 'AllowanceProgramSetting',
     meta: {
       requiresAuth: true,
-      permission: "allowance-view",
+      permission: "allowanceField-view",
     },
     component: () => import("../pages/SystemConfiguration/allowance_program/AdditionalField/Index.vue")
   },
@@ -299,7 +299,7 @@ const SystemConfigurationRoutes = [
     name: 'AllowanceProgramSetting',
     meta: {
       requiresAuth: true,
-      permission: "allowance-edit",
+      permission: "allowanceField-edit",
     },
     component: () => import("../pages/SystemConfiguration/allowance_program/AdditionalFieldValue/Index.vue")
   },
