@@ -108,7 +108,7 @@ const BeneficiaryManagementRoutes = [
     },
     component: () =>
       import(
-        "../pages/BeneficiaryManagement/beneficiary_list/BeneficiaeyDetails.vue"
+        "../pages/BeneficiaryManagement/beneficiary_list/BeneficiaeyDetails_V2.vue"
       ),
   },
   {
