@@ -870,6 +870,13 @@
         "title": "সুবিধাভোগী স্থানান্তর",
         "cause": "কারণ",
         "activation_date": "সক্রিয়করণের তারিখ"
+      },
+      "dashboard": {
+        "total_beneficiary": "সুবিধাভোগীর মোট সংখ্যা",
+        "active_beneficiary": "সক্রিয় সুবিধাভোগীর সংখ্যা",
+        "inactive_beneficiary": "নিষ্ক্রিয়/মৃত সুবিধাভোগীর সংখ্যা",
+        "waitining_beneficiary": "অপেক্ষামান সুবিধাভোগীর সংখ্যা",
+        "replaced_beneficiary": "প্রতিস্থাপিত সুবিধাভোগীর সংখ্যা"
       }
     },
     "manage_allotment": {

@@ -7,27 +7,28 @@
         <tr>
           <td>
             <v-card
-              max-height="auto"
               elevation="2"
               rounded="xl"
               class="ml-2 mr-2"
+              height="100%"
+              max-height="auto"
             >
               <v-card-title>
                 <v-row>
-                  <v-avatar color="primary" size="30" class="mt-7 ml-5">
-                    <!-- <v-icon dark>mdi-account-circle</v-icon> -->
-                    <v-icon dark>mdi mdi-account-multiple</v-icon>
-                    <!-- <img
-                      src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
-                      alt="Avatar"
-                    /> -->
+                  <v-avatar color="#cce6ff" size="30" class="mt-7 ml-5">
+                    <v-icon color="primary">mdi mdi-account-multiple</v-icon>
                   </v-avatar>
 
                   <v-col>
                     <v-card-text style="word-break: break-word">
-                      <span class="font-weight-bold"
-                        >Total Number of Beneficiary
+                      <span class="font-weight-bold">
+                        {{
+                          $t(
+                            "container.beneficiary_management.dashboard.total_beneficiary"
+                          )
+                        }}
                       </span>
+                      <br />
                       <br />
                       <span class="headline font-weight-bold">
                         {{ beneficiaries.totalBeneficiaries }}
@@ -44,23 +45,23 @@
               elevation="2"
               rounded="xl"
               class="ml-2 mr-2"
+              height="100%"
             >
               <v-card-title>
                 <v-row>
-                  <v-avatar color="primary" size="30" class="mt-7 ml-5">
-                    <!-- <v-icon dark>mdi-account-circle</v-icon> -->
-                    <v-icon dark>mdi mdi-account</v-icon>
-                    <!-- <img
-                      src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
-                      alt="Avatar"
-                    /> -->
+                  <v-avatar color="#cce6ff" size="30" class="mt-7 ml-5">
+                    <v-icon color="primary">mdi-account</v-icon>
                   </v-avatar>
 
                   <v-col>
-                    <v-card-text>
-                      <span class="font-weight-bold"
-                        >Number of Active Beneficiary</span
-                      >
+                    <v-card-text style="word-break: break-word">
+                      <span class="font-weight-bold">
+                        {{
+                          $t(
+                            "container.beneficiary_management.dashboard.active_beneficiary"
+                          )
+                        }}
+                      </span>
                       <br />
                       <span class="headline font-weight-bold">
                         {{ beneficiaries.totalActiveBeneficiaries }}
@@ -77,22 +78,25 @@
               elevation="2"
               rounded="xl"
               class="ml-2 mr-2"
+              height="100%"
             >
               <v-card-title>
                 <v-row>
-                  <v-avatar color="primary" size="30" class="mt-7 ml-5">
-                    <!-- <v-icon dark>mdi-account-circle</v-icon> -->
-                    <v-icon dark>mdi mdi-account-multiple</v-icon>
-                    <!-- <img
-                      src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
-                      alt="Avatar"
-                    /> -->
+                  <v-avatar color="#cce6ff" size="30" class="mt-7 ml-5">
+                    <v-icon color="primary">mdi mdi-account-off</v-icon>
                   </v-avatar>
 
                   <v-col>
                     <v-card-text>
-                      <span class="font-weight-bold"
-                        >Number of Inactive/Dead Beneficiary</span
+                      <span
+                        class="font-weight-bold"
+                        style="word-break: break-word"
+                      >
+                        {{
+                          $t(
+                            "container.beneficiary_management.dashboard.inactive_beneficiary"
+                          )
+                        }}</span
                       >
                       <br />
                       <span class="headline font-weight-bold">
@@ -110,22 +114,24 @@
               elevation="2"
               rounded="xl"
               class="ml-2 mr-2"
+              height="100%"
             >
-              <v-card-title>
+              <v-card-title style="word-break: break-word">
                 <v-row>
-                  <v-avatar color="primary" size="30" class="mt-7 ml-5">
-                    <!-- <v-icon dark>mdi-account-circle</v-icon> -->
-                    <v-icon dark>mdi mdi-account</v-icon>
-                    <!-- <img
-                      src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
-                      alt="Avatar"
-                    /> -->
+                  <v-avatar color="#cce6ff" size="30" class="mt-7 ml-5">
+                    <v-icon color="primary"
+                      >mdi mdi-account-multiple-outline</v-icon
+                    >
                   </v-avatar>
 
                   <v-col>
                     <v-card-text>
-                      <span class="font-weight-bold"
-                        >Number of Beneficiary in Waiting List</span
+                      <span class="font-weight-bold">
+                        {{
+                          $t(
+                            "container.beneficiary_management.dashboard.waitining_beneficiary"
+                          )
+                        }}</span
                       >
                       <br />
                       <span class="headline font-weight-bold">
@@ -139,6 +145,7 @@
           </td>
           <td>
             <v-card
+              height="100%"
               max-height="auto"
               elevation="2"
               rounded="xl"
@@ -146,19 +153,18 @@
             >
               <v-card-title>
                 <v-row>
-                  <v-avatar color="primary" size="30" class="mt-7 ml-5">
-                    <v-icon dark>mdi mdi-account</v-icon>
-                    <!-- <span class="mdi mdi-account-circle"></span> -->
-                    <!-- <img
-                      src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460"
-                      alt="Avatar"
-                    /> -->
+                  <v-avatar color="#cce6ff" size="30" class="mt-7 ml-5">
+                    <v-icon color="primary">mdi mdi-account-switch</v-icon>
                   </v-avatar>
 
                   <v-col>
-                    <v-card-text>
-                      <span class="font-weight-bold"
-                        >Number of Replaced Beneficiary</span
+                    <v-card-text style="word-break: break-word">
+                      <span class="font-weight-bold">
+                        {{
+                          $t(
+                            "container.beneficiary_management.dashboard.replaced_beneficiary"
+                          )
+                        }}</span
                       >
                       <br />
                       <span class="headline font-weight-bold">
@@ -771,13 +777,7 @@ export default {
   title: "CTM - Beneficiary Dashboard",
   data() {
     return {
-      program_location_wise_ben: [
-        // { division: "Dhaka", value: 300, percentage: 50 },
-        // { division: "Rajshahi", value: 50, percentage: 10 },
-        // { division: "Khulna", value: 100, percentage: 20 },
-        // { division: "Sylhet", value: 150, percentage: 30 },
-        // { division: "Chattrogram", value: 200, percentage: 40 },
-      ],
+      program_location_wise_ben: [],
       year_wise_waiting_ben: [
         { year: "2019", value: 1200, waiting: 600 },
         { year: "2020", value: 1900, waiting: 1000 },
