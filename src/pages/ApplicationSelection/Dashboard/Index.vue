@@ -8,7 +8,7 @@
 
     <v-row class="mt-3">
 
-      <v-col cols="12" md="3" lg="3">
+      <v-col cols="12" md="6" lg="6">
         <v-card>
           <v-card-text>
             <V-row>
@@ -17,7 +17,7 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="12" md="3" lg="3">
+      <v-col cols="12" md="6" lg="6">
         <v-card height="100%">
           <v-card-text>
             <V-row>
@@ -26,7 +26,7 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="12" md="3" lg="3">
+      <v-col cols="12" md="6" lg="6">
         <v-card height="100%">
           <v-card-text>
             <V-row>
@@ -35,7 +35,7 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="12" md="3" lg="3">
+      <v-col cols="12" md="6" lg="6">
         <v-card height="100%">
           <v-card-text>
             <V-row>
