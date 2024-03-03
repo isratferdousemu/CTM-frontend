@@ -244,7 +244,7 @@
                     <ValidationProvider
                       name="Username"
                       vid="username"
-                      rules="required"
+                      rules="checkUsername"
                       v-slot="{ errors }"
                     >
                       <v-text-field
@@ -1029,7 +1029,7 @@
                     <ValidationProvider
                         name="Username"
                         vid="username"
-                        rules="required"
+                        rules="checkUsername"
                         v-slot="{ errors }"
                     >
                       <v-text-field
@@ -1045,6 +1045,7 @@
                           required
                           :error="errors[0] ? true : false"
                           :error-messages="errors[0]"
+                          :readonly="true"
                       ></v-text-field>
                     </ValidationProvider>
                   </v-col>
@@ -1859,6 +1860,22 @@ import { required } from "vee-validate/dist/rules";
 import PermissionBadge from "../../../../components/BeneficiaryManagement/Committee/PermissionBadge.vue";
 
 extend("required", required);
+
+
+extend("checkUsername", {
+  validate: (value) => {
+    if (!value && value !== 0) {
+      return false;
+    }
+    // Check if all characters are numeric and not allow special characters
+    const isValid = /^[a-z][a-z0-9._]*$/.test(value);
+
+    // Return true if both conditions are met
+    return isValid;
+  },
+  message: "Username should be in lowercase and without any special character",
+});
+
 export default {
   name: "Index",
   title: "CTM - User Management",
