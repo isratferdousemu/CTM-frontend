@@ -77,8 +77,8 @@ export default {
                 // application_id: this.successId,
              
                   language: this.$i18n.locale,
-                //   application_id: "FYXrqO6d62",
-                     application_id: this.successId,
+             
+                  application_id: this.successId,
                   program: this.$t('container.application_selection.application.program'),
                   application: this.$t('container.application_selection.application.applicant_id'),
                   title: this.$t('container.application_selection.application.title'),
@@ -109,6 +109,13 @@ export default {
                   nominee_address: this.$t('container.application_selection.application.nominee_address'),
                   nationality: this.$t('container.application_selection.application.nationality'),
                   relationship: this.$t('container.application_selection.application.relationship'),
+                  bank_info: this.$t('container.application_selection.application.bank'),
+                  account_ownership: this.$t('container.application_selection.application.account_ownership'),
+                  account_no: this.$t('container.beneficiary_management.beneficiary_list.account_no'),
+                  bank_name: this.$t('container.application_selection.application.bank_name'),
+                  branch_name: this.$t('container.application_selection.application.branch_name'),
+                
+                 
                  
                   
                   
@@ -124,13 +131,13 @@ export default {
                     responseType: 'arraybuffer',
                 })
                 .then((result) => {
-                    console.log(result,"result");
-                    // return false;
+                    // console.log(result,"result");
+             
                     const blob = new Blob([result.data], { type: 'application/pdf' });
                     const url = window.URL.createObjectURL(blob);
                     window.open(url, '_blank');
-                    // this.isLoading = false;
-                    // window.open(result.data.data.url, '_blank');
+               
+            
                 })
                 .catch(error => {
                     console.error('Error generating PDF:', error);
