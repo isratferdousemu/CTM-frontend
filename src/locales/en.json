@@ -566,6 +566,7 @@
         "bank_name": "Bank Name",
         "branch_name": "Branch Name",
         "bank_account_number": "Bank Account Number",
+        
         "email": "Email",
         "mobile_account": "MFS (Mobile Financial Service)",
         "bank_account": "Bank Account",
