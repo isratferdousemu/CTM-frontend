@@ -138,7 +138,7 @@ export default {
 
                         <v-col cols="12" sm="6" lg="6">
                           <ValidationProvider
-                            name="User Name"
+                            name="Full Name"
                             vid="name"
                             rules="required"
                             v-slot="{ errors }"
@@ -147,7 +147,7 @@ export default {
                               type="text"
                               v-model="editDevice.name"
                               :label="
-                                $t('container.system_config.device.user_name')
+                                $t('container.system_config.device.full_name')
                               "
                               persistent-hint
                               outlined
@@ -215,7 +215,7 @@ export default {
 
                     <v-col cols="12" class="d-flex">
                       <v-row wrap>
-                        <v-col cols="12" sm="6" lg="6">
+<!--                        <v-col cols="12" sm="6" lg="6">
                           <ValidationProvider
                             name="Ip Address"
                             vid="ip_address"
@@ -235,7 +235,7 @@ export default {
                               required
                             ></v-text-field>
                           </ValidationProvider>
-                        </v-col>
+                        </v-col>-->
 
                         <v-col cols="12" sm="6" lg="6">
                           <ValidationProvider

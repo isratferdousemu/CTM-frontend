@@ -131,7 +131,6 @@ export default {
     },
     extarnalUrl(url,type) {
       if (type == 1) {
-        console.log(url, 'url');
         if (this.$route.path != url && url!=null) {
           this.$router.push(url);
         }
@@ -151,7 +150,7 @@ export default {
 
     getPermissionName(menu) {
       // menu.link_type==2?'common':menu?.page_link?.name
-      console.log(menu.permission,'permission');
+      // console.log(menu.permission,'permission');
       if(menu.permission!=null){
         return menu.permission
       }

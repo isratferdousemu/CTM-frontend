@@ -410,6 +410,7 @@
         "list": "Device Lists",
         "user_id": "User ID",
         "user_name": "User Name",
+        "full_name": "Full Name",
         "device_type": "Device Type",
         "ip_address": "IP Address",
         "pupose_of_use": "Purpose of Use",

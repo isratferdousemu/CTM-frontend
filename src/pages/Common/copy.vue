@@ -9,13 +9,16 @@
           v-model="fingerPrint"
           outlined
         ></v-text-field>
-        <v-text-field
+
+        Please copy the browser fingerprint information and provide it to your supervisor.
+
+<!--        <v-text-field
           label="IP Address"
           append-inner-icon="mdi-clipboard-outline"
           @click:append-inner="copyToClipboard"
           v-model="ipAddress"
           outlined
-        ></v-text-field>
+        ></v-text-field>-->
       </div>
     </div>
   </div>
