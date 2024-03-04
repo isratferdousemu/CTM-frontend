@@ -130,7 +130,7 @@ export default {
             plugins: {
               legend: {
                 display: true,
-                position: "right",
+                position: "bottom",
                 align: "center",
               },
             },
