@@ -394,7 +394,7 @@
           "location": "নির্ধারিত স্থান",
           "login_id": "লগইন আইডি",
           "role": "রোল",
-          "user_id": "ব্যবহারকারী আইডি"
+          "ward": "ওয়ার্ড"
         },
         "financial_year": {
           "financial_year": "আর্থিক বর্ষ",
