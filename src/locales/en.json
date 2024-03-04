@@ -395,7 +395,7 @@
           "location": "Assigned Location",
           "login_id": "Login ID",
           "role": "Role",
-          "user_id": "User ID"
+          "ward": "Ward"
         },
         "financial_year": {
           "financial_year": "Financial Year",
@@ -410,6 +410,7 @@
         "list": "Device Lists",
         "user_id": "User ID",
         "user_name": "User Name",
+        "full_name": "Full Name",
         "device_type": "Device Type",
         "ip_address": "IP Address",
         "pupose_of_use": "Purpose of Use",

@@ -1,5 +1,17 @@
 const SystemConfigurationRoutes = [
-  {
+    {
+      path: "/system-configuration/dashboard",
+      name: "Dashboard",
+      meta: {
+        requiresAuth: true,
+        permission: "systemConfigurationDashboard-view",
+      },
+      component: () =>
+          import(
+              "../pages/SystemConfiguration/Dashboard/Index.vue"
+              ),
+    },
+    {
     path: "/system-configuration/division",
     name: "Division",
     meta: {
