@@ -4,7 +4,7 @@
     <v-col cols="12">
       <label style="color: #1976d2">
                       <span>
-                        {{ $t("Program Wise Number of Application Approve") }}
+                        {{ $t("Office Type Number of User") }}
                       </span>
       </label></v-col
     >
@@ -50,7 +50,8 @@
     </v-menu>
   </v-row>
   <v-row>
-    <canvas id="programwise_application_approval"></canvas>
+    <canvas id="office_type_number_of_user"></canvas>
+
   </v-row>
   </v-col>
 
@@ -112,7 +113,7 @@ export default {
         this.programwise_application_approve_chart.destroy();
       }
       if (this.programwise_application_approve_levels && this.programwise_application_approve_datas) {
-        this.programwise_application_approve_chart = new Chart(document.getElementById("programwise_application_approval"), {
+        this.programwise_application_approve_chart = new Chart(document.getElementById("office_type_number_of_user"), {
           type: "pie",
           data: {
             labels: this.programwise_application_approve_levels,
@@ -130,12 +131,24 @@ export default {
             plugins: {
               legend: {
                 display: true,
-                position: "bottom",
+                position: "right",
                 align: "center",
               },
             },
+            layout: {
+              padding: {
+                left: 45,
+                // right: 50,
+                top: 5,
+                bottom: 150
+              }
+            }
           },
         });
+
+        this.programwise_application_approve_chart.canvas.style.width = 'auto';
+        this.programwise_application_approve_chart.canvas.style.height = '350px';
+
       } else {
         console.error("Data is not available to create chart.");
       }
