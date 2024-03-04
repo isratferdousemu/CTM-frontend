@@ -219,6 +219,7 @@
                     <v-date-picker
                       v-model="dates"
                       :range="[dates[0], dates[1]]"
+                      :rules="[customDateRangeRule]"
                       no-title
                       scrollable
                       @input="onChangeProgramAndLocationWiseBeneficiary($event)"
@@ -1171,6 +1172,28 @@ export default {
       }
       // this.GetWaitingBeneficiaries();
     },
+
+    customDateRangeRule(value) {
+      alert(value);
+      if (!value || value.length !== 2) {
+        return "Please select a valid date range";
+      }
+
+      const startDate = value[0];
+      const endDate = value[1];
+
+      if (!startDate || !endDate) {
+        return "Please select both start and end dates";
+      }
+
+      if (endDate < startDate) {
+        return "End date must be after start date";
+      }
+
+      // Additional custom validation logic if needed
+
+      return true; // Validation passed
+    },
   },
   watch: {
     "$i18n.locale": "updateHeaderTitle",
@@ -1459,12 +1482,19 @@ export default {
         ],
       },
       options: {
-        scales: {
-          x: {
-            stacked: true,
+        plugins: {
+          legend: {
+            labels: false,
           },
         },
       },
+      // options: {
+      //   scales: {
+      //     x: {
+      //       stacked: true,
+      //     },
+      //   },
+      // },
     });
 
     new Chart(document.getElementById("shifted_beneficiary"), {
