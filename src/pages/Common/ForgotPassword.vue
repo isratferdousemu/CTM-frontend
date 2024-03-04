@@ -216,6 +216,20 @@
                 >
                   <v-form @submit.prevent="sendOtp" class="ma-5">
                     <ValidationProvider
+                      name="Username"
+                      vid="username"
+                      rules="required"
+                    >
+                    <v-text-field
+                      type="text"
+                      label="Username"
+                      v-model="form.username"
+                      :error="errors.username ? true : false"
+                      :error-messages="errors.username"
+                    ></v-text-field>
+                    </ValidationProvider>
+
+                    <ValidationProvider
                       name="Phone"
                       vid="phone"
                       rules="required"
@@ -227,12 +241,6 @@
                       :error="errors.phone ? true : false"
                       :error-messages="errors.phone"
                     ></v-text-field>
-                      <!-- :error="
-                          forgotPasswordErrors && forgotPasswordErrors.phone
-                        "
-                        :error-messages="
-                          forgotPasswordErrors ? forgotPasswordErrors.phone : []
-                        " -->
                     </ValidationProvider>
 
                     <div class="d-inline d-flex justify-end">
@@ -272,8 +280,8 @@ export default {
     step: 1,
     height: "57vh",
     form: new Form({
-      device_token: "admin@ctm.com",
       phone: "",
+      username: "",
       otp: "",
       password: "",
       confirm_password: "",
@@ -300,9 +308,8 @@ export default {
       this.step = 1;
     },
     async sendOtp() {
-      await this.$store.dispatch("sendOtpForgetPassword", this.form);
       try {
-        this.$store
+        await this.$store
           .dispatch("sendOtpForgetPassword", this.form)
           .then((data) => {
             if (data?.success == true) {
