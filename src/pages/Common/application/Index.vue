@@ -637,8 +637,8 @@
                               $t('container.system_config.demo_graphic.ward.post_code') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-text-field v-model="data.post_code" outlined clearable :error="errors[0] ? true : false"
-                              :error-messages="errors[0]">
+                            <v-text-field v-model="data.post_code" type="number" outlined clearable :error="errors[0] ? true : false"
+                              :error-messages="errors[0]" >
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
@@ -854,7 +854,7 @@
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6" lg="6">
-                          <ValidationProvider name="Post Code" vid="permanent_post_code" rules="CheckPost"
+                          <ValidationProvider name="Post Code" vid="permanent_post_code" rules="CheckPost" type="number"
                             v-slot="{ errors }">
                             <label style="display: inline-block">{{
                               $t('container.system_config.demo_graphic.ward.post_code') }}

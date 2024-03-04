@@ -267,7 +267,7 @@
                     <ValidationProvider
                       name="Mobile Number"
                       vid="mobile"
-                      rules="required"
+                      rules="checkPhoneNumber"
                       v-slot="{ errors }"
                     >
                       <v-text-field
@@ -950,6 +950,7 @@
                         :hide-details="errors[0] ? false : true"
                         v-model="data.office_id"
                         outlined
+                        @input="onChangeOffice($event)"
                         :label="
                           $t(
                             'container.system_config.demo_graphic.user.office_id'
@@ -964,6 +965,40 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
+
+<!--                  <v-col
+                    lg="6"
+                    md="6"
+                    cols="12"
+                    v-if="
+                      data.office_type == 9 ||
+                      data.office_type == 10
+                    "
+                  >
+                    <ValidationProvider
+                      name="Ward"
+                      vid="office_ward_id"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        :hide-details="errors[0] ? false : true"
+                        v-model="data.office_ward_id"
+                        outlined
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.user.ward'
+                          )
+                        "
+                        :items="officeWards"
+                        item-text="name_en"
+                        item-value="id"
+                        multiple
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>-->
                 </v-row>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
@@ -1053,7 +1088,7 @@
                     <ValidationProvider
                         name="Mobile Number"
                         vid="mobile"
-                        rules="required"
+                        rules="checkPhoneNumber"
                         v-slot="{ errors }"
                     >
                       <v-text-field
@@ -1876,6 +1911,20 @@ extend("checkUsername", {
   message: "Username should be in lowercase and without any special character",
 });
 
+extend("checkPhoneNumber", {
+  validate: (value) => {
+    if (!value && value !== 0) {
+      return false;
+    }
+    // Check if all characters are numeric and not allow special characters
+    const isValid = /^01[3-9]\d{8}$/.test(value);
+
+    // Return true if both conditions are met
+    return isValid;
+  },
+  message: "Enter a valid number eg. 017xxxxxxxx",
+});
+
 export default {
   name: "Index",
   title: "CTM - User Management",
@@ -1901,7 +1950,8 @@ export default {
         ward_id: null,
         city_corpo_id: null,
         committee_type: null,
-        committee_id: null
+        committee_id: null,
+        office_ward_id: []
       },
       isDistrictHidden: true,
       isLocationTypeHidden: true,
@@ -1926,6 +1976,7 @@ export default {
       users: [],
       Allusers: [],
       committees: [],
+      officeWards: [],
       userType_id: null,
       userType: [
         {
@@ -2565,7 +2616,10 @@ export default {
 
       this.offices = []
 
-      this.getOfficeByLocation(event);
+      //ministry & head office
+      if (event == 4 || event == 5) {
+        this.getOfficeByLocation(event);
+      }
 
       // if (this.dialogEdit) {
       //   this.getOfficeByLocation(event);
@@ -2780,6 +2834,25 @@ export default {
     },
 
 
+    async onChangeOffice(event) {
+      this.officeWards = []
+
+      await this.$axios
+          .get(`/admin/office/wards/${event}`, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((result) => {
+            this.officeWards = result.data.data;
+          });
+    },
+
+
+
+
+
 
     async getCommittees(locationId) {
       this.data.committee_id = null;
@@ -2825,7 +2898,7 @@ export default {
       }
     },
 
-    getOfficeByLocation(office_type_id, location_type_id = null) {
+    async getOfficeByLocation(office_type_id, location_type_id = null) {
       let data = {
         office_type_id: office_type_id,
         location_type_id: location_type_id,
@@ -2836,7 +2909,7 @@ export default {
           fd.append(key, value);
         }
       }
-      this.$axios
+      await this.$axios
         .post("/admin/user/office/by-location", fd, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,

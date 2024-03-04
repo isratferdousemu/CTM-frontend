@@ -395,7 +395,7 @@
           "location": "Assigned Location",
           "login_id": "Login ID",
           "role": "Role",
-          "user_id": "User ID"
+          "ward": "Ward"
         },
         "financial_year": {
           "financial_year": "Financial Year",
