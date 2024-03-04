@@ -45,7 +45,8 @@ const routes = [
         },
         component: () =>
           import(
-            "../pages/Common/dashboard.vue"
+            "../pages/ApplicationSelection/Dashboard/Index.vue"
+            // "../pages/Common/dashboard.vue"
           ),
       },
       ...ApplicationSelectionRoutes,
