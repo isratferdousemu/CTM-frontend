@@ -929,7 +929,15 @@ export default {
           this.selectAll = false;
           this.GetApplication();
         })
-        .catch((err) => { });
+        .catch((err) => { 
+          if (err.response && err.response.data && err.response.data.errors) {
+            const errorMessage = err.response.data.errors.applications_id[0];
+            this.$toast.error(errorMessage);
+          } else {
+            this.$toast.error('An error occurred. Please try again later.');
+          }
+        
+        });
     },
     SubmitApproved() {
       this.forward.status = 2;
@@ -961,12 +969,20 @@ export default {
           },
         })
         .then((result) => {
+          
           this.forward = [];
           this.selectAll = false;
           this.forward.applications_id = [];
           this.GetApplication();
         })
-        .catch((err) => { });
+        .catch((err) => {
+          if (err.response && err.response.data && err.response.data.errors) {
+            const errorMessage = err.response.data.errors.applications_id[0];
+            this.$toast.error(errorMessage);
+          } else {
+            this.$toast.error('An error occurred. Please try again later.');
+          }
+         });
     },
     SubmitWaiting() {
       this.forward.status = 3;
@@ -1004,7 +1020,15 @@ export default {
           this.forward.applications_id = [];
           this.GetApplication();
         })
-        .catch((err) => { });
+        .catch((err) => { 
+          if (err.response && err.response.data && err.response.data.errors) {
+            const errorMessage = err.response.data.errors.applications_id[0];
+            this.$toast.error(errorMessage);
+          } else {
+            this.$toast.error('An error occurred. Please try again later.');
+          }
+          
+        });
     },
     SubmitReject() {
       this.forward.status = 4;
@@ -1041,7 +1065,14 @@ export default {
           this.GetApplication();
           this.selectAll = false;
         })
-        .catch((err) => { });
+        .catch((err) => { 
+          if (err.response && err.response.data && err.response.data.errors) {
+            const errorMessage = err.response.data.errors.applications_id[0];
+            this.$toast.error(errorMessage);
+          } else {
+            this.$toast.error('An error occurred. Please try again later.');
+          }
+        });
     },
     resetForm() {
       this.data.division_id = null;
