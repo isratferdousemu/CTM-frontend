@@ -4,7 +4,7 @@
     <v-col cols="12">
       <label style="color: #1976d2">
                       <span>
-                        {{ $t("Program Wise Number of Application Approve") }}
+                        {{ $t("Program Wise Number of Application Approved") }}
                       </span>
       </label></v-col
     >
@@ -112,16 +112,21 @@ export default {
         this.programwise_application_approve_chart.destroy();
       }
       if (this.programwise_application_approve_levels && this.programwise_application_approve_datas) {
+        const total = this.programwise_application_approve_datas.reduce((acc, value) => acc + value, 0);
+        const percentages = this.programwise_application_approve_datas.map(value => ((value / total) * 100).toFixed(2) + '%');
+
         this.programwise_application_approve_chart = new Chart(document.getElementById("programwise_application_approval"), {
           type: "pie",
           data: {
-            labels: this.programwise_application_approve_levels,
+            // labels: this.programwise_application_approve_levels,
+            labels: this.programwise_application_approve_levels.map((label, index) => `${label} (${percentages[index]})`),
             percentage: 0.5,
             datasets: [
               {
                 label: "Values",
                 data: this.programwise_application_approve_datas,
-                backgroundColor: ["Green", "Red", "blue", "Purple", "Yellow"],
+                backgroundColor: this.programwise_application_approve_datas.map(() => this.generateRandomColor()),
+                // backgroundColor: ["Green", "Red", "blue", "Purple", "Yellow"],
                 hoverOffset: 4,
               },
             ],
@@ -131,14 +136,30 @@ export default {
               legend: {
                 display: true,
                 position: "bottom",
-                align: "center",
+                align: "start",
               },
             },
+            layout: {
+              padding: {
+                left: 20,
+                right: 20,
+                top: 0,
+                bottom: 20
+              }
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            aspectRatio: 1, // Aspect ratio of 1 w
           },
         });
+        document.getElementById("programwise_application_approval").style.width = '400px';
+        document.getElementById("programwise_application_approval").style.height = '435px';
       } else {
         console.error("Data is not available to create chart.");
       }
+    },
+    generateRandomColor() {
+      return '#' + Math.floor(Math.random() * 16777215).toString(16);
     },
 
     OnChangeDateInfo(event, type) {

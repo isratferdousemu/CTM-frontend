@@ -4,7 +4,7 @@
     <v-col cols="12">
       <label style="color: #1976d2">
                       <span>
-                        {{ $t("Total Number of Application Received Application") }}
+                        {{ $t("Total Number of Application Received") }}
                       </span>
       </label></v-col
     >
@@ -113,12 +113,17 @@ export default {
       }
 
       if (this.total_number_of_application_received_levels && this.total_number_of_application_received_datas) {
+        const total = this.total_number_of_application_received_datas.reduce((acc, value) => acc + value, 0);
+        const percentages = this.total_number_of_application_received_datas.map(value => ((value / total) * 100).toFixed(2) + '%');
+
         this.total_number_of_application_received_chart = new Chart(document.getElementById("total_number_of_application_received_info"), {
           type: "doughnut",
           data: {
-            labels: this.total_number_of_application_received_levels,
+            // labels: this.total_number_of_application_received_levels,
+            labels: this.total_number_of_application_received_levels.map((label, index) => `${label} (${percentages[index]})`),
             datasets: [{
               label: "Count",
+              backgroundColor: this.total_number_of_application_received_datas.map(() => this.generateRandomColor()),
               data: this.total_number_of_application_received_datas,
               fill: false,
               tension: 0.1,
@@ -129,14 +134,30 @@ export default {
               legend: {
                 display: true,
                 position: "bottom",
-                align: "center",
+                align: "start",
               },
             },
+            layout: {
+              padding: {
+                left: 20,
+                right: 20,
+                top: 0,
+                bottom: 20
+              }
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            aspectRatio: 1, // Aspect ratio of 1 w
           },
         });
+        document.getElementById("total_number_of_application_received_info").style.width = '400px';
+        document.getElementById("total_number_of_application_received_info").style.height = '435px';
       } else {
         console.error("Data is not available to create chart.");
       }
+    },
+    generateRandomColor() {
+      return '#' + Math.floor(Math.random() * 16777215).toString(16);
     },
     OnChangeDateInfo(event, type) {
       if (this.dates.length < 2) {
