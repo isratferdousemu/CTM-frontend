@@ -568,7 +568,7 @@
         "bank_name": "Bank Name",
         "branch_name": "Branch Name",
         "bank_account_number": "Bank Account Number",
-        
+
         "email": "Email",
         "mobile_account": "MFS (Mobile Financial Service)",
         "bank_account": "Bank Account",
@@ -887,7 +887,11 @@
         "program_wise_ben": "Program Wise Beneficiary",
         "age_and_program_wise_ben": "Age & Program Wise Beneficiary",
         "total_percentage_of_location_wise_ben": "Total Percentage(%) of Beneficiary Location Wise",
-        "number_of_ben_program_shifted": "Number of Beneficiary Program Shifted"
+        "number_of_ben_program_shifted": "Number of Beneficiary Program Shifted",
+        "program": "Program",
+        "enter_start_end_date": "Enter Start & End Date",
+        "waitining_beneficiaries": "Waiting Beneficiaries",
+        "total_beneficiaries": "Total Beneficiaries"
       }
     },
     "manage_allotment": {

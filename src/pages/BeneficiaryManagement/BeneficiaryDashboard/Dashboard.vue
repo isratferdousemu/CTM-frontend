@@ -222,16 +222,22 @@
                       :rules="[customDateRangeRule]"
                       no-title
                       scrollable
-                      @input="onChangeProgramAndLocationWiseBeneficiary($event)"
+                      @change="
+                        onChangeProgramAndLocationWiseBeneficiary($event)
+                      "
                     >
                       <v-spacer></v-spacer>
-                      <v-btn text color="primary" @click="menu = false">
+                      <v-btn
+                        text
+                        color="primary"
+                        @click="resetDateProgramAndLocationWiseBeneficiary"
+                      >
                         Cancel
                       </v-btn>
                       <v-btn
                         text
                         color="primary"
-                        @click="$refs.menu.save(dates)"
+                        @click="submitDateProgramAndLocationWiseBeneficiary"
                       >
                         OK
                       </v-btn>
@@ -301,16 +307,19 @@
                       :range="[gender_wise_dates[0], gender_wise_dates[1]]"
                       no-title
                       scrollable
-                      @input="onChangeGenderWiseBeneficiary($event)"
                     >
                       <v-spacer></v-spacer>
-                      <v-btn text color="primary" @click="menu2 = false">
+                      <v-btn
+                        text
+                        color="primary"
+                        @click="resetDateGenderWiseBeneficiary"
+                      >
                         Cancel
                       </v-btn>
                       <v-btn
                         text
                         color="primary"
-                        @click="$refs.menu2.save(gender_wise_dates)"
+                        @click="submitDateGenderWiseBeneficiary"
                       >
                         OK
                       </v-btn>
@@ -383,16 +392,19 @@
                       :range="[wiaiting_wise_dates[0], wiaiting_wise_dates[1]]"
                       no-title
                       scrollable
-                      @input="onChangeWaitingBeneficiary($event)"
                     >
                       <v-spacer></v-spacer>
-                      <v-btn text color="primary" @click="menu3 = false">
+                      <v-btn
+                        text
+                        color="primary"
+                        @click="resetDateWaitingWiseBeneficiary"
+                      >
                         Cancel
                       </v-btn>
                       <v-btn
                         text
                         color="primary"
-                        @click="$refs.menu3.save(wiaiting_wise_dates)"
+                        @click="submitDateWaitingBeneficiary"
                       >
                         OK
                       </v-btn>
@@ -465,16 +477,19 @@
                         :range="[program_wise_dates[0], program_wise_dates[1]]"
                         no-title
                         scrollable
-                        @input="onChangeProgramWiseBeneficiary($event)"
                       >
                         <v-spacer></v-spacer>
-                        <v-btn text color="primary" @click="menu4 = false">
+                        <v-btn
+                          text
+                          color="primary"
+                          @click="resetDateProgramWiseBeneficiary"
+                        >
                           Cancel
                         </v-btn>
                         <v-btn
                           text
                           color="primary"
-                          @click="$refs.menu4.save(program_wise_dates)"
+                          @click="submitDateProgramBeneficiary"
                         >
                           OK
                         </v-btn>
@@ -558,16 +573,19 @@
                         ]"
                         no-title
                         scrollable
-                        @input="onChangeAgeAndProgramWiseBeneficiary($event)"
                       >
                         <v-spacer></v-spacer>
-                        <v-btn text color="primary" @click="menu5 = false">
+                        <v-btn
+                          text
+                          color="primary"
+                          @click="resetDateAgeAndProgramWiseBeneficiary"
+                        >
                           Cancel
                         </v-btn>
                         <v-btn
                           text
                           color="primary"
-                          @click="$refs.menu5.save(age_and_program_wise_dates)"
+                          @click="submitDateAgeAndProgramBeneficiary"
                         >
                           OK
                         </v-btn>
@@ -580,18 +598,9 @@
                 </v-row>
 
                 <v-row>
-                  <v-col cols="12" lg="6" md="6" class="mt-2">
-                    <v-autocomplete
-                      class="mr-5"
-                      :items="programs"
-                      :label="$t('Age')"
-                      dense
-                      item-text="name_en"
-                      item-value="id"
-                    ></v-autocomplete>
-                  </v-col>
+                  <v-col cols="12" lg="4" md="4" class="mt-2"> </v-col>
 
-                  <v-col cols="12" lg="6" md="6" class="mt-2">
+                  <v-col cols="12" lg="8" md="8" class="mt-2">
                     <v-autocomplete
                       class="mr-5"
                       :items="programs"
@@ -667,16 +676,19 @@
                         :range="[shifted_dates[0], shifted_dates[1]]"
                         no-title
                         scrollable
-                        @input="onChangeShiftedBeneficiary($event)"
                       >
                         <v-spacer></v-spacer>
-                        <v-btn text color="primary" @click="menu6 = false">
+                        <v-btn
+                          text
+                          color="primary"
+                          @click="resetDateShiftedWiseBeneficiary"
+                        >
                           Cancel
                         </v-btn>
                         <v-btn
                           text
                           color="primary"
-                          @click="$refs.menu6.save(shifted_dates)"
+                          @click="submitDateShiftedBeneficiary"
                         >
                           OK
                         </v-btn>
@@ -695,64 +707,6 @@
                         {{ $t("Number of Beneficiary Program Shifted") }}
                       </span>
                     </label>
-                  </v-col>
-                </v-row>
-              </v-col>
-            </V-row>
-          </v-card-text>
-        </v-card>
-      </v-col>
-      <v-col cols="12" md="6" lg="6">
-        <v-card height="100%">
-          <v-card-text>
-            <V-row>
-              <v-col>
-                <v-row>
-                  <v-col cols="12" lg="6" md="6">
-                    <label style="color: #1976d2">
-                      <span>
-                        {{
-                          $t("Total Percentage(%) of Beneficiary Location Wise")
-                        }}
-                      </span>
-                    </label>
-                  </v-col>
-                  <v-col cols="3" lg="3">
-                    <v-autocomplete
-                      class="mr-5"
-                      :items="months"
-                      :label="$t('Month')"
-                      dense
-                      item-text="month_name"
-                      item-value="month_name"
-                    ></v-autocomplete>
-                  </v-col>
-                  <v-col cols="3" lg="3">
-                    <v-autocomplete
-                      class="mr-5"
-                      :items="years"
-                      :label="$t('Year')"
-                      dense
-                      item-text="year_name"
-                      item-value="year_name"
-                    ></v-autocomplete>
-                  </v-col>
-                </v-row>
-
-                <v-row>
-                  <!-- <canvas id="linechart2"></canvas> -->
-                </v-row>
-                <v-row>
-                  <v-col cols="12" lg="4" md="4"> </v-col>
-                  <v-col cols="12" lg="8" md="8">
-                    <v-autocomplete
-                      class="mr-5"
-                      :items="programs"
-                      :label="$t('Program')"
-                      dense
-                      item-text="name_en"
-                      item-value="id"
-                    ></v-autocomplete>
                   </v-col>
                 </v-row>
               </v-col>
@@ -840,46 +794,51 @@ export default {
       beneficiaries: [],
       genders: ["Male", "Female", "3rd Gender"],
       program_name: "",
+
       //for program & location wise chart
       program_location_chart: null,
       program_location_Wise_beneficiary: {
         program_id: null,
       },
       dates: [],
+      menu: false,
+
       //for gender wise chart
       gender_wise_chart: null,
       gender_Wise_beneficiary: {
         program_id: null,
       },
       gender_wise_dates: [],
+      menu2: false,
+
+      //for Year Wise Number of Waiting list of Beneficiary chart
       waiting_beneficiary: {
         program_id: null,
       },
       wiaiting_wise_dates: [],
+      menu3: false,
 
+      //for Program Wise Beneficiary chart
       program_wise_beneficiary: {
         program_id: null,
       },
       program_wise_dates: [],
+      menu4: false,
 
+      //for Age & Program Wise Beneficiary chart
       age_and_program_wise_beneficiary: {
         program_id: null,
       },
       age_and_program_wise_dates: [],
+      menu5: false,
 
+      //for Shifted Beneficiary chart
       shifted_beneficiary: {
         from_program_id: null,
         to_program_id: null,
       },
       shifted_dates: [],
-
-      // dates: ["2019-09-10", "2019-09-20"],
-      // dates: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-      //   .toISOString()
-      //   .substr(0, 10),
-      // menu: false,
-      // modal: false,
-      // menu2: false,
+      menu6: false,
 
       isLoading: false,
     };
@@ -964,8 +923,8 @@ export default {
       this.isLoading = true;
       const queryParams = {
         program_id: this.program_location_Wise_beneficiary.program_id,
-        to_date: this.dates[0],
-        from_date: this.dates[1],
+        from_date: this.dates[0],
+        to_date: this.dates[1],
       };
       await this.$axios
         .get("/admin/beneficiary-dashboard/getLocationWiseBeneficiaries", {
@@ -991,16 +950,24 @@ export default {
         });
     },
     onChangeProgramAndLocationWiseBeneficiary(event) {
-      if (this.dates.length < 2) {
+      if (this.dates.length < 2 || event < 2) {
         return;
       }
+      this.GetLocationWiseBeneficiaries();
+    },
+    submitDateProgramAndLocationWiseBeneficiary() {
+      this.menu = false;
+    },
+    resetDateProgramAndLocationWiseBeneficiary() {
+      this.dates = [];
+      this.menu = false;
       this.GetLocationWiseBeneficiaries();
     },
     async GetGenderWiseBeneficiaries() {
       const queryParams = {
         program_id: this.gender_Wise_beneficiary.program_id,
-        to_date: this.gender_wise_dates[0],
-        from_date: this.gender_wise_dates[1],
+        from_date: this.gender_wise_dates[0],
+        to_date: this.gender_wise_dates[1],
       };
       await this.$axios
         .get("/admin/beneficiary-dashboard/getGenderWiseBeneficiaries", {
@@ -1025,17 +992,23 @@ export default {
           this.gender_wise_chart.update();
         });
     },
-    onChangeGenderWiseBeneficiary(event) {
+    submitDateGenderWiseBeneficiary() {
+      this.menu2 = false;
       if (this.gender_wise_dates.length < 2) {
         return;
       }
       this.GetGenderWiseBeneficiaries();
     },
+    resetDateGenderWiseBeneficiary() {
+      this.gender_wise_dates = [];
+      this.menu2 = false;
+      this.GetGenderWiseBeneficiaries();
+    },
     async GetWaitingBeneficiaries() {
       const queryParams = {
         program_id: this.waiting_beneficiary.program_id,
-        to_date: this.wiaiting_wise_dates[0],
-        from_date: this.wiaiting_wise_dates[1],
+        from_date: this.wiaiting_wise_dates[0],
+        to_date: this.wiaiting_wise_dates[1],
       };
       await this.$axios
         .get("/admin/beneficiary-dashboard/getGenderWiseBeneficiaries", {
@@ -1060,17 +1033,23 @@ export default {
           // this.gender_wise_chart.update();
         });
     },
-    onChangeWaitingBeneficiary(event) {
+    submitDateWaitingBeneficiary() {
+      this.menu3 = false;
       if (this.wiaiting_wise_dates.length < 2) {
         return;
       }
-      // this.GetWaitingBeneficiaries();
+      this.GetWaitingBeneficiaries();
+    },
+    resetDateWaitingWiseBeneficiary() {
+      this.wiaiting_wise_dates = [];
+      this.menu3 = false;
+      this.GetWaitingBeneficiaries();
     },
     async GetProgramWiseBeneficiaries() {
       const queryParams = {
         program_id: this.program_wise_beneficiary.program_id,
-        to_date: this.program_wise_dates[0],
-        from_date: this.program_wise_dates[1],
+        from_date: this.program_wise_dates[0],
+        to_date: this.program_wise_dates[1],
       };
       await this.$axios
         .get("/admin/beneficiary-dashboard/getGenderWiseBeneficiaries", {
@@ -1095,17 +1074,23 @@ export default {
           // this.gender_wise_chart.update();
         });
     },
-    onChangeProgramWiseBeneficiary(event) {
+    submitDateProgramBeneficiary() {
+      this.menu4 = false;
       if (this.program_wise_dates.length < 2) {
         return;
       }
-      // this.GetWaitingBeneficiaries();
+      this.GetProgramWiseBeneficiaries();
+    },
+    resetDateProgramWiseBeneficiary() {
+      this.program_wise_dates = [];
+      this.menu4 = false;
+      this.GetProgramWiseBeneficiaries();
     },
     async GetAgeAndProgramWiseBeneficiaries() {
       const queryParams = {
         program_id: this.age_and_program_wise_beneficiary.program_id,
-        to_date: this.age_and_program_wise_dates[0],
-        from_date: this.age_and_program_wise_dates[1],
+        from_date: this.age_and_program_wise_dates[0],
+        to_date: this.age_and_program_wise_dates[1],
       };
       await this.$axios
         .get("/admin/beneficiary-dashboard/getGenderWiseBeneficiaries", {
@@ -1130,18 +1115,24 @@ export default {
           // this.gender_wise_chart.update();
         });
     },
-    onChangeAgeAndProgramWiseBeneficiary(event) {
+    submitDateAgeAndProgramBeneficiary() {
+      this.menu5 = false;
       if (this.age_and_program_wise_dates.length < 2) {
         return;
       }
-      // this.GetWaitingBeneficiaries();
+      this.GetAgeAndProgramWiseBeneficiaries();
+    },
+    resetDateAgeAndProgramWiseBeneficiary() {
+      this.age_and_program_wise_dates = [];
+      this.menu5 = false;
+      this.GetAgeAndProgramWiseBeneficiaries();
     },
     async GetShiftedBeneficiaries() {
       const queryParams = {
         to_program_id: this.shifted_beneficiary.to_program_id,
         from_program_id: this.shifted_beneficiary.from_program_id,
-        to_date: this.shifted_dates[0],
-        from_date: this.shifted_dates[1],
+        from_date: this.shifted_dates[0],
+        to_date: this.shifted_dates[1],
       };
       await this.$axios
         .get("/admin/beneficiary-dashboard/getGenderWiseBeneficiaries", {
@@ -1166,13 +1157,18 @@ export default {
           // this.gender_wise_chart.update();
         });
     },
-    onChangeShiftedBeneficiary(event) {
+    submitDateShiftedBeneficiary() {
+      this.menu6 = false;
       if (this.shifted_dates.length < 2) {
         return;
       }
-      // this.GetWaitingBeneficiaries();
+      this.GetShiftedBeneficiaries();
     },
-
+    resetDateShiftedWiseBeneficiary() {
+      this.shifted_dates = [];
+      this.menu6 = false;
+      this.GetShiftedBeneficiaries();
+    },
     customDateRangeRule(value) {
       alert(value);
       if (!value || value.length !== 2) {
