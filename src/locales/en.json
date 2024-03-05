@@ -889,6 +889,8 @@
         "total_percentage_of_location_wise_ben": "Total Percentage(%) of Beneficiary Location Wise",
         "number_of_ben_program_shifted": "Number of Beneficiary Program Shifted",
         "program": "Program",
+        "to_program_name": "To Program Name",
+        "from_program_name": "From Program Name",
         "enter_start_end_date": "Enter Start & End Date",
         "waitining_beneficiaries": "Waiting Beneficiaries",
         "total_beneficiaries": "Total Beneficiaries"
