@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-row justify="center">
-      <v-col v-for="item in items" :key="item.id" class="justify-center">
+      <v-col v-for="item in get_all_application_count_info" :key="item.id" class="justify-center">
         <v-card class="elevation-10 border-radius-card">
           <v-card-text class="flex-column align-center">
             <div class="d-flex align-center">
@@ -84,26 +84,8 @@ export default {
   title: "System Configuration Dashboard",
   data() {
     return {
-      items: [
-        { id: 1, icon: "mdi-map-marker", title: "Division", number: 100 },
-        { id: 2, icon: "mdi-map-marker", title: "District", number: 50 },
-        { id: 3, icon: "mdi-map-marker", title: "Upazila", number: 200 },
-        { id: 1, icon: "mdi-map-marker", title: "City Cor.", number: 100 },
-        { id: 2, icon: "mdi-map-marker", title: "Dist/Pau ", number: 50 },
-        { id: 3, icon: "mdi-map-marker", title: "Union", number: 200 },
-        { id: 1, icon: "mdi-map-marker", title: "Thana", number: 100 },
-        { id: 2, icon: "mdi-map-marker", title: "Paurashava", number: 50 },
-        { id: 3, icon: "mdi-map-marker", title: "Wawrd", number: 200 },
-        // Add more items as needed
-      ],
-      items1: [
-        { value1: 'Item 1', value2: 'Value 1' },
-        { value1: 'Item 2', value2: 'Value 2' },
-      ],
-      items2: [
-        { value1: 'Item 3', value2: 'Value 3' },
-        { value1: 'Item 4', value2: 'Value 4' },
-      ],
+      get_all_application_count_info: [],
+
     };
   },
   components: {
@@ -121,7 +103,19 @@ export default {
     },
   },
   methods: {
+    async getAllApplicationLocationCount() {
+      await this.$axios
+          .get(`/admin/system-configuration/dashboard/get-all-location-application-count`, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((result) => {
+            this.get_all_application_count_info = result.data.data
+          });
 
+    },
   },
   mounted(){
     this.drawer = false;
@@ -134,7 +128,7 @@ export default {
   },
 
   created() {
-
+    this.getAllApplicationLocationCount()
   },
 
 }
