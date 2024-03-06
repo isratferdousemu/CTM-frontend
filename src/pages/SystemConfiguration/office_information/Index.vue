@@ -402,6 +402,7 @@
                             'container.system_config.demo_graphic.office.office_type'
                           )
                             " :items="officeType" item-text="value_en" item-value="id"
+                          :readonly="((selectedWards.length > 0) && (data.office_type === 9)) || ((selectedWards_UCDUpazila.length > 0) && (data.office_type === 10))"
                           :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                       </ValidationProvider>
                     </v-col>
@@ -419,6 +420,7 @@
                             'container.system_config.demo_graphic.division.division'
                           )
                             " :items="divisions" item-text="name_en" item-value="id" required
+                         :readonly="((selectedWards.length > 0) && (data.office_type === 9)) || ((selectedWards_UCDUpazila.length > 0) && (data.office_type === 10))"
                           :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                       </ValidationProvider>
                     </v-col>
@@ -434,6 +436,7 @@
                             'container.system_config.demo_graphic.district.district'
                           )
                             " :items="districts" item-text="name_en" item-value="id" required
+                          :readonly="((selectedWards.length > 0) && (data.office_type === 9)) || ((selectedWards_UCDUpazila.length > 0) && (data.office_type === 10))"
                           :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                       </ValidationProvider>
                     </v-col>
@@ -441,6 +444,7 @@
                       data.office_type === 10">
                       <ValidationProvider name="Upazila" vid="upazila" rules="required" v-slot="{ errors }">
                         <v-autocomplete :hide-details="errors[0] ? false : true" outlined
+                           :readonly="((selectedWards.length > 0) && (data.office_type === 9)) || ((selectedWards_UCDUpazila.length > 0) && (data.office_type === 10))"
                           v-model="data.upazila_id" :label="$t(
                             'container.system_config.demo_graphic.office.upazila'
                           )
@@ -485,7 +489,7 @@
                         <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.city_id"
                           @change="onChangeCity($event)" outlined :label="$t('container.system_config.demo_graphic.office.city')
                             " :items="cities" item-text="name_en" item-value="id" required
-                                        :error="errors[0] ? true : false"
+                          :readonly="data.city_id !== null" :error="errors[0] ? true : false"
                           :error-messages="errors[0]"></v-autocomplete>
                       </ValidationProvider>
                     </v-col>
@@ -506,7 +510,6 @@
                       </ValidationProvider>
                       <div v-if="message" class="red--text">{{ message }}</div>
                     </v-col>
-
                     <v-col lg="6" md="6" cols="12" v-if="data.office_type === 10">
                       <ValidationProvider name="ward" vid="ward_id_upazila_ucd" v-slot="{ errors }">
                         <v-autocomplete :hide-details="errors[0] ? false : true" v-model="selectedWards_UCDUpazila_edit"
@@ -516,7 +519,6 @@
                       </ValidationProvider>
                       <div v-if="message" class="red--text">{{ message }}</div>
                     </v-col>
-
                     <v-col lg="6" md="6" cols="12" v-if="data.office_type === 35">
                       <ValidationProvider name="Upazila" vid="upazila" rules="required" v-slot="{ errors }">
                         <v-autocomplete :hide-details="errors[0] ? false : true" outlined v-model="data.dist_pouro_id"
