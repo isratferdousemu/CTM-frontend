@@ -966,7 +966,7 @@
                     </ValidationProvider>
                   </v-col>
 
-<!--                  <v-col
+                  <v-col
                     lg="6"
                     md="6"
                     cols="12"
@@ -998,7 +998,7 @@
                         :error-messages="errors[0]"
                       ></v-autocomplete>
                     </ValidationProvider>
-                  </v-col>-->
+                  </v-col>
                 </v-row>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
@@ -1769,6 +1769,7 @@
                           :hide-details="errors[0] ? false : true"
                           v-model="data.office_id"
                           outlined
+                          @input="onChangeOffice($event)"
                           :label="
                           $t(
                             'container.system_config.demo_graphic.user.office_id'
@@ -1783,6 +1784,42 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
+
+
+                  <v-col
+                      lg="6"
+                      md="6"
+                      cols="12"
+                      v-if="
+                      data.office_type == 9 ||
+                      data.office_type == 10
+                    "
+                  >
+                    <ValidationProvider
+                        name="Ward"
+                        vid="office_ward_id"
+                        rules="required"
+                        v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                          :hide-details="errors[0] ? false : true"
+                          v-model="data.office_ward_id"
+                          outlined
+                          :label="
+                          $t(
+                            'container.system_config.demo_graphic.user.ward'
+                          )
+                        "
+                          :items="officeWards"
+                          item-text="name_en"
+                          item-value="id"
+                          multiple
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+
                 </v-row>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
@@ -2329,14 +2366,16 @@ export default {
       this.data.username = item.username;
       this.data.mobile = item.mobile;
       this.data.email = item.email;
-      this.data.user_type = item.office_id ? 1 : 2;
+      this.data.user_type = item.office_type ? 1 : 2;
 
       this.data.status = item.status
 
 
       if (this.data.user_type == 2) {
+        this.data.office_type = null
         this.data.committee_type = item.committee_type_id
       } else {
+        this.data.committee_type = null
         this.data.office_type = item.office_type
       }
 
@@ -2429,10 +2468,14 @@ export default {
         this.onChangeWard(this.data.thana_id)
       }
 
-
       this.data.office_id = item.office_id
       this.data.committee_id = item.committee_id
 
+      if (this.data.office_id && item?.user_wards?.length) {
+        this.onChangeOffice(this.data.office_id)
+      }
+
+      this.data.office_ward_id = item?.user_wards?.map(i => i.id)
     },
 
 
@@ -2836,6 +2879,7 @@ export default {
 
     async onChangeOffice(event) {
       this.officeWards = []
+      this.data.office_ward_id = []
 
       await this.$axios
           .get(`/admin/office/wards/${event}`, {
