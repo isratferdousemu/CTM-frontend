@@ -101,13 +101,20 @@ export default {
     TotalNumerForwardedBarChart,
   },
   computed: {
-
+    drawer: {
+      get() {
+        return this.$store.state.Drawer;
+      },
+      set(v) {
+        return this.$store.commit("setDrawer", v);
+      },
+    },
   },
   methods: {
 
-
   },
   mounted(){
+    this.drawer = false;
   },
   beforeMount() {
 

@@ -20,6 +20,9 @@
       <v-col cols="12" md="6" lg="6">
         <v-card>
           <v-card-text>
+            <V-row>
+              <ProgramWiseTotalBeneficiaryDoughnutChart/>
+            </V-row>
           </v-card-text>
         </v-card>
       </v-col>
@@ -36,42 +39,36 @@
 
     </v-row>
 
-    <v-row>
-      <v-col>
-        <v-simple-table class="table-bord">
-          <template v-slot:default>
-            <thead>
-            <tr>
-              <th colspan="5" class="text-center">Active Allowance Program List</th>
-            </tr>
-            <tr>
-              <th class="text-center">SL</th>
-              <th class="text-center">Program Name</th>
-              <th class="text-center">Total Number of Beneficiary</th>
-              <th class="text-center">Active Fiscal Year</th>
-              <th class="text-center">Year of Start</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <td class="bordered-cell">1</td>
-              <td class="bordered-cell">Old Age</td>
-              <td class="bordered-cell">125000</td>
-              <td class="bordered-cell">2024-2025</td>
-              <td class="bordered-cell">1992-1993</td>
-            </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
+<!--    <v-row>-->
+<!--      <v-col>-->
+<!--        <v-simple-table class="table-bord">-->
+<!--          <template v-slot:default>-->
+<!--            <thead>-->
+<!--            <tr>-->
+<!--              <th colspan="5" class="text-center">Active Allowance Program List</th>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--              <th class="text-center">SL</th>-->
+<!--              <th class="text-center">Program Name</th>-->
+<!--              <th class="text-center">Total Number of Beneficiary</th>-->
+<!--              <th class="text-center">Active Fiscal Year</th>-->
+<!--              <th class="text-center">Year of Start</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--            <tr>-->
+<!--              <td class="bordered-cell">1</td>-->
+<!--              <td class="bordered-cell">Old Age</td>-->
+<!--              <td class="bordered-cell">125000</td>-->
+<!--              <td class="bordered-cell">2024-2025</td>-->
+<!--              <td class="bordered-cell">1992-1993</td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--          </template>-->
+<!--        </v-simple-table>-->
 
-      </v-col>
-    </v-row>
-
-
-
-
-
-
+<!--      </v-col>-->
+<!--    </v-row>-->
   </v-container>
 </template>
 
@@ -79,6 +76,8 @@
 import Chart from "chart.js/auto";
 import OfficeTypeofUserNumber from "@/pages/SystemConfiguration/Dashboard/OfficeTypeofUserNumber.vue";
 import TotalNumerForwardedBarChart from "@/pages/ApplicationSelection/Dashboard/TotalNumerForwardedBarChart.vue";
+import ProgramWiseTotalBeneficiaryDoughnutChart
+  from "@/pages/SystemConfiguration/Dashboard/ProgramWiseTotalBeneficiaryDoughnutChart.vue";
 export default {
   name: "Index",
   title: "System Configuration Dashboard",
@@ -90,7 +89,8 @@ export default {
   },
   components: {
     TotalNumerForwardedBarChart,
-    OfficeTypeofUserNumber
+    OfficeTypeofUserNumber,
+    ProgramWiseTotalBeneficiaryDoughnutChart
   },
   computed: {
     drawer: {
