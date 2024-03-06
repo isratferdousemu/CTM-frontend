@@ -36,7 +36,13 @@
       width="350"
     >
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="indigo" dark v-bind="attrs" v-on="on" icon>
+
+        <div style="margin-top: 15px; margin-left: 5px; ">
+          <b>{{userData.full_name}}</b>
+          <p style="font-size: 14px;">{{userData.roleNames.join(', ')}}</p>
+        </div>
+
+  <v-btn color="indigo" dark v-bind="attrs" v-on="on" icon>
           <v-badge
             v-if="notificationUnseen > 0"
             :content="notificationUnseen"
