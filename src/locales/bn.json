@@ -871,6 +871,26 @@
         "title": "সুবিধাভোগী স্থানান্তর",
         "cause": "কারণ",
         "activation_date": "সক্রিয়করণের তারিখ"
+      },
+      "dashboard": {
+        "total_beneficiary": "সুবিধাভোগীর মোট সংখ্যা",
+        "active_beneficiary": "সক্রিয় সুবিধাভোগীর সংখ্যা",
+        "inactive_beneficiary": "নিষ্ক্রিয়/মৃত সুবিধাভোগীর সংখ্যা",
+        "waitining_beneficiary": "অপেক্ষামান সুবিধাভোগীর সংখ্যা",
+        "replaced_beneficiary": "প্রতিস্থাপিত সুবিধাভোগীর সংখ্যা",
+        "program_and_location_wise_ben": "প্রোগ্রাম এবং অবস্থান অনুযায়ী সুবিধাভোগী",
+        "gender_wise_ben": "লিঙ্গ অনুযায়ী সুবিধাভোগী",
+        "year_wise_waiting_ben": "বছর অনুযায়ী অপেক্ষমান সুবিধাভোগীর সংখ্যা",
+        "program_wise_ben": "কর্মসূচি অনুযায়ী সুবিধাভোগী",
+        "age_and_program_wise_ben": "বয়স ও কর্মসূচি অনুযায়ী সুবিধাভোগী",
+        "total_percentage_of_location_wise_ben": "সুবিধাভোগীর অবস্থান অনুযায়ী মোট শতাংশ (%)",
+        "number_of_ben_program_shifted": "প্রোগ্রাম স্থানান্তরিত সংখ্যা অনুযায়ী সুবিধাভোগী",
+        "program": "কর্মসূচী",
+        "to_program_name": "স্থানান্তরিত প্রোগ্রাম",
+        "from_program_name": "পূর্বের প্রোগ্রাম",
+        "enter_start_end_date": "শুরু এবং শেষ তারিখ লিখুন",
+        "waitining_beneficiaries": "অপেক্ষমান সুবিধাভোগী",
+        "total_beneficiaries": "মোট সুবিধাভোগী"
       }
     },
     "manage_allotment": {

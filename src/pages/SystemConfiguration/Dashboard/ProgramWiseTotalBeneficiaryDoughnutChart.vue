@@ -4,7 +4,7 @@
     <v-col cols="12">
       <label style="color: #1976d2">
                       <span>
-                        {{ $t("Number of Application Rejected") }}
+                        {{ $t("Total Number of Program Wise Beneficiary") }}
                       </span>
       </label></v-col
     >
@@ -37,7 +37,7 @@
       >
         <v-spacer></v-spacer>
         <v-btn text color="primary" @click="resetDateRange">
-          Cancel
+          Reset
         </v-btn>
         <v-btn
             text
@@ -50,7 +50,7 @@
     </v-menu>
   </v-row>
   <v-row>
-    <canvas id="total_number_of_application_rejected_info"></canvas>
+    <canvas id="total_number_of_office_typewise_user_info"></canvas>
   </v-row>
   </v-col>
 
@@ -64,10 +64,10 @@ export default {
       // Define data properties here
       dates: [],
       menu: false,
-      total_number_of_application_rejected_chart: null,
-      total_number_of_application_rejected_info: [],
-      total_number_of_application_rejected_levels: [],
-      total_number_of_application_rejected_datas: [],
+      total_number_of_office_typewise_user_chart: null,
+      total_number_of_office_typewise_user_info: [],
+      total_number_of_office_typewise_user_levels: [],
+      total_number_of_office_typewise_user_datas: [],
       isLoading: false,
       dateRangeText: ""
     };
@@ -76,30 +76,29 @@ export default {
     resetDateRange() {
       this.dates = [];
       this.menu = false;
-      this.fetchTotalRejectedApplicationChartData()
+      this.fetchTotalOfficeTypewiseUserChartData()
     },
-    async fetchTotalRejectedApplicationChartData(from_date = null, to_date = null) {
-      await this.getTotalRejectedApplication(4, from_date, to_date);
-      this.createTotalRejectedApplicentChart();
+    async fetchTotalOfficeTypewiseUserChartData(from_date = null, to_date = null) {
+      await this.getTotalOfficeTypewiseUser(2, from_date, to_date);
+      this.createTotalOfficeTypewiseUserChart();
     },
-    async getTotalRejectedApplication(status, from_date = null, to_date = null) {
+    async getTotalOfficeTypewiseUser(status, from_date = null, to_date = null) {
       const queryParams = {
         status: status,
         start_date: from_date,
         end_date: to_date,
       };
       try {
-        const result = await this.$axios.get("/admin/application-dashboard/get-total-received-application", {
+        const result = await this.$axios.get("/admin/system-configuration/dashboard/get-program-wise-beneficiary-count", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
           },
           params: queryParams,
         });
-
-        this.total_number_of_application_rejected_info = result.data.data;
-        this.total_number_of_application_rejected_levels = this.total_number_of_application_rejected_info.map((row) => row.name_en);
-        this.total_number_of_application_rejected_datas = this.total_number_of_application_rejected_info.map((row) => row.applications_count);
+        this.total_number_of_office_typewise_user_info = result.data.data;
+        this.total_number_of_office_typewise_user_levels = this.total_number_of_office_typewise_user_info.map((row) => row.name_en);
+        this.total_number_of_office_typewise_user_datas = this.total_number_of_office_typewise_user_info.map((row) => row.beneficiaries_count);
         this.isLoading = false;
 
       } catch (error) {
@@ -107,26 +106,24 @@ export default {
         // Handle error if necessary
       }
     },
-    createTotalRejectedApplicentChart() {
-      if (this.total_number_of_application_rejected_chart) {
-        this.total_number_of_application_rejected_chart.destroy();
+    createTotalOfficeTypewiseUserChart() {
+      if (this.total_number_of_office_typewise_user_chart) {
+        this.total_number_of_office_typewise_user_chart.destroy();
       }
 
-      if (this.total_number_of_application_rejected_levels && this.total_number_of_application_rejected_datas) {
-        const total = this.total_number_of_application_rejected_datas.reduce((acc, value) => acc + value, 0);
-        const percentages = this.total_number_of_application_rejected_datas.map(value => ((value / total) * 100).toFixed(2) + '%');
+      if (this.total_number_of_office_typewise_user_levels && this.total_number_of_office_typewise_user_datas) {
+        const total = this.total_number_of_office_typewise_user_datas.reduce((acc, value) => acc + value, 0);
+        const percentages = this.total_number_of_office_typewise_user_datas.map(value => ((value / total) * 100).toFixed(2) + '%');
 
-        this.total_number_of_application_rejected_chart = new Chart(document.getElementById("total_number_of_application_rejected_info"), {
+        this.total_number_of_office_typewise_user_chart = new Chart(document.getElementById("total_number_of_office_typewise_user_info"), {
           type: "doughnut",
           data: {
-            // labels: this.total_number_of_application_rejected_levels,
-            labels: this.total_number_of_application_rejected_levels.map((label, index) => `${label} (${percentages[index]})`),
+            labels: this.total_number_of_office_typewise_user_levels.map((label, index) => `${label} (${percentages[index]})`),
             datasets: [{
               label: "Count",
-              data: this.total_number_of_application_rejected_datas,
-              backgroundColor: this.total_number_of_application_rejected_datas.map(() => this.generateRandomColor()),
-              // backgroundColor: ["Red", "Green", "blue", "Purple", "Yellow"],
-              fill: false,
+              data: this.total_number_of_office_typewise_user_datas,
+              backgroundColor: this.total_number_of_office_typewise_user_datas.map(() => this.generateRandomColor()),
+              fill: true,
               tension: 0.1,
             }],
           },
@@ -151,15 +148,17 @@ export default {
             aspectRatio: 1, // Aspect ratio of 1 w
           },
         });
-        document.getElementById("total_number_of_application_rejected_info").style.width = '400px';
-        document.getElementById("total_number_of_application_rejected_info").style.height = '435px';
+        document.getElementById("total_number_of_office_typewise_user_info").style.width = '400px';
+        document.getElementById("total_number_of_office_typewise_user_info").style.height = '435px';
       } else {
         console.error("Data is not available to create chart.");
       }
     },
+
     generateRandomColor() {
       return '#' + Math.floor(Math.random() * 16777215).toString(16);
     },
+
     OnChangeDateInfo(event, type) {
       if (this.dates.length < 2) {
         return;
@@ -171,12 +170,12 @@ export default {
         from_date = event[0];
         to_date = event[1];
       }
-      this.fetchTotalRejectedApplicationChartData(from_date, to_date);
+      this.fetchTotalOfficeTypewiseUserChartData(from_date, to_date);
     },
   },
 
   mounted() {
-    this.fetchTotalRejectedApplicationChartData();
+    this.fetchTotalOfficeTypewiseUserChartData();
   }
 }
 </script>

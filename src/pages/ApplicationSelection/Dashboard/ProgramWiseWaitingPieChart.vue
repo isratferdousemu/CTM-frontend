@@ -112,16 +112,22 @@ export default {
       }
 
       if (this.programwise_application_waiting_levels && this.programwise_application_waiting_datas) {
+
+        const total = this.programwise_application_waiting_datas.reduce((acc, value) => acc + value, 0);
+        const percentages = this.programwise_application_waiting_datas.map(value => ((value / total) * 100).toFixed(2) + '%');
+
         this.programwise_application_waiting_chart = new Chart(document.getElementById("programwise_application_waiting"), {
           type: "pie",
           data: {
-            labels: this.programwise_application_waiting_levels,
+            // labels: this.programwise_application_waiting_levels,
+            labels: this.programwise_application_waiting_levels.map((label, index) => `${label} (${percentages[index]})`),
             percentage: 0.5,
             datasets: [
               {
                 label: "Values",
                 data: this.programwise_application_waiting_datas,
-                backgroundColor: ["Purple", "Red", "Green", "Blue", "Yellow"],
+                backgroundColor: this.programwise_application_waiting_datas.map(() => this.generateRandomColor()),
+                // backgroundColor: ["Purple", "Red", "Green", "Blue", "Yellow"],
                 hoverOffset: 4,
               },
             ],
@@ -131,14 +137,31 @@ export default {
               legend: {
                 display: true,
                 position: "bottom",
-                align: "center",
+                align: "start",
               },
             },
+            layout: {
+              padding: {
+                left: 20,
+                right: 20,
+                top: 0,
+                bottom: 20
+              }
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            aspectRatio: 1, // Aspect ratio of 1 w
           },
         });
+        document.getElementById("programwise_application_waiting").style.width = '400px';
+        document.getElementById("programwise_application_waiting").style.height = '435px';
       } else {
         console.error("Data is not available to create chart.");
       }
+    },
+
+    generateRandomColor() {
+      return '#' + Math.floor(Math.random() * 16777215).toString(16);
     },
 
     OnChangeDateInfo(event, type) {

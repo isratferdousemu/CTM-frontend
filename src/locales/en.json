@@ -568,7 +568,7 @@
         "bank_name": "Bank Name",
         "branch_name": "Branch Name",
         "bank_account_number": "Bank Account Number",
-        
+
         "email": "Email",
         "mobile_account": "MFS (Mobile Financial Service)",
         "bank_account": "Bank Account",
@@ -874,6 +874,26 @@
         "title": "Beneficiary Shifting",
         "cause": "Cause",
         "activation_date": "Activation Date"
+      },
+      "dashboard": {
+        "total_beneficiary": "Total Number of Beneficiary",
+        "active_beneficiary": "Number of Active Beneficiary",
+        "inactive_beneficiary": "Number of Inactive/Dead Beneficiary",
+        "waitining_beneficiary": "Number of Beneficiary in Waiting List",
+        "replaced_beneficiary": "Number of Replaced Beneficiary",
+        "program_and_location_wise_ben": "Program & Location Wise Beneficiary",
+        "gender_wise_ben": "Gender Wise Beneficiary",
+        "year_wise_waiting_ben": "Year Wise Number of Waiting list of Beneficiary",
+        "program_wise_ben": "Program Wise Beneficiary",
+        "age_and_program_wise_ben": "Age & Program Wise Beneficiary",
+        "total_percentage_of_location_wise_ben": "Total Percentage(%) of Beneficiary Location Wise",
+        "number_of_ben_program_shifted": "Number of Beneficiary Program Shifted",
+        "program": "Program",
+        "to_program_name": "To Program Name",
+        "from_program_name": "From Program Name",
+        "enter_start_end_date": "Enter Start & End Date",
+        "waitining_beneficiaries": "Waiting Beneficiaries",
+        "total_beneficiaries": "Total Beneficiaries"
       }
     },
     "manage_allotment": {
