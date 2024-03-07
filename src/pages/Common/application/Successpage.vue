@@ -75,11 +75,11 @@ export default {
         generatePDF() {
             const queryParams = {
                 // application_id: this.successId,
-                  application_id: "swU1IbrVjD",
+                //   application_id: "swU1IbrVjD",
              
                   language: this.$i18n.locale,
              
-                //   application_id: this.successId,
+                  application_id: this.successId,
                   program: this.$t('container.application_selection.application.program'),
                   application: this.$t('container.application_selection.application.applicant_id'),
                   title: this.$t('container.application_selection.application.title'),
