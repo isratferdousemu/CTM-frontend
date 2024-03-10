@@ -49,6 +49,7 @@
 
                        
                         <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="generatePDF">
+                            
                             {{ $t("container.list.download") }}
                         </v-btn>
                     </v-card-text>
@@ -74,12 +75,11 @@ export default {
     methods: {
         generatePDF() {
             const queryParams = {
-                // application_id: this.successId,
-                  application_id: "swU1IbrVjD",
+           
              
                   language: this.$i18n.locale,
              
-                //   application_id: this.successId,
+                  application_id: this.successId,
                   program: this.$t('container.application_selection.application.program'),
                   application: this.$t('container.application_selection.application.applicant_id'),
                   title: this.$t('container.application_selection.application.title'),
