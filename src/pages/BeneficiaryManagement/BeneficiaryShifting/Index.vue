@@ -266,8 +266,8 @@ import { mapState, mapActions } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 export default {
-  name: "DigitalIndex",
-  title: "CTM - Digital ID Card",
+  name: "ShiftingIndex",
+  title: "CTM - Beneficiary Shifting",
 
   data() {
     return {
