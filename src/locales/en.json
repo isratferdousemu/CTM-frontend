@@ -70,7 +70,8 @@
       "yes": "yes",
       "no": "No",
       "attention": "Attention!!!",
-      "create": "Create"
+      "create": "Create",
+      "download":"Download Application"
     },
     "system_config": {
       "demo_graphic": {
