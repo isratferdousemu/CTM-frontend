@@ -1,51 +1,51 @@
 <template>
-    <div id="success">
-         <v-app-bar color="#405c61" fixed height="80" class="px-4" dense dark>
-          <v-row align="center" no-gutters>
-                  <v-img class="p-3 mr-4" max-height="100%" max-width="60px" position="center center" src="/assets/images/logo.png"></v-img>
-                  <v-toolbar-title>{{ $t('container.application_selection.application.title_online_1') }}<br>{{ $t('container.application_selection.application.title_online_2') }}
-                  </v-toolbar-title>
-           
-  
-        
-              <v-col>
-                <!-- Empty column to create space between title and LocaleSwitcher -->
-              </v-col>
-              <v-col>
-                  <!-- Empty column to create space between title and LocaleSwitcher -->
-                </v-col>
-                <v-col>
-                    <!-- Empty column to create space between title and LocaleSwitcher -->
-                  </v-col>
-                   <v-col>
-                    <!-- Empty column to create space between title and LocaleSwitcher -->
-                  </v-col>
-                   <v-col>
-                      <!-- Empty column to create space between title and LocaleSwitcher -->
-                    </v-col>
-                    <v-col>
-                        <!-- Empty column to create space between title and LocaleSwitcher -->
-                      </v-col>
+  <div id="success">
+    <v-app-bar color="#405c61" fixed height="80" class="px-4" dense dark>
+      <v-row align="center" no-gutters>
+        <v-img class="p-3 mr-4" max-height="100%" max-width="60px" position="center center" src="/assets/images/logo.png"></v-img>
+        <v-toolbar-title>{{ $t('container.application_selection.application.title_online_1') }}<br>{{ $t('container.application_selection.application.title_online_2') }}
+        </v-toolbar-title>
 
-              <v-col>
-                <v-row align="center" justify="end" no-gutters>
-                  <v-col>
-                    <!-- Adjust the styling of LocaleSwitcher as needed -->
-                    <LocaleSwitcher />
-                  </v-col>
-                </v-row>
-              </v-col>
-            </v-row>
-        </v-app-bar>
-        <v-row class="mt-10">
-            <v-col cols="6" class="mx-auto mt-10">
-                <v-card>
-                    <v-card-text class="mt-10 text-center">
-                        <p style="font-size: 15px" class="mt-5">
-                             {{ $t('container.application_selection.application.successfull') }} {{ successId }}
-                            
-                          </p>
-                        <p style="font-size: 15px" class="mt-5"> {{ $t('container.application_selection.application.tracking') }} </p>
+
+
+        <v-col>
+          <!-- Empty column to create space between title and LocaleSwitcher -->
+        </v-col>
+        <v-col>
+          <!-- Empty column to create space between title and LocaleSwitcher -->
+        </v-col>
+        <v-col>
+          <!-- Empty column to create space between title and LocaleSwitcher -->
+        </v-col>
+        <v-col>
+          <!-- Empty column to create space between title and LocaleSwitcher -->
+        </v-col>
+        <v-col>
+          <!-- Empty column to create space between title and LocaleSwitcher -->
+        </v-col>
+        <v-col>
+          <!-- Empty column to create space between title and LocaleSwitcher -->
+        </v-col>
+
+        <v-col>
+          <v-row align="center" justify="end" no-gutters>
+            <v-col>
+              <!-- Adjust the styling of LocaleSwitcher as needed -->
+              <LocaleSwitcher />
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-app-bar>
+    <v-row class="mt-10">
+      <v-col cols="6" class="mx-auto mt-10">
+        <v-card>
+          <v-card-text class="mt-10 text-center">
+            <p style="font-size: 15px" class="mt-5">
+              {{ $t('container.application_selection.application.successfull') }} {{ successId }}
+
+            </p>
+            <p style="font-size: 15px" class="mt-5"> {{ $t('container.application_selection.application.tracking') }} </p>
 
                        
                         <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="generatePDF">
@@ -62,10 +62,10 @@
 <script>
 import LocaleSwitcher from "@/components/Common/LocaleSwitcher"
 export default {
-     components: {
-      
-        LocaleSwitcher
-    },
+  components: {
+
+    LocaleSwitcher
+  },
 
     computed: {
         successId() {
@@ -121,29 +121,29 @@ export default {
                   
                   
 
-            };
-            this.$axios
-                .get("/global/applicants_copy", {
-                    headers: {
-                        Authorization: "Bearer " + this.$store.state.token,
-                        "Content-Type": "multipart/form-data",
-                    },
-                    params: queryParams,
-                    responseType: 'arraybuffer',
-                })
-                .then((result) => {
-                    // console.log(result,"result");
-             
-                    const blob = new Blob([result.data], { type: 'application/pdf' });
-                    const url = window.URL.createObjectURL(blob);
-                    window.open(url, '_blank');
-               
-            
-                })
-                .catch(error => {
-                    console.error('Error generating PDF:', error);
-                });
-        },
-    }
+      };
+      this.$axios
+          .get("/global/applicants_copy", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+            params: queryParams,
+            responseType: 'arraybuffer',
+          })
+          .then((result) => {
+            // console.log(result,"result");
+
+            const blob = new Blob([result.data], { type: 'application/pdf' });
+            const url = window.URL.createObjectURL(blob);
+            window.open(url, '_blank');
+
+
+          })
+          .catch(error => {
+            console.error('Error generating PDF:', error);
+          });
+    },
+  }
 };
 </script>
