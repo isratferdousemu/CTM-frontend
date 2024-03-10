@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <!-- header card start -->
-    <Spinner :loading="isLoading" />
+    <!-- <Spinner :loading="isLoading" /> -->
     <v-table>
       <thead>
         <tr>
@@ -183,7 +183,7 @@
     <!-- first row chart start -->
     <v-row class="mt-3">
       <v-col cols="12" md="4" lg="4">
-        <v-card height="100%">
+        <v-card :loading="isLoadingProgramLocation" height="100%">
           <v-card-text>
             <V-row>
               <v-col>
@@ -230,9 +230,6 @@
                       :rules="[customDateRangeRule]"
                       no-title
                       scrollable
-                      @change="
-                        onChangeProgramAndLocationWiseBeneficiary($event)
-                      "
                     >
                       <v-spacer></v-spacer>
                       <v-btn
@@ -279,7 +276,7 @@
         </v-card>
       </v-col>
       <v-col cols="12" md="4" lg="4">
-        <v-card height="100%">
+        <v-card :loading="isLoadingGender" height="100%">
           <v-card-text>
             <V-row>
               <v-col>
@@ -371,7 +368,7 @@
       </v-col>
 
       <v-col cols="12" md="4" lg="4">
-        <v-card height="100%">
+        <v-card :loading="isLoadingWaiting" height="100%">
           <v-card-text>
             <V-row>
               <v-col>
@@ -468,7 +465,7 @@
     <!-- Second row chart start -->
     <v-row class="mt-3">
       <v-col cols="12" md="6" lg="6">
-        <v-card height="100%">
+        <v-card :loading="isLoadingProgram" height="100%">
           <v-card-text>
             <V-row>
               <v-col>
@@ -571,7 +568,7 @@
         </v-card>
       </v-col>
       <v-col cols="12" md="6" lg="6">
-        <v-card height="100%">
+        <v-card :loading="isLoadingAgeProgram" height="100%">
           <v-card-text>
             <V-row>
               <v-col>
@@ -672,7 +669,7 @@
     <!-- Third row chart start -->
     <v-row class="mt-3">
       <v-col cols="12" md="6" lg="6">
-        <v-card height="100%">
+        <v-card :loading="isLoadingShifted" height="100%">
           <v-card-text>
             <V-row>
               <v-col>
@@ -821,7 +818,12 @@ export default {
       beneficiaries: [],
       genders: ["Male", "Female", "3rd Gender"],
       program_name: "",
-
+      isLoadingProgramLocation: false,
+      isLoadingGender: false,
+      isLoadingWaiting: false,
+      isLoadingProgram: false,
+      isLoadingAgeProgram: false,
+      isLoadingShifted: false,
       //for program & location wise chart
       program_location_chart: null,
       program_location_Wise_beneficiary: {
@@ -875,8 +877,6 @@ export default {
       },
       shifted_dates: [],
       menu6: false,
-
-      isLoading: false,
     };
   },
   components: {
@@ -956,7 +956,7 @@ export default {
       }
     },
     async GetLocationWiseBeneficiaries() {
-      this.isLoading = true;
+      this.isLoadingProgramLocation = true;
       const queryParams = {
         program_id: this.program_location_Wise_beneficiary.program_id,
         from_date: this.dates[0],
@@ -982,17 +982,15 @@ export default {
             this.program_location_wise_ben.map((row) => row.value);
           this.program_location_chart.update();
 
-          this.isLoading = false;
+          this.isLoadingProgramLocation = false;
         });
-    },
-    onChangeProgramAndLocationWiseBeneficiary(event) {
-      if (this.dates.length < 2 || event < 2) {
-        return;
-      }
-      this.GetLocationWiseBeneficiaries();
     },
     submitDateProgramAndLocationWiseBeneficiary() {
       this.menu = false;
+      if (this.dates.length < 2) {
+        return;
+      }
+      this.GetLocationWiseBeneficiaries();
     },
     resetDateProgramAndLocationWiseBeneficiary() {
       this.dates = [];
@@ -1000,6 +998,7 @@ export default {
       this.GetLocationWiseBeneficiaries();
     },
     async GetGenderWiseBeneficiaries() {
+      this.isLoadingGender = true;
       const queryParams = {
         program_id: this.gender_Wise_beneficiary.program_id,
         from_date: this.gender_wise_dates[0],
@@ -1026,6 +1025,8 @@ export default {
           this.gender_wise_chart.data.datasets[0].data =
             this.gender_wise_ben.map((row) => row.value);
           this.gender_wise_chart.update();
+
+          this.isLoadingGender = false;
         });
     },
     submitDateGenderWiseBeneficiary() {
@@ -1041,6 +1042,7 @@ export default {
       this.GetGenderWiseBeneficiaries();
     },
     async GetWaitingBeneficiaries() {
+      this.isLoadingWaiting = true;
       const queryParams = {
         program_id: this.waiting_beneficiary.program_id,
         from_date: this.wiaiting_wise_dates[0],
@@ -1069,6 +1071,7 @@ export default {
             this.year_wise_waiting_ben.map((row) => row.value);
 
           this.year_wise_waiting_chart.update();
+          this.isLoadingWaiting = false;
         });
     },
     submitDateWaitingBeneficiary() {
@@ -1084,6 +1087,7 @@ export default {
       this.GetWaitingBeneficiaries();
     },
     async GetProgramWiseBeneficiaries() {
+      this.isLoadingProgram = true;
       const queryParams = {
         program_id: this.program_wise_beneficiary.program_id,
         from_date: this.program_wise_dates[0],
@@ -1107,6 +1111,8 @@ export default {
           this.program_wise_ben_chart.data.datasets[0].data =
             this.program_wise_ben.map((row) => row.beneficiaries);
           this.program_wise_ben_chart.update();
+
+          this.isLoadingProgram = false;
         });
     },
     submitDateProgramBeneficiary() {
@@ -1122,6 +1128,7 @@ export default {
       this.GetProgramWiseBeneficiaries();
     },
     async GetAgeAndProgramWiseBeneficiaries() {
+      this.isLoadingAgeProgram = true;
       const queryParams = {
         program_id: this.age_and_program_wise_beneficiary.program_id,
         from_date: this.age_and_program_wise_dates[0],
@@ -1149,6 +1156,7 @@ export default {
             this.age_and_program_wise_ben.map((row) => row.beneficiaries);
 
           this.age_and_program_wise_ben_chart.update();
+          this.isLoadingAgeProgram = false;
         });
     },
     submitDateAgeAndProgramBeneficiary() {
@@ -1164,6 +1172,7 @@ export default {
       this.GetAgeAndProgramWiseBeneficiaries();
     },
     async GetShiftedBeneficiaries() {
+      this.isLoadingShifted = true;
       const queryParams = {
         to_program_id: this.shifted_beneficiary.to_program_id,
         from_program_id: this.shifted_beneficiary.from_program_id,
@@ -1192,6 +1201,8 @@ export default {
             (row) => row.beneficiaries
           );
           this.shifted_ben_chart.update();
+
+          this.isLoadingShifted = false;
         });
     },
     submitDateShiftedBeneficiary() {

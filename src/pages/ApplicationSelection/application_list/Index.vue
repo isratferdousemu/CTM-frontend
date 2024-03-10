@@ -110,7 +110,8 @@
                           !isReadonlyUnion()
                           " lg="3" md="3" cols="12">
                           <ValidationProvider name="unions" vid="unions" v-slot="{ errors }">
-                            <v-autocomplete @input="onChangeUnionGetWard($event)" v-model="data.union_id" outlined :label="$t(
+                            <v-autocomplete @input="onChangeUnionGetWard($event)" v-model="data.union_id" outlined
+                              :label="$t(
                               'container.system_config.demo_graphic.ward.union'
                             )
                               " :items="unions" item-text="name_en" item-value="id" :error="errors[0] ? true : false"
@@ -142,9 +143,9 @@
                               " :hide-details="errors[0] ? false : true" v-model="data.city_thana_id" outlined :label="$t(
     'container.system_config.demo_graphic.ward.thana'
   )
-    " :items="city_thanas" item-text="name_en" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]" class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"></v-autocomplete>
+    " :items="city_thanas" item-text="name_en" item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]" class="no-arrow-icon" :append-icon-cb="appendIconCallback"
+                              append-icon="mdi-plus"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
 
@@ -181,9 +182,9 @@
                       <v-row>
                         <v-btn elevation="2" class="btn ml-3 mt-3 white--text" color="blue"
                           @click="toggleFieldVisibility">{{
-                            $t(
-                              "container.beneficiary_management.beneficiary_list.advance_search"
-                            )
+                          $t(
+                          "container.beneficiary_management.beneficiary_list.advance_search"
+                          )
                           }}</v-btn>
                       </v-row>
                       <v-row v-if="isFieldVisible" class="mt-10">
@@ -204,8 +205,8 @@
                           </v-text-field>
                         </v-col>
                         <v-col lg="3" md="3" cols="12">
-                          <v-text-field v-model="data.account_no" outlined clearable :append-icon-cb="appendIconCallback"
-                            append-icon="mdi-plus" :label="$t(
+                          <v-text-field v-model="data.account_no" outlined clearable
+                            :append-icon-cb="appendIconCallback" append-icon="mdi-plus" :label="$t(
                               'container.application_selection.application.account'
                             )
                               ">
@@ -229,11 +230,12 @@
                       </v-row>
 
                       <div class="d-inline d-flex justify-end">
-                        <v-btn elevation="2" type="submit" class="btn mr-2" color="success">{{ $t("container.list.search")
-                        }}</v-btn>
+                        <v-btn elevation="2" type="submit" class="btn mr-2" color="success">{{
+                          $t("container.list.search")
+                          }}</v-btn>
                         <v-btn elevation="2" class="btn" @click="resetForm()">{{
                           $t("container.list.reset")
-                        }}</v-btn>
+                          }}</v-btn>
                       </div>
                     </form>
                   </ValidationObserver>
@@ -244,9 +246,9 @@
                 <v-expansion-panel-header color="#8C9EFF">
                   <h3 class="white--text">
                     {{
-                      $t(
-                        "container.application_selection.application.update_status"
-                      )
+                    $t(
+                    "container.application_selection.application.update_status"
+                    )
                     }}
                   </h3>
                 </v-expansion-panel-header>
@@ -265,9 +267,9 @@
                         <template v-slot:label>
                           <label>
                             {{
-                              $t(
-                                "container.application_selection.application.forward_to_committee"
-                              )
+                            $t(
+                            "container.application_selection.application.forward_to_committee"
+                            )
                             }}</label>
                           <span style="margin-left: 4px; color: red">*</span>
                         </template>
@@ -279,19 +281,19 @@
 
                   </v-row>
                   <div class="d-flex justify-end">
-<!-- :disabled="isForwardButtonDisabled" -->
+                    <!-- :disabled="isForwardButtonDisabled" -->
                     <v-btn elevation="2" class="btn mr-2" color="success" @click="SubmitApproved()"
                       v-if="this.permissions?.permission?.approve">{{
-                        $t("container.list.approve") }}</v-btn>
+                      $t("container.list.approve") }}</v-btn>
                     <v-btn elevation="2" class="btn mr-2 white--text" color="blue" @click="SubmitForward()"
-                       v-if="this.permissions?.permission?.forward">{{
-                        $t("container.list.forward") }}</v-btn>
+                      v-if="this.permissions?.permission?.forward">{{
+                      $t("container.list.forward") }}</v-btn>
                     <v-btn elevation="2" class="btn mr-2" color="warning" @click="SubmitWaiting()"
-                       v-if="this.permissions?.permission?.waiting">{{
-                        $t("container.list.waiting") }}</v-btn>
+                      v-if="this.permissions?.permission?.waiting">{{
+                      $t("container.list.waiting") }}</v-btn>
                     <v-btn elevation="2" class="btn mr-2 error" @click="SubmitReject()" :disabled="isButtonDisabled"
                       v-if="this.permissions?.permission?.reject">{{
-                        $t("container.list.reject")
+                      $t("container.list.reject")
                       }}</v-btn>
                   </div>
                 </v-expansion-panel-content>
@@ -366,16 +368,16 @@
 
                       <template v-slot:item.id="{ item, index }">
 
-                        <v-checkbox v-model="forward.applications_id" :value="item.id"
-                          :disabled="unselectedItem(item)"></v-checkbox>
+                        <v-checkbox v-model="forward.applications_id" :value="item.id" :disabled="unselectedItem(item)"
+                          ></v-checkbox>
 
 
                       </template>
                       <template v-slot:item.sl="{ item, index }">
                         {{
-                          (pagination.current - 1) * pagination.perPage +
-                          index +
-                          1
+  (pagination.current - 1) * pagination.perPage +
+                        index +
+                        1
                         }}
                       </template>
                       <template v-slot:item.division="{ item }">
@@ -770,6 +772,11 @@ export default {
   },
 
   methods: {
+    // updateSelectAll($event) {
+    //   console.log($event.length,"event");
+    //   // Update select_all to false if forward.applications_id is empty
+    //   this.select_all = false;
+    // },
     Division() {
       this.data.division_id != null;
     },
@@ -784,6 +791,7 @@ export default {
         // Deselect all items
         this.forward.applications_id = [];
       }
+     
       console.log(this.forward.applications_id, "applications");
     },
     isReadonlyDivision() {
