@@ -1486,7 +1486,7 @@
                           <v-col cols="8" lg="8">
                             :<template>
                               <span style="20px">
-                                {{ beneficiary.financialYear.financial_year }}
+                                {{ beneficiary?.financialYear?.financial_year }}
                               </span>
                             </template>
                           </v-col>

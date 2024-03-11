@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <!-- header card start -->
-    <Spinner :loading="isLoading" />
+    <!-- <Spinner :loading="isLoading" /> -->
     <v-table>
       <thead>
         <tr>
@@ -183,7 +183,7 @@
     <!-- first row chart start -->
     <v-row class="mt-3">
       <v-col cols="12" md="4" lg="4">
-        <v-card height="100%">
+        <v-card :loading="isLoadingProgramLocation" height="100%">
           <v-card-text>
             <V-row>
               <v-col>
@@ -230,9 +230,6 @@
                       :rules="[customDateRangeRule]"
                       no-title
                       scrollable
-                      @change="
-                        onChangeProgramAndLocationWiseBeneficiary($event)
-                      "
                     >
                       <v-spacer></v-spacer>
                       <v-btn
@@ -279,7 +276,7 @@
         </v-card>
       </v-col>
       <v-col cols="12" md="4" lg="4">
-        <v-card height="100%">
+        <v-card :loading="isLoadingGender" height="100%">
           <v-card-text>
             <V-row>
               <v-col>
@@ -371,7 +368,7 @@
       </v-col>
 
       <v-col cols="12" md="4" lg="4">
-        <v-card height="100%">
+        <v-card :loading="isLoadingWaiting" height="100%">
           <v-card-text>
             <V-row>
               <v-col>
@@ -468,7 +465,7 @@
     <!-- Second row chart start -->
     <v-row class="mt-3">
       <v-col cols="12" md="6" lg="6">
-        <v-card height="100%">
+        <v-card :loading="isLoadingProgram" height="100%">
           <v-card-text>
             <V-row>
               <v-col>
@@ -571,7 +568,7 @@
         </v-card>
       </v-col>
       <v-col cols="12" md="6" lg="6">
-        <v-card height="100%">
+        <v-card :loading="isLoadingAgeProgram" height="100%">
           <v-card-text>
             <V-row>
               <v-col>
@@ -672,7 +669,7 @@
     <!-- Third row chart start -->
     <v-row class="mt-3">
       <v-col cols="12" md="6" lg="6">
-        <v-card height="100%">
+        <v-card :loading="isLoadingShifted" height="100%">
           <v-card-text>
             <V-row>
               <v-col>
@@ -821,7 +818,12 @@ export default {
       beneficiaries: [],
       genders: ["Male", "Female", "3rd Gender"],
       program_name: "",
-
+      isLoadingProgramLocation: false,
+      isLoadingGender: false,
+      isLoadingWaiting: false,
+      isLoadingProgram: false,
+      isLoadingAgeProgram: false,
+      isLoadingShifted: false,
       //for program & location wise chart
       program_location_chart: null,
       program_location_Wise_beneficiary: {
@@ -875,8 +877,6 @@ export default {
       },
       shifted_dates: [],
       menu6: false,
-
-      isLoading: false,
     };
   },
   components: {
@@ -885,6 +885,14 @@ export default {
     Spinner,
   },
   computed: {
+    drawer: {
+      get() {
+        return this.$store.state.Drawer;
+      },
+      set(v) {
+        return this.$store.commit("setDrawer", v);
+      },
+    },
     dateRangeText() {
       return this.dates.join(" ~ ");
     },
@@ -956,7 +964,7 @@ export default {
       }
     },
     async GetLocationWiseBeneficiaries() {
-      this.isLoading = true;
+      this.isLoadingProgramLocation = true;
       const queryParams = {
         program_id: this.program_location_Wise_beneficiary.program_id,
         from_date: this.dates[0],
@@ -972,27 +980,16 @@ export default {
         })
         .then((result) => {
           this.program_location_wise_ben = result.data.data;
-          console.log("results_total__", this.total);
-
-          this.program_location_chart.data.labels =
-            this.program_location_wise_ben.map((row) => row.division);
-          this.program_location_chart.data.percentage =
-            this.program_location_wise_ben.map((row) => row.percentage);
-          this.program_location_chart.data.datasets[0].data =
-            this.program_location_wise_ben.map((row) => row.value);
-          this.program_location_chart.update();
-
-          this.isLoading = false;
+          this.CreateLocationWiseBeneficiariesChart();
+          this.isLoadingProgramLocation = false;
         });
-    },
-    onChangeProgramAndLocationWiseBeneficiary(event) {
-      if (this.dates.length < 2 || event < 2) {
-        return;
-      }
-      this.GetLocationWiseBeneficiaries();
     },
     submitDateProgramAndLocationWiseBeneficiary() {
       this.menu = false;
+      if (this.dates.length < 2) {
+        return;
+      }
+      this.GetLocationWiseBeneficiaries();
     },
     resetDateProgramAndLocationWiseBeneficiary() {
       this.dates = [];
@@ -1000,6 +997,7 @@ export default {
       this.GetLocationWiseBeneficiaries();
     },
     async GetGenderWiseBeneficiaries() {
+      this.isLoadingGender = true;
       const queryParams = {
         program_id: this.gender_Wise_beneficiary.program_id,
         from_date: this.gender_wise_dates[0],
@@ -1015,17 +1013,8 @@ export default {
         })
         .then((result) => {
           this.gender_wise_ben = result.data.data;
-          console.log("results_total__", this.gender_wise_ben);
-
-          this.gender_wise_chart.data.labels = this.gender_wise_ben.map(
-            (row) => row.gender
-          );
-          this.gender_wise_chart.data.percentage = this.gender_wise_ben.map(
-            (row) => row.percentage
-          );
-          this.gender_wise_chart.data.datasets[0].data =
-            this.gender_wise_ben.map((row) => row.value);
-          this.gender_wise_chart.update();
+          this.CreateGenderWiseBeneficiariesChart();
+          this.isLoadingGender = false;
         });
     },
     submitDateGenderWiseBeneficiary() {
@@ -1041,6 +1030,7 @@ export default {
       this.GetGenderWiseBeneficiaries();
     },
     async GetWaitingBeneficiaries() {
+      this.isLoadingWaiting = true;
       const queryParams = {
         program_id: this.waiting_beneficiary.program_id,
         from_date: this.wiaiting_wise_dates[0],
@@ -1057,18 +1047,8 @@ export default {
         .then((result) => {
           console.log("result__", result.data.data);
           this.year_wise_waiting_ben = result.data.data;
-          console.log("year_wise_waiting_ben", this.year_wise_waiting_ben);
-
-          this.year_wise_waiting_chart.data.labels =
-            this.year_wise_waiting_ben.map((row) => row.year);
-
-          this.year_wise_waiting_chart.data.datasets[0].data =
-            this.year_wise_waiting_ben.map((row) => row.waiting);
-
-          this.year_wise_waiting_chart.data.datasets[1].data =
-            this.year_wise_waiting_ben.map((row) => row.value);
-
-          this.year_wise_waiting_chart.update();
+          this.CreateWaitingBeneficiariesChart();
+          this.isLoadingWaiting = false;
         });
     },
     submitDateWaitingBeneficiary() {
@@ -1084,6 +1064,7 @@ export default {
       this.GetWaitingBeneficiaries();
     },
     async GetProgramWiseBeneficiaries() {
+      this.isLoadingProgram = true;
       const queryParams = {
         program_id: this.program_wise_beneficiary.program_id,
         from_date: this.program_wise_dates[0],
@@ -1098,15 +1079,9 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          console.log("result__", result.data.data);
           this.program_wise_ben = result.data.data;
-          console.log("results_total__", this.program_wise_ben);
-          this.program_wise_ben_chart.data.labels = this.program_wise_ben.map(
-            (row) => row.year
-          );
-          this.program_wise_ben_chart.data.datasets[0].data =
-            this.program_wise_ben.map((row) => row.beneficiaries);
-          this.program_wise_ben_chart.update();
+          this.CreateProgramWiseBeneficiariesChart();
+          this.isLoadingProgram = false;
         });
     },
     submitDateProgramBeneficiary() {
@@ -1122,6 +1097,7 @@ export default {
       this.GetProgramWiseBeneficiaries();
     },
     async GetAgeAndProgramWiseBeneficiaries() {
+      this.isLoadingAgeProgram = true;
       const queryParams = {
         program_id: this.age_and_program_wise_beneficiary.program_id,
         from_date: this.age_and_program_wise_dates[0],
@@ -1136,19 +1112,9 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          console.log("result__", result.data.data);
           this.age_and_program_wise_ben = result.data.data;
-          console.log("results_total__", this.age_and_program_wise_ben);
-          this.age_and_program_wise_ben_chart.data.labels =
-            this.age_and_program_wise_ben.map((row) => row.age);
-
-          this.age_and_program_wise_ben_chart.data.datasets[0].data =
-            this.age_and_program_wise_ben.map((row) => row.beneficiaries);
-
-          this.age_and_program_wise_ben_chart.data.datasets[1].data =
-            this.age_and_program_wise_ben.map((row) => row.beneficiaries);
-
-          this.age_and_program_wise_ben_chart.update();
+          this.CreateAgeAndProgramWiseBeneficiariesChart();
+          this.isLoadingAgeProgram = false;
         });
     },
     submitDateAgeAndProgramBeneficiary() {
@@ -1164,6 +1130,7 @@ export default {
       this.GetAgeAndProgramWiseBeneficiaries();
     },
     async GetShiftedBeneficiaries() {
+      this.isLoadingShifted = true;
       const queryParams = {
         to_program_id: this.shifted_beneficiary.to_program_id,
         from_program_id: this.shifted_beneficiary.from_program_id,
@@ -1181,17 +1148,9 @@ export default {
         .then((result) => {
           console.log("result__", result.data.data);
           this.shifted_ben = result.data.data;
-          console.log("results_total__", this.shifted_ben);
-          this.shifted_ben_chart.data.labels = this.shifted_ben.map(
-            (row) => row.year
-          );
-          this.shifted_ben_chart.data.datasets[0].data = this.shifted_ben.map(
-            (row) => row.beneficiaries
-          );
-          this.shifted_ben_chart.data.datasets[1].data = this.shifted_ben.map(
-            (row) => row.beneficiaries
-          );
-          this.shifted_ben_chart.update();
+          this.CreateShiftedBeneficiariesChart();
+
+          this.isLoadingShifted = false;
         });
     },
     submitDateShiftedBeneficiary() {
@@ -1230,6 +1189,422 @@ export default {
     generateRandomColor() {
       return "#" + Math.floor(Math.random() * 16777215).toString(16);
     },
+    CreateLocationWiseBeneficiariesChart() {
+      if (this.program_location_chart) {
+        this.program_location_chart.destroy();
+      }
+      // program_location_wise_chart
+      this.program_location_chart = new Chart(
+        document.getElementById("program_location_wise_chart"),
+        {
+          type: "pie",
+          data: {
+            labels: this.program_location_wise_ben.map((row) => row.division),
+            percentage: this.program_location_wise_ben.map(
+              (row) => row.percentage
+            ),
+            datasets: [
+              {
+                label: "Values::",
+                data: this.program_location_wise_ben.map((row) => row.value),
+                backgroundColor: this.program_location_wise_ben.map(() =>
+                  this.generateRandomColor()
+                ),
+                hoverOffset: 4,
+              },
+            ],
+          },
+          options: {
+            plugins: {
+              legend: {
+                display: true,
+                position: "bottom",
+                align: "center",
+              },
+              datalabels: {
+                color: "#ffff",
+                formatter: function (value, context) {
+                  return (
+                    value +
+                    ", " +
+                    context.chart.data.percentage[context.dataIndex] +
+                    "%"
+                  );
+                },
+              },
+            },
+            layout: {
+              padding: {
+                left: 10,
+                right: 10,
+                top: 0,
+                bottom: 10,
+              },
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            aspectRatio: 1, // Aspect ratio of 1 w
+          },
+        }
+      );
+    },
+    CreateGenderWiseBeneficiariesChart() {
+      if (this.gender_wise_chart) {
+        this.gender_wise_chart.destroy();
+      }
+      this.gender_wise_chart = new Chart(
+        document.getElementById("gender_wise_beneficiary"),
+        {
+          type: "pie",
+          data: {
+            labels: this.gender_wise_ben.map((row) => row.gender),
+
+            percentage: this.gender_wise_ben.map((row) => row.percentage),
+            datasets: [
+              {
+                label: "Values:: ",
+                data: this.gender_wise_ben.map((row) => row.value),
+                backgroundColor: this.program_location_wise_ben.map(() =>
+                  this.generateRandomColor()
+                ),
+              },
+            ],
+          },
+          options: {
+            plugins: {
+              legend: {
+                display: true,
+                position: "bottom",
+                align: "center",
+                labels: {
+                  // color: "rgb(255, 99, 132)",
+                },
+              },
+              datalabels: {
+                color: "#ffff",
+                formatter: function (value, context) {
+                  return (
+                    value +
+                    ", " +
+                    context.chart.data.percentage[context.dataIndex] +
+                    "%"
+                  );
+                },
+                labels: {
+                  title: {
+                    font: {
+                      weight: "bold",
+                    },
+                  },
+                },
+              },
+            },
+            layout: {
+              padding: {
+                left: 10,
+                right: 10,
+                top: 0,
+                bottom: 10,
+              },
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            aspectRatio: 1, // Aspect ratio of 1 w
+          },
+        }
+      );
+    },
+    CreateWaitingBeneficiariesChart() {
+      if (this.year_wise_waiting_chart) {
+        this.year_wise_waiting_chart.destroy();
+      }
+      this.year_wise_waiting_chart = new Chart(
+        document.getElementById("year_wise_waiting_ben"),
+        {
+          data: {
+            labels: this.year_wise_waiting_ben.map((row) => row.year),
+
+            datasets: [
+              {
+                // barPercentage: 0.5,
+                barThickness: 13,
+                maxBarThickness: 10,
+                // minBarLength: 2,
+
+                type: "bar",
+                label: "Waiting Beneficiaries",
+                data: this.year_wise_waiting_ben.map((row) => row.waiting),
+                backgroundColor: this.program_location_wise_ben.map(() =>
+                  this.generateRandomColor()
+                ),
+                borderWidth: 1,
+                datalabels: {
+                  labels: {
+                    title: false,
+                  },
+                },
+              },
+              {
+                // barPercentage: 0.5,
+                barThickness: 13,
+                maxBarThickness: 10,
+                // minBarLength: 2,
+
+                type: "bar",
+                label: "Total Beneficiaries",
+                data: this.year_wise_waiting_ben.map((row) => row.value),
+                borderWidth: 1,
+                backgroundColor: this.program_location_wise_ben.map(() =>
+                  this.generateRandomColor()
+                ),
+                datalabels: {
+                  labels: {
+                    title: {
+                      // color: "red",
+                      anchor: "end",
+                      align: "top",
+                      display: "true",
+                      font: {
+                        // weight: "bold",
+                      },
+                    },
+                  },
+                },
+              },
+            ],
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+            layout: {
+              padding: {
+                left: 10,
+                right: 10,
+                top: 0,
+                bottom: 10,
+              },
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            aspectRatio: 1, // Aspect ratio of 1 w
+          },
+        }
+      );
+    },
+    CreateProgramWiseBeneficiariesChart() {
+      if (this.program_wise_ben_chart) {
+        this.program_wise_ben_chart.destroy();
+      }
+      this.program_wise_ben_chart = new Chart(
+        document.getElementById("program_wise_beneficiary"),
+        {
+          type: "bar",
+          data: {
+            labels: this.program_wise_ben.map((row) => row.year),
+            datasets: [
+              {
+                barPercentage: 0.5,
+                barThickness: 25,
+                maxBarThickness: 30,
+                minBarLength: 2,
+                label: "Program Wise Beneficiary",
+                data: this.program_wise_ben.map((row) => row.beneficiaries),
+                backgroundColor: this.program_location_wise_ben.map(() =>
+                  this.generateRandomColor()
+                ),
+                borderWidth: 1,
+                datalabels: {
+                  labels: {
+                    title: {
+                      // color: "red",
+                      anchor: "end",
+                      align: "top",
+                      display: "true",
+                      font: {
+                        // weight: "bold",
+                      },
+                    },
+                  },
+                },
+              },
+            ],
+          },
+          options: {
+            plugins: {
+              legend: {
+                display: false,
+              },
+            },
+            layout: {
+              padding: {
+                left: 10,
+                right: 10,
+                top: 0,
+                bottom: 10,
+              },
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            aspectRatio: 1, // Aspect ratio of 1 w
+          },
+        }
+      );
+    },
+    CreateAgeAndProgramWiseBeneficiariesChart() {
+      if (this.age_and_program_wise_ben_chart) {
+        this.age_and_program_wise_ben_chart.destroy();
+      }
+      this.age_and_program_wise_ben_chart = new Chart(
+        document.getElementById("age_program_wise_beneficiary"),
+        {
+          type: "line",
+          data: {
+            labels: this.age_and_program_wise_ben.map((row) => row.age),
+            datasets: [
+              {
+                type: "line",
+                label: "Line Dataset",
+                data: this.age_and_program_wise_ben.map(
+                  (row) => row.beneficiaries
+                ),
+                // fill: false,
+                // barThickness: 10,
+                borderColor: this.program_location_wise_ben.map(() =>
+                  this.generateRandomColor()
+                ),
+                tension: 0.1,
+                datalabels: {
+                  labels: {
+                    title: {
+                      // color: "red",
+                      anchor: "end",
+                      align: "top",
+                      display: "true",
+                      font: {
+                        // weight: "bold",
+                      },
+                    },
+                  },
+                },
+              },
+              {
+                type: "bar",
+                label: "Bar Dataset",
+                data: this.age_and_program_wise_ben.map(
+                  (row) => row.beneficiaries
+                ),
+                barPercentage: 0.5,
+                barThickness: 6,
+                maxBarThickness: 8,
+                minBarLength: 2,
+                backgroundColor: this.program_location_wise_ben.map(() =>
+                  this.generateRandomColor()
+                ),
+                datalabels: {
+                  labels: {
+                    title: false,
+                  },
+                },
+              },
+            ],
+          },
+          options: {
+            plugins: {
+              legend: {
+                labels: false,
+              },
+            },
+            layout: {
+              padding: {
+                left: 10,
+                right: 10,
+                top: 0,
+                bottom: 10,
+              },
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            aspectRatio: 1, // Aspect ratio of 1 w
+          },
+        }
+      );
+    },
+    CreateShiftedBeneficiariesChart() {
+      if (this.shifted_ben_chart) {
+        this.shifted_ben_chart.destroy();
+      }
+      this.shifted_ben_chart = new Chart(
+        document.getElementById("shifted_beneficiary"),
+        {
+          data: {
+            labels: this.shifted_ben.map((row) => row.year),
+            datasets: [
+              {
+                type: "line",
+                label: "Line Dataset",
+                data: this.shifted_ben.map((row) => row.beneficiaries),
+                fill: false,
+                borderColor: this.program_location_wise_ben.map(() =>
+                  this.generateRandomColor()
+                ),
+                tension: 0.1,
+                datalabels: {
+                  labels: {
+                    title: false,
+                  },
+                },
+              },
+              {
+                type: "bar",
+                label: "Bar Dataset",
+                data: this.shifted_ben.map((row) => row.beneficiaries),
+                barPercentage: 0.5,
+                barThickness: 6,
+                maxBarThickness: 8,
+                minBarLength: 2,
+                backgroundColor: this.program_location_wise_ben.map(() =>
+                  this.generateRandomColor()
+                ),
+                datalabels: {
+                  labels: {
+                    title: {
+                      // color: "red",
+                      anchor: "end",
+                      align: "top",
+                      display: "true",
+                      font: {
+                        // weight: "bold",
+                      },
+                    },
+                  },
+                },
+              },
+            ],
+          },
+          options: {
+            plugins: {
+              legend: {
+                labels: false,
+              },
+            },
+            layout: {
+              padding: {
+                left: 10,
+                right: 10,
+                top: 0,
+                bottom: 10,
+              },
+            },
+            responsive: true,
+            maintainAspectRatio: false,
+            aspectRatio: 1, // Aspect ratio of 1 w
+          },
+        }
+      );
+    },
   },
   watch: {
     "$i18n.locale": "updateHeaderTitle",
@@ -1239,6 +1614,7 @@ export default {
     this.updateHeaderTitle();
   },
   mounted() {
+    this.drawer = false;
     this.GetLocationWiseBeneficiaries();
     this.GetGenderWiseBeneficiaries();
     this.GetTotalBeneficiaries();
@@ -1247,366 +1623,6 @@ export default {
     this.GetProgramWiseBeneficiaries();
     this.GetAgeAndProgramWiseBeneficiaries();
     this.GetShiftedBeneficiaries();
-
-    // program_location_wise_chart
-    const ctxpie = document.getElementById("program_location_wise_chart");
-    this.program_location_chart = new Chart(ctxpie, {
-      type: "pie",
-      data: {
-        labels: this.program_location_wise_ben.map((row) => row.division),
-        percentage: this.program_location_wise_ben.map((row) => row.percentage),
-        datasets: [
-          {
-            label: "Values::",
-            data: this.program_location_wise_ben.map((row) => row.value),
-            // backgroundColor: this.program_location_wise_ben.map(() =>
-            //   this.generateRandomColor()
-            // ),
-
-            backgroundColor: ["Blue", "Red", "Green", "Purple", "Yellow"],
-            // backgroundColor: [
-            //   "rgb(255, 99, 132)",
-            //   "rgb(54, 162, 235)",
-            //   "rgb(255, 205, 86)",
-            // ],
-            hoverOffset: 4,
-          },
-        ],
-      },
-      options: {
-        plugins: {
-          legend: {
-            display: true,
-            position: "right",
-            align: "center",
-            // labels: {
-            //   color: "rgb(255, 99, 132)",
-            // },
-          },
-          // title: {
-          //   display: true,
-          //   text: "Custom Chart Title",
-          // },
-          datalabels: {
-            color: "#ffff",
-            formatter: function (value, context) {
-              return (
-                value +
-                ", " +
-                context.chart.data.percentage[context.dataIndex] +
-                "%"
-              );
-            },
-          },
-        },
-      },
-      // options: {
-      //   scales: {
-      //     y: {
-      //       beginAtZero: true,
-      //     },
-      //   },
-      // },
-    });
-    const ctxpie2 = document.getElementById("gender_wise_beneficiary");
-    this.gender_wise_chart = new Chart(ctxpie2, {
-      type: "pie",
-      data: {
-        labels: this.gender_wise_ben.map((row) => row.gender),
-
-        percentage: this.gender_wise_ben.map((row) => row.percentage),
-        datasets: [
-          {
-            label: "Values:: ",
-            data: this.gender_wise_ben.map((row) => row.value),
-            backgroundColor: ["Green", "Purple", "Blue"],
-            // hoverBackgroundColor: [
-            //   "rgba(255, 99, 132, 0.8)",
-            //   "rgba(54, 162, 235, 0.8)",
-            //   "rgba(255, 206, 86, 0.8)",
-            // ],
-          },
-        ],
-      },
-      options: {
-        plugins: {
-          legend: {
-            display: true,
-            position: "right",
-            align: "center",
-            labels: {
-              // color: "rgb(255, 99, 132)",
-            },
-          },
-          datalabels: {
-            color: "#ffff",
-            formatter: function (value, context) {
-              return (
-                value +
-                ", " +
-                context.chart.data.percentage[context.dataIndex] +
-                "%"
-              );
-            },
-            labels: {
-              title: {
-                font: {
-                  weight: "bold",
-                },
-              },
-            },
-          },
-        },
-      },
-    });
-    const ctx = document.getElementById("year_wise_waiting_ben");
-    this.year_wise_waiting_chart = new Chart(ctx, {
-      data: {
-        labels: this.year_wise_waiting_ben.map((row) => row.year),
-
-        datasets: [
-          {
-            // barPercentage: 0.5,
-            barThickness: 13,
-            maxBarThickness: 10,
-            // minBarLength: 2,
-
-            type: "bar",
-            label: "Waiting Beneficiaries",
-            data: this.year_wise_waiting_ben.map((row) => row.waiting),
-            backgroundColor: ["rgba(0, 200, 255, 1)"],
-            borderWidth: 1,
-            datalabels: {
-              labels: {
-                title: false,
-              },
-            },
-          },
-          {
-            // barPercentage: 0.5,
-            barThickness: 13,
-            maxBarThickness: 10,
-            // minBarLength: 2,
-
-            type: "bar",
-            label: "Total Beneficiaries",
-            data: this.year_wise_waiting_ben.map((row) => row.value),
-            borderWidth: 1,
-            backgroundColor: ["rgba(0, 92, 255, 1)"],
-            datalabels: {
-              labels: {
-                title: {
-                  // color: "red",
-                  anchor: "end",
-                  align: "top",
-                  display: "true",
-                  font: {
-                    // weight: "bold",
-                  },
-                },
-              },
-            },
-          },
-        ],
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-          },
-        },
-      },
-    });
-
-    this.program_wise_ben_chart = new Chart(
-      document.getElementById("program_wise_beneficiary"),
-      {
-        type: "bar",
-        data: {
-          labels: this.program_wise_ben.map((row) => row.year),
-          datasets: [
-            {
-              barPercentage: 0.5,
-              barThickness: 25,
-              maxBarThickness: 30,
-              minBarLength: 2,
-              label: "Program Wise Beneficiary",
-              data: this.program_wise_ben.map((row) => row.beneficiaries),
-              backgroundColor: [
-                "rgba(0, 200, 255, 1)",
-                "rgba(0, 92, 255, 1",
-                "rgba(255, 128, 148, 1)",
-                "rgba(188, 35, 199, 1)",
-              ],
-              // borderColor: [
-              //   "rgb(255, 99, 132)",
-              //   "rgb(255, 159, 64)",
-              //   "rgb(255, 205, 86)",
-              //   "rgb(75, 192, 192)",
-              //   "rgb(54, 162, 235)",
-              //   "rgb(153, 102, 255)",
-              //   "rgb(201, 203, 207)",
-              // ],
-              borderWidth: 1,
-              datalabels: {
-                labels: {
-                  title: {
-                    // color: "red",
-                    anchor: "end",
-                    align: "top",
-                    display: "true",
-                    font: {
-                      // weight: "bold",
-                    },
-                  },
-                },
-              },
-            },
-          ],
-        },
-        options: {
-          plugins: {
-            legend: {
-              display: false,
-              // labels: {
-              //   color: "rgb(255, 99, 132)",
-              // },
-            },
-          },
-        },
-      }
-    );
-    this.age_and_program_wise_ben_chart = new Chart(
-      document.getElementById("age_program_wise_beneficiary"),
-      {
-        type: "line",
-        data: {
-          labels: this.age_and_program_wise_ben.map((row) => row.age),
-          datasets: [
-            {
-              type: "line",
-              label: "Line Dataset",
-              data: this.age_and_program_wise_ben.map(
-                (row) => row.beneficiaries
-              ),
-              borderColor: "rgba(0, 92, 255, 1",
-              // fill: false,
-              // barThickness: 10,
-              tension: 0.1,
-              datalabels: {
-                labels: {
-                  title: {
-                    // color: "red",
-                    anchor: "end",
-                    align: "top",
-                    display: "true",
-                    font: {
-                      // weight: "bold",
-                    },
-                  },
-                },
-              },
-            },
-            {
-              type: "bar",
-              label: "Bar Dataset",
-              data: this.age_and_program_wise_ben.map(
-                (row) => row.beneficiaries
-              ),
-              barPercentage: 0.5,
-              barThickness: 6,
-              maxBarThickness: 8,
-              minBarLength: 2,
-              backgroundColor: [
-                "rgba(0, 200, 255, 1)",
-                "rgba(0, 92, 255, 1",
-                "rgba(255, 128, 148, 1)",
-                "rgba(188, 35, 199, 1)",
-              ],
-              datalabels: {
-                labels: {
-                  title: false,
-                },
-              },
-            },
-          ],
-        },
-        options: {
-          plugins: {
-            legend: {
-              labels: false,
-            },
-          },
-        },
-        // options: {
-        //   scales: {
-        //     x: {
-        //       stacked: true,
-        //     },
-        //   },
-        // },
-      }
-    );
-
-    this.shifted_ben_chart = new Chart(
-      document.getElementById("shifted_beneficiary"),
-      {
-        data: {
-          // labels: Utils.months({ count: 7 }),
-          labels: this.shifted_ben.map((row) => row.year),
-          datasets: [
-            {
-              type: "line",
-              label: "Line Dataset",
-              data: this.shifted_ben.map((row) => row.beneficiaries),
-              fill: false,
-              borderColor: "rgba(0, 92, 255, 1",
-              tension: 0.1,
-              datalabels: {
-                labels: {
-                  title: false,
-                },
-              },
-            },
-            {
-              type: "bar",
-              label: "Bar Dataset",
-              data: this.shifted_ben.map((row) => row.beneficiaries),
-              barPercentage: 0.5,
-              barThickness: 6,
-              maxBarThickness: 8,
-              minBarLength: 2,
-              backgroundColor: [
-                "rgba(0, 200, 255, 1)",
-                "rgba(0, 92, 255, 1",
-                "rgba(255, 128, 148, 1)",
-                "rgba(188, 35, 199, 1)",
-              ],
-              datalabels: {
-                labels: {
-                  title: {
-                    // color: "red",
-                    anchor: "end",
-                    align: "top",
-                    display: "true",
-                    font: {
-                      // weight: "bold",
-                    },
-                  },
-                },
-              },
-            },
-          ],
-        },
-        options: {
-          plugins: {
-            legend: {
-              labels: false,
-            },
-          },
-        },
-      }
-    );
   },
 };
 </script>
