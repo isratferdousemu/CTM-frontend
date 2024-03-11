@@ -3724,6 +3724,13 @@ export default {
                 .then((result) => {
 
                     this.data = result.data.application;
+                    //  const dateParts = this.data.date_of_birth.split('-');
+
+    
+                    // this.selectedYear = dateParts[0]; // Year
+                    // this.month = dateParts[1]; // Month
+                    // this.selectedDay = dateParts[2]; // Day
+                    // console.log(this.selectedYear, this.month, this.selectedDay,this.data.date_of_birth,"date_of_birth");
                     this.current_location = result?.data?.application?.current_location;
                     this.data.current_location_id=null;
                     this.data.current_location_type_id= null;

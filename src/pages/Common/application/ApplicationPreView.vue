@@ -1040,10 +1040,10 @@
                                                 cols="6" lg="6">
                                                 <v-row>
                                                     <v-col cols="4" lg="4"> <label>
-                                                        {{ language == 'bn' ? field.label
-                    .name_bn : field.label
-                        .name_en }} 
-                                                           
+                                                            {{ language == 'bn' ? field.label
+                                                            .name_bn : field.label
+                                                            .name_en }}
+
                                                             <!-- {{ language == 'bn' ? field.label
                     .name_bn : field.label
                         .name_en }} -->
@@ -1055,7 +1055,7 @@
                                                             <span style="20px">
                                                                 {{
 
-    field.value }}
+                                                                field.value }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -1778,7 +1778,7 @@ export default {
             whole_program: [],
             genderName: null,
             confirmDialog: false,
-            // loading:false,
+            loading:false,
 
 
 
@@ -2159,6 +2159,7 @@ export default {
                 },
             })
                 .then((res) => {
+                    this.confirmDialog = false;
                     this.$store.commit('ApplicationSelection/setSuccessId', res.data.id);
                     this.$router.push("/submitted-application");
                 })
