@@ -27,6 +27,7 @@
       "reset": "Reset",
       "back": "Back",
       "forward": "Forward",
+      "recommendation": "Recommendation",
       "waiting": "Waiting",
       "reject": "Reject",
       "status": "Status",
@@ -71,7 +72,7 @@
       "no": "No",
       "attention": "Attention!!!",
       "create": "Create",
-      "download":"Download Application"
+      "download": "Download Application"
     },
     "system_config": {
       "demo_graphic": {
@@ -350,6 +351,7 @@
           "name": "Name",
           "approve": "Approve",
           "forward": "Forward",
+          "recommendation": "Recommendation",
           "reject": "Reject",
           "waiting": "Waiting"
         },
