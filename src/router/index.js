@@ -24,6 +24,7 @@ import CommonRoutes from "./Common";
 import store from "../store/index";
 // import components
 import DefaultLayout from "../layouts/defaultLayout.vue";
+import ActivityLogRoutes from "@/router/ActivityLog";
 
 
 const routes = [
@@ -61,6 +62,7 @@ const routes = [
       ...TrainingManagementRoutes,
       ...GeneralSettingRoutes,
       ...SystemAuditRoutes,
+      ...ActivityLogRoutes
     ],
   },
 ];
