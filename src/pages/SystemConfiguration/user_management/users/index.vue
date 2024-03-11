@@ -146,7 +146,7 @@
                         </v-tooltip>
 
 
-                        <v-tooltip top>
+<!--                        <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
                                 :disabled="item.user_type == 1"
@@ -155,7 +155,7 @@
                                 x-small
                                 v-on="on"
                                 color="red"
-                                class="ml-3 white--text"
+                                class="ml-3 white&#45;&#45;text"
                                 elevation="0"
                                 @click="deleteAlert(item.id)"
                             >
@@ -163,7 +163,7 @@
                             </v-btn>
                           </template>
                           <span> {{ $t("container.list.delete") }}</span>
-                        </v-tooltip>
+                        </v-tooltip>-->
 
                       </template>
                       <!-- End Action Button -->
@@ -2545,7 +2545,7 @@ export default {
         page: this.pagination.current,
       };
       this.$axios
-        .get("/admin/division/get", {
+        .get("/get-divisions", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -2686,7 +2686,7 @@ export default {
         return this.getOfficeByLocation(this.data.office_type, event);
       }
       await this.$axios
-          .get(`/admin/district/get/${event}`, {
+          .get(`/get-districts/${event}`, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
@@ -2739,7 +2739,7 @@ export default {
         const lookupType = this.data.committee_type == 16 || this.data.office_type == 35 ? 1 : 3
 
         await this.$axios
-            .get(`/admin/city/get/` + this.data.district_id + "/" + lookupType, {
+            .get(`/get-cities-pouroshavas/` + this.data.district_id + "/" + lookupType, {
               headers: {
                 Authorization: "Bearer " + this.$store.state.token,
                 "Content-Type": "multipart/form-data",
@@ -2882,7 +2882,7 @@ export default {
       this.data.office_ward_id = []
 
       await this.$axios
-          .get(`/admin/office/wards/${event}`, {
+          .get(`/get-office-wards/${event}`, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
@@ -2926,26 +2926,30 @@ export default {
       this.data.office_id = null;
       this.data.committee_id = null;
 
-      try {
-        this.$store
-          .dispatch("Thana/GetAllUpazilaByDistrict", id)
-          .then((data) => {
-            this.upazilas = data;
+
+      await this.$axios
+          .get(`/get-upazilas/${id}`, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((result) => {
+            this.upazilas = result.data.data;
             this.city = []
             this.thanas = []
             this.unions = []
             this.wards = []
             this.committees = []
+            this.offices = result.data.data;
           });
-      } catch (e) {
-        console.log(e);
-      }
+
     },
 
-    async getOfficeByLocation(office_type_id, location_type_id = null) {
+    async getOfficeByLocation(office_type_id, location_id = null) {
       let data = {
         office_type_id: office_type_id,
-        location_type_id: location_type_id,
+        location_id: location_id,
       };
       let fd = new FormData();
       for (const [key, value] of Object.entries(data)) {
@@ -2954,7 +2958,7 @@ export default {
         }
       }
       await this.$axios
-        .post("/admin/user/office/by-location", fd, {
+        .post("/get-offices", fd, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "application/json",
