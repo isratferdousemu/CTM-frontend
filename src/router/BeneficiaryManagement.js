@@ -264,6 +264,30 @@ const BeneficiaryManagementRoutes = [
         "../pages/BeneficiaryManagement/BeneficiaryShifting/ShiftingList.vue"
       ),
   },
+  {
+    path: "/beneficiary-management/beneficiary-location-shifting",
+    name: "beneficiary-location-shifting",
+    meta: {
+      requiresAuth: true,
+      permission: "beneficiary-location.shifting",
+    },
+    component: () =>
+      import(
+        "../pages/BeneficiaryManagement/BeneficiaryShifting/LocationShifting/Index.vue"
+      ),
+  },
+  {
+    path: "/beneficiary-management/beneficiary-location-shifting-list",
+    name: "beneficiary_shifting_list",
+    meta: {
+      requiresAuth: true,
+      permission: "beneficiary-shifting-list",
+    },
+    component: () =>
+      import(
+        "../pages/BeneficiaryManagement/BeneficiaryShifting/LocationShifting/LocationShiftingList.vue"
+      ),
+  },
 ];
 
 export default BeneficiaryManagementRoutes;
