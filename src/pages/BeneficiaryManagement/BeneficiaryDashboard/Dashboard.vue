@@ -9,7 +9,7 @@
             <v-card
               elevation="2"
               rounded="xl"
-              class="ml-2 mr-2"
+              class="mr-2"
               height="100%"
               max-height="auto"
             >
@@ -21,18 +21,16 @@
 
                   <v-col>
                     <v-card-text style="word-break: break-word">
-                      <span class="font-weight-bold">
+                      <div class="font-weight-bold d-flex">
                         {{
                           $t(
                             "container.beneficiary_management.dashboard.total_beneficiary"
                           )
                         }}
-                      </span>
-                      <br />
-                      <br />
-                      <span class="headline font-weight-bold">
+                      </div>
+                      <div class="headline font-weight-bold d-flex">
                         {{ beneficiaries.totalBeneficiaries }}
-                      </span>
+                      </div>
                     </v-card-text>
                   </v-col>
                 </v-row>
@@ -55,17 +53,16 @@
 
                   <v-col>
                     <v-card-text style="word-break: break-word">
-                      <span class="font-weight-bold">
+                      <div class="font-weight-bold d-flex">
                         {{
                           $t(
                             "container.beneficiary_management.dashboard.active_beneficiary"
                           )
                         }}
-                      </span>
-                      <br />
-                      <span class="headline font-weight-bold">
+                      </div>
+                      <div class="headline font-weight-bold d-flex">
                         {{ beneficiaries.totalActiveBeneficiaries }}
-                      </span>
+                      </div>
                     </v-card-text>
                   </v-col>
                 </v-row>
@@ -88,20 +85,19 @@
 
                   <v-col>
                     <v-card-text>
-                      <span
-                        class="font-weight-bold"
+                      <div
+                        class="font-weight-bold d-flex"
                         style="word-break: break-word"
                       >
                         {{
                           $t(
                             "container.beneficiary_management.dashboard.inactive_beneficiary"
                           )
-                        }}</span
+                        }}</div
                       >
-                      <br />
-                      <span class="headline font-weight-bold">
+                      <div class="headline font-weight-bold d-flex">
                         {{ beneficiaries.totalInactiveBeneficiaries }}
-                      </span>
+                      </div>
                     </v-card-text>
                   </v-col>
                 </v-row>
@@ -126,17 +122,16 @@
 
                   <v-col>
                     <v-card-text>
-                      <span class="font-weight-bold">
+                      <div class="font-weight-bold d-flex">
                         {{
                           $t(
                             "container.beneficiary_management.dashboard.waitining_beneficiary"
                           )
-                        }}</span
+                        }}</div
                       >
-                      <br />
-                      <span class="headline font-weight-bold">
+                      <div class="headline font-weight-bold d-flex">
                         {{ beneficiaries.totalWaitingBeneficiaries }}
-                      </span>
+                      </div>
                     </v-card-text>
                   </v-col>
                 </v-row>
@@ -149,7 +144,7 @@
               max-height="auto"
               elevation="2"
               rounded="xl"
-              class="ml-2 mr-2"
+              class="ml-2"
             >
               <v-card-title>
                 <v-row>
@@ -159,17 +154,16 @@
 
                   <v-col>
                     <v-card-text style="word-break: break-word">
-                      <span class="font-weight-bold">
+                      <div class="font-weight-bold d-flex">
                         {{
                           $t(
                             "container.beneficiary_management.dashboard.replaced_beneficiary"
                           )
-                        }}</span
+                        }}</div
                       >
-                      <br />
-                      <span class="headline font-weight-bold">
+                      <div class="headline font-weight-bold d-flex">
                         {{ beneficiaries.totalReplacedBeneficiaries }}
-                      </span>
+                      </div>
                     </v-card-text>
                   </v-col>
                 </v-row>

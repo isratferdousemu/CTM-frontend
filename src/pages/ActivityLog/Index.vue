@@ -117,6 +117,38 @@
                         </span>
                       </template>
 
+                      <template v-slot:item.properties="{ item }">
+
+                        <span>
+
+                          <v-expansion-panels>
+                            <v-expansion-panel>
+                              <v-expansion-panel-header>
+                                Properties
+                              </v-expansion-panel-header>
+                              <v-expansion-panel-content>
+                                <v-container>
+                                  <v-row v-for="(value, key) in item.properties.userInfo" :key="key">
+                                    <v-col cols="6">{{ key }}</v-col>
+                                    <v-col cols="6">{{ value }}</v-col>
+                                  </v-row>
+                                </v-container>
+                                <v-container>
+                                  <v-row v-for="(value, key) in item.properties.data" :key="key">
+                                    <v-col cols="6">{{ key }}</v-col>
+                                    <v-col cols="6">{{ value }}</v-col>
+                                  </v-row>
+                                </v-container>
+<!--                                <v-container>-->
+<!--                                  {{ JSON.stringify(item.properties)}}-->
+<!--                                </v-container>-->
+                              </v-expansion-panel-content>
+                            </v-expansion-panel>
+                          </v-expansion-panels>
+
+                        </span>
+                      </template>
+
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
                         <v-tooltip top>
@@ -288,6 +320,13 @@ export default {
           ),
           value: "causer",
           class: "highlight-column",
+        },
+        {
+          text: this.$t(
+              "Properties"
+          ),
+          value: "properties",
+          // sortable: true,
         },
         {
           text: this.$t(

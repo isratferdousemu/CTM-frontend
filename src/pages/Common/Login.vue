@@ -331,6 +331,8 @@ export default {
                 })
                 .catch((err) => {
                     this.loading = false;
+                  this.$toast.error(err.response.data.message);
+
                     if (err.response) {
                         if (err.response.data.success == false) {
                             if (err.response.data.error_code == "wrong_email_or_password") {
@@ -341,11 +343,11 @@ export default {
                             }
                             if (err.response.data.error_code == "device_not_found") {
                                  
-                                 this.$toast.error(err.response.data.message);
+                                 // this.$toast.error(err.response.data.message);
                              }
                             if (err.response.data.error_code == "user_default_password") {
                                  
-                                this.$toast.error(err.response.data.message);
+                                // this.$toast.error(err.response.data.message);
                                  this.resetPassword=true
 
                               this.form.old_password = this.form.password

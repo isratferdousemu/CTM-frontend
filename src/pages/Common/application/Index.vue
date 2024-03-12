@@ -432,8 +432,9 @@
                               v-slot="{ errors }">
                               <label>{{ $t('container.application_selection.application.education_status') }}</label>
                               <span style="margin-left: 4px; color: red">*</span>
-                              <v-select v-model="data.education_status" :item-text="getItemText" item-value="name_en" outlined
-                                :error="errors[0] ? true : false" :error-messages="errors[0]" :items="education_status">
+                              <v-select v-model="data.education_status" :item-text="getItemText" item-value="name_en"
+                                outlined :error="errors[0] ? true : false" :error-messages="errors[0]"
+                                :items="education_status">
                               </v-select>
                             </ValidationProvider>
                           </v-col>
@@ -1168,7 +1169,8 @@
                             <span style="margin-left: 4px; color: red">*</span>
 
                             <v-select v-model="data.account_owner" outlined clearable :items="mobile_ownership"
-                              :item-text="getItemText" item-value="name_en" :error="errors[0] ? true : false" :error-messages="errors[0]">
+                              :item-text="getItemText" item-value="name_en" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]">
                             </v-select>
                           </ValidationProvider>
                         </v-col>
@@ -1181,7 +1183,8 @@
                             <span style="margin-left: 4px; color: red">*</span>
 
                             <v-select v-model="data.account_owner" outlined clearable :items="mobile_ownership"
-                              :item-text="getItemText"  item-value="name_en" :error="errors[0] ? true : false" :error-messages="errors[0]">
+                              :item-text="getItemText" item-value="name_en" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]">
                             </v-select>
                           </ValidationProvider>
                         </v-col>
@@ -1558,17 +1561,18 @@
                 <!-- <v-btn @click="resetForm()" elevation="2" class="btn mr-2" color="info">{{ $t('container.list.cancel')
                 }}</v-btn> -->
                 <!-- old one -->
-                <!-- <v-btn @click="confirmDialog = true" flat color="primary" :loading="loading" :disabled="invalid"
-                  class="custom-btn-width black white--text py-2">
-                  {{ $t('container.list.submit') }}
-                </v-btn> -->
+
                 <v-btn @click="resetForm()" elevation="2" class="btn mr-2" outlined color="red" dark>{{
                   $t('container.list.cancel') }}</v-btn>
-                <!--  -->
-                <v-btn @click="submitApplication()" flat color="primary" :loading="loading" :disabled="invalid"
+                <v-btn @click="confirmDialog = true" flat color="primary" :loading="loading" :disabled="invalid"
+                  class="custom-btn-width black white--text py-2">
+                  {{ $t('container.list.submit') }}
+                </v-btn>
+                <!--:disabled="invalid"  -->
+                <!-- <v-btn @click="submitApplication()" flat color="primary" :loading="loading"
                   class="custom-btn-width black white--text py-2">
                   {{ $t('container.list.preview') }}
-                </v-btn>
+                </v-btn> -->
 
 
               </div>
@@ -2034,6 +2038,22 @@ export default {
 
   methods:
    {
+
+     //User Activity Log
+     async SendActivityLog() {
+       const queryParams = {
+         info: "Online Application",
+       };
+       this.$axios
+           .get("/activity-log/get-information", {
+             params: queryParams,
+           })
+           .then((result) => {
+             console.log(result, "ActivityLog");
+
+           });
+     },
+
     checkLengthAndVerify() {
       if (this.data.nominee_verification_number.length === 10 || this.data.nominee_verification_number.length === 17) {
         if (this.data.verification_number == this.data.nominee_verification_number) {
@@ -2472,12 +2492,12 @@ export default {
         this.loading = false;
         // console.log(res.data.data, "data")
         // console.log(res.data.id, "id")
-        // this.$store.commit('ApplicationSelection/setSuccessId', res.data.id);
+        this.$store.commit('ApplicationSelection/setSuccessId', res.data.id);
         // console.log(res.data.id, " after store id")
       
-        // this.$router.push("/submitted-application");
+        this.$router.push("/submitted-application");
         // console.log(res.data.id, " after pushing id")
-        this.$router.push(`/online-application-preview/${res.data.application_id}`);
+        // this.$router.push(`/online-application-preview/${res.data.application_id}`);
 
       })
         .catch((err) => {
@@ -3159,7 +3179,7 @@ export default {
 
 
       await this.$axios
-        .get(`/admin/ward/get/${$event}`, {
+        .get(`/global/ward/get/${$event}`, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -3253,6 +3273,7 @@ export default {
     }
   },
   created() {
+    this.SendActivityLog();
     this.getAllProgram();
     this.getAllDivision();
     this.permanent_getAllDivision();

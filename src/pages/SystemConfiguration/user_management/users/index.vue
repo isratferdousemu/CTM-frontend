@@ -79,17 +79,21 @@
                       </template>
                       <template v-slot:item.status="{ item }">
                         <v-chip
-                          :color="item.status == 1 ? 'success' : 'error'"
+                          :color="userStatus[item.status]"
                           dark
                           small
                           class="white--text"
                         >
-                          {{
-                            item.status == 1
-                              ? $t("container.list.active")
-                              : $t("container.list.inactive")
-                          }}
+                          <span v-if="item.status==0">{{$t("container.list.inactive")}}</span>
+                          <span v-if="item.status==1">{{$t("container.list.active")}}</span>
+                          <span v-if="item.status==2">{{$t("container.list.banned")}}</span>
                         </v-chip>
+                      </template>
+
+                      <template v-slot:[`item.banned`]="{item}">
+                      <span>
+                           <v-switch :input-value="item.status === 2" @change="banUser(item.id)" hide-details color="orange darken-3"></v-switch>
+                      </span>
                       </template>
 
 
@@ -1990,6 +1994,13 @@ export default {
         committee_id: null,
         office_ward_id: []
       },
+
+      userStatus: {
+        0: 'grey',
+        1: 'success',
+        2: 'error',
+      },
+
       isDistrictHidden: true,
       isLocationTypeHidden: true,
       isCityCorporationHidden: false,
@@ -2076,6 +2087,10 @@ export default {
           text: this.$t("container.system_config.demo_graphic.user.status"),
           value: "status",
         },
+        /*{
+          text: this.$t("container.list.banned"),
+          value: "banned",
+        },*/
         {
           text: this.$t("container.system_config.demo_graphic.user.location"),
           value: "assign_location.name_en",
@@ -2594,7 +2609,7 @@ export default {
 
 
     approveUser: async function () {
-      this.$axios
+      await this.$axios
           .get("/admin/user/approve/" + this.data.id, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
@@ -2613,6 +2628,32 @@ export default {
           })
           .catch((err) => {
             console.log(err, "error");
+            console.log(err.response);
+            this.$toast.error(err?.response?.data?.message);
+          });
+    },
+
+
+    async banUser(id) {
+      await this.$axios
+          .get("/admin/user/ban/" + id, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((res) => {
+            console.log(res.data)
+
+            if (res.data.data.status == 2) {
+              this.$toast.warning(res.data.message)
+            } else {
+              this.$toast.success(res.data.message)
+            }
+
+            this.getUsers();
+          })
+          .catch((err) => {
             console.log(err.response);
             this.$toast.error(err?.response?.data?.message);
           });
