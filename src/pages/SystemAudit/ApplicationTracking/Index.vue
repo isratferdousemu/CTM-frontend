@@ -52,15 +52,15 @@ export default {
              legends: [
                 { status: 'completed', icon: 'mdi-check', color: '#26A69A', label: 'Completed' },
                 { status: 'rejected', icon: 'mdi-close', color: '#E53935', label: 'Rejected' },
-                { status: 'waiting', icon: 'mdi-clock', color: '#FF6F00', label: 'Waiting' },
-                { status: 'pending', icon: 'mdi-alert', color: '#FFEA00', label: 'Pending' },
+                 { status: 'waiting', icon: 'mdi-clock', color: '#757575', label: 'Inprogress' },
+                 { status: 'pending', icon: 'mdi-alert', color: '#757575', label: 'Future Proram' },
             ],
              tracking_summary: [
                 { name: 'National ID/Birth Registration No', value: '2234897899412' },
                 { name: 'Application Time', value: '04:05:52'},
                 { name: 'Application Date', value: '2023-10-04' },
                 { name: 'Office', value: 'Head Office'},
-                  { name: 'Tracking No', value: '2234897899412' },
+                { name: 'Tracking No', value: '2234897899412' },
            
        
             ],
@@ -81,9 +81,9 @@ export default {
                 case 'rejected':
                     return '#E53935';
                 case 'waiting':
-                    return '#FF6F00';
+                    return '#616161';
                 case 'pending':
-                    return '#FFEA00';
+                    return '#616161';
                 default:
                     return 'grey';
             }
