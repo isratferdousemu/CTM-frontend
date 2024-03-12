@@ -486,7 +486,7 @@
                           >
                             <v-autocomplete
                               :hide-details="errors[0] ? false : true"
-                              v-model="ben_search_id"
+                              v-model="selected_ben_ids"
                               clearable
                               outlined
                               :label="
@@ -496,15 +496,26 @@
                               "
                               :items="beneficiary_ids"
                               item-text="application_id"
-                              item-value="id"
+                              item-value="application_id"
                               required
                               multiple
                               chips
                               closable-chips
                               :error="errors[0] ? true : false"
                               :error-messages="errors[0]"
-                              @change="GetBeneficaryDetails($event)"
                             >
+                              <template v-slot:selection="data">
+                                <v-chip
+                                  :selected="data.selected"
+                                  close
+                                  class="chip--select-multi"
+                                  @click:close="
+                                    remove(data.item.application_id)
+                                  "
+                                >
+                                  {{ data.item.application_id }}
+                                </v-chip>
+                              </template>
                             </v-autocomplete>
                           </ValidationProvider>
                         </v-col>
@@ -691,6 +702,7 @@ export default {
       ben_search_id: "",
       beneficiaries: [],
       beneficiary_ids: [],
+      selected_ben_ids: [],
       beneficiariesList: [],
       data: {
         program_id: null,
@@ -924,7 +936,6 @@ export default {
         }
       }
     },
-
     async onChangeUpazila(event) {
       await this.$axios
         .get(`/admin/union/get/${this.data.thana_id}`, {
@@ -1196,6 +1207,13 @@ export default {
       } catch (e) {
         console.log(e);
       }
+    },
+    remove(item) {
+      // alert(this.selected_ben_ids.length);
+      this.selected_ben_ids.map((row) => console.log("value_", row));
+
+      const index = this.selected_ben_ids.indexOf(item);
+      if (index >= 0) this.selected_ben_ids.splice(index, 1);
     },
     updateHeaderTitle() {
       const title = this.$t(
