@@ -17,6 +17,7 @@
       "action": "Action",
       "active": "Active",
       "inactive": "Inactive",
+      "banned": "Banned",
       "submit": "Submit",
       "cancel": "cancel",
       "edit": "Edit",
