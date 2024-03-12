@@ -71,7 +71,7 @@
       "no": "No",
       "attention": "Attention!!!",
       "create": "Create",
-      "download":"Download Application"
+      "download": "Download Application"
     },
     "system_config": {
       "demo_graphic": {
@@ -755,6 +755,7 @@
         "cause_date": "Cause Date",
         "reason_provision": "reason provision",
         "beneficiary_replacement_list": "Beneficiary Replacement List",
+        "beneficiary_waiting_list": "Beneficiary Waiting List",
         "payment_history": "Payment History",
         "grievance_history": "Grievance History",
         "Change_tracking": "Change Tracking",

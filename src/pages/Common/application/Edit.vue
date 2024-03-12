@@ -3327,8 +3327,8 @@ export default {
                     this.wards_city = result.data.data;
                     this.wards_upazila = [];
                     this.wards_dist = [];
-                    this.ward_id_dist = null;
-                    this.ward_id_upazila = null;
+                    this.data.ward_id_dist = null;
+                    this.data.ward_id_upazila = null;
                 });
 
         },
@@ -3346,8 +3346,8 @@ export default {
                     console.log(this.permanent_wards_city, "hi called thana properly")
                     this.permanent_wards_upazila = [];
                     this.permanent_wards_dist = [];
-                    this.permanent_ward_id_dist = null;
-                    this.permanent_ward_id_upazila = null;
+                    this.data.permanent_ward_id_dist = null;
+                    this.data.permanent_ward_id_upazila = null;
                 });
 
         },
@@ -3462,7 +3462,12 @@ export default {
                         })
                         .then((result) => {
                             this.permanent_thanas = result.data.data;
-                            console.log("its calling always")
+                            this.data.permanent_city_id = null;
+                            this.data.permanent_city_thana_id = null;
+                            this.data.permanent_ward_id_city = null;
+                            this.permanent_district_poros = [];
+                            this.data.permanent_district_pouro_id = null;
+                            this.data.permanent_ward_id_dist = null;
                         });
                 }
                 if ($event === 3) {
@@ -3474,6 +3479,15 @@ export default {
                         })
                         .then((result) => {
                             this.permanent_cities = result.data.data;
+                            this.permanent_district_poros =[];
+                            this.data.permanent_district_pouro_id = null;
+                            this.data.permanent_ward_id_dist=null;
+                            this.permanent_thanas = [];
+                            this.data.permanent_thana_id=null;
+                            this.data.permanent_union_id=null;
+                            this.data.permanent_pouro_id=null;
+                            this.data.permanent_ward_id_union=null;
+                            this.data.permanent_ward_id_pouro = null;
                         });
                 }
                 if ($event === 1) {
@@ -3485,6 +3499,16 @@ export default {
                         })
                         .then((result) => {
                             this.permanent_district_poros = result.data.data;
+                            this.permanent_cities = [];
+                            this.data.permanent_city_id = null;
+                            this.data.permanent_city_thana_id = null;
+                            this.data.permanent_ward_id_city = null;
+                            this.thanas = [];
+                            this.data.permanent_thana_id = null;
+                            this.data.permanent_union_id = null;
+                            this.data.permanent_pouro_id = null;
+                            this.data.permanent_ward_id_union = null;
+                            this.data.permanent_ward_id_pouro = null;
                         });
                 }
             }
@@ -3625,7 +3649,7 @@ export default {
 
 
             await this.$axios
-                .get(`/admin/ward/get/${$event}`, {
+                .get(`/global/ward/get/${$event}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -3886,7 +3910,7 @@ export default {
                         this.data.district_pouro_id = this.current_location?.parent.id;
                         this.onChangeDistrictPouro(this.data.district_pouro_id);
 
-                        this.data.ward_id_dist = this.current_location;
+                        this.data.ward_id_dist = this.current_location.id;
                         this.data.post_code = this.data?.current_post_code;
                         this.data.address = this.data?.current_address;
 

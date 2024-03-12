@@ -432,8 +432,9 @@
                               v-slot="{ errors }">
                               <label>{{ $t('container.application_selection.application.education_status') }}</label>
                               <span style="margin-left: 4px; color: red">*</span>
-                              <v-select v-model="data.education_status" :item-text="getItemText" item-value="name_en" outlined
-                                :error="errors[0] ? true : false" :error-messages="errors[0]" :items="education_status">
+                              <v-select v-model="data.education_status" :item-text="getItemText" item-value="name_en"
+                                outlined :error="errors[0] ? true : false" :error-messages="errors[0]"
+                                :items="education_status">
                               </v-select>
                             </ValidationProvider>
                           </v-col>
@@ -1168,7 +1169,8 @@
                             <span style="margin-left: 4px; color: red">*</span>
 
                             <v-select v-model="data.account_owner" outlined clearable :items="mobile_ownership"
-                              :item-text="getItemText" item-value="name_en" :error="errors[0] ? true : false" :error-messages="errors[0]">
+                              :item-text="getItemText" item-value="name_en" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]">
                             </v-select>
                           </ValidationProvider>
                         </v-col>
@@ -1181,7 +1183,8 @@
                             <span style="margin-left: 4px; color: red">*</span>
 
                             <v-select v-model="data.account_owner" outlined clearable :items="mobile_ownership"
-                              :item-text="getItemText"  item-value="name_en" :error="errors[0] ? true : false" :error-messages="errors[0]">
+                              :item-text="getItemText" item-value="name_en" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]">
                             </v-select>
                           </ValidationProvider>
                         </v-col>
@@ -1564,8 +1567,8 @@
                 </v-btn> -->
                 <v-btn @click="resetForm()" elevation="2" class="btn mr-2" outlined color="red" dark>{{
                   $t('container.list.cancel') }}</v-btn>
-                <!--  -->
-                <v-btn @click="submitApplication()" flat color="primary" :loading="loading" :disabled="invalid"
+                <!--:disabled="invalid"  -->
+                <v-btn @click="submitApplication()" flat color="primary" :loading="loading"
                   class="custom-btn-width black white--text py-2">
                   {{ $t('container.list.preview') }}
                 </v-btn>
@@ -3159,7 +3162,7 @@ export default {
 
 
       await this.$axios
-        .get(`/admin/ward/get/${$event}`, {
+        .get(`/global/ward/get/${$event}`, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
