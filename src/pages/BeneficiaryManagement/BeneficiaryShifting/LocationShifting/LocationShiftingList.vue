@@ -23,7 +23,7 @@
                   <h3 class="white--text">
                     {{
                       $t(
-                        "container.beneficiary_management.beneficiary_shifting.shitfing_list"
+                        "container.beneficiary_management.beneficiary_shifting.location_shitfing_list"
                       )
                     }}
                   </h3>
@@ -476,6 +476,84 @@
                             ></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
+                        <v-col lg="3" md="3" cols="12">
+                          <ValidationProvider
+                            name="To Date"
+                            vid="to_date"
+                            v-slot="{ errors }"
+                          >
+                            <v-menu
+                              v-model="menu2"
+                              :close-on-content-click="false"
+                              :nudge-right="40"
+                              transition="scale-transition"
+                              offset-y
+                              min-width="auto"
+                            >
+                              <template v-slot:activator="{ on, attrs }">
+                                <v-text-field
+                                  outlined
+                                  clearable
+                                  v-model="data.from_date"
+                                  :label="
+                                    $t(
+                                      'container.beneficiary_management.beneficiary_shifting.from_date'
+                                    )
+                                  "
+                                  prepend-inner-icon="mdi-calendar"
+                                  readonly
+                                  v-bind="attrs"
+                                  v-on="on"
+                                  :error="errors[0] ? true : false"
+                                  :error-messages="errors[0]"
+                                ></v-text-field>
+                              </template>
+                              <v-date-picker
+                                v-model="data.from_date"
+                                @input="menu2 = false"
+                              ></v-date-picker>
+                            </v-menu>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col lg="3" md="3" cols="12">
+                          <ValidationProvider
+                            name="From Date"
+                            vid="from_date"
+                            v-slot="{ errors }"
+                          >
+                            <v-menu
+                              v-model="menu1"
+                              :close-on-content-click="false"
+                              :nudge-right="40"
+                              transition="scale-transition"
+                              offset-y
+                              min-width="auto"
+                            >
+                              <template v-slot:activator="{ on, attrs }">
+                                <v-text-field
+                                  outlined
+                                  clearable
+                                  v-model="data.to_date"
+                                  :label="
+                                    $t(
+                                      'container.beneficiary_management.beneficiary_shifting.to_date'
+                                    )
+                                  "
+                                  prepend-inner-icon="mdi-calendar"
+                                  readonly
+                                  v-bind="attrs"
+                                  v-on="on"
+                                  :error="errors[0] ? true : false"
+                                  :error-messages="errors[0]"
+                                ></v-text-field>
+                              </template>
+                              <v-date-picker
+                                v-model="data.to_date"
+                                @input="menu1 = false"
+                              ></v-date-picker>
+                            </v-menu>
+                          </ValidationProvider>
+                        </v-col>
                       </v-row>
 
                       <div class="d-inline d-flex justify-end">
@@ -508,7 +586,7 @@
                 <h3 class="text-uppercase pt-3">
                   {{
                     $t(
-                      "container.beneficiary_management.beneficiary_shifting.shitfing_list"
+                      "container.beneficiary_management.beneficiary_shifting.location_shitfing_list"
                     )
                   }}
                 </h3>
@@ -516,7 +594,7 @@
               <v-card-text>
                 <v-row justify="end" align="center" class="mx-4">
                   <!-- Dropdown on the right -->
-                  <v-col lg="4" md="4" cols="12" class="text-right">
+                  <!-- <v-col lg="4" md="4" cols="12" class="text-right">
                     <v-btn
                       elevation="2"
                       class="btn mr-2 white--text"
@@ -535,7 +613,7 @@
                       <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
                       {{ $t("container.list.excel") }}
                     </v-btn>
-                  </v-col>
+                  </v-col> -->
                 </v-row>
                 <v-row
                   class="ma-0 white round-border d-flex justify-space-between align-center"
@@ -647,6 +725,8 @@ export default {
         thana_id: null,
         union_id: null,
         ward_id: null,
+        to_date: null,
+        from_date: null,
       },
       ben_status: [
         {
@@ -740,15 +820,15 @@ export default {
         },
         {
           text: this.$t(
-            "container.beneficiary_management.beneficiary_list.from_program_name"
+            "container.beneficiary_management.beneficiary_shifting.from_location"
           ),
-          value: "from_program_name_en",
+          value: "from_division_name_en",
         },
         {
           text: this.$t(
-            "container.beneficiary_management.beneficiary_list.to_program_name"
+            "container.beneficiary_management.beneficiary_shifting.to_location"
           ),
-          value: "to_program_name_en",
+          value: "to_division_name_en",
         },
         {
           text: this.$t(
@@ -760,7 +840,7 @@ export default {
           text: this.$t(
             "container.beneficiary_management.beneficiary_list.activation_date"
           ),
-          value: "activation_date",
+          value: "effective_date",
         },
         {
           text: this.$t("container.list.action"),
@@ -797,6 +877,8 @@ export default {
       this.data.program_id = null;
       this.data.union_id = null;
       this.data.ward_id = null;
+      this.data.from_date = null;
+      this.data.to_date = null;
 
       this.GetApplication();
     },
@@ -1085,14 +1167,17 @@ export default {
         pouro_id: this.data.pouro_id,
         union_id: this.data.union_id,
         ward_id: this.data.ward_id,
+        from_date: this.data.from_date,
+        to_date: this.data.to_date,
 
         perPage: this.pagination.perPage,
         page: this.pagination.current,
+
         // sortBy: this.sortBy,
         // orderBy: this.sortDesc,
       };
       this.$axios
-        .get("/admin/beneficiary/shiftingList", {
+        .get("/admin/beneficiary/locationShiftingList", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",

@@ -22,8 +22,8 @@
                         <span style="20px">
                           {{
                             language === "bn"
-                              ? beneficiary.program.name_bn
-                              : beneficiary.program.name_en
+                              ? beneficiary?.program?.name_bn
+                              : beneficiary?.program?.name_en
                           }}
                         </span>
                       </template>
@@ -213,7 +213,7 @@
                             <v-col cols="8" lg="8">
                               :<template>
                                 <span style="20px">
-                                  {{ beneficiary.name_en }}
+                                  {{ beneficiary?.name_en }}
                                 </span>
                               </template>
                             </v-col>
@@ -251,7 +251,7 @@
                             <v-col cols="8" lg="8">
                               :<template>
                                 <span style="20px">
-                                  {{ beneficiary.father_name_en }}
+                                  {{ beneficiary?.father_name_en }}
                                 </span>
                               </template>
                             </v-col>
@@ -291,7 +291,7 @@
                             <v-col cols="8" lg="8">
                               :<template>
                                 <span style="20px">
-                                  {{ beneficiary.mother_name_en }}
+                                  {{ beneficiary?.mother_name_en }}
                                 </span>
                               </template>
                             </v-col>
@@ -352,7 +352,7 @@
                             <v-col cols="8" lg="8">
                               :<template>
                                 <span style="20px">
-                                  {{ beneficiary.spouse_name_en }}
+                                  {{ beneficiary?.spouse_name_en }}
                                 </span>
                               </template>
                             </v-col>
@@ -567,8 +567,8 @@
                               <span style="20px">
                                 {{
                                   language == "bn"
-                                    ? beneficiary.currentDivision.name_bn
-                                    : beneficiary.currentDivision.name_en
+                                    ? beneficiary?.currentDivision?.name_bn
+                                    : beneficiary?.currentDivision?.name_en
                                 }}
                               </span>
                             </template>
@@ -591,8 +591,8 @@
                               <span style="20px">
                                 {{
                                   language == "bn"
-                                    ? beneficiary.currentDistrict.name_bn
-                                    : beneficiary.currentDistrict.name_en
+                                    ? beneficiary?.currentDistrict?.name_bn
+                                    : beneficiary?.currentDistrict?.name_en
                                 }}
                               </span>
                             </template>
@@ -640,8 +640,10 @@
                               <span style="20px">
                                 {{
                                   language == "bn"
-                                    ? beneficiary.currentCityCorporation.name_bn
-                                    : beneficiary.currentCityCorporation.name_en
+                                    ? beneficiary?.currentCityCorporation
+                                        ?.name_bn
+                                    : beneficiary?.currentCityCorporation
+                                        ?.name_en
                                 }}
                               </span>
                             </template>
@@ -669,8 +671,8 @@
                               <span style="20px">
                                 {{
                                   language == "bn"
-                                    ? beneficiary.currentUpazila.name_bn
-                                    : beneficiary.currentUpazila.name_en
+                                    ? beneficiary?.currentUpazila?.name_bn
+                                    : beneficiary?.currentUpazila?.name_en
                                 }}
                               </span>
                             </template>
@@ -698,10 +700,10 @@
                               <span style="20px">
                                 {{
                                   language == "bn"
-                                    ? beneficiary.currentDistrictPourashava
-                                        .name_bn
-                                    : beneficiary.currentDistrictPourashava
-                                        .name_en
+                                    ? beneficiary?.currentDistrictPourashava
+                                        ?.name_bn
+                                    : beneficiary?.currentDistrictPourashava
+                                        ?.name_en
                                 }}
                               </span>
                             </template>
@@ -729,8 +731,8 @@
                               <span style="20px">
                                 {{
                                   language == "bn"
-                                    ? beneficiary.currentThana.name_bn
-                                    : beneficiary.currentThana.name_en
+                                    ? beneficiary?.currentThana?.name_bn
+                                    : beneficiary?.currentThana?.name_en
                                 }}
                               </span>
                             </template>
@@ -759,8 +761,8 @@
                               <span style="20px">
                                 {{
                                   language == "bn"
-                                    ? beneficiary.currentUnion.name_bn
-                                    : beneficiary.currentUnion.name_en
+                                    ? beneficiary?.currentUnion?.name_bn
+                                    : beneficiary?.currentUnion?.name_en
                                 }}
                               </span>
                             </template>
@@ -788,8 +790,8 @@
                               <span style="20px">
                                 {{
                                   language == "bn"
-                                    ? beneficiary.currentPourashava.name_bn
-                                    : beneficiary.currentPourashava.name_en
+                                    ? beneficiary?.currentPourashava?.name_bn
+                                    : beneficiary?.currentPourashava?.name_en
                                 }}
                               </span>
                             </template>
@@ -813,8 +815,8 @@
                               <span style="20px">
                                 {{
                                   language == "bn"
-                                    ? beneficiary.currentWard.name_bn
-                                    : beneficiary.currentWard.name_en
+                                    ? beneficiary?.currentWard?.name_bn
+                                    : beneficiary?.currentWard?.name_en
                                 }}
                               </span>
                             </template>
@@ -891,8 +893,8 @@
                               <span style="20px">
                                 {{
                                   language == "bn"
-                                    ? beneficiary.permanentDivision.name_bn
-                                    : beneficiary.permanentDivision.name_en
+                                    ? beneficiary?.permanentDivision?.name_bn
+                                    : beneficiary?.permanentDivision?.name_en
                                 }}
                               </span>
                             </template>
@@ -915,8 +917,8 @@
                               <span style="20px">
                                 {{
                                   language == "bn"
-                                    ? beneficiary.permanentDistrict.name_bn
-                                    : beneficiary.permanentDistrict.name_en
+                                    ? beneficiary?.permanentDistrict?.name_bn
+                                    : beneficiary?.permanentDistrict?.name_en
                                 }}
                               </span>
                             </template>
@@ -964,10 +966,10 @@
                               <span style="20px">
                                 {{
                                   language == "bn"
-                                    ? beneficiary.permanentCityCorporation
-                                        .name_bn
-                                    : beneficiary.permanentCityCorporation
-                                        .name_en
+                                    ? beneficiary?.permanentCityCorporation
+                                        ?.name_bn
+                                    : beneficiary?.permanentCityCorporation
+                                        ?.name_en
                                 }}
                               </span>
                             </template>
@@ -995,8 +997,8 @@
                               <span style="20px">
                                 {{
                                   language == "bn"
-                                    ? beneficiary.permanentUpazila.name_bn
-                                    : beneficiary.permanentUpazila.name_en
+                                    ? beneficiary?.permanentUpazila?.name_bn
+                                    : beneficiary?.permanentUpazila?.name_en
                                 }}
                               </span>
                             </template>
@@ -1024,10 +1026,10 @@
                               <span style="20px">
                                 {{
                                   language == "bn"
-                                    ? beneficiary.permanentDistrictPourashava
-                                        .name_bn
-                                    : beneficiary.permanentDistrictPourashava
-                                        .name_en
+                                    ? beneficiary?.permanentDistrictPourashava
+                                        ?.name_bn
+                                    : beneficiary?.permanentDistrictPourashava
+                                        ?.name_en
                                 }}
                               </span>
                             </template>
@@ -1055,8 +1057,8 @@
                               <span style="20px">
                                 {{
                                   language == "bn"
-                                    ? beneficiary.permanentThana.name_bn
-                                    : beneficiary.permanentThana.name_en
+                                    ? beneficiary?.permanentThana?.name_bn
+                                    : beneficiary?.permanentThana?.name_en
                                 }}
                               </span>
                             </template>
@@ -1085,8 +1087,8 @@
                               <span style="20px">
                                 {{
                                   language == "bn"
-                                    ? beneficiary.permanentUnion.name_bn
-                                    : beneficiary.permanentUnion.name_en
+                                    ? beneficiary?.permanentUnion?.name_bn
+                                    : beneficiary?.permanentUnion?.name_en
                                 }}
                               </span>
                             </template>
@@ -1114,8 +1116,8 @@
                               <span style="20px">
                                 {{
                                   language == "bn"
-                                    ? beneficiary.permanentPourashava.name_bn
-                                    : beneficiary.permanentPourashava.name_en
+                                    ? beneficiary?.permanentPourashava?.name_bn
+                                    : beneficiary?.permanentPourashava?.name_en
                                 }}
                               </span>
                             </template>
@@ -1139,8 +1141,8 @@
                               <span style="20px">
                                 {{
                                   language == "bn"
-                                    ? beneficiary.permanentWard.name_bn
-                                    : beneficiary.permanentWard.name_en
+                                    ? beneficiary?.permanentWard?.name_bn
+                                    : beneficiary?.permanentWard?.name_en
                                 }}
                               </span>
                             </template>
@@ -1588,7 +1590,7 @@
                             <v-col cols="8" lg="8">
                               :<template>
                                 <span style="20px">
-                                  {{ beneficiary.nominee_en }}
+                                  {{ beneficiary?.nominee_en }}
                                 </span>
                               </template>
                             </v-col>

@@ -238,6 +238,7 @@
           "upazila_city_district": "উপজেলা/জেলা পৌরসভা/সিটি কর্পোরেশন",
           "union_ward": "ইউনিয়ন/ওয়ার্ড",
           "subLocation_type": "সাব লোকেশন",
+          "office_name": "অফিসের নাম ",
           "dist_pouro": "জেলা পৌরসভা",
           "union_pouro": "ইউনিয়ন /পৌরসভা",
           "post_code": "পোস্ট কোড",
@@ -872,7 +873,16 @@
         "shitfing_list": "সুবিধাভোগী স্থানান্তর তালিকা",
         "title": "সুবিধাভোগী স্থানান্তর",
         "cause": "কারণ",
-        "activation_date": "সক্রিয়করণের তারিখ"
+        "activation_date": "সক্রিয়করণের তারিখ",
+        "effective_date": "কার্যকর তারিখ",
+        "current_location": "বর্তমান অবস্থান",
+        "new_location": "নতুন অবস্থান",
+        "shift_location": "স্থান পরিবর্তন করুন",
+        "to_date": "তারিখ পর্যন্ত",
+        "from_date": "তারিখ থেকে",
+        "location_shitfing_list": "সুবিধাভোগী স্থান স্থানান্তর তালিকা",
+        "from_location": "অবস্থান থেকে",
+        "to_location": "অবস্থানে"
       },
       "dashboard": {
         "total_beneficiary": "সুবিধাভোগীর মোট সংখ্যা",
