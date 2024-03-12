@@ -2037,6 +2037,22 @@ export default {
 
   methods:
    {
+
+     //User Activity Log
+     async SendActivityLog() {
+       const queryParams = {
+         info: "Online Application",
+       };
+       this.$axios
+           .get("/activity-log/get-information", {
+             params: queryParams,
+           })
+           .then((result) => {
+             console.log(result, "ActivityLog");
+
+           });
+     },
+
     checkLengthAndVerify() {
       if (this.data.nominee_verification_number.length === 10 || this.data.nominee_verification_number.length === 17) {
         if (this.data.verification_number == this.data.nominee_verification_number) {
@@ -3256,6 +3272,7 @@ export default {
     }
   },
   created() {
+    this.SendActivityLog();
     this.getAllProgram();
     this.getAllDivision();
     this.permanent_getAllDivision();

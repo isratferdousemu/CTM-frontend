@@ -2077,7 +2077,6 @@ export default {
 
       data: {
         verification_type: null,
-
         division_id: null,
         district_id: null,
         thana_id: null,

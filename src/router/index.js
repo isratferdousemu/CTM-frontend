@@ -24,6 +24,7 @@ import CommonRoutes from "./Common";
 import store from "../store/index";
 // import components
 import DefaultLayout from "../layouts/defaultLayout.vue";
+import ActivityLogRoutes from "@/router/ActivityLog";
 
 
 const routes = [
@@ -45,7 +46,8 @@ const routes = [
         },
         component: () =>
           import(
-            "../pages/Common/dashboard.vue"
+            "../pages/ApplicationSelection/Dashboard/Index.vue"
+            // "../pages/Common/dashboard.vue"
           ),
       },
       ...ApplicationSelectionRoutes,
@@ -60,6 +62,7 @@ const routes = [
       ...TrainingManagementRoutes,
       ...GeneralSettingRoutes,
       ...SystemAuditRoutes,
+      ...ActivityLogRoutes
     ],
   },
 ];
@@ -71,22 +74,16 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  console.log(to.meta, ' -> menu permission');
   if (to.meta.requiresAuth) {
-    console.log(store.getters.GetUserPermissions, ' -> permission')
-    console.log(store.state.userData, ' -> userData')
     // Page requires authentication
     if (store.state.token) {
-      console.log(store.state.userData.roleNames, ' -> roleNames');
-
-      console.log(to.meta, ' -> menu permission');
       if (store.state && store.state.userData && store.state.userData.roleNames && !store.state.userData.roleNames.includes("super-admin")) {
-          console.log(to.meta.permission != "common" && 
-          store.getters.GetUserPermissions.findIndex(per => 
-            per.name === to.meta.permission 
-            // || per.module_name === to.meta.permission
-            // || per.sub_module_name === to.meta.permission            
-            ) === -1);
+          // console.log(to.meta.permission != "common" &&
+          // store.getters.GetUserPermissions.findIndex(per =>
+          //   per.name === to.meta.permission
+          //   // || per.module_name === to.meta.permission
+          //   // || per.sub_module_name === to.meta.permission
+          //   ) === -1);
 
         if (to.meta.permission != "common" && store.getters.GetUserPermissions.findIndex(per => per.name === to.meta.permission || per.module_name === to.meta.permission || per.sub_module_name === to.meta.permission) === -1)
         {
