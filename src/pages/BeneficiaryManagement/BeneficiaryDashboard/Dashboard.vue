@@ -12,6 +12,7 @@
               class="mr-2"
               height="100%"
               max-height="auto"
+              @click="GoBenInfoList()"
             >
               <v-card-title>
                 <v-row>
@@ -44,6 +45,7 @@
               rounded="xl"
               class="ml-2 mr-2"
               height="100%"
+              @click="GoActiveBenInfoList()"
             >
               <v-card-title>
                 <v-row>
@@ -76,6 +78,7 @@
               rounded="xl"
               class="ml-2 mr-2"
               height="100%"
+              @click="GoInActiveBenInfoList()"
             >
               <v-card-title>
                 <v-row>
@@ -93,8 +96,8 @@
                           $t(
                             "container.beneficiary_management.dashboard.inactive_beneficiary"
                           )
-                        }}</div
-                      >
+                        }}
+                      </div>
                       <div class="headline font-weight-bold d-flex">
                         {{ beneficiaries.totalInactiveBeneficiaries }}
                       </div>
@@ -111,6 +114,7 @@
               rounded="xl"
               class="ml-2 mr-2"
               height="100%"
+              @click="GoWaitingBenInfoList()"
             >
               <v-card-title style="word-break: break-word">
                 <v-row>
@@ -127,8 +131,8 @@
                           $t(
                             "container.beneficiary_management.dashboard.waitining_beneficiary"
                           )
-                        }}</div
-                      >
+                        }}
+                      </div>
                       <div class="headline font-weight-bold d-flex">
                         {{ beneficiaries.totalWaitingBeneficiaries }}
                       </div>
@@ -145,6 +149,7 @@
               elevation="2"
               rounded="xl"
               class="ml-2"
+              @click="GoReplaceBenInfoList()"
             >
               <v-card-title>
                 <v-row>
@@ -159,8 +164,8 @@
                           $t(
                             "container.beneficiary_management.dashboard.replaced_beneficiary"
                           )
-                        }}</div
-                      >
+                        }}
+                      </div>
                       <div class="headline font-weight-bold d-flex">
                         {{ beneficiaries.totalReplacedBeneficiaries }}
                       </div>
@@ -1598,6 +1603,76 @@ export default {
           },
         }
       );
+    },
+    GoBenInfoList() {
+      if (
+        !this.isLoadingProgramLocation &&
+        !this.isLoadingGender &&
+        !this.isLoadingWaiting &&
+        !this.isLoadingProgram &&
+        !this.isLoadingAgeProgram &&
+        !this.isLoadingShifted
+      ) {
+        this.$router.push({ name: "Beneficiary_List" });
+      } else {
+        this.$toast.error("Please wait!!!");
+      }
+    },
+    GoActiveBenInfoList() {
+      if (
+        !this.isLoadingProgramLocation &&
+        !this.isLoadingGender &&
+        !this.isLoadingWaiting &&
+        !this.isLoadingProgram &&
+        !this.isLoadingAgeProgram &&
+        !this.isLoadingShifted
+      ) {
+        this.$router.push({ name: "Beneficiary_List_Active" });
+      } else {
+        this.$toast.error("Please wait!!!");
+      }
+    },
+    GoInActiveBenInfoList() {
+      if (
+        !this.isLoadingProgramLocation &&
+        !this.isLoadingGender &&
+        !this.isLoadingWaiting &&
+        !this.isLoadingProgram &&
+        !this.isLoadingAgeProgram &&
+        !this.isLoadingShifted
+      ) {
+        this.$router.push({ name: "Beneficiary_List_Inactive" });
+      } else {
+        this.$toast.error("Please wait!!!");
+      }
+    },
+    GoWaitingBenInfoList() {
+      if (
+        !this.isLoadingProgramLocation &&
+        !this.isLoadingGender &&
+        !this.isLoadingWaiting &&
+        !this.isLoadingProgram &&
+        !this.isLoadingAgeProgram &&
+        !this.isLoadingShifted
+      ) {
+        this.$router.push({ name: "Beneficiary_List_Waiting" });
+      } else {
+        this.$toast.error("Please wait!!!");
+      }
+    },
+    GoReplaceBenInfoList() {
+      if (
+        !this.isLoadingProgramLocation &&
+        !this.isLoadingGender &&
+        !this.isLoadingWaiting &&
+        !this.isLoadingProgram &&
+        !this.isLoadingAgeProgram &&
+        !this.isLoadingShifted
+      ) {
+        this.$router.push({ name: "beneficiary_replacement_list" });
+      } else {
+        this.$toast.error("Please wait!!!");
+      }
     },
   },
   watch: {
