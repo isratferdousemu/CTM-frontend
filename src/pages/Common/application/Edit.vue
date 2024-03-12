@@ -1887,18 +1887,18 @@
                                 <!-- <v-btn @click="resetForm()" elevation="2" class="btn mr-2" color="info">{{ $t('container.list.cancel')
                 }}</v-btn> -->
                                 <!-- old one -->
-                                <!-- <v-btn @click="confirmDialog = true" flat color="primary" :loading="loading" :disabled="invalid"
+                                <v-btn @click="confirmDialog = true" flat color="primary" :loading="loading" :disabled="invalid"
                   class="custom-btn-width black white--text py-2">
                   {{ $t('container.list.submit') }}
-                </v-btn> -->
+                </v-btn>
                                 <!-- <v-btn @click="resetForm()" elevation="2" class="btn mr-2" outlined color="red" dark>{{
                                     $t('container.list.cancel') }}</v-btn> -->
                                 <!--  -->
                                 <!-- :disabled="invalid" -->
-                                <v-btn @click="submitApplication()" flat color="primary" :loading="loading"
+                                <!-- <v-btn @click="submitApplication()" flat color="primary" :loading="loading"
                                     class="custom-btn-width black white--text py-2">
                                     {{ $t('container.list.preview') }}
-                                </v-btn>
+                                </v-btn> -->
 
 
                             </div>
@@ -2813,7 +2813,7 @@ export default {
                 this.$refs.form.reset();
                 this.loading = false;
              
-                this.$router.push(`/online-application-preview/${res.data.application_id}`);
+                // this.$router.push(`/online-application-preview/${res.data.application_id}`);
 
             })
                 .catch((err) => {
