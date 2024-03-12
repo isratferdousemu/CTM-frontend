@@ -2087,10 +2087,10 @@ export default {
           text: this.$t("container.system_config.demo_graphic.user.status"),
           value: "status",
         },
-        {
+        /*{
           text: this.$t("container.list.banned"),
           value: "banned",
-        },
+        },*/
         {
           text: this.$t("container.system_config.demo_graphic.user.location"),
           value: "assign_location.name_en",
