@@ -2381,8 +2381,24 @@ export default {
           this.data.account_name = res.data.data.nameEn
         })
         .catch((err) => {
-          console.log(err)
-          this.$toast.error(err.response.data.message);
+          // console.log(err)
+          // this.$toast.error(err.response.data.message);
+          if (err.response.data.errors) {
+    const errorMessages = err.response.data.errors;
+    let errorMessage = '';
+    for (const key in errorMessages) {
+        if (Array.isArray(errorMessages[key])) {
+            errorMessage += errorMessages[key].join('\n') + '\n';
+        } else {
+            errorMessage += errorMessages[key] + '\n';
+        }
+    }
+    this.$toast.error(errorMessage);
+} else if (err.response.data.message) {
+    this.$toast.error(err.response.data.message);
+} else {
+    this.$toast.error(err.response.data.message || err.response.data.error_code || 'Unknown error');
+}
         })
     },
 
@@ -2440,6 +2456,9 @@ export default {
       }
       this.confirmDialog = false
       console.log(this.data, "All data")
+
+
+      
 
 
       let fd = new FormData();
