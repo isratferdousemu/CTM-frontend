@@ -432,8 +432,9 @@
                               v-slot="{ errors }">
                               <label>{{ $t('container.application_selection.application.education_status') }}</label>
                               <span style="margin-left: 4px; color: red">*</span>
-                              <v-select v-model="data.education_status" :item-text="getItemText" outlined
-                                :error="errors[0] ? true : false" :error-messages="errors[0]" :items="education_status">
+                              <v-select v-model="data.education_status" :item-text="getItemText" item-value="name_en"
+                                outlined :error="errors[0] ? true : false" :error-messages="errors[0]"
+                                :items="education_status">
                               </v-select>
                             </ValidationProvider>
                           </v-col>
@@ -546,7 +547,7 @@
                             <v-select :hide-details="errors[0] ? false : true" v-model="data.union_id" outlined
                               @input="onChangeUnion($event)" :items="unions" :item-text="getItemText" item-value="id"
                               :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
-                          
+
                           </ValidationProvider>
                         </v-col>
 
@@ -1168,7 +1169,8 @@
                             <span style="margin-left: 4px; color: red">*</span>
 
                             <v-select v-model="data.account_owner" outlined clearable :items="mobile_ownership"
-                              :item-text="getItemText" :error="errors[0] ? true : false" :error-messages="errors[0]">
+                              :item-text="getItemText" item-value="name_en" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]">
                             </v-select>
                           </ValidationProvider>
                         </v-col>
@@ -1181,7 +1183,8 @@
                             <span style="margin-left: 4px; color: red">*</span>
 
                             <v-select v-model="data.account_owner" outlined clearable :items="mobile_ownership"
-                              :item-text="getItemText" :error="errors[0] ? true : false" :error-messages="errors[0]">
+                              :item-text="getItemText" item-value="name_en" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]">
                             </v-select>
                           </ValidationProvider>
                         </v-col>
@@ -1557,11 +1560,20 @@
               <div class="d-inline d-flex justify-end">
                 <!-- <v-btn @click="resetForm()" elevation="2" class="btn mr-2" color="info">{{ $t('container.list.cancel')
                 }}</v-btn> -->
-                <!--  -->
+                <!-- old one -->
+
+                <v-btn @click="resetForm()" elevation="2" class="btn mr-2" outlined color="red" dark>{{
+                  $t('container.list.cancel') }}</v-btn>
                 <v-btn @click="confirmDialog = true" flat color="primary" :loading="loading" :disabled="invalid"
                   class="custom-btn-width black white--text py-2">
                   {{ $t('container.list.submit') }}
                 </v-btn>
+                <!--:disabled="invalid"  -->
+                <!-- <v-btn @click="submitApplication()" flat color="primary" :loading="loading"
+                  class="custom-btn-width black white--text py-2">
+                  {{ $t('container.list.preview') }}
+                </v-btn> -->
+
 
               </div>
               <p class="red--text mt-5">
@@ -2026,6 +2038,22 @@ export default {
 
   methods:
    {
+
+     //User Activity Log
+     async SendActivityLog() {
+       const queryParams = {
+         info: "Online Application",
+       };
+       this.$axios
+           .get("/activity-log/get-information", {
+             params: queryParams,
+           })
+           .then((result) => {
+             console.log(result, "ActivityLog");
+
+           });
+     },
+
     checkLengthAndVerify() {
       if (this.data.nominee_verification_number.length === 10 || this.data.nominee_verification_number.length === 17) {
         if (this.data.verification_number == this.data.nominee_verification_number) {
@@ -2372,6 +2400,24 @@ export default {
           console.log(err)
           this.$toast.error(err.response.data.message);
           this.data.age = '';
+          // console.log(err)
+          // this.$toast.error(err.response.data.message);
+          if (err.response.data.errors) {
+    const errorMessages = err.response.data.errors;
+    let errorMessage = '';
+    for (const key in errorMessages) {
+        if (Array.isArray(errorMessages[key])) {
+            errorMessage += errorMessages[key].join('\n') + '\n';
+        } else {
+            errorMessage += errorMessages[key] + '\n';
+        }
+    }
+    this.$toast.error(errorMessage);
+} else if (err.response.data.message) {
+    this.$toast.error(err.response.data.message);
+} else {
+    this.$toast.error(err.response.data.message || err.response.data.error_code || 'Unknown error');
+}
         })
     },
 
@@ -2431,6 +2477,9 @@ export default {
       console.log(this.data, "All data")
 
 
+      
+
+
       let fd = new FormData();
       for (const [key, value] of Object.entries(this.data)) {
         if (value !== null) {
@@ -2463,14 +2512,14 @@ export default {
         // this.$toast.success("Your Application submitted Successfully");
         this.$refs.form.reset();
         this.loading = false;
-        console.log(res.data.data, "data")
-        console.log(res.data.id, "id")
+        // console.log(res.data.data, "data")
+        // console.log(res.data.id, "id")
         this.$store.commit('ApplicationSelection/setSuccessId', res.data.id);
-        console.log(res.data.id, " after store id")
-        // this.$router.push({ name: 'SuccessView' });
-        // this.$router.push({ name: 'SuccessView', query: { id: res.data.id } });
+        // console.log(res.data.id, " after store id")
+      
         this.$router.push("/submitted-application");
-        console.log(res.data.id, " after pushing id")
+        // console.log(res.data.id, " after pushing id")
+        // this.$router.push(`/online-application-preview/${res.data.application_id}`);
 
       })
         .catch((err) => {
@@ -3152,7 +3201,7 @@ export default {
 
 
       await this.$axios
-        .get(`/admin/ward/get/${$event}`, {
+        .get(`/global/ward/get/${$event}`, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -3246,6 +3295,7 @@ export default {
     }
   },
   created() {
+    this.SendActivityLog();
     this.getAllProgram();
     this.getAllDivision();
     this.permanent_getAllDivision();

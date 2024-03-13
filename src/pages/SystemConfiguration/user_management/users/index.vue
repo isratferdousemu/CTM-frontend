@@ -79,17 +79,21 @@
                       </template>
                       <template v-slot:item.status="{ item }">
                         <v-chip
-                          :color="item.status == 1 ? 'success' : 'error'"
+                          :color="userStatus[item.status]"
                           dark
                           small
                           class="white--text"
                         >
-                          {{
-                            item.status == 1
-                              ? $t("container.list.active")
-                              : $t("container.list.inactive")
-                          }}
+                          <span v-if="item.status==0">{{$t("container.list.inactive")}}</span>
+                          <span v-if="item.status==1">{{$t("container.list.active")}}</span>
+                          <span v-if="item.status==2">{{$t("container.list.banned")}}</span>
                         </v-chip>
+                      </template>
+
+                      <template v-slot:[`item.banned`]="{item}">
+                      <span>
+                           <v-switch :input-value="item.status === 2" @change="banUser(item.id)" hide-details color="orange darken-3"></v-switch>
+                      </span>
                       </template>
 
 
@@ -146,7 +150,7 @@
                         </v-tooltip>
 
 
-                        <v-tooltip top>
+<!--                        <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
                                 :disabled="item.user_type == 1"
@@ -155,7 +159,7 @@
                                 x-small
                                 v-on="on"
                                 color="red"
-                                class="ml-3 white--text"
+                                class="ml-3 white&#45;&#45;text"
                                 elevation="0"
                                 @click="deleteAlert(item.id)"
                             >
@@ -163,7 +167,7 @@
                             </v-btn>
                           </template>
                           <span> {{ $t("container.list.delete") }}</span>
-                        </v-tooltip>
+                        </v-tooltip>-->
 
                       </template>
                       <!-- End Action Button -->
@@ -1990,6 +1994,13 @@ export default {
         committee_id: null,
         office_ward_id: []
       },
+
+      userStatus: {
+        0: 'grey',
+        1: 'success',
+        2: 'error',
+      },
+
       isDistrictHidden: true,
       isLocationTypeHidden: true,
       isCityCorporationHidden: false,
@@ -2075,6 +2086,10 @@ export default {
         {
           text: this.$t("container.system_config.demo_graphic.user.status"),
           value: "status",
+        },
+        {
+          text: this.$t("container.list.banned"),
+          value: "banned",
         },
         {
           text: this.$t("container.system_config.demo_graphic.user.location"),
@@ -2545,7 +2560,7 @@ export default {
         page: this.pagination.current,
       };
       this.$axios
-        .get("/admin/division/get", {
+        .get("/get-divisions", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -2594,7 +2609,7 @@ export default {
 
 
     approveUser: async function () {
-      this.$axios
+      await this.$axios
           .get("/admin/user/approve/" + this.data.id, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
@@ -2613,6 +2628,32 @@ export default {
           })
           .catch((err) => {
             console.log(err, "error");
+            console.log(err.response);
+            this.$toast.error(err?.response?.data?.message);
+          });
+    },
+
+
+    async banUser(id) {
+      await this.$axios
+          .get("/admin/user/ban/" + id, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((res) => {
+            console.log(res.data)
+
+            if (res.data.data.status == 2) {
+              this.$toast.warning(res.data.message)
+            } else {
+              this.$toast.success(res.data.message)
+            }
+
+            this.getUsers();
+          })
+          .catch((err) => {
             console.log(err.response);
             this.$toast.error(err?.response?.data?.message);
           });
@@ -2686,7 +2727,7 @@ export default {
         return this.getOfficeByLocation(this.data.office_type, event);
       }
       await this.$axios
-          .get(`/admin/district/get/${event}`, {
+          .get(`/get-districts/${event}`, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
@@ -2739,7 +2780,7 @@ export default {
         const lookupType = this.data.committee_type == 16 || this.data.office_type == 35 ? 1 : 3
 
         await this.$axios
-            .get(`/admin/city/get/` + this.data.district_id + "/" + lookupType, {
+            .get(`/get-cities-pouroshavas/` + this.data.district_id + "/" + lookupType, {
               headers: {
                 Authorization: "Bearer " + this.$store.state.token,
                 "Content-Type": "multipart/form-data",
@@ -2882,7 +2923,7 @@ export default {
       this.data.office_ward_id = []
 
       await this.$axios
-          .get(`/admin/office/wards/${event}`, {
+          .get(`/get-office-wards/${event}`, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
@@ -2926,26 +2967,30 @@ export default {
       this.data.office_id = null;
       this.data.committee_id = null;
 
-      try {
-        this.$store
-          .dispatch("Thana/GetAllUpazilaByDistrict", id)
-          .then((data) => {
-            this.upazilas = data;
+
+      await this.$axios
+          .get(`/get-upazilas/${id}`, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((result) => {
+            this.upazilas = result.data.data;
             this.city = []
             this.thanas = []
             this.unions = []
             this.wards = []
             this.committees = []
+            this.offices = result.data.data;
           });
-      } catch (e) {
-        console.log(e);
-      }
+
     },
 
-    async getOfficeByLocation(office_type_id, location_type_id = null) {
+    async getOfficeByLocation(office_type_id, location_id = null) {
       let data = {
         office_type_id: office_type_id,
-        location_type_id: location_type_id,
+        location_id: location_id,
       };
       let fd = new FormData();
       for (const [key, value] of Object.entries(data)) {
@@ -2954,7 +2999,7 @@ export default {
         }
       }
       await this.$axios
-        .post("/admin/user/office/by-location", fd, {
+        .post("/get-offices", fd, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "application/json",

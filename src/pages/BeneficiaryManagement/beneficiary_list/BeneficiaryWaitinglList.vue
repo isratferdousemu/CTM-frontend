@@ -647,7 +647,7 @@
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
-                              v-can="'update-post'"
+                              v-can="'beneficiaryInfo-view'"
                               fab
                               x-small
                               v-on="on"
@@ -667,7 +667,7 @@
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
-                              v-can="'update-post'"
+                              v-can="'beneficiaryInfo-edit'"
                               fab
                               x-small
                               v-on="on"
@@ -687,7 +687,7 @@
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
-                              v-can="'delete-division'"
+                              v-can="'beneficiaryReplacement-create'"
                               fab
                               x-small
                               v-on="on"
@@ -705,7 +705,7 @@
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
-                              v-can="'delete-division'"
+                              v-can="'beneficiaryInfo-view'"
                               fab
                               x-small
                               v-on="on"
@@ -725,7 +725,7 @@
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
-                              v-can="'update-post'"
+                              v-can="'beneficiaryInfo-delete'"
                               fab
                               x-small
                               v-on="on"

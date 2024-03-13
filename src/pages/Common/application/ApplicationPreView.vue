@@ -1,7 +1,46 @@
 <template>
     <div id="application_view">
-        <v-row class="mx-5 my-5 mt-5">
-            <v-col class="mt-5" cols="12">
+        <v-app-bar color="#405c61" fixed height="80" class="px-4" dense dark>
+            <v-row align="center" no-gutters>
+                <v-img class="p-3 mr-4" max-height="100%" max-width="60px" position="center center"
+                    src="/assets/images/logo.png"></v-img>
+                <v-toolbar-title>{{ $t('container.application_selection.application.title_online_1') }}<br>{{
+                    $t('container.application_selection.application.title_online_2') }}
+                </v-toolbar-title>
+
+
+
+                <v-col>
+                    <!-- Empty column to create space between title and LocaleSwitcher -->
+                </v-col>
+                <v-col>
+                    <!-- Empty column to create space between title and LocaleSwitcher -->
+                </v-col>
+                <v-col>
+                    <!-- Empty column to create space between title and LocaleSwitcher -->
+                </v-col>
+                <v-col>
+                    <!-- Empty column to create space between title and LocaleSwitcher -->
+                </v-col>
+                <v-col>
+                    <!-- Empty column to create space between title and LocaleSwitcher -->
+                </v-col>
+                <v-col>
+                    <!-- Empty column to create space between title and LocaleSwitcher -->
+                </v-col>
+
+                <v-col>
+                    <v-row align="center" justify="end" no-gutters>
+                        <v-col>
+                            <!-- Adjust the styling of LocaleSwitcher as needed -->
+                            <LocaleSwitcher />
+                        </v-col>
+                    </v-row>
+                </v-col>
+            </v-row>
+        </v-app-bar>
+        <v-row class="mx-5 my-5 mt-10">
+            <v-col class="mt-10" cols="10" offset="1">
                 <ValidationObserver ref="form" v-slot="{ invalid }">
                     <form @submit.prevent="submitApplication()">
                         <v-card class="pa-5 px-10 mb-4">
@@ -9,12 +48,13 @@
                                 <v-col cols="6" lg="6">
                                     <v-row class="mx-4">
                                         <v-col cols="4" lg="4"> <label>{{
-                                            $t('container.application_selection.application.program') }}
+                                                $t('container.application_selection.application.program') }}
                                             </label></v-col>
                                         <v-col cols="8" lg="8">
                                             :<template>
                                                 <span style="20px">
-                                                    {{ language === 'bn' ? whole_program.name_bn : whole_program.name_en }}
+                                                    {{ language === 'bn' ? whole_program.name_bn : whole_program.name_en
+                                                    }}
                                                 </span>
                                             </template>
                                         </v-col>
@@ -56,20 +96,24 @@
                                                 <v-row>
                                                     <v-col cols="4" lg="4"> <label>
                                                             <span v-if="data.verification_type == 1">
-                                                                {{ $t('container.application_selection.application.nid') }}
+                                                                {{ $t('container.application_selection.application.nid')
+                                                                }}
                                                             </span>
                                                             <span v-else-if="data.verification_type == 2">
-                                                                {{ $t('container.application_selection.application.brn') }}
+                                                                {{ $t('container.application_selection.application.brn')
+                                                                }}
                                                             </span>
                                                             <span v-else>
                                                                 {{
-                                                                    $t('container.beneficiary_management.beneficiary_list.nid')
+                                                                $t('container.beneficiary_management.beneficiary_list.nid')
                                                                 }}
                                                             </span>
 
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{ data.verification_number }}
                                                             </span>
@@ -82,11 +126,13 @@
                                             <v-col>
                                                 <v-row>
                                                     <v-col cols="4" lg="4"> <label>{{
-                                                        $t('container.application_selection.application.date_of_birth')
-                                                    }}
+                                                            $t('container.application_selection.application.date_of_birth')
+                                                            }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{ data.date_of_birth }}
                                                             </span>
@@ -134,10 +180,13 @@
 
                                                     <v-row>
                                                         <v-col cols="4" lg="4"> <label>{{
-                                                            $t('container.application_selection.application.name_bn') }}
+                                                                $t('container.application_selection.application.name_bn')
+                                                                }}
                                                             </label></v-col>
                                                         <v-col cols="8" lg="8">
-                                                            :<template>
+                                                            :
+
+                                                            <template>
                                                                 <span style="20px">
                                                                     {{ data.name_bn }}
                                                                 </span>
@@ -150,10 +199,13 @@
                                                 <v-col cols="6" lg="6">
                                                     <v-row>
                                                         <v-col cols="4" lg="4"> <label>{{
-                                                            $t('container.application_selection.application.name_en') }}
+                                                                $t('container.application_selection.application.name_en')
+                                                                }}
                                                             </label></v-col>
                                                         <v-col cols="8" lg="8">
-                                                            :<template>
+                                                            :
+
+                                                            <template>
                                                                 <span style="20px">
                                                                     {{ data.name_en }}
                                                                 </span>
@@ -169,10 +221,12 @@
 
                                                     <v-row>
                                                         <v-col cols="4" lg="4"> <label>{{
-                                                            $t('container.application_selection.application.father_name_bn')
-                                                        }}</label></v-col>
+                                                                $t('container.application_selection.application.father_name_bn')
+                                                                }}</label></v-col>
                                                         <v-col cols="8" lg="8">
-                                                            :<template>
+                                                            :
+
+                                                            <template>
                                                                 <span style="20px">
                                                                     {{ data.father_name_bn }}
                                                                 </span>
@@ -186,11 +240,13 @@
                                                 <v-col cols="6" lg="6">
                                                     <v-row>
                                                         <v-col cols="4" lg="4"> <label>{{
-                                                            $t('container.application_selection.application.father_name_en')
-                                                        }}
+                                                                $t('container.application_selection.application.father_name_en')
+                                                                }}
                                                             </label></v-col>
                                                         <v-col cols="8" lg="8">
-                                                            :<template>
+                                                            :
+
+                                                            <template>
                                                                 <span style="20px">
                                                                     {{ data.father_name_en }}
                                                                 </span>
@@ -203,11 +259,13 @@
 
                                                     <v-row>
                                                         <v-col cols="4" lg="4"> <label>{{
-                                                            $t('container.application_selection.application.mother_name_bn')
-                                                        }}
+                                                                $t('container.application_selection.application.mother_name_bn')
+                                                                }}
                                                             </label></v-col>
                                                         <v-col cols="8" lg="8">
-                                                            :<template>
+                                                            :
+
+                                                            <template>
                                                                 <span style="20px">
                                                                     {{ data.mother_name_bn }}
                                                                 </span>
@@ -219,11 +277,13 @@
 
                                                     <v-row>
                                                         <v-col cols="4" lg="4"> <label>{{
-                                                            $t('container.application_selection.application.mother_name_en')
-                                                        }}
+                                                                $t('container.application_selection.application.mother_name_en')
+                                                                }}
                                                             </label></v-col>
                                                         <v-col cols="8" lg="8">
-                                                            :<template>
+                                                            :
+
+                                                            <template>
                                                                 <span style="20px">
                                                                     {{ data.mother_name_en }}
                                                                 </span>
@@ -235,11 +295,13 @@
                                                 <v-col cols="6" lg="6">
                                                     <v-row>
                                                         <v-col cols="4" lg="4"> <label>{{
-                                                            $t('container.system_config.allowance_program.marital_status')
-                                                        }}
+                                                                $t('container.system_config.allowance_program.marital_status')
+                                                                }}
                                                             </label></v-col>
                                                         <v-col cols="8" lg="8">
-                                                            :<template>
+                                                            :
+
+                                                            <template>
                                                                 <span style="20px">
                                                                     {{ data.marital_status }}
                                                                 </span>
@@ -250,11 +312,13 @@
                                                 <v-col cols="6" lg="6">
                                                     <v-row>
                                                         <v-col cols="4" lg="4"> <label>{{
-                                                            $t('container.application_selection.application.spouse_name_bn')
-                                                        }}
+                                                                $t('container.application_selection.application.spouse_name_bn')
+                                                                }}
                                                             </label></v-col>
                                                         <v-col cols="8" lg="8">
-                                                            :<template>
+                                                            :
+
+                                                            <template>
                                                                 <span style="20px">
                                                                     {{ data.spouse_name_bn }}
                                                                 </span>
@@ -267,11 +331,13 @@
                                                 <v-col cols="6" lg="6">
                                                     <v-row>
                                                         <v-col cols="4" lg="4"> <label>{{
-                                                            $t('container.application_selection.application.spouse_name_en')
-                                                        }}
+                                                                $t('container.application_selection.application.spouse_name_en')
+                                                                }}
                                                             </label></v-col>
                                                         <v-col cols="8" lg="8">
-                                                            :<template>
+                                                            :
+
+                                                            <template>
                                                                 <span style="20px">
                                                                     {{ data.spouse_name_en }}
                                                                 </span>
@@ -285,11 +351,13 @@
                                                 <v-col cols="6" lg="6">
                                                     <v-row>
                                                         <v-col cols="4" lg="4"> <label>{{
-                                                            $t('container.application_selection.application.religion')
-                                                        }}
+                                                                $t('container.application_selection.application.religion')
+                                                                }}
                                                             </label></v-col>
                                                         <v-col cols="8" lg="8">
-                                                            :<template>
+                                                            :
+
+                                                            <template>
                                                                 <span style="20px">
                                                                     {{ data.religion }}
                                                                 </span>
@@ -301,11 +369,13 @@
                                                 <v-col cols="6" lg="6">
                                                     <v-row>
                                                         <v-col cols="4" lg="4"> <label>{{
-                                                            $t('container.application_selection.application.mobile')
-                                                        }}
+                                                                $t('container.application_selection.application.mobile')
+                                                                }}
                                                             </label></v-col>
                                                         <v-col cols="8" lg="8">
-                                                            :<template>
+                                                            :
+
+                                                            <template>
                                                                 <span style="20px">
                                                                     {{ data.mobile }}
                                                                 </span>
@@ -318,11 +388,13 @@
                                                 <v-col cols="6" lg="6">
                                                     <v-row>
                                                         <v-col cols="4" lg="4"> <label>{{
-                                                            $t('container.application_selection.application.nationality')
-                                                        }}
+                                                                $t('container.application_selection.application.nationality')
+                                                                }}
                                                             </label></v-col>
                                                         <v-col cols="8" lg="8">
-                                                            :<template>
+                                                            :
+
+                                                            <template>
                                                                 <span style="20px">
                                                                     {{ data.nationality }}
                                                                 </span>
@@ -334,11 +406,13 @@
                                                 <v-col cols="6" lg="6">
                                                     <v-row>
                                                         <v-col cols="4" lg="4"> <label>{{
-                                                            $t('container.application_selection.application.age')
-                                                        }}
+                                                                $t('container.application_selection.application.age')
+                                                                }}
                                                             </label></v-col>
                                                         <v-col cols="8" lg="8">
-                                                            :<template>
+                                                            :
+
+                                                            <template>
                                                                 <span style="20px">
                                                                     {{ data.age }}
                                                                 </span>
@@ -353,14 +427,19 @@
                                                 <v-col cols="6" lg="6">
                                                     <v-row>
                                                         <v-col cols="4" lg="4"> <label>{{
-                                                            $t('container.system_config.allowance_program.gender')
-                                                        }}
+                                                                $t('container.system_config.allowance_program.gender')
+                                                                }}
                                                             </label></v-col>
                                                         <v-col cols="8" lg="8">
-                                                            :<template>
+                                                            :
+
+                                                            <template>
                                                                 <span style="20px">
-                                                                    
-                                                                    {{ genderName .value_en}},
+
+                                                                    {{ language == 'bn' ? genderName.value_bn :
+                                                                    genderName.value_en }}
+                                                                    <!-- 
+                                                                    {{ genderName.value_en }} -->
                                                                 </span>
                                                             </template>
                                                         </v-col>
@@ -373,11 +452,13 @@
                                                 <v-col cols="6" lg="6">
                                                     <v-row>
                                                         <v-col cols="4" lg="4"> <label>{{
-                                                            $t('container.application_selection.application.education_status')
-                                                        }}
+                                                                $t('container.application_selection.application.education_status')
+                                                                }}
                                                             </label></v-col>
                                                         <v-col cols="8" lg="8">
-                                                            :<template>
+                                                            :
+
+                                                            <template>
                                                                 <span style="20px">
                                                                     {{ data.education_status }}
                                                                 </span>
@@ -391,11 +472,13 @@
                                                 <v-col cols="6" lg="6">
                                                     <v-row>
                                                         <v-col cols="4" lg="4"> <label>{{
-                                                            $t('container.application_selection.application.profession')
-                                                        }}
+                                                                $t('container.application_selection.application.profession')
+                                                                }}
                                                             </label></v-col>
                                                         <v-col cols="8" lg="8">
-                                                            :<template>
+                                                            :
+
+                                                            <template>
                                                                 <span style="20px">
                                                                     {{ data.profession }}
                                                                 </span>
@@ -408,11 +491,13 @@
                                                 <v-col cols="6" lg="6">
                                                     <v-row>
                                                         <v-col cols="4" lg="4"> <label>{{
-                                                            $t('container.application_selection.application.identification_mark')
-                                                        }}
+                                                                $t('container.application_selection.application.identification_mark')
+                                                                }}
                                                             </label></v-col>
                                                         <v-col cols="8" lg="8">
-                                                            :<template>
+                                                            :
+
+                                                            <template>
                                                                 <span style="20px">
                                                                     {{ data.identification_mark }}
                                                                 </span>
@@ -442,20 +527,23 @@
                                             <v-col cols="12" class="text-center">
                                                 <v-chip color="success" class="text-uppercase" label>{{
                                                     $t('container.application_selection.application.present_address')
-                                                }}</v-chip>
+                                                    }}</v-chip>
                                             </v-col>
                                             <!-- {{ permanent_location }}  -->
                                             <v-col lg="6" md="6" cols="12">
                                                 <v-row>
                                                     <v-col cols="4" lg="4"> <label>{{
-                                                        $t('container.system_config.demo_graphic.division.division')
-                                                    }}
+                                                            $t('container.system_config.demo_graphic.division.division')
+                                                            }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
+
                                                                 {{ language == 'bn' ? data.division_id.name_bn :
-                                                                    data.division_id.name_en }}
+                                                                data.division_id.name_en }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -467,14 +555,16 @@
                                             <v-col lg="6" md="6" cols="12">
                                                 <v-row>
                                                     <v-col cols="4" lg="4"> <label>{{
-                                                        $t('container.system_config.demo_graphic.district.district')
-                                                    }}
+                                                            $t('container.system_config.demo_graphic.district.district')
+                                                            }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{ language == 'bn' ? data.district_id.name_bn :
-                                                                    data.district_id.name_en }}
+                                                                data.district_id.name_en }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -485,16 +575,18 @@
                                             <v-col lg="6" md="6" cols="12">
                                                 <v-row>
                                                     <v-col cols="4" lg="4"> <label>{{
-                                                        $t('container.list.location_type')
-                                                    }}
+                                                            $t('container.list.location_type')
+                                                            }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
 
-                                                                    language == 'bn' ? LocationName.value_bn :
-                                                                    LocationName.value_en }}
+                                                                language == 'bn' ? LocationName.value_bn :
+                                                                LocationName.value_en }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -508,11 +600,13 @@
                                                             $t('container.system_config.demo_graphic.ward.upazila') }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
-                                                                    language == 'bn' ? data.thana_id.name_bn :
-                                                                    data.thana_id.name_en }}
+                                                                language == 'bn' ? data.thana_id.name_bn :
+                                                                data.thana_id.name_en }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -524,14 +618,17 @@
                                                 <v-row>
                                                     <v-col cols="4" lg="4">
                                                         <label>{{
-                                                            $t('container.system_config.demo_graphic.ward.union_pouro') }}
+                                                            $t('container.system_config.demo_graphic.ward.union_pouro')
+                                                            }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
-                                                                    language == 'bn' ? data.union_id.name_bn :
-                                                                    data.union_id.name_en }}
+                                                                language == 'bn' ? data.union_id.name_bn :
+                                                                data.union_id.name_en }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -547,11 +644,13 @@
                                                             $t('container.system_config.demo_graphic.ward.city') }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
-                                                                    language == 'bn' ? data.city_id.name_bn :
-                                                                    data.city_id.name_en }}
+                                                                language == 'bn' ? data.city_id.name_bn :
+                                                                data.city_id.name_en }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -568,11 +667,13 @@
                                                             $t('container.system_config.demo_graphic.ward.thana') }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
-                                                                    language == 'bn' ? data.city_thana_id.name_bn :
-                                                                    data.city_thana_id.name_en }}
+                                                                language == 'bn' ? data.city_thana_id.name_bn :
+                                                                data.city_thana_id.name_en }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -583,14 +684,17 @@
                                                 <v-row>
                                                     <v-col cols="4" lg="4">
                                                         <label>{{
-                                                            $t('container.system_config.demo_graphic.ward.dist_pouro') }}
+                                                            $t('container.system_config.demo_graphic.ward.dist_pouro')
+                                                            }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
-                                                                    language == 'bn' ? data.district_pouro_id.name_bn
-                                                                    : data.district_pouro_id.name_en }}
+                                                                language == 'bn' ? data.district_pouro_id.name_bn
+                                                                : data.district_pouro_id.name_en }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -606,11 +710,13 @@
                                                             $t('container.system_config.demo_graphic.ward.ward') }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
-                                                                    language == 'bn' ? data.ward_id.name_bn :
-                                                                    data.ward_id.name_en }}
+                                                                language == 'bn' ? data.ward_id.name_bn :
+                                                                data.ward_id.name_en }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -626,7 +732,9 @@
                                                             $t('container.system_config.demo_graphic.ward.post_code') }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{ data.post_code }}
 
@@ -647,10 +755,12 @@
                                                             $t('container.system_config.demo_graphic.ward.address') }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
-                                                                    data.address }}
+                                                                data.address }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -663,7 +773,8 @@
                                         <v-row>
                                             <v-col cols="12" class="text-center">
                                                 <v-chip color="success" class="text-uppercase" label>{{
-                                                    $t('container.application_selection.application.permanent_address') }}
+                                                    $t('container.application_selection.application.permanent_address')
+                                                    }}
                                                 </v-chip>
                                             </v-col>
 
@@ -671,14 +782,17 @@
                                             <v-col lg="6" md="6" cols="12">
                                                 <v-row>
                                                     <v-col cols="4" lg="4"> <label>{{
-                                                        $t('container.system_config.demo_graphic.division.division')
-                                                    }}
+                                                            $t('container.system_config.demo_graphic.division.division')
+                                                            }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
-                                                                {{ language == 'bn' ? data.permanent_division_id.name_bn :
-                                                                    data.permanent_division_id.name_en }}
+                                                                {{ language == 'bn' ? data.permanent_division_id.name_bn
+                                                                :
+                                                                data.permanent_division_id.name_en }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -690,14 +804,17 @@
                                             <v-col lg="6" md="6" cols="12">
                                                 <v-row>
                                                     <v-col cols="4" lg="4"> <label>{{
-                                                        $t('container.system_config.demo_graphic.district.district')
-                                                    }}
+                                                            $t('container.system_config.demo_graphic.district.district')
+                                                            }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
-                                                                {{ language == 'bn' ? data.permanent_district_id.name_bn :
-                                                                    data.permanent_district_id.name_en }}
+                                                                {{ language == 'bn' ? data.permanent_district_id.name_bn
+                                                                :
+                                                                data.permanent_district_id.name_en }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -708,15 +825,17 @@
                                             <v-col lg="6" md="6" cols="12">
                                                 <v-row>
                                                     <v-col cols="4" lg="4"> <label>{{
-                                                        $t('container.list.location_type')
-                                                    }}
+                                                            $t('container.list.location_type')
+                                                            }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
-                                                                    language == 'bn' ? permanentLocationName.value_bn :
-                                                                    permanentLocationName.value_en }}
+                                                                language == 'bn' ? permanentLocationName.value_bn :
+                                                                permanentLocationName.value_en }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -730,11 +849,13 @@
                                                             $t('container.system_config.demo_graphic.ward.upazila') }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
-                                                                    language == 'bn' ? data.permanent_thana_id.name_bn :
-                                                                    data.permanent_thana_id.name_en }}
+                                                                language == 'bn' ? data.permanent_thana_id.name_bn :
+                                                                data.permanent_thana_id.name_en }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -746,14 +867,17 @@
                                                 <v-row>
                                                     <v-col cols="4" lg="4">
                                                         <label>{{
-                                                            $t('container.system_config.demo_graphic.ward.union_pouro') }}
+                                                            $t('container.system_config.demo_graphic.ward.union_pouro')
+                                                            }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
-                                                                    language == 'bn' ? data.permanent_union_id.name_bn :
-                                                                    data.permanent_union_id.name_en }}
+                                                                language == 'bn' ? data.permanent_union_id.name_bn :
+                                                                data.permanent_union_id.name_en }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -769,11 +893,13 @@
                                                             $t('container.system_config.demo_graphic.ward.city') }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
-                                                                    language == 'bn' ? data.permanent_city_id.name_bn :
-                                                                    data.permanent_city_id.name_en }}
+                                                                language == 'bn' ? data.permanent_city_id.name_bn :
+                                                                data.permanent_city_id.name_en }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -790,11 +916,14 @@
                                                             $t('container.system_config.demo_graphic.ward.thana') }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
-                                                                    language == 'bn' ? data.permanent_city_thana_id.name_bn :
-                                                                    data.permanent_city_thana_id.name_en }}
+                                                                language == 'bn' ? data.permanent_city_thana_id.name_bn
+                                                                :
+                                                                data.permanent_city_thana_id.name_en }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -805,14 +934,19 @@
                                                 <v-row>
                                                     <v-col cols="4" lg="4">
                                                         <label>{{
-                                                            $t('container.system_config.demo_graphic.ward.dist_pouro') }}
+                                                            $t('container.system_config.demo_graphic.ward.dist_pouro')
+                                                            }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
-                                                                    language == 'bn' ? data.permanent_district_pouro_id.name_bn :
-                                                                    data.permanent_district_pouro_id.name_en }}
+                                                                language == 'bn' ?
+                                                                data.permanent_district_pouro_id.name_bn
+                                                                :
+                                                                data.permanent_district_pouro_id.name_en }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -828,11 +962,13 @@
                                                             $t('container.system_config.demo_graphic.ward.ward') }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
-                                                                    language == 'bn' ? data.permanent_ward_id.name_bn :
-                                                                    data.permanent_ward_id.name_en }}
+                                                                language == 'bn' ? data.permanent_ward_id.name_bn :
+                                                                data.permanent_ward_id.name_en }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -848,10 +984,12 @@
                                                             $t('container.system_config.demo_graphic.ward.post_code') }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
-                                                                    data.permanent_post_code }}
+                                                                data.permanent_post_code }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -869,10 +1007,12 @@
                                                             $t('container.system_config.demo_graphic.ward.address') }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
-                                                                    data.permanent_address }}
+                                                                data.permanent_address }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -889,44 +1029,53 @@
 
                                     <v-card-title style="background-color: #1976D2; color: white;">
                                         {{ language == 'bn' ? whole_program.name_bn : whole_program.name_en }} {{
-                                            $t('container.application_selection.application.info') }}
+                                        $t('container.application_selection.application.info') }}
                                     </v-card-title>
                                     <v-card-text class="mt-5">
 
 
 
                                         <v-row>
-                                            <v-col v-for="(field, index) in formattedAllowanceValues" :key="index" cols="6"
-                                                lg="6">
+                                            <v-col v-for="(field, index) in formattedAllowanceValues" :key="index"
+                                                cols="6" lg="6">
                                                 <v-row>
-                                                    <v-col cols="4" lg="4"> <label>{{ language == 'bn' ? field.label
-                                                        .name_bn : field.label
+                                                    <v-col cols="4" lg="4"> <label>
+                                                            {{ language == 'bn' ? field.label
+                                                            .name_bn : field.label
                                                             .name_en }}
+
+                                                            <!-- {{ language == 'bn' ? field.label
+                    .name_bn : field.label
+                        .name_en }} -->
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
 
-                                                                    field.value }}
+                                                                field.value }}
                                                             </span>
                                                         </template>
                                                     </v-col>
                                                 </v-row>
-                                            
+
                                             </v-col>
-                                            <v-col v-for="(field, index) in allowance_filed" :key="index" cols="6" lg="6"
-                                                v-if="field.type == 'text'">
+                                            <v-col v-for="(field, index) in allowance_filed" :key="index" cols="6"
+                                                lg="6" v-if="field.type == 'text'">
                                                 <v-row>
                                                     <v-col cols="4" lg="4"> <label>{{ language == 'bn' ? field
-                                                        .name_bn : field.name_en }}
+                                                            .name_bn : field.name_bn }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
 
-                                                                    field.pivot.value }}
+                                                                field.pivot.value }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -940,18 +1089,20 @@
 
 
                                             </v-col>
-                                            <v-col v-for="(field, index) in allowance_filed" :key="index" cols="6" lg="6"
-                                                v-if="field.type == 'number'">
+                                            <v-col v-for="(field, index) in allowance_filed" :key="index" cols="6"
+                                                lg="6" v-if="field.type == 'number'">
                                                 <v-row>
                                                     <v-col cols="4" lg="4"> <label> {{ language == 'bn' ? field
-                                                        .name_bn : field.name_en }}
+                                                            .name_bn : field.name_en }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
 
-                                                                    field.pivot.value }}
+                                                                field.pivot.value }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -961,19 +1112,21 @@
 
 
                                             </v-col>
-                                            <v-col v-for="(field, index) in allowance_filed" :key="index" cols="6" lg="6"
-                                                v-if="field.type == 'date'">
+                                            <v-col v-for="(field, index) in allowance_filed" :key="index" cols="6"
+                                                lg="6" v-if="field.type == 'date'">
 
                                                 <v-row>
                                                     <v-col cols="4" lg="4"> <label> {{ language == 'bn' ? field
-                                                        .name_bn : field.name_en }}
+                                                            .name_bn : field.name_en }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
 
-                                                                    field.pivot.value }}
+                                                                field.pivot.value }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -1006,15 +1159,17 @@
                                             <v-col cols="6" lg="6">
                                                 <v-row>
                                                     <v-col cols="4" lg="4"> <label> {{
-                                                        $t('container.application_selection.application.account_name')
-                                                    }}
+                                                            $t('container.application_selection.application.account_name')
+                                                            }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
 
-                                                                    data.account_name }}
+                                                                data.account_name }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -1024,21 +1179,23 @@
                                             <v-col cols="6" lg="6">
                                                 <v-row>
                                                     <v-col cols="4" lg="4"> <label> {{
-                                                        $t('container.application_selection.application.account_type')
-                                                    }}
+                                                            $t('container.application_selection.application.account_type')
+                                                            }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
-                                                            <span style="20px" v-if="data.account_type === 1">
+                                                        :
+
+                                                        <template>
+                                                            <span style="20px" v-if="data.account_type == 1">
                                                                 {{
 
-                                                                    $t('container.application_selection.application.bank_account')
+                                                                $t('container.application_selection.application.bank_account')
                                                                 }}
                                                             </span>
-                                                            <span style="20px" v-if="data.account_type === 3">
+                                                            <span style="20px" v-if="data.account_type == 2">
                                                                 {{
 
-                                                                    $t('container.application_selection.application.mobile_account')
+                                                                $t('container.application_selection.application.mobile_account')
                                                                 }}
                                                             </span>
 
@@ -1050,15 +1207,17 @@
                                             <v-col cols="6" lg="6" v-if="data.account_type === 2">
                                                 <v-row>
                                                     <v-col cols="4" lg="4"> <label> {{
-                                                        $t('container.application_selection.application.mobile_ownership')
-                                                    }}
+                                                            $t('container.application_selection.application.mobile_ownership')
+                                                            }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
 
-                                                                    data.account_owner }}
+                                                                data.account_owner }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -1070,15 +1229,17 @@
                                             <v-col cols="6" lg="6" v-if="data.account_type === 1">
                                                 <v-row>
                                                     <v-col cols="4" lg="4"> <label> {{
-                                                        $t('container.application_selection.application.account_ownership')
-                                                    }}
+                                                            $t('container.application_selection.application.account_ownership')
+                                                            }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
 
-                                                                    data.account_owner }}
+                                                                data.account_owner }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -1093,15 +1254,17 @@
                                             <v-col cols="6" lg="6" v-if="data.account_type === 2">
                                                 <v-row>
                                                     <v-col cols="4" lg="4"> <label> {{
-                                                        $t('container.application_selection.application.mobile')
-                                                    }}
+                                                            $t('container.application_selection.application.mobile')
+                                                            }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
 
-                                                                    data.account_number }}
+                                                                data.account_number }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -1113,15 +1276,17 @@
                                             <v-col cols="6" lg="6" v-if="data.account_type === 1">
                                                 <v-row>
                                                     <v-col cols="4" lg="4"> <label> {{
-                                                        $t('container.application_selection.application.bank_name')
-                                                    }}
+                                                            $t('container.application_selection.application.bank_name')
+                                                            }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
 
-                                                                    data.bank_name }}
+                                                                data.bank_name }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -1135,15 +1300,17 @@
                                             <v-col cols="6" lg="6" v-if="data.account_type === 1">
                                                 <v-row>
                                                     <v-col cols="4" lg="4"> <label> {{
-                                                        $t('container.application_selection.application.branch_name')
-                                                    }}
+                                                            $t('container.application_selection.application.branch_name')
+                                                            }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
 
-                                                                    data.branch_name }}
+                                                                data.branch_name }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -1155,15 +1322,17 @@
                                             <v-col cols="6" lg="6" v-if="data.account_type === 1">
                                                 <v-row>
                                                     <v-col cols="4" lg="4"> <label> {{
-                                                        $t('container.application_selection.application.bank_account_number')
-                                                    }}
+                                                            $t('container.application_selection.application.bank_account_number')
+                                                            }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
 
-                                                                    data.account_number }}
+                                                                data.account_number }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -1175,15 +1344,17 @@
                                             <v-col cols="6" lg="6">
                                                 <v-row>
                                                     <v-col cols="4" lg="4"> <label> {{
-                                                        $t('container.application_selection.application.email')
-                                                    }}
+                                                            $t('container.application_selection.application.email')
+                                                            }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
-                                                        :<template>
+                                                        :
+
+                                                        <template>
                                                             <span style="20px">
                                                                 {{
 
-                                                                    data.email }}
+                                                                data.email }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -1233,15 +1404,17 @@
                                                 <v-col cols="6" lg="6">
                                                     <v-row>
                                                         <v-col cols="4" lg="4"> <label> {{
-                                                            $t('container.application_selection.application.name_bn')
-                                                        }}
+                                                                $t('container.application_selection.application.name_bn')
+                                                                }}
                                                             </label></v-col>
                                                         <v-col cols="8" lg="8">
-                                                            :<template>
+                                                            :
+
+                                                            <template>
                                                                 <span style="20px">
                                                                     {{
 
-                                                                        data.nominee_bn }}
+                                                                    data.nominee_bn }}
                                                                 </span>
                                                             </template>
                                                         </v-col>
@@ -1251,15 +1424,17 @@
                                                 <v-col cols="6" lg="6">
                                                     <v-row>
                                                         <v-col cols="4" lg="4"> <label> {{
-                                                            $t('container.application_selection.application.name_en')
-                                                        }}
+                                                                $t('container.application_selection.application.name_en')
+                                                                }}
                                                             </label></v-col>
                                                         <v-col cols="8" lg="8">
-                                                            :<template>
+                                                            :
+
+                                                            <template>
                                                                 <span style="20px">
                                                                     {{
 
-                                                                        data.nominee_en }}
+                                                                    data.nominee_en }}
                                                                 </span>
                                                             </template>
                                                         </v-col>
@@ -1269,15 +1444,17 @@
                                                 <v-col cols="6" lg="6">
                                                     <v-row>
                                                         <v-col cols="4" lg="4"> <label> {{
-                                                            $t('container.application_selection.application.nid_brn')
-                                                        }}
+                                                                $t('container.application_selection.application.nid_brn')
+                                                                }}
                                                             </label></v-col>
                                                         <v-col cols="8" lg="8">
-                                                            :<template>
+                                                            :
+
+                                                            <template>
                                                                 <span style="20px">
                                                                     {{
 
-                                                                        data.nominee_verification_number }}
+                                                                    data.nominee_verification_number }}
                                                                 </span>
                                                             </template>
                                                         </v-col>
@@ -1287,15 +1464,17 @@
                                                 <v-col cols="6" lg="6">
                                                     <v-row>
                                                         <v-col cols="4" lg="4"> <label> {{
-                                                            $t('container.application_selection.application.date_of_birth')
-                                                        }}
+                                                                $t('container.application_selection.application.date_of_birth')
+                                                                }}
                                                             </label></v-col>
                                                         <v-col cols="8" lg="8">
-                                                            :<template>
+                                                            :
+
+                                                            <template>
                                                                 <span style="20px">
                                                                     {{
 
-                                                                        data.nominee_date_of_birth }}
+                                                                    data.nominee_date_of_birth }}
                                                                 </span>
                                                             </template>
                                                         </v-col>
@@ -1305,15 +1484,17 @@
                                                 <v-col cols="6" lg="6">
                                                     <v-row>
                                                         <v-col cols="4" lg="4"> <label> {{
-                                                            $t('container.application_selection.application.nationality')
-                                                        }}
+                                                                $t('container.application_selection.application.nationality')
+                                                                }}
                                                             </label></v-col>
                                                         <v-col cols="8" lg="8">
-                                                            :<template>
+                                                            :
+
+                                                            <template>
                                                                 <span style="20px">
                                                                     {{
 
-                                                                        data.nominee_nationality }}
+                                                                    data.nominee_nationality }}
                                                                 </span>
                                                             </template>
                                                         </v-col>
@@ -1323,15 +1504,17 @@
                                                 <v-col cols="6" lg="6">
                                                     <v-row>
                                                         <v-col cols="4" lg="4"> <label> {{
-                                                            $t('container.application_selection.application.relationship')
-                                                        }}
+                                                                $t('container.application_selection.application.relationship')
+                                                                }}
                                                             </label></v-col>
                                                         <v-col cols="8" lg="8">
-                                                            :<template>
+                                                            :
+
+                                                            <template>
                                                                 <span style="20px">
                                                                     {{
 
-                                                                        data.nominee_relation_with_beneficiary }}
+                                                                    data.nominee_relation_with_beneficiary }}
                                                                 </span>
                                                             </template>
                                                         </v-col>
@@ -1341,23 +1524,25 @@
 
 
                                                 <v-col cols="6" lg="6">
-                                                            <v-row>
-                                                            <v-col cols="4" lg="4"> <label> {{
+                                                    <v-row>
+                                                        <v-col cols="4" lg="4"> <label> {{
                                                                 $t('container.application_selection.application.nominee_address')
-                                                            }}
-                                                                </label></v-col>
-                                                            <v-col cols="8" lg="8">
-                                                                :<template>
-                                                                    <span style="20px">
-                                                                        {{
+                                                                }}
+                                                            </label></v-col>
+                                                        <v-col cols="8" lg="8">
+                                                            :
 
-                                                                           data.nominee_address }}
-                                                                    </span>
-                                                                </template>
-                                                            </v-col>
-                                                        </v-row>
+                                                            <template>
+                                                                <span style="20px">
+                                                                    {{
 
-                                                   
+                                                                    data.nominee_address }}
+                                                                </span>
+                                                            </template>
+                                                        </v-col>
+                                                    </v-row>
+
+
                                                 </v-col>
                                             </v-row>
                                         </div>
@@ -1370,45 +1555,55 @@
 
                                 <v-card class="mt-5" v-if="variable && variable.length > 0">
 
-                                
+
                                     <v-card-title style="background-color: #1976D2; color: white;">
                                         {{ $t('container.application_selection.application.eligiblity_info') }}
                                     </v-card-title>
                                     <v-card-text class="mt-5">
                                         <v-row>
-                                            <v-col v-for="(field, index) in variable" :key="index" cols="6" lg="6" v-if="field.parent">
+                                            <v-col v-for="(field, index) in variable" :key="index" cols="6" lg="6"
+                                                v-if="field.parent">
                                                 <v-row>
-                                                            <v-col cols="4" lg="4"> <label> 
-                                                                {{ language === 'bn' ? (field.parent ? field.parent.name_bn : '') : (field.parent ? field.parent.name_en : '') }}
-                                                                
-                                                                </label></v-col>
-                                                            <v-col cols="8" lg="8">
-                                                                :<template>
-                                                                    <span style="20px">
-                                                                       {{ language === 'bn' ? field.name_bn : field.name_en }}
-                                                                    </span>
-                                                                </template>
-                                                            </v-col>
-                                                        </v-row>
+                                                    <v-col cols="4" lg="4"> <label>
+                                                            {{ language === 'bn' ? (field.parent ? field.parent.name_bn
+                                                            :
+                                                            '') : (field.parent ? field.parent.name_en : '') }}
+
+                                                        </label></v-col>
+                                                    <v-col cols="8" lg="8">
+                                                        :
+
+                                                        <template>
+                                                            <span style="20px">
+                                                                {{ language === 'bn' ? field.name_bn : field.name_en }}
+                                                            </span>
+                                                        </template>
+                                                    </v-col>
+                                                </v-row>
 
 
                                             </v-col>
-                                            <v-col v-for="(field, index) in variable" :key="index" cols="6" lg="6" v-if="field.parent == null">
-                                                    <v-row>
-                                                                <v-col cols="4" lg="4"> <label> {{ language === 'bn' ? field.name_bn : field.name_en }}
-                                                                    </label></v-col>
-                                                                <v-col cols="8" lg="8">
-                                                                    :<template>
-                                                                        <span style="20px">
-                                                                            {{ language === 'bn' ? 'হ্যাঁ' :   'Yes' }}
-                                                                         
-                                                                        </span>
-                                                                    </template>
-                                                                </v-col>
-                                                            </v-row>
+                                            <v-col v-for="(field, index) in variable" :key="index" cols="6" lg="6"
+                                                v-if="field.parent == null">
+                                                <v-row>
+                                                    <v-col cols="4" lg="4"> <label> {{ language === 'bn' ? field.name_bn
+                                                            :
+                                                            field.name_en }}
+                                                        </label></v-col>
+                                                    <v-col cols="8" lg="8">
+                                                        :
+
+                                                        <template>
+                                                            <span style="20px">
+                                                                {{ language === 'bn' ? 'হ্যাঁ' : 'Yes' }}
+
+                                                            </span>
+                                                        </template>
+                                                    </v-col>
+                                                </v-row>
 
 
-                                                </v-col>
+                                            </v-col>
 
 
                                         </v-row>
@@ -1422,14 +1617,52 @@
                             <div style="display: flex; justify-content: flex-end;" class="mt-5">
                                 <!-- Other content on the left -->
 
-                                <v-btn flat color="gray" type="submit" @click="navigateTolist" class="custom-btn">
+                                <v-btn flat color="gray" type="submit" @click="navigateTolist" class="custom-btn mr-2">
                                     {{ $t('container.list.back') }}
+                                </v-btn>
+                                <v-btn flat color="gray" type="submit" @click="confirmDialog=true" class="custom-btn">
+                                    {{ $t('container.list.submit') }}
                                 </v-btn>
                             </div>
                         </v-card>
                     </form>
                 </ValidationObserver>
             </v-col>
+
+            <template>
+                <v-dialog v-model="confirmDialog" max-width="700" max-height="500">
+                    <v-card>
+                        <v-card-title class="font-weight-bold justify-center">
+
+                            {{ $t('container.application_selection.application.form_submission') }}
+                        </v-card-title>
+
+
+
+                        <v-divider></v-divider>
+
+                        <v-card-text class="text-center">
+                            <div class="subtitle-1 font-weight-medium mt-5">
+                                {{ $t('container.application_selection.application.question') }}
+                            </div>
+                        </v-card-text>
+
+                        <v-card-actions class="d-flex justify-center">
+                            <v-btn text @click="confirmDialog = false" outlined class="custom-btn-width ">
+                                {{ $t("container.list.cancel") }}
+                            </v-btn>
+                            <!-- <v-btn text flat color="primary" @click="submitApplicationStatus()" type="submit"
+                                class="custom-btn-width black white--text py-2">
+                                {{ $t("container.list.confirm") }}
+                            </v-btn> -->
+                            <v-btn @click="submitApplicationStatus()" flat color="primary" 
+                                type="submit" class="custom-btn-width black white--text py-2">
+                                {{ $t('container.list.confirm') }}
+                            </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+            </template>
         </v-row>
 
         <FooterBar />
@@ -1438,6 +1671,8 @@
 
 <script>
 import FooterBar from "@/components/Common/FooterBar.vue";
+// import CryptoJS from 'crypto-js';
+import LocaleSwitcher from "@/components/Common/LocaleSwitcher"
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { mapState } from "vuex";
 import axios from "axios";
@@ -1542,6 +1777,8 @@ export default {
             program_name: null,
             whole_program: [],
             genderName: null,
+            confirmDialog: false,
+            loading:false,
 
 
 
@@ -1647,8 +1884,8 @@ export default {
                 return { label_name: labelName, values: values };
             });
         },
-          formattedVariables() {
-          const formattedVariables = {};
+        formattedVariables() {
+            const formattedVariables = {};
 
             // Iterate through the allowance_values array
             this.variable.forEach(value => {
@@ -1670,9 +1907,9 @@ export default {
         },
         formattedAllowanceValues() {
             const formattedValues = {};
-            console.log(this.allowance_values,"this.allowance_values")
 
             // Iterate through the allowance_values array
+            console.log(this.allowance_values,"this.allowance_values");
             this.allowance_values.forEach(value => {
                 // Check if the id already exists in formattedValues
                 if (formattedValues[value.additional_field_id]) {
@@ -1698,6 +1935,7 @@ export default {
         ValidationProvider,
         ValidationObserver,
         FooterBar,
+        LocaleSwitcher
     },
     watch: {
         menu(val) {
@@ -1706,13 +1944,44 @@ export default {
     },
 
     methods: {
+        submitApplication() {
+
+
+            this.loading = true;
+            this.$axios.post("/global/online-application/registration", fd, {
+                headers: {
+                    "Application": "application/json",
+                    "Content-Type": "multipart/form-data",
+                }
+            }).then((res) => {
+                // this.$toast.success("Your Application submitted Successfully");
+                this.$refs.form.reset();
+                this.loading = false;
+
+
+                this.$store.commit('ApplicationSelection/setSuccessId', res.data.id);
+
+
+
+
+
+            })
+                .catch((err) => {
+                    this.loading = false;
+                    console.log(err);
+
+
+                });
+        },
         navigateTolist() {
-            this.$router.push("/application-management/application");
+            this.$router.push(`/online-application/edit/${this.$route.params.id}`);
         },
         async getApplicationById() {
 
+
+
             this.$axios
-                .get(`/admin/application/get/${this.$route.params.id}`, {
+                .get(`/global/application/get/${this.$route.params.id}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -1723,7 +1992,7 @@ export default {
 
                     this.data = result.data.application;
                     const genderArray = this.genders;
-                    const genderObject = genderArray.find(gender => gender.id === this.data.gender_id
+                    const genderObject = genderArray.find(gender => gender.id == this.data.gender_id
 
                     );
 
@@ -1740,16 +2009,16 @@ export default {
                     this.allowance_values = result?.data?.application?.allow_addi_field_value;
                     this.program_name = this.data?.program.name_en;
                     this.whole_program = this.data?.program;
-                    this.image =  result?.data?.image;
-                    //  this.image = this.image.replace(/\\\//g, '/');
+                    this.image = result?.data?.image;
+
                     console.log(this.image, "image");
 
-                    this.signature =  result?.data?.signature;
-                    //   this.signature = this.signature.replace(/\\\//g, '/');
+                    this.signature = result?.data?.signature;
+
                     this.nominee_image = result?.data?.nominee_image;
-                    //  this.nominee_image = this.nominee_image.replace(/\\\//g, '/');
-                    this.nominee_signature =  result?.data?.nominee_signature;
-                    //  this.nominee_signature = this.nominee_signature.replace(/\\\//g, '/');
+
+                    this.nominee_signature = result?.data?.nominee_signature;
+
                     console.log(this.nominee_signature, "nominee_signature");
 
                     console.log(this.allowance_filed, "this.allowance_filed")
@@ -1766,7 +2035,7 @@ export default {
                         );
 
                         this.LocationName = locationObject
-                        console.log(this.LocationName,"location");
+                        console.log(this.LocationName, "location");
                         this.data.city_id = this.current_location?.parent?.parent;
                         this.data.city_thana_id = this.current_location?.parent;
                         this.data.ward_id = this.current_location;
@@ -1873,13 +2142,36 @@ export default {
         },
         concatenateCheckboxValues(checkboxValues) {
             return checkboxValues.map(value => value.value).join(', ');
-        }
+        },
+        submitApplicationStatus() {
+            let id = this.$route.params.id;
+            console.log(id, "id");
+            let data = {
+                id: id,
+                // Assuming this.data is an object containing the verification number
+                verification_number: this.data.verification_number
+            };
+
+            this.$axios.post(`/global/online-application/final-submit`, data, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    Accept: "application/json",
+                },
+            })
+                .then((res) => {
+                    this.confirmDialog = false;
+                    this.$store.commit('ApplicationSelection/setSuccessId', res.data.id);
+                    this.$router.push("/submitted-application");
+                })
+                .catch((err) => {
+                    console.log(err);
+                    this.$toast.error(err.response.data.message);
+                });
+        },
 
     },
-
-
     created() {
-    
+
         this.$store
             .dispatch("getGlobalLookupByType", 20)
             .then((res) => (this.classes = res));
@@ -1919,4 +2211,5 @@ body.my-app {
 .no-calendar-icon .v-input__icon {
     display: none;
     /* Hide the default calendar icon */
-}</style>
+}
+</style>

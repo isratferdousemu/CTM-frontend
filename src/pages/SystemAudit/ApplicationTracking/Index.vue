@@ -1,4 +1,111 @@
 
+
+    data() {
+        return {
+            tracking: [
+                {
+                    icon: 'mdi mdi-check',
+                    name: 'Application Accepted',
+                    state: 'Your application is accepted',
+                    date_time:'Time: 04:05:52 PM Date: 11 - 10 - 2023',
+                    status:'completed'
+                },
+                  {
+                    icon: 'mdi mdi-check',
+                    name: 'Primarily Verification',
+                    state: 'Your application is included to Verification list Allotted for execution Time / day     : 1 minute Estimated Execution Time / day       : 2 days',
+                    date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
+                    status: 'completed'
+                },
+                 {
+                    icon: 'mdi mdi-check',
+                    name: 'Union/Pouroshava Committee',
+                    state: 'Your application has been forwarded to the Union / pouroshava CommitteeAllotted for execution Time / day     : 1 minute Estimated Execution Time / day       : 2 days',
+                    date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
+                    status: 'completed'
+                },
+                   {
+                    icon: 'mdi mdi-check',
+                    name: 'Upazila/City Corporation Committee',
+                    state: 'Your application has been forwarded to the Upazila/City Corporation Committee Allotted for execution Time / day     : 1 minute Estimated Execution Time / day       : days',
+                    date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
+                    status: 'waiting'
+                },
+                 {
+                    icon: 'mdi mdi-check',
+                    name: 'Waiting List',
+                    state: 'Your application has been included in the waiting list Allotted for execution Time / day     : 1 minute Estimated Execution Time / day       : 2 days',
+                    date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
+                    status: 'pending'
+                },
+                {
+                    icon: 'mdi mdi-check',
+                    name: 'Final Selection List',
+                    state: 'Congratulations, you have been finally selected to receive the allowance Allotted for execution Time / day     : 1 minute Estimated Execution Time / day       : 2 days',
+                    date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
+                    status: 'pending'
+                },
+               
+            ],
+             legends: [
+                { status: 'completed', icon: 'mdi-check', color: '#26A69A', label: 'Completed' },
+                { status: 'rejected', icon: 'mdi-close', color: '#E53935', label: 'Rejected' },
+                 { status: 'waiting', icon: 'mdi-clock', color: '#757575', label: 'Inprogress' },
+                 { status: 'pending', icon: 'mdi-alert', color: '#757575', label: 'Future Proram' },
+            ],
+             tracking_summary: [
+                { name: 'National ID/Birth Registration No', value: '2234897899412' },
+                { name: 'Application Time', value: '04:05:52'},
+                { name: 'Application Date', value: '2023-10-04' },
+                { name: 'Office', value: 'Head Office'},
+                { name: 'Tracking No', value: '2234897899412' },
+           
+       
+            ],
+
+        };
+    },
+
+    mounted() {
+
+    },
+
+    methods: {
+       
+           getTimelineColor(status) {
+            switch (status) {
+                case 'completed':
+                    return '#26A69A';
+                case 'rejected':
+                    return '#E53935';
+                case 'waiting':
+                    return '#616161';
+                case 'pending':
+                    return '#616161';
+                default:
+                    return 'grey';
+            }
+        },
+            getTimelineIcon(status) {
+            switch (status) {
+                case 'completed':
+                    return 'mdi-check';
+                case 'rejected':
+                    return '#mdi-close';
+                case 'waiting':
+                    return 'mdi-clock';
+                case 'pending':
+                    return 'mdi-alert';
+                default:
+                    return 'grey';
+            }
+        },
+        
+
+    },
+};
+</script>
+
 <style>
 .small-text {
     font-size: 9px;

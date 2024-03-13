@@ -16,6 +16,7 @@
       "sl": "ক্রমিক নং ",
       "active": "সক্রিয়",
       "inactive": "নিষ্ক্রিয়",
+      "banned": "নিষিদ্ধ",
       "action": "অ্যাকশন ",
       "submit": "সাবমিট ",
       "cancel": "বাতিল",
@@ -239,6 +240,7 @@
           "upazila_city_district": "উপজেলা/জেলা পৌরসভা/সিটি কর্পোরেশন",
           "union_ward": "ইউনিয়ন/ওয়ার্ড",
           "subLocation_type": "সাব লোকেশন",
+          "office_name": "অফিসের নাম ",
           "dist_pouro": "জেলা পৌরসভা",
           "union_pouro": "ইউনিয়ন /পৌরসভা",
           "post_code": "পোস্ট কোড",
@@ -755,6 +757,7 @@
         "cause_date": "প্রভাবের তারিখ",
         "reason_provision": "কারণ বিধান",
         "beneficiary_replacement_list": "সুবিধাভোগী প্রতিস্থাপন তালিকা",
+        "beneficiary_waiting_list": "সুবিধাভোগী অপেক্ষমান তালিকা",
         "payment_history": "অর্থপ্রদানের ইতিহাস",
         "grievance_history": "অভিযোগের ইতিহাস",
         "Change_tracking": "ট্র্যাকিং পরিবর্তন",
@@ -873,7 +876,18 @@
         "shitfing_list": "সুবিধাভোগী স্থানান্তর তালিকা",
         "title": "সুবিধাভোগী স্থানান্তর",
         "cause": "কারণ",
-        "activation_date": "সক্রিয়করণের তারিখ"
+        "activation_date": "সক্রিয়করণের তারিখ",
+        "effective_date": "কার্যকর তারিখ",
+        "current_location": "বর্তমান অবস্থান",
+        "new_location": "নতুন অবস্থান",
+        "shift_location": "স্থান পরিবর্তন করুন",
+        "to_date": "তারিখ পর্যন্ত",
+        "from_date": "তারিখ থেকে",
+        "location_shitfing_list": "সুবিধাভোগী স্থান স্থানান্তর তালিকা",
+        "from_location": "অবস্থান থেকে",
+        "to_location": "অবস্থানে",
+        "title_location": "সুবিধাভোগী স্থান স্থানান্তর",
+        "title_program_shifting": "সুবিধাভোগী প্রোগ্রাম স্থানান্তর"
       },
       "dashboard": {
         "total_beneficiary": "সুবিধাভোগীর মোট সংখ্যা",
@@ -954,6 +968,15 @@
       "device_id": "ডিভাইস আইডি",
       "location": "অবস্থান",
       "date_time": "তারিখ এবং সময়"
+    },
+    "activity_log": {
+      "title": "এক্টিভিটি লগের তালিকা",
+      "name": "লগের নাম",
+      "description": "বর্ননা",
+      "change_info": "পরিবর্তন ",
+      "login_user_info": "লগইন ইউজার তথ্য",
+      "login_anonymous_user_info": "লগইন/বেনামী ইউজার তথ্য",
+      "create": "ক্রিয়েট"
     }
   }
 }
