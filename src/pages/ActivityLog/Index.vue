@@ -14,7 +14,7 @@
             >
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
-                  {{ $t("Activity Log Lists") }}
+                  {{ $t('container.activity_log.title') }}
                 </h3>
               </v-card-title>
               <v-card-text>
@@ -78,7 +78,7 @@
                           <v-expansion-panels>
                             <v-expansion-panel>
                               <v-expansion-panel-header>
-                                Subject
+                                {{ $t('container.activity_log.change_info') }}
                               </v-expansion-panel-header>
                               <v-expansion-panel-content>
                                 <v-container>
@@ -102,7 +102,7 @@
                           <v-expansion-panels>
                             <v-expansion-panel>
                               <v-expansion-panel-header>
-                                Causer
+                                {{ $t('container.activity_log.login_user_info') }}
                               </v-expansion-panel-header>
                               <v-expansion-panel-content>
                                 <v-container>
@@ -124,7 +124,7 @@
                           <v-expansion-panels>
                             <v-expansion-panel>
                               <v-expansion-panel-header>
-                                Properties
+                                {{ $t('container.activity_log.login_anonymous_user_info') }}
                               </v-expansion-panel-header>
                               <v-expansion-panel-content>
                                 <v-container>
@@ -300,38 +300,30 @@ export default {
           sortable: false,
         },
         {
-          text: 'Log Name',
+          text:  this.$t("container.activity_log.name") ,
           value: "log_name",
         },
         {
-          text: 'Description',
+          text: this.$t("container.activity_log.description"),
           value: "description",
         },
         {
-          text: this.$t(
-              "Subject"
-          ),
+          text: this.$t("container.activity_log.change_info"),
           value: "subject",
           // sortable: true,
         },
         {
-          text: this.$t(
-              "Causer"
-          ),
+          text: this.$t("container.activity_log.login_user_info"),
           value: "causer",
           class: "highlight-column",
         },
         {
-          text: this.$t(
-              "Properties"
-          ),
+          text: this.$t("container.activity_log.login_anonymous_user_info"),
           value: "properties",
           // sortable: true,
         },
         {
-          text: this.$t(
-              "created_at"
-          ),
+          text: this.$t("container.activity_log.create"),
           value: "created_at",
         },
         {

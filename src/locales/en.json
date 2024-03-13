@@ -968,6 +968,15 @@
       "device_id": "Device ID",
       "location": "Location",
       "date_time": "Date & Time"
+    },
+    "activity_log": {
+      "title": "Activity Log Lists",
+      "name": "Log Name",
+      "description": "Description",
+      "change_info": "Change Info",
+      "login_user_info": "Login User",
+      "login_anonymous_user_info": "Login/Anonymous User Info",
+      "create": "Create"
     }
   }
 }

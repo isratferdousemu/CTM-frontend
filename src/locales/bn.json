@@ -964,6 +964,15 @@
       "device_id": "ডিভাইস আইডি",
       "location": "অবস্থান",
       "date_time": "তারিখ এবং সময়"
+    },
+    "activity_log": {
+      "title": "এক্টিভিটি লগের তালিকা",
+      "name": "লগের নাম",
+      "description": "বর্ননা",
+      "change_info": "পরিবর্তন ",
+      "login_user_info": "লগইন ইউজার তথ্য",
+      "login_anonymous_user_info": "লগইন/বেনামী ইউজার তথ্য",
+      "create": "ক্রিয়েট"
     }
   }
 }
