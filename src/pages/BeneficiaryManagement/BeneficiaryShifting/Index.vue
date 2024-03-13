@@ -5,6 +5,20 @@
         <div class="d-block text-right mb-2">
           <v-btn
             elevation="2"
+            class="mr-2 btn"
+            color="primary"
+            router
+            to="/beneficiary-management/beneficiary-location-shifting"
+          >
+            {{
+              $t(
+                "container.beneficiary_management.beneficiary_shifting.title_location"
+              )
+            }}
+          </v-btn>
+
+          <v-btn
+            elevation="2"
             class="btn"
             color="primary"
             router
