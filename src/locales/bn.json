@@ -883,7 +883,9 @@
         "from_date": "তারিখ থেকে",
         "location_shitfing_list": "সুবিধাভোগী স্থান স্থানান্তর তালিকা",
         "from_location": "অবস্থান থেকে",
-        "to_location": "অবস্থানে"
+        "to_location": "অবস্থানে",
+        "title_location": "সুবিধাভোগী স্থান স্থানান্তর",
+        "title_program_shifting": "সুবিধাভোগী প্রোগ্রাম স্থানান্তর"
       },
       "dashboard": {
         "total_beneficiary": "সুবিধাভোগীর মোট সংখ্যা",

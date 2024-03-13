@@ -886,7 +886,9 @@
         "from_date": "From Date",
         "location_shitfing_list": "Beneficiary Location Shifting List",
         "from_location": "From Location",
-        "to_location": "To Location"
+        "to_location": "To Location",
+        "title_location": "Beneficiary Location Shifting",
+        "title_program_shifting": "Beneficiary Program Shifting"
       },
       "dashboard": {
         "total_beneficiary": "Total Number of Beneficiary",

@@ -5,6 +5,20 @@
         <div class="d-block text-right mb-2">
           <v-btn
             elevation="2"
+            class="mr-2 btn"
+            color="primary"
+            router
+            to="/beneficiary-management/beneficiary-shifting"
+          >
+            {{
+              $t(
+                "container.beneficiary_management.beneficiary_shifting.title_program_shifting"
+              )
+            }}
+          </v-btn>
+
+          <v-btn
+            elevation="2"
             class="btn"
             color="primary"
             router
@@ -451,7 +465,7 @@
                             ></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
-                        <v-col lg="6" md="6" cols="12">
+                        <!-- <v-col lg="6" md="6" cols="12">
                           <ValidationProvider
                             name="officeName"
                             vid="officeName"
@@ -476,7 +490,7 @@
                               append-icon="mdi-plus"
                             ></v-autocomplete>
                           </ValidationProvider>
-                        </v-col>
+                        </v-col> -->
                         <v-col lg="6" md="6" cols="12">
                           <ValidationProvider
                             name="ProgramName"
@@ -1051,7 +1065,7 @@
                             ></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
-                        <v-col lg="6" md="6" cols="12">
+                        <!-- <v-col lg="6" md="6" cols="12">
                           <ValidationProvider
                             name="officeName"
                             vid="officeName"
@@ -1076,7 +1090,7 @@
                               append-icon="mdi-plus"
                             ></v-autocomplete>
                           </ValidationProvider>
-                        </v-col>
+                        </v-col> -->
                       </v-row>
                     </div>
                   </v-card-text>
