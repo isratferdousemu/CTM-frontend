@@ -157,7 +157,7 @@
                             'container.system_config.demo_graphic.district.district'
                           )
                             " :items="districts" item-text="name_en" item-value="id" required
-                          :readonly="((selectedWards.length > 0) && (data.office_type === 35)) || ((selectedWards_UCDUpazila.length > 0) && (data.office_type === 10))"
+                        
                           :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                       </ValidationProvider>
                     </v-col>
@@ -210,7 +210,6 @@
                         <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.city_id"
                           @change="onChangeCity($event)" outlined :label="$t('container.system_config.demo_graphic.office.city')
                             " :items="cities" item-text="name_en" item-value="id" required
-                          :readonly="((selectedWards.length > 0) && (data.office_type === 9)) || ((selectedWards_UCDUpazila.length > 0) && (data.office_type === 10))"
                           :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                       </ValidationProvider>
                     </v-col>
@@ -402,7 +401,6 @@
                             'container.system_config.demo_graphic.office.office_type'
                           )
                             " :items="officeType" item-text="value_en" item-value="id"
-                          :readonly="((selectedWards.length > 0) && (data.office_type === 9)) || ((selectedWards_UCDUpazila.length > 0) && (data.office_type === 10))"
                           :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                       </ValidationProvider>
                     </v-col>
@@ -420,7 +418,6 @@
                             'container.system_config.demo_graphic.division.division'
                           )
                             " :items="divisions" item-text="name_en" item-value="id" required
-                         :readonly="((selectedWards.length > 0) && (data.office_type === 9)) || ((selectedWards_UCDUpazila.length > 0) && (data.office_type === 10))"
                           :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                       </ValidationProvider>
                     </v-col>
@@ -489,7 +486,7 @@
                         <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.city_id"
                           @change="onChangeCity($event)" outlined :label="$t('container.system_config.demo_graphic.office.city')
                             " :items="cities" item-text="name_en" item-value="id" required
-                          :readonly="data.city_id !== null" :error="errors[0] ? true : false"
+                    
                           :error-messages="errors[0]"></v-autocomplete>
                       </ValidationProvider>
                     </v-col>
@@ -888,6 +885,9 @@
           sub_location_type: null,
 
         },
+
+        officeInfo:[],
+
         isLoading:false,
         thanas_for_edit: [],
         subLocationType: [
@@ -908,7 +908,18 @@
         //extra work for city
         // Selected wards
         edit: [],
-        selectedWardsDetails: [],
+        selectedWardsDetails: [
+          // {
+          //   division: 22,
+          //   district: 33,
+          //   city: 44,
+          //   thana: 55,
+          //   ward: 66,
+          //   ward_id: 77,
+
+          // }
+
+        ],
         selectedWards: [],
         selectedWards_edit: [],
         selectedWards_UCDUpazila: [],
@@ -1489,33 +1500,72 @@
 
         this.onChangeWards_UCDUpazila(this.selectedWards_UCDUpazila);
       },
+
       onChangeWards(selectedWards) {
+        console.log(selectedWards,'ward');
+        const division = this.divisions.find(div => div.id === this.data.division_id);
+        const district = this.districts.find(d => d.id === this.data.district_id);
+        const city = this.cities.find(c => c.id === this.data.city_id);
+        
+        let info = {};
+        selectedWards.forEach(wardId => {
+           const ward = this.wards.find(w => w.id === wardId);
+           const thana = this.thanas.find(t => t.id === ward.parent.id);
+            info = {
+            division: division.name_en,
+            district: district.name_en,
+            city: city.name_en,
+            thana: thana.name_en,
+            ward: ward.name_en,
+            ward_id: ward.id,
 
-        console.log(this.selectedWards, "selectedWards Check in wards")
-        if (this.selectedWards.length > 0) {
-          this.selectedWards_UCDUpazila = [];
-          // Update selectedWardsDetails based on the selectedWards
-          this.selectedWardsDetails = selectedWards.map(wardId => {
-            const ward = this.wards.find(w => w.id === wardId);
-            const district = this.districts.find(d => d.id === this.data.district_id);
-            const division = this.divisions.find(div => div.id === this.data.division_id);
-            const city = this.cities.find(c => c.id === this.data.city_id);
-            console.log(this.wards, "all wards")
-            console.log(ward, "const ward in ward")
-            const thana = this.thanas.find(t => t.id === ward.parent.id);
+          }
+        });
 
-            return {
-              division: division.name_en,
-              district: district.name_en,
-              city: city.name_en,
-              thana: thana.name_en,
-              ward: ward.name_en,
-              ward_id: ward.id,
-            };
-          });
-          console.log(this.selectedWardsDetails, "selected ward")
+        // const ward = this.wards.find(w => w.id === selectedWards[0]);
+        // const thana = this.thanas.find(t => t.id === ward.parent.id);
 
-        }
+      
+
+        
+        console.log(info,'testinfo')
+        this.selectedWardsDetails.push(info)
+        // this.officeInfo.push(info)
+
+        console.log(this.selectedWardsDetails, "officeInfos")
+
+
+
+        // console.log(this.selectedWards, "selectedWards Check in wards")
+        // if (this.selectedWards.length > 0) {
+        //   this.selectedWards_UCDUpazila = [];
+        //   // Update selectedWardsDetails based on the selectedWards
+        //   this.selectedWardsDetails = selectedWards.map(wardId => {
+        //     const ward = this.wards.find(w => w.id === wardId);
+        //     const district = this.districts.find(d => d.id === this.data.district_id);
+        //     alert(district);
+        //     console.log(district, "const district value")
+        //     console.log(this.data.district_id, "this.data.district_id")
+        //     const division = this.divisions.find(div => div.id === this.data.division_id);
+        //     const city = this.cities.find(c => c.id === this.data.city_id);
+        //     // console.log(this.wards, "all wards")
+        //     console.log(city, "const city value")
+        //     console.log(division, "const division value")
+        //     console.log(district, "const district value")
+        //     const thana = this.thanas.find(t => t.id === ward.parent.id);
+          
+        //     return [
+        //       division => division.name_en,
+        //       district => district.name_en,
+        //       city => city.name_en,
+        //       thana => thana.name_en,
+        //       ward => ward.name_en,
+        //       ward_id => ward.id,
+        //   ];
+        //   });
+        //   console.log(this.selectedWardsDetails, "selected ward")
+
+        // }
 
 
 
@@ -1756,6 +1806,7 @@
 
       },
       async editOffice(item) {
+        
         if (this.$refs.formEdit) {
           this.$refs.formEdit.reset();
         }
@@ -1801,14 +1852,14 @@
 
         }
 
-        //  if (this.edit[0]?.wards[0]?.parent?.parent?.parent?.type == "city") {
-        //   this.data.city_id = this.edit[0]?.wards[0]?.parent?.parent?.parent?.id;
-        //   this.onChangeCity(this.data.city_id);
-        // }
+         if (this.edit[0]?.wards[0]?.parent?.parent?.parent?.type == "city") {
+          this.data.city_id = this.edit[0]?.wards[0]?.parent?.parent?.parent?.id;
+          this.onChangeCity(this.data.city_id);
+        }
 
-        //  if (this.edit[0]?.wards[0]?.parent?.parent?.parent?.type == "thana" && this.edit[0]?.wards[0]?.parent?.parent?.parent?.location_type === 2) {
-        //   this.data.upazila_id = this.edit[0]?.wards[0]?.parent?.parent?.parent?.id;
-        // }
+         if (this.edit[0]?.wards[0]?.parent?.parent?.parent?.type == "thana" && this.edit[0]?.wards[0]?.parent?.parent?.parent?.location_type === 2) {
+          this.data.upazila_id = this.edit[0]?.wards[0]?.parent?.parent?.parent?.id;
+        }
 
         const queryParams = {
           id: item.id
@@ -1824,6 +1875,8 @@
           })
           .then((result) => {
             this.edit = result.data;
+
+            console.log( this.edit[0].wards,"viewinfo :)")
 
 
           });
@@ -1905,6 +1958,7 @@
 
           this.edit[0].wards?.forEach((ward) => {
             const parentId = ward.parent?.parent?.id;
+            console.log(parentId,'parentId ward');
 
             if (parentId !== undefined && parentId !== null && !uniqueParentIds.has(parentId)) {
 
@@ -1940,6 +1994,50 @@
         if (item?.assign_location?.location_type?.value_en == "Upazila") {
           this.data.thana_id = item?.assign_location?.id;
         }
+
+
+
+        
+        // console.log(this.edit[0].wards,"edit wards")
+        // alert(123);
+
+          
+        // // const division = this.divisions.find(div => div.id === this.data.division_id);
+        // // const district = this.districts.find(d => d.id === this.data.district_id);
+        // // const city = this.cities.find(c => c.id === this.data.city_id);
+      
+        // let infos = {};
+        // this.edit[0].wards.forEach(wardId => {
+          
+        //   // Prepare information object
+        //   const infos = {
+        //     division: 'ddd',
+        //     district: 'yyy',
+        //     city: 'zzzz',
+        //     thana: 'Unknown Thana',
+        //     ward: 'Unknown Ward',
+        //     ward_id: '222',
+        //   };
+
+        //   // Do something with infos object
+        //   console.log(infos);
+        // });
+
+
+
+        // // const ward = this.wards.find(w => w.id === selectedWards[0]);
+        // // const thana = this.thanas.find(t => t.id === ward.parent.id);
+
+
+
+
+
+        // this.selectedWardsDetails.push(infos)
+        // // this.officeInfo.push(info)
+
+        // console.log(this.selectedWardsDetails, "officeInfos")
+
+        
 
 
       },
