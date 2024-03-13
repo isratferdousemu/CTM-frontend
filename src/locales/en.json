@@ -239,6 +239,7 @@
           "union_pouro_city": "Thana/ Union/ Pouroshava",
           "union_ward": "Union/Ward",
           "subLocation_type": "Sub Location",
+          "office_name": "Office Name",
           "pouroshava": "Pouroshava",
           "dist_pouro": "Distrcit Pouroshava",
           "union_pouro": "Union /Pouroshava",
@@ -876,7 +877,16 @@
         "shitfing_list": "Beneficiary Shifting List",
         "title": "Beneficiary Shifting",
         "cause": "Cause",
-        "activation_date": "Activation Date"
+        "activation_date": "Activation Date",
+        "effective_date": "Effective Date",
+        "current_location": "Current Location",
+        "new_location": "New Location",
+        "shift_location": "Shift Location",
+        "to_date": "To Date",
+        "from_date": "From Date",
+        "location_shitfing_list": "Beneficiary Location Shifting List",
+        "from_location": "From Location",
+        "to_location": "To Location"
       },
       "dashboard": {
         "total_beneficiary": "Total Number of Beneficiary",

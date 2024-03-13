@@ -100,6 +100,19 @@
                                   {{ beneficiary_details.beneficiary_address }}
                                 </td>
                               </tr>
+                              <tr>
+                                <td>
+                                  {{
+                                    $t(
+                                      "container.beneficiary_management.beneficiary_list.program_name"
+                                    )
+                                  }}
+                                </td>
+                                <td>
+                                  :
+                                  {{ beneficiary_details?.program?.name_en }}
+                                </td>
+                              </tr>
                             </table>
                           </v-card-text>
                         </v-card>
