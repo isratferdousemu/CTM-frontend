@@ -9,9 +9,10 @@
             <v-card
               elevation="2"
               rounded="xl"
-              class="ml-2 mr-2"
+              class="mr-2"
               height="100%"
               max-height="auto"
+              @click="GoBenInfoList()"
             >
               <v-card-title>
                 <v-row>
@@ -21,18 +22,16 @@
 
                   <v-col>
                     <v-card-text style="word-break: break-word">
-                      <span class="font-weight-bold">
+                      <div class="font-weight-bold d-flex">
                         {{
                           $t(
                             "container.beneficiary_management.dashboard.total_beneficiary"
                           )
                         }}
-                      </span>
-                      <br />
-                      <br />
-                      <span class="headline font-weight-bold">
+                      </div>
+                      <div class="headline font-weight-bold d-flex">
                         {{ beneficiaries.totalBeneficiaries }}
-                      </span>
+                      </div>
                     </v-card-text>
                   </v-col>
                 </v-row>
@@ -46,6 +45,7 @@
               rounded="xl"
               class="ml-2 mr-2"
               height="100%"
+              @click="GoActiveBenInfoList()"
             >
               <v-card-title>
                 <v-row>
@@ -55,17 +55,16 @@
 
                   <v-col>
                     <v-card-text style="word-break: break-word">
-                      <span class="font-weight-bold">
+                      <div class="font-weight-bold d-flex">
                         {{
                           $t(
                             "container.beneficiary_management.dashboard.active_beneficiary"
                           )
                         }}
-                      </span>
-                      <br />
-                      <span class="headline font-weight-bold">
+                      </div>
+                      <div class="headline font-weight-bold d-flex">
                         {{ beneficiaries.totalActiveBeneficiaries }}
-                      </span>
+                      </div>
                     </v-card-text>
                   </v-col>
                 </v-row>
@@ -79,6 +78,7 @@
               rounded="xl"
               class="ml-2 mr-2"
               height="100%"
+              @click="GoInActiveBenInfoList()"
             >
               <v-card-title>
                 <v-row>
@@ -88,20 +88,19 @@
 
                   <v-col>
                     <v-card-text>
-                      <span
-                        class="font-weight-bold"
+                      <div
+                        class="font-weight-bold d-flex"
                         style="word-break: break-word"
                       >
                         {{
                           $t(
                             "container.beneficiary_management.dashboard.inactive_beneficiary"
                           )
-                        }}</span
-                      >
-                      <br />
-                      <span class="headline font-weight-bold">
+                        }}
+                      </div>
+                      <div class="headline font-weight-bold d-flex">
                         {{ beneficiaries.totalInactiveBeneficiaries }}
-                      </span>
+                      </div>
                     </v-card-text>
                   </v-col>
                 </v-row>
@@ -115,6 +114,7 @@
               rounded="xl"
               class="ml-2 mr-2"
               height="100%"
+              @click="GoWaitingBenInfoList()"
             >
               <v-card-title style="word-break: break-word">
                 <v-row>
@@ -126,17 +126,16 @@
 
                   <v-col>
                     <v-card-text>
-                      <span class="font-weight-bold">
+                      <div class="font-weight-bold d-flex">
                         {{
                           $t(
                             "container.beneficiary_management.dashboard.waitining_beneficiary"
                           )
-                        }}</span
-                      >
-                      <br />
-                      <span class="headline font-weight-bold">
+                        }}
+                      </div>
+                      <div class="headline font-weight-bold d-flex">
                         {{ beneficiaries.totalWaitingBeneficiaries }}
-                      </span>
+                      </div>
                     </v-card-text>
                   </v-col>
                 </v-row>
@@ -149,7 +148,8 @@
               max-height="auto"
               elevation="2"
               rounded="xl"
-              class="ml-2 mr-2"
+              class="ml-2"
+              @click="GoReplaceBenInfoList()"
             >
               <v-card-title>
                 <v-row>
@@ -159,17 +159,16 @@
 
                   <v-col>
                     <v-card-text style="word-break: break-word">
-                      <span class="font-weight-bold">
+                      <div class="font-weight-bold d-flex">
                         {{
                           $t(
                             "container.beneficiary_management.dashboard.replaced_beneficiary"
                           )
-                        }}</span
-                      >
-                      <br />
-                      <span class="headline font-weight-bold">
+                        }}
+                      </div>
+                      <div class="headline font-weight-bold d-flex">
                         {{ beneficiaries.totalReplacedBeneficiaries }}
-                      </span>
+                      </div>
                     </v-card-text>
                   </v-col>
                 </v-row>
@@ -1604,6 +1603,76 @@ export default {
           },
         }
       );
+    },
+    GoBenInfoList() {
+      if (
+        !this.isLoadingProgramLocation &&
+        !this.isLoadingGender &&
+        !this.isLoadingWaiting &&
+        !this.isLoadingProgram &&
+        !this.isLoadingAgeProgram &&
+        !this.isLoadingShifted
+      ) {
+        this.$router.push({ name: "Beneficiary_List" });
+      } else {
+        this.$toast.error("Please wait!!!");
+      }
+    },
+    GoActiveBenInfoList() {
+      if (
+        !this.isLoadingProgramLocation &&
+        !this.isLoadingGender &&
+        !this.isLoadingWaiting &&
+        !this.isLoadingProgram &&
+        !this.isLoadingAgeProgram &&
+        !this.isLoadingShifted
+      ) {
+        this.$router.push({ name: "Beneficiary_List_Active" });
+      } else {
+        this.$toast.error("Please wait!!!");
+      }
+    },
+    GoInActiveBenInfoList() {
+      if (
+        !this.isLoadingProgramLocation &&
+        !this.isLoadingGender &&
+        !this.isLoadingWaiting &&
+        !this.isLoadingProgram &&
+        !this.isLoadingAgeProgram &&
+        !this.isLoadingShifted
+      ) {
+        this.$router.push({ name: "Beneficiary_List_Inactive" });
+      } else {
+        this.$toast.error("Please wait!!!");
+      }
+    },
+    GoWaitingBenInfoList() {
+      if (
+        !this.isLoadingProgramLocation &&
+        !this.isLoadingGender &&
+        !this.isLoadingWaiting &&
+        !this.isLoadingProgram &&
+        !this.isLoadingAgeProgram &&
+        !this.isLoadingShifted
+      ) {
+        this.$router.push({ name: "Beneficiary_List_Waiting" });
+      } else {
+        this.$toast.error("Please wait!!!");
+      }
+    },
+    GoReplaceBenInfoList() {
+      if (
+        !this.isLoadingProgramLocation &&
+        !this.isLoadingGender &&
+        !this.isLoadingWaiting &&
+        !this.isLoadingProgram &&
+        !this.isLoadingAgeProgram &&
+        !this.isLoadingShifted
+      ) {
+        this.$router.push({ name: "beneficiary_replacement_list" });
+      } else {
+        this.$toast.error("Please wait!!!");
+      }
     },
   },
   watch: {

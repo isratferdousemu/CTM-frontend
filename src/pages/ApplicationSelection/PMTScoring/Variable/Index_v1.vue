@@ -187,7 +187,7 @@
                                             <v-tooltip top>
                                                 <template v-slot:activator="{ on }">
                                                     <v-btn fab dense x-small v-on="on" class="danger" elevation="0"
-                                                        @click="removeRow(item.id)">
+                                                        @click="removeRow(item)">
                                                         <v-icon style="color: red">mdi-trash-can-outline</v-icon>
                                                     </v-btn>
                                                 </template>
@@ -300,7 +300,7 @@
                                         <v-tooltip top>
                                             <template v-slot:activator="{ on }">
                                                 <v-btn fab dense x-small v-on="on" class="danger" elevation="0"
-                                                    @click="removeRow(item.id)">
+                                                    @click="removeRow(item)">
                                                     <v-icon style="color: red">mdi-trash-can-outline</v-icon>
                                                 </v-btn>
                                             </template>
@@ -393,7 +393,7 @@ export default {
                 // field_value: [],
 
                 field_value: [
-                    {
+                    {   id:null,
                         value_en: null,
                         value_bn: null,
                         score: null
@@ -617,6 +617,7 @@ console.log(this.data,"update_variable")
             this.errors = {};
             this.data.field_value = item.children.map(child => {
                 return {
+                    id: child.id,
                     value_en: child.name_en,
                     value_bn: child.name_bn,
                     score: child.score
@@ -674,6 +675,7 @@ console.log(this.data,"update_variable")
 
                 // Create a new row with default values
                 const newRow = {
+                    id: this.data.field_value.length,
                     value_en: null,
                     value_bn: null,
                     score: null
@@ -685,18 +687,24 @@ console.log(this.data,"update_variable")
                 console.log('After adding row:', this.data.field_value);
            
         },
-        removeRow(id) {
+        // removeRow(id) {
+           
+        //     const index = this.data.field_value.findIndex((item) => item.id == id);
+
+        //     this.data.field_value.splice(index, 1);
+          
+        // },
+        removeRow(item) {
             // Find the index of the row with the given id
-            const index = this.data.field_value.findIndex((item) => item.id === id);
+            const index = this.data.field_value.findIndex((each) => each.id == item.id);
+            console.log(item,index,"index")
 
-            // Check if there is more than one input before removing
-            // if (index !== -1 && this.data.field_value.length > 1) {
-            this.data.field_value.splice(index, 1);
-            // } else {
-            // Optionally, you can show a message or handle this case differently
-            // this.$toast.success("Atleast One input Needed");
-
-            // }
+            // Check if index is valid before removing
+            if (index !== -1) {
+                this.data.field_value.splice(index, 1);
+            } else {
+                console.error("Item with id", id, "not found.");
+            }
         },
         createDialog() {
             if (this.$refs.formAdd) {

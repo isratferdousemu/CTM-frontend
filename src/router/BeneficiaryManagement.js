@@ -278,7 +278,7 @@ const BeneficiaryManagementRoutes = [
   },
   {
     path: "/beneficiary-management/beneficiary-location-shifting-list",
-    name: "beneficiary_shifting_list",
+    name: "beneficiary_location_shifting_list",
     meta: {
       requiresAuth: true,
       permission: "beneficiary-shifting-list",
