@@ -5,13 +5,12 @@
     <v-table>
       <thead>
         <tr>
-          <td>
+          <td width="20%">
             <v-card
               elevation="2"
               rounded="xl"
               class="mr-2"
               height="100%"
-              max-height="auto"
               @click="GoBenInfoList()"
             >
               <v-card-title>
@@ -38,7 +37,7 @@
               </v-card-title>
             </v-card>
           </td>
-          <td>
+          <td width="20%">
             <v-card
               max-height="auto"
               elevation="2"
@@ -71,7 +70,7 @@
               </v-card-title>
             </v-card>
           </td>
-          <td>
+          <td width="20%">
             <v-card
               max-height="auto"
               elevation="2"
@@ -107,7 +106,7 @@
               </v-card-title>
             </v-card>
           </td>
-          <td>
+          <td width="20%">
             <v-card
               max-height="auto"
               elevation="2"
@@ -142,7 +141,7 @@
               </v-card-title>
             </v-card>
           </td>
-          <td>
+          <td width="20%">
             <v-card
               height="100%"
               max-height="auto"
@@ -181,7 +180,7 @@
     <!-- header card end -->
     <!-- first row chart start -->
     <v-row class="mt-3">
-      <v-col cols="12" md="4" lg="4">
+      <v-col cols="12" md="6" lg="6">
         <v-card :loading="isLoadingProgramLocation" height="100%">
           <v-card-text>
             <V-row>
@@ -200,81 +199,85 @@
                   >
                 </v-row>
                 <v-row class="ml-1 mr-1">
-                  <v-menu
-                    ref="menu"
-                    v-model="menu"
-                    :close-on-content-click="false"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="auto"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                        v-model="dateRangeText"
-                        :value="formattedDates"
-                        :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
+                  <v-col cols="7">
+                    <v-row class="mr-1">
+                      <v-menu
+                        ref="menu"
+                        v-model="menu"
+                        :close-on-content-click="false"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            v-model="dateRangeText"
+                            :value="formattedDates"
+                            :append-icon="
+                              menu ? 'mdi-calendar' : 'mdi-calendar'
+                            "
+                            :label="
+                              $t(
+                                'container.beneficiary_management.dashboard.enter_start_end_date'
+                              )
+                            "
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker
+                          v-model="dates"
+                          :range="[dates[0], dates[1]]"
+                          :rules="[customDateRangeRule]"
+                          no-title
+                          scrollable
+                        >
+                          <v-spacer></v-spacer>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="resetDateProgramAndLocationWiseBeneficiary"
+                          >
+                            Cancel
+                          </v-btn>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="submitDateProgramAndLocationWiseBeneficiary"
+                          >
+                            OK
+                          </v-btn>
+                        </v-date-picker>
+                      </v-menu>
+                    </v-row>
+                  </v-col>
+                  <v-col cols="5">
+                    <v-row>
+                      <v-select
                         :label="
                           $t(
-                            'container.beneficiary_management.dashboard.enter_start_end_date'
+                            'container.beneficiary_management.dashboard.select_program'
                           )
                         "
-                        readonly
-                        v-bind="attrs"
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker
-                      v-model="dates"
-                      :range="[dates[0], dates[1]]"
-                      :rules="[customDateRangeRule]"
-                      no-title
-                      scrollable
-                    >
-                      <v-spacer></v-spacer>
-                      <v-btn
-                        text
-                        color="primary"
-                        @click="resetDateProgramAndLocationWiseBeneficiary"
-                      >
-                        Cancel
-                      </v-btn>
-                      <v-btn
-                        text
-                        color="primary"
-                        @click="submitDateProgramAndLocationWiseBeneficiary"
-                      >
-                        OK
-                      </v-btn>
-                    </v-date-picker>
-                  </v-menu>
+                        :items="programs"
+                        v-model="program_location_Wise_beneficiary.program_id"
+                        item-text="name_en"
+                        item-value="id"
+                        @change="GetLocationWiseBeneficiaries($event)"
+                      ></v-select>
+                    </v-row>
+                  </v-col>
                 </v-row>
                 <v-row>
                   <canvas id="program_location_wise_chart"></canvas>
-                </v-row>
-                <v-row>
-                  <v-col cols="12" lg="4" md="4"> </v-col>
-
-                  <v-col cols="12" lg="8" md="8">
-                    <v-autocomplete
-                      class="mr-5"
-                      :items="programs"
-                      :label="
-                        $t('container.beneficiary_management.dashboard.program')
-                      "
-                      dense
-                      item-text="name_en"
-                      item-value="id"
-                      v-model="program_location_Wise_beneficiary.program_id"
-                      @input="GetLocationWiseBeneficiaries($event)"
-                    ></v-autocomplete>
-                  </v-col>
                 </v-row>
               </v-col>
             </V-row>
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="12" md="4" lg="4">
+      <v-col cols="12" md="6" lg="6">
         <v-card :loading="isLoadingGender" height="100%">
           <v-card-text>
             <V-row>
@@ -293,80 +296,88 @@
                   >
                 </v-row>
                 <v-row class="ml-1 mr-1">
-                  <v-menu
-                    ref="menu2"
-                    v-model="menu2"
-                    :close-on-content-click="false"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="auto"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                        v-model="dateRangeTextOnGender"
-                        :value="formattedDates"
-                        :append-icon="menu2 ? 'mdi-calendar' : 'mdi-calendar'"
+                  <v-col cols="7">
+                    <v-row class="mr-1">
+                      <v-menu
+                        ref="menu2"
+                        v-model="menu2"
+                        :close-on-content-click="false"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            v-model="dateRangeTextOnGender"
+                            :value="formattedDates"
+                            :append-icon="
+                              menu2 ? 'mdi-calendar' : 'mdi-calendar'
+                            "
+                            :label="
+                              $t(
+                                'container.beneficiary_management.dashboard.enter_start_end_date'
+                              )
+                            "
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker
+                          v-model="gender_wise_dates"
+                          :range="[gender_wise_dates[0], gender_wise_dates[1]]"
+                          no-title
+                          scrollable
+                        >
+                          <v-spacer></v-spacer>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="resetDateGenderWiseBeneficiary"
+                          >
+                            Cancel
+                          </v-btn>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="submitDateGenderWiseBeneficiary"
+                          >
+                            OK
+                          </v-btn>
+                        </v-date-picker>
+                      </v-menu>
+                    </v-row>
+                  </v-col>
+                  <v-col cols="5">
+                    <v-row>
+                      <v-select
                         :label="
                           $t(
-                            'container.beneficiary_management.dashboard.enter_start_end_date'
+                            'container.beneficiary_management.dashboard.select_program'
                           )
                         "
-                        readonly
-                        v-bind="attrs"
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker
-                      v-model="gender_wise_dates"
-                      :range="[gender_wise_dates[0], gender_wise_dates[1]]"
-                      no-title
-                      scrollable
-                    >
-                      <v-spacer></v-spacer>
-                      <v-btn
-                        text
-                        color="primary"
-                        @click="resetDateGenderWiseBeneficiary"
-                      >
-                        Cancel
-                      </v-btn>
-                      <v-btn
-                        text
-                        color="primary"
-                        @click="submitDateGenderWiseBeneficiary"
-                      >
-                        OK
-                      </v-btn>
-                    </v-date-picker>
-                  </v-menu>
+                        :items="programs"
+                        v-model="gender_Wise_beneficiary.program_id"
+                        item-text="name_en"
+                        item-value="id"
+                        @change="GetGenderWiseBeneficiaries($event)"
+                      ></v-select>
+                    </v-row>
+                  </v-col>
                 </v-row>
                 <v-row>
                   <canvas id="gender_wise_beneficiary"></canvas>
-                </v-row>
-                <v-row>
-                  <v-col cols="12" lg="4" md="4"> </v-col>
-                  <v-col cols="12" lg="8" md="8">
-                    <v-autocomplete
-                      class="mr-5"
-                      :items="programs"
-                      :label="
-                        $t('container.beneficiary_management.dashboard.program')
-                      "
-                      dense
-                      item-text="name_en"
-                      item-value="id"
-                      v-model="gender_Wise_beneficiary.program_id"
-                      @input="GetGenderWiseBeneficiaries($event)"
-                    ></v-autocomplete>
-                  </v-col>
                 </v-row>
               </v-col>
             </V-row>
           </v-card-text>
         </v-card>
       </v-col>
-
-      <v-col cols="12" md="4" lg="4">
+    </v-row>
+    <!-- first row chart end -->
+    <!-- Second row chart start -->
+    <v-row class="mt-3">
+      <v-col cols="12" md="6" lg="6">
         <v-card :loading="isLoadingWaiting" height="100%">
           <v-card-text>
             <V-row>
@@ -384,92 +395,94 @@
                     </label></v-col
                   >
                 </v-row>
-
                 <v-row class="ml-1 mr-1">
-                  <v-menu
-                    ref="menu3"
-                    v-model="menu3"
-                    :close-on-content-click="false"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="auto"
-                  >
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-text-field
-                        v-model="dateRangeTextOnWaitingBen"
-                        :value="formattedDates"
-                        :append-icon="menu3 ? 'mdi-calendar' : 'mdi-calendar'"
+                  <v-col cols="7">
+                    <v-row class="mr-1">
+                      <v-menu
+                        ref="menu3"
+                        v-model="menu3"
+                        :close-on-content-click="false"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            v-model="dateRangeTextOnWaitingBen"
+                            :value="formattedDates"
+                            :append-icon="
+                              menu3 ? 'mdi-calendar' : 'mdi-calendar'
+                            "
+                            :label="
+                              $t(
+                                'container.beneficiary_management.dashboard.enter_start_end_date'
+                              )
+                            "
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker
+                          v-model="wiaiting_wise_dates"
+                          :range="[
+                            wiaiting_wise_dates[0],
+                            wiaiting_wise_dates[1],
+                          ]"
+                          no-title
+                          scrollable
+                        >
+                          <v-spacer></v-spacer>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="resetDateWaitingWiseBeneficiary"
+                          >
+                            Cancel
+                          </v-btn>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="submitDateWaitingBeneficiary"
+                          >
+                            OK
+                          </v-btn>
+                        </v-date-picker>
+                      </v-menu>
+                    </v-row>
+                  </v-col>
+                  <v-col cols="5">
+                    <v-row>
+                      <v-select
                         :label="
                           $t(
-                            'container.beneficiary_management.dashboard.enter_start_end_date'
+                            'container.beneficiary_management.dashboard.select_program'
                           )
                         "
-                        readonly
-                        v-bind="attrs"
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker
-                      v-model="wiaiting_wise_dates"
-                      :range="[wiaiting_wise_dates[0], wiaiting_wise_dates[1]]"
-                      no-title
-                      scrollable
-                    >
-                      <v-spacer></v-spacer>
-                      <v-btn
-                        text
-                        color="primary"
-                        @click="resetDateWaitingWiseBeneficiary"
-                      >
-                        Cancel
-                      </v-btn>
-                      <v-btn
-                        text
-                        color="primary"
-                        @click="submitDateWaitingBeneficiary"
-                      >
-                        OK
-                      </v-btn>
-                    </v-date-picker>
-                  </v-menu>
+                        :items="programs"
+                        v-model="waiting_beneficiary.program_id"
+                        item-text="name_en"
+                        item-value="id"
+                        @change="GetWaitingBeneficiaries($event)"
+                      ></v-select>
+                    </v-row>
+                  </v-col>
                 </v-row>
                 <v-row>
                   <canvas height="300" id="year_wise_waiting_ben"></canvas>
-                </v-row>
-                <v-row>
-                  <v-col cols="12" lg="4" md="4"> </v-col>
-
-                  <v-col cols="12" lg="8" md="8">
-                    <v-autocomplete
-                      class="mr-5"
-                      :items="programs"
-                      :label="
-                        $t('container.beneficiary_management.dashboard.program')
-                      "
-                      dense
-                      item-text="name_en"
-                      item-value="id"
-                      v-model="waiting_beneficiary.program_id"
-                      @input="GetWaitingBeneficiaries($event)"
-                    ></v-autocomplete>
-                  </v-col>
                 </v-row>
               </v-col>
             </V-row>
           </v-card-text>
         </v-card>
       </v-col>
-    </v-row>
-    <!-- first row chart end -->
-    <!-- Second row chart start -->
-    <v-row class="mt-3">
       <v-col cols="12" md="6" lg="6">
         <v-card :loading="isLoadingProgram" height="100%">
           <v-card-text>
             <V-row>
               <v-col>
                 <v-row>
-                  <v-col cols="12" lg="5" md="5" class="mt-4">
+                  <v-col cols="12">
                     <label style="color: #1976d2">
                       <span>
                         {{
@@ -480,182 +493,84 @@
                       </span>
                     </label></v-col
                   >
-                  <v-col cols="7" lg="7" md="7">
-                    <v-menu
-                      ref="menu4"
-                      v-model="menu4"
-                      :close-on-content-click="false"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="auto"
-                    >
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                          v-model="dateRangeTextOnProgramWiseBen"
-                          :value="formattedDates"
-                          :append-icon="menu4 ? 'mdi-calendar' : 'mdi-calendar'"
-                          :label="
-                            $t(
-                              'container.beneficiary_management.dashboard.enter_start_end_date'
-                            )
-                          "
-                          readonly
-                          v-bind="attrs"
-                          v-on="on"
-                        ></v-text-field>
-                      </template>
-                      <v-date-picker
-                        v-model="program_wise_dates"
-                        :range="[program_wise_dates[0], program_wise_dates[1]]"
-                        no-title
-                        scrollable
+                </v-row>
+
+                <v-row class="ml-1 mr-1">
+                  <v-col cols="7">
+                    <v-row class="mr-1">
+                      <v-menu
+                        ref="menu4"
+                        v-model="menu4"
+                        :close-on-content-click="false"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
                       >
-                        <v-spacer></v-spacer>
-                        <v-btn
-                          text
-                          color="primary"
-                          @click="resetDateProgramWiseBeneficiary"
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            v-model="dateRangeTextOnProgramWiseBen"
+                            :value="formattedDates"
+                            :append-icon="
+                              menu4 ? 'mdi-calendar' : 'mdi-calendar'
+                            "
+                            :label="
+                              $t(
+                                'container.beneficiary_management.dashboard.enter_start_end_date'
+                              )
+                            "
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker
+                          v-model="program_wise_dates"
+                          :range="[
+                            program_wise_dates[0],
+                            program_wise_dates[1],
+                          ]"
+                          no-title
+                          scrollable
                         >
-                          Cancel
-                        </v-btn>
-                        <v-btn
-                          text
-                          color="primary"
-                          @click="submitDateProgramBeneficiary"
-                        >
-                          OK
-                        </v-btn>
-                      </v-date-picker>
-                    </v-menu>
+                          <v-spacer></v-spacer>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="resetDateProgramWiseBeneficiary"
+                          >
+                            Cancel
+                          </v-btn>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="submitDateProgramBeneficiary"
+                          >
+                            OK
+                          </v-btn>
+                        </v-date-picker>
+                      </v-menu>
+                    </v-row>
+                  </v-col>
+                  <v-col cols="5">
+                    <v-row>
+                      <v-select
+                        :label="
+                          $t(
+                            'container.beneficiary_management.dashboard.select_program'
+                          )
+                        "
+                        :items="programs"
+                        v-model="program_wise_beneficiary.program_id"
+                        item-text="name_en"
+                        item-value="id"
+                        @change="GetProgramWiseBeneficiaries($event)"
+                      ></v-select>
+                    </v-row>
                   </v-col>
                 </v-row>
 
                 <v-row>
                   <canvas id="program_wise_beneficiary"></canvas>
-                </v-row>
-                <!-- <v-row>
-                  <v-col cols="12" lg="4" md="4"> </v-col>
-                  <v-col cols="12" lg="8" md="8">
-                    <label>
-                      <span>
-                        {{ $t("Disable Program Allowance") }}
-                      </span>
-                    </label>
-                  </v-col>
-                </v-row> -->
-                <v-row>
-                  <v-col cols="12" lg="4" md="4"> </v-col>
-
-                  <v-col cols="12" lg="8" md="8" class="mt-2">
-                    <v-autocomplete
-                      class="mr-5"
-                      :items="programs"
-                      :label="
-                        $t('container.beneficiary_management.dashboard.program')
-                      "
-                      dense
-                      item-text="name_en"
-                      item-value="id"
-                      v-model="program_wise_beneficiary.program_id"
-                      @input="GetProgramWiseBeneficiaries($event)"
-                    ></v-autocomplete>
-                  </v-col>
-                </v-row>
-              </v-col>
-            </V-row>
-          </v-card-text>
-        </v-card>
-      </v-col>
-      <v-col cols="12" md="6" lg="6">
-        <v-card :loading="isLoadingAgeProgram" height="100%">
-          <v-card-text>
-            <V-row>
-              <v-col>
-                <v-row>
-                  <v-col cols="12" lg="5" md="5" class="mt-4">
-                    <label style="color: #1976d2">
-                      <span>
-                        {{
-                          $t(
-                            "container.beneficiary_management.dashboard.age_and_program_wise_ben"
-                          )
-                        }}
-                      </span>
-                    </label></v-col
-                  >
-                  <v-col cols="7" lg="7" md="7">
-                    <v-menu
-                      ref="menu5"
-                      v-model="menu5"
-                      :close-on-content-click="false"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="auto"
-                    >
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                          v-model="dateRangeTextOnAgeAndProgramWiseBen"
-                          :value="formattedDates"
-                          :append-icon="menu5 ? 'mdi-calendar' : 'mdi-calendar'"
-                          :label="
-                            $t(
-                              'container.beneficiary_management.dashboard.enter_start_end_date'
-                            )
-                          "
-                          readonly
-                          v-bind="attrs"
-                          v-on="on"
-                        ></v-text-field>
-                      </template>
-                      <v-date-picker
-                        v-model="age_and_program_wise_dates"
-                        :range="[
-                          age_and_program_wise_dates[0],
-                          age_and_program_wise_dates[1],
-                        ]"
-                        no-title
-                        scrollable
-                      >
-                        <v-spacer></v-spacer>
-                        <v-btn
-                          text
-                          color="primary"
-                          @click="resetDateAgeAndProgramWiseBeneficiary"
-                        >
-                          Cancel
-                        </v-btn>
-                        <v-btn
-                          text
-                          color="primary"
-                          @click="submitDateAgeAndProgramBeneficiary"
-                        >
-                          OK
-                        </v-btn>
-                      </v-date-picker>
-                    </v-menu>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <canvas id="age_program_wise_beneficiary"></canvas>
-                </v-row>
-
-                <v-row>
-                  <v-col cols="12" lg="4" md="4" class="mt-2"> </v-col>
-
-                  <v-col cols="12" lg="8" md="8" class="mt-2">
-                    <v-autocomplete
-                      class="mr-5"
-                      :items="programs"
-                      :label="
-                        $t('container.beneficiary_management.dashboard.program')
-                      "
-                      dense
-                      item-text="name_en"
-                      item-value="id"
-                      v-model="age_and_program_wise_beneficiary.program_id"
-                      @input="GetAgeAndProgramWiseBeneficiaries($event)"
-                    ></v-autocomplete>
-                  </v-col>
                 </v-row>
               </v-col>
             </V-row>
@@ -668,96 +583,111 @@
     <!-- Third row chart start -->
     <v-row class="mt-3">
       <v-col cols="12" md="6" lg="6">
+        <v-card :loading="isLoadingAgeProgram" height="100%">
+          <v-card-text>
+            <V-row>
+              <v-col>
+                <v-row>
+                  <v-col cols="12">
+                    <label style="color: #1976d2">
+                      <span>
+                        {{
+                          $t(
+                            "container.beneficiary_management.dashboard.age_and_program_wise_ben"
+                          )
+                        }}
+                      </span>
+                    </label></v-col
+                  >
+                </v-row>
+                <v-row class="ml-1 mr-1">
+                  <v-col cols="7">
+                    <v-row class="mr-1">
+                      <v-menu
+                        ref="menu5"
+                        v-model="menu5"
+                        :close-on-content-click="false"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            v-model="dateRangeTextOnAgeAndProgramWiseBen"
+                            :value="formattedDates"
+                            :append-icon="
+                              menu5 ? 'mdi-calendar' : 'mdi-calendar'
+                            "
+                            :label="
+                              $t(
+                                'container.beneficiary_management.dashboard.enter_start_end_date'
+                              )
+                            "
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker
+                          v-model="age_and_program_wise_dates"
+                          :range="[
+                            age_and_program_wise_dates[0],
+                            age_and_program_wise_dates[1],
+                          ]"
+                          no-title
+                          scrollable
+                        >
+                          <v-spacer></v-spacer>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="resetDateAgeAndProgramWiseBeneficiary"
+                          >
+                            Cancel
+                          </v-btn>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="submitDateAgeAndProgramBeneficiary"
+                          >
+                            OK
+                          </v-btn>
+                        </v-date-picker>
+                      </v-menu>
+                    </v-row>
+                  </v-col>
+                  <v-col cols="5">
+                    <v-row>
+                      <v-select
+                        :label="
+                          $t(
+                            'container.beneficiary_management.dashboard.select_program'
+                          )
+                        "
+                        :items="programs"
+                        v-model="age_and_program_wise_beneficiary.program_id"
+                        item-text="name_en"
+                        item-value="id"
+                        @change="GetAgeAndProgramWiseBeneficiaries($event)"
+                      ></v-select>
+                    </v-row>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <canvas id="age_program_wise_beneficiary"></canvas>
+                </v-row>
+              </v-col>
+            </V-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="6" lg="6">
         <v-card :loading="isLoadingShifted" height="100%">
           <v-card-text>
             <V-row>
               <v-col>
                 <v-row>
-                  <v-col cols="12" lg="6" md="6">
-                    <v-autocomplete
-                      class="mr-5"
-                      :items="programs"
-                      :label="
-                        $t(
-                          'container.beneficiary_management.dashboard.to_program_name'
-                        )
-                      "
-                      dense
-                      item-text="name_en"
-                      item-value="id"
-                      v-model="shifted_beneficiary.to_program_id"
-                      @input="GetShiftedBeneficiaries($event)"
-                    ></v-autocomplete>
-                    <v-autocomplete
-                      class="mr-5"
-                      :items="programs"
-                      :label="
-                        $t(
-                          'container.beneficiary_management.dashboard.from_program_name'
-                        )
-                      "
-                      dense
-                      item-text="name_en"
-                      item-value="id"
-                      v-model="shifted_beneficiary.from_program_id"
-                      @input="GetShiftedBeneficiaries($event)"
-                    ></v-autocomplete>
-                  </v-col>
-                  <v-col cols="6" lg="6">
-                    <v-menu
-                      ref="menu6"
-                      v-model="menu6"
-                      :close-on-content-click="false"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="auto"
-                    >
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                          v-model="dateRangeTextShiftedBen"
-                          :value="formattedDates"
-                          :append-icon="menu6 ? 'mdi-calendar' : 'mdi-calendar'"
-                          :label="
-                            $t(
-                              'container.beneficiary_management.dashboard.enter_start_end_date'
-                            )
-                          "
-                          readonly
-                          v-bind="attrs"
-                          v-on="on"
-                        ></v-text-field>
-                      </template>
-                      <v-date-picker
-                        v-model="shifted_dates"
-                        :range="[shifted_dates[0], shifted_dates[1]]"
-                        no-title
-                        scrollable
-                      >
-                        <v-spacer></v-spacer>
-                        <v-btn
-                          text
-                          color="primary"
-                          @click="resetDateShiftedWiseBeneficiary"
-                        >
-                          Cancel
-                        </v-btn>
-                        <v-btn
-                          text
-                          color="primary"
-                          @click="submitDateShiftedBeneficiary"
-                        >
-                          OK
-                        </v-btn>
-                      </v-date-picker>
-                    </v-menu>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <canvas id="shifted_beneficiary"></canvas>
-                </v-row>
-                <v-row>
-                  <v-col cols="12" lg="4" md="4"> </v-col>
-                  <v-col cols="12" lg="8" md="8">
+                  <v-col cols="6" class="mt-2">
                     <label style="color: #1976d2">
                       <span>
                         {{
@@ -768,6 +698,100 @@
                       </span>
                     </label>
                   </v-col>
+                  <v-col cols="6">
+                    <v-row class="mr-1">
+                      <v-menu
+                        ref="menu6"
+                        v-model="menu6"
+                        :close-on-content-click="false"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            v-model="dateRangeTextShiftedBen"
+                            :value="formattedDates"
+                            :append-icon="
+                              menu6 ? 'mdi-calendar' : 'mdi-calendar'
+                            "
+                            :label="
+                              $t(
+                                'container.beneficiary_management.dashboard.enter_start_end_date'
+                              )
+                            "
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker
+                          v-model="shifted_dates"
+                          :range="[shifted_dates[0], shifted_dates[1]]"
+                          no-title
+                          scrollable
+                        >
+                          <v-spacer></v-spacer>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="resetDateShiftedWiseBeneficiary"
+                          >
+                            Cancel
+                          </v-btn>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="submitDateShiftedBeneficiary"
+                          >
+                            OK
+                          </v-btn>
+                        </v-date-picker>
+                      </v-menu>
+                    </v-row>
+                  </v-col>
+                </v-row>
+                <v-row class="ml-1">
+                  <v-col cols="6">
+                    <v-row>
+                      <v-autocomplete
+                        class="mr-5"
+                        :items="programs"
+                        :label="
+                          $t(
+                            'container.beneficiary_management.dashboard.to_program_name'
+                          )
+                        "
+                        dense
+                        item-text="name_en"
+                        item-value="id"
+                        v-model="shifted_beneficiary.to_program_id"
+                        @input="GetShiftedBeneficiaries($event)"
+                      ></v-autocomplete>
+                    </v-row>
+                  </v-col>
+                  <v-col cols="6">
+                    <v-row>
+                      <v-autocomplete
+                        class="mr-5"
+                        :items="programs"
+                        :label="
+                          $t(
+                            'container.beneficiary_management.dashboard.from_program_name'
+                          )
+                        "
+                        dense
+                        item-text="name_en"
+                        item-value="id"
+                        v-model="shifted_beneficiary.from_program_id"
+                        @input="GetShiftedBeneficiaries($event)"
+                      ></v-autocomplete>
+                    </v-row>
+                  </v-col>
+                </v-row>
+
+                <v-row>
+                  <canvas id="shifted_beneficiary"></canvas>
                 </v-row>
               </v-col>
             </V-row>
@@ -1246,6 +1270,10 @@ export default {
           },
         }
       );
+      document.getElementById("program_location_wise_chart").style.width =
+        "350px";
+      document.getElementById("program_location_wise_chart").style.height =
+        "385px";
     },
     CreateGenderWiseBeneficiariesChart() {
       if (this.gender_wise_chart) {
@@ -1312,6 +1340,8 @@ export default {
           },
         }
       );
+      document.getElementById("gender_wise_beneficiary").style.width = "350px";
+      document.getElementById("gender_wise_beneficiary").style.height = "385px";
     },
     CreateWaitingBeneficiariesChart() {
       if (this.year_wise_waiting_chart) {

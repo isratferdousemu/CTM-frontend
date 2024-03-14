@@ -7,6 +7,7 @@
           <v-col cols="12">
             <div class="d-block text-right">
               <v-btn
+                v-can="'beneficiaryExit-create'"
                 elevation="2"
                 class="btn my-2"
                 color="primary"

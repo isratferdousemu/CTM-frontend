@@ -219,7 +219,7 @@
                     <v-tooltip top>
                       <template v-slot:activator="{ on }">
                         <v-btn
-                          v-can="'update-post'"
+                          v-can="'beneficiaryReplacement-create'"
                           fab
                           x-small
                           v-on="on"

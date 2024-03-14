@@ -4,6 +4,7 @@
       <v-col cols="12">
         <div class="d-block text-right mb-2">
           <v-btn
+            v-can="'beneficiaryShifting-create'"
             elevation="2"
             class="mr-2 btn"
             color="primary"
@@ -18,6 +19,7 @@
           </v-btn>
 
           <v-btn
+            v-can="'beneficiaryShifting-view'"
             elevation="2"
             class="btn"
             color="primary"

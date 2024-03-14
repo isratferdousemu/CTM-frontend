@@ -646,6 +646,7 @@
                       <template v-slot:item.actions="{ item }">
                         <v-btn
                           v-on="on"
+                          v-can="'beneficiaryExit-create'"
                           color="success"
                           elevation="0"
                           @click="rollBackBeneficiary(item.id)"
