@@ -450,7 +450,6 @@
                               <ValidationProvider
                                 name="member_name"
                                 vid="member_name"
-                                rules="required"
                               >
                                 <v-text-field
                                   :label="
