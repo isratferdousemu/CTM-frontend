@@ -613,6 +613,10 @@ console.log(this.data,"update_variable")
             this.data.id = item.id;
             this.data.name_en = item.name_en;
             this.data.name_bn = item.name_bn;
+            if (item.score){
+                this.data.score = item.score;
+            }
+            
             this.data.field_type = item.field_type;
             this.errors = {};
             this.data.field_value = item.children.map(child => {
@@ -866,6 +870,7 @@ console.log(this.data,"update_variable")
 
             this.data.name_en = null;
             this.data.name_bn = null;
+            this.data.score=null;
             this.data.field_type = null;
             this.data.field_value = [
 
