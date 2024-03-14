@@ -890,7 +890,8 @@
         "from_location": "From Location",
         "to_location": "To Location",
         "title_location": "Beneficiary Location Shifting",
-        "title_program_shifting": "Beneficiary Program Shifting"
+        "title_program_shifting": "Beneficiary Program Shifting",
+        "allowance_program_new": "Allowance Program New"
       },
       "dashboard": {
         "total_beneficiary": "Total Number of Beneficiary",
@@ -906,6 +907,7 @@
         "total_percentage_of_location_wise_ben": "Total Percentage(%) of Beneficiary Location Wise",
         "number_of_ben_program_shifted": "Number of Beneficiary Program Shifted",
         "program": "Program",
+        "select_program": "Select Program",
         "to_program_name": "To Program Name",
         "from_program_name": "From Program Name",
         "enter_start_end_date": "Enter Start & End Date",

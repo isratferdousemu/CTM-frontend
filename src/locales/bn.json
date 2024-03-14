@@ -887,7 +887,8 @@
         "from_location": "অবস্থান থেকে",
         "to_location": "অবস্থানে",
         "title_location": "সুবিধাভোগী স্থান স্থানান্তর",
-        "title_program_shifting": "সুবিধাভোগী প্রোগ্রাম স্থানান্তর"
+        "title_program_shifting": "সুবিধাভোগী প্রোগ্রাম স্থানান্তর",
+        "allowance_program_new": "নতুন ভাতা কার্যক্রম"
       },
       "dashboard": {
         "total_beneficiary": "সুবিধাভোগীর মোট সংখ্যা",
@@ -903,6 +904,7 @@
         "total_percentage_of_location_wise_ben": "সুবিধাভোগীর অবস্থান অনুযায়ী মোট শতাংশ (%)",
         "number_of_ben_program_shifted": "প্রোগ্রাম স্থানান্তরিত সংখ্যা অনুযায়ী সুবিধাভোগী",
         "program": "কর্মসূচী",
+        "select_program": "প্রোগ্রাম নির্বাচন করুন",
         "to_program_name": "স্থানান্তরিত প্রোগ্রাম",
         "from_program_name": "পূর্বের প্রোগ্রাম",
         "enter_start_end_date": "শুরু এবং শেষ তারিখ লিখুন",

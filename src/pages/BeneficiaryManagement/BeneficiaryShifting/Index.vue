@@ -160,7 +160,7 @@
                                 outlined
                                 :label="
                                   $t(
-                                    'container.application_selection.application.program'
+                                    'container.beneficiary_management.beneficiary_shifting.allowance_program_new'
                                   )
                                 "
                                 :items="programs"
