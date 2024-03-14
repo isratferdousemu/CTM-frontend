@@ -2397,6 +2397,9 @@ export default {
           this.data.account_name = res.data.data.nameEn
         })
         .catch((err) => {
+          console.log(err)
+          this.$toast.error(err.response.data.message);
+          this.data.age = '';
           // console.log(err)
           // this.$toast.error(err.response.data.message);
           if (err.response.data.errors) {

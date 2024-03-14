@@ -28,6 +28,7 @@
       "reset": "Reset",
       "back": "Back",
       "forward": "Forward",
+      "recommendation": "Recommendation",
       "waiting": "Waiting",
       "reject": "Reject",
       "status": "Status",
@@ -352,6 +353,7 @@
           "name": "Name",
           "approve": "Approve",
           "forward": "Forward",
+          "recommendation": "Recommendation",
           "reject": "Reject",
           "waiting": "Waiting"
         },
