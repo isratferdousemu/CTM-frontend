@@ -622,6 +622,7 @@
                       <template v-slot:item.actions="{ item }">
                         <v-btn
                           v-on="on"
+                          v-can="'beneficiaryInfo-delete'"
                           color="success"
                           elevation="0"
                           @click="rollBackBeneficiary(item.id)"
@@ -675,11 +676,7 @@
       <v-dialog v-model="dialogRollBack" width="400">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{
-              $t(
-                "container.list.attention"
-              )
-            }}
+            {{ $t("container.list.attention") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-2">
@@ -1329,7 +1326,10 @@ export default {
       }
       try {
         this.$store
-          .dispatch("BeneficiaryManagement/RollBackBeneficiary", this.rollBack_id)
+          .dispatch(
+            "BeneficiaryManagement/RollBackBeneficiary",
+            this.rollBack_id
+          )
           .then((res) => {
             console.log(res, "submit__");
             if (res.data?.success) {
