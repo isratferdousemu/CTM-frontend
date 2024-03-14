@@ -45,7 +45,7 @@
     <v-row class="mx-5 my-5 mt-10">
       <v-col class="mt-10" cols="10" offset="1">
         <ValidationObserver ref="form" v-slot="{ invalid }">
-          <form @submit.prevent="submitApplication()">
+          <form @submit.prevent="submitApplicationCheck()">
             <v-card class="pa-5 px-10 mb-4">
 
               <!-- <v-btn  flat color="primary" @click="gotocheck()"
@@ -144,8 +144,11 @@
                         <v-col cols="2">
                           <label>{{ $t('container.application_selection.application.month') }} </label>
                           <span style="margin-left: 4px; color: red">*</span>
-                          <v-select clearable v-model="selectedMonth" :items="months" outlined
-                            @change="updateDate"></v-select>
+                          <ValidationProvider name="Year" vid="selectedMonth" v-slot="{ errors }" rules="required">
+
+                            <v-select clearable v-model="selectedMonth" :items="months" outlined
+                              @change="updateDate"></v-select>
+                          </ValidationProvider>
                         </v-col>
 
 
@@ -154,7 +157,7 @@
                         <v-col cols="2">
                           <label>{{ $t('container.application_selection.application.year') }} </label>
                           <span style="margin-left: 4px; color: red">*</span>
-                          <ValidationProvider name="Age" vid="age" v-slot="{ errors }" rules="required">
+                          <ValidationProvider name="Year" vid="selectedYear" v-slot="{ errors }" rules="required">
                             <v-select clearable v-model="selectedYear" :items="years" outlined
                               @change="updateDate"></v-select>
                           </ValidationProvider>
@@ -175,6 +178,7 @@
                             <v-text-field v-model="data.date_of_birth" readonly :value="formattedDate"
                               outlined></v-text-field>
                           </ValidationProvider>
+
 
 
 
@@ -223,8 +227,9 @@
 
                   <!-- 3rd Expansion panel -->
                   <!-- Personal Information  -->
-                  <v-expansion-panel>
-                    <v-expansion-panel-header color="primary">
+
+                  <v-expansion-panel v-if="status_code==200">
+                    <v-expansion-panel-header color=" primary">
                       <h3 class="white--text">{{ $t('container.application_selection.application.personal_info') }}</h3>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
@@ -245,8 +250,7 @@
                             <label>{{ $t('container.application_selection.application.image') }} ({{
                               $t('container.application_selection.application.image_alert') }})</label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <ValidationProvider v-slot="{ errors }" name="Image" rules="required" vid="image"
-                              ref="image">
+                            <ValidationProvider v-slot="{ errors }" name="Image" rules="required" vid="image">
                               <v-file-input outlined show-size counter prepend-inner-icon="mdi-camera"
                                 v-model="data.image" accept="image/*" @change="previewImage" prepend-icon="">
                               </v-file-input>
@@ -263,7 +267,7 @@
                                     height: 80px;
                                     border: 1px solid #ccc;
                                   " class="mb-5"></v-img>
-                            <ValidationProvider v-slot="{ errors }" name="Signature" rules="required" vid="sign">
+                            <ValidationProvider v-slot="{ errors }" name="Signature" rules="required" vid="signature">
                               <label>{{ $t('container.application_selection.application.signature') }} ({{
                                 $t('container.application_selection.application.signature_alert') }})</label>
                               <span style="margin-left: 4px; color: red">*</span>
@@ -313,8 +317,8 @@
                           </v-col>
                           <v-col cols="6" lg="6">
                             <div class="validation-error-mobile">
-                              <ValidationProvider name="Mother Name in English" vid="mother_name_bn"
-                                v-slot="{ errors }">
+                              <ValidationProvider name="Mother Name in English" vid="mother_name_bn" v-slot="{ errors }"
+                                rules="required">
                                 <label>{{ $t('container.application_selection.application.mother_name_bn') }}</label>
                                 <v-text-field v-model="data.mother_name_bn" outlined clearable
                                   :error="errors[0] ? true : false" :error-messages="errors[0]">
@@ -326,8 +330,8 @@
                           <v-col cols="6" lg="6">
                             <div class="validation-error_marital">
 
-                              <ValidationProvider name="Mother Name in English" vid="mother_name_en"
-                                v-slot="{ errors }">
+                              <ValidationProvider name="Mother Name in English" vid="mother_name_en" v-slot="{ errors }"
+                                rules="required">
                                 <label>{{ $t('container.application_selection.application.mother_name_en') }}</label>
                                 <v-text-field v-model="data.mother_name_en" outlined clearable
                                   :error="errors[0] ? true : false" :error-messages="errors[0]">
@@ -339,7 +343,7 @@
                           <v-col cols="6" lg="6">
 
 
-                            <ValidationProvider rules="checkNumberMobile" name="Mobile Number" vid="mobile"
+                            <ValidationProvider rules="checkNumberMobile||required" name="Mobile Number" vid="mobile"
                               v-slot="{ errors }">
                               <label style="display: inline-block">{{
                                 $t('container.application_selection.application.mobile') }} </label><span
@@ -439,7 +443,7 @@
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider name="Profession" vid="profession" v-slot="{ errors }">
+                            <ValidationProvider name="Profession" vid="profession" v-slot="{ errors }" rules="required">
                               <label>{{ $t('container.application_selection.application.profession') }}</label>
                               <span style="margin-left: 4px; color: red">*</span>
                               <v-select v-model="data.profession" outlined clearable :items="professionType"
@@ -467,7 +471,7 @@
 
                   <!-- 3rd Expansion panel -->
                   <!-- Contact Information -->
-                  <v-expansion-panel class="ma-4">
+                  <v-expansion-panel class="ma-4" v-if="status_code==200">
                     <v-expansion-panel-header color="primary">
                       <h3 class="white--text">{{ $t('container.application_selection.application.contact_info') }}</h3>
                     </v-expansion-panel-header>
@@ -647,7 +651,8 @@
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6" lg="6">
-                          <ValidationProvider name="Post Code" vid="post_code" rules="CheckPost" v-slot="{ errors }">
+                          <ValidationProvider name="Post Code" vid="post_code" rules="CheckPost||required"
+                            v-slot="{ errors }">
                             <label style="display: inline-block">{{
                               $t('container.system_config.demo_graphic.ward.post_code') }}
                             </label>
@@ -871,8 +876,8 @@
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6" lg="6">
-                          <ValidationProvider name="Post Code" vid="permanent_post_code" rules="CheckPost" type="number"
-                            v-slot="{ errors }">
+                          <ValidationProvider name="Post Code" vid="permanent_post_code" rules="CheckPost||required"
+                            type="number" v-slot="{ errors }">
                             <label style="display: inline-block">{{
                               $t('container.system_config.demo_graphic.ward.post_code') }}
                             </label>
@@ -902,7 +907,7 @@
                   <!-- Contact Information End -->
                   <!-- 4th Expansion panel -->
                   <!-- Information According to the Program -->
-                  <v-expansion-panel class="ma-4">
+                  <v-expansion-panel class="ma-4" v-if="status_code==200">
                     <v-expansion-panel-header color="primary">
                       <h3 class="white--text">
                         {{ language == 'bn' ? programName.name_bn : programName.name_en }} {{
@@ -1128,7 +1133,7 @@
                   <!-- Information According to the Program End -->
                   <!-- Expansion panel 5 start-->
                   <!-- Bank/MFS Information -->
-                  <v-expansion-panel class="mb-4">
+                  <v-expansion-panel class="mb-4" v-if="status_code==200">
                     <v-expansion-panel-header color="primary">
                       <h3 class="white--text">{{ $t('container.application_selection.application.bank') }}</h3>
                     </v-expansion-panel-header>
@@ -1215,7 +1220,7 @@
 
                         </v-col>
                         <v-col cols="6" lg="6" v-if="data.account_type === 1">
-                          <ValidationProvider rules="required" name="Bank name" vid="bank_name" v-slot="{ errors }">
+                          <ValidationProvider rules="required" name="Bank name" vid="bank_name" v-slot="{ errors }" >
                             <label style="display: inline-block">{{
                               $t('container.application_selection.application.bank_name') }} </label><span
                               style="margin-left: 4px; color: red">*</span>
@@ -1270,7 +1275,7 @@
                   <!-- Bank/MFS Information End -->
                   <!-- Expansion panel 5 End -->
                   <!-- Nominee Information -->
-                  <v-expansion-panel class="mb-4">
+                  <v-expansion-panel class="mb-4" v-if="status_code==200">
                     <v-expansion-panel-header color="primary">
                       <h3 class="white--text"> {{ $t('container.application_selection.application.nominee_info') }}</h3>
                     </v-expansion-panel-header>
@@ -1340,8 +1345,8 @@
                                     <label>{{ $t('container.application_selection.application.date_of_birth') }}
                                     </label>
                                     <span style="margin-left: 4px; color: red">*</span>
-                                    <ValidationProvider name="Date of Birth" vid="date_of_birth" v-slot="{ errors }"
-                                      rules="required">
+                                    <ValidationProvider name=" Nominee Date of Birth" vid="nominee_date_of_birth"
+                                      v-slot="{ errors }" rules="required">
 
                                       <v-text-field v-model="data.nominee_date_of_birth" readonly
                                         :value="formattedDateNominee" outlined></v-text-field>
@@ -1476,7 +1481,7 @@
                   <!-- Nominee Information End -->
                   <!-- 5th Expansion panel -->
                   <!-- Other Information of Eligibility -->
-                  <v-expansion-panel class="mb-4" v-if="pmt_status == 1">
+                  <v-expansion-panel class="mb-4" v-if="pmt_status == 1 && status_code ==200">
                     <v-expansion-panel-header color="primary">
                       <h3 class="white--text">
                         {{ $t('container.application_selection.application.eligiblity_info') }}
@@ -1496,7 +1501,7 @@
                                   color: red;
                                 ">*</span></label>
                               <ValidationProvider :name="variables.name_en"
-                                vid="data.application_pmt[indexPMT].sub_variables" rules="required" v-slot="{ errors }">
+                                vid="application_pmt.sub_variables" rules="required" v-slot="{ errors }">
                                 <v-select :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
                                   :error-messages="errors[0]" outlined required
                                   v-model="data.application_pmt[indexPMT].sub_variables" :items="[
@@ -1522,7 +1527,7 @@
                                   color: red;
                                 ">*</span></label>
                               <ValidationProvider :name="variables.name_en"
-                                vid="data.application_pmt[indexPMT].sub_variables" rules="required" v-slot="{ errors }">
+                                vid="sub_variables" rules="required" v-slot="{ errors }">
                                 <v-select :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
                                   :error-messages="errors[0]" outlined
                                   v-model="data.application_pmt[indexPMT].sub_variables" :items="variables.children"
@@ -1539,7 +1544,7 @@
                                   color: red;
                                 ">*</span></label>
                               <ValidationProvider :name="variables.name_en"
-                                vid="data.application_pmt[indexPMT].sub_variables" rules="required" v-slot="{ errors }">
+                                vid="application_pmt.sub_variables" rules="required" v-slot="{ errors }">
                                 <v-select multiple :hide-details="errors[0] ? false : true"
                                   :error="errors[0] ? true : false" :error-messages="errors[0]" outlined
                                   v-model="data.application_pmt[indexPMT].sub_variables" :items="variables.children"
@@ -1557,6 +1562,7 @@
 
                 </v-expansion-panels>
               </div>
+              <br>
               <div class="d-inline d-flex justify-end">
                 <!-- <v-btn @click="resetForm()" elevation="2" class="btn mr-2" color="info">{{ $t('container.list.cancel')
                 }}</v-btn> -->
@@ -1564,7 +1570,7 @@
 
                 <v-btn @click="resetForm()" elevation="2" class="btn mr-2" outlined color="red" dark>{{
                   $t('container.list.cancel') }}</v-btn>
-                <v-btn @click="confirmDialog = true" flat color="primary" :loading="loading" :disabled="invalid"
+                <v-btn @click="submitApplicationCheck()" flat color="primary" :loading="loading"
                   class="custom-btn-width black white--text py-2">
                   {{ $t('container.list.submit') }}
                 </v-btn>
@@ -1851,7 +1857,7 @@ export default {
         { name_en: 'Close relative', name_bn: 'নিকট আত্মীয়' },
         { name_en: 'Parent', name_bn: 'পিতা/মাতা' },
       ],
-
+      status_code:null,
       activePicker: null,
       date: null,
       menu: false,
@@ -1864,7 +1870,7 @@ export default {
         program_id: null,
         verification_type: 1,
         verification_number: null,
-        account_type: null,
+        account_type: 1,
         age: null,
         date_of_birth: null,
         name_en: null,
@@ -2357,6 +2363,8 @@ export default {
       }
     },
     verifyCard() {
+    
+      this.status_code= null;
       let data = {
         program_id: this.data.program_id,
         gender_id: this.data.gender_id,
@@ -2372,8 +2380,10 @@ export default {
         },
       })
         .then((res) => {
-          console.log(res)
+          console.log(res,"responseVerify")
           this.$toast.success(res.data.message);
+          this.status_code= res.status;
+          
 
           this.data.age = res.data.data.age
           this.data.name_en = res.data.data.nameEn
@@ -2383,22 +2393,21 @@ export default {
         .catch((err) => {
           // console.log(err)
           // this.$toast.error(err.response.data.message);
-          if (err.response.data.errors) {
-    const errorMessages = err.response.data.errors;
-    let errorMessage = '';
-    for (const key in errorMessages) {
-        if (Array.isArray(errorMessages[key])) {
-            errorMessage += errorMessages[key].join('\n') + '\n';
-        } else {
-            errorMessage += errorMessages[key] + '\n';
-        }
-    }
-    this.$toast.error(errorMessage);
-} else if (err.response.data.message) {
-    this.$toast.error(err.response.data.message);
-} else {
-    this.$toast.error(err.response.data.message || err.response.data.error_code || 'Unknown error');
-}
+          if (err.response.data.errors && err.response.data.errors.verification_number) {
+            const verificationErrors = err.response.data.errors.verification_number;
+            const beneficiaryMessageIndex = verificationErrors.indexOf('You are already a beneficiary');
+            if (beneficiaryMessageIndex !== -1) {
+              this.$toast.error('You are already a beneficiary');
+            } else {
+              // If "You are already a beneficiary" message not found, display the first error message
+              this.$toast.error(verificationErrors[0]);
+            }
+          } else if (err.response.data.message) {
+            this.$toast.error(err.response.data.message);
+          } else {
+            this.$toast.error(err.response.data.message || err.response.data.error_code || 'Unknown error');
+          }
+  
         })
     },
 
@@ -2446,6 +2455,51 @@ export default {
           this.$toast.error(err.response.data.message);
         })
     },
+    // async submitApplicationCheck() {
+     
+    //   const isValid = await this.$refs.form.validate();
+
+    //   if (!isValid) {
+
+    //     const firstErrorElement = document.querySelector('.v-messages.error--text');
+    //     if (firstErrorElement) {
+    //       firstErrorElement.scrollIntoView({ behavior: 'smooth' });
+    //     }
+    //   } else {
+    
+    //     console.log("submit Application Successfully")
+       
+    //     this.confirmDialog=true;
+    //   }
+    // }
+    async submitApplicationCheck() {
+      if (this.status_code != 200) {
+        this.$toast.error('Verify First');
+        return false;
+      }
+      const isValid = await this.$refs.form.validate();
+
+      if (!isValid) {
+        // Find the first element with an error and scroll to it
+        const firstErrorElement = document.querySelector('.v-messages.error--text');
+        if (firstErrorElement) {
+          const windowHeight = window.innerHeight;
+          const elementTop = firstErrorElement.getBoundingClientRect().top;
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          const offset = elementTop + scrollTop - windowHeight / 2; // Adjust scroll position
+
+          window.scrollTo({
+            top: offset,
+            behavior: 'smooth'
+          });
+        }
+      } else {
+        console.log("submit Application Successfully");
+        this.confirmDialog = true;
+      }
+    }
+    ,
+  
 
     submitApplication() {
    
