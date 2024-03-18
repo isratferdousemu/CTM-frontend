@@ -228,7 +228,7 @@
                   <!-- 3rd Expansion panel -->
                   <!-- Personal Information  -->
 
-                  <v-expansion-panel v-if="status_code==200">
+                  <v-expansion-panel v-if="status_code == 200">
                     <v-expansion-panel-header color=" primary">
                       <h3 class="white--text">{{ $t('container.application_selection.application.personal_info') }}</h3>
                     </v-expansion-panel-header>
@@ -252,7 +252,7 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <ValidationProvider v-slot="{ errors }" name="Image" rules="required" vid="image">
                               <v-file-input outlined show-size counter prepend-inner-icon="mdi-camera"
-                                v-model="data.image" accept="image/*" @change="previewImage" prepend-icon="">
+                                v-model="data.image" accept="image/*" @change="previewImage" prepend-icon="" id="image">
                               </v-file-input>
                             </ValidationProvider>
                           </v-col>
@@ -272,7 +272,7 @@
                                 $t('container.application_selection.application.signature_alert') }})</label>
                               <span style="margin-left: 4px; color: red">*</span>
                               <v-file-input outlined show-size counter prepend-inner-icon="mdi-camera"
-                                v-model="data.signature" accept="image/*" @change="previewSign"
+                                v-model="data.signature" accept="image/*" @change="previewSign" id="signature"
                                 prepend-icon=""></v-file-input>
                             </ValidationProvider>
                           </v-col>
@@ -373,7 +373,8 @@
                             <!-- </div> -->
                           </v-col>
                           <v-col cols="6" lg="6" v-if="data.marital_status == 'Married'">
-                            <ValidationProvider name="Spouse Name in Bangla" vid="spouse_name_bn" v-slot="{ errors }">
+                            <ValidationProvider name="Spouse Name in Bangla" vid="spouse_name_bn" rules="required"
+                              v-slot="{ errors }">
                               <label>{{ $t('container.application_selection.application.spouse_name_bn') }}</label>
                               <v-text-field v-model="data.spouse_name_bn" outlined clearable
                                 :error="errors[0] ? true : false" :error-messages="errors[0]">
@@ -381,7 +382,8 @@
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6" v-if="data.marital_status == 'Married'">
-                            <ValidationProvider name="Spouse Name in English" vid="spouse_name_en" v-slot="{ errors }">
+                            <ValidationProvider name="Spouse Name in English" vid="spouse_name_en" rules="required"
+                              v-slot="{ errors }">
                               <label>{{ $t('container.application_selection.application.spouse_name_en') }}</label>
                               <v-text-field v-model="data.spouse_name_en" outlined clearable
                                 :error="errors[0] ? true : false" :error-messages="errors[0]">
@@ -981,8 +983,8 @@
                                     margin-right: 4px;
                                     color: red;
                                   ">*</span></label>
-                                  <ValidationProvider :name="fields.name_en" vid="value" rules="required"
-                                    v-slot="{ errors }">
+                                  <ValidationProvider :name="fields.name_en"
+                                    :vid="'application_allowance_values' + index" rules="required" v-slot="{ errors }">
                                     <v-text-field v-model="data.application_allowance_values[index]
                                       .value
                                       " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
@@ -1004,8 +1006,8 @@
                                     margin-right: 4px;
                                     color: red;
                                   ">*</span></label>
-                                <ValidationProvider :name="fields.name_en" vid="value" rules="required"
-                                  v-slot="{ errors }">
+                                <ValidationProvider :name="fields.name_en" :vid="'application_allowance_values' + index"
+                                  rules="required" v-slot="{ errors }">
                                   <v-text-field v-model="data.application_allowance_values[index]
                                     .value
                                     " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
@@ -1028,8 +1030,8 @@
                                     margin-right: 4px;
                                     color: red;
                                   ">*</span></label>
-                              <ValidationProvider :name="fields.name_en"
-                                vid="allowance_program_additional_field_values_id" rules="required" v-slot="{ errors }">
+                              <ValidationProvider :name="fields.name_en" :vid="'application_allowance_values' + index"
+                                rules="required" v-slot="{ errors }">
                                 <v-select :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
                                   :error-messages="errors[0]" outlined v-model="data.application_allowance_values[index]
                                     .allowance_program_additional_field_values_id
@@ -1050,8 +1052,8 @@
                                     margin-right: 4px;
                                     color: red;
                                   ">*</span></label>
-                              <ValidationProvider :name="fields.name_en"
-                                vid="allowance_program_additional_field_values_id" rules="required" v-slot="{ errors }">
+                              <ValidationProvider :name="fields.name_en" :vid="'application_allowance_values' + index"
+                                rules="required" v-slot="{ errors }">
                                 <v-select multiple :hide-details="errors[0] ? false : true"
                                   :error="errors[0] ? true : false" :error-messages="errors[0]" outlined v-model="data.application_allowance_values[index]
                                     .allowance_program_additional_field_values_id
@@ -1066,7 +1068,8 @@
                                     margin-right: 4px;
                                     color: red;
                                   ">*</span></label>
-                              <ValidationProvider :name="fields.name_en" vid="value" v-slot="{ errors }">
+                              <ValidationProvider :name="fields.name_en" :vid="'application_allowance_values' + index"
+                                v-slot="{ errors }">
                                 <v-file-input v-model="data.application_allowance_values[index]
                                   .value
                                   " @change="addPreviewFile($event, index)" placeholder="Select your files"
@@ -1084,8 +1087,8 @@
                                     margin-right: 4px;
                                     color: red;
                                   ">*</span></label>
-                              <ValidationProvider :name="fields.name_en" vid="value" rules="required"
-                                v-slot="{ errors }">
+                              <ValidationProvider :name="fields.name_en" :vid="'application_allowance_values' + index"
+                                rules="required" v-slot="{ errors }">
                                 <v-text-field v-model="data.application_allowance_values[index]
                                   .value
                                   " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
@@ -1100,8 +1103,8 @@
                                     margin-right: 4px;
                                     color: red;
                                   ">*</span></label>
-                              <ValidationProvider :name="fields.name_en" vid="value" rules="required"
-                                v-slot="{ errors }">
+                              <ValidationProvider :name="fields.name_en" :vid="'application_allowance_values' + index"
+                                rules="required" v-slot="{ errors }">
                                 <v-text-field v-model="data.application_allowance_values[index]
                                   .value
                                   " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
@@ -1116,8 +1119,8 @@
                                     margin-right: 4px;
                                     color: red;
                                   ">*</span></label>
-                              <ValidationProvider :name="fields.name_en" vid="value" rules="required"
-                                v-slot="{ errors }">
+                              <ValidationProvider :name="fields.name_en" :vid="'application_allowance_values' + index"
+                                rules="required" v-slot="{ errors }">
                                 <v-text-field v-model="data.application_allowance_values[index]
                                   .value
                                   " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
@@ -1140,8 +1143,8 @@
                     <v-expansion-panel-content class="mt-5">
                       <v-row>
                         <v-col cols="6" lg="6">
-                          <ValidationProvider name="Account Name" vid="account_name" rules="required"
-                            v-slot="{ errors }">
+                          <ValidationProvider name="Account Name" :vid="'application_allowance_values' + index"
+                            rules="required" v-slot="{ errors }">
                             <label style="display: inline-block"> {{
                               $t('container.application_selection.application.account_name') }}
                             </label>
@@ -1167,7 +1170,8 @@
                           </v-radio-group>
                         </v-col>
                         <v-col cols="6" lg="6" v-if="data.account_type === 2">
-                          <ValidationProvider name="Account Ownership" vid="account_owner" v-slot="{ errors }">
+                          <ValidationProvider name="Account Ownership" vid="account_owner" rules="required"
+                            v-slot="{ errors }">
                             <label style="display: inline-block"> {{
                               $t('container.application_selection.application.mobile_ownership') }}
                             </label>
@@ -1181,7 +1185,8 @@
                         </v-col>
 
                         <v-col cols="6" lg="6" v-if="data.account_type === 1">
-                          <ValidationProvider name="Account Ownership" vid="account_owner" v-slot="{ errors }">
+                          <ValidationProvider name="Account Ownership" vid="bank_account_owner" rules="required"
+                            v-slot="{ errors }">
                             <label style="display: inline-block">{{
                               $t('container.application_selection.application.account_ownership') }}
                             </label>
@@ -1207,8 +1212,8 @@
 
 
                         <v-col cols="6" lg="6" v-if="data.account_type === 2">
-                          <ValidationProvider rules="checkNumberMobile" name="Mobile Number" vid="account_number"
-                            v-slot="{ errors }">
+                          <ValidationProvider rules="checkNumberMobile||required" name="Mobile Number"
+                            vid="account_number" v-slot="{ errors }">
                             <label style="display: inline-block">{{
                               $t('container.application_selection.application.mobile') }} </label><span
                               style="margin-left: 4px; color: red">*</span>
@@ -1220,7 +1225,7 @@
 
                         </v-col>
                         <v-col cols="6" lg="6" v-if="data.account_type === 1">
-                          <ValidationProvider rules="required" name="Bank name" vid="bank_name" v-slot="{ errors }" >
+                          <ValidationProvider rules="required" name="Bank name" vid="bank_name" v-slot="{ errors }">
                             <label style="display: inline-block">{{
                               $t('container.application_selection.application.bank_name') }} </label><span
                               style="margin-left: 4px; color: red">*</span>
@@ -1232,7 +1237,7 @@
                         </v-col>
 
                         <v-col cols="6" lg="6" v-if="data.account_type === 1">
-                          <ValidationProvider rules="required" name="Bank name" vid="bank_name" v-slot="{ errors }">
+                          <ValidationProvider rules="required" name="Bank name" vid="account_type" v-slot="{ errors }">
                             <label style="display: inline-block">{{
                               $t('container.application_selection.application.branch_name') }}</label><span
                               style="margin-left: 4px; color: red">*</span>
@@ -1362,7 +1367,7 @@
 
                                 <div></div>
                                 <div class="d-inline d-flex justify-end">
-                                  <v-btn @click="verifyNomineeCard()" elevation="2"
+                                  <v-btn @click="verifyNomineeCard()" elevation="2" id="verify-button"
                                     :disabled="data.nominee_verification_number == null || data.nominee_date_of_birth == ''"
                                     class="btn" color="primary">{{ $t('container.list.verify') }}</v-btn>
                                 </div>
@@ -1436,7 +1441,7 @@
                             <ValidationProvider v-slot="{ errors }" name="Image" rules="required" vid="nominee_image">
                               <v-file-input outlined show-size counter prepend-inner-icon="mdi-camera"
                                 v-model="data.nominee_image" accept="image/*" @change="previewImageNominee"
-                                prepend-icon=""></v-file-input>
+                                prepend-icon="" id="nominee_image"></v-file-input>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" align-self="end" lg="6">
@@ -1459,7 +1464,7 @@
 
                               <v-file-input outlined show-size counter prepend-inner-icon="mdi-camera"
                                 v-model="data.nominee_signature" accept="image/*" @change="previewSignNominee"
-                                prepend-icon=""></v-file-input>
+                                prepend-icon="" id="nominee_signature"></v-file-input>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="12" lg="12">
@@ -1500,8 +1505,8 @@
                                   margin-right: 4px;
                                   color: red;
                                 ">*</span></label>
-                              <ValidationProvider :name="variables.name_en"
-                                vid="application_pmt.sub_variables" rules="required" v-slot="{ errors }">
+                              <ValidationProvider :name="variables.name_en" :vid="'application_pmt_' + indexPMT"
+                                rules="required" v-slot="{ errors }">
                                 <v-select :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
                                   :error-messages="errors[0]" outlined required
                                   v-model="data.application_pmt[indexPMT].sub_variables" :items="[
@@ -1526,8 +1531,8 @@
                                   margin-right: 4px;
                                   color: red;
                                 ">*</span></label>
-                              <ValidationProvider :name="variables.name_en"
-                                vid="sub_variables" rules="required" v-slot="{ errors }">
+                              <ValidationProvider :name="variables.name_en" :vid="'application_pmt_' + indexPMT"
+                                rules="required" v-slot="{ errors }">
                                 <v-select :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
                                   :error-messages="errors[0]" outlined
                                   v-model="data.application_pmt[indexPMT].sub_variables" :items="variables.children"
@@ -1543,8 +1548,8 @@
                                   margin-right: 4px;
                                   color: red;
                                 ">*</span></label>
-                              <ValidationProvider :name="variables.name_en"
-                                vid="application_pmt.sub_variables" rules="required" v-slot="{ errors }">
+                              <ValidationProvider :name="variables.name_en" :vid="'application_pmt_' + indexPMT"
+                                rules="required" v-slot="{ errors }">
                                 <v-select multiple :hide-details="errors[0] ? false : true"
                                   :error="errors[0] ? true : false" :error-messages="errors[0]" outlined
                                   v-model="data.application_pmt[indexPMT].sub_variables" :items="variables.children"
@@ -1858,6 +1863,7 @@ export default {
         { name_en: 'Parent', name_bn: 'পিতা/মাতা' },
       ],
       status_code:null,
+      status_code_nominee:null,
       activePicker: null,
       date: null,
       menu: false,
@@ -2052,7 +2058,36 @@ export default {
         }
       }
     },
-    
+    scrollToVerifyButton() {
+      const verifyButton = document.getElementById('verify-button');
+      if (verifyButton) {
+        verifyButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    },
+    scrollToImage() {
+      const verifyButton = document.getElementById('image');
+      if (verifyButton) {
+        verifyButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    },
+     scrollToSignature() {
+      const verifyButton = document.getElementById('signature');
+      if (verifyButton) {
+        verifyButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    },
+    scrollToNomineeImage() {
+      const verifyButton = document.getElementById('nominee_image');
+      if (verifyButton) {
+        verifyButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    },
+    scrollToNomineeSignature() {
+      const verifyButton = document.getElementById('nominee_signature');
+      if (verifyButton) {
+        verifyButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    },
    getItemTextYear(item) {
       return this.language === 'bn' ? this.$helpers.englishToBangla(item.years) : item.years;
 
@@ -2412,6 +2447,7 @@ export default {
     },
 
     verifyNomineeCard() {
+       this.status_code_nominee= null;
       let data = {
         verification_number: this.data.nominee_verification_number,
         date_of_birth: this.data.nominee_date_of_birth,
@@ -2425,6 +2461,7 @@ export default {
       })
           .then((res) => {
             console.log(res)
+            this.status_code_nominee = res.status;
             this.$toast.success(res.data.message);
 
             this.data.nominee_en = res.data.data.nameEn
@@ -2477,6 +2514,34 @@ export default {
         this.$toast.error('Verify First');
         return false;
       }
+      if (this.data.image === null) {
+        this.$toast.error('Image is required');
+        this.scrollToImage();
+        return false;
+      }
+      if (this.data.signature === null) {
+        this.$toast.error('Signature is required');
+        this.scrollToSignature();
+        return false;
+      }
+      if (this.status_code_nominee != 200) {
+        this.$toast.error('Verify Nominee First');
+        this.scrollToVerifyButton();
+        return false;
+      }
+      if (this.data.nominee_image === null) {
+        this.$toast.error('Nominee Image is required');
+        this.scrollToNomineeImage();
+        return false;
+      }
+      if (this.data.nominee_signature === null) {
+        this.$toast.error('Nominee Signature is required');
+        this.scrollToNomineeSignature();
+        return false;
+      }
+ 
+    
+     
       const isValid = await this.$refs.form.validate();
 
       if (!isValid) {
@@ -2493,6 +2558,8 @@ export default {
             behavior: 'smooth'
           });
         }
+      
+      
       } else {
         console.log("submit Application Successfully");
         this.confirmDialog = true;
