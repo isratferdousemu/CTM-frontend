@@ -4,7 +4,7 @@
     <v-col cols="12">
       <label style="color: #1976d2">
                       <span>
-                        {{ $t("Program Wise Number of Waiting Applicant") }}
+                        {{ $t("container.application_selection_dashboard.program_wise_number_of_waiting_application") }}
                       </span>
       </label></v-col
     >
@@ -22,7 +22,7 @@
         <v-text-field
             v-model="dates"
             :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
-            :label="$t('Enter Start & End Date')"
+            :label="$t('container.application_selection_dashboard.enter_start_end_date')"
             readonly
             v-bind="attrs"
             v-on="on"
@@ -58,6 +58,8 @@
 
 <script>
 import Chart from "chart.js/auto";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+Chart.register(ChartDataLabels);
 export default {
   data() {
     return {
@@ -97,7 +99,7 @@ export default {
           params: queryParams,
         });
         this.programwise_application_waiting_info = result.data.data;
-        this.programwise_application_waiting_levels = this.programwise_application_waiting_info.map((row) => row.name_en);
+        this.programwise_application_waiting_levels = this.programwise_application_waiting_info.map((row) => this.$i18n.locale == 'en' ? row.name_en : row.name_bn);
         this.programwise_application_waiting_datas = this.programwise_application_waiting_info.map((row) => row.applications_count);
         this.isLoading = false;
 
@@ -114,14 +116,18 @@ export default {
       if (this.programwise_application_waiting_levels && this.programwise_application_waiting_datas) {
 
         const total = this.programwise_application_waiting_datas.reduce((acc, value) => acc + value, 0);
-        const percentages = this.programwise_application_waiting_datas.map(value => ((value / total) * 100).toFixed(2) + '%');
-
+        // const percentages = this.programwise_application_waiting_datas.map(value => ((value / total) * 100).toFixed(2) + '%');
+        const percentages = this.programwise_application_waiting_datas.map(value => {
+          const percentage = ((value / total) * 100).toFixed(2);
+          return isNaN(percentage) ? '0.00%' : percentage + '%';
+        });
         this.programwise_application_waiting_chart = new Chart(document.getElementById("programwise_application_waiting"), {
           type: "pie",
           data: {
             // labels: this.programwise_application_waiting_levels,
-            labels: this.programwise_application_waiting_levels.map((label, index) => `${label} (${percentages[index]})`),
-            percentage: 0.5,
+            // labels: this.programwise_application_waiting_levels.map((label, index) => `${label} (${percentages[index]})`),
+            labels: this.programwise_application_waiting_levels.map((label, index) => `${label} (${this.$i18n.locale == 'en' ? this.programwise_application_waiting_datas[index] : this.$helpers.englishToBangla(this.programwise_application_waiting_datas[index])} - ${this.$i18n.locale == 'en' ? percentages[index]  : this.$helpers.englishToBangla(percentages[index])})`),
+            percentages:percentages,
             datasets: [
               {
                 label: "Values",
@@ -139,6 +145,21 @@ export default {
                 position: "bottom",
                 align: "start",
               },
+              datalabels: {
+                color: '#fff',
+                fontWeight: 'bold',
+                formatter: (value, context) => {
+                  const percentage = context.chart.data.percentages[context.dataIndex];
+                  const truncatedPercentage = parseFloat(percentage).toFixed(0);
+                  if (truncatedPercentage == '0') {
+                    return '';
+                  }
+                  if (value == '0') {
+                    return '';
+                  }
+                  return `${this.$i18n.locale == 'en' ? value : this.$helpers.englishToBangla(value)} , ${this.$i18n.locale == 'en' ? truncatedPercentage : this.$helpers.englishToBangla(truncatedPercentage)}%`;
+                }
+              }
             },
             layout: {
               padding: {
@@ -181,6 +202,16 @@ export default {
 
   mounted() {
     this.fetchProgramwiseWaitingApplicationChartData();
-  }
+  },
+  watch: {
+    '$i18n.locale': {
+      handler(newLocale, oldLocale) {
+        if (newLocale != oldLocale) {
+          this.fetchProgramwiseWaitingApplicationChartData();
+        }
+      },
+      immediate: true // Call the handler immediately to initialize the levels
+    }
+  },
 }
 </script>

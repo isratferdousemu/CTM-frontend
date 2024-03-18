@@ -4,7 +4,7 @@
     <v-col cols="12">
       <label style="color: #1976d2">
                       <span>
-                        {{ $t("Total Number of Application Received Application") }}
+                        {{ $t("container.application_selection_dashboard.total_number_of_application_received_application") }}
                       </span>
       </label></v-col
     >
@@ -22,7 +22,7 @@
         <v-text-field
             v-model="dates"
             :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
-            :label="$t('Enter Start & End Date')"
+            :label="$t('container.application_selection_dashboard.enter_start_end_date')"
             readonly
             v-bind="attrs"
             v-on="on"
@@ -141,9 +141,9 @@ export default {
                 label: "Bar Dataset",
                 data: this.total_number_of_application_received_line_bar_datas,
                 barPercentage: 0.5,
-                barThickness: 6,
-                maxBarThickness: 8,
-                minBarLength: 2,
+                barThickness: 16,
+                maxBarThickness: 18,
+                minBarLength: 12,
               },
             ],
           },

@@ -4,7 +4,7 @@
     <v-col cols="12">
       <label style="color: #1976d2">
                       <span>
-                        {{ $t("Number of Application Rejected") }}
+                        {{ $t("container.application_selection_dashboard.number_of_application_rejected") }}
                       </span>
       </label></v-col
     >
@@ -22,7 +22,7 @@
         <v-text-field
             v-model="dates"
             :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
-            :label="$t('Enter Start & End Date')"
+            :label="$t('container.application_selection_dashboard.enter_start_end_date')"
             readonly
             v-bind="attrs"
             v-on="on"
@@ -58,6 +58,8 @@
 
 <script>
 import Chart from "chart.js/auto";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+Chart.register(ChartDataLabels);
 export default {
   data() {
     return {
@@ -98,7 +100,7 @@ export default {
         });
 
         this.total_number_of_application_rejected_info = result.data.data;
-        this.total_number_of_application_rejected_levels = this.total_number_of_application_rejected_info.map((row) => row.name_en);
+        this.total_number_of_application_rejected_levels = this.total_number_of_application_rejected_info.map((row) => this.$i18n.locale == 'en' ? row.name_en : row.name_bn);
         this.total_number_of_application_rejected_datas = this.total_number_of_application_rejected_info.map((row) => row.applications_count);
         this.isLoading = false;
 
@@ -114,13 +116,18 @@ export default {
 
       if (this.total_number_of_application_rejected_levels && this.total_number_of_application_rejected_datas) {
         const total = this.total_number_of_application_rejected_datas.reduce((acc, value) => acc + value, 0);
-        const percentages = this.total_number_of_application_rejected_datas.map(value => ((value / total) * 100).toFixed(2) + '%');
-
+        // const percentages = this.total_number_of_application_rejected_datas.map(value => ((value / total) * 100).toFixed(2) + '%');
+        const percentages = this.total_number_of_application_rejected_datas.map(value => {
+          const percentage = ((value / total) * 100).toFixed(2);
+          return isNaN(percentage) ? '0.00%' : percentage + '%';
+        });
         this.total_number_of_application_rejected_chart = new Chart(document.getElementById("total_number_of_application_rejected_info"), {
           type: "doughnut",
           data: {
             // labels: this.total_number_of_application_rejected_levels,
-            labels: this.total_number_of_application_rejected_levels.map((label, index) => `${label} (${percentages[index]})`),
+            // labels: this.total_number_of_application_rejected_levels.map((label, index) => `${label} (${percentages[index]})`),
+            labels: this.total_number_of_application_rejected_levels.map((label, index) => `${label} (${this.$i18n.locale == 'en' ? this.total_number_of_application_rejected_datas[index] : this.$helpers.englishToBangla(this.total_number_of_application_rejected_datas[index])} - ${this.$i18n.locale == 'en' ? percentages[index]  : this.$helpers.englishToBangla(percentages[index])})`),
+            percentages:percentages,
             datasets: [{
               label: "Count",
               data: this.total_number_of_application_rejected_datas,
@@ -137,6 +144,21 @@ export default {
                 position: "bottom",
                 align: "start",
               },
+              datalabels: {
+                color: '#fff',
+                fontWeight: 'bold',
+                formatter: (value, context) => {
+                  const percentage = context.chart.data.percentages[context.dataIndex];
+                  const truncatedPercentage = parseFloat(percentage).toFixed(0);
+                  if (truncatedPercentage == '0') {
+                    return '';
+                  }
+                  if (value == '0') {
+                    return '';
+                  }
+                  return `${this.$i18n.locale == 'en' ? value : this.$helpers.englishToBangla(value)} , ${this.$i18n.locale == 'en' ? truncatedPercentage : this.$helpers.englishToBangla(truncatedPercentage)}%`;
+                }
+              }
             },
             layout: {
               padding: {
@@ -177,6 +199,16 @@ export default {
 
   mounted() {
     this.fetchTotalRejectedApplicationChartData();
-  }
+  },
+  watch: {
+    '$i18n.locale': {
+      handler(newLocale, oldLocale) {
+        if (newLocale != oldLocale) {
+          this.fetchTotalRejectedApplicationChartData();
+        }
+      },
+      immediate: true // Call the handler immediately to initialize the levels
+    }
+  },
 }
 </script>
