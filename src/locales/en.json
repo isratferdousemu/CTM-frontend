@@ -983,6 +983,22 @@
       "login_user_info": "Login User",
       "login_anonymous_user_info": "Login/Anonymous User Info",
       "create": "Create"
+    },
+    "system_config_dashboard": {
+      "enter_start_end_date": "Enter Start & End Date",
+      "total_number_of_program_wise_beneficiary": "Total Number of Program Wise Beneficiary",
+      "office_type_wise_total_users": "Office Type Wise Total Users",
+      "select_office": "Select Office",
+      "reset_office": "-- Reset Office --"
+    },
+    "application_selection_dashboard": {
+      "enter_start_end_date": "Enter Start & End Date",
+      "total_number_of_application_received": "Total Number of Application Received",
+      "program_wise_number_of_application_approve": "Program Wise Number of Application Approved",
+      "program_wise_number_of_waiting_application": "Program Wise Number of Waiting Applicant",
+      "number_of_application_rejected": "Number of Application Rejected",
+      "total_number_of_application_received_application": "Total Number of Application Received Application",
+      "number_of_application_forwarded": "Number of Application Forwarded"
     }
   }
 }

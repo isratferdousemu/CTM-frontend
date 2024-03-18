@@ -3,15 +3,17 @@
     <v-row justify="center">
       <v-col v-for="item in get_all_application_count_info" :key="item.id" class="justify-center">
         <v-card class="elevation-10 border-radius-card">
-          <v-card-text class="flex-column align-center">
-            <div class="d-flex align-center">
+          <a :href="item.link" target="_blank" class="flex-column align-center">
+          <v-card-text>
+            <div class="d-flex align-center black--text">
               <div class="location-icon-container">
                 <v-icon class="mdi mdi-map-marker"></v-icon>
               </div>
-              <span class="ml-1 font-weight-bold">{{ item.title }}</span>
+              <span class="ml-1 font-weight-bold">{{ $i18n.locale == 'en' ? item.title_en : item.title_bn }}</span>
             </div>
-            <div class="mt-1 font-weight-bold text-center">{{ item.number }}</div>
+            <div class="mt-1 font-weight-bold text-center black--text">{{ $i18n.locale == 'en' ? item.number : $helpers.englishToBangla(item.number) }}</div>
           </v-card-text>
+          </a>
         </v-card>
       </v-col>
     </v-row>
@@ -130,6 +132,7 @@ export default {
   created() {
     this.getAllApplicationLocationCount()
   },
+
 
 }
 </script>

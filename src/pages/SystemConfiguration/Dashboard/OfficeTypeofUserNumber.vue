@@ -4,7 +4,7 @@
       <v-col cols="12">
         <label style="color: #1976d2">
                       <span>
-                        {{ $t("Office Type Wise Total Users") }}
+                        {{ $t("container.system_config_dashboard.office_type_wise_total_users") }}
                       </span>
         </label></v-col
       >
@@ -25,7 +25,7 @@
               <v-text-field
                   v-model="dates"
                   :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
-                  :label="$t('Enter Start & End Date')"
+                  :label="$t('container.system_config_dashboard.enter_start_end_date')"
                   readonly
                   v-bind="attrs"
                   v-on="on"
@@ -57,10 +57,16 @@
       <v-col cols="5">
         <v-row>
             <v-select
-                label="Select Office"
-                :items="[ { id: null, value_en: '--Reset office--' }, ...officeType ]"
+                :label="$t('container.system_config_dashboard.select_office')"
+                :items="[{
+                    id: null,
+                    value: $t('container.system_config_dashboard.reset_office')
+                }, ...officeType.map(item => ({
+                    id: item.id,
+                    value: $i18n.locale === 'en' ? item.value_en : item.value_bn
+                }))]"
                 v-model="office_type"
-                item-text="value_en"
+                item-text="value"
                 item-value="id"
                 @change="handleOfficeTypeChange"
             ></v-select>
@@ -78,6 +84,8 @@
 
 <script>
 import Chart from "chart.js/auto";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+Chart.register(ChartDataLabels);
 export default {
   data() {
     return {
@@ -121,7 +129,7 @@ export default {
         });
 
         this.office_type_wise_users_info = result.data.data;
-        this.office_type_wise_users_levels = this.office_type_wise_users_info.map((row) => row.value_en);
+        this.office_type_wise_users_levels = this.office_type_wise_users_info.map((row) => this.$i18n.locale == 'en' ? row.value_en : row.value_bn);
         this.office_type_wise_users_datas = this.office_type_wise_users_info.map((row) => row.users_count);
         this.isLoading = false;
 
@@ -136,15 +144,19 @@ export default {
       }
       if (this.office_type_wise_users_levels && this.office_type_wise_users_datas) {
         const total = this.office_type_wise_users_datas.reduce((acc, value) => acc + value, 0);
-        const percentages = this.office_type_wise_users_datas.map(value => ((value / total) * 100).toFixed(2) + '%');
+        const percentages = this.office_type_wise_users_datas.map(value => {
+          const percentage = ((value / total) * 100).toFixed(2);
+          return isNaN(percentage) ? '0.00%' : percentage + '%';
+        });
 
         this.office_type_wise_users_chart = new Chart(document.getElementById("office_typewise_total_user"), {
 
           type: "pie",
           data: {
             // labels: this.office_type_wise_users_levels,
-            labels: this.office_type_wise_users_levels.map((label, index) => `${label} (${percentages[index]})`),
-            percentage: 0.5,
+            // labels: this.office_type_wise_users_levels.map((label, index) => `${label} (${percentages[index]})`),
+            labels: this.office_type_wise_users_levels.map((label, index) => `${label} (${this.$i18n.locale == 'en' ? this.office_type_wise_users_datas[index] : this.$helpers.englishToBangla(this.office_type_wise_users_datas[index])} - ${this.$i18n.locale == 'en' ? percentages[index]  : this.$helpers.englishToBangla(percentages[index])})`),
+            percentages:percentages,
             datasets: [
               {
                 label: "Count",
@@ -162,6 +174,21 @@ export default {
                 position: "bottom",
                 align: "start",
               },
+              datalabels: {
+                color: '#fff',
+                fontWeight: 'bold',
+                formatter: (value, context) => {
+                  const percentage = context.chart.data.percentages[context.dataIndex];
+                  const truncatedPercentage = parseFloat(percentage).toFixed(0);
+                  if (truncatedPercentage == '0') {
+                    return '';
+                  }
+                  if (value == '0') {
+                    return '';
+                  }
+                  return `${this.$i18n.locale == 'en' ? value : this.$helpers.englishToBangla(value)} , ${this.$i18n.locale == 'en' ? truncatedPercentage : this.$helpers.englishToBangla(truncatedPercentage)}%`;
+                }
+              }
             },
             layout: {
               padding: {
@@ -212,6 +239,16 @@ export default {
       this.officeType = data
     });
 
-  }
+  },
+  watch: {
+    '$i18n.locale': {
+      handler(newLocale, oldLocale) {
+        if (newLocale != oldLocale) {
+          this.fetchProgramwiseApproveApplicationChartData();
+        }
+      },
+      immediate: true // Call the handler immediately to initialize the levels
+    }
+  },
 }
 </script>
