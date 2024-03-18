@@ -228,7 +228,7 @@
                   <!-- 3rd Expansion panel -->
                   <!-- Personal Information  -->
 
-                  <v-expansion-panel v-if="status_code == 200">
+                  <v-expansion-panel v-if="status_code==200">
                     <v-expansion-panel-header color=" primary">
                       <h3 class="white--text">{{ $t('container.application_selection.application.personal_info') }}</h3>
                     </v-expansion-panel-header>
@@ -2399,7 +2399,7 @@ export default {
     },
     verifyCard() {
     
-      this.status_code= null;
+      // this.status_code= null;
       let data = {
         program_id: this.data.program_id,
         gender_id: this.data.gender_id,
@@ -2426,6 +2426,7 @@ export default {
           this.data.account_name = res.data.data.nameEn
         })
         .catch((err) => {
+          this.status_code= 100;
           // console.log(err)
           // this.$toast.error(err.response.data.message);
           if (err.response.data.errors && err.response.data.errors.verification_number) {
@@ -2514,27 +2515,27 @@ export default {
         this.$toast.error('Verify First');
         return false;
       }
-      if (this.data.image === null) {
+      if (this.data.image === null || this.data.image == '') {
         this.$toast.error('Image is required');
         this.scrollToImage();
         return false;
       }
-      if (this.data.signature === null) {
+      if (this.data.signature === null || this.data.signature == '') {
         this.$toast.error('Signature is required');
         this.scrollToSignature();
         return false;
       }
-      if (this.status_code_nominee != 200) {
+      if (this.status_code_nominee != 200 ) {
         this.$toast.error('Verify Nominee First');
         this.scrollToVerifyButton();
         return false;
       }
-      if (this.data.nominee_image === null) {
+      if (this.data.nominee_image === null || this.data.nominee_image == '') {
         this.$toast.error('Nominee Image is required');
         this.scrollToNomineeImage();
         return false;
       }
-      if (this.data.nominee_signature === null) {
+      if (this.data.nominee_signature === null || this.data.nominee_signature == '') {
         this.$toast.error('Nominee Signature is required');
         this.scrollToNomineeSignature();
         return false;
