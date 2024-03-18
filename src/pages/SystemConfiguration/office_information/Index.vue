@@ -1477,62 +1477,91 @@ export default {
       const division = this.divisions.find(div => div.id === this.data.division_id);
       const district = this.districts.find(d => d.id === this.data.district_id);
       const city = this.cities.find(c => c.id === this.data.city_id);
-      // this.selectedWardsDetails = [];
-      let info = {};
+
       selectedWards.forEach(wardId => {
         const ward = this.wards.find(w => w.id === wardId);
-        console.log(ward, 'ward data info');
-        // return false;
         const thana = this.thanas.find(t => t.id === ward?.parent?.id);
-        info = {
-          division: division?.name_en,
-          division_id: division?.id,
-          district: district?.name_en,
-          district_id: district?.id,
-          city: city?.name_en,
-          city_id: city?.id,
-          thana: thana?.name_en,
-          thana_id: thana?.id,
-          ward: ward?.name_en,
-          ward_id: ward?.id,
 
+        // Create a unique identifier for the current entry
+        const entryIdentifier = `${division?.id}_${district?.id}_${city?.id}_${thana?.id}_${ward?.id}`;
+
+        // Check if the entry already exists in selectedWardsDetails
+        const isDuplicate = this.selectedWardsDetails.some(info => {
+          const existingIdentifier = `${info.division_id}_${info.district_id}_${info.city_id}_${info.thana_id}_${info.ward_id}`;
+          return existingIdentifier === entryIdentifier;
+        });
+
+        // If it's not a duplicate, add it to selectedWardsDetails
+        if (!isDuplicate) {
+          const info = {
+            division: division?.name_en,
+            division_id: division?.id,
+            district: district?.name_en,
+            district_id: district?.id,
+            city: city?.name_en,
+            city_id: city?.id,
+            thana: thana?.name_en,
+            thana_id: thana?.id,
+            ward: ward?.name_en,
+            ward_id: ward?.id,
+          };
+          this.selectedWardsDetails.push(info);
         }
       });
-
-      this.selectedWardsDetails.push(info)
-
     },
-     onChangeWards_edit(selectedWards) {
-    
+
+    onChangeWards_edit(selectedWards) {
       const division = this.divisions.find(div => div.id === this.data.division_id);
       const district = this.districts.find(d => d.id === this.data.district_id);
       const city = this.cities.find(c => c.id === this.data.city_id);
-      // this.selectedWardsDetails = [];
-      let info = {};
-      selectedWards.forEach(wardId => {
-        const ward = this.wards.find(w => w.id === wardId);
-        console.log(ward, 'ward data info');
-        // return false;
-        const thana = this.thanas.find(t => t.id === ward?.parent?.id);
-        info = {
-          division: division?.name_en,
-          division_id: division?.id,
-          district: district?.name_en,
-          district_id: district?.id,
-          city: city?.name_en,
-          city_id: city?.id,
-          thana: thana?.name_en,
-          thana_id: thana?.id,
-          ward: ward?.name_en,
-          ward_id: ward?.id,
 
+      selectedWards.forEach(wardId => {
+        // Find the ward object
+        const ward = this.wards.find(w => w.id === wardId);
+        if (!ward) {
+          return; // Skip to the next iteration
+        }
+
+        // Find the thana object
+        const thana = this.thanas.find(t => t.id === ward?.parent?.id);
+        if (!thana) {
+          return; // Skip to the next iteration
+        }
+
+        // Create a unique identifier for the current entry
+        const entryIdentifier = `${division?.id}_${district?.id}_${city?.id}_${thana?.id}_${ward?.id}`;
+
+        // Check if the entry already exists in selectedWardsDetails
+        const isDuplicate = this.selectedWardsDetails.some(info => {
+          const existingIdentifier = `${info.division_id}_${info.district_id}_${info.city_id}_${info.thana_id}_${info.ward_id}`;
+
+          return existingIdentifier === entryIdentifier;
+        });
+        
+  
+        // If it's not a duplicate, add it to selectedWardsDetails
+        if (!isDuplicate) {
+          const info = {
+            division: division?.name_en,
+            division_id: division?.id,
+            district: district?.name_en,
+            district_id: district?.id,
+            city: city?.name_en,
+            city_id: city?.id,
+            thana: thana?.name_en,
+            thana_id: thana?.id,
+            ward: ward?.name_en,
+            ward_id: ward?.id,
+            // Include the unique identifier
+            identifier: entryIdentifier,
+          };
+          this.selectedWardsDetails.push(info);
+        }else{
+          this.$toast.error(`Already Exists`);
         }
       });
-
-      this.selectedWardsDetails.push(info)
-      // console.log(this.selectedWardsDetails,'edit final data')
-    
     },
+
 
     onChangeWards_UCDUpazila_edit(selectedWards_UCDUpazila_edit) {
       // Update selectedWardsDetails based on the selectedWards
