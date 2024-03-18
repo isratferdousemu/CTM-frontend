@@ -983,6 +983,13 @@
       "login_user_info": "Login User",
       "login_anonymous_user_info": "Login/Anonymous User Info",
       "create": "Create"
+    },
+    "system_config_dashboard": {
+      "enter_start_end_date": "Enter Start & End Date",
+      "total_number_of_program_wise_beneficiary": "Total Number of Program Wise Beneficiary",
+      "office_type_wise_total_users": "Office Type Wise Total Users",
+      "select_office": "Select Office",
+      "reset_office": "-- Reset Office --"
     }
   }
 }
