@@ -260,7 +260,7 @@
                           " v-model="forward.remark">
                       </v-text-field>
                     </v-col>
-                    <v-col lg="6" md="6" cols="12" v-if="this.permissions?.permission?.forward">
+                    <v-col lg="6" md="6" cols="12" v-if="this.permissions?.permission?.forward || this.permissions?.permission?.recommendation">
                       <v-select outlined clearable :items="committe" item-text="name" item-value="id"
                         v-model="forward.committee_id">
                         <template v-slot:label>
@@ -286,7 +286,10 @@
                       $t("container.list.approve") }}</v-btn>
                     <v-btn elevation="2" class="btn mr-2 white--text" color="blue" @click="SubmitForward()"
                       v-if="this.permissions?.permission?.forward">{{
-                      $t("container.list.forward") }}</v-btn>
+                      $t("container.list.forward") }} </v-btn>  
+                   <v-btn elevation="2" class="btn mr-2 white--text" color="green" @click="SubmitRecommendation()"
+                      v-if="this.permissions?.permission?.recommendation">{{
+                        $t("container.list.recommendation") }}</v-btn>
                     <v-btn elevation="2" class="btn mr-2" color="warning" @click="SubmitWaiting()"
                       v-if="this.permissions?.permission?.waiting">{{
                       $t("container.list.waiting") }}</v-btn>
@@ -446,7 +449,7 @@
                         </span>
                         <span v-if="item.status == 1" class="forwarded"
                           style="background-color: #4CAF50; color: white; padding: 5px; width: 100px;">
-                          Forwarded
+                          Forwarded For Recommendation
                         </span>
                         <span v-if="item.status == 2" class="approved"
                           style="background-color: #008000; color: white; padding: 5px; width: 100px;">
@@ -460,6 +463,10 @@
                           style="background-color: #FF0000; color: white; padding: 5px; width: 100px;">
                           Rejected
                         </span>
+                         <span v-if="item.status == 5" class="recommendation"
+                            style="background-color:green; color: white; padding: 5px; width: 100px;">
+                            Forwarded For Final Recommendation
+                         </span>
                       </template>
 
 
@@ -559,6 +566,7 @@ export default {
         { id: 0, name_en: "Not Selected" },
         { id: 4, name_en: "Rejected" },
         { id: 3, name_en: "Waiting" },
+        { id: 5, name_en: "Recommendation" },
       ],
 
       selectAll: null,
@@ -894,15 +902,68 @@ export default {
         this.permissions?.user?.office_type !== null &&
         this.permissions?.user?.committee_type_id == null
       ) {
-        return item.status !== 0;
+        return item.status != 0;
       }
       if (this.permissions?.user?.committee_type_id !== null) {
-        return item.status == 2 || item.status == 4;
+          if(this.permissions?.permission?.approve && item.status == 5){
+            return false;
+          }else if(this.permissions?.permission?.recommendation && item.status == 3){
+             return true;
+          }else if(this.permissions?.permission?.approve && item.status == 3){
+             return false;
+          } else{
+            return item.status == 2 || item.status == 4 || item.status == 5;
+          }
       }
       return false;
     },
     SubmitForward() {
       this.forward.status = 1;
+      console.log("Selected Items:", this.forward.applications_id);
+      console.log("status:", this.forward.status);
+      console.log("committee:", this.forward.committee_id);
+      let fd = new FormData();
+      for (const [key, value] of Object.entries(this.forward)) {
+        if (value !== null) {
+          fd.append(key, value);
+          console.log(key, value, "fd values");
+          if (key == "applications_id") {
+            console.log(key, value, " values");
+            for (let i = 0; i < value.length; i++) {
+              fd.append("applications_id[" + i + "]", value[i]);
+              console.log(key, value, "applications values");
+            }
+          } else {
+            fd.append(key, value);
+          }
+        }
+      }
+
+      this.$axios
+        .post("admin/application/update-status", fd, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
+          this.forward = [];
+          this.forward.applications_id = [];
+          this.selectAll = false;
+          this.GetApplication();
+        })
+        .catch((err) => { 
+          if (err.response && err.response.data && err.response.data.errors) {
+            const errorMessage = err.response.data.errors.applications_id[0];
+            this.$toast.error(errorMessage);
+          } else {
+            this.$toast.error('An error occurred. Please try again later.');
+          }
+        
+        });
+    }, 
+    SubmitRecommendation() {
+      this.forward.status = 5;
       console.log("Selected Items:", this.forward.applications_id);
       console.log("status:", this.forward.status);
       console.log("committee:", this.forward.committee_id);

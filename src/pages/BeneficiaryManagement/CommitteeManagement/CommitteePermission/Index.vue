@@ -63,6 +63,11 @@
                                          :status="item.committee_permission?.approve"/>
                       </template>
 
+                       <template v-slot:item.committee_permission.recommendation="{ item }">
+                          <PermissionBadge :permission="item.committee_permission"
+                                           :status="item.committee_permission?.recommendation"/>
+                        </template>
+
                       <template v-slot:item.committee_permission.forward="{ item }">
                         <PermissionBadge :permission="item.committee_permission"
                                          :status="item.committee_permission?.forward"/>
@@ -177,6 +182,12 @@
                     v-model="data.approve"
                     :label='$t("container.system_config.demo_graphic.committeePermission.approve")'
                     :value="true"
+                ></v-checkbox>     
+                
+                <v-checkbox
+                    v-model="data.recommendation"
+                    :label='$t("container.system_config.demo_graphic.committeePermission.recommendation")'
+                    :value="true"
                 ></v-checkbox>
 
                 <v-checkbox
@@ -285,6 +296,7 @@ export default {
         forward: null,
         reject: null,
         waiting: null,
+        recommendation: null,
       },
 
       office_type_id: null,
@@ -334,6 +346,7 @@ export default {
         { text: this.$t("container.system_config.demo_graphic.committeePermission.name"), value: "value_en" },
         { text: this.$t("container.system_config.demo_graphic.committeePermission.approve"), value: "committee_permission.approve" },
         { text: this.$t("container.system_config.demo_graphic.committeePermission.forward"), value: "committee_permission.forward" },
+        { text: this.$t("container.system_config.demo_graphic.committeePermission.recommendation"), value: "committee_permission.recommendation" },
         { text: this.$t("container.system_config.demo_graphic.committeePermission.reject"), value: "committee_permission.reject" },
         { text: this.$t("container.system_config.demo_graphic.committeePermission.waiting"), value: "committee_permission.waiting" },
         { text: this.$t("container.list.action"), value: "actions", align: "center", sortable: false },
@@ -392,10 +405,13 @@ export default {
       }
     },
     editDialog(item) {
+      console.log('hhh');
+      console.log(item);
       this.data.committee_type_id = item.id;
       this.data.value_en = item.value_en;
       this.data.value_bn = item.value_bn;
       this.data.approve = !!item.committee_permission?.approve
+      this.data.recommendation = !!item.committee_permission?.recommendation
       this.data.forward = !!item.committee_permission?.forward
       this.data.reject = !!item.committee_permission?.reject
       this.data.waiting = !!item.committee_permission?.waiting
@@ -454,6 +470,7 @@ export default {
       this.data.value_bn = null
       this.data.approve = null
       this.data.forward = null
+      this.data.recommendation = null
       this.data.reject = null
       this.data.waiting = null
       this.errors = {};
@@ -684,6 +701,8 @@ export default {
         .then((result) => {
 
           this.commitees = result.data.data.data;
+          console.log('hello commet');
+          console.log(this.commitee);
           this.pagination.current = result.data.data.current_page;
           this.pagination.total = result.data.data.last_page;
           this.pagination.grand_total = result.data.data.total;
