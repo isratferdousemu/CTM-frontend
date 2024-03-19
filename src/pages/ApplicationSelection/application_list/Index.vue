@@ -903,7 +903,7 @@ export default {
         this.permissions?.user?.office_type !== null &&
         this.permissions?.user?.committee_type_id == null
       ) {
-        return item.status !== 0;
+        return item.status != 0;
       }
       if (this.permissions?.user?.committee_type_id !== null) {
           if(this.permissions?.permission?.approve && item.status == 5){
