@@ -4,7 +4,7 @@
     <v-col cols="12">
       <label style="color: #1976d2">
                       <span>
-                        {{ $t("Number of Application Forwarded") }}
+                        {{ $t("container.application_selection_dashboard.number_of_application_forwarded") }}
                       </span>
       </label></v-col
     >
@@ -22,7 +22,7 @@
         <v-text-field
             v-model="dates"
             :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
-            :label="$t('Enter Start & End Date')"
+            :label="$t('container.application_selection_dashboard.enter_start_end_date')"
             readonly
             v-bind="attrs"
             v-on="on"

@@ -399,7 +399,11 @@
           "location": "নির্ধারিত স্থান",
           "login_id": "লগইন আইডি",
           "role": "রোল",
-          "ward": "ওয়ার্ড"
+          "ward": "ওয়ার্ড",
+          "unapproved": "অননুমোদিত",
+          "active": "সক্রিয়",
+          "inactive": "নিষ্ক্রিয়",
+          "banned": "নিষিদ্ধ"
         },
         "financial_year": {
           "financial_year": "আর্থিক বর্ষ",
@@ -979,6 +983,22 @@
       "login_user_info": "লগইন ইউজার তথ্য",
       "login_anonymous_user_info": "লগইন/বেনামী ইউজার তথ্য",
       "create": "ক্রিয়েট"
+    },
+    "system_config_dashboard": {
+      "enter_start_end_date": "শুরু এবং শেষ তারিখ লিখুন",
+      "total_number_of_program_wise_beneficiary": "প্রোগ্রাম ভিত্তিক সুবিধাভোগীর মোট সংখ্যা",
+      "office_type_wise_total_users": "অফিস টাইপ ওয়াইজ মোট ব্যবহারকারী",
+      "select_office": "অফিস নিবার্চন করুন ",
+      "reset_office": "-- রিসেট  করুন --"
+    },
+    "application_selection_dashboard": {
+      "enter_start_end_date": "শুরু এবং শেষ তারিখ লিখুন",
+      "total_number_of_application_received": "প্রাপ্ত আবেদনের মোট সংখ্যা",
+      "program_wise_number_of_application_approve": "প্রোগ্রাম অনুসারে অনুমোদিত আবেদনের সংখ্যা",
+      "program_wise_number_of_waiting_application": "অপেক্ষারত আবেদনকারীর প্রোগ্রাম অনুযায়ী সংখ্যা",
+      "number_of_application_rejected": "প্রত্যাখ্যানকৃত আবেদনের সংখ্যা",
+      "total_number_of_application_received_application": "প্রাপ্ত আবেদনপত্রের মোট সংখ্যা",
+      "number_of_application_forwarded": "ফরোয়ার্ড করা আবেদনের সংখ্যা"
     }
   }
 }
