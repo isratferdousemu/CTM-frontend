@@ -1756,6 +1756,7 @@ export default {
 
   data() {
     return {
+      panel2Open: true,
       panel: [0, 1, 2, 3, 4, 5, 6],
       programs: [],
       mobile_operators: [],
@@ -1871,6 +1872,7 @@ export default {
       deleteDialog: false,
       confirmDialog: false,
         showAlert: false,
+       
       data: {
 
         program_id: null,
@@ -2416,20 +2418,31 @@ export default {
       })
         .then((res) => {
           console.log(res,"responseVerify")
-          this.$toast.success(res.data.message);
-          this.status_code= res.status;
+         
           
+          
+          this.status_code = res.status;
+         
 
+         
+          
+          
+          this.$toast.success(res.data.message);
           this.data.age = res.data.data.age
           this.data.name_en = res.data.data.nameEn
           this.data.name_bn = res.data.data.name
           this.data.account_name = res.data.data.nameEn
         })
         .catch((err) => {
-          this.status_code= 100;
+           this.status_code= null;
+         
+          //  this.data.age = null;
+          // this.data.name_en =null;
+          // this.data.name_bn = null;
+          // this.data.account_name = null;
           // console.log(err)
           // this.$toast.error(err.response.data.message);
-          if (err.response.data.errors && err.response.data.errors.verification_number) {
+          if (err?.response?.data?.errors && err?.response?.data?.errors?.verification_number) {
             const verificationErrors = err.response.data.errors.verification_number;
             const beneficiaryMessageIndex = verificationErrors.indexOf('You are already a beneficiary');
             if (beneficiaryMessageIndex !== -1) {
@@ -2445,6 +2458,7 @@ export default {
           }
   
         })
+  
     },
 
     verifyNomineeCard() {
