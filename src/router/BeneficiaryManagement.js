@@ -132,7 +132,7 @@ const BeneficiaryManagementRoutes = [
     },
     component: () =>
       import(
-        "../pages/BeneficiaryManagement/BeneficiaryDashboard/Dashboard.vue"
+        "../pages/BeneficiaryManagement/BeneficiaryDashboard/Dashboard_v2.vue"
       ),
   },
   // {
