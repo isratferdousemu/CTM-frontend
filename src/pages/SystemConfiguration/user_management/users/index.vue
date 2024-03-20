@@ -3,6 +3,7 @@
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
         <v-row>
+          <Spinner :loading="isLoading" />
           <v-col cols="12">
             <v-card
               elevation="10"
@@ -84,15 +85,18 @@
                           small
                           class="white--text"
                         >
-                          <span v-if="item.status==0">{{$t("container.list.inactive")}}</span>
-                          <span v-if="item.status==1">{{$t("container.list.active")}}</span>
-                          <span v-if="item.status==2">{{$t("container.list.banned")}}</span>
+                          <span v-if="item.status==0">{{$t("container.system_config.demo_graphic.user.unapproved")}}</span>
+                          <span v-if="item.status==1">{{$t("container.system_config.demo_graphic.user.active")}}</span>
+                          <span v-if="item.status==2">{{$t("container.system_config.demo_graphic.user.banned")}}</span>
+                          <span v-if="item.status==5">{{$t("container.system_config.demo_graphic.user.inactive")}}</span>
                         </v-chip>
                       </template>
 
-                      <template v-slot:[`item.banned`]="{item}">
+                      <template v-slot:[`item.active`]="{item}">
                       <span>
-                           <v-switch :input-value="item.status === 2" @change="banUser(item.id)" hide-details color="orange darken-3"></v-switch>
+                           <v-switch :input-value="item.status == 1"
+                                     @change="changeStatus(item.id, item.status)"
+                                     hide-details color="orange darken-3"></v-switch>
                       </span>
                       </template>
 
@@ -130,7 +134,7 @@
 
 
 
-                        <v-tooltip top v-if="!item.status">
+<!--                        <v-tooltip top v-if="!item.status">
                           <template v-slot:activator="{ on }">
                             <v-btn
                                 v-can="'user-edit'"
@@ -147,7 +151,7 @@
                           <span>
                             {{ $t("container.list.approve") }}
                           </span>
-                        </v-tooltip>
+                        </v-tooltip>-->
 
 
 <!--                        <v-tooltip top>
@@ -1905,7 +1909,7 @@
             <v-row class="mx-0 my-0 py-2" justify="center">
               <v-btn
                   text
-                  @click="approveDialog = false"
+                  @click="cancelApprove()"
                   outlined
                   class="custom-btn-width py-2 mr-10"
               >
@@ -1913,7 +1917,7 @@
               </v-btn>
               <v-btn
                   text
-                  @click="approveUser()"
+                  @click="callChangeStatusApi(data.id)"
                   color="white"
                   :loading="delete_loading"
                   class="custom-btn-width warning white--text py-2"
@@ -1934,6 +1938,7 @@ import { mapState } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 import PermissionBadge from "../../../../components/BeneficiaryManagement/Committee/PermissionBadge.vue";
+import Spinner from "@/components/Common/Spinner.vue";
 
 extend("required", required);
 
@@ -1999,6 +2004,7 @@ export default {
         0: 'grey',
         1: 'success',
         2: 'error',
+        5: 'warning',
       },
 
       isDistrictHidden: true,
@@ -2043,12 +2049,14 @@ export default {
         perPage: 10,
       },
       items: [5, 10, 15, 20, 40, 50, 100],
+      isLoading: false
     };
   },
   components: {
     PermissionBadge,
     ValidationProvider,
     ValidationObserver,
+    Spinner,
   },
   computed: {
     headers() {
@@ -2084,16 +2092,16 @@ export default {
           value: "office.name_en",
         },
         {
+          text: this.$t("container.system_config.demo_graphic.user.location"),
+          value: "assign_location.name_en",
+        },
+        {
           text: this.$t("container.system_config.demo_graphic.user.status"),
           value: "status",
         },
         {
-          text: this.$t("container.list.banned"),
-          value: "banned",
-        },
-        {
-          text: this.$t("container.system_config.demo_graphic.user.location"),
-          value: "assign_location.name_en",
+          text: this.$t("container.system_config.demo_graphic.user.active"),
+          value: "active",
         },
         {
           text: this.$t("container.list.action"),
@@ -2532,6 +2540,7 @@ export default {
       }
     },
     async getUsers() {
+      this.isLoading = true
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
@@ -2547,6 +2556,7 @@ export default {
           params: queryParams,
         })
         .then((result) => {
+          this.isLoading = false
           this.users = result.data.data;
           this.pagination.current = result.data.current_page;
           this.pagination.total = result.data.last_page;
@@ -2634,18 +2644,40 @@ export default {
     },
 
 
-    async banUser(id) {
+
+
+
+    cancelApprove() {
+      this.users = this.users.filter(i => i.id != this.data.id)
+      this.getUsers()
+      this.approveDialog = false;
+    },
+
+    changeStatus(id, status) {
+      if (status == 0) {
+        this.data.id = id;
+        return this.approveDialog = true;
+      }
+
+      this.callChangeStatusApi(id)
+    },
+
+    async callChangeStatusApi(id) {
+      this.isLoading = true
+      this.approveDialog = false
+
       await this.$axios
-          .get("/admin/user/ban/" + id, {
+          .get("/admin/user/change-status/" + id, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
             },
           })
           .then((res) => {
+            this.isLoading = false
             console.log(res.data)
 
-            if (res.data.data.status == 2) {
+            if (res.data.data.status == 5) {
               this.$toast.warning(res.data.message)
             } else {
               this.$toast.success(res.data.message)
@@ -2654,10 +2686,15 @@ export default {
             this.getUsers();
           })
           .catch((err) => {
+            this.isLoading = false
             console.log(err.response);
             this.$toast.error(err?.response?.data?.message);
           });
     },
+
+
+
+
 
     approveAlert(id) {
       this.data.id = id;

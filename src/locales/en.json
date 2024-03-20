@@ -400,7 +400,11 @@
           "location": "Assigned Location",
           "login_id": "Login ID",
           "role": "Role",
-          "ward": "Ward"
+          "ward": "Ward",
+          "unapproved": "Unapproved",
+          "active": "Active",
+          "inactive": "Inactive",
+          "banned": "Banned"
         },
         "financial_year": {
           "financial_year": "Financial Year",

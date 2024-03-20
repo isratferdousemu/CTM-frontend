@@ -17,8 +17,7 @@
                   <ValidationObserver ref="formsearch" v-slot="{ invalid }">
                     <form @submit.prevent="submitsearch()">
                       <v-row>
-                        <v-col lg="3" md="3" cols="12">
-
+                        <v-col lg="3" md="3" cols="12" v-if="!userData.committee">
                           <v-autocomplete outlined clearable class="no-arrow-icon" v-model="data.program_id"
                             :append-icon-cb="appendIconCallback" append-icon="mdi-plus" :items="allowances"
                             item-text="name_en" item-value="id"
@@ -903,7 +902,7 @@ export default {
         this.permissions?.user?.office_type !== null &&
         this.permissions?.user?.committee_type_id == null
       ) {
-        return item.status !== 0;
+        return item.status != 0;
       }
       if (this.permissions?.user?.committee_type_id !== null) {
           if(this.permissions?.permission?.approve && item.status == 5){

@@ -399,7 +399,11 @@
           "location": "নির্ধারিত স্থান",
           "login_id": "লগইন আইডি",
           "role": "রোল",
-          "ward": "ওয়ার্ড"
+          "ward": "ওয়ার্ড",
+          "unapproved": "অননুমোদিত",
+          "active": "সক্রিয়",
+          "inactive": "নিষ্ক্রিয়",
+          "banned": "নিষিদ্ধ"
         },
         "financial_year": {
           "financial_year": "আর্থিক বর্ষ",
