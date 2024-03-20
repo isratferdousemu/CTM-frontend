@@ -4,6 +4,10 @@ export default {
 
     data() {
         return {
+        data:{
+            tracking_type:1
+
+        },
             tracking: [
                 {
                     icon: 'mdi mdi-check',
@@ -133,31 +137,42 @@ export default {
 
                     </v-col>
                     <v-col cols="12">
-                        <v-card   elevation="0">
+                        <v-card elevation="0">
 
                             <v-card-text>
                                 <v-row class="ma-5">
-                                    <v-col cols="12" lg="6" md="6">
-                                        <v-radio-group required row>
-                                            <span class="mr-5">{{ $t('container.system_audit.application_tracking')
-                                            }}</span>
+                                    <v-col cols="12" lg="4" md="4">
+
+                                        <v-radio-group required row v-model="data.tracking_type">
+                                            <label class="mr-5">{{ $t('container.system_audit.application_tracking')
+                                                }}</label>
                                             <v-radio :label="$t('container.system_audit.nbr')" :value="1"></v-radio>
-                                            <v-radio :label="$t('container.system_audit.tracking_no')" :value="2"></v-radio>
+                                            <v-radio :label="$t('container.system_audit.tracking_no')"
+                                                :value="2"></v-radio>
                                         </v-radio-group>
                                     </v-col>
-                                    <v-col cols="12" lg="3" md="3">
+                                    <v-col cols="12" lg="4" md="4" v-if="data.tracking_type == 2">
+                                        <br>
+                                        <label>{{ $t('container.system_audit.application_tracking')
+                                            }}</label>
                                         <v-text-field outlined clearable></v-text-field>
                                     </v-col>
-                                    <v-col cols="12" lg="3" md="3">
-
-
-
-                                        <v-btn type="submit" flat color="success" :disabled="invalid" :loading="loading"
-                                            class="custom-btn-width  white--text py-2">
-                                            {{ $t("container.list.preview") }}
-                                        </v-btn>
-
-
+                              
+                                    <v-col cols="12" lg="4" md="4" v-if="data.tracking_type == 1">
+                                        <br>
+                                        <label>{{ $t('container.system_audit.nbr')
+                                            }}</label>
+                                        <v-text-field outlined clearable></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" lg="4" md="4">
+                                        <br>
+                                        <div class="text-right">
+                                            <v-btn type="submit" flat color="success" :disabled="invalid"
+                                                :loading="loading" class="custom-btn-width white--text py-2">
+                                                <span class="mdi mdi-television mr-2"></span> <!-- Icon -->
+                                                {{ $t("container.list.preview") }}
+                                            </v-btn>
+                                        </div>
                                     </v-col>
 
 
@@ -176,50 +191,55 @@ export default {
                                         <table class="small-text">
                                             <h3 style="text-decoration: underline">Disability Allowance</h3>
                                             Details
-                                           
-      <tr v-for="item in tracking_summary" :key="item.name">
-                                                            <td><b>{{ item.name }}</b></td>
-                                                          
-                                                             <td><b>:</b>{{ item.value }}</td>
-                                                        </tr>
+
+                                            <tr v-for="item in tracking_summary" :key="item.name">
+                                                <td><b>{{ item.name }}</b></td>
+
+                                                <td><b>:</b>{{ item.value }}</td>
+                                            </tr>
 
                                         </table>
 
                                     </v-col>
                                     <v-col cols="12" lg="9" md="9">
                                         <v-card elevation="0">
-                                            <v-card-title class="custom-title"><h3 class="text-center">{{ $t('container.system_audit.application_status')
-                                                                                            }}</h3></v-card-title>
+                                            <v-card-title class="custom-title">
+                                                <h3 class="text-center">{{
+                                                    $t('container.system_audit.application_status')
+                                                    }}</h3>
+                                            </v-card-title>
                                             <v-card-text>
-               <table>
-           <tbody>
-                                                
-                                                    <tr v-for="item in tracking" :key="item.name">
-                                                        <td>{{ item.name }}</td>
-                                                        <td>
-                                                            
-                                                            <v-timeline >
-                                                 
-                                                                <v-timeline-item :color="getTimelineColor(item.status)" :icon="getTimelineIcon(item.status)"></v-timeline-item>
-                                                            </v-timeline>
-                                                        </td>
-                                                        <td>{{ item.state }}</td>
-                                                         <td>{{ item.date_time }}</td>
-                                                    </tr>
+                                                <table>
+                                                    <tbody>
 
-    </tbody>
-    
-          </table>
+                                                        <tr v-for="item in tracking" :key="item.name">
+                                                            <td>{{ item.name }}</td>
+                                                            <td>
+
+                                                                <v-timeline>
+
+                                                                    <v-timeline-item
+                                                                        :color="getTimelineColor(item.status)"
+                                                                        :icon="getTimelineIcon(item.status)"></v-timeline-item>
+                                                                </v-timeline>
+                                                            </td>
+                                                            <td>{{ item.state }}</td>
+                                                            <td>{{ item.date_time }}</td>
+                                                        </tr>
+
+                                                    </tbody>
+
+                                                </table>
 
                                             </v-card-text>
                                         </v-card>
                                     </v-col>
-                                    <v-row  class="justify-end mt-2">
-                    <v-col v-for="legend in legends" :key="legend.status" cols="4" md="1" lg="1">
-                      <v-icon :color="legend.color">{{ legend.icon }}</v-icon>
-                      <span>{{ legend.label }}</span>
-                    </v-col>
-                  </v-row>
+                                    <v-row class="justify-end mt-2">
+                                        <v-col v-for="legend in legends" :key="legend.status" cols="4" md="1" lg="1">
+                                            <v-icon :color="legend.color">{{ legend.icon }}</v-icon>
+                                            <span>{{ legend.label }}</span>
+                                        </v-col>
+                                    </v-row>
 
                                 </v-row>
 
