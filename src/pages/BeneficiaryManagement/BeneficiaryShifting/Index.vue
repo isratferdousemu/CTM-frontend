@@ -4,6 +4,21 @@
       <v-col cols="12">
         <div class="d-block text-right mb-2">
           <v-btn
+            v-can="'beneficiaryShifting-create'"
+            elevation="2"
+            class="mr-2 btn"
+            color="primary"
+            router
+            to="/beneficiary-management/beneficiary-location-shifting"
+          >
+            {{
+              $t(
+                "container.beneficiary_management.beneficiary_shifting.title_location"
+              )
+            }}
+          </v-btn>
+          <v-btn
+            v-can="'beneficiaryShifting-view'"
             elevation="2"
             class="btn"
             color="primary"
@@ -100,6 +115,19 @@
                                   {{ beneficiary_details.beneficiary_address }}
                                 </td>
                               </tr>
+                              <tr>
+                                <td>
+                                  {{
+                                    $t(
+                                      "container.beneficiary_management.beneficiary_list.program_name"
+                                    )
+                                  }}
+                                </td>
+                                <td>
+                                  :
+                                  {{ beneficiary_details?.program?.name_en }}
+                                </td>
+                              </tr>
                             </table>
                           </v-card-text>
                         </v-card>
@@ -132,7 +160,7 @@
                                 outlined
                                 :label="
                                   $t(
-                                    'container.application_selection.application.program'
+                                    'container.beneficiary_management.beneficiary_shifting.allowance_program_new'
                                   )
                                 "
                                 :items="programs"
@@ -266,8 +294,8 @@ import { mapState, mapActions } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 export default {
-  name: "DigitalIndex",
-  title: "CTM - Digital ID Card",
+  name: "ShiftingIndex",
+  title: "CTM - Beneficiary Shifting",
 
   data() {
     return {

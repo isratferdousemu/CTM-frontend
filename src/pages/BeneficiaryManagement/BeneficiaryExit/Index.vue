@@ -4,6 +4,7 @@
       <v-col cols="12">
         <div class="d-block text-right">
           <v-btn
+            v-can="'beneficiaryExit-view'"
             elevation="2"
             class="btn my-2"
             color="primary"
@@ -408,9 +409,12 @@
               </v-row>
 
               <div class="d-inline d-flex justify-end">
-                <v-btn elevation="2" class="btn mr-2 mb-2" @click="resetSearchExitInfo">{{
-                  $t("container.list.reset")
-                }}</v-btn>
+                <v-btn
+                  elevation="2"
+                  class="btn mr-2 mb-2"
+                  @click="resetSearchExitInfo"
+                  >{{ $t("container.list.reset") }}</v-btn
+                >
                 <v-btn
                   elevation="2"
                   class="btn mr-2 mb-2"
@@ -877,7 +881,7 @@ export default {
         union_id: this.data.union_id,
         thana_id: this.data.thana_id,
         ward_id: this.data.ward_id,
-        status: 1, //Active list 
+        status: 1, //Active list
 
         perPage: this.pagination.perPage,
         page: this.pagination.current,
@@ -924,7 +928,7 @@ export default {
         beneficiaries.push(data);
       });
 
-      if(beneficiaries.length === 0){
+      if (beneficiaries.length === 0) {
         this.$toast.success("Please select at least one Beneficiary for Exit");
         return;
       }
@@ -965,10 +969,10 @@ export default {
         console.log(e);
       }
     },
-    resetSearchExitInfo(){
+    resetSearchExitInfo() {
       this.data.exit_reason_id = null;
       this.data.exit_reason_detail = "";
-      this.data.exit_date="";
+      this.data.exit_date = "";
     },
     updateHeaderTitle() {
       const title = this.$t(

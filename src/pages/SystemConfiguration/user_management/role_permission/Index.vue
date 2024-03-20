@@ -492,6 +492,7 @@ export default {
                         type="submit"
                         class="custom-btn mr-2"
                         :disabled="invalid"
+                        v-can="'rolePermission-edit'"
                     >Submit
                     </v-btn>
                   </v-row>

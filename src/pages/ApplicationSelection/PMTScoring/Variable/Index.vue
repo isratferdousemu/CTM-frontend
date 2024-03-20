@@ -574,6 +574,7 @@ export default {
       this.data.code = item.code;
       this.data.name_en = item.name_en;
       this.data.score = item.score;
+      // console.log(item.score,"item.score")
       this.data.field_type = item.field_type;
       this.data.id = item.id;
       this.errors = {};

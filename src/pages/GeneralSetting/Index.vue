@@ -54,6 +54,7 @@
                     flat
                     color="primary"
                     prepend-icon="mdi-account-multiple-plus"
+                    v-can="'generalSetting-create'"
                   >
                     {{ $t("container.list.add_new") }}
                   </v-btn>
@@ -92,7 +93,7 @@
                             v-if="item.default !== 1"
                           >
                             <v-btn
-                              v-can="'update-post'"
+                              v-can="'generalSetting-edit'"
                               fab
                               x-small
                               v-on="on"
@@ -114,7 +115,7 @@
                             v-if="item.default !== 1"
                           >
                             <v-btn
-                              v-can="'delete-division'"
+                              v-can="'generalSetting-delete'"
                               fab
                               x-small
                               v-on="on"

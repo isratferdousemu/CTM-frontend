@@ -222,6 +222,17 @@ const actions = {
         return err;
       });
   },
+
+  BeneficiaryLocationShifting: ({ commit }, data) => {
+    return http()
+      .post("/admin/beneficiary/locationShiftingSave", data)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        return err;
+      });
+  },
 };
 /* -------------------------------------------------------------------------- */
 /*                               Getters Define                               */

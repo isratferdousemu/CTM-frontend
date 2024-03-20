@@ -3,6 +3,7 @@
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
         <v-row>
+          <Spinner :loading="isLoading" />
           <v-col cols="12">
             <v-card
               elevation="10"
@@ -79,17 +80,24 @@
                       </template>
                       <template v-slot:item.status="{ item }">
                         <v-chip
-                          :color="item.status == 1 ? 'success' : 'error'"
+                          :color="userStatus[item.status]"
                           dark
                           small
                           class="white--text"
                         >
-                          {{
-                            item.status == 1
-                              ? $t("container.list.active")
-                              : $t("container.list.inactive")
-                          }}
+                          <span v-if="item.status==0">{{$t("container.system_config.demo_graphic.user.unapproved")}}</span>
+                          <span v-if="item.status==1">{{$t("container.system_config.demo_graphic.user.active")}}</span>
+                          <span v-if="item.status==2">{{$t("container.system_config.demo_graphic.user.banned")}}</span>
+                          <span v-if="item.status==5">{{$t("container.system_config.demo_graphic.user.inactive")}}</span>
                         </v-chip>
+                      </template>
+
+                      <template v-slot:[`item.active`]="{item}">
+                      <span>
+                           <v-switch :input-value="item.status == 1"
+                                     @change="changeStatus(item.id, item.status)"
+                                     hide-details color="orange darken-3"></v-switch>
+                      </span>
                       </template>
 
 
@@ -126,7 +134,7 @@
 
 
 
-                        <v-tooltip top v-if="!item.status">
+<!--                        <v-tooltip top v-if="!item.status">
                           <template v-slot:activator="{ on }">
                             <v-btn
                                 v-can="'user-edit'"
@@ -143,10 +151,10 @@
                           <span>
                             {{ $t("container.list.approve") }}
                           </span>
-                        </v-tooltip>
+                        </v-tooltip>-->
 
 
-                        <v-tooltip top>
+<!--                        <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
                                 :disabled="item.user_type == 1"
@@ -155,7 +163,7 @@
                                 x-small
                                 v-on="on"
                                 color="red"
-                                class="ml-3 white--text"
+                                class="ml-3 white&#45;&#45;text"
                                 elevation="0"
                                 @click="deleteAlert(item.id)"
                             >
@@ -163,7 +171,7 @@
                             </v-btn>
                           </template>
                           <span> {{ $t("container.list.delete") }}</span>
-                        </v-tooltip>
+                        </v-tooltip>-->
 
                       </template>
                       <!-- End Action Button -->
@@ -244,7 +252,7 @@
                     <ValidationProvider
                       name="Username"
                       vid="username"
-                      rules="required"
+                      rules="checkUsername"
                       v-slot="{ errors }"
                     >
                       <v-text-field
@@ -267,7 +275,7 @@
                     <ValidationProvider
                       name="Mobile Number"
                       vid="mobile"
-                      rules="required"
+                      rules="checkPhoneNumber"
                       v-slot="{ errors }"
                     >
                       <v-text-field
@@ -950,6 +958,7 @@
                         :hide-details="errors[0] ? false : true"
                         v-model="data.office_id"
                         outlined
+                        @input="onChangeOffice($event)"
                         :label="
                           $t(
                             'container.system_config.demo_graphic.user.office_id'
@@ -959,6 +968,40 @@
                         item-text="name_en"
                         item-value="id"
                         required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+
+                  <v-col
+                    lg="6"
+                    md="6"
+                    cols="12"
+                    v-if="
+                      data.office_type == 9 ||
+                      data.office_type == 10
+                    "
+                  >
+                    <ValidationProvider
+                      name="Ward"
+                      vid="office_ward_id"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                        :hide-details="errors[0] ? false : true"
+                        v-model="data.office_ward_id"
+                        outlined
+                        :label="
+                          $t(
+                            'container.system_config.demo_graphic.user.ward'
+                          )
+                        "
+                        :items="officeWards"
+                        item-text="name_en"
+                        item-value="id"
+                        multiple
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
                       ></v-autocomplete>
@@ -1029,7 +1072,7 @@
                     <ValidationProvider
                         name="Username"
                         vid="username"
-                        rules="required"
+                        rules="checkUsername"
                         v-slot="{ errors }"
                     >
                       <v-text-field
@@ -1045,6 +1088,7 @@
                           required
                           :error="errors[0] ? true : false"
                           :error-messages="errors[0]"
+                          :readonly="true"
                       ></v-text-field>
                     </ValidationProvider>
                   </v-col>
@@ -1052,7 +1096,7 @@
                     <ValidationProvider
                         name="Mobile Number"
                         vid="mobile"
-                        rules="required"
+                        rules="checkPhoneNumber"
                         v-slot="{ errors }"
                     >
                       <v-text-field
@@ -1733,6 +1777,7 @@
                           :hide-details="errors[0] ? false : true"
                           v-model="data.office_id"
                           outlined
+                          @input="onChangeOffice($event)"
                           :label="
                           $t(
                             'container.system_config.demo_graphic.user.office_id'
@@ -1747,6 +1792,42 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
+
+
+                  <v-col
+                      lg="6"
+                      md="6"
+                      cols="12"
+                      v-if="
+                      data.office_type == 9 ||
+                      data.office_type == 10
+                    "
+                  >
+                    <ValidationProvider
+                        name="Ward"
+                        vid="office_ward_id"
+                        rules="required"
+                        v-slot="{ errors }"
+                    >
+                      <v-autocomplete
+                          :hide-details="errors[0] ? false : true"
+                          v-model="data.office_ward_id"
+                          outlined
+                          :label="
+                          $t(
+                            'container.system_config.demo_graphic.user.ward'
+                          )
+                        "
+                          :items="officeWards"
+                          item-text="name_en"
+                          item-value="id"
+                          multiple
+                          :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"
+                      ></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+
                 </v-row>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
@@ -1828,7 +1909,7 @@
             <v-row class="mx-0 my-0 py-2" justify="center">
               <v-btn
                   text
-                  @click="approveDialog = false"
+                  @click="cancelApprove()"
                   outlined
                   class="custom-btn-width py-2 mr-10"
               >
@@ -1836,7 +1917,7 @@
               </v-btn>
               <v-btn
                   text
-                  @click="approveUser()"
+                  @click="callChangeStatusApi(data.id)"
                   color="white"
                   :loading="delete_loading"
                   class="custom-btn-width warning white--text py-2"
@@ -1857,8 +1938,39 @@ import { mapState } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 import PermissionBadge from "../../../../components/BeneficiaryManagement/Committee/PermissionBadge.vue";
+import Spinner from "@/components/Common/Spinner.vue";
 
 extend("required", required);
+
+
+extend("checkUsername", {
+  validate: (value) => {
+    if (!value && value !== 0) {
+      return false;
+    }
+    // Check if all characters are numeric and not allow special characters
+    const isValid = /^[a-z][a-z0-9._]*$/.test(value);
+
+    // Return true if both conditions are met
+    return isValid;
+  },
+  message: "Username should be in lowercase and without any special character",
+});
+
+extend("checkPhoneNumber", {
+  validate: (value) => {
+    if (!value && value !== 0) {
+      return false;
+    }
+    // Check if all characters are numeric and not allow special characters
+    const isValid = /^01[3-9]\d{8}$/.test(value);
+
+    // Return true if both conditions are met
+    return isValid;
+  },
+  message: "Enter a valid number eg. 017xxxxxxxx",
+});
+
 export default {
   name: "Index",
   title: "CTM - User Management",
@@ -1884,8 +1996,17 @@ export default {
         ward_id: null,
         city_corpo_id: null,
         committee_type: null,
-        committee_id: null
+        committee_id: null,
+        office_ward_id: []
       },
+
+      userStatus: {
+        0: 'grey',
+        1: 'success',
+        2: 'error',
+        5: 'warning',
+      },
+
       isDistrictHidden: true,
       isLocationTypeHidden: true,
       isCityCorporationHidden: false,
@@ -1909,6 +2030,7 @@ export default {
       users: [],
       Allusers: [],
       committees: [],
+      officeWards: [],
       userType_id: null,
       userType: [
         {
@@ -1927,12 +2049,14 @@ export default {
         perPage: 10,
       },
       items: [5, 10, 15, 20, 40, 50, 100],
+      isLoading: false
     };
   },
   components: {
     PermissionBadge,
     ValidationProvider,
     ValidationObserver,
+    Spinner,
   },
   computed: {
     headers() {
@@ -1968,12 +2092,16 @@ export default {
           value: "office.name_en",
         },
         {
+          text: this.$t("container.system_config.demo_graphic.user.location"),
+          value: "assign_location.name_en",
+        },
+        {
           text: this.$t("container.system_config.demo_graphic.user.status"),
           value: "status",
         },
         {
-          text: this.$t("container.system_config.demo_graphic.user.location"),
-          value: "assign_location.name_en",
+          text: this.$t("container.system_config.demo_graphic.user.active"),
+          value: "active",
         },
         {
           text: this.$t("container.list.action"),
@@ -2261,14 +2389,16 @@ export default {
       this.data.username = item.username;
       this.data.mobile = item.mobile;
       this.data.email = item.email;
-      this.data.user_type = item.office_id ? 1 : 2;
+      this.data.user_type = item.office_type ? 1 : 2;
 
       this.data.status = item.status
 
 
       if (this.data.user_type == 2) {
+        this.data.office_type = null
         this.data.committee_type = item.committee_type_id
       } else {
+        this.data.committee_type = null
         this.data.office_type = item.office_type
       }
 
@@ -2361,10 +2491,14 @@ export default {
         this.onChangeWard(this.data.thana_id)
       }
 
-
       this.data.office_id = item.office_id
       this.data.committee_id = item.committee_id
 
+      if (this.data.office_id && item?.user_wards?.length) {
+        this.onChangeOffice(this.data.office_id)
+      }
+
+      this.data.office_ward_id = item?.user_wards?.map(i => i.id)
     },
 
 
@@ -2406,6 +2540,7 @@ export default {
       }
     },
     async getUsers() {
+      this.isLoading = true
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
@@ -2421,6 +2556,7 @@ export default {
           params: queryParams,
         })
         .then((result) => {
+          this.isLoading = false
           this.users = result.data.data;
           this.pagination.current = result.data.current_page;
           this.pagination.total = result.data.last_page;
@@ -2434,7 +2570,7 @@ export default {
         page: this.pagination.current,
       };
       this.$axios
-        .get("/admin/division/get", {
+        .get("/get-divisions", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -2483,7 +2619,7 @@ export default {
 
 
     approveUser: async function () {
-      this.$axios
+      await this.$axios
           .get("/admin/user/approve/" + this.data.id, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
@@ -2506,6 +2642,59 @@ export default {
             this.$toast.error(err?.response?.data?.message);
           });
     },
+
+
+
+
+
+    cancelApprove() {
+      this.users = this.users.filter(i => i.id != this.data.id)
+      this.getUsers()
+      this.approveDialog = false;
+    },
+
+    changeStatus(id, status) {
+      if (status == 0) {
+        this.data.id = id;
+        return this.approveDialog = true;
+      }
+
+      this.callChangeStatusApi(id)
+    },
+
+    async callChangeStatusApi(id) {
+      this.isLoading = true
+      this.approveDialog = false
+
+      await this.$axios
+          .get("/admin/user/change-status/" + id, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((res) => {
+            this.isLoading = false
+            console.log(res.data)
+
+            if (res.data.data.status == 5) {
+              this.$toast.warning(res.data.message)
+            } else {
+              this.$toast.success(res.data.message)
+            }
+
+            this.getUsers();
+          })
+          .catch((err) => {
+            this.isLoading = false
+            console.log(err.response);
+            this.$toast.error(err?.response?.data?.message);
+          });
+    },
+
+
+
+
 
     approveAlert(id) {
       this.data.id = id;
@@ -2548,7 +2737,10 @@ export default {
 
       this.offices = []
 
-      this.getOfficeByLocation(event);
+      //ministry & head office
+      if (event == 4 || event == 5) {
+        this.getOfficeByLocation(event);
+      }
 
       // if (this.dialogEdit) {
       //   this.getOfficeByLocation(event);
@@ -2572,7 +2764,7 @@ export default {
         return this.getOfficeByLocation(this.data.office_type, event);
       }
       await this.$axios
-          .get(`/admin/district/get/${event}`, {
+          .get(`/get-districts/${event}`, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
@@ -2625,7 +2817,7 @@ export default {
         const lookupType = this.data.committee_type == 16 || this.data.office_type == 35 ? 1 : 3
 
         await this.$axios
-            .get(`/admin/city/get/` + this.data.district_id + "/" + lookupType, {
+            .get(`/get-cities-pouroshavas/` + this.data.district_id + "/" + lookupType, {
               headers: {
                 Authorization: "Bearer " + this.$store.state.token,
                 "Content-Type": "multipart/form-data",
@@ -2763,6 +2955,26 @@ export default {
     },
 
 
+    async onChangeOffice(event) {
+      this.officeWards = []
+      this.data.office_ward_id = []
+
+      await this.$axios
+          .get(`/get-office-wards/${event}`, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((result) => {
+            this.officeWards = result.data.data;
+          });
+    },
+
+
+
+
+
 
     async getCommittees(locationId) {
       this.data.committee_id = null;
@@ -2792,26 +3004,30 @@ export default {
       this.data.office_id = null;
       this.data.committee_id = null;
 
-      try {
-        this.$store
-          .dispatch("Thana/GetAllUpazilaByDistrict", id)
-          .then((data) => {
-            this.upazilas = data;
+
+      await this.$axios
+          .get(`/get-upazilas/${id}`, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((result) => {
+            this.upazilas = result.data.data;
             this.city = []
             this.thanas = []
             this.unions = []
             this.wards = []
             this.committees = []
+            this.offices = result.data.data;
           });
-      } catch (e) {
-        console.log(e);
-      }
+
     },
 
-    getOfficeByLocation(office_type_id, location_type_id = null) {
+    async getOfficeByLocation(office_type_id, location_id = null) {
       let data = {
         office_type_id: office_type_id,
-        location_type_id: location_type_id,
+        location_id: location_id,
       };
       let fd = new FormData();
       for (const [key, value] of Object.entries(data)) {
@@ -2819,8 +3035,8 @@ export default {
           fd.append(key, value);
         }
       }
-      this.$axios
-        .post("/admin/user/office/by-location", fd, {
+      await this.$axios
+        .post("/get-offices", fd, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "application/json",

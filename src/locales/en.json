@@ -1,6 +1,7 @@
 {
   "topSidebar": {
-    "title": "Social Security Program - Social Service Department"
+    "title": "Social Security Program - Social Service Department",
+    "location": "Social Service Building, E-8/B-1, Agargaon, Sherbangla Nagar, Dhaka-1207, Bangladesh."
   },
   "sidebar": {
     "dashboard": "Dashboard"
@@ -16,6 +17,7 @@
       "action": "Action",
       "active": "Active",
       "inactive": "Inactive",
+      "banned": "Banned",
       "submit": "Submit",
       "cancel": "cancel",
       "edit": "Edit",
@@ -26,6 +28,7 @@
       "reset": "Reset",
       "back": "Back",
       "forward": "Forward",
+      "recommendation": "Recommendation",
       "waiting": "Waiting",
       "reject": "Reject",
       "status": "Status",
@@ -70,7 +73,7 @@
       "no": "No",
       "attention": "Attention!!!",
       "create": "Create",
-      "download":"Download Application"
+      "download": "Download Application"
     },
     "system_config": {
       "demo_graphic": {
@@ -237,6 +240,7 @@
           "union_pouro_city": "Thana/ Union/ Pouroshava",
           "union_ward": "Union/Ward",
           "subLocation_type": "Sub Location",
+          "office_name": "Office Name",
           "pouroshava": "Pouroshava",
           "dist_pouro": "Distrcit Pouroshava",
           "union_pouro": "Union /Pouroshava",
@@ -349,6 +353,7 @@
           "name": "Name",
           "approve": "Approve",
           "forward": "Forward",
+          "recommendation": "Recommendation",
           "reject": "Reject",
           "waiting": "Waiting"
         },
@@ -395,7 +400,11 @@
           "location": "Assigned Location",
           "login_id": "Login ID",
           "role": "Role",
-          "user_id": "User ID"
+          "ward": "Ward",
+          "unapproved": "Unapproved",
+          "active": "Active",
+          "inactive": "Inactive",
+          "banned": "Banned"
         },
         "financial_year": {
           "financial_year": "Financial Year",
@@ -410,6 +419,7 @@
         "list": "Device Lists",
         "user_id": "User ID",
         "user_name": "User Name",
+        "full_name": "Full Name",
         "device_type": "Device Type",
         "ip_address": "IP Address",
         "pupose_of_use": "Purpose of Use",
@@ -567,7 +577,7 @@
         "bank_name": "Bank Name",
         "branch_name": "Branch Name",
         "bank_account_number": "Bank Account Number",
-        
+
         "email": "Email",
         "mobile_account": "MFS (Mobile Financial Service)",
         "bank_account": "Bank Account",
@@ -753,6 +763,7 @@
         "cause_date": "Cause Date",
         "reason_provision": "reason provision",
         "beneficiary_replacement_list": "Beneficiary Replacement List",
+        "beneficiary_waiting_list": "Beneficiary Waiting List",
         "payment_history": "Payment History",
         "grievance_history": "Grievance History",
         "Change_tracking": "Change Tracking",
@@ -872,7 +883,40 @@
         "shitfing_list": "Beneficiary Shifting List",
         "title": "Beneficiary Shifting",
         "cause": "Cause",
-        "activation_date": "Activation Date"
+        "activation_date": "Activation Date",
+        "effective_date": "Effective Date",
+        "current_location": "Current Location",
+        "new_location": "New Location",
+        "shift_location": "Shift Location",
+        "to_date": "To Date",
+        "from_date": "From Date",
+        "location_shitfing_list": "Beneficiary Location Shifting List",
+        "from_location": "From Location",
+        "to_location": "To Location",
+        "title_location": "Beneficiary Location Shifting",
+        "title_program_shifting": "Beneficiary Program Shifting",
+        "allowance_program_new": "Allowance Program New"
+      },
+      "dashboard": {
+        "total_beneficiary": "Total Number of Beneficiary",
+        "active_beneficiary": "Number of Active Beneficiary",
+        "inactive_beneficiary": "Number of Inactive/Dead Beneficiary",
+        "waitining_beneficiary": "Number of Beneficiary in Waiting List",
+        "replaced_beneficiary": "Number of Replaced Beneficiary",
+        "program_and_location_wise_ben": "Program & Location Wise Beneficiary",
+        "gender_wise_ben": "Gender Wise Beneficiary",
+        "year_wise_waiting_ben": "Year Wise Number of Waiting list of Beneficiary",
+        "program_wise_ben": "Program Wise Beneficiary",
+        "age_and_program_wise_ben": "Age & Program Wise Beneficiary",
+        "total_percentage_of_location_wise_ben": "Total Percentage(%) of Beneficiary Location Wise",
+        "number_of_ben_program_shifted": "Number of Beneficiary Program Shifted",
+        "program": "Program",
+        "select_program": "Select Program",
+        "to_program_name": "To Program Name",
+        "from_program_name": "From Program Name",
+        "enter_start_end_date": "Enter Start & End Date",
+        "waitining_beneficiaries": "Waiting Beneficiaries",
+        "total_beneficiaries": "Total Beneficiaries"
       }
     },
     "manage_allotment": {
@@ -934,6 +978,31 @@
       "device_id": "Device ID",
       "location": "Location",
       "date_time": "Date & Time"
+    },
+    "activity_log": {
+      "title": "Activity Log Lists",
+      "name": "Log Name",
+      "description": "Description",
+      "change_info": "Change Info",
+      "login_user_info": "Login User",
+      "login_anonymous_user_info": "Login/Anonymous User Info",
+      "create": "Create"
+    },
+    "system_config_dashboard": {
+      "enter_start_end_date": "Enter Start & End Date",
+      "total_number_of_program_wise_beneficiary": "Total Number of Program Wise Beneficiary",
+      "office_type_wise_total_users": "Office Type Wise Total Users",
+      "select_office": "Select Office",
+      "reset_office": "-- Reset Office --"
+    },
+    "application_selection_dashboard": {
+      "enter_start_end_date": "Enter Start & End Date",
+      "total_number_of_application_received": "Total Number of Application Received",
+      "program_wise_number_of_application_approve": "Program Wise Number of Application Approved",
+      "program_wise_number_of_waiting_application": "Program Wise Number of Waiting Applicant",
+      "number_of_application_rejected": "Number of Application Rejected",
+      "total_number_of_application_received_application": "Total Number of Application Received Application",
+      "number_of_application_forwarded": "Number of Application Forwarded"
     }
   }
 }

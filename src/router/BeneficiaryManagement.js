@@ -4,7 +4,7 @@ const BeneficiaryManagementRoutes = [
     name: "Committee-List",
     meta: {
       requiresAuth: true,
-      permission: "thana-list",
+      permission: "committee-view",
     },
     component: () =>
       import("../pages/BeneficiaryManagement/CommitteeManagement/Index.vue"),
@@ -26,7 +26,7 @@ const BeneficiaryManagementRoutes = [
     name: "Committee-Create",
     meta: {
       requiresAuth: true,
-      permission: "thana-list",
+      permission: "committee-create",
     },
     component: () =>
       import("../pages/BeneficiaryManagement/CommitteeManagement/Create.vue"),
@@ -36,7 +36,7 @@ const BeneficiaryManagementRoutes = [
     name: "Committee-Edit",
     meta: {
       requiresAuth: true,
-      permission: "thana-list",
+      permission: "committee-edit",
     },
     component: () =>
       import("../pages/BeneficiaryManagement/CommitteeManagement/Edit.vue"),
@@ -46,7 +46,7 @@ const BeneficiaryManagementRoutes = [
     name: "Beneficiary_List",
     meta: {
       requiresAuth: true,
-      permission: "beneficiary-list",
+      permission: "beneficiaryInfo-view",
     },
     component: () =>
       import("../pages/BeneficiaryManagement/beneficiary_list/Index.vue"),
@@ -56,7 +56,7 @@ const BeneficiaryManagementRoutes = [
     name: "Beneficiary_List_Active",
     meta: {
       requiresAuth: true,
-      permission: "beneficiary-list-active",
+      permission: "beneficiaryActiveList-view",
     },
     component: () =>
       import(
@@ -68,7 +68,7 @@ const BeneficiaryManagementRoutes = [
     name: "Beneficiary_List_Inactive",
     meta: {
       requiresAuth: true,
-      permission: "beneficiary-list-inactive",
+      permission: "beneficiaryInactiveList-view",
     },
     component: () =>
       import(
@@ -80,7 +80,7 @@ const BeneficiaryManagementRoutes = [
     name: "Beneficiary_List_Waiting",
     meta: {
       requiresAuth: true,
-      permission: "beneficiary-list-waiting",
+      permission: "beneficiaryWaitingList-view",
     },
     component: () =>
       import(
@@ -92,7 +92,7 @@ const BeneficiaryManagementRoutes = [
     name: "Beneficiary_List_Delete",
     meta: {
       requiresAuth: true,
-      permission: "beneficiary-list-delete",
+      permission: "beneficiaryDeleteList-view",
     },
     component: () =>
       import(
@@ -104,11 +104,11 @@ const BeneficiaryManagementRoutes = [
     name: "beneficiary_details",
     meta: {
       requiresAuth: true,
-      permission: "beneficiary-list",
+      permission: "beneficiaryInfo-view",
     },
     component: () =>
       import(
-        "../pages/BeneficiaryManagement/beneficiary_list/BeneficiaeyDetails.vue"
+        "../pages/BeneficiaryManagement/beneficiary_list/BeneficiaeyDetails_V2.vue"
       ),
   },
   {
@@ -116,7 +116,7 @@ const BeneficiaryManagementRoutes = [
     name: "beneficiary_edit",
     meta: {
       requiresAuth: true,
-      permission: "beneficiary-list",
+      permission: "beneficiaryInfo-edit",
     },
     component: () =>
       import(
@@ -128,7 +128,7 @@ const BeneficiaryManagementRoutes = [
     name: "Beneficiary_Dashboard",
     meta: {
       requiresAuth: true,
-      permission: "beneficiary-dashboard",
+      permission: "beneficiaryDashboard-view",
     },
     component: () =>
       import(
@@ -149,7 +149,7 @@ const BeneficiaryManagementRoutes = [
     name: "beneficiary_replacement_list",
     meta: {
       requiresAuth: true,
-      permission: "beneficiary-replacement-list",
+      permission: "beneficiaryReplacement-view",
     },
     component: () =>
       import("../pages/BeneficiaryManagement/BeneficiaryReplacement/Index.vue"),
@@ -159,7 +159,7 @@ const BeneficiaryManagementRoutes = [
     name: "beneficiary_replacement",
     meta: {
       requiresAuth: true,
-      permission: "beneficiary-replacement",
+      permission: "beneficiaryReplacement-create",
     },
     component: () =>
       import(
@@ -171,7 +171,7 @@ const BeneficiaryManagementRoutes = [
     name: "beneficiary_journey",
     meta: {
       requiresAuth: true,
-      permission: "beneficiary-journey",
+      permission: "beneficiaryInfo-view",
     },
     component: () =>
       import(
@@ -195,7 +195,7 @@ const BeneficiaryManagementRoutes = [
     name: "beneficiary-card",
     meta: {
       requiresAuth: true,
-      permission: "beneficiary-card",
+      permission: "beneficiaryIdCard-view",
     },
     component: () =>
       import("../pages/BeneficiaryManagement/DigitalIDCard/IndexNew.vue"),
@@ -205,7 +205,7 @@ const BeneficiaryManagementRoutes = [
     name: "digital-id-card",
     meta: {
       requiresAuth: true,
-      permission: "digital-id-card",
+      permission: "beneficiaryIdCard-view",
     },
     component: () =>
       import(
@@ -217,7 +217,7 @@ const BeneficiaryManagementRoutes = [
     name: "digital-id-card",
     meta: {
       requiresAuth: true,
-      permission: "digital-id-card",
+      permission: "beneficiaryIdCard-view",
     },
     component: () =>
       import("../pages/BeneficiaryManagement/DigitalIDCard/DigitalIDCard.vue"),
@@ -227,7 +227,7 @@ const BeneficiaryManagementRoutes = [
     name: "beneficiary_exit_list",
     meta: {
       requiresAuth: true,
-      permission: "beneficiary-exit-list",
+      permission: "beneficiaryExit-view",
     },
     component: () =>
       import("../pages/BeneficiaryManagement/BeneficiaryExit/ExitList.vue"),
@@ -237,7 +237,7 @@ const BeneficiaryManagementRoutes = [
     name: "beneficiary-exit",
     meta: {
       requiresAuth: true,
-      permission: "beneficiary-exit",
+      permission: "beneficiaryExit-create",
     },
     component: () =>
       import("../pages/BeneficiaryManagement/BeneficiaryExit/Index.vue"),
@@ -247,7 +247,7 @@ const BeneficiaryManagementRoutes = [
     name: "beneficiary-shifting",
     meta: {
       requiresAuth: true,
-      permission: "beneficiary-shifting",
+      permission: "beneficiaryShifting-create",
     },
     component: () =>
       import("../pages/BeneficiaryManagement/BeneficiaryShifting/Index.vue"),
@@ -257,11 +257,35 @@ const BeneficiaryManagementRoutes = [
     name: "beneficiary_shifting_list",
     meta: {
       requiresAuth: true,
-      permission: "beneficiary-shifting-list",
+      permission: "beneficiaryShifting-view",
     },
     component: () =>
       import(
         "../pages/BeneficiaryManagement/BeneficiaryShifting/ShiftingList.vue"
+      ),
+  },
+  {
+    path: "/beneficiary-management/beneficiary-location-shifting",
+    name: "beneficiary-location-shifting",
+    meta: {
+      requiresAuth: true,
+      permission: "beneficiaryShifting-create",
+    },
+    component: () =>
+      import(
+        "../pages/BeneficiaryManagement/BeneficiaryShifting/LocationShifting/Index.vue"
+      ),
+  },
+  {
+    path: "/beneficiary-management/beneficiary-location-shifting-list",
+    name: "beneficiary_location_shifting_list",
+    meta: {
+      requiresAuth: true,
+      permission: "beneficiaryShifting-view",
+    },
+    component: () =>
+      import(
+        "../pages/BeneficiaryManagement/BeneficiaryShifting/LocationShifting/LocationShiftingList.vue"
       ),
   },
 ];

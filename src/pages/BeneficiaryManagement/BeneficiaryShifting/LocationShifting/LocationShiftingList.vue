@@ -12,7 +12,7 @@
                 class="btn my-2"
                 color="primary"
                 router
-                to="/beneficiary-management/beneficiary-shifting"
+                to="/beneficiary-management/beneficiary-location-shifting"
               >
                 {{ $t("container.list.add") }}
               </v-btn>
@@ -24,7 +24,7 @@
                   <h3 class="white--text">
                     {{
                       $t(
-                        "container.beneficiary_management.beneficiary_shifting.shitfing_list"
+                        "container.beneficiary_management.beneficiary_shifting.location_shitfing_list"
                       )
                     }}
                   </h3>
@@ -477,7 +477,6 @@
                             ></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
-
                         <v-col lg="3" md="3" cols="12">
                           <ValidationProvider
                             name="To Date"
@@ -517,7 +516,6 @@
                             </v-menu>
                           </ValidationProvider>
                         </v-col>
-
                         <v-col lg="3" md="3" cols="12">
                           <ValidationProvider
                             name="From Date"
@@ -589,7 +587,7 @@
                 <h3 class="text-uppercase pt-3">
                   {{
                     $t(
-                      "container.beneficiary_management.beneficiary_shifting.shitfing_list"
+                      "container.beneficiary_management.beneficiary_shifting.location_shitfing_list"
                     )
                   }}
                 </h3>
@@ -597,7 +595,7 @@
               <v-card-text>
                 <v-row justify="end" align="center" class="mx-4">
                   <!-- Dropdown on the right -->
-                  <v-col lg="4" md="4" cols="12" class="text-right">
+                  <!-- <v-col lg="4" md="4" cols="12" class="text-right">
                     <v-btn
                       elevation="2"
                       class="btn mr-2 white--text"
@@ -616,7 +614,7 @@
                       <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
                       {{ $t("container.list.excel") }}
                     </v-btn>
-                  </v-col>
+                  </v-col> -->
                 </v-row>
                 <v-row
                   class="ma-0 white round-border d-flex justify-space-between align-center"
@@ -714,7 +712,7 @@ import Spinner from "@/components/Common/Spinner.vue";
 extend("required", required);
 export default {
   name: "Index",
-  title: "CTM - Beneficiary Shifting List",
+  title: "CTM - Beneficiary Location Shifting List",
   data() {
     return {
       data: {
@@ -823,15 +821,15 @@ export default {
         },
         {
           text: this.$t(
-            "container.beneficiary_management.beneficiary_list.from_program_name"
+            "container.beneficiary_management.beneficiary_shifting.from_location"
           ),
-          value: "from_program_name_en",
+          value: "from_division_name_en",
         },
         {
           text: this.$t(
-            "container.beneficiary_management.beneficiary_list.to_program_name"
+            "container.beneficiary_management.beneficiary_shifting.to_location"
           ),
-          value: "to_program_name_en",
+          value: "to_division_name_en",
         },
         {
           text: this.$t(
@@ -843,7 +841,7 @@ export default {
           text: this.$t(
             "container.beneficiary_management.beneficiary_list.activation_date"
           ),
-          value: "activation_date",
+          value: "effective_date",
         },
         {
           text: this.$t("container.list.action"),
@@ -1175,11 +1173,12 @@ export default {
 
         perPage: this.pagination.perPage,
         page: this.pagination.current,
+
         // sortBy: this.sortBy,
         // orderBy: this.sortDesc,
       };
       this.$axios
-        .get("/admin/beneficiary/shiftingList", {
+        .get("/admin/beneficiary/locationShiftingList", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",

@@ -172,7 +172,7 @@
             <h3 class="text-uppercase pt-3">
               {{
                 $t(
-                  "container.beneficiary_management.beneficiary_list.beneficiary_replacement_list"
+                  "container.beneficiary_management.beneficiary_list.beneficiary_waiting_list"
                 )
               }}
             </h3>
@@ -219,7 +219,7 @@
                     <v-tooltip top>
                       <template v-slot:activator="{ on }">
                         <v-btn
-                          v-can="'update-post'"
+                          v-can="'beneficiaryReplacement-create'"
                           fab
                           x-small
                           v-on="on"
@@ -368,7 +368,7 @@ export default {
       this.loading = true;
       try {
         const queryParams = {
-          program_id: null,
+          exclude_beneficiary_id: this.$route.params.id,
         };
         this.$axios
           .get(`/admin/beneficiary/getListForReplace`, {

@@ -10,7 +10,7 @@ const ApplicationSelectionRoutes = [
     name: "application-dashboard",
     meta: {
       requiresAuth: true,
-      permission: "application-dashboard",
+      permission: "applicationDashboard-view",
     },
     component: () => import("../pages/ApplicationSelection/Dashboard/Index.vue")
   },

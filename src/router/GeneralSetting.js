@@ -4,7 +4,7 @@ const CommonRoutes = [
     name: "GeneralSetting",
     meta: { 
       requiresAuth: true,
-      permission: "general-setting-view",
+      permission: "generalSetting-view",
     },
     component: () =>
       import(

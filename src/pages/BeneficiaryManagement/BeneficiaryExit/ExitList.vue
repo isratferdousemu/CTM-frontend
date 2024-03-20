@@ -7,6 +7,7 @@
           <v-col cols="12">
             <div class="d-block text-right">
               <v-btn
+                v-can="'beneficiaryExit-create'"
                 elevation="2"
                 class="btn my-2"
                 color="primary"
@@ -476,6 +477,84 @@
                             ></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
+                        <v-col lg="3" md="3" cols="12">
+                          <ValidationProvider
+                            name="To Date"
+                            vid="to_date"
+                            v-slot="{ errors }"
+                          >
+                            <v-menu
+                              v-model="menu2"
+                              :close-on-content-click="false"
+                              :nudge-right="40"
+                              transition="scale-transition"
+                              offset-y
+                              min-width="auto"
+                            >
+                              <template v-slot:activator="{ on, attrs }">
+                                <v-text-field
+                                  outlined
+                                  clearable
+                                  v-model="data.from_date"
+                                  :label="
+                                    $t(
+                                      'container.beneficiary_management.beneficiary_shifting.from_date'
+                                    )
+                                  "
+                                  prepend-inner-icon="mdi-calendar"
+                                  readonly
+                                  v-bind="attrs"
+                                  v-on="on"
+                                  :error="errors[0] ? true : false"
+                                  :error-messages="errors[0]"
+                                ></v-text-field>
+                              </template>
+                              <v-date-picker
+                                v-model="data.from_date"
+                                @input="menu2 = false"
+                              ></v-date-picker>
+                            </v-menu>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col lg="3" md="3" cols="12">
+                          <ValidationProvider
+                            name="From Date"
+                            vid="from_date"
+                            v-slot="{ errors }"
+                          >
+                            <v-menu
+                              v-model="menu1"
+                              :close-on-content-click="false"
+                              :nudge-right="40"
+                              transition="scale-transition"
+                              offset-y
+                              min-width="auto"
+                            >
+                              <template v-slot:activator="{ on, attrs }">
+                                <v-text-field
+                                  outlined
+                                  clearable
+                                  v-model="data.to_date"
+                                  :label="
+                                    $t(
+                                      'container.beneficiary_management.beneficiary_shifting.to_date'
+                                    )
+                                  "
+                                  prepend-inner-icon="mdi-calendar"
+                                  readonly
+                                  v-bind="attrs"
+                                  v-on="on"
+                                  :error="errors[0] ? true : false"
+                                  :error-messages="errors[0]"
+                                ></v-text-field>
+                              </template>
+                              <v-date-picker
+                                v-model="data.to_date"
+                                @input="menu1 = false"
+                              ></v-date-picker>
+                            </v-menu>
+                          </ValidationProvider>
+                        </v-col>
                       </v-row>
 
                       <div class="d-inline d-flex justify-end">
@@ -664,6 +743,8 @@ export default {
         thana_id: null,
         union_id: null,
         ward_id: null,
+        to_date: null,
+        from_date: null,
       },
       ben_status: [
         {
@@ -806,6 +887,8 @@ export default {
       this.data.program_id = null;
       this.data.union_id = null;
       this.data.ward_id = null;
+      this.data.from_date = null;
+      this.data.to_date = null;
 
       this.GetApplication();
     },
@@ -1094,6 +1177,8 @@ export default {
         pouro_id: this.data.pouro_id,
         union_id: this.data.union_id,
         ward_id: this.data.ward_id,
+        from_date: this.data.from_date,
+        to_date: this.data.to_date,
 
         perPage: this.pagination.perPage,
         page: this.pagination.current,

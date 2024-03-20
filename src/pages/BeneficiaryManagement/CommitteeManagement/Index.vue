@@ -40,6 +40,7 @@
                   <!-- Dropdown on the right -->
                   <v-col lg="3" md="3" cols="12" class="text-right">
                     <v-btn
+                      v-can="'committee-create'"
                       to="/beneficiary-management/committee/create"
                       color="primary"
                       prepend-icon="mdi-account-multiple-plus"
@@ -130,7 +131,7 @@
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
-                              v-can="'update-post'"
+                              v-can="'committee-view'"
                               fab
                               x-small
                               v-on="on"
@@ -148,7 +149,7 @@
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
-                              v-can="'update-post'"
+                              v-can="'committee-edit'"
                               fab
                               x-small
                               v-on="on"
@@ -167,7 +168,7 @@
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
-                              v-can="'delete-division'"
+                              v-can="'committee-delete'"
                               fab
                               x-small
                               v-on="on"

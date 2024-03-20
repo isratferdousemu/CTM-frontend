@@ -52,9 +52,9 @@ export default {
       return [
         { text: this.$t('container.list.sl'), value: "id", align: "start", sortable: false },
         { text: this.$t('container.system_config.device.user_id'), value: "user.user_id" },
-        { text: this.$t('container.system_config.device.user_name'), value: "name" },
+        { text: this.$t('container.system_config.device.full_name'), value: "name" },
         { text: this.$t('container.system_config.device.device_type'), value: "device_type" },
-        { text: this.$t('container.system_config.device.ip_address'), value: "ip_address" },
+        // { text: this.$t('container.system_config.device.ip_address'), value: "ip_address" },
         { text: this.$t('container.system_config.device.pupose_of_use'), value: "purpose_use" },
         { text: this.$t('container.list.status'), value: "status" },
         { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false },
