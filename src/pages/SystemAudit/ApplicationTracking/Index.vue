@@ -6,7 +6,7 @@
                 {
                     icon: 'mdi mdi-check',
                     name: 'Application Accepted',
-                    state: 'Your application is accepted',
+                    state: 'Your application is received',
                     date_time:'Time: 04:05:52 PM Date: 11 - 10 - 2023',
                     status:'completed'
                 },
@@ -25,7 +25,7 @@
                     status: 'completed'
                 },
                    {
-                    icon: 'mdi mdi-check',
+                    icon: 'mdi-timer-sand',
                     name: 'Upazila/City Corporation Committee',
                     state: 'Your application has been forwarded to the Upazila/City Corporation Committee Allotted for execution Time / day     : 1 minute Estimated Execution Time / day       : days',
                     date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
@@ -49,9 +49,9 @@
             ],
              legends: [
                 { status: 'completed', icon: 'mdi-check', color: '#26A69A', label: 'Completed' },
-                { status: 'rejected', icon: 'mdi-close', color: '#E53935', label: 'Rejected' },
-                 { status: 'waiting', icon: 'mdi-clock', color: '#757575', label: 'Inprogress' },
-                 { status: 'pending', icon: 'mdi-alert', color: '#757575', label: 'Future Proram' },
+            
+                 { status: 'waiting', icon: 'mdi-timer-sand', color: '#FFD600', label: 'Inprogress' },
+                 { status: 'pending', icon: 'mdi-clock', color: '#757575', label: 'Future Proram' },
             ],
              tracking_summary: [
                 { name: 'National ID/Birth Registration No', value: '2234897899412' },
@@ -79,7 +79,7 @@
                 case 'rejected':
                     return '#E53935';
                 case 'waiting':
-                    return '#616161';
+                    return '#FFD600';
                 case 'pending':
                     return '#616161';
                 default:
@@ -93,9 +93,9 @@
                 case 'rejected':
                     return '#mdi-close';
                 case 'waiting':
-                    return 'mdi-clock';
+                    return 'mdi-timer-sand';
                 case 'pending':
-                    return 'mdi-alert';
+                    return 'mdi-clock';
                 default:
                     return 'grey';
             }
