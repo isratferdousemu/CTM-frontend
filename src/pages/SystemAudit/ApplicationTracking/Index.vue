@@ -2,6 +2,10 @@
 
     data() {
         return {
+        data:{
+            tracking_type:1
+
+        },
             tracking: [
                 {
                     icon: 'mdi mdi-check',
@@ -140,29 +144,38 @@
 
                             <v-card-text>
                                 <v-row class="ma-5">
-                                    <v-col cols="12" lg="3" md="6">
-                                        <span class="mr-5">{{ $t('container.system_audit.application_tracking') }}
-                                            Number</span>
-                                        <!-- <v-radio-group required row>
-                                            <span class="mr-5">{{ $t('container.system_audit.application_tracking')
-                                            }}</span>
+                                    <v-col cols="12" lg="4" md="4">
+
+                                        <v-radio-group required row v-model="data.tracking_type">
+                                            <label class="mr-5">{{ $t('container.system_audit.application_tracking')
+                                                }}</label>
                                             <v-radio :label="$t('container.system_audit.nbr')" :value="1"></v-radio>
-                                            <v-radio :label="$t('container.system_audit.tracking_no')" :value="2"></v-radio>
-                                        </v-radio-group> -->
+                                            <v-radio :label="$t('container.system_audit.tracking_no')"
+                                                :value="2"></v-radio>
+                                        </v-radio-group>
                                     </v-col>
-                                    <v-col cols="12" lg="6" md="3">
-                                        <v-text-field v-model="data.tracking_no" outlined clearable></v-text-field>
+                                    <v-col cols="12" lg="4" md="4" v-if="data.tracking_type == 2">
+                                        <br>
+                                        <label>{{ $t('container.system_audit.application_tracking')
+                                            }}</label>
+                                        <v-text-field outlined clearable></v-text-field>
                                     </v-col>
-                                    <v-col cols="12" lg="3" md="3">
-
-
-
-                                        <v-btn type="submit" flat color="success" :disabled="invalid" :loading="loading"
-                                            class="custom-btn-width  white--text py-2" @click="applicationTracking()">
-                                            {{ $t("container.list.preview") }}
-                                        </v-btn>
-
-
+                              
+                                    <v-col cols="12" lg="4" md="4" v-if="data.tracking_type == 1">
+                                        <br>
+                                        <label>{{ $t('container.system_audit.nbr')
+                                            }}</label>
+                                        <v-text-field outlined clearable></v-text-field>
+                                    </v-col>
+                                    <v-col cols="12" lg="4" md="4">
+                                        <br>
+                                        <div class="text-right">
+                                            <v-btn type="submit" flat color="success" :disabled="invalid"
+                                                :loading="loading" class="custom-btn-width white--text py-2">
+                                                <span class="mdi mdi-television mr-2"></span> <!-- Icon -->
+                                                {{ $t("container.list.preview") }}
+                                            </v-btn>
+                                        </div>
                                     </v-col>
 
 
@@ -179,13 +192,13 @@
                                 <v-row class="ma-1">
                                     <v-col cols="12" lg="3" md="3">
                                         <table class="small-text">
-                                            <h2 style="text-decoration: underline">{{ tracking_details.program?.name_en }}
-                                            </h2>
-                                            <h2>Applicant Details</h2>
+                                            <h3 style="text-decoration: underline">Disability Allowance</h3>
+                                            Details
 
-                                            <tr v-for="data in tracking_summary">
-                                                <td><b>{{ data.name }}</b></td>
-                                                <td><b>:</b>{{ data.value }}</td>
+                                            <tr v-for="item in tracking_summary" :key="item.name">
+                                                <td><b>{{ item.name }}</b></td>
+
+                                                <td><b>:</b>{{ item.value }}</td>
                                             </tr>
 
                                         </table>
@@ -194,27 +207,27 @@
                                     <v-col cols="12" lg="9" md="9">
                                         <v-card elevation="0">
                                             <v-card-title class="custom-title">
-                                                <h3 class="text-center">{{ $t('container.system_audit.application_status')
-                                                }}</h3>
+                                                <h3 class="text-center">{{
+                                                    $t('container.system_audit.application_status')
+                                                    }}</h3>
                                             </v-card-title>
                                             <v-card-text>
                                                 <table>
                                                     <tbody>
 
-                                                        <tr v-for="item in tracking"
-                                                            :key="item.name">
+                                                        <tr v-for="item in tracking" :key="item.name">
                                                             <td>{{ item.name }}</td>
                                                             <td>
 
                                                                 <v-timeline>
 
-                                                                    <v-timeline-item :color="getTimelineColor(item.status)"
-                                                                        :icon="getTimelineIcon(item.status)">
-                                                                    </v-timeline-item>
+                                                                    <v-timeline-item
+                                                                        :color="getTimelineColor(item.status)"
+                                                                        :icon="getTimelineIcon(item.status)"></v-timeline-item>
                                                                 </v-timeline>
                                                             </td>
                                                             <td>{{ item.state }}</td>
-                                                            <td>Time :{{ item.time }}  </br>Date:{{ item.date }}</td>
+                                                            <td>{{ item.date_time }}</td>
                                                         </tr>
 
                                                     </tbody>
