@@ -100,7 +100,7 @@
           "search": "Search District",
           "edit": "Edit District",
           "delete": "Delete Division",
-          "delete_alert": "Are you sure to delete this Division?"
+          "delete_alert": "Are you sure to delete this District?"
         },
         "city": {
           "city": "City Corporation/District Pourashava",
@@ -212,7 +212,7 @@
           "union": "Union/Pouroshava",
           "list": "Union/Pouroshava List",
           "code": "Union/Pourashava Code",
-          "custom_code": "Thana (City) /Union/Pourashava Geo Code",
+          "custom_code": "Union/Thana/Pourashava Geo Code",
           "name_en": "Union/Thana/Pouroshava Name English",
           "name_bn": "Union/Thana/Pouroshava Name Bangla",
           "add_new": "Add New Union/Pouroshava",
@@ -517,7 +517,9 @@
         "page_link_id": "Page url",
         "order": "Order",
         "add": "Add Menu",
-        "edit": "Edit Menu"
+        "edit": "Edit Menu",
+        "delete": "Delete Menu",
+        "delete_alert": "Are you sure to delete this Menu?"
       }
     },
     "general_setting": {
