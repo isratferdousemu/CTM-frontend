@@ -214,7 +214,7 @@
                                                                 </v-timeline>
                                                             </td>
                                                             <td>{{ item.state }}</td>
-                                                            <td>Time :{{ item.time }}  </br>Date:{{ item.date }}</td>
+                                                            <td>Time :{{ item.time }}  </br>Date:{{ item.date }} </br> Days Taken:{{ item.daysToken }}</td>
                                                         </tr>
 
                                                     </tbody>
@@ -256,9 +256,6 @@ export default {
                 tracking_no: null,
             },
             tracking_details: [],
-            // tracking_details: {
-            //     status: 'completed'
-            // },
             localDate: null,
             localTime: null,
             tracking: [],
@@ -342,20 +339,24 @@ export default {
                  this.tracking_details = response.data.data;
                  const trackingAllData = response.data.data.committee_application;
 
-                 console.log(trackingAllData,'trackingAllDatatrackingAllData');
-                const updatedTracking = this.tracking.map((item, index) => {
+                  const updatedTracking = this.tracking.map((item, index) => {
                     if (index < trackingAllData.length) {
-                              // Format the date to local date and time
+                        // Format the date to local date and time
                         const dateTime1 = new Date(trackingAllData[index].created_at);
                         this.localDate1 = dateTime1.toLocaleDateString();
                         this.localTime1 = dateTime1.toLocaleTimeString();
+
+                        // Calculate the difference in days between the current item's created_at date and the previous item's created_at date
+                        const previousDate = index > 0 ? new Date(trackingAllData[index - 1].created_at) : dateTime1;
+                        const differenceInMilliseconds = Math.abs(dateTime1 - previousDate);
+                        const differenceInDays = Math.ceil(differenceInMilliseconds / (1000 * 60 * 60 * 24));
+
                         return {
                             ...item,
                             status: trackingAllData[index].status,
-                            date: this.localDate1, 
-                            time: this.localTime1, 
-                            daysToken: this.localTime1, 
-                            /* icon: this.getTimelineIcon(trackingAllData[index].status)  */
+                            date: this.localDate1,
+                            time: this.localTime1,
+                            daysToken: differenceInDays,
                         };
                     } else {
                         return item;
@@ -379,6 +380,8 @@ export default {
                     { name: 'Office', value: this.tracking_details?.permanent_address },
                     { name: 'Tracking No', value: this.tracking_details?.application_id },
                 ];
+
+  
 
             }).catch((error) => {
                 console.log(error);
