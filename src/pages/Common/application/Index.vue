@@ -251,10 +251,19 @@
                               $t('container.application_selection.application.image_alert') }})</label>
                             <span style="margin-left: 4px; color: red">*</span>
                             <ValidationProvider v-slot="{ errors }" name="Image" rules="required" vid="image">
-                              <v-file-input outlined show-size counter prepend-inner-icon="mdi-camera"
+                              <v-file-input outlined show-size counter prepend-outer-icon="mdi-camera"
                                 v-model="data.image" accept="image/*" @change="previewImage" prepend-icon="" id="image">
                               </v-file-input>
                             </ValidationProvider>
+                            <!-- <ValidationProvider v-slot="{ errors }" name="Image" rules="required" vid="image">
+                              <v-file-input outlined show-size counter v-model="data.image" accept="image/*"
+                                @change="previewImage" id="image">
+                                <template v-slot:prepend-inner>
+                                  <v-icon @click="triggerFileInput">mdi-camera</v-icon>
+                                </template>
+                              </v-file-input>
+                            </ValidationProvider> -->
+
                           </v-col>
                           <v-col cols="6" align-self="end" lg="6">
                             <v-img :src="signUrl" style="
@@ -271,7 +280,7 @@
                               <label>{{ $t('container.application_selection.application.signature') }} ({{
                                 $t('container.application_selection.application.signature_alert') }})</label>
                               <span style="margin-left: 4px; color: red">*</span>
-                              <v-file-input outlined show-size counter prepend-inner-icon="mdi-camera"
+                              <v-file-input outlined show-size counter prepend-outer-icon="mdi-camera"
                                 v-model="data.signature" accept="image/*" @change="previewSign" id="signature"
                                 prepend-icon=""></v-file-input>
                             </ValidationProvider>
@@ -317,7 +326,7 @@
                           </v-col>
                           <v-col cols="6" lg="6">
                             <div class="validation-error-mobile">
-                              <ValidationProvider name="Mother Name in English" vid="mother_name_bn" v-slot="{ errors }"
+                              <ValidationProvider name="Mother Name in Bangla" vid="mother_name_bn" v-slot="{ errors }"
                                 rules="required">
                                 <label>{{ $t('container.application_selection.application.mother_name_bn') }}</label>
                                 <v-text-field v-model="data.mother_name_bn" outlined clearable
@@ -405,8 +414,10 @@
 
                           <v-col cols="6" lg="6">
                             <div class="validation_error_gender_type">
-                              <ValidationProvider name="Nationality" vid="nationality" readonly v-slot="{ errors }">
+                              <ValidationProvider name="Nationality" vid="nationality" readonly v-slot="{ errors }"
+                                rules="required">
                                 <label>{{ $t('container.application_selection.application.nationality') }}</label>
+                                <span style="margin-left: 4px; color: red">*</span>
                                 <v-text-field v-model="data.nationality" outlined :error="errors[0] ? true : false"
                                   :error-messages="errors[0]">
                                 </v-text-field>
@@ -535,7 +546,8 @@
                             $t('container.system_config.demo_graphic.ward.subLocation_type') }}
                           </label>
                           <span style="margin-left: 4px; color: red">*</span>
-                          <ValidationProvider name="subLocationType" vid="subLocationType" v-slot="{ errors }">
+                          <ValidationProvider name="subLocationType" vid="subLocationType" v-slot="{ errors }"
+                            rules="required">
                             <v-select @input="onChangeSubLocationType($event)" v-model="data.sub_location_type" outlined
                               :items="subLocationType" :item-text="getItemValue" item-value="id"
                               :error="errors[0] ? true : false" :error-messages="errors[0]"
@@ -751,7 +763,8 @@
                             $t('container.system_config.demo_graphic.ward.subLocation_type') }}
                           </label>
                           <span style="margin-left: 4px; color: red">*</span>
-                          <ValidationProvider name="subLocationType" vid="subLocationType" v-slot="{ errors }">
+                          <ValidationProvider name="subLocationType" vid="subLocationTypePermanent" v-slot="{ errors }"
+                            rules="required">
                             <v-select @input="onChangeSubLocationTypePermanent($event)"
                               v-model="data.permanent_sub_location_type" outlined :items="subLocationType"
                               :item-text="getItemValue" item-value="id" :error="errors[0] ? true : false"
@@ -1073,7 +1086,7 @@
                                 <v-file-input v-model="data.application_allowance_values[index]
                                   .value
                                   " @change="addPreviewFile($event, index)" placeholder="Select your files"
-                                  prepend-icon prepend-inner-icon="mdi-paperclip" outlined
+                                  prepend-icon prepend-outer-icon="mdi-paperclip" outlined
                                   :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
                                   :error-messages="errors[0]" :show-size="1000">
                                 </v-file-input>
@@ -1403,7 +1416,7 @@
 
                           <v-col cols="6" lg="6">
                             <ValidationProvider name="Nominee Natinality" readonly vid="nominee_nationality"
-                              v-slot="{ errors }">
+                              v-slot="{ errors }" rules="required">
                               <label>{{ $t('container.application_selection.application.nationality') }} </label>
                               <v-text-field v-model="data.nominee_nationality" outlined readonly
                                 :error="errors[0] ? true : false" :error-messages="errors[0]">
@@ -1412,8 +1425,8 @@
                           </v-col>
                           <v-col cols="6" lg="6">
                             <div class="validation_error_gender_type">
-                              <ValidationProvider name="Gender of Nominee" vid="nominee_relation_with_beneficiary"
-                                v-slot="{ errors }" rules="required">
+                              <ValidationProvider name="Relationship with beneficiary"
+                                vid="nominee_relation_with_beneficiary" v-slot="{ errors }" rules="required">
                                 <label>{{ $t('container.application_selection.application.relationship') }}</label>
                                 <span style="margin-left: 4px; color: red">*</span>
                                 <v-select v-model="data.nominee_relation_with_beneficiary" outlined item-value="name_en"
@@ -1439,7 +1452,7 @@
                               $t('container.application_selection.application.image_alert') }})</label>
                             <span style="margin-left: 4px; color: red">*</span>
                             <ValidationProvider v-slot="{ errors }" name="Image" rules="required" vid="nominee_image">
-                              <v-file-input outlined show-size counter prepend-inner-icon="mdi-camera"
+                              <v-file-input outlined show-size counter prepend-outer-icon="mdi-camera"
                                 v-model="data.nominee_image" accept="image/*" @change="previewImageNominee"
                                 prepend-icon="" id="nominee_image"></v-file-input>
                             </ValidationProvider>
@@ -1462,7 +1475,7 @@
                             <ValidationProvider v-slot="{ errors }" name="Signature" rules="required"
                               vid="nominee_signature">
 
-                              <v-file-input outlined show-size counter prepend-inner-icon="mdi-camera"
+                              <v-file-input outlined show-size counter prepend-outer-icon="mdi-camera"
                                 v-model="data.nominee_signature" accept="image/*" @change="previewSignNominee"
                                 prepend-icon="" id="nominee_signature"></v-file-input>
                             </ValidationProvider>
@@ -2076,6 +2089,7 @@ export default {
         }
       }
     },
+  
     scrollToVerifyButton() {
       const verifyButton = document.getElementById('verify-button');
       if (verifyButton) {
