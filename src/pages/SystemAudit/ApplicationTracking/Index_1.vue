@@ -157,12 +157,19 @@ export default {
                                             }}</label>
                                         <v-text-field outlined clearable></v-text-field>
                                     </v-col>
-                              
+
                                     <v-col cols="12" lg="4" md="4" v-if="data.tracking_type == 1">
                                         <br>
-                                        <label>{{ $t('container.system_audit.nbr')
-                                            }}</label>
-                                        <v-text-field outlined clearable></v-text-field>
+                                        <v-row>
+                                            <v-col> <label>{{ $t('container.system_audit.nbr')
+                                                    }}</label>
+                                                <v-text-field outlined clearable></v-text-field></v-col>
+                                        </v-row>
+                                        <v-col> <label>{{
+    $t('container.application_selection.application.date_of_birth')
+                                                }}</label>
+                                            <v-text-field outlined clearable type="date"></v-text-field></v-col>
+
                                     </v-col>
                                     <v-col cols="12" lg="4" md="4">
                                         <br>
