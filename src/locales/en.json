@@ -33,10 +33,10 @@
       "reject": "Reject",
       "status": "Status",
       "code": "Code",
-      "name_en": "Name English",
-      "name_bn": "Name Bangla",
-      "value_en": "Name English",
-      "value_bn": "Name Bangla",
+      "name_en": "Name (English)",
+      "name_bn": "Name (Bangla)",
+      "value_en": "Name (English)",
+      "value_bn": "Name (Bangla)",
       "keyword": "Keyword",
       "location_type": "Location Type",
       "add_new": "Add New",
@@ -73,7 +73,9 @@
       "no": "No",
       "attention": "Attention!!!",
       "create": "Create",
-      "download": "Download Application"
+      "download": "Download Application",
+      "pouroshava": "Pouroshava",
+      "union": "Union"
     },
     "system_config": {
       "demo_graphic": {
