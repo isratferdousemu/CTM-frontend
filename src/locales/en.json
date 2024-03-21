@@ -963,8 +963,8 @@
       "grievance_tracking": "Grievance Tracking",
       "payment_tracking": "Payment Tracking",
       "nbr": "NID/Birth Registration Number",
-      "tracking_no": "Tracking No",
-      "application_status": "Application Status",
+      "tracking_no": "Tracking Information",
+      "application_status": "Application Status Verification",
       "grievance_status": "Grievance Status",
       "payment_status": "Payment Status",
       "activity_log": "Activity Log",
@@ -977,7 +977,11 @@
       "user": "User",
       "device_id": "Device ID",
       "location": "Location",
-      "date_time": "Date & Time"
+      "date_time": "Date & Time",
+      "application_time": "Application Time",
+      "application_date": "Application Date",
+      "office": "Office",
+      "applicant_details": "Applicant Details"
     },
     "activity_log": {
       "title": "Activity Log Lists",

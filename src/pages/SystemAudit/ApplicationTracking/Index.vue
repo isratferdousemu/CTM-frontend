@@ -1,109 +1,4 @@
-data() {
-return {
-    
-tracking: [
-{
-icon: 'mdi mdi-check',
-name: 'Application Accepted',
-state: 'Your application is received',
-date_time:'Time: 04:05:52 PM Date: 11 - 10 - 2023',
-status:'completed'
-},
-{
-icon: 'mdi mdi-check',
-name: 'Primarily Verification',
-state: 'Your application is included to Verification list',
-date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
-status: 'completed'
-},
-{
-icon: 'mdi mdi-check',
-name: 'Ward/Union/Pouroshava Committee',
-state: 'Your application has been forwarded to the Union / pouroshava Committee',
-date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
-status: 'completed'
-},
-{
-icon: 'mdi-timer-sand',
-name: 'Upazila/City Corporation Committee',
-state: 'Your application has been forwarded to the Upazila/City Corporation Committee',
-date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
-status: 'waiting'
-},
-{
-icon: 'mdi mdi-check',
-name: 'Waiting List',
-state: 'Your application has been included in the waiting list',
-date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
-status: 'pending'
-},
-{
-icon: 'mdi mdi-check',
-name: 'Final Selection List',
-state: 'Congratulations, you have been finally selected to receive the allowance ',
-date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
-status: 'pending'
-},
 
-],
-legends: [
-{ status: 'completed', icon: 'mdi-check', color: '#26A69A', label: 'Completed' },
-
-{ status: 'waiting', icon: 'mdi-timer-sand', color: '#FFD600', label: 'Inprogress' },
-{ status: 'pending', icon: 'mdi-clock', color: '#757575', label: 'Future Proram' },
-],
-tracking_summary: [
-{ name: 'National ID/Birth Registration No', value: '2234897899412' },
-{ name: 'Application Time', value: '04:05:52'},
-{ name: 'Application Date', value: '2023-10-04' },
-{ name: 'Office', value: 'Head Office'},
-{ name: 'Tracking No', value: '2234897899412' },
-
-
-],
-
-};
-},
-
-mounted() {
-
-},
-
-methods: {
-
-getTimelineColor(status) {
-switch (status) {
-case 'completed':
-return '#26A69A';
-case 'rejected':
-return '#E53935';
-case 'waiting':
-return '#FFD600';
-case 'pending':
-return '#616161';
-default:
-return 'grey';
-}
-},
-getTimelineIcon(status) {
-switch (status) {
-case 'completed':
-return 'mdi-check';
-case 'rejected':
-return '#mdi-close';
-case 'waiting':
-return 'mdi-timer-sand';
-case 'pending':
-return 'mdi-clock';
-default:
-return 'grey';
-}
-},
-
-
-},
-};
-</script>
 
 <style>
 .small-text {
@@ -153,7 +48,7 @@ return 'grey';
                                     <v-col cols="12" lg="6" md="6">
                                         <br>
                                         <div v-if="data.tracking_type == 2">
-                                            <label>{{ $t('container.system_audit.application_tracking')
+                                            <label>{{ $t('container.system_audit.tracking_no')
                                                 }}</label>
                                             <v-text-field v-model="data.tracking_no" outlined clearable></v-text-field>
                                         </div>
@@ -198,21 +93,31 @@ return 'grey';
 
                         </v-card>
                     </v-col>
-                    <v-col cols="12">
+
+
+                    <v-col cols="12" v-if="tracking_details !== null && tracking_details?.length!=0">
                         <v-card elevation="0">
 
                             <v-card-text>
 
 
-                                <v-row>
+                                <v-row dense class="ml-5">
                                     <v-col cols="12">
-                                        <h4 style="text-decoration: underline" class="text--blue">{{
+                                        <h4 style=" color: blue !important;">
+                                            {{ this.language === 'bn' ? tracking_details.program?.name_bn :
                                             tracking_details.program?.name_en }}</h4>
-                                        <h4>Applicant Details</h4>
+                                        <br>
+                                        <hr style="border-top: 1px solid gray; width: 40%;">
+
+
+                                        <br>
+                                        <h4>{{
+                                            $t('container.system_audit.applicant_details')
+                                            }}</h4>
                                     </v-col>
                                 </v-row>
-                                <v-row>
-                                    <v-col cols="4" v-for="data in tracking_summary" :key="data.name">
+                                <v-row dense class="ml-5">
+                                    <v-col cols="12" v-for="data in tracking_summary" :key="data.name">
                                         <b>{{ data.name }}:</b> {{ data.value }}
                                     </v-col>
                                 </v-row>
@@ -223,35 +128,58 @@ return 'grey';
                                     <v-col cols="12" lg="12" md="12">
                                         <v-card elevation="0">
                                             <v-card-title class="custom-title">
-                                                <h3 class="text-center">{{
+                                                <h5 class="text-center">{{
                                                     $t('container.system_audit.application_status')
-                                                    }}</h3>
+                                                    }}</h5>
                                             </v-card-title>
                                             <v-card-text>
-                                                <table style="margin: 0 auto;">
+                                                <br>
+                                                <table style="margin: 0 auto; width: 100%; font-size: 12px;">
                                                     <tbody>
-
                                                         <tr v-for="item in tracking" :key="item.name">
-                                                            <td style="width: 30%">{{ item.name }}</td>
+                                                            <td style="width: 20%;">{{ language == 'bn' ?
+                                                                item.name_bn :
+                                                                item.name_en }}</td>
+                                                            <!-- Decrease width of the first td -->
+
                                                             <td style="width: 10%">
-
                                                                 <v-timeline>
-
                                                                     <v-timeline-item
                                                                         :color="getTimelineColor(item.status)"
                                                                         :icon="getTimelineIcon(item.status)">
                                                                     </v-timeline-item>
                                                                 </v-timeline>
                                                             </td>
-                                                            <td style="width: 50%;">{{ item.state }}</td>
-                                                            <td style="width: 10%">Time :{{ item.time }} </br>Date:{{
-                                                                item.date }} </br>
-                                                                Days Taken:{{ item.daysToken }}</td>
+                                                            <td style="width: 50%;">{{ language == 'bn' ?
+                                                                item.state_bn :
+                                                                item.state_en }}</td>
+                                                            <!-- Increase width of the third td -->
+                                                            <td style="width: 20%;">
+                                                                <!-- Adjusted width for the last td -->
+                                                                {{ language == 'bn' ? "সময়:" : "Time:" }} {{
+                                                                language == 'bn' ?
+                                                                $helpers.englishToBangla(item.time ?? '' )
+                                                                : item.time ?? '' }} <br>
+                                                                {{ language == 'bn' ? "তারিখ :" : "Date:" }} {{ language
+                                                                ==
+                                                                'bn' ?
+                                                                $helpers.englishToBangla(item.date ?? '')
+                                                                : item.date ?? '' }} <br>
+                                                                {{ language == 'bn' ? "প্রাপ্ত কার্য সম্পাদনের গৃহীত
+                                                                সময়কাল:" : "Days Taken:" }}{{ language
+                                                                == 'bn' ?
+                                                                $helpers.englishToBangla(item.daysToken ?? '')
+                                                                : item.daysToken ?? ''}}
+
+                                                            </td>
                                                         </tr>
-
                                                     </tbody>
-
                                                 </table>
+
+
+
+
+
 
 
 
@@ -300,61 +228,103 @@ export default {
             tracking: [
                 {
                     icon: 'mdi mdi-check',
-                    name: 'Application Accepted',
-                    state: 'Your application is accepted',
-                    date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
+                    name_en: 'Application Accepted',
+                    name_bn: 'আবেদন গৃহীত',
+                    state_en: 'Your application is accepted',
+                    state_bn: 'আপনার আবেদন গৃহীত হয়েছে',
+                   
                     status: '',
                 },
                 {
                     icon: 'mdi mdi-check',
-                    name: 'Primarily Verification',
-                    state: 'Your application is included to Verification list',
+                    name_en: 'Primarily Verification',
+                    name_bn: 'প্রাথমিকভাবে যাচাইকরণ',
+                    state_en: 'Your application is included to Verification list',
+                    state_bn: 'আপনার আবেদনটি যাচাইকরণ তালিকায় অন্তর্ভুক্ত করা হয়েছে',
                     status: '',
                 },
                 {
                     icon: 'mdi mdi-check',
-                    name: 'Ward/Union/Pouroshava Committee',
-                    state: 'Your application has been forwarded to the Union / pouroshava Committee',
+                    name_en: 'Ward/Union/Pouroshava Committee',
+                    name_bn: 'ওয়ার্ড/ইউনিয়ন/পৌরসভা কমিটি',
+                    state_en: 'Your application has been forwarded to the Ward/Union/pouroshava Committee',
+                    state_bn: 'আপনার আবেদনটি ওয়ার্ড/ইউনিয়ন/পৌরসভা কমিটির কাছে পাঠানো হয়েছে',
                     status: '',
                 },
                 {
                     icon: 'mdi mdi-check',
-                    name: 'District Pourashava/Upazila/City Corporation Committee',
-                    state: 'Your application has been forwarded to the Upazila/City Corporation Committee ',
+                    name_en: 'District Pourashava/Upazila/City Corporation Committee',
+                    name_bn: 'জেলা পৌরসভা/উপজেলা/সিটি কর্পোরেশন কমিটি',
+                    state_en: 'Your application has been forwarded to the District Pouroshava/Upazila/City Corporation Committee',
+                    state_bn: 'আপনার আবেদন জেলা পৌরসভা/উপজেলা/সিটি কর্পোরেশন কমিটিতে পাঠানো হয়েছে',
                     status: '',
                 },
                 {
                     icon: 'mdi mdi-check',
-                    name: 'Waiting List',
-                    state: 'Your application has been included in the waiting list ',
+                    name_en: 'Waiting List',
+                    name_bn: 'অপেক্ষামান তালিকা',
+                    state_en: 'Your application has been included in the waiting list',
+                    state_bn: 'আপনার আবেদনটি  অপেক্ষমাণ তালিকায় অন্তর্ভুক্ত করা হয়েছে',
                     status: '',
                 },
                 {
                     icon: 'mdi mdi-check',
-                    name: 'Final Selection List',
-                    state: 'Congratulations, you have been finally selected to receive the allowance ',
+                    name_en: 'Final Selection List',
+                    name_bn: 'চূড়ান্তভাবে নির্বাচিত',
+                    state_en: 'Congratulations, you have been finally selected to receive the allowance',
+                    state_bn: 'অভিনন্দন, আপনি চূড়ান্তভাবে ভাতা পাওয়ার জন্য নির্বাচিত হয়েছেন',
                     status: '',
                 },
 
             ],
             legends: [
-                { status: 'completed', icon: 'mdi-check', color: '#26A69A', label: 'Completed' },
-                { status: 'rejected', icon: 'mdi-close', color: '#E53935', label: 'Rejected' },
-                { status: 'waiting', icon: 'mdi-clock', color: '#FF6F00', label: 'Waiting' },
-                { status: 'pending', icon: 'mdi-alert', color: '#FFEA00', label: 'Pending' },
+                { status: 'completed', icon: 'mdi mdi-circle', color: '#26A69A', label: 'Completed' },
+     
+                { status: 'pending', icon: 'mdi mdi-circle', color: '#FFEB3B', label: 'Process Runnig' },
+                { status: 'waiting', icon: 'mdi mdi-circle', color: '#757575', label: 'Future Program' },
+                
             ],
             // tracking_summary:{},
-            tracking_summary: [
-                { name: 'National ID/Birth Registration No', value: '' },
-                { name: 'Application Time', value: '' },
-                { name: 'Application Date', value: '' },
-                { name: 'Office', value: '' },
-                { name: 'Tracking No', value: '' },
-
-
-            ],
-
+            
         };
+    },
+    computed:{
+        language: {
+            get() {
+                return this.$store.getters.getAppLanguage;
+            },
+        },
+        tracking_summary() {
+            return [
+                {
+                    name: this.$t(
+                        "container.system_audit.nbr"
+                    ), value: this.language === 'bn' ? this.$helpers.englishToBangla(this.tracking_details?.verification_number) : this.tracking_details?.verification_number
+                },
+                {
+                    name: this.$t(
+                        "container.system_audit.application_time"
+                    ), value: this.language === 'bn' ? this.$helpers.englishToBangla(this.localTime) : this.localTime
+                },
+                {
+                    name: this.$t(
+                        "container.system_audit.application_date"
+                    ), value: this.language === 'bn' ? this.$helpers.englishToBangla(this.localDate) : this.localDate
+                },
+                {
+                    name: this.$t(
+                        "container.system_audit.office"
+                    ), value: this.tracking_details?.permanent_address
+                },
+                {
+                    name: this.$t(
+                        "container.system_audit.tracking_no"
+                    ), value: this.tracking_details?.application_id
+                },
+            ];   
+        } 
+
+
     },
 
     methods: {
@@ -408,14 +378,7 @@ export default {
                 this.localTime = dateTime.toLocaleTimeString();
 
                 // Update tracking_summary dynamically
-                this.tracking_summary = [
-                    { name: 'National ID/Birth Registration No', value: this.tracking_details?.verification_number },
-                    { name: 'Application Time', value: this.localTime },
-                    { name: 'Application Date', value: this.localDate },
-                    { name: 'Office', value: this.tracking_details?.permanent_address },
-                    { name: 'Tracking No', value: this.tracking_details?.application_id },
-                ];
-
+                
 
 
             }).catch((error) => {

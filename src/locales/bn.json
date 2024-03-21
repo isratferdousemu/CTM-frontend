@@ -553,7 +553,7 @@
         "account": "হিসাব নাম্বার",
         "nominee_relation_with_beneficiary": " নমিনী সাথে সম্পর্ক",
         "applicant_verification": "আবেদনকারী যাচাইকরণ",
-        "nid": "জাতীয় পরিচিতি  নম্বর",
+        "nid": "জাতীয় পরিচিতি নম্বর",
         "brn": "জন্মনিবন্ধন নম্বর",
         "date_of_birth": "জন্ম তারিখ",
         "personal_info": "ব্যক্তিগত তথ্য",
@@ -958,9 +958,9 @@
       "application_tracking": "আবেদন ট্র্যাকিং",
       "grievance_tracking": "অভিযোগ ট্র্যাকিং",
       "payment_tracking": "অর্থপ্রদান ট্র্যাকিং",
-      "nbr": "এনআইডি/জন্ম নিবন্ধন নম্বর",
-      "tracking_no": "ট্র্যাকিং নম্বর",
-      "application_status": "আবেদনের অবস্থা",
+      "nbr": "জাতীয় পরিচিতি নম্বর/জন্ম নিবন্ধন নম্বর",
+      "tracking_no": "ট্র্যাকিং তথ্য",
+      "application_status": "আবেদনের অবস্থা যাচাই",
       "grievance_status": "অভিযোগের অবস্থা",
       "payment_status": "অর্থপ্রদানের অবস্থা",
       "activity_log": "কার্য বিবরণ",
@@ -973,7 +973,13 @@
       "user": "ব্যবহারকারী",
       "device_id": "ডিভাইস আইডি",
       "location": "অবস্থান",
-      "date_time": "তারিখ এবং সময়"
+      "date_time": "তারিখ এবং সময়",
+      "application_time":"আবেদনের সময়",
+      "application_date": "আবেদনের তারিখ",
+      "office":"অফিস",
+  
+      "applicant_details":"আবেদনকারীর বিবরণ"
+
     },
     "activity_log": {
       "title": "এক্টিভিটি লগের তালিকা",
