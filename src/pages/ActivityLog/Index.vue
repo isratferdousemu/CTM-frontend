@@ -148,9 +148,27 @@
 
                         </span>
                       </template>
-
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
+                        <v-tooltip top>
+                          <template v-slot:activator="{ on }">
+                            <v-btn
+                                :disabled="item.default === 1"
+                                fab
+                                style="margin-right: 10px;"
+                                x-small
+                                color="success"
+                                v-on="on"
+                                router
+                                :to="`/activity-logs/view/${item.id}`"
+                                v-can="'activity_log-view'"
+                            >
+                              <v-icon>mdi-eye-outline</v-icon>
+                            </v-btn>
+                          </template>
+                          <span>{{ $t('container.list.view') }}</span>
+                        </v-tooltip>
+
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
