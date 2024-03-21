@@ -37,7 +37,8 @@
                                     <v-col cols="12" lg="4" md="4">
 
 
-                                        <v-radio-group required row v-model="data.tracking_type">
+                                        <v-radio-group required row v-model="data.tracking_type"
+                                            @change="handleRadioChange">
                                             <label class="mr-5">{{ $t('container.system_audit.application_tracking')
                                                 }}</label>
                                             <v-radio :label="$t('container.system_audit.nbr')" :value="1"></v-radio>
@@ -342,6 +343,19 @@ export default {
     },
 
     methods: {
+        handleRadioChange(value){
+            if(value==1){
+                this.data.tracking_no=null;
+
+            }
+            if (value == 2) {
+                this.data.date_of_birth = null;
+                this.data.nid = null;
+
+            }
+
+        },
+        
 
         applicationTracking() {
             // let data = {
