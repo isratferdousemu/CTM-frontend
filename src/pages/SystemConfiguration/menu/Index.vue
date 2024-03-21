@@ -255,22 +255,22 @@ export default {
       <v-dialog v-model="deleteDialog" width="350">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            Delete Device
+            {{ $t('container.system_config.menu.delete') }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
-              Are you sure to delete this Device? Division all information will be deleted.
+              {{ $t('container.system_config.menu.delete_alert') }}
             </div>
           </v-card-text>
           <v-card-actions style="display: block">
             <v-row class="mx-0 my-0 py-2" justify="center">
               <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
-                Cancel
+                {{ $t("container.list.cancel") }}
               </v-btn>
               <v-btn text @click="deleteMenu" color="white" :loading="delete_loading"
                      class="custom-btn-width warning white--text py-2">
-                Delete
+                {{ $t("container.list.delete") }}
               </v-btn>
             </v-row>
           </v-card-actions>
