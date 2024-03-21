@@ -1250,7 +1250,7 @@
                         </v-col>
 
                         <v-col cols="6" lg="6" v-if="data.account_type === 1">
-                          <ValidationProvider rules="required" name="Bank name" vid="account_type" v-slot="{ errors }">
+                          <ValidationProvider rules="required" name="Branch name" vid="account_type" v-slot="{ errors }">
                             <label style="display: inline-block">{{
                               $t('container.application_selection.application.branch_name') }}</label><span
                               style="margin-left: 4px; color: red">*</span>

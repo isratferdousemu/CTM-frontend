@@ -1,112 +1,107 @@
+data() {
+return {
+    
+tracking: [
+{
+icon: 'mdi mdi-check',
+name: 'Application Accepted',
+state: 'Your application is received',
+date_time:'Time: 04:05:52 PM Date: 11 - 10 - 2023',
+status:'completed'
+},
+{
+icon: 'mdi mdi-check',
+name: 'Primarily Verification',
+state: 'Your application is included to Verification list',
+date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
+status: 'completed'
+},
+{
+icon: 'mdi mdi-check',
+name: 'Ward/Union/Pouroshava Committee',
+state: 'Your application has been forwarded to the Union / pouroshava Committee',
+date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
+status: 'completed'
+},
+{
+icon: 'mdi-timer-sand',
+name: 'Upazila/City Corporation Committee',
+state: 'Your application has been forwarded to the Upazila/City Corporation Committee',
+date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
+status: 'waiting'
+},
+{
+icon: 'mdi mdi-check',
+name: 'Waiting List',
+state: 'Your application has been included in the waiting list',
+date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
+status: 'pending'
+},
+{
+icon: 'mdi mdi-check',
+name: 'Final Selection List',
+state: 'Congratulations, you have been finally selected to receive the allowance ',
+date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
+status: 'pending'
+},
+
+],
+legends: [
+{ status: 'completed', icon: 'mdi-check', color: '#26A69A', label: 'Completed' },
+
+{ status: 'waiting', icon: 'mdi-timer-sand', color: '#FFD600', label: 'Inprogress' },
+{ status: 'pending', icon: 'mdi-clock', color: '#757575', label: 'Future Proram' },
+],
+tracking_summary: [
+{ name: 'National ID/Birth Registration No', value: '2234897899412' },
+{ name: 'Application Time', value: '04:05:52'},
+{ name: 'Application Date', value: '2023-10-04' },
+{ name: 'Office', value: 'Head Office'},
+{ name: 'Tracking No', value: '2234897899412' },
 
 
-    data() {
-        return {
-        data:{
-            tracking_type:1
+],
 
-        },
-            tracking: [
-                {
-                    icon: 'mdi mdi-check',
-                    name: 'Application Accepted',
-                    state: 'Your application is received',
-                    date_time:'Time: 04:05:52 PM Date: 11 - 10 - 2023',
-                    status:'completed'
-                },
-                  {
-                    icon: 'mdi mdi-check',
-                    name: 'Primarily Verification',
-                    state: 'Your application is included to Verification list Allotted for execution Time / day     : 1 minute Estimated Execution Time / day       : 2 days',
-                    date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
-                    status: 'completed'
-                },
-                 {
-                    icon: 'mdi mdi-check',
-                    name: 'Union/Pouroshava Committee',
-                    state: 'Your application has been forwarded to the Union / pouroshava CommitteeAllotted for execution Time / day     : 1 minute Estimated Execution Time / day       : 2 days',
-                    date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
-                    status: 'completed'
-                },
-                   {
-                    icon: 'mdi-timer-sand',
-                    name: 'Upazila/City Corporation Committee',
-                    state: 'Your application has been forwarded to the Upazila/City Corporation Committee Allotted for execution Time / day     : 1 minute Estimated Execution Time / day       : days',
-                    date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
-                    status: 'waiting'
-                },
-                 {
-                    icon: 'mdi mdi-check',
-                    name: 'Waiting List',
-                    state: 'Your application has been included in the waiting list Allotted for execution Time / day     : 1 minute Estimated Execution Time / day       : 2 days',
-                    date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
-                    status: 'pending'
-                },
-                {
-                    icon: 'mdi mdi-check',
-                    name: 'Final Selection List',
-                    state: 'Congratulations, you have been finally selected to receive the allowance Allotted for execution Time / day     : 1 minute Estimated Execution Time / day       : 2 days',
-                    date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
-                    status: 'pending'
-                },
-               
-            ],
-             legends: [
-                { status: 'completed', icon: 'mdi-check', color: '#26A69A', label: 'Completed' },
-            
-                 { status: 'waiting', icon: 'mdi-timer-sand', color: '#FFD600', label: 'Inprogress' },
-                 { status: 'pending', icon: 'mdi-clock', color: '#757575', label: 'Future Proram' },
-            ],
-             tracking_summary: [
-                { name: 'National ID/Birth Registration No', value: '2234897899412' },
-                { name: 'Application Time', value: '04:05:52'},
-                { name: 'Application Date', value: '2023-10-04' },
-                { name: 'Office', value: 'Head Office'},
-                { name: 'Tracking No', value: '2234897899412' },
-           
-       
-            ],
+};
+},
 
-        };
-    },
+mounted() {
 
-    mounted() {
+},
 
-    },
+methods: {
 
-    methods: {
-       
-           getTimelineColor(status) {
-            switch (status) {
-                case 'completed':
-                    return '#26A69A';
-                case 'rejected':
-                    return '#E53935';
-                case 'waiting':
-                    return '#FFD600';
-                case 'pending':
-                    return '#616161';
-                default:
-                    return 'grey';
-            }
-        },
-            getTimelineIcon(status) {
-            switch (status) {
-                case 'completed':
-                    return 'mdi-check';
-                case 'rejected':
-                    return '#mdi-close';
-                case 'waiting':
-                    return 'mdi-timer-sand';
-                case 'pending':
-                    return 'mdi-clock';
-                default:
-                    return 'grey';
-            }
-        },
-        
+getTimelineColor(status) {
+switch (status) {
+case 'completed':
+return '#26A69A';
+case 'rejected':
+return '#E53935';
+case 'waiting':
+return '#FFD600';
+case 'pending':
+return '#616161';
+default:
+return 'grey';
+}
+},
+getTimelineIcon(status) {
+switch (status) {
+case 'completed':
+return 'mdi-check';
+case 'rejected':
+return '#mdi-close';
+case 'waiting':
+return 'mdi-timer-sand';
+case 'pending':
+return 'mdi-clock';
+default:
+return 'grey';
+}
+},
 
-    },
+
+},
 };
 </script>
 
@@ -146,6 +141,7 @@
                                 <v-row class="ma-5">
                                     <v-col cols="12" lg="4" md="4">
 
+
                                         <v-radio-group required row v-model="data.tracking_type">
                                             <label class="mr-5">{{ $t('container.system_audit.application_tracking')
                                                 }}</label>
@@ -154,28 +150,45 @@
                                                 :value="2"></v-radio>
                                         </v-radio-group>
                                     </v-col>
-                                    <v-col cols="12" lg="4" md="4" v-if="data.tracking_type == 2">
+                                    <v-col cols="12" lg="6" md="6">
                                         <br>
-                                        <label>{{ $t('container.system_audit.application_tracking')
-                                            }}</label>
-                                        <v-text-field outlined clearable></v-text-field>
+                                        <div v-if="data.tracking_type == 2">
+                                            <label>{{ $t('container.system_audit.application_tracking')
+                                                }}</label>
+                                            <v-text-field v-model="data.tracking_no" outlined clearable></v-text-field>
+                                        </div>
+                                        <div v-if="data.tracking_type == 1">
+                                            <v-row>
+                                                <v-col>
+                                                    <label>{{ $t('container.system_audit.nbr') }}</label>
+                                                    <v-text-field outlined clearable></v-text-field>
+                                                </v-col>
+
+                                                <v-col>
+                                                    <label>{{
+                                                        $t('container.application_selection.application.date_of_birth')
+                                                        }}</label>
+                                                    <v-text-field outlined clearable type="date"></v-text-field>
+                                                </v-col>
+                                            </v-row>
+                                        </div>
+
                                     </v-col>
-                              
-                                    <v-col cols="12" lg="4" md="4" v-if="data.tracking_type == 1">
+                                    <v-col cols="12" lg="2" md="2">
+
+
                                         <br>
-                                        <label>{{ $t('container.system_audit.nbr')
-                                            }}</label>
-                                        <v-text-field outlined clearable></v-text-field>
-                                    </v-col>
-                                    <v-col cols="12" lg="4" md="4">
                                         <br>
                                         <div class="text-right">
+
                                             <v-btn type="submit" flat color="success" :disabled="invalid"
-                                                :loading="loading" class="custom-btn-width white--text py-2">
-                                                <span class="mdi mdi-television mr-2"></span> <!-- Icon -->
+                                                :loading="loading" @click="applicationTracking()"
+                                                class="custom-btn-width white--text py-2">
+                                                <span class="mdi mdi-television mr-2"></span>
                                                 {{ $t("container.list.preview") }}
                                             </v-btn>
                                         </div>
+
                                     </v-col>
 
 
@@ -189,22 +202,25 @@
                         <v-card elevation="0">
 
                             <v-card-text>
-                                <v-row class="ma-1">
-                                    <v-col cols="12" lg="3" md="3">
-                                        <table class="small-text">
-                                            <h3 style="text-decoration: underline">Disability Allowance</h3>
-                                            Details
 
-                                            <tr v-for="item in tracking_summary" :key="item.name">
-                                                <td><b>{{ item.name }}</b></td>
 
-                                                <td><b>:</b>{{ item.value }}</td>
-                                            </tr>
-
-                                        </table>
-
+                                <v-row>
+                                    <v-col cols="12">
+                                        <h4 style="text-decoration: underline" class="text--blue">{{
+                                            tracking_details.program?.name_en }}</h4>
+                                        <h4>Applicant Details</h4>
                                     </v-col>
-                                    <v-col cols="12" lg="9" md="9">
+                                </v-row>
+                                <v-row>
+                                    <v-col cols="4" v-for="data in tracking_summary" :key="data.name">
+                                        <b>{{ data.name }}:</b> {{ data.value }}
+                                    </v-col>
+                                </v-row>
+
+                                <v-row class="ma-1">
+
+
+                                    <v-col cols="12" lg="12" md="12">
                                         <v-card elevation="0">
                                             <v-card-title class="custom-title">
                                                 <h3 class="text-center">{{
@@ -212,27 +228,32 @@
                                                     }}</h3>
                                             </v-card-title>
                                             <v-card-text>
-                                                <table>
+                                                <table style="margin: 0 auto;">
                                                     <tbody>
 
                                                         <tr v-for="item in tracking" :key="item.name">
-                                                            <td>{{ item.name }}</td>
-                                                            <td>
+                                                            <td style="width: 30%">{{ item.name }}</td>
+                                                            <td style="width: 10%">
 
                                                                 <v-timeline>
 
                                                                     <v-timeline-item
                                                                         :color="getTimelineColor(item.status)"
-                                                                        :icon="getTimelineIcon(item.status)"></v-timeline-item>
+                                                                        :icon="getTimelineIcon(item.status)">
+                                                                    </v-timeline-item>
                                                                 </v-timeline>
                                                             </td>
-                                                            <td>{{ item.state }}</td>
-                                                            <td>{{ item.date_time }}</td>
+                                                            <td style="width: 50%;">{{ item.state }}</td>
+                                                            <td style="width: 10%">Time :{{ item.time }} </br>Date:{{
+                                                                item.date }} </br>
+                                                                Days Taken:{{ item.daysToken }}</td>
                                                         </tr>
 
                                                     </tbody>
 
                                                 </table>
+
+
 
                                             </v-card-text>
                                         </v-card>
@@ -267,59 +288,55 @@ export default {
         return {
             data: {
                 tracking_no: null,
+                tracking_type: 2,
+                data_of_birth:null,
+                nid_no:null
+
             },
             tracking_details: [],
-            // tracking_details: {
-            //     status: 'completed'
-            // },
             localDate: null,
             localTime: null,
             tracking: [],
-             tracking: [
+            tracking: [
                 {
                     icon: 'mdi mdi-check',
                     name: 'Application Accepted',
                     state: 'Your application is accepted',
                     date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
-                    status:'', 
+                    status: '',
                 },
                 {
                     icon: 'mdi mdi-check',
                     name: 'Primarily Verification',
-                    state: 'Your application is included to Verification list Allotted for execution Time / day     : 1 minute Estimated Execution Time / day       : 2 days',
-                    date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
+                    state: 'Your application is included to Verification list',
                     status: '',
                 },
                 {
                     icon: 'mdi mdi-check',
-                    name: 'Union/Pouroshava Committee',
-                    state: 'Your application has been forwarded to the Union / pouroshava CommitteeAllotted for execution Time / day     : 1 minute Estimated Execution Time / day       : 2 days',
-                    date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
+                    name: 'Ward/Union/Pouroshava Committee',
+                    state: 'Your application has been forwarded to the Union / pouroshava Committee',
                     status: '',
                 },
                 {
                     icon: 'mdi mdi-check',
-                    name: 'Upazila/City Corporation Committee',
-                    state: 'Your application has been forwarded to the Upazila/City Corporation Committee Allotted for execution Time / day     : 1 minute Estimated Execution Time / day       : days',
-                    date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
+                    name: 'District Pourashava/Upazila/City Corporation Committee',
+                    state: 'Your application has been forwarded to the Upazila/City Corporation Committee ',
                     status: '',
                 },
                 {
                     icon: 'mdi mdi-check',
                     name: 'Waiting List',
-                    state: 'Your application has been included in the waiting list Allotted for execution Time / day     : 1 minute Estimated Execution Time / day       : 2 days',
-                    date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
+                    state: 'Your application has been included in the waiting list ',
                     status: '',
                 },
                 {
                     icon: 'mdi mdi-check',
                     name: 'Final Selection List',
-                    state: 'Congratulations, you have been finally selected to receive the allowance Allotted for execution Time / day     : 1 minute Estimated Execution Time / day       : 2 days',
-                    date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
+                    state: 'Congratulations, you have been finally selected to receive the allowance ',
                     status: '',
                 },
 
-            ], 
+            ],
             legends: [
                 { status: 'completed', icon: 'mdi-check', color: '#26A69A', label: 'Completed' },
                 { status: 'rejected', icon: 'mdi-close', color: '#E53935', label: 'Rejected' },
@@ -345,6 +362,8 @@ export default {
         applicationTracking() {
             let data = {
                 tracking_no: this.data.tracking_no,
+                nid: this.data.nid,
+                date_of_birth: this.data.date_of_birth,
             };
             this.$axios.post("global/applicants_tracking", data, {
                 headers: {
@@ -352,23 +371,27 @@ export default {
                     Accept: "application/json",
                 },
             }).then((response) => {
-                 this.tracking_details = response.data.data;
-                 const trackingAllData = response.data.data.committee_application;
+                this.tracking_details = response.data.data;
+                const trackingAllData = response.data.data.committee_application;
 
-                 console.log(trackingAllData,'trackingAllDatatrackingAllData');
                 const updatedTracking = this.tracking.map((item, index) => {
                     if (index < trackingAllData.length) {
-                              // Format the date to local date and time
+                        // Format the date to local date and time
                         const dateTime1 = new Date(trackingAllData[index].created_at);
                         this.localDate1 = dateTime1.toLocaleDateString();
                         this.localTime1 = dateTime1.toLocaleTimeString();
+
+                        // Calculate the difference in days between the current item's created_at date and the previous item's created_at date
+                        const previousDate = index > 0 ? new Date(trackingAllData[index - 1].created_at) : dateTime1;
+                        const differenceInMilliseconds = Math.abs(dateTime1 - previousDate);
+                        const differenceInDays = Math.ceil(differenceInMilliseconds / (1000 * 60 * 60 * 24));
+
                         return {
                             ...item,
                             status: trackingAllData[index].status,
-                            date: this.localDate1, 
-                            time: this.localTime1, 
-                            daysToken: this.localTime1, 
-                            /* icon: this.getTimelineIcon(trackingAllData[index].status)  */
+                            date: this.localDate1,
+                            time: this.localTime1,
+                            daysToken: differenceInDays,
                         };
                     } else {
                         return item;
@@ -377,7 +400,7 @@ export default {
 
                 this.tracking = updatedTracking;
 
-                console.log(this.tracking,'all tracking data');
+                console.log(this.tracking, 'all tracking data');
 
                 // Format the date to local date and time
                 const dateTime = new Date(response.data.data.created_at);
@@ -392,6 +415,8 @@ export default {
                     { name: 'Office', value: this.tracking_details?.permanent_address },
                     { name: 'Tracking No', value: this.tracking_details?.application_id },
                 ];
+
+
 
             }).catch((error) => {
                 console.log(error);
@@ -418,7 +443,7 @@ export default {
         },
         getTimelineIcon(status) {
             switch (status) {
-                
+
                 case 1:
                     return 'mdi-check';
                 case 2:
