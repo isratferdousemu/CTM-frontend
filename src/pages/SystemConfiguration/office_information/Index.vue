@@ -398,8 +398,8 @@
                         v-model="data.office_type" outlined :label="$t(
                           'container.system_config.demo_graphic.office.office_type'
                         )
-                          " :items="officeType" item-text="value_en" item-value="id"
-                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                          " :items="officeType" item-text="value_en" item-value="id" :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12" v-if="data.office_type === 6 ||
@@ -490,8 +490,8 @@
                     <ValidationProvider name="city" vid="city_corpo_id" v-slot="{ errors }">
                       <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.thana_id"
                         @change="onChangeThana($event)" outlined :label="$t('container.system_config.demo_graphic.ward.thana')
-                          " :items="final_thanas" item-text="name_en" item-value="id"
-                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                          " :items="final_thanas" item-text="name_en" item-value="id" :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12" v-if="data.office_type === 9">
@@ -1537,8 +1537,8 @@ export default {
 
           return existingIdentifier === entryIdentifier;
         });
-        
-  
+
+
         // If it's not a duplicate, add it to selectedWardsDetails
         if (!isDuplicate) {
           const info = {
@@ -1556,7 +1556,7 @@ export default {
             identifier: entryIdentifier,
           };
           this.selectedWardsDetails.push(info);
-        }else{
+        } else {
           this.$toast.error(`Already Exists`);
         }
       });
@@ -1678,13 +1678,15 @@ export default {
       fd.append("selectedWardsDetails", JSON.stringify(this.selectedWardsDetails));
       try {
         this.$store.dispatch("Office/StoreOffice", fd).then((data) => {
-          // console.log(data, "submit");
+          console.log(data, "submit");
           if (data == null) {
             this.$toast.success("Data Inserted Successfully");
             this.dialogAdd = false;
             this.resetData();
             this.GetOffices();
           } else {
+             this.$toast.error(data.errors);
+            console.log(data.errors,'data.errors');
             this.$refs.formAdd.setErrors(data.errors);
             // this.errors = data.errors;
           }
@@ -1751,8 +1753,8 @@ export default {
 
           }
         }
-        console.log(this.selectedWardsDetails,'test anwar data')
-       fd.append("selectedWardsDetails", JSON.stringify(this.selectedWardsDetails));
+        console.log(this.selectedWardsDetails, 'test anwar data')
+        fd.append("selectedWardsDetails", JSON.stringify(this.selectedWardsDetails));
         try {
           this.$store.dispatch("Office/UpdateOffice", fd).then((data) => {
             console.log(data, "update");
@@ -1851,7 +1853,7 @@ export default {
         .then((result) => {
           this.edit = result.data;
 
-          console.log(this.edit,'editinf')
+          console.log(this.edit, 'editinf')
           return false;
 
           console.log(this.edit[0], "viewinfo :)")

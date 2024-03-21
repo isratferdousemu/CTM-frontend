@@ -200,6 +200,18 @@
                                             <v-card-text>
                                                 <table>
                                                     <tbody>
+                                                           <tr>
+                                                                <td>Application Accepted</td>
+                                                                <td>
+                                                                 <v-timeline>
+                                                                   <v-timeline-item :color="getTimelineColor(1)"
+                                                                                    :icon="getTimelineIcon(1)">
+                                                                   </v-timeline-item>
+                                                                </v-timeline>
+                                                                </td>
+                                                                 <td>Your application is accepte</td>
+                                                                 <br>Time : {{ this.localTime }} </br> Date: {{ this.localDate }}</td>
+                                                            </tr>
 
                                                         <tr v-for="item in tracking"
                                                             :key="item.name">
@@ -260,45 +272,45 @@ export default {
             localTime: null,
             tracking: [],
              tracking: [
-                {
+                /* {
                     icon: 'mdi mdi-check',
                     name: 'Application Accepted',
                     state: 'Your application is accepted',
                     date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
                     status:'', 
-                },
+                }, */
                 {
                     icon: 'mdi mdi-check',
                     name: 'Primarily Verification',
-                    state: 'Your application is included to Verification list Allotted for execution Time / day     : 1 minute Estimated Execution Time / day       : 2 days',
+                    state: 'Your application is included to Verification list',
                     date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
                     status: '',
                 },
                 {
                     icon: 'mdi mdi-check',
-                    name: 'Union/Pouroshava Committee',
-                    state: 'Your application has been forwarded to the Union / pouroshava CommitteeAllotted for execution Time / day     : 1 minute Estimated Execution Time / day       : 2 days',
+                    name: 'Ward /Union/Pouroshava Committee',
+                    state: 'Your application has been forwarded to the Ward/ Union / pouroshava Committee ',
                     date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
                     status: '',
                 },
                 {
                     icon: 'mdi mdi-check',
-                    name: 'Upazila/City Corporation Committee',
-                    state: 'Your application has been forwarded to the Upazila/City Corporation Committee Allotted for execution Time / day     : 1 minute Estimated Execution Time / day       : days',
+                    name: 'Upazila / District/City Corporation Committee',
+                    state: 'Your application has been forwarded to the Upazila/Distrcit/City Corporation Committee ',
                     date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
                     status: '',
                 },
                 {
                     icon: 'mdi mdi-check',
                     name: 'Waiting List',
-                    state: 'Your application has been included in the waiting list Allotted for execution Time / day     : 1 minute Estimated Execution Time / day       : 2 days',
+                    state: 'Your application has been included in the waiting list',
                     date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
                     status: '',
                 },
                 {
                     icon: 'mdi mdi-check',
                     name: 'Final Selection List',
-                    state: 'Congratulations, you have been finally selected to receive the allowance Allotted for execution Time / day     : 1 minute Estimated Execution Time / day       : 2 days',
+                    state: 'Congratulations, you have been finally selected to receive',
                     date_time: 'Time: 04:05:52 PM Date: 11 - 10 - 2023',
                     status: '',
                 },
@@ -329,6 +341,7 @@ export default {
         applicationTracking() {
             let data = {
                 tracking_no: this.data.tracking_no,
+                
             };
             this.$axios.post("global/applicants_tracking", data, {
                 headers: {
