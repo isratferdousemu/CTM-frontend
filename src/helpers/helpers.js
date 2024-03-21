@@ -13,6 +13,9 @@ export default {
             7: "৭",
             8: "৮",
             9: "৯",
+            PM:"পিএম",
+            AM: "এএম",
+           
         };
 
         for (var x in banglaNumber) {
