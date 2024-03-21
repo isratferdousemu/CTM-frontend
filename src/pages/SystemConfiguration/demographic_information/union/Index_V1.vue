@@ -808,11 +808,7 @@
                 {{ $t("container.list.cancel") }}
               </v-btn>
               <v-btn text @click="deleteUnion()" color="white" :loading="delete_loading"
-                class="custom-btn-width black white--text py-2">
-                {{ $t("container.list.delete") }}
-              </v-btn>
-              <v-btn text @click="deleteUnion()" color="white" :loading="delete_loading"
-                class="custom-btn-width white--text py-2">
+                class="custom-btn-width black white--text py-2 warning">
                 {{ $t("container.list.delete") }}
               </v-btn>
             </v-row>
