@@ -939,7 +939,7 @@ export default {
     async GetAllProgram() {
       try {
         this.$axios
-          .get("/admin/allowance/get", {
+          .get("/global/program", {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",

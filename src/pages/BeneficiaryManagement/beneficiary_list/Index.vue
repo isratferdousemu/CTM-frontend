@@ -945,7 +945,6 @@ export default {
       loading: true,
       search: "",
       delete_id: "",
-      applications: [],
       beneficiaries: [],
       beneficiary_list: [],
       total: "",
