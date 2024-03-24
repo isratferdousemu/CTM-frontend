@@ -279,9 +279,7 @@
                                         <ValidationProvider name="Value" vid="value" rules="required"
                                             v-slot="{ errors }">
                                             <v-text-field outlined dense hide-details v-model="item.value_bn"
-                                                v-if="data.id==1" type="number"></v-text-field>
-                                            <v-text-field outlined dense hide-details v-model="item.value_bn"
-                                                v-if="data.id !=1"></v-text-field>
+                                               ></v-text-field>
                                         </ValidationProvider>
                                     </template>
                                     <template v-slot:item.score="{ item }">
