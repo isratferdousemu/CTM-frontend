@@ -278,7 +278,6 @@
                                     <template v-slot:item.value_bn="{ item }">
                                         <ValidationProvider name="Value" vid="value" rules="required"
                                             v-slot="{ errors }">
-                                          
                                             <v-text-field outlined dense hide-details v-model="item.value_bn"
                                                ></v-text-field>
                                         </ValidationProvider>
