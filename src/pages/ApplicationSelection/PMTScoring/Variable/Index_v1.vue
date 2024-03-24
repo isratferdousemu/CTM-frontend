@@ -15,86 +15,63 @@
                                     justify="center" justify-lg="space-between">
                                     <div class="d-flex justify-sm-end flex-wrap">
                                         <v-text-field @keyup.native="GetVariable" outlined dense v-model="search"
-                                            prepend-inner-icon="mdi-magnify" class="my-sm-0 my-3 mx-0v -input--horizontal"
-                                            flat variant="outlined" :label="$t('container.application_selection.variable.search')
+                                            prepend-inner-icon="mdi-magnify"
+                                            class="my-sm-0 my-3 mx-0v -input--horizontal" flat variant="outlined"
+                                            :label="$t('container.application_selection.variable.search')
                                                 " hide-details color="primary">
                                         </v-text-field>
                                     </div>
                                     <v-btn @click="createDialog" flat color="primary"
-                                        prepend-icon="mdi-account-multiple-plus"
-                                           v-can="'variable-create'"
-                                    >
+                                        prepend-icon="mdi-account-multiple-plus" v-can="'variable-create'">
                                         {{ $t("container.list.add_new") }}
                                     </v-btn>
-                      
+
                                     <v-col cols="12">
-                                       <v-data-table
-                          :headers="headers"
-                          :items="variables"
-                          :search="search"
-                          :options.sync="options"
-                          :server-items-length="totalvariables"
-                          :loading="loading"
-                          :footer-props="{
+                                        <v-data-table :headers="headers" :items="variables" :search="search"
+                                            :options.sync="options" :server-items-length="totalvariables"
+                                            :loading="loading" :footer-props="{
                               'items-per-page-options': [5,10, 20, 30, 40, 50]
-                          }"
-                          dense
-                          class="elevation-1 transparent row-pointer"
-                      >
-
-                    
-
-                       <template v-slot:item.id="{ item, index }">
-        <!-- {{ (currentPage - 1) * itemsPerPage + index + 1 }} -->
-           {{
-
-               language === 'bn' ? $helpers.englishToBangla(
-                   (currentPage - 1) * itemsPerPage + index + 1) : (currentPage - 1) * itemsPerPage + index + 1
+                          }" dense class="elevation-1 transparent row-pointer">
 
 
-                                                      }}
-    </template>
 
-                        <template v-slot:[`item.actions`]="{ item }" style="padding: 10px;">
-                          <v-tooltip top>
-                            <template v-slot:activator="{ on }">
-                              <v-btn
-                             
-                                  fab
-                                
-                                  x-small
-                                  color="success"
-                                  v-on="on"
-                                   @click="editDialog(item)"
-                                  v-can="'variable-edit'"
-                              >
-                              <v-icon>mdi-account-edit-outline</v-icon>
-                              </v-btn>
-                            </template>
-                            <span>{{ $t('container.list.edit') }}</span>
-                          </v-tooltip>
+                                            <template v-slot:item.id="{ item, index }">
+                                                <!-- {{ (currentPage - 1) * itemsPerPage + index + 1 }} -->
+                                                {{
 
-                     
+                                                language === 'bn' ? $helpers.englishToBangla(
+                                                (currentPage - 1) * itemsPerPage + index + 1) : (currentPage - 1) *
+                                                itemsPerPage + index + 1
 
-                          <v-tooltip top>
-                            <template v-slot:activator="{ on }">
-                              <v-btn
-                                  :disabled="item.default === 1"
-                                  fab
-                                  x-small
-                                  color="grey"
-                                  class="ml-3 white--text"
-                                  v-on="on"
-                                  @click="deleteAlert(item.id)"
-                                  v-can="'variable-delete'"
-                              >
-                                <v-icon>mdi-delete</v-icon>
-                              </v-btn>
-                            </template>
-                        <span>{{ $t('container.list.delete') }}</span>
-                          </v-tooltip>
-                        </template>
-                      </v-data-table>
+
+                                                }}
+                                            </template>
+
+                                            <template v-slot:[`item.actions`]="{ item }" style="padding: 10px;">
+                                                <v-tooltip top>
+                                                    <template v-slot:activator="{ on }">
+                                                        <v-btn fab x-small color="success" v-on="on"
+                                                            @click="editDialog(item)" v-can="'variable-edit'">
+                                                            <v-icon>mdi-account-edit-outline</v-icon>
+                                                        </v-btn>
+                                                    </template>
+                                                    <span>{{ $t('container.list.edit') }}</span>
+                                                </v-tooltip>
+
+
+
+                                                <v-tooltip top>
+                                                    <template v-slot:activator="{ on }">
+                                                        <v-btn :disabled="item.id == 1" fab x-small color="grey"
+                                                            class="ml-3 white--text" v-on="on"
+                                                            @click="deleteAlert(item.id)" v-can="'variable-delete'">
+                                                            <v-icon>mdi-delete</v-icon>
+                                                        </v-btn>
+                                                    </template>
+                                                    <span>{{ $t('container.list.delete') }}</span>
+                                                </v-tooltip>
+                                            </template>
+                                        </v-data-table>
                                     </v-col>
                                 </v-row>
                             </v-card-text>
@@ -108,9 +85,9 @@
                 <v-card style="justify-content: center; text-align: center">
                     <v-card-title class="font-weight-bold justify-center">
                         {{
-                            $t(
-                                "container.application_selection.variable.add_new"
-                            )
+                        $t(
+                        "container.application_selection.variable.add_new"
+                        )
                         }}
                     </v-card-title>
                     <v-divider></v-divider>
@@ -118,23 +95,29 @@
                         <ValidationObserver ref="formAdd" v-slot="{ invalid }">
                             <form @submit.prevent="submitVariable()">
 
-                                <ValidationProvider name="Name in English" vid="name_en" rules="required" v-slot="{ errors }">
+                                <ValidationProvider name="Name in English" vid="name_en" rules="required"
+                                    v-slot="{ errors }">
                                     <v-text-field outlined type="text" v-model="data.name_en" :label="$t(
                                         'container.application_selection.variable.name_en'
                                     )
                                         " required :error="errors[0] ? true : false"
                                         :error-messages="errors[0]"></v-text-field>
                                 </ValidationProvider>
-                                       <ValidationProvider name="Name in Bangla" vid="name_bn" rules="required" v-slot="{ errors }">
-                                        <v-text-field outlined type="text" v-model="data.name_bn" :label="$t(
+                                <ValidationProvider name="Name in Bangla" vid="name_bn" rules="required"
+                                    v-slot="{ errors }">
+                                    <v-text-field outlined type="text" v-model="data.name_bn" :label="$t(
                                             'container.application_selection.variable.name_bn'
                                         )
                                             " required :error="errors[0] ? true : false"
-                                            :error-messages="errors[0]"></v-text-field>
-                                    </ValidationProvider>
-                                <ValidationProvider name="Field Type" vid="field_type" rules="required" v-slot="{ errors }">
-                                    <v-select outlined v-model="data.field_type" :items="field_types" :item-text="getItemText" item-value="id" :label="$t('container.application_selection.variable.field_type')" required :error="errors[0] ? true : false" :error-messages="errors[0]">
-    </v-select>
+                                        :error-messages="errors[0]"></v-text-field>
+                                </ValidationProvider>
+                                <ValidationProvider name="Field Type" vid="field_type" rules="required"
+                                    v-slot="{ errors }">
+                                    <v-select outlined v-model="data.field_type" :items="field_types"
+                                        :item-text="getItemText" item-value="id"
+                                        :label="$t('container.application_selection.variable.field_type')" required
+                                        :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                    </v-select>
                                 </ValidationProvider>
 
 
@@ -147,58 +130,59 @@
                                         :error-messages="errors[0]"></v-text-field>
                                 </ValidationProvider>
 
-                                  <!-- <v-data-table :headers="header_field_value" :items="data.field_value"
+                                <!-- <v-data-table :headers="header_field_value" :items="data.field_value"
                                         v-if="data.field_type == 1 || data.field_type == 2" hide-default-footer> -->
-    <v-data-table
-      :headers="header_field_value"
-      :items="data.field_value"
-      v-if="data.field_type == 1 || data.field_type == 2"
-      :items-per-page="100" 
-      hide-default-footer
-      no-data-text=""
-    > 
-                                        <template v-slot:item.id="{ item, index }">
-                                            {{ index + 1 }}
-                                        </template>
+                                <v-data-table :headers="header_field_value" :items="data.field_value"
+                                    v-if="data.field_type == 1 || data.field_type == 2" :items-per-page="100"
+                                    hide-default-footer no-data-text="">
+                                    <template v-slot:item.id="{ item, index }">
+                                        {{ index + 1 }}
+                                    </template>
 
-                                        <template v-slot:item.value_en="{ item }">
+                                    <template v-slot:item.value_en="{ item }">
 
 
 
-                                            <ValidationProvider name="Subvariable Name in English" vid="value_en" rules="required" v-slot="{ errors }">
-                                                <v-text-field outlined dense hide-details v-model="item.value_en"></v-text-field>
-                                            </ValidationProvider>
-                                                 </template>
-                                                  <template v-slot:item.value_bn="{ item }">
-                                                    <ValidationProvider name="Subvariable Name in Bangla" vid="value_bn" rules="required" v-slot="{ errors }">
-                                                        <v-text-field outlined dense hide-details v-model="item.value_bn"></v-text-field>
-                                                    </ValidationProvider>
+                                        <ValidationProvider name="Subvariable Name in English" vid="value_en"
+                                            rules="required" v-slot="{ errors }">
+                                            <v-text-field outlined dense hide-details
+                                                v-model="item.value_en"></v-text-field>
+                                        </ValidationProvider>
+                                    </template>
+                                    <template v-slot:item.value_bn="{ item }">
+                                        <ValidationProvider name="Subvariable Name in Bangla" vid="value_bn"
+                                            rules="required" v-slot="{ errors }">
+                                            <v-text-field outlined dense hide-details
+                                                v-model="item.value_bn"></v-text-field>
+                                        </ValidationProvider>
 
-                                                </template>
-                                            
-                                   
-                                        <template v-slot:item.score="{ item }">
-                                            <ValidationProvider name="Score" vid="score" rules="required" v-slot="{ errors }">
-                                                <v-text-field outlined dense hide-details v-model="item.score"></v-text-field>
-                                            </ValidationProvider>
-                                        </template>
+                                    </template>
 
-                                        <template v-slot:item.action="{ item }">
-                                            <v-tooltip top>
-                                                <template v-slot:activator="{ on }">
-                                                    <v-btn fab dense x-small v-on="on" class="danger" elevation="0"
-                                                        @click="removeRow(item)">
-                                                        <v-icon style="color: red">mdi-trash-can-outline</v-icon>
-                                                    </v-btn>
-                                                </template>
-                                                <span>
-                                                    {{ $t("container.list.remove") }}
-                                                </span>
-                                            </v-tooltip>
-                                        </template>
-                                    </v-data-table>
-                                <v-btn v-if="data.field_type == 1 || data.field_type == 2" fab color="primary" class="m-4"
-                                    @click="addRow">
+
+                                    <template v-slot:item.score="{ item }">
+                                        <ValidationProvider name="Score" vid="score" rules="required"
+                                            v-slot="{ errors }">
+                                            <v-text-field outlined dense hide-details
+                                                v-model="item.score"></v-text-field>
+                                        </ValidationProvider>
+                                    </template>
+
+                                    <template v-slot:item.action="{ item }">
+                                        <v-tooltip top>
+                                            <template v-slot:activator="{ on }">
+                                                <v-btn fab dense x-small v-on="on" class="danger" elevation="0"
+                                                    @click="removeRow(item)">
+                                                    <v-icon style="color: red">mdi-trash-can-outline</v-icon>
+                                                </v-btn>
+                                            </template>
+                                            <span>
+                                                {{ $t("container.list.remove") }}
+                                            </span>
+                                        </v-tooltip>
+                                    </template>
+                                </v-data-table>
+                                <v-btn v-if="data.field_type == 1 || data.field_type == 2" fab color="primary"
+                                    class="m-4" @click="addRow">
                                     <v-icon>mdi-plus</v-icon>
                                 </v-btn>
 
@@ -223,9 +207,9 @@
                 <v-card style="justify-content: center; text-align: center">
                     <v-card-title class="font-weight-bold justify-center">
                         {{
-                            $t(
-                                "container.application_selection.variable.edit"
-                            )
+                        $t(
+                        "container.application_selection.variable.edit"
+                        )
                         }}
                     </v-card-title>
                     <v-divider></v-divider>
@@ -233,23 +217,29 @@
                         <ValidationObserver ref="formAdd" v-slot="{ invalid }">
                             <form @submit.prevent="updateVariable()">
 
-                                <ValidationProvider name="Name in English" vid="name_en" rules="required" v-slot="{ errors }">
+                                <ValidationProvider name="Name in English" vid="name_en" rules="required"
+                                    v-slot="{ errors }">
                                     <v-text-field outlined type="text" v-model="data.name_en" :label="$t(
                                         'container.application_selection.variable.name_en'
                                     )
                                         " required :error="errors[0] ? true : false"
                                         :error-messages="errors[0]"></v-text-field>
                                 </ValidationProvider>
-                                 <ValidationProvider name="Name in Bangla" vid="name_bn" rules="required" v-slot="{ errors }">
-                                        <v-text-field outlined type="text" v-model="data.name_bn" :label="$t(
+                                <ValidationProvider name="Name in Bangla" vid="name_bn" rules="required"
+                                    v-slot="{ errors }">
+                                    <v-text-field outlined type="text" v-model="data.name_bn" :label="$t(
                                             'container.application_selection.variable.name_bn'
                                         )
                                             " required :error="errors[0] ? true : false"
-                                            :error-messages="errors[0]"></v-text-field>
-                                    </ValidationProvider>
-                                <ValidationProvider name="Field Type" vid="field_type" rules="required" v-slot="{ errors }">
-                                     <v-select outlined v-model="data.field_type" :items="field_types" :item-text="getItemText" item-value="id" :label="$t('container.application_selection.variable.field_type')" required :error="errors[0] ? true : false" :error-messages="errors[0]">
-        </v-select>
+                                        :error-messages="errors[0]"></v-text-field>
+                                </ValidationProvider>
+                                <ValidationProvider name="Field Type" vid="field_type" rules="required"
+                                    v-slot="{ errors }">
+                                    <v-select outlined v-model="data.field_type" :items="field_types"
+                                        :item-text="getItemText" item-value="id"
+                                        :label="$t('container.application_selection.variable.field_type')" required
+                                        :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                    </v-select>
                                 </ValidationProvider>
 
 
@@ -264,14 +254,9 @@
 
                                 <!-- <v-data-table :headers="header_field_value" :items="data.field_value"
                                     v-if="data.field_type == 1 || data.field_type == 2" hide-default-footer> -->
-                                     <v-data-table
-          :headers="header_field_value"
-          :items="data.field_value"
-          v-if="data.field_type == 1 || data.field_type == 2"
-          :items-per-page="100" 
-          hide-default-footer
-          no-data-text=""
-        > 
+                                <v-data-table :headers="header_field_value" :items="data.field_value"
+                                    v-if="data.field_type == 1 || data.field_type == 2" :items-per-page="100"
+                                    hide-default-footer no-data-text="">
                                     <template v-slot:item.id="{ item, index }">
                                         {{ index + 1 }}
                                     </template>
@@ -280,19 +265,28 @@
 
 
 
-                                        <ValidationProvider name="Value" vid="value" rules="required" v-slot="{ errors }">
-                                            <v-text-field outlined dense hide-details v-model="item.value_en"></v-text-field>
+                                        <ValidationProvider name="Value" vid="value" rules="required"
+                                            v-slot="{ errors }">
+                                            <v-text-field outlined dense hide-details v-if="data.id==1"
+                                                v-model="item.value_en" type="number"></v-text-field>
+
+                                            <v-text-field outlined dense hide-details v-if="data.id !=1"
+                                                v-model="item.value_en"></v-text-field>
                                         </ValidationProvider>
-                                      
+
                                     </template>
                                     <template v-slot:item.value_bn="{ item }">
-                                            <ValidationProvider name="Value" vid="value" rules="required" v-slot="{ errors }">
-                                                    <v-text-field outlined dense hide-details v-model="item.value_bn"></v-text-field>
-                                                </ValidationProvider>
+                                        <ValidationProvider name="Value" vid="value" rules="required"
+                                            v-slot="{ errors }">
+                                            <v-text-field outlined dense hide-details v-model="item.value_bn"
+                                               ></v-text-field>
+                                        </ValidationProvider>
                                     </template>
                                     <template v-slot:item.score="{ item }">
-                                        <ValidationProvider name="Score" vid="score" rules="required" v-slot="{ errors }">
-                                            <v-text-field outlined dense hide-details v-model="item.score"></v-text-field>
+                                        <ValidationProvider name="Score" vid="score" rules="required"
+                                            v-slot="{ errors }">
+                                            <v-text-field outlined dense hide-details
+                                                v-model="item.score"></v-text-field>
                                         </ValidationProvider>
                                     </template>
 
@@ -310,13 +304,14 @@
                                         </v-tooltip>
                                     </template>
                                 </v-data-table>
-                                <v-btn v-if="data.field_type == 1 || data.field_type == 2" fab color="primary" class="m-4"
-                                    @click="addRow">
+                                <v-btn v-if="data.field_type == 1 || data.field_type == 2" fab color="primary"
+                                    class="m-4" @click="addRow">
                                     <v-icon>mdi-plus</v-icon>
                                 </v-btn>
 
                                 <v-row class="mx-0 my-0 py-2" justify="center">
-                                    <v-btn flat @click="dialogEdit = false" outlined class="custom-btn-width py-2 mr-10">
+                                    <v-btn flat @click="dialogEdit = false" outlined
+                                        class="custom-btn-width py-2 mr-10">
                                         {{ $t("container.list.cancel") }}
                                     </v-btn>
                                     <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
@@ -337,18 +332,18 @@
                 <v-card style="justify-content: center; text-align: center">
                     <v-card-title class="font-weight-bold justify-center">
                         {{
-                            $t(
-                                "container.application_selection.variable.delete"
-                            )
+                        $t(
+                        "container.application_selection.variable.delete"
+                        )
                         }}
                     </v-card-title>
                     <v-divider></v-divider>
                     <v-card-text>
                         <div class="subtitle-1 font-weight-medium mt-5">
                             {{
-                                $t(
-                                    "container.application_selection.variable.delete_alert"
-                                )
+                            $t(
+                            "container.application_selection.variable.delete_alert"
+                            )
                             }}
                         </div>
                     </v-card-text>

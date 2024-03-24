@@ -286,7 +286,7 @@
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider name="Name in Bangla" vid="name_bn" rules="required"
+                            <ValidationProvider name="Name in Bangla" vid="name_bn" rules="required||bangla"
                               v-slot="{ errors }">
                               <label>{{ $t('container.application_selection.application.name_bn') }} </label>
                               <span style="margin-left: 4px; color: red">*</span>
@@ -306,8 +306,8 @@
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider name="Father Name in Bangla" vid="father_name_bn" rules="required"
-                              v-slot="{ errors }">
+                            <ValidationProvider name="Father Name in Bangla" vid="father_name_bn"
+                              rules="required||bangla" v-slot="{ errors }">
                               <label>{{ $t('container.application_selection.application.father_name_bn') }}</label>
 
                               <v-text-field v-model="data.father_name_bn" outlined clearable
@@ -327,7 +327,7 @@
                           <v-col cols="6" lg="6">
                             <div class="validation-error-mobile">
                               <ValidationProvider name="Mother Name in Bangla" vid="mother_name_bn" v-slot="{ errors }"
-                                rules="required">
+                                rules="required||bangla">
                                 <label>{{ $t('container.application_selection.application.mother_name_bn') }}</label>
                                 <v-text-field v-model="data.mother_name_bn" outlined clearable
                                   :error="errors[0] ? true : false" :error-messages="errors[0]">
@@ -1183,7 +1183,7 @@
                           </v-radio-group>
                         </v-col>
                         <v-col cols="6" lg="6" v-if="data.account_type === 2">
-                          <ValidationProvider name="Account Ownership" vid="account_owner" rules="required"
+                          <ValidationProvider name="Mobile Number Ownership" vid="account_owner" rules="required"
                             v-slot="{ errors }">
                             <label style="display: inline-block"> {{
                               $t('container.application_selection.application.mobile_ownership') }}
@@ -1198,7 +1198,7 @@
                         </v-col>
 
                         <v-col cols="6" lg="6" v-if="data.account_type === 1">
-                          <ValidationProvider name="Account Ownership" vid="bank_account_owner" rules="required"
+                          <ValidationProvider name=" Bank Account Ownership" vid="bank_account_owner" rules="required"
                             v-slot="{ errors }">
                             <label style="display: inline-block">{{
                               $t('container.application_selection.application.account_ownership') }}
@@ -1250,7 +1250,7 @@
                         </v-col>
 
                         <v-col cols="6" lg="6" v-if="data.account_type === 1">
-                          <ValidationProvider rules="required" name="Branch name" vid="account_type" v-slot="{ errors }">
+                          <ValidationProvider rules="required" name="Branch name" vid="branch_name" v-slot="{ errors }">
                             <label style="display: inline-block">{{
                               $t('container.application_selection.application.branch_name') }}</label><span
                               style="margin-left: 4px; color: red">*</span>
@@ -1390,7 +1390,7 @@
 
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider name="Nominee Name (BN)" vid="nominee_bn" rules="required"
+                            <ValidationProvider name="Nominee Name (BN)" vid="nominee_bn" rules="required||bangla"
                               v-slot="{ errors }">
                               <label style="display: inline-block">{{
                                 $t('container.application_selection.application.name_bn') }}
@@ -1549,7 +1549,7 @@
                                 <v-select :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
                                   :error-messages="errors[0]" outlined
                                   v-model="data.application_pmt[indexPMT].sub_variables" :items="variables.children"
-                                  item-value="id" :item-text="getItemText">
+                                  item-value="id" :item-text="getItemText" @change="onChangeHouse($event,variables)">
                                 </v-select>
                               </ValidationProvider>
                             </template>
@@ -1570,9 +1570,53 @@
                                 </v-select>
                               </ValidationProvider>
                             </template>
+
                           </v-col>
+
+                          <v-col cols="6">
+                            <template>
+                              <label> {{ language === 'bn' ? 'ঘরের সংখ্যা' :'No Of Room' }}
+                                <span style="
+                                  margin-left: 4px;
+                                  margin-right: 4px;
+                                  color: red;
+                                ">*</span></label>
+                              <ValidationProvider name="No of Room" vid="no_of_room" rules="required"
+                                v-slot="{ errors }">
+                                <v-select :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+                                  :error-messages="errors[0]" outlined v-model="data.no_of_room" :items="no_of_rooms"
+                                  item-value="name_en" :item-text="getItemText" @change="onChange($event)">
+                                </v-select>
+                              </ValidationProvider>
+                            </template>
+
+                          </v-col>
+                          <v-col cols="6">
+                            <template>
+                              <label>
+                                {{ language === 'bn' ? 'রুম প্রতি মানুষের সংখ্যা স্কোর' : 'Score of number of people per
+                                room' }}
+                                <span style="margin-left: 4px; margin-right: 4px; color: red;">*</span>
+                              </label>
+
+                              <v-text-field outlined v-model="data.per_room_score" readonly></v-text-field>
+                            </template>
+                          </v-col>
+                          <v-col cols="6">
+                            <template>
+                              <label>
+                                {{ language === 'bn' ? 'রুমের সংখ্যার স্কোর' : 'Score of number of room' }}
+                                <span style="margin-left: 4px; margin-right: 4px; color: red;">*</span>
+                              </label>
+
+                              <v-text-field outlined v-model="data.no_of_people_score" readonly></v-text-field>
+                            </template>
+                          </v-col>
+
                         </v-row>
 
+                        // Num of people per room Score:{{ data?.per_room_score }}
+                        // No. of people Score:{{ data?.no_of_people_score }}
                       </div>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
@@ -1684,6 +1728,14 @@ import { required, numeric } from 'vee-validate/dist/rules';
 extend("numeric", {
   ...numeric,
   message: "This field must be a number"
+});
+extend('bangla', {
+  validate: value => {
+    // Regular expression to match Bangla characters
+    const banglaRegex = /^[\u0980-\u09FF\s]+$/;
+    return banglaRegex.test(value);
+  },
+  message: 'Only Bangla characters will be allowed in this field'
 });
 
 
@@ -1885,9 +1937,33 @@ export default {
       deleteDialog: false,
       confirmDialog: false,
         showAlert: false,
+      no_of_rooms: [{ name_en: 1, name_bn: '১' },
+        { name_en: 2, name_bn: '২' },
+        { name_en: 3, name_bn: '৩' },
+        { name_en: 4, name_bn: '৪' },
+        { name_en: 5, name_bn: '৫' },
+        { name_en: 6, name_bn: '৬' },
+        { name_en: 7, name_bn: '৭' },
+        { name_en: 8, name_bn: '৮' },
+        { name_en: 9, name_bn: '৯' },
+        { name_en: 10, name_bn: '১০' },
+        { name_en: 11, name_bn: '১১' },
+        { name_en: 12, name_bn: '১২' },
+        { name_en: 13, name_bn: '১৩' },
+        { name_en: 14, name_bn: '১৪' },
+        { name_en: 15, name_bn: '১৫' },
+        { name_en: 16, name_bn: '১৬' },
+        { name_en: 17, name_bn: '১৭' },
+        { name_en: 18, name_bn: '১৮' },
+        { name_en: 19, name_bn: '১৯' },
+        { name_en: 20, name_bn: '২০' }],
        
       data: {
-
+        house_size:null,
+        per_room_score:null,
+        no_of_people_score:null,
+        no_of_room:null,
+        
         program_id: null,
         verification_type: 1,
         verification_number: null,
@@ -2065,7 +2141,38 @@ export default {
 
   methods:
    {
+    onChange($event) {
+       this.data.per_room_score = (this.data.house_size / $event)*-0.05;
+       this.data.per_room_score = parseFloat(this.data.per_room_score.toFixed(3));
+       this.data.no_of_people_score =  (this.data.house_size / $event) * this.data.per_room_score
+       this.data.no_of_people_score = parseFloat( this.data.no_of_people_score.toFixed(3));
+        // Do something with the input value
+     
+        
+    },
+    onChangeHouse($event, selected_value) {
+      console.log("selected_event", $event);
+      console.log("selected_value", selected_value);
+      if (selected_value.id == 1) {
+        const childWithId210 = selected_value.children.find(child => child.id == $event);
 
+        // Get the name_en property if the child exists
+        const name_en = childWithId210 ? childWithId210.name_en : null;
+
+        // Do something with the name_en value
+        console.log('Name (English):', name_en);
+        this.data.house_size = name_en
+      }
+      if (this.data.house_size){
+        this.data.per_room_score = (this.data.house_size / this.data.no_of_room) * -0.05;
+        this.data.per_room_score = parseFloat(this.data.per_room_score.toFixed(3));
+        this.data.no_of_people_score = (this.data.house_size / this.data.no_of_room) * this.data.per_room_score
+        this.data.no_of_people_score = parseFloat(this.data.no_of_people_score.toFixed(3));
+        
+      }
+      // Do something with the input value
+    },
+  
      //User Activity Log
      async SendActivityLog() {
        const queryParams = {
