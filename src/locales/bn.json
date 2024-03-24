@@ -285,6 +285,7 @@
           "name_bn": "কমিটির নাম বাংলা",
           "program_name": "প্রোগ্রামের নাম",
           "committee_type": "কমিটির ধরন",
+          "office_types": "অফিসের ধরন",
           "ward": "ওয়ার্ড",
           "add_new": "নতুন কমিটি যোগ করুন",
           "add": "কমিটি যোগ করুন",
@@ -986,12 +987,11 @@
       "device_id": "ডিভাইস আইডি",
       "location": "অবস্থান",
       "date_time": "তারিখ এবং সময়",
-      "application_time":"আবেদনের সময়",
+      "application_time": "আবেদনের সময়",
       "application_date": "আবেদনের তারিখ",
-      "office":"অফিস",
-  
-      "applicant_details":"আবেদনকারীর বিবরণ"
+      "office": "অফিস",
 
+      "applicant_details": "আবেদনকারীর বিবরণ"
     },
     "activity_log": {
       "title": "এক্টিভিটি লগের তালিকা",

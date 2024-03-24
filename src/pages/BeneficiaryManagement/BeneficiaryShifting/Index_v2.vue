@@ -1227,6 +1227,7 @@ export default {
           program_id: this.data.program_id,
           division_id: this.data.division_id,
           district_id: this.data.district_id,
+          location_type_id: this.data.location_type,
           city_corp_id: this.data.city_id,
           district_pourashava_id: this.data.district_pouro_id,
           union_id: this.data.union_id,
