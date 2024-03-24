@@ -358,11 +358,6 @@ export default {
         
 
         applicationTracking() {
-            // let data = {
-            //     tracking_no: this.data.tracking_no,
-            //     nid: this.data.nid,
-            //     date_of_birth: this.data.date_of_birth,
-            // };
             this.$axios.post("global/applicants_tracking", this.data, {
                 headers: {
                     "Content-Type": "multipart/form-data",
