@@ -546,7 +546,7 @@
                             $t('container.system_config.demo_graphic.ward.subLocation_type') }}
                           </label>
                           <span style="margin-left: 4px; color: red">*</span>
-                          <ValidationProvider name="subLocationType" vid="subLocationType" v-slot="{ errors }"
+                          <ValidationProvider name="Sub Location" vid="subLocationType" v-slot="{ errors }"
                             rules="required">
                             <v-select @input="onChangeSubLocationType($event)" v-model="data.sub_location_type" outlined
                               :items="subLocationType" :item-text="getItemValue" item-value="id"
@@ -763,7 +763,7 @@
                             $t('container.system_config.demo_graphic.ward.subLocation_type') }}
                           </label>
                           <span style="margin-left: 4px; color: red">*</span>
-                          <ValidationProvider name="subLocationType" vid="subLocationTypePermanent" v-slot="{ errors }"
+                          <ValidationProvider name="Sub Location" vid="subLocationTypePermanent" v-slot="{ errors }"
                             rules="required">
                             <v-select @input="onChangeSubLocationTypePermanent($event)"
                               v-model="data.permanent_sub_location_type" outlined :items="subLocationType"
@@ -1250,7 +1250,7 @@
                         </v-col>
 
                         <v-col cols="6" lg="6" v-if="data.account_type === 1">
-                          <ValidationProvider rules="required" name="Bank name" vid="account_type" v-slot="{ errors }">
+                          <ValidationProvider rules="required" name="Branch name" vid="account_type" v-slot="{ errors }">
                             <label style="display: inline-block">{{
                               $t('container.application_selection.application.branch_name') }}</label><span
                               style="margin-left: 4px; color: red">*</span>

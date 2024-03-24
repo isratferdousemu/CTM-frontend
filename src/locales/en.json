@@ -33,10 +33,10 @@
       "reject": "Reject",
       "status": "Status",
       "code": "Code",
-      "name_en": "Name English",
-      "name_bn": "Name Bangla",
-      "value_en": "Name English",
-      "value_bn": "Name Bangla",
+      "name_en": "Name (English)",
+      "name_bn": "Name (Bangla)",
+      "value_en": "Name (English)",
+      "value_bn": "Name (Bangla)",
       "keyword": "Keyword",
       "location_type": "Location Type",
       "add_new": "Add New",
@@ -73,7 +73,9 @@
       "no": "No",
       "attention": "Attention!!!",
       "create": "Create",
-      "download": "Download Application"
+      "download": "Download Application",
+      "pouroshava": "Pouroshava",
+      "union": "Union"
     },
     "system_config": {
       "demo_graphic": {
@@ -371,7 +373,9 @@
           "add": "Add Role",
           "edit": "Edit Role",
           "role_name": "Role Name",
-          "module_name": "Module Name"
+          "module_name": "Module Name",
+          "delete": "Role Delete",
+          "delete_alert": "Are you sure to delete this role?"
         },
         "user": {
           "listTitle": "User List",
@@ -394,7 +398,7 @@
           "thana_id": "Select Thana",
           "city_corpo_id": "Select City Corporation",
           "add_new": "Add New User",
-          "delete_alert": "Are you sure to delete this User?.",
+          "delete_alert": "Are you sure to delete this User?",
           "approve_alert": "Are you sure to approve this User?",
           "search": "Search User",
           "email_label": "Email",
@@ -424,6 +428,7 @@
         "user_name": "User Name",
         "full_name": "Full Name",
         "device_type": "Device Type",
+        "device_name": "Device Name",
         "ip_address": "IP Address",
         "pupose_of_use": "Purpose of Use",
         "unique_id": "Unique ID",
@@ -970,8 +975,8 @@
       "grievance_tracking": "Grievance Tracking",
       "payment_tracking": "Payment Tracking",
       "nbr": "NID/Birth Registration Number",
-      "tracking_no": "Tracking No",
-      "application_status": "Application Status",
+      "tracking_no": "Tracking Information",
+      "application_status": "Application Status Verification",
       "grievance_status": "Grievance Status",
       "payment_status": "Payment Status",
       "activity_log": "Activity Log",
@@ -984,7 +989,11 @@
       "user": "User",
       "device_id": "Device ID",
       "location": "Location",
-      "date_time": "Date & Time"
+      "date_time": "Date & Time",
+      "application_time": "Application Time",
+      "application_date": "Application Date",
+      "office": "Office",
+      "applicant_details": "Applicant Details"
     },
     "activity_log": {
       "title": "Activity Log Lists",

@@ -250,7 +250,7 @@ const BeneficiaryManagementRoutes = [
       permission: "beneficiaryShifting-create",
     },
     component: () =>
-      import("../pages/BeneficiaryManagement/BeneficiaryShifting/Index.vue"),
+      import("../pages/BeneficiaryManagement/BeneficiaryShifting/Index_v2.vue"),
   },
   {
     path: "/beneficiary-management/beneficiary-shifting-list",
