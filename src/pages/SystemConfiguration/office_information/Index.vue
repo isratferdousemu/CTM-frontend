@@ -802,7 +802,7 @@
                 {{ $t("container.list.cancel") }}
               </v-btn>
               <v-btn text @click="deleteOffice($event)" color="white" :loading="delete_loading"
-                class="custom-btn-width black white--text py-2">
+                class="custom-btn-width warning white--text py-2">
                 {{ $t("container.list.delete") }}
               </v-btn>
             </v-row>
@@ -2446,9 +2446,9 @@ export default {
           // console.log(res);
           // check if the request was successful
           if (res?.data?.success) {
-            this.$toast.error(res.data.message);
-          } else {
             this.$toast.success(res.data.message);
+          } else {
+            this.$toast.error(res.data.message);
           }
           this.deleteDialog = false;
           this.GetOffices();

@@ -53,6 +53,7 @@ export default {
         formData.append('name_en', this.add_role.name_en);
         formData.append('name_bn', this.add_role.name_bn);
         formData.append('comment', this.add_role.comment);
+        formData.append('status', this.add_role.status);
 
 
         await this.$store.dispatch("Role/StoreRole", formData).then((res) => {
@@ -168,6 +169,17 @@ export default {
                         ></v-text-field>
                         </ValidationProvider>
                       </v-col>
+
+                      <v-col lg="6" md="6" cols="12">
+                        <ValidationProvider name="Status" vid="status" v-slot="{ errors }">
+                          <v-checkbox v-model="add_role.status" :label="$t(
+                        'container.system_config.demo_graphic.office.active'
+                      )
+                        " color="green" value="1" :hide-details="errors[0] ? false : true"
+                                      :error="errors[0] ? true : false" :error-messages="errors[0]"></v-checkbox>
+                        </ValidationProvider>
+                      </v-col>
+
                     </v-row>
                   </v-col>
 
