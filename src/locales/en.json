@@ -373,7 +373,9 @@
           "add": "Add Role",
           "edit": "Edit Role",
           "role_name": "Role Name",
-          "module_name": "Module Name"
+          "module_name": "Module Name",
+          "delete": "Role Delete",
+          "delete_alert": "Are you sure to delete this role?"
         },
         "user": {
           "listTitle": "User List",
@@ -396,7 +398,7 @@
           "thana_id": "Select Thana",
           "city_corpo_id": "Select City Corporation",
           "add_new": "Add New User",
-          "delete_alert": "Are you sure to delete this User?.",
+          "delete_alert": "Are you sure to delete this User?",
           "approve_alert": "Are you sure to approve this User?",
           "search": "Search User",
           "email_label": "Email",
@@ -426,6 +428,7 @@
         "user_name": "User Name",
         "full_name": "Full Name",
         "device_type": "Device Type",
+        "device_name": "Device Name",
         "ip_address": "IP Address",
         "pupose_of_use": "Purpose of Use",
         "unique_id": "Unique ID",
