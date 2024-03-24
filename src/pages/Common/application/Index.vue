@@ -1572,10 +1572,29 @@
                             </template>
 
                           </v-col>
+                          <v-col cols="6">
+                            <template>
+                              <label> {{ language === 'bn' ? 'ঘরের সংখ্যা' :'No Of Room' }}
+                                <span style="
+                                  margin-left: 4px;
+                                  margin-right: 4px;
+                                  color: red;
+                                ">*</span></label>
+                              <ValidationProvider name="No of Room" vid="no_of_room" rules="required"
+                                v-slot="{ errors }">
+                                <v-select :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+                                  :error-messages="errors[0]" outlined v-model="data.no_of_room" :items="no_of_rooms"
+                                  item-value="name_en" :item-text="getItemText" @change="onChange($event)">
+                                </v-select>
+                              </ValidationProvider>
+                            </template>
+
+                          </v-col>
+
 
                         </v-row>
 
-                      
+
                       </div>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
@@ -1590,7 +1609,7 @@
                 <!-- old one -->
 
                 <v-btn @click="resetForm()" elevation="2" class="btn mr-2" outlined color="red" dark>{{
-                  $t('container.list.cancel') }}</v-btn>
+          $t('container.list.cancel') }}</v-btn>
                 <v-btn @click="submitApplicationCheck()" flat color="primary" :loading="loading"
                   class="custom-btn-width black white--text py-2">
                   {{ $t('container.list.submit') }}
