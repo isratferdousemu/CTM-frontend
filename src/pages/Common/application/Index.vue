@@ -1574,7 +1574,7 @@
                           </v-col>
                           <v-col cols="6">
                             <template>
-                              <label> {{ language === 'bn' ? 'ঘরের সংখ্যা' :'No Of Room' }}
+                              <label> {{ language === 'bn' ? 'ঘরের সংখ্যা' :'No of Room' }}
                                 <span style="
                                   margin-left: 4px;
                                   margin-right: 4px;
