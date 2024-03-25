@@ -1572,10 +1572,9 @@
                             </template>
 
                           </v-col>
-
                           <v-col cols="6">
                             <template>
-                              <label> {{ language === 'bn' ? 'ঘরের সংখ্যা' :'No Of Room' }}
+                              <label> {{ language === 'bn' ? 'ঘরের সংখ্যা' :'No of Room' }}
                                 <span style="
                                   margin-left: 4px;
                                   margin-right: 4px;
@@ -1591,32 +1590,11 @@
                             </template>
 
                           </v-col>
-                          <v-col cols="6">
-                            <template>
-                              <label>
-                                {{ language === 'bn' ? 'রুম প্রতি মানুষের সংখ্যা স্কোর' : 'Score of number of people per
-                                room' }}
-                                <span style="margin-left: 4px; margin-right: 4px; color: red;">*</span>
-                              </label>
 
-                              <v-text-field outlined v-model="data.per_room_score" readonly></v-text-field>
-                            </template>
-                          </v-col>
-                          <v-col cols="6">
-                            <template>
-                              <label>
-                                {{ language === 'bn' ? 'রুমের সংখ্যার স্কোর' : 'Score of number of room' }}
-                                <span style="margin-left: 4px; margin-right: 4px; color: red;">*</span>
-                              </label>
-
-                              <v-text-field outlined v-model="data.no_of_people_score" readonly></v-text-field>
-                            </template>
-                          </v-col>
 
                         </v-row>
 
-                        // Num of people per room Score:{{ data?.per_room_score }}
-                        // No. of people Score:{{ data?.no_of_people_score }}
+
                       </div>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
@@ -1631,7 +1609,7 @@
                 <!-- old one -->
 
                 <v-btn @click="resetForm()" elevation="2" class="btn mr-2" outlined color="red" dark>{{
-                  $t('container.list.cancel') }}</v-btn>
+          $t('container.list.cancel') }}</v-btn>
                 <v-btn @click="submitApplicationCheck()" flat color="primary" :loading="loading"
                   class="custom-btn-width black white--text py-2">
                   {{ $t('container.list.submit') }}
