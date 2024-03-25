@@ -862,7 +862,6 @@ export default {
   title: "CTM - Beneficiary Dashboard",
   data() {
     return {
-      program_location_wise_ben: [],
       months: [
         "January",
         "February",
@@ -894,6 +893,7 @@ export default {
       isLoadingAgeProgram: false,
       isLoadingShifted: false,
       //for program & location wise chart
+      program_location_wise_ben: [],
       program_location_chart: null,
       program_location_Wise_beneficiary: {
         program_id: null,
@@ -1277,13 +1277,19 @@ export default {
           {
             type: "pie",
             data: {
-              labels: this.program_location_wise_ben.map((row) => row.division),
+              // labels: this.program_location_wise_ben.map((row) => row.name_en),
+              labels: this.program_location_wise_ben.map(
+                (row) =>
+                  `(${this.$i18n.locale == "en" ? row.name_en : row.name_bn})`
+              ),
               percentage: this.program_location_wise_ben.map(
                 (row) => row.percentage
               ),
               datasets: [
                 {
-                  label: "Values::",
+                  label: this.$t(
+                    "container.beneficiary_management.dashboard.total_beneficiaries"
+                  ),
                   data: this.program_location_wise_ben.map((row) => row.value),
                   backgroundColor: this.program_location_wise_ben.map(() =>
                     this.generateRandomColor()
@@ -1301,14 +1307,29 @@ export default {
                 },
                 datalabels: {
                   color: "#fff",
-                  fontWeight: "bold",
-                  formatter: function (value, context) {
-                    return (
-                      value +
-                      ", " +
-                      context.chart.data.percentage[context.dataIndex] +
-                      "%"
-                    );
+                  formatter: (value, context) => {
+                    const percentage =
+                      context.chart.data.percentage[context.dataIndex];
+                    if (value == "0") {
+                      return "";
+                    }
+                    return `${
+                      this.$i18n.locale == "en"
+                        ? value
+                        : this.$helpers.englishToBangla(value)
+                    }, ${
+                      this.$i18n.locale == "en"
+                        ? percentage
+                        : this.$helpers.englishToBangla(percentage)
+                    }%`;
+                  },
+                  labels: {
+                    title: {
+                      font: {
+                        weight: "bold",
+                        color: "#fff",
+                      },
+                    },
                   },
                 },
               },
@@ -1343,14 +1364,20 @@ export default {
         {
           type: "pie",
           data: {
-            labels: this.gender_wise_ben.map((row) => row.gender),
+            // labels: this.gender_wise_ben.map((row) => row.gender),
+            labels: this.gender_wise_ben.map(
+              (row) =>
+                `(${this.$i18n.locale == "en" ? row.name_en : row.name_bn})`
+            ),
 
             percentage: this.gender_wise_ben.map((row) => row.percentage),
             datasets: [
               {
-                label: "Values:: ",
+                label: this.$t(
+                  "container.beneficiary_management.dashboard.total_beneficiaries"
+                ),
                 data: this.gender_wise_ben.map((row) => row.value),
-                backgroundColor: this.program_location_wise_ben.map(() =>
+                backgroundColor: this.gender_wise_ben.map(() =>
                   this.generateRandomColor()
                 ),
               },
@@ -1369,13 +1396,21 @@ export default {
               datalabels: {
                 color: "#fff",
                 fontWeight: "bold",
-                formatter: function (value, context) {
-                  return (
-                    value +
-                    ", " +
-                    context.chart.data.percentage[context.dataIndex] +
-                    "%"
-                  );
+                formatter: (value, context) => {
+                  const percentage =
+                    context.chart.data.percentage[context.dataIndex];
+                  if (value == "0") {
+                    return "";
+                  }
+                  return `${
+                    this.$i18n.locale == "en"
+                      ? value
+                      : this.$helpers.englishToBangla(value)
+                  }, ${
+                    this.$i18n.locale == "en"
+                      ? percentage
+                      : this.$helpers.englishToBangla(percentage)
+                  }%`;
                 },
                 labels: {
                   title: {
@@ -1421,7 +1456,9 @@ export default {
                 // minBarLength: 2,
 
                 type: "bar",
-                label: "Waiting Beneficiaries",
+                label: this.$t(
+                  "container.beneficiary_management.dashboard.waitining_beneficiaries"
+                ),
                 data: this.year_wise_waiting_ben.map((row) => row.waiting),
                 backgroundColor: this.program_location_wise_ben.map(() =>
                   this.generateRandomColor()
@@ -1440,7 +1477,9 @@ export default {
                 // minBarLength: 2,
 
                 type: "bar",
-                label: "Total Beneficiaries",
+                label: this.$t(
+                  "container.beneficiary_management.dashboard.total_beneficiaries"
+                ),
                 data: this.year_wise_waiting_ben.map((row) => row.value),
                 borderWidth: 1,
                 backgroundColor: this.program_location_wise_ben.map(() =>
@@ -1500,6 +1539,9 @@ export default {
                 maxBarThickness: 30,
                 minBarLength: 2,
                 label: "Program Wise Beneficiary",
+                label: this.$t(
+                  "container.beneficiary_management.dashboard.program_wise_ben"
+                ),
                 data: this.program_wise_ben.map((row) => row.beneficiaries),
                 backgroundColor: this.program_location_wise_ben.map(() =>
                   this.generateRandomColor()
@@ -1555,7 +1597,9 @@ export default {
             datasets: [
               {
                 type: "line",
-                label: "Line Dataset",
+                label: this.$t(
+                  "container.beneficiary_management.dashboard.age_and_program_wise_ben"
+                ),
                 data: this.age_and_program_wise_ben.map(
                   (row) => row.beneficiaries
                 ),
@@ -1581,7 +1625,9 @@ export default {
               },
               {
                 type: "bar",
-                label: "Bar Dataset",
+                label: this.$t(
+                  "container.beneficiary_management.dashboard.age_and_program_wise_ben"
+                ),
                 data: this.age_and_program_wise_ben.map(
                   (row) => row.beneficiaries
                 ),
@@ -1633,7 +1679,9 @@ export default {
             datasets: [
               {
                 type: "line",
-                label: "Line Dataset",
+                label: this.$t(
+                  "container.beneficiary_management.dashboard.number_of_ben_program_shifted"
+                ),
                 data: this.shifted_ben.map((row) => row.beneficiaries),
                 fill: false,
                 borderColor: this.program_location_wise_ben.map(() =>
@@ -1648,7 +1696,9 @@ export default {
               },
               {
                 type: "bar",
-                label: "Bar Dataset",
+                label: this.$t(
+                  "container.beneficiary_management.dashboard.number_of_ben_program_shifted"
+                ),
                 data: this.shifted_ben.map((row) => row.beneficiaries),
                 barPercentage: 0.5,
                 barThickness: 6,
@@ -1770,15 +1820,20 @@ export default {
     "$i18n.locale": {
       handler(newLocale, oldLocale) {
         if (newLocale != oldLocale) {
-          //this.GetLocationWiseBeneficiaries();
+          this.GetLocationWiseBeneficiaries();
+          this.GetGenderWiseBeneficiaries();
+          this.GetWaitingBeneficiaries();
+          this.GetProgramWiseBeneficiaries();
+          this.GetAgeAndProgramWiseBeneficiaries();
+          this.GetShiftedBeneficiaries();
         }
       },
-      immediate: true, // Call the handler immediately to initialize the levels
+      // immediate: true, // Call the handler immediately to initialize the levels
     },
   },
   created() {},
   beforeMount() {
-    this.updateHeaderTitle();
+    // this.updateHeaderTitle();
   },
   mounted() {
     this.drawer = false;
