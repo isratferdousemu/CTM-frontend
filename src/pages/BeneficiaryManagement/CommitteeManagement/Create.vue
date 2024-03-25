@@ -483,7 +483,6 @@
                                     )
                                   "
                                   v-model="data.members[index]['member_name']"
-                                  required
                                   outlined
                                   :id="member"
                                   :error="errors[0] ? true : false"
@@ -692,7 +691,7 @@ export default {
         paurashava_id: null,
         members: [
           {
-            member_name: null,
+            member_name: "",
             designation: null,
             address: null,
             email: null,
