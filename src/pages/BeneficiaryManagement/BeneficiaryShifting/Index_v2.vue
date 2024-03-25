@@ -29,8 +29,8 @@
           </v-btn>
         </div>
         <!-- Expantion panels start -->
-        <v-expansion-panels>
-          <v-expansion-panel expand>
+        <v-expansion-panels v-model="panel" multiple>
+          <v-expansion-panel>
             <v-expansion-panel-header color="#8C9EFF">
               <h3 class="white--text">
                 {{
@@ -638,7 +638,7 @@
                                 )
                               "
                               :items="programs"
-                              item-text="name_en"
+                              :item-text="getItemText"
                               item-value="id"
                             ></v-autocomplete>
 
@@ -707,7 +707,8 @@
                   flat
                   :disabled="
                     submit_data.to_program_id &&
-                    selectedBeneficiaries.length > 0
+                    selectedBeneficiaries.length > 0 &&
+                    data.program_id != submit_data.to_program_id
                       ? false
                       : true
                   "
@@ -791,6 +792,7 @@ export default {
       },
       items: [5, 10, 15, 20, 40, 50, 100],
       value: ["name_bn"],
+      panel: [0],
     };
   },
   components: {
@@ -1225,6 +1227,7 @@ export default {
           program_id: this.data.program_id,
           division_id: this.data.division_id,
           district_id: this.data.district_id,
+          location_type_id: this.data.location_type,
           city_corp_id: this.data.city_id,
           district_pourashava_id: this.data.district_pouro_id,
           union_id: this.data.union_id,
@@ -1256,13 +1259,6 @@ export default {
       }
     },
     submitBeneficiaryShifting() {
-      this.selectedBeneficiaries.forEach((beneficiary, index) => {
-        console.log("selected_ben_1", beneficiary.id);
-        console.log("selected_ben_2", beneficiary.program.id);
-      });
-
-      alert(this.selectedBeneficiaries.length);
-
       //   const beneficiaries = [];
       //   this.checked.map((item) => {
       //     const data = {

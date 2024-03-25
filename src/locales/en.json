@@ -286,6 +286,7 @@
           "name_bn": "Committee Name Bangla",
           "program_name": "Program Name",
           "committee_type": "Committee Type",
+          "office_types": "Office Type",
           "ward": "Ward",
           "add_new": "Add New Committee",
           "add": "Add Committee",

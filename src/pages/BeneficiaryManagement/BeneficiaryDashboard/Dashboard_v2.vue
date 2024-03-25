@@ -301,7 +301,7 @@
                         "
                         :items="programs"
                         v-model="program_location_Wise_beneficiary.program_id"
-                        item-text="name_en"
+                        :item-text="getItemText"
                         item-value="id"
                         @change="GetLocationWiseBeneficiaries($event)"
                         clearable
@@ -398,7 +398,7 @@
                         "
                         :items="programs"
                         v-model="gender_Wise_beneficiary.program_id"
-                        item-text="name_en"
+                        :item-text="getItemText"
                         item-value="id"
                         @change="GetGenderWiseBeneficiaries($event)"
                         clearable
@@ -502,7 +502,7 @@
                         "
                         :items="programs"
                         v-model="waiting_beneficiary.program_id"
-                        item-text="name_en"
+                        :item-text="getItemText"
                         item-value="id"
                         @change="GetWaitingBeneficiaries($event)"
                         clearable
@@ -603,7 +603,7 @@
                         "
                         :items="programs"
                         v-model="program_wise_beneficiary.program_id"
-                        item-text="name_en"
+                        :item-text="getItemText"
                         item-value="id"
                         @change="GetProgramWiseBeneficiaries($event)"
                         clearable
@@ -709,7 +709,7 @@
                         "
                         :items="programs"
                         v-model="age_and_program_wise_beneficiary.program_id"
-                        item-text="name_en"
+                        :item-text="getItemText"
                         item-value="id"
                         @change="GetAgeAndProgramWiseBeneficiaries($event)"
                         clearable
@@ -807,7 +807,7 @@
                           )
                         "
                         dense
-                        item-text="name_en"
+                        :item-text="getItemText"
                         item-value="id"
                         v-model="shifted_beneficiary.to_program_id"
                         @input="GetShiftedBeneficiaries($event)"
@@ -826,7 +826,7 @@
                           )
                         "
                         dense
-                        item-text="name_en"
+                        :item-text="getItemText"
                         item-value="id"
                         v-model="shifted_beneficiary.from_program_id"
                         @input="GetShiftedBeneficiaries($event)"
@@ -960,6 +960,11 @@ export default {
       },
       set(v) {
         return this.$store.commit("setDrawer", v);
+      },
+    },
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
       },
     },
     dateRangeText() {
@@ -1257,6 +1262,9 @@ export default {
     },
     generateRandomColor() {
       return "#" + Math.floor(Math.random() * 16777215).toString(16);
+    },
+    getItemText(item) {
+      return this.language === "bn" ? item.name_bn : item.name_en;
     },
     CreateLocationWiseBeneficiariesChart() {
       if (this.program_location_chart) {
@@ -1762,7 +1770,7 @@ export default {
     "$i18n.locale": {
       handler(newLocale, oldLocale) {
         if (newLocale != oldLocale) {
-          this.GetLocationWiseBeneficiaries();
+          //this.GetLocationWiseBeneficiaries();
         }
       },
       immediate: true, // Call the handler immediately to initialize the levels
