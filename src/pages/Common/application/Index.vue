@@ -989,7 +989,7 @@
                             <!-- v-if="programDetails?.additional_field.length != 0 && keyGetByName('DIS No.') != index && keyGetByName('Disability Type') != index"> -->
                             <template v-if="fields.type == 'number'">
                               <v-row v-if="fields.verified === 1">
-                                <v-col cols="10" lg="10">
+                                <v-col cols="8" lg="8">
                                   <label> {{ language == 'bn' ? fields.name_bn : fields.name_en }}
                                     <span style="
                                     margin-left: 4px;
@@ -1006,7 +1006,7 @@
                                   </ValidationProvider>
 
                                 </v-col>
-                                <v-col cols="2" lg="2" class="text-right">
+                                <v-col cols="4" lg="4" class="text-right">
                                   <v-btn class="btn mt-5" color="primary" style="height: 56px;" :disabled="data.application_allowance_values[index]
                                     .value == null">{{ $t('container.list.verify') }}</v-btn>
 
