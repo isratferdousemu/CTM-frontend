@@ -862,30 +862,8 @@ export default {
   title: "CTM - Beneficiary Dashboard",
   data() {
     return {
-      months: [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-      ],
-      years: Array.from(
-        { length: 100 },
-        (_, i) => new Date().getFullYear() - i
-      ),
-      month_name: "",
-      year_name: "",
       programs: [],
       beneficiaries: [],
-      genders: ["Male", "Female", "3rd Gender"],
-      program_name: "",
       isLoadingProgramLocation: false,
       isLoadingGender: false,
       isLoadingWaiting: false,
@@ -894,6 +872,9 @@ export default {
       isLoadingShifted: false,
       //for program & location wise chart
       program_location_wise_ben: [],
+      program_location_wise_levels: [],
+      program_location_wise_datas: [],
+      program_location_wise_percentage: [],
       program_location_chart: null,
       program_location_Wise_beneficiary: {
         program_id: null,
@@ -903,6 +884,9 @@ export default {
 
       //for gender wise chart
       gender_wise_ben: [],
+      gender_wise_ben_levels: [],
+      gender_wise_ben_datas: [],
+      gender_wise_ben_percentage: [],
       gender_wise_chart: null,
       gender_Wise_beneficiary: {
         program_id: null,
@@ -1054,6 +1038,18 @@ export default {
         })
         .then((result) => {
           this.program_location_wise_ben = result.data.data;
+
+          this.program_location_wise_levels =
+            this.program_location_wise_ben.map((row) =>
+              this.$i18n.locale == "en" ? row.name_en : row.name_bn
+            );
+
+          this.program_location_wise_datas = this.program_location_wise_ben.map(
+            (row) => row.value
+          );
+          this.program_location_wise_percentage =
+            this.program_location_wise_ben.map((row) => row.percentage);
+
           this.isLoadingProgramLocation = false;
         });
       this.CreateLocationWiseBeneficiariesChart();
@@ -1087,9 +1083,20 @@ export default {
         })
         .then((result) => {
           this.gender_wise_ben = result.data.data;
-          this.CreateGenderWiseBeneficiariesChart();
+
+          this.gender_wise_ben_levels = this.gender_wise_ben.map((row) =>
+            this.$i18n.locale == "en" ? row.name_en : row.name_bn
+          );
+          this.gender_wise_ben_datas = this.gender_wise_ben.map(
+            (row) => row.value
+          );
+          this.gender_wise_ben_percentage = this.gender_wise_ben.map(
+            (row) => row.percentage
+          );
+
           this.isLoadingGender = false;
         });
+      this.CreateGenderWiseBeneficiariesChart();
     },
     submitDateGenderWiseBeneficiary() {
       this.menu2 = false;
@@ -1270,6 +1277,7 @@ export default {
       if (this.program_location_chart) {
         this.program_location_chart.destroy();
       }
+
       if (this.program_location_wise_ben.length > 0) {
         // program_location_wise_chart
         this.program_location_chart = new Chart(
@@ -1277,14 +1285,23 @@ export default {
           {
             type: "pie",
             data: {
-              // labels: this.program_location_wise_ben.map((row) => row.name_en),
-              labels: this.program_location_wise_ben.map(
-                (row) =>
-                  `(${this.$i18n.locale == "en" ? row.name_en : row.name_bn})`
+              labels: this.program_location_wise_levels.map(
+                (label, index) =>
+                  `${label} (${
+                    this.$i18n.locale == "en"
+                      ? this.program_location_wise_datas[index]
+                      : this.$helpers.englishToBangla(
+                          this.program_location_wise_datas[index]
+                        )
+                  } - ${
+                    this.$i18n.locale == "en"
+                      ? this.program_location_wise_percentage[index]
+                      : this.$helpers.englishToBangla(
+                          this.program_location_wise_percentage[index]
+                        )
+                  }%)`
               ),
-              percentage: this.program_location_wise_ben.map(
-                (row) => row.percentage
-              ),
+              percentage: this.program_location_wise_percentage,
               datasets: [
                 {
                   label: this.$t(
@@ -1359,84 +1376,100 @@ export default {
       if (this.gender_wise_chart) {
         this.gender_wise_chart.destroy();
       }
-      this.gender_wise_chart = new Chart(
-        document.getElementById("gender_wise_beneficiary"),
-        {
-          type: "pie",
-          data: {
-            // labels: this.gender_wise_ben.map((row) => row.gender),
-            labels: this.gender_wise_ben.map(
-              (row) =>
-                `(${this.$i18n.locale == "en" ? row.name_en : row.name_bn})`
-            ),
-
-            percentage: this.gender_wise_ben.map((row) => row.percentage),
-            datasets: [
-              {
-                label: this.$t(
-                  "container.beneficiary_management.dashboard.total_beneficiaries"
-                ),
-                data: this.gender_wise_ben.map((row) => row.value),
-                backgroundColor: this.gender_wise_ben.map(() =>
-                  this.generateRandomColor()
-                ),
-              },
-            ],
-          },
-          options: {
-            plugins: {
-              legend: {
-                display: true,
-                position: "bottom",
-                align: "center",
-                labels: {
-                  // color: "rgb(255, 99, 132)",
-                },
-              },
-              datalabels: {
-                color: "#fff",
-                fontWeight: "bold",
-                formatter: (value, context) => {
-                  const percentage =
-                    context.chart.data.percentage[context.dataIndex];
-                  if (value == "0") {
-                    return "";
-                  }
-                  return `${
+      if (this.gender_wise_ben.length > 0) {
+        this.gender_wise_chart = new Chart(
+          document.getElementById("gender_wise_beneficiary"),
+          {
+            type: "pie",
+            data: {
+              labels: this.gender_wise_ben_levels.map(
+                (label, index) =>
+                  `${label} (${
                     this.$i18n.locale == "en"
-                      ? value
-                      : this.$helpers.englishToBangla(value)
-                  }, ${
+                      ? this.gender_wise_ben_datas[index]
+                      : this.$helpers.englishToBangla(
+                          this.gender_wise_ben_datas[index]
+                        )
+                  } - ${
                     this.$i18n.locale == "en"
-                      ? percentage
-                      : this.$helpers.englishToBangla(percentage)
-                  }%`;
+                      ? this.gender_wise_ben_percentage[index]
+                      : this.$helpers.englishToBangla(
+                          this.gender_wise_ben_percentage[index]
+                        )
+                  }%)`
+              ),
+              percentage: this.gender_wise_ben_percentage,
+              datasets: [
+                {
+                  label: this.$t(
+                    "container.beneficiary_management.dashboard.total_beneficiaries"
+                  ),
+                  data: this.gender_wise_ben.map((row) => row.value),
+                  backgroundColor: this.gender_wise_ben.map(() =>
+                    this.generateRandomColor()
+                  ),
                 },
-                labels: {
-                  title: {
-                    font: {
-                      weight: "bold",
+              ],
+            },
+            options: {
+              plugins: {
+                legend: {
+                  display: true,
+                  position: "bottom",
+                  align: "center",
+                  labels: {
+                    // color: "rgb(255, 99, 132)",
+                  },
+                },
+                datalabels: {
+                  color: "#fff",
+                  fontWeight: "bold",
+                  formatter: (value, context) => {
+                    const percentage =
+                      context.chart.data.percentage[context.dataIndex];
+                    if (value == "0") {
+                      return "";
+                    }
+                    return `${
+                      this.$i18n.locale == "en"
+                        ? value
+                        : this.$helpers.englishToBangla(value)
+                    }, ${
+                      this.$i18n.locale == "en"
+                        ? percentage
+                        : this.$helpers.englishToBangla(percentage)
+                    }%`;
+                  },
+                  labels: {
+                    title: {
+                      font: {
+                        weight: "bold",
+                      },
                     },
                   },
                 },
               },
-            },
-            layout: {
-              padding: {
-                left: 10,
-                right: 10,
-                top: 0,
-                bottom: 10,
+              layout: {
+                padding: {
+                  left: 10,
+                  right: 10,
+                  top: 0,
+                  bottom: 10,
+                },
               },
+              responsive: true,
+              maintainAspectRatio: false,
+              aspectRatio: 1, // Aspect ratio of 1 w
             },
-            responsive: true,
-            maintainAspectRatio: false,
-            aspectRatio: 1, // Aspect ratio of 1 w
-          },
-        }
-      );
-      document.getElementById("gender_wise_beneficiary").style.width = "350px";
-      document.getElementById("gender_wise_beneficiary").style.height = "385px";
+          }
+        );
+        document.getElementById("gender_wise_beneficiary").style.width =
+          "350px";
+        document.getElementById("gender_wise_beneficiary").style.height =
+          "385px";
+      } else {
+        console.error("Data is not available to create gender wise  chart.");
+      }
     },
     CreateWaitingBeneficiariesChart() {
       if (this.year_wise_waiting_chart) {
