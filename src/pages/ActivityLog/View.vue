@@ -20,81 +20,167 @@
               <v-simple-table dense>
                 <template v-slot:default>
                   <tbody>
-                  <tr>
-                    <th class="text-left">
-                      Causer Model
-                    </th>
-                    <td class="text-left">
-                      App\User
-                    </td>
-                  </tr>
-                  <tr>
-                    <th class="text-left">
-                      Causer
-                    </th>
-                    <td class="text-left">
-                      Info
-                    </td>
-                  </tr>
-                  <tr>
-                    <th class="text-left">
-                      Event
-                    </th>
-                    <td class="text-left">
-                      create/edit/update/delete
-                    </td>
-                  </tr>
 
-                  <tr>
-                    <th class="text-left">
-                      Subject Model
-                    </th>
-                    <td class="text-left">
-                      App\Model\Article
-                    </td>
-                  </tr>
-                  <tr>
+                  <tr v-if=" activity_log_details.log_name">
                     <th class="text-left">
                       Subject
                     </th>
                     <td class="text-left">
-                      Subject Details
+                      {{ activity_log_details.log_name }}
                     </td>
                   </tr>
+
+                  <tr v-if="activity_log_details.description">
+                    <th class="text-left">
+                      Description
+                    </th>
+                    <td class="text-left">
+                      {{ activity_log_details.description }}
+                    </td>
+                  </tr>
+
+                  <tr v-if="activity_log_details.causer_type">
+                    <th class="text-left">
+                      Causer Model
+                    </th>
+                    <td class="text-left">
+                      {{ activity_log_details.causer_type}}
+                    </td>
+                  </tr>
+                  <!--                  <tr>-->
+                  <!--                    <th class="text-left">-->
+                  <!--                      Causer-->
+                  <!--                    </th>-->
+                  <!--                    <td class="text-left">-->
+                  <!--                      Info-->
+                  <!--                    </td>-->
+                  <!--                  </tr>-->
+
+                  <tr v-if="activity_log_details.subject_type">
+                    <th class="text-left">
+                      Subject Model
+                    </th>
+                    <td class="text-left">
+                      {{ activity_log_details.subject_type }}
+                    </td>
+                  </tr>
+
+                  <tr v-if="activity_log_details.event">
+                    <th class="text-left">
+                      Event
+                    </th>
+                    <td class="text-left">
+                      {{ activity_log_details.event }}
+                    </td>
+                  </tr>
+
 
                   <tr>
                     <th class="text-left">
                       Date
                     </th>
                     <td class="text-left">
-                      21 Mar 2024, 10:32
+                      {{ activity_log_details.database_created_at }}  ({{ activity_log_details.created_at }})
                     </td>
                   </tr>
 
+                  <!--                  <tr>-->
+                  <!--                    <th class="text-left">-->
+                  <!--                      Changes:-->
+                  <!--                    </th>-->
+                  <!--                    <td class="text-left">-->
+                  <!--                      <v-simple-table dense>-->
+                  <!--                        <template v-slot:default>-->
+                  <!--                          <thead>-->
+                  <!--                            <th>Key</th>-->
+                  <!--                            <th>Previous Value</th>-->
+                  <!--                            <th>New Value</th>-->
+                  <!--                          </thead>-->
+                  <!--                          <tbody>-->
+                  <!--                            <tr>-->
+                  <!--                              <td class="text-left">Date</td>-->
+                  <!--                              <td>2023-08-31</td>-->
+                  <!--                              <td>dssdfsdfsd</td>-->
+                  <!--                            </tr>-->
+                  <!--                          </tbody>-->
+                  <!--                        </template>-->
+                  <!--                      </v-simple-table>-->
+                  <!--                    </td>-->
+                  <!--                  </tr>-->
+
                   <tr>
                     <th class="text-left">
-                      Changes:
+                      Change Info:
                     </th>
                     <td class="text-left">
                       <v-simple-table dense>
                         <template v-slot:default>
                           <thead>
-                            <th>Key</th>
-                            <th>Previous Value</th>
-                            <th>New Value</th>
+                          <th>Key</th>
+                          <th>Value</th>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td class="text-left">Date</td>
-                              <td>2023-08-31</td>
-                              <td>dssdfsdfsd</td>
-                            </tr>
+
+                          <tr v-for="(value, key) in activity_log_details.subject" :key="key">
+                            <template v-if="value != null">
+                              <td>{{ key }}</td>
+                              <td>{{ value }}</td>
+                            </template>
+                          </tr>
+
                           </tbody>
                         </template>
                       </v-simple-table>
                     </td>
                   </tr>
 
+                  <tr v-if="activity_log_details.causer">
+                    <th class="text-left">
+                      User Information:
+                    </th>
+                    <td class="text-left">
+                      <v-simple-table dense>
+                        <template v-slot:default>
+                          <thead>
+                          <th>Key</th>
+                          <th>Value</th>
+                          </thead>
+                          <tbody>
+                          <tr v-for="(value, key) in activity_log_details.causer" :key="key">
+                            <template v-if="value != null">
+                              <td>{{ key }}</td>
+                              <td>{{ value }}</td>
+                            </template>
+                          </tr>
+                          </tbody>
+                        </template>
+                      </v-simple-table>
+                    </td>
+                  </tr>
+
+                  <tr v-if="activity_log_details.properties.userInfo">
+                    <th class="text-left">
+                      User And Device Info:
+                    </th>
+                    <td class="text-left">
+                      <v-simple-table dense>
+                        <template v-slot:default>
+                          <thead>
+                          <th>Key</th>
+                          <th>Value</th>
+                          </thead>
+                          <tbody>
+                          <tr v-for="(value, key) in activity_log_details.properties.userInfo" :key="key">
+                            <template v-if="value != null">
+                              <td>{{ key }}</td>
+                              <td>{{ value }}</td>
+                            </template>
+                          </tr>
+                          </tbody>
+                        </template>
+                      </v-simple-table>
+                    </td>
+                  </tr>
                   </tbody>
                 </template>
               </v-simple-table>
@@ -123,6 +209,8 @@ export default {
         id: null,
       },
       isLoading:false,
+
+      activity_log_details: [],
 
 
       desserts: [
@@ -179,19 +267,29 @@ export default {
   },
   methods: {
 
-    viewActivityLog: (id) => {
-      return http().get(`/admin/activity-log/view/${id}`).then((result) => {
-        console.log(result.data, 'program')
-      }).catch((err) => {
-        console.log(err);
+    viewActivityLog(id) {
+      this.$axios.get(`/admin/activity-log/view/${id}`, {
+        headers: {
+          Authorization: "Bearer " + this.$store.state.token,
+          "Content-Type": "multipart/form-data",
+        },
       })
+          .then((response) => {
+            this.activity_log_details = response.data.data;
+            console.log(response.data, 'program');
+
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+
     },
   },
   created() {
-    this.viewActivityLog(this.$route.params.id)
+
   },
   mounted(){
-    alert(this.$route.params.id)
+    this.viewActivityLog(this.$route.params.id)
   },
   beforeMount() {
 
