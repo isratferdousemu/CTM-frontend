@@ -19,10 +19,9 @@
               </v-card-title>
               <v-card-text>
                 <v-row justify="space-between" align="center" class="mx-5">
-
                   <v-col lg="3" md="3" cols="12">
                     <v-text-field
-                        @keyup.native="GetActivityLog"
+                        @keyup.native="GetActivityLog()"
                         outlined
                         dense
                         v-model="search"
@@ -34,9 +33,54 @@
                         color="primary"
                     ></v-text-field>
                   </v-col>
-                  <v-col lg="3" md="3" cols="12" class="text-right ">
+
+                  <v-col lg="4" md="4" cols="12">
+                    <v-row class="ml-1 mr-1">
+                      <v-menu
+                          ref="menu"
+                          v-model="menu"
+                          :close-on-content-click="false"
+                          transition="scale-transition"
+                          offset-y
+                          min-width="auto"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                              v-model="dates"
+                              :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
+                              :label="$t('container.application_selection_dashboard.enter_start_end_date')"
+                              readonly
+                              v-bind="attrs"
+                              v-on="on"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker
+                            v-model="dates"
+                            :range="[dates[0] , dates[1]]"
+                            no-title
+                            scrollable
+                            @input="OnChangeDateInfo($event,'total_received')"
+                        >
+                          <v-spacer></v-spacer>
+                          <v-btn text color="primary" @click="resetDateRange">
+                            Cancel
+                          </v-btn>
+                          <v-btn
+                              text
+                              color="primary"
+                              @click="$refs.menu.save(dates)"
+                          >
+                            OK
+                          </v-btn>
+                        </v-date-picker>
+                      </v-menu>
+                    </v-row>
+                  </v-col>
+
+                  <v-col lg="3" md="3" cols="12">
 
                   </v-col>
+
                 </v-row>
                 <v-row justify="space-between" align="center" class="mx-4">
 
@@ -95,30 +139,45 @@
                         </span>
                       </template>
 
-                                            <template v-slot:item.causer.user_type="{ item }">
+<!--                                            <template v-slot:item.causer.user_type="{ item }">-->
 
-                                              <span>
-                                                {{ item.causer != null ? item.causer['User Type'] : "" }}
-                                              </span>
-                                            </template>
+<!--                                              <span>-->
+<!--                                                {{ item.causer != null ? item.causer['User Type'] : "" }}-->
+<!--                                              </span>-->
+<!--                                            </template>-->
 
-                                          <template v-slot:item.causer.email="{ item }">
+                      <template v-slot:item.causer.user_name="{ item }">
 
                                                                   <span>
-                                                                    {{ item.causer != null ? item.causer['Email'] : "" }}
+                                                                    {{
+                                                                      item.causer != null ? item.causer['User Name'] : ""
+                                                                    }}
                                                                   </span>
-                                          </template>
+                      </template>
+
+                      <template v-slot:item.causer.email="{ item }">
+
+                                                                  <span>
+                                                                    {{
+                                                                      item.causer != null ? item.causer['Email'] : ""
+                                                                    }}
+                                                                  </span>
+                      </template>
 
                       <template v-slot:item.properties.device="{ item }">
 
                                                                   <span>
-                                                                    {{ item.properties['userInfo'] != null ? item.properties['userInfo']['Device Type'] : "" }}
+                                                                    {{
+                                                                      item.properties['userInfo'] != null ? item.properties['userInfo']['Device Type'] : ""
+                                                                    }}
                                                                   </span>
                       </template>
                       <template v-slot:item.properties.ip="{ item }">
 
                                                                   <span>
-                                                                    {{ item.properties['userInfo'] != null ? item.properties['userInfo']['Ip Address'] : "" }}
+                                                                    {{
+                                                                      item.properties['userInfo'] != null ? item.properties['userInfo']['Ip Address'] : ""
+                                                                    }}
                                                                   </span>
                       </template>
 
@@ -288,6 +347,8 @@ export default {
       data: {
         id: null,
       },
+      dates: [],
+      menu: false,
       isLoading:false,
       total:null,
       deleteDialog: false,
@@ -330,11 +391,14 @@ export default {
           text: this.$t("container.activity_log.description"),
           value: "description",
         },
+        // {
+        //   text:  this.$t("User Type") ,
+        //   value: "causer.user_type",
+        // },
         {
-          text:  this.$t("User Type") ,
-          value: "causer.user_type",
+          text:  this.$t("User Name") ,
+          value: "causer.user_name",
         },
-
         {
           text:  this.$t("User Email") ,
           value: "causer.email",
@@ -371,11 +435,24 @@ export default {
   },
   methods: {
 
-    getUserType(item) {
-      return item.causer != null ? item.causer['User Type'] : "";
+    resetDateRange() {
+      this.dates = [];
+      this.menu = false;
+      this.GetActivityLog()
     },
-    getUserEmail(item) {
-      return item.causer != null ? item.causer['Email'] : "";
+
+    OnChangeDateInfo(event, type) {
+      if (this.dates.length < 2) {
+        return;
+      }
+      let from_date = null;
+      let to_date = null;
+      if (event.length === 2) {
+        from_date = event[0];
+        to_date = event[1];
+      }
+
+      this.GetActivityLog(from_date,to_date)
     },
 
     registerCustomRules() {
@@ -430,7 +507,7 @@ export default {
       };
 
     },
-    GetActivityLog() {
+    GetActivityLog( from_date = null, to_date = null ) {
       let page;
       if(!this.sortBy){
         page = this.pagination.current;
@@ -441,6 +518,8 @@ export default {
         page: this.pagination.current,
         sortBy: this.sortBy,
         orderBy: this.sortDesc,
+        from_date: from_date,
+        to_date: to_date,
       };
       // return;
       this.$axios
