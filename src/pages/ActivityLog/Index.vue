@@ -75,82 +75,105 @@
 
                         <span>
 
-                          <v-expansion-panels>
-                            <v-expansion-panel>
-                              <v-expansion-panel-header>
-                                {{ $t('container.activity_log.change_info') }}
-                              </v-expansion-panel-header>
-                              <v-expansion-panel-content>
-                                <v-container>
-                                  <v-row v-for="(value, key) in item.subject" :key="key">
-                                    <v-col cols="6">{{ key }}</v-col>
-                                    <v-col cols="6">{{ value }}</v-col>
-                                  </v-row>
-                                </v-container>
-                              </v-expansion-panel-content>
-                            </v-expansion-panel>
-                          </v-expansion-panels>
+<!--                          <v-expansion-panels>-->
+                          <!--                            <v-expansion-panel>-->
+                          <!--                              <v-expansion-panel-header>-->
+                          <!--                                {{ $t('container.activity_log.change_info') }}-->
+                          <!--                              </v-expansion-panel-header>-->
+                          <!--                              <v-expansion-panel-content>-->
+                          <!--                                <v-container>-->
+                          <!--                                  <v-row v-for="(value, key) in item.subject" :key="key">-->
+                          <!--                                    <v-col cols="6">{{ key }}</v-col>-->
+                          <!--                                    <v-col cols="6">{{ value }}</v-col>-->
+                          <!--                                  </v-row>-->
+                          <!--                                </v-container>-->
+                          <!--                              </v-expansion-panel-content>-->
+                          <!--                            </v-expansion-panel>-->
+                          <!--                          </v-expansion-panels>-->
 
-<!--                          {{ JSON.stringify(item.subject) }}-->
+                          <!--                          {{ JSON.stringify(item.subject) }}-->
                         </span>
                       </template>
 
-                      <template v-slot:item.causer="{ item }">
+                                            <template v-slot:item.causer.user_type="{ item }">
 
-                        <span>
+                                              <span>
+                                                {{ item.causer != null ? item.causer['User Type'] : "" }}
+                                              </span>
+                                            </template>
 
-                          <v-expansion-panels>
-                            <v-expansion-panel>
-                              <v-expansion-panel-header>
-                                {{ $t('container.activity_log.login_user_info') }}
-                              </v-expansion-panel-header>
-                              <v-expansion-panel-content>
-                                <v-container>
-                                  <v-row v-for="(value, key) in item.causer" :key="key">
-                                    <v-col cols="6">{{ key }}</v-col>
-                                    <v-col cols="6">{{ value }}</v-col>
-                                  </v-row>
-                                </v-container>
-                              </v-expansion-panel-content>
-                            </v-expansion-panel>
-                          </v-expansion-panels>
-                        </span>
+                                          <template v-slot:item.causer.email="{ item }">
+
+                                                                  <span>
+                                                                    {{ item.causer != null ? item.causer['Email'] : "" }}
+                                                                  </span>
+                                          </template>
+
+                      <template v-slot:item.properties.device="{ item }">
+
+                                                                  <span>
+                                                                    {{ item.properties['userInfo'] != null ? item.properties['userInfo']['Device Type'] : "" }}
+                                                                  </span>
+                      </template>
+                      <template v-slot:item.properties.ip="{ item }">
+
+                                                                  <span>
+                                                                    {{ item.properties['userInfo'] != null ? item.properties['userInfo']['Ip Address'] : "" }}
+                                                                  </span>
                       </template>
 
-                      <template v-slot:item.properties="{ item }">
+                      <!--                      <template v-slot:item.properties="{ item }">-->
 
-                        <span>
+                      <!--                        <span>-->
 
-                          <v-expansion-panels>
-                            <v-expansion-panel>
-                              <v-expansion-panel-header>
-                                {{ $t('container.activity_log.login_anonymous_user_info') }}
-                              </v-expansion-panel-header>
-                              <v-expansion-panel-content>
-                                <v-container>
-                                  <v-row v-for="(value, key) in item.properties.userInfo" :key="key">
-                                    <v-col cols="6">{{ key }}</v-col>
-                                    <v-col cols="6">{{ value }}</v-col>
-                                  </v-row>
-                                </v-container>
-                                <v-container>
-                                  <v-row v-for="(value, key) in item.properties.data" :key="key">
-                                    <v-col cols="6">{{ key }}</v-col>
-                                    <v-col cols="6">{{ value }}</v-col>
-                                  </v-row>
-                                </v-container>
-<!--                                <v-container>-->
-<!--                                  {{ JSON.stringify(item.properties)}}-->
-<!--                                </v-container>-->
-                              </v-expansion-panel-content>
-                            </v-expansion-panel>
-                          </v-expansion-panels>
+                      <!--                          <v-expansion-panels>-->
+                      <!--                            <v-expansion-panel>-->
+                      <!--                              <v-expansion-panel-header>-->
+                      <!--                                {{ $t('container.activity_log.login_anonymous_user_info') }}-->
+                      <!--                              </v-expansion-panel-header>-->
+                      <!--                              <v-expansion-panel-content>-->
+                      <!--                                <v-container>-->
+                      <!--                                  <v-row v-for="(value, key) in item.properties.userInfo" :key="key">-->
+                      <!--                                    <v-col cols="6">{{ key }}</v-col>-->
+                      <!--                                    <v-col cols="6">{{ value }}</v-col>-->
+                      <!--                                  </v-row>-->
+                      <!--                                </v-container>-->
+                      <!--                                <v-container>-->
+                      <!--                                  <v-row v-for="(value, key) in item.properties.data" :key="key">-->
+                      <!--                                    <v-col cols="6">{{ key }}</v-col>-->
+                      <!--                                    <v-col cols="6">{{ value }}</v-col>-->
+                      <!--                                  </v-row>-->
+                      <!--                                </v-container>-->
+                      <!--&lt;!&ndash;                                <v-container>&ndash;&gt;-->
+                      <!--&lt;!&ndash;                                  {{ JSON.stringify(item.properties)}}&ndash;&gt;-->
+                      <!--&lt;!&ndash;                                </v-container>&ndash;&gt;-->
+                      <!--                              </v-expansion-panel-content>-->
+                      <!--                            </v-expansion-panel>-->
+                      <!--                          </v-expansion-panels>-->
 
-                        </span>
-                      </template>
-
+                      <!--                        </span>-->
+                      <!--                      </template>-->
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
+                        <v-tooltip top>
+                          <template v-slot:activator="{ on }">
+                            <v-btn
+                                :disabled="item.default === 1"
+                                fab
+                                style="margin-right: 10px;"
+                                x-small
+                                color="success"
+                                v-on="on"
+                                router
+                                :to="`/activity-logs/view/${item.id}`"
+                                v-can="'activity_log-view'"
+                            >
+                              <v-icon>mdi-eye-outline</v-icon>
+                            </v-btn>
+                          </template>
+                          <span>{{ $t('container.list.view') }}</span>
+                        </v-tooltip>
+
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
@@ -300,7 +323,7 @@ export default {
           sortable: false,
         },
         {
-          text:  this.$t("container.activity_log.name") ,
+          text:  this.$t("Action Type") ,
           value: "log_name",
         },
         {
@@ -308,20 +331,28 @@ export default {
           value: "description",
         },
         {
-          text: this.$t("container.activity_log.change_info"),
-          value: "subject",
-          // sortable: true,
+          text:  this.$t("User Type") ,
+          value: "causer.user_type",
+        },
+
+        {
+          text:  this.$t("User Email") ,
+          value: "causer.email",
         },
         {
-          text: this.$t("container.activity_log.login_user_info"),
-          value: "causer",
-          class: "highlight-column",
+          text: this.$t("Device"),
+          value: "properties.device",
         },
         {
-          text: this.$t("container.activity_log.login_anonymous_user_info"),
-          value: "properties",
-          // sortable: true,
+          text: this.$t("Source IP"),
+          value: "properties.ip",
         },
+        // {
+        //   text: this.$t("container.activity_log.change_info"),
+        //   value: "subject",
+        //   // sortable: true,
+        // },
+
         {
           text: this.$t("container.activity_log.create"),
           value: "created_at",
@@ -339,6 +370,13 @@ export default {
     }),
   },
   methods: {
+
+    getUserType(item) {
+      return item.causer != null ? item.causer['User Type'] : "";
+    },
+    getUserEmail(item) {
+      return item.causer != null ? item.causer['Email'] : "";
+    },
 
     registerCustomRules() {
       extend("codeRules", (value) => {

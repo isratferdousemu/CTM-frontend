@@ -33,10 +33,10 @@
       "reject": "Reject",
       "status": "Status",
       "code": "Code",
-      "name_en": "Name English",
-      "name_bn": "Name Bangla",
-      "value_en": "Name English",
-      "value_bn": "Name Bangla",
+      "name_en": "Name (English)",
+      "name_bn": "Name (Bangla)",
+      "value_en": "Name (English)",
+      "value_bn": "Name (Bangla)",
       "keyword": "Keyword",
       "location_type": "Location Type",
       "add_new": "Add New",
@@ -73,7 +73,9 @@
       "no": "No",
       "attention": "Attention!!!",
       "create": "Create",
-      "download": "Download Application"
+      "download": "Download Application",
+      "pouroshava": "Pouroshava",
+      "union": "Union"
     },
     "system_config": {
       "demo_graphic": {
@@ -284,6 +286,7 @@
           "name_bn": "Committee Name Bangla",
           "program_name": "Program Name",
           "committee_type": "Committee Type",
+          "office_types": "Office Type",
           "ward": "Ward",
           "add_new": "Add New Committee",
           "add": "Add Committee",
@@ -371,7 +374,9 @@
           "add": "Add Role",
           "edit": "Edit Role",
           "role_name": "Role Name",
-          "module_name": "Module Name"
+          "module_name": "Module Name",
+          "delete": "Role Delete",
+          "delete_alert": "Are you sure to delete this role?"
         },
         "user": {
           "listTitle": "User List",
@@ -394,7 +399,7 @@
           "thana_id": "Select Thana",
           "city_corpo_id": "Select City Corporation",
           "add_new": "Add New User",
-          "delete_alert": "Are you sure to delete this User?.",
+          "delete_alert": "Are you sure to delete this User?",
           "approve_alert": "Are you sure to approve this User?",
           "search": "Search User",
           "email_label": "Email",
@@ -424,6 +429,7 @@
         "user_name": "User Name",
         "full_name": "Full Name",
         "device_type": "Device Type",
+        "device_name": "Device Name",
         "ip_address": "IP Address",
         "pupose_of_use": "Purpose of Use",
         "unique_id": "Unique ID",

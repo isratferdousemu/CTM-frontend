@@ -82,7 +82,7 @@
                               )
                             "
                             :items="programs"
-                            item-text="name_en"
+                            :item-text="getItemText"
                             item-value="id"
                             required
                             :error="errors[0] ? true : false"
@@ -129,7 +129,32 @@
                               )
                             "
                             :items="committee_types"
-                            item-text="value_en"
+                            :item-text="getItemTextValue"
+                            item-value="id"
+                            required
+                            :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"
+                          ></v-autocomplete>
+                        </ValidationProvider>
+                      </v-col>
+                      <v-col lg="6" md="6" cols="12">
+                        <ValidationProvider
+                          name="OfficeType"
+                          vid="office_type"
+                          rules="required"
+                          v-slot="{ errors }"
+                        >
+                          <v-autocomplete
+                            :hide-details="errors[0] ? false : true"
+                            v-model="data.office_type"
+                            outlined
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.committee.office_types'
+                              )
+                            "
+                            :items="officeType"
+                            :item-text="getItemTextValue"
                             item-value="id"
                             required
                             :error="errors[0] ? true : false"
@@ -191,7 +216,7 @@
                               )
                             "
                             :items="divisions"
-                            item-text="name_en"
+                            :item-text="getItemText"
                             item-value="id"
                             required
                             :error="errors[0] ? true : false"
@@ -229,7 +254,7 @@
                               )
                             "
                             :items="districts"
-                            item-text="name_en"
+                            :item-text="getItemText"
                             item-value="id"
                             required
                             :error="errors[0] ? true : false"
@@ -262,7 +287,7 @@
                               )
                             "
                             :items="upazilas"
-                            item-text="name_en"
+                            :item-text="getItemText"
                             item-value="id"
                             required
                             :error="errors[0] ? true : false"
@@ -295,7 +320,7 @@
                               )
                             "
                             :items="city"
-                            item-text="name_en"
+                            :item-text="getItemText"
                             item-value="id"
                             required
                             :error="errors[0] ? true : false"
@@ -329,7 +354,7 @@
                               )
                             "
                             :items="thanas"
-                            item-text="name_en"
+                            :item-text="getItemText"
                             item-value="id"
                             required
                             :error="errors[0] ? true : false"
@@ -359,7 +384,7 @@
                               )
                             "
                             :items="unions"
-                            item-text="name_en"
+                            :item-text="getItemText"
                             item-value="id"
                             required
                             :error="errors[0] ? true : false"
@@ -389,7 +414,7 @@
                               )
                             "
                             :items="unions"
-                            item-text="name_en"
+                            :item-text="getItemText"
                             item-value="id"
                             required
                             :error="errors[0] ? true : false"
@@ -419,7 +444,7 @@
                               )
                             "
                             :items="wards"
-                            item-text="name_en"
+                            :item-text="getItemText"
                             item-value="id"
                             required
                             :error="errors[0] ? true : false"
@@ -458,7 +483,6 @@
                                     )
                                   "
                                   v-model="data.members[index]['member_name']"
-                                  required
                                   outlined
                                   :id="member"
                                   :error="errors[0] ? true : false"
@@ -479,7 +503,7 @@
                                   outlined
                                   :id="member"
                                   :items="designations"
-                                  item-text="value_en"
+                                  :item-text="getItemTextValue"
                                   item-value="id"
                                   :label="
                                     $t(
@@ -667,7 +691,7 @@ export default {
         paurashava_id: null,
         members: [
           {
-            member_name: null,
+            member_name: "",
             designation: null,
             address: null,
             email: null,
@@ -776,10 +800,14 @@ export default {
         },
       ];
     },
-
     ...mapState({
       divisions: (state) => state.Division.divisions,
     }),
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      },
+    },
     filteredOptions() {
       // Apply your filter logic here, e.g., filtering out options with 'Option 2' label
       return this.locationType.filter(
@@ -848,6 +876,12 @@ export default {
       } catch (e) {
         console.log(e);
       }
+    },
+    getItemText(item) {
+      return this.language === "bn" ? item.name_bn : item.name_en;
+    },
+    getItemTextValue(item) {
+      return this.language === "bn" ? item.value_bn : item.value_en;
     },
     async updateOffice() {
       let fd = new FormData();
@@ -932,7 +966,7 @@ export default {
     /* -------------------------------------------------------------------------- */
     /*                               Getters Define                               */
     /* -------------------------------------------------------------------------- */
-    async GetCommitteeType() {
+    async GetOfficeType() {
       try {
         this.$store.dispatch("getLookupByType", 3).then((data) => {
           this.officeType = data;
@@ -958,7 +992,7 @@ export default {
     async GetAllProgram() {
       try {
         this.$axios
-          .get("/admin/allowance/get", {
+          .get("/global/program", {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
@@ -1224,9 +1258,7 @@ export default {
     this.GetAllDesignation();
     // this.GetAllUpazila();
     // this.GetCityCorporation();
-    // this.$store
-    //   .dispatch("getLookupByType", 1)
-    //   .then((res) => (this.locationType = res));
+    this.GetOfficeType();
   },
   watch: {
     "$i18n.locale": "updateHeaderTitle",
