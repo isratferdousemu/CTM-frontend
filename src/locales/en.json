@@ -1020,6 +1020,17 @@
       "number_of_application_rejected": "Number of Application Rejected",
       "total_number_of_application_received_application": "Total Number of Application Received Application",
       "number_of_application_forwarded": "Number of Application Forwarded"
+    },
+    "grievance_management": {
+      "grievanceType": "Grievance Type",
+      "title_en": "Title (English)",
+      "title_bn": "Title (Bangla)",
+      "add_grievance_type": "Add New Complaint Type",
+      "edit_grievance_type": "Edit Complaint Type",
+      "grievance_subject": "Grievance Subject",
+      "add_grievance_subject": "Add New Complaint Subject",
+      "edit_grievance_subject": "Edit Complaint Subject",
+      "main_grievance_type": "Grievance Type"
     }
   }
 }

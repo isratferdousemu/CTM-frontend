@@ -1017,6 +1017,17 @@
       "number_of_application_rejected": "প্রত্যাখ্যানকৃত আবেদনের সংখ্যা",
       "total_number_of_application_received_application": "প্রাপ্ত আবেদনপত্রের মোট সংখ্যা",
       "number_of_application_forwarded": "ফরোয়ার্ড করা আবেদনের সংখ্যা"
+    },
+    "grievance_management":{
+      "grievanceType": "অভিযোগের ধরন",
+      "title_en": "শিরোনাম (ইংরেজি)",
+      "title_bn": "শিরোনাম (বাংলা)",
+      "add_grievance_type": "নতুন অভিযোগের ধরন যোগ করুন",
+      "edit_grievance_type": "অভিযোগের ধরন আপডেট করুন",
+      "grievance_subject": "অভিযোগ বিষয়",
+      "add_grievance_subject": "নতুন অভিযোগের বিষয় যোগ করুন",
+      "edit_grievance_subject": "অভিযোগের বিষয় আপডেট করুন",
+      "main_grievance_type": "অভিযোগের ধরন"
     }
   }
 }
