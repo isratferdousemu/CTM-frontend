@@ -179,12 +179,7 @@
                           1
                         }}
                       </template>
-                      <!-- <template v-slot:[`item.id`]="{ item, index }">
-                        {{ index + 1 }}
-                      </template>
-                        <template v-slot:[`item.id`]="{ item, index }">
-                          {{ options }}
-                        </template> -->
+                  
 
                       <template v-slot:item.name_en="{ item }">
                         {{ item.name_en }}
