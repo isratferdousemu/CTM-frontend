@@ -6,6 +6,7 @@ import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
 // Import routing modules
+import APIManagerRoutes from "./APIManager";
 import ApplicationSelectionRoutes from "./ApplicationSelection";
 import BeneficiaryManagementRoutes from "./BeneficiaryManagement";
 import BudgetManagementRoutes from "./BudgetManagement";
@@ -62,7 +63,8 @@ const routes = [
       ...TrainingManagementRoutes,
       ...GeneralSettingRoutes,
       ...SystemAuditRoutes,
-      ...ActivityLogRoutes
+      ...ActivityLogRoutes,
+      ...APIManagerRoutes
     ],
   },
 ];
