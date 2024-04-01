@@ -287,6 +287,7 @@
           "program_name": "Program Name",
           "committee_type": "Committee Type",
           "office_types": "Office Type",
+          "office": "Office",
           "ward": "Ward",
           "add_new": "Add New Committee",
           "add": "Add Committee",
