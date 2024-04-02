@@ -107,7 +107,7 @@ export default {
 
 <template>
     <div id="device_create">
-        <v-row class="mx-5 mt-5">
+        <v-row class="ma-5 ">
             <v-col cols="12">
                 <v-row>
                     <v-col cols="12">
@@ -124,7 +124,7 @@ export default {
                                 <ValidationObserver ref="form" v-slot="{ invalid }">
                                     <v-form v-on:submit.prevent="updateUrl()">
 
-                                        <v-row class="my-custom-row">
+                                        <v-row class="my-custom-row ma-5">
                                             <v-col cols="2" sm="2" lg="2">
 
                                                 <b>{{ $t('container.api_manager.url_generate.name') }}</b>

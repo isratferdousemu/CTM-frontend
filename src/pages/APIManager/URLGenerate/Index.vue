@@ -193,8 +193,8 @@ export default {
                             <v-card-text>
                                 <v-card-title class="mb-5">
                                     <div class="d-flex justify-sm-end flex-wrap">
-                                        <v-text-field @keyup.native="PageSetup" v-model="search" append-icon="mdi-magnify"
-                                            :label="$t(
+                                        <v-text-field @keyup.native="PageSetup" v-model="search"
+                                            append-icon="mdi-magnify" :label="$t(
                                             'container.list.search'
                                         )" hide-details class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal" flat
                                             outlined dense></v-text-field>
@@ -255,14 +255,14 @@ export default {
                                         <template v-slot:item.actions="{ item }">
                                             <v-tooltip top>
                                                 <template v-slot:activator="{ on }">
-                                                    <v-btn v-can="'url-view'" fab x-small v-on="on" color="success"
-                                                        elevation="0" router class="mr-3"
+                                                    <v-btn v-can="'url-view'" fab x-small v-on="on" color="#AFB42B"
+                                                        elevation="0" router class="mr-3 white--text" 
                                                         :to="`/api-manager/url-generate/view/${item.id}`">
                                                         <v-icon> mdi-eye </v-icon>
                                                     </v-btn>
                                                 </template>
                                                 <span>
-                                                    {{ $t("container.list.edit") }}
+                                                    {{ $t("container.list.view") }}
                                                 </span>
                                             </v-tooltip>
                                             <v-tooltip top>
