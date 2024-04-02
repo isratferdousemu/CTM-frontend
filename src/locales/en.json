@@ -287,6 +287,7 @@
           "program_name": "Program Name",
           "committee_type": "Committee Type",
           "office_types": "Office Type",
+          "office": "Office",
           "ward": "Ward",
           "add_new": "Add New Committee",
           "add": "Add Committee",
@@ -971,6 +972,27 @@
       "delete": "Delete Payment Processor ",
       "delete_alert": "Are you sure to delete this Payment Processor?"
     },
+      "training_management": {
+        "trainer_info": {
+          "list": "Trainer Information List"
+        
+        }
+      },
+      "api_manager": {
+        "url_generate": {
+          "list": "URL List",
+         
+           "add": "Add New URL",
+           "edit": "Edit URL",
+            "name":"Name",
+            "url":"URL",
+            "method":"Method",
+            "table_name":"Table Name",
+            "delete_header":"Delete URL",
+            "delete_alert":"Are you sure to delete this URL? URL all information will be deleted."
+            
+        }
+      },
     "system_audit": {
       "application_tracking": "Application Tracking",
       "grievance_tracking": "Grievance Tracking",

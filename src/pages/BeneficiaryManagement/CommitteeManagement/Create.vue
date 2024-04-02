@@ -452,6 +452,32 @@
                           ></v-autocomplete>
                         </ValidationProvider>
                       </v-col>
+
+                      <v-col lg="6" md="6" cols="12">
+                        <ValidationProvider
+                          name="Office"
+                          vid="office"
+                          rules="required"
+                          v-slot="{ errors }"
+                        >
+                          <v-autocomplete
+                            :hide-details="errors[0] ? false : true"
+                            v-model="data.office_id"
+                            outlined
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.committee.office'
+                              )
+                            "
+                            :items="office"
+                            :item-text="getItemText"
+                            item-value="id"
+                            required
+                            :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"
+                          ></v-autocomplete>
+                        </ValidationProvider>
+                      </v-col>
                     </v-row>
 
                     <v-card-title
@@ -689,6 +715,7 @@ export default {
         thana_id: null,
         union_id: null,
         paurashava_id: null,
+        office_id: null,
         members: [
           {
             member_name: "",
@@ -724,6 +751,7 @@ export default {
       committee_types: [],
       designations: [],
       offices: [],
+      office: [],
       unions: [],
       programs: [],
       officeType: [],
@@ -976,6 +1004,18 @@ export default {
         console.log(e);
       }
     },
+    async GetOffice(event) {
+      await this.$axios
+        .get(`/global/office-list/${event}`, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
+          this.office = result.data.data;
+        });
+    },
     async GetAllUpazila(id) {
       console.log(id, "GetAllUpazila");
       try {
@@ -1134,6 +1174,7 @@ export default {
         .then((result) => {
           this.thanas = result.data.data;
         });
+      this.GetOffice(event);
     },
     async onChangeCommitteeType(event) {
       this.data.committee_type = event;
@@ -1219,6 +1260,7 @@ export default {
       this.data.id = null;
       this.data.office_type = null;
       this.office_type_id = null;
+      this.office_id = null;
       //   this.data.name_en = null;
       this.data.name_bn = null;
       this.data.office_address = null;
