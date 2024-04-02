@@ -496,76 +496,6 @@
                         </ValidationProvider>
                       </v-col>
                     </v-row>
-                    <v-row>
-                      <v-col lg="6" md="6" cols="12">
-                        <v-switch
-                          v-model="advanch_search"
-                          color="primary"
-                          :label="
-                            $t(
-                              'container.beneficiary_management.beneficiary_list.advance_search'
-                            )
-                          "
-                          :value="!advanch_search"
-                          hide-details
-                        ></v-switch>
-                      </v-col>
-                    </v-row>
-
-                    <v-row v-if="advanch_search">
-                      <v-col lg="3" md="3" cols="12">
-                        <v-text-field
-                          outlined
-                          clearable
-                          :label="
-                            $t(
-                              'container.beneficiary_management.beneficiary_list.beneficiary_id'
-                            )
-                          "
-                          v-model="data.beneficiary_id"
-                        >
-                        </v-text-field>
-                      </v-col>
-                      <v-col lg="3" md="3" cols="12">
-                        <v-text-field
-                          outlined
-                          clearable
-                          :label="
-                            $t(
-                              'container.beneficiary_management.beneficiary_list.nominee'
-                            )
-                          "
-                          v-model="data.nominee_name"
-                        >
-                        </v-text-field>
-                      </v-col>
-                      <v-col lg="3" md="3" cols="12">
-                        <v-text-field
-                          outlined
-                          clearable
-                          :label="
-                            $t(
-                              'container.beneficiary_management.beneficiary_list.account_no'
-                            )
-                          "
-                          v-model="data.account_number"
-                        >
-                        </v-text-field>
-                      </v-col>
-                      <v-col lg="3" md="3" cols="12">
-                        <v-text-field
-                          outlined
-                          clearable
-                          :label="
-                            $t(
-                              'container.beneficiary_management.beneficiary_list.nid'
-                            )
-                          "
-                          v-model="data.nid"
-                        >
-                        </v-text-field>
-                      </v-col>
-                    </v-row>
                     <div class="d-inline d-flex justify-end">
                       <v-btn
                         elevation="2"
@@ -822,10 +752,6 @@ export default {
         upazila_id: null,
         union_id: null,
         ward_id: null,
-        beneficiary_id: null,
-        nominee_name: null,
-        account_number: null,
-        nid: null,
       },
       selectedBeneficiaries: [],
       submit_data: {
@@ -854,7 +780,6 @@ export default {
       unions: [],
       wards: [],
       district_pouros: [],
-      advanch_search: false,
       cb: {},
       user_permission: {
         division: null,
@@ -1007,10 +932,6 @@ export default {
       this.upazila_id = null;
       this.data.union_id = null;
       this.data.ward_id = null;
-      this.data.beneficiary_id = null;
-      this.data.nominee_name = null;
-      this.data.account_number = null;
-      this.data.nid = null;
     },
 
     async GetAllProgram() {
@@ -1336,11 +1257,6 @@ export default {
           ward_id: this.data.ward_id,
           status: 1, //Active list
 
-          beneficiary_id: this.data.beneficiary_id,
-          nominee_name: this.data.nominee_name,
-          account_number: this.data.account_number,
-          nid: this.data.nid,
-
           perPage: this.pagination.perPage,
           page: this.pagination.current,
           sortBy: this.sortBy,
@@ -1438,15 +1354,6 @@ export default {
   watch: {
     "$i18n.locale": "updateHeaderTitle",
     value(val) {},
-    advanch_search(val) {
-      this.data = {
-        ...this.data,
-        beneficiary_id: null,
-        nominee_name: null,
-        account_number: null,
-        nid: null,
-      };
-    },
   },
   created() {
     this.GetBeneficiary();
