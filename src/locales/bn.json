@@ -1027,7 +1027,10 @@
       "grievance_subject": "অভিযোগ বিষয়",
       "add_grievance_subject": "নতুন অভিযোগের বিষয় যোগ করুন",
       "edit_grievance_subject": "অভিযোগের বিষয় আপডেট করুন",
-      "main_grievance_type": "অভিযোগের ধরন"
+      "main_grievance_type": "অভিযোগের ধরন",
+      "grievance_settings": "অভিযোগ সেটিংস",
+      "grievance_delete": "অভিযোগের ধরন মুছুন",
+      "grievance_delete_message": "আপনি এই অভিযোগের ধরন মুছে ফেলার বিষয়ে নিশ্চিত?"
     }
   }
 }

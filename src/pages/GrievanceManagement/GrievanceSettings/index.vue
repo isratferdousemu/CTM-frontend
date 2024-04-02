@@ -8,7 +8,7 @@
             <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8">
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
-                  {{ $t("container.grievance_management.grievanceType") }}
+                  {{ $t("container.grievance_management.grievance_settings") }}
                 </h3>
               </v-card-title>
               <v-card-text>

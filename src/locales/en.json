@@ -1030,7 +1030,10 @@
       "grievance_subject": "Grievance Subject",
       "add_grievance_subject": "Add New Complaint Subject",
       "edit_grievance_subject": "Edit Complaint Subject",
-      "main_grievance_type": "Grievance Type"
+      "main_grievance_type": "Grievance Type",
+      "grievance_settings": "Grievance Settings",
+      "grievance_delete": "Delete Grievance Type",
+      "grievance_delete_message": "Are you sure to delete this Grievance Type?"
     }
   }
 }

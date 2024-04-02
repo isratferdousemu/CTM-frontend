@@ -10,7 +10,7 @@ const GrievanceManagementRoutes = [
       import("../pages/GrievanceManagement/GrievanceType/index.vue"),
   },
   {
-    path: "grievance-management/settings",
+    path: "/grievance-management/settings",
     name: "GrievanceSettings",
     meta: {
       requiresAuth: true,
