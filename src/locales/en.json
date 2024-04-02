@@ -981,6 +981,7 @@
       "api_manager": {
         "url_generate": {
           "list": "URL List",
+         
            "add": "Add New URL",
            "edit": "Edit URL",
             "name":"Name",

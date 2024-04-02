@@ -114,7 +114,7 @@ export default {
                         <v-card>
                             <v-card-title class="justify-center">
                                 <h4 class="mt-5">
-                                    {{ $t("container.api_manager.url_generate.edit") }}
+                                    {{ $t("container.api_manager.url_generate.url") }}
                                 </h4>
                             </v-card-title>
 
@@ -124,53 +124,66 @@ export default {
                                 <ValidationObserver ref="form" v-slot="{ invalid }">
                                     <v-form v-on:submit.prevent="updateUrl()">
 
-                                        <v-row>
-                                            <v-col cols="12" sm="3" lg="3">
-                                                <ValidationProvider name="Name" vid="name" rules="required"
-                                                    v-slot="{ errors }">
-                                                    <v-text-field type="text" v-model="data.name" :label="$t('container.api_manager.url_generate.name')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]"></v-text-field>
-                                                </ValidationProvider>
+                                        <v-row class="my-custom-row">
+                                            <v-col cols="2" sm="2" lg="2">
+
+                                                <b>{{ $t('container.api_manager.url_generate.name') }}</b>
                                             </v-col>
-                                            <v-col cols="12" sm="3" lg="3">
-                                                <ValidationProvider name="URL" vid="url" rules="required"
-                                                    v-slot="{ errors }">
-                                                    <v-text-field type="text" v-model="data.url" :label="$t('container.api_manager.url_generate.url')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]"></v-text-field>
-                                                </ValidationProvider>
+                                            <v-col cols="2" sm="2" lg="2" style="font-weight: bold;">
+
+                                                :
                                             </v-col>
-                                            <v-col cols="12" sm="3" lg="3">
-                                                <ValidationProvider name="Table Name" vid="url" rules="required"
-                                                    v-slot="{ errors }">
-                                                    <v-text-field type="text" v-model="data.table" :label="$t('container.api_manager.url_generate.table_name')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]"></v-text-field>
-                                                </ValidationProvider>
+                                            <v-col cols="2" sm="2" lg="2">
+
+                                                {{ data.name }}
                                             </v-col>
-                                            <v-col cols="12" sm="3" lg="3">
-                                                <ValidationProvider name="Method" vid="methods" rules="required"
-                                                    v-slot="{ errors }">
-                                                    <v-autocomplete v-model="data.method" :label="$t('container.api_manager.url_generate.method')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]" :items="methods"></v-autocomplete>
-                                                </ValidationProvider>
+                                            <v-col cols="2" sm="2" lg="2">
+
+                                                <b>{{ $t('container.api_manager.url_generate.url') }}</b>
+                                            </v-col>
+                                            <v-col cols="2" sm="2" lg="2" style="font-weight: bold;">
+
+                                                :
+                                            </v-col>
+                                            <v-col cols="2" sm="2" lg="2">
+                                                {{ data.url }}
+                                            </v-col>
+                                            <v-col cols="2" sm="2" lg="2">
+
+                                                <b>{{ $t('container.api_manager.url_generate.table_name') }}</b>
+                                            </v-col>
+                                            <v-col cols="2" sm="2" lg="2" style="font-weight: bold;">
+
+                                                :
+                                            </v-col>
+                                            <v-col cols="2" sm="2" lg="2">
+                                                {{ data.table }}
+                                            </v-col>
+                                            <v-col cols="2" sm="2" lg="2">
+
+                                                <b>{{ $t('container.api_manager.url_generate.method') }}</b>
+                                            </v-col>
+                                            <v-col cols="2" sm="2" lg="2" style="font-weight: bold;">
+
+                                                :
+                                            </v-col>
+                                            <v-col cols="2" sm="2" lg="2">
+                                                {{ data.method }}
                                             </v-col>
 
 
 
 
                                         </v-row>
-                                        <v-row class="justify-end mt-5 mb-5">
+                                        <v-row class="justify-end mt-5 mb-5 mr-5">
                                             <v-btn flat color="primary" class="custom-btn mr-2" router
                                                 to="/api-manager/url-generate">{{
                                                 $t("container.list.back") }}
                                             </v-btn>
-                                            <v-btn flat color="success" type="submit" class="custom-btn mr-2"
+                                            <!-- <v-btn flat color="success" type="submit" class="custom-btn mr-2"
                                                 :disabled="invalid">
                                                 {{ $t("container.list.update") }}
-                                            </v-btn>
+                                            </v-btn> -->
                                         </v-row>
                                     </v-form>
                                 </ValidationObserver>
@@ -183,4 +196,11 @@ export default {
     </div>
 </template>
 
-<style scoped></style>
+<style >
+.my-custom-row .v-col {
+    padding-left: 5px;
+    /* Adjust as needed */
+    padding-right: 5px;
+    /* Adjust as needed */
+}
+</style>
