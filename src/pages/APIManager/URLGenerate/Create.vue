@@ -100,7 +100,7 @@ export default {
                                     <v-form v-on:submit.prevent="submitUrl()">
 
                                         <v-row>
-                                            <v-col cols="12" sm="6" lg="6">
+                                            <v-col cols="12" sm="3" lg="3">
                                                 <ValidationProvider name="Name" vid="name" rules="required"
                                                     v-slot="{ errors }">
                                                     <v-text-field type="text" v-model="data.name" :label="$t('container.api_manager.url_generate.name')
@@ -108,7 +108,7 @@ export default {
                                                         :error-messages="errors[0]"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
-                                            <v-col cols="12" sm="6" lg="6">
+                                            <v-col cols="12" sm="3" lg="3">
                                                 <ValidationProvider name="URL" vid="url" rules="required"
                                                     v-slot="{ errors }">
                                                     <v-text-field type="text" v-model="data.url" :label="$t('container.api_manager.url_generate.url')
@@ -116,7 +116,7 @@ export default {
                                                         :error-messages="errors[0]"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
-                                            <v-col cols="12" sm="6" lg="6">
+                                            <v-col cols="12" sm="3" lg="3">
                                                 <ValidationProvider name="Table Name" vid="url" rules="required"
                                                     v-slot="{ errors }">
                                                     <v-text-field type="text" v-model="data.table" :label="$t('container.api_manager.url_generate.table_name')
@@ -124,7 +124,7 @@ export default {
                                                         :error-messages="errors[0]"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
-                                            <v-col cols="12" sm="6" lg="6">
+                                            <v-col cols="12" sm="3" lg="3">
                                                 <ValidationProvider name="Method" vid="methods" rules="required"
                                                     v-slot="{ errors }">
                                                     <v-autocomplete v-model="data.method" :label="$t('container.api_manager.url_generate.method')

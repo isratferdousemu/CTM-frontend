@@ -34,6 +34,15 @@ const APIManagerRoutes = [
         },
         component: () => import("../pages/APIManager/URLGenerate/Edit.vue")
     },
+    {
+        path: "/api-manager/url-generate/view/:id",
+        name: "URLEdit",
+        meta: {
+            requiresAuth: true,
+            permission: "url-edit",
+        },
+        component: () => import("../pages/APIManager/URLGenerate/View.vue")
+    },
     /*Url Generate route e end*/
 ];
 

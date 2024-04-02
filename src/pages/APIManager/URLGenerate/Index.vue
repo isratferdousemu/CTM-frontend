@@ -68,6 +68,11 @@ export default {
     },
 
     methods: {
+        PageSetup(){
+             this.pagination.current=1;
+            this.GetURL();
+
+        },
         async GetURL() {
             const queryParams = {
                 search: this.search,
@@ -188,7 +193,7 @@ export default {
                             <v-card-text>
                                 <v-card-title class="mb-5">
                                     <div class="d-flex justify-sm-end flex-wrap">
-                                        <v-text-field @keyup.native="GetURL" v-model="search" append-icon="mdi-magnify"
+                                        <v-text-field @keyup.native="PageSetup" v-model="search" append-icon="mdi-magnify"
                                             :label="$t(
                                             'container.list.search'
                                         )" hide-details class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal" flat
@@ -248,6 +253,18 @@ export default {
 
                                         <!-- Action Button -->
                                         <template v-slot:item.actions="{ item }">
+                                            <v-tooltip top>
+                                                <template v-slot:activator="{ on }">
+                                                    <v-btn v-can="'url-view'" fab x-small v-on="on" color="success"
+                                                        elevation="0" router class="mr-3"
+                                                        :to="`/api-manager/url-generate/view/${item.id}`">
+                                                        <v-icon> mdi-eye </v-icon>
+                                                    </v-btn>
+                                                </template>
+                                                <span>
+                                                    {{ $t("container.list.edit") }}
+                                                </span>
+                                            </v-tooltip>
                                             <v-tooltip top>
                                                 <template v-slot:activator="{ on }">
                                                     <v-btn v-can="'url-edit'" fab x-small v-on="on" color="success"
