@@ -137,7 +137,7 @@
                 <!-- {{errors.code}}
                   {{errors.name_en}} -->
 
-                <ValidationProvider v-slot="{ errors }" name="Title English" vid="code" rules="required">
+                <ValidationProvider v-slot="{ errors }" name="Title English" vid="title_en" rules="required">
                   <v-text-field outlined type="text" v-model="data.title_en" :label="$t('container.grievance_management.title_en')
                     " required :error="errors[0] ? true : false" :error-messages="errors[0]">></v-text-field>
                 </ValidationProvider>
@@ -381,8 +381,8 @@ export default {
       const CustomInfo = this.AllGrievanceType.map(((i, index) => {
         return [
           this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
-          this.$i18n.locale == 'en' ? i.title_bn : i.title_en,
-          this.$i18n.locale == 'en' ? i.title_en : i.title_bn,
+          this.$i18n.locale == 'en' ? i.title_en : i.title_en,
+          this.$i18n.locale == 'en' ? i.title_bn : i.title_bn,
           this.$i18n.locale == 'en' ? i.status : this.$helpers.englishToBangla(i.status),
         ]
       }));
