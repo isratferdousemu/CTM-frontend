@@ -25,7 +25,7 @@
                   <v-col lg="3" md="3" cols="12" class="text-right ">
                     <v-btn @click="createDialog" color="primary" prepend-icon="mdi-account-multiple-plus"
                       v-can="'division-create'">
-                      {{ $t("container.list.add_new") }}
+                      {{ $t("container.grievance_management.add_new_type") }}
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -147,7 +147,7 @@
                   )
                     " required :error="errors[0] ? true : false" :error-messages="errors[0]">></v-text-field>
                 </ValidationProvider>
-                <ValidationProvider name="Status" vid="status" v-slot="{ errors }" rules="required">
+                <ValidationProvider name="Status" vid="status" v-slot="{ errors }">
                   <v-checkbox v-model="data.status" :label="$t(
                     'container.system_config.demo_graphic.office.active'
                   )
@@ -194,7 +194,7 @@
                   )
                     " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
                 </ValidationProvider>
-                <ValidationProvider name="Status" vid="status" v-slot="{ errors }" rules="required">
+                <ValidationProvider name="Status" vid="status" v-slot="{ errors }" >
                   <v-checkbox v-model="data.status" :label="$t(
                     'container.system_config.demo_graphic.office.active'
                   )
@@ -510,11 +510,11 @@ export default {
         checkLanguageBangla !== "Bangla" &&
         checkLanguageBangla !== "BanglaSpecialChar"
       ) {
-        errs.name_bn = ["Please Enter in Bangla Language in this Field"];
+        errs.title_bn = ["Please Enter in Bangla Language in this Field"];
       }
 
       if (checkLanguageEnglish != "English") {
-        errs.name_en = ["Please Enter in English Language in this Field"];
+        errs.title_en = ["Please Enter in English Language in this Field"];
       }
 
       if (Object.keys(errs).length > 0) {
@@ -573,6 +573,7 @@ export default {
       this.data.title_en = item.title_en;
       this.data.title_bn = item.title_bn;
       this.data.id = item.id;
+      this.data.grievance_type_id = item.grievance_type_id;
       this.errors = {};
     },
     updateGrievanceType() {
@@ -615,7 +616,7 @@ export default {
 
     onPageChange($event) {
       // this.pagination.current = $event;
-      this.GetGrievanceType();
+      this.GetGrievanceSubject();
     },
     setInitialHeader() {
       for (let i = 0; i < this.headers.length; i++) {

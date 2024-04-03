@@ -16,7 +16,7 @@
                 <v-row justify="space-between" align="center" class="mx-5">
                   <!-- Checkbox on the left -->
                   <v-col lg="3" md="3" cols="12">
-                    <v-text-field @keyup.native="GetDivision" outlined dense v-model="search"
+                    <v-text-field @keyup.native="GetGrievanceSubject" outlined dense v-model="search"
                       prepend-inner-icon="mdi-magnify" class="my-sm-0 my-3 mx-0v -input--horizontal" variant="outlined"
                       :label="$t('container.list.search')" hide-details color="primary"></v-text-field>
                   </v-col>
@@ -25,7 +25,7 @@
                   <v-col lg="3" md="3" cols="12" class="text-right ">
                     <v-btn @click="createDialog" color="primary" prepend-icon="mdi-account-multiple-plus"
                       v-can="'division-create'">
-                      {{ $t("container.list.add_new") }}
+                      {{ $t("container.grievance_management.add_grievance_subject") }}
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -53,7 +53,7 @@
                   justify-lg="space-between">
 
                   <v-col cols="12">
-                    <v-data-table :loading="loading" item-key="id" :headers="headers" :items="divisions"
+                    <v-data-table :loading="loading" item-key="id" :headers="headers" :items="subjects"
                       :items-per-page="pagination.perPage" @update:options="handleOptionsUpdate" hide-default-footer
                       class="elevation-0 transparent row-pointer">
                       <template v-slot:item.id="{ item, index }">
@@ -65,11 +65,15 @@
                       </template>
 
 
-                      <template v-slot:item.name_en="{ item }">
-                        {{ item.name_en }}
+                      <template v-slot:item.title_en="{ item }">
+                        {{ item.title_en }}
                       </template>
-                      <template v-slot:item.name_bn="{ item }">
-                        {{ item.name_bn }}
+                      <template v-slot:item.title_bn="{ item }">
+                        {{ item.title_bn }}
+                      </template>
+                       <template v-slot:item.status="{ item }">
+                           <span v-if="item?.status == '0'"> Inactive </span>
+                            <span v-if="item?.status == '1'"> Active </span>
                       </template>
 
                       <!-- Action Button -->
@@ -134,20 +138,20 @@
                   {{errors.name_en}} -->
                   <ValidationProvider
                     name="Grievance Type"
-                    vid="division"
+                    vid="subject"
                     rules="required"
                     v-slot="{ errors }"
                   >
                     <v-autocomplete
-                      @input="onChangeDivision($event)"
-                      v-model="data.division_id"
+                    
+                      v-model="data.grievance_type_id"
                       outlined
                       :label="$t(
                         'container.grievance_management.main_grievance_type'
                       )
                         "
-                      :items="divisions"
-                      item-text="name_en"
+                      :items="types"
+                      item-text="title_en"
                       item-value="id"
                       required
                       :error="errors[0] ? true : false"
@@ -155,12 +159,12 @@
                     ></v-autocomplete>
                   </ValidationProvider>
 
-                <ValidationProvider v-slot="{ errors }" name="Title English" vid="code" rules="required">
-                  <v-text-field outlined type="text" v-model="data.code" :label="$t('container.grievance_management.title_en')
+                <ValidationProvider v-slot="{ errors }" name="Title English" vid="title_en" rules="required">
+                  <v-text-field outlined type="text" v-model="data.title_en" :label="$t('container.grievance_management.title_en')
                     " required :error="errors[0] ? true : false" :error-messages="errors[0]">></v-text-field>
                 </ValidationProvider>
-                <ValidationProvider v-slot="{ errors }" name="Title Bangla" vid="name_en" rules="required">
-                  <v-text-field outlined type="text" v-model="data.name_en" :label="$t(
+                <ValidationProvider v-slot="{ errors }" name="Title Bangla" vid="title_bn" rules="required">
+                  <v-text-field outlined type="text" v-model="data.title_bn" :label="$t(
                     'container.grievance_management.title_bn'
                   )
                     " required :error="errors[0] ? true : false" :error-messages="errors[0]">></v-text-field>
@@ -198,25 +202,24 @@
           <v-divider></v-divider>
           <v-card-text class="mt-7">
             <ValidationObserver ref="formEdit" v-slot="{ invalid }">
-              <form @submit.prevent="updateGrievanceType()">
+              <form @submit.prevent="updateGrievanceSubject()">
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
                  <ValidationProvider
                       name="Grievance Type"
-                      vid="division"
+                      vid="subject"
                       rules="required"
                       v-slot="{ errors }"
                     >
                       <v-autocomplete
-                        @input="onChangeDivision($event)"
-                        v-model="data.division_id"
+                        v-model="data.grievance_type_id"
                         outlined
                         :label="$t(
                           'container.grievance_management.main_grievance_type'
                         )
                           "
-                        :items="divisions"
-                        item-text="name_en"
+                        :items="types"
+                        item-text="title_en"
                         item-value="id"
                         required
                         :error="errors[0] ? true : false"
@@ -224,12 +227,12 @@
                       ></v-autocomplete>
                     </ValidationProvider>
 
-                <ValidationProvider name="Title English" vid="code" v-slot="{ errors }">
-                  <v-text-field outlined type="text" v-model="data.code" :label="$t('container.grievance_management.title_en')
+                <ValidationProvider name="Title English" vid="title_en" v-slot="{ errors }">
+                  <v-text-field outlined type="text" v-model="data.title_en" :label="$t('container.grievance_management.title_en')
                     " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
                 </ValidationProvider>
-                <ValidationProvider name="Title Bangla" vid="name_en" rules="required" v-slot="{ errors }">
-                  <v-text-field outlined type="text" v-model="data.name_en" :label="$t(
+                <ValidationProvider name="Title Bangla" vid="title_bn" rules="required" v-slot="{ errors }">
+                  <v-text-field outlined type="text" v-model="data.title_bn" :label="$t(
                     'container.grievance_management.title_bn'
                   )
                     " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
@@ -262,13 +265,13 @@
       <v-dialog v-model="deleteDialog" width="350">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.system_config.demo_graphic.division.delete") }}
+            {{ $t("container.grievance_management.grievance_subject_delete") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
               {{
-                $t("container.system_config.demo_graphic.division.delete_alert")
+                $t("container.grievance_management.grievance_subject_delete_message")
               }}
             </div>
           </v-card-text>
@@ -305,9 +308,10 @@ export default {
     return {
       data: {
         id: null,
-        code: null,
-        name_en: null,
-        name_bn: null,
+        status: null,
+        title_en: null,
+        title_bn: null,
+        grievance_type_id: null,
       },
       total: null,
       isLoading: false,
@@ -318,8 +322,9 @@ export default {
       loading: false,
       search: "",
       delete_id: "",
-      divisions: [],
-      Alldivisions: [],
+      subjects: [],
+      types: [],
+      AllGrievanceSubject: [],
       errors: {},
       error_status: {},
       pagination: {
@@ -354,26 +359,26 @@ export default {
         },
         {
           text: this.$t("container.grievance_management.title_en"),
-          value: "code",
+          value: "title_en",
         },
         {
           text: this.$t(
             "container.grievance_management.title_bn"
           ),
-          value: "name_en",
+          value: "title_bn",
           class: "highlight-column ",
         },
          {
           text: this.$t(
             "container.grievance_management.main_grievance_type"
           ),
-          value: "name_bn",
+          value: "grievanceTypeEn",
         },
         {
           text: this.$t(
             "container.list.status"
           ),
-          value: "name_bn",
+          value: "status",
         },
         {
           text: this.$t("container.list.action"),
@@ -407,7 +412,7 @@ export default {
       };
 
       await this.$axios
-        .get("/admin/division/get", {
+        .get("/admin/grievanceSubject/get", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -415,20 +420,24 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          this.Alldivisions = result.data.data;
+          this.AllGrievanceSubject = result.data.data;
         });
 
       const HeaderInfo = [
         this.$t("container.list.sl"),
-        this.$t("container.system_config.demo_graphic.division.code"),
-        this.$t("container.system_config.demo_graphic.division.division"),
+        this.$t("container.grievance_management.title_en"),
+        this.$t("container.grievance_management.title_bn"),
+        this.$t("container.grievance_management.main_grievance_type"),
+        this.$t("container.list.status"),
       ]
 
-      const CustomInfo = this.Alldivisions.map(((i, index) => {
+      const CustomInfo = this.AllGrievanceSubject.map(((i, index) => {
         return [
           this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
-          this.$i18n.locale == 'en' ? i.code : this.$helpers.englishToBangla(i.code),
-          this.$i18n.locale == 'en' ? i.name_en : i.name_bn,
+          this.$i18n.locale == 'en' ? i.title_en : i.title_en,
+          this.$i18n.locale == 'en' ? i.title_bn : i.title_bn,
+          this.$i18n.locale == 'en' ? i.grievanceTypeEn : i.grievanceTypeBn,
+          this.$i18n.locale == 'en' ? i.status : this.$helpers.englishToBangla(i.status),
         ]
       }));
 
@@ -436,7 +445,7 @@ export default {
         language: this.$i18n.locale,
         data: CustomInfo,
         header: HeaderInfo,
-        fileName: this.$t("container.system_config.demo_graphic.division.list"),
+        fileName: this.$t("container.grievance_management.grievance_subject"),
       };
       try {
         const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
@@ -473,7 +482,7 @@ export default {
       };
 
       await this.$axios
-        .get("/admin/division/get", {
+        .get("/admin/grievanceSubject/get", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -481,7 +490,8 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          this.Alldivisions = result.data.data;
+          this.AllGrievanceSubject = result.data.data;
+          console.log(this.AllGrievanceSubject,'excel')
         })
         .catch(error => {
           this.isLoading = false;
@@ -492,25 +502,29 @@ export default {
 
           const HeaderInfo = [
             this.$t("container.list.sl"),
-            this.$t("container.system_config.demo_graphic.district.code"),
-            this.$t("container.system_config.demo_graphic.division.division"),
+            this.$t("container.grievance_management.title_en"),
+            this.$t("container.grievance_management.title_bn"),
+            this.$t("container.grievance_management.main_grievance_type"),
+            this.$t("container.list.status"),
           ]
 
-          const CustomInfo = this.Alldivisions.map(((i, index) => {
+          const CustomInfo = this.AllGrievanceSubject.map(((i, index) => {
             return {
               "sl": this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
-              "code": this.$i18n.locale == 'en' ? i.code : this.$helpers.englishToBangla(i.code),
-              "division": this.$i18n.locale == 'en' ? i.name_en : i.name_bn,
+              "title_en": this.$i18n.locale == 'en' ? i.title_en : i.title_en,
+              "title_bn": this.$i18n.locale == 'en' ? i.title_bn : i.title_bn,
+              "grievance_type_id": this.$i18n.locale == 'en' ? i.grievanceTypeEn : i.grievanceTypeBn,
+              "status": this.$i18n.locale == 'en' ? i.status : this.$helpers.englishToBangla(i.status),
             }
           }));
 
-          const Field = ['sl', 'code', 'division']
+          const Field = ['sl', 'title_en', 'title_bn','grievance_type_id','status']
 
           const Data = this.FormatJson(Field, CustomInfo)
           const currentDate = new Date().toISOString().slice(0, 10); //
           let dateinfo = queryParams.language == 'en' ? currentDate : this.$helpers.englishToBangla(currentDate)
 
-          const filenameWithDate = `${dateinfo}_${this.$t("container.system_config.demo_graphic.division.list")}`;
+          const filenameWithDate = `${dateinfo}_${this.$t("container.grievance_management.grievance_subject")}`;
 
           excel.export_json_to_excel({
             header: HeaderInfo,
@@ -545,8 +559,8 @@ export default {
       this.dialogAdd = true;
     },
     checkLanguage() {
-      let checkLanguageEnglish = this.$checkLanguage(this.data.name_en);
-      let checkLanguageBangla = this.$checkLanguage(this.data.name_bn);
+      let checkLanguageEnglish = this.$checkLanguage(this.data.title_en);
+      let checkLanguageBangla = this.$checkLanguage(this.data.title_bn);
       let errs = {};
 
       if (
@@ -588,14 +602,21 @@ export default {
       }
 
       try {
-        this.$store
-          .dispatch("Division/StoreDivision", this.validator())
+     
+          this.$axios
+          .post(`/admin/grievanceSubject/store`, this.data, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+
+          })
           .then((res) => {
             if (res.data?.success) {
               this.$toast.success("Data Inserted Successfully");
               this.resetForm();
               this.dialogAdd = false;
-              this.GetDivision();
+              this.GetGrievanceSubject();
             } else if (res.response?.data?.errors) {
               this.$refs.formAdd.setErrors(res.response.data.errors);
             }
@@ -605,26 +626,34 @@ export default {
     },
     editDialog(item) {
       this.dialogEdit = true;
-      this.data.code = item.code;
-      this.data.name_en = item.name_en;
-      this.data.name_bn = item.name_bn;
+      // this.data.status = item.status;
+      this.data.status = String(item.status);
+      this.data.title_en = item.title_en;
+      this.data.title_bn = item.title_bn;
+      this.data.grievance_type_id = item.grievance_type_id;
       this.data.id = item.id;
       this.errors = {};
     },
-    updateGrievanceType() {
+    updateGrievanceSubject() {
       if (!this.checkLanguage()) {
         return;
       }
 
       try {
-        this.$store
-          .dispatch("Division/UpdateDivision", this.validator())
+       this.$axios
+          .post(`/admin/grievanceSubject/update/`, this.data, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+
+          })
           .then((data) => {
-            if (data == null) {
+            if (data != null) {
               this.$toast.success("Data Updated Successfully");
               this.dialogEdit = false;
               this.resetForm();
-              this.GetDivision();
+              this.GetGrievanceSubject();
             } else {
               this.$refs.formEdit.setErrors(data.errors);
             }
@@ -645,7 +674,7 @@ export default {
 
     onPageChange($event) {
       // this.pagination.current = $event;
-      this.GetDivision();
+      // this.GetDivision();
     },
     setInitialHeader() {
       for (let i = 0; i < this.headers.length; i++) {
@@ -673,7 +702,7 @@ export default {
         this.sortBy = sortBy[0];
         this.sortDesc = sortDesc[0] == true ? "desc" : "asc";
       }
-      this.GetDivision();
+      // this.GetDivision();
 
       const queryParams = {
         sortBy: this.sortBy,
@@ -683,7 +712,31 @@ export default {
       // alert(JSON.stringify(queryParams));
     },
 
-    async GetDivision() {
+    async GetGrievanceType() {
+      const queryParams = {
+        searchText: this.search,
+        perPage: this.pagination.perPage,
+        page: this.pagination.current,
+        sortBy: this.sortBy,
+        sortDesc: this.sortDesc,
+        status: 'active',
+      };
+      this.$axios
+        .get("/admin/grievanceType/get", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          this.types = result.data.data;
+          console.log(this.types,' this.types');
+     
+        });
+    }, 
+    
+    async GetGrievanceSubject() {
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
@@ -692,7 +745,7 @@ export default {
         sortDesc: this.sortDesc,
       };
       this.$axios
-        .get("/admin/division/get", {
+        .get("/admin/grievanceSubject/get", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -700,8 +753,10 @@ export default {
           params: queryParams,
         })
         .then((result) => {
+           console.log(result, ' this.subjects11111');
           this.total = result.data.meta.total;
-          this.divisions = result.data.data;
+          this.subjects = result.data.data;
+    
           this.pagination.current = result.data.meta.current_page;
           this.pagination.total = result.data.meta.last_page;
           this.pagination.grand_total = result.data.meta.total;
@@ -709,8 +764,13 @@ export default {
     },
     deleteDivision: async function () {
       try {
-        await this.$store
-          .dispatch("Division/DestroyDivision", this.delete_id)
+        this.$axios
+          .delete(`/admin/grievanceSubject/destroy/${this.delete_id}`, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+            },
+
+          })
           .then((res) => {
             // check if the request was successful
             if (res?.data?.success) {
@@ -719,7 +779,7 @@ export default {
               this.$toast.error(res.response.data.message);
             }
             this.deleteDialog = false;
-            this.GetDivision();
+            this.GetGrievanceSubject();
           })
           .catch((error) => {
             console.log(error, "error");
@@ -764,10 +824,11 @@ export default {
     this.setInitialHeader();
   },
   created() {
-
+      this.GetGrievanceType();
   },
   beforeMount() {
     this.updateHeaderTitle();
+    this.GetGrievanceSubject();
   },
 };
 </script>
