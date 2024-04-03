@@ -1039,18 +1039,22 @@
       "number_of_application_forwarded": "ফরোয়ার্ড করা আবেদনের সংখ্যা"
     },
     "grievance_management":{
+      "add_new_type": "নতুন টাইপ যোগ করুন",
       "grievanceType": "অভিযোগের ধরন",
       "title_en": "শিরোনাম (ইংরেজি)",
       "title_bn": "শিরোনাম (বাংলা)",
       "add_grievance_type": "নতুন অভিযোগের ধরন যোগ করুন",
       "edit_grievance_type": "অভিযোগের ধরন আপডেট করুন",
+      "add_new_subject": "নতুন অভিযোগের বিষয় যোগ করুন",
       "grievance_subject": "অভিযোগ বিষয়",
       "add_grievance_subject": "নতুন অভিযোগের বিষয় যোগ করুন",
       "edit_grievance_subject": "অভিযোগের বিষয় আপডেট করুন",
       "main_grievance_type": "অভিযোগের ধরন",
       "grievance_settings": "অভিযোগ সেটিংস",
       "grievance_delete": "অভিযোগের ধরন মুছুন",
-      "grievance_delete_message": "আপনি এই অভিযোগের ধরন মুছে ফেলার বিষয়ে নিশ্চিত?"
+      "grievance_delete_message": "আপনি এই অভিযোগের ধরন মুছে ফেলার বিষয়ে নিশ্চিত?",
+      "grievance_subject_delete": "অভিযোগের বিষয় মুছুন",
+      "grievance_subject_delete_message": "আপনি এই অভিযোগের বিষয় মুছে ফেলার বিষয়ে নিশ্চিত?"
     }
   }
 }
