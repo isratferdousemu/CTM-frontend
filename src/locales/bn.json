@@ -41,7 +41,7 @@
       "location_type": "অবস্থানের ধরন",
       "add_new": "যোগ করুন",
       "add": "যোগ করুন",
-      "update": "আপডেট",
+      "update": "আপডেট করুন",
       "delete": "মুছে ফেলুন",
       "saved": "ডেটা সফলভাবে সংরক্ষিত হয়েছে",
       "updated": "ডেটা সফলভাবে আপডেট হয়েছে",
@@ -286,6 +286,7 @@
           "program_name": "প্রোগ্রামের নাম",
           "committee_type": "কমিটির ধরন",
           "office_types": "অফিসের ধরন",
+          "office": "অফিস",
           "ward": "ওয়ার্ড",
           "add_new": "নতুন কমিটি যোগ করুন",
           "add": "কমিটি যোগ করুন",
@@ -967,6 +968,25 @@
       "delete": "পেমেন্ট প্রসেসর মুছুন ",
       "delete_alert": "আপনি এই পেমেন্ট প্রসেসর মুছে ফেলার বিষয়ে নিশ্চিত??"
     },
+      "training_management": {
+        "trainer_info":{
+          "list":"প্রশিক্ষকের তথ্য তালিকা"
+
+        }
+      },
+      "api_manager": {
+        "url_generate": {
+          "list": "ইউআরএল তালিকা",
+          "add": "নতুন ইউআরএল যোগ করুন",
+          "edit": "ইউআরএল এডিট করুন",
+          "name": "নাম",
+          "method": "মেথড ",
+          "url": "ইউআরএল",
+          "table_name": "টেবিলের নাম",
+            "delete_header": "ইউআরএল মুছুন",
+            "delete_alert": "আপনি এই ইউআরএলটি মুছে ফেলার বিষয়ে নিশ্চিত? ইউআরএল এর সব তথ্য মুছে ফেলা হবে ।"
+        }
+      },
     "system_audit": {
       "application_tracking": "আবেদন ট্র্যাকিং",
       "grievance_tracking": "অভিযোগ ট্র্যাকিং",
@@ -1017,6 +1037,24 @@
       "number_of_application_rejected": "প্রত্যাখ্যানকৃত আবেদনের সংখ্যা",
       "total_number_of_application_received_application": "প্রাপ্ত আবেদনপত্রের মোট সংখ্যা",
       "number_of_application_forwarded": "ফরোয়ার্ড করা আবেদনের সংখ্যা"
+    },
+    "grievance_management":{
+      "add_new_type": "নতুন টাইপ যোগ করুন",
+      "grievanceType": "অভিযোগের ধরন",
+      "title_en": "শিরোনাম (ইংরেজি)",
+      "title_bn": "শিরোনাম (বাংলা)",
+      "add_grievance_type": "নতুন অভিযোগের ধরন যোগ করুন",
+      "edit_grievance_type": "অভিযোগের ধরন আপডেট করুন",
+      "add_new_subject": "নতুন অভিযোগের বিষয় যোগ করুন",
+      "grievance_subject": "অভিযোগ বিষয়",
+      "add_grievance_subject": "নতুন অভিযোগের বিষয় যোগ করুন",
+      "edit_grievance_subject": "অভিযোগের বিষয় আপডেট করুন",
+      "main_grievance_type": "অভিযোগের ধরন",
+      "grievance_settings": "অভিযোগ সেটিংস",
+      "grievance_delete": "অভিযোগের ধরন মুছুন",
+      "grievance_delete_message": "আপনি এই অভিযোগের ধরন মুছে ফেলার বিষয়ে নিশ্চিত?",
+      "grievance_subject_delete": "অভিযোগের বিষয় মুছুন",
+      "grievance_subject_delete_message": "আপনি এই অভিযোগের বিষয় মুছে ফেলার বিষয়ে নিশ্চিত?"
     }
   }
 }

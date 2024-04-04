@@ -556,6 +556,76 @@
                           </ValidationProvider>
                         </v-col>
                       </v-row>
+                      <v-row>
+                        <v-col lg="6" md="6" cols="12">
+                          <v-switch
+                            v-model="advanch_search"
+                            color="primary"
+                            :label="
+                              $t(
+                                'container.beneficiary_management.beneficiary_list.advance_search'
+                              )
+                            "
+                            :value="!advanch_search"
+                            hide-details
+                          ></v-switch>
+                        </v-col>
+                      </v-row>
+
+                      <v-row v-if="advanch_search">
+                        <v-col lg="3" md="3" cols="12">
+                          <v-text-field
+                            outlined
+                            clearable
+                            :label="
+                              $t(
+                                'container.beneficiary_management.beneficiary_list.beneficiary_id'
+                              )
+                            "
+                            v-model="data.beneficiary_id"
+                          >
+                          </v-text-field>
+                        </v-col>
+                        <v-col lg="3" md="3" cols="12">
+                          <v-text-field
+                            outlined
+                            clearable
+                            :label="
+                              $t(
+                                'container.beneficiary_management.beneficiary_list.nominee'
+                              )
+                            "
+                            v-model="data.nominee_name"
+                          >
+                          </v-text-field>
+                        </v-col>
+                        <v-col lg="3" md="3" cols="12">
+                          <v-text-field
+                            outlined
+                            clearable
+                            :label="
+                              $t(
+                                'container.beneficiary_management.beneficiary_list.account_no'
+                              )
+                            "
+                            v-model="data.account_number"
+                          >
+                          </v-text-field>
+                        </v-col>
+                        <v-col lg="3" md="3" cols="12">
+                          <v-text-field
+                            outlined
+                            clearable
+                            :label="
+                              $t(
+                                'container.beneficiary_management.beneficiary_list.nid'
+                              )
+                            "
+                            v-model="data.nid"
+                          >
+                          </v-text-field>
+                        </v-col>
+                      </v-row>
 
                       <div class="d-inline d-flex justify-end">
                         <v-btn
@@ -728,6 +798,10 @@ export default {
         ward_id: null,
         to_date: null,
         from_date: null,
+        beneficiary_id: null,
+        nominee_name: null,
+        account_number: null,
+        nid: null,
       },
       ben_status: [
         {
@@ -745,6 +819,7 @@ export default {
       ],
 
       beneficiaryItem: {},
+      advanch_search: false,
       isLoading: false,
       loading: true,
       search: "",
@@ -880,6 +955,10 @@ export default {
       this.data.ward_id = null;
       this.data.from_date = null;
       this.data.to_date = null;
+      this.data.beneficiary_id = null;
+      this.data.nominee_name = null;
+      this.data.account_number = null;
+      this.data.nid = null;
 
       this.GetApplication();
     },
@@ -1171,13 +1250,18 @@ export default {
         from_date: this.data.from_date,
         to_date: this.data.to_date,
 
+        beneficiary_id: this.data.beneficiary_id,
+        nominee_name: this.data.nominee_name,
+        account_number: this.data.account_number,
+        nid: this.data.nid,
+
         perPage: this.pagination.perPage,
         page: this.pagination.current,
 
         // sortBy: this.sortBy,
         // orderBy: this.sortDesc,
       };
-      this.$axios
+      await this.$axios
         .get("/admin/beneficiary/locationShiftingList", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
@@ -1429,6 +1513,15 @@ export default {
   },
   watch: {
     "$i18n.locale": "updateHeaderTitle",
+    advanch_search(val) {
+      this.data = {
+        ...this.data,
+        beneficiary_id: null,
+        nominee_name: null,
+        account_number: null,
+        nid: null,
+      };
+    },
   },
   created() {
     this.GetAllDivisions();

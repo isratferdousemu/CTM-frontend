@@ -29,490 +29,498 @@
           </v-btn>
         </div>
         <!-- Expantion panels start -->
-        <v-expansion-panels v-model="panel" multiple>
-          <v-expansion-panel>
-            <v-expansion-panel-header color="#8C9EFF">
-              <h3 class="white--text">
-                {{
-                  $t(
-                    "container.beneficiary_management.beneficiary_shifting.title"
-                  )
-                }}
-              </h3>
-            </v-expansion-panel-header>
-            <v-expansion-panel-content class="elevation-0 transparent mt-10">
-              <ValidationObserver ref="form" v-slot="{ invalid }">
-                <form @submit.prevent="onSearch()">
-                  <v-row>
-                    <v-col lg="3" md="3" cols="12">
-                      <ValidationProvider
-                        name="ProgramName"
-                        vid="program_id"
-                        v-slot="{ errors }"
-                      >
-                        <v-select
-                          :hide-details="errors[0] ? false : true"
-                          @input="onChangeProgramName($event)"
-                          v-model="data.program_id"
-                          outlined
-                          :label="
-                            $t(
-                              'container.system_config.demo_graphic.committee.program_name'
-                            )
-                          "
-                          :items="programs"
-                          :item-text="getItemText"
-                          item-value="id"
-                          class="no-arrow-icon"
-                          :append-icon-cb="appendIconCallback"
-                          append-icon="mdi-plus"
-                          :error="errors[0] ? true : false"
-                          :error-messages="errors[0]"
-                          clearable
-                        ></v-select>
-                      </ValidationProvider>
-                    </v-col>
-                    <v-col lg="3" md="3" cols="12">
-                      <ValidationProvider
-                        name="Division"
-                        vid="division"
-                        v-slot="{ errors }"
-                      >
-                        <v-text-field
-                          outlined
-                          readonly
-                          v-model="user_permission.division_name"
-                          :label="
-                            $t(
-                              'container.system_config.demo_graphic.division.division'
-                            )
-                          "
-                          v-if="user_permission.division"
+        <v-card :loading="isLoading" height="100%">
+          <v-expansion-panels v-model="panel" multiple>
+            <v-expansion-panel>
+              <v-expansion-panel-header color="#8C9EFF">
+                <h3 class="white--text">
+                  {{
+                    $t(
+                      "container.beneficiary_management.beneficiary_shifting.title"
+                    )
+                  }}
+                </h3>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content class="elevation-0 transparent mt-10">
+                <ValidationObserver ref="form" v-slot="{ invalid }">
+                  <form @submit.prevent="onSearch()">
+                    <v-row>
+                      <v-col lg="3" md="3" cols="12">
+                        <ValidationProvider
+                          name="ProgramName"
+                          vid="program_id"
+                          v-slot="{ errors }"
                         >
-                        </v-text-field>
-                        <v-select
-                          v-if="!user_permission.division"
-                          outlined
-                          @input="onChangeDivision($event)"
-                          v-model="data.division_id"
-                          :label="
-                            $t(
-                              'container.system_config.demo_graphic.division.division'
-                            )
-                          "
-                          :items="divisions"
-                          :item-text="getItemText"
-                          item-value="id"
-                          :error="errors[0] ? true : false"
-                          :error-messages="errors[0]"
-                          class="no-arrow-icon"
-                          :append-icon-cb="appendIconCallback"
-                          append-icon="mdi-plus"
-                          clearable
+                          <v-select
+                            :hide-details="errors[0] ? false : true"
+                            @input="onChangeProgramName($event)"
+                            v-model="data.program_id"
+                            outlined
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.committee.program_name'
+                              )
+                            "
+                            :items="programs"
+                            :item-text="getItemText"
+                            item-value="id"
+                            class="no-arrow-icon"
+                            :append-icon-cb="appendIconCallback"
+                            append-icon="mdi-plus"
+                            :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"
+                            clearable
+                          ></v-select>
+                        </ValidationProvider>
+                      </v-col>
+                      <v-col lg="3" md="3" cols="12">
+                        <ValidationProvider
+                          name="Division"
+                          vid="division"
+                          v-slot="{ errors }"
                         >
-                        </v-select>
-                      </ValidationProvider>
-                    </v-col>
-                    <v-col lg="3" md="3" cols="12">
-                      <ValidationProvider
-                        name="District"
-                        vid="district"
-                        v-slot="{ errors }"
+                          <v-text-field
+                            outlined
+                            readonly
+                            v-model="user_permission.division_name"
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.division.division'
+                              )
+                            "
+                            v-if="user_permission.division"
+                          >
+                          </v-text-field>
+                          <v-select
+                            v-if="!user_permission.division"
+                            outlined
+                            @input="onChangeDivision($event)"
+                            v-model="data.division_id"
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.division.division'
+                              )
+                            "
+                            :items="divisions"
+                            :item-text="getItemText"
+                            item-value="id"
+                            :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"
+                            class="no-arrow-icon"
+                            :append-icon-cb="appendIconCallback"
+                            append-icon="mdi-plus"
+                            clearable
+                          >
+                          </v-select>
+                        </ValidationProvider>
+                      </v-col>
+                      <v-col lg="3" md="3" cols="12">
+                        <ValidationProvider
+                          name="District"
+                          vid="district"
+                          v-slot="{ errors }"
+                        >
+                          <v-text-field
+                            outlined
+                            readonly
+                            v-model="user_permission.district_name"
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.district.district'
+                              )
+                            "
+                            v-if="user_permission.district"
+                          >
+                          </v-text-field>
+                          <v-select
+                            v-if="!user_permission.district"
+                            outlined
+                            v-model="data.district_id"
+                            @input="onChangeDistrict($event)"
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.district.district'
+                              )
+                            "
+                            :items="districts"
+                            :item-text="getItemText"
+                            item-value="id"
+                            class="no-arrow-icon"
+                            :append-icon-cb="appendIconCallback"
+                            append-icon="mdi-plus"
+                            :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"
+                            clearable
+                          ></v-select>
+                        </ValidationProvider>
+                      </v-col>
+                      <v-col lg="3" md="3" cols="12">
+                        <ValidationProvider
+                          name="Location Type"
+                          vid="location_type"
+                          v-slot="{ errors }"
+                        >
+                          <v-text-field
+                            outlined
+                            readonly
+                            v-model="user_permission.location_type_name"
+                            :label="$t('container.list.location_type')"
+                            v-if="user_permission.location_type"
+                          >
+                          </v-text-field>
+                          <v-select
+                            v-if="!user_permission.location_type"
+                            @input="LocationType($event)"
+                            v-model="data.location_type"
+                            outlined
+                            :label="$t('container.list.location_type')"
+                            :items="locationType"
+                            :item-text="getLocationText"
+                            item-value="id"
+                            class="no-arrow-icon"
+                            :append-icon-cb="appendIconCallback"
+                            append-icon="mdi-plus"
+                            :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"
+                            clearable
+                          ></v-select>
+                        </ValidationProvider>
+                      </v-col>
+                      <v-col
+                        v-if="data.location_type == 1"
+                        lg="3"
+                        md="3"
+                        cols="12"
                       >
-                        <v-text-field
-                          outlined
-                          readonly
-                          v-model="user_permission.district_name"
-                          :label="
-                            $t(
-                              'container.system_config.demo_graphic.district.district'
-                            )
-                          "
-                          v-if="user_permission.district"
+                        <ValidationProvider
+                          name="thana"
+                          vid="district_pouro_id"
+                          v-slot="{ errors }"
                         >
-                        </v-text-field>
-                        <v-select
-                          v-if="!user_permission.district"
-                          outlined
-                          v-model="data.district_id"
-                          @input="onChangeDistrict($event)"
-                          :label="
-                            $t(
-                              'container.system_config.demo_graphic.district.district'
-                            )
-                          "
-                          :items="districts"
-                          :item-text="getItemText"
-                          item-value="id"
-                          class="no-arrow-icon"
-                          :append-icon-cb="appendIconCallback"
-                          append-icon="mdi-plus"
-                          :error="errors[0] ? true : false"
-                          :error-messages="errors[0]"
-                          clearable
-                        ></v-select>
-                      </ValidationProvider>
-                    </v-col>
-                    <v-col lg="3" md="3" cols="12">
-                      <ValidationProvider
-                        name="Location Type"
-                        vid="location_type"
-                        v-slot="{ errors }"
+                          <v-text-field
+                            outlined
+                            readonly
+                            v-model="user_permission.district_pourashava_name"
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.pouro'
+                              )
+                            "
+                            v-if="user_permission.district_pourashava"
+                          >
+                          </v-text-field>
+                          <v-select
+                            v-if="!user_permission.district_pourashava"
+                            v-model="data.district_pouro_id"
+                            outlined
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.pouro'
+                              )
+                            "
+                            @change="onChangeDistrictPouro($event)"
+                            :items="district_pouros"
+                            :item-text="getItemText"
+                            item-value="id"
+                            class="no-arrow-icon"
+                            :append-icon-cb="appendIconCallback"
+                            append-icon="mdi-plus"
+                            :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"
+                            clearable
+                          ></v-select>
+                        </ValidationProvider>
+                      </v-col>
+                      <v-col
+                        v-if="data.location_type == 2"
+                        lg="3"
+                        md="3"
+                        cols="12"
                       >
-                        <v-text-field
-                          outlined
-                          readonly
-                          v-model="user_permission.location_type_name"
-                          :label="$t('container.list.location_type')"
-                          v-if="user_permission.location_type"
+                        <ValidationProvider
+                          name="Upazila"
+                          vid="upazila_id"
+                          v-slot="{ errors }"
                         >
-                        </v-text-field>
-                        <v-select
-                          v-if="!user_permission.location_type"
-                          @input="LocationType($event)"
-                          v-model="data.location_type"
-                          outlined
-                          :label="$t('container.list.location_type')"
-                          :items="locationType"
-                          :item-text="getLocationText"
-                          item-value="id"
-                          class="no-arrow-icon"
-                          :append-icon-cb="appendIconCallback"
-                          append-icon="mdi-plus"
-                          :error="errors[0] ? true : false"
-                          :error-messages="errors[0]"
-                          clearable
-                        ></v-select>
-                      </ValidationProvider>
-                    </v-col>
-                    <v-col
-                      v-if="data.location_type == 1"
-                      lg="3"
-                      md="3"
-                      cols="12"
-                    >
-                      <ValidationProvider
-                        name="thana"
-                        vid="district_pouro_id"
-                        v-slot="{ errors }"
-                      >
-                        <v-text-field
-                          outlined
-                          readonly
-                          v-model="user_permission.district_pourashava_name"
-                          :label="
-                            $t(
-                              'container.system_config.demo_graphic.ward.pouro'
-                            )
-                          "
-                          v-if="user_permission.district_pourashava"
-                        >
-                        </v-text-field>
-                        <v-select
-                          v-if="!user_permission.district_pourashava"
-                          v-model="data.district_pouro_id"
-                          outlined
-                          :label="
-                            $t(
-                              'container.system_config.demo_graphic.ward.pouro'
-                            )
-                          "
-                          @change="onChangeDistrictPouro($event)"
-                          :items="district_pouros"
-                          :item-text="getItemText"
-                          item-value="id"
-                          class="no-arrow-icon"
-                          :append-icon-cb="appendIconCallback"
-                          append-icon="mdi-plus"
-                          :error="errors[0] ? true : false"
-                          :error-messages="errors[0]"
-                          clearable
-                        ></v-select>
-                      </ValidationProvider>
-                    </v-col>
-                    <v-col
-                      v-if="data.location_type == 2"
-                      lg="3"
-                      md="3"
-                      cols="12"
-                    >
-                      <ValidationProvider
-                        name="Upazila"
-                        vid="thana_id"
-                        v-slot="{ errors }"
-                      >
-                        <v-text-field
-                          outlined
-                          readonly
-                          v-model="user_permission.upazila_name"
-                          :label="
-                            $t(
-                              'container.system_config.demo_graphic.thana.thana'
-                            )
-                          "
-                          v-if="user_permission.upazila"
-                        >
-                        </v-text-field>
-                        <v-select
-                          v-if="!user_permission.upazila"
-                          v-model="data.thana_id"
-                          outlined
-                          :label="
-                            $t(
-                              'container.system_config.demo_graphic.thana.thana'
-                            )
-                          "
-                          @change="onChangeUpazila($event)"
-                          :items="thanas"
-                          :item-text="getItemText"
-                          item-value="id"
-                          class="no-arrow-icon"
-                          :append-icon-cb="appendIconCallback"
-                          append-icon="mdi-plus"
-                          :error="errors[0] ? true : false"
-                          :error-messages="errors[0]"
-                          clearable
-                        ></v-select>
-                      </ValidationProvider>
-                    </v-col>
+                          <v-text-field
+                            outlined
+                            readonly
+                            v-model="user_permission.upazila_name"
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.thana.thana'
+                              )
+                            "
+                            v-if="user_permission.upazila"
+                          >
+                          </v-text-field>
+                          <v-select
+                            v-if="!user_permission.upazila"
+                            v-model="data.upazila_id"
+                            outlined
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.thana.thana'
+                              )
+                            "
+                            @change="onChangeUpazila($event)"
+                            :items="thanas"
+                            :item-text="getItemText"
+                            item-value="id"
+                            class="no-arrow-icon"
+                            :append-icon-cb="appendIconCallback"
+                            append-icon="mdi-plus"
+                            :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"
+                            clearable
+                          ></v-select>
+                        </ValidationProvider>
+                      </v-col>
 
-                    <v-col
-                      v-if="data.location_type == 2"
-                      lg="3"
-                      md="3"
-                      cols="12"
-                    >
-                      <ValidationProvider
-                        name="subLocationType"
-                        vid="subLocationType"
-                        v-slot="{ errors }"
+                      <v-col
+                        v-if="data.location_type == 2"
+                        lg="3"
+                        md="3"
+                        cols="12"
                       >
-                        <v-autocomplete
-                          @input="onChangeSubLocationType($event)"
-                          v-model="data.sub_location_type"
-                          outlined
-                          :label="
-                            $t(
-                              'container.system_config.demo_graphic.ward.subLocation_type'
-                            )
-                          "
-                          :items="subLocationType"
-                          item-text="value"
-                          item-value="id"
-                          :error="errors[0] ? true : false"
-                          :error-messages="errors[0]"
-                          :hide-details="errors[0] ? false : true"
-                          class="no-arrow-icon"
-                          :append-icon-cb="appendIconCallback"
-                          append-icon="mdi-plus"
-                          clearable
-                        ></v-autocomplete>
-                      </ValidationProvider>
-                    </v-col>
-                    <v-col
-                      v-if="
-                        data.location_type == 2 && data.sub_location_type == 1
-                      "
-                      lg="3"
-                      md="3"
-                      cols="12"
-                    >
-                      <ValidationProvider
-                        name="pouros"
-                        vid="pouros"
-                        v-slot="{ errors }"
-                      >
-                        <v-select
-                          v-model="data.pouro_id"
-                          outlined
-                          :label="
-                            $t(
-                              'container.system_config.demo_graphic.ward.pouro'
-                            )
-                          "
-                          :items="pouros"
-                          :item-text="getItemText"
-                          item-value="id"
-                          :error="errors[0] ? true : false"
-                          :error-messages="errors[0]"
-                          :hide-details="errors[0] ? false : true"
-                          class="no-arrow-icon"
-                          :append-icon-cb="appendIconCallback"
-                          append-icon="mdi-plus"
-                          clearable
-                        ></v-select>
-                      </ValidationProvider>
-                    </v-col>
-
-                    <v-col
-                      v-if="
-                        data.sub_location_type == 2 && data.location_type == 2
-                      "
-                      lg="3"
-                      md="3"
-                      cols="12"
-                    >
-                      <ValidationProvider
-                        name="unions"
-                        vid="unions"
-                        v-slot="{ errors }"
-                      >
-                        <v-select
-                          @input="onChangeUnionGetWard($event)"
-                          v-model="data.union_id"
-                          outlined
-                          :label="
-                            $t(
-                              'container.system_config.demo_graphic.ward.union'
-                            )
-                          "
-                          :items="unions"
-                          :item-text="getItemText"
-                          item-value="id"
-                          :error="errors[0] ? true : false"
-                          :error-messages="errors[0]"
-                          :hide-details="errors[0] ? false : true"
-                          class="no-arrow-icon"
-                          :append-icon-cb="appendIconCallback"
-                          append-icon="mdi-plus"
-                          clearable
-                        ></v-select>
-                      </ValidationProvider>
-                    </v-col>
-
-                    <v-col
-                      v-if="data.location_type == 3"
-                      lg="3"
-                      md="3"
-                      cols="12"
-                    >
-                      <ValidationProvider
-                        name="city"
-                        vid="city_id"
-                        v-slot="{ errors }"
-                      >
-                        <v-text-field
-                          outlined
-                          readonly
-                          v-model="user_permission.city_corp_name"
-                          :label="
-                            $t('container.system_config.demo_graphic.ward.city')
-                          "
-                          v-if="user_permission.city_corp"
+                        <ValidationProvider
+                          name="subLocationType"
+                          vid="subLocationType"
+                          v-slot="{ errors }"
                         >
-                        </v-text-field>
-                        <v-select
-                          v-if="!user_permission.city_corp"
-                          v-model="data.city_id"
-                          @change="onChangeCity($event)"
-                          outlined
-                          :label="
-                            $t('container.system_config.demo_graphic.ward.city')
-                          "
-                          :items="cities"
-                          :item-text="getItemText"
-                          item-value="id"
-                          class="no-arrow-icon"
-                          :append-icon-cb="appendIconCallback"
-                          append-icon="mdi-plus"
-                          :error="errors[0] ? true : false"
-                          :error-messages="errors[0]"
-                          clearable
-                        ></v-select>
-                      </ValidationProvider>
-                    </v-col>
-
-                    <v-col
-                      v-if="data.location_type == 3"
-                      lg="3"
-                      md="3"
-                      cols="12"
-                    >
-                      <ValidationProvider
-                        name="thana"
-                        vid="thana_id"
-                        v-slot="{ errors }"
+                          <v-autocomplete
+                            @input="onChangeSubLocationType($event)"
+                            v-model="data.sub_location_type"
+                            outlined
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.subLocation_type'
+                              )
+                            "
+                            :items="subLocationType"
+                            item-text="value"
+                            item-value="id"
+                            :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"
+                            :hide-details="errors[0] ? false : true"
+                            class="no-arrow-icon"
+                            :append-icon-cb="appendIconCallback"
+                            append-icon="mdi-plus"
+                            clearable
+                          ></v-autocomplete>
+                        </ValidationProvider>
+                      </v-col>
+                      <v-col
+                        v-if="
+                          data.location_type == 2 && data.sub_location_type == 1
+                        "
+                        lg="3"
+                        md="3"
+                        cols="12"
                       >
-                        <v-select
-                          v-model="data.thana_id"
-                          outlined
-                          :label="
-                            $t(
-                              'container.system_config.demo_graphic.ward.thana'
-                            )
-                          "
-                          @change="onChangeThana($event)"
-                          :items="thanas"
-                          :item-text="getItemText"
-                          item-value="id"
-                          class="no-arrow-icon"
-                          :append-icon-cb="appendIconCallback"
-                          append-icon="mdi-plus"
-                          :error="errors[0] ? true : false"
-                          :error-messages="errors[0]"
-                          clearable
-                        ></v-select>
-                      </ValidationProvider>
-                    </v-col>
+                        <ValidationProvider
+                          name="pouros"
+                          vid="pouros"
+                          v-slot="{ errors }"
+                        >
+                          <v-select
+                            v-model="data.pouro_id"
+                            outlined
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.pouro'
+                              )
+                            "
+                            :items="pouros"
+                            :item-text="getItemText"
+                            item-value="id"
+                            :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"
+                            :hide-details="errors[0] ? false : true"
+                            class="no-arrow-icon"
+                            :append-icon-cb="appendIconCallback"
+                            append-icon="mdi-plus"
+                            clearable
+                          ></v-select>
+                        </ValidationProvider>
+                      </v-col>
 
-                    <v-col
-                      v-if="
-                        data.location_type == 1 ||
-                        data.location_type == 2 ||
-                        data.location_type == 3
-                      "
-                      lg="3"
-                      md="3"
-                      cols="12"
-                    >
-                      <ValidationProvider
-                        name="ward"
-                        vid="ward_id"
-                        v-slot="{ errors }"
+                      <v-col
+                        v-if="
+                          data.sub_location_type == 2 && data.location_type == 2
+                        "
+                        lg="3"
+                        md="3"
+                        cols="12"
                       >
-                        <v-select
-                          v-model="data.ward_id"
-                          outlined
-                          :label="
-                            $t('container.system_config.demo_graphic.ward.ward')
-                          "
-                          :items="wards"
-                          :item-text="getItemText"
-                          item-value="id"
-                          class="no-arrow-icon"
-                          :append-icon-cb="appendIconCallback"
-                          append-icon="mdi-plus"
-                          :error="errors[0] ? true : false"
-                          :error-messages="errors[0]"
-                          clearable
-                        ></v-select>
-                      </ValidationProvider>
-                    </v-col>
-                  </v-row>
-                  <div class="d-inline d-flex justify-end">
-                    <v-btn
-                      elevation="2"
-                      class="btn mr-2"
-                      color="success"
-                      type="submit"
-                      :disabled="
-                        !data.program_id ||
-                        !data.division_id ||
-                        !data.district_id
-                      "
-                      >{{ $t("container.list.search") }}</v-btn
-                    >
-                    <v-btn elevation="2" class="btn" @click="resetSearch">{{
-                      $t("container.list.reset")
-                    }}</v-btn>
-                  </div>
-                </form>
-              </ValidationObserver>
+                        <ValidationProvider
+                          name="unions"
+                          vid="unions"
+                          v-slot="{ errors }"
+                        >
+                          <v-select
+                            @input="onChangeUnionGetWard($event)"
+                            v-model="data.union_id"
+                            outlined
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.union'
+                              )
+                            "
+                            :items="unions"
+                            :item-text="getItemText"
+                            item-value="id"
+                            :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"
+                            :hide-details="errors[0] ? false : true"
+                            class="no-arrow-icon"
+                            :append-icon-cb="appendIconCallback"
+                            append-icon="mdi-plus"
+                            clearable
+                          ></v-select>
+                        </ValidationProvider>
+                      </v-col>
 
-              <v-divider class="mb-5 mt-5"></v-divider>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
+                      <v-col
+                        v-if="data.location_type == 3"
+                        lg="3"
+                        md="3"
+                        cols="12"
+                      >
+                        <ValidationProvider
+                          name="city"
+                          vid="city_id"
+                          v-slot="{ errors }"
+                        >
+                          <v-text-field
+                            outlined
+                            readonly
+                            v-model="user_permission.city_corp_name"
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.city'
+                              )
+                            "
+                            v-if="user_permission.city_corp"
+                          >
+                          </v-text-field>
+                          <v-select
+                            v-if="!user_permission.city_corp"
+                            v-model="data.city_id"
+                            @change="onChangeCity($event)"
+                            outlined
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.city'
+                              )
+                            "
+                            :items="cities"
+                            :item-text="getItemText"
+                            item-value="id"
+                            class="no-arrow-icon"
+                            :append-icon-cb="appendIconCallback"
+                            append-icon="mdi-plus"
+                            :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"
+                            clearable
+                          ></v-select>
+                        </ValidationProvider>
+                      </v-col>
+
+                      <v-col
+                        v-if="data.location_type == 3"
+                        lg="3"
+                        md="3"
+                        cols="12"
+                      >
+                        <ValidationProvider
+                          name="thana"
+                          vid="thana_id"
+                          v-slot="{ errors }"
+                        >
+                          <v-select
+                            v-model="data.thana_id"
+                            outlined
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.thana'
+                              )
+                            "
+                            @change="onChangeThana($event)"
+                            :items="thanas"
+                            :item-text="getItemText"
+                            item-value="id"
+                            class="no-arrow-icon"
+                            :append-icon-cb="appendIconCallback"
+                            append-icon="mdi-plus"
+                            :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"
+                            clearable
+                          ></v-select>
+                        </ValidationProvider>
+                      </v-col>
+
+                      <v-col
+                        v-if="
+                          data.location_type == 1 ||
+                          data.location_type == 2 ||
+                          data.location_type == 3
+                        "
+                        lg="3"
+                        md="3"
+                        cols="12"
+                      >
+                        <ValidationProvider
+                          name="ward"
+                          vid="ward_id"
+                          v-slot="{ errors }"
+                        >
+                          <v-select
+                            v-model="data.ward_id"
+                            outlined
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.ward.ward'
+                              )
+                            "
+                            :items="wards"
+                            :item-text="getItemText"
+                            item-value="id"
+                            class="no-arrow-icon"
+                            :append-icon-cb="appendIconCallback"
+                            append-icon="mdi-plus"
+                            :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"
+                            clearable
+                          ></v-select>
+                        </ValidationProvider>
+                      </v-col>
+                    </v-row>
+                    <div class="d-inline d-flex justify-end">
+                      <v-btn
+                        elevation="2"
+                        class="btn mr-2"
+                        color="success"
+                        type="submit"
+                        :disabled="
+                          !data.program_id ||
+                          !data.division_id ||
+                          !data.district_id
+                        "
+                        >{{ $t("container.list.search") }}</v-btn
+                      >
+                      <v-btn elevation="2" class="btn" @click="resetSearch">{{
+                        $t("container.list.reset")
+                      }}</v-btn>
+                    </div>
+                  </form>
+                </ValidationObserver>
+
+                <v-divider class="mb-5 mt-5"></v-divider>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+        </v-card>
         <!-- Expantion panels end -->
       </v-col>
 
@@ -728,7 +736,7 @@ import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 export default {
   name: "DigitalIndex",
-  title: "CTM - Beneficiary Exit",
+  title: "CTM - Beneficiary Shifting",
 
   data() {
     return {
@@ -741,6 +749,7 @@ export default {
         city_id: null,
         district_pouro_id: null,
         thana_id: null,
+        upazila_id: null,
         union_id: null,
         ward_id: null,
       },
@@ -759,6 +768,7 @@ export default {
       menu2: false,
 
       loading: false,
+      isLoading: false,
       search: "",
       beneficiaries: [],
       cause_types: [],
@@ -905,7 +915,7 @@ export default {
         this.data.city_id = null;
       }
       if (!this.user_permission.upazila) {
-        this.data.thana_id = null;
+        this.data.upazila_id = null;
       }
       if (!this.user_permission.pouro_id) {
         this.data.district_pouro_id = null;
@@ -919,6 +929,7 @@ export default {
       this.data.city_id = null;
       this.data.district_pouro_id = null;
       this.data.thana_id = null;
+      this.upazila_id = null;
       this.data.union_id = null;
       this.data.ward_id = null;
     },
@@ -949,8 +960,9 @@ export default {
       }
     },
     async GetUserPermission() {
+      this.isLoading = true;
       try {
-        this.$axios
+        await this.$axios
           .get("/admin/beneficiary/getUserLocation", {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
@@ -999,7 +1011,8 @@ export default {
             }
             if (item?.upazila) {
               this.user_permission.upazila = item?.upazila;
-              this.data.thana_id = item?.upazila?.id;
+              this.data.upazila_id = item?.upazila?.id;
+              this.onChangeUpazila(item?.upazila?.id);
               this.user_permission.upazila_name =
                 this.language == "en"
                   ? item?.upazila?.name_en
@@ -1014,6 +1027,7 @@ export default {
                   ? item?.city_corp?.name_en
                   : item?.city_corp?.name_bn;
             }
+            this.isLoading = false;
           })
           .catch((err) => {
             console.log(err, "error");
@@ -1058,6 +1072,7 @@ export default {
       this.data.city_id = null;
       this.data.district_pouro_id = null;
       this.data.thana_id = null;
+      this.data.upazila_id = null;
       this.data.union_id = null;
       this.data.ward_id = null;
 
@@ -1107,8 +1122,10 @@ export default {
     },
 
     async onChangeUpazila(event) {
+      this.data.union_id = null;
+      this.data.ward_id = null;
       await this.$axios
-        .get(`/admin/union/get/${this.data.thana_id}`, {
+        .get(`/admin/union/get/${this.data.upazila_id}`, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -1138,7 +1155,7 @@ export default {
         this.data.union_id = null;
       }
       if (event == 2) {
-        this.onChangeUpazila(this.data.thana_id);
+        this.onChangeUpazila(this.data.upazila_id);
         this.data.pouro_id = null;
       }
     },
@@ -1169,6 +1186,9 @@ export default {
         });
     },
     async onChangeCity(event) {
+      this.data.thana_id = null;
+      this.data.ward_id = null;
+
       await this.$axios
         .get(`/admin/thana/get/city/${event}`, {
           headers: {
@@ -1193,6 +1213,7 @@ export default {
         });
     },
     async onChangeDistrictPouro(event) {
+      this.data.ward_id = null;
       await this.$axios
         .get(`/admin/ward/get/district_pouro/${event}`, {
           headers: {
@@ -1220,7 +1241,7 @@ export default {
         this.data.program_id &&
         this.data.division_id &&
         this.data.district_id
-        // (this.data.city_id || this.data.district_pouro_id || this.data.thana_id)
+        // (this.data.city_id || this.data.district_pouro_id || this.data.upazila_id)
       ) {
         this.loading = true;
         const queryParams = {
@@ -1232,6 +1253,7 @@ export default {
           district_pourashava_id: this.data.district_pouro_id,
           union_id: this.data.union_id,
           thana_id: this.data.thana_id,
+          upazila_id: this.data.upazila_id,
           ward_id: this.data.ward_id,
           status: 1, //Active list
 
@@ -1342,9 +1364,9 @@ export default {
     this.GetAllCommitteeType();
   },
   mounted() {
+    this.GetUserPermission();
     this.GetAllProgram();
     this.GetAllDivisions();
-    this.GetUserPermission();
     this.$store
       .dispatch("getLookupByType", 1)
       .then((res) => (this.locationType = res));

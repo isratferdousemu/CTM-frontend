@@ -156,6 +156,7 @@
                             :items="officeType"
                             :item-text="getItemTextValue"
                             item-value="id"
+                            @input="onChangeOfficeLoad($event)"
                             required
                             :error="errors[0] ? true : false"
                             :error-messages="errors[0]"
@@ -416,6 +417,7 @@
                             :items="unions"
                             :item-text="getItemText"
                             item-value="id"
+                            @change="onDistrictPourosova($event)"
                             required
                             :error="errors[0] ? true : false"
                             :error-messages="errors[0]"
@@ -444,6 +446,32 @@
                               )
                             "
                             :items="wards"
+                            :item-text="getItemText"
+                            item-value="id"
+                            required
+                            :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"
+                          ></v-autocomplete>
+                        </ValidationProvider>
+                      </v-col>
+
+                      <v-col lg="6" md="6" cols="12">
+                        <ValidationProvider
+                          name="Office"
+                          vid="office"
+                          rules="required"
+                          v-slot="{ errors }"
+                        >
+                          <v-autocomplete
+                            :hide-details="errors[0] ? false : true"
+                            v-model="data.office_id"
+                            outlined
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.committee.office'
+                              )
+                            "
+                            :items="office"
                             :item-text="getItemText"
                             item-value="id"
                             required
@@ -483,7 +511,6 @@
                                     )
                                   "
                                   v-model="data.members[index]['member_name']"
-                                  required
                                   outlined
                                   :id="member"
                                   :error="errors[0] ? true : false"
@@ -680,6 +707,7 @@ export default {
         upazila_id: null,
         thana_id: null,
         office_type: null,
+        location_id: null,
         office_address: null,
         comment: null,
         status: "0",
@@ -690,9 +718,10 @@ export default {
         thana_id: null,
         union_id: null,
         paurashava_id: null,
+        office_id: null,
         members: [
           {
-            member_name: null,
+            member_name: "",
             designation: null,
             address: null,
             email: null,
@@ -725,6 +754,7 @@ export default {
       committee_types: [],
       designations: [],
       offices: [],
+      office: [],
       unions: [],
       programs: [],
       officeType: [],
@@ -977,6 +1007,42 @@ export default {
         console.log(e);
       }
     },
+    async onChangeOfficeLoad(event) {
+      this.GetOffice();
+    },
+    async onDistrictPourosova(event) {
+      this.data.location_id = event;
+      this.GetOffice();
+    },
+    async GetOffice() {
+      this.office = [];
+      const queryParams = {
+        office_type: this.data.office_type,
+        location_id: this.data.location_id,
+      };
+      await this.$axios
+        .get("/global/office-list", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          this.office = result.data.data;
+        });
+
+      // await this.$axios
+      //   .get(`/global/office-list/${event}`, {
+      //     headers: {
+      //       Authorization: "Bearer " + this.$store.state.token,
+      //       "Content-Type": "multipart/form-data",
+      //     },
+      //   })
+      //   .then((result) => {
+      //     this.office = result.data.data;
+      //   });
+    },
     async GetAllUpazila(id) {
       console.log(id, "GetAllUpazila");
       try {
@@ -985,6 +1051,10 @@ export default {
           .then((data) => {
             console.log(data, "GetAllUpazilaByDistrict");
             this.upazilas = data;
+
+            //Office Load
+            this.data.location_id = id;
+            this.GetOffice();
           });
       } catch (e) {
         console.log(e);
@@ -1092,6 +1162,10 @@ export default {
         .then((result) => {
           this.unions = result.data.data;
           console.log(this.unions, "unions");
+
+          //Office Load
+          this.data.location_id = event;
+          this.GetOffice(event);
         });
     },
     async onChangeThana(event) {
@@ -1134,6 +1208,9 @@ export default {
         })
         .then((result) => {
           this.thanas = result.data.data;
+          //Office Load
+          this.data.location_id = event;
+          this.GetOffice(event);
         });
     },
     async onChangeCommitteeType(event) {
@@ -1176,6 +1253,10 @@ export default {
           .then((result) => {
             this.unions = lookupType === 1 ? result.data.data : [];
             this.city = lookupType === 3 ? result.data.data : [];
+
+            // //Office Load
+            // this.data.location_id = this.data.district_id;
+            // this.GetOffice();
           });
       }
     },
@@ -1219,7 +1300,9 @@ export default {
       this.dialogEdit = null;
       this.data.id = null;
       this.data.office_type = null;
+      this.data.location_id = null;
       this.office_type_id = null;
+      this.office_id = null;
       //   this.data.name_en = null;
       this.data.name_bn = null;
       this.data.office_address = null;

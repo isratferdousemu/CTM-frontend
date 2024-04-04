@@ -287,6 +287,7 @@
           "program_name": "Program Name",
           "committee_type": "Committee Type",
           "office_types": "Office Type",
+          "office": "Office",
           "ward": "Ward",
           "add_new": "Add New Committee",
           "add": "Add Committee",
@@ -971,6 +972,27 @@
       "delete": "Delete Payment Processor ",
       "delete_alert": "Are you sure to delete this Payment Processor?"
     },
+      "training_management": {
+        "trainer_info": {
+          "list": "Trainer Information List"
+        
+        }
+      },
+      "api_manager": {
+        "url_generate": {
+          "list": "URL List",
+         
+           "add": "Add New URL",
+           "edit": "Edit URL",
+            "name":"Name",
+            "url":"URL",
+            "method":"Method",
+            "table_name":"Table Name",
+            "delete_header":"Delete URL",
+            "delete_alert":"Are you sure to delete this URL? URL all information will be deleted."
+            
+        }
+      },
     "system_audit": {
       "application_tracking": "Application Tracking",
       "grievance_tracking": "Grievance Tracking",
@@ -1020,6 +1042,24 @@
       "number_of_application_rejected": "Number of Application Rejected",
       "total_number_of_application_received_application": "Total Number of Application Received Application",
       "number_of_application_forwarded": "Number of Application Forwarded"
+    },
+    "grievance_management": {
+      "add_new_type": "Add New Type",
+      "grievanceType": "Grievance Type",
+      "title_en": "Title (English)",
+      "title_bn": "Title (Bangla)",
+      "add_grievance_type": "Add New Grievance Type",
+      "edit_grievance_type": "Edit Complaint Type",
+      "add_new_subject": "Add New Grievance Subject",
+      "grievance_subject": "Grievance Subject",
+      "add_grievance_subject": "Add New Subject",
+      "edit_grievance_subject": "Edit Grievance Subject",
+      "main_grievance_type": "Grievance Type",
+      "grievance_settings": "Grievance Settings",
+      "grievance_delete": "Delete Grievance Type",
+      "grievance_delete_message": "Are you sure to delete this Grievance Type?",
+      "grievance_subject_delete": "Delete Grievance Subject",
+      "grievance_subject_delete_message": "Are you sure to delete this Grievance Subject?"
     }
   }
 }
