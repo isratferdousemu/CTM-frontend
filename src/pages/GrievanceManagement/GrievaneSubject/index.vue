@@ -567,11 +567,11 @@ export default {
         checkLanguageBangla !== "Bangla" &&
         checkLanguageBangla !== "BanglaSpecialChar"
       ) {
-        errs.name_bn = ["Please Enter in Bangla Language in this Field"];
+        errs.title_bn = ["Please Enter in Bangla Language in this Field"];
       }
 
       if (checkLanguageEnglish != "English") {
-        errs.name_en = ["Please Enter in English Language in this Field"];
+        errs.title_en = ["Please Enter in English Language in this Field"];
       }
 
       if (Object.keys(errs).length > 0) {
