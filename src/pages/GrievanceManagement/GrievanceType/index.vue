@@ -141,7 +141,7 @@
                   <v-text-field outlined type="text" v-model="data.title_en" :label="$t('container.grievance_management.title_en')
                     " required :error="errors[0] ? true : false" :error-messages="errors[0]">></v-text-field>
                 </ValidationProvider>
-                <ValidationProvider v-slot="{ errors }" name="Title Bangla" vid="name_en" rules="required">
+                <ValidationProvider v-slot="{ errors }" name="Title Bangla" vid="title_bn" rules="required">
                   <v-text-field outlined type="text" v-model="data.title_bn" :label="$t(
                     'container.grievance_management.title_bn'
                   )
@@ -509,7 +509,7 @@ export default {
       if (
         checkLanguageBangla !== "Bangla" &&
         checkLanguageBangla !== "BanglaSpecialChar"
-      ) {
+      ){
         errs.title_bn = ["Please Enter in Bangla Language in this Field"];
       }
 
