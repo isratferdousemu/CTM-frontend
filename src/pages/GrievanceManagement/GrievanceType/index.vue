@@ -383,7 +383,7 @@ export default {
           this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
           this.$i18n.locale == 'en' ? i.title_en : i.title_en,
           this.$i18n.locale == 'en' ? i.title_bn : i.title_bn,
-          this.$i18n.locale == 'en' ? i.status : this.$helpers.englishToBangla(i.status),
+          this.$i18n.locale == 'en' ? this.status(i.status) : this.status(i.status),
         ]
       }));
 
@@ -457,7 +457,7 @@ export default {
               "sl": this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
               "title_en": this.$i18n.locale == 'en' ? i.title_bn : i.title_en,
               "title_bn": this.$i18n.locale == 'en' ? i.title_en : i.title_bn,
-              "status": this.$i18n.locale == 'en' ? i.status : this.$helpers.englishToBangla(i.status),
+              "status": this.$i18n.locale == 'en' ? this.status(i.status) : this.status(i.status),
             }
           }));
 
@@ -492,7 +492,13 @@ export default {
           return v[j];
         })))
     },
-
+    status(status) {
+      if (status == 1) {
+        return this.$i18n.locale == 'en' ? 'Active' : 'সক্রিয়'
+      } else {
+        return this.$i18n.locale == 'en' ? 'Inactive ' : 'নিষ্ক্রিয়'
+      }
+    },
 
     createDialog() {
       if (this.$refs.formAdd) {

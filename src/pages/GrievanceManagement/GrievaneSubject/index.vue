@@ -128,7 +128,7 @@
       <v-dialog v-model="dialogAdd" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.grievance_management.add_grievance_subject") }}
+            {{ $t("container.grievance_management.add_new_subject") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
@@ -437,7 +437,7 @@ export default {
           this.$i18n.locale == 'en' ? i.title_en : i.title_en,
           this.$i18n.locale == 'en' ? i.title_bn : i.title_bn,
           this.$i18n.locale == 'en' ? i.grievanceTypeEn : i.grievanceTypeBn,
-          this.$i18n.locale == 'en' ? i.status : this.$helpers.englishToBangla(i.status),
+          this.$i18n.locale == 'en' ? this.status(i.status) : this.status(i.status),
         ]
       }));
 
@@ -465,7 +465,13 @@ export default {
         console.error('Error generating PDF:', error);
       }
     },
-
+    status(status){
+      if(status==1){
+         return this.$i18n.locale == 'en' ? 'Active' : 'সক্রিয়'
+      }else{
+        return this.$i18n.locale == 'en' ? 'Inactive ' : 'নিষ্ক্রিয়'
+      }
+    },
     async GenerateExcel() {
       this.isLoading = true;
       let page;
@@ -514,7 +520,7 @@ export default {
               "title_en": this.$i18n.locale == 'en' ? i.title_en : i.title_en,
               "title_bn": this.$i18n.locale == 'en' ? i.title_bn : i.title_bn,
               "grievance_type_id": this.$i18n.locale == 'en' ? i.grievanceTypeEn : i.grievanceTypeBn,
-              "status": this.$i18n.locale == 'en' ? i.status : this.$helpers.englishToBangla(i.status),
+              "status": this.$i18n.locale == 'en' ? this.status(i.status) : this.status(i.status),
             }
           }));
 

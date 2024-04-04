@@ -1059,7 +1059,14 @@
       "grievance_delete": "Delete Grievance Type",
       "grievance_delete_message": "Are you sure to delete this Grievance Type?",
       "grievance_subject_delete": "Delete Grievance Subject",
-      "grievance_subject_delete_message": "Are you sure to delete this Grievance Subject?"
+      "grievance_subject_delete_message": "Are you sure to delete this Grievance Subject?",
+      "grievance_setup": "Set Grievance",
+      "add_new_grievance_setting": "Add New Grievance Setting",
+      "solution_time": "Solution Time (Days)",
+      "1stOfficer": "1st Tire (1st Officer)",
+      "2ndOfficer": "2nd Tire (2nd Officer)",
+      "3rdOfficer": "3rd Tire (3rd Officer"
+
     }
   }
 }
