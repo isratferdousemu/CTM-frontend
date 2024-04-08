@@ -231,7 +231,7 @@
                   <v-text-field outlined type="text" v-model="data.title_en" :label="$t('container.grievance_management.title_en')
                     " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
                 </ValidationProvider>
-                <ValidationProvider name="Title Bangla" vid="title_bn" rules="required" v-slot="{ errors }">
+                <ValidationProvider name="Title Bangla" vid="title_bn" rules="required||bangla" v-slot="{ errors }">
                   <v-text-field outlined type="text" v-model="data.title_bn" :label="$t(
                     'container.grievance_management.title_bn'
                   )
