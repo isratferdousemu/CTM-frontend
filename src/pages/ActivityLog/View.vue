@@ -14,7 +14,7 @@
             >
               <v-card-title class="justify-center" tag="div">
                 <h4 class="text-uppercase pt-3">
-                  {{ $t('Activity Log View') }}
+                  {{ $t('container.activity_log.log_view') }}
                 </h4>
               </v-card-title>
               <v-simple-table dense>
@@ -84,55 +84,55 @@
                     </td>
                   </tr>
 
-                  <!--                  <tr>-->
-                  <!--                    <th class="text-left">-->
-                  <!--                      Changes:-->
-                  <!--                    </th>-->
-                  <!--                    <td class="text-left">-->
-                  <!--                      <v-simple-table dense>-->
-                  <!--                        <template v-slot:default>-->
-                  <!--                          <thead>-->
-                  <!--                            <th>Key</th>-->
-                  <!--                            <th>Previous Value</th>-->
-                  <!--                            <th>New Value</th>-->
-                  <!--                          </thead>-->
-                  <!--                          <tbody>-->
-                  <!--                            <tr>-->
-                  <!--                              <td class="text-left">Date</td>-->
-                  <!--                              <td>2023-08-31</td>-->
-                  <!--                              <td>dssdfsdfsd</td>-->
-                  <!--                            </tr>-->
-                  <!--                          </tbody>-->
-                  <!--                        </template>-->
-                  <!--                      </v-simple-table>-->
-                  <!--                    </td>-->
-                  <!--                  </tr>-->
+                                    <tr>
+                                      <th class="text-left">
+                                        Changes:
+                                      </th>
+                                      <td class="text-left">
+                                        <v-simple-table dense>
+                                          <template v-slot:default>
+                                            <thead>
+                                              <th>Key</th>
+                                              <th v-if="activity_log_details.properties.changes.previous">Previous Value</th>
+                                              <th>New Value</th>
+                                            </thead>
+                                            <tbody>
+                                            <tr v-for="(value, key) in activity_log_details.properties.changes.new" :key="key">
+                                              <td>{{ key }}</td>
+                                              <td v-if="activity_log_details.properties.changes.previous">{{ activity_log_details.properties.changes.previous[key] }}</td>
+                                              <td>{{ activity_log_details.properties.changes.new[key] }}</td>
+                                            </tr>
+                                            </tbody>
+                                          </template>
+                                        </v-simple-table>
+                                      </td>
+                                    </tr>
 
-                  <tr>
-                    <th class="text-left">
-                      Change Info:
-                    </th>
-                    <td class="text-left">
-                      <v-simple-table dense>
-                        <template v-slot:default>
-                          <thead>
-                          <th>Key</th>
-                          <th>Value</th>
-                          </thead>
-                          <tbody>
+<!--                  <tr>-->
+<!--                    <th class="text-left">-->
+<!--                      Change Info:-->
+<!--                    </th>-->
+<!--                    <td class="text-left">-->
+<!--                      <v-simple-table dense>-->
+<!--                        <template v-slot:default>-->
+<!--                          <thead>-->
+<!--                          <th>Key</th>-->
+<!--                          <th>Value</th>-->
+<!--                          </thead>-->
+<!--                          <tbody>-->
 
-                          <tr v-for="(value, key) in activity_log_details.subject" :key="key">
-                            <template v-if="value != null">
-                              <td>{{ key }}</td>
-                              <td>{{ value }}</td>
-                            </template>
-                          </tr>
+<!--                          <tr v-for="(value, key) in activity_log_details.subject" :key="key">-->
+<!--                            <template v-if="value != null">-->
+<!--                              <td>{{ key }}</td>-->
+<!--                              <td>{{ value }}</td>-->
+<!--                            </template>-->
+<!--                          </tr>-->
 
-                          </tbody>
-                        </template>
-                      </v-simple-table>
-                    </td>
-                  </tr>
+<!--                          </tbody>-->
+<!--                        </template>-->
+<!--                      </v-simple-table>-->
+<!--                    </td>-->
+<!--                  </tr>-->
 
                   <tr v-if="activity_log_details.causer">
                     <th class="text-left">
