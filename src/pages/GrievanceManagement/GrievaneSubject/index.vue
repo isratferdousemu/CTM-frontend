@@ -631,6 +631,7 @@ export default {
       }
     },
     editDialog(item) {
+      console.log(item,'itemitemitemitem');
       this.dialogEdit = true;
       // this.data.status = item.status;
       this.data.status = String(item.status);
@@ -670,9 +671,10 @@ export default {
     resetForm() {
       // Reset the form data
       this.data = {
-        code: "",
-        name_en: "",
-        name_bn: "",
+        status: "",
+        title_en: "",
+        title_bn: "",
+        grievance_type_id: "",
         // Reset other form fields
       };
       this.errors = {};
