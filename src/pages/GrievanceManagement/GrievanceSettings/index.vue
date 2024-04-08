@@ -53,7 +53,7 @@
                   justify-lg="space-between">
 
                   <v-col cols="12">
-                    <v-data-table :loading="loading" item-key="id" :headers="headers" :items="subjects"
+                    <v-data-table :loading="loading" item-key="id" :headers="headers" :items="settings"
                       :items-per-page="pagination.perPage" @update:options="handleOptionsUpdate" hide-default-footer
                       class="elevation-0 transparent row-pointer">
                       <template v-slot:item.id="{ item, index }">
@@ -66,15 +66,12 @@
 
 
                       <template v-slot:item.title_en="{ item }">
-                        {{ item.title_en }}
+                        {{ item.grievance_type_id }}
                       </template>
                       <template v-slot:item.title_bn="{ item }">
-                        {{ item.title_bn }}
+                        {{ item.grievance_type_id }}
                       </template>
-                      <template v-slot:item.status="{ item }">
-                        <span v-if="item?.status == '0'"> Inactive </span>
-                        <span v-if="item?.status == '1'"> Active </span>
-                      </template>
+                      
 
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
@@ -133,7 +130,7 @@
           <v-divider></v-divider>
           <v-card-text class="mt-7">
             <ValidationObserver ref="formAdd" v-slot="{ invalid }">
-              <form @submit.prevent="submitGrievanceSubject()">
+              <form @submit.prevent="submitGrievanceSetting()">
                 <!-- {{errors.code}}
                   {{errors.name_en}} -->
                 <v-row>
@@ -147,7 +144,7 @@
                     </ValidationProvider>
                   </v-col>
                   <v-col>
-                    <ValidationProvider name="Grievance Subject" vid="subject" rules="required" v-slot="{ errors }">
+                    <ValidationProvider name="Grievance Subject" vid="grievance_subject_id" rules="required" v-slot="{ errors }">
                       <v-autocomplete v-model="data.grievance_subject_id" outlined :label="$t(
                         'container.grievance_management.grievance_subject'
                       )
@@ -202,7 +199,7 @@
       <!-- Grievance Settings add modal  -->
 
       <!-- Grievance Settings Edit modal  -->
-      <v-dialog v-model="dialogEdit" width="650">
+      <v-dialog v-model="dialogEdit" width="1050">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
             {{ $t("container.grievance_management.edit_grievance_subject") }}
@@ -210,34 +207,58 @@
           <v-divider></v-divider>
           <v-card-text class="mt-7">
             <ValidationObserver ref="formEdit" v-slot="{ invalid }">
-              <form @submit.prevent="updateGrievanceSubject()">
+              <form @submit.prevent="updateGrievanceSetting()">
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
-                <ValidationProvider name="Grievance Type" vid="subject" rules="required" v-slot="{ errors }">
-                  <v-autocomplete v-model="data.grievance_type_id" outlined :label="$t(
-                    'container.grievance_management.main_grievance_type'
-                  )
-                    " :items="types" item-text="title_en" item-value="id" required :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"></v-autocomplete>
-                </ValidationProvider>
+                      <v-row>
+                    <v-col>
+                      <ValidationProvider name="Grievance Type" vid="type" rules="required" v-slot="{ errors }">
+                        <v-autocomplete v-model="data.grievance_type_id" outlined :label="$t(
+                          'container.grievance_management.main_grievance_type'
+                        )
+                          " :items="types" item-text="title_en" item-value="id" required
+                          :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                      </ValidationProvider>
+                    </v-col>
+                    <v-col>
+                      <ValidationProvider name="Grievance Subject" vid="grievance_subject_id" rules="required" v-slot="{ errors }">
+                        <v-autocomplete v-model="data.grievance_subject_id" outlined :label="$t(
+                          'container.grievance_management.grievance_subject'
+                        )
+                          " :items="subjects" item-text="title_en" item-value="id" required
+                          :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                      </ValidationProvider>
+                    </v-col>
+                  </v-row>
+                  <v-row v-for="(facilityData, index) in OfficerForm" :key="index">
+                    <v-col>
+                      <ValidationProvider v-slot="{ errors }" name="Solution Time" vid="first_tire_solution_time"
+                        rules="required">
+                        <v-text-field outlined type="number" v-model="facilityData.first_tire_solution_time" :label="$t('container.grievance_management.solution_time')
+                          " required :error="errors[0] ? true : false" :error-messages="errors[0]">></v-text-field>
+                      </ValidationProvider>
+                    </v-col>
+                    <v-col cols="5">
+                      <ValidationProvider name="Grievance Type" vid="subject" rules="required" v-slot="{ errors }">
+                        <v-autocomplete v-model="facilityData.first_tire_officer" outlined :label="$t(
+                          'container.grievance_management.1stOfficer'
+                        )
+                          " :items="roles" item-text="name" item-value="id" required :error="errors[0] ? true : false"
+                          :error-messages="errors[0]"></v-autocomplete>
+                      </ValidationProvider>
+                    </v-col>
+                    <v-col cols="1">
+                      <v-btn v-if="index > 0" class="mx-2" fab dark x-small color="red" @click="remove(index)">
+                        <v-icon dark> mdi-minus </v-icon>
+                      </v-btn>
 
-                <ValidationProvider name="Title English" vid="title_en" v-slot="{ errors }">
-                  <v-text-field outlined type="text" v-model="data.title_en" :label="$t('container.grievance_management.title_en')
-                    " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
-                </ValidationProvider>
-                <ValidationProvider name="Title Bangla" vid="title_bn" rules="required" v-slot="{ errors }">
-                  <v-text-field outlined type="text" v-model="data.title_bn" :label="$t(
-                    'container.grievance_management.title_bn'
-                  )
-                    " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
-                </ValidationProvider>
-                <ValidationProvider name="Status" vid="status" v-slot="{ errors }">
-                  <v-checkbox v-model="data.status" :label="$t(
-                    'container.system_config.demo_graphic.office.active'
-                  )
-                    " color="green" value="1" :hide-details="errors[0] ? false : true"
-                    :error="errors[0] ? true : false" :error-messages="errors[0]"></v-checkbox>
-                </ValidationProvider>
+                      <v-btn v-if="index <= 1" class="mx-2" fab dark x-small color="green" @click="addmore(index)">
+                        <!-- <v-icon dark> mdi-plus </v-icon> -->
+                        <v-icon> mdi-plus </v-icon>
+                      </v-btn>
+                    </v-col>
+                  </v-row>
+               
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
                   <v-btn @click="dialogEdit = false" outlined class="custom-btn-width py-2 mr-10">
@@ -259,13 +280,13 @@
       <v-dialog v-model="deleteDialog" width="350">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.grievance_management.grievance_subject_delete") }}
+            {{ $t("container.grievance_management.grievance_setting_delete") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
               {{
-                $t("container.grievance_management.grievance_subject_delete_message")
+                $t("container.grievance_management.grievance_setting_delete_message")
               }}
             </div>
           </v-card-text>
@@ -302,9 +323,6 @@ export default {
     return {
       data: {
         id: null,
-        status: null,
-        title_en: null,
-        title_bn: null,
         grievance_type_id: null,
         grievance_subject_id: null,
         // first_tire_officer: [],
@@ -334,7 +352,8 @@ export default {
       subjects: [],
       types: [],
       roles: [],
-      AllGrievanceSubject: [],
+      settings: [],
+      AllGrievanceSettings: [],
       errors: {},
       error_status: {},
       pagination: {
@@ -374,27 +393,51 @@ export default {
           sortable: false,
         },
         {
-          text: this.$t("container.grievance_management.title_en"),
-          value: "title_en",
+          text: this.$t("container.grievance_management.main_grievance_type"),
+          value: "grievanceTypeEn",
         },
         {
           text: this.$t(
-            "container.grievance_management.title_bn"
+            "container.grievance_management.grievance_subject"
           ),
-          value: "title_bn",
+          value: "grievanceSubjectEn",
           class: "highlight-column ",
         },
         {
           text: this.$t(
-            "container.grievance_management.main_grievance_type"
+            "container.grievance_management.solution_time"
+          ),
+          value: "grievanceTypeEn",
+        },
+       {
+          text: this.$t(
+            "container.grievance_management.1stOfficer"
+          ),
+          value: "grievanceTypeEn",
+        },
+         {
+          text: this.$t(
+            "container.grievance_management.solution_time"
           ),
           value: "grievanceTypeEn",
         },
         {
           text: this.$t(
-            "container.list.status"
+            "container.grievance_management.2ndOfficer"
           ),
-          value: "status",
+          value: "grievanceTypeEn",
+        },
+         {
+          text: this.$t(
+            "container.grievance_management.solution_time"
+          ),
+          value: "grievanceTypeEn",
+        },
+        {
+          text: this.$t(
+            "container.grievance_management.3rdOfficer"
+          ),
+          value: "grievanceTypeEn",
         },
         {
           text: this.$t("container.list.action"),
@@ -440,7 +483,7 @@ export default {
       };
 
       await this.$axios
-        .get("/admin/grievanceSubject/get", {
+        .get("/admin/grievanceSetting/get", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -448,18 +491,23 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          this.AllGrievanceSubject = result.data.data;
+          this.AllGrievanceSettings = result.data.data;
         });
 
       const HeaderInfo = [
         this.$t("container.list.sl"),
-        this.$t("container.grievance_management.title_en"),
-        this.$t("container.grievance_management.title_bn"),
         this.$t("container.grievance_management.main_grievance_type"),
-        this.$t("container.list.status"),
+        this.$t("container.grievance_management.grievance_subject"),
+        this.$t("container.grievance_management.solution_time"),
+        this.$t("container.grievance_management.1stOfficer"),
+        this.$t("container.grievance_management.solution_time"),
+        this.$t("container.grievance_management.2ndOfficer"),
+        this.$t("container.grievance_management.solution_time"),
+        this.$t("container.grievance_management.3rdOfficer"),
+
       ]
 
-      const CustomInfo = this.AllGrievanceSubject.map(((i, index) => {
+      const CustomInfo = this.AllGrievanceSettings.map(((i, index) => {
         return [
           this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
           this.$i18n.locale == 'en' ? i.title_en : i.title_en,
@@ -516,7 +564,7 @@ export default {
       };
 
       await this.$axios
-        .get("/admin/grievanceSubject/get", {
+        .get("/admin/grievanceSetting/get", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -524,8 +572,8 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          this.AllGrievanceSubject = result.data.data;
-          console.log(this.AllGrievanceSubject, 'excel')
+          this.AllGrievanceSettings = result.data.data;
+          console.log(this.AllGrievanceSettings, 'excel')
         })
         .catch(error => {
           this.isLoading = false;
@@ -536,23 +584,31 @@ export default {
 
           const HeaderInfo = [
             this.$t("container.list.sl"),
-            this.$t("container.grievance_management.title_en"),
-            this.$t("container.grievance_management.title_bn"),
             this.$t("container.grievance_management.main_grievance_type"),
-            this.$t("container.list.status"),
+            this.$t("container.grievance_management.grievance_subject"),
+            this.$t("container.grievance_management.solution_time"),
+            this.$t("container.grievance_management.1stOfficer"),
+            this.$t("container.grievance_management.solution_time"),
+            this.$t("container.grievance_management.2ndOfficer"),
+            this.$t("container.grievance_management.solution_time"),
+            this.$t("container.grievance_management.3rdOfficer"),
           ]
 
-          const CustomInfo = this.AllGrievanceSubject.map(((i, index) => {
+          const CustomInfo = this.AllGrievanceSettings.map(((i, index) => {
             return {
               "sl": this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
-              "title_en": this.$i18n.locale == 'en' ? i.title_en : i.title_en,
-              "title_bn": this.$i18n.locale == 'en' ? i.title_bn : i.title_bn,
               "grievance_type_id": this.$i18n.locale == 'en' ? i.grievanceTypeEn : i.grievanceTypeBn,
-              "status": this.$i18n.locale == 'en' ? this.status(i.status) : this.status(i.status),
+              "grievance_subject_id": this.$i18n.locale == 'en' ? i.grievanceSubjectEn : i.grievanceSubjectEn,
+              "grievance_type_id": this.$i18n.locale == 'en' ? i.grievanceTypeEn : i.grievanceTypeBn,
+              "grievance_type_id": this.$i18n.locale == 'en' ? i.grievanceTypeEn : i.grievanceTypeBn,
+              "grievance_type_id": this.$i18n.locale == 'en' ? i.grievanceTypeEn : i.grievanceTypeBn,
+              "grievance_type_id": this.$i18n.locale == 'en' ? i.grievanceTypeEn : i.grievanceTypeBn,
+              "grievance_type_id": this.$i18n.locale == 'en' ? i.grievanceTypeEn : i.grievanceTypeBn,
+    
             }
           }));
 
-          const Field = ['sl', 'title_en', 'title_bn', 'grievance_type_id', 'status']
+          const Field = ['sl', 'grievance_type_id', 'grievance_subject_id', 'grievance_type_id']
 
           const Data = this.FormatJson(Field, CustomInfo)
           const currentDate = new Date().toISOString().slice(0, 10); //
@@ -630,15 +686,11 @@ export default {
       }
       return fd;
     },
-    submitGrievanceSubject() {
-      if (!this.checkLanguage()) {
-        return;
-      }
-
+    submitGrievanceSetting() {
       try {
 
         this.$axios
-          .post(`/admin/grievanceSubject/store`, this.data, {
+          .post(`/admin/grievanceSetting/store`, this.data, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
@@ -650,7 +702,7 @@ export default {
               this.$toast.success("Data Inserted Successfully");
               this.resetForm();
               this.dialogAdd = false;
-              this.GetGrievanceSubject();
+              this.GetGrievanceSettings();
             } else if (res.response?.data?.errors) {
               this.$refs.formAdd.setErrors(res.response.data.errors);
             }
@@ -660,22 +712,16 @@ export default {
     },
     editDialog(item) {
       this.dialogEdit = true;
-      // this.data.status = item.status;
-      this.data.status = String(item.status);
-      this.data.title_en = item.title_en;
-      this.data.title_bn = item.title_bn;
+      this.data.grievance_type_id = item.grievance_type_id;
+      this.data.grievance_subject_id = item.grievance_subject_id;
       this.data.grievance_type_id = item.grievance_type_id;
       this.data.id = item.id;
       this.errors = {};
     },
     updateGrievanceSubject() {
-      if (!this.checkLanguage()) {
-        return;
-      }
-
       try {
         this.$axios
-          .post(`/admin/grievanceSubject/update/`, this.data, {
+          .post(`/admin/grievanceSetting/update/`, this.data, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
@@ -687,7 +733,7 @@ export default {
               this.$toast.success("Data Updated Successfully");
               this.dialogEdit = false;
               this.resetForm();
-              this.GetGrievanceSubject();
+              this.GetGrievanceSettings();
             } else {
               this.$refs.formEdit.setErrors(data.errors);
             }
@@ -698,9 +744,15 @@ export default {
     resetForm() {
       // Reset the form data
       this.data = {
-        code: "",
-        name_en: "",
-        name_bn: "",
+        grievance_type_id: "",
+        grievance_subject_id: "",
+        first_tire_officer: "",
+        first_tire_solution_time: "",
+        secound_tire_officer: "",
+        secound_tire_solution_time: "",
+        third_tire_officer: "",
+        third_tire_solution_time: "",
+
         // Reset other form fields
       };
       this.errors = {};
@@ -708,7 +760,7 @@ export default {
 
     onPageChange($event) {
       // this.pagination.current = $event;
-      this.GetGrievanceSubject();
+      this.GetGrievanceSettings();
     },
     setInitialHeader() {
       for (let i = 0; i < this.headers.length; i++) {
@@ -792,10 +844,36 @@ export default {
 
         });
     },
+     async GetGrievanceSettings() {
+      const queryParams = {
+        searchText: this.search,
+        perPage: this.pagination.perPage,
+        page: this.pagination.current,
+        sortBy: this.sortBy,
+        sortDesc: this.sortDesc,
+      };
+      this.$axios
+        .get("/admin/grievanceSetting/get", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          this.total = result?.data?.meta?.total;
+          this.settings = result.data.data;
+          this.pagination.current = result.data.meta.current_page;
+          this.pagination.total = result.data.meta.last_page;
+          this.pagination.grand_total = result.data.meta.total;
+
+
+        });
+    },
     deleteDivision: async function () {
       try {
         this.$axios
-          .delete(`/admin/grievanceSubject/destroy/${this.delete_id}`, {
+          .delete(`/admin/grievanceSetting/destroy/${this.delete_id}`, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
             },
@@ -809,7 +887,7 @@ export default {
               this.$toast.error(res.response.data.message);
             }
             this.deleteDialog = false;
-            this.GetGrievanceSubject();
+            this.GetGrievanceSettings();
           })
           .catch((error) => {
             console.log(error, "error");
@@ -872,6 +950,7 @@ export default {
   created() {
     this.GetGrievanceType();
     this.getRoles();
+    this.GetGrievanceSettings();
   },
   beforeMount() {
     this.updateHeaderTitle();
