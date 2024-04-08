@@ -159,18 +159,29 @@
                 <v-row>
                   <v-col>
                        <ValidationProvider v-slot="{ errors }" name="Title English" vid="title_en" rules="required">
-                    <v-text-field outlined type="text" v-model="data.title_en" :label="$t('container.grievance_management.title_en')
+                    <v-text-field outlined type="text" v-model="data.title_en" :label="$t('container.grievance_management.solution_time')
                       " required :error="errors[0] ? true : false" :error-messages="errors[0]">></v-text-field>
                   </ValidationProvider>
                   </v-col>
-                  <v-col>
+                  <v-col cols="5">
                     <ValidationProvider name="Grievance Type" vid="subject" rules="required" v-slot="{ errors }">
                       <v-autocomplete v-model="data.grievance_type_id" outlined :label="$t(
-                        'container.grievance_management.grievance_subject'
+                        'container.grievance_management.1stOfficer'
                       )
                         " :items="types" item-text="title_en" item-value="id" required
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
+                  </v-col>
+                  <v-col cols="1">
+                         <v-tooltip top>
+                            <template v-slot:activator="{ on }">
+                              <v-btn v-can="'division-delete'" fab x-small v-on="on" color="green" class="ml-3 white--text"
+                                elevation="0" @click="addMoreData()">
+                                <v-icon> mdi-plus </v-icon>
+                              </v-btn>
+                            </template>
+                            <span> {{ $t("container.list.add") }}</span>
+                          </v-tooltip>
                   </v-col>
                 </v-row>
 
@@ -378,6 +389,11 @@ export default {
     }),
   },
   methods: {
+
+     addMoreData() {
+      
+
+      },
 
     async GeneratePDF() {
       this.isLoading = true;
