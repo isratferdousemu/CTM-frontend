@@ -159,11 +159,11 @@
                     ></v-autocomplete>
                   </ValidationProvider>
 
-                <ValidationProvider v-slot="{ errors }" name="Title English" vid="title_en" rules="required">
+                <ValidationProvider v-slot="{ errors }" name="Title English" vid="title_en" rules="required ">
                   <v-text-field outlined type="text" v-model="data.title_en" :label="$t('container.grievance_management.title_en')
                     " required :error="errors[0] ? true : false" :error-messages="errors[0]">></v-text-field>
                 </ValidationProvider>
-                <ValidationProvider v-slot="{ errors }" name="Title Bangla" vid="title_bn" rules="required">
+                <ValidationProvider v-slot="{ errors }" name="Title Bangla" vid="title_bn" rules="required||bangla">
                   <v-text-field outlined type="text" v-model="data.title_bn" :label="$t(
                     'container.grievance_management.title_bn'
                   )
@@ -231,7 +231,7 @@
                   <v-text-field outlined type="text" v-model="data.title_en" :label="$t('container.grievance_management.title_en')
                     " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
                 </ValidationProvider>
-                <ValidationProvider name="Title Bangla" vid="title_bn" rules="required" v-slot="{ errors }">
+                <ValidationProvider name="Title Bangla" vid="title_bn" rules="required||bangla" v-slot="{ errors }">
                   <v-text-field outlined type="text" v-model="data.title_bn" :label="$t(
                     'container.grievance_management.title_bn'
                   )
@@ -301,6 +301,14 @@ import { http } from "@/hooks/httpService";
 import Spinner from "@/components/Common/Spinner.vue";
 
 extend("required", required);
+extend('bangla', {
+  validate: value => {
+    // Regular expression to match Bangla characters
+    const banglaRegex = /^[\u0980-\u09FF\s]+$/;
+    return banglaRegex.test(value);
+  },
+  message: 'Only Bangla characters will be allowed in this field'
+});
 export default {
   name: "Index",
   title: "CTM - Grievance",
@@ -332,7 +340,7 @@ export default {
         total: 0,
         perPage: 15,
       },
-      sortBy: "name_en",
+      sortBy: "title_en",
       sortDesc: false, //ASC
       // errors: "",
       items: [5, 10, 15, 20, 40, 50, 100],
@@ -631,6 +639,7 @@ export default {
       }
     },
     editDialog(item) {
+      console.log(item,'itemitemitemitem');
       this.dialogEdit = true;
       // this.data.status = item.status;
       this.data.status = String(item.status);
@@ -670,9 +679,10 @@ export default {
     resetForm() {
       // Reset the form data
       this.data = {
-        code: "",
-        name_en: "",
-        name_bn: "",
+        status: "",
+        title_en: "",
+        title_bn: "",
+        grievance_type_id: "",
         // Reset other form fields
       };
       this.errors = {};
@@ -680,7 +690,7 @@ export default {
 
     onPageChange($event) {
       // this.pagination.current = $event;
-      // this.GetDivision();
+      this.GetGrievanceSubject();
     },
     setInitialHeader() {
       for (let i = 0; i < this.headers.length; i++) {
