@@ -124,7 +124,7 @@
         </v-row>
       </v-col>
 
-      <!-- Grievance Subject add modal  -->
+      <!-- Grievance Settings add modal  -->
       <v-dialog v-model="dialogAdd" width="1050">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
@@ -138,50 +138,50 @@
                   {{errors.name_en}} -->
                 <v-row>
                   <v-col>
-                    <ValidationProvider name="Grievance Type" vid="subject" rules="required" v-slot="{ errors }">
+                    <ValidationProvider name="Grievance Type" vid="type" rules="required" v-slot="{ errors }">
                       <v-autocomplete v-model="data.grievance_type_id" outlined :label="$t(
                         'container.grievance_management.main_grievance_type'
                       )
-                        " :items="types" item-text="title_en" item-value="id" required :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"></v-autocomplete>
+                        " :items="types" item-text="title_en" item-value="id" required
+                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col>
-                    <ValidationProvider name="Grievance Type" vid="subject" rules="required" v-slot="{ errors }">
-                      <v-autocomplete v-model="data.grievance_type_id" outlined :label="$t(
+                    <ValidationProvider name="Grievance Subject" vid="subject" rules="required" v-slot="{ errors }">
+                      <v-autocomplete v-model="data.grievance_subject_id" outlined :label="$t(
                         'container.grievance_management.grievance_subject'
                       )
-                        " :items="types" item-text="title_en" item-value="id" required
+                        " :items="subjects" item-text="title_en" item-value="id" required
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                 </v-row>
-                <v-row>
+                <v-row v-for="(facilityData, index) in OfficerForm" :key="index">
                   <v-col>
-                       <ValidationProvider v-slot="{ errors }" name="Title English" vid="title_en" rules="required">
-                    <v-text-field outlined type="text" v-model="data.title_en" :label="$t('container.grievance_management.solution_time')
-                      " required :error="errors[0] ? true : false" :error-messages="errors[0]">></v-text-field>
-                  </ValidationProvider>
+                    <ValidationProvider v-slot="{ errors }" name="Solution Time" vid="first_tire_solution_time"
+                      rules="required">
+                      <v-text-field outlined type="number" v-model="facilityData.first_tire_solution_time" :label="$t('container.grievance_management.solution_time')
+                        " required :error="errors[0] ? true : false" :error-messages="errors[0]">></v-text-field>
+                    </ValidationProvider>
                   </v-col>
                   <v-col cols="5">
                     <ValidationProvider name="Grievance Type" vid="subject" rules="required" v-slot="{ errors }">
-                      <v-autocomplete v-model="data.grievance_type_id" outlined :label="$t(
+                      <v-autocomplete v-model="facilityData.first_tire_officer" outlined :label="$t(
                         'container.grievance_management.1stOfficer'
                       )
-                        " :items="types" item-text="title_en" item-value="id" required
-                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                        " :items="roles" item-text="name" item-value="id" required :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col cols="1">
-                         <v-tooltip top>
-                            <template v-slot:activator="{ on }">
-                              <v-btn v-can="'division-delete'" fab x-small v-on="on" color="green" class="ml-3 white--text"
-                                elevation="0" @click="addMoreData()">
-                                <v-icon> mdi-plus </v-icon>
-                              </v-btn>
-                            </template>
-                            <span> {{ $t("container.list.add") }}</span>
-                          </v-tooltip>
+                    <v-btn v-if="index > 0" class="mx-2" fab dark x-small color="red" @click="remove(index)">
+                      <v-icon dark> mdi-minus </v-icon>
+                    </v-btn>
+
+                    <v-btn v-if="index <= 1" class="mx-2" fab dark x-small color="green" @click="addmore(index)">
+                      <!-- <v-icon dark> mdi-plus </v-icon> -->
+                      <v-icon> mdi-plus </v-icon>
+                    </v-btn>
                   </v-col>
                 </v-row>
 
@@ -199,9 +199,9 @@
           </v-card-text>
         </v-card>
       </v-dialog>
-      <!-- Grievance Subject add modal  -->
+      <!-- Grievance Settings add modal  -->
 
-      <!-- Grievance Subject Edit modal  -->
+      <!-- Grievance Settings Edit modal  -->
       <v-dialog v-model="dialogEdit" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
@@ -253,7 +253,7 @@
           </v-card-text>
         </v-card>
       </v-dialog>
-      <!-- Grievance Subject Edit modal  -->
+      <!-- Grievance Settings Edit modal  -->
 
       <!-- delete modal  -->
       <v-dialog v-model="deleteDialog" width="350">
@@ -306,7 +306,22 @@ export default {
         title_en: null,
         title_bn: null,
         grievance_type_id: null,
+        grievance_subject_id: null,
+        // first_tire_officer: [],
+        // secound_tire_officer: [],
+        // third_tire_officer: [],
+        // first_tire_solution_time: [],
+        // secound_tire_solution_time: [],
+        // third_tire_solution_time: [],
       },
+      OfficerForm: [{
+        first_tire_officer: "",
+        // secound_tire_officer: null,
+        // third_tire_officer: null,
+        first_tire_solution_time: "",
+        // secound_tire_solution_time: null,
+        // third_tire_solution_time: null,
+      }],
       total: null,
       isLoading: false,
       dialogAdd: false,
@@ -318,6 +333,7 @@ export default {
       delete_id: "",
       subjects: [],
       types: [],
+      roles: [],
       AllGrievanceSubject: [],
       errors: {},
       error_status: {},
@@ -343,6 +359,12 @@ export default {
     ValidationObserver,
   },
   computed: {
+    OfficerLength() {
+      return this.OfficerForm.length;
+    },
+    shouldDisplayButton() {
+      return this.index === this.OfficerLength - 1 && this.OfficerLength < 3;
+    },
     headers() {
       return [
         {
@@ -389,11 +411,18 @@ export default {
     }),
   },
   methods: {
+    addmore() {
+      this.OfficerForm.push({
+        first_tire_solution_time: "",
+        first_tire_officer: "",
+      });
 
-     addMoreData() {
-      
-
-      },
+      // this.getParentComponentList();
+    },
+    remove(index) {
+      this.OfficerForm.splice(index, 1);
+      // this.setParentFormData();
+    },
 
     async GeneratePDF() {
       this.isLoading = true;
@@ -679,7 +708,7 @@ export default {
 
     onPageChange($event) {
       // this.pagination.current = $event;
-      // this.GetDivision();
+      this.GetGrievanceSubject();
     },
     setInitialHeader() {
       for (let i = 0; i < this.headers.length; i++) {
@@ -748,6 +777,7 @@ export default {
         page: this.pagination.current,
         sortBy: this.sortBy,
         sortDesc: this.sortDesc,
+        status: 'active',
       };
       this.$axios
         .get("/admin/grievanceSubject/get", {
@@ -758,13 +788,8 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          console.log(result, ' this.subjects11111');
-          this.total = result.data.meta.total;
           this.subjects = result.data.data;
 
-          this.pagination.current = result.data.meta.current_page;
-          this.pagination.total = result.data.meta.last_page;
-          this.pagination.grand_total = result.data.meta.total;
         });
     },
     deleteDivision: async function () {
@@ -823,13 +848,30 @@ export default {
         .catch(error => {
           console.error('Error generating PDF:', error);
         });
-    }
+    },
+    getRoles() {
+      this.$axios
+        .get("/admin/user/get-roles", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
+          this.roles = result.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
   },
   mounted() {
     this.setInitialHeader();
   },
   created() {
     this.GetGrievanceType();
+    this.getRoles();
   },
   beforeMount() {
     this.updateHeaderTitle();
