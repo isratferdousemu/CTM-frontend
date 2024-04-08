@@ -384,7 +384,7 @@ export default {
           sortable: false,
         },
         {
-          text:  this.$t("Action Type") ,
+          text:  this.$t("container.activity_log.action_type") ,
           value: "log_name",
         },
         {
@@ -396,19 +396,19 @@ export default {
         //   value: "causer.user_type",
         // },
         {
-          text:  this.$t("User Name") ,
+          text:  this.$t("container.activity_log.user_name") ,
           value: "causer.user_name",
         },
         {
-          text:  this.$t("User Email") ,
+          text:  this.$t("container.activity_log.user_email") ,
           value: "causer.email",
         },
         {
-          text: this.$t("Device"),
+          text: this.$t("container.activity_log.device"),
           value: "properties.device",
         },
         {
-          text: this.$t("Source IP"),
+          text: this.$t("container.activity_log.source_ip"),
           value: "properties.ip",
         },
         // {

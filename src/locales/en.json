@@ -1020,7 +1020,13 @@
     },
     "activity_log": {
       "title": "Activity Log Lists",
+      "log_view": "Activity Log View",
       "name": "Log Name",
+      "action_type": "Action Type",
+      "user_name": "User Name",
+      "user_email": "Email",
+      "device": "Device",
+      "source_ip": "Source IP",
       "description": "Description",
       "change_info": "Change Info",
       "login_user_info": "Login User",
