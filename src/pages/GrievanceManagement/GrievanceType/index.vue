@@ -141,7 +141,7 @@
                   <v-text-field outlined type="text" v-model="data.title_en" :label="$t('container.grievance_management.title_en')
                     " required :error="errors[0] ? true : false" :error-messages="errors[0]">></v-text-field>
                 </ValidationProvider>
-                <ValidationProvider v-slot="{ errors }" name="Title Bangla" vid="name_en" rules="required">
+                <ValidationProvider v-slot="{ errors }" name="Title Bangla" vid="title_bn" rules="required||bangla">
                   <v-text-field outlined type="text" v-model="data.title_bn" :label="$t(
                     'container.grievance_management.title_bn'
                   )
@@ -188,7 +188,7 @@
                   <v-text-field outlined type="text" v-model="data.title_en" :label="$t('container.grievance_management.title_en')
                     " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
                 </ValidationProvider>
-                <ValidationProvider name="Title Bangla" vid="title_bn" rules="required" v-slot="{ errors }">
+                <ValidationProvider name="Title Bangla" vid="title_bn" rules="required||bangla" v-slot="{ errors }">
                   <v-text-field outlined type="text" v-model="data.title_bn" :label="$t(
                     'container.grievance_management.title_bn'
                   )
@@ -258,6 +258,14 @@ import { http } from "@/hooks/httpService";
 import Spinner from "@/components/Common/Spinner.vue";
 
 extend("required", required);
+extend('bangla', {
+  validate: value => {
+    // Regular expression to match Bangla characters
+    const banglaRegex = /^[\u0980-\u09FF\s]+$/;
+    return banglaRegex.test(value);
+  },
+  message: 'Only Bangla characters will be allowed in this field'
+});
 export default {
   name: "Index",
   title: "CTM - Grievance",
@@ -383,7 +391,7 @@ export default {
           this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
           this.$i18n.locale == 'en' ? i.title_en : i.title_en,
           this.$i18n.locale == 'en' ? i.title_bn : i.title_bn,
-          this.$i18n.locale == 'en' ? i.status : this.$helpers.englishToBangla(i.status),
+          this.$i18n.locale == 'en' ? this.status(i.status) : this.status(i.status),
         ]
       }));
 
@@ -457,7 +465,7 @@ export default {
               "sl": this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
               "title_en": this.$i18n.locale == 'en' ? i.title_bn : i.title_en,
               "title_bn": this.$i18n.locale == 'en' ? i.title_en : i.title_bn,
-              "status": this.$i18n.locale == 'en' ? i.status : this.$helpers.englishToBangla(i.status),
+              "status": this.$i18n.locale == 'en' ? this.status(i.status) : this.status(i.status),
             }
           }));
 
@@ -492,7 +500,13 @@ export default {
           return v[j];
         })))
     },
-
+    status(status) {
+      if (status == 1) {
+        return this.$i18n.locale == 'en' ? 'Active' : 'সক্রিয়'
+      } else {
+        return this.$i18n.locale == 'en' ? 'Inactive ' : 'নিষ্ক্রিয়'
+      }
+    },
 
     createDialog() {
       if (this.$refs.formAdd) {
@@ -509,7 +523,7 @@ export default {
       if (
         checkLanguageBangla !== "Bangla" &&
         checkLanguageBangla !== "BanglaSpecialChar"
-      ) {
+      ){
         errs.title_bn = ["Please Enter in Bangla Language in this Field"];
       }
 

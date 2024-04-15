@@ -384,7 +384,7 @@ export default {
           sortable: false,
         },
         {
-          text:  this.$t("Action Type") ,
+          text:  this.$t("container.activity_log.action_type") ,
           value: "log_name",
         },
         {
@@ -396,19 +396,19 @@ export default {
         //   value: "causer.user_type",
         // },
         {
-          text:  this.$t("User Name") ,
+          text:  this.$t("container.activity_log.user_name") ,
           value: "causer.user_name",
         },
         {
-          text:  this.$t("User Email") ,
+          text:  this.$t("container.activity_log.user_email") ,
           value: "causer.email",
         },
         {
-          text: this.$t("Device"),
+          text: this.$t("container.activity_log.device"),
           value: "properties.device",
         },
         {
-          text: this.$t("Source IP"),
+          text: this.$t("container.activity_log.source_ip"),
           value: "properties.ip",
         },
         // {
@@ -508,6 +508,7 @@ export default {
 
     },
     GetActivityLog( from_date = null, to_date = null ) {
+      this.isLoading = true;
       let page;
       if(!this.sortBy){
         page = this.pagination.current;
@@ -529,7 +530,7 @@ export default {
               "Content-Type": "multipart/form-data",
             },
             params: queryParams,
-          })
+          })  
           .then((result) => {
             console.log(result,'tanbeer')
             this.activity_logs = result.data?.data;
@@ -537,6 +538,14 @@ export default {
             this.pagination.total = result.data?.meta?.last_page[0];
             this.pagination.grand_total = result.data?.meta?.total[0];
             this.total = result.data?.meta?.total[0];
+            this.isLoading = false;
+          })
+          .catch((error) => {
+              console.error(error);
+            this.isLoading = false;
+            })
+          .finally(() => {
+            this.isLoading = false;
           });
     },
     deleteActivityLogs: async function () {

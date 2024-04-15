@@ -128,7 +128,7 @@
       <v-dialog v-model="dialogAdd" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.grievance_management.add_grievance_subject") }}
+            {{ $t("container.grievance_management.add_new_subject") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
@@ -159,11 +159,11 @@
                     ></v-autocomplete>
                   </ValidationProvider>
 
-                <ValidationProvider v-slot="{ errors }" name="Title English" vid="title_en" rules="required">
+                <ValidationProvider v-slot="{ errors }" name="Title English" vid="title_en" rules="required ">
                   <v-text-field outlined type="text" v-model="data.title_en" :label="$t('container.grievance_management.title_en')
                     " required :error="errors[0] ? true : false" :error-messages="errors[0]">></v-text-field>
                 </ValidationProvider>
-                <ValidationProvider v-slot="{ errors }" name="Title Bangla" vid="title_bn" rules="required">
+                <ValidationProvider v-slot="{ errors }" name="Title Bangla" vid="title_bn" rules="required||bangla">
                   <v-text-field outlined type="text" v-model="data.title_bn" :label="$t(
                     'container.grievance_management.title_bn'
                   )
@@ -231,7 +231,7 @@
                   <v-text-field outlined type="text" v-model="data.title_en" :label="$t('container.grievance_management.title_en')
                     " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
                 </ValidationProvider>
-                <ValidationProvider name="Title Bangla" vid="title_bn" rules="required" v-slot="{ errors }">
+                <ValidationProvider name="Title Bangla" vid="title_bn" rules="required||bangla" v-slot="{ errors }">
                   <v-text-field outlined type="text" v-model="data.title_bn" :label="$t(
                     'container.grievance_management.title_bn'
                   )
@@ -301,6 +301,14 @@ import { http } from "@/hooks/httpService";
 import Spinner from "@/components/Common/Spinner.vue";
 
 extend("required", required);
+extend('bangla', {
+  validate: value => {
+    // Regular expression to match Bangla characters
+    const banglaRegex = /^[\u0980-\u09FF\s]+$/;
+    return banglaRegex.test(value);
+  },
+  message: 'Only Bangla characters will be allowed in this field'
+});
 export default {
   name: "Index",
   title: "CTM - Grievance",
@@ -332,7 +340,7 @@ export default {
         total: 0,
         perPage: 15,
       },
-      sortBy: "name_en",
+      sortBy: "title_en",
       sortDesc: false, //ASC
       // errors: "",
       items: [5, 10, 15, 20, 40, 50, 100],
@@ -437,7 +445,7 @@ export default {
           this.$i18n.locale == 'en' ? i.title_en : i.title_en,
           this.$i18n.locale == 'en' ? i.title_bn : i.title_bn,
           this.$i18n.locale == 'en' ? i.grievanceTypeEn : i.grievanceTypeBn,
-          this.$i18n.locale == 'en' ? i.status : this.$helpers.englishToBangla(i.status),
+          this.$i18n.locale == 'en' ? this.status(i.status) : this.status(i.status),
         ]
       }));
 
@@ -465,7 +473,13 @@ export default {
         console.error('Error generating PDF:', error);
       }
     },
-
+    status(status){
+      if(status==1){
+         return this.$i18n.locale == 'en' ? 'Active' : 'সক্রিয়'
+      }else{
+        return this.$i18n.locale == 'en' ? 'Inactive ' : 'নিষ্ক্রিয়'
+      }
+    },
     async GenerateExcel() {
       this.isLoading = true;
       let page;
@@ -514,7 +528,7 @@ export default {
               "title_en": this.$i18n.locale == 'en' ? i.title_en : i.title_en,
               "title_bn": this.$i18n.locale == 'en' ? i.title_bn : i.title_bn,
               "grievance_type_id": this.$i18n.locale == 'en' ? i.grievanceTypeEn : i.grievanceTypeBn,
-              "status": this.$i18n.locale == 'en' ? i.status : this.$helpers.englishToBangla(i.status),
+              "status": this.$i18n.locale == 'en' ? this.status(i.status) : this.status(i.status),
             }
           }));
 
@@ -567,11 +581,11 @@ export default {
         checkLanguageBangla !== "Bangla" &&
         checkLanguageBangla !== "BanglaSpecialChar"
       ) {
-        errs.name_bn = ["Please Enter in Bangla Language in this Field"];
+        errs.title_bn = ["Please Enter in Bangla Language in this Field"];
       }
 
       if (checkLanguageEnglish != "English") {
-        errs.name_en = ["Please Enter in English Language in this Field"];
+        errs.title_en = ["Please Enter in English Language in this Field"];
       }
 
       if (Object.keys(errs).length > 0) {
@@ -625,6 +639,7 @@ export default {
       }
     },
     editDialog(item) {
+      console.log(item,'itemitemitemitem');
       this.dialogEdit = true;
       // this.data.status = item.status;
       this.data.status = String(item.status);
@@ -664,9 +679,10 @@ export default {
     resetForm() {
       // Reset the form data
       this.data = {
-        code: "",
-        name_en: "",
-        name_bn: "",
+        status: "",
+        title_en: "",
+        title_bn: "",
+        grievance_type_id: "",
         // Reset other form fields
       };
       this.errors = {};
@@ -674,7 +690,7 @@ export default {
 
     onPageChange($event) {
       // this.pagination.current = $event;
-      // this.GetDivision();
+      this.GetGrievanceSubject();
     },
     setInitialHeader() {
       for (let i = 0; i < this.headers.length; i++) {

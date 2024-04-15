@@ -1020,7 +1020,13 @@
     },
     "activity_log": {
       "title": "Activity Log Lists",
+      "log_view": "Activity Log View",
       "name": "Log Name",
+      "action_type": "Action Type",
+      "user_name": "User Name",
+      "user_email": "Email",
+      "device": "Device",
+      "source_ip": "Source IP",
       "description": "Description",
       "change_info": "Change Info",
       "login_user_info": "Login User",
@@ -1049,7 +1055,7 @@
       "title_en": "Title (English)",
       "title_bn": "Title (Bangla)",
       "add_grievance_type": "Add New Grievance Type",
-      "edit_grievance_type": "Edit Complaint Type",
+      "edit_grievance_type": "Edit Grievance Type",
       "add_new_subject": "Add New Grievance Subject",
       "grievance_subject": "Grievance Subject",
       "add_grievance_subject": "Add New Subject",
@@ -1059,7 +1065,14 @@
       "grievance_delete": "Delete Grievance Type",
       "grievance_delete_message": "Are you sure to delete this Grievance Type?",
       "grievance_subject_delete": "Delete Grievance Subject",
-      "grievance_subject_delete_message": "Are you sure to delete this Grievance Subject?"
+      "grievance_subject_delete_message": "Are you sure to delete this Grievance Subject?",
+      "grievance_setup": "Set Grievance",
+      "add_new_grievance_setting": "Add New Grievance Setting",
+      "solution_time": "Solution Time (Days)",
+      "1stOfficer": "1st Tire (1st Officer)",
+      "2ndOfficer": "2nd Tire (2nd Officer)",
+      "3rdOfficer": "3rd Tire (3rd Officer"
+
     }
   }
 }
