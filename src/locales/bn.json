@@ -985,6 +985,36 @@
           "table_name": "টেবিলের নাম",
             "delete_header": "ইউআরএল মুছুন",
             "delete_alert": "আপনি এই ইউআরএলটি মুছে ফেলার বিষয়ে নিশ্চিত? ইউআরএল এর সব তথ্য মুছে ফেলা হবে ।"
+        },
+        "api_generate": {
+          "list": "এপিআই তালিকা",
+          "api_view": "এপিআই বিবরণ",
+          "add": "নতুন এপিআই যুক্ত করুন",
+          "edit": "এপিআই এডিট করুন",
+          "api_name": "এপিআই নাম",
+          "url": "ইউআরএল",
+          "delete_header": "এপিআই মুছুন",
+          "delete_alert": "আপনি এই এপিআই টি মুছে ফেলার বিষয়ে নিশ্চিত? এপিআই এর সব তথ্য মুছে ফেলা হবে ।",
+          "parameter": "প্যারামিটার",
+          "module": "মডিউল",
+          "purpose": "উদ্দেশ্য",
+          "select_column": "কলাম নির্বাচন করুন"
+        },
+        "data_receive": {
+          "list": "এপিআই তালিকা",
+          "api_view": "API View",
+          "add": "Add New API Receiver",
+          "edit": "Edit API Receiver",
+          "api": " API",
+          "organization": "Oraganization",
+          "phone": "Phone",
+          "total_heat": "Total Heat",
+          "dutaion": "Dutaion",
+          "api_key": "Api Key",
+          "delete_header": "Delete API Receiver",
+          "delete_alert": "Are you sure to delete this API Receiver? API all information will be deleted.",
+          "parameter": "Parameter"
+         
         }
       },
     "system_audit": {

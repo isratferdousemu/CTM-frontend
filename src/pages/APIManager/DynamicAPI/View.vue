@@ -5,7 +5,7 @@ import { mapActions, mapState } from "vuex";
 
 export default {
     name: "GenerateUrl",
-    title: "CTM - Edit URL",
+    title: "CTM - View API",
     components: {
         ValidationProvider,
         ValidationObserver,
@@ -32,7 +32,7 @@ export default {
 
 
     mounted() {
-        this.UrlView();
+        this.APIView();
 
        
     },
@@ -75,10 +75,10 @@ export default {
                 });
         },
 
-        UrlView() {
+        APIView() {
             console.log(this.$route.params.id, "params")
           this.$axios
-              .get(`admin/api-url/${this.$route.params.id}`,  {
+              .get(`admin/api-list/${this.$route.params.id}`,  {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -87,6 +87,7 @@ export default {
                 .then((result) => {
                     console.log(result,"result")
                     this.data=result?.data?.data
+                    this.data.module = result?.data?.data?.purpose?.api_module_id;
                    
                 })
                 .catch((err) => {
@@ -114,76 +115,75 @@ export default {
                         <v-card>
                             <v-card-title class="justify-center">
                                 <h4 class="mt-5">
-                                    {{ $t("container.api_manager.url_generate.url") }}
+                                    {{ $t("container.api_manager.api_generate.api_view") }}
                                 </h4>
                             </v-card-title>
 
                             <!-- <v-divider></v-divider> -->
 
                             <v-card-text class="mt-5">
-                                <ValidationObserver ref="form" v-slot="{ invalid }">
-                                    <v-form v-on:submit.prevent="updateUrl()">
 
+                                <v-row>
+                                    <v-col ols="8" sm="8" lg="8">
                                         <v-row class="my-custom-row ma-5">
-                                            <v-col cols="2" sm="2" lg="2">
+                                            <v-col cols="12" sm="4" lg="4">
+                                                <b>{{ $t('container.api_manager.api_generate.api_name') }}</b>:
+                                            </v-col>
+                                            <v-col cols="12" sm="8" lg="8">
+                                                <b>:</b> <span class="ml-2">{{ data.name }}</span>
 
-                                                <b>{{ $t('container.api_manager.url_generate.name') }}</b>
                                             </v-col>
-                                            <v-col cols="2" sm="2" lg="2" style="font-weight: bold;">
+                                            <v-col cols="12" sm="4" lg="4">
+                                                <b>{{ $t('container.api_manager.api_generate.module') }}</b>
 
-                                                :
                                             </v-col>
-                                            <v-col cols="2" sm="2" lg="2">
+                                            <v-col cols="12" sm="8" lg="8">
+                                                <b>:</b>
+                                                <span class="ml-2">{{ data.purpose?.module?.name
+                                                    }}</span>
 
-                                                {{ data.name }}
                                             </v-col>
-                                            <v-col cols="2" sm="2" lg="2">
+                                            <v-col cols="12" sm="4" lg="4">
+                                                <b>{{ $t('container.api_manager.api_generate.purpose') }}</b>:
 
-                                                <b>{{ $t('container.api_manager.url_generate.url') }}</b>
                                             </v-col>
-                                            <v-col cols="2" sm="2" lg="2" style="font-weight: bold;">
+                                            <v-col cols="12" sm="8" lg="8">
+                                                <b>:</b> <span class="ml-2">{{
+                                                    data?.purpose?.purpose }}</span>
 
-                                                :
                                             </v-col>
-                                            <v-col cols="2" sm="2" lg="2">
-                                                {{ data.url }}
-                                            </v-col>
-                                            <v-col cols="2" sm="2" lg="2">
 
-                                                <b>{{ $t('container.api_manager.url_generate.table_name') }}</b>
-                                            </v-col>
-                                            <v-col cols="2" sm="2" lg="2" style="font-weight: bold;">
 
-                                                :
-                                            </v-col>
-                                            <v-col cols="2" sm="2" lg="2">
-                                                {{ data.table }}
-                                            </v-col>
-                                            <v-col cols="2" sm="2" lg="2">
+                                            <v-col cols="12" sm="4" lg="4">
+                                                <b>{{ $t('container.api_manager.api_generate.parameter') }}</b>
 
-                                                <b>{{ $t('container.api_manager.url_generate.method') }}</b>
                                             </v-col>
-                                            <v-col cols="2" sm="2" lg="2" style="font-weight: bold;">
+                                            <v-col cols="12" sm="8" lg="8">
+                                                <b>:</b>
+                                                <span class="ml-2">{{ data?.selected_columns ?
+                                                    data.selected_columns.join(', ') : '' }}</span>
 
-                                                :
                                             </v-col>
-                                            <v-col cols="2" sm="2" lg="2">
-                                                {{ data.method }}
-                                            </v-col>
+
 
 
 
 
                                         </v-row>
-                                        <v-row class="justify-end mt-5 mb-5 mr-5">
-                                            <v-btn flat color="primary" class="custom-btn mr-2" router
-                                                to="/api-manager/url-generate">{{
-                                                $t("container.list.back") }}
-                                            </v-btn>
-                                    
-                                        </v-row>
-                                    </v-form>
-                                </ValidationObserver>
+                                    </v-col>
+                                </v-row>
+
+                                <v-row class="justify-end mt-5 mb-5 mr-5">
+                                    <v-btn flat color="primary" class="custom-btn mr-2" router
+                                        to="/api-manager/api-generate">{{
+                                        $t("container.list.back") }}
+                                    </v-btn>
+                                    <!-- <v-btn flat color="success" type="submit" class="custom-btn mr-2"
+                                                :disabled="invalid">
+                                                {{ $t("container.list.update") }}
+                                            </v-btn> -->
+                                </v-row>
+
                             </v-card-text>
                         </v-card>
                     </v-col>
