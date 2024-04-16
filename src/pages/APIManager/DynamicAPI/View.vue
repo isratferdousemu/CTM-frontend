@@ -5,7 +5,7 @@ import { mapActions, mapState } from "vuex";
 
 export default {
     name: "GenerateUrl",
-    title: "CTM - Edit URL",
+    title: "CTM - View API",
     components: {
         ValidationProvider,
         ValidationObserver,
@@ -114,22 +114,22 @@ export default {
                         <v-card>
                             <v-card-title class="justify-center">
                                 <h4 class="mt-5">
-                                    {{ $t("container.api_manager.url_generate.url") }}
+                                    {{ $t("container.api_manager.api_generate.api_view") }}
                                 </h4>
                             </v-card-title>
 
                             <!-- <v-divider></v-divider> -->
 
                             <v-card-text class="mt-5">
-                                <ValidationObserver ref="form" v-slot="{ invalid }">
-                                    <v-form v-on:submit.prevent="updateUrl()">
 
+                                <v-row>
+                                    <v-col ols="8" sm="8" lg="8">
                                         <v-row class="my-custom-row ma-5">
-                                            <v-col cols="2" sm="2" lg="2">
+                                            <v-col cols="3" sm="3" lg="3" style="font-weight: bold;">
 
                                                 <b>{{ $t('container.api_manager.url_generate.name') }}</b>
                                             </v-col>
-                                            <v-col cols="2" sm="2" lg="2" style="font-weight: bold;">
+                                            <v-col cols="3" sm="3" lg="3" style="font-weight: bold;">
 
                                                 :
                                             </v-col>
@@ -175,15 +175,20 @@ export default {
 
 
                                         </v-row>
-                                        <v-row class="justify-end mt-5 mb-5 mr-5">
-                                            <v-btn flat color="primary" class="custom-btn mr-2" router
-                                                to="/api-manager/url-generate">{{
-                                                $t("container.list.back") }}
-                                            </v-btn>
-                                    
-                                        </v-row>
-                                    </v-form>
-                                </ValidationObserver>
+                                    </v-col>
+                                </v-row>
+
+                                <v-row class="justify-end mt-5 mb-5 mr-5">
+                                    <v-btn flat color="primary" class="custom-btn mr-2" router
+                                        to="/api-manager/url-generate">{{
+                                        $t("container.list.back") }}
+                                    </v-btn>
+                                    <!-- <v-btn flat color="success" type="submit" class="custom-btn mr-2"
+                                                :disabled="invalid">
+                                                {{ $t("container.list.update") }}
+                                            </v-btn> -->
+                                </v-row>
+
                             </v-card-text>
                         </v-card>
                     </v-col>

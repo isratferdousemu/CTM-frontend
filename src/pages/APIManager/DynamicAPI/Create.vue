@@ -1,0 +1,230 @@
+<script>
+import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
+
+import { mapActions, mapState } from "vuex";
+
+export default {
+    name: "GenerateUrl",
+    title: "CTM - Create API",
+    components: {
+        ValidationProvider,
+        ValidationObserver,
+    },
+
+    data() {
+        return {
+     
+                methods:['GET','POST'],
+            modules:[],
+            selected_columns:[],
+            purposes:[],
+
+            data: {
+                name: null,
+                api_purpose_id: null,
+                api_unique_id:null,
+                module:null,
+
+                url: null,
+                table: null,
+                method:null,
+                selected_columns:[]
+            },
+        };
+    },
+
+    watch: {
+        "$i18n.locale": "updateHeaderTitle",
+    },
+
+   
+
+    mounted() {
+        this.GetModules();
+      
+        this.updateHeaderTitle();
+    },
+
+    methods: {
+        handleChange() {
+            // Find the selected module by its id
+            const selectedModule = this.modules.find(module => module.id === this.data.module);
+            if (selectedModule) {
+                // const purposes = selectedModule.purposes;
+               this.purposes=selectedModule.purposes
+                console.log(this.purposes,"purposes")
+              
+            }
+         
+        },
+        Change() {
+            // Find the selected module by its id
+            const selectedpurpose = this.purposes.find(purpose => purpose.id === this.data.api_purpose_id);
+            if (selectedpurpose) {
+                // const purposes = selectedModule.purposes;
+                this.data.api_unique_id = selectedpurpose.api_unique_id
+                this.selected_columns = selectedpurpose.columns
+             
+
+            }
+
+        },
+        async GetModules() {
+        
+            this.$axios
+                .get("/admin/get-modules", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+              
+                })
+                .then((result) => {
+               
+                    this.modules = result?.data?.data;
+                   
+                });
+        },
+     
+
+    
+
+        submitAPI() {
+           
+            this.$axios
+                .post("admin/api-list", this.data, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((result) => {
+                    if (result.data.success == true) {
+                        this.$toast.success(result.data.message);
+                        this.$router.push("/api-manager/api-generate");
+                    } else {
+                        this.$refs.form.setErrors(result.data.errors);
+
+
+                    }
+
+                })
+                .catch((err) => {
+                    if (this.$refs.formAdd && this.$refs.formAdd.$refs && this.$refs.formAdd.$refs.operator) {
+                       
+                        this.$refs.formAdd.$refs.operator.setErrors([err.response.data.errors.operator[0]]);
+                    } else {
+                        console.error('Error setting errors:', err);
+                    }
+
+                });
+
+        },
+       
+        updateHeaderTitle() {
+            const title = this.$t("container.system_config.device.add");
+            this.$store.commit("setHeaderTitle", title);
+        },
+    },
+};
+</script>
+
+<template>
+    <div id="device_create">
+        <v-row class="mx-5 mt-5">
+            <v-col cols="12">
+                <v-row>
+                    <v-col cols="12">
+                        <v-card>
+                            <v-card-title class="justify-center">
+                                <h4 class="mt-5">
+                                    {{ $t("container.api_manager.api_generate.add") }}
+                                </h4>
+                            </v-card-title>
+
+                            <!-- <v-divider></v-divider> -->
+
+                            <v-card-text class="mt-5">
+                                <ValidationObserver ref="form" v-slot="{ invalid }">
+                                    <v-form v-on:submit.prevent="submitAPI()">
+
+                                        <v-row>
+                                            <v-col cols="12" sm="3" lg="3">
+                                                <ValidationProvider name=" API Name" vid="api_name" rules="required"
+                                                    v-slot="{ errors }">
+                                                    <v-text-field type="text" v-model="data.name" :label="$t('container.api_manager.api_generate.api_name')
+                                        " persistent-hint outlined :error="errors[0] ? true : false"
+                                                        :error-messages="errors[0]"></v-text-field>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols="12" sm="3" lg="3">
+                                                <ValidationProvider name="Module" vid="module" rules="required"
+                                                    v-slot="{ errors }">
+                                                    <v-select v-model="data.module" :label="$t('container.api_manager.api_generate.module')
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :items="modules"
+                                                        item-text="name" item-value="id" :error-messages="errors[0]"
+                                                        @change="handleChange"></v-select>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols="12" sm="3" lg="3">
+                                                <ValidationProvider name="Purpose" vid="purpose" rules="required"
+                                                    v-slot="{ errors }">
+                                                    <v-select type="text" v-model="data.api_purpose_id" :label="$t('container.api_manager.api_generate.purpose')
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :items="purposes"
+                                                        item-text="purpose" item-value="api_module_id"
+                                                        :error-messages="errors[0]" @change="Change"></v-select>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols="12" sm="3" lg="3">
+                                                <ValidationProvider name="Select Column" vid="select_column" rules="required"
+                                                    v-slot="{ errors }">
+                                                    <v-select multiple type="text" v-model="data.selected_columns"
+                                                        :label="$t('container.api_manager.api_generate.select_column')
+                                        " persistent-hint outlined :error="errors[0] ? true : false"
+                                                        :items="selected_columns" item-text="name" item-value="id"
+                                                        :error-messages="errors[0]"></v-select>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <!-- <v-col cols="12" sm="3" lg="3">
+                                                <ValidationProvider name="Table Name" vid="url" rules="required"
+                                                    v-slot="{ errors }">
+                                                    <v-text-field type="text" v-model="data.table" :label="$t('container.api_manager.url_generate.table_name')
+                                        " persistent-hint outlined :error="errors[0] ? true : false"
+                                                        :error-messages="errors[0]"></v-text-field>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols="12" sm="3" lg="3">
+                                                <ValidationProvider name="Method" vid="methods" rules="required"
+                                                    v-slot="{ errors }">
+                                                    <v-autocomplete v-model="data.method" :label="$t('container.api_manager.url_generate.method')
+                                        " persistent-hint outlined :error="errors[0] ? true : false"
+                                                        :error-messages="errors[0]" :items="methods"></v-autocomplete>
+                                                </ValidationProvider>
+                                            </v-col> -->
+
+
+
+
+                                        </v-row>
+                                        <v-row class="justify-end mt-5 mb-5">
+                                            <v-btn flat color="primary" class="custom-btn mr-2" router
+                                                to="/api-manager/api-generate">{{
+                                                $t("container.list.back") }}
+                                            </v-btn>
+                                            <v-btn flat color="success" type="submit" class="custom-btn mr-2"
+                                                :disabled="invalid">
+                                                {{ $t("container.list.submit") }}
+                                            </v-btn>
+                                        </v-row>
+                                    </v-form>
+                                </ValidationObserver>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+                </v-row>
+            </v-col>
+        </v-row>
+    </div>
+</template>
+
+<style scoped></style>

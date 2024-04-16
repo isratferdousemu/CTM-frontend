@@ -967,7 +967,6 @@
       "api_manager": {
         "url_generate": {
           "list": "URL List",
-         
            "add": "Add New URL",
            "edit": "Edit URL",
             "name":"Name",
@@ -977,7 +976,37 @@
             "delete_header":"Delete URL",
             "delete_alert":"Are you sure to delete this URL? URL all information will be deleted."
             
-        }
+        },
+        "api_generate": {
+          "list": "API List",
+          "api_view":"API View",
+          "add": "Add New API",
+          "edit": "Edit API",
+          "api_name": " API Name",
+          "url": "URL",
+          "delete_header": "Delete API",
+          "delete_alert": "Are you sure to delete this API? API all information will be deleted.",
+          "parameter":"Parameter",
+          "module": "Module",
+          "purpose":"Purpose",
+          "select_column": "Select Column"
+        },
+          "data_receive": {
+            "list": "API List",
+            "api_view": "API View",
+            "add": "Add New API Receiver",
+            "edit": "Edit API Receiver",
+            "api": " API",
+            "organization": "Oraganization",
+            "phone": "Phone",
+            "total_heat": "Total Heat",
+            "dutaion": "Dutaion",
+            "api_key": "Api Key",
+            "delete_header": "Delete API Receiver",
+            "delete_alert": "Are you sure to delete this API Receiver? API all information will be deleted.",
+            "parameter": "Parameter"
+           
+          }
       },
     "system_audit": {
       "application_tracking": "Application Tracking",
