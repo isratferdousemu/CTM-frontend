@@ -31,37 +31,37 @@ export default {
             },
             sortBy: "name_en",
             sortDesc: false, //ASC
-            // items:[5,10, 15, 20, 40, 50, 100],
-            items: 
-            [
-                    {
-                        "name_en": 5,
-                        "name_bn": "৫"
-                    },
-                    {
-                        "name_en": 10,
-                        "name_bn": "১০"
-                    },
+            items:[5,10, 15, 20, 40, 50, 100],
+            // items: 
+            // [
+            //         {
+            //             "name_en": 5,
+            //             "name_bn": "৫"
+            //         },
+            //         {
+            //             "name_en": 10,
+            //             "name_bn": "১০"
+            //         },
                
-                {
-                    "name_en": 30,
-                    "name_bn": "৩০"
-                },
-                {
-                    "name_en": 40,
-                    "name_bn": "৪০"
-                },
-                {
-                    "name_en": 50,
-                    "name_bn": "৫০"
-                },
+            //     {
+            //         "name_en": 30,
+            //         "name_bn": "৩০"
+            //     },
+            //     {
+            //         "name_en": 40,
+            //         "name_bn": "৪০"
+            //     },
+            //     {
+            //         "name_en": 50,
+            //         "name_bn": "৫০"
+            //     },
                    
                
-                {
-                    "name_en": 100,
-                    "name_bn": "১০০"
-                }
-            ]
+            //     {
+            //         "name_en": 100,
+            //         "name_bn": "১০০"
+            //     }
+            // ]
         };
     },
 
@@ -96,6 +96,161 @@ export default {
     },
 
     methods: {
+        async GeneratePDF() {
+            this.isLoading = true;
+            let page;
+            if (!this.sortBy) {
+                page = this.pagination.current;
+            }
+            const queryParams = {
+                language: this.$i18n.locale,
+                searchText: this.search,
+                perPage: this.search.trim() === '' ? this.total : this.total,
+                page: this.pagination.current,
+                sortBy: this.sortBy,
+                orderBy: this.sortDesc,
+            };
+
+            await this.$axios
+                .get("/admin/api-list", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                    params: queryParams,
+                })
+                .then((result) => {
+                    this.apis = result?.data?.data?.data;
+                });
+
+            const HeaderInfo = [
+                this.$t("container.list.sl"), 
+                this.$t('container.api_manager.api_generate.api_name'),
+                this.$t('container.api_manager.api_generate.parameter'),
+               
+            ]
+            
+
+            const CustomInfo = this.apis.map(((i, index) => {
+              
+                return [
+                    this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+                    this.$i18n.locale == 'en' ? i.name : i.name,
+                    i.selected_columns.join(', '),
+                  
+                    
+                ]
+            }));
+
+            const queryParam = {
+                language: this.$i18n.locale,
+                data: CustomInfo,
+                header: HeaderInfo,
+                fileName: this.$t("container.api_manager.api_generate.list"),
+            };
+            try {
+                const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "application/json", // Set content type to JSON
+                    },
+                    responseType: 'arraybuffer',
+                });
+
+                const blob = new Blob([response.data], { type: 'application/pdf' });
+                const url = window.URL.createObjectURL(blob);
+                window.open(url, '_blank');
+                this.isLoading = false;
+            } catch (error) {
+                this.isLoading = false;
+                console.error('Error generating PDF:', error);
+            }
+        },
+        async GenerateExcel() {
+            this.isLoading = true;
+            let page;
+            if (!this.sortBy) {
+                page = this.pagination.current;
+            }
+            const queryParams = {
+                language: this.$i18n.locale,
+                searchText: this.search,
+                perPage: this.search.trim() === '' ? this.total : this.total,
+                page: this.pagination.current,
+                sortBy: this.sortBy,
+                orderBy: this.sortDesc,
+            };
+
+            await this.$axios
+                .get("/admin/api-list", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                    params: queryParams,
+                })
+                .then((result) => {
+                    this.apis = result?.data?.data?.data;
+                })
+                .catch(error => {
+                    this.isLoading = false;
+                });
+
+            try {
+                import('@/plugins/Export2Excel').then((excel) => {
+
+                    const HeaderInfo = [
+                        this.$t("container.list.sl"),
+                        this.$t('container.api_manager.api_generate.api_name'),
+                        this.$t('container.api_manager.api_generate.parameter'),
+                    ]
+
+                    const CustomInfo = this.apis.map(((i, index) => {
+                        return {
+                            "sl": this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+                            "name": this.$i18n.locale == 'en' ? i.name : i.name,
+                            "parameter": i.selected_columns.join(', '),
+                            
+                           
+                        }
+                    }));
+
+                    const Field = ['sl', 'name','parameter']
+
+                    const Data = this.FormatJson(Field, CustomInfo)
+                    const currentDate = new Date().toISOString().slice(0, 10); //
+                    let dateinfo = queryParams.language == 'en' ? currentDate : this.$helpers.englishToBangla(currentDate)
+
+                    const filenameWithDate = `${dateinfo}_${this.$t("container.api_manager.api_generate.list")}`;
+
+                    excel.export_json_to_excel({
+                        header: HeaderInfo,
+                        data: Data,
+                        sheetName: filenameWithDate,
+                        filename: filenameWithDate,
+                        autoWidth: true,
+                        bookType: "xlsx"
+                    })
+                })
+            } catch (error) {
+                // Handle any errors here
+                this.isLoading = false;
+            } finally {
+                this.isLoading = false;
+            }
+        },
+        FormatJson(FilterData, JsonData) {
+            return JsonData.map((v) =>
+                FilterData.map((j => {
+                    return v[j];
+                })))
+        },
+
+    showMore(id){
+         
+            this.$router.push(`/api-manager/api-generate/view/${id}`);
+
+    },
         localizationPage(item){
             
             return this.language === 'bn' ? item.name_bn : item.name_en;
@@ -238,9 +393,9 @@ export default {
 
 
 
-                                    <!-- <v-col lg="4" md="6" cols="12" class="text-right">
+                                    <v-col lg="4" md="6" cols="12" class="text-right">
                                         <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4"
-                                            @click="GeneratePdf()">
+                                            @click="GeneratePDF()">
                                             <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{
                                             $t("container.list.PDF") }}
                                         </v-btn>
@@ -249,7 +404,7 @@ export default {
                                             <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
                                             {{ $t("container.list.excel") }}
                                         </v-btn>
-                                    </v-col> -->
+                                    </v-col>
 
                                     <v-btn medium flat color="primary" router to="/api-manager/api-generate/create"
                                         v-can="'url-create'">
@@ -264,6 +419,7 @@ export default {
                                         {{ language === 'bn' ? $helpers.englishToBangla(
                                         this.total) : this.total}}
                                     </span>
+                                    
                                 </v-card-subtitle>
                                 <v-data-table :loading="loading" item-key="id" :headers="headers" :items="apis"
                                     :items-per-page="pagination.perPage" hide-default-footer
@@ -281,7 +437,7 @@ export default {
                                     </template>
 
 
-                             
+
                                     <template v-slot:item.selected_columns="{ item }">
                                         <span v-for="(value, key) in item.selected_columns" :key="key">
                                             <v-chip small label color="#FACD91" class="ma-1" v-if="key < 10">
@@ -289,7 +445,7 @@ export default {
                                             </v-chip> &nbsp;
                                             <v-btn color="#FACD91" class="text-caption"
                                                 v-if="key == 9 && Object.keys(item.selected_columns).length > 10"
-                                                x-small @click="showMore(item.selected_columns)">+{{
+                                                x-small @click="showMore(item.id)">+{{
                                                 Object.keys(item.selected_columns).length - 10 }} more</v-btn>
 
                                         </span>
@@ -299,9 +455,9 @@ export default {
                                                 {{ value }}
                                             </v-chip>
                                         </span> -->
-                                        {{item.id}}
+
                                     </template>
-                                
+
 
 
 
@@ -353,10 +509,11 @@ export default {
                               right: 25px;
                               width: 149px;
                               transform: translate(0px, 0px);
+                            
                                     
-                                                " :items="items" :item-text="localizationPage" item-value="name_en"
-                                                hide-details dense outlined @change="onPageChange"
+                                                " :items="items" hide-details dense outlined @change="onPageChange"
                                                 v-model="pagination.perPage"></v-select>
+                                             <!-- :item-text="localizationPage" item-value="name_en"  -->
                                             <v-pagination circle primary v-model="pagination.current"
                                                 :length="pagination.total" @input="onPageChange" :total-visible="11"
                                                 class="custom-pagination-item"></v-pagination>

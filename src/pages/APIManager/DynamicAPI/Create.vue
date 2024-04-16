@@ -149,7 +149,7 @@ export default {
                                     <v-form v-on:submit.prevent="submitAPI()">
 
                                         <v-row>
-                                            <v-col cols="12" sm="3" lg="3">
+                                            <v-col cols="12" sm="4" lg="4">
                                                 <ValidationProvider name=" API Name" vid="api_name" rules="required"
                                                     v-slot="{ errors }">
                                                     <v-text-field type="text" v-model="data.name" :label="$t('container.api_manager.api_generate.api_name')
@@ -157,7 +157,7 @@ export default {
                                                         :error-messages="errors[0]"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
-                                            <v-col cols="12" sm="3" lg="3">
+                                            <v-col cols="12" sm="4" lg="4">
                                                 <ValidationProvider name="Module" vid="module" rules="required"
                                                     v-slot="{ errors }">
                                                     <v-select v-model="data.module" :label="$t('container.api_manager.api_generate.module')
@@ -166,7 +166,7 @@ export default {
                                                         @change="handleChange"></v-select>
                                                 </ValidationProvider>
                                             </v-col>
-                                            <v-col cols="12" sm="3" lg="3">
+                                            <v-col cols="12" sm="4" lg="4">
                                                 <ValidationProvider name="Purpose" vid="purpose" rules="required"
                                                     v-slot="{ errors }">
                                                     <v-select type="text" v-model="data.api_purpose_id" :label="$t('container.api_manager.api_generate.purpose')
@@ -175,14 +175,24 @@ export default {
                                                         :error-messages="errors[0]" @change="Change"></v-select>
                                                 </ValidationProvider>
                                             </v-col>
-                                            <v-col cols="12" sm="3" lg="3">
-                                                <ValidationProvider name="Select Column" vid="select_column" rules="required"
-                                                    v-slot="{ errors }">
-                                                    <v-select multiple type="text" v-model="data.selected_columns"
+                                            <v-col cols="12" sm="12" lg="12">
+                                                <ValidationProvider name="Select Column" vid="select_column"
+                                                    rules="required" v-slot="{ errors }">
+                                                    <!-- <v-select multiple type="text" v-model="data.selected_columns"
                                                         :label="$t('container.api_manager.api_generate.select_column')
                                         " persistent-hint outlined :error="errors[0] ? true : false"
                                                         :items="selected_columns" item-text="name" item-value="id"
-                                                        :error-messages="errors[0]"></v-select>
+                                                        :error-messages="errors[0]"></v-select> -->
+                                                    <v-select multiple type="text" v-model="data.selected_columns"
+                                                        :label="$t('container.api_manager.api_generate.parameter')"
+                                                        persistent-hint outlined :error="errors[0] ? true : false"
+                                                        :items="selected_columns" item-text="name" item-value="id"
+                                                        :error-messages="errors[0]" class="select-with-chips">
+                                                        <!-- Slot for chips -->
+                                                        <template v-slot:selection="{ item }">
+                                                            <v-chip color="#CCCCCC">{{ item }}</v-chip>
+                                                        </template>
+                                                    </v-select>
                                                 </ValidationProvider>
                                             </v-col>
                                             <!-- <v-col cols="12" sm="3" lg="3">
@@ -227,4 +237,11 @@ export default {
     </div>
 </template>
 
-<style scoped></style>
+<style >
+.select-with-chips .v-select__selections {
+    max-height: 150px;
+    /* Set max height as needed */
+    overflow-y: auto;
+    /* Enable vertical scrolling */
+}
+</style>

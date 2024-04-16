@@ -993,7 +993,7 @@
         },
         "api_generate": {
           "list": "API List",
-          "api_view":"API View",
+          "api_view":"API Details",
           "add": "Add New API",
           "edit": "Edit API",
           "api_name": " API Name",
