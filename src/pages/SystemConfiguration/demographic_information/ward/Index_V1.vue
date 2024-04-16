@@ -1783,7 +1783,7 @@
                   @click="deleteWard()"
                   color="white"
                   :loading="delete_loading"
-                  class="custom-btn-width black white--text py-2"
+                  class="custom-btn-width black white--text py-2 warning"
               >
                 {{ $t("container.list.delete") }}
               </v-btn>

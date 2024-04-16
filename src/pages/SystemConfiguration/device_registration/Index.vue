@@ -53,7 +53,8 @@ export default {
         { text: this.$t('container.list.sl'), value: "id", align: "start", sortable: false },
         { text: this.$t('container.system_config.device.user_id'), value: "user.user_id" },
         { text: this.$t('container.system_config.device.full_name'), value: "name" },
-        { text: this.$t('container.system_config.device.device_type'), value: "device_type" },
+        // { text: this.$t('container.system_config.device.device_type'), value: "device_type" },
+        { text: this.$t('container.system_config.device.device_name'), value: "device_name" },
         // { text: this.$t('container.system_config.device.ip_address'), value: "ip_address" },
         { text: this.$t('container.system_config.device.pupose_of_use'), value: "purpose_use" },
         { text: this.$t('container.list.status'), value: "status" },
@@ -419,22 +420,22 @@ export default {
       <v-dialog v-model="deleteDialog" width="350">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            Delete Device
+            {{ $t('container.system_config.device.delete_title') }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
-              Are you sure to delete this Device? Division all information will be deleted.
+              {{ $t('container.system_config.device.delete_alert') }}
             </div>
           </v-card-text>
           <v-card-actions style="display: block">
             <v-row class="mx-0 my-0 py-2" justify="center">
               <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
-                Cancel
+                {{ $t("container.list.cancel") }}
               </v-btn>
               <v-btn text @click="deleteDevice" color="white" :loading="delete_loading"
                      class="custom-btn-width warning white--text py-2">
-                Delete
+                {{ $t("container.list.delete") }}
               </v-btn>
             </v-row>
           </v-card-actions>

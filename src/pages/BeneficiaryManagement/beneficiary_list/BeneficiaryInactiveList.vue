@@ -29,7 +29,7 @@
                             vid="program_id"
                             v-slot="{ errors }"
                           >
-                            <v-autocomplete
+                            <v-select
                               :hide-details="errors[0] ? false : true"
                               @input="onChangeProgramName($event)"
                               v-model="data.program_id"
@@ -40,14 +40,15 @@
                                 )
                               "
                               :items="programs"
-                              item-text="name_en"
+                              :item-text="getItemText"
                               item-value="id"
                               class="no-arrow-icon"
                               :append-icon-cb="appendIconCallback"
                               append-icon="mdi-plus"
                               :error="errors[0] ? true : false"
                               :error-messages="errors[0]"
-                            ></v-autocomplete>
+                              clearable
+                            ></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col lg="3" md="3" cols="12">
@@ -59,7 +60,7 @@
                             <v-text-field
                               outlined
                               readonly
-                              v-model="user_permission.division.name_en"
+                              v-model="user_permission.division_name"
                               :label="
                                 $t(
                                   'container.system_config.demo_graphic.division.division'
@@ -68,7 +69,7 @@
                               v-if="user_permission.division"
                             >
                             </v-text-field>
-                            <v-autocomplete
+                            <v-select
                               v-if="!user_permission.division"
                               outlined
                               @input="onChangeDivision($event)"
@@ -79,15 +80,16 @@
                                 )
                               "
                               :items="divisions"
-                              item-text="name_en"
+                              :item-text="getItemText"
                               item-value="id"
                               :error="errors[0] ? true : false"
                               :error-messages="errors[0]"
                               class="no-arrow-icon"
                               :append-icon-cb="appendIconCallback"
                               append-icon="mdi-plus"
+                              clearable
                             >
-                            </v-autocomplete>
+                            </v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col lg="3" md="3" cols="12">
@@ -99,7 +101,7 @@
                             <v-text-field
                               outlined
                               readonly
-                              v-model="user_permission.division.name_en"
+                              v-model="user_permission.district_name"
                               :label="
                                 $t(
                                   'container.system_config.demo_graphic.district.district'
@@ -108,7 +110,7 @@
                               v-if="user_permission.district"
                             >
                             </v-text-field>
-                            <v-autocomplete
+                            <v-select
                               v-if="!user_permission.district"
                               outlined
                               v-model="data.district_id"
@@ -119,14 +121,15 @@
                                 )
                               "
                               :items="districts"
-                              item-text="name_en"
+                              :item-text="getItemText"
                               item-value="id"
                               class="no-arrow-icon"
                               :append-icon-cb="appendIconCallback"
                               append-icon="mdi-plus"
                               :error="errors[0] ? true : false"
                               :error-messages="errors[0]"
-                            ></v-autocomplete>
+                              clearable
+                            ></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col lg="3" md="3" cols="12">
@@ -138,26 +141,27 @@
                             <v-text-field
                               outlined
                               readonly
-                              v-model="user_permission.location_type.value_en"
+                              v-model="user_permission.location_type_name"
                               :label="$t('container.list.location_type')"
                               v-if="user_permission.location_type"
                             >
                             </v-text-field>
-                            <v-autocomplete
+                            <v-select
                               v-if="!user_permission.location_type"
                               @input="LocationType($event)"
                               v-model="data.location_type"
                               outlined
                               :label="$t('container.list.location_type')"
                               :items="locationType"
-                              item-text="value_en"
+                              :item-text="getLocationText"
                               item-value="id"
                               class="no-arrow-icon"
                               :append-icon-cb="appendIconCallback"
                               append-icon="mdi-plus"
                               :error="errors[0] ? true : false"
                               :error-messages="errors[0]"
-                            ></v-autocomplete>
+                              clearable
+                            ></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col
@@ -174,18 +178,16 @@
                             <v-text-field
                               outlined
                               readonly
-                              v-model="
-                                user_permission.district_pourashava.name_en
-                              "
+                              v-model="user_permission.district_pourashava_name"
                               :label="
                                 $t(
                                   'container.system_config.demo_graphic.ward.pouro'
                                 )
                               "
-                              v-if="user_permission.location_type"
+                              v-if="user_permission.district_pourashava"
                             >
                             </v-text-field>
-                            <v-autocomplete
+                            <v-select
                               v-if="!user_permission.district_pourashava"
                               v-model="data.district_pouro_id"
                               outlined
@@ -196,14 +198,15 @@
                               "
                               @change="onChangeDistrictPouro($event)"
                               :items="district_pouros"
-                              item-text="name_en"
+                              :item-text="getItemText"
                               item-value="id"
                               class="no-arrow-icon"
                               :append-icon-cb="appendIconCallback"
                               append-icon="mdi-plus"
                               :error="errors[0] ? true : false"
                               :error-messages="errors[0]"
-                            ></v-autocomplete>
+                              clearable
+                            ></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col
@@ -220,7 +223,7 @@
                             <v-text-field
                               outlined
                               readonly
-                              v-model="user_permission.upazila.name_en"
+                              v-model="user_permission.upazila_name"
                               :label="
                                 $t(
                                   'container.system_config.demo_graphic.thana.thana'
@@ -229,7 +232,7 @@
                               v-if="user_permission.upazila"
                             >
                             </v-text-field>
-                            <v-autocomplete
+                            <v-select
                               v-if="!user_permission.upazila"
                               v-model="data.thana_id"
                               outlined
@@ -240,14 +243,15 @@
                               "
                               @change="onChangeUpazila($event)"
                               :items="thanas"
-                              item-text="name_en"
+                              :item-text="getItemText"
                               item-value="id"
                               class="no-arrow-icon"
                               :append-icon-cb="appendIconCallback"
                               append-icon="mdi-plus"
                               :error="errors[0] ? true : false"
                               :error-messages="errors[0]"
-                            ></v-autocomplete>
+                              clearable
+                            ></v-select>
                           </ValidationProvider>
                         </v-col>
 
@@ -272,7 +276,7 @@
                                 )
                               "
                               :items="subLocationType"
-                              item-text="value_en"
+                              item-text="value"
                               item-value="id"
                               :error="errors[0] ? true : false"
                               :error-messages="errors[0]"
@@ -280,6 +284,7 @@
                               class="no-arrow-icon"
                               :append-icon-cb="appendIconCallback"
                               append-icon="mdi-plus"
+                              clearable
                             ></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
@@ -297,7 +302,7 @@
                             vid="pouros"
                             v-slot="{ errors }"
                           >
-                            <v-autocomplete
+                            <v-select
                               v-model="data.pouro_id"
                               outlined
                               :label="
@@ -306,7 +311,7 @@
                                 )
                               "
                               :items="pouros"
-                              item-text="name_en"
+                              :item-text="getItemText"
                               item-value="id"
                               :error="errors[0] ? true : false"
                               :error-messages="errors[0]"
@@ -314,7 +319,8 @@
                               class="no-arrow-icon"
                               :append-icon-cb="appendIconCallback"
                               append-icon="mdi-plus"
-                            ></v-autocomplete>
+                              clearable
+                            ></v-select>
                           </ValidationProvider>
                         </v-col>
 
@@ -332,7 +338,7 @@
                             vid="unions"
                             v-slot="{ errors }"
                           >
-                            <v-autocomplete
+                            <v-select
                               @input="onChangeUnionGetWard($event)"
                               v-model="data.union_id"
                               outlined
@@ -342,7 +348,7 @@
                                 )
                               "
                               :items="unions"
-                              item-text="name_en"
+                              :item-text="getItemText"
                               item-value="id"
                               :error="errors[0] ? true : false"
                               :error-messages="errors[0]"
@@ -350,7 +356,8 @@
                               class="no-arrow-icon"
                               :append-icon-cb="appendIconCallback"
                               append-icon="mdi-plus"
-                            ></v-autocomplete>
+                              clearable
+                            ></v-select>
                           </ValidationProvider>
                         </v-col>
 
@@ -368,7 +375,7 @@
                             <v-text-field
                               outlined
                               readonly
-                              v-model="user_permission.city_corp.name_en"
+                              v-model="user_permission.city_corp_name"
                               :label="
                                 $t(
                                   'container.system_config.demo_graphic.ward.city'
@@ -377,7 +384,7 @@
                               v-if="user_permission.city_corp"
                             >
                             </v-text-field>
-                            <v-autocomplete
+                            <v-select
                               v-if="!user_permission.city_corp"
                               v-model="data.city_id"
                               @change="onChangeCity($event)"
@@ -388,14 +395,15 @@
                                 )
                               "
                               :items="cities"
-                              item-text="name_en"
+                              :item-text="getItemText"
                               item-value="id"
                               class="no-arrow-icon"
                               :append-icon-cb="appendIconCallback"
                               append-icon="mdi-plus"
                               :error="errors[0] ? true : false"
                               :error-messages="errors[0]"
-                            ></v-autocomplete>
+                              clearable
+                            ></v-select>
                           </ValidationProvider>
                         </v-col>
 
@@ -410,7 +418,7 @@
                             vid="thana_id"
                             v-slot="{ errors }"
                           >
-                            <v-autocomplete
+                            <v-select
                               v-model="data.thana_id"
                               outlined
                               :label="
@@ -420,14 +428,15 @@
                               "
                               @change="onChangeThana($event)"
                               :items="thanas"
-                              item-text="name_en"
+                              :item-text="getItemText"
                               item-value="id"
                               class="no-arrow-icon"
                               :append-icon-cb="appendIconCallback"
                               append-icon="mdi-plus"
                               :error="errors[0] ? true : false"
                               :error-messages="errors[0]"
-                            ></v-autocomplete>
+                              clearable
+                            ></v-select>
                           </ValidationProvider>
                         </v-col>
 
@@ -446,7 +455,7 @@
                             vid="ward_id"
                             v-slot="{ errors }"
                           >
-                            <v-autocomplete
+                            <v-select
                               v-model="data.ward_id"
                               outlined
                               :label="
@@ -455,14 +464,15 @@
                                 )
                               "
                               :items="wards"
-                              item-text="name_en"
+                              :item-text="getItemText"
                               item-value="id"
                               class="no-arrow-icon"
                               :append-icon-cb="appendIconCallback"
                               append-icon="mdi-plus"
                               :error="errors[0] ? true : false"
                               :error-messages="errors[0]"
-                            ></v-autocomplete>
+                              clearable
+                            ></v-select>
                           </ValidationProvider>
                         </v-col>
                       </v-row>
@@ -579,15 +589,15 @@
                   <v-col>
                     <!-- selected columns -->
                     <v-select
-                      v-model="value"
-                      :items="headers"
+                      v-model="selectedColumns"
+                      :items="selectableColumns"
                       :label="
                         $t(
                           'container.application_selection.application.select_column'
                         )
                       "
                       multiple
-                      return-object
+                      @change="updateVisibleColumns"
                       outlined
                       menu-props="top"
                     >
@@ -627,7 +637,7 @@
                 >
                   <v-col cols="12">
                     <v-data-table
-                      :headers="selectedHeaders"
+                      :headers="visibleHeaders"
                       :items="beneficiaries"
                       :loading="loading"
                       item-key="id"
@@ -637,11 +647,43 @@
                     >
                       <template v-slot:item.sl="{ item, index }">
                         {{
-                          (pagination.current - 1) * pagination.perPage +
-                          index +
-                          1
+                          language === "bn"
+                            ? $helpers.englishToBangla(
+                                (pagination.current - 1) * pagination.perPage +
+                                  index +
+                                  1
+                              )
+                            : (pagination.current - 1) * pagination.perPage +
+                              index +
+                              1
                         }}
                       </template>
+                      <template v-slot:item.program_name="{ item }">
+                        {{
+                          language === "bn"
+                            ? item.program?.name_bn
+                            : item.program?.name_en
+                        }}
+                      </template>
+                      <template v-slot:item.mobile="{ item }">
+                        {{
+                          language === "bn"
+                            ? $helpers.englishToBangla(item.mobile)
+                            : item.mobile
+                        }}
+                      </template>
+                      <template v-slot:item.status_name="{ item }">
+                        <span v-if="item.status == 1">
+                          {{ language === "bn" ? "সক্রিয়" : "Active" }}
+                        </span>
+                        <span v-if="item.status == 2">
+                          {{ language === "bn" ? "নিষ্ক্রিয়" : "Inactive" }}
+                        </span>
+                        <span v-if="item.status == 3">
+                          {{ language === "bn" ? "অপেক্ষেয়মান" : "Waiting" }}
+                        </span>
+                      </template>
+                      <!-- Action Button -->
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
                         <v-btn
@@ -696,6 +738,7 @@
           </v-col>
         </v-row>
       </v-col>
+
       <!-- Beneficiary RollBack modal  -->
       <v-dialog v-model="dialogRollBack" width="400">
         <v-card style="justify-content: center; text-align: center">
@@ -744,6 +787,7 @@ import { mapState, mapActions } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 import Spinner from "@/components/Common/Spinner.vue";
+
 extend("required", required);
 export default {
   name: "InactiveIndex",
@@ -767,52 +811,8 @@ export default {
         nid: null,
         status: null,
       },
-      ben_status: [
-        {
-          id: 1,
-          value: this.$t("container.list.active"),
-        },
-        {
-          id: 2,
-          value: this.$t("container.list.inactive"),
-        },
-        {
-          id: 3,
-          value: this.$t("container.list.waiting"),
-        },
-      ],
-
-      value: [
-        {
-          text: this.$t(
-            "container.beneficiary_management.beneficiary_list.beneficiary_id"
-          ),
-          value: "application_id",
-        },
-        {
-          text: this.$t("container.list.name_en"),
-          value: "name_en",
-        },
-        {
-          text: this.$t(
-            "container.application_selection.application.father_name_en"
-          ),
-          value: "father_name_en",
-        },
-        {
-          text: this.$t("container.application_selection.application.program"),
-          value: "program.name_en",
-        },
-        {
-          text: this.$t("container.application_selection.application.mobile"),
-          value: "mobile",
-        },
-        {
-          text: this.$t("container.list.status"),
-          value: "status",
-        },
-      ], // Default selection without 'name'
       selectedHeaders: [],
+      dialogView: false,
       beneficiaryItem: {},
       isLoading: false,
       loading: true,
@@ -833,24 +833,20 @@ export default {
       advanch_search: false,
       dialogRollBack: false,
       rollBack_id: null,
-      subLocationType: [
-        {
-          id: 1,
-          value_en: "Pouroshava",
-        },
 
-        {
-          id: 2,
-          value_en: "Union",
-        },
-      ],
       user_permission: {
         division: null,
+        division_name: null,
         district: null,
+        district_name: null,
         location_type: null,
+        location_type_name: null,
         upazila: null,
+        upazila_name: null,
         city_corp: null,
+        city_corp_name: null,
         district_pourashava: null,
+        district_pourashava_name: null,
       },
       pagination: {
         current: 1,
@@ -860,33 +856,55 @@ export default {
       sortBy: "created_at",
       sortDesc: "desc",
       items: [5, 10, 15, 20, 40, 50, 100],
+
+      selectedColumns: [
+        "application_id",
+        "name_en",
+        "father_name_en",
+        "program_name",
+        "mobile",
+        "status_name",
+      ], // Initially, first 8 columns are selected
+
+      fixedColumns: ["sl", "actions"], // Two columns that will always remain visible
     };
   },
   components: {
+    Spinner,
     ValidationProvider,
     ValidationObserver,
-    Spinner,
   },
   computed: {
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      },
+    },
     ...mapState({
       divisions: (state) => state.Division.divisions,
       userData: (state) => state.userData,
     }),
+    visibleHeaders() {
+      // Combine fixed columns and selected columns
+      const allVisibleColumns = [...this.fixedColumns, ...this.selectedColumns];
+
+      // Filter the headers based on the visible columns
+      return this.headers.filter((column) =>
+        allVisibleColumns.includes(column.value)
+      );
+    },
+    selectableColumns() {
+      // Filter the columns that can be selected (exclude fixed columns)
+      return this.headers.filter((column) => !column.fixed);
+    },
     headers() {
       return [
+        { text: this.$t("container.list.sl"), value: "sl", fixed: true },
         {
           text: this.$t(
             "container.beneficiary_management.beneficiary_list.beneficiary_id"
           ),
           value: "application_id",
-        },
-        {
-          text: this.$t("container.list.name_en"),
-          value: "name_en",
-        },
-        {
-          text: this.$t("container.application_selection.application.program"),
-          value: "program.name_en",
         },
         {
           text: this.$t("container.list.name_en"),
@@ -933,37 +951,8 @@ export default {
           value: "spouse_name_bn",
         },
         {
-          text: this.$t("container.application_selection.application.mobile"),
-          value: "mobile",
-        },
-        {
-          text: this.$t("container.list.status"),
-          value: "status",
-        },
-      ];
-    },
-    headers_start() {
-      return [
-        { text: this.$t("container.list.sl"), value: "sl" },
-        {
-          text: this.$t(
-            "container.beneficiary_management.beneficiary_list.beneficiary_id"
-          ),
-          value: "application_id",
-        },
-        {
-          text: this.$t("container.list.name_en"),
-          value: "name_en",
-        },
-        {
-          text: this.$t(
-            "container.application_selection.application.father_name_en"
-          ),
-          value: "father_name_en",
-        },
-        {
           text: this.$t("container.application_selection.application.program"),
-          value: "program.name_en",
+          value: "program_name",
         },
         {
           text: this.$t("container.application_selection.application.mobile"),
@@ -971,13 +960,30 @@ export default {
         },
         {
           text: this.$t("container.list.status"),
-          value: "status",
+          value: "status_name",
+          align: "center",
         },
         {
           text: this.$t("container.list.action"),
           value: "actions",
-          width: "200",
           align: "center",
+          width: "240",
+          fixed: true,
+        },
+      ];
+    },
+    subLocationType() {
+      return [
+        {
+          id: 1,
+          // value_en: "Pouroshava",
+          value: this.$t("container.list.pouroshava"),
+        },
+
+        {
+          id: 2,
+          // value_en: "Union",
+          value: this.$t("container.list.union"),
         },
       ];
     },
@@ -986,6 +992,19 @@ export default {
     ...mapActions({
       GetAllDivisions: "Division/GetAllDivisions",
     }),
+    updateVisibleColumns() {
+      // Triggered when the selected columns change
+      // Update the visibleHeaders based on the selected columns
+      this.visibleHeaders = this.headers.filter((column) =>
+        this.selectedColumns.includes(column.value)
+      );
+    },
+    getItemText(item) {
+      return this.language === "bn" ? item.name_bn : item.name_en;
+    },
+    getLocationText(item) {
+      return this.language === "bn" ? item.value_bn : item.value_en;
+    },
     resetSearch() {
       if (!this.user_permission.division) {
         this.data.division_id = null;
@@ -1020,7 +1039,7 @@ export default {
     async GetAllProgram() {
       try {
         this.$axios
-          .get("/admin/allowance/get", {
+          .get("/global/program", {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
@@ -1058,31 +1077,55 @@ export default {
             if (item?.division) {
               this.data.division_id = item?.division?.id;
               this.user_permission.division = item?.division;
+              this.user_permission.division_name =
+                this.language == "en"
+                  ? item?.division?.name_en
+                  : item?.division?.name_bn;
               if (!item?.district) {
                 this.onChangeDivision(item?.division?.id);
               } else {
                 this.data.district_id = item?.district?.id;
                 this.user_permission.district = item?.district;
+                this.user_permission.district_name =
+                  this.language == "en"
+                    ? item?.district?.name_en
+                    : item?.district?.name_bn;
               }
             }
             if (item?.location_type) {
               this.user_permission.location_type = item?.location_type;
               this.data.location_type = item?.location_type?.id;
+              this.user_permission.location_type_name =
+                this.language == "en"
+                  ? item?.location_type?.value_en
+                  : item?.location_type?.value_bn;
             }
             if (item?.district_pourashava) {
               this.data.district_pouro_id = item?.district_pourashava?.id;
               this.user_permission.district_pourashava =
                 item?.district_pourashava;
               this.onChangeDistrictPouro(item?.district_pourashava?.id);
+              this.user_permission.district_pourashava_name =
+                this.language == "en"
+                  ? item?.district_pourashava?.name_en
+                  : item?.district_pourashava?.name_bn;
             }
             if (item?.upazila) {
               this.user_permission.upazila = item?.upazila;
               this.data.thana_id = item?.upazila?.id;
+              this.user_permission.upazila_name =
+                this.language == "en"
+                  ? item?.upazila?.name_en
+                  : item?.upazila?.name_bn;
             }
             if (item?.city_corp) {
               this.data.city_id = item?.city_corp?.id;
               this.user_permission.city_corp = item?.city_corp;
               this.onChangeCity(item?.city_corp?.id);
+              this.user_permission.city_corp_name =
+                this.language == "en"
+                  ? item?.city_corp?.name_en
+                  : item?.city_corp?.name_bn;
             }
             this.GetApplication();
           })
@@ -1306,7 +1349,7 @@ export default {
         nominee_name: this.data.nominee_name,
         account_number: this.data.account_number,
         nid: this.data.nid,
-        status: 2, //Inactive list
+        status: 2, //For Inactive List
 
         perPage: this.pagination.perPage,
         page: this.pagination.current,
@@ -1322,16 +1365,10 @@ export default {
           params: queryParams,
         })
         .then((result) => {
+          this.beneficiaries = result.data.data;
           this.total = result.data.meta.total;
-          var results = result.data.data;
-          console.log("results", results);
+          console.log("results_total__", this.total);
 
-          this.beneficiaries = results.map((item) => {
-            return (item = {
-              ...item,
-              status: this.ben_status[item.status - 1].value,
-            });
-          });
           this.pagination.current = result.data.meta.current_page;
           this.pagination.total = result.data.meta.last_page;
           this.pagination.grand_total = result.data.meta.total;
@@ -1343,6 +1380,11 @@ export default {
         "container.beneficiary_management.beneficiary_list.list_inactive"
       );
       this.$store.commit("setHeaderTitle", title);
+    },
+    async GetBeneficiaryById(item) {
+      this.dialogView = true;
+      this.beneficiaryItem = item;
+      console.log(this.beneficiaryItem);
     },
     async GeneratePDF() {
       this.isLoading = true;
@@ -1613,23 +1655,45 @@ export default {
         console.log(e);
       }
     },
+    userPermissionLocalization() {
+      if (this.user_permission.division_name) {
+        this.user_permission.division_name =
+          this.language == "en"
+            ? this.user_permission?.division?.name_en
+            : this.user_permission?.division?.name_bn;
+      }
+      if (this.user_permission.district_name) {
+        this.user_permission.district_name =
+          this.language == "en"
+            ? this.user_permission?.district?.name_en
+            : this.user_permission?.district?.name_bn;
+      }
+      if (this.user_permission.location_type_name) {
+        this.user_permission.location_type_name =
+          this.language == "en"
+            ? this.user_permission?.location_type?.value_en
+            : this.user_permission?.location_type?.value_bn;
+      }
+      if (this.user_permission.district_pourashava_name) {
+        this.user_permission.district_pourashava_name =
+          this.language == "en"
+            ? this.user_permission?.district_pourashava?.name_en
+            : this.user_permission?.district_pourashava?.name_bn;
+      } else if (this.user_permission.upazila_name) {
+        this.user_permission.upazila_name =
+          this.language == "en"
+            ? this.user_permission?.upazila?.name_en
+            : this.user_permission?.upazila?.name_bn;
+      } else if (this.user_permission.city_corp_name) {
+        this.user_permission.city_corp_name =
+          this.language == "en"
+            ? this.user_permission?.city_corp?.name_en
+            : this.user_permission?.city_corp?.name_bn;
+      }
+    },
   },
   watch: {
-    "$i18n.locale": "updateHeaderTitle",
-    value(val) {
-      // this.selectedHeaders = val;
-
-      this.selectedHeaders = [
-        { text: this.$t("container.list.sl"), value: "sl" },
-        ...val,
-        {
-          text: this.$t("container.list.action"),
-          value: "actions",
-          width: "200",
-          align: "center",
-        },
-      ];
-    },
+    // "$i18n.locale": "updateHeaderTitle",
     advanch_search(val) {
       this.data = {
         ...this.data,
@@ -1639,6 +1703,14 @@ export default {
         nid: null,
         status: null,
       };
+    },
+    "$i18n.locale": {
+      handler(newLocale, oldLocale) {
+        if (newLocale != oldLocale) {
+          this.userPermissionLocalization();
+        }
+      },
+      // immediate: true, // Call the handler immediately to initialize the levels
     },
   },
   created() {
@@ -1650,7 +1722,6 @@ export default {
     this.updateHeaderTitle();
   },
   mounted() {
-    this.selectedHeaders = this.headers_start;
     this.$store
       .dispatch("getLookupByType", 1)
       .then((res) => (this.locationType = res));

@@ -33,10 +33,10 @@
       "reject": "Reject",
       "status": "Status",
       "code": "Code",
-      "name_en": "Name English",
-      "name_bn": "Name Bangla",
-      "value_en": "Name English",
-      "value_bn": "Name Bangla",
+      "name_en": "Name (English)",
+      "name_bn": "Name (Bangla)",
+      "value_en": "Name (English)",
+      "value_bn": "Name (Bangla)",
       "keyword": "Keyword",
       "location_type": "Location Type",
       "add_new": "Add New",
@@ -73,7 +73,9 @@
       "no": "No",
       "attention": "Attention!!!",
       "create": "Create",
-      "download": "Download Application"
+      "download": "Download Application",
+      "pouroshava": "Pouroshava",
+      "union": "Union"
     },
     "system_config": {
       "demo_graphic": {
@@ -100,7 +102,7 @@
           "search": "Search District",
           "edit": "Edit District",
           "delete": "Delete Division",
-          "delete_alert": "Are you sure to delete this Division?"
+          "delete_alert": "Are you sure to delete this District?"
         },
         "city": {
           "city": "City Corporation/District Pourashava",
@@ -155,7 +157,7 @@
           "delete_alert": "Are you sure to delete this Thana/Upazila?"
         },
         "thana": {
-          "thana": "Thana/Upazila",
+          "thana": "Upazila/City Corporation/District Pouroshava",
           "list": "Thana/Upazila List",
           "code": "Thana/Upazila Code",
           "name_en": "Thana/Upazila Name English",
@@ -180,17 +182,20 @@
         },
         "union1": {
           "union": "Union",
-          "customtitle": "Thana/ Union/ Pouroshava",
+          "customtitle": "Union/Thana/Pouroshava",
           "pouroshava": "Pouroshava",
           "list": "Union List",
           "code": "Union Geo Code",
           "name_en": "Union Name English",
           "name_bn": "Union Name Bangla",
-          "add_new": "Add New Thana/ Union/ Pouroshava",
-          "search": "Search Thana/ Union/ Pouroshava",
-          "edit": "Edit Thana/ Union/ Pouroshava",
-          "delete": "Delete Thana/ Union/ Pouroshava",
-          "delete_alert": "Are you sure to delete this Thana/ Union/ Pouroshava?"
+          "add_new": "Add New Union/Thana/Pouroshava",
+          "search": "Search Union/Thana/Pouroshava",
+          "edit": "Edit Union/Thana/Pouroshava",
+          "delete": "Delete Union/Thana/Pouroshava",
+          "delete_alert": "Are you sure to delete this Union/Thana/Pouroshava?",
+          "upazila_city": "Upazila/City Corporation",
+          "union_thana_pouroshava_name": "Union/Thana/Pouroshava Name English",
+          "union_thana_pouroshava_name_bn": "Union/Thana/Pouroshava Name Bangla"
         },
         "pouro": {
           "union": "Pouroshava",
@@ -209,14 +214,14 @@
           "union": "Union/Pouroshava",
           "list": "Union/Pouroshava List",
           "code": "Union/Pourashava Code",
-          "custom_code": "Thana (City) /Union/Pourashava Geo Code",
-          "name_en": "Union/Pouroshava Name English",
-          "name_bn": "Union/Pouroshava Name Bangla",
+          "custom_code": "Union/Thana/Pourashava Geo Code",
+          "name_en": "Union/Thana/Pouroshava Name English",
+          "name_bn": "Union/Thana/Pouroshava Name Bangla",
           "add_new": "Add New Union/Pouroshava",
           "search": "Search Union/Pouroshava",
-          "edit": "Edit Union/Pouroshava",
-          "delete": "Delete Union/Pouroshava",
-          "delete_alert": "Are you sure to delete this Union/Pouroshava?"
+          "edit": "Edit Union/Thana/Pouroshava",
+          "delete": "Delete Union/Thana/Pouroshava",
+          "delete_alert": "Are you sure to delete this Union/Thana/Pouroshava?"
         },
         "ward": {
           "ward": "Ward",
@@ -236,8 +241,8 @@
           "upazila": "Upazila",
           "union": "Union",
           "pouro": "Pouroshava",
-          "upazila_city_district": "Upazila/District Pouroshava/City Corporation",
-          "union_pouro_city": "Thana/ Union/ Pouroshava",
+          "upazila_city_district": "Upazila/City Corporation/District Pouroshava",
+          "union_pouro_city": "Union/Thana/Pouroshava",
           "union_ward": "Union/Ward",
           "subLocation_type": "Sub Location",
           "office_name": "Office Name",
@@ -281,6 +286,8 @@
           "name_bn": "Committee Name Bangla",
           "program_name": "Program Name",
           "committee_type": "Committee Type",
+          "office_types": "Office Type",
+          "office": "Office",
           "ward": "Ward",
           "add_new": "Add New Committee",
           "add": "Add Committee",
@@ -368,7 +375,9 @@
           "add": "Add Role",
           "edit": "Edit Role",
           "role_name": "Role Name",
-          "module_name": "Module Name"
+          "module_name": "Module Name",
+          "delete": "Role Delete",
+          "delete_alert": "Are you sure to delete this role?"
         },
         "user": {
           "listTitle": "User List",
@@ -391,7 +400,7 @@
           "thana_id": "Select Thana",
           "city_corpo_id": "Select City Corporation",
           "add_new": "Add New User",
-          "delete_alert": "Are you sure to delete this User?.",
+          "delete_alert": "Are you sure to delete this User?",
           "approve_alert": "Are you sure to approve this User?",
           "search": "Search User",
           "email_label": "Email",
@@ -421,11 +430,14 @@
         "user_name": "User Name",
         "full_name": "Full Name",
         "device_type": "Device Type",
+        "device_name": "Device Name",
         "ip_address": "IP Address",
         "pupose_of_use": "Purpose of Use",
         "unique_id": "Unique ID",
         "add": "Add Device",
-        "edit": "Edit device"
+        "edit": "Edit device",
+        "delete_title": "Delete Device Registration",
+        "delete_alert": "Are you sure to delete this Device Registration?"
       },
       "allowance_program": {
         "list": "Allowance Program Lists",
@@ -512,7 +524,9 @@
         "page_link_id": "Page url",
         "order": "Order",
         "add": "Add Menu",
-        "edit": "Edit Menu"
+        "edit": "Edit Menu",
+        "delete": "Delete Menu",
+        "delete_alert": "Are you sure to delete this Menu?"
       }
     },
     "general_setting": {
@@ -1035,7 +1049,13 @@
     },
     "activity_log": {
       "title": "Activity Log Lists",
+      "log_view": "Activity Log View",
       "name": "Log Name",
+      "action_type": "Action Type",
+      "user_name": "User Name",
+      "user_email": "Email",
+      "device": "Device",
+      "source_ip": "Source IP",
       "description": "Description",
       "change_info": "Change Info",
       "login_user_info": "Login User",
@@ -1057,6 +1077,31 @@
       "number_of_application_rejected": "Number of Application Rejected",
       "total_number_of_application_received_application": "Total Number of Application Received Application",
       "number_of_application_forwarded": "Number of Application Forwarded"
+    },
+    "grievance_management": {
+      "add_new_type": "Add New Type",
+      "grievanceType": "Grievance Type",
+      "title_en": "Title (English)",
+      "title_bn": "Title (Bangla)",
+      "add_grievance_type": "Add New Grievance Type",
+      "edit_grievance_type": "Edit Grievance Type",
+      "add_new_subject": "Add New Grievance Subject",
+      "grievance_subject": "Grievance Subject",
+      "add_grievance_subject": "Add New Subject",
+      "edit_grievance_subject": "Edit Grievance Subject",
+      "main_grievance_type": "Grievance Type",
+      "grievance_settings": "Grievance Settings",
+      "grievance_delete": "Delete Grievance Type",
+      "grievance_delete_message": "Are you sure to delete this Grievance Type?",
+      "grievance_subject_delete": "Delete Grievance Subject",
+      "grievance_subject_delete_message": "Are you sure to delete this Grievance Subject?",
+      "grievance_setup": "Set Grievance",
+      "add_new_grievance_setting": "Add New Grievance Setting",
+      "solution_time": "Solution Time (Days)",
+      "1stOfficer": "1st Tire (1st Officer)",
+      "2ndOfficer": "2nd Tire (2nd Officer)",
+      "3rdOfficer": "3rd Tire (3rd Officer"
+
     }
   }
 }

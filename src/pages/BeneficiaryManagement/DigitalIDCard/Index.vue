@@ -7,7 +7,11 @@
           <v-expansion-panel>
             <v-expansion-panel-header color="#8C9EFF">
               <h3 class="white--text">
-                {{ $t("container.beneficiary_management.digital_id.digital_id_card") }}
+                {{
+                  $t(
+                    "container.beneficiary_management.digital_id.digital_id_card"
+                  )
+                }}
               </h3>
             </v-expansion-panel-header>
             <v-expansion-panel-content class="elevation-0 transparent mt-10">
@@ -531,7 +535,7 @@ export default {
     async GetAllProgram() {
       try {
         this.$axios
-          .get("/admin/allowance/get", {
+          .get("/global/program", {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",

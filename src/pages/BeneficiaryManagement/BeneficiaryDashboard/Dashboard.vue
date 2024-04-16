@@ -1,7 +1,6 @@
 <template>
   <v-container fluid>
     <!-- header card start -->
-    <!-- <Spinner :loading="isLoading" /> -->
     <v-table>
       <thead>
         <tr>
@@ -29,7 +28,15 @@
                         }}
                       </div>
                       <div class="headline font-weight-bold d-flex">
-                        {{ beneficiaries.totalBeneficiaries }}
+                        {{
+                          beneficiaries.totalBeneficiaries
+                            ? this.$i18n.locale == "en"
+                              ? beneficiaries.totalBeneficiaries
+                              : this.$helpers.englishToBangla(
+                                  beneficiaries.totalBeneficiaries
+                                )
+                            : null
+                        }}
                       </div>
                     </v-card-text>
                   </v-col>
@@ -62,7 +69,15 @@
                         }}
                       </div>
                       <div class="headline font-weight-bold d-flex">
-                        {{ beneficiaries.totalActiveBeneficiaries }}
+                        {{
+                          beneficiaries.totalActiveBeneficiaries
+                            ? this.$i18n.locale == "en"
+                              ? beneficiaries.totalActiveBeneficiaries
+                              : this.$helpers.englishToBangla(
+                                  beneficiaries.totalActiveBeneficiaries
+                                )
+                            : null
+                        }}
                       </div>
                     </v-card-text>
                   </v-col>
@@ -98,7 +113,15 @@
                         }}
                       </div>
                       <div class="headline font-weight-bold d-flex">
-                        {{ beneficiaries.totalInactiveBeneficiaries }}
+                        {{
+                          beneficiaries.totalInactiveBeneficiaries
+                            ? this.$i18n.locale == "en"
+                              ? beneficiaries.totalInactiveBeneficiaries
+                              : this.$helpers.englishToBangla(
+                                  beneficiaries.totalInactiveBeneficiaries
+                                )
+                            : null
+                        }}
                       </div>
                     </v-card-text>
                   </v-col>
@@ -133,7 +156,15 @@
                         }}
                       </div>
                       <div class="headline font-weight-bold d-flex">
-                        {{ beneficiaries.totalWaitingBeneficiaries }}
+                        {{
+                          beneficiaries.totalWaitingBeneficiaries
+                            ? this.$i18n.locale == "en"
+                              ? beneficiaries.totalWaitingBeneficiaries
+                              : this.$helpers.englishToBangla(
+                                  beneficiaries.totalWaitingBeneficiaries
+                                )
+                            : null
+                        }}
                       </div>
                     </v-card-text>
                   </v-col>
@@ -166,7 +197,15 @@
                         }}
                       </div>
                       <div class="headline font-weight-bold d-flex">
-                        {{ beneficiaries.totalReplacedBeneficiaries }}
+                        {{
+                          beneficiaries.totalReplacedBeneficiaries
+                            ? this.$i18n.locale == "en"
+                              ? beneficiaries.totalReplacedBeneficiaries
+                              : this.$helpers.englishToBangla(
+                                  beneficiaries.totalReplacedBeneficiaries
+                                )
+                            : null
+                        }}
                       </div>
                     </v-card-text>
                   </v-col>
@@ -184,95 +223,7 @@
         <v-card :loading="isLoadingProgramLocation" height="100%">
           <v-card-text>
             <V-row>
-              <v-col>
-                <v-row>
-                  <v-col cols="12">
-                    <label style="color: #1976d2">
-                      <span>
-                        {{
-                          $t(
-                            "container.beneficiary_management.dashboard.program_and_location_wise_ben"
-                          )
-                        }}
-                      </span>
-                    </label></v-col
-                  >
-                </v-row>
-                <v-row class="ml-1 mr-1">
-                  <v-col cols="7">
-                    <v-row class="mr-1">
-                      <v-menu
-                        ref="menu"
-                        v-model="menu"
-                        :close-on-content-click="false"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="auto"
-                      >
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-text-field
-                            v-model="dateRangeText"
-                            :value="formattedDates"
-                            :append-icon="
-                              menu ? 'mdi-calendar' : 'mdi-calendar'
-                            "
-                            :label="
-                              $t(
-                                'container.beneficiary_management.dashboard.enter_start_end_date'
-                              )
-                            "
-                            readonly
-                            v-bind="attrs"
-                            v-on="on"
-                          ></v-text-field>
-                        </template>
-                        <v-date-picker
-                          v-model="dates"
-                          :range="[dates[0], dates[1]]"
-                          :rules="[customDateRangeRule]"
-                          no-title
-                          scrollable
-                        >
-                          <v-spacer></v-spacer>
-                          <v-btn
-                            text
-                            color="primary"
-                            @click="resetDateProgramAndLocationWiseBeneficiary"
-                          >
-                            Cancel
-                          </v-btn>
-                          <v-btn
-                            text
-                            color="primary"
-                            @click="submitDateProgramAndLocationWiseBeneficiary"
-                          >
-                            OK
-                          </v-btn>
-                        </v-date-picker>
-                      </v-menu>
-                    </v-row>
-                  </v-col>
-                  <v-col cols="5">
-                    <v-row>
-                      <v-select
-                        :label="
-                          $t(
-                            'container.beneficiary_management.dashboard.select_program'
-                          )
-                        "
-                        :items="programs"
-                        v-model="program_location_Wise_beneficiary.program_id"
-                        item-text="name_en"
-                        item-value="id"
-                        @change="GetLocationWiseBeneficiaries($event)"
-                      ></v-select>
-                    </v-row>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <canvas id="program_location_wise_chart"></canvas>
-                </v-row>
-              </v-col>
+              <ProgramLocationWisePieChartVue />
             </V-row>
           </v-card-text>
         </v-card>
@@ -361,6 +312,7 @@
                         item-text="name_en"
                         item-value="id"
                         @change="GetGenderWiseBeneficiaries($event)"
+                        clearable
                       ></v-select>
                     </v-row>
                   </v-col>
@@ -464,6 +416,7 @@
                         item-text="name_en"
                         item-value="id"
                         @change="GetWaitingBeneficiaries($event)"
+                        clearable
                       ></v-select>
                     </v-row>
                   </v-col>
@@ -564,6 +517,7 @@
                         item-text="name_en"
                         item-value="id"
                         @change="GetProgramWiseBeneficiaries($event)"
+                        clearable
                       ></v-select>
                     </v-row>
                   </v-col>
@@ -669,6 +623,7 @@
                         item-text="name_en"
                         item-value="id"
                         @change="GetAgeAndProgramWiseBeneficiaries($event)"
+                        clearable
                       ></v-select>
                     </v-row>
                   </v-col>
@@ -767,6 +722,7 @@
                         item-value="id"
                         v-model="shifted_beneficiary.to_program_id"
                         @input="GetShiftedBeneficiaries($event)"
+                        clearable
                       ></v-autocomplete>
                     </v-row>
                   </v-col>
@@ -785,6 +741,7 @@
                         item-value="id"
                         v-model="shifted_beneficiary.from_program_id"
                         @input="GetShiftedBeneficiaries($event)"
+                        clearable
                       ></v-autocomplete>
                     </v-row>
                   </v-col>
@@ -810,13 +767,12 @@ import Chart from "chart.js/auto";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 Chart.register(ChartDataLabels);
 extend("required", required);
-import Spinner from "@/components/Common/Spinner.vue";
+import ProgramLocationWisePieChartVue from "@/pages/BeneficiaryManagement/BeneficiaryDashboard//ProgramLocationWisePieChart.vue";
 export default {
   name: "Dashboard",
   title: "CTM - Beneficiary Dashboard",
   data() {
     return {
-      program_location_wise_ben: [],
       months: [
         "January",
         "February",
@@ -848,6 +804,7 @@ export default {
       isLoadingAgeProgram: false,
       isLoadingShifted: false,
       //for program & location wise chart
+      program_location_wise_ben: [],
       program_location_chart: null,
       program_location_Wise_beneficiary: {
         program_id: null,
@@ -905,7 +862,7 @@ export default {
   components: {
     ValidationProvider,
     ValidationObserver,
-    Spinner,
+    ProgramLocationWisePieChartVue,
   },
   computed: {
     drawer: {
@@ -939,7 +896,7 @@ export default {
     async GetAllProgram() {
       try {
         await this.$axios
-          .get("/admin/allowance/get", {
+          .get("/global/program", {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
@@ -1003,9 +960,9 @@ export default {
         })
         .then((result) => {
           this.program_location_wise_ben = result.data.data;
-          this.CreateLocationWiseBeneficiariesChart();
           this.isLoadingProgramLocation = false;
         });
+      this.CreateLocationWiseBeneficiariesChart();
     },
     submitDateProgramAndLocationWiseBeneficiary() {
       this.menu = false;
@@ -1216,64 +1173,69 @@ export default {
       if (this.program_location_chart) {
         this.program_location_chart.destroy();
       }
-      // program_location_wise_chart
-      this.program_location_chart = new Chart(
-        document.getElementById("program_location_wise_chart"),
-        {
-          type: "pie",
-          data: {
-            labels: this.program_location_wise_ben.map((row) => row.division),
-            percentage: this.program_location_wise_ben.map(
-              (row) => row.percentage
-            ),
-            datasets: [
-              {
-                label: "Values::",
-                data: this.program_location_wise_ben.map((row) => row.value),
-                backgroundColor: this.program_location_wise_ben.map(() =>
-                  this.generateRandomColor()
-                ),
-                hoverOffset: 4,
-              },
-            ],
-          },
-          options: {
-            plugins: {
-              legend: {
-                display: true,
-                position: "bottom",
-                align: "center",
-              },
-              datalabels: {
-                color: "#ffff",
-                formatter: function (value, context) {
-                  return (
-                    value +
-                    ", " +
-                    context.chart.data.percentage[context.dataIndex] +
-                    "%"
-                  );
+      if (this.program_location_wise_ben.length > 0) {
+        // program_location_wise_chart
+        this.program_location_chart = new Chart(
+          document.getElementById("program_location_wise_chart"),
+          {
+            type: "pie",
+            data: {
+              labels: this.program_location_wise_ben.map((row) => row.division),
+              percentage: this.program_location_wise_ben.map(
+                (row) => row.percentage
+              ),
+              datasets: [
+                {
+                  label: "Values::",
+                  data: this.program_location_wise_ben.map((row) => row.value),
+                  backgroundColor: this.program_location_wise_ben.map(() =>
+                    this.generateRandomColor()
+                  ),
+                  hoverOffset: 4,
+                },
+              ],
+            },
+            options: {
+              plugins: {
+                legend: {
+                  display: true,
+                  position: "bottom",
+                  align: "center",
+                },
+                datalabels: {
+                  color: "#fff",
+                  fontWeight: "bold",
+                  formatter: function (value, context) {
+                    return (
+                      value +
+                      ", " +
+                      context.chart.data.percentage[context.dataIndex] +
+                      "%"
+                    );
+                  },
                 },
               },
-            },
-            layout: {
-              padding: {
-                left: 10,
-                right: 10,
-                top: 0,
-                bottom: 10,
+              layout: {
+                padding: {
+                  left: 10,
+                  right: 10,
+                  top: 0,
+                  bottom: 10,
+                },
               },
+              responsive: true,
+              maintainAspectRatio: false,
+              aspectRatio: 1, // Aspect ratio of 1 w
             },
-            responsive: true,
-            maintainAspectRatio: false,
-            aspectRatio: 1, // Aspect ratio of 1 w
-          },
-        }
-      );
-      document.getElementById("program_location_wise_chart").style.width =
-        "350px";
-      document.getElementById("program_location_wise_chart").style.height =
-        "385px";
+          }
+        );
+        document.getElementById("program_location_wise_chart").style.width =
+          "350px";
+        document.getElementById("program_location_wise_chart").style.height =
+          "385px";
+      } else {
+        console.error("Data is not available to create chart.");
+      }
     },
     CreateGenderWiseBeneficiariesChart() {
       if (this.gender_wise_chart) {
@@ -1308,7 +1270,8 @@ export default {
                 },
               },
               datalabels: {
-                color: "#ffff",
+                color: "#fff",
+                fontWeight: "bold",
                 formatter: function (value, context) {
                   return (
                     value +
@@ -1706,15 +1669,15 @@ export default {
     },
   },
   watch: {
-    "$i18n.locale": "updateHeaderTitle",
+    // "$i18n.locale": "updateHeaderTitle",
   },
   created() {},
-  beforeMount() {
-    this.updateHeaderTitle();
-  },
+  // beforeMount() {
+  //   this.updateHeaderTitle();
+  // },
   mounted() {
     this.drawer = false;
-    this.GetLocationWiseBeneficiaries();
+    // this.GetLocationWiseBeneficiaries();
     this.GetGenderWiseBeneficiaries();
     this.GetTotalBeneficiaries();
     this.GetAllProgram();

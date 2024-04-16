@@ -82,7 +82,7 @@
                               )
                             "
                             :items="programs"
-                            item-text="name_en"
+                            :item-text="getItemText"
                             item-value="id"
                             required
                             :error="errors[0] ? true : false"
@@ -129,8 +129,34 @@
                               )
                             "
                             :items="committee_types"
-                            item-text="value_en"
+                            :item-text="getItemTextValue"
                             item-value="id"
+                            required
+                            :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"
+                          ></v-autocomplete>
+                        </ValidationProvider>
+                      </v-col>
+                      <v-col lg="6" md="6" cols="12">
+                        <ValidationProvider
+                          name="OfficeType"
+                          vid="office_type"
+                          rules="required"
+                          v-slot="{ errors }"
+                        >
+                          <v-autocomplete
+                            :hide-details="errors[0] ? false : true"
+                            v-model="data.office_type"
+                            outlined
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.committee.office_types'
+                              )
+                            "
+                            :items="officeType"
+                            :item-text="getItemTextValue"
+                            item-value="id"
+                            @input="onChangeOfficeLoad($event)"
                             required
                             :error="errors[0] ? true : false"
                             :error-messages="errors[0]"
@@ -191,7 +217,7 @@
                               )
                             "
                             :items="divisions"
-                            item-text="name_en"
+                            :item-text="getItemText"
                             item-value="id"
                             required
                             :error="errors[0] ? true : false"
@@ -229,7 +255,7 @@
                               )
                             "
                             :items="districts"
-                            item-text="name_en"
+                            :item-text="getItemText"
                             item-value="id"
                             required
                             :error="errors[0] ? true : false"
@@ -262,7 +288,7 @@
                               )
                             "
                             :items="upazilas"
-                            item-text="name_en"
+                            :item-text="getItemText"
                             item-value="id"
                             required
                             :error="errors[0] ? true : false"
@@ -295,7 +321,7 @@
                               )
                             "
                             :items="city"
-                            item-text="name_en"
+                            :item-text="getItemText"
                             item-value="id"
                             required
                             :error="errors[0] ? true : false"
@@ -329,7 +355,7 @@
                               )
                             "
                             :items="thanas"
-                            item-text="name_en"
+                            :item-text="getItemText"
                             item-value="id"
                             required
                             :error="errors[0] ? true : false"
@@ -359,7 +385,7 @@
                               )
                             "
                             :items="unions"
-                            item-text="name_en"
+                            :item-text="getItemText"
                             item-value="id"
                             required
                             :error="errors[0] ? true : false"
@@ -389,8 +415,9 @@
                               )
                             "
                             :items="unions"
-                            item-text="name_en"
+                            :item-text="getItemText"
                             item-value="id"
+                            @change="onDistrictPourosova($event)"
                             required
                             :error="errors[0] ? true : false"
                             :error-messages="errors[0]"
@@ -419,7 +446,33 @@
                               )
                             "
                             :items="wards"
-                            item-text="name_en"
+                            :item-text="getItemText"
+                            item-value="id"
+                            required
+                            :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"
+                          ></v-autocomplete>
+                        </ValidationProvider>
+                      </v-col>
+
+                      <v-col lg="6" md="6" cols="12">
+                        <ValidationProvider
+                          name="Office"
+                          vid="office"
+                          rules="required"
+                          v-slot="{ errors }"
+                        >
+                          <v-autocomplete
+                            :hide-details="errors[0] ? false : true"
+                            v-model="data.office_id"
+                            outlined
+                            :label="
+                              $t(
+                                'container.system_config.demo_graphic.committee.office'
+                              )
+                            "
+                            :items="office"
+                            :item-text="getItemText"
                             item-value="id"
                             required
                             :error="errors[0] ? true : false"
@@ -458,7 +511,6 @@
                                     )
                                   "
                                   v-model="data.members[index]['member_name']"
-                                  required
                                   outlined
                                   :id="member"
                                   :error="errors[0] ? true : false"
@@ -479,7 +531,7 @@
                                   outlined
                                   :id="member"
                                   :items="designations"
-                                  item-text="value_en"
+                                  :item-text="getItemTextValue"
                                   item-value="id"
                                   :label="
                                     $t(
@@ -655,6 +707,7 @@ export default {
         upazila_id: null,
         thana_id: null,
         office_type: null,
+        location_id: null,
         office_address: null,
         comment: null,
         status: "0",
@@ -665,9 +718,10 @@ export default {
         thana_id: null,
         union_id: null,
         paurashava_id: null,
+        office_id: null,
         members: [
           {
-            member_name: null,
+            member_name: "",
             designation: null,
             address: null,
             email: null,
@@ -700,6 +754,7 @@ export default {
       committee_types: [],
       designations: [],
       offices: [],
+      office: [],
       unions: [],
       programs: [],
       officeType: [],
@@ -776,10 +831,14 @@ export default {
         },
       ];
     },
-
     ...mapState({
       divisions: (state) => state.Division.divisions,
     }),
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      },
+    },
     filteredOptions() {
       // Apply your filter logic here, e.g., filtering out options with 'Option 2' label
       return this.locationType.filter(
@@ -848,6 +907,12 @@ export default {
       } catch (e) {
         console.log(e);
       }
+    },
+    getItemText(item) {
+      return this.language === "bn" ? item.name_bn : item.name_en;
+    },
+    getItemTextValue(item) {
+      return this.language === "bn" ? item.value_bn : item.value_en;
     },
     async updateOffice() {
       let fd = new FormData();
@@ -932,7 +997,7 @@ export default {
     /* -------------------------------------------------------------------------- */
     /*                               Getters Define                               */
     /* -------------------------------------------------------------------------- */
-    async GetCommitteeType() {
+    async GetOfficeType() {
       try {
         this.$store.dispatch("getLookupByType", 3).then((data) => {
           this.officeType = data;
@@ -942,6 +1007,42 @@ export default {
         console.log(e);
       }
     },
+    async onChangeOfficeLoad(event) {
+      this.GetOffice();
+    },
+    async onDistrictPourosova(event) {
+      this.data.location_id = event;
+      this.GetOffice();
+    },
+    async GetOffice() {
+      this.office = [];
+      const queryParams = {
+        office_type: this.data.office_type,
+        location_id: this.data.location_id,
+      };
+      await this.$axios
+        .get("/global/office-list", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          this.office = result.data.data;
+        });
+
+      // await this.$axios
+      //   .get(`/global/office-list/${event}`, {
+      //     headers: {
+      //       Authorization: "Bearer " + this.$store.state.token,
+      //       "Content-Type": "multipart/form-data",
+      //     },
+      //   })
+      //   .then((result) => {
+      //     this.office = result.data.data;
+      //   });
+    },
     async GetAllUpazila(id) {
       console.log(id, "GetAllUpazila");
       try {
@@ -950,6 +1051,10 @@ export default {
           .then((data) => {
             console.log(data, "GetAllUpazilaByDistrict");
             this.upazilas = data;
+
+            //Office Load
+            this.data.location_id = id;
+            this.GetOffice();
           });
       } catch (e) {
         console.log(e);
@@ -958,7 +1063,7 @@ export default {
     async GetAllProgram() {
       try {
         this.$axios
-          .get("/admin/allowance/get", {
+          .get("/global/program", {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
@@ -1057,6 +1162,10 @@ export default {
         .then((result) => {
           this.unions = result.data.data;
           console.log(this.unions, "unions");
+
+          //Office Load
+          this.data.location_id = event;
+          this.GetOffice(event);
         });
     },
     async onChangeThana(event) {
@@ -1099,6 +1208,9 @@ export default {
         })
         .then((result) => {
           this.thanas = result.data.data;
+          //Office Load
+          this.data.location_id = event;
+          this.GetOffice(event);
         });
     },
     async onChangeCommitteeType(event) {
@@ -1141,6 +1253,10 @@ export default {
           .then((result) => {
             this.unions = lookupType === 1 ? result.data.data : [];
             this.city = lookupType === 3 ? result.data.data : [];
+
+            // //Office Load
+            // this.data.location_id = this.data.district_id;
+            // this.GetOffice();
           });
       }
     },
@@ -1184,7 +1300,9 @@ export default {
       this.dialogEdit = null;
       this.data.id = null;
       this.data.office_type = null;
+      this.data.location_id = null;
       this.office_type_id = null;
+      this.office_id = null;
       //   this.data.name_en = null;
       this.data.name_bn = null;
       this.data.office_address = null;
@@ -1224,9 +1342,7 @@ export default {
     this.GetAllDesignation();
     // this.GetAllUpazila();
     // this.GetCityCorporation();
-    // this.$store
-    //   .dispatch("getLookupByType", 1)
-    //   .then((res) => (this.locationType = res));
+    this.GetOfficeType();
   },
   watch: {
     "$i18n.locale": "updateHeaderTitle",

@@ -57,14 +57,14 @@
                                             <v-row>
                                                 <v-col>
                                                     <label>{{ $t('container.system_audit.nbr') }}</label>
-                                                    <v-text-field outlined clearable></v-text-field>
+                                                    <v-text-field outlined clearable v-model="data.nid"></v-text-field>
                                                 </v-col>
 
                                                 <v-col>
                                                     <label>{{
                                                         $t('container.application_selection.application.date_of_birth')
                                                         }}</label>
-                                                    <v-text-field outlined clearable type="date"></v-text-field>
+                                                    <v-text-field outlined clearable v-model="data.date_of_birth" type="date"></v-text-field>
                                                 </v-col>
                                             </v-row>
                                         </div>
@@ -137,6 +137,18 @@
                                                 <br>
                                                 <table style="margin: 0 auto; width: 100%; font-size: 12px;">
                                                     <tbody>
+                                                           <tr>
+                                                                <td>Application Accepted</td>
+                                                                <td>
+                                                               <v-timeline>
+                                                                   <v-timeline-item :color="getTimelineColor(1)"
+                                                                                    :icon="getTimelineIcon(1)">
+                                                                   </v-timeline-item>
+                                                               </v-timeline>
+                                                                </td>
+                                                                 <td>Your application is accepte</td>
+                                                                 <br>Time : {{ this.localTime }} </br> Date: {{ this.localDate }}</td>
+                                                            </tr>
                                                         <tr v-for="item in tracking" :key="item.name">
                                                             <td style="width: 20%;">{{ language == 'bn' ?
                                                                 item.name_bn :
@@ -217,6 +229,8 @@ export default {
         return {
             data: {
                 tracking_no: null,
+                nid: null,
+                date_of_birth: null,
                 tracking_type: 2,
                 data_of_birth:null,
                 nid_no:null
@@ -227,15 +241,15 @@ export default {
             localTime: null,
             tracking: [],
             tracking: [
-                {
-                    icon: 'mdi mdi-check',
-                    name_en: 'Application Accepted',
-                    name_bn: 'আবেদন গৃহীত',
-                    state_en: 'Your application is accepted',
-                    state_bn: 'আপনার আবেদন গৃহীত হয়েছে',
+                // {
+                //     icon: 'mdi mdi-check',
+                //     name_en: 'Application Accepted',
+                //     name_bn: 'আবেদন গৃহীত',
+                //     state_en: 'Your application is accepted',
+                //     state_bn: 'আপনার আবেদন গৃহীত হয়েছে',
                    
-                    status: '',
-                },
+                //     status: '',
+                // },
                 {
                     icon: 'mdi mdi-check',
                     name_en: 'Primarily Verification',
@@ -344,12 +358,7 @@ export default {
         
 
         applicationTracking() {
-            let data = {
-                tracking_no: this.data.tracking_no,
-                nid: this.data.nid,
-                date_of_birth: this.data.date_of_birth,
-            };
-            this.$axios.post("global/applicants_tracking", data, {
+            this.$axios.post("global/applicants_tracking", this.data, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     Accept: "application/json",

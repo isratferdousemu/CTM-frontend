@@ -132,7 +132,7 @@ const BeneficiaryManagementRoutes = [
     },
     component: () =>
       import(
-        "../pages/BeneficiaryManagement/BeneficiaryDashboard/Dashboard.vue"
+        "../pages/BeneficiaryManagement/BeneficiaryDashboard/Dashboard_v2.vue"
       ),
   },
   // {
@@ -250,7 +250,7 @@ const BeneficiaryManagementRoutes = [
       permission: "beneficiaryShifting-create",
     },
     component: () =>
-      import("../pages/BeneficiaryManagement/BeneficiaryShifting/Index.vue"),
+      import("../pages/BeneficiaryManagement/BeneficiaryShifting/Index_v2.vue"),
   },
   {
     path: "/beneficiary-management/beneficiary-shifting-list",
