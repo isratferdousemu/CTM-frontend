@@ -1,10 +1,10 @@
 const ActivityLogRoutes = [
     {
-        path: "/activity-logs",
+        path: "/system-audit/activity-logs",
         name: "activityLog",
         meta: {
             requiresAuth: true,
-            permission: "activity_log-list",
+            permission: "activityLog-view",
         },
         component: () => import("../pages/ActivityLog/Index.vue")
     },

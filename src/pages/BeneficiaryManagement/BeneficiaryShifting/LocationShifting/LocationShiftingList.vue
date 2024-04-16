@@ -1261,7 +1261,7 @@ export default {
         // sortBy: this.sortBy,
         // orderBy: this.sortDesc,
       };
-      this.$axios
+      await this.$axios
         .get("/admin/beneficiary/locationShiftingList", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,

@@ -1015,7 +1015,13 @@
     },
     "activity_log": {
       "title": "এক্টিভিটি লগের তালিকা",
+      "log_view": "এক্টিভিটি লগের বিস্তারিত তথ্য",
       "name": "লগের নাম",
+      "action_type": "কর্মের ধরন",
+      "user_name": "ব্যবহারকারীর নাম",
+      "user_email": "ইমেইল",
+      "device": "ডিভাইস",
+      "source_ip": "উৎস আইপি",
       "description": "বর্ননা",
       "change_info": "পরিবর্তন ",
       "login_user_info": "লগইন ইউজার তথ্য",
@@ -1037,6 +1043,30 @@
       "number_of_application_rejected": "প্রত্যাখ্যানকৃত আবেদনের সংখ্যা",
       "total_number_of_application_received_application": "প্রাপ্ত আবেদনপত্রের মোট সংখ্যা",
       "number_of_application_forwarded": "ফরোয়ার্ড করা আবেদনের সংখ্যা"
+    },
+    "grievance_management":{
+      "add_new_type": "নতুন টাইপ যোগ করুন",
+      "grievanceType": "অভিযোগের ধরন",
+      "title_en": "শিরোনাম (ইংরেজি)",
+      "title_bn": "শিরোনাম (বাংলা)",
+      "add_grievance_type": "নতুন অভিযোগের ধরন যোগ করুন",
+      "edit_grievance_type": "অভিযোগের ধরন আপডেট করুন",
+      "add_new_subject": "নতুন অভিযোগের বিষয় যোগ করুন",
+      "grievance_subject": "অভিযোগ বিষয়",
+      "add_grievance_subject": "নতুন বিষয় যোগ করুন",
+      "edit_grievance_subject": "অভিযোগের বিষয় আপডেট করুন",
+      "main_grievance_type": "অভিযোগের ধরন",
+      "grievance_settings": "অভিযোগ সেটিংস",
+      "grievance_delete": "অভিযোগের ধরন মুছুন",
+      "grievance_delete_message": "আপনি এই অভিযোগের ধরন মুছে ফেলার বিষয়ে নিশ্চিত?",
+      "grievance_subject_delete": "অভিযোগের বিষয় মুছুন",
+      "grievance_subject_delete_message": "আপনি এই অভিযোগের বিষয় মুছে ফেলার বিষয়ে নিশ্চিত?",
+      "grievance_setup": "অভিযোগ সেট করুন",
+      "add_new_grievance_setting": "নতুন অভিযোগ সেটিং যোগ করুন",
+      "solution_time": "সমাধানের সময় (দিন)",
+      "1stOfficer": "১ম টায়ার (১ম অফিসার)",
+      "2ndOfficer": "২য় টায়ার (২য় অফিসার)",
+      "3rdOfficer": "3য় টায়ার (3য় অফিসার)"
     }
   }
 }
