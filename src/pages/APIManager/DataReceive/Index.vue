@@ -2,7 +2,7 @@
 
 export default {
     name: "Index",
-    title: "CTM - Api Data Receive",
+    title: "CTM - API Generate",
     data() {
         return {
             data: {
@@ -20,19 +20,48 @@ export default {
             loading: false,
             search: "",
             delete_id: "",
-            urls: [],
+            apis: [],
             Alldivisions: [],
             errors: {},
             error_status: {},
             pagination: {
                 current: 1,
                 total: 0,
-                perPage: 15,
+                perPage: 5
             },
             sortBy: "name_en",
             sortDesc: false, //ASC
-            // errors: "",
             items: [5, 10, 15, 20, 40, 50, 100],
+            // items: 
+            // [
+            //         {
+            //             "name_en": 5,
+            //             "name_bn": "৫"
+            //         },
+            //         {
+            //             "name_en": 10,
+            //             "name_bn": "১০"
+            //         },
+
+            //     {
+            //         "name_en": 30,
+            //         "name_bn": "৩০"
+            //     },
+            //     {
+            //         "name_en": 40,
+            //         "name_bn": "৪০"
+            //     },
+            //     {
+            //         "name_en": 50,
+            //         "name_bn": "৫০"
+            //     },
+
+
+            //     {
+            //         "name_en": 100,
+            //         "name_bn": "১০০"
+            //     }
+            // ]
         };
     },
 
@@ -49,33 +78,191 @@ export default {
         },
         headers() {
             return [
-                { text: this.$t('container.list.sl'), value: "id", align: "start", sortable: false, width: "10%" },
-                { text: this.$t('container.api_manager.data_receive.organization'), value: "name", width: "15%" },
-                { text: this.$t('container.api_manager.data_receive.phone'), value: "url", width: "25%"  },
-                { text: this.$t('container.api_manager.data_receive.api'), value: "table", width: "15%"  },
-                { text: this.$t('container.api_manager.data_receive.total_heat'), value: "method", width: "15%" },
-                { text: this.$t('container.api_manager.data_receive.dutaion'), value: "method", width: "15%" },
-                { text: this.$t('container.api_manager.data_receive.api_key'), value: "method", width: "15%" },
+                { text: this.$t('container.list.sl'), value: "id", align: "start", sortable: false, width: "15%" },
+                { text: this.$t('container.api_manager.api_generate.api_name'), value: "name", width: "20%" },
+                { text: this.$t('container.api_manager.api_generate.parameter'), value: "selected_columns", width: "45%" },
 
-                { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false, width: "20%"  },
+
+                { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false, width: "20%" },
             ];
         },
 
-      
+
     },
 
     mounted() {
-        this.GetURL();
-     
+        this.GetAPI();
+
     },
 
     methods: {
-        PageSetup(){
-             this.pagination.current=1;
-            this.GetURL();
+        async GeneratePDF() {
+            this.isLoading = true;
+            let page;
+            if (!this.sortBy) {
+                page = this.pagination.current;
+            }
+            const queryParams = {
+                language: this.$i18n.locale,
+                searchText: this.search,
+                perPage: this.search.trim() === '' ? this.total : this.total,
+                page: this.pagination.current,
+                sortBy: this.sortBy,
+                orderBy: this.sortDesc,
+            };
+
+            await this.$axios
+                .get("/admin/api-list", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                    params: queryParams,
+                })
+                .then((result) => {
+                    this.apis = result?.data?.data?.data;
+                });
+
+            const HeaderInfo = [
+                this.$t("container.list.sl"),
+                this.$t('container.api_manager.api_generate.api_name'),
+                this.$t('container.api_manager.api_generate.parameter'),
+
+            ]
+
+
+            const CustomInfo = this.apis.map(((i, index) => {
+
+                return [
+                    this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+                    this.$i18n.locale == 'en' ? i.name : i.name,
+                    i.selected_columns.join(', '),
+
+
+                ]
+            }));
+
+            const queryParam = {
+                language: this.$i18n.locale,
+                data: CustomInfo,
+                header: HeaderInfo,
+                fileName: this.$t("container.api_manager.api_generate.list"),
+            };
+            try {
+                const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "application/json", // Set content type to JSON
+                    },
+                    responseType: 'arraybuffer',
+                });
+
+                const blob = new Blob([response.data], { type: 'application/pdf' });
+                const url = window.URL.createObjectURL(blob);
+                window.open(url, '_blank');
+                this.isLoading = false;
+            } catch (error) {
+                this.isLoading = false;
+                console.error('Error generating PDF:', error);
+            }
+        },
+        async GenerateExcel() {
+            this.isLoading = true;
+            let page;
+            if (!this.sortBy) {
+                page = this.pagination.current;
+            }
+            const queryParams = {
+                language: this.$i18n.locale,
+                searchText: this.search,
+                perPage: this.search.trim() === '' ? this.total : this.total,
+                page: this.pagination.current,
+                sortBy: this.sortBy,
+                orderBy: this.sortDesc,
+            };
+
+            await this.$axios
+                .get("/admin/api-list", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                    params: queryParams,
+                })
+                .then((result) => {
+                    this.apis = result?.data?.data?.data;
+                })
+                .catch(error => {
+                    this.isLoading = false;
+                });
+
+            try {
+                import('@/plugins/Export2Excel').then((excel) => {
+
+                    const HeaderInfo = [
+                        this.$t("container.list.sl"),
+                        this.$t('container.api_manager.api_generate.api_name'),
+                        this.$t('container.api_manager.api_generate.parameter'),
+                    ]
+
+                    const CustomInfo = this.apis.map(((i, index) => {
+                        return {
+                            "sl": this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+                            "name": this.$i18n.locale == 'en' ? i.name : i.name,
+                            "parameter": i.selected_columns.join(', '),
+
+
+                        }
+                    }));
+
+                    const Field = ['sl', 'name', 'parameter']
+
+                    const Data = this.FormatJson(Field, CustomInfo)
+                    const currentDate = new Date().toISOString().slice(0, 10); //
+                    let dateinfo = queryParams.language == 'en' ? currentDate : this.$helpers.englishToBangla(currentDate)
+
+                    const filenameWithDate = `${dateinfo}_${this.$t("container.api_manager.api_generate.list")}`;
+
+                    excel.export_json_to_excel({
+                        header: HeaderInfo,
+                        data: Data,
+                        sheetName: filenameWithDate,
+                        filename: filenameWithDate,
+                        autoWidth: true,
+                        bookType: "xlsx"
+                    })
+                })
+            } catch (error) {
+                // Handle any errors here
+                this.isLoading = false;
+            } finally {
+                this.isLoading = false;
+            }
+        },
+        FormatJson(FilterData, JsonData) {
+            return JsonData.map((v) =>
+                FilterData.map((j => {
+                    return v[j];
+                })))
+        },
+
+        showMore(id) {
+
+            this.$router.push(`/api-manager/api-generate/view/${id}`);
 
         },
-        async GetURL() {
+        localizationPage(item) {
+
+            return this.language === 'bn' ? item.name_bn : item.name_en;
+
+
+        },
+        PageSetup() {
+            this.pagination.current = 1;
+            this.GetAPI();
+
+        },
+        async GetAPI() {
             const queryParams = {
                 search: this.search,
                 perPage: this.pagination.perPage,
@@ -84,7 +271,7 @@ export default {
                 sortDesc: this.sortDesc,
             };
             this.$axios
-                .get("/admin/api-url", {
+                .get("/admin/api-list", {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -93,7 +280,7 @@ export default {
                 })
                 .then((result) => {
                     this.total = result?.data?.data?.total;
-                    this.urls = result?.data?.data.data;
+                    this.apis = result?.data?.data.data;
                     this.pagination.current = result?.data?.data?.current_page;
                     this.pagination.total = result?.data?.data?.last_page;
                     this.pagination.grand_total = result?.data?.data?.total;
@@ -101,7 +288,7 @@ export default {
         },
         onPageChange($event) {
             // this.pagination.current = $event;
-            this.GetURL();
+            this.GetAPI();
         },
         submitUrl() {
             this.$axios
@@ -117,8 +304,8 @@ export default {
 
                     } else {
                         this.$refs.formAdd.setErrors(result.data.errors);
-                  
-                     
+
+
                     }
 
                 })
@@ -134,9 +321,9 @@ export default {
 
         },
 
-       
-        
-        
+
+
+
 
         deleteAlert(id) {
             this.deleteDialog = true;
@@ -145,7 +332,7 @@ export default {
 
         deleteURL: async function () {
             this.$axios
-                .delete(`admin/api-url/${this.deleted_id }`, {
+                .delete(`admin/api-list/${this.deleted_id}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "application/json", // Use application/json instead of multipart/form-data
@@ -156,12 +343,12 @@ export default {
                     if (res?.data?.success == true) {
                         this.$toast.success(res.data.message);
                         this.deleteDialog = false;
-                        this.GetURL();
+                        this.GetAPI();
                     }
                     if (res?.data?.success == false) {
                         this.$toast.error(res.data.message);
                     }
-               
+
 
 
                 })
@@ -171,7 +358,7 @@ export default {
                 });
         },
 
-   
+
 
     },
 }
@@ -186,19 +373,19 @@ export default {
                         <v-card>
 
                             <v-card-title class="justify-center">
-                                <h4>{{ $t('container.api_manager.url_generate.list') }}</h4>
+                                <h4>{{ $t('container.api_manager.api_generate.list') }}</h4>
                             </v-card-title>
 
 
                             <!-- <v-divider></v-divider> -->
 
                             <v-card-text>
-                                <v-card-title class="mb-5">
+                                <v-card-title class="mb-5 ml-5">
                                     <div class="d-flex justify-sm-end flex-wrap">
                                         <v-text-field @keyup.native="PageSetup" v-model="search"
                                             append-icon="mdi-magnify" :label="$t(
-                                            'container.list.search'
-                                        )" hide-details class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal" flat
+                                    'container.list.search'
+                                )" hide-details class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal" flat
                                             outlined dense></v-text-field>
                                     </div>
 
@@ -206,109 +393,134 @@ export default {
 
 
 
-                                    <!-- <v-col lg="4" md="6" cols="12" class="text-right">
+                                    <v-col lg="4" md="6" cols="12" class="text-right">
                                         <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4"
-                                            @click="GeneratePdf()">
+                                            @click="GeneratePDF()">
                                             <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{
-                                            $t("container.list.PDF") }}
+                                    $t("container.list.PDF") }}
                                         </v-btn>
                                         <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2"
                                             @click="GenerateExcel()">
                                             <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
                                             {{ $t("container.list.excel") }}
                                         </v-btn>
-                                    </v-col> -->
+                                    </v-col>
 
-                                    <v-btn medium flat color="primary" router to="/api-manager/url-generate/create"
+                                    <v-btn medium flat color="primary" router to="/api-manager/api-generate/create"
                                         v-can="'url-create'">
                                         <v-icon small left>mdi-plus</v-icon>
                                         <span>{{
-                                            $t('container.list.add_new') }}</span>
+                                    $t('container.list.add_new') }}</span>
                                     </v-btn>
                                 </v-card-title>
 
-                                <v-card-subtitle>
-                                    {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">
+                                <v-card-subtitle class="mx-5">
+                                    {{ $t('container.list.total') }}:&nbsp;<span style=" font-weight: bold;">
                                         {{ language === 'bn' ? $helpers.englishToBangla(
-                                        this.total) : this.total}}
+                                    this.total) : this.total }}
                                     </span>
 
-                                    <v-data-table :loading="loading" item-key="id" :headers="headers" :items="urls"
-                                        :items-per-page="pagination.perPage" hide-default-footer
-                                        class="elevation-0 transparent row-pointer mt-5">
-                                        <template v-slot:item.id="{ item, index }">
+                                </v-card-subtitle>
+                                <v-data-table :loading="loading" item-key="id" :headers="headers" :items="apis"
+                                    :items-per-page="pagination.perPage" hide-default-footer
+                                    class="elevation-0 transparent row-pointer mt-5 mx-5">
+                                    <template v-slot:item.id="{ item, index }">
 
-                                            {{ language === 'bn' ? $helpers.englishToBangla(
-                                            (pagination.current - 1) * pagination.perPage +
-                                            index +
-                                            1) : (pagination.current - 1) * pagination.perPage +
-                                            index +
-                                            1 }}
-
-
-                                        </template>
+                                        {{ language === 'bn' ? $helpers.englishToBangla(
+                                    (pagination.current - 1) * pagination.perPage +
+                                    index +
+                                    1) : (pagination.current - 1) * pagination.perPage +
+                                    index +
+                                    1 }}
 
 
-                                        <template v-slot:item.name="{ item }">
-                                            {{ item.name }}
-                                        </template>
+                                    </template>
 
-                                        <!-- Action Button -->
-                                        <template v-slot:item.actions="{ item }">
-                                            <v-tooltip top>
-                                                <template v-slot:activator="{ on }">
-                                                    <v-btn v-can="'url-view'" fab x-small v-on="on" color="#AFB42B"
-                                                        elevation="0" router class="mr-3 white--text" 
-                                                        :to="`/api-manager/url-generate/view/${item.id}`">
-                                                        <v-icon> mdi-eye </v-icon>
-                                                    </v-btn>
-                                                </template>
-                                                <span>
-                                                    {{ $t("container.list.view") }}
-                                                </span>
-                                            </v-tooltip>
-                                            <v-tooltip top>
-                                                <template v-slot:activator="{ on }">
-                                                    <v-btn v-can="'url-edit'" fab x-small v-on="on" color="success"
-                                                        elevation="0" router
-                                                        :to="`/api-manager/url-generate/edit/${item.id}`">
-                                                        <v-icon> mdi-account-edit-outline </v-icon>
-                                                    </v-btn>
-                                                </template>
-                                                <span>
-                                                    {{ $t("container.list.edit") }}
-                                                </span>
-                                            </v-tooltip>
 
-                                            <v-tooltip top>
-                                                <template v-slot:activator="{ on }">
-                                                    <v-btn v-can="'url-delete'" fab x-small v-on="on" color="grey"
-                                                        class="ml-3 white--text" elevation="0"
-                                                        @click="deleteAlert(item.id)">
-                                                        <v-icon> mdi-delete </v-icon>
-                                                    </v-btn>
-                                                </template>
-                                                <span> {{ $t("container.list.delete") }}</span>
-                                            </v-tooltip>
-                                        </template>
-                                        <!-- End Action Button -->
 
-                                        <template v-slot:footer="item">
-                                            <div class="text-center pt-2 v-data-footer justify-center pb-2">
-                                                <v-select style="
+                                    <template v-slot:item.selected_columns="{ item }">
+                                        <span v-for="(value, key) in item.selected_columns" :key="key">
+                                            <v-chip small label color="#FACD91" class="ma-1" v-if="key < 10">
+                                                {{ value }}
+                                            </v-chip> &nbsp;
+                                            <v-btn color="#FACD91" class="text-caption"
+                                                v-if="key == 9 && Object.keys(item.selected_columns).length > 10"
+                                                x-small @click="showMore(item.id)">+{{
+                                    Object.keys(item.selected_columns).length - 10 }} more</v-btn>
+
+                                        </span>
+                                        <!-- <br><br>
+                                        <span v-for="(value, key) in item.selected_columns" :key="key">
+                                            <v-chip small label color="#FACD91" class="ma-1 ">
+                                                {{ value }}
+                                            </v-chip>
+                                        </span> -->
+
+                                    </template>
+
+
+
+
+
+                                    <!-- Action Button -->
+                                    <template v-slot:item.actions="{ item }">
+                                        <v-tooltip top>
+                                            <template v-slot:activator="{ on }">
+                                                <v-btn v-can="'url-view'" fab x-small v-on="on" color="#AFB42B"
+                                                    elevation="0" router class="mr-3 white--text"
+                                                    :to="`/api-manager/api-generate/view/${item.id}`">
+                                                    <v-icon> mdi-eye </v-icon>
+                                                </v-btn>
+                                            </template>
+                                            <span>
+                                                {{ $t("container.list.view") }}
+                                            </span>
+                                        </v-tooltip>
+                                        <v-tooltip top>
+                                            <template v-slot:activator="{ on }">
+                                                <v-btn v-can="'url-edit'" fab x-small v-on="on" color="success"
+                                                    elevation="0" router
+                                                    :to="`/api-manager/api-generate/edit/${item.id}`">
+                                                    <v-icon> mdi-account-edit-outline </v-icon>
+                                                </v-btn>
+                                            </template>
+                                            <span>
+                                                {{ $t("container.list.edit") }}
+                                            </span>
+                                        </v-tooltip>
+
+                                        <v-tooltip top>
+                                            <template v-slot:activator="{ on }">
+                                                <v-btn v-can="'api-delete'" fab x-small v-on="on" color="grey"
+                                                    class="ml-3 white--text" elevation="0"
+                                                    @click="deleteAlert(item.id)">
+                                                    <v-icon> mdi-delete </v-icon>
+                                                </v-btn>
+                                            </template>
+                                            <span> {{ $t("container.list.delete") }}</span>
+                                        </v-tooltip>
+                                    </template>
+                                    <!-- End Action Button -->
+
+                                    <template v-slot:footer="item">
+                                        <div class="text-center pt-2 v-data-footer justify-center pb-2">
+                                            <v-select style="
                               position: absolute;
                               right: 25px;
                               width: 149px;
                               transform: translate(0px, 0px);
-                            " :items="items" hide-details dense outlined @change="onPageChange"
-                                                    v-model="pagination.perPage"></v-select>
-                                                <v-pagination circle primary v-model="pagination.current"
-                                                    :length="pagination.total" @input="onPageChange" :total-visible="11"
-                                                    class="custom-pagination-item"></v-pagination>
-                                            </div>
-                                        </template>
-                                    </v-data-table>
-                                </v-card-subtitle>
+                            
+                                    
+                                                " :items="items" hide-details dense outlined @change="onPageChange"
+                                                v-model="pagination.perPage"></v-select>
+                                            <!-- :item-text="localizationPage" item-value="name_en"  -->
+                                            <v-pagination circle primary v-model="pagination.current"
+                                                :length="pagination.total" @input="onPageChange" :total-visible="11"
+                                                class="custom-pagination-item"></v-pagination>
+                                        </div>
+                                    </template>
+                                </v-data-table>
+
                             </v-card-text>
                         </v-card>
                     </v-col>
@@ -319,12 +531,12 @@ export default {
             <v-dialog v-model="deleteDialog" width="350">
                 <v-card style="justify-content: center; text-align: center">
                     <v-card-title class="font-weight-bold justify-center">
-                        {{ $t('container.api_manager.url_generate.delete_header') }}
+                        {{ $t('container.api_manager.api_generate.delete_header') }}
                     </v-card-title>
                     <v-divider></v-divider>
                     <v-card-text>
                         <div class="subtitle-1 font-weight-medium mt-5">
-                            {{ $t('container.api_manager.url_generate.delete_alert') }}
+                            {{ $t('container.api_manager.api_generate.delete_alert') }}
 
 
                         </div>
@@ -348,4 +560,23 @@ export default {
     </div>
 </template>
 
-<style lang="css" scoped></style>
+<style>
+.text-wrap {
+    /* You can adjust these properties as needed */
+    overflow-wrap: break-word;
+    /* Handles long words */
+    word-wrap: break-word;
+    /* Handles long words */
+    white-space: pre-wrap;
+    /* Handles spaces and line breaks */
+}
+
+.word-wrap {
+    overflow-wrap: break-word;
+}
+
+.custom-chip {
+    background-color: blue;
+    color: white;
+}
+</style>
