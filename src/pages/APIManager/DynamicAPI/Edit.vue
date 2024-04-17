@@ -46,6 +46,8 @@ export default {
     methods: {
         handleChange() {
             // Find the selected module by its id
+            // Find the selected module by its id
+            this.data.selected_columns = [];
             const selectedModule = this.modules.find(module => module.id === this.data.module);
             if (selectedModule) {
                 // const purposes = selectedModule.purposes;
@@ -213,7 +215,7 @@ export default {
                                                     v-slot="{ errors }">
                                                     <v-select type="text" v-model="data.api_purpose_id" :label="$t('container.api_manager.api_generate.purpose')
                                         " persistent-hint outlined :error="errors[0] ? true : false" :items="purposes"
-                                                        item-text="purpose" item-value="api_module_id"
+                                                        item-text="purpose" item-value="id"
                                                         :error-messages="errors[0]" @change="Change"></v-select>
                                                 </ValidationProvider>
                                             </v-col>
