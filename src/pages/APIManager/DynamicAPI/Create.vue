@@ -48,6 +48,8 @@ export default {
     methods: {
         handleChange() {
             // Find the selected module by its id
+            this.data.selected_columns = [];
+            this.data.api_purpose_id=null;
             const selectedModule = this.modules.find(module => module.id == this.data.module);
             if (selectedModule) {
                 // const purposes = selectedModule.purposes;
