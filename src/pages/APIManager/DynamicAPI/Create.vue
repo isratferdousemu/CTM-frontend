@@ -48,10 +48,10 @@ export default {
     methods: {
         handleChange() {
             // Find the selected module by its id
-            const selectedModule = this.modules.find(module => module.id === this.data.module);
+            const selectedModule = this.modules.find(module => module.id == this.data.module);
             if (selectedModule) {
                 // const purposes = selectedModule.purposes;
-               this.purposes=selectedModule.purposes
+               this.purposes=selectedModule?.purposes
                 console.log(this.purposes,"purposes")
               
             }
@@ -59,6 +59,7 @@ export default {
         },
         Change() {
             // Find the selected module by its id
+            this.data.selected_columns=[];
             const selectedpurpose = this.purposes.find(purpose => purpose.id === this.data.api_purpose_id);
             if (selectedpurpose) {
                 // const purposes = selectedModule.purposes;
@@ -169,15 +170,16 @@ export default {
                                             <v-col cols="12" sm="4" lg="4">
                                                 <ValidationProvider name="Purpose" vid="purpose" rules="required"
                                                     v-slot="{ errors }">
+                                                   
                                                     <v-select type="text" v-model="data.api_purpose_id" :label="$t('container.api_manager.api_generate.purpose')
                                         " persistent-hint outlined :error="errors[0] ? true : false" :items="purposes"
-                                                        item-text="purpose" item-value="api_module_id"
+                                                        item-text="purpose" item-value="id"
                                                         :error-messages="errors[0]" @change="Change"></v-select>
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols="12" sm="12" lg="12">
                                                 <ValidationProvider name="Select Column" vid="Parameter"
-                                                     v-slot="{ errors }">
+                                                    v-slot="{ errors }">
                                                     <!-- <v-select multiple type="text" v-model="data.selected_columns"
                                                         :label="$t('container.api_manager.api_generate.select_column')
                                         " persistent-hint outlined :error="errors[0] ? true : false"
