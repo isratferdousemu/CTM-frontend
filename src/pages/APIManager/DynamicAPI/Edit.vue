@@ -47,9 +47,12 @@ export default {
         handleChange() {
             // Find the selected module by its id
             // Find the selected module by its id
-            this.data.selected_columns = [];
+          
+         this.data.selected_columns=[];
+            this.data.api_purpose_id=null;
             const selectedModule = this.modules.find(module => module.id === this.data.module);
             if (selectedModule) {
+              
                 // const purposes = selectedModule.purposes;
                 this.purposes = selectedModule.purposes
                 console.log(this.purposes, "purposes")
@@ -57,7 +60,24 @@ export default {
             }
 
         },
+        handleChange_1() {
+            // Find the selected module by its id
+            // Find the selected module by its id
+
+          
+            const selectedModule = this.modules.find(module => module.id === this.data.module);
+            if (selectedModule) {
+
+                // const purposes = selectedModule.purposes;
+                this.purposes = selectedModule.purposes
+                console.log(this.purposes, "purposes")
+
+            }
+
+        },
+       
         APIView() {
+          
             console.log(this.$route.params.id, "params")
             this.$axios
                 .get(`admin/api-list/${this.$route.params.id}`, {
@@ -70,8 +90,11 @@ export default {
                     console.log(result, "result")
                     this.data = result?.data?.data
                     this.data.module = result?.data?.data?.purpose?.api_module_id;
-                    this.handleChange();
-                    this.Change();
+                    this.data.api_unique_id= result?.data?.data?.purpose?.api_unique_id
+;
+                    this.handleChange_1();
+                    this.Change_1();
+                    console.log("selected_columns",this.data.selected_columns)
 
                 })
                 .catch((err) => {
@@ -88,6 +111,20 @@ export default {
 
         Change() {
             // Find the selected module by its id
+            this.data.selected_columns = [];
+            const selectedpurpose = this.purposes.find(purpose => purpose.id == this.data.api_purpose_id);
+            if (selectedpurpose) {
+                // const purposes = selectedModule.purposes;
+                this.data.api_unique_id = selectedpurpose.api_unique_id
+                this.selected_columns = selectedpurpose.columns
+
+
+            }
+
+        },
+        Change_1() {
+            // Find the selected module by its id
+     
             const selectedpurpose = this.purposes.find(purpose => purpose.id == this.data.api_purpose_id);
             if (selectedpurpose) {
                 // const purposes = selectedModule.purposes;
