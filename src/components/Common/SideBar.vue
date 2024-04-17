@@ -8,7 +8,12 @@
     fixed
     app
     class="mr-9 ml-3 my-3 nav-height rounded-lg nav-left-custom">
-    <v-divider></v-divider>
+<!--    <v-divider></v-divider>-->
+    <div style="background-color:white;">
+      <h3 class="text-center pt-5" style="color:#1C3B68;">{{  this.$t("leftSidebar.title") }}</h3>
+      <h4 class="text-center pt-6" style="border-bottom:1px solid white"></h4>
+    </div>
+
     <v-list two-line  class="white--text left-sidebar p-0">
         <template v-for="(menu,index) in menus">
             <v-list-item  class="white--text" v-if="menu.children.length==0"
@@ -17,9 +22,9 @@
             :class="checkIsActive(menu?.page_link!=null ? menu.page_link.page_url : menu.link) ? 'v-list-item--active' : ''"
             @click="extarnalUrl(menu?.page_link!=null ? menu.page_link.page_url : menu.link,menu.link_type)"
             v-can="menu.link_type==2?'common':menu?.page_link?.name"
-            > 
+            >
             <!-- :to="menu?.page_link!=null ? menu.page_link.page_url : menu.link" -->
-        
+
                 <v-list-item-title  > {{language=='bn'?menu.label_name_bn:menu.label_name_en}}</v-list-item-title>
               </v-list-item>
             <!-- single menu end  -->
@@ -39,7 +44,7 @@
               <v-list-item-content>
                 <v-list-item-title class="pl-1 white--text"> {{language=='bn'?subMenu.label_name_bn:subMenu.label_name_en}}</v-list-item-title>
               </v-list-item-content>
-            
+
             </template>
             <v-list-item class="white--text"
               v-for="(subSubMenu,subSubIndex) in subMenu.children"
@@ -57,7 +62,7 @@
               <v-list-item-title class="white--text" v-text="language=='bn'?subSubMenu.label_name_bn:subSubMenu.label_name_en"></v-list-item-title>
             </v-list-item>
             <!-- sub sub  -->
-           
+
             <!-- sub sub end -->
           </v-list-group>
 
@@ -81,12 +86,12 @@
 
             </template>
           </v-list-group>
-            
+
 
         </template>
-    
-  
-    
+
+
+
       </v-list>
     </v-navigation-drawer>
   </div>
@@ -138,14 +143,14 @@ export default {
       }
       if (type == 2) {
         window.open(url, '_blank');
-        
+
       }
-      
+
     },
     setUrl(url, type) {
 
-      // 
-      
+      //
+
     },
 
     getPermissionName(menu) {
@@ -173,13 +178,14 @@ export default {
   color: #000000;
 }
 .v-list.left-sidebar.v-sheet.theme--light .v-list-item__title {
-  font-size: 14px;
+  font-size: 16px;
 }
 .left-sidebar .theme--light.v-icon{
 color: #f6f5f5dd;
 }
 .left-sidebar .v-list-item{
-min-height: 50px !important;
+min-height: 40px !important;
+  border-bottom: 1px solid powderblue !important;
 }
 .left-sidebar .v-list-group__items{
 padding-left: 15px !important;
@@ -188,6 +194,17 @@ padding-left: 15px !important;
 padding-left: 0px !important;
 }
 .left-sidebar .v-list-item .v-list-item__icon{
-margin-bottom: 16px !important;
+margin-bottom: 5px !important;
+}
+.theme--light.v-navigation-drawer .v-divider {
+  margin-top: 68px;
+}
+.theme--light.v-divider {
+  border-color: whitesmoke !important ;
+}
+.v-navigation-drawer__content {
+   height: 100%;
+   //overflow-y: auto;
+   //overflow-x: hidden;
 }
 </style>

@@ -233,23 +233,23 @@
                           <span>{{ $t('container.list.view') }}</span>
                         </v-tooltip>
 
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn
-                                v-can="'activity_log-delete'"
-                                fab
-                                x-small
-                                v-on="on"
-                                color="grey"
-                                class="ml-3 white--text"
-                                elevation="0"
-                                @click="deleteAlert(item.id)"
-                            >
-                              <v-icon> mdi-delete </v-icon>
-                            </v-btn>
-                          </template>
-                          <span> {{ $t("container.list.delete") }}</span>
-                        </v-tooltip>
+<!--                        <v-tooltip top>-->
+<!--                          <template v-slot:activator="{ on }">-->
+<!--                            <v-btn-->
+<!--                                v-can="'activity_log-delete'"-->
+<!--                                fab-->
+<!--                                x-small-->
+<!--                                v-on="on"-->
+<!--                                color="grey"-->
+<!--                                class="ml-3 white&#45;&#45;text"-->
+<!--                                elevation="0"-->
+<!--                                @click="deleteAlert(item.id)"-->
+<!--                            >-->
+<!--                              <v-icon> mdi-delete </v-icon>-->
+<!--                            </v-btn>-->
+<!--                          </template>-->
+<!--                          <span> {{ $t("container.list.delete") }}</span>-->
+<!--                        </v-tooltip>-->
                       </template>
                       <!-- End Action Button -->
                       <template v-slot:footer="item">
@@ -294,14 +294,12 @@
       <v-dialog v-model="deleteDialog" width="350">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.system_config.demo_graphic.district.delete") }}
+            {{ $t("container.activity_log.delete") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
-              {{
-                $t("container.system_config.demo_graphic.district.delete_alert")
-              }}
+              {{ $t("container.activity_log.delete_alert") }}
             </div>
           </v-card-text>
           <v-card-actions style="display: block">
