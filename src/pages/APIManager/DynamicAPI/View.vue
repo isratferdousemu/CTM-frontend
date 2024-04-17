@@ -13,6 +13,7 @@ export default {
 
     data() {
         return {
+            loading:false,
 
             methods: ['GET', 'POST'],
 
@@ -124,44 +125,46 @@ export default {
                             <v-card-text class="mt-5">
 
                                 <v-row>
-                                    <v-col ols="8" sm="8" lg="8">
+                                    <v-col ols="12" sm="12" lg="12">
                                         <v-row class="my-custom-row ma-5">
-                                            <v-col cols="12" sm="4" lg="4">
+                                            <v-col cols="12" sm="2" lg="2">
                                                 <b>{{ $t('container.api_manager.api_generate.api_name') }}</b>:
                                             </v-col>
-                                            <v-col cols="12" sm="8" lg="8">
+                                            <v-col cols="12" sm="10" lg="10">
                                                 <b>:</b> <span class="ml-2">{{ data.name }}</span>
 
                                             </v-col>
-                                            <v-col cols="12" sm="4" lg="4">
+                                            <v-col cols="12" sm="2" lg="2">
                                                 <b>{{ $t('container.api_manager.api_generate.module') }}</b>
 
                                             </v-col>
-                                            <v-col cols="12" sm="8" lg="8">
+                                            <v-col cols="12" sm="10" lg="10">
                                                 <b>:</b>
                                                 <span class="ml-2">{{ data.purpose?.module?.name
                                                     }}</span>
 
                                             </v-col>
-                                            <v-col cols="12" sm="4" lg="4">
-                                                <b>{{ $t('container.api_manager.api_generate.purpose') }}</b>:
+                                            <v-col cols="12" sm="2" lg="2">
+                                                <b>{{ $t('container.api_manager.api_generate.purpose') }}</b>
 
                                             </v-col>
-                                            <v-col cols="12" sm="8" lg="8">
+                                            <v-col cols="12" sm="10" lg="10">
                                                 <b>:</b> <span class="ml-2">{{
                                                     data?.purpose?.purpose }}</span>
 
                                             </v-col>
 
 
-                                            <v-col cols="12" sm="4" lg="4">
+                                            <v-col cols="12" sm="2" lg="2">
                                                 <b>{{ $t('container.api_manager.api_generate.parameter') }}</b>
 
                                             </v-col>
-                                            <v-col cols="12" sm="8" lg="8">
+                                            <v-col cols="12" sm="10" lg="10">
                                                 <b>:</b>
-                                                <span class="ml-2">{{ data?.selected_columns ?
-                                                    data.selected_columns.join(', ') : '' }}</span>
+                                                <v-chip  v-for="(item, index) in data.selected_columns"
+                                                     :key="index" class="ml-2 mt-2">
+                                                    {{ item }}
+                                                </v-chip>
 
                                             </v-col>
 

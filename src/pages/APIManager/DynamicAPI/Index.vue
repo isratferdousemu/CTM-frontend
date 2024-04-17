@@ -263,6 +263,7 @@ export default {
 
         },
         async GetAPI() {
+            this.loading=true;
             const queryParams = {
                 search: this.search,
                 perPage: this.pagination.perPage,
@@ -279,6 +280,7 @@ export default {
                     params: queryParams,
                 })
                 .then((result) => {
+                     this.loading=false;
                     this.total = result?.data?.data?.total;
                     this.apis = result?.data?.data.data;
                     this.pagination.current = result?.data?.data?.current_page;
@@ -393,37 +395,45 @@ export default {
 
 
 
-                                    <v-col lg="4" md="6" cols="12" class="text-right">
-                                        <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4"
+
+                                    <v-btn medium flat class="mr-5" color="primary" router to="/api-manager/api-generate/create"
+                                        v-can="'api-create'">
+                                        <v-icon small left>mdi-plus</v-icon>
+                                        <span>{{
+                                            $t('container.api_manager.api_generate.add_new') }}</span>
+                                    </v-btn>
+                                </v-card-title>
+
+                                <v-row class="mx-6">
+                                    <v-col cols="12" lg="6" md="6">
+                                        {{ $t('container.list.total') }}:&nbsp;<span style=" font-weight: bold;">
+                                            {{ language === 'bn' ? $helpers.englishToBangla(
+                                            this.total) : this.total }}
+                                        </span>
+
+                                    </v-col>
+                                    <v-col cols="12" lg="6" md="6" class="text-right">
+                                        <v-btn elevation="2" class="btn white--text " flat color="red darken-4"
                                             @click="GeneratePDF()">
                                             <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{
                                             $t("container.list.PDF") }}
                                         </v-btn>
-                                        <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2"
+                                        <v-btn elevation="2" class="btn white--text ml-2" flat color="teal darken-2"
                                             @click="GenerateExcel()">
-                                            <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
-                                            {{ $t("container.list.excel") }}
+                                            <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{
+                                            $t("container.list.excel") }}
                                         </v-btn>
+
                                     </v-col>
 
-                                    <v-btn medium flat color="primary" router to="/api-manager/api-generate/create"
-                                        v-can="'url-create'">
-                                        <v-icon small left>mdi-plus</v-icon>
-                                        <span>{{
-                                            $t('container.list.add_new') }}</span>
-                                    </v-btn>
-                                </v-card-title>
 
-                                <v-card-subtitle class="mx-5">
-                                    {{ $t('container.list.total') }}:&nbsp;<span style=" font-weight: bold;">
-                                        {{ language === 'bn' ? $helpers.englishToBangla(
-                                        this.total) : this.total}}
-                                    </span>
-                                    
-                                </v-card-subtitle>
+
+
+
+                                </v-row>
                                 <v-data-table :loading="loading" item-key="id" :headers="headers" :items="apis"
                                     :items-per-page="pagination.perPage" hide-default-footer
-                                    class="elevation-0 transparent row-pointer mt-5 mx-5">
+                                    class="elevation-0 transparent row-pointer mt-5 mx-5 ">
                                     <template v-slot:item.id="{ item, index }">
 
                                         {{ language === 'bn' ? $helpers.englishToBangla(
@@ -513,7 +523,7 @@ export default {
                                     
                                                 " :items="items" hide-details dense outlined @change="onPageChange"
                                                 v-model="pagination.perPage"></v-select>
-                                             <!-- :item-text="localizationPage" item-value="name_en"  -->
+                                            <!-- :item-text="localizationPage" item-value="name_en"  -->
                                             <v-pagination circle primary v-model="pagination.current"
                                                 :length="pagination.total" @input="onPageChange" :total-visible="11"
                                                 class="custom-pagination-item"></v-pagination>

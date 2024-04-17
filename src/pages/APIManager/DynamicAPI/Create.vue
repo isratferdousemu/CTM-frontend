@@ -176,14 +176,14 @@ export default {
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols="12" sm="12" lg="12">
-                                                <ValidationProvider name="Select Column" vid="select_column"
-                                                    rules="required" v-slot="{ errors }">
+                                                <ValidationProvider name="Select Column" vid="Parameter"
+                                                     v-slot="{ errors }">
                                                     <!-- <v-select multiple type="text" v-model="data.selected_columns"
                                                         :label="$t('container.api_manager.api_generate.select_column')
                                         " persistent-hint outlined :error="errors[0] ? true : false"
                                                         :items="selected_columns" item-text="name" item-value="id"
                                                         :error-messages="errors[0]"></v-select> -->
-                                                    <v-select multiple type="text" v-model="data.selected_columns"
+                                                    <v-autocomplete multiple type="text" v-model="data.selected_columns"
                                                         :label="$t('container.api_manager.api_generate.parameter')"
                                                         persistent-hint outlined :error="errors[0] ? true : false"
                                                         :items="selected_columns" item-text="name" item-value="id"
@@ -192,7 +192,7 @@ export default {
                                                         <template v-slot:selection="{ item }">
                                                             <v-chip color="#CCCCCC">{{ item }}</v-chip>
                                                         </template>
-                                                    </v-select>
+                                                    </v-autocomplete>
                                                 </ValidationProvider>
                                             </v-col>
                                             <!-- <v-col cols="12" sm="3" lg="3">

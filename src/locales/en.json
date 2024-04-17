@@ -1003,7 +1003,8 @@
           "parameter":"Parameter",
           "module": "Module",
           "purpose":"Purpose",
-          "select_column": "Select Column"
+          "select_column": "Select Column",
+          "add_new":"Add New API"
         },
           "data_receive": {
             "list": "API List",

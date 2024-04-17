@@ -998,7 +998,8 @@
           "parameter": "প্যারামিটার",
           "module": "মডিউল",
           "purpose": "উদ্দেশ্য",
-          "select_column": "কলাম নির্বাচন করুন"
+          "select_column": "কলাম নির্বাচন করুন",
+          "add_new": "নতুন এপিআই যুক্ত করুন"
         },
         "data_receive": {
           "list": "এপিআই তালিকা",
