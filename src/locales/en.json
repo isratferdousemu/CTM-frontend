@@ -365,6 +365,9 @@
           "waiting": "Waiting"
         },
         "role": {
+          "select_all": "Select All",
+            "select_role": "Select Role",
+            "select_module": "Select Module",
           "list": "Role Lists",
           "code": "Code",
           "name_en": "Role Name (EN)",
@@ -466,7 +469,7 @@
       "allowance_program_additiona_field": {
         "variable": "Allowance Program Additional Field",
         "score": "score",
-        "name_en": "Allowance Program  Field Name",
+        "name_en": "Allowance Program  Field Name in English",
         "name_bn": "Allowance Program  Field Name Bangla",
         "add_new": "Add New Allowance Program Additional Field",
         "search": "Search Field",
