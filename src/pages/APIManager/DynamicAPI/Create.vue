@@ -172,11 +172,11 @@ export default {
                                             <v-col cols="12" sm="4" lg="4">
                                                 <ValidationProvider name="Purpose" vid="purpose" rules="required"
                                                     v-slot="{ errors }">
-                                                   
+
                                                     <v-select type="text" v-model="data.api_purpose_id" :label="$t('container.api_manager.api_generate.purpose')
                                         " persistent-hint outlined :error="errors[0] ? true : false" :items="purposes"
-                                                        item-text="purpose" item-value="id"
-                                                        :error-messages="errors[0]" @change="Change"></v-select>
+                                                        item-text="purpose" item-value="id" :error-messages="errors[0]"
+                                                        @change="Change"></v-select>
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols="12" sm="12" lg="12">
@@ -187,7 +187,9 @@ export default {
                                         " persistent-hint outlined :error="errors[0] ? true : false"
                                                         :items="selected_columns" item-text="name" item-value="id"
                                                         :error-messages="errors[0]"></v-select> -->
-                                                    <v-autocomplete multiple type="text" v-model="data.selected_columns"
+                                                    <v-autocomplete
+                                                        v-if="selected_columns && selected_columns.length > 0" multiple
+                                                        type="text" v-model="data.selected_columns"
                                                         :label="$t('container.api_manager.api_generate.parameter')"
                                                         persistent-hint outlined :error="errors[0] ? true : false"
                                                         :items="selected_columns" item-text="name" item-value="id"
