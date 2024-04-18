@@ -16,7 +16,7 @@
                 <v-row justify="space-between" align="center" class="mx-5">
                   <!-- Checkbox on the left -->
                   <v-col lg="3" md="3" cols="12">
-                    <v-text-field @keyup.native="GetGrievanceSubject" outlined dense v-model="search"
+                    <v-text-field @keyup.native="GetGrievanceSettings" outlined dense v-model="search"
                       prepend-inner-icon="mdi-magnify" class="my-sm-0 my-3 mx-0v -input--horizontal" variant="outlined"
                       :label="$t('container.list.search')" hide-details color="primary"></v-text-field>
                   </v-col>
@@ -272,7 +272,7 @@
                     <v-btn class="mx-2" fab dark x-small color="red" @click="remove(index)">
                       <v-icon dark> mdi-minus </v-icon>
                     </v-btn>
-                    <v-btn v-if="index === countInput && index < 1" class="mx-2" fab dark x-small color="green" @click="addmore(index)">    
+                    <v-btn v-if="index === countInput && index < 2 " class="mx-2" fab dark x-small color="green" @click="addmore(index)">    
                       <v-icon> mdi-plus</v-icon>
                     </v-btn>
                   </v-col>
@@ -531,10 +531,10 @@ export default {
           this.$i18n.locale == 'en' ? i.grievanceSubjectEn : i.grievanceSubjectBn,
           this.$i18n.locale == 'en' ? i.first_tire_solution_time : this.$helpers.englishToBangla(i.first_tire_solution_time),
           this.$i18n.locale == 'en' ? i.first_tire_officer : i.first_tire_officer,
-          this.$i18n.locale == 'en' ? i.secound_tire_solution_time : this.$helpers.englishToBangla(i.secound_tire_solution_time),
+          this.$i18n.locale == 'en' ? i.secound_tire_solution_time ?? 'N/A' : this.$helpers.englishToBangla(i.secound_tire_solution_time) ?? 'N/A',
           this.$i18n.locale == 'en' ? i.secound_tire_officer : i.secound_tire_officer,
-          this.$i18n.locale == 'en' ? i.third_tire_solution_time : this.$helpers.englishToBangla(i.third_tire_solution_time),
-          this.$i18n.locale == 'en' ? i.third_tire_officer : i.third_tire_officer,
+          this.$i18n.locale == 'en' ? i.third_tire_solution_time ?? 'N/A' : this.$helpers.englishToBangla(i.third_tire_solution_time) ?? 'N/A',
+          this.$i18n.locale == 'en' ? i.third_tire_officer??'N/A' : i.third_tire_officer ?? 'N/A',
 
         ]
       }));
@@ -623,10 +623,10 @@ export default {
               "grievance_subject_id": this.$i18n.locale == 'en' ? i.grievanceSubjectEn : i.grievanceSubjectEn,
               "first_tire_solution_time": this.$i18n.locale == 'en' ? i.first_tire_solution_time : this.$helpers.englishToBangla(i.first_tire_solution_time),
               "first_tire_officer": this.$i18n.locale == 'en' ? i.first_tire_officer : i.first_tire_officer,
-              "secound_tire_solution_time": this.$i18n.locale == 'en' ? i.secound_tire_solution_time : this.$helpers.englishToBangla(i.secound_tire_solution_time),
-              "secound_tire_officer": this.$i18n.locale == 'en' ? i.secound_tire_officer : i.secound_tire_officer,
-              "third_tire_solution_time": this.$i18n.locale == 'en' ? i.third_tire_solution_time : this.$helpers.englishToBangla(i.third_tire_solution_time),
-              "third_tire_officer": this.$i18n.locale == 'en' ? i.third_tire_officer : i.third_tire_officer,
+              "secound_tire_solution_time": this.$i18n.locale == 'en' ? i.secound_tire_solution_time ?? 'N/A' : this.$helpers.englishToBangla(i.secound_tire_solution_time) ?? 'N/A',
+              "secound_tire_officer": this.$i18n.locale == 'en' ? i.secound_tire_officer ?? 'N/A' : i.secound_tire_officer ?? 'N/A',
+              "third_tire_solution_time": this.$i18n.locale == 'en' ? i.third_tire_solution_time ?? 'N/A' : this.$helpers.englishToBangla(i.third_tire_solution_time) ?? 'N/A',
+              "third_tire_officer": this.$i18n.locale == 'en' ? i.third_tire_officer ?? 'N/A' : i.third_tire_officer ?? 'N/A',
 
             }
           }));
@@ -733,6 +733,10 @@ export default {
       }
     },
     editDialog(items) {
+      this.dialogEdit = true;
+      this.data.grievance_type_id = items.grievance_type_id;
+      this.data.grievance_subject_id = items.grievance_subject_id;
+      this.data.id = items.id;
       this.data.OfficerForm = [];
       // Define an array of property names
       const propertyNames = ['first', 'secound', 'third'];
@@ -744,16 +748,16 @@ export default {
             first_tire_solution_time: items[`${propertyNames[i]}_tire_solution_time`]
           };
           this.data.OfficerForm.push(newItem);
+          // this.countInput++;
         }
+        
+        
       }
-
-      this.dialogEdit = true;
-      this.data.grievance_type_id = items.grievance_type_id;
-      this.data.grievance_subject_id = items.grievance_subject_id;
-      this.data.id = items.id;
+      this.countInput = this.data.OfficerForm.length - 1;
       this.errors = {};
     },
     updateGrievanceSetting() {
+      console.log(this.data,'this.datathis.data');
       try {
         this.$axios
           .post(`/admin/grievanceSetting/update/`, this.data, {
@@ -777,11 +781,8 @@ export default {
       }
     },
     resetForm() {
-      console.log(this.data.OfficerForm,'this.data.OfficerFormthis.data.OfficerForm');
-       this.data.id = null;
-      this.data.grievance_type_id = null;
-      this.data.grievance_subject_id = null;
-
+      this.data.grievance_type_id = '';
+      this.data.grievance_subject_id = '';
       // Reset OfficerForm array
       this.data.OfficerForm = [
         {
@@ -789,19 +790,6 @@ export default {
           first_tire_solution_time: "",
         }
       ];
-      // Reset the form data
-      // this.data = {
-      //   grievance_type_id: "",
-      //   grievance_subject_id: "",
-      //   first_tire_officer: "",
-      //   first_tire_solution_time: "",
-      //   secound_tire_officer: "",
-      //   secound_tire_solution_time: "",
-      //   third_tire_officer: "",
-      //   third_tire_solution_time: "",
-
-      //   // Reset other form fields
-      // };
       this.errors = {};
     },
 
@@ -899,6 +887,7 @@ export default {
         sortBy: this.sortBy,
         sortDesc: this.sortDesc,
       };
+      console.log(queryParams,'queryParams');
       this.$axios
         .get("/admin/grievanceSetting/get", {
           headers: {
