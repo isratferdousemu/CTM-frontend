@@ -3,6 +3,9 @@
     "title": "সামাজিক নিরাপত্তা কর্মসূচি - সমাজসেবা অধিদফতর",
     "location": "সমাজসেবা ভবন, ই-৮/বি-১, আগারগাঁও, শেরেবাংলা নগর, ঢাকা-১২০৭, বাংলাদেশ।"
   },
+  "leftSidebar": {
+    "title": "ভাতা ব্যবস্থাপনা সিস্টেম"
+  },
   "sidebar": {
     "dashboard": "ড্যাশবোর্ড"
   },
@@ -985,6 +988,37 @@
           "table_name": "টেবিলের নাম",
             "delete_header": "ইউআরএল মুছুন",
             "delete_alert": "আপনি এই ইউআরএলটি মুছে ফেলার বিষয়ে নিশ্চিত? ইউআরএল এর সব তথ্য মুছে ফেলা হবে ।"
+        },
+        "api_generate": {
+          "list": "এপিআই তালিকা",
+          "api_view": "এপিআই বিবরণ",
+          "add": "নতুন এপিআই যুক্ত করুন",
+          "edit": "এপিআই এডিট করুন",
+          "api_name": "এপিআই নাম",
+          "url": "ইউআরএল",
+          "delete_header": "এপিআই মুছুন",
+          "delete_alert": "আপনি এই এপিআই টি মুছে ফেলার বিষয়ে নিশ্চিত? এপিআই এর সব তথ্য মুছে ফেলা হবে ।",
+          "parameter": "প্যারামিটার",
+          "module": "মডিউল",
+          "purpose": "উদ্দেশ্য",
+          "select_column": "কলাম নির্বাচন করুন",
+          "add_new": "নতুন এপিআই যুক্ত করুন"
+        },
+        "data_receive": {
+          "list": "এপিআই তালিকা",
+          "api_view": "API View",
+          "add": "Add New API Receiver",
+          "edit": "Edit API Receiver",
+          "api": " API",
+          "organization": "Oraganization",
+          "phone": "Phone",
+          "total_heat": "Total Heat",
+          "dutaion": "Dutaion",
+          "api_key": "Api Key",
+          "delete_header": "Delete API Receiver",
+          "delete_alert": "Are you sure to delete this API Receiver? API all information will be deleted.",
+          "parameter": "Parameter"
+         
         }
       },
     "system_audit": {
@@ -1015,12 +1049,20 @@
     },
     "activity_log": {
       "title": "এক্টিভিটি লগের তালিকা",
+      "log_view": "এক্টিভিটি লগের বিস্তারিত তথ্য",
       "name": "লগের নাম",
+      "action_type": "কর্মের ধরন",
+      "user_name": "ব্যবহারকারীর নাম",
+      "user_email": "ইমেইল",
+      "device": "ডিভাইস",
+      "source_ip": "উৎস আইপি",
       "description": "বর্ননা",
       "change_info": "পরিবর্তন ",
       "login_user_info": "লগইন ইউজার তথ্য",
       "login_anonymous_user_info": "লগইন/বেনামী ইউজার তথ্য",
-      "create": "ক্রিয়েট"
+      "create": "ক্রিয়েট",
+      "delete": "এক্টিভিটি লগ মুছে ফেলুন",
+      "delete_alert": "আপনি কি এই এক্টিভিটি লগ মুছে ফেলার বিষয়ে নিশ্চিত?।"
     },
     "system_config_dashboard": {
       "enter_start_end_date": "শুরু এবং শেষ তারিখ লিখুন",

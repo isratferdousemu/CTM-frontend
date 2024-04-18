@@ -233,23 +233,23 @@
                           <span>{{ $t('container.list.view') }}</span>
                         </v-tooltip>
 
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn
-                                v-can="'activity_log-delete'"
-                                fab
-                                x-small
-                                v-on="on"
-                                color="grey"
-                                class="ml-3 white--text"
-                                elevation="0"
-                                @click="deleteAlert(item.id)"
-                            >
-                              <v-icon> mdi-delete </v-icon>
-                            </v-btn>
-                          </template>
-                          <span> {{ $t("container.list.delete") }}</span>
-                        </v-tooltip>
+<!--                        <v-tooltip top>-->
+<!--                          <template v-slot:activator="{ on }">-->
+<!--                            <v-btn-->
+<!--                                v-can="'activity_log-delete'"-->
+<!--                                fab-->
+<!--                                x-small-->
+<!--                                v-on="on"-->
+<!--                                color="grey"-->
+<!--                                class="ml-3 white&#45;&#45;text"-->
+<!--                                elevation="0"-->
+<!--                                @click="deleteAlert(item.id)"-->
+<!--                            >-->
+<!--                              <v-icon> mdi-delete </v-icon>-->
+<!--                            </v-btn>-->
+<!--                          </template>-->
+<!--                          <span> {{ $t("container.list.delete") }}</span>-->
+<!--                        </v-tooltip>-->
                       </template>
                       <!-- End Action Button -->
                       <template v-slot:footer="item">
@@ -294,14 +294,12 @@
       <v-dialog v-model="deleteDialog" width="350">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.system_config.demo_graphic.district.delete") }}
+            {{ $t("container.activity_log.delete") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
-              {{
-                $t("container.system_config.demo_graphic.district.delete_alert")
-              }}
+              {{ $t("container.activity_log.delete_alert") }}
             </div>
           </v-card-text>
           <v-card-actions style="display: block">
@@ -384,7 +382,7 @@ export default {
           sortable: false,
         },
         {
-          text:  this.$t("Action Type") ,
+          text:  this.$t("container.activity_log.action_type") ,
           value: "log_name",
         },
         {
@@ -396,19 +394,19 @@ export default {
         //   value: "causer.user_type",
         // },
         {
-          text:  this.$t("User Name") ,
+          text:  this.$t("container.activity_log.user_name") ,
           value: "causer.user_name",
         },
         {
-          text:  this.$t("User Email") ,
+          text:  this.$t("container.activity_log.user_email") ,
           value: "causer.email",
         },
         {
-          text: this.$t("Device"),
+          text: this.$t("container.activity_log.device"),
           value: "properties.device",
         },
         {
-          text: this.$t("Source IP"),
+          text: this.$t("container.activity_log.source_ip"),
           value: "properties.ip",
         },
         // {
@@ -508,6 +506,7 @@ export default {
 
     },
     GetActivityLog( from_date = null, to_date = null ) {
+      this.isLoading = true;
       let page;
       if(!this.sortBy){
         page = this.pagination.current;
@@ -529,7 +528,7 @@ export default {
               "Content-Type": "multipart/form-data",
             },
             params: queryParams,
-          })
+          })  
           .then((result) => {
             console.log(result,'tanbeer')
             this.activity_logs = result.data?.data;
@@ -537,6 +536,14 @@ export default {
             this.pagination.total = result.data?.meta?.last_page[0];
             this.pagination.grand_total = result.data?.meta?.total[0];
             this.total = result.data?.meta?.total[0];
+            this.isLoading = false;
+          })
+          .catch((error) => {
+              console.error(error);
+            this.isLoading = false;
+            })
+          .finally(() => {
+            this.isLoading = false;
           });
     },
     deleteActivityLogs: async function () {
