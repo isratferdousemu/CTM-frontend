@@ -30,6 +30,15 @@
                     </td>
                   </tr>
 
+                  <tr v-if=" activity_log_details.subject_id">
+                    <th class="text-left">
+                      Subject Id
+                    </th>
+                    <td class="text-left">
+                      {{ activity_log_details.subject_id }}
+                    </td>
+                  </tr>
+
                   <tr v-if="activity_log_details.description">
                     <th class="text-left">
                       Description
