@@ -1,93 +1,101 @@
 <template>
-    <div id="financial_year">
-        <v-row class="mx-5 mt-4">
-            <v-col cols="12">
-                <v-row>
-                    <v-col cols="12">
-                        <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8">
-                            <v-card-title class="justify-center" tag="div">
-                                <h3 class="text-uppercase pt-3">
-                                    {{ $t("container.system_config.demo_graphic.financial_year.list") }}
-                                </h3>
-                            </v-card-title>
+  <div id="financial_year">
+    <v-row class="mx-5 mt-4">
+      <v-col cols="12">
+        <v-row>
+          <v-col cols="12">
+            <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8">
+              <v-card-title class="justify-center" tag="div">
+                <h3 class="text-uppercase pt-3">
+                  {{ $t("container.system_config.demo_graphic.financial_year.list") }}
+                </h3>
+              </v-card-title>
 
-                            <v-card-text>
-                                <v-row class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
-                                    justify="center" justify-lg="space-between">
-                                    <div class="d-flex justify-sm-end flex-wrap">
-                                        <v-text-field @keyup.native="GetFinancialYear" outlined dense v-model="search"
-                                            prepend-inner-icon="mdi-magnify" class="my-sm-0 my-3 mx-0v -input--horizontal"
-                                            flat variant="outlined" :label="$t(
-                                                'container.system_config.demo_graphic.financial_year.search'
+              <v-card-text>
+                <v-row class="ma-0 pa-3 white round-border d-flex justify-space-between align-center" justify="center"
+                  justify-lg="space-between">
+                  <div class="d-flex justify-sm-end flex-wrap">
+                    <v-text-field @keyup.native="GetFinancialYear" outlined dense v-model="search"
+                      prepend-inner-icon="mdi-magnify" class="my-sm-0 my-3 mx-0v -input--horizontal" flat
+                      variant="outlined" :label="$t(
+                                                'container.list.search'
                                             )
                                                 " hide-details color="primary">
-                                        </v-text-field>
+                    </v-text-field>
 
-                                    </div>
-                                  <!-- Dropdown on the right -->
+                  </div>
+                  <!-- Dropdown on the right -->
 
-                                  <v-col lg="4" md="6" cols="12" class="text-right">
-                                    <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="GeneratePdf()">
-                                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
-                                    </v-btn>
-                                    <v-btn elevation="2" class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
-                                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
-                                      {{ $t("container.list.excel") }}
-                                    </v-btn>
-                                  </v-col>
+                  <v-col lg="4" md="6" cols="12" class="text-right">
+                    <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="GeneratePdf()">
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
+                    </v-btn>
+                    <v-btn elevation="2" class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                      {{ $t("container.list.excel") }}
+                    </v-btn>
+                  </v-col>
 
-                                    <v-col cols="12">
-                                        <v-data-table :loading="loading" item-key="id" :headers="headers" :items="financial_years"
-                                            :items-per-page="pagination.perPage" hide-default-footer
-                                            class="elevation-0 transparent row-pointer">
-                                            <template v-slot:item.id="{ item, index }">
-                                                {{
-                                                    (pagination.current - 1) * pagination.perPage +
-                                                    index +
-                                                    1
-                                                }}
-                                            </template>
-                                            <template v-slot:item.financial_year="{ item }">
-                                                {{ item.financial_year }}
-                                            </template>
-                                            <template v-slot:item.start_date="{ item }">
-                                                {{ item.start_date }}
-                                            </template>
-                                             <template v-slot:item.end_date="{ item }">
-                                                    {{ item.end_date }}
-                                                </template>
-                                                  <!-- <template v-slot:item.status="{ item }">
+                  <v-col cols="12">
+                    <v-data-table :loading="loading" item-key="id" :headers="headers" :items="financial_years"
+                      :items-per-page="pagination.perPage" hide-default-footer
+                      class="elevation-0 transparent row-pointer">
+                      <template v-slot:item.id="{ item, index }">
+
+                        {{
+
+                        language === 'bn' ? $helpers.englishToBangla(
+                        (pagination.current - 1) * pagination.perPage +
+                        index +
+                        1) : (pagination.current - 1) * pagination.perPage +
+                        index + 1
+
+
+                        }}
+                      </template>
+                      <template v-slot:item.financial_year="{ item }">
+                        {{ language === 'bn' ? $helpers.englishToBangla(item.financial_year) : item.financial_year }}
+                      </template>
+                      <template v-slot:item.start_date="{ item }">
+                         {{ language === 'bn' ? $helpers.englishToBangla(item.start_date) :
+                        item.start_date }}
+                      </template>
+                      <template v-slot:item.end_date="{ item }">
+                       {{ language === 'bn' ? $helpers.englishToBangla(item.end_date) :
+                        item.end_date }}
+                      </template>
+                      <!-- <template v-slot:item.status="{ item }">
                                                         {{ item.status }}
                                                     </template> -->
-                                                    <template v-slot:item.status="{ item }">
-                            <span v-if="item?.status == '0'"> Inactive </span>
-                            <span v-if="item?.status == '1'"> Active </span>
-                          </template>
+                      <template v-slot:item.status="{ item }">
+                        <span v-if="item?.status == '0'"> {{ language === 'bn' ? 'নিষ্ক্রিয়' : 'Inactive ' }} </span>
 
-                                            <template v-slot:footer="item">
-                                                <div class="text-center pt-2 v-data-footer justify-center pb-2">
-                                                    <v-select style="
+                        <span v-if="item?.status == '1'"> {{ language === 'bn' ? 'সক্রিয়' : 'Active ' }} </span>
+                      </template>
+
+                      <template v-slot:footer="item">
+                        <div class="text-center pt-2 v-data-footer justify-center pb-2">
+                          <v-select style="
                               position: absolute;
                               right: 25px;
                               width: 149px;
                               transform: translate(0px, 0px);
                             " :items="items" hide-details dense outlined @change="onPageChange"
-                                                        v-model="pagination.perPage"></v-select>
-                                                    <v-pagination circle primary v-model="pagination.current"
-                                                        :length="pagination.total" @input="onPageChange" :total-visible="11"
-                                                        class="custom-pagination-item"></v-pagination>
-                                                </div>
-                                            </template>
-                                        </v-data-table>
-                                    </v-col>
-                                </v-row>
-                            </v-card-text>
-                        </v-card>
-                    </v-col>
+                            v-model="pagination.perPage"></v-select>
+                          <v-pagination circle primary v-model="pagination.current" :length="pagination.total"
+                            @input="onPageChange" :total-visible="11" class="custom-pagination-item"></v-pagination>
+                        </div>
+                      </template>
+                    </v-data-table>
+                  </v-col>
                 </v-row>
-            </v-col>
+              </v-card-text>
+            </v-card>
+          </v-col>
         </v-row>
-    </div>
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script>
@@ -125,6 +133,10 @@ export default {
         ValidationObserver,
     },
     computed: {
+      language: {
+        get() {
+          return this.$store.getters.getAppLanguage;
+        }},
         headers() {
             return [
                 {

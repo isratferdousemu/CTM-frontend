@@ -3,41 +3,23 @@
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
         <v-row>
+
           <v-col cols="12">
-            <v-card
-              elevation="10"
-              color="white"
-              rounded="md"
-              theme="light"
-              class="mb-8"
-            >
+            <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8">
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
                   {{ $t("container.system_config.allowance_program_additiona_field.list") }}
                 </h3>
               </v-card-title>
               <v-card-text>
-                <v-row
-                  class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
-                  justify="center"
-                  justify-lg="space-between"
-                >
+                <v-row class="ma-0 pa-3 white round-border d-flex justify-space-between align-center" justify="center"
+                  justify-lg="space-between">
                   <div class="d-flex justify-sm-end flex-wrap">
-                    <v-text-field
-                      @keyup.native="GetOffices"
-                      outlined
-                      dense
-                      v-model="search"
-                      prepend-inner-icon="mdi-magnify"
-                      class="my-sm-0 my-3 mx-0v -input--horizontal"
-                      flat
-                      variant="outlined"
-                      :label="
-                        $t('container.system_config.allowance_program_additiona_field.search')
-                      "
-                      hide-details
-                      color="primary"
-                    >
+                    <v-text-field @keyup.native="GetOffices" outlined dense v-model="search"
+                      prepend-inner-icon="mdi-magnify" class="my-sm-0 my-3 mx-0v -input--horizontal" flat
+                      variant="outlined" :label="
+                        $t('container.list.search')
+                      " hide-details color="primary">
                     </v-text-field>
                   </div>
 
@@ -45,20 +27,16 @@
                     <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4" @click="GeneratePdf()">
                       <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
                     </v-btn>
-                    <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
+                    <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2"
+                      @click="GenerateExcel()">
                       <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
                       {{ $t("container.list.excel") }}
                     </v-btn>
                   </v-col>
 
 
-                  <v-btn
-                    @click="createDialog"
-                    flat
-                    color="primary"
-                    prepend-icon="mdi-account-multiple-plus"
-                    v-can="'allowanceField-create'"
-                  >
+                  <v-btn @click="createDialog" flat color="primary" prepend-icon="mdi-account-multiple-plus"
+                    v-can="'allowanceField-create'">
                     {{ $t("container.list.add_new") }}
                   </v-btn>
 
@@ -67,42 +45,41 @@
 
 
                   <v-col cols="12">
-                    <v-data-table
-                      :loading="loading"
-                      item-key="id"
-                      :headers="headers"
-                      :items="additional_fields"
-                      :items-per-page="pagination.perPage"
-                      @update:options="handleOptionsUpdate"
-                      hide-default-footer
-                      class="elevation-0 transparent row-pointer"
-                    >
+                    <v-data-table :loading="loading" item-key="id" :headers="headers" :items="additional_fields"
+                      :items-per-page="pagination.perPage" @update:options="handleOptionsUpdate" hide-default-footer
+                      class="elevation-0 transparent row-pointer">
                       <template v-slot:item.id="{ item, index }">
+
                         {{
-                          (pagination.current - 1) * pagination.perPage +
-                          index +
-                          1
+
+                        language === 'bn' ? $helpers.englishToBangla(
+                        (pagination.current - 1) * pagination.perPage +
+                        index +
+                        1) : (pagination.current - 1) * pagination.perPage +
+                        index + 1
+
+
                         }}
                       </template>
 
-                      <template v-slot:item.status="{ item }">
-                        <span v-if="item?.status == '0'"> Inactive </span>
-                        <span v-if="item?.status == '1'"> Active </span>
+
+                      <template v-slot:item.field_type="{ item }">
+                        <span v-if="item.type == 'dropdown'"> {{
+                          language == 'bn' ? "ড্রপডাউন": item.type }}</span>
+                        <span v-if="item.type == 'number'"> {{
+                          language == 'bn' ? "নাম্বার " : item.type }}</span>
+                        <span v-if="item.type == 'text'"> {{
+                          language == 'bn' ? "টেক্সট": item.type }}</span>
+                        <span v-if="item.type == 'date'"> {{
+                          language == 'bn' ? "ডেট ": item.type }}</span>
                       </template>
 
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn
-                                v-can="'allowanceField-edit'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="success"
-                              elevation="0"
-                              @click="editDialog(item)"
-                            >
+                            <v-btn v-can="'allowanceField-edit'" fab x-small v-on="on" color="success" elevation="0"
+                              @click="editDialog(item)">
                               <v-icon> mdi-account-edit-outline </v-icon>
                             </v-btn>
                           </template>
@@ -113,16 +90,8 @@
 
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'allowanceField-delete'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="grey"
-                              class="ml-3 white--text"
-                              elevation="0"
-                              @click="deleteAlert(item)"
-                            >
+                            <v-btn v-can="'allowanceField-delete'" fab x-small v-on="on" color="grey"
+                              class="ml-3 white--text" elevation="0" @click="deleteAlert(item)">
                               <v-icon> mdi-delete </v-icon>
                             </v-btn>
                           </template>
@@ -132,32 +101,16 @@
                       <!-- End Action Button -->
 
                       <template v-slot:footer="item">
-                        <div
-                          class="text-center pt-2 v-data-footer justify-center pb-2"
-                        >
-                          <v-select
-                            style="
+                        <div class="text-center pt-2 v-data-footer justify-center pb-2">
+                          <v-select style="
                               position: absolute;
                               right: 25px;
                               width: 149px;
                               transform: translate(0px, 0px);
-                            "
-                            :items="items"
-                            hide-details
-                            dense
-                            outlined
-                            @change="onPageChange"
-                            v-model="pagination.perPage"
-                          ></v-select>
-                          <v-pagination
-                            circle
-                            primary
-                            v-model="pagination.current"
-                            :length="pagination.total"
-                            @input="onPageChange"
-                            :total-visible="11"
-                            class="custom-pagination-item"
-                          ></v-pagination>
+                            " :items="items" hide-details dense outlined @change="onPageChange"
+                            v-model="pagination.perPage"></v-select>
+                          <v-pagination circle primary v-model="pagination.current" :length="pagination.total"
+                            @input="onPageChange" :total-visible="11" class="custom-pagination-item"></v-pagination>
                         </div>
                       </template>
                     </v-data-table>
@@ -169,14 +122,23 @@
         </v-row>
       </v-col>
 
+      <v-row>
+        <v-col cols=12 md="6" lg="6">
+Division
+        </v-col>
+         <v-col cols=12 md="6" lg="6">
+District
+        </v-col>
+      </v-row>
+
       <!-- additional field add modal  -->
       <v-dialog v-model="dialogAdd" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
             {{
-              $t(
-                "container.system_config.allowance_program_additiona_field.add_new"
-              )
+            $t(
+            "container.system_config.allowance_program_additiona_field.add_new"
+            )
             }}
           </v-card-title>
           <v-divider></v-divider>
@@ -186,67 +148,26 @@
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
 
-                <ValidationProvider
-                  name="Name English"
-                  vid="name_en"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <v-text-field
-                    outlined
-                    type="text"
-                    v-model="data.name_en"
-                    :label="
+                <ValidationProvider name="Name English" vid="name_en" rules="required" v-slot="{ errors }">
+                  <v-text-field outlined type="text" v-model="data.name_en" :label="
                       $t(
                         'container.system_config.allowance_program_additiona_field.name_en'
                       )
-                    "
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-text-field>
+                    " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
                 </ValidationProvider>
-                  <ValidationProvider
-                    name="Name Bangla"
-                    vid="name_bn"
-                    rules="required"
-                    v-slot="{ errors }"
-                  >
-                    <v-text-field
-                      outlined
-                      type="text"
-                      v-model="data.name_bn"
-                      :label="$t(
+                <ValidationProvider name="Name Bangla" vid="name_bn" rules="required" v-slot="{ errors }">
+                  <v-text-field outlined type="text" v-model="data.name_bn" :label="$t(
                         'container.system_config.allowance_program_additiona_field.name_bn'
                       )
-                        "
-                      required
-                      :error="errors[0] ? true : false"
-                      :error-messages="errors[0]"
-                    ></v-text-field>
-                  </ValidationProvider>
+                        " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
+                </ValidationProvider>
 
-                <ValidationProvider
-                  name="Field Type"
-                  vid="type"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <v-select
-                    outlined
-                    v-model="data.type"
-                    :items="field_types"
-                    item-text="value"
-                    item-value="id"
-                    :label="
+                <ValidationProvider name="Field Type" vid="type" rules="required" v-slot="{ errors }">
+                  <v-select outlined v-model="data.type" :items="field_types" item-text="value" item-value="id" :label="
                       $t(
                         'container.system_config.allowance_program_additiona_field.field_type'
                       )
-                    "
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-select>
+                    " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                 </ValidationProvider>
 
                 <!-- <v-data-table
@@ -284,22 +205,11 @@
                 </v-data-table> -->
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
-                  <v-btn
-                    flat
-                    @click="dialogAdd = false"
-                    outlined
-                    class="custom-btn-width py-2 mr-10"
-                  >
+                  <v-btn flat @click="dialogAdd = false" outlined class="custom-btn-width py-2 mr-10">
                     {{ $t("container.list.cancel") }}
                   </v-btn>
-                  <v-btn
-                    type="submit"
-                    flat
-                    color="primary"
-                    :disabled="invalid"
-                    :loading="loading"
-                    class="custom-btn-width  white--text py-2"
-                  >
+                  <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
+                    class="custom-btn-width  white--text py-2">
                     {{ $t("container.list.submit") }}
                   </v-btn>
                 </v-row>
@@ -315,9 +225,9 @@
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
             {{
-              $t(
-                "container.system_config.allowance_program_additiona_field.edit"
-              )
+            $t(
+            "container.system_config.allowance_program_additiona_field.edit"
+            )
             }}
           </v-card-title>
           <v-divider></v-divider>
@@ -326,191 +236,80 @@
               <form @submit.prevent="updateField()">
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
-                <ValidationProvider
-                  name="Name English"
-                  vid="name_en"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <v-text-field
-                    outlined
-                    type="text"
-                    v-model="data.name_en"
-                    :label="
+                <ValidationProvider name="Name English" vid="name_en" rules="required" v-slot="{ errors }">
+                  <v-text-field outlined type="text" v-model="data.name_en" :label="
                       $t(
                         'container.system_config.allowance_program_additiona_field.name_en'
                       )
-                    "
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-text-field>
+                    " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
                 </ValidationProvider>
-                  <ValidationProvider
-                    name="Name English"
-                    vid="name_bn"
-                    rules="required"
-                    v-slot="{ errors }"
-                  >
-                    <v-text-field
-                      outlined
-                      type="text"
-                      v-model="data.name_bn"
-                      :label="$t(
+                <ValidationProvider name="Name English" vid="name_bn" rules="required" v-slot="{ errors }">
+                  <v-text-field outlined type="text" v-model="data.name_bn" :label="$t(
                         'container.system_config.allowance_program_additiona_field.name_en'
                       )
-                        "
-                      required
-                      :error="errors[0] ? true : false"
-                      :error-messages="errors[0]"
-                    ></v-text-field>
-                  </ValidationProvider>
+                        " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
+                </ValidationProvider>
 
 
-                <ValidationProvider
-                  name="Field Type"
-                  vid="field_type"
-
-                  v-slot="{ errors }"
-                >
-                  <v-select
-                    outlined
-                    v-model="data.type"
-                    :items="field_types"
-                    item-text="value"
-                    item-value="id"
-                    :label="
+                <ValidationProvider name="Field Type" vid="field_type" v-slot="{ errors }">
+                  <v-select outlined v-model="data.type" :items="field_types" item-text="value" item-value="id" :label="
                       $t(
                         'container.system_config.allowance_program_additiona_field.field_type'
                       )
-                    "
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-select>
+                    " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                 </ValidationProvider>
-                 <ValidationProvider
-                        name="Date"
-                        vid="date"
-
-                        v-slot="{ errors }"
-                      >
-                        <v-text-field
-                         v-if="data.type == 3"
-                          outlined
-                          type="date"
-                          v-model="data.date"
-                          :label="$t(
+                <ValidationProvider name="Date" vid="date" v-slot="{ errors }">
+                  <v-text-field v-if="data.type == 3" outlined type="date" v-model="data.date" :label="$t(
                             'container.system_config.allowance_program_additiona_field.date'
                           )
-                            "
-                          required
-                          :error="errors[0] ? true : false"
-                          :error-messages="errors[0]"
-                        ></v-text-field>
-                      </ValidationProvider>
-                       <ValidationProvider
-                        name="Number"
-                        vid="number"
-
-                        v-slot="{ errors }"
-                      >
-                        <v-text-field
-                         v-if="data.type == 4"
-                          outlined
-                          type="number"
-                          v-model="data.number"
-                          :label="$t(
+                            " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
+                </ValidationProvider>
+                <ValidationProvider name="Number" vid="number" v-slot="{ errors }">
+                  <v-text-field v-if="data.type == 4" outlined type="number" v-model="data.number" :label="$t(
                             'container.system_config.allowance_program_additiona_field.value'
                           )
-                            "
-                          required
-                          :error="errors[0] ? true : false"
-                          :error-messages="errors[0]"
-                        ></v-text-field>
-                      </ValidationProvider>
-                       <ValidationProvider
-                        name="Text"
-                        vid="text"
-
-                        v-slot="{ errors }"
-                      >
-                        <v-text-field
-                         v-if="data.type == 5"
-                          outlined
-                          type="text"
-                          v-model="data.text"
-                          :label="$t(
+                            " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
+                </ValidationProvider>
+                <ValidationProvider name="Text" vid="text" v-slot="{ errors }">
+                  <v-text-field v-if="data.type == 5" outlined type="text" v-model="data.text" :label="$t(
                             'container.system_config.allowance_program_additiona_field.value'
                           )
-                            "
-                          required
-                          :error="errors[0] ? true : false"
-                          :error-messages="errors[0]"
-                        ></v-text-field>
-                      </ValidationProvider>
+                            " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
+                </ValidationProvider>
 
-              <v-data-table
-    :headers="header_additional_field_value"
-    :items="data.field_value"
-    v-if="data.type == 2"
-    hide-default-footer
-  >
-    <template v-slot:item.id="{ item, index }">
-      {{ index + 1 }}
-    </template>
+                <v-data-table :headers="header_additional_field_value" :items="data.field_value" v-if="data.type == 2"
+                  hide-default-footer>
+                  <template v-slot:item.id="{ item, index }">
+                    {{ index + 1 }}
+                  </template>
 
-    <template v-slot:item.value="{ item }">
-      <v-text-field
-        outlined
-        dense
-        hide-details
-        v-model="item.value"
-      ></v-text-field>
-    </template>
+                  <template v-slot:item.value="{ item }">
+                    <v-text-field outlined dense hide-details v-model="item.value"></v-text-field>
+                  </template>
 
-    <template v-slot:item.action="{ item }">
-      <v-tooltip top>
-        <template v-slot:activator="{ on }">
-          <v-btn
-            fab
-            dense
-            x-small
-            v-on="on"
-            class="danger"
-            elevation="0"
-            @click="removeRow(item.id)"
-          >
-            <v-icon style="color: red">mdi-trash-can-outline</v-icon>
-          </v-btn>
-        </template>
-        <span>
-          {{ $t("container.list.remove") }}
-        </span>
-      </v-tooltip>
-    </template>
-  </v-data-table>
+                  <template v-slot:item.action="{ item }">
+                    <v-tooltip top>
+                      <template v-slot:activator="{ on }">
+                        <v-btn fab dense x-small v-on="on" class="danger" elevation="0" @click="removeRow(item.id)">
+                          <v-icon style="color: red">mdi-trash-can-outline</v-icon>
+                        </v-btn>
+                      </template>
+                      <span>
+                        {{ $t("container.list.remove") }}
+                      </span>
+                    </v-tooltip>
+                  </template>
+                </v-data-table>
                 <v-btn v-if="data.type == 2" fab color="primary" class="m-4" @click="addRow">
                   <v-icon>mdi-plus</v-icon>
                 </v-btn>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
-                  <v-btn
-                    flat
-                    @click="dialogEdit = false"
-                    outlined
-                    class="custom-btn-width py-2 mr-10"
-                  >
+                  <v-btn flat @click="dialogEdit = false" outlined class="custom-btn-width py-2 mr-10">
                     {{ $t("container.list.cancel") }}
                   </v-btn>
-                  <v-btn
-                    type="submit"
-                    flat
-                    color="primary"
-                    :disabled="invalid"
-                    :loading="loading"
-                    class="custom-btn-width primary white--text py-2"
-                  >
+                  <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
+                    class="custom-btn-width primary white--text py-2">
                     {{ $t("container.list.update") }}
                   </v-btn>
                 </v-row>
@@ -526,38 +325,28 @@
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
             {{
-              $t(
-                "container.system_config.allowance_program_additiona_field.delete"
-              )
+            $t(
+            "container.system_config.allowance_program_additiona_field.delete"
+            )
             }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
               {{
-                $t(
-                  "container.system_config.allowance_program_additiona_field.delete_alert"
-                )
+              $t(
+              "container.system_config.allowance_program_additiona_field.delete_alert"
+              )
               }}
             </div>
           </v-card-text>
           <v-card-actions style="display: block">
             <v-row class="mx-0 my-0 py-2" justify="center">
-              <v-btn
-                text
-                @click="deleteDialog = false"
-                outlined
-                class="custom-btn-width py-2 mr-10"
-              >
+              <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
                 {{ $t("container.list.cancel") }}
               </v-btn>
-              <v-btn
-                text
-                @click="deleteField()"
-                color="white"
-                :loading="delete_loading"
-                class="custom-btn-width warning white--text py-2"
-              >
+              <v-btn text @click="deleteField()" color="white" :loading="delete_loading"
+                class="custom-btn-width warning white--text py-2">
                 {{ $t("container.list.delete") }}
               </v-btn>
             </v-row>
@@ -641,6 +430,11 @@ export default {
     ValidationObserver,
   },
   computed: {
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      }
+    },
     header_additional_field_value() {
       return [
         {
@@ -665,49 +459,45 @@ export default {
       ];
     },
     headers() {
-      return [
+      let headers = [
         {
           text: this.$t("container.list.sl"),
           value: "id",
           align: "start",
+          width: "20%",
           sortable: false,
         },
         {
-          text: this.$t("container.system_config.allowance_program_additiona_field.name_en"),
-          value: "name_en",
-          class: "highlight-column ",
-        },
-        {
-          text: this.$t("container.system_config.allowance_program_additiona_field.name_bn"),
-          value: "name_bn",
-        },
-        {
-          text: this.$t(
-            "container.system_config.allowance_program_additiona_field.field_type"
-          ),
-          value: "type",
+          text: this.$t("container.system_config.allowance_program_additiona_field.field_type"),
+          value: "field_type",
+          width: "20%",
           sortable: false,
         },
-        // {
-        //   text: this.$t(
-        //     "container.system_config.demo_graphic.office.office_address"
-        //   ),
-        //   value: "office_address",
-        //   sortable: false,
-        // },
-        // {
-        //   text: this.$t("container.system_config.demo_graphic.office.status"),
-        //   value: "status",
-        //   sortable: false,
-        // },
         {
           text: this.$t("container.list.action"),
           value: "actions",
           align: "center",
+          width: "20%",
           sortable: false,
           width: "13%",
         },
       ];
+
+      if (this.language == 'en') {
+        headers.splice(1, 0, {
+          text: this.$t("container.system_config.allowance_program_additiona_field.name_en"),
+          value: "name_en",
+           width: "40%"
+        });
+      } else if (this.language == 'bn') {
+        headers.splice(1, 0, {
+          text: this.$t("container.system_config.allowance_program_additiona_field.name_bn"),
+          value: "name_bn",
+          width: "40%"
+        });
+      }
+
+      return headers;
     },
     headersWard() {
       return [

@@ -368,6 +368,9 @@
           "waiting": "Waiting"
         },
         "role": {
+          "select_all": "Select All",
+            "select_role": "Select Role",
+            "select_module": "Select Module",
           "list": "Role Lists",
           "code": "Code",
           "name_en": "Role Name (EN)",
@@ -469,7 +472,7 @@
       "allowance_program_additiona_field": {
         "variable": "Allowance Program Additional Field",
         "score": "score",
-        "name_en": "Allowance Program  Field Name",
+        "name_en": "Allowance Program  Field Name in English",
         "name_bn": "Allowance Program  Field Name Bangla",
         "add_new": "Add New Allowance Program Additional Field",
         "search": "Search Field",
@@ -1103,11 +1106,13 @@
       "grievance_subject_delete_message": "Are you sure to delete this Grievance Subject?",
       "grievance_setup": "Set Grievance",
       "add_new_grievance_setting": "Add New Grievance Setting",
+      "edit_grievance_setting": "Edit Grievance Setting",
       "solution_time": "Solution Time (Days)",
       "1stOfficer": "1st Tire (1st Officer)",
       "2ndOfficer": "2nd Tire (2nd Officer)",
-      "3rdOfficer": "3rd Tire (3rd Officer"
-
+      "3rdOfficer": "3rd Tire (3rd Officer)",
+      "grievance_setting_delete": "Delete Grievance Setting",
+      "grievance_setting_delete_message": "Are you sure to delete this Grievance Setting?"
     }
   }
 }

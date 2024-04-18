@@ -47,7 +47,12 @@ export default {
       message: (state) => state.Role_permission.success_message,
       success_status: (state) => state.Role_permission.success_status,
       errors: (state) => state.Role_permission.errors,
-      error_status: (state) => state.Role_permission.error_status
+      error_status: (state) => state.Role_permission.error_status,
+      language: {
+        get() {
+          return this.$store.getters.getAppLanguage;
+        }
+      },
     }),
 
     ...mapGetters({
@@ -329,62 +334,51 @@ export default {
 <template>
   <div id="role_permission">
     <v-row class="mx-5 mt-5">
-        <v-col cols="12">
-          <ValidationObserver ref="form" v-slot="{ invalid }">
-            <v-form v-on:submit.prevent="addRolePermission">
-              <v-row wrap>
-                <v-col cols="12">
-                  <v-card>
-                    <v-row>
-                      <v-col col="6">
-                        <v-card-title><h3>Role Permission Create</h3></v-card-title>
-                      </v-col>
-                    </v-row>
+      <v-col cols="12">
+        <ValidationObserver ref="form" v-slot="{ invalid }">
+          <v-form v-on:submit.prevent="addRolePermission">
+            <v-row wrap>
+              <v-col cols="12">
+                <v-card>
+                  <v-row>
+                    <v-col col="6">
+                      <v-card-title>
+                        <h3>Role Permission Create</h3>
+                      </v-card-title>
+                    </v-col>
+                  </v-row>
 
-                    <v-divider></v-divider>
+                  <v-divider></v-divider>
 
-                    <v-card-text>
-                      <v-col cols="12" class="d-flex">
-                        <v-row wrap>
-                          <v-col cols="12" sm="6" lg="6">
-                            <ValidationProvider name="role_id" vid="role_id" rules="required" v-slot="{ errors }">
-                              <v-select
-                                  :items="roles"
-                                  item-text="name"
-                                  item-value="id"
-                                  label="Select Role"
-                                  menu-props="auto"
-                                  persistent-hint
-                                  outlined
-                                  v-model="add_role_permission.role_id"
-                                  :error="errors[0] ? true : false"
-                                  :error-messages="errors[0]"
-                                  required
-                                  @change="getRolePermission(add_role_permission.role_id)"
-                              ></v-select>
-                            </ValidationProvider>
-                          </v-col>
+                  <v-card-text>
+                    <v-col cols="12" class="d-flex">
+                      <v-row wrap>
+                        <v-col cols="12" sm="6" lg="6">
+                          <ValidationProvider name="role_id" vid="role_id" rules="required" v-slot="{ errors }">
+                            <v-select :items="roles" item-text="name" item-value="id" :label="$t(
+  'container.system_config.demo_graphic.role.select_role'
+        )
+          " menu-props="auto" persistent-hint outlined v-model="add_role_permission.role_id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]" required
+                              @change="getRolePermission(add_role_permission.role_id)"></v-select>
+                          </ValidationProvider>
+                        </v-col>
 
-                          <v-col cols="12" sm="6" lg="6">
-                            <v-select
-                                :items="modules"
-                                item-text="name"
-                                label="Select Module"
-                                menu-props="auto"
-                                persistent-hint
-                                outlined
-                                v-model="selectedModule"
-                                @change="toggleModule(selectedModule)"
-                            >
-                            </v-select>
-                          </v-col>
-                        </v-row>
-                      </v-col>
-                    </v-card-text>
-                  </v-card>
-                </v-col>
+                        <v-col cols="12" sm="6" lg="6">
+                          <v-select :items="modules" item-text="name" :label="$t(
+          'container.system_config.demo_graphic.role.select_module'
+        )
+          " menu-props=" auto" persistent-hint outlined v-model="selectedModule"
+                            @change="toggleModule(selectedModule)">
+                          </v-select>
+                        </v-col>
+                      </v-row>
+                    </v-col>
+                  </v-card-text>
+                </v-card>
+              </v-col>
 
-                <v-row justify="end">
+              <v-row justify="end">
                 <v-col lg="4" md="6" cols="12" class="text-right">
                   <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="GeneratePDF()">
                     <v-icon class="pr-1">mdi-tray-arrow-down</v-icon> {{ $t("container.list.PDF") }}
@@ -394,136 +388,138 @@ export default {
                     {{ $t("container.list.excel") }}
                   </v-btn>
                 </v-col>
-                </v-row>
+              </v-row>
 
 
-                <v-col cols="12" v-if="rolePermissions === null">
-                  <v-card style="margin-bottom: 50px">
-                    <v-card-text>
-                      <v-simple-table height="500px">
-                        <template v-slot:default>
-                          <thead>
+              <v-col cols="12" v-if="rolePermissions === null">
+                <v-card style="margin-bottom: 50px">
+                  <v-card-text>
+                    <v-simple-table height="500px">
+                      <template v-slot:default>
+                        <thead>
                           <tr>
-                            <th class="text-left"><v-checkbox @click="selectAll" v-model="allSelected" color="primary" label="Select All"></v-checkbox></th>
-                            <th class="text-left">Create</th>
-                            <th class="text-left">View</th>
-                            <th class="text-left">Edit</th>
-                            <th class="text-left">Delete</th>
+                            <th class="text-left"><v-checkbox @click="selectAll" v-model="allSelected" color="primary"
+                                :label="$t(
+  'container.system_config.demo_graphic.role.select_all'
+)"></v-checkbox></th>
+                            <th class="text-left">{{ $t(
+                              'container.list.create'
+                              ) }}</th>
+                            <th class="text-left">{{ $t(
+                              'container.list.view'
+                              ) }}</th>
+                            <th class="text-left">{{ $t(
+                              'container.list.edit'
+                              ) }}</th>
+                            <th class="text-left">
+                            <th class="text-left">{{ $t(
+                              'container.list.delete'
+                              ) }}</th>
                           </tr>
-                          </thead>
-                          <tbody>
-                          <tr v-for="(m, key) in subModules" :key="m.id">
-                            <td style="width: 30%">
-                                <h4>{{ key }}</h4>
-                            </td>
-                            <td v-for="mm in m" :key="mm.id">
-                            <span>
-                               <v-checkbox
-                                   v-model="add_role_permission.permissions"
-                                   color="primary"
-                                   :value="mm.id"
-                                   @click="select"
-                               ></v-checkbox>
-                            </span>
-                            </td>
-                          </tr>
-                          </tbody>
-                        </template>
-                      </v-simple-table>
-                    </v-card-text>
-                  </v-card>
-                </v-col >
-
-                <v-col cols="12" v-else>
-                  <v-card style="margin-bottom: 50px">
-                    <v-card-text>
-                      <v-simple-table height="500px">
-                        <template v-slot:default>
-                          <thead>
-                          <tr>
-                            <th class="text-left"><v-checkbox @click="selectAll" v-model="allSelected" color="primary" label="Select All"></v-checkbox></th>
-                            <th class="text-left">Create</th>
-                            <th class="text-left">View</th>
-                            <th class="text-left">Edit</th>
-                            <th class="text-left">Delete</th>
-                          </tr>
-                          </thead>
-                          <tbody>
+                        </thead>
+                        <tbody>
                           <tr v-for="(m, key) in subModules" :key="m.id">
                             <td style="width: 30%">
                               <h4>{{ key }}</h4>
                             </td>
                             <td v-for="mm in m" :key="mm.id">
-                            <span>
-                               <v-checkbox
-                                   v-model="rolePermissions"
-                                   color="primary"
-                                   :value="mm.id"
-                                   @click="select"
-                               ></v-checkbox>
-                            </span>
+                              <span>
+                                <v-checkbox v-model="add_role_permission.permissions" color="primary" :value="mm.id"
+                                  @click="select"></v-checkbox>
+                              </span>
                             </td>
                           </tr>
-                          </tbody>
-                        </template>
-                      </v-simple-table>
-                    </v-card-text>
-                  </v-card>
-                </v-col>
+                        </tbody>
+                      </template>
+                    </v-simple-table>
+                  </v-card-text>
+                </v-card>
+              </v-col>
 
-                <v-col cols="12">
-                  <v-row class="justify-end mb-5" style="margin-top: -50px">
-                    <v-btn
-                        color="primary"
-                        class="custom-btn mr-2"
-                        router
-                        to="/system-configuration/role"
-                    >Back
-                    </v-btn>
+              <v-col cols="12" v-else>
+                <v-card style="margin-bottom: 50px">
+                  <v-card-text>
+                    <v-simple-table height="500px">
+                      <template v-slot:default>
+                        <thead>
+                          <tr>
+                            <th class="text-left"><v-checkbox @click="selectAll" v-model="allSelected" color="primary"
+                                :label="$t(
+  'container.system_config.demo_graphic.role.select_all'
+)"></v-checkbox></th>
+                            <th class="text-left">{{ $t(
+  'container.list.create'
+) }}</th>
+                            <th class="text-left">{{ $t(
+          'container.list.view'
+        ) }}</th>
+                            <th class="text-left">{{ $t(
+          'container.list.edit'
+        ) }}</th>
+                            <th class="text-left">
+                            <th class="text-left">{{ $t(
+          'container.list.delete'
+        ) }}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="(m, key) in subModules" :key="m.id">
+                            <td style="width: 30%">
+                              <h4>{{ key }}</h4>
+                            </td>
+                            <td v-for="mm in m" :key="mm.id">
+                              <span>
+                                <v-checkbox v-model="rolePermissions" color="primary" :value="mm.id"
+                                  @click="select"></v-checkbox>
+                              </span>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </template>
+                    </v-simple-table>
+                  </v-card-text>
+                </v-card>
+              </v-col>
 
-                    <v-btn
-                        color="orange"
-                        class="custom-btn mr-2"
-                        @click="forceUpdate()"
-                    >Reset
-                    </v-btn>
-                    <v-btn
-                        color="success"
-                        type="submit"
-                        class="custom-btn mr-2"
-                        :disabled="invalid"
-                        v-can="'rolePermission-edit'"
-                    >Submit
-                    </v-btn>
-                  </v-row>
-                </v-col>
-              </v-row>
-            </v-form>
-          </ValidationObserver>
-        </v-col>
+              <v-col cols="12">
+                <v-row class="justify-end mb-5" style="margin-top: -50px">
+                  <v-btn color="primary" class="custom-btn mr-2" router to="/system-configuration/role">Back
+                  </v-btn>
 
-        <!-- error modal  -->
-        <v-dialog v-model="roleDialog" width="350">
-          <v-card style="justify-content: center; text-align: center">
-            <v-card-title class="font-weight-bold justify-center">
-              Role-Permission
-            </v-card-title>
-            <v-divider></v-divider>
-            <v-card-text>
-              <div class="subtitle-1 font-weight-medium mt-5">
-                Please select permission from permission lists? other wise you will not store data
-              </div>
-            </v-card-text>
-            <v-card-actions style="display: block">
-              <v-row class="mx-0 my-0 py-2" justify="center">
-                <v-btn text @click="roleDialog = false" outlined class="custom-btn-width py-2 mr-10">
-                  Cancel
-                </v-btn>
-              </v-row>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-        <!-- error modal  -->
+                  <v-btn color="orange" class="custom-btn mr-2" @click="forceUpdate()">Reset
+                  </v-btn>
+                  <v-btn color="success" type="submit" class="custom-btn mr-2" :disabled="invalid"
+                    v-can="'rolePermission-edit'">Submit
+                  </v-btn>
+                </v-row>
+              </v-col>
+            </v-row>
+          </v-form>
+        </ValidationObserver>
+      </v-col>
+
+      <!-- error modal  -->
+      <v-dialog v-model="roleDialog" width="350">
+        <v-card style="justify-content: center; text-align: center">
+          <v-card-title class="font-weight-bold justify-center">
+            Role-Permission
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            <div class="subtitle-1 font-weight-medium mt-5">
+              Please select permission from permission lists? other wise you will not store data
+            </div>
+          </v-card-text>
+          <v-card-actions style="display: block">
+            <v-row class="mx-0 my-0 py-2" justify="center">
+              <v-btn text @click="roleDialog = false" outlined class="custom-btn-width py-2 mr-10">
+                Cancel
+              </v-btn>
+            </v-row>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <!-- error modal  -->
     </v-row>
   </div>
 </template>

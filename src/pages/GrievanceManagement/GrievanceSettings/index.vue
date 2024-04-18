@@ -53,28 +53,45 @@
                   justify-lg="space-between">
 
                   <v-col cols="12">
-                    <v-data-table :loading="loading" item-key="id" :headers="headers" :items="subjects"
+                    <v-data-table :loading="loading" item-key="id" :headers="headers" :items="settings"
                       :items-per-page="pagination.perPage" @update:options="handleOptionsUpdate" hide-default-footer
                       class="elevation-0 transparent row-pointer">
                       <template v-slot:item.id="{ item, index }">
+
                         {{
                           (pagination.current - 1) * pagination.perPage +
                           index +
                           1
+                          
                         }}
+
                       </template>
 
 
                       <template v-slot:item.title_en="{ item }">
-                        {{ item.title_en }}
+                        {{ item.grievance_type_id }}
                       </template>
                       <template v-slot:item.title_bn="{ item }">
-                        {{ item.title_bn }}
+                        {{ item.grievance_type_id }}
                       </template>
-                      <template v-slot:item.status="{ item }">
-                        <span v-if="item?.status == '0'"> Inactive </span>
-                        <span v-if="item?.status == '1'"> Active </span>
+                      <template v-slot:item.first_tire_solution_time="{ item }">
+                        {{ item.first_tire_solution_time }}
                       </template>
+                      <template v-slot:item.secound_tire_solution_time="{ item }">
+                        {{ item.secound_tire_solution_time ?? 'N/A' }}
+                      </template>
+                      <template v-slot:item.secound_tire_officer="{ item }">
+                        {{ item.secound_tire_officer ?? 'N/A' }}
+                      </template>
+
+                      <template v-slot:item.third_tire_solution_time="{ item }">
+                        {{ item.third_tire_solution_time ?? 'N/A' }}
+                      </template>
+
+                      <template v-slot:item.third_tire_officer="{ item }">
+                        {{ item.third_tire_officer ?? 'N/A' }}
+                      </template>
+
 
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
@@ -133,7 +150,7 @@
           <v-divider></v-divider>
           <v-card-text class="mt-7">
             <ValidationObserver ref="formAdd" v-slot="{ invalid }">
-              <form @submit.prevent="submitGrievanceSubject()">
+              <form @submit.prevent="submitGrievanceSetting()">
                 <!-- {{errors.code}}
                   {{errors.name_en}} -->
                 <v-row>
@@ -147,7 +164,8 @@
                     </ValidationProvider>
                   </v-col>
                   <v-col>
-                    <ValidationProvider name="Grievance Subject" vid="subject" rules="required" v-slot="{ errors }">
+                    <ValidationProvider name="Grievance Subject" vid="grievance_subject_id" rules="required"
+                      v-slot="{ errors }">
                       <v-autocomplete v-model="data.grievance_subject_id" outlined :label="$t(
                         'container.grievance_management.grievance_subject'
                       )
@@ -156,29 +174,30 @@
                     </ValidationProvider>
                   </v-col>
                 </v-row>
-                <v-row v-for="(facilityData, index) in OfficerForm" :key="index">
+
+                <v-row v-for="(OfficerForm, index) in data.OfficerForm" :key="index">
                   <v-col>
                     <ValidationProvider v-slot="{ errors }" name="Solution Time" vid="first_tire_solution_time"
                       rules="required">
-                      <v-text-field outlined type="number" v-model="facilityData.first_tire_solution_time" :label="$t('container.grievance_management.solution_time')
+                      <v-text-field outlined type="number" v-model="OfficerForm.first_tire_solution_time" :label="$t('container.grievance_management.solution_time')
                         " required :error="errors[0] ? true : false" :error-messages="errors[0]">></v-text-field>
                     </ValidationProvider>
                   </v-col>
                   <v-col cols="5">
                     <ValidationProvider name="Grievance Type" vid="subject" rules="required" v-slot="{ errors }">
-                      <v-autocomplete v-model="facilityData.first_tire_officer" outlined :label="$t(
-                        'container.grievance_management.1stOfficer'
-                      )
-                        " :items="roles" item-text="name" item-value="id" required :error="errors[0] ? true : false"
+                      <v-autocomplete v-model="OfficerForm.first_tire_officer" outlined :label="dynamicLabel(index)"
+                        :items="roles" item-text="name" item-value="id" required :error="errors[0] ? true : false"
                         :error-messages="errors[0]"></v-autocomplete>
+
                     </ValidationProvider>
                   </v-col>
                   <v-col cols="1">
-                    <v-btn v-if="index > 0" class="mx-2" fab dark x-small color="red" @click="remove(index)">
+                    <v-btn class="mx-2" fab dark x-small color="red" @click="remove(index)">
                       <v-icon dark> mdi-minus </v-icon>
                     </v-btn>
 
-                    <v-btn v-if="index <= 1" class="mx-2" fab dark x-small color="green" @click="addmore(index)">
+                    <v-btn v-if="index === countInput && index < 2" class="mx-2" fab dark x-small color="green"
+                      @click="addmore(index)">
                       <!-- <v-icon dark> mdi-plus </v-icon> -->
                       <v-icon> mdi-plus </v-icon>
                     </v-btn>
@@ -202,42 +221,63 @@
       <!-- Grievance Settings add modal  -->
 
       <!-- Grievance Settings Edit modal  -->
-      <v-dialog v-model="dialogEdit" width="650">
+      <v-dialog v-model="dialogEdit" width="1050">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.grievance_management.edit_grievance_subject") }}
+            {{ $t("container.grievance_management.edit_grievance_setting") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
             <ValidationObserver ref="formEdit" v-slot="{ invalid }">
-              <form @submit.prevent="updateGrievanceSubject()">
+              <form @submit.prevent="updateGrievanceSetting()">
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
-                <ValidationProvider name="Grievance Type" vid="subject" rules="required" v-slot="{ errors }">
-                  <v-autocomplete v-model="data.grievance_type_id" outlined :label="$t(
-                    'container.grievance_management.main_grievance_type'
-                  )
-                    " :items="types" item-text="title_en" item-value="id" required :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"></v-autocomplete>
-                </ValidationProvider>
+                <v-row>
+                  <v-col>
+                    <ValidationProvider name="Grievance Type" vid="type" rules="required" v-slot="{ errors }">
+                      <v-autocomplete v-model="data.grievance_type_id" outlined :label="$t(
+                        'container.grievance_management.main_grievance_type'
+                      )
+                        " :items="types" item-text="title_en" item-value="id" required
+                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col>
+                    <ValidationProvider name="Grievance Subject" vid="grievance_subject_id" rules="required"
+                      v-slot="{ errors }">
+                      <v-autocomplete v-model="data.grievance_subject_id" outlined :label="$t(
+                        'container.grievance_management.grievance_subject'
+                      )
+                        " :items="subjects" item-text="title_en" item-value="id" required
+                        :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                </v-row>
+                <v-row v-for="(OfficerForm, index) in data.OfficerForm" :key="index">
+                  <v-col>
+                    <ValidationProvider v-slot="{ errors }" name="Solution Time" vid="first_tire_solution_time"
+                      rules="required">
+                      <v-text-field outlined type="number" v-model="OfficerForm.first_tire_solution_time" :label="$t('container.grievance_management.solution_time')
+                        " required :error="errors[0] ? true : false" :error-messages="errors[0]">></v-text-field>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col cols="5">
+                    <ValidationProvider name="Officer" vid="First Tire Officer" rules="required" v-slot="{ errors }">
+                      <v-autocomplete v-model="OfficerForm.first_tire_officer" outlined :label="dynamicLabel(index)
+                        " :items="roles" item-text="name" item-value="id" required :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"></v-autocomplete>
+                    </ValidationProvider>
+                  </v-col>
+                  <v-col cols="1">
+                    <v-btn class="mx-2" fab dark x-small color="red" @click="remove(index)">
+                      <v-icon dark> mdi-minus </v-icon>
+                    </v-btn>
+                    <v-btn v-if="index === countInput && index < 1" class="mx-2" fab dark x-small color="green" @click="addmore(index)">    
+                      <v-icon> mdi-plus</v-icon>
+                    </v-btn>
+                  </v-col>
+                </v-row>
 
-                <ValidationProvider name="Title English" vid="title_en" v-slot="{ errors }">
-                  <v-text-field outlined type="text" v-model="data.title_en" :label="$t('container.grievance_management.title_en')
-                    " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
-                </ValidationProvider>
-                <ValidationProvider name="Title Bangla" vid="title_bn" rules="required" v-slot="{ errors }">
-                  <v-text-field outlined type="text" v-model="data.title_bn" :label="$t(
-                    'container.grievance_management.title_bn'
-                  )
-                    " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
-                </ValidationProvider>
-                <ValidationProvider name="Status" vid="status" v-slot="{ errors }">
-                  <v-checkbox v-model="data.status" :label="$t(
-                    'container.system_config.demo_graphic.office.active'
-                  )
-                    " color="green" value="1" :hide-details="errors[0] ? false : true"
-                    :error="errors[0] ? true : false" :error-messages="errors[0]"></v-checkbox>
-                </ValidationProvider>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
                   <v-btn @click="dialogEdit = false" outlined class="custom-btn-width py-2 mr-10">
@@ -259,13 +299,13 @@
       <v-dialog v-model="deleteDialog" width="350">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.grievance_management.grievance_subject_delete") }}
+            {{ $t("container.grievance_management.grievance_setting_delete") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
               {{
-                $t("container.grievance_management.grievance_subject_delete_message")
+                $t("container.grievance_management.grievance_setting_delete_message")
               }}
             </div>
           </v-card-text>
@@ -298,56 +338,46 @@ extend("required", required);
 export default {
   name: "Index",
   title: "CTM - Grievance",
-  data() {
-    return {
-      data: {
-        id: null,
-        status: null,
-        title_en: null,
-        title_bn: null,
-        grievance_type_id: null,
-        grievance_subject_id: null,
-        // first_tire_officer: [],
-        // secound_tire_officer: [],
-        // third_tire_officer: [],
-        // first_tire_solution_time: [],
-        // secound_tire_solution_time: [],
-        // third_tire_solution_time: [],
-      },
-      OfficerForm: [{
-        first_tire_officer: "",
-        // secound_tire_officer: null,
-        // third_tire_officer: null,
-        first_tire_solution_time: "",
-        // secound_tire_solution_time: null,
-        // third_tire_solution_time: null,
-      }],
-      total: null,
-      isLoading: false,
-      dialogAdd: false,
-      deleteDialog: false,
-      dialogEdit: false,
-      delete_loading: false,
-      loading: false,
-      search: "",
-      delete_id: "",
-      subjects: [],
-      types: [],
-      roles: [],
-      AllGrievanceSubject: [],
-      errors: {},
-      error_status: {},
-      pagination: {
-        current: 1,
-        total: 0,
-        perPage: 15,
-      },
-      sortBy: "name_en",
-      sortDesc: false, //ASC
-      // errors: "",
-      items: [5, 10, 15, 20, 40, 50, 100],
-    };
-  },
+  data: () => ({
+    data: {
+      id: null,
+      grievance_type_id: null,
+      grievance_subject_id: null,
+      OfficerForm: [
+        {
+          first_tire_officer: "",
+          first_tire_solution_time: "",
+        },
+      ],
+
+    },
+    total: null,
+    isLoading: false,
+    dialogAdd: false,
+    deleteDialog: false,
+    dialogEdit: false,
+    delete_loading: false,
+    loading: false,
+    search: "",
+    delete_id: "",
+    subjects: [],
+    types: [],
+    roles: [],
+    settings: [],
+    AllGrievanceSettings: [],
+    errors: {},
+    error_status: {},
+    pagination: {
+      current: 1,
+      total: 0,
+      perPage: 15,
+    },
+    sortBy: "id",
+    sortDesc: false, //ASC
+    // errors: "",
+    items: [5, 10, 15, 20, 40, 50, 100],
+    countInput: 0,
+  }),
 
   watch: {
     "$i18n.locale": "updateHeaderTitle",
@@ -359,12 +389,6 @@ export default {
     ValidationObserver,
   },
   computed: {
-    OfficerLength() {
-      return this.OfficerForm.length;
-    },
-    shouldDisplayButton() {
-      return this.index === this.OfficerLength - 1 && this.OfficerLength < 3;
-    },
     headers() {
       return [
         {
@@ -374,27 +398,51 @@ export default {
           sortable: false,
         },
         {
-          text: this.$t("container.grievance_management.title_en"),
-          value: "title_en",
-        },
-        {
-          text: this.$t(
-            "container.grievance_management.title_bn"
-          ),
-          value: "title_bn",
-          class: "highlight-column ",
-        },
-        {
-          text: this.$t(
-            "container.grievance_management.main_grievance_type"
-          ),
+          text: this.$t("container.grievance_management.main_grievance_type"),
           value: "grievanceTypeEn",
         },
         {
           text: this.$t(
-            "container.list.status"
+            "container.grievance_management.grievance_subject"
           ),
-          value: "status",
+          value: "grievanceSubjectEn",
+          class: "highlight-column ",
+        },
+        {
+          text: this.$t(
+            "container.grievance_management.solution_time"
+          ),
+          value: "first_tire_solution_time",
+        },
+        {
+          text: this.$t(
+            "container.grievance_management.1stOfficer"
+          ),
+          value: "first_tire_officer",
+        },
+        {
+          text: this.$t(
+            "container.grievance_management.solution_time"
+          ),
+          value: "secound_tire_solution_time",
+        },
+        {
+          text: this.$t(
+            "container.grievance_management.2ndOfficer"
+          ),
+          value: "secound_tire_officer",
+        },
+        {
+          text: this.$t(
+            "container.grievance_management.solution_time"
+          ),
+          value: "third_tire_solution_time",
+        },
+        {
+          text: this.$t(
+            "container.grievance_management.3rdOfficer"
+          ),
+          value: "third_tire_officer",
         },
         {
           text: this.$t("container.list.action"),
@@ -405,23 +453,35 @@ export default {
       ];
     },
 
-    ...mapState({
-      message: (state) => state.Division.success_message,
-
-    }),
   },
   methods: {
-    addmore() {
-      this.OfficerForm.push({
+    dynamicLabel(index) {
+      if (index == 0) {
+        return this.$t('container.grievance_management.1stOfficer');
+      }
+      if (index == 1) {
+        return this.$t('container.grievance_management.2ndOfficer');
+      }
+      if (index == 2) {
+        return this.$t('container.grievance_management.3rdOfficer');
+      }
+      // You can calculate or fetch the dynamic label here
+
+    },
+    addmore(index) {
+      this.data.OfficerForm.push({
         first_tire_solution_time: "",
         first_tire_officer: "",
       });
 
-      // this.getParentComponentList();
+      this.countInput++;
+
     },
     remove(index) {
-      this.OfficerForm.splice(index, 1);
-      // this.setParentFormData();
+      if (this.countInput > 0) {
+        this.data.OfficerForm.splice(index, 1);
+        this.countInput--;
+      }
     },
 
     async GeneratePDF() {
@@ -440,7 +500,7 @@ export default {
       };
 
       await this.$axios
-        .get("/admin/grievanceSubject/get", {
+        .get("/admin/grievanceSetting/get", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -448,24 +508,34 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          this.AllGrievanceSubject = result.data.data;
+          this.AllGrievanceSettings = result.data.data;
         });
 
       const HeaderInfo = [
         this.$t("container.list.sl"),
-        this.$t("container.grievance_management.title_en"),
-        this.$t("container.grievance_management.title_bn"),
         this.$t("container.grievance_management.main_grievance_type"),
-        this.$t("container.list.status"),
+        this.$t("container.grievance_management.grievance_subject"),
+        this.$t("container.grievance_management.solution_time"),
+        this.$t("container.grievance_management.1stOfficer"),
+        this.$t("container.grievance_management.solution_time"),
+        this.$t("container.grievance_management.2ndOfficer"),
+        this.$t("container.grievance_management.solution_time"),
+        this.$t("container.grievance_management.3rdOfficer"),
+
       ]
 
-      const CustomInfo = this.AllGrievanceSubject.map(((i, index) => {
+      const CustomInfo = this.AllGrievanceSettings.map(((i, index) => {
         return [
           this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
-          this.$i18n.locale == 'en' ? i.title_en : i.title_en,
-          this.$i18n.locale == 'en' ? i.title_bn : i.title_bn,
           this.$i18n.locale == 'en' ? i.grievanceTypeEn : i.grievanceTypeBn,
-          this.$i18n.locale == 'en' ? this.status(i.status) : this.status(i.status),
+          this.$i18n.locale == 'en' ? i.grievanceSubjectEn : i.grievanceSubjectBn,
+          this.$i18n.locale == 'en' ? i.first_tire_solution_time : this.$helpers.englishToBangla(i.first_tire_solution_time),
+          this.$i18n.locale == 'en' ? i.first_tire_officer : i.first_tire_officer,
+          this.$i18n.locale == 'en' ? i.secound_tire_solution_time : this.$helpers.englishToBangla(i.secound_tire_solution_time),
+          this.$i18n.locale == 'en' ? i.secound_tire_officer : i.secound_tire_officer,
+          this.$i18n.locale == 'en' ? i.third_tire_solution_time : this.$helpers.englishToBangla(i.third_tire_solution_time),
+          this.$i18n.locale == 'en' ? i.third_tire_officer : i.third_tire_officer,
+
         ]
       }));
 
@@ -473,7 +543,7 @@ export default {
         language: this.$i18n.locale,
         data: CustomInfo,
         header: HeaderInfo,
-        fileName: this.$t("container.grievance_management.grievance_subject"),
+        fileName: this.$t("container.grievance_management.grievance_setup"),
       };
       try {
         const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
@@ -516,7 +586,7 @@ export default {
       };
 
       await this.$axios
-        .get("/admin/grievanceSubject/get", {
+        .get("/admin/grievanceSetting/get", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -524,8 +594,8 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          this.AllGrievanceSubject = result.data.data;
-          console.log(this.AllGrievanceSubject, 'excel')
+          this.AllGrievanceSettings = result.data.data;
+          console.log(this.AllGrievanceSettings, 'excel')
         })
         .catch(error => {
           this.isLoading = false;
@@ -536,29 +606,38 @@ export default {
 
           const HeaderInfo = [
             this.$t("container.list.sl"),
-            this.$t("container.grievance_management.title_en"),
-            this.$t("container.grievance_management.title_bn"),
             this.$t("container.grievance_management.main_grievance_type"),
-            this.$t("container.list.status"),
+            this.$t("container.grievance_management.grievance_subject"),
+            this.$t("container.grievance_management.solution_time"),
+            this.$t("container.grievance_management.1stOfficer"),
+            this.$t("container.grievance_management.solution_time"),
+            this.$t("container.grievance_management.2ndOfficer"),
+            this.$t("container.grievance_management.solution_time"),
+            this.$t("container.grievance_management.3rdOfficer"),
           ]
 
-          const CustomInfo = this.AllGrievanceSubject.map(((i, index) => {
+          const CustomInfo = this.AllGrievanceSettings.map(((i, index) => {
             return {
               "sl": this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
-              "title_en": this.$i18n.locale == 'en' ? i.title_en : i.title_en,
-              "title_bn": this.$i18n.locale == 'en' ? i.title_bn : i.title_bn,
               "grievance_type_id": this.$i18n.locale == 'en' ? i.grievanceTypeEn : i.grievanceTypeBn,
-              "status": this.$i18n.locale == 'en' ? this.status(i.status) : this.status(i.status),
+              "grievance_subject_id": this.$i18n.locale == 'en' ? i.grievanceSubjectEn : i.grievanceSubjectEn,
+              "first_tire_solution_time": this.$i18n.locale == 'en' ? i.first_tire_solution_time : this.$helpers.englishToBangla(i.first_tire_solution_time),
+              "first_tire_officer": this.$i18n.locale == 'en' ? i.first_tire_officer : i.first_tire_officer,
+              "secound_tire_solution_time": this.$i18n.locale == 'en' ? i.secound_tire_solution_time : this.$helpers.englishToBangla(i.secound_tire_solution_time),
+              "secound_tire_officer": this.$i18n.locale == 'en' ? i.secound_tire_officer : i.secound_tire_officer,
+              "third_tire_solution_time": this.$i18n.locale == 'en' ? i.third_tire_solution_time : this.$helpers.englishToBangla(i.third_tire_solution_time),
+              "third_tire_officer": this.$i18n.locale == 'en' ? i.third_tire_officer : i.third_tire_officer,
+
             }
           }));
 
-          const Field = ['sl', 'title_en', 'title_bn', 'grievance_type_id', 'status']
+          const Field = ['sl', 'grievance_type_id', 'grievance_subject_id', 'first_tire_solution_time','first_tire_officer','secound_tire_solution_time','secound_tire_officer','third_tire_solution_time','third_tire_officer']
 
           const Data = this.FormatJson(Field, CustomInfo)
           const currentDate = new Date().toISOString().slice(0, 10); //
           let dateinfo = queryParams.language == 'en' ? currentDate : this.$helpers.englishToBangla(currentDate)
 
-          const filenameWithDate = `${dateinfo}_${this.$t("container.grievance_management.grievance_subject")}`;
+          const filenameWithDate = `${dateinfo}_${this.$t("container.grievance_management.grievance_setup")}`;
 
           excel.export_json_to_excel({
             header: HeaderInfo,
@@ -630,15 +709,10 @@ export default {
       }
       return fd;
     },
-    submitGrievanceSubject() {
-      if (!this.checkLanguage()) {
-        return;
-      }
-
+    submitGrievanceSetting() {
       try {
-
         this.$axios
-          .post(`/admin/grievanceSubject/store`, this.data, {
+          .post(`/admin/grievanceSetting/store`, this.data, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
@@ -650,7 +724,7 @@ export default {
               this.$toast.success("Data Inserted Successfully");
               this.resetForm();
               this.dialogAdd = false;
-              this.GetGrievanceSubject();
+              this.GetGrievanceSettings();
             } else if (res.response?.data?.errors) {
               this.$refs.formAdd.setErrors(res.response.data.errors);
             }
@@ -658,24 +732,31 @@ export default {
       } catch (e) {
       }
     },
-    editDialog(item) {
-      this.dialogEdit = true;
-      // this.data.status = item.status;
-      this.data.status = String(item.status);
-      this.data.title_en = item.title_en;
-      this.data.title_bn = item.title_bn;
-      this.data.grievance_type_id = item.grievance_type_id;
-      this.data.id = item.id;
-      this.errors = {};
-    },
-    updateGrievanceSubject() {
-      if (!this.checkLanguage()) {
-        return;
+    editDialog(items) {
+      this.data.OfficerForm = [];
+      // Define an array of property names
+      const propertyNames = ['first', 'secound', 'third'];
+
+      for (let i = 0; i < propertyNames.length; i++) {
+        if (items[`${propertyNames[i]}_tire_officer_id`] != null && items[`${propertyNames[i]}_tire_solution_time`] != null) {
+          let newItem = {
+            first_tire_officer: items[`${propertyNames[i]}_tire_officer_id`],
+            first_tire_solution_time: items[`${propertyNames[i]}_tire_solution_time`]
+          };
+          this.data.OfficerForm.push(newItem);
+        }
       }
 
+      this.dialogEdit = true;
+      this.data.grievance_type_id = items.grievance_type_id;
+      this.data.grievance_subject_id = items.grievance_subject_id;
+      this.data.id = items.id;
+      this.errors = {};
+    },
+    updateGrievanceSetting() {
       try {
         this.$axios
-          .post(`/admin/grievanceSubject/update/`, this.data, {
+          .post(`/admin/grievanceSetting/update/`, this.data, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
@@ -687,7 +768,7 @@ export default {
               this.$toast.success("Data Updated Successfully");
               this.dialogEdit = false;
               this.resetForm();
-              this.GetGrievanceSubject();
+              this.GetGrievanceSettings();
             } else {
               this.$refs.formEdit.setErrors(data.errors);
             }
@@ -696,19 +777,37 @@ export default {
       }
     },
     resetForm() {
+      console.log(this.data.OfficerForm,'this.data.OfficerFormthis.data.OfficerForm');
+       this.data.id = null;
+      this.data.grievance_type_id = null;
+      this.data.grievance_subject_id = null;
+
+      // Reset OfficerForm array
+      this.data.OfficerForm = [
+        {
+          first_tire_officer: "",
+          first_tire_solution_time: "",
+        }
+      ];
       // Reset the form data
-      this.data = {
-        code: "",
-        name_en: "",
-        name_bn: "",
-        // Reset other form fields
-      };
+      // this.data = {
+      //   grievance_type_id: "",
+      //   grievance_subject_id: "",
+      //   first_tire_officer: "",
+      //   first_tire_solution_time: "",
+      //   secound_tire_officer: "",
+      //   secound_tire_solution_time: "",
+      //   third_tire_officer: "",
+      //   third_tire_solution_time: "",
+
+      //   // Reset other form fields
+      // };
       this.errors = {};
     },
 
     onPageChange($event) {
       // this.pagination.current = $event;
-      this.GetGrievanceSubject();
+      this.GetGrievanceSettings();
     },
     setInitialHeader() {
       for (let i = 0; i < this.headers.length; i++) {
@@ -792,10 +891,37 @@ export default {
 
         });
     },
+    async GetGrievanceSettings() {
+      const queryParams = {
+        searchText: this.search,
+        perPage: this.pagination.perPage,
+        page: this.pagination.current,
+        sortBy: this.sortBy,
+        sortDesc: this.sortDesc,
+      };
+      this.$axios
+        .get("/admin/grievanceSetting/get", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          console.log(result, 'all get data');
+          this.total = result?.data?.meta?.total;
+          this.settings = result.data.data;
+          this.pagination.current = result.data.meta.current_page;
+          this.pagination.total = result.data.meta.last_page;
+          this.pagination.grand_total = result.data.meta.total;
+
+
+        });
+    },
     deleteDivision: async function () {
       try {
         this.$axios
-          .delete(`/admin/grievanceSubject/destroy/${this.delete_id}`, {
+          .delete(`/admin/grievanceSetting/destroy/${this.delete_id}`, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
             },
@@ -809,7 +935,7 @@ export default {
               this.$toast.error(res.response.data.message);
             }
             this.deleteDialog = false;
-            this.GetGrievanceSubject();
+            this.GetGrievanceSettings();
           })
           .catch((error) => {
             console.log(error, "error");
@@ -872,6 +998,7 @@ export default {
   created() {
     this.GetGrievanceType();
     this.getRoles();
+    this.GetGrievanceSettings();
   },
   beforeMount() {
     this.updateHeaderTitle();
