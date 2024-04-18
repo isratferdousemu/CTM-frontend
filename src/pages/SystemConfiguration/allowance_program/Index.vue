@@ -3,7 +3,7 @@ import {http} from "@/hooks/httpService";
 
 export default {
   name: "Index",
-  title: "CTM - Allowance Program",
+  title: "CTM -Allowance Program",
 
   data(){
     return{
@@ -40,16 +40,33 @@ export default {
   },
 
   computed: {
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      }
+    },
     headers(){
-      return[
-        { text: this.$t('container.list.sl'), value: "id", align: "start", sortable: false },
-        { text: this.$t('container.system_config.allowance_program.name_en'), value: "name_en" },
-        { text: this.$t('container.system_config.allowance_program.name_bn'), value: "name_bn" },
-        { text: this.$t('container.system_config.allowance_program.payment_cycle'), value: "payment_cycle" },
-        { text: this.$t('container.system_config.allowance_program.status'), value: "is_active" },
-     { text: this.$t('container.system_config.allowance_program.system_status'), value: "system_status" },
-        { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false },
-      ]
+      let headers = 
+   [
+          { text: this.$t('container.list.sl'), value: "id", align: "start", sortable: false, width:"10%"},
+       
+          { text: this.$t('container.system_config.allowance_program.payment_cycle'), value: "payment", width: "15%" },
+          { text: this.$t('container.system_config.allowance_program.status'), value: "is_active", width: "5%" },
+          { text: this.$t('container.system_config.allowance_program.system_status'), value: "system_status", width: "15%" },
+          { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false, width: "15%" },
+      ];
+      if (this.language == 'en') {
+        headers.splice(1, 0, {
+          text: this.$t('container.system_config.allowance_program.name_en'), value: "name_en", width: "20%"
+         
+        });
+      } else if (this.language == 'bn') {
+        headers.splice(1, 0, {
+          text: this.$t('container.system_config.allowance_program.name_bn'), value: "name_bn", width: "20%"
+       
+        });
+      }
+      return headers;
     }
   },
 
@@ -286,7 +303,9 @@ export default {
             <v-card>
               <v-row>
                 <v-col col="6">
-                  <v-card-title><h3>{{ $t('container.system_config.allowance_program.list') }}</h3></v-card-title>
+                  <v-card-title>
+                    <h3>{{ $t('container.system_config.allowance_program.list') }}</h3>
+                  </v-card-title>
                 </v-col>
               </v-row>
 
@@ -295,71 +314,79 @@ export default {
               <v-card-text>
                 <v-card-title class="mb-5">
                   <div class="d-flex justify-sm-end flex-wrap">
-                    <v-text-field
-                        @keyup.native="getAllowance"
-                        v-model="search"
-                        append-icon="mdi-magnify"
-                        label="Search"
-                        hide-details
-                        class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal"
-                        flat
-                        outlined dense
-                    ></v-text-field>
+                    <v-text-field @keyup.native="getAllowance" v-model="search" append-icon="mdi-magnify" label="Search"
+                      hide-details class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal" flat outlined
+                      dense></v-text-field>
                   </div>
 
                   <v-spacer></v-spacer>
 
-                  <v-btn
-                      medium
-                      flat
-                      color="primary"
-                      router
-                      to="/system-configuration/allowance-program/create"
-                      class=" mr-5"
-                      v-can="'allowance-create'"
-                  >
+                  <v-btn medium flat color="primary" router to="/system-configuration/allowance-program/create"
+                    class=" mr-5" v-can="'allowance-create'">
                     <v-icon small left>mdi-plus</v-icon>
                     <span>{{$t('container.list.add_new')}}</span>
                   </v-btn>
                 </v-card-title>
-                
-                
-        <v-row justify="space-between" align="center" class="mx-3">
-            <!-- Checkbox on the left -->
-            <v-col lg="3" md="3" cols="12">
-                {{ $t('container.list.total') }} &nbsp;:&nbsp;{{ this.total }}
-            </v-col>
 
-          <v-col lg="4" md="6" cols="12" class="text-right">
-            <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="GeneratePDF()">
-              <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
-            </v-btn>
-            <v-btn elevation="2" class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
-              <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
-              {{ $t("container.list.excel") }}
-            </v-btn>
-          </v-col>
-        </v-row>
+
+                <v-row justify="space-between" align="center" class="mx-3">
+                  <!-- Checkbox on the left -->
+                  <v-col lg="3" md="3" cols="12">
+
+                   
+                    {{ $t('container.list.total') }}:&nbsp;
+                      {{ language === 'bn' ? $helpers.englishToBangla(
+                      this.total) : this.total }}
+                  </v-col>
+
+                  <v-col lg="4" md="6" cols="12" class="text-right">
+                    <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="GeneratePDF()">
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
+                    </v-btn>
+                    <v-btn elevation="2" class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                      {{ $t("container.list.excel") }}
+                    </v-btn>
+                  </v-col>
+                </v-row>
                 <v-card-subtitle>
-                  <v-data-table
-                      :headers="headers"
-                      :items="allowances"
-                      :search="search"
-                      :options.sync="options"
-                      :server-items-length="totalAllowances"
-                      :loading="loading"
-                      :footer-props="{
+                  <v-data-table :headers="headers" :items="allowances" :search="search" :options.sync="options"
+                    :server-items-length="totalAllowances" :loading="loading" :footer-props="{
                           'items-per-page-options': [10,20,30,40,50]
-                      }"
-                      dense
-                      class="elevation-1 transparent row-pointer"
-                  >
+                      }" dense class="elevation-1 transparent row-pointer">
 
                     <template v-slot:[`item.id`]="{ item,index }">
-                      {{ index + 1 }}
+                      {{
+
+                      language === 'bn' ? $helpers.englishToBangla(
+                      index + 1) : index + 1
+
+
+                      }}
+                      <!-- {{ index + 1 }} -->
+                    </template>
+                    <template v-slot:item.payment="{ item }">
+                      <span v-if="item.payment_cycle == 'Quarterly'"> {{
+                        language == 'bn' ? "ত্রৈমাসিক" : item.payment_cycle }}</span>
+                      <span v-if="item.payment_cycle == 'Monthly'"> {{
+                        language == 'bn' ? "মাসিক" : item.payment_cycle }}</span>
+                      <span v-if="item.payment_cycle == 'Half Yearly'"> {{
+                        language == 'bn' ? "অর্ধ বার্ষিক" : item.payment_cycle }}</span>
+                      <span v-if="item.payment_cycle == 'Yearly'"> {{
+                        language == 'bn' ? "বার্ষিক" : item.payment_cycle }}</span>
                     </template>
 
                     <template v-slot:[`item.is_active`]="{ item }">
+                      <span v-if="item.is_active === 0">
+                        {{
+                        language == 'bn' ? "নিষ্ক্রিয়" : 'Inactive' }}
+                      </span>
+                      <span v-else>
+                        {{
+                        language == 'bn' ? "সক্রিয়" : 'Active' }}
+                      </span>
+                    </template>
+                    <template v-slot:[`item.system_status`]="{ item }">
                       <span v-if="item.is_active === 0">
                         Inactive
                       </span>
@@ -367,77 +394,47 @@ export default {
                         Active
                       </span>
                     </template>
-                           <template v-slot:[`item.system_status`]="{ item }">
-                        <span v-if="item.is_active === 0">
-                          Inactive
-                        </span>
-                        <span v-else>
-                          Active
-                        </span>
-                      </template>
-                          <template v-slot:[`item.system_status`]="{ item }">
-                                           
-                                                  <span >
-                                                       <v-switch :input-value="item.system_status === 1 ? true : false" @change="deviceActivate({ id: item.id, system_status: item.system_status })" hide-details color="orange darken-3"></v-switch>
-                                                  </span>
-                                          </template>
+                    <template v-slot:[`item.system_status`]="{ item }">
+
+                      <span>
+                        <v-switch :input-value="item.system_status === 1 ? true : false"
+                          @change="deviceActivate({ id: item.id, system_status: item.system_status })" hide-details
+                          color="orange darken-3"></v-switch>
+                      </span>
+                    </template>
 
                     <template v-slot:[`item.actions`]="{ item }" style="padding: 10px;">
                       <v-tooltip top>
                         <template v-slot:activator="{ on }">
-                          <v-btn
-                              :disabled="item.default === 1"
-                              fab
-                              style="margin-right: 10px;"
-                              x-small
-                              color="success"
-                              v-on="on"
-                              router
-                              :to="`/system-configuration/allowance-program/edit/${item.id}`"
-                              v-can="'allowance-edit'"
-                          >
-                          <v-icon>mdi-account-edit-outline</v-icon>
+                          <v-btn :disabled="item.default === 1" fab style="margin-right: 10px;" x-small color="success"
+                            v-on="on" router :to="`/system-configuration/allowance-program/edit/${item.id}`"
+                            v-can="'allowance-edit'">
+                            <v-icon>mdi-account-edit-outline</v-icon>
                           </v-btn>
                         </template>
                         <span>{{ $t('container.list.edit') }}</span>
                       </v-tooltip>
 
-                     <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn
-                                :disabled="item.default === 1"
-                                fab
-                                x-small
-                                color="success"
-                                v-on="on"
-                                router
-                                :to="`/system-configuration/allowance-program/setting/${item.id}`"
-                                v-can="'allowance-edit'"
-                            >
-                              <v-icon>mdi-cogs</v-icon>
-                              <!-- <v-icon>mdi-account-edit-outline</v-icon> -->
-                            </v-btn>
-                          </template>
-                          <span>Setings</span>
-                        </v-tooltip>
+                      <v-tooltip top>
+                        <template v-slot:activator="{ on }">
+                          <v-btn :disabled="item.default === 1" fab x-small color="success" v-on="on" router
+                            :to="`/system-configuration/allowance-program/setting/${item.id}`" v-can="'allowance-edit'">
+                            <v-icon>mdi-cogs</v-icon>
+                            <!-- <v-icon>mdi-account-edit-outline</v-icon> -->
+                          </v-btn>
+                        </template>
+                        <span>Setings</span>
+                      </v-tooltip>
 
 
                       <v-tooltip top>
                         <template v-slot:activator="{ on }">
-                          <v-btn
-                              :disabled="item.default === 1"
-                              fab
-                              x-small
-                              color="grey"
-                              class="ml-3 white--text"
-                              v-on="on"
-                              @click="deleteAlert(item.id)"
-                              v-can="'allowance-delete'"
-                          >
+                          <v-btn :disabled="item.default === 1" fab x-small color="grey" class="ml-3 white--text"
+                            v-on="on" @click="deleteAlert(item.id)" v-can="'allowance-delete'">
                             <v-icon>mdi-delete</v-icon>
                           </v-btn>
                         </template>
-                    <span>{{ $t('container.list.delete') }}</span>
+                        <span>{{ $t('container.list.delete') }}</span>
                       </v-tooltip>
                     </template>
                   </v-data-table>
@@ -466,7 +463,7 @@ export default {
                 Cancel
               </v-btn>
               <v-btn text @click="deleteAllowanceProgram" color="white" :loading="delete_loading"
-                     class="custom-btn-width warning white--text py-2">
+                class="custom-btn-width warning white--text py-2">
                 Delete
               </v-btn>
             </v-row>
