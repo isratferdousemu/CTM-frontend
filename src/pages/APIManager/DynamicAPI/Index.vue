@@ -136,7 +136,7 @@ export default {
                 return [
                     this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
                     this.$i18n.locale == 'en' ? i.name : i.name,
-                    i.selected_columns.join(', '),
+                    i?.selected_columns?.join(', '),
                   
                     
                 ]
@@ -209,7 +209,7 @@ export default {
                         return {
                             "sl": this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
                             "name": this.$i18n.locale == 'en' ? i.name : i.name,
-                            "parameter": i.selected_columns.join(', '),
+                            "parameter": i?.selected_columns?.join(', '),
                             
                            
                         }
