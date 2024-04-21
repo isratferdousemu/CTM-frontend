@@ -163,9 +163,13 @@ export default {
             formData.append('api_unique_id', this.data.api_unique_id);
             formData.append('api_unique_id', this.data.api_unique_id);
             // formData.append('selected_columns', this.data.selected_columns);
+
+          if (this.data.selected_columns) {
             this.data?.selected_columns.forEach((item, index) => {
-                formData.append('selected_columns[]', item);
+              formData.append('selected_columns[]', item);
             });
+          }
+
 
             // formData.append('selected_columns', JSON.stringify(this.data.selected_columns)); // Convert to JSON string
             formData.append('_method', "PUT");
