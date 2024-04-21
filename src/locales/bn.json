@@ -1106,9 +1106,14 @@
       "solution_time": "সমাধানের সময় (দিন)",
       "1stOfficer": "১ম টায়ার (১ম অফিসার)",
       "2ndOfficer": "২য় টায়ার (২য় অফিসার)",
-      "3rdOfficer": "3য় টায়ার (3য় অফিসার)",
+      "3rdOfficer": "৩য় টায়ার (৩য় অফিসার)",
       "grievance_setting_delete": "অভিযোগের সেটিংস মুছুন",
-      "grievance_setting_delete_message": "আপনি এই অভিযোগের সেটিংস মুছে ফেলার বিষয়ে নিশ্চিত?"
+      "grievance_setting_delete_message": "আপনি এই অভিযোগের সেটিংস মুছে ফেলার বিষয়ে নিশ্চিত?",
+      "grievanceEntry": {
+        "complaint_area": "অভিযোগ এলাকা সংশ্লিষ্ট অফিস",
+        "is_existing_beneficiary": "আপনি একটি বিদ্যমান সুবিধাভোগী?",
+        "details": "অভিযোগের বিবরণ"
+      }
     }
   }
 }

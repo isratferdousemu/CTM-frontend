@@ -483,6 +483,7 @@ export default {
 
     },
     addmore(index) {
+     
       this.data.OfficerForm.push({
         first_tire_solution_time: "",
         first_tire_officer: "",
@@ -546,7 +547,7 @@ export default {
           this.$i18n.locale == 'en' ? i.first_tire_solution_time : this.$helpers.englishToBangla(i.first_tire_solution_time),
           this.$i18n.locale == 'en' ? i.first_tire_officer : i.first_tire_officer,
           this.$i18n.locale == 'en' ? i.secound_tire_solution_time ?? 'N/A' : this.$helpers.englishToBangla(i.secound_tire_solution_time) ?? 'N/A',
-          this.$i18n.locale == 'en' ? i.secound_tire_officer : i.secound_tire_officer,
+          this.$i18n.locale == 'en' ? i.secound_tire_officer ?? 'N/A' : i.secound_tire_officer ?? 'N/A',
           this.$i18n.locale == 'en' ? i.third_tire_solution_time ?? 'N/A' : this.$helpers.englishToBangla(i.third_tire_solution_time) ?? 'N/A',
           this.$i18n.locale == 'en' ? i.third_tire_officer ?? 'N/A' : i.third_tire_officer ?? 'N/A',
 
@@ -680,10 +681,14 @@ export default {
 
     createDialog() {
       if (this.$refs.formAdd) {
+       
         this.$refs.formAdd.reset();
       }
-      this.resetForm();
-      this.dialogAdd = true;
+       this.resetForm();
+       this.countInput=0;
+       this.dialogAdd = true;
+
+     
     },
     checkLanguage() {
       let checkLanguageEnglish = this.$checkLanguage(this.data.title_en);
