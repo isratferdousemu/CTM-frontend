@@ -34,7 +34,11 @@
                 <v-row justify="space-between" align="center" class="mx-4">
                   <!-- Checkbox on the left -->
                   <v-col lg="3" md="3" cols="12">
-                    {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">{{ this.total }}</span>
+                    {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">
+
+                      {{ language === 'bn' ? $helpers.englishToBangla(
+                        this.total) : this.total }}
+                    </span>
                   </v-col>
 
                   <!-- Dropdown on the right -->
@@ -57,11 +61,12 @@
                       :items-per-page="pagination.perPage" @update:options="handleOptionsUpdate" hide-default-footer
                       class="elevation-0 transparent row-pointer">
                       <template v-slot:item.id="{ item, index }">
-                        {{
+                        {{ language === 'bn' ? $helpers.englishToBangla(
                           (pagination.current - 1) * pagination.perPage +
                           index +
-                          1
-                        }}
+                          1) : (pagination.current - 1) * pagination.perPage +
+                          index +
+                          1 }}
                       </template>
 
 
@@ -71,9 +76,9 @@
                       <template v-slot:item.title_bn="{ item }">
                         {{ item.title_bn }}
                       </template>
-                       <template v-slot:item.status="{ item }">
-                           <span v-if="item?.status == '0'"> Inactive </span>
-                            <span v-if="item?.status == '1'"> Active </span>
+                      <template v-slot:item.status="{ item }">
+                        <span v-if="item?.status == '0'"> Inactive </span>
+                        <span v-if="item?.status == '1'"> Active </span>
                       </template>
 
                       <!-- Action Button -->
@@ -136,28 +141,13 @@
               <form @submit.prevent="submitGrievanceSubject()">
                 <!-- {{errors.code}}
                   {{errors.name_en}} -->
-                  <ValidationProvider
-                    name="Grievance Type"
-                    vid="subject"
-                    rules="required"
-                    v-slot="{ errors }"
-                  >
-                    <v-autocomplete
-                    
-                      v-model="data.grievance_type_id"
-                      outlined
-                      :label="$t(
-                        'container.grievance_management.main_grievance_type'
-                      )
-                        "
-                      :items="types"
-                      item-text="title_en"
-                      item-value="id"
-                      required
-                      :error="errors[0] ? true : false"
-                      :error-messages="errors[0]"
-                    ></v-autocomplete>
-                  </ValidationProvider>
+                <ValidationProvider name="Grievance Type" vid="subject" rules="required" v-slot="{ errors }">
+                  <v-autocomplete v-model="data.grievance_type_id" outlined :label="$t(
+                    'container.grievance_management.main_grievance_type'
+                  )
+                    " :items="types" item-text="title_en" item-value="id" required
+                    :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                </ValidationProvider>
 
                 <ValidationProvider v-slot="{ errors }" name="Title English" vid="title_en" rules="required ">
                   <v-text-field outlined type="text" v-model="data.title_en" :label="$t('container.grievance_management.title_en')
@@ -205,27 +195,13 @@
               <form @submit.prevent="updateGrievanceSubject()">
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
-                 <ValidationProvider
-                      name="Grievance Type"
-                      vid="subject"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        v-model="data.grievance_type_id"
-                        outlined
-                        :label="$t(
-                          'container.grievance_management.main_grievance_type'
-                        )
-                          "
-                        :items="types"
-                        item-text="title_en"
-                        item-value="id"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-autocomplete>
-                    </ValidationProvider>
+                <ValidationProvider name="Grievance Type" vid="subject" rules="required" v-slot="{ errors }">
+                  <v-autocomplete v-model="data.grievance_type_id" outlined :label="$t(
+                    'container.grievance_management.main_grievance_type'
+                  )
+                    " :items="types" item-text="title_en" item-value="id" required
+                    :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                </ValidationProvider>
 
                 <ValidationProvider name="Title English" vid="title_en" v-slot="{ errors }">
                   <v-text-field outlined type="text" v-model="data.title_en" :label="$t('container.grievance_management.title_en')
@@ -357,6 +333,11 @@ export default {
     ValidationObserver,
   },
   computed: {
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      }
+    },
     headers() {
       return [
         {
@@ -376,7 +357,7 @@ export default {
           value: "title_bn",
           class: "highlight-column ",
         },
-         {
+        {
           text: this.$t(
             "container.grievance_management.main_grievance_type"
           ),
@@ -473,10 +454,10 @@ export default {
         console.error('Error generating PDF:', error);
       }
     },
-    status(status){
-      if(status==1){
-         return this.$i18n.locale == 'en' ? 'Active' : 'সক্রিয়'
-      }else{
+    status(status) {
+      if (status == 1) {
+        return this.$i18n.locale == 'en' ? 'Active' : 'সক্রিয়'
+      } else {
         return this.$i18n.locale == 'en' ? 'Inactive ' : 'নিষ্ক্রিয়'
       }
     },
@@ -505,7 +486,7 @@ export default {
         })
         .then((result) => {
           this.AllGrievanceSubject = result.data.data;
-          console.log(this.AllGrievanceSubject,'excel')
+          console.log(this.AllGrievanceSubject, 'excel')
         })
         .catch(error => {
           this.isLoading = false;
@@ -532,7 +513,7 @@ export default {
             }
           }));
 
-          const Field = ['sl', 'title_en', 'title_bn','grievance_type_id','status']
+          const Field = ['sl', 'title_en', 'title_bn', 'grievance_type_id', 'status']
 
           const Data = this.FormatJson(Field, CustomInfo)
           const currentDate = new Date().toISOString().slice(0, 10); //
@@ -616,8 +597,8 @@ export default {
       }
 
       try {
-     
-          this.$axios
+
+        this.$axios
           .post(`/admin/grievanceSubject/store`, this.data, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
@@ -639,7 +620,7 @@ export default {
       }
     },
     editDialog(item) {
-      console.log(item,'itemitemitemitem');
+      console.log(item, 'itemitemitemitem');
       this.dialogEdit = true;
       // this.data.status = item.status;
       this.data.status = String(item.status);
@@ -655,7 +636,7 @@ export default {
       }
 
       try {
-       this.$axios
+        this.$axios
           .post(`/admin/grievanceSubject/update/`, this.data, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
@@ -747,11 +728,11 @@ export default {
         })
         .then((result) => {
           this.types = result.data.data;
-          console.log(this.types,' this.types');
-     
+          console.log(this.types, ' this.types');
+
         });
-    }, 
-    
+    },
+
     async GetGrievanceSubject() {
       const queryParams = {
         searchText: this.search,
@@ -769,10 +750,10 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-           console.log(result, ' this.subjects11111');
+          console.log(result, ' this.subjects11111');
           this.total = result.data.meta.total;
           this.subjects = result.data.data;
-    
+
           this.pagination.current = result.data.meta.current_page;
           this.pagination.total = result.data.meta.last_page;
           this.pagination.grand_total = result.data.meta.total;
@@ -840,7 +821,7 @@ export default {
     this.setInitialHeader();
   },
   created() {
-      this.GetGrievanceType();
+    this.GetGrievanceType();
   },
   beforeMount() {
     this.updateHeaderTitle();

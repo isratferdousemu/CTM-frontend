@@ -34,7 +34,10 @@
                 <v-row justify="space-between" align="center" class="mx-4">
                   <!-- Checkbox on the left -->
                   <v-col lg="3" md="3" cols="12">
-                    {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">{{ this.total }}</span>
+                    {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">
+                      {{ language === 'bn' ? $helpers.englishToBangla(
+                        this.total) : this.total }}
+                    </span>
                   </v-col>
 
                   <!-- Dropdown on the right -->
@@ -58,12 +61,12 @@
                       class="elevation-0 transparent row-pointer">
                       <template v-slot:item.id="{ item, index }">
 
-                        {{
+                        {{ language === 'bn' ? $helpers.englishToBangla(
                           (pagination.current - 1) * pagination.perPage +
                           index +
-                          1
-                          
-                        }}
+                          1) : (pagination.current - 1) * pagination.perPage +
+                          index +
+                          1 }}
 
                       </template>
 
@@ -272,7 +275,8 @@
                     <v-btn class="mx-2" fab dark x-small color="red" @click="remove(index)">
                       <v-icon dark> mdi-minus </v-icon>
                     </v-btn>
-                    <v-btn v-if="index === countInput && index < 2 " class="mx-2" fab dark x-small color="green" @click="addmore(index)">    
+                    <v-btn v-if="index === countInput && index < 2" class="mx-2" fab dark x-small color="green"
+                      @click="addmore(index)">
                       <v-icon> mdi-plus</v-icon>
                     </v-btn>
                   </v-col>
@@ -389,6 +393,11 @@ export default {
     ValidationObserver,
   },
   computed: {
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      }
+    },
     headers() {
       return [
         {
@@ -534,7 +543,7 @@ export default {
           this.$i18n.locale == 'en' ? i.secound_tire_solution_time ?? 'N/A' : this.$helpers.englishToBangla(i.secound_tire_solution_time) ?? 'N/A',
           this.$i18n.locale == 'en' ? i.secound_tire_officer : i.secound_tire_officer,
           this.$i18n.locale == 'en' ? i.third_tire_solution_time ?? 'N/A' : this.$helpers.englishToBangla(i.third_tire_solution_time) ?? 'N/A',
-          this.$i18n.locale == 'en' ? i.third_tire_officer??'N/A' : i.third_tire_officer ?? 'N/A',
+          this.$i18n.locale == 'en' ? i.third_tire_officer ?? 'N/A' : i.third_tire_officer ?? 'N/A',
 
         ]
       }));
@@ -631,7 +640,7 @@ export default {
             }
           }));
 
-          const Field = ['sl', 'grievance_type_id', 'grievance_subject_id', 'first_tire_solution_time','first_tire_officer','secound_tire_solution_time','secound_tire_officer','third_tire_solution_time','third_tire_officer']
+          const Field = ['sl', 'grievance_type_id', 'grievance_subject_id', 'first_tire_solution_time', 'first_tire_officer', 'secound_tire_solution_time', 'secound_tire_officer', 'third_tire_solution_time', 'third_tire_officer']
 
           const Data = this.FormatJson(Field, CustomInfo)
           const currentDate = new Date().toISOString().slice(0, 10); //
@@ -750,14 +759,14 @@ export default {
           this.data.OfficerForm.push(newItem);
           // this.countInput++;
         }
-        
-        
+
+
       }
       this.countInput = this.data.OfficerForm.length - 1;
       this.errors = {};
     },
     updateGrievanceSetting() {
-      console.log(this.data,'this.datathis.data');
+      console.log(this.data, 'this.datathis.data');
       try {
         this.$axios
           .post(`/admin/grievanceSetting/update/`, this.data, {
@@ -887,7 +896,7 @@ export default {
         sortBy: this.sortBy,
         sortDesc: this.sortDesc,
       };
-      console.log(queryParams,'queryParams');
+      console.log(queryParams, 'queryParams');
       this.$axios
         .get("/admin/grievanceSetting/get", {
           headers: {
