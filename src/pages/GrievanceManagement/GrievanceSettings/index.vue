@@ -180,18 +180,19 @@
 
                 <v-row v-for="(OfficerForm, index) in data.OfficerForm" :key="index">
                   <v-col>
-                    <ValidationProvider v-slot="{ errors }" name="Solution Time" vid="first_tire_solution_time"
-                      rules="required">
-                      <v-text-field outlined type="number" v-model="OfficerForm.first_tire_solution_time" :label="$t('container.grievance_management.solution_time')
-                        " required :error="errors[0] ? true : false" :error-messages="errors[0]">></v-text-field>
-                    </ValidationProvider>
-                  </v-col>
-                  <v-col cols="5">
                     <ValidationProvider name="Grievance Type" vid="subject" rules="required" v-slot="{ errors }">
                       <v-autocomplete v-model="OfficerForm.first_tire_officer" outlined :label="dynamicLabel(index)"
                         :items="roles" item-text="name" item-value="id" required :error="errors[0] ? true : false"
                         :error-messages="errors[0]"></v-autocomplete>
 
+                    </ValidationProvider>
+
+                  </v-col>
+                  <v-col cols="5">
+                    <ValidationProvider v-slot="{ errors }" name="Solution Time" vid="first_tire_solution_time"
+                      rules="required">
+                      <v-text-field outlined type="number" v-model="OfficerForm.first_tire_solution_time" :label="$t('container.grievance_management.solution_time')
+                        " required :error="errors[0] ? true : false" :error-messages="errors[0]">></v-text-field>
                     </ValidationProvider>
                   </v-col>
                   <v-col cols="1">
@@ -258,17 +259,18 @@
                 </v-row>
                 <v-row v-for="(OfficerForm, index) in data.OfficerForm" :key="index">
                   <v-col>
-                    <ValidationProvider v-slot="{ errors }" name="Solution Time" vid="first_tire_solution_time"
-                      rules="required">
-                      <v-text-field outlined type="number" v-model="OfficerForm.first_tire_solution_time" :label="$t('container.grievance_management.solution_time')
-                        " required :error="errors[0] ? true : false" :error-messages="errors[0]">></v-text-field>
-                    </ValidationProvider>
-                  </v-col>
-                  <v-col cols="5">
                     <ValidationProvider name="Officer" vid="First Tire Officer" rules="required" v-slot="{ errors }">
                       <v-autocomplete v-model="OfficerForm.first_tire_officer" outlined :label="dynamicLabel(index)
                         " :items="roles" item-text="name" item-value="id" required :error="errors[0] ? true : false"
                         :error-messages="errors[0]"></v-autocomplete>
+                    </ValidationProvider>
+
+                  </v-col>
+                  <v-col cols="5">
+                    <ValidationProvider v-slot="{ errors }" name="Solution Time" vid="first_tire_solution_time"
+                      rules="required">
+                      <v-text-field outlined type="number" v-model="OfficerForm.first_tire_solution_time" :label="$t('container.grievance_management.solution_time')
+                        " required :error="errors[0] ? true : false" :error-messages="errors[0]">></v-text-field>
                     </ValidationProvider>
                   </v-col>
                   <v-col cols="1">
@@ -417,12 +419,7 @@ export default {
           value: "grievanceSubjectEn",
           class: "highlight-column ",
         },
-        {
-          text: this.$t(
-            "container.grievance_management.solution_time"
-          ),
-          value: "first_tire_solution_time",
-        },
+
         {
           text: this.$t(
             "container.grievance_management.1stOfficer"
@@ -433,8 +430,9 @@ export default {
           text: this.$t(
             "container.grievance_management.solution_time"
           ),
-          value: "secound_tire_solution_time",
+          value: "first_tire_solution_time",
         },
+
         {
           text: this.$t(
             "container.grievance_management.2ndOfficer"
@@ -445,13 +443,20 @@ export default {
           text: this.$t(
             "container.grievance_management.solution_time"
           ),
-          value: "third_tire_solution_time",
+          value: "secound_tire_solution_time",
         },
+
         {
           text: this.$t(
             "container.grievance_management.3rdOfficer"
           ),
           value: "third_tire_officer",
+        },
+        {
+          text: this.$t(
+            "container.grievance_management.solution_time"
+          ),
+          value: "third_tire_solution_time",
         },
         {
           text: this.$t("container.list.action"),

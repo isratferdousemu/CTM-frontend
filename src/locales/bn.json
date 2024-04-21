@@ -1100,7 +1100,7 @@
       "grievance_delete_message": "আপনি এই অভিযোগের ধরন মুছে ফেলার বিষয়ে নিশ্চিত?",
       "grievance_subject_delete": "অভিযোগের বিষয় মুছুন",
       "grievance_subject_delete_message": "আপনি এই অভিযোগের বিষয় মুছে ফেলার বিষয়ে নিশ্চিত?",
-      "grievance_setup": "অভিযোগ সেট করুন",
+      "grievance_setup": "অভিযোগ কনফিগার করুন",
       "add_new_grievance_setting": "নতুন অভিযোগ সেটিং যোগ করুন",
       "edit_grievance_setting": "অভিযোগ সেটিং আপডেট করুন",
       "solution_time": "সমাধানের সময় (দিন)",
