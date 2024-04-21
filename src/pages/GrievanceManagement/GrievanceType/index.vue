@@ -34,7 +34,10 @@
                 <v-row justify="space-between" align="center" class="mx-4">
                   <!-- Checkbox on the left -->
                   <v-col lg="3" md="3" cols="12">
-                    {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">{{ this.total }}</span>
+                    {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">
+                      {{ language === 'bn' ? $helpers.englishToBangla(
+                        this.total) : this.total }}
+                    </span>
                   </v-col>
 
                   <!-- Dropdown on the right -->
@@ -57,11 +60,12 @@
                       :items-per-page="pagination.perPage" @update:options="handleOptionsUpdate" hide-default-footer
                       class="elevation-0 transparent row-pointer">
                       <template v-slot:item.id="{ item, index }">
-                        {{
+                        {{ language === 'bn' ? $helpers.englishToBangla(
                           (pagination.current - 1) * pagination.perPage +
                           index +
-                          1
-                        }}
+                          1) : (pagination.current - 1) * pagination.perPage +
+                          index +
+                          1 }}
                       </template>
 
 
@@ -70,10 +74,10 @@
                       </template>
                       <template v-slot:item.title_bn="{ item }">
                         {{ item.title_bn }}
-                      </template> 
+                      </template>
                       <template v-slot:item.status="{ item }">
-                         <span v-if="item?.status == '0'"> Inactive </span>
-                          <span v-if="item?.status == '1'"> Active </span>
+                        <span v-if="item?.status == '0'"> Inactive </span>
+                        <span v-if="item?.status == '1'"> Active </span>
                       </template>
 
                       <!-- Action Button -->
@@ -194,7 +198,7 @@
                   )
                     " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
                 </ValidationProvider>
-                <ValidationProvider name="Status" vid="status" v-slot="{ errors }" >
+                <ValidationProvider name="Status" vid="status" v-slot="{ errors }">
                   <v-checkbox v-model="data.status" :label="$t(
                     'container.system_config.demo_graphic.office.active'
                   )
@@ -312,6 +316,11 @@ export default {
     ValidationObserver,
   },
   computed: {
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      }
+    },
     headers() {
       return [
         {
@@ -469,7 +478,7 @@ export default {
             }
           }));
 
-          const Field = ['sl', 'title_en', 'title_bn','status'];
+          const Field = ['sl', 'title_en', 'title_bn', 'status'];
 
           const Data = this.FormatJson(Field, CustomInfo)
           const currentDate = new Date().toISOString().slice(0, 10); //
@@ -523,7 +532,7 @@ export default {
       if (
         checkLanguageBangla !== "Bangla" &&
         checkLanguageBangla !== "BanglaSpecialChar"
-      ){
+      ) {
         errs.title_bn = ["Please Enter in Bangla Language in this Field"];
       }
 
@@ -559,8 +568,8 @@ export default {
       }
 
       try {
-          this.$axios
-          .post(`/admin/grievanceType/store/`,this.data,{
+        this.$axios
+          .post(`/admin/grievanceType/store/`, this.data, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
@@ -596,7 +605,7 @@ export default {
       }
 
       try {
-           this.$axios
+        this.$axios
           .post(`/admin/grievanceType/update/`, this.data, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
