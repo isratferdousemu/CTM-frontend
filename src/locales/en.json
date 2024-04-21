@@ -1104,7 +1104,7 @@
       "grievance_delete_message": "Are you sure to delete this Grievance Type?",
       "grievance_subject_delete": "Delete Grievance Subject",
       "grievance_subject_delete_message": "Are you sure to delete this Grievance Subject?",
-      "grievance_setup": "Set Grievance",
+      "grievance_setup": "Configure Grievance",
       "add_new_grievance_setting": "Add New Grievance Setting",
       "edit_grievance_setting": "Edit Grievance Setting",
       "solution_time": "Solution Time (Days)",
