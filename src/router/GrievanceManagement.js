@@ -29,6 +29,16 @@ const GrievanceManagementRoutes = [
     component: () =>
       import("../pages/GrievanceManagement/GrievaneSubject/index.vue"),
   },
+  {
+    path: "/grievance-management/entry",
+    name: "GrievanceTypeEntry",
+    meta: {
+      requiresAuth: true,
+      Permission: "subject-list",
+    },
+    component: () =>
+      import("../pages/GrievanceManagement/GrievaneEntry/create.vue"),
+  },
 ];
 
 export default GrievanceManagementRoutes;

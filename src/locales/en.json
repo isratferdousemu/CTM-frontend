@@ -1112,7 +1112,14 @@
       "2ndOfficer": "2nd Tire (2nd Officer)",
       "3rdOfficer": "3rd Tire (3rd Officer)",
       "grievance_setting_delete": "Delete Grievance Setting",
-      "grievance_setting_delete_message": "Are you sure to delete this Grievance Setting?"
+      "grievance_setting_delete_message": "Are you sure to delete this Grievance Setting?",
+      "grievanceEntry":{
+         "complaint_area": "Complaint Area Concerned Office",
+         "is_existing_beneficiary": "Are you an existing beneficiary?",
+         "complaint_details": "Provide Details of the Complaint",
+         "details": "Complaint Details"
+
+      }
     }
   }
 }
