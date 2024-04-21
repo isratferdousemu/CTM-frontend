@@ -163,7 +163,7 @@ export default {
             formData.append('api_unique_id', this.data.api_unique_id);
             formData.append('api_unique_id', this.data.api_unique_id);
             // formData.append('selected_columns', this.data.selected_columns);
-            this.data.selected_columns.forEach((item, index) => {
+            this.data?.selected_columns.forEach((item, index) => {
                 formData.append('selected_columns[]', item);
             });
 
