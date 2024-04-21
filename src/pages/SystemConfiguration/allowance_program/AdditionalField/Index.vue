@@ -122,14 +122,7 @@
         </v-row>
       </v-col>
 
-      <v-row>
-        <v-col cols=12 md="6" lg="6">
-Division
-        </v-col>
-         <v-col cols=12 md="6" lg="6">
-District
-        </v-col>
-      </v-row>
+   
 
       <!-- additional field add modal  -->
       <v-dialog v-model="dialogAdd" width="650">

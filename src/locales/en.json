@@ -447,8 +447,8 @@
       },
       "allowance_program": {
         "list": "Allowance Program Lists",
-        "name_en": "Program Name En",
-        "name_bn": "Program Name Bn",
+        "name_en": "Program Name in English ",
+        "name_bn": "Program Name in Bangla",
         "gender": "Gender",
         "payment_cycle": "Payment Cycle",
         "is_marital_toggle": "Marital",
