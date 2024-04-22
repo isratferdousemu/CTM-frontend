@@ -1117,7 +1117,16 @@
          "complaint_area": "Complaint Area Concerned Office",
          "is_existing_beneficiary": "Are you an existing beneficiary?",
          "complaint_details": "Provide Details of the Complaint",
-         "details": "Complaint Details"
+         "details": "Complaint Details",
+         "document": "Document attachment (if applicable)",
+         "document1": "(doc, docx, pdf, xls, xlsx, txt, jpg, jpeg, png)",
+         "complaint_info": "Complaint information",
+         "email": "Email",
+         "name": "Name",
+         "Program_name": "Name of Allowance Program",
+         "Verify": "Verify",
+         "beneficiary_id": "Beneficiary ID",
+         "grievance_entry": "Grievance Entry"
 
       }
     }

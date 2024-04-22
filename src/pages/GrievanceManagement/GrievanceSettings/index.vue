@@ -483,7 +483,7 @@ export default {
 
     },
     addmore(index) {
-     
+
       this.data.OfficerForm.push({
         first_tire_solution_time: "",
         first_tire_officer: "",
@@ -681,14 +681,14 @@ export default {
 
     createDialog() {
       if (this.$refs.formAdd) {
-       
+
         this.$refs.formAdd.reset();
       }
-       this.resetForm();
-       this.countInput=0;
-       this.dialogAdd = true;
+      this.resetForm();
+      this.countInput = 0;
+      this.dialogAdd = true;
 
-     
+
     },
     checkLanguage() {
       let checkLanguageEnglish = this.$checkLanguage(this.data.title_en);

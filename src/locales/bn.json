@@ -1112,7 +1112,16 @@
       "grievanceEntry": {
         "complaint_area": "অভিযোগ এলাকা সংশ্লিষ্ট অফিস",
         "is_existing_beneficiary": "আপনি একটি বিদ্যমান সুবিধাভোগী?",
-        "details": "অভিযোগের বিবরণ"
+        "details": "অভিযোগের বিবরণ",
+        "document": "নথি সংযুক্তি (যদি প্রযোজ্য হয়)",
+        "document1": "(doc, docx, pdf, xls, xlsx, txt, jpg, jpeg, png)",
+        "complaint_info": "অভিযোগের তথ্য",
+        "email": "ইমেইল",
+        "name": "নাম",
+        "Program_name": "ভাতা কর্মসূচির নাম",
+        "Verify": "যাচাই করুন",
+        "beneficiary_id": "সুবিধাভোগী আইডি",
+        "grievance_entry": "অভিযোগ এন্ট্রি"
       }
     }
   }
