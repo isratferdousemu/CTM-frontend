@@ -11,7 +11,8 @@
                   <!-------------complaint entry--------------->
                   <v-expansion-panel class="mb-4">
                     <v-expansion-panel-header color="primary">
-                      <h3 class="white--text">{{ $t('container.grievance_management.grievanceEntry.grievance_entry') }}</h3>
+                      <h3 class="white--text">{{ $t('container.grievance_management.grievanceEntry.grievance_entry') }}
+                      </h3>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
                       <v-row>
@@ -21,7 +22,7 @@
                             <label>{{ $t('container.grievance_management.grievanceEntry.is_existing_beneficiary')
                             }}</label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-select v-model="data.tracking_type" item-value="value" outlined :items="[
+                            <v-select v-model="data.is_existing_beneficiary" item-value="value" outlined :items="[
                               { text: 'Yes', value: 1 },
                               { text: 'No', value: 2 }
                             ]" :item-text="text" :error="errors[0] ? true : false" :error-messages="errors[0]">
@@ -29,39 +30,58 @@
                           </ValidationProvider>
                         </v-col>
                       </v-row>
-       
-          
-                      <v-row v-if="data.tracking_type == 1">
-                        <v-col cols="6" lg="6" >
-                                 <label>{{ $t('container.grievance_management.grievanceEntry.beneficiary_id') }}</label>
-                                  <v-text-field outlined clearable v-model="data.nid"></v-text-field>
-                       </v-col>
-                        <v-col cols="6" lg="6" >
-                             <label>{{
-                               $t('container.application_selection.application.date_of_birth')
-                             }}</label>
-                                  <v-text-field outlined clearable v-model="data.date_of_birth" type="date"></v-text-field>
-                         </v-col>
+
+
+                      <v-row v-if="data.is_existing_beneficiary == 1">
+                        <v-col cols="6" lg="6">
+                          <label>{{ $t('container.grievance_management.grievanceEntry.beneficiary_id') }}</label>
+                          <v-text-field outlined clearable v-model="data.nid"></v-text-field>
+                        </v-col>
+                        <v-col cols="6" lg="6">
+                          <label>{{
+                            $t('container.application_selection.application.date_of_birth')
+                          }}</label>
+                          <v-text-field outlined clearable v-model="data.date_of_birth" type="date"></v-text-field>
+                        </v-col>
                       </v-row>
 
-                          <v-row v-if="data.tracking_type == 2">
-                          <v-col cols="6" lg="6" >
-                                   <label>{{ $t('container.system_audit.nbr') }}</label>
-                                    <v-text-field outlined clearable v-model="data.nid"></v-text-field>
-                         </v-col>
-                          <v-col cols="6" lg="6" >
-                               <label>{{
-                                 $t('container.application_selection.application.date_of_birth')
-                               }}</label>
-                                    <v-text-field outlined clearable v-model="data.date_of_birth" type="date"></v-text-field>
-                           </v-col>
-                        </v-row>
+                      <v-row v-if="data.is_existing_beneficiary == 2">
+                        <v-radio-group required row v-model="data.verification_type" @change="handleRadioChange">
+                          <v-radio :label="$t('container.system_audit.nbr')" :value="3"></v-radio>
+                          <v-radio :label="$t('container.system_audit.tracking_no')" :value="4"></v-radio>
+                        </v-radio-group>
+                      </v-row>
+
+                      <v-row v-if="data.verification_type == 3">
+                        <v-col cols="6" lg="6">
+                          <label>{{ $t('container.system_audit.nbr') }}</label>
+                          <v-text-field outlined clearable v-model="data.nid"></v-text-field>
+                        </v-col>
+                        <v-col cols="6" lg="6">
+                          <label>{{
+                            $t('container.application_selection.application.date_of_birth')
+                          }}</label>
+                          <v-text-field outlined clearable v-model="data.date_of_birth" type="date"></v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row v-if="data.verification_type == 4">
+                          <v-col cols="6" lg="6">
+                            <label>{{ $t('container.system_audit.nbr') }}</label>
+                            <v-text-field outlined clearable v-model="data.nid"></v-text-field>
+                          </v-col>
+                          <v-col cols="6" lg="6">
+                            <label>{{
+                              $t('container.application_selection.application.date_of_birth')
+                            }}</label>
+                            <v-text-field outlined clearable v-model="data.date_of_birth" type="date"></v-text-field>
+                          </v-col>
+                      </v-row>
 
                       <v-row>
-                         <v-col cols="12">
+                        <v-col cols="12">
                           <div class="text-right">
-                            <v-btn type="submit" flat color="success" :loading="loading"
-                              @click="applicationTracking()" class="custom-btn-width white--text py-2">
+                            <v-btn type="submit" flat color="success" :loading="loading" @click="applicationTracking()"
+                              class="custom-btn-width white--text py-2">
                               <span class="mdi mdi-television mr-2"></span>
                               {{ $t("container.grievance_management.grievanceEntry.Verify") }}
                             </v-btn>
@@ -85,7 +105,7 @@
                             <ValidationProvider name="Name" vid="name" rules="required" v-slot="{ errors }">
                               <label>{{ $t('container.grievance_management.grievanceEntry.name') }} </label>
                               <span style="margin-left: 4px; color: red">*</span>
-                              <v-text-field v-model="data.name_bn" outlined :error="errors[0] ? true : false"
+                              <v-text-field v-model="data.name" outlined :error="errors[0] ? true : false"
                                 :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
@@ -114,13 +134,13 @@
                           <v-col cols="6" lg="6">
 
 
-                            <ValidationProvider rules="checkNumberMobile||required" name="Email Adress" vid="Email"
+                            <ValidationProvider rules="required" name="Email Adress" vid="Email"
                               v-slot="{ errors }">
                               <label style="display: inline-block">{{
                                 $t('container.grievance_management.grievanceEntry.email') }} </label><span
                                 style="margin-left: 4px; color: red">*</span>
 
-                              <v-text-field v-model="data.mobile" outlined type="number" clearable
+                              <v-text-field v-model="data.email" outlined type="email" clearable
                                 :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
@@ -143,10 +163,6 @@
 
 
                           </v-col>
-
-
-
-
                         </v-row>
                       </div>
                     </v-expansion-panel-content>
@@ -163,7 +179,7 @@
                       <v-row>
                         <v-col>
                           <label>{{ $t('container.grievance_management.main_grievance_type') }} </label>
-                          <ValidationProvider name="Grievance Type" vid="type" rules="required" v-slot="{ errors }">
+                          <ValidationProvider name="Grievance Type" vid="grievance_type_id" rules="required" v-slot="{ errors }">
                             <v-autocomplete v-model="data.grievance_type_id" outlined :items="types" item-text="title_en"
                               item-value="id" required :error="errors[0] ? true : false"
                               :error-messages="errors[0]"></v-autocomplete>
@@ -184,38 +200,20 @@
                           <label>{{ $t('container.grievance_management.grievanceEntry.details') }}</label>
                           <ValidationProvider name="Grievance Details" vid="details" rules="required" v-slot="{ errors }">
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-textarea v-model="data.address" outlined clearable :error="errors[0] ? true : false"
+                            <v-textarea v-model="data.details" outlined clearable :error="errors[0] ? true : false"
                               handleCheckboxChangsa :error-messages="errors[0]">
                             </v-textarea>
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6" lg="6">
-                          <!-- <v-img :src="imageUrl" style="
-                                    width: 200px;
-                                    height: 200px;
-                                    border: 1px solid #ccc;
-                                  " class="mb-5" v-if="imageUrl"></v-img>
-                              <v-img src="/assets/images/profile.png" v-if="!imageUrl" style="
-                                    width: 150px;
-                                    height: 150px;
-                                    border: 1px solid #ccc;
-                                  " class="mb-5"></v-img> -->
 
                           <label>{{ $t('container.grievance_management.grievanceEntry.document') }}</label>
                           <!-- <span style="margin-left: 4px; color: red">*</span> -->
-                          <ValidationProvider v-slot="{ errors }" name="Image" rules="required" vid="image">
-                            <v-file-input outlined show-size counter prepend-outer-icon="mdi-camera" v-model="data.image"
-                              accept="image/*" @change="previewImage" prepend-icon="" id="image">
+                          <ValidationProvider v-slot="{ errors }" name="Document" rules="required" vid="image">
+                            <v-file-input outlined show-size counter prepend-outer-icon="mdi-camera" v-model="data.documents"
+                              accept="file/*" @change="previewImage" prepend-icon="" id="image">
                             </v-file-input>
                           </ValidationProvider>
-                          <!-- <ValidationProvider v-slot="{ errors }" name="Image" rules="required" vid="image">
-                              <v-file-input outlined show-size counter v-model="data.image" accept="image/*"
-                                @change="previewImage" id="image">
-                                <template v-slot:prepend-inner>
-                                  <v-icon @click="triggerFileInput">mdi-camera</v-icon>
-                                </template>
-                              </v-file-input>
-                            </ValidationProvider> -->
 
                         </v-col>
                       </v-row>
@@ -427,7 +425,7 @@
                       </v-row>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
-                 <!-- complaint complaint_area end------ ----------->
+                  <!-- complaint complaint_area end------ ----------->
                   <!-- Expansion panel 4 End -->
                 </v-expansion-panels>
               </div>
@@ -589,6 +587,7 @@ export default {
       subjects: [],
       types: [],
 
+
       panel2Open: true,
       panel: [0, 1, 2, 3, 4, 5, 6],
       programs: [],
@@ -658,12 +657,6 @@ export default {
 
       yes_no: ["Yes ", "No"],
 
-      relations_with_bef: [
-        { name_en: 'Spouse', name_bn: 'স্বামী/স্ত্রী' },
-        { name_en: 'Family member', name_bn: 'পরিবারের সদস্য' },
-        { name_en: 'Close relative', name_bn: 'নিকট আত্মীয়' },
-        { name_en: 'Parent', name_bn: 'পিতা/মাতা' },
-      ],
       status_code: null,
       status_code_nominee: null,
       activePicker: null,
@@ -675,33 +668,24 @@ export default {
       showAlert: false,
 
       data: {
-        house_size: null,
-        per_room_score: null,
-        no_of_people_score: null,
-        no_of_room: null,
-
-        program_id: null,
+        is_existing_beneficiary: null,
+        beneficiary_id: null,
+        date_of_birth: null,
         verification_type: 1,
         verification_number: null,
-        account_type: 1,
-        age: null,
-        date_of_birth: null,
-        name_en: null,
-        name_bn: null,
-        father_name_en: null,
-        father_name_bn: null,
-        mother_name_en: null,
-        mother_name_bn: null,
-        spouse_name_en: null,
-        spouse_name_bn: null,
-        identification_mark: null,
-        image: null,
-        signature: null,
-        nationality: "Bangladeshi",
+        // information
+        name: null,
         gender_id: null,
-        education_status: null,
-        profession: null,
-        religion: null,
+        program_id: null,
+        email: null,
+        mobile: null,
+
+        // detaisl
+        grievance_type_id:null,
+        grievance_subject_id: null,
+        details: null,
+        documents: null,
+        // area
         division_id: null,
         district_id: null,
         upazila: null,
@@ -720,36 +704,7 @@ export default {
         ward_id_upazila_pouro: null,
         ward_id_dist: null,
         mobile: null,
-        permanent_division_id: null,
-        permanent_district_id: null,
-        permanent_upazila: null,
-        permanent_post_code: null,
-        permanent_address: null,
-        permanent_location_type: null,
-        permanent_sub_location_type: null,
-        permanent_thana_id: null,
-        permanent_union_id: null,
-        permanent_pouro_id: null,
-        permanent_city_id: null,
-        permanent_city_thana_id: null,
-        permanent_district_pouro_id: null,
-        permanent_ward_id_city: null,
-        permanent_ward_id_union: null,
-        permanent_ward_id_pouro: null,
-        permanent_ward_id_dist: null,
-        permanent_mobile: null,
-        nominee_en: null,
-        nominee_bn: null,
-        nominee_verification_number: null,
-        nominee_date_of_birth: null,
-        nominee_address: null,
-        nominee_image: null,
-        nominee_signature: null,
-        nominee_relation_with_beneficiary: null,
-        nominee_nationality: "Bangladeshi",
-        account_name: null,
-        account_owner: null,
-        account_number: null,
+
         application_allowance_values: [],
         application_pmt: [],
         marital_status: null,
@@ -757,7 +712,8 @@ export default {
         mobile_operator: null,
         pmt_status: null,
         tracking_type: [],
-        text: ''
+        text: '',
+        type: ''
       },
 
       checkbox: false,
@@ -835,6 +791,18 @@ export default {
 
   methods:
   {
+     handleRadioChange(value) {
+      if (value == 3 || value == 4) {
+        this.data.tracking_no = null;
+
+      }
+      if (value == 4) {
+        this.data.date_of_birth = null;
+        this.data.nid = null;
+
+      }
+
+    },
     async GetGrievanceType() {
       const queryParams = {
         status: 'active',
@@ -871,7 +839,8 @@ export default {
 
         });
     },
-    
+
+
     onChange($event) {
       this.data.per_room_score = (this.data.house_size / $event) * -0.05;
       this.data.per_room_score = parseFloat(this.data.per_room_score.toFixed(3));
@@ -1340,32 +1309,6 @@ export default {
         this.$toast.error('Verify First');
         return false;
       }
-      if (this.data.image === null || this.data.image == '') {
-        this.$toast.error('Image is required');
-        this.scrollToImage();
-        return false;
-      }
-      if (this.data.signature === null || this.data.signature == '') {
-        this.$toast.error('Signature is required');
-        this.scrollToSignature();
-        return false;
-      }
-      if (this.status_code_nominee != 200) {
-        this.$toast.error('Verify Nominee First');
-        this.scrollToVerifyButton();
-        return false;
-      }
-      if (this.data.nominee_image === null || this.data.nominee_image == '') {
-        this.$toast.error('Nominee Image is required');
-        this.scrollToNomineeImage();
-        return false;
-      }
-      if (this.data.nominee_signature === null || this.data.nominee_signature == '') {
-        this.$toast.error('Nominee Signature is required');
-        this.scrollToNomineeSignature();
-        return false;
-      }
-
 
 
       const isValid = await this.$refs.form.validate();
@@ -1396,39 +1339,7 @@ export default {
 
     submitApplication() {
 
-
-      if (this.data.mobile_operator !== null && this.data.mobile_operator !== undefined) {
-        // Convert this.data.account_number to string before concatenation
-        this.data.account_number = this.data.mobile_operator + String(this.data.account_number);
-      }
-      this.confirmDialog = false
-      console.log(this.data, "All data")
-
-
-
-
-
       let fd = new FormData();
-      for (const [key, value] of Object.entries(this.data)) {
-        if (value !== null) {
-          if (key == 'application_allowance_values') {
-            console.log(value)
-            fd.append("application_allowance_values", JSON.stringify(value));
-
-          }
-          if (key == 'application_pmt') {
-            fd.append("application_pmt", JSON.stringify(value));
-
-          }
-          if (key != 'application_pmt' && key != 'application_allowance_values') {
-
-            console.log(key, value);
-            fd.append(key, value);
-          }
-          console.log(key, value, "z");
-
-        }
-      }
 
       this.loading = true;
       this.$axios.post("/global/online-application/registration", fd, {
@@ -1458,27 +1369,7 @@ export default {
             if (err.response.data.success == false) {
               // this.$refs.form.setErrors(err.response.data.errors);
               // this.$toast.error(err.response.data.message);
-              if (err.response.data.error_code == "applicant_marital_status") {
-                let errs = {
-                  "marital_status": [err.response.data.message]
-                }
-                this.$refs.form.setErrors(errs);
-                this.$toast.error(err.response.data.message);
-                //scroll to first error filed
-                const firstErrorField = document.querySelector(".validation-error_marital");
-                if (firstErrorField) {
-                  firstErrorField.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start",
-                    inline: "start",
-                  });
-                }
-
-                // end of scroll to first error filed
-
-
-              }
-              else if (err.response.data.error_code == "applicant_gender_type") {
+              if (err.response.data.error_code == "applicant_gender_type") {
                 let errs = {
                   "gender_id": [err.response.data.message]
                 }
@@ -1499,22 +1390,7 @@ export default {
 
 
               }
-              else if (err.response.data.error_code == "applicant_age_limit") {
-                this.$refs.form.setErrors(err.response.data.message);
-                //scroll to first error filed
-                const firstErrorField = document.querySelector(".validation_error_age_limit");
-                if (firstErrorField) {
-                  firstErrorField.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start",
-                    inline: "nearest",
-                  });
-                }
-
-                // end of scroll to first error filed
-                this.$toast.error(err.response.data.message);
-
-              }
+     
               else if (err.response.data.error_code == "invalid_nid") {
                 this.$refs.form.setErrors(err.response.data.message);
                 //scroll to first error filed
@@ -1531,22 +1407,7 @@ export default {
                 this.$toast.error(err.response.data.message);
 
               }
-              else if (err.response.data.error_code == "invalid_nominee_nid") {
-                this.$refs.form.setErrors(err.response.data.message);
-                //scroll to first error filed
-                const firstErrorField = document.querySelector(".validation_error_nominee");
-                if (firstErrorField) {
-                  firstErrorField.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start",
-                    inline: "nearest",
-                  });
-                }
-
-                // end of scroll to first error filed
-                this.$toast.error(err.response.data.message);
-
-              }
+      
             } else if (err.response) {
               this.$refs.form.setErrors(err.response.data.errors);
 
