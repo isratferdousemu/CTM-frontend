@@ -8,138 +8,152 @@
             <v-card class="pa-5 px-10 mb-4">
               <div>
                 <v-expansion-panels v-model="panel" multiple>
+                  <!-------------complaint entry--------------->
                   <v-expansion-panel class="mb-4">
                     <v-expansion-panel-header color="primary">
-                      <h3 class="white--text">{{ $t('container.application_selection.application.bank') }}</h3>
+                      <h3 class="white--text">{{ $t('container.grievance_management.grievanceEntry.grievance_entry') }}</h3>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
                       <v-row>
-                        <v-col cols="12" lg="4" md="4">
-
-
-                          <v-radio-group required row v-model="data.tracking_type" @change="handleRadioChange">
-                            <label class="mr-5">{{ $t('container.system_audit.application_tracking')
+                        <v-col cols="6" lg="6">
+                          <ValidationProvider name="Existing Beneficiary" vid="is_existing_beneficiary"
+                            v-slot="{ errors }" rules="required">
+                            <label>{{ $t('container.grievance_management.grievanceEntry.is_existing_beneficiary')
                             }}</label>
-                            <v-radio :label="$t('container.system_audit.nbr')" :value="1"></v-radio>
-                            <v-radio :label="$t('container.system_audit.tracking_no')" :value="2"></v-radio>
-                          </v-radio-group>
+                            <span style="margin-left: 4px; color: red">*</span>
+                            <v-select v-model="data.tracking_type" item-value="value" outlined :items="[
+                              { text: 'Yes', value: 1 },
+                              { text: 'No', value: 2 }
+                            ]" :item-text="text" :error="errors[0] ? true : false" :error-messages="errors[0]">
+                            </v-select>
+                          </ValidationProvider>
                         </v-col>
-                        <v-col cols="12" lg="6" md="6">
-                          <br>
-                          <div v-if="data.tracking_type == 2">
-                            <label>{{ $t('container.system_audit.tracking_no')
-                            }}</label>
-                            <v-text-field v-model="data.tracking_no" outlined clearable></v-text-field>
-                          </div>
-                          <div v-if="data.tracking_type == 1">
-                            <v-row>
-                              <v-col>
-                                <label>{{ $t('container.system_audit.nbr') }}</label>
-                                <v-text-field outlined clearable v-model="data.nid"></v-text-field>
-                              </v-col>
+                      </v-row>
+       
+          
+                      <v-row v-if="data.tracking_type == 1">
+                        <v-col cols="6" lg="6" >
+                                 <label>{{ $t('container.grievance_management.grievanceEntry.beneficiary_id') }}</label>
+                                  <v-text-field outlined clearable v-model="data.nid"></v-text-field>
+                       </v-col>
+                        <v-col cols="6" lg="6" >
+                             <label>{{
+                               $t('container.application_selection.application.date_of_birth')
+                             }}</label>
+                                  <v-text-field outlined clearable v-model="data.date_of_birth" type="date"></v-text-field>
+                         </v-col>
+                      </v-row>
 
-                              <v-col>
-                                <label>{{
-                                  $t('container.application_selection.application.date_of_birth')
-                                }}</label>
-                                <v-text-field outlined clearable v-model="data.date_of_birth" type="date"></v-text-field>
-                              </v-col>
-                            </v-row>
-                          </div>
+                          <v-row v-if="data.tracking_type == 2">
+                          <v-col cols="6" lg="6" >
+                                   <label>{{ $t('container.system_audit.nbr') }}</label>
+                                    <v-text-field outlined clearable v-model="data.nid"></v-text-field>
+                         </v-col>
+                          <v-col cols="6" lg="6" >
+                               <label>{{
+                                 $t('container.application_selection.application.date_of_birth')
+                               }}</label>
+                                    <v-text-field outlined clearable v-model="data.date_of_birth" type="date"></v-text-field>
+                           </v-col>
+                        </v-row>
 
-                        </v-col>
-                        <v-col cols="12" lg="2" md="2">
-
-
-                          <br>
-                          <br>
+                      <v-row>
+                         <v-col cols="12">
                           <div class="text-right">
-
-                            <v-btn type="submit" flat color="success" :disabled="invalid" :loading="loading"
+                            <v-btn type="submit" flat color="success" :loading="loading"
                               @click="applicationTracking()" class="custom-btn-width white--text py-2">
                               <span class="mdi mdi-television mr-2"></span>
-                              {{ $t("container.list.preview") }}
+                              {{ $t("container.grievance_management.grievanceEntry.Verify") }}
                             </v-btn>
                           </div>
-
                         </v-col>
                       </v-row>
 
                     </v-expansion-panel-content>
                   </v-expansion-panel>
+                  <!-------------complaint entry end--------------->
+                  <!-------------complaint_info--------------->
                   <v-expansion-panel class="mb-4">
                     <v-expansion-panel-header color="primary">
-                      <h3 class="white--text">{{ $t('container.application_selection.application.bank') }}</h3>
+                      <h3 class="white--text">{{ $t('container.grievance_management.grievanceEntry.complaint_info') }}
+                      </h3>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
-                      <v-row>
-                        <v-col cols="6" lg="6">
-                          <ValidationProvider name="Account Name" :vid="'application_allowance_values' + index"
-                            rules="required" v-slot="{ errors }">
-                            <label style="display: inline-block"> {{
-                              $t('container.application_selection.application.account_name') }}
-                            </label>
-                            <span style="margin-left: 4px; color: red">*</span>
-                            <v-text-field v-model="data.account_name" outlined clearable :error="errors[0] ? true : false"
-                              readonly :error-messages="errors[0]">
-                            </v-text-field>
-                          </ValidationProvider>
-                        </v-col>
-                        <v-col cols="6" lg="6">
-                          <v-radio-group v-model="data.account_type" row>
-                            {{ $t('container.application_selection.application.account_type') }}
+                      <div class="pa-2 mb-4">
+                        <v-row>
+                          <v-col cols="6" lg="6">
+                            <ValidationProvider name="Name" vid="name" rules="required" v-slot="{ errors }">
+                              <label>{{ $t('container.grievance_management.grievanceEntry.name') }} </label>
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-text-field v-model="data.name_bn" outlined :error="errors[0] ? true : false"
+                                :error-messages="errors[0]">
+                              </v-text-field>
+                            </ValidationProvider>
+                          </v-col>
+                          <v-col cols="6" lg="6">
+                            <ValidationProvider name="Gender" vid="gender" v-slot="{ errors }" rules="required">
+                              <label>{{ $t('container.system_config.allowance_program.gender') }}</label>
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-select v-model="data.gender_id" item-value="id" outlined :items="genders"
+                                :item-text="getItemValue" :error="errors[0] ? true : false" :error-messages="errors[0]">
+                              </v-select>
+                            </ValidationProvider>
+                          </v-col>
 
-                            <span style="
-                              margin-left: 4px;
-                              margin-right: 4px;
-                              color: red;
-                            ">*</span>
-                            <v-radio :label="$t('container.application_selection.application.bank_account')"
-                              :value="1"></v-radio>
-                            <v-radio :label="$t('container.application_selection.application.mobile_account')" :value="2"
-                              @click=mobile()></v-radio>
-                          </v-radio-group>
-                        </v-col>
-                        <v-col cols="6" lg="6" v-if="data.account_type === 2">
-                          <ValidationProvider name="Mobile Number Ownership" vid="account_owner" rules="required"
-                            v-slot="{ errors }">
-                            <label style="display: inline-block"> {{
-                              $t('container.application_selection.application.mobile_ownership') }}
-                            </label>
-                            <span style="margin-left: 4px; color: red">*</span>
+                          <v-col cols="6" lg="6">
+                            <ValidationProvider name="program" vid="program" rules="required" v-slot="{ errors }">
+                              <label>{{ $t('container.grievance_management.grievanceEntry.Program_name') }} </label>
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-select @change="getProgramName()" outlined :items="programs" :item-text="getItemText"
+                                item-value="id" v-model="data.program_id" :error="errors[0] ? true : false"
+                                :error-messages="errors[0]">
+                              </v-select>
+                            </ValidationProvider>
+                          </v-col>
 
-                            <v-select v-model="data.account_owner" outlined clearable :items="mobile_ownership"
-                              :item-text="getItemText" item-value="name_en" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]">
-                            </v-select>
-                          </ValidationProvider>
-                        </v-col>
+                          <v-col cols="6" lg="6">
 
-                        <v-col cols="6" lg="6" v-if="data.account_type === 1">
-                          <ValidationProvider name=" Bank Account Ownership" vid="bank_account_owner" rules="required"
-                            v-slot="{ errors }">
-                            <label style="display: inline-block">{{
-                              $t('container.application_selection.application.account_ownership') }}
-                            </label>
-                            <span style="margin-left: 4px; color: red">*</span>
 
-                            <v-select v-model="data.account_owner" outlined clearable :items="mobile_ownership"
-                              :item-text="getItemText" item-value="name_en" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]">
-                            </v-select>
-                          </ValidationProvider>
-                        </v-col>
+                            <ValidationProvider rules="checkNumberMobile||required" name="Email Adress" vid="Email"
+                              v-slot="{ errors }">
+                              <label style="display: inline-block">{{
+                                $t('container.grievance_management.grievanceEntry.email') }} </label><span
+                                style="margin-left: 4px; color: red">*</span>
 
-                      </v-row>
-                      <p class="red--text mt-2">
-                        {{ $t('container.application_selection.application.bank_alert') }}
+                              <v-text-field v-model="data.mobile" outlined type="number" clearable
+                                :error="errors[0] ? true : false" :error-messages="errors[0]">
+                              </v-text-field>
+                            </ValidationProvider>
 
-                      </p>
+
+                          </v-col>
+                          <v-col cols="6" lg="6">
+
+
+                            <ValidationProvider rules="checkNumberMobile||required" name="Mobile Number" vid="mobile"
+                              v-slot="{ errors }">
+                              <label style="display: inline-block">{{
+                                $t('container.application_selection.application.mobile') }} </label><span
+                                style="margin-left: 4px; color: red">*</span>
+
+                              <v-text-field v-model="data.mobile" outlined type="number" clearable
+                                :error="errors[0] ? true : false" :error-messages="errors[0]">
+                              </v-text-field>
+                            </ValidationProvider>
+
+
+                          </v-col>
+
+
+
+
+                        </v-row>
+                      </div>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
+                  <!-------------complaint_info end--------------->
 
-
-                  <!-- Bank/MFS Information -->
+                  <!-- complaint complaint_details --------------->
                   <v-expansion-panel class="mb-4">
                     <v-expansion-panel-header color="primary">
                       <h3 class="white--text">{{ $t('container.grievance_management.grievanceEntry.complaint_details') }}
@@ -148,37 +162,35 @@
                     <v-expansion-panel-content class="mt-5">
                       <v-row>
                         <v-col>
+                          <label>{{ $t('container.grievance_management.main_grievance_type') }} </label>
                           <ValidationProvider name="Grievance Type" vid="type" rules="required" v-slot="{ errors }">
-                            <v-autocomplete v-model="data.grievance_type_id" outlined :label="$t(
-                              'container.grievance_management.main_grievance_type'
-                            )
-                              " :items="types" item-text="title_en" item-value="id" required
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            <v-autocomplete v-model="data.grievance_type_id" outlined :items="types" item-text="title_en"
+                              item-value="id" required :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
                         <v-col>
+                          <label>{{ $t('container.grievance_management.grievance_subject') }}</label>
                           <ValidationProvider name="Grievance Subject" vid="grievance_subject_id" rules="required"
                             v-slot="{ errors }">
-                            <v-autocomplete v-model="data.grievance_subject_id" outlined :label="$t(
-                              'container.grievance_management.grievance_subject'
-                            )
-                              " :items="subjects" item-text="title_en" item-value="id" required
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                            <v-autocomplete v-model="data.grievance_subject_id" outlined :items="subjects"
+                              item-text="title_en" item-value="id" required :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
                       </v-row>
-                           <v-row>
-                           <v-col>
-                              <ValidationProvider name="Grievance Type" vid="type" rules="required" v-slot="{ errors }">
-                                <v-autocomplete v-model="data.grievance_type_id" outlined :label="$t(
-                                  'container.grievance_management.main_grievance_type'
-                                )
-                                  " :items="types" item-text="title_en" item-value="id" required
-                                  :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
-                              </ValidationProvider>
-                            </v-col>
-                             <v-col cols="6" lg="6">
-                              <!-- <v-img :src="imageUrl" style="
+                      <v-row>
+                        <v-col>
+                          <label>{{ $t('container.grievance_management.grievanceEntry.details') }}</label>
+                          <ValidationProvider name="Grievance Details" vid="details" rules="required" v-slot="{ errors }">
+                            <span style="margin-left: 4px; color: red">*</span>
+                            <v-textarea v-model="data.address" outlined clearable :error="errors[0] ? true : false"
+                              handleCheckboxChangsa :error-messages="errors[0]">
+                            </v-textarea>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col cols="6" lg="6">
+                          <!-- <v-img :src="imageUrl" style="
                                     width: 200px;
                                     height: 200px;
                                     border: 1px solid #ccc;
@@ -189,15 +201,14 @@
                                     border: 1px solid #ccc;
                                   " class="mb-5"></v-img> -->
 
-                              <!-- <label>{{ $t('container.application_selection.application.image') }} ({{
-                                $t('container.application_selection.application.image_alert') }})</label> -->
-                              <!-- <span style="margin-left: 4px; color: red">*</span> -->
-                              <ValidationProvider v-slot="{ errors }" name="Image" rules="required" vid="image">
-                                <v-file-input outlined show-size counter prepend-outer-icon="mdi-camera"
-                                  v-model="data.image" accept="image/*" @change="previewImage" prepend-icon="" id="image">
-                                </v-file-input>
-                              </ValidationProvider>
-                              <!-- <ValidationProvider v-slot="{ errors }" name="Image" rules="required" vid="image">
+                          <label>{{ $t('container.grievance_management.grievanceEntry.document') }}</label>
+                          <!-- <span style="margin-left: 4px; color: red">*</span> -->
+                          <ValidationProvider v-slot="{ errors }" name="Image" rules="required" vid="image">
+                            <v-file-input outlined show-size counter prepend-outer-icon="mdi-camera" v-model="data.image"
+                              accept="image/*" @change="previewImage" prepend-icon="" id="image">
+                            </v-file-input>
+                          </ValidationProvider>
+                          <!-- <ValidationProvider v-slot="{ errors }" name="Image" rules="required" vid="image">
                               <v-file-input outlined show-size counter v-model="data.image" accept="image/*"
                                 @change="previewImage" id="image">
                                 <template v-slot:prepend-inner>
@@ -206,13 +217,13 @@
                               </v-file-input>
                             </ValidationProvider> -->
 
-                            </v-col>
-                            </v-row>
+                        </v-col>
+                      </v-row>
 
                     </v-expansion-panel-content>
                   </v-expansion-panel>
-                  <!-- Bank/MFS Information End -->
-                  <!-- Complaint Area Concerned Office -->
+                  <!-- complaint complaint_details end ----------->
+                  <!-- complaint complaint_area ------ ----------->
                   <v-expansion-panel class="ma-4">
                     <v-expansion-panel-header color="primary">
                       <h3 class="white--text">{{ $t('container.grievance_management.grievanceEntry.complaint_area') }}
@@ -416,23 +427,18 @@
                       </v-row>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
-                  <!-- Complaint Area Concerned Office End -->
-                  <!-- Expansion panel 5 End -->
+                 <!-- complaint complaint_area end------ ----------->
+                  <!-- Expansion panel 4 End -->
                 </v-expansion-panels>
               </div>
               <br>
               <div class="d-inline d-flex justify-end">
-
-
                 <v-btn @click="resetForm()" elevation="2" class="btn mr-2" outlined color="red" dark>{{
                   $t('container.list.cancel') }}</v-btn>
                 <v-btn @click="submitApplicationCheck()" flat color="primary" :loading="loading"
                   class="custom-btn-width black white--text py-2">
                   {{ $t('container.list.submit') }}
                 </v-btn>
-
-
-
               </div>
 
             </v-card>
@@ -444,11 +450,8 @@
           <v-dialog v-model="confirmDialog" max-width="700" max-height="500">
             <v-card>
               <v-card-title class="font-weight-bold justify-center">
-
                 {{ $t('container.application_selection.application.form_submission') }}
               </v-card-title>
-
-
               <!-- Add a divider after the title -->
               <v-divider></v-divider>
 
@@ -462,10 +465,6 @@
                 <v-btn text @click="confirmDialog = false" outlined class="custom-btn-width">
                   {{ $t("container.list.cancel") }}
                 </v-btn>
-                <!-- <v-btn text flat color="primary" :loading="loading" type="submit"
-                  class="custom-btn-width success white--text py-2">
-                  {{ $t("container.list.confirm") }}
-                </v-btn> -->
                 <v-btn @click="submitApplication()" flat color="primary" :loading="loading" type="submit"
                   class="custom-btn-width black white--text py-2">
                   {{ $t('container.list.confirm') }}
@@ -589,6 +588,7 @@ export default {
     return {
       subjects: [],
       types: [],
+
       panel2Open: true,
       panel: [0, 1, 2, 3, 4, 5, 6],
       programs: [],
@@ -634,49 +634,17 @@ export default {
       permanent_wards_pouro: [],
       permanent_wards_dist: [],
 
-      education_status: [
-        { name_en: 'Illiterate', name_bn: 'অশিক্ষিত' },
-        { name_en: 'JSC', name_bn: 'জেএসসি' },
-        { name_en: 'SSC', name_bn: 'এসএসসি' },
-        { name_en: 'HSC', name_bn: 'এইচএসসি' },
-        { name_en: 'Graduate', name_bn: 'গ্রাজুয়েট' },
-        { name_en: 'Post Graduate', name_bn: 'পোস্ট গ্রাজুয়েট' },
-        { name_en: 'Other', name_bn: 'অন্যান্য' }
-      ],
-      govt_programs: [
-        "Old Age Allowance Program",
-        "Disability Allowance Program",
-        "Widow And Husband Adopted Allowance program",
-        "Freedom Fighter Honorary Allowance",
-        "No Allowance",
-        "Other (specify)",
-      ],
       marital_status: [{ name_en: 'Married', name_bn: 'বিবাহিত' },
       { name_en: 'Unmarried', name_bn: 'অবিবাহিত' },
       { name_en: 'Widow', name_bn: 'বিধবা' },
       { name_en: 'Other', name_bn: 'অন্যান্য' }
 
       ],
-      health_status: [
-        "Totally Disabled",
-        "Sick",
-        "Insane",
-        "Disabled",
-        "Partially Powerless",
-        "Other (specify)",
-      ],
+
 
       financial_status: ["Poor", "Refugee", "Landless"],
       social_status: ["Widow", "Widower", "Divorced"],
       house_status: ["Homeless", "Self", "Rent", "Others"],
-      land_ownership: [
-        "Habitatless",
-        "Below 0.5 acre",
-        "Up to 1 acre",
-        "Above 1 acre",
-        "Other (specify)",
-      ],
-
       mobile_ownership:
         [{ name_en: 'Myself', name_bn: 'নিজ' },
         { name_en: 'Family Member', name_bn: 'পরিবারের সদস্য' },
@@ -705,26 +673,6 @@ export default {
       deleteDialog: false,
       confirmDialog: false,
       showAlert: false,
-      no_of_rooms: [{ name_en: 1, name_bn: '১' },
-      { name_en: 2, name_bn: '২' },
-      { name_en: 3, name_bn: '৩' },
-      { name_en: 4, name_bn: '৪' },
-      { name_en: 5, name_bn: '৫' },
-      { name_en: 6, name_bn: '৬' },
-      { name_en: 7, name_bn: '৭' },
-      { name_en: 8, name_bn: '৮' },
-      { name_en: 9, name_bn: '৯' },
-      { name_en: 10, name_bn: '১০' },
-      { name_en: 11, name_bn: '১১' },
-      { name_en: 12, name_bn: '১২' },
-      { name_en: 13, name_bn: '১৩' },
-      { name_en: 14, name_bn: '১৪' },
-      { name_en: 15, name_bn: '১৫' },
-      { name_en: 16, name_bn: '১৬' },
-      { name_en: 17, name_bn: '১৭' },
-      { name_en: 18, name_bn: '১৮' },
-      { name_en: 19, name_bn: '১৯' },
-      { name_en: 20, name_bn: '২০' }],
 
       data: {
         house_size: null,
@@ -807,27 +755,11 @@ export default {
         marital_status: null,
         email: null,
         mobile_operator: null,
-        pmt_status: null
+        pmt_status: null,
+        tracking_type: [],
+        text: ''
       },
-      professionType: [
 
-        { name_en: 'Farmer', name_bn: 'কৃষক' },
-        { name_en: 'Rickshaw Puller', name_bn: 'রিকশাচালক' },
-        { name_en: 'Day Laborer', name_bn: 'দিন মজুর' },
-        { name_en: 'Street Vendor', name_bn: 'রাস্তার দোকানদার' },
-        { name_en: 'Fisherman', name_bn: 'জেলে' },
-        { name_en: 'Construction Worker', name_bn: 'নির্মাণ কর্মী' },
-        { name_en: 'Domestic Worker', name_bn: 'পরিবারিক কর্মচারী' },
-        { name_en: 'Tea Garden Laborer', name_bn: 'চা বাগানের শ্রমিক' },
-        { name_en: 'Auto Rickshaw Driver', name_bn: 'অটো রিকশা চালক' },
-        { name_en: 'Handicraftsman', name_bn: 'হাস্তশিল্পী' },
-        { name_en: 'Plumber', name_bn: 'প্লাম্বার' },
-        { name_en: 'Carpenter', name_bn: 'কার্পেন্টার' },
-        { name_en: 'Street Sweeper', name_bn: 'রাস্তা পরিষ্কারক' },
-        { name_en: 'Security Guard', name_bn: 'নিরাপত্তা গার্ড' },
-        { name_en: 'Rural Artisan', name_bn: 'গ্রামীণ শিল্পী' },
-        { name_en: 'Other', name_bn: 'অন্যান্য' }
-      ],
       checkbox: false,
       checkboxNomineeAddress: false,
       imageUrl: null,
@@ -939,6 +871,7 @@ export default {
 
         });
     },
+    
     onChange($event) {
       this.data.per_room_score = (this.data.house_size / $event) * -0.05;
       this.data.per_room_score = parseFloat(this.data.per_room_score.toFixed(3));
