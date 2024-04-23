@@ -169,7 +169,7 @@
 
                   <tr v-if="activity_log_details.properties.userInfo">
                     <th class="text-left">
-                      User And Device Info:
+                       Device & Location Info:
                     </th>
                     <td class="text-left">
                       <v-simple-table dense>
