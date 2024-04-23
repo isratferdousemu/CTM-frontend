@@ -4,7 +4,7 @@
     "location": "Social Service Building, E-8/B-1, Agargaon, Sherbangla Nagar, Dhaka-1207, Bangladesh."
   },
   "leftSidebar": {
-    "title": "Allowance Management System"
+    "title": "Integrated Social Protection Management Information System (ISPMIS)"
   },
   "sidebar": {
     "dashboard": "Dashboard"
@@ -1064,21 +1064,33 @@
       "applicant_details": "Applicant Details"
     },
     "activity_log": {
-      "title": "Activity Log Lists",
-      "log_view": "Activity Log View",
-      "name": "Log Name",
-      "action_type": "Action Type",
-      "user_name": "User Name",
-      "user_email": "Email",
-      "device": "Device",
-      "source_ip": "Source IP",
-      "description": "Description",
-      "change_info": "Change Info",
-      "login_user_info": "Login User",
-      "login_anonymous_user_info": "Login/Anonymous User Info",
-      "create": "Create",
-      "delete": "Delete Activity Log",
-      "delete_alert": "Are you sure to delete this Activity Log?"
+      "table": {
+        "title": "Activity Log Lists",
+        "log_view": "Activity Log View",
+        "name": "Log Name",
+        "action_type": "Action Type",
+        "user_name": "User Name",
+        "user_email": "Email",
+        "device": "Device",
+        "source_ip": "Source IP",
+        "description": "Description",
+        "change_info": "Change Info",
+        "login_user_info": "Login User",
+        "login_anonymous_user_info": "Login/Anonymous User Info",
+        "create": "Create",
+        "delete": "Delete Activity Log",
+        "delete_alert": "Are you sure to delete this Activity Log?"
+      },
+      "filter": {
+        "title": "Activity Log Filter",
+        "division": "Division",
+        "district": "District",
+        "office": "Office",
+        "device_type": "Device Type",
+        "user_id": "User Id",
+        "user_name": "User Name",
+        "action_type": "Action Type"
+      }
     },
     "system_config_dashboard": {
       "enter_start_end_date": "Enter Start & End Date",
@@ -1113,7 +1125,7 @@
       "grievance_delete_message": "Are you sure to delete this Grievance Type?",
       "grievance_subject_delete": "Delete Grievance Subject",
       "grievance_subject_delete_message": "Are you sure to delete this Grievance Subject?",
-      "grievance_setup": "Set Grievance",
+      "grievance_setup": "Configure Grievance",
       "add_new_grievance_setting": "Add New Grievance Setting",
       "edit_grievance_setting": "Edit Grievance Setting",
       "solution_time": "Solution Time (Days)",
@@ -1121,7 +1133,23 @@
       "2ndOfficer": "2nd Tire (2nd Officer)",
       "3rdOfficer": "3rd Tire (3rd Officer)",
       "grievance_setting_delete": "Delete Grievance Setting",
-      "grievance_setting_delete_message": "Are you sure to delete this Grievance Setting?"
+      "grievance_setting_delete_message": "Are you sure to delete this Grievance Setting?",
+      "grievanceEntry":{
+         "complaint_area": "Complaint Area Concerned Office",
+         "is_existing_beneficiary": "Are you an existing beneficiary?",
+         "complaint_details": "Provide Details of the Complaint",
+         "details": "Complaint Details",
+         "document": "Document attachment (if applicable)",
+         "document1": "(doc, docx, pdf, xls, xlsx, txt, jpg, jpeg, png)",
+         "complaint_info": "Complaint information",
+         "email": "Email",
+         "name": "Name",
+         "Program_name": "Name of Allowance Program",
+         "Verify": "Verify",
+         "beneficiary_id": "Beneficiary ID",
+         "grievance_entry": "Grievance Entry"
+
+      }
     }
   }
 }

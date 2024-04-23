@@ -4,7 +4,7 @@
     "location": "সমাজসেবা ভবন, ই-৮/বি-১, আগারগাঁও, শেরেবাংলা নগর, ঢাকা-১২০৭, বাংলাদেশ।"
   },
   "leftSidebar": {
-    "title": "ভাতা ব্যবস্থাপনা সিস্টেম"
+    "title": "ইন্টিগ্রেটেড সোশ্যাল প্রোটেকশন ম্যানেজমেন্ট ইনফরমেশন সিস্টেম (আইএসপিএমআইএস)"
   },
   "sidebar": {
     "dashboard": "ড্যাশবোর্ড"
@@ -1061,21 +1061,33 @@
       "applicant_details": "আবেদনকারীর বিবরণ"
     },
     "activity_log": {
-      "title": "এক্টিভিটি লগের তালিকা",
-      "log_view": "এক্টিভিটি লগের বিস্তারিত তথ্য",
-      "name": "লগের নাম",
-      "action_type": "কর্মের ধরন",
-      "user_name": "ব্যবহারকারীর নাম",
-      "user_email": "ইমেইল",
-      "device": "ডিভাইস",
-      "source_ip": "উৎস আইপি",
-      "description": "বর্ননা",
-      "change_info": "পরিবর্তন ",
-      "login_user_info": "লগইন ইউজার তথ্য",
-      "login_anonymous_user_info": "লগইন/বেনামী ইউজার তথ্য",
-      "create": "ক্রিয়েট",
-      "delete": "এক্টিভিটি লগ মুছে ফেলুন",
-      "delete_alert": "আপনি কি এই এক্টিভিটি লগ মুছে ফেলার বিষয়ে নিশ্চিত?।"
+      "table":{
+        "title": "এক্টিভিটি লগের তালিকা",
+        "log_view": "এক্টিভিটি লগের বিস্তারিত তথ্য",
+        "name": "লগের নাম",
+        "action_type": "কর্মের ধরন",
+        "user_name": "ব্যবহারকারীর নাম",
+        "user_email": "ইমেইল",
+        "device": "ডিভাইস",
+        "source_ip": "উৎস আইপি",
+        "description": "বর্ননা",
+        "change_info": "পরিবর্তন ",
+        "login_user_info": "লগইন ইউজার তথ্য",
+        "login_anonymous_user_info": "লগইন/বেনামী ইউজার তথ্য",
+        "create": "ক্রিয়েট",
+        "delete": "এক্টিভিটি লগ মুছে ফেলুন",
+        "delete_alert": "আপনি কি এই এক্টিভিটি লগ মুছে ফেলার বিষয়ে নিশ্চিত?।"
+      },
+      "filter": {
+        "title": "কার্যকলাপ লগ ফিল্টার",
+        "division": "বিভাগ",
+        "district": "জেলা",
+        "office": "অফিস",
+        "device_type": "ডিভাইসের ধরন",
+        "user_id": "ব্যবহারকারী আইডি",
+        "user_name": "ব্যবহারকারীর নাম",
+        "action_type": "অ্যাকশনের ধরন"
+      }
     },
     "system_config_dashboard": {
       "enter_start_end_date": "শুরু এবং শেষ তারিখ লিখুন",
@@ -1110,15 +1122,29 @@
       "grievance_delete_message": "আপনি এই অভিযোগের ধরন মুছে ফেলার বিষয়ে নিশ্চিত?",
       "grievance_subject_delete": "অভিযোগের বিষয় মুছুন",
       "grievance_subject_delete_message": "আপনি এই অভিযোগের বিষয় মুছে ফেলার বিষয়ে নিশ্চিত?",
-      "grievance_setup": "অভিযোগ সেট করুন",
+      "grievance_setup": "অভিযোগ কনফিগার করুন",
       "add_new_grievance_setting": "নতুন অভিযোগ সেটিং যোগ করুন",
       "edit_grievance_setting": "অভিযোগ সেটিং আপডেট করুন",
       "solution_time": "সমাধানের সময় (দিন)",
       "1stOfficer": "১ম টায়ার (১ম অফিসার)",
       "2ndOfficer": "২য় টায়ার (২য় অফিসার)",
-      "3rdOfficer": "3য় টায়ার (3য় অফিসার)",
+      "3rdOfficer": "৩য় টায়ার (৩য় অফিসার)",
       "grievance_setting_delete": "অভিযোগের সেটিংস মুছুন",
-      "grievance_setting_delete_message": "আপনি এই অভিযোগের সেটিংস মুছে ফেলার বিষয়ে নিশ্চিত?"
+      "grievance_setting_delete_message": "আপনি এই অভিযোগের সেটিংস মুছে ফেলার বিষয়ে নিশ্চিত?",
+      "grievanceEntry": {
+        "complaint_area": "অভিযোগ এলাকা সংশ্লিষ্ট অফিস",
+        "is_existing_beneficiary": "আপনি একটি বিদ্যমান সুবিধাভোগী?",
+        "details": "অভিযোগের বিবরণ",
+        "document": "নথি সংযুক্তি (যদি প্রযোজ্য হয়)",
+        "document1": "(doc, docx, pdf, xls, xlsx, txt, jpg, jpeg, png)",
+        "complaint_info": "অভিযোগের তথ্য",
+        "email": "ইমেইল",
+        "name": "নাম",
+        "Program_name": "ভাতা কর্মসূচির নাম",
+        "Verify": "যাচাই করুন",
+        "beneficiary_id": "সুবিধাভোগী আইডি",
+        "grievance_entry": "অভিযোগ এন্ট্রি"
+      }
     }
   }
 }
