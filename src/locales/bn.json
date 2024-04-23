@@ -994,6 +994,7 @@
         },
         "api_generate": {
           "list": "এপিআই তালিকা",
+          "list_1": "গ্রাহকের তালিকা",
           "api_view": "এপিআই বিবরণ",
           "add": "নতুন এপিআই যুক্ত করুন",
           "edit": "এপিআই এডিট করুন",
@@ -1007,20 +1008,29 @@
           "select_column": "কলাম নির্বাচন করুন",
           "add_new": "নতুন এপিআই যুক্ত করুন"
         },
-        "data_receive": {
-          "list": "এপিআই তালিকা",
-          "api_view": "API View",
-          "add": "Add New API Receiver",
-          "edit": "Edit API Receiver",
-          "api": " API",
-          "organization": "Oraganization",
-          "phone": "Phone",
-          "total_heat": "Total Heat",
-          "dutaion": "Dutaion",
-          "api_key": "Api Key",
-          "delete_header": "Delete API Receiver",
-          "delete_alert": "Are you sure to delete this API Receiver? API all information will be deleted.",
-          "parameter": "Parameter"
+        "data_receiver": {
+          "list": "এপিআই গ্রাহকের তালিকা",
+          "view": "এপিআই গ্রাহকের বিবরণ",
+          "add": "নতুন এপিআই গ্রাহক যুক্ত করুন",
+          "edit": "এপিআই গ্রাহক সম্পাদনা করুন",
+          "api": " এপিআই",
+          "organization": "প্রতিষ্ঠানের নাম",
+          "phone": "প্রতিষ্ঠানের ফোন",
+          "email": "প্রতিষ্ঠানের ইমেইল",
+          "responsible_person_email": "দায়িত্বশীল ব্যক্তির ইমেইল",
+          "responsible_person_nid": "দায়িত্বশীল ব্যক্তির এনআইডি",
+          "total_heat": "টোটাল হিট",
+          "dutaion": "সময়কাল",
+          "api_key": "এপিআই কী",
+          "user_name": "ব্যবহারকারীর নাম",
+          "ip": "সার্ভারের আইপি এড্রেস",
+          "delete_header": "এপিআই গ্রাহক মুছুন",
+          "delete_alert": "আপনি কি এই এপিআই গ্রাহক মুছে ফেলার ব্যাপারে নিশ্চিত? এপিআই গ্রাহকের সমস্ত তথ্য মুছে ফেলা হবে।",
+          "select_api": "এপিআই নির্বাচন করুন",
+          "start_date": "শুরুর তারিখ",
+          "end_date": "শেষের তারিখ"
+        
+         
          
         }
       },

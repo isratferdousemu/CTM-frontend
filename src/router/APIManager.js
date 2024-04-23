@@ -86,40 +86,40 @@ const APIManagerRoutes = [
     /*API Generate route e end*/
     /*API Data Receive route start*/
     {
-        path: "/api-manager/data-receive",
+        path: "/api-manager/data-receiver",
         name: "DataList",
         meta: {
             requiresAuth: true,
-            permission: "data-receive-view",
+            permission: "apiDataReceive-view",
         },
         component: () => import("../pages/APIManager/DataReceive/Index.vue")
     },
 
     {
-        path: "/api-manager/data-receive/generate",
+        path: "/api-manager/data-receiver/generate",
         name: "DataReceiveGenerate",
         meta: {
             requiresAuth: true,
-            permission: "data-receive-create",
+            permission: "apiDataReceive-create",
         },
         component: () => import("../pages/APIManager/DataReceive/Create.vue")
     },
 
     {
-        path: "/api-manager/data-receive/edit/:id",
+        path: "/api-manager/data-receiver/edit/:id",
         name: "DataReceiveEdit",
         meta: {
             requiresAuth: true,
-            permission: "data-receive-edit",
+            permission: "apiDataReceive-edit",
         },
         component: () => import("../pages/APIManager/DataReceive/Edit.vue")
     },
     {
-        path: "/api-manager/data-receive/view/:id",
+        path: "/api-manager/data-receiver/view/:id",
         name: "DataReceiveView",
         meta: {
             requiresAuth: true,
-            permission: "data-receive-view",
+            permission: "apiDataReceive-view",
         },
         component: () => import("../pages/APIManager/DataReceive/View.vue")
     },
