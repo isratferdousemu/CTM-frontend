@@ -506,8 +506,8 @@ export default {
                     <v-col cols="12">
                         <v-card>
 
-                            <v-card-title class="justify-center gradient-background">
-                                <h4>{{ $t('container.api_manager.data_receiver.list') }}</h4>
+                            <v-card-title class="justify-center ">
+                                <h4 class="mt-5">{{ $t('container.api_manager.data_receiver.list') }}</h4>
                             </v-card-title>
 
 

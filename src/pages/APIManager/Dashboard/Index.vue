@@ -1,7 +1,7 @@
 <template>
   <v-container fluid>
     <v-row justify="center">
-      <v-col v-for="(item ,index) in getAllApiCount" :key="index" class="justify-center">
+      <v-col cols="12" md="6" lg="6" v-for="(item ,index) in getAllApiCount" :key="index" class="justify-center">
         <v-card class="elevation-10 border-radius-card">
 
           <div class="flex-column align-center">
@@ -9,17 +9,15 @@
               <div class="d-flex align-center black--text">
 
                 <v-row>
-                  <v-col>
-                    <v-chip> <v-icon class="mdi mdi-map-marker"></v-icon></v-chip>
-
-
-                    <span class="ml-1 font-weight-bold">{{ $i18n.locale ==
-                      'en' ? item.title_en : item.title_bn
+                  <v-col class="d-flex align-center">
+                    <div class="location-icon-container"> <v-icon class="mdi mdi-map-marker"></v-icon></div>
+                    <span class="ml-1 font-weight-bold">{{ $i18n.locale == 'en' ? item.title_en : item.title_bn
                       }}</span>
                   </v-col>
                   <v-col v-if="index == 2 || index == 3" class="font-weight-bold text-right align-right">
-                    Last 24
-                    Hour
+                    {{ $i18n.locale ==
+                    'en' ? 'Last 24 Hour' : '২৪ ঘণ্টা আগে'
+                    }}
                   </v-col>
                 </v-row>
 
