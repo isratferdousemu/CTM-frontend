@@ -14,10 +14,11 @@ extend('email', {
 extend('bangla', {
     validate: value => {
         // Regular expression to match Bangla characters
-        const banglaRegex = /^[\u0980-\u09FF\s]+$/;
+        // const banglaRegex = /^[\u0980-\u09FF\s]+$/;
+        const banglaRegex = /^[^\u0980-\u09FF]+$/;
         return banglaRegex.test(value);
     },
-    message: 'Only Bangla characters will be allowed in this field'
+    message: 'Bangla characters are not allowed in this field'
 });
 extend('ip_address', {
     validate: value => {
@@ -187,8 +188,8 @@ export default {
                 <v-row>
                     <v-col cols="12">
                         <v-card>
-                            <v-card-title class="justify-center gradient-background ">
-                                <h4>
+                            <v-card-title class="justify-center  ">
+                                <h4 class="mt-5">
                                     {{ $t("container.api_manager.data_receiver.add") }}
                                 </h4>
                             </v-card-title>
@@ -275,7 +276,9 @@ export default {
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols="12" sm="6" lg="6">
-                                                <ValidationProvider name="User Name" vid="username"
+                                                <ValidationProvider name="Auth 
+                                                
+                                                key" vid="username"
                                                     rules="required||bangla" v-slot="{ errors }">
                                                     <v-text-field dense v-model="data.username" :label="$t('container.api_manager.data_receiver.user_name')
                                         " persistent-hint outlined :error="errors[0] ? true : false"

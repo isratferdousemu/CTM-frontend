@@ -181,8 +181,8 @@ export default {
             aspectRatio: 1, // Aspect ratio of 1 w
           },
         });
-        document.getElementById("office_typewise_total_user").style.width = '400px';
-        document.getElementById("office_typewise_total_user").style.height = '435px';
+        document.getElementById("office_typewise_total_user").style.width = '300px';
+        document.getElementById("office_typewise_total_user").style.height = '237px';
       } else {
         console.error("Data is not available to create chart.");
       }

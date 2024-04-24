@@ -1,18 +1,31 @@
 <template>
   <v-container fluid>
     <v-row justify="center">
-      <v-col v-for="item in getAllApiCount" :key="item.id" class="justify-center">
+      <v-col cols="12" md="6" lg="6" v-for="(item ,index) in getAllApiCount" :key="index" class="justify-center">
         <v-card class="elevation-10 border-radius-card">
 
           <div class="flex-column align-center">
             <v-card-text>
               <div class="d-flex align-center black--text">
-                <div class="location-icon-container">
-                  <v-icon class="mdi mdi-map-marker"></v-icon>
-                </div>
-                <span class="ml-1 font-weight-bold">{{ $i18n.locale == 'en' ? item.title_en : item.title_bn }}</span>
+
+                <v-row>
+                  <v-col class="d-flex align-center">
+                    <div class="location-icon-container"> <v-icon class="mdi mdi-map-marker"></v-icon></div>
+                    <span class="ml-1 font-weight-bold">{{ $i18n.locale == 'en' ? item.title_en : item.title_bn
+                      }}</span>
+                  </v-col>
+                  <v-col v-if="index == 2 || index == 3" class="font-weight-bold text-right align-right">
+                    {{ $i18n.locale ==
+                    'en' ? 'Last 24 Hour' : '২৪ ঘণ্টা আগে'
+                    }}
+                  </v-col>
+                </v-row>
+
+
+
               </div>
-              <div class="mt-1 font-weight-bold text-center black--text">{{ $i18n.locale == 'en' ? item.number : $helpers.englishToBangla(item.number) }}</div>
+              <div class="mt-1 ml-5 font-weight-bold text-left black--text">{{ $i18n.locale == 'en' ? item.number :
+                $helpers.englishToBangla(item.number) }}</div>
             </v-card-text>
           </div>
 
@@ -25,7 +38,7 @@
         <v-card>
           <v-card-text>
             <V-row>
-              <DateWiseChart/>
+              <DateWiseChart />
             </V-row>
           </v-card-text>
         </v-card>
@@ -35,7 +48,7 @@
         <v-card>
           <v-card-text>
             <V-row>
-              <OrganizationWiseChart/>
+              <OrganizationWiseChart />
             </V-row>
           </v-card-text>
         </v-card>
