@@ -4,7 +4,7 @@
       <v-col cols="12">
         <v-row>
           <Spinner :loading="isLoading" />
-          <v-col cols="12">
+          <v-col cols="12" id="print-section">
             <v-card
                 elevation="10"
                 color="white"
@@ -12,15 +12,19 @@
                 theme="light"
                 class="mb-8"
             >
+
               <v-card-title class="justify-center" tag="div">
                 <h4 class="text-uppercase pt-3">
                   {{ $t('container.activity_log.table.log_view') }}
                 </h4>
               </v-card-title>
+              <div class="d-inline d-flex justify-end ma-1 mr-5">
+                <v-icon color="black" @click="printTable">mdi-printer</v-icon>
+              </div>
               <v-simple-table dense>
+
                 <template v-slot:default>
                   <tbody>
-
                   <tr v-if=" activity_log_details.log_name">
                     <th class="text-left">
                       Subject
@@ -56,14 +60,6 @@
                       {{ activity_log_details.causer_type}}
                     </td>
                   </tr>
-                  <!--                  <tr>-->
-                  <!--                    <th class="text-left">-->
-                  <!--                      Causer-->
-                  <!--                    </th>-->
-                  <!--                    <td class="text-left">-->
-                  <!--                      Info-->
-                  <!--                    </td>-->
-                  <!--                  </tr>-->
 
                   <tr v-if="activity_log_details.subject_type">
                     <th class="text-left">
@@ -93,66 +89,16 @@
                     </td>
                   </tr>
 
-<!--                                    <tr>-->
-<!--                                      <th class="text-left">-->
-<!--                                        Changes:-->
-<!--                                      </th>-->
-<!--                                      <td class="text-left">-->
-<!--                                        <v-simple-table dense>-->
-<!--                                          <template v-slot:default>-->
-<!--                                            <thead>-->
-<!--                                              <th>Key</th>-->
-<!--                                              <th v-if="activity_log_details.properties.changes.previous">Previous Value</th>-->
-<!--                                              <th>New Value</th>-->
-<!--                                            </thead>-->
-<!--                                            <tbody>-->
-<!--                                            <tr v-for="(value, key) in activity_log_details.properties.changes.new" :key="key">-->
-<!--                                              <td>{{ key }}</td>-->
-<!--                                              <td v-if="activity_log_details.properties.changes.previous">{{ activity_log_details.properties.changes.previous[key] }}</td>-->
-<!--                                              <td>{{ activity_log_details.properties.changes.new[key] }}</td>-->
-<!--                                            </tr>-->
-<!--                                            </tbody>-->
-<!--                                          </template>-->
-<!--                                        </v-simple-table>-->
-<!--                                      </td>-->
-<!--                                    </tr>-->
-
-<!--                  <tr>-->
-<!--                    <th class="text-left">-->
-<!--                      Change Info:-->
-<!--                    </th>-->
-<!--                    <td class="text-left">-->
-<!--                      <v-simple-table dense>-->
-<!--                        <template v-slot:default>-->
-<!--                          <thead>-->
-<!--                          <th>Key</th>-->
-<!--                          <th>Value</th>-->
-<!--                          </thead>-->
-<!--                          <tbody>-->
-
-<!--                          <tr v-for="(value, key) in activity_log_details.subject" :key="key">-->
-<!--                            <template v-if="value != null">-->
-<!--                              <td>{{ key }}</td>-->
-<!--                              <td>{{ value }}</td>-->
-<!--                            </template>-->
-<!--                          </tr>-->
-
-<!--                          </tbody>-->
-<!--                        </template>-->
-<!--                      </v-simple-table>-->
-<!--                    </td>-->
-<!--                  </tr>-->
-
                   </tbody>
                 </template>
               </v-simple-table>
             </v-card>
 
-            <v-simple-table>
+            <v-simple-table v-if="activity_log_details?.properties?.changes?.previous || activity_log_details?.properties?.changes?.new">
               <template>
                 <thead>
                 <tr>
-                  <th class="text-center">
+                  <th class="text-center" style="background-color: #1C3B68; color: white;">
                     Change Information:
                   </th>
                 </tr>
@@ -186,7 +132,7 @@
               <template>
                 <thead>
                 <tr>
-                  <th class="text-center">
+                  <th class="text-center" style="background-color: #1C3B68; color: white;">
                     User Information:
                   </th>
                 </tr>
@@ -220,7 +166,7 @@
               <template>
                 <thead>
                 <tr>
-                  <th class="text-center">
+                  <th class="text-center" style="background-color: #1C3B68; color: white;">
                     Device & Location Information:
                   </th>
                 </tr>
@@ -274,53 +220,7 @@ export default {
         id: null,
       },
       isLoading:false,
-
       activity_log_details: [],
-
-
-      desserts: [
-        {
-          name: 'Frozen Yogurt',
-          calories: 159,
-        },
-        {
-          name: 'Ice cream sandwich',
-          calories: 237,
-        },
-        {
-          name: 'Eclair',
-          calories: 262,
-        },
-        {
-          name: 'Cupcake',
-          calories: 305,
-        },
-        {
-          name: 'Gingerbread',
-          calories: 356,
-        },
-        {
-          name: 'Jelly bean',
-          calories: 375,
-        },
-        {
-          name: 'Lollipop',
-          calories: 392,
-        },
-        {
-          name: 'Honeycomb',
-          calories: 408,
-        },
-        {
-          name: 'Donut',
-          calories: 452,
-        },
-        {
-          name: 'KitKat',
-          calories: 518,
-        },
-      ],
-
     };
   },
   components: {
@@ -329,8 +229,26 @@ export default {
     ValidationObserver,
   },
   computed: {
+    drawer: {
+      get() {
+        return this.$store.state.Drawer;
+      },
+      set(v) {
+        return this.$store.commit("setDrawer", v);
+      },
+    },
   },
   methods: {
+    async printTable() {
+      this.drawer = false;
+      setTimeout(() => {
+        if (this.drawer === false) {
+          window.print();
+          this.drawer = true;
+        }
+      }, 100);
+    },
+
 
     viewActivityLog(id) {
       this.$axios.get(`/admin/activity-log/view/${id}`, {
@@ -364,5 +282,18 @@ export default {
 <style>
 .highlight-column {
   background-color: #e0eaf1;
+}
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #print-section, #print-section * {
+    visibility: visible;
+  }
+  #print-section {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
 }
 </style>
