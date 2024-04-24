@@ -134,15 +134,15 @@ export default {
                 <v-row>
                     <v-col cols="12">
                         <v-card>
-                            <v-card-title class="justify-center">
-                                <h4 class="mt-5">
+                            <v-card-title class="justify-center gradient-background">
+                                <h4 >
                                     {{ $t("container.api_manager.data_receiver.view") }}
                                 </h4>
                             </v-card-title>
 
                             <!-- <v-divider></v-divider> -->
 
-                            <v-card-text class="mt-5">
+                            <v-card-text class="mt-10">
 
                                 <v-row>
                                     <v-col ols="12" sm="12" lg="12">
@@ -280,7 +280,7 @@ export default {
                                             </v-col>
                                         </v-row>
 
-                                        <v-card-title v-if="data.api_list"  class="justify-center black--text">
+                                        <v-card-title v-if="data.api_list" class="justify-center black--text">
                                             <h5 class="mt-5">
                                                 {{ $t("container.api_manager.api_generate.api_view") }}
                                             </h5>
@@ -355,5 +355,28 @@ export default {
     /* Adjust as needed */
     padding-right: 5px;
     /* Adjust as needed */
+}
+.gradient-background {
+    background: linear-gradient(to right, #87CEEB, #ADD8E6, #F0F8FF);
+    color: black;
+    /* Adjust text color for better contrast */
+    border-radius: 10px;
+    /* Add rounded corners for a softer look */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Add a subtle shadow for depth */
+
+    /* Add a subtle animation */
+    animation: gradient-animation 10s infinite alternate;
+}
+
+/* Define the animation */
+@keyframes gradient-animation {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
 }
 </style>

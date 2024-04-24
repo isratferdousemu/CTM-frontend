@@ -1,5 +1,5 @@
 <script>
-
+import {ValidationObserver } from "vee-validate";
 export default {
     name: "Index",
     title: "CTM - API Data Receiver",
@@ -12,6 +12,9 @@ export default {
                 name_bn: null,
             },
             total: null,
+            org_name:null,
+            module_id:null,
+            modules:[],
 
             dialogAdd: false,
             deleteDialog: false,
@@ -93,10 +96,15 @@ export default {
 
     mounted() {
         this.GetDataReceiver();
+        this.GetModule();
 
     },
 
     methods: {
+        resetSearch(){
+            this.module_id=null;
+            this.org_name=null;
+        },
         async GeneratePDF() {
             this.isLoading = true;
             let page;
@@ -104,6 +112,7 @@ export default {
                 page = this.pagination.current;
             }
             const queryParams = {
+                
                 language: this.$i18n.locale,
                 searchText: this.search,
                 perPage: this.search.trim() === '' ? this.total : this.total,
@@ -310,9 +319,30 @@ export default {
             this.GetDataReceiver();
 
         },
+        async GetModule(){
+        
+            this.$axios
+                .get("/admin/get-modules", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                  
+                })
+                .then((result) => {
+
+                    
+                    this.modules = result?.data?.data;
+                  
+                 
+
+                });
+        },
         async GetDataReceiver() {
             this.loading=true;
             const queryParams = {
+                module_id: this.module_id,
+                org_name: this.org_name,
                 search: this.search,
                 perPage: this.pagination.perPage,
                 page: this.pagination.current,
@@ -423,17 +453,67 @@ export default {
             <v-col cols="12">
                 <v-row wrap>
                     <v-col cols="12">
+                        <v-expansion-panels>
+                            <v-expansion-panel>
+                                <v-expansion-panel-header color="#8C9EFF">
+                                    <h3 class="white--text">
+                                        {{ $t("container.list.filter") }}
+                                    </h3>
+                                </v-expansion-panel-header>
+                                <v-expansion-panel-content class="mt-5">
+
+                                    <form @submit.prevent="GetDataReceiver()">
+
+                                        <v-row>
+
+                                            <v-col lg="4" md="4" cols="12">
+                                                <v-autocomplete outlined clearable dense
+                                                    :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
+                                                    class="no-arrow-icon" v-model="module_id" :items="modules"
+                                                    item-text="name" item-value="id"
+                                                    :label="$t('container.api_manager.api_generate.module')">
+                                                </v-autocomplete>
+                                            </v-col>
+                                            <v-col lg="4" md="4" cols="12">
+                                                <v-text-field outlined clearable dense
+                                                    :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
+                                                    v-model="org_name"
+                                                    :label="$t('container.api_manager.data_receiver.organization') ">
+                                                </v-text-field>
+                                            </v-col>
+                                            <v-col lg="4" md="4" cols="12">
+                                                <div class="d-inline d-flex justify-end">
+                                                    <v-btn elevation="2" class="btn" @click="resetSearch">{{
+                                                        $t("container.list.reset")
+                                                        }}</v-btn>
+                                                    <v-btn elevation="2" type="submit" class="btn ml-2"
+                                                        color="success">{{
+                                                        $t("container.list.filter") }}</v-btn>
+                                                </div>
+
+                                            </v-col>
+
+                                        </v-row>
+
+
+                                    </form>
+
+                                </v-expansion-panel-content>
+                            </v-expansion-panel>
+                        </v-expansion-panels>
+                    </v-col>
+                    <v-col cols="12">
                         <v-card>
 
-                            <v-card-title class="justify-center">
+                            <v-card-title class="justify-center gradient-background">
                                 <h4>{{ $t('container.api_manager.data_receiver.list') }}</h4>
                             </v-card-title>
 
 
                             <!-- <v-divider></v-divider> -->
 
-                            <v-card-text>
-                                <v-card-title class="mb-5 ml-5">
+                            <v-card-text class="mt-10">
+                                <v-card-title class="mb-5 ml-5 ">
                                     <div class="d-flex justify-sm-end flex-wrap">
                                         <v-text-field @keyup.native="PageSetup" v-model="search"
                                             append-icon="mdi-magnify" :label="$t(
@@ -550,8 +630,8 @@ export default {
 
                                         <v-tooltip top>
                                             <template v-slot:activator="{ on }">
-                                                <v-btn v-can="'apiDataReceive-delete'" fab x-small v-on="on" color="grey"
-                                                    class="ml-3 white--text" elevation="0"
+                                                <v-btn v-can="'apiDataReceive-delete'" fab x-small v-on="on"
+                                                    color="grey" class="ml-3 white--text" elevation="0"
                                                     @click="deleteAlert(item.id)">
                                                     <v-icon> mdi-delete </v-icon>
                                                 </v-btn>
@@ -637,5 +717,28 @@ export default {
 .custom-chip {
     background-color: blue;
     color: white;
+}
+.gradient-background {
+    background: linear-gradient(to right, #87CEEB, #ADD8E6, #F0F8FF);
+    color: black;
+    /* Adjust text color for better contrast */
+    border-radius: 10px;
+    /* Add rounded corners for a softer look */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Add a subtle shadow for depth */
+
+    /* Add a subtle animation */
+    animation: gradient-animation 10s infinite alternate;
+}
+
+/* Define the animation */
+@keyframes gradient-animation {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
 }
 </style>

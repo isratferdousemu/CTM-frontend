@@ -179,31 +179,34 @@ export default {
                 <v-row>
                     <v-col cols="12">
                         <v-card>
-                            <v-card-title class="justify-center">
-                                <h4 class="mt-5">
+                            <v-card-title class="justify-center gradient-background ">
+                                <h4 >
                                     {{ $t("container.api_manager.data_receiver.add") }}
                                 </h4>
                             </v-card-title>
 
                             <!-- <v-divider></v-divider> -->
 
-                            <v-card-text class="mt-5">
+                            <v-card-text class="mt-10">
                                 <ValidationObserver ref="form" v-slot="{ invalid }">
                                     <v-form v-on:submit.prevent="submitDataReceiver()">
 
-                                        <v-row>
+                                        <v-row class="mx-10">
                                             <v-col cols="12" sm="6" lg="6">
                                                 <ValidationProvider name="Organization Name" vid="organization_name"
                                                     rules="required" v-slot="{ errors }">
-                                                    <v-text-field type="text" v-model="data.organization_name" :label="$t('container.api_manager.data_receiver.organization')
+                                                    <v-text-field dense type="text" v-model="data.organization_name"
+                                                        :label="$t('container.api_manager.data_receiver.organization')
                                         " persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]"></v-text-field>
+                                                        :error-messages="errors[0]"
+                                                        class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols="12" sm="6" lg="6">
                                                 <ValidationProvider name="Organization Phone" vid="organization_phone"
                                                     rules="required||phone" v-slot="{ errors }">
-                                                    <v-text-field type="text" v-model="data.organization_phone" :label="$t('container.api_manager.data_receiver.phone')
+                                                    <v-text-field dense type="text" v-model="data.organization_phone"
+                                                        :label="$t('container.api_manager.data_receiver.phone')
                                         " persistent-hint outlined :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]"></v-text-field>
                                                 </ValidationProvider>
@@ -211,7 +214,8 @@ export default {
                                             <v-col cols="12" sm="6" lg="6">
                                                 <ValidationProvider name="Organization Email" vid="organization_email"
                                                     rules="required||email" v-slot="{ errors }">
-                                                    <v-text-field type="email" v-model="data.organization_email" :label="$t('container.api_manager.data_receiver.email')
+                                                    <v-text-field dense type="email" v-model="data.organization_email"
+                                                        :label="$t('container.api_manager.data_receiver.email')
                                         " persistent-hint outlined :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]"></v-text-field>
                                                 </ValidationProvider>
@@ -220,8 +224,8 @@ export default {
                                                 <ValidationProvider name="Responsible Person Email"
                                                     vid="responsible_person_email" rules="required||email"
                                                     v-slot="{ errors }">
-                                                    <v-text-field type="email" v-model="data.responsible_person_email"
-                                                        :label="$t('container.api_manager.data_receiver.responsible_person_email')
+                                                    <v-text-field dense type="email"
+                                                        v-model="data.responsible_person_email" :label="$t('container.api_manager.data_receiver.responsible_person_email')
                                         " persistent-hint outlined :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]"></v-text-field>
                                                 </ValidationProvider>
@@ -230,7 +234,7 @@ export default {
                                                 <ValidationProvider name="Responsible Person NID"
                                                     vid="responsible_person_nid" rules="required||checkNumber"
                                                     v-slot="{ errors }">
-                                                    <v-text-field v-model="data.responsible_person_nid" :label="$t('container.api_manager.data_receiver.responsible_person_nid')
+                                                    <v-text-field dense v-model="data.responsible_person_nid" :label="$t('container.api_manager.data_receiver.responsible_person_nid')
                                         " persistent-hint outlined :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]"></v-text-field>
                                                 </ValidationProvider>
@@ -238,7 +242,7 @@ export default {
                                             <v-col cols="12" sm="6" lg="6">
                                                 <ValidationProvider name="Select API" vid="api_list" rules="required"
                                                     v-slot="{ errors }">
-                                                    <v-autocomplete multiple type="text" v-model="data.api_list"
+                                                    <v-autocomplete dense multiple type="text" v-model="data.api_list"
                                                         :label="$t('container.api_manager.data_receiver.select_api')"
                                                         persistent-hint outlined :error="errors[0] ? true : false"
                                                         :items="apis" item-text="name" item-value="id"
@@ -256,7 +260,7 @@ export default {
                                             <v-col cols="12" sm="6" lg="6">
                                                 <ValidationProvider name="Server IP Address" vid="whitelist_ip"
                                                     rules="required||ip_address" v-slot="{ errors }">
-                                                    <v-text-field v-model="data.whitelist_ip" :label="$t('container.api_manager.data_receiver.ip')
+                                                    <v-text-field dense v-model="data.whitelist_ip" :label="$t('container.api_manager.data_receiver.ip')
                                         " persistent-hint outlined :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]"></v-text-field>
                                                 </ValidationProvider>
@@ -264,7 +268,7 @@ export default {
                                             <v-col cols="12" sm="6" lg="6">
                                                 <ValidationProvider name="User Name" vid="username" rules="required"
                                                     v-slot="{ errors }">
-                                                    <v-text-field v-model="data.username" :label="$t('container.api_manager.data_receiver.user_name')
+                                                    <v-text-field dense v-model="data.username" :label="$t('container.api_manager.data_receiver.user_name')
                                         " persistent-hint outlined :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]"></v-text-field>
                                                 </ValidationProvider>
@@ -273,7 +277,7 @@ export default {
                                                 <ValidationProvider name="Start Date" vid="start_date"
                                                     :rules="{ required, start_date: data.end_date }"
                                                     v-slot="{ errors }">
-                                                    <v-text-field type="date" v-model="data.start_date" :label="$t('container.api_manager.data_receiver.start_date')
+                                                    <v-text-field dense type="date" v-model="data.start_date" :label="$t('container.api_manager.data_receiver.start_date')
                                         " persistent-hint outlined :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]"></v-text-field>
                                                 </ValidationProvider>
@@ -282,7 +286,7 @@ export default {
                                                 <ValidationProvider name="End Date" vid="end_date"
                                                     :rules="{ required, end_date: data.start_date }"
                                                     v-slot="{ errors }">
-                                                    <v-text-field type="date" v-model="data.end_date" :label="$t('container.api_manager.data_receiver.end_date')
+                                                    <v-text-field dense type="date" v-model="data.end_date" :label="$t('container.api_manager.data_receiver.end_date')
                                         " persistent-hint outlined :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]"></v-text-field>
                                                 </ValidationProvider>
@@ -316,4 +320,28 @@ export default {
     </div>
 </template>
 
-<style scoped></style>
+<style >
+.gradient-background {
+    background: linear-gradient(to right, #87CEEB, #ADD8E6, #F0F8FF);
+    color: black;
+    /* Adjust text color for better contrast */
+    border-radius: 10px;
+    /* Add rounded corners for a softer look */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Add a subtle shadow for depth */
+
+    /* Add a subtle animation */
+    animation: gradient-animation 10s infinite alternate;
+}
+
+/* Define the animation */
+@keyframes gradient-animation {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
+}
+</style>
