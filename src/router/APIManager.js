@@ -6,6 +6,15 @@ const APIManagerRoutes = [
     //   },
     /*Url Generate route start*/
     {
+        path: "/api-manager/dashboard",
+        name: "ApiDashboard",
+        meta: {
+            requiresAuth: true,
+            permission: "apiDashboard-view",
+        },
+        component: () => import("../pages/APIManager/Dashboard/Index.vue")
+    },
+    {
         path: "/api-manager/url-generate",
         name: "URLList",
         meta: {

@@ -1036,7 +1036,12 @@
               "select_api":"Select API"
 
            
-          }
+          },
+
+        "dashboard": {
+          "organization_wise_api_requests": "Organization Wise API Requests",
+          "number_of_api_request": "Number Of API Requests"
+        }
       },
     "system_audit": {
       "application_tracking": "Application Tracking",

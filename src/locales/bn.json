@@ -1032,6 +1032,10 @@
         
          
          
+        },
+        "dashboard": {
+          "organization_wise_api_requests": "সংগঠন অনুযায়ী এপিআই অনুরোধ",
+          "number_of_api_request": "এপিআই অনুরোধের সংখ্যা"
         }
       },
     "system_audit": {
