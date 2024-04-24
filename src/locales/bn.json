@@ -1022,6 +1022,10 @@
           "delete_alert": "Are you sure to delete this API Receiver? API all information will be deleted.",
           "parameter": "Parameter"
          
+        },
+        "dashboard": {
+          "organization_wise_api_requests": "সংগঠন অনুযায়ী এপিআই অনুরোধ",
+          "number_of_api_request": "এপিআই অনুরোধের সংখ্যা"
         }
       },
     "system_audit": {
