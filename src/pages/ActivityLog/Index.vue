@@ -183,6 +183,20 @@
                         </v-col>
 
                         <v-col lg="3" md="3" cols="12">
+                          <v-text-field
+                              outlined
+                              clearable
+                              :label="
+                              $t(
+                                'container.activity_log.filter.beneficiary_id'
+                              )
+                            "
+                              v-model="data.beneficiary_id"
+                          >
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col lg="3" md="3" cols="12">
                           <v-row class="ml-1 mr-1">
                             <v-menu
                                 ref="menu"
@@ -243,7 +257,6 @@
                 </v-expansion-panel-content>
               </v-expansion-panel>
             </v-expansion-panels>
-
 
             <v-card
                 elevation="10"
@@ -324,7 +337,17 @@
                 <v-row justify="space-between" align="center" class="mx-4">
 
                   <v-col lg="3" md="3" cols="12">
-                    {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">{{ this.total }}</span>
+                    {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">{{ $i18n.locale == 'en' ? this.total : $helpers.englishToBangla(this.total)  }}</span>
+                  </v-col>
+
+                  <v-col lg="4" md="6" cols="12" class="text-right">
+                    <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4" @click="GeneratePdf()">
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
+                    </v-btn>
+                    <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                      {{ $t("container.list.excel") }}
+                    </v-btn>
                   </v-col>
 
                 </v-row>
@@ -356,40 +379,13 @@
 
                       <template v-slot:item.subject="{ item }">
 
-                        <span>
-
-<!--                          <v-expansion-panels>-->
-                          <!--                            <v-expansion-panel>-->
-                          <!--                              <v-expansion-panel-header>-->
-                          <!--                                {{ $t('container.activity_log.table.change_info') }}-->
-                          <!--                              </v-expansion-panel-header>-->
-                          <!--                              <v-expansion-panel-content>-->
-                          <!--                                <v-container>-->
-                          <!--                                  <v-row v-for="(value, key) in item.subject" :key="key">-->
-                          <!--                                    <v-col cols="6">{{ key }}</v-col>-->
-                          <!--                                    <v-col cols="6">{{ value }}</v-col>-->
-                          <!--                                  </v-row>-->
-                          <!--                                </v-container>-->
-                          <!--                              </v-expansion-panel-content>-->
-                          <!--                            </v-expansion-panel>-->
-                          <!--                          </v-expansion-panels>-->
-
-                          <!--                          {{ JSON.stringify(item.subject) }}-->
-                        </span>
                       </template>
-
-<!--                                            <template v-slot:item.causer.user_type="{ item }">-->
-
-<!--                                              <span>-->
-<!--                                                {{ item.causer != null ? item.causer['User Type'] : "" }}-->
-<!--                                              </span>-->
-<!--                                            </template>-->
 
                       <template v-slot:item.causer.user_name="{ item }">
 
                                                                   <span>
                                                                     {{
-                                                                      item.causer != null ? item.causer['User Name'] : ""
+                                                                      item.causer != null ? item.causer['User Name'] : "Anonymous"
                                                                     }}
                                                                   </span>
                       </template>
@@ -420,38 +416,6 @@
                                                                   </span>
                       </template>
 
-                      <!--                      <template v-slot:item.properties="{ item }">-->
-
-                      <!--                        <span>-->
-
-                      <!--                          <v-expansion-panels>-->
-                      <!--                            <v-expansion-panel>-->
-                      <!--                              <v-expansion-panel-header>-->
-                      <!--                                {{ $t('container.activity_log.table.login_anonymous_user_info') }}-->
-                      <!--                              </v-expansion-panel-header>-->
-                      <!--                              <v-expansion-panel-content>-->
-                      <!--                                <v-container>-->
-                      <!--                                  <v-row v-for="(value, key) in item.properties.userInfo" :key="key">-->
-                      <!--                                    <v-col cols="6">{{ key }}</v-col>-->
-                      <!--                                    <v-col cols="6">{{ value }}</v-col>-->
-                      <!--                                  </v-row>-->
-                      <!--                                </v-container>-->
-                      <!--                                <v-container>-->
-                      <!--                                  <v-row v-for="(value, key) in item.properties.data" :key="key">-->
-                      <!--                                    <v-col cols="6">{{ key }}</v-col>-->
-                      <!--                                    <v-col cols="6">{{ value }}</v-col>-->
-                      <!--                                  </v-row>-->
-                      <!--                                </v-container>-->
-                      <!--&lt;!&ndash;                                <v-container>&ndash;&gt;-->
-                      <!--&lt;!&ndash;                                  {{ JSON.stringify(item.properties)}}&ndash;&gt;-->
-                      <!--&lt;!&ndash;                                </v-container>&ndash;&gt;-->
-                      <!--                              </v-expansion-panel-content>-->
-                      <!--                            </v-expansion-panel>-->
-                      <!--                          </v-expansion-panels>-->
-
-                      <!--                        </span>-->
-                      <!--                      </template>-->
-                      <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
@@ -589,6 +553,7 @@ export default {
         office_id: null,
         device_type: null,
         user_id: '',
+        beneficiary_id: '',
         user_name: '',
       },
       action_types:[],
@@ -602,6 +567,7 @@ export default {
       search: "",
       delete_id: "",
       activity_logs: [],
+      Allactivitylogs: [],
       errors: {},
       error_status: {},
       pagination: {
@@ -614,7 +580,7 @@ export default {
       items: [5, 10, 15, 20, 40, 50, 100],
       districts: [],
       offices: [],
-      device_types: ['Desktop', 'Mobile', 'Phone', 'Tablet', 'Robot']
+      device_types: ['Desktop', 'Phone', 'Robot']
     };
   },
   components: {
@@ -688,6 +654,193 @@ export default {
       GetAllDivisions: "Division/GetAllDivisions",
     }),
 
+    async GeneratePdf(){
+      this.isLoading = true;
+      const queryParams = {
+        language: this.$i18n.locale,
+        perPage: this.search.trim() === '' ? this.total : this.total,
+        page: 1,
+        sortBy: this.sortBy,
+        orderBy: this.sortDesc,
+        searchText: this.search,
+        division_id: this.data.division_id,
+        district_id: this.data.district_id,
+        office_id: this.data.office_id,
+        device_type: this.data.device_type,
+        action_type: this.data.action_type,
+        user_id: this.data.user_id,
+        user_name: this.data.user_name,
+        from_date: this.dates[0],
+        to_date: this.dates[1],
+      };
+
+      await this.$axios
+          .get("/admin/activity-log/all/filtered", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+            params: queryParams,
+          })
+          .then((result) => {
+            this.Allactivitylogs = result?.data?.data;
+          })
+          .catch((err) => {
+            console.log(err, "error");
+
+          });
+
+      const HeaderInfo = [
+        this.$t("container.list.sl"),
+        this.$t("container.activity_log.table.action_type"),
+        this.$t("container.activity_log.table.description"),
+        this.$t("container.activity_log.table.user_name"),
+        this.$t("container.activity_log.table.user_email"),
+        this.$t("container.activity_log.table.device"),
+        this.$t("container.activity_log.table.source_ip"),
+        this.$t("container.activity_log.table.create"),
+      ]
+
+      const OBJ = this.Allactivitylogs;
+
+      const CustomInfo = OBJ.map((((i,index) => {
+        return [
+          this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+           i?.log_name,
+           i?.description,
+           i?.causer != null ? i.causer['User Name']: "Anonymous",
+           i?.causer != null ? i.causer['Email']: "",
+           i?.properties['userInfo'] != null ? i?.properties['userInfo']['Device Type'] : '',
+           i?.properties['userInfo'] != null ? i?.properties['userInfo']['Ip Address'] : '',
+           i?.created_at,
+        ]
+      })));
+
+
+      const queryParam = {
+        language: this.$i18n.locale,
+        data: CustomInfo,
+        header: HeaderInfo,
+        fileName: this.$t("container.activity_log.table.title"),
+      };
+
+      try {
+        const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "application/json", // Set content type to JSON
+          },
+          responseType: 'arraybuffer',
+        });
+
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        window.open(url, '_blank');
+        this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
+        console.error('Error generating PDF:', error);
+      }
+
+    },
+
+    async GenerateExcel() {
+      this.isLoading = true;
+      const queryParams = {
+        language: this.$i18n.locale,
+        perPage: this.search.trim() === '' ? this.total : this.total,
+        page: 1,
+        sortBy: this.sortBy,
+        orderBy: this.sortDesc,
+        searchText: this.search,
+        division_id: this.data.division_id,
+        district_id: this.data.district_id,
+        office_id: this.data.office_id,
+        device_type: this.data.device_type,
+        action_type: this.data.action_type,
+        user_id: this.data.user_id,
+        user_name: this.data.user_name,
+        from_date: this.dates[0],
+        to_date: this.dates[1],
+      };
+
+      await this.$axios
+          .get("/admin/activity-log/all/filtered", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+            params: queryParams,
+          })
+          .then((result) => {
+            this.Allactivitylogs = result?.data?.data;
+          })
+          .catch((err) => {
+            console.log(err, "error");
+
+          });
+
+      try {
+        import('@/plugins/Export2Excel').then((excel) => {
+          const OBJ = this.Allactivitylogs;
+
+          const CustomInfo = OBJ.map(((i,index) => {
+            return {
+              "sl": queryParams.language == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+              "log_name": i?.log_name,
+              "description": i?.description,
+              "user_name": i?.causer != null ? i.causer['User Name']: "Anonymous",
+              "email": i?.causer != null ? i.causer['Email']: "",
+              "device_type": i?.properties['userInfo'] != null ? i?.properties['userInfo']['Device Type'] : '',
+              "ip_address": i?.properties['userInfo'] != null ? i?.properties['userInfo']['Ip Address'] : '',
+              "created_at": i?.created_at,
+            }
+          }));
+
+          const Header = [
+            this.$t("container.list.sl"),
+            this.$t("container.activity_log.table.action_type"),
+            this.$t("container.activity_log.table.description"),
+            this.$t("container.activity_log.table.user_name"),
+            this.$t("container.activity_log.table.user_email"),
+            this.$t("container.activity_log.table.device"),
+            this.$t("container.activity_log.table.source_ip"),
+            this.$t("container.activity_log.table.create"),
+          ]
+
+          const Field = ['sl','log_name', 'description', 'user_name', 'email','device_type','ip_address','created_at']
+
+          const Data = this.FormatJson(Field, CustomInfo)
+          const currentDate = new Date().toISOString().slice(0, 10); //
+          let dateinfo = queryParams.language == 'en' ? currentDate : this.$helpers.englishToBangla(currentDate)
+
+          const filenameWithDate = `${dateinfo}_${this.$t("container.activity_log.table.title")}`;
+
+          excel.export_json_to_excel({
+            header: Header,
+            data: Data,
+            sheetName: filenameWithDate,
+            filename: filenameWithDate,
+            autoWidth: true,
+            bookType: "xlsx"
+          })
+        })
+      } catch (error) {
+        // Handle any errors here
+        console.error("An error occurred:", error);
+        this.isLoading = false;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    FormatJson(FilterData,JsonData){
+      return JsonData.map((v) =>
+          FilterData.map((j => {
+            return v[j];
+          })))
+    },
+
     getAllLogName() {
        this.$axios
           .get(`/admin/activity-log/all-log-name`, {
@@ -758,6 +911,7 @@ export default {
       this.data.office_id= null,
       this.data.device_type= null,
       this.data.user_id= '',
+      this.data.beneficiary_id= '',
       this.data.user_name= '',
       this.GetActivityLog()
     },
@@ -843,6 +997,7 @@ export default {
         device_type: this.data.device_type,
         action_type: this.data.action_type,
         user_id: this.data.user_id,
+        beneficiary_id: this.data.beneficiary_id,
         user_name: this.data.user_name,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
@@ -862,7 +1017,6 @@ export default {
             params: queryParams,
           })  
           .then((result) => {
-            console.log(result,'tanbeer')
             this.activity_logs = result.data?.data;
             this.pagination.current = result.data?.meta?.current_page[0];
             this.pagination.total = result.data?.meta?.last_page[0];
