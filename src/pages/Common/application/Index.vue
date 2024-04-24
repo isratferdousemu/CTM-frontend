@@ -556,7 +556,7 @@
                         </v-col>
 
                         <v-col v-if="data.location_type == 2 && data.sub_location_type === 2" cols="6">
-                          <ValidationProvider name="union" vid="union_id" rules="required" v-slot="{ errors }">
+                          <ValidationProvider name="Union" vid="union_id" rules="required" v-slot="{ errors }">
                             <label style="display: inline-block">{{
                               $t('container.system_config.demo_graphic.ward.union')
                               }}
@@ -584,7 +584,7 @@
 
                         </v-col>
                         <v-col v-if="data.location_type == 3" lg="6" md="6" cols="6">
-                          <ValidationProvider name="city" vid="city_id" rules="required" v-slot="{ errors }">
+                          <ValidationProvider name="City" vid="city_id" rules="required" v-slot="{ errors }">
                             <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.city')
                               }}
                             </label>
@@ -595,7 +595,7 @@
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 3" lg="6" md="6" cols="6">
-                          <ValidationProvider name="thana" vid="city_thana_id" rules="required" v-slot="{ errors }">
+                          <ValidationProvider name="Thana" vid="city_thana_id" rules="required" v-slot="{ errors }">
                             <label style="display: inline-block">{{
                               $t('container.system_config.demo_graphic.ward.thana')
                               }}
@@ -607,7 +607,7 @@
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 1" lg="6" md="6" cols="6">
-                          <ValidationProvider name="thana" vid="district_pouro_id" rules="required" v-slot="{ errors }">
+                          <ValidationProvider name="Thana" vid="district_pouro_id" rules="required" v-slot="{ errors }">
                             <label style="display: inline-block">{{
                               $t('container.system_config.demo_graphic.ward.dist_pouro') }}
                             </label>
@@ -618,7 +618,7 @@
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 3" lg="6" md="6" cols="6">
-                          <ValidationProvider name="ward_id_city" vid="ward_id_city" rules="required"
+                          <ValidationProvider name="Ward" vid="ward_id_city" rules="required"
                             v-slot="{ errors }">
                             <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.ward')
                               }}
@@ -630,7 +630,7 @@
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 2 && data.sub_location_type == 2" lg="6" md="6" cols="6">
-                          <ValidationProvider name="ward_id_union" vid="ward_id_union" rules="required"
+                          <ValidationProvider name="Ward" vid="ward_id_union" rules="required"
                             v-slot="{ errors }">
                             <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.ward')
                               }}
@@ -642,7 +642,7 @@
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 2 && data.sub_location_type == 1" lg="6" md="6" cols="6">
-                          <ValidationProvider name="ward_id_union" vid="ward_id_union" rules="required"
+                          <ValidationProvider name="Ward" vid="ward_id_union" rules="required"
                             v-slot="{ errors }">
                             <label style="display: inline-block">Ward
                             </label>
@@ -653,7 +653,7 @@
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 1" lg="6" md="6" cols="6">
-                          <ValidationProvider name="ward_id_dist" vid="ward_id_dist" rules="required"
+                          <ValidationProvider name="Ward" vid="ward_id_dist" rules="required"
                             v-slot="{ errors }">
                             <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.ward')
                               }}
@@ -775,7 +775,7 @@
 
                         <v-col v-if="data.permanent_location_type === 2 && data.permanent_sub_location_type === 2"
                           lg="6" md="6" cols="12">
-                          <ValidationProvider name="union" vid="permanent_union_id" rules="required"
+                          <ValidationProvider name="Union" vid="permanent_union_id" rules="required"
                             v-slot="{ errors }">
                             <label style="display: inline-block">{{
                               $t('container.system_config.demo_graphic.ward.union')
@@ -804,7 +804,7 @@
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type == 3" lg="6" md="6" cols="12">
-                          <ValidationProvider name="city" vid="permanent_city_id" rules="required" v-slot="{ errors }">
+                          <ValidationProvider name="City" vid="permanent_city_id" rules="required" v-slot="{ errors }">
                             <label style="display: inline-block">City
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
@@ -815,7 +815,7 @@
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type == 3" lg="6" md="6" cols="12">
-                          <ValidationProvider name="thana" vid="permanent_city_thana_id" rules="required"
+                          <ValidationProvider name="Thana" vid="permanent_city_thana_id" rules="required"
                             v-slot="{ errors }">
                             <label style="display: inline-block">{{
                               $t('container.system_config.demo_graphic.ward.thana')
@@ -829,7 +829,7 @@
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type == 1" lg="6" md="6" cols="12">
-                          <ValidationProvider name="thana" vid="permanent_district_pouro_id" rules="required"
+                          <ValidationProvider name="District Pourashava" vid="permanent_district_pouro_id" rules="required"
                             v-slot="{ errors }">
                             <label style="display: inline-block">{{
                               $t('container.system_config.demo_graphic.ward.dist_pouro') }}
@@ -842,7 +842,7 @@
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type == 3" lg="6" md="6" cols="12">
-                          <ValidationProvider name="permanent_ward_id_city" vid="permanent_ward_id_city"
+                          <ValidationProvider name="Ward" vid="permanent_ward_id_city"
                             rules="required" v-slot="{ errors }">
                             <label style="display: inline-block">Ward
                             </label>
@@ -853,7 +853,7 @@
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type == 1" lg="6" md="6" cols="12">
-                          <ValidationProvider name="permanent_ward_id_dist" vid="permanent_ward_id_dist"
+                          <ValidationProvider name="Ward" vid="permanent_ward_id_dist"
                             rules="required" v-slot="{ errors }">
                             <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.ward')
                               }}
@@ -866,7 +866,7 @@
                         </v-col>
                         <v-col v-if="data.permanent_location_type === 2 && data.permanent_sub_location_type === 2"
                           lg="6" md="6" cols="12">
-                          <ValidationProvider name="permanent_ward_id_upazila" vid="permanent_ward_id_upazila"
+                          <ValidationProvider name="Ward" vid="permanent_ward_id_upazila"
                             rules="required" v-slot="{ errors }">
                             <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.ward')
                               }}
@@ -879,7 +879,7 @@
                         </v-col>
                         <v-col v-if="data.permanent_location_type === 2 && data.permanent_sub_location_type === 1"
                           lg="6" md="6" cols="12">
-                          <ValidationProvider name="permanent_ward_id_upazila" vid="permanent_ward_id_upazila"
+                          <ValidationProvider name="Ward" vid="permanent_ward_id_upazila"
                             rules="required" v-slot="{ errors }">
                             <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.ward')
                               }}

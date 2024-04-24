@@ -1,8 +1,8 @@
 <script>
-
+import {ValidationObserver } from "vee-validate";
 export default {
     name: "Index",
-    title: "CTM - API Generate",
+    title: "CTM - API Data Receiver",
     data() {
         return {
             data: {
@@ -12,7 +12,10 @@ export default {
                 name_bn: null,
             },
             total: null,
-            isLoading: false,
+            org_name:null,
+            module_id:null,
+            modules:[],
+
             dialogAdd: false,
             deleteDialog: false,
             dialogEdit: false,
@@ -20,8 +23,9 @@ export default {
             loading: false,
             search: "",
             delete_id: "",
-            apis: [],
-            Alldivisions: [],
+           
+            apis:[],
+
             errors: {},
             error_status: {},
             pagination: {
@@ -78,11 +82,11 @@ export default {
         },
         headers() {
             return [
-                { text: this.$t('container.list.sl'), value: "id", align: "start", sortable: false, width: "15%" },
-                { text: this.$t('container.api_manager.api_generate.api_name'), value: "name", width: "20%" },
-                { text: this.$t('container.api_manager.api_generate.parameter'), value: "selected_columns", width: "45%" },
-
-
+                { text: this.$t('container.list.sl'), value: "id", align: "start", sortable: false, width: "10%" },
+                { text: this.$t('container.api_manager.data_receiver.organization'), value: "organization_name", width: "20%" },
+                { text: this.$t('container.api_manager.data_receiver.api'), value: "api_list_custom", width: "25%" },
+                { text: this.$t('container.api_manager.data_receiver.total_heat'), value: "total_hit", width: "10%" },
+                { text: this.$t('container.api_manager.data_receiver.api_key'), value: "api_key_custom", width: "10%" },
                 { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false, width: "20%" },
             ];
         },
@@ -91,11 +95,17 @@ export default {
     },
 
     mounted() {
-        this.GetAPI();
+        this.GetDataReceiver();
+        this.GetModule();
 
     },
 
     methods: {
+        resetSearch(){
+            this.module_id=null;
+            this.org_name=null;
+            this.GetDataReceiver();
+        },
         async GeneratePDF() {
             this.isLoading = true;
             let page;
@@ -103,16 +113,17 @@ export default {
                 page = this.pagination.current;
             }
             const queryParams = {
+                
                 language: this.$i18n.locale,
                 searchText: this.search,
                 perPage: this.search.trim() === '' ? this.total : this.total,
-                page: this.pagination.current,
+                page: 1,
                 sortBy: this.sortBy,
                 orderBy: this.sortDesc,
             };
 
             await this.$axios
-                .get("/admin/api-list", {
+                .get("/admin/api-data-receive", {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -121,22 +132,50 @@ export default {
                 })
                 .then((result) => {
                     this.apis = result?.data?.data?.data;
+                    // const parts = this.apis.start_date.split(" ");
+                    // const datePart = parts[0];
+                    // this.apis.start_date = datePart;
+                    // const parts_2 = this.apis.end_date.split(" ");
+                    // const datePart_2 = parts_2[0];
+                    // this.apis.end_date = datePart_2;
                 });
 
             const HeaderInfo = [
                 this.$t("container.list.sl"),
-                this.$t('container.api_manager.api_generate.api_name'),
-                this.$t('container.api_manager.api_generate.parameter'),
+                this.$t('container.api_manager.data_receiver.organization'),
+                this.$t('container.api_manager.data_receiver.api'),
+                this.$t('container.api_manager.data_receiver.email'),
+                this.$t('container.api_manager.data_receiver.phone'),
+                this.$t('container.api_manager.data_receiver.responsible_person_email'),
+                this.$t('container.api_manager.data_receiver.responsible_person_nid'),
+                this.$t('container.api_manager.data_receiver.user_name'),
+                this.$t('container.api_manager.data_receiver.ip'),
+                this.$t('container.api_manager.data_receiver.total_heat'),
+                 this.$t('container.api_manager.data_receiver.start_date'),
+                this.$t('container.api_manager.data_receiver.end_date'),
+                
 
             ]
 
-
+        
             const CustomInfo = this.apis.map(((i, index) => {
 
                 return [
                     this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
-                    this.$i18n.locale == 'en' ? i.name : i.name,
-                    i.selected_columns.join(', '),
+                    
+                    this.$i18n.locale == 'en' ? i.organization_name : i.organization_name,
+                  
+                    i?.api_list?.map(api => api.name).join(', '),
+                    this.$i18n.locale == 'en' ? i.organization_phone : this.$helpers.englishToBangla(i.organization_phone),
+                    this.$i18n.locale == 'en' ? i?.organization_email : i?.organization_email,
+                    this.$i18n.locale == 'en' ? i?.responsible_person_email : i?.responsible_person_email,
+                    this.$i18n.locale == 'en' ? i.responsible_person_nid : this.$helpers.englishToBangla(i.responsible_person_nid),
+                    this.$i18n.locale == 'en' ? i?.username : i?.username,
+                    this.$i18n.locale == 'en' ? i?.whitelist_ip : this.$helpers.englishToBangla(i?.whitelist_ip),
+                    this.$i18n.locale == 'en' ? i?.total_hit : this.$helpers.englishToBangla(i?.total_hit),
+                    this.$i18n.locale == 'en' ? i?.start_date : this.$helpers.englishToBangla(i?.start_date),
+                    this.$i18n.locale == 'en' ? i?.end_date : this.$helpers.englishToBangla(i?.end_date),
+                
 
 
                 ]
@@ -146,7 +185,7 @@ export default {
                 language: this.$i18n.locale,
                 data: CustomInfo,
                 header: HeaderInfo,
-                fileName: this.$t("container.api_manager.api_generate.list"),
+                fileName: this.$t("container.api_manager.data_receiver.list"),
             };
             try {
                 const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
@@ -176,13 +215,13 @@ export default {
                 language: this.$i18n.locale,
                 searchText: this.search,
                 perPage: this.search.trim() === '' ? this.total : this.total,
-                page: this.pagination.current,
+                page: 1,
                 sortBy: this.sortBy,
                 orderBy: this.sortDesc,
             };
 
             await this.$axios
-                .get("/admin/api-list", {
+                .get("/admin/api-data-receive", {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -201,27 +240,50 @@ export default {
 
                     const HeaderInfo = [
                         this.$t("container.list.sl"),
-                        this.$t('container.api_manager.api_generate.api_name'),
-                        this.$t('container.api_manager.api_generate.parameter'),
+                        this.$t('container.api_manager.data_receiver.organization'),
+                        this.$t('container.api_manager.data_receiver.api'),
+                        this.$t('container.api_manager.data_receiver.email'),
+                        this.$t('container.api_manager.data_receiver.phone'),
+                        this.$t('container.api_manager.data_receiver.responsible_person_email'),
+                        this.$t('container.api_manager.data_receiver.responsible_person_nid'),
+                        this.$t('container.api_manager.data_receiver.user_name'),
+                        this.$t('container.api_manager.data_receiver.ip'),
+                        this.$t('container.api_manager.data_receiver.total_heat'),
+                        this.$t('container.api_manager.data_receiver.start_date'),
+                        this.$t('container.api_manager.data_receiver.end_date'),
                     ]
 
                     const CustomInfo = this.apis.map(((i, index) => {
                         return {
                             "sl": this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
-                            "name": this.$i18n.locale == 'en' ? i.name : i.name,
-                            "parameter": i.selected_columns.join(', '),
+                            "organization_name": this.$i18n.locale == 'en' ? i?.organization_name : i?.organization_name,
+
+                            // "ip":i?.api_list?.map(api => api.name).join(', '),
+                            "ip": this.$i18n.locale == 'en' ? i?.api_list?.map(api => api.name).join(', ') : i?.api_list?.map(api => api.name).join(', '),
+                            "organization_email": this.$i18n.locale == 'en' ? i?.organization_email : i?.organization_email,
+                            "organization_phone": this.$i18n.locale == 'en' ? i.organization_phone : this.$helpers.englishToBangla(i.organization_phone),
+                         
+                            "responsible_person_email": this.$i18n.locale == 'en' ? i?.organization_name : i?.responsible_person_email,
+                            "responsible_person_nid": this.$i18n.locale == 'en' ? i?.responsible_person_nid : this.$helpers.englishToBangla(i?.responsible_person_nid),
+                            "username": this.$i18n.locale == 'en' ? i?.username : i?.username,
+                            "whitelist_ip": this.$i18n.locale == 'en' ? i?.whitelist_ip : this.$helpers.englishToBangla(i?.whitelist_ip),
+                            "total_hit": this.$i18n.locale == 'en' ? i?.total_hit : this.$helpers.englishToBangla(i?.total_hit),
+                            "start_date": this.$i18n.locale == 'en' ? i?.start_date : this.$helpers.englishToBangla(i?.start_date),
+                            "end_date": this.$i18n.locale == 'en' ? i?.end_date : this.$helpers.englishToBangla(i?.end_date),
+
+                            
 
 
                         }
                     }));
 
-                    const Field = ['sl', 'name', 'parameter']
+                    const Field = ['sl', 'organization_name', 'ip','organization_email', 'organization_phone',  'responsible_person_email', 'responsible_person_nid', 'username', 'whitelist_ip','total_hit','start_date','end_date']
 
                     const Data = this.FormatJson(Field, CustomInfo)
                     const currentDate = new Date().toISOString().slice(0, 10); //
                     let dateinfo = queryParams.language == 'en' ? currentDate : this.$helpers.englishToBangla(currentDate)
 
-                    const filenameWithDate = `${dateinfo}_${this.$t("container.api_manager.api_generate.list")}`;
+                    const filenameWithDate = `${dateinfo}_${this.$t("container.api_manager.api_generate.list_1")}`;
 
                     excel.export_json_to_excel({
                         header: HeaderInfo,
@@ -246,11 +308,7 @@ export default {
                 })))
         },
 
-        showMore(id) {
-
-            this.$router.push(`/api-manager/api-generate/view/${id}`);
-
-        },
+    
         localizationPage(item) {
 
             return this.language === 'bn' ? item.name_bn : item.name_en;
@@ -259,11 +317,33 @@ export default {
         },
         PageSetup() {
             this.pagination.current = 1;
-            this.GetAPI();
+            this.GetDataReceiver();
 
         },
-        async GetAPI() {
+        async GetModule(){
+        
+            this.$axios
+                .get("/admin/get-modules", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                  
+                })
+                .then((result) => {
+
+                    
+                    this.modules = result?.data?.data;
+                  
+                 
+
+                });
+        },
+        async GetDataReceiver() {
+            this.loading=true;
             const queryParams = {
+                module_id: this.module_id,
+                org_name: this.org_name,
                 search: this.search,
                 perPage: this.pagination.perPage,
                 page: this.pagination.current,
@@ -271,7 +351,7 @@ export default {
                 sortDesc: this.sortDesc,
             };
             this.$axios
-                .get("/admin/api-list", {
+                .get("/admin/api-data-receive", {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -279,16 +359,20 @@ export default {
                     params: queryParams,
                 })
                 .then((result) => {
+
                     this.total = result?.data?.data?.total;
-                    this.apis = result?.data?.data.data;
+                    this.apis = result?.data?.data?.data;
+                    console.log(this.apis,"apis")
                     this.pagination.current = result?.data?.data?.current_page;
                     this.pagination.total = result?.data?.data?.last_page;
                     this.pagination.grand_total = result?.data?.data?.total;
+                    this.loading=false;
+                 
                 });
         },
         onPageChange($event) {
             // this.pagination.current = $event;
-            this.GetAPI();
+            this.GetDataReceiver();
         },
         submitUrl() {
             this.$axios
@@ -330,9 +414,9 @@ export default {
             this.deleted_id = id;
         },
 
-        deleteURL: async function () {
+        deleteDataReceiver: async function () {
             this.$axios
-                .delete(`admin/api-list/${this.deleted_id}`, {
+                .delete(`admin/api-data-receive/${this.deleted_id}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "application/json", // Use application/json instead of multipart/form-data
@@ -343,7 +427,7 @@ export default {
                     if (res?.data?.success == true) {
                         this.$toast.success(res.data.message);
                         this.deleteDialog = false;
-                        this.GetAPI();
+                        this.GetDataReceiver();
                     }
                     if (res?.data?.success == false) {
                         this.$toast.error(res.data.message);
@@ -370,91 +454,147 @@ export default {
             <v-col cols="12">
                 <v-row wrap>
                     <v-col cols="12">
+                        <v-expansion-panels>
+                            <v-expansion-panel>
+                                <v-expansion-panel-header color="#8C9EFF">
+                                    <h3 class="white--text">
+                                        {{ $t("container.list.filter") }}
+                                    </h3>
+                                </v-expansion-panel-header>
+                                <v-expansion-panel-content class="mt-5">
+
+                                    <form @submit.prevent="GetDataReceiver()">
+
+                                        <v-row>
+
+                                            <v-col lg="4" md="4" cols="12">
+                                                <v-autocomplete outlined  dense
+                                                    :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
+                                                    class="no-arrow-icon" v-model="module_id" :items="modules"
+                                                    item-text="name" item-value="id"
+                                                    :label="$t('container.api_manager.api_generate.module')">
+                                                </v-autocomplete>
+                                            </v-col>
+                                            <v-col lg="4" md="4" cols="12">
+                                                <v-text-field outlined clearable dense
+                                                    :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
+                                                    v-model="org_name"
+                                                    :label="$t('container.api_manager.data_receiver.organization') ">
+                                                </v-text-field>
+                                            </v-col>
+                                            <v-col lg="4" md="4" cols="12">
+                                                <div class="d-inline d-flex justify-end">
+                                                    <v-btn elevation="2" class="btn" @click="resetSearch">{{
+                                                        $t("container.list.reset")
+                                                        }}</v-btn>
+                                                    <v-btn elevation="2" type="submit" class="btn ml-2"
+                                                        color="success">{{
+                                                        $t("container.list.filter") }}</v-btn>
+                                                </div>
+
+                                            </v-col>
+
+                                        </v-row>
+
+
+                                    </form>
+
+                                </v-expansion-panel-content>
+                            </v-expansion-panel>
+                        </v-expansion-panels>
+                    </v-col>
+                    <v-col cols="12">
                         <v-card>
 
-                            <v-card-title class="justify-center">
-                                <h4>{{ $t('container.api_manager.api_generate.list') }}</h4>
+                            <v-card-title class="justify-center ">
+                                <h4 class="mt-5">{{ $t('container.api_manager.data_receiver.list') }}</h4>
                             </v-card-title>
 
 
                             <!-- <v-divider></v-divider> -->
 
-                            <v-card-text>
-                                <v-card-title class="mb-5 ml-5">
+                            <v-card-text class="mt-10">
+                                <v-card-title class="mb-5 ml-5 ">
                                     <div class="d-flex justify-sm-end flex-wrap">
                                         <v-text-field @keyup.native="PageSetup" v-model="search"
                                             append-icon="mdi-magnify" :label="$t(
                                     'container.list.search'
-                                )" hide-details class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal" flat
-                                            outlined dense></v-text-field>
+                                )" hide-details class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal" flat outlined
+                                            dense></v-text-field>
                                     </div>
 
                                     <v-spacer></v-spacer>
 
 
 
-                                    <v-col lg="4" md="6" cols="12" class="text-right">
-                                        <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4"
-                                            @click="GeneratePDF()">
-                                            <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{
-                                    $t("container.list.PDF") }}
-                                        </v-btn>
-                                        <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2"
-                                            @click="GenerateExcel()">
-                                            <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
-                                            {{ $t("container.list.excel") }}
-                                        </v-btn>
-                                    </v-col>
 
-                                    <v-btn medium flat color="primary" router to="/api-manager/api-generate/create"
-                                        v-can="'url-create'">
-                                        <v-icon small left>mdi-plus</v-icon>
-                                        <span>{{
-                                    $t('container.list.add_new') }}</span>
+
+                                    <v-btn flat color="primary" router to="/api-manager/data-receiver/generate"
+                                        v-can="'data-receiver-create'">
+                                        <v-icon small>mdi-plus</v-icon>
+                                        {{
+                                        $t('container.api_manager.data_receiver.add') }}
                                     </v-btn>
+
                                 </v-card-title>
 
-                                <v-card-subtitle class="mx-5">
-                                    {{ $t('container.list.total') }}:&nbsp;<span style=" font-weight: bold;">
-                                        {{ language === 'bn' ? $helpers.englishToBangla(
-                                    this.total) : this.total }}
-                                    </span>
+                                <v-row class="mx-6">
+                                    <v-col cols="12" lg="6" md="6">
+                                        {{ $t('container.list.total') }}:&nbsp;<span style=" font-weight: bold;">
+                                            {{ language === 'bn' ? $helpers.englishToBangla(
+                                            this.total) : this.total }}
+                                        </span>
 
-                                </v-card-subtitle>
+                                    </v-col>
+                                    <v-col cols="12" lg="6" md="6" class="text-right">
+                                        <v-btn elevation="2" class="btn white--text " flat color="red darken-4"
+                                            @click="GeneratePDF()">
+                                            <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{
+                                            $t("container.list.PDF") }}
+                                        </v-btn>
+                                        <v-btn elevation="2" class="btn white--text ml-2" flat color="teal darken-2"
+                                            @click="GenerateExcel()">
+                                            <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{
+                                            $t("container.list.excel") }}
+                                        </v-btn>
+
+                                    </v-col>
+
+
+
+
+
+                                </v-row>
+
                                 <v-data-table :loading="loading" item-key="id" :headers="headers" :items="apis"
                                     :items-per-page="pagination.perPage" hide-default-footer
                                     class="elevation-0 transparent row-pointer mt-5 mx-5">
                                     <template v-slot:item.id="{ item, index }">
 
                                         {{ language === 'bn' ? $helpers.englishToBangla(
-                                    (pagination.current - 1) * pagination.perPage +
-                                    index +
-                                    1) : (pagination.current - 1) * pagination.perPage +
-                                    index +
-                                    1 }}
+                                        (pagination.current - 1) * pagination.perPage +
+                                        index +
+                                        1) : (pagination.current - 1) * pagination.perPage +
+                                        index +
+                                        1 }}
 
 
                                     </template>
 
 
 
-                                    <template v-slot:item.selected_columns="{ item }">
-                                        <span v-for="(value, key) in item.selected_columns" :key="key">
-                                            <v-chip small label color="#FACD91" class="ma-1" v-if="key < 10">
-                                                {{ value }}
-                                            </v-chip> &nbsp;
-                                            <v-btn color="#FACD91" class="text-caption"
-                                                v-if="key == 9 && Object.keys(item.selected_columns).length > 10"
-                                                x-small @click="showMore(item.id)">+{{
-                                    Object.keys(item.selected_columns).length - 10 }} more</v-btn>
 
-                                        </span>
-                                        <!-- <br><br>
-                                        <span v-for="(value, key) in item.selected_columns" :key="key">
-                                            <v-chip small label color="#FACD91" class="ma-1 ">
-                                                {{ value }}
-                                            </v-chip>
-                                        </span> -->
+                                    <template v-slot:item.api_list_custom="{ item }">
+                                        <div>
+                                            <v-chip label color="#FACD91" v-for="(name, index) in item.api_list"
+                                                class="ma-1" :key="index">{{ name.name
+                                                }}</v-chip>
+                                        </div>
+                                    </template>
+
+                                    <template v-slot:item.api_key_custom="{ item }">
+
+                                        *****
 
                                     </template>
 
@@ -466,9 +606,9 @@ export default {
                                     <template v-slot:item.actions="{ item }">
                                         <v-tooltip top>
                                             <template v-slot:activator="{ on }">
-                                                <v-btn v-can="'url-view'" fab x-small v-on="on" color="#AFB42B"
-                                                    elevation="0" router class="mr-3 white--text"
-                                                    :to="`/api-manager/api-generate/view/${item.id}`">
+                                                <v-btn v-can="'apiDataReceive-view'" fab x-small v-on="on"
+                                                    color="#AFB42B" elevation="0" router class="mr-3 white--text"
+                                                    :to="`/api-manager/data-receiver/view/${item.id}`">
                                                     <v-icon> mdi-eye </v-icon>
                                                 </v-btn>
                                             </template>
@@ -478,9 +618,9 @@ export default {
                                         </v-tooltip>
                                         <v-tooltip top>
                                             <template v-slot:activator="{ on }">
-                                                <v-btn v-can="'url-edit'" fab x-small v-on="on" color="success"
-                                                    elevation="0" router
-                                                    :to="`/api-manager/api-generate/edit/${item.id}`">
+                                                <v-btn v-can="'apiDataReceive-edit'" fab x-small v-on="on"
+                                                    color="success" elevation="0" router
+                                                    :to="`/api-manager/data-receiver/edit/${item.id}`">
                                                     <v-icon> mdi-account-edit-outline </v-icon>
                                                 </v-btn>
                                             </template>
@@ -491,8 +631,8 @@ export default {
 
                                         <v-tooltip top>
                                             <template v-slot:activator="{ on }">
-                                                <v-btn v-can="'api-delete'" fab x-small v-on="on" color="grey"
-                                                    class="ml-3 white--text" elevation="0"
+                                                <v-btn v-can="'apiDataReceive-delete'" fab x-small v-on="on"
+                                                    color="grey" class="ml-3 white--text" elevation="0"
                                                     @click="deleteAlert(item.id)">
                                                     <v-icon> mdi-delete </v-icon>
                                                 </v-btn>
@@ -531,12 +671,12 @@ export default {
             <v-dialog v-model="deleteDialog" width="350">
                 <v-card style="justify-content: center; text-align: center">
                     <v-card-title class="font-weight-bold justify-center">
-                        {{ $t('container.api_manager.api_generate.delete_header') }}
+                        {{ $t('container.api_manager.data_receiver.delete_header') }}
                     </v-card-title>
                     <v-divider></v-divider>
                     <v-card-text>
                         <div class="subtitle-1 font-weight-medium mt-5">
-                            {{ $t('container.api_manager.api_generate.delete_alert') }}
+                            {{ $t('container.api_manager.data_receiver.delete_alert') }}
 
 
                         </div>
@@ -547,7 +687,7 @@ export default {
                                 {{ $t('container.list.cancel') }}
                             </v-btn>
 
-                            <v-btn text @click="deleteURL" color="white" :loading="delete_loading"
+                            <v-btn text @click="deleteDataReceiver" color="white" :loading="delete_loading"
                                 class="custom-btn-width warning white--text py-2">
                                 {{ $t('container.list.delete') }}
                             </v-btn>
@@ -578,5 +718,28 @@ export default {
 .custom-chip {
     background-color: blue;
     color: white;
+}
+.gradient-background {
+    background: linear-gradient(to right, #87CEEB, #ADD8E6, #F0F8FF);
+    color: black;
+    /* Adjust text color for better contrast */
+    border-radius: 10px;
+    /* Add rounded corners for a softer look */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Add a subtle shadow for depth */
+
+    /* Add a subtle animation */
+    animation: gradient-animation 10s infinite alternate;
+}
+
+/* Define the animation */
+@keyframes gradient-animation {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
 }
 </style>

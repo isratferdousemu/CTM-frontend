@@ -10,8 +10,8 @@
     class="mr-9 ml-3 my-3 nav-height rounded-lg nav-left-custom">
 <!--    <v-divider></v-divider>-->
     <div style="background-color:white;">
-      <h3 class="text-center pt-5" style="color:#1C3B68;">{{  this.$t("leftSidebar.title") }}</h3>
-      <h4 class="text-center pt-6" style="border-bottom:1px solid white"></h4>
+      <h5 class="text-center pt-5" style="color:#1C3B68;">{{  this.$t("leftSidebar.title") }}</h5>
+      <h4 class="text-center pt-3" style="border-bottom:1px solid white"></h4>
     </div>
 
     <v-list two-line  class="white--text left-sidebar p-0">
