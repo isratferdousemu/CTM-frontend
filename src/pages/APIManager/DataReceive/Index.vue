@@ -104,6 +104,7 @@ export default {
         resetSearch(){
             this.module_id=null;
             this.org_name=null;
+            this.GetDataReceiver();
         },
         async GeneratePDF() {
             this.isLoading = true;
@@ -467,7 +468,7 @@ export default {
                                         <v-row>
 
                                             <v-col lg="4" md="4" cols="12">
-                                                <v-autocomplete outlined clearable dense
+                                                <v-autocomplete outlined  dense
                                                     :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
                                                     class="no-arrow-icon" v-model="module_id" :items="modules"
                                                     item-text="name" item-value="id"

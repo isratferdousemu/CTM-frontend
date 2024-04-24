@@ -11,6 +11,14 @@ extend('email', {
     },
     message: 'Please enter a valid email address'
 });
+extend('bangla', {
+    validate: value => {
+        // Regular expression to match Bangla characters
+        const banglaRegex = /^[\u0980-\u09FF\s]+$/;
+        return banglaRegex.test(value);
+    },
+    message: 'Only Bangla characters will be allowed in this field'
+});
 extend('ip_address', {
     validate: value => {
         // Regular expression for IP address validation
@@ -180,7 +188,7 @@ export default {
                     <v-col cols="12">
                         <v-card>
                             <v-card-title class="justify-center gradient-background ">
-                                <h4 >
+                                <h4>
                                     {{ $t("container.api_manager.data_receiver.add") }}
                                 </h4>
                             </v-card-title>
@@ -213,18 +221,18 @@ export default {
                                             </v-col>
                                             <v-col cols="12" sm="6" lg="6">
                                                 <ValidationProvider name="Organization Email" vid="organization_email"
-                                                    rules="required||email" v-slot="{ errors }">
-                                                    <v-text-field dense type="email" v-model="data.organization_email"
-                                                        :label="$t('container.api_manager.data_receiver.email')
+                                                    rules="required||email||bangla" v-slot="{ errors }">
+                                                    <v-text-field dense type="email" placeholder="xxx@gmail.com"
+                                                        v-model="data.organization_email" :label="$t('container.api_manager.data_receiver.email')
                                         " persistent-hint outlined :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols="12" sm="6" lg="6">
                                                 <ValidationProvider name="Responsible Person Email"
-                                                    vid="responsible_person_email" rules="required||email"
+                                                    vid="responsible_person_email" rules="required||email||bangla"
                                                     v-slot="{ errors }">
-                                                    <v-text-field dense type="email"
+                                                    <v-text-field placeholder="xxx@gmail.com" dense type="email"
                                                         v-model="data.responsible_person_email" :label="$t('container.api_manager.data_receiver.responsible_person_email')
                                         " persistent-hint outlined :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]"></v-text-field>
@@ -260,14 +268,15 @@ export default {
                                             <v-col cols="12" sm="6" lg="6">
                                                 <ValidationProvider name="Server IP Address" vid="whitelist_ip"
                                                     rules="required||ip_address" v-slot="{ errors }">
-                                                    <v-text-field dense v-model="data.whitelist_ip" :label="$t('container.api_manager.data_receiver.ip')
+                                                    <v-text-field placeholder="x.x.x.x" dense
+                                                        v-model="data.whitelist_ip" :label="$t('container.api_manager.data_receiver.ip')
                                         " persistent-hint outlined :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols="12" sm="6" lg="6">
-                                                <ValidationProvider name="User Name" vid="username" rules="required"
-                                                    v-slot="{ errors }">
+                                                <ValidationProvider name="User Name" vid="username"
+                                                    rules="required||bangla" v-slot="{ errors }">
                                                     <v-text-field dense v-model="data.username" :label="$t('container.api_manager.data_receiver.user_name')
                                         " persistent-hint outlined :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]"></v-text-field>
@@ -279,7 +288,9 @@ export default {
                                                     v-slot="{ errors }">
                                                     <v-text-field dense type="date" v-model="data.start_date" :label="$t('container.api_manager.data_receiver.start_date')
                                         " persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]"></v-text-field>
+                                                        :error-messages="errors[0]"
+                                                        
+                                                        ></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols="12" sm="6" lg="6">
