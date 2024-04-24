@@ -1114,21 +1114,32 @@
       "grievance_setting_delete": "Delete Grievance Setting",
       "grievance_setting_delete_message": "Are you sure to delete this Grievance Setting?",
       "grievanceEntry":{
-         "complaint_area": "Complaint Area Concerned Office",
-         "is_existing_beneficiary": "Are you an existing beneficiary?",
-         "complaint_details": "Provide Details of the Complaint",
-         "details": "Complaint Details",
-         "document": "Document attachment (if applicable)",
-         "document1": "(doc, docx, pdf, xls, xlsx, txt, jpg, jpeg, png)",
-         "complaint_info": "Complaint information",
-         "email": "Email",
-         "name": "Name",
-         "Program_name": "Name of Allowance Program",
-         "Verify": "Verify",
-         "beneficiary_id": "Beneficiary ID",
-         "grievance_entry": "Grievance Entry"
-
-      }
+        "complaint_area": "Complaint Area Concerned Office",
+        "is_existing_beneficiary": "Are you an existing beneficiary?",
+        "complaint_details": "Provide Details of the Complaint",
+        "details": "Complaint Details",
+        "document": "Document attachment (if applicable)",
+        "document1": "(doc, docx, pdf, xls, xlsx, txt, jpg, jpeg, png)",
+        "complaint_info": "Complaint information",
+        "email": "Email",
+        "name": "Name",
+        "Program_name": "Name of Allowance Program",
+        "Verify": "Verify",
+        "beneficiary_id": "Beneficiary ID",
+        "grievance_entry": "Grievance Entry",
+        "birth_registration_number": "Birth Registration Number",
+        "national_identity": "National Identity (NID)",
+        "grievance_question": "Are you sure to submit the Grievance? After submission editing will not be applicable."
+  
+      },
+      "grievanceList": {
+          "grievance_list": "Grievacne List",
+          "tracking_no": "Tracking ID",
+          "grievance_date": "Grievance Date",
+          "search": "Search",
+          "resolved_officer": "Resolved Officer",
+          "grievance_details": "Grievance Details"
+        }
     }
   }
 }

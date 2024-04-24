@@ -1121,7 +1121,18 @@
         "Program_name": "ভাতা কর্মসূচির নাম",
         "Verify": "যাচাই করুন",
         "beneficiary_id": "সুবিধাভোগী আইডি",
-        "grievance_entry": "অভিযোগ এন্ট্রি"
+        "grievance_entry": "অভিযোগ এন্ট্রি",
+        "birth_registration_number": "জন্ম নিবন্ধন নম্বর",
+        "national_identity": "জাতীয় পরিচয় (এনআইডি)",
+        "grievance_question": "আপনি কি অভিযোগ জমা দিতে নিশ্চিত? জমা দেওয়ার পরে সম্পাদনা প্রযোজ্য হবে না।"
+      },
+      "grievanceList":{
+        "grievance_list": "অভিযোগের তালিকা",
+        "tracking_no": "ট্র্যাকিং আইডি",
+        "grievance_date": "অভিযোগের তারিখ",
+        "search": "অনুসন্ধান করুন",
+        "resolved_officer": "সমাধান কর্মকর্তা",
+        "grievance_details": "অভিযোগ বিবরণ"
       }
     }
   }

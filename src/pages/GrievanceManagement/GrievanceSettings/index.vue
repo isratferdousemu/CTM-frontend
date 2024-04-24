@@ -509,7 +509,7 @@ export default {
         language: this.$i18n.locale,
         searchText: this.search,
         perPage: this.search.trim() === '' ? this.total : this.total,
-        page: this.pagination.current,
+        page: 1,
         sortBy: this.sortBy,
         orderBy: this.sortDesc,
       };
@@ -595,7 +595,7 @@ export default {
         language: this.$i18n.locale,
         searchText: this.search,
         perPage: this.search.trim() === '' ? this.total : this.total,
-        page: this.pagination.current,
+        page: 1,
         sortBy: this.sortBy,
         orderBy: this.sortDesc,
       };
