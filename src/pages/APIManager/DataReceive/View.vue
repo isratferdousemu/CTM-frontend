@@ -31,6 +31,7 @@ export default {
                 { text: this.$t('container.list.sl'), value: "id", align: "start", sortable: false, width: "15%" },
                 { text: this.$t('container.api_manager.api_generate.api_name'), value: "name", width: "20%" },
                 { text: this.$t('container.api_manager.api_generate.parameter'), value: "selected_columns", width: "45%" },
+                { text: this.$t('container.api_manager.url_generate.url'), value: "api_url", width: "20%" },
             
             ];
         },
@@ -134,8 +135,8 @@ export default {
                 <v-row>
                     <v-col cols="12">
                         <v-card>
-                            <v-card-title class="justify-center gradient-background">
-                                <h4 >
+                            <v-card-title class="justify-center ">
+                                <h4 class="mt-5">
                                     {{ $t("container.api_manager.data_receiver.view") }}
                                 </h4>
                             </v-card-title>
@@ -314,6 +315,12 @@ export default {
 
 
                                                 </span>
+
+
+                                            </template>
+                                            <template v-slot:item.api_url="{ item }">
+
+                                                {{ item?.purpose?.url }}
 
 
                                             </template>

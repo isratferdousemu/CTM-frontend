@@ -123,10 +123,15 @@ export default {
                 label: "Line Dataset",
                 data: this.total_number_of_application_received_line_bar_datas,
                 fill: false,
-                tension: 0.1,
+                tension: 0.4,
+                
               },
+              
             ],
+            
           },
+    
+
         });
       } else {
         console.error("Data is not available to create chart.");
