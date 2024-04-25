@@ -427,10 +427,12 @@
                           </ValidationProvider>
                         </v-col>
                       </v-row>
+                       <v-checkbox v-model="checkboxChecked" :label="$t('container.grievance_management.grievanceEntry.note')"></v-checkbox>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
                   <!-- complaint complaint_area end------ ----------->
                   <!-- Expansion panel 4 End -->
+                  
                 </v-expansion-panels>
               </div>
               <br>
@@ -442,7 +444,7 @@
                   {{ $t('container.list.submit') }}
                 </v-btn>
               </div>
-
+               
             </v-card>
 
           </form>
@@ -609,6 +611,7 @@ export default {
       wards_upazila: [],
       wards_dist: [],
       locationType: [],
+      checkboxChecked: false,
       subLocationType: [
         {
           id: 1,
@@ -1076,6 +1079,11 @@ export default {
     ,
 
     submitGrievance() {
+       if (!this.checkboxChecked) {
+        // If checkbox is not checked, show error message or prevent form submission
+        this.$toast.error("Please agree to the terms and conditions.");
+        return; // Prevent form submission
+      }
       this.loading = true;
       this.$axios.post("/global/grievance-entry", this.data, {
         headers: {

@@ -544,7 +544,7 @@
           <template>
             <v-simple-table dense>
               <template v-slot:default>
-                <thead style="font-size:25px;">
+                <thead>
                   <tr >
                     <th>{{ $t("container.grievance_management.grievanceList.tracking_no") }} :</th>
                     <th>{{ data.tracking_no }}</th>
@@ -571,16 +571,14 @@
                           <th>{{ data.resolved_officer }}</th>
                         </tr>
                 </thead>
-                 <v-row class="mx-0 my-0 py-2 ">
-                  <div style="text-align:right">
-                        <v-btn @click="showDetailsModalClose" outlined class="custom-btn-width py-2 mr-10 text-right">
-                        {{ $t("container.list.cancel") }}
-                      </v-btn>  
-                  </div>
-                        
-                  </v-row>
+         
               </template>
             </v-simple-table>
+                 <div style="text-align:right">
+                      <v-btn @click="showDetailsModalClose" outlined class="custom-btn-width py-2 mr-10 text-right">
+                        {{ $t("container.list.cancel") }}
+                      </v-btn>  
+                 </div>
           </template>
 
 
