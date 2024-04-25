@@ -1,17 +1,17 @@
 <template>
   <div id="application">
-
     <v-row>
       <v-col cols="12">
         <ValidationObserver ref="form" v-slot="{ invalid }">
-          <form @submit.prevent="submitApplicationCheck()">
+          <form @submit.prevent="submitGrievanceCheck()">
             <v-card class="pa-5 px-10 mb-4">
               <div>
                 <v-expansion-panels v-model="panel" multiple>
                   <!-------------complaint entry--------------->
                   <v-expansion-panel class="mb-4">
                     <v-expansion-panel-header color="primary">
-                      <h3 class="white--text">{{ $t('container.grievance_management.grievanceEntry.grievance_entry') }}</h3>
+                      <h3 class="white--text">{{ $t('container.grievance_management.grievanceEntry.grievance_entry') }}
+                      </h3>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
                       <v-row>
@@ -21,47 +21,69 @@
                             <label>{{ $t('container.grievance_management.grievanceEntry.is_existing_beneficiary')
                             }}</label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-select v-model="data.tracking_type" item-value="value" outlined :items="[
+                            <v-select v-model="data.is_existing_beneficiary" item-value="value" outlined :items="[
                               { text: 'Yes', value: 1 },
                               { text: 'No', value: 2 }
-                            ]" :item-text="text" :error="errors[0] ? true : false" :error-messages="errors[0]">
+                            ]" item-text="text" :error="errors[0] ? true : false" :error-messages="errors[0]"
+                              @change="handleSelectChange">
                             </v-select>
                           </ValidationProvider>
                         </v-col>
                       </v-row>
-       
-          
-                      <v-row v-if="data.tracking_type == 1">
-                        <v-col cols="6" lg="6" >
-                                 <label>{{ $t('container.grievance_management.grievanceEntry.beneficiary_id') }}</label>
-                                  <v-text-field outlined clearable v-model="data.nid"></v-text-field>
-                       </v-col>
-                        <v-col cols="6" lg="6" >
-                             <label>{{
-                               $t('container.application_selection.application.date_of_birth')
-                             }}</label>
-                                  <v-text-field outlined clearable v-model="data.date_of_birth" type="date"></v-text-field>
-                         </v-col>
+
+
+                      <v-row v-if="data.is_existing_beneficiary == 1">
+                        <v-col cols="6" lg="6">
+                          <label>{{ $t('container.grievance_management.grievanceEntry.beneficiary_id') }}</label>
+                          <v-text-field outlined clearable v-model="data.verification_number"></v-text-field>
+                        </v-col>
+                        <v-col cols="6" lg="6">
+                          <label>{{
+                            $t('container.application_selection.application.date_of_birth')
+                          }}</label>
+                          <v-text-field outlined clearable v-model="data.date_of_birth" type="date"></v-text-field>
+                        </v-col>
                       </v-row>
 
-                          <v-row v-if="data.tracking_type == 2">
-                          <v-col cols="6" lg="6" >
-                                   <label>{{ $t('container.system_audit.nbr') }}</label>
-                                    <v-text-field outlined clearable v-model="data.nid"></v-text-field>
-                         </v-col>
-                          <v-col cols="6" lg="6" >
-                               <label>{{
-                                 $t('container.application_selection.application.date_of_birth')
-                               }}</label>
-                                    <v-text-field outlined clearable v-model="data.date_of_birth" type="date"></v-text-field>
-                           </v-col>
-                        </v-row>
+                      <v-row v-if="data.is_existing_beneficiary == 2">
+                        <v-radio-group required row v-model="data.verification_type" @change="handleRadioChange">
+                          <v-radio :label="$t('container.grievance_management.grievanceEntry.national_identity')"
+                            :value="4"></v-radio>
+                          <v-radio :label="$t('container.grievance_management.grievanceEntry.birth_registration_number')"
+                            :value="3"></v-radio>
+                        </v-radio-group>
+                      </v-row>
+
+                      <v-row v-if="data.verification_type == 3 && data.is_existing_beneficiary == 2">
+                        <v-col cols="6" lg="6">
+                          <label>{{ $t('container.system_audit.nbr') }}</label>
+                          <v-text-field outlined clearable v-model="data.verification_number"></v-text-field>
+                        </v-col>
+                        <v-col cols="6" lg="6">
+                          <label>{{
+                            $t('container.application_selection.application.date_of_birth')
+                          }}</label>
+                          <v-text-field outlined clearable v-model="data.date_of_birth" type="date"></v-text-field>
+                        </v-col>
+                      </v-row>
+                      <v-row v-if="data.verification_type == 4 && data.is_existing_beneficiary == 2">
+                        <v-col cols="6" lg="6">
+                          <label>{{ $t('container.system_audit.nbr') }}</label>
+                          <v-text-field outlined clearable v-model="data.verification_number"></v-text-field>
+                        </v-col>
+                        <v-col cols="6" lg="6">
+                          <label>{{
+                            $t('container.application_selection.application.date_of_birth')
+                          }}</label>
+                          <v-text-field outlined clearable v-model="data.date_of_birth" type="date"></v-text-field>
+                        </v-col>
+                      </v-row>
 
                       <v-row>
-                         <v-col cols="12">
+                        <v-col cols="12">
                           <div class="text-right">
-                            <v-btn type="submit" flat color="success" :loading="loading"
-                              @click="applicationTracking()" class="custom-btn-width white--text py-2">
+                            <v-btn type="submit" flat color="success" :loading="loading" @click="verifyCard()"
+                              class="custom-btn-width white--text py-2">
                               <span class="mdi mdi-television mr-2"></span>
                               {{ $t("container.grievance_management.grievanceEntry.Verify") }}
                             </v-btn>
@@ -85,7 +107,7 @@
                             <ValidationProvider name="Name" vid="name" rules="required" v-slot="{ errors }">
                               <label>{{ $t('container.grievance_management.grievanceEntry.name') }} </label>
                               <span style="margin-left: 4px; color: red">*</span>
-                              <v-text-field v-model="data.name_bn" outlined :error="errors[0] ? true : false"
+                              <v-text-field v-model="data.name" outlined :error="errors[0] ? true : false"
                                 :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
@@ -114,13 +136,12 @@
                           <v-col cols="6" lg="6">
 
 
-                            <ValidationProvider rules="checkNumberMobile||required" name="Email Adress" vid="Email"
-                              v-slot="{ errors }">
+                            <ValidationProvider rules="required" name="Email Adress" vid="Email" v-slot="{ errors }">
                               <label style="display: inline-block">{{
                                 $t('container.grievance_management.grievanceEntry.email') }} </label><span
                                 style="margin-left: 4px; color: red">*</span>
 
-                              <v-text-field v-model="data.mobile" outlined type="number" clearable
+                              <v-text-field v-model="data.email" outlined type="email" clearable
                                 :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
                             </ValidationProvider>
@@ -143,10 +164,6 @@
 
 
                           </v-col>
-
-
-
-
                         </v-row>
                       </div>
                     </v-expansion-panel-content>
@@ -163,7 +180,9 @@
                       <v-row>
                         <v-col>
                           <label>{{ $t('container.grievance_management.main_grievance_type') }} </label>
-                          <ValidationProvider name="Grievance Type" vid="type" rules="required" v-slot="{ errors }">
+                          <ValidationProvider name="Grievance Type" vid="grievance_type_id" rules="required"
+                            v-slot="{ errors }">
+                            <span style="margin-left: 4px; color: red">*</span>
                             <v-autocomplete v-model="data.grievance_type_id" outlined :items="types" item-text="title_en"
                               item-value="id" required :error="errors[0] ? true : false"
                               :error-messages="errors[0]"></v-autocomplete>
@@ -173,6 +192,7 @@
                           <label>{{ $t('container.grievance_management.grievance_subject') }}</label>
                           <ValidationProvider name="Grievance Subject" vid="grievance_subject_id" rules="required"
                             v-slot="{ errors }">
+                            <span style="margin-left: 4px; color: red">*</span>
                             <v-autocomplete v-model="data.grievance_subject_id" outlined :items="subjects"
                               item-text="title_en" item-value="id" required :error="errors[0] ? true : false"
                               :error-messages="errors[0]"></v-autocomplete>
@@ -184,38 +204,20 @@
                           <label>{{ $t('container.grievance_management.grievanceEntry.details') }}</label>
                           <ValidationProvider name="Grievance Details" vid="details" rules="required" v-slot="{ errors }">
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-textarea v-model="data.address" outlined clearable :error="errors[0] ? true : false"
+                            <v-textarea v-model="data.details" outlined clearable :error="errors[0] ? true : false"
                               handleCheckboxChangsa :error-messages="errors[0]">
                             </v-textarea>
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6" lg="6">
-                          <!-- <v-img :src="imageUrl" style="
-                                    width: 200px;
-                                    height: 200px;
-                                    border: 1px solid #ccc;
-                                  " class="mb-5" v-if="imageUrl"></v-img>
-                              <v-img src="/assets/images/profile.png" v-if="!imageUrl" style="
-                                    width: 150px;
-                                    height: 150px;
-                                    border: 1px solid #ccc;
-                                  " class="mb-5"></v-img> -->
 
                           <label>{{ $t('container.grievance_management.grievanceEntry.document') }}</label>
                           <!-- <span style="margin-left: 4px; color: red">*</span> -->
-                          <ValidationProvider v-slot="{ errors }" name="Image" rules="required" vid="image">
-                            <v-file-input outlined show-size counter prepend-outer-icon="mdi-camera" v-model="data.image"
-                              accept="image/*" @change="previewImage" prepend-icon="" id="image">
+                          <ValidationProvider v-slot="{ errors }" name="Document"  vid="document">
+                            <v-file-input outlined show-size counter  prepend-outer-icon="mdi-camera"
+                              v-model="data.documents" accept="file/*"  prepend-icon="">
                             </v-file-input>
                           </ValidationProvider>
-                          <!-- <ValidationProvider v-slot="{ errors }" name="Image" rules="required" vid="image">
-                              <v-file-input outlined show-size counter v-model="data.image" accept="image/*"
-                                @change="previewImage" id="image">
-                                <template v-slot:prepend-inner>
-                                  <v-icon @click="triggerFileInput">mdi-camera</v-icon>
-                                </template>
-                              </v-file-input>
-                            </ValidationProvider> -->
 
                         </v-col>
                       </v-row>
@@ -389,11 +391,11 @@
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 1" lg="6" md="6" cols="6">
-                          <ValidationProvider name="ward_id_dist" vid="ward_id_dist" rules="required" v-slot="{ errors }">
+                          <ValidationProvider name="ward_id_dist" vid="ward_id_dist" v-slot="{ errors }">
                             <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.ward')
                             }}
                             </label>
-                            <span style="margin-left: 4px; color: red">*</span>
+                            <!-- <span style="margin-left: 4px; color: red">*</span> -->
                             <v-select :hide-details="errors[0] ? false : true" v-model="data.ward_id_dist" outlined
                               :items="wards_dist" :item-text="getItemText" item-value="id"
                               :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
@@ -413,34 +415,36 @@
                         </v-col>
                         <v-col cols="6" lg="6">
                           <ValidationProvider name="Village/House No.,
-                                                        Road No., Block No, Section" vid="address" rules="required"
+                                                        Road No., Block No, Section" vid="address" 
                             v-slot="{ errors }">
                             <label style="display: inline-block">{{
                               $t('container.system_config.demo_graphic.ward.address') }}
                             </label>
-                            <span style="margin-left: 4px; color: red">*</span>
+                      
                             <v-text-field v-model="data.address" outlined clearable :error="errors[0] ? true : false"
                               handleCheckboxChangsa :error-messages="errors[0]">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
                       </v-row>
+                       <v-checkbox v-model="checkboxChecked" :label="$t('container.grievance_management.grievanceEntry.note')"></v-checkbox>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
-                 <!-- complaint complaint_area end------ ----------->
+                  <!-- complaint complaint_area end------ ----------->
                   <!-- Expansion panel 4 End -->
+                  
                 </v-expansion-panels>
               </div>
               <br>
               <div class="d-inline d-flex justify-end">
                 <v-btn @click="resetForm()" elevation="2" class="btn mr-2" outlined color="red" dark>{{
                   $t('container.list.cancel') }}</v-btn>
-                <v-btn @click="submitApplicationCheck()" flat color="primary" :loading="loading"
+                <v-btn @click="submitGrievanceCheck()" flat color="primary" :loading="loading"
                   class="custom-btn-width black white--text py-2">
                   {{ $t('container.list.submit') }}
                 </v-btn>
               </div>
-
+               
             </v-card>
 
           </form>
@@ -457,7 +461,7 @@
 
               <v-card-text class="text-center">
                 <div class="subtitle-1 font-weight-medium mt-5">
-                  {{ $t('container.application_selection.application.question') }}
+                  {{ $t('container.grievance_management.grievanceEntry.grievance_question') }}
                 </div>
               </v-card-text>
 
@@ -465,7 +469,7 @@
                 <v-btn text @click="confirmDialog = false" outlined class="custom-btn-width">
                   {{ $t("container.list.cancel") }}
                 </v-btn>
-                <v-btn @click="submitApplication()" flat color="primary" :loading="loading" type="submit"
+                <v-btn @click="submitGrievance()" flat color="primary" :loading="loading" type="submit"
                   class="custom-btn-width black white--text py-2">
                   {{ $t('container.list.confirm') }}
                 </v-btn>
@@ -477,7 +481,6 @@
 
       </v-col>
     </v-row>
-
     <FooterBar />
   </div>
 </template>
@@ -582,12 +585,14 @@ extend("checkNumberMobile", {
 });
 
 export default {
-  title: "CTM - Online Application",
+  title: "CTM - Online Grievance Application",
 
   data() {
     return {
       subjects: [],
       types: [],
+      genders: [],
+
 
       panel2Open: true,
       panel: [0, 1, 2, 3, 4, 5, 6],
@@ -606,6 +611,7 @@ export default {
       wards_upazila: [],
       wards_dist: [],
       locationType: [],
+      checkboxChecked: false,
       subLocationType: [
         {
           id: 1,
@@ -634,36 +640,6 @@ export default {
       permanent_wards_pouro: [],
       permanent_wards_dist: [],
 
-      marital_status: [{ name_en: 'Married', name_bn: 'বিবাহিত' },
-      { name_en: 'Unmarried', name_bn: 'অবিবাহিত' },
-      { name_en: 'Widow', name_bn: 'বিধবা' },
-      { name_en: 'Other', name_bn: 'অন্যান্য' }
-
-      ],
-
-
-      financial_status: ["Poor", "Refugee", "Landless"],
-      social_status: ["Widow", "Widower", "Divorced"],
-      house_status: ["Homeless", "Self", "Rent", "Others"],
-      mobile_ownership:
-        [{ name_en: 'Myself', name_bn: 'নিজ' },
-        { name_en: 'Family Member', name_bn: 'পরিবারের সদস্য' },
-        { name_en: 'Other', name_bn: 'অন্যান্য' }],
-      religion: [{ name_en: 'Islam', name_bn: 'ইসলাম' },
-      { name_en: 'Hindu', name_bn: 'হিন্দু' },
-      { name_en: 'Buddhist', name_bn: 'বৌদ্ধ' },
-      { name_en: 'Christian', name_bn: 'খ্রিষ্টান' },
-      { name_en: 'Other', name_bn: 'অন্যান্য' }],
-
-
-      yes_no: ["Yes ", "No"],
-
-      relations_with_bef: [
-        { name_en: 'Spouse', name_bn: 'স্বামী/স্ত্রী' },
-        { name_en: 'Family member', name_bn: 'পরিবারের সদস্য' },
-        { name_en: 'Close relative', name_bn: 'নিকট আত্মীয়' },
-        { name_en: 'Parent', name_bn: 'পিতা/মাতা' },
-      ],
       status_code: null,
       status_code_nominee: null,
       activePicker: null,
@@ -675,33 +651,24 @@ export default {
       showAlert: false,
 
       data: {
-        house_size: null,
-        per_room_score: null,
-        no_of_people_score: null,
-        no_of_room: null,
-
-        program_id: null,
-        verification_type: 1,
+        is_existing_beneficiary: null,
         verification_number: null,
-        account_type: 1,
-        age: null,
         date_of_birth: null,
-        name_en: null,
-        name_bn: null,
-        father_name_en: null,
-        father_name_bn: null,
-        mother_name_en: null,
-        mother_name_bn: null,
-        spouse_name_en: null,
-        spouse_name_bn: null,
-        identification_mark: null,
-        image: null,
-        signature: null,
-        nationality: "Bangladeshi",
+        verification_type: 1,
+        // verification_number: null,
+        // information
+        name: null,
         gender_id: null,
-        education_status: null,
-        profession: null,
-        religion: null,
+        program_id: null,
+        email: null,
+        mobile: null,
+
+        // detaisl
+        grievance_type_id: null,
+        grievance_subject_id: null,
+        details: null,
+        documents: null,
+        // area
         division_id: null,
         district_id: null,
         upazila: null,
@@ -720,71 +687,10 @@ export default {
         ward_id_upazila_pouro: null,
         ward_id_dist: null,
         mobile: null,
-        permanent_division_id: null,
-        permanent_district_id: null,
-        permanent_upazila: null,
-        permanent_post_code: null,
-        permanent_address: null,
-        permanent_location_type: null,
-        permanent_sub_location_type: null,
-        permanent_thana_id: null,
-        permanent_union_id: null,
-        permanent_pouro_id: null,
-        permanent_city_id: null,
-        permanent_city_thana_id: null,
-        permanent_district_pouro_id: null,
-        permanent_ward_id_city: null,
-        permanent_ward_id_union: null,
-        permanent_ward_id_pouro: null,
-        permanent_ward_id_dist: null,
-        permanent_mobile: null,
-        nominee_en: null,
-        nominee_bn: null,
-        nominee_verification_number: null,
-        nominee_date_of_birth: null,
-        nominee_address: null,
-        nominee_image: null,
-        nominee_signature: null,
-        nominee_relation_with_beneficiary: null,
-        nominee_nationality: "Bangladeshi",
-        account_name: null,
-        account_owner: null,
-        account_number: null,
-        application_allowance_values: [],
-        application_pmt: [],
-        marital_status: null,
-        email: null,
-        mobile_operator: null,
-        pmt_status: null,
-        tracking_type: [],
-        text: ''
+
+
       },
 
-      checkbox: false,
-      checkboxNomineeAddress: false,
-      imageUrl: null,
-      signUrl: null,
-      nomineeImageUrl: null,
-      programName: null,
-      nomineeSignUrl: null,
-      programDetails: null,
-      PMTVariables: [],
-      //Date of Birth
-      selectedDay: null,
-      selectedMonth: null,
-      selectedYear: null,
-      selectedDayNominee: null,
-      selectedMonthNominee: null,
-      selectedYearNominee: null,
-      twoDigitDays: Array.from({ length: 32 }, (_, i) => String(i).padStart(2, '0')).slice(1),
-
-
-      months: [
-
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-      ],
-      years: Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i),
 
     };
   },
@@ -835,6 +741,85 @@ export default {
 
   methods:
   {
+    verifyCard() {
+
+      let data = {
+        is_existing_beneficiary: this.data.is_existing_beneficiary,
+        verification_number: this.data.verification_number,
+        date_of_birth: this.data.date_of_birth,
+        verification_type: this.data.verification_type,
+        verification_number: this.data.verification_number,
+      };
+      console.log(data, 'data is');
+      this.$axios.post("/global/online-grievance/card-verification", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Accept: "application/json",
+        },
+      })
+        .then((res) => {
+
+          if (res.status == 201) {
+            console.log(res, "responseVerify11")
+            this.status_code = res.status;
+            this.$toast.success(res.data.message);
+            this.data.gender_id = res.data.data.gender
+            this.data.name = res.data.data.name_en
+            this.data.email = res.data.data.email
+            this.data.mobile = res.data.data.mobile
+            this.data.program_id = res.data.data.program_id
+          } else if (res.status == 200) {
+            console.log(res, "responseVerify2222")
+            this.status_code = res.status;
+            this.$toast.success(res.data.message);
+            this.data.gender_id = res.data.data.gender
+            this.data.name = res.data.data.nameEn
+            this.data.email = res.data.data.email
+            this.data.mobile = res.data.data.mobile
+            this.data.program_id = res.data.data.program_id
+          }
+
+        })
+        .catch((err) => {
+          console.log(err, "responseVerify66666")
+          this.data.status_code = null;
+          this.data.verification_number = null;
+          this.data.date_of_birth = null;
+          this.data.verification_type = null;
+          // this.data.is_existing_beneficiary = null;
+
+          if (err?.response?.data?.errors && err?.response?.data?.errors?.verification_number) {
+            const verificationErrors = err.response.data.errors.verification_number;
+            // If "You are already a beneficiary" message not found, display the first error message
+            this.$toast.error(verificationErrors[0]);
+
+          } else if (err.response.data.message) {
+            this.$toast.error(err.response.data.message);
+          } else {
+            this.$toast.error(err.response.data.message || err.response.data.error_code || 'Unknown error');
+          }
+
+        })
+
+    },
+    handleSelectChange(value) {
+      this.data.verification_number = null;
+      this.data.date_of_birth = null;
+      if (value == 2) {
+        this.data.verification_type = null;
+
+      }
+
+    },
+    handleRadioChange(value) {
+      this.data.verification_number = null;
+      this.data.date_of_birth = null;
+      if (value == 2) {
+        this.data.verification_type = null;
+
+      }
+
+    },
     async GetGrievanceType() {
       const queryParams = {
         status: 'active',
@@ -871,97 +856,6 @@ export default {
 
         });
     },
-    
-    onChange($event) {
-      this.data.per_room_score = (this.data.house_size / $event) * -0.05;
-      this.data.per_room_score = parseFloat(this.data.per_room_score.toFixed(3));
-      this.data.no_of_people_score = (this.data.house_size / $event) * this.data.per_room_score
-      this.data.no_of_people_score = parseFloat(this.data.no_of_people_score.toFixed(3));
-      // Do something with the input value
-
-
-    },
-    onChangeHouse($event, selected_value) {
-      console.log("selected_event", $event);
-      console.log("selected_value", selected_value);
-      if (selected_value.id == 1) {
-        const childWithId210 = selected_value.children.find(child => child.id == $event);
-
-        // Get the name_en property if the child exists
-        const name_en = childWithId210 ? childWithId210.name_en : null;
-
-        // Do something with the name_en value
-        console.log('Name (English):', name_en);
-        this.data.house_size = name_en
-      }
-      if (this.data.house_size) {
-        this.data.per_room_score = (this.data.house_size / this.data.no_of_room) * -0.05;
-        this.data.per_room_score = parseFloat(this.data.per_room_score.toFixed(3));
-        this.data.no_of_people_score = (this.data.house_size / this.data.no_of_room) * this.data.per_room_score
-        this.data.no_of_people_score = parseFloat(this.data.no_of_people_score.toFixed(3));
-
-      }
-      // Do something with the input value
-    },
-
-    //User Activity Log
-    async SendActivityLog() {
-      const queryParams = {
-        info: "Online Application",
-      };
-      this.$axios
-        .get("/activity-log/get-information", {
-          params: queryParams,
-        })
-        .then((result) => {
-          console.log(result, "ActivityLog");
-
-        });
-    },
-
-    checkLengthAndVerify() {
-      if (this.data.nominee_verification_number.length === 10 || this.data.nominee_verification_number.length === 17) {
-        if (this.data.verification_number == this.data.nominee_verification_number) {
-          this.data.nominee_verification_number = null;
-          this.$toast.error("Nominee cannot be the same as the applicant");
-        }
-      }
-    },
-
-    scrollToVerifyButton() {
-      const verifyButton = document.getElementById('verify-button');
-      if (verifyButton) {
-        verifyButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    },
-    scrollToImage() {
-      const verifyButton = document.getElementById('image');
-      if (verifyButton) {
-        verifyButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    },
-    scrollToSignature() {
-      const verifyButton = document.getElementById('signature');
-      if (verifyButton) {
-        verifyButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    },
-    scrollToNomineeImage() {
-      const verifyButton = document.getElementById('nominee_image');
-      if (verifyButton) {
-        verifyButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    },
-    scrollToNomineeSignature() {
-      const verifyButton = document.getElementById('nominee_signature');
-      if (verifyButton) {
-        verifyButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    },
-    getItemTextYear(item) {
-      return this.language === 'bn' ? this.$helpers.englishToBangla(item.years) : item.years;
-
-    },
 
     getItemText(item) {
       return this.language === 'bn' ? item.name_bn : item.name_en;
@@ -979,123 +873,42 @@ export default {
     getItemLocation(item) {
       return this.language === 'bn' ? item.value_bn : item.value_bn;
     },
-    mobile() {
-      if (this.data.mobile) {
-        this.data.account_number = this.data.mobile
-      }
 
-
-    },
-    gotocheck() {
-      this.$axios.get("/global/online-application/check", {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Accept: "application/json",
-        },
-      })
-        .then((res) => {
-          console.log(res)
-          // this.$toast.success(res.data.data);
-
-        })
-        .catch((err) => {
-          console.log(err)
-          // this.$toast.error(err.response.data.message);
-        })
-      // triggers watch and emits the updated date
-    },
-    // Update the formatted date when any dropdown changes
-    updateDate() {
-      this.data.date_of_birth = this.formattedDate; // triggers watch and emits the updated date
-    },
-    updateDateNominee() {
-      this.data.nominee_date_of_birth = this.formattedDateNominee; // triggers watch and emits the updated date
-    },
     resetForm() {
-      this.data.location_type = null;
-      this.data.program_id = null;
-      this.data.verification_type = null;
-      this.data.verification_number = null;
-      this.data.age = null;
-      this.data.date_of_birth = null;
-      this.data.name_en = null;
-      this.data.name_bn = null;
-      this.data.father_name_en = null;
-      this.data.father_name_bn = null;
-      this.data.mother_name_en = null;
-      this.data.mother_name_bn = null;
-      this.data.spouse_name_en = null;
-      this.data.spouse_name_bn = null;
-      this.data.identification_mark = null;
-      this.data.image = null;
-      this.data.signature = null;
-      this.data.nationality = "Bangladeshi";
-      this.data.gender_id = null;
-      this.data.education_status = null;
-      this.data.profession = null;
-      this.data.religion = null;
-      this.data.division_id = null;
-      this.data.district_id = null;
-      this.data.upazila = null;
-      this.data.post_code = null;
-      this.data.address = null;
-      this.data.location_type = null;
-      this.data.thana_id = null;
-      this.data.union_id = null;
-      this.data.city_id = null;
-      this.data.city_thana_id = null;
-      this.data.district_pouro_id = null;
-      this.data.mobile = null;
-      this.data.permanent_division_id = null;
-      this.data.permanent_district_id = null;
-      this.data.permanent_upazila = null;
-      this.data.permanent_post_code = null;
-      this.data.permanent_address = '';
-      this.data.permanent_location_type = null;
-      this.data.permanent_thana_id = null;
-      this.data.permanent_union_id = null;
-      this.data.permanent_city_id = null;
-      this.data.permanent_city_thana_id = null;
-      this.data.permanent_district_pouro_id = null;
-      this.data.permanent_mobile = null;
-      this.data.nominee_en = null;
-      this.data.nominee_bn = null;
-      this.data.nominee_verification_number = null;
-      this.data.nominee_address = null;
-      this.data.nominee_image = null;
-      this.data.nominee_signature = null;
-      this.data.nominee_relation_with_beneficiary = null;
-      this.data.nominee_nationality = "Bangladeshi";
-      this.data.account_name = null;
-      this.data.account_owner = null;
-      this.data.account_number = null;
-      this.data.application_allowance_values = null;
-      this.data.application_pmt = null;
-      this.data.marital_status = null;
-      this.data.email = null;
-    },
-    checkNum() {
-      // this.$refs.observer.validate();
-    },
-    checkIsHaveDIS() {
-      if (this.programDetails != null) {
-        let check = this.programDetails.additional_field.filter((item) => {
-          return item.id == 11;
-        })
-        if (check.length == 0) {
-          return false
-        } else {
-          return true
-        }
-      }
+      this.data.is_existing_beneficiary = null,
+        this.data.verification_number = null,
+        this.data.date_of_birth = null,
+        this.data.verification_type = 1,
+        this.data.name = null,
+        this.data.gender_id = null,
+        this.data.program_id = null,
+        this.data.email = null,
+        this.data.mobile = null,
 
-    },
-
-    keyGetByName(name) {
-      if (this.programDetails != null) {
-        let key = this.programDetails.additional_field.findIndex(field => field.name_en == name);
-        return key
-      }
+        // detaisl
+        this.data.grievance_type_id = null,
+        this.data.grievance_subject_id = null,
+        this.data.details = null,
+        this.data.documents = null,
+        // area
+        this.data.division_id = null,
+        this.data.district_id = null,
+        this.data.upazila = null,
+        this.data.post_code = null,
+        this.data.address = null,
+        this.data.location_type = null,
+        this.data.sub_location_type = null,
+        this.data.thana_id = null,
+        this.data.union_id = null,
+        this.data.pouro_id = null,
+        this.data.city_id = null,
+        this.data.city_thana_id = null,
+        this.data.district_pouro_id = null,
+        this.data.ward_id_city = null,
+        this.data.ward_id_upazila_union = null,
+        this.data.ward_id_upazila_pouro = null,
+        this.data.ward_id_dist = null,
+        this.data.mobile = null
     },
 
     handleNomineeCheckboxChange(event) {
@@ -1232,140 +1045,12 @@ export default {
 
       }
     },
-    verifyCard() {
 
-      // this.status_code= null;
-      let data = {
-        program_id: this.data.program_id,
-        gender_id: this.data.gender_id,
-        verification_type: this.data.verification_type,
-        verification_number: this.data.verification_number,
-        date_of_birth: this.data.date_of_birth,
-      };
-
-      this.$axios.post("/global/online-application/card-verification", data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Accept: "application/json",
-        },
-      })
-        .then((res) => {
-          console.log(res, "responseVerify")
-
-
-
-          this.status_code = res.status;
-
-
-
-
-
-          this.$toast.success(res.data.message);
-          this.data.age = res.data.data.age
-          this.data.name_en = res.data.data.nameEn
-          this.data.name_bn = res.data.data.name
-          this.data.account_name = res.data.data.nameEn
-        })
-        .catch((err) => {
-          this.status_code = null;
-
-          if (err?.response?.data?.errors && err?.response?.data?.errors?.verification_number) {
-            const verificationErrors = err.response.data.errors.verification_number;
-            const beneficiaryMessageIndex = verificationErrors.indexOf('You are already a beneficiary');
-            if (beneficiaryMessageIndex !== -1) {
-              this.$toast.error('You are already a beneficiary');
-            } else {
-              // If "You are already a beneficiary" message not found, display the first error message
-              this.$toast.error(verificationErrors[0]);
-            }
-          } else if (err.response.data.message) {
-            this.$toast.error(err.response.data.message);
-          } else {
-            this.$toast.error(err.response.data.message || err.response.data.error_code || 'Unknown error');
-          }
-
-        })
-
-    },
-
-    verifyNomineeCard() {
-      this.status_code_nominee = null;
-      let data = {
-        verification_number: this.data.nominee_verification_number,
-        date_of_birth: this.data.nominee_date_of_birth,
-      };
-
-      this.$axios.post("/global/online-application/nominee-card-verification", data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Accept: "application/json",
-        },
-      })
-        .then((res) => {
-          console.log(res)
-          this.status_code_nominee = res.status;
-          this.$toast.success(res.data.message);
-
-          this.data.nominee_en = res.data.data.nameEn
-          this.data.nominee_bn = res.data.data.name
-        })
-        .catch((err) => {
-          console.log(err)
-          this.$toast.error(err.response.data.message);
-        })
-    },
-    verifyDISCard() {
-      let data = {
-        dis_no: this.data.application_allowance_values[`${this.keyGetByName('DIS No.')}`].value,
-      };
-
-      this.$axios.post("/global/online-application/dis-card-verification", data, {
-        headers: {
-          Accept: "application/json",
-        },
-      })
-        .then((res) => {
-          console.log(res)
-          this.$toast.success(res.data.data);
-
-        })
-        .catch((err) => {
-          console.log(err)
-          this.$toast.error(err.response.data.message);
-        })
-    },
-
-    async submitApplicationCheck() {
-      if (this.status_code != 200) {
+    async submitGrievanceCheck() {
+      if (this.status_code == null || this.status_code == 300 || this.status_code == '') {
         this.$toast.error('Verify First');
         return false;
       }
-      if (this.data.image === null || this.data.image == '') {
-        this.$toast.error('Image is required');
-        this.scrollToImage();
-        return false;
-      }
-      if (this.data.signature === null || this.data.signature == '') {
-        this.$toast.error('Signature is required');
-        this.scrollToSignature();
-        return false;
-      }
-      if (this.status_code_nominee != 200) {
-        this.$toast.error('Verify Nominee First');
-        this.scrollToVerifyButton();
-        return false;
-      }
-      if (this.data.nominee_image === null || this.data.nominee_image == '') {
-        this.$toast.error('Nominee Image is required');
-        this.scrollToNomineeImage();
-        return false;
-      }
-      if (this.data.nominee_signature === null || this.data.nominee_signature == '') {
-        this.$toast.error('Nominee Signature is required');
-        this.scrollToNomineeSignature();
-        return false;
-      }
-
 
 
       const isValid = await this.$refs.form.validate();
@@ -1387,67 +1072,32 @@ export default {
 
 
       } else {
-        console.log("submit Application Successfully");
+        console.log("submit Grievance Successfully");
         this.confirmDialog = true;
       }
     }
     ,
 
-
-    submitApplication() {
-
-
-      if (this.data.mobile_operator !== null && this.data.mobile_operator !== undefined) {
-        // Convert this.data.account_number to string before concatenation
-        this.data.account_number = this.data.mobile_operator + String(this.data.account_number);
+    submitGrievance() {
+       if (!this.checkboxChecked) {
+        // If checkbox is not checked, show error message or prevent form submission
+        this.$toast.error("Please agree to the terms and conditions.");
+        return; // Prevent form submission
       }
-      this.confirmDialog = false
-      console.log(this.data, "All data")
-
-
-
-
-
-      let fd = new FormData();
-      for (const [key, value] of Object.entries(this.data)) {
-        if (value !== null) {
-          if (key == 'application_allowance_values') {
-            console.log(value)
-            fd.append("application_allowance_values", JSON.stringify(value));
-
-          }
-          if (key == 'application_pmt') {
-            fd.append("application_pmt", JSON.stringify(value));
-
-          }
-          if (key != 'application_pmt' && key != 'application_allowance_values') {
-
-            console.log(key, value);
-            fd.append(key, value);
-          }
-          console.log(key, value, "z");
-
-        }
-      }
-
       this.loading = true;
-      this.$axios.post("/global/online-application/registration", fd, {
+      this.$axios.post("/global/grievance-entry", this.data, {
         headers: {
           "Application": "application/json",
           "Content-Type": "multipart/form-data",
         }
       }).then((res) => {
-        // this.$toast.success("Your Application submitted Successfully");
+         this.confirmDialog = false
+        this.$toast.success("Your Grievance submitted Successfully");
         this.$refs.form.reset();
         this.loading = false;
+        this.resetForm();
         // console.log(res.data.data, "data")
-        // console.log(res.data.id, "id")
-        this.$store.commit('ApplicationSelection/setSuccessId', res.data.id);
-        // console.log(res.data.id, " after store id")
-
-        this.$router.push("/submitted-application");
-        // console.log(res.data.id, " after pushing id")
-        // this.$router.push(`/online-application-preview/${res.data.application_id}`);
+        //  this.$router.push("/grievance/entry");
 
       })
         .catch((err) => {
@@ -1458,160 +1108,7 @@ export default {
             if (err.response.data.success == false) {
               // this.$refs.form.setErrors(err.response.data.errors);
               // this.$toast.error(err.response.data.message);
-              if (err.response.data.error_code == "applicant_marital_status") {
-                let errs = {
-                  "marital_status": [err.response.data.message]
-                }
-                this.$refs.form.setErrors(errs);
-                this.$toast.error(err.response.data.message);
-                //scroll to first error filed
-                const firstErrorField = document.querySelector(".validation-error_marital");
-                if (firstErrorField) {
-                  firstErrorField.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start",
-                    inline: "start",
-                  });
-                }
-
-                // end of scroll to first error filed
-
-
-              }
-              else if (err.response.data.error_code == "applicant_gender_type") {
-                let errs = {
-                  "gender_id": [err.response.data.message]
-                }
-                this.$refs.form.setErrors(err.response.data.message);
-                //scroll to first error filed
-                const firstErrorField = document.querySelector(".validation_error_gender_type");
-                if (firstErrorField) {
-                  firstErrorField.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start",
-                    inline: "nearest",
-                  });
-                }
-
-                // end of scroll to first error filed
-                this.$toast.error(err.response.data.message);
-
-
-
-              }
-              else if (err.response.data.error_code == "applicant_age_limit") {
-                this.$refs.form.setErrors(err.response.data.message);
-                //scroll to first error filed
-                const firstErrorField = document.querySelector(".validation_error_age_limit");
-                if (firstErrorField) {
-                  firstErrorField.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start",
-                    inline: "nearest",
-                  });
-                }
-
-                // end of scroll to first error filed
-                this.$toast.error(err.response.data.message);
-
-              }
-              else if (err.response.data.error_code == "invalid_nid") {
-                this.$refs.form.setErrors(err.response.data.message);
-                //scroll to first error filed
-                const firstErrorField = document.querySelector(".validation_error_age_limit");
-                if (firstErrorField) {
-                  firstErrorField.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start",
-                    inline: "nearest",
-                  });
-                }
-
-                // end of scroll to first error filed
-                this.$toast.error(err.response.data.message);
-
-              }
-              else if (err.response.data.error_code == "invalid_nominee_nid") {
-                this.$refs.form.setErrors(err.response.data.message);
-                //scroll to first error filed
-                const firstErrorField = document.querySelector(".validation_error_nominee");
-                if (firstErrorField) {
-                  firstErrorField.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start",
-                    inline: "nearest",
-                  });
-                }
-
-                // end of scroll to first error filed
-                this.$toast.error(err.response.data.message);
-
-              }
-            } else if (err.response) {
-              this.$refs.form.setErrors(err.response.data.errors);
-
-              // this.$toast.error(err.response.data.message);
-              this.$toast.error(
-                (err?.response?.data?.errors?.verification_number?.[0] ?? '') +
-                '\n' +
-                (err?.response?.data?.errors?.mobile?.[0] ?? '')
-              );
-
-              this.errors = err.response.data.errors
-
-
-              // if (err.response.data.error_code === "verification_number") {
-              if (err?.response?.data?.errors?.mobile?.[0]) {
-                //scroll to first error filed
-                this.$nextTick(() => {
-                  const firstErrorField2 = document.querySelector(".validation-error-mobile");
-                  if (firstErrorField2) {
-                    firstErrorField2.scrollIntoView({
-                      behavior: "smooth",
-                      block: "start",
-                      inline: "start",
-                    });
-                  }
-                });
-                // end of scroll to first error filed
-
-              }
-
-              if (err?.response?.data?.errors?.verification_number?.[0]) {
-                //scroll to first error filed
-                this.$nextTick(() => {
-                  const firstErrorField1 = document.querySelector(".validation-error");
-                  if (firstErrorField1) {
-                    firstErrorField1.scrollIntoView({
-                      behavior: "smooth",
-                      block: "start",
-                      inline: "start",
-                    });
-                  }
-                });
-                // end of scroll to first error filed
-
-              }
-
-
-              // }
-              // else if (err.response.data.error_code === "mobile") {
-              //      //scroll to first error filed
-              //   this.$nextTick(() => {
-              //     const firstErrorField = document.querySelector(".validation_error_mobile");
-              //     if (firstErrorField) {
-              //       firstErrorField.scrollIntoView({
-              //         behavior: "smooth",
-              //         block: "start",
-              //         inline: "start",
-              //       });
-              //     }
-              //   });
-              //   // end of scroll to first error filed
-
-              // }
-
-
+              this.$toast.error(err.response.data.message);
 
             }
           }
@@ -1628,8 +1125,6 @@ export default {
       // this.programName = await programName[0]?.name_en;
       this.programName = await programName[0];
 
-      this.pmt_status = await programName[0]?.pmt_status;
-      console.log(this.pmt_status, "pmt_status");
       this.programDetails = await programName[0];
       if (this.programDetails != null) {
         this.data.application_allowance_values = [];
@@ -1656,22 +1151,13 @@ export default {
 
       // }
     },
-    getAllPMT() {
-      this.$axios.get("global/pmt").then((res) => {
-        this.PMTVariables = res.data.data;
-      });
-    },
+
     getAllProgram() {
       this.$axios.get("global/program").then((res) => {
         this.programs = res.data.data;
       });
     },
-    getAllMobileOperator() {
-      this.$axios.get("global/mobile-operator").then((res) => {
-        this.mobile_operators = res.data;
 
-      });
-    },
     getAllDivision() {
       this.$axios.get("global/division/get").then((res) => {
         this.divisions = res.data.data;
@@ -2225,12 +1711,11 @@ export default {
   created() {
     this.GetGrievanceSubject();
     this.GetGrievanceType();
-    this.SendActivityLog();
     this.getAllProgram();
     this.getAllDivision();
     this.permanent_getAllDivision();
     this.getProgramName();
-    this.getAllPMT();
+
     this.$store
       .dispatch("getGlobalLookupByType", 20)
       .then((res) => (this.classes = res));
@@ -2240,8 +1725,7 @@ export default {
     this.$store
       .dispatch("getGlobalLookupByType", 1)
       .then((res) => (this.locationType = res));
-    this.getAllMobileOperator();
-    console.log(this.$el, "el");
+
   },
 
 };
@@ -2277,5 +1761,7 @@ body.my-app {
   color: #999;
   cursor: not-allowed;
 }
+
+
 </style>
 

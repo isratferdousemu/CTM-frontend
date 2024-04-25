@@ -85,7 +85,7 @@
                       <template v-slot:item.actions="{ item }">
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn v-can="'division-edit'" fab x-small v-on="on" color="success" elevation="0"
+                            <v-btn v-can="'subject-edit'" fab x-small v-on="on" color="success" elevation="0"
                               @click="editDialog(item)">
                               <v-icon> mdi-account-edit-outline </v-icon>
                             </v-btn>
@@ -395,7 +395,7 @@ export default {
         language: this.$i18n.locale,
         searchText: this.search,
         perPage: this.search.trim() === '' ? this.total : this.total,
-        page: this.pagination.current,
+        page: 1,
         sortBy: this.sortBy,
         orderBy: this.sortDesc,
       };
@@ -471,7 +471,7 @@ export default {
         language: this.$i18n.locale,
         searchText: this.search,
         perPage: this.search.trim() === '' ? this.total : this.total,
-        page: this.pagination.current,
+        page: 1,
         sortBy: this.sortBy,
         orderBy: this.sortDesc,
       };
