@@ -10,7 +10,7 @@ const CommonRoutes = [
     path: "/forgotPassword",
     name: "ForgotPassword",
     meta: {
-      guest: true,
+      guest: true
     },
     component: ForgotPassword,
   },
@@ -18,7 +18,7 @@ const CommonRoutes = [
     path: "/login",
     name: "Login",
     meta: {
-      guest: true,
+      guest: true
     },
     component: Login,
   },
@@ -43,6 +43,7 @@ const CommonRoutes = [
     component: ApplicationEdit,
   },
 
+
   {
     path: "/submitted-application",
     name: "SuccessView",
@@ -55,7 +56,7 @@ const CommonRoutes = [
       guest: true,
     },
     component: () =>
-      import("../pages/GrievanceManagement/GrievaneEntry/create.vue"),
+      import("../pages/Common/GrievaneEntry/create.vue"),
   },
-];
+]
 export default CommonRoutes;
