@@ -1,6 +1,43 @@
 <template>
   <div id="application">
-    <v-row>
+        <v-app-bar color="#405c61" fixed height="80" class="px-4" dense dark>
+        <v-row align="center" no-gutters>
+          <v-img class="p-3 mr-4" max-height="100%" max-width="60px" position="center center"
+            src="/assets/images/logo.png"></v-img>
+          <v-toolbar-title>{{ $t('container.application_selection.application.title_online_1') }}<br>{{
+            $t('container.application_selection.application.title_online_2') }}
+          </v-toolbar-title>
+
+          <v-col>
+            <!-- Empty column to create space between title and LocaleSwitcher -->
+          </v-col>
+          <v-col>
+            <!-- Empty column to create space between title and LocaleSwitcher -->
+          </v-col>
+          <v-col>
+            <!-- Empty column to create space between title and LocaleSwitcher -->
+          </v-col>
+          <v-col>
+            <!-- Empty column to create space between title and LocaleSwitcher -->
+          </v-col>
+          <v-col>
+            <!-- Empty column to create space between title and LocaleSwitcher -->
+          </v-col>
+          <v-col>
+            <!-- Empty column to create space between title and LocaleSwitcher -->
+          </v-col>
+
+          <v-col>
+            <v-row align="center" justify="end" no-gutters>
+              <v-col>
+                <!-- Adjust the styling of LocaleSwitcher as needed -->
+                <LocaleSwitcher />
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-app-bar>
+    <v-row style="margin-top:60px;">
       <v-col cols="12">
         <ValidationObserver ref="form" v-slot="{ invalid }">
           <form @submit.prevent="submitGrievanceCheck()">
@@ -10,7 +47,7 @@
                   <!-------------complaint entry--------------->
                   <v-expansion-panel class="mb-4">
                     <v-expansion-panel-header color="primary">
-                      <h3 class="white--text">{{ $t('container.grievance_management.grievanceEntry.grievance_entry') }}
+                      <h3 class="white--text" align="center">{{ $t('container.grievance_management.grievanceEntry.grievance_entry') }}
                       </h3>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
@@ -97,7 +134,7 @@
                   <!-------------complaint_info--------------->
                   <v-expansion-panel class="mb-4">
                     <v-expansion-panel-header color="primary">
-                      <h3 class="white--text">{{ $t('container.grievance_management.grievanceEntry.complaint_info') }}
+                      <h3 class="white--text" align="center">{{ $t('container.grievance_management.grievanceEntry.complaint_info') }}
                       </h3>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
@@ -173,7 +210,7 @@
                   <!-- complaint complaint_details --------------->
                   <v-expansion-panel class="mb-4">
                     <v-expansion-panel-header color="primary">
-                      <h3 class="white--text">{{ $t('container.grievance_management.grievanceEntry.complaint_details') }}
+                      <h3 class="white--text" align="center">{{ $t('container.grievance_management.grievanceEntry.complaint_details') }}
                       </h3>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
@@ -228,7 +265,7 @@
                   <!-- complaint complaint_area ------ ----------->
                   <v-expansion-panel class="ma-4">
                     <v-expansion-panel-header color="primary">
-                      <h3 class="white--text">{{ $t('container.grievance_management.grievanceEntry.complaint_area') }}
+                      <h3 class="white--text" align="center">{{ $t('container.grievance_management.grievanceEntry.complaint_area') }}
                       </h3>
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
