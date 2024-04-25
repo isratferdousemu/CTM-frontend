@@ -46,6 +46,7 @@
       "add": "Add",
       "update": "Update",
       "delete": "Delete",
+      "email":"Send Email",
       "saved": "Data saved Successfully",
       "updated": "Data updated Successfully৷",
       "deleted": "Data deleted Successfully",
@@ -1031,6 +1032,8 @@
               "api_key": "Secret Key",
               "delete_header": "Delete API Receiver",
               "delete_alert": "Are you sure to delete this API Receiver? API all information will be deleted.",
+              "email_header": "Send Email to Receiver",
+              "email_alert": "Are you sure to send email?",
                 "start_date": "Start date",
                 "end_date": "End date",
               "select_api":"Select API"
