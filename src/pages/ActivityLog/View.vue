@@ -13,11 +13,34 @@
                 class="mb-8"
             >
 
+              <div id="printHeadingAddress">
+                <div class="text-center" style="font-weight: bold" v-if="$i18n.locale == 'en'">
+                  <h3 class="title" style="font-weight: bold">
+                    Government of the People's Republic of Bangladesh <br>
+                    Department of Social Services
+                  </h3>
+                  <p style="font-size:15px" class="center">Cash Transfer Modernization(CTM)Project</p>
+                  <p style="font-size:12px">Social Service Building, E-8/B-1, Agargaon, Sherbangla Nagar, Dhaka-1207, Bangladesh.</p>
+                  <a target="_blank" href="https://dss.gov.bd/">www.dss.gov.bd</a>
+                </div>
+                <div class="text-center" style="font-weight: bold" v-if="$i18n.locale == 'bn'">
+                  <h3 class="title" style="font-weight: bold">
+                    গণপ্রজাতন্ত্রী বাংলাদেশ সরকার <br>
+                    সমাজসেবা অধিদফতর
+                  </h3>
+                  <p style="font-size:15px; " class="center">ক্যাশ ট্রান্সফার মডার্নাইজেশন (সিটিএম) প্রকল্প</p>
+                  <p style="font-size:12px">সমাজসেবা ভবন, ই-৮/বি-১, আগারগাঁও, শেরেবাংলা নগর, ঢাকা-১২০৭, বাংলাদেশ।</p>
+                  <a target="_blank" href="https://dss.gov.bd/">www.dss.gov.bd</a>
+                </div>
+              </div>
+
+
               <v-card-title class="justify-center" tag="div">
                 <h4 class="text-uppercase pt-3">
                   {{ $t('container.activity_log.table.log_view') }}
                 </h4>
               </v-card-title>
+
               <div class="d-inline d-flex justify-end ma-1 mr-5">
                 <v-icon color="black" @click="printTable">mdi-printer</v-icon>
               </div>
@@ -98,7 +121,7 @@
               <template>
                 <thead>
                 <tr>
-                  <th class="text-center" style="background-color: #1C3B68; color: white;">
+                  <th class="text-center" style="background-color: #1C3B68; color: white;font-size: 15px;">
                     Change Information:
                   </th>
                 </tr>
@@ -132,7 +155,7 @@
               <template>
                 <thead>
                 <tr>
-                  <th class="text-center" style="background-color: #1C3B68; color: white;">
+                  <th class="text-center" style="background-color: #1C3B68; color: white;font-size: 15px;">
                     User Information:
                   </th>
                 </tr>
@@ -166,7 +189,7 @@
               <template>
                 <thead>
                 <tr>
-                  <th class="text-center" style="background-color: #1C3B68; color: white;">
+                  <th class="text-center" style="background-color: #1C3B68; color: white;font-size: 15px;">
                     Device & Location Information:
                   </th>
                 </tr>
@@ -283,6 +306,9 @@ export default {
 .highlight-column {
   background-color: #e0eaf1;
 }
+#printHeadingAddress {
+  display: none;
+}
 @media print {
   body * {
     visibility: hidden;
@@ -294,6 +320,9 @@ export default {
     position: absolute;
     left: 0;
     top: 0;
+  }
+  #printHeadingAddress {
+    display: block;
   }
 }
 </style>

@@ -15,8 +15,8 @@ extend('bangla', {
     validate: value => {
         // Regular expression to match Bangla characters
         // const banglaRegex = /^[\u0980-\u09FF\s]+$/;
-        const banglaRegex = /^[^\u0980-\u09FF]+$/;
-        return banglaRegex.test(value);
+        const nonBanglaRegex = /^[^\u0980-\u09FF]*$/;
+        return nonBanglaRegex.test(value);
     },
     message: 'Bangla characters are not allowed in this field'
 });
@@ -332,7 +332,8 @@ export default {
                                                         :error-messages="errors[0]" class="select-with-chips">
                                                         <!-- Slot for chips -->
                                                         <template v-slot:selection="{ item }">
-                                                            <v-chip color="#169BD5" class="white--text">{{ item.name
+                                                            <v-chip color="#169BD5" class="white--text ma-1">{{
+                                                                item.name
                                                                 }}</v-chip>
                                                         </template>
                                                     </v-autocomplete>

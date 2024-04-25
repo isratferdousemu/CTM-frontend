@@ -49,5 +49,14 @@ const CommonRoutes = [
     name: "SuccessView",
     component: SuccessView,
   },
+  {
+    path: "/grievance/entry",
+    name: "GrievanceEntry",
+    meta: {
+      guest: true,
+    },
+    component: () =>
+      import("../pages/Common/GrievaneEntry/create.vue"),
+  },
 ]
 export default CommonRoutes;
