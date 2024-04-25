@@ -786,11 +786,21 @@ export default {
             console.log(res, "responseVerify11")
             this.status_code = res.status;
             this.$toast.success(res.data.message);
-            this.data.gender_id = res.data.data.gender
+            this.data.gender_id = res.data.data.gender_id
             this.data.name = res.data.data.name_en
             this.data.email = res.data.data.email
             this.data.mobile = res.data.data.mobile
             this.data.program_id = res.data.data.program_id
+            this.data.division_id = res.data.data.current_division_id
+            this.data.district_id = res.data.data.current_district_id
+            this.data.city_id = res.data.data.current_city_corp_id
+            this.data.upazila_id = res.data.data.current_upazila_id
+            this.data.pouro_id = res.data.data.current_pourashava_id
+            this.data.thana_id = res.data.data.current_thana_id
+            this.data.union_id = res.data.data.current_union_id
+            this.data.ward_id = res.data.data.current_ward_id
+            this.data.address = res.data.data.current_address
+            this.data.post_code = res.data.data.current_post_code
           } else if (res.status == 200) {
             console.log(res, "responseVerify2222")
             this.status_code = res.status;
