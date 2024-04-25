@@ -1139,6 +1139,7 @@
       "grievanceEntry": {
         "complaint_area": "অভিযোগ এলাকা সংশ্লিষ্ট অফিস",
         "is_existing_beneficiary": "আপনি একটি বিদ্যমান সুবিধাভোগী?",
+        "complaint_details": "অভিযোগের বিশদ বিবরণ প্রদান করুন",
         "details": "অভিযোগের বিবরণ",
         "document": "নথি সংযুক্তি (যদি প্রযোজ্য হয়)",
         "document1": "(doc, docx, pdf, xls, xlsx, txt, jpg, jpeg, png)",
