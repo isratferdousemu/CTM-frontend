@@ -16,6 +16,8 @@ export default {
             loading: false,
 
             methods: ['GET', 'POST'],
+            dialogEmail:false,
+            email_id: "",
 
             data: {
                 name: null,
@@ -55,8 +57,34 @@ export default {
     },
 
     methods: {
+        sendEmail() {
+            this.$axios
+                .get(`/admin/api-manager/send-email/${this.email_id}`, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
 
 
+                })
+                .then((result) => {
+
+                    this.$toast.success(result?.data?.data);
+                    this.dialogEmail = false
+
+
+
+
+
+                })
+                .catch(error => {
+                    console.error('Error generating PDF:', error);
+                });
+        },
+        emailAlert(id) {
+            this.dialogEmail = true;
+            this.email_id = this.$route.params.id;
+        },
 
 
         updateUrl() {
@@ -341,6 +369,10 @@ export default {
                                         to="/api-manager/data-receiver">{{
                                         $t("container.list.back") }}
                                     </v-btn>
+                                    <v-btn @click="emailAlert()" flat color="cyan darken-4"
+                                        class="custom-btn mr-2 white--text">{{
+                                        $t("container.list.email") }}
+                                    </v-btn>
                                     <!-- <v-btn flat color="success" type="submit" class="custom-btn mr-2"
                                                 :disabled="invalid">
                                                 {{ $t("container.list.update") }}
@@ -353,6 +385,35 @@ export default {
                 </v-row>
             </v-col>
         </v-row>
+        <!-- Mail modal  -->
+        <v-dialog v-model="dialogEmail" width="350">
+            <v-card style="justify-content: center; text-align: center">
+                <v-card-title class="font-weight-bold justify-center">
+                    {{ $t('container.api_manager.data_receiver.email_header') }}
+                </v-card-title>
+                <v-divider></v-divider>
+                <v-card-text>
+                    <div class="subtitle-1 font-weight-medium mt-5">
+                        {{ $t('container.api_manager.data_receiver.email_alert') }}
+
+
+                    </div>
+                </v-card-text>
+                <v-card-actions style="display: block">
+                    <v-row class="mx-0 my-0 py-2" justify="center">
+                        <v-btn text @click="dialogEmail = false" outlined class="custom-btn-width py-2 mr-10">
+                            {{ $t('container.list.cancel') }}
+                        </v-btn>
+
+                        <v-btn text @click="sendEmail()" color="white" :loading="delete_loading"
+                            class="custom-btn-width warning white--text py-2">
+                            {{ $t('container.list.confirm') }}
+                        </v-btn>
+                    </v-row>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        <!-- Mail modal  -->
     </div>
 </template>
 

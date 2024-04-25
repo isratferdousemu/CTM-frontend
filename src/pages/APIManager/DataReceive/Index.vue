@@ -18,11 +18,12 @@ export default {
 
             dialogAdd: false,
             deleteDialog: false,
-            dialogEdit: false,
+            dialogEmail: false,
             delete_loading: false,
             loading: false,
             search: "",
             delete_id: "",
+            email_id: "",
            
             apis:[],
 
@@ -86,8 +87,8 @@ export default {
                 { text: this.$t('container.api_manager.data_receiver.organization'), value: "organization_name", width: "20%" },
                 { text: this.$t('container.api_manager.data_receiver.api'), value: "api_list_custom", width: "25%" },
                 { text: this.$t('container.api_manager.data_receiver.total_heat'), value: "total_hit", width: "10%" },
-                { text: this.$t('container.api_manager.data_receiver.api_key'), value: "api_key_custom", width: "10%" },
-                { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false, width: "20%" },
+                { text: this.$t('container.api_manager.data_receiver.api_key'), value: "api_key_custom", width: "5%" },
+                { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false, width: "25%" },
             ];
         },
 
@@ -101,6 +102,30 @@ export default {
     },
 
     methods: {
+        sendEmail(){
+            this.$axios
+                .get(`/admin/api-manager/send-email/${this.email_id}`, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                 
+                 
+                })
+                .then((result) => {
+                   
+                    this.$toast.success(result?.data?.data);
+                    this.dialogEmail=false;
+                    
+                   
+    
+
+
+                })
+                .catch(error => {
+                    console.error('Error generating PDF:', error);
+                });
+        },
         resetSearch(){
             this.module_id=null;
             this.org_name=null;
@@ -340,6 +365,7 @@ export default {
                 });
         },
         async GetDataReceiver() {
+            
             this.loading=true;
             const queryParams = {
                 module_id: this.module_id,
@@ -407,7 +433,10 @@ export default {
 
 
 
-
+        emailAlert(id) {
+            this.dialogEmail = true;
+            this.email_id = id;
+        },
 
         deleteAlert(id) {
             this.deleteDialog = true;
@@ -468,10 +497,9 @@ export default {
                                         <v-row>
 
                                             <v-col lg="4" md="4" cols="12">
-                                                <v-autocomplete outlined  dense
-                                                    :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
-                                                    class="no-arrow-icon" v-model="module_id" :items="modules"
-                                                    item-text="name" item-value="id"
+                                                <v-autocomplete outlined dense :append-icon-cb="appendIconCallback"
+                                                    append-icon="mdi-plus" class="no-arrow-icon" v-model="module_id"
+                                                    :items="modules" item-text="name" item-value="id"
                                                     :label="$t('container.api_manager.api_generate.module')">
                                                 </v-autocomplete>
                                             </v-col>
@@ -552,6 +580,7 @@ export default {
                                             <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{
                                             $t("container.list.PDF") }}
                                         </v-btn>
+
                                         <v-btn elevation="2" class="btn white--text ml-2" flat color="teal darken-2"
                                             @click="GenerateExcel()">
                                             <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{
@@ -639,7 +668,17 @@ export default {
                                             </template>
                                             <span> {{ $t("container.list.delete") }}</span>
                                         </v-tooltip>
+                                        <v-tooltip top>
+                                            <template v-slot:activator="{ on }">
+                                                <v-btn fab x-small v-on="on" color="cyan darken-4"
+                                                    class="ml-3 white--text" elevation="0" @click="emailAlert(item.id)">
+                                                    <v-icon> mdi mdi-email-alert </v-icon>
+                                                </v-btn>
+                                            </template>
+                                            <span> {{ $t("container.list.email") }}</span>
+                                        </v-tooltip>
                                     </template>
+
                                     <!-- End Action Button -->
 
                                     <template v-slot:footer="item">
@@ -696,6 +735,35 @@ export default {
                 </v-card>
             </v-dialog>
             <!-- delete modal  -->
+            <!-- Mail modal  -->
+            <v-dialog v-model="dialogEmail" width="350">
+                <v-card style="justify-content: center; text-align: center">
+                    <v-card-title class="font-weight-bold justify-center">
+                        {{ $t('container.api_manager.data_receiver.email_header') }}
+                    </v-card-title>
+                    <v-divider></v-divider>
+                    <v-card-text>
+                        <div class="subtitle-1 font-weight-medium mt-5">
+                            {{ $t('container.api_manager.data_receiver.email_alert') }}
+
+
+                        </div>
+                    </v-card-text>
+                    <v-card-actions style="display: block">
+                        <v-row class="mx-0 my-0 py-2" justify="center">
+                            <v-btn text @click="dialogEmail = false" outlined class="custom-btn-width py-2 mr-10">
+                                {{ $t('container.list.cancel') }}
+                            </v-btn>
+
+                            <v-btn text @click="sendEmail" color="white" :loading="delete_loading"
+                                class="custom-btn-width warning white--text py-2">
+                                {{ $t('container.list.confirm') }}
+                            </v-btn>
+                        </v-row>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+            <!-- Mail modal  -->
         </v-row>
     </div>
 </template>
