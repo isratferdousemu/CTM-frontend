@@ -757,23 +757,8 @@ export default {
       },
     },
 
-    formattedDate() {
-      if (this.selectedDay && this.selectedMonth && this.selectedYear) {
-        const monthIndex = this.months.indexOf(this.selectedMonth) + 1;
-        const formattedMonth = monthIndex < 10 ? `0${monthIndex}` : `${monthIndex}`;
-        return `${this.selectedYear}-${formattedMonth}-${this.selectedDay}`;
-      }
-      return null;
-    },
-    formattedDateNominee() {
-      if (this.selectedDayNominee && this.selectedMonthNominee && this.selectedYearNominee) {
-        const monthIndex = this.months.indexOf(this.selectedMonthNominee) + 1;
-        const formattedMonth = monthIndex < 10 ? `0${monthIndex}` : `${monthIndex}`;
-        return `${this.selectedYearNominee}-${formattedMonth}-${this.selectedDayNominee}`;
+ 
 
-      }
-      return null;
-    },
 
   },
 
@@ -840,15 +825,7 @@ export default {
         })
 
     },
-    handleSelectChange(value) {
-      this.data.verification_number = null;
-      this.data.date_of_birth = null;
-      if (value == 2) {
-        this.data.verification_type = null;
 
-      }
-
-    },
     handleRadioChange(value) {
       this.data.verification_number = null;
       this.data.date_of_birth = null;
@@ -1089,6 +1066,11 @@ export default {
         this.$toast.error('Verify First');
         return false;
       }
+       if (!this.checkboxChecked) {
+        // If checkbox is not checked, show error message or prevent form submission
+        this.$toast.error("Please agree to the terms and conditions.");
+        return; // Prevent form submission
+      }
 
 
       const isValid = await this.$refs.form.validate();
@@ -1117,11 +1099,7 @@ export default {
     ,
 
     submitGrievance() {
-       if (!this.checkboxChecked) {
-        // If checkbox is not checked, show error message or prevent form submission
-        this.$toast.error("Please agree to the terms and conditions.");
-        return; // Prevent form submission
-      }
+      
       this.loading = true;
       this.$axios.post("/global/grievance-entry", this.data, {
         headers: {
@@ -1518,136 +1496,7 @@ export default {
       }
     },
 
-    save(data) {
-      this.$refs.menu.save(data.date_of_birth);
-    },
-    previewImage() {
-      if (this.data.image) {
 
-        const maxFileSize = 200 * 1024; // 200 KB in bytes
-
-        if (this.data.image.size > maxFileSize) {
-          // alert("file size must be 200kb")
-          // this.confirmDialog =true;
-          this.$toast.error("File size must be under 200 KB ");// Show the alert
-          this.data.image = '';
-
-          return false;
-        }
-        const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg']; // Allowed file types
-        if (!allowedTypes.includes(this.data.image.type)) {
-          this.$toast.error("Only PNG, JPEG, or JPG files are allowed");
-          this.data.image = '';
-          return false;
-        }
-        // return true;
-
-
-
-
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          this.imageUrl = e.target.result;
-        };
-        reader.readAsDataURL(this.data.image);
-      } else {
-        // Clear the preview if no file is selected
-        this.imageUrl = null;
-      }
-
-    },
-    addPreviewFile(event, index) {
-      console.log(event, index)
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        this.data.application_allowance_values[index].file_value = e.target.result;
-      };
-      reader.readAsDataURL(event);
-    },
-    previewSign() {
-      if (this.data.signature) {
-        const maxFileSize = 200 * 1024;
-        if (this.data.signature.size > maxFileSize) {
-
-          this.$toast.error("File size must be unser 200 KB ");// Show the alert
-          this.data.signature = '';
-
-          return false;
-
-        }
-        const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg']; // Allowed file types
-        if (!allowedTypes.includes(this.data.signature.type)) {
-          this.$toast.error("Only PNG, JPEG, or JPG files are allowed");
-          this.data.signature = '';
-          return false;
-        }
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          this.signUrl = e.target.result;
-        };
-        reader.readAsDataURL(this.data.signature);
-      } else {
-        // Clear the preview if no file is selected
-        this.signUrl = null;
-      }
-    },
-    previewImageNominee() {
-
-      if (this.data.nominee_image) {
-        const maxFileSize = 200 * 1024;
-        // Read the selected file and generate a preview URL
-        if (this.data.nominee_image.size > maxFileSize) {
-
-          this.$toast.error("File size must be unser 200 KB ");// Show the alert
-          this.data.nominee_image = '';
-
-          return false;
-
-        }
-        const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg']; // Allowed file types
-        if (!allowedTypes.includes(this.data.nominee_image.type)) {
-          this.$toast.error("Only PNG, JPEG, or JPG files are allowed");
-          this.data.nominee_image = '';
-          return false;
-        }
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          this.nomineeImageUrl = e.target.result;
-        };
-        reader.readAsDataURL(this.data.nominee_image);
-      } else {
-        // Clear the preview if no file is selected
-        this.nomineeImageUrl = null;
-      }
-    },
-    previewSignNominee() {
-      if (this.data.nominee_signature) {
-        // Read the selected file and gener
-        const maxFileSize = 200 * 1024;
-        if (this.data.nominee_signature.size > maxFileSize) {
-
-          this.$toast.error("File size must be unser 200 KB ");// Show the alert
-          this.data.nominee_signature = '';
-
-          return false;
-
-        }
-        const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg']; // Allowed file types
-        if (!allowedTypes.includes(this.data.nominee_signature.type)) {
-          this.$toast.error("Only PNG, JPEG, or JPG files are allowed");
-          this.data.nominee_signature = '';
-          return false;
-        }
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          this.nomineeSignUrl = e.target.result;
-        };
-        reader.readAsDataURL(this.data.nominee_signature);
-      } else {
-        // Clear the preview if no file is selected
-        this.nomineeSignUrl = null;
-      }
-    },
     async onChangeUnion($event) {
 
 
