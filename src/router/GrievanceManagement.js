@@ -29,16 +29,7 @@ const GrievanceManagementRoutes = [
     component: () =>
       import("../pages/GrievanceManagement/GrievaneSubject/index.vue"),
   },
-  {
-    path: "/grievance/entry",
-    name: "GrievanceTypeEntry",
-    meta: {
-      requiresAuth: true,
-      Permission: "subject-list",
-    },
-    component: () =>
-      import("../pages/GrievanceManagement/GrievaneEntry/create.vue"),
-  },
+  
   {
     path: "/grievance-management/list",
     name: "GrievanceList",
@@ -46,8 +37,7 @@ const GrievanceManagementRoutes = [
       requiresAuth: true,
       Permission: "grievance-list",
     },
-    component: () =>
-      import("../pages/GrievanceManagement/index.vue"),
+    component: () => import("../pages/GrievanceManagement/index.vue"),
   },
 ];
 

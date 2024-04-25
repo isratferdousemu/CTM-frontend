@@ -428,22 +428,23 @@
                         </v-col>
                       </v-row>
                        <v-checkbox v-model="checkboxChecked" :label="$t('container.grievance_management.grievanceEntry.note')"></v-checkbox>
+                <div class="d-inline d-flex justify-end">
+                  <v-btn @click="resetForm()" elevation="2" class="btn mr-2" outlined color="red" dark>{{
+                    $t('container.list.cancel') }}</v-btn>
+                  <v-btn @click="submitGrievanceCheck()" flat color="primary" :loading="loading"
+                    class="custom-btn-width black white--text py-2">
+                    {{ $t('container.list.submit') }}
+                  </v-btn>
+                </div>
                     </v-expansion-panel-content>
+                    
                   </v-expansion-panel>
                   <!-- complaint complaint_area end------ ----------->
                   <!-- Expansion panel 4 End -->
                   
                 </v-expansion-panels>
               </div>
-              <br>
-              <div class="d-inline d-flex justify-end">
-                <v-btn @click="resetForm()" elevation="2" class="btn mr-2" outlined color="red" dark>{{
-                  $t('container.list.cancel') }}</v-btn>
-                <v-btn @click="submitGrievanceCheck()" flat color="primary" :loading="loading"
-                  class="custom-btn-width black white--text py-2">
-                  {{ $t('container.list.submit') }}
-                </v-btn>
-              </div>
+         
                
             </v-card>
 
@@ -825,7 +826,7 @@ export default {
         status: 'active',
       };
       this.$axios
-        .get("/admin/grievanceType/get", {
+        .get("/global/grievanceType/get", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -844,7 +845,7 @@ export default {
         status: 'active',
       };
       this.$axios
-        .get("/admin/grievanceSubject/get", {
+        .get("/global/grievanceSubject/get", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
