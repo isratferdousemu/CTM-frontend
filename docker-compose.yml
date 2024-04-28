@@ -10,7 +10,6 @@ services:
   frontend-stage:
     container_name: ctm-frontend-stage
     image: 'ctm-app-frontend-stage'
-
     environment:
       - TZ=Asia/Dhaka
     ports:
