@@ -252,7 +252,7 @@
                           <!-- <span style="margin-left: 4px; color: red">*</span> -->
                           <ValidationProvider v-slot="{ errors }" name="Document"  vid="document">
                             <v-file-input outlined show-size counter  prepend-outer-icon="mdi-camera"
-                              v-model="data.documents" accept="file/*"  prepend-icon="">
+                              v-model="data.documents" accept="file/*" append-icon="mdi-file" placeholder="Select file here">
                             </v-file-input>
                           </ValidationProvider>
 
