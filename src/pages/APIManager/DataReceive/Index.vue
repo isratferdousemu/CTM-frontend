@@ -103,8 +103,8 @@ export default {
     },
 
     methods: {
-        togglePasswordVisibility() {
-            this.showPassword = !this.showPassword;
+        toggleApiKeyVisibility(item) {
+            item.showApiKey = !item.showApiKey;
         },
         sendEmail(){
             this.$axios
@@ -397,6 +397,10 @@ export default {
                     this.pagination.total = result?.data?.data?.last_page;
                     this.pagination.grand_total = result?.data?.data?.total;
                     this.loading=false;
+                    this.apis.forEach(item => {
+                        this.$set(item, 'showApiKey', false);
+                    });
+                    console.log(this.apis,"this.apis")
                  
                 });
         },
@@ -628,12 +632,13 @@ export default {
                                     <template v-slot:item.api_key_custom="{ item }">
                                         <v-row align="center">
                                             <span>
-                                                <span v-if="!showPassword">
+                                                <span v-if="!item.showApiKey">
                                                     <span v-for="char in item.api_key" :key="char">*</span>
                                                 </span>
                                                 <span v-else>{{ item.api_key }}</span>
-                                                <v-icon @click="togglePasswordVisibility">{{ showPassword ?
-                                                    'mdi-eye-off' : 'mdi-eye' }}</v-icon>
+                                                <v-icon @click="toggleApiKeyVisibility(item)">
+                                                    {{ item.showApiKey ? 'mdi-eye-off' : 'mdi-eye' }}
+                                                </v-icon>
                                             </span>
                                         </v-row>
 
@@ -657,6 +662,7 @@ export default {
                                                 {{ $t("container.list.view") }}
                                             </span>
                                         </v-tooltip>
+
                                         <v-tooltip top>
                                             <template v-slot:activator="{ on }">
                                                 <v-btn v-can="'apiDataReceive-edit'" fab x-small v-on="on"
@@ -669,6 +675,15 @@ export default {
                                                 {{ $t("container.list.edit") }}
                                             </span>
                                         </v-tooltip>
+                                        <v-tooltip top>
+                                            <template v-slot:activator="{ on }">
+                                                <v-btn fab x-small v-on="on" color="cyan darken-4"
+                                                    class="ml-3 white--text" elevation="0" @click="emailAlert(item.id)">
+                                                    <v-icon> mdi mdi-email </v-icon>
+                                                </v-btn>
+                                            </template>
+                                            <span> {{ $t("container.list.email") }}</span>
+                                        </v-tooltip>
 
                                         <v-tooltip top>
                                             <template v-slot:activator="{ on }">
@@ -680,15 +695,7 @@ export default {
                                             </template>
                                             <span> {{ $t("container.list.delete") }}</span>
                                         </v-tooltip>
-                                        <v-tooltip top>
-                                            <template v-slot:activator="{ on }">
-                                                <v-btn fab x-small v-on="on" color="cyan darken-4"
-                                                    class="ml-3 white--text" elevation="0" @click="emailAlert(item.id)">
-                                                    <v-icon> mdi mdi-email-alert </v-icon>
-                                                </v-btn>
-                                            </template>
-                                            <span> {{ $t("container.list.email") }}</span>
-                                        </v-tooltip>
+
                                     </template>
 
                                     <!-- End Action Button -->
