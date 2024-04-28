@@ -173,13 +173,13 @@
                           <v-col cols="6" lg="6">
 
 
-                            <ValidationProvider rules="required" name="Email Adress" vid="Email" v-slot="{ errors }">
+                            <ValidationProvider rules="checkEmail||bangla||required" name="Email Adress" vid="Email" v-slot="{ errors }">
                               <label style="display: inline-block">{{
                                 $t('container.grievance_management.grievanceEntry.email') }} </label><span
                                 style="margin-left: 4px; color: red">*</span>
 
                               <v-text-field v-model="data.email" outlined type="email" clearable
-                                :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                :error="errors[0] ? true : false" :error-messages="errors[0]" placeholder="xxxx@gmail.com">
                               </v-text-field>
                             </ValidationProvider>
 
@@ -472,7 +472,9 @@
                     class="custom-btn-width black white--text py-2">
                     {{ $t('container.list.submit') }}
                   </v-btn>
+                  
                 </div>
+              
                     </v-expansion-panel-content>
                     
                   </v-expansion-panel>
@@ -519,6 +521,7 @@
 
       </v-col>
     </v-row>
+      <br/>  <br/>
     <FooterBar />
   </div>
 </template>
@@ -607,6 +610,14 @@ extend("checkMobileNumber", {
     return isNumeric;
   },
   message: "This field must be a number with 8 characters",
+});
+extend("checkEmail", {
+   validate: (value) => {
+    // Regular expression to validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(value);
+  },
+  message: "The email field must be a valid email address" // Custom error message
 });
 extend("checkNumberMobile", {
   validate: (value) => {
