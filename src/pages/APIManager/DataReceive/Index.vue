@@ -11,6 +11,7 @@ export default {
                 name_en: null,
                 name_bn: null,
             },
+            showPassword: false,
             total: null,
             org_name:null,
             module_id:null,
@@ -83,12 +84,12 @@ export default {
         },
         headers() {
             return [
-                { text: this.$t('container.list.sl'), value: "id", align: "start", sortable: false, width: "10%" },
+                { text: this.$t('container.list.sl'), value: "id", align: "start", sortable: false, width: "5%" },
                 { text: this.$t('container.api_manager.data_receiver.organization'), value: "organization_name", width: "20%" },
                 { text: this.$t('container.api_manager.data_receiver.api'), value: "api_list_custom", width: "25%" },
-                { text: this.$t('container.api_manager.data_receiver.total_heat'), value: "total_hit", width: "10%" },
+                { text: this.$t('container.api_manager.data_receiver.total_heat'), value: "total_hit", width: "5%" },
                 { text: this.$t('container.api_manager.data_receiver.api_key'), value: "api_key_custom", width: "5%" },
-                { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false, width: "25%" },
+                { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false, width: "40%" },
             ];
         },
 
@@ -102,6 +103,9 @@ export default {
     },
 
     methods: {
+        togglePasswordVisibility() {
+            this.showPassword = !this.showPassword;
+        },
         sendEmail(){
             this.$axios
                 .get(`/admin/api-manager/send-email/${this.email_id}`, {
@@ -622,8 +626,16 @@ export default {
                                     </template>
 
                                     <template v-slot:item.api_key_custom="{ item }">
-
-                                        *****
+                                        <v-row align="center">
+                                            <span>
+                                                <span v-if="!showPassword">
+                                                    <span v-for="char in item.api_key" :key="char">*</span>
+                                                </span>
+                                                <span v-else>{{ item.api_key }}</span>
+                                                <v-icon @click="togglePasswordVisibility">{{ showPassword ?
+                                                    'mdi-eye-off' : 'mdi-eye' }}</v-icon>
+                                            </span>
+                                        </v-row>
 
                                     </template>
 
