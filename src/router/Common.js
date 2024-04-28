@@ -50,7 +50,7 @@ const CommonRoutes = [
     component: SuccessView,
   },
   {
-    path: "/grievance/entry",
+    path: "/grievance-entry",
     name: "GrievanceEntry",
     meta: {
       guest: true,
