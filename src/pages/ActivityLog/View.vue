@@ -134,7 +134,7 @@
                     <tr class="text-center">
                       <th style="text-align:center; background-color: #1C3B68; color: white;font-size: 15px;"
                           colspan="3">
-                        Change Information:
+                        Change Information
                       </th>
                     </tr>
                     <tr style="color: black !important; font-weight: bold">
@@ -173,7 +173,7 @@
                     <tr class="text-center">
                       <th style="text-align:center; background-color: #1C3B68; color: white;font-size: 15px;"
                           colspan="2">
-                        User Information:
+                        User Information
                       </th>
                     </tr>
                     <tr style="color: black !important; font-weight: bold !important;">
@@ -211,7 +211,7 @@
                     <tr>
                       <th style="text-align:center; background-color: #1C3B68; color: white;font-size: 15px;"
                           colspan="2">
-                        Device & Location Information:
+                        Device & Location Information
                       </th>
                     </tr>
                     <tr style="color: black !important; font-weight: bold">
