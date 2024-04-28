@@ -173,7 +173,7 @@
                           <v-col cols="6" lg="6">
 
 
-                            <ValidationProvider rules="checkEmail||bangla||required" name="Email Adress" vid="Email" v-slot="{ errors }">
+                            <ValidationProvider rules="checkEmail||englishOnly||required" name="Email Adress" vid="Email" v-slot="{ errors }">
                               <label style="display: inline-block">{{
                                 $t('container.grievance_management.grievanceEntry.email') }} </label><span
                                 style="margin-left: 4px; color: red">*</span>
@@ -538,13 +538,13 @@ extend("numeric", {
   ...numeric,
   message: "This field must be a number"
 });
-extend('bangla', {
-  validate: value => {
-    // Regular expression to match Bangla characters
-    const banglaRegex = /^[\u0980-\u09FF\s]+$/;
-    return banglaRegex.test(value);
+extend('englishOnly', {
+  validate: (value) => {
+    // Regular expression to match only English characters (excluding Bangla characters)
+    const englishRegex = /^[^\u0980-\u09FF]*$/;
+    return englishRegex.test(value);
   },
-  message: 'Only Bangla characters will be allowed in this field'
+  message: "Only English characters are allowed in this field",
 });
 
 
