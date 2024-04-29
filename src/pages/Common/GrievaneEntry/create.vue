@@ -1,6 +1,6 @@
 <template>
   <div id="application">
-        <v-app-bar color="#405c61" fixed height="80%" class="px-4" dense dark>
+        <v-app-bar color="#405c61" fixed height="100%" class="px-4" dense dark>
         <v-row align="center" no-gutters>
           <v-img class="p-3 mr-4" max-height="100%" max-width="60px" position="center center"
             src="/assets/images/logo.png"></v-img>
@@ -253,7 +253,7 @@
                           <!-- <span style="margin-left: 4px; color: red">*</span> -->
                           <ValidationProvider v-slot="{ errors }" name="Document"  vid="document">
                             <v-file-input outlined  prepend-outer-icon="mdi-camera"
-                              v-model="data.documents" accept="file/*" append-icon="mdi-file" :placeholder="language === 'bn' ? 'সিলেক্ট ফাইল' : 'Select File'">
+                              v-model="data.documents" accept="file/*"  :placeholder="language === 'bn' ? 'সিলেক্ট ফাইল' : 'Select File'">
                             </v-file-input>
                           </ValidationProvider>
 
