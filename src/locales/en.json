@@ -1138,9 +1138,9 @@
       "add_new_grievance_setting": "Add New Grievance Setting",
       "edit_grievance_setting": "Edit Grievance Setting",
       "solution_time": "Solution Time (Days)",
-      "1stOfficer": "1st Tire (1st Officer)",
-      "2ndOfficer": "2nd Tire (2nd Officer)",
-      "3rdOfficer": "3rd Tire (3rd Officer)",
+      "1stOfficer": "1st Tire (1st Resolver)",
+      "2ndOfficer": "2nd Tire (2nd Resolver)",
+      "3rdOfficer": "3rd Tire (3rd Resolver)",
       "grievance_setting_delete": "Delete Grievance Setting",
       "grievance_setting_delete_message": "Are you sure to delete this Grievance Setting?",
       "grievanceEntry":{
