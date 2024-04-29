@@ -18,6 +18,7 @@ export default {
             methods: ['GET', 'POST'],
             dialogEmail:false,
             email_id: "",
+            showApiKey:false,
 
             data: {
                 name: null,
@@ -57,6 +58,9 @@ export default {
     },
 
     methods: {
+        toggleApiKeyVisibility() {
+            this.showApiKey = !this.showApiKey;
+        },
         sendEmail() {
             this.$axios
                 .get(`/admin/api-manager/send-email/${this.email_id}`, {
@@ -251,8 +255,17 @@ export default {
                                             <v-col cols="12" sm="9" lg="9">
                                                 <b>:</b>
 
-                                                <span class="ml-2">{{
-                                                    data?.api_key }}</span>
+                                                <!-- <span class="ml-2">{{
+                                                    data?.api_key }}</span> -->
+                                                <span class="ml-2">
+                                                    <span v-if="!showApiKey">
+                                                        <span v-for="char in data?.api_key" :key="char">#</span>
+                                                    </span>
+                                                    <span v-else>{{ data?.api_key }}</span>
+                                                    <v-icon class="ml-3" @click="toggleApiKeyVisibility()">
+                                                        {{ showApiKey ? 'mdi-eye-off' : 'mdi-eye' }}
+                                                    </v-icon>
+                                                </span>
 
                                             </v-col>
                                             <v-col cols="12" sm="3" lg="3">
