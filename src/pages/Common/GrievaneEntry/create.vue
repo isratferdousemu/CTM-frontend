@@ -38,7 +38,7 @@
         </v-row>
       </v-app-bar>
         <br/>
-    <v-row style="margin-top:60px;">
+    <v-row style="margin:auto;margin-top:60px;width:70%">
       <v-col cols="12">
         <ValidationObserver ref="form" v-slot="{ invalid }">
           <form @submit.prevent="submitGrievanceCheck()">
@@ -221,7 +221,7 @@
                           <ValidationProvider name="Grievance Type" vid="grievance_type_id" rules="required"
                             v-slot="{ errors }">
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete v-model="data.grievance_type_id" outlined :items="types" :item-text="getItemTypeText"
+                            <v-autocomplete v-model="data.grievance_type_id" outlined :items="types" :item-text="language === 'bn' ? 'title_bn' : 'title_en'"
                               item-value="id" required :error="errors[0] ? true : false"
                               :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে অভিযোগের ধরন নির্বাচন করুন' : 'Please Select Grievance Type.') : ''"></v-autocomplete>
                           </ValidationProvider>
@@ -232,7 +232,7 @@
                             v-slot="{ errors }">
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-autocomplete v-model="data.grievance_subject_id" outlined :items="subjects"
-                              :item-text="getItemSubjectText" item-value="id" required :error="errors[0] ? true : false"
+                              :item-text="language === 'bn' ? 'title_bn' : 'title_en'" item-value="id" required :error="errors[0] ? true : false"
                               :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে অভিযোগের বিষয় নির্বাচন করুন' : 'Please Select Grievacne Subject.') : ''"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
@@ -900,17 +900,9 @@ export default {
 
         });
     },
-    getItemTypeText(item) {
-      return this.language === 'bn' ? item.title_bn : item.title_en;
-    }, 
-      errorLabel(item,error) {
-      
-        // alert(item);
-      // return this.language === 'bn' ? item.grievanceTypebn : item.grievanceTypeEn;
-    },
-     getItemSubjectText(item) {
-      return this.language === 'bn' ? item.title_bn : item.title_en;
-    },
+
+
+
     getItemText(item) {
       return this.language === 'bn' ? item.name_bn : item.name_en;
     },
