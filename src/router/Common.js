@@ -53,9 +53,6 @@ const CommonRoutes = [
   {
     path: "/grievance-entry",
     name: "GrievanceEntry",
-    meta: {
-      guest: true,
-    },
     component: () =>
       import("../pages/Common/GrievaneEntry/create.vue"),
   },
