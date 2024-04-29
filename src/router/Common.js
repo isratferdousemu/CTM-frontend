@@ -5,6 +5,7 @@ import ApplicationView from "../pages/Common/application/Index.vue";
 import ApplicationEdit from "../pages/Common/application/Edit.vue";
 import ApplicationPreView from "../pages/Common/application/ApplicationPreView.vue";
 import SuccessView from "../pages/Common/application/Successpage.vue";
+import APiView from "../pages/Common/api_manager/Index.vue";
 const CommonRoutes = [
   {
     path: "/forgotPassword",
@@ -57,6 +58,11 @@ const CommonRoutes = [
     },
     component: () =>
       import("../pages/Common/GrievaneEntry/create.vue"),
+  },
+  {
+    path: "/api-documentation",
+    name: "APiView",
+    component: APiView,
   },
 ]
 export default CommonRoutes;

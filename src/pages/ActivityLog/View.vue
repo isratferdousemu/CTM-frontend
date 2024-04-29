@@ -3,7 +3,7 @@
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
         <v-row>
-          <Spinner :loading="isLoading" />
+          <Spinner :loading="isLoading"/>
           <v-col cols="12" id="print-section">
             <v-card
                 elevation="10"
@@ -20,7 +20,8 @@
                     Department of Social Services
                   </h3>
                   <p style="font-size:15px" class="center">Cash Transfer Modernization(CTM)Project</p>
-                  <p style="font-size:12px">Social Service Building, E-8/B-1, Agargaon, Sherbangla Nagar, Dhaka-1207, Bangladesh.</p>
+                  <p style="font-size:12px">Social Service Building, E-8/B-1, Agargaon, Sherbangla Nagar, Dhaka-1207,
+                    Bangladesh.</p>
                   <a target="_blank" href="https://dss.gov.bd/">www.dss.gov.bd</a>
                 </div>
                 <div class="text-center" style="font-weight: bold" v-if="$i18n.locale == 'bn'">
@@ -35,7 +36,7 @@
               </div>
 
 
-              <v-card-title class="justify-center" tag="div">
+              <v-card-title class="justify-center" tag="div" style="text-align:center; background-color: #1C3B68; color: white;font-size: 17px;">
                 <h4 class="text-uppercase pt-3">
                   {{ $t('container.activity_log.table.log_view') }}
                 </h4>
@@ -80,7 +81,7 @@
                       Causer Model
                     </th>
                     <td class="text-left">
-                      {{ activity_log_details.causer_type}}
+                      {{ activity_log_details.causer_type }}
                     </td>
                   </tr>
 
@@ -108,7 +109,7 @@
                       Date
                     </th>
                     <td class="text-left">
-                      {{ activity_log_details.database_created_at }}  ({{ activity_log_details.created_at }})
+                      {{ activity_log_details.database_created_at }} ({{ activity_log_details.created_at }})
                     </td>
                   </tr>
 
@@ -117,107 +118,120 @@
               </v-simple-table>
             </v-card>
 
-            <v-simple-table v-if="activity_log_details?.properties?.changes?.previous || activity_log_details?.properties?.changes?.new">
-              <template>
-                <thead>
-                <tr>
-                  <th class="text-center" style="background-color: #1C3B68; color: white;font-size: 15px;">
-                    Change Information:
-                  </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <td class="text-left">
-                    <v-simple-table dense>
-                      <template v-slot:default>
-                        <thead class="text-center">
-                        <th>Key</th>
-                        <th v-if="activity_log_details.properties.changes.previous">Previous Value</th>
-                        <th>New Value</th>
-                        </thead>
-                        <tbody class="text-center">
-                        <tr v-for="(value, key) in activity_log_details.properties.changes.new" :key="key">
-                          <td>{{ key }}</td>
-                          <td v-if="activity_log_details.properties.changes.previous">{{ activity_log_details.properties.changes.previous[key] }}</td>
-                          <td>{{ activity_log_details.properties.changes.new[key] }}</td>
-                        </tr>
-                        </tbody>
-                      </template>
-                    </v-simple-table>
-                  </td>
-                </tr>
-                </tbody>
-              </template>
-            </v-simple-table>
+            <v-card
+                elevation="10"
+                color="white"
+                rounded="md"
+                theme="light"
+                class="mb-8"
+            >
+              <template
+                  v-if="activity_log_details?.properties?.changes?.previous || activity_log_details?.properties?.changes?.new">
 
-            <v-simple-table v-if="activity_log_details.causer">
-              <template>
-                <thead>
-                <tr>
-                  <th class="text-center" style="background-color: #1C3B68; color: white;font-size: 15px;">
-                    User Information:
-                  </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-if="activity_log_details.properties.userInfo">
-                  <td class="text-left">
-                    <v-simple-table dense>
-                      <template v-slot:default>
-                        <thead class="text-center">
-                        <th>Key</th>
-                        <th>Value</th>
-                        </thead>
-                        <tbody class="text-center">
-                        <tr v-for="(value, key) in activity_log_details.causer" :key="key">
-                          <template v-if="value != null">
-                            <td>{{ key }}</td>
-                            <td>{{ value }}</td>
-                          </template>
-                        </tr>
-                        </tbody>
-                      </template>
-                    </v-simple-table>
-                  </td>
-                </tr>
-                </tbody>
+                <v-simple-table dense>
+                  <template v-slot:default>
+                    <thead>
+                    <tr class="text-center">
+                      <th style="text-align:center; background-color: #1C3B68; color: white;font-size: 15px;"
+                          colspan="3">
+                        Change Information
+                      </th>
+                    </tr>
+                    <tr style="color: black !important; font-weight: bold">
+                      <td>Key</td>
+                      <td v-if="activity_log_details.properties.changes.previous">Previous Value</td>
+                      <td>New Value</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(value, key) in activity_log_details.properties.changes.new" :key="key">
+                      <th>{{ key }}</th>
+                      <td v-if="activity_log_details.properties.changes.previous">
+                        {{ activity_log_details.properties.changes.previous[key] }}
+                      </td>
+                      <td>{{ activity_log_details.properties.changes.new[key] }}</td>
+                    </tr>
+                    </tbody>
+                  </template>
+                </v-simple-table>
               </template>
-            </v-simple-table>
 
-            <v-simple-table v-if="activity_log_details.properties.userInfo">
-              <template>
-                <thead>
-                <tr>
-                  <th class="text-center" style="background-color: #1C3B68; color: white;font-size: 15px;">
-                    Device & Location Information:
-                  </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-if="activity_log_details.properties.userInfo">
-                  <td class="text-left">
-                    <v-simple-table dense>
-                      <template v-slot:default>
-                        <thead class="text-center">
-                        <th>Key</th>
-                        <th>Value</th>
-                        </thead>
-                        <tbody class="text-center">
-                        <tr v-for="(value, key) in activity_log_details.properties.userInfo" :key="key">
-                          <template v-if="value != null">
-                            <td>{{ key }}</td>
-                            <td>{{ value }}</td>
-                          </template>
-                        </tr>
-                        </tbody>
+            </v-card>
+
+            <v-card
+                elevation="10"
+                color="white"
+                rounded="md"
+                theme="light"
+                class="mb-8"
+            >
+
+              <template v-if="activity_log_details.causer">
+                <v-simple-table dense v-if="activity_log_details.properties.userInfo">
+                  <template v-slot:default>
+                    <thead>
+                    <tr class="text-center">
+                      <th style="text-align:center; background-color: #1C3B68; color: white;font-size: 15px;"
+                          colspan="2">
+                        User Information
+                      </th>
+                    </tr>
+                    <tr style="color: black !important; font-weight: bold !important;">
+                      <td>Key</td>
+                      <td>Value</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(value, key) in activity_log_details.causer" :key="key">
+                      <template v-if="value != null">
+                        <th>{{ key }}</th>
+                        <td>{{ value }}</td>
                       </template>
-                    </v-simple-table>
-                  </td>
-                </tr>
-                </tbody>
+                    </tr>
+                    </tbody>
+                  </template>
+                </v-simple-table>
               </template>
-            </v-simple-table>
+
+            </v-card>
+
+            <v-card
+                elevation="10"
+                color="white"
+                rounded="md"
+                theme="light"
+                class="mb-8"
+            >
+
+              <template v-if="activity_log_details.properties.userInfo">
+
+                <v-simple-table dense v-if="activity_log_details.properties.userInfo">
+                  <template v-slot:default>
+                    <thead>
+                    <tr>
+                      <th style="text-align:center; background-color: #1C3B68; color: white;font-size: 15px;"
+                          colspan="2">
+                        Device & Location Information
+                      </th>
+                    </tr>
+                    <tr style="color: black !important; font-weight: bold">
+                      <td>Key</td>
+                      <td>Value</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(value, key) in activity_log_details.properties.userInfo" :key="key">
+                      <template v-if="value != null">
+                        <th>{{ key }}</th>
+                        <td>{{ value }}</td>
+                      </template>
+                    </tr>
+                    </tbody>
+                  </template>
+                </v-simple-table>
+              </template>
+
+            </v-card>
 
           </v-col>
         </v-row>
@@ -227,9 +241,9 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
-import { required } from "vee-validate/dist/rules";
+import {mapState} from "vuex";
+import {extend, ValidationProvider, ValidationObserver} from "vee-validate";
+import {required} from "vee-validate/dist/rules";
 import Spinner from "@/components/Common/Spinner.vue";
 import {http} from "@/hooks/httpService";
 
@@ -242,7 +256,7 @@ export default {
       data: {
         id: null,
       },
-      isLoading:false,
+      isLoading: false,
       activity_log_details: [],
     };
   },
@@ -294,7 +308,7 @@ export default {
   created() {
 
   },
-  mounted(){
+  mounted() {
     this.viewActivityLog(this.$route.params.id)
   },
   beforeMount() {
@@ -306,21 +320,26 @@ export default {
 .highlight-column {
   background-color: #e0eaf1;
 }
+
 #printHeadingAddress {
   display: none;
 }
+
 @media print {
   body * {
     visibility: hidden;
   }
+
   #print-section, #print-section * {
     visibility: visible;
   }
+
   #print-section {
     position: absolute;
     left: 0;
     top: 0;
   }
+
   #printHeadingAddress {
     display: block;
   }
