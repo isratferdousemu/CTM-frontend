@@ -86,10 +86,10 @@ export default {
             return [
                 { text: this.$t('container.list.sl'), value: "id", align: "start", sortable: false, width: "5%" },
                 { text: this.$t('container.api_manager.data_receiver.organization'), value: "organization_name", width: "20%" },
-                { text: this.$t('container.api_manager.data_receiver.api'), value: "api_list_custom", width: "25%" },
-                { text: this.$t('container.api_manager.data_receiver.total_heat'), value: "total_hit", width: "5%" },
-                { text: this.$t('container.api_manager.data_receiver.api_key'), value: "api_key_custom", width: "5%" },
-                { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false, width: "40%" },
+                { text: this.$t('container.api_manager.data_receiver.api'), value: "api_list_custom", width: "35%" },
+                { text: this.$t('container.api_manager.data_receiver.total_heat'), value: "total_hit", width: "10%" },
+              
+                { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false, width: "30%" },
             ];
         },
 
@@ -488,9 +488,9 @@ export default {
 <template>
     <div id="url-generate">
         <v-row class="mx-5 mt-5">
-            <v-col cols="12">
+            <v-col cols="12" lg="12" md="12" sm="4">
                 <v-row wrap>
-                    <v-col cols="12">
+                    <v-col cols="12" lg="12" md="12" sm="4">
                         <v-expansion-panels>
                             <v-expansion-panel>
                                 <v-expansion-panel-header color="#8C9EFF">
