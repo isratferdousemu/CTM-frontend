@@ -8,12 +8,13 @@ networks:
 
 services:
   frontend-stage:
-    container_name: ctm-frontend
-    image: 'ctm-app-frontend'
+    container_name: ctm-frontend-stage
+    image: 'ctm-app-frontend-stage'
+
     environment:
       - TZ=Asia/Dhaka
     ports:
-      - 80:80
+      - 8060:80
     restart: always
     build:
       context: "./"
