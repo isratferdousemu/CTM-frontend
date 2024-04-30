@@ -488,9 +488,9 @@ export default {
 <template>
     <div id="url-generate">
         <v-row class="mx-5 mt-5">
-            <v-col cols="12" lg="12" md="12" sm="4">
+            <v-col cols="12" lg="12" md="12" sm="12" xs="12">
                 <v-row wrap>
-                    <v-col cols="12" lg="12" md="12" sm="4">
+                    <v-col cols="12" lg="12" md="12" sm="12" xs="12">
                         <v-expansion-panels>
                             <v-expansion-panel>
                                 <v-expansion-panel-header color="#8C9EFF">
@@ -653,7 +653,7 @@ export default {
                                         <v-tooltip top>
                                             <template v-slot:activator="{ on }">
                                                 <v-btn v-can="'apiDataReceive-view'" fab x-small v-on="on"
-                                                    color="#AFB42B" elevation="0" router class="mr-3 white--text"
+                                                    color="#AFB42B" elevation="0" router class=" white--text"
                                                     :to="`/api-manager/data-receiver/view/${item.id}`">
                                                     <v-icon> mdi-eye </v-icon>
                                                 </v-btn>
@@ -665,7 +665,7 @@ export default {
 
                                         <v-tooltip top>
                                             <template v-slot:activator="{ on }">
-                                                <v-btn v-can="'apiDataReceive-edit'" fab x-small v-on="on"
+                                                <v-btn v-can="'apiDataReceive-edit'" class="ml-3" fab x-small v-on=" on"
                                                     color="success" elevation="0" router
                                                     :to="`/api-manager/data-receiver/edit/${item.id}`">
                                                     <v-icon> mdi-account-edit-outline </v-icon>
