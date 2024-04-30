@@ -188,7 +188,7 @@ export default {
                 <v-row>
                     <v-col cols="12">
                         <v-card>
-                            <v-card-title class="justify-center  ">
+                            <v-card-title class="justify-center">
                                 <h4 class="mt-5">
                                     {{ $t("container.api_manager.data_receiver.add") }}
                                 </h4>
