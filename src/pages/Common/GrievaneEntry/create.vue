@@ -48,6 +48,11 @@
                   <!-------------complaint entry--------------->
                   <v-expansion-panel class="mb-4">
                     <v-expansion-panel-header color="primary">
+                      <template v-slot:actions>
+                        <v-icon color="white">
+                          $expand
+                        </v-icon>
+                      </template>
                       <h3 class="white--text" align="center">{{
                         $t('container.grievance_management.grievanceEntry.grievance_entry') }}
                       </h3>
@@ -137,10 +142,16 @@
                   <!-------------complaint_info--------------->
                   <v-expansion-panel class="mb-4">
                     <v-expansion-panel-header color="primary">
+                      <template v-slot:actions>
+                        <v-icon color="white">
+                          $expand
+                        </v-icon>
+                      </template>
                       <h3 class="white--text" align="center">{{
                         $t('container.grievance_management.grievanceEntry.complaint_info') }}
                       </h3>
                     </v-expansion-panel-header>
+
                     <v-expansion-panel-content class="mt-5">
                       <div class="pa-2 mb-4">
                         <v-row>
@@ -218,6 +229,11 @@
                   <!-- complaint complaint_details --------------->
                   <v-expansion-panel class="mb-4">
                     <v-expansion-panel-header color="primary">
+                      <template v-slot:actions>
+                        <v-icon color="white">
+                          $expand
+                        </v-icon>
+                      </template>
                       <h3 class="white--text" align="center">{{
                         $t('container.grievance_management.grievanceEntry.complaint_details') }}
                       </h3>
@@ -275,8 +291,13 @@
                   </v-expansion-panel>
                   <!-- complaint complaint_details end ----------->
                   <!-- complaint complaint_area ------ ----------->
-                  <v-expansion-panel class="ma-4">
+                  <v-expansion-panel class="mb-4">
                     <v-expansion-panel-header color="primary">
+                      <template v-slot:actions>
+                        <v-icon color="white">
+                          $expand
+                        </v-icon>
+                      </template>
                       <h3 class="white--text" align="center">{{
                         $t('container.grievance_management.grievanceEntry.complaint_area') }}
                       </h3>
@@ -410,8 +431,9 @@
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-select :hide-details="errors[0] ? false : true" v-model="data.district_pouro_id"
-                              @input="onChangeDistrictPouro" outlined :items="district_poros" :item-text="getItemText"
-                              item-value="id" :error="errors[0] ? true : false"
+                              @input="onChangeDistrictPouro" outlined :items="district_poros"
+                              :item-text="language === 'bn' ? 'name_bn' : 'name_en'" item-value="id"
+                              :error="errors[0] ? true : false"
                               :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে জেলা পৌরসভা নির্বাচন করুন' : 'Please Select Distrcit Pouroshava.') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
@@ -477,7 +499,7 @@
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
-                        <v-col lg="6" md="6" cols="12">
+                        <v-col lg="6" md="6" cols="12" >
                           <ValidationProvider name="Village/House No.,
                                                         Road No., Block No, Section" vid="address" v-slot="{ errors }">
                             <label style="display: inline-block">{{
@@ -485,7 +507,6 @@
                             </label>
 
                             <v-text-field v-model="data.address" outlined clearable :error="errors[0] ? true : false"
-                              handleCheckboxChangsa
                               :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে ঠিকানা লিখুন' : 'Please Enter Your Address.') : ''">
                             </v-text-field>
                           </ValidationProvider>
@@ -1512,6 +1533,7 @@ export default {
             })
             .then((result) => {
               this.district_poros = result.data.data;
+              console.log(this.district_poros, 'this.district_porosthis.district_porosthis.district_poros');
             });
         }
       }
@@ -1706,5 +1728,6 @@ body.my-app {
   background-color: #f5f5f5;
   color: #999;
   cursor: not-allowed;
-}</style>
+}
+</style>
 
