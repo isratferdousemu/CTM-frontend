@@ -18,11 +18,20 @@
         position="center center"
         src="/assets/images/logo.png"
       ></v-img>
-    <b>  <p style="margin-left:15px; margin-top:15px">
-    {{  this.$t("topSidebar.title") }} </br> <span v-if="userData?.office">{{ userData?.office?.office_address}}</span>
+    <!-- <b> {{  this.$t("topSidebar.title") }}  <p :style="{ 'margin-left': '15%', 'margin-top': '15%' }">
+   </br> <span v-if="userData?.office">{{ userData?.office?.office_address}}</span>
     <span v-else>{{  this.$t("topSidebar.location") }}</span>
     </p>
-    </b>
+    </b> -->
+<v-row no-gutters class="ml-2">
+  <v-col cols="12" md="12" lg="12" sm="12" xs="12">
+    <span :class="$vuetify.breakpoint.xs ? 'text-xs' : ''">{{ this.$t("topSidebar.title") }}</span>
+  </v-col>
+  <v-col cols="12" md="12" lg="12" sm="12" xs="12">
+    <span :class="$vuetify.breakpoint.xs ? 'text-xs' : ''" v-if="userData?.office">{{ userData?.office?.office_address }}</span>
+    <span :class="$vuetify.breakpoint.xs ? 'text-xs' : ''" v-else>{{ this.$t("topSidebar.location") }}</span>
+  </v-col>
+</v-row>
 
 
     <v-spacer />
@@ -52,25 +61,19 @@
         </v-btn>
       </template>
 
-      <v-card id="notification" style="min-width: 350px">
-        <v-list>
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title class="font-weight-bold subtitle-1"
-                >NOTIFICATIONS</v-list-item-title
-              >
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
+<v-card id="notification" style="min-width: 350px">
+  <v-list>
+    <v-list-item>
+      <v-list-item-content>
+        <v-list-item-title class="font-weight-bold subtitle-1">NOTIFICATIONS</v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
+  </v-list>
 
-        <v-divider></v-divider>
+  <v-divider></v-divider>
 
-        <v-list
-          three-line
-          class="pa-0"
-          style="overflow-y: scroll; height: 350px"
-        >
-          <template v-for="(notification, index) in notification">
+  <v-list three-line class="pa-0" style="overflow-y: scroll; height: 350px">
+    <template v-for="(notification, index) in notification">
             <div :key="index">
               <v-divider v-if="index != 0"></v-divider>
 
@@ -107,30 +110,24 @@
               </v-list-item>
             </div>
           </template>
-        </v-list>
-        <v-list style="background: #eaeaea; padding: 0; margin: 0">
-          <v-list-item @click="seeMore()">
-            <v-list-item-action>
-              <v-icon>mdi-bell</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>ALL NOTIFICATIONS</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
-      </v-card>
-    </v-menu>
-    <!-- Notification End -->
+  </v-list>
+  <v-list style="background: #eaeaea; padding: 0; margin: 0">
+    <v-list-item @click="seeMore()">
+      <v-list-item-action>
+        <v-icon>mdi-bell</v-icon>
+      </v-list-item-action>
+      <v-list-item-content>
+        <v-list-item-title>ALL NOTIFICATIONS</v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
+  </v-list>
+</v-card>
+</v-menu>
+<!-- Notification End -->
 
-    <!-- User link Start -->
-    <v-menu
-      transition="scale-transition"
-      origin="top end 0"
-      :close-on-content-click="false"
-      offset-y
-      :nudge-left="150"
-    >
-      <template v-slot:activator="{ on, attrs }">
+<!-- User link Start -->
+<v-menu transition="scale-transition" origin="top end 0" :close-on-content-click="false" offset-y :nudge-left="150">
+  <template v-slot:activator="{ on, attrs }">
         <v-btn
           variant="text"
           class="profileBtn custom-hover-primary"
@@ -157,39 +154,33 @@
           </v-avatar>
         </v-btn>
       </template>
-      <v-sheet rounded="md" width="200" elevation="10" class="">
-        <v-list class="py-0" lines="one">
-          <v-list-item value="item1" to="/login" active-color="primary">
-            <v-icon size="20">mdi-account-outline</v-icon>
-            <v-list-item-title class="pl-4 text-body-1"
-              >My Profile</v-list-item-title
-            >
-          </v-list-item>
-          <v-list-item value="item2" to="/login" active-color="primary">
-            <v-icon size="20">mdi-cog-outline</v-icon>
+  <v-sheet rounded="md" width="200" elevation="10" class="">
+    <v-list class="py-0" lines="one">
+      <v-list-item value="item1" to="/login" active-color="primary">
+        <v-icon size="20">mdi-account-outline</v-icon>
+        <v-list-item-title class="pl-4 text-body-1">My Profile</v-list-item-title>
+      </v-list-item>
+      <v-list-item value="item2" to="/login" active-color="primary">
+        <v-icon size="20">mdi-cog-outline</v-icon>
 
-            <v-list-item-title class="pl-4 text-body-1"
-              >My Account</v-list-item-title
-            >
-          </v-list-item>
-        </v-list>
-        <div class="pt-4 pb-4 px-5 text-center">
-          <v-btn link @click="logout()" color="primary" outlined block
-            >Logout</v-btn
-          >
-        </div>
-      </v-sheet>
-    </v-menu>
-    <!-- User link End -->
-  </v-app-bar>
+        <v-list-item-title class="pl-4 text-body-1">My Account</v-list-item-title>
+      </v-list-item>
+    </v-list>
+    <div class="pt-4 pb-4 px-5 text-center">
+      <v-btn link @click="logout()" color="primary" outlined block>Logout</v-btn>
+    </div>
+  </v-sheet>
+</v-menu>
+<!-- User link End -->
+</v-app-bar>
 </template>
 
 <script>
 import axios from "axios";
 import LocaleSwitcher from "@/components/Common/LocaleSwitcher"
-import {mapState} from "vuex";
+import { mapState } from "vuex";
 export default {
-  
+
   components: { LocaleSwitcher },
   computed: {
     headerTitle: {
@@ -235,7 +226,7 @@ export default {
           },
         })
         .then(() => {
-          
+
           this.$store.commit("setToken", null);
           this.$store.commit("setUser", null);
           this.$router.push({ name: "Login" });
@@ -245,4 +236,8 @@ export default {
 };
 </script>
 
-<style lang=""></style>
+<style scoped>
+.text-xs {
+  font-size: 5px;
+}
+</style>
