@@ -83,8 +83,8 @@ router.beforeEach((to, from, next) => {
           // console.log(to.meta.permission != "common" &&
           // store.getters.GetUserPermissions.findIndex(per =>
           //   per.name === to.meta.permission
-          //   // || per.module_name === to.meta.permission
-          //   // || per.sub_module_name === to.meta.permission
+          //   || per.module_name === to.meta.permission
+          //   || per.sub_module_name === to.meta.permission
           //   ) === -1);
 
         if (to.meta.permission != "common" && store.getters.GetUserPermissions.findIndex(per => per.name === to.meta.permission || per.module_name === to.meta.permission || per.sub_module_name === to.meta.permission) === -1)

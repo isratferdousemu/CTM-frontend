@@ -1,10 +1,10 @@
 const GrievanceManagementRoutes = [
   {
     path: "/grievance-management/type",
-    name: "GrievanceTypeListView",
+    name: "grievanceType",
     meta: {
       requiresAuth: true,
-      Permission: "type-list",
+      permission: "grievanceType-view",
     },
     component: () =>
       import("../pages/GrievanceManagement/GrievanceType/index.vue"),
@@ -14,7 +14,7 @@ const GrievanceManagementRoutes = [
     name: "GrievanceSettings",
     meta: {
       requiresAuth: true,
-      Permission: "grievance-settings",
+      permission: "grievance-setting",
     },
     component: () =>
       import("../pages/GrievanceManagement/GrievanceSettings/index.vue"),
@@ -24,7 +24,7 @@ const GrievanceManagementRoutes = [
     name: "GrievanceTypeSubject",
     meta: {
       requiresAuth: true,
-      Permission: "subject-list",
+      permission: "grievanceSubject-view",
     },
     component: () =>
       import("../pages/GrievanceManagement/GrievaneSubject/index.vue"),
@@ -35,7 +35,7 @@ const GrievanceManagementRoutes = [
     name: "GrievanceList",
     meta: {
       requiresAuth: true,
-      Permission: "grievance-list",
+      permission: "grievanceList-view",
     },
     component: () => import("../pages/GrievanceManagement/index.vue"),
   },
