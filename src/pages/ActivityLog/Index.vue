@@ -8,7 +8,7 @@
 
             <v-expansion-panels>
               <v-expansion-panel class="ma-2">
-                <v-expansion-panel-header color="#8C9EFF">
+                <v-expansion-panel-header color="#8C9EFF" style="background-color: #1C3B68; color: white;font-size: 17px;">
                   <h3 class="white--text">
                     {{
                       $t(
@@ -221,6 +221,7 @@
                                   :range="[dates[0] , dates[1]]"
                                   no-title
                                   scrollable
+                                  ref="datePicker"
                               >
                                 <v-spacer></v-spacer>
                                 <v-btn text color="primary" @click="resetDateRange">
@@ -265,7 +266,9 @@
                 theme="light"
                 class="mb-8"
             >
-              <v-card-title class="justify-center" tag="div">
+              <v-card-title class="justify-center" tag="div"
+                            style="text-align:center; background-color: #1C3B68; color: white;font-size: 17px;padding-top:2px !important;"
+              >
                 <h3 class="text-uppercase pt-3">
                   {{ $t('container.activity_log.table.title') }}
                 </h3>
@@ -363,7 +366,6 @@
                         :headers="headers"
                         :items="activity_logs"
                         :items-per-page="pagination.perPage"
-
                         @update:options="handleOptionsUpdate($event)"
 
                         hide-default-footer
@@ -596,53 +598,54 @@ export default {
           value: "id",
           align: "start",
           sortable: false,
+          width: "1%" // Specify the width for this column
         },
         {
-          text:  this.$t("container.activity_log.table.action_type") ,
+          text: this.$t("container.activity_log.table.action_type"),
           value: "log_name",
+          width: "10%"
         },
         {
           text: this.$t("container.activity_log.table.description"),
           value: "description",
+          width: "20%"
         },
-        // {
-        //   text:  this.$t("User Type") ,
-        //   value: "causer.user_type",
-        // },
+
         {
-          text:  this.$t("container.activity_log.table.user_name") ,
+          text: this.$t("container.activity_log.table.user_name"),
           value: "causer.user_name",
+          width: "10%"
         },
         {
-          text:  this.$t("container.activity_log.table.user_email") ,
+          text: this.$t("container.activity_log.table.user_email"),
           value: "causer.email",
+          width: "15%"
         },
         {
           text: this.$t("container.activity_log.table.device"),
           value: "properties.device",
+          width: "15%" // Specify the width for this column
         },
         {
           text: this.$t("container.activity_log.table.source_ip"),
           value: "properties.ip",
+          width: "10%" // Specify the width for this column
         },
-        // {
-        //   text: this.$t("container.activity_log.table.change_info"),
-        //   value: "subject",
-        //   // sortable: true,
-        // },
-
         {
           text: this.$t("container.activity_log.table.create"),
           value: "created_at",
+          width: "14%" // Specify the width for this column
         },
         {
           text: this.$t("container.list.action"),
           value: "actions",
           align: "center",
           sortable: false,
-        },
+          width: "1%"
+        }
       ];
     },
+
     ...mapState({
       message: (state) => state.District.success_message,
       divisions: (state) => state.Division.divisions,
@@ -904,16 +907,17 @@ export default {
 
     resetDateRange() {
       this.dates = [];
-      this.menu = false;
-      this.data.division_id= null,
-      this.data.district_id= null,
-      this.data.action_type= null,
-      this.data.office_id= null,
-      this.data.device_type= null,
-      this.data.user_id= '',
-      this.data.beneficiary_id= '',
-      this.data.user_name= '',
-      this.GetActivityLog()
+      // this.menu = false;
+      // this.data.division_id= null,
+      // this.data.district_id= null,
+      // this.data.action_type= null,
+      // this.data.office_id= null,
+      // this.data.device_type= null,
+      // this.data.user_id= '',
+      // this.data.beneficiary_id= '',
+      // this.data.user_name= '',
+      // this.GetActivityLog()
+      this.$refs.menu.save();
     },
 
     async OnChangeDateInfo(event, type) {
@@ -1034,7 +1038,20 @@ export default {
     },
 
     resetSearch() {
-      this.resetDateRange();
+
+      this.dates = [];
+      this.menu = false;
+      this.data.division_id= null,
+          this.data.district_id= null,
+          this.data.action_type= null,
+          this.data.office_id= null,
+          this.data.device_type= null,
+          this.data.user_id= '',
+          this.data.beneficiary_id= '',
+          this.data.user_name= '',
+          this.GetActivityLog()
+
+      // this.resetDateRange();
     },
 
     deleteActivityLogs: async function () {

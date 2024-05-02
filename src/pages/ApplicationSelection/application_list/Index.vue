@@ -226,6 +226,39 @@
                             :label="$t('container.list.status')">
                           </v-select>
                         </v-col>
+
+                        <v-col lg="3" md="3" cols="12">
+                          <v-select outlined clearable append-icon="mdi-plus" item-value="id" :items="genders" v-model="data.gender_id"
+                                    :item-text="$i18n.locale == 'en' ? 'value_en' : 'value_bn'" :label="$t('container.application_selection.application.gender')">
+                          </v-select>
+
+                        </v-col>
+
+                        <v-col lg="3" md="3" cols="12">
+                          <v-select outlined clearable append-icon="mdi-plus" :items="accountTypes" item-value="id"
+                                    :item-text="$i18n.locale == 'en' ? 'value_en' : 'value_bn'"
+                                    v-model="data.account_type"
+                                    :label="$t('container.application_selection.application.account_type')">
+                          </v-select>
+                        </v-col>
+
+                        <v-col lg="3" md="3" cols="12">
+                          <v-text-field v-model="data.search_text" outlined clearable append-icon="mdi-plus"
+                                        :label="$t('container.list.search')">
+                          </v-text-field>
+                        </v-col>
+                        <v-col lg="3" md="3" cols="12">
+                          <template>
+                            <v-range-slider
+                                v-model="data.age_range"
+                                :label="$t('container.application_selection.application.age')"
+                                :min="1"
+                                :max="130"
+                                thumb-label="always"
+                            ></v-range-slider>
+                          </template>
+                        </v-col>
+
                       </v-row>
 
                       <div class="d-inline d-flex justify-end">
@@ -432,15 +465,39 @@
 
 
                       <template v-slot:item.ward="{ item }">
-
-
                         <span>
 
                           {{ item?.permanent_location.name_en }}
                         </span>
-
-
                       </template>
+
+                      <template v-slot:item.gender="{ item }">
+                        <span>
+                          {{ $i18n.locale == 'en' ? item?.gender.value_en : item?.gender.value_bn }}
+                        </span>
+                      </template>
+
+                      <template v-slot:item.gender="{ item }">
+                        <span>
+                          {{ $i18n.locale == 'en' ? item?.gender.value_en : item?.gender.value_bn }}
+                        </span>
+                      </template>
+
+                      <template v-slot:item.age="{ item }">
+                       <span>
+                          {{ $i18n.locale == 'en' ? item.age : $helpers.englishToBangla(item.age) }}
+                        </span>
+                      </template>
+
+                      <template v-slot:item.account_type="{ item }">
+                        <span v-if="item.account_type == 1">
+                          {{ $i18n.locale == 'en' ? 'Bank account' : 'ব্যাংক অ্যাকাউন্ট' }}
+                        </span>
+                        <span v-if="item.account_type == 2">
+                          {{ $i18n.locale == 'en' ? 'MFS (Mobile Financial Service)' : 'এমএফএস (মোবাইল ফিনান্সিয়াল সেবা)' }}
+                        </span>
+                      </template>
+
                       <template v-slot:item.status="{ item }">
 
                         <span v-if="item.status == 0" class="not-selected"
@@ -530,6 +587,11 @@ export default {
   title: "CTM - Application List",
   data() {
     return {
+      accountTypes: [
+        { id: '1', value_en: 'Bank account', value_bn: 'ব্যাংক অ্যাকাউন্ট' },
+        { id: '2', value_en: 'MFS (Mobile Financial Service)', value_bn: 'এমএফএস (মোবাইল ফিনান্সিয়াল সেবা)' }
+      ],
+
       data: {
         id: null,
         name_en: null,
@@ -551,6 +613,11 @@ export default {
         account_no: null,
         status_list: null,
         program_id: null,
+
+        gender_id: null,
+        account_type: null,
+        search_text:'',
+        age_range:[1, 130],
       },
       total: null,
 
@@ -722,8 +789,6 @@ export default {
           value: "ward",
         },
 
-
-
         {
           text: this.$t("container.application_selection.application.father_name_en"),
           value: "father_name_en",
@@ -758,15 +823,25 @@ export default {
           value: "nominee_relation_with_beneficiary",
 
         },
-
-
-
         {
           text: this.$t("container.application_selection.application.mobile"),
           value: "mobile",
-
         },
 
+        {
+          text: this.$t("container.application_selection.application.age"),
+          value: "age",
+        },
+
+        {
+          text: this.$t("container.application_selection.application.gender"),
+          value: "gender",
+        },
+
+        {
+          text: this.$t("container.application_selection.application.account_type"),
+          value: "account_type",
+        },
 
         { text: this.$t("container.list.action"), value: "actions", fixed: true },
 
@@ -784,6 +859,11 @@ export default {
     //   // Update select_all to false if forward.applications_id is empty
     //   this.select_all = false;
     // },
+
+    getItemValue(item) {
+      return this.language === 'bn' ? item.value_bn : item.value_en;
+    },
+
     Division() {
       this.data.division_id != null;
     },
@@ -1161,6 +1241,10 @@ export default {
 
       this.data.status_list = null;
       this.data.program_id = null;
+      this.data.gender_id=null;
+      this.data.account_type=null;
+      this.data.age_range=[1, 130];
+      this.data.search_text='';
 
       this.GetPermissions();
       this.GetApplication();
@@ -1674,7 +1758,7 @@ export default {
     async GetApplication() {
       const queryParams = {
 
-        searchText: this.search,
+        searchText: this.data.search_text,
         application_id: this.data.application_id,
         nominee_name: this.data.nominee_name,
         account_no: this.data.account_no,
@@ -1695,6 +1779,9 @@ export default {
         status: this.data.status_list,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
+        account_type:this.data.account_type,
+        gender_id:this.data.gender_id,
+        age_range:this.data.age_range,
       };
       this.$axios
         .get("/admin/application/get", {
@@ -1778,6 +1865,15 @@ export default {
           }
         }
 
+        let account_type = '';
+        if (i) {
+          if (i.account_type == 1) {
+            account_type = this.$i18n.locale == 'en' ? 'Bank account' : 'ব্যাংক অ্যাকাউন্ট'
+          } else if (i.account_type == 2) {
+            account_type =  this.$i18n.locale == 'en' ? 'MFS (Mobile Financial Service)' : 'এমএফএস (মোবাইল ফিনান্সিয়াল সেবা)'
+          }
+        }
+
         if (i?.permanent_location_type_id == '1') {
           divisionName = this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.parent?.name_bn;
           districtName = this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.name_bn;
@@ -1815,6 +1911,10 @@ export default {
           'nominee_en': i?.nominee_en,
           'nominee_relation_with_beneficiary': i?.nominee_relation_with_beneficiary,
           'mobile': i?.mobile,
+
+          'age': this.$i18n.locale == 'en' ? i?.age : this.$helpers.englishToBangla(i?.age),
+          'gender': this.$i18n.locale == 'en' ? i?.gender.value_en : i?.gender.value_bn,
+          'account_type': account_type,
         }
       }));
 
@@ -1920,6 +2020,14 @@ export default {
                   status = "Rejected"
                 }
               }
+              let account_type = '';
+              if (i) {
+                if (i.account_type == 1) {
+                  account_type = this.$i18n.locale == 'en' ? 'Bank account' : 'ব্যাংক অ্যাকাউন্ট'
+                } else if (i.account_type == 2) {
+                  account_type =  this.$i18n.locale == 'en' ? 'MFS (Mobile Financial Service)' : 'এমএফএস (মোবাইল ফিনান্সিয়াল সেবা)'
+                }
+              }
 
               if (i?.permanent_location_type_id == '1') {
                 divisionName = this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.parent?.name_bn;
@@ -1958,6 +2066,10 @@ export default {
                 'nominee_en': i?.nominee_en,
                 'nominee_relation_with_beneficiary': i?.nominee_relation_with_beneficiary,
                 'mobile': i?.mobile,
+
+                'age': this.$i18n.locale == 'en' ? i?.age : this.$helpers.englishToBangla(i?.age),
+                'gender': this.$i18n.locale == 'en' ? i?.gender.value_en : i?.gender.value_bn,
+                'account_type': account_type,
               }
             }));
 
@@ -2017,8 +2129,6 @@ export default {
 
     submitsearch() {
       this.GetApplication();
-
-
     },
 
     updateHeaderTitle() {
@@ -2031,8 +2141,10 @@ export default {
   },
   created() {
     this.GetAllDivisions();
-
     this.GetCommitte();
+    this.$store
+        .dispatch("getGlobalLookupByType", 2)
+        .then((res) => (this.genders = res));
   },
   beforeMount() {
     this.updateHeaderTitle();
