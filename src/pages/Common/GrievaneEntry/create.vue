@@ -1573,6 +1573,8 @@ export default {
             })
             .then((result) => {
               this.district_poros = result.data.data;
+            
+
               console.log(this.district_poros, 'this.district_porosthis.district_porosthis.district_poros');
             });
         }
