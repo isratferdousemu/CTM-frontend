@@ -631,7 +631,11 @@
         "exit_reason": "Exit Reason",
         "exit_date": "Exit Date",
         "replace_with_application_id": "Replaced with Beneficiary ID",
-        "replace_with_name_en": "Replaced with Beneficiary Name"
+        "replace_with_name_en": "Replaced with Beneficiary Name",
+
+        "gender": "Gender",
+        "account_type": "Account Type",
+        "age": "Age"
       },
       "mobile_operator": {
         "list": "Mobile Operator List",
@@ -1076,11 +1080,11 @@
         "title": "Activity Log Lists",
         "log_view": "Activity Log View",
         "name": "Log Name",
-        "action_type": "Action Type",
-        "user_name": "User Name",
+        "action_type": "Action",
+        "user_name": "User",
         "user_email": "Email",
         "device": "Device",
-        "source_ip": "Source IP",
+        "source_ip": "IP",
         "description": "Description",
         "change_info": "Change Info",
         "login_user_info": "Login User",

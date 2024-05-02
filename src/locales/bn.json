@@ -630,7 +630,11 @@
         "exit_reason": "প্রস্থানের কারণ",
         "exit_date": "প্রস্থানের তারিখ",
         "replace_with_application_id": "প্রতিস্থাপিত উপকারভোগীর আইডি",
-        "replace_with_name_en": "প্রতিস্থাপিত উপকারভোগীর নাম"
+        "replace_with_name_en": "প্রতিস্থাপিত উপকারভোগীর নাম",
+
+        "gender": "লিঙ্গ",
+        "account_type": "অ্যাকাউন্ট ধরন",
+        "age": "বয়স"
       },
       "mobile_operator": {
         "list": "মোবাইল অপারেটরের তালিকা",
@@ -1072,11 +1076,11 @@
         "title": "এক্টিভিটি লগের তালিকা",
         "log_view": "এক্টিভিটি লগের বিস্তারিত তথ্য",
         "name": "লগের নাম",
-        "action_type": "কর্মের ধরন",
-        "user_name": "ব্যবহারকারীর নাম",
+        "action_type": "কর্ম",
+        "user_name": "ব্যবহারকারী",
         "user_email": "ইমেইল",
         "device": "ডিভাইস",
-        "source_ip": "উৎস আইপি",
+        "source_ip": "আইপি",
         "description": "বর্ননা",
         "change_info": "পরিবর্তন ",
         "login_user_info": "লগইন ইউজার তথ্য",
