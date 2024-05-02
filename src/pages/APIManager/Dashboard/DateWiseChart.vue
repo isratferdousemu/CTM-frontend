@@ -1,58 +1,37 @@
 <template>
   <v-col>
-  <v-row>
-    <v-col cols="12">
-      <label style="color: #1976d2">
-                      <span>
-                        {{ $t("container.api_manager.dashboard.number_of_api_request") }}
+    <v-row>
+      <v-col cols="12">
+        <label style="color: #1976d2">
+          <span>
+            {{ $t("container.api_manager.dashboard.number_of_api_request") }}
 
-                      </span>
-      </label></v-col
-    >
-  </v-row>
-  <v-row class="ml-1 mr-1">
-    <v-menu
-        ref="menu"
-        v-model="menu"
-        :close-on-content-click="false"
-        transition="scale-transition"
-        offset-y
-        min-width="auto"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-text-field
-            v-model="dates"
-            :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
-            :label="$t('container.application_selection_dashboard.enter_start_end_date')"
-            readonly
-            v-bind="attrs"
-            v-on="on"
-        ></v-text-field>
-      </template>
-      <v-date-picker
-          v-model="dates"
-          :range="[dates[0], dates[1]]"
-          no-title
-          scrollable
-          @input="OnChangeDateInfo($event,'total_received')"
-      >
-        <v-spacer></v-spacer>
-        <v-btn text color="primary" @click="resetDateRange">
-          Cancel
-        </v-btn>
-        <v-btn
-            text
-            color="primary"
-            @click="$refs.menu.save(dates)"
-        >
-          OK
-        </v-btn>
-      </v-date-picker>
-    </v-menu>
-  </v-row>
-  <v-row>
-    <canvas id="total_number_of_application_received_line_bar_info"></canvas>
-  </v-row>
+          </span>
+        </label></v-col>
+    </v-row>
+    <v-row class="ml-1 mr-1">
+      <v-menu ref="menu" v-model="menu" :close-on-content-click="false" transition="scale-transition" offset-y
+        min-width="auto">
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field v-model="dates" :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
+            :label="$t('container.application_selection_dashboard.enter_start_end_date')" readonly v-bind="attrs"
+            v-on="on"></v-text-field>
+        </template>
+        <v-date-picker v-model="dates" :range="[dates[0], dates[1]]" no-title scrollable
+          @input="OnChangeDateInfo($event,'total_received')">
+          <v-spacer></v-spacer>
+          <v-btn text color="primary" @click="resetDateRange">
+            {{$t('container.list.reset')}}
+          </v-btn>
+          <v-btn text color="primary" @click="$refs.menu.save(dates)">
+            {{ $t('container.list.ok') }}
+          </v-btn>
+        </v-date-picker>
+      </v-menu>
+    </v-row>
+    <v-row>
+      <canvas id="total_number_of_application_received_line_bar_info"></canvas>
+    </v-row>
   </v-col>
 
 </template>
