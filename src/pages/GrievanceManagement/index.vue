@@ -441,15 +441,13 @@
 
 
                       </template>
-                      <template v-slot:item.tracking_no="{ item }">
+                        <template v-slot:item.tracking_no="{ item }">
 
 
                         <span>
 
                           {{ item?.tracking_no }}
                         </span>
-
-
                       </template>
                       <template v-slot:item.status="{ item }">
 
@@ -699,6 +697,11 @@ export default {
     ValidationObserver,
   },
   computed: {
+     language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      },
+    },
 
 
     isForwardButtonDisabled() {
@@ -827,12 +830,13 @@ export default {
     },
     // show details modal
     showDetailsModal(item) {
+       console.log(this.language,'languagelanguagelanguage');
       this.showModal = true;
       this.data.status = item.status
       this.data.tracking_no = item.tracking_no
       this.data.resolved_officer = item.resolved_officer
-      this.data.grievanceSubjectEn = item.grievanceSubjectEn
-      this.data.grievanceTypeEn = item.grievanceTypeEn
+      this.data.grievanceSubjectEn = this.language === 'bn' ? item.grievance_subject?.title_bn : item.grievance_subject?.title_en
+      this.data.grievanceTypeEn = this.language === 'bn' ? item.grievance_type?.title_bn : item.grievance_type?.title_en
       this.data.created_at = item.created_at
       console.log(item, 'item eee');
     },
@@ -1734,12 +1738,13 @@ export default {
           params: queryParams,
         })
         .then((result) => {
+          console.log(result,'resultresultresultresultresult');
           this.applications = result.data.data;
           console.log(this.applications, ' this.applications this.applications');
-          this.total = result.data.meta.total;
-          this.pagination.current = result.data.meta.current_page;
-          this.pagination.total = result.data.meta.last_page;
-          this.pagination.grand_total = result.data.meta.total;
+          this.total = result.data.total;
+          this.pagination.current = result.data.current_page;
+          this.pagination.total = result.data.last_page;
+          this.pagination.grand_total = result.data.total;
         });
 
 
