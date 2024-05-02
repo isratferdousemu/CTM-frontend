@@ -375,6 +375,7 @@
 
 
                       </template> -->
+
                       <template v-slot:item.sl="{ item, index }">
                         {{
                           (pagination.current - 1) * pagination.perPage +
@@ -382,65 +383,21 @@
                           1
                         }}
                       </template>
-                      <template v-slot:item.division="{ item }">
-                        <span v-if="item?.permanent_location.location_type == '1'">
-                          {{ item?.permanent_location?.parent?.parent?.parent?.name_en }}
-                        </span>
-
-                        <span
-                          v-if="item?.permanent_location.location_type == '2' || item?.permanent_location.location_type == '3'">
-                          {{ item?.permanent_location.parent?.parent?.parent?.parent?.name_en }}
-                        </span>
-
-
-                      </template>
-                      <template v-slot:item.district="{ item }">
-                        <span v-if="item?.permanent_location.location_type == '1'">
-                          {{ item?.permanent_location?.parent?.parent?.name_en }}
-                        </span>
-
-                        <span
-                          v-if="item?.permanent_location.location_type == '2' || item?.permanent_location.location_type == '3'">
-                          {{ item?.permanent_location.parent?.parent?.parent?.name_en }}
-                        </span>
-
-
-                      </template>
-                      <template v-slot:item.location="{ item }">
-                        <span v-if="item?.permanent_location.location_type == '1'">
-                          {{ item?.permanent_location?.parent?.name_en }}
-                        </span>
-
-                        <span
-                          v-if="item?.permanent_location.location_type == '2' || item?.permanent_location.location_type == '3'">
-                          {{ item?.permanent_location.parent?.parent?.name_en }}
-                        </span>
-
-
-                      </template>
-
-                      <template v-slot:item.union_pouro_city="{ item }">
-
-
-                        <span
-                          v-if="item?.permanent_location.location_type == '2' || item?.permanent_location.location_type == '3'">
-                          {{ item?.permanent_location.parent?.name_en }}
-                        </span>
-
-
-                      </template>
-
-
-                      <template v-slot:item.ward="{ item }">
-
-
+              
+                      <template v-slot:item.grievanceType="{ item }">
                         <span>
-
-                          {{ item?.permanent_location.name_en }}
+                          {{ language === 'bn' ? item.grievance_type?.title_bn : item.grievance_type?.title_en  }}
+                          <!-- {{ item?.grievance_type?.title_en }} -->
                         </span>
-
-
                       </template>
+
+                        <template v-slot:item.grievanceSubject="{ item }">
+                          <span>
+                             {{ language === 'bn' ? item.grievance_subject?.title_bn : item.grievance_subject?.title_en }}
+                          </span>
+                        </template>
+
+                    
                         <template v-slot:item.tracking_no="{ item }">
 
 
@@ -474,23 +431,6 @@
 
                       </template>
 
-
-                      <!-- Action Button -->
-                      <!-- <template v-slot:item.actions="{ item }">
-
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn fab x-small v-on="on" color="#AFB42B" router
-                              :to="`/application-selection/application-view/${item.application_id}`" elevation="0"
-                              class="white--text">
-                              <v-icon> mdi-eye </v-icon>
-                            </v-btn>
-                          </template>
-                          <span>
-                            {{ $t("container.list.view") }}
-                          </span>
-                        </v-tooltip>
-                      </template> -->
                       <template v-slot:item.actions="{ item }">
 
                         <v-tooltip top>
@@ -505,9 +445,6 @@
                           </span>
                         </v-tooltip>
                       </template>
-
-
-
 
                       <!-- End Action Button -->
                       <template v-slot:footer="item">
@@ -550,11 +487,11 @@
                   </tr>
                     <tr>
                       <th>{{ $t("container.grievance_management.main_grievance_type") }} :</th>
-                      <th>{{ data.grievanceTypeEn }}</th>
+                      <th>{{ data.grievanceType }}</th>
                     </tr>
                      <tr>
                         <th>{{ $t("container.grievance_management.grievance_subject") }} :</th>
-                        <th>{{ data.grievanceSubjectEn }}</th>
+                        <th>{{ data.grievanceSubject }}</th>
                       </tr>
                        <tr>
                         <th>{{ $t("container.grievance_management.grievanceList.grievance_date") }} :</th>
@@ -623,8 +560,8 @@ export default {
         program_id: null,
         tracking_no: null,
         status: null,
-        grievanceTypeEn: null,
-        grievanceSubjectEn: null,
+        grievanceType: null,
+        grievanceSubject: null,
         created_at: null,
         resolved_officer: null,
       },
@@ -685,7 +622,7 @@ export default {
       },
       items: [5, 10, 15, 20, 40, 50, 100],
 
-      selectedColumns: ['grievanceSubjectEn', 'grievanceTypeEn', 'tracking_no', 'created_at', 'resolved_officer', 'status'],  // Initially, first 6 columns are selected
+      selectedColumns: ['grievanceSubject', 'grievanceType', 'tracking_no', 'created_at', 'resolved_officer', 'status'],  // Initially, first 6 columns are selected
 
       fixedColumns: ['id', 'sl', 'actions'],  // Two columns that will always remain visible
 
@@ -755,13 +692,13 @@ export default {
           text: this.$t(
             "container.grievance_management.main_grievance_type"
           ),
-          value: "grievanceTypeEn",
+          value: "grievanceType",
 
 
         },
         {
           text: this.$t("container.grievance_management.grievance_subject"),
-          value: "grievanceSubjectEn",
+          value: "grievanceSubject",
 
         },
         {
@@ -835,8 +772,8 @@ export default {
       this.data.status = item.status
       this.data.tracking_no = item.tracking_no
       this.data.resolved_officer = item.resolved_officer
-      this.data.grievanceSubjectEn = this.language === 'bn' ? item.grievance_subject?.title_bn : item.grievance_subject?.title_en
-      this.data.grievanceTypeEn = this.language === 'bn' ? item.grievance_type?.title_bn : item.grievance_type?.title_en
+      this.data.grievanceSubject = this.language === 'bn' ? item.grievance_subject?.title_bn : item.grievance_subject?.title_en
+      this.data.grievanceType = this.language === 'bn' ? item.grievance_type?.title_bn : item.grievance_type?.title_en
       this.data.created_at = item.created_at
       console.log(item, 'item eee');
     },
@@ -1738,7 +1675,6 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          console.log(result,'resultresultresultresultresult');
           this.applications = result.data.data;
           console.log(this.applications, ' this.applications this.applications');
           this.total = result.data.total;
