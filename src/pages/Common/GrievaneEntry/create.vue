@@ -4,7 +4,7 @@
       <v-row align="center" no-gutters>
         <v-img class="p-3 mr-4" max-height="100%" max-width="60px" position="center center"
           src="/assets/images/logo.png"></v-img>
-        <v-toolbar-title>{{ $t('container.application_selection.application.title_online_1') }}<br>{{
+        <v-toolbar-title style="font-size:100%">{{ $t('container.application_selection.application.title_online_1') }}<br>{{
           $t('container.application_selection.application.title_online_2') }}
         </v-toolbar-title>
 
@@ -29,7 +29,7 @@
 
         <v-col>
           <v-row align="center" justify="end" no-gutters>
-            <v-col>
+            <v-col lg="6" md="6"  sm="8" cols="12">
               <!-- Adjust the styling of LocaleSwitcher as needed -->
               <LocaleSwitcher />
             </v-col>
@@ -38,11 +38,11 @@
       </v-row>
     </v-app-bar>
     <br />
-    <v-row style="margin:auto;margin-top:60px;width:70%">
-      <v-col cols="12">
+    <v-row justify="center" class="ma-0 pa-0 mt-16">
+      <v-col lg="8" md="6" cols="12" >
         <ValidationObserver ref="form" v-slot="{ invalid }">
           <form @submit.prevent="submitGrievanceCheck()">
-            <v-card class="pa-5 px-10 mb-4">
+            <v-card class="pa-1 px-3 mb-1">
               <div>
                 <v-expansion-panels v-model="panel" multiple>
                   <!-------------complaint entry--------------->
@@ -65,7 +65,7 @@
                             <label>{{ $t('container.grievance_management.grievanceEntry.is_existing_beneficiary')
                             }}</label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-select v-model="data.is_existing_beneficiary" item-value="value" outlined :items="[
+                            <v-select :hide-details="errors[0] ? false : true" v-model="data.is_existing_beneficiary" item-value="value" outlined :items="[
                               { text: language === 'bn' ? 'হ্যাঁ' : 'Yes', value: 1 },
                               { text: language === 'bn' ? 'না' : 'No', value: 2 },]" item-text="text"
                               :error="errors[0] ? true : false"
@@ -79,14 +79,26 @@
 
                       <v-row v-if="data.is_existing_beneficiary == 1">
                         <v-col lg="6" md="6" cols="12">
-                          <label>{{ $t('container.grievance_management.grievanceEntry.beneficiary_id') }}</label>
-                          <v-text-field outlined clearable v-model="data.verification_number"></v-text-field>
+                               <ValidationProvider name="Beneficiary ID" vid="beneficiary_id" rules="required" v-slot="{ errors }">
+                                    <label>{{ $t('container.grievance_management.grievanceEntry.beneficiary_id') }}</label>
+                                    <span style="margin-left: 4px; color: red">*</span>
+                                    <v-text-field :hide-details="errors[0] ? false : true" outlined clearable v-model="data.verification_number" :error="errors[0] ? true : false"
+                                      :error-messages="errors[0] ? (language === 'bn' ? 'দয়া করে সঠিক সুবিধাভোগী আইডি লিখুন' : 'Please Enter Valid Beneficiary ID.') : ''">
+                                    </v-text-field>
+                                  </ValidationProvider>
+                          <!-- <label>{{ $t('container.grievance_management.grievanceEntry.beneficiary_id') }}</label>
+                          <v-text-field outlined clearable v-model="data.verification_number"></v-text-field> -->
                         </v-col>
                         <v-col lg="6" md="6" cols="12">
-                          <label>{{
-                            $t('container.application_selection.application.date_of_birth')
-                          }}</label>
-                          <v-text-field outlined clearable v-model="data.date_of_birth" type="date"></v-text-field>
+                          <ValidationProvider name="Date Of Birth" vid="date_of_birth" rules="required" v-slot="{ errors }">
+                                 <label>{{
+                                   $t('container.application_selection.application.date_of_birth')
+                                 }}</label>
+                                  <span style="margin-left: 4px; color: red">*</span>
+                                  <v-text-field :hide-details="errors[0] ? false : true" outlined clearable v-model="data.date_of_birth" type="date" :error="errors[0] ? true : false"
+                                    :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে আপনার  জন্ম  তারিখ লিখুন' : 'Please Enter Valid Data of Birth.') : ''">
+                                  </v-text-field>
+                                </ValidationProvider>
                         </v-col>
                       </v-row>
 
@@ -101,26 +113,54 @@
 
                       <v-row v-if="data.verification_type == 3 && data.is_existing_beneficiary == 2">
                         <v-col lg="6" md="6" cols="12">
-                          <label>{{ $t('container.system_audit.nbr') }}</label>
-                          <v-text-field outlined clearable v-model="data.verification_number"></v-text-field>
+                            <ValidationProvider name="NID Number" vid="verification_number" rules="required" v-slot="{ errors }">
+                                    <label>{{ $t('container.system_audit.nbr') }}</label>
+                                    <span style="margin-left: 4px; color: red">*</span>
+                                    <v-text-field :hide-details="errors[0] ? false : true" outlined clearable v-model="data.verification_number" :error="errors[0] ? true : false"
+                                      :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে সঠিক জন্ম নিবন্ধন নম্বর লিখুন' : 'Please Enter Valid NID Number.') : ''">
+                                    </v-text-field>
+                                  </ValidationProvider>
                         </v-col>
                         <v-col lg="6" md="6" cols="12">
-                          <label>{{
-                            $t('container.application_selection.application.date_of_birth')
-                          }}</label>
-                          <v-text-field outlined clearable v-model="data.date_of_birth" type="date"></v-text-field>
+                         <ValidationProvider name="Date Of Birth" vid="date_of_birth" rules="required" v-slot="{ errors }">
+                                 <label>{{
+                                   $t('container.application_selection.application.date_of_birth')
+                                 }}</label>
+                                  <span style="margin-left: 4px; color: red">*</span>
+                                  <v-text-field :hide-details="errors[0] ? false : true" outlined clearable v-model="data.date_of_birth" type="date" :error="errors[0] ? true : false"
+                                    :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে আপনার  জন্ম  তারিখ লিখুন' : 'Please Enter Valid Data of Birth.') : ''">
+                                  </v-text-field>
+                                </ValidationProvider>
                         </v-col>
                       </v-row>
                       <v-row v-if="data.verification_type == 4 && data.is_existing_beneficiary == 2">
                         <v-col lg="6" md="6" cols="12">
-                          <label>{{ $t('container.system_audit.nbr') }}</label>
-                          <v-text-field outlined clearable v-model="data.verification_number"></v-text-field>
+                                 <ValidationProvider name="NID Number" vid="verification_number" rules="required" v-slot="{ errors }">
+                                  <label>{{ $t('container.system_audit.nbr') }}</label>
+                                  <span style="margin-left: 4px; color: red">*</span>
+                                  <v-text-field :hide-details="errors[0] ? false : true" outlined clearable v-model="data.verification_number" :error="errors[0] ? true : false"
+                                    :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে সঠিক এনআইডি নম্বর লিখুন' : 'Please Enter Valid NID Number.') : ''">
+                                  </v-text-field>
+                                </ValidationProvider>
+
+                          <!-- <label>{{ $t('container.system_audit.nbr') }}</label>
+                          <v-text-field outlined clearable v-model="data.verification_number"></v-text-field> -->
                         </v-col>
                         <v-col lg="6" md="6" cols="12">
-                          <label>{{
+                              <ValidationProvider name="Date Of Birth" vid="date_of_birth" rules="required" v-slot="{ errors }">
+                               <label>{{
+                                 $t('container.application_selection.application.date_of_birth')
+                               }}</label>
+                                <span style="margin-left: 4px; color: red">*</span>
+                                <v-text-field :hide-details="errors[0] ? false : true" outlined clearable v-model="data.date_of_birth" type="date" :error="errors[0] ? true : false"
+                                  :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে আপনার জন্ম তারিখ লিখুন' : 'Please Enter Valid Data of Birth.') : ''">
+                                </v-text-field>
+                              </ValidationProvider>
+
+                          <!-- <label>{{
                             $t('container.application_selection.application.date_of_birth')
                           }}</label>
-                          <v-text-field outlined clearable v-model="data.date_of_birth" type="date"></v-text-field>
+                          <v-text-field outlined clearable v-model="data.date_of_birth" type="date"></v-text-field> -->
                         </v-col>
                       </v-row>
 
@@ -128,7 +168,7 @@
                         <v-col cols="12">
                           <div class="text-right">
                             <v-btn type="submit" flat color="success" :loading="loading" @click="verifyCard()"
-                              class="custom-btn-width white--text py-2">
+                              class="custom-btn-width white--text ">
                               <span class="mdi mdi-television mr-2"></span>
                               {{ $t("container.grievance_management.grievanceEntry.Verify") }}
                             </v-btn>
@@ -153,13 +193,13 @@
                     </v-expansion-panel-header>
 
                     <v-expansion-panel-content class="mt-5">
-                      <div class="pa-2 mb-4">
+                    
                         <v-row>
                           <v-col lg="6" md="6" cols="12">
                             <ValidationProvider name="Name" vid="name" rules="required" v-slot="{ errors }">
                               <label>{{ $t('container.grievance_management.grievanceEntry.name') }} </label>
                               <span style="margin-left: 4px; color: red">*</span>
-                              <v-text-field v-model="data.name" outlined :error="errors[0] ? true : false"
+                              <v-text-field :hide-details="errors[0] ? false : true" v-model="data.name" outlined :error="errors[0] ? true : false"
                                 :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে আপনার নাম লিখুন' : 'Please Enter Your Name.') : ''">
                               </v-text-field>
                             </ValidationProvider>
@@ -168,7 +208,7 @@
                             <ValidationProvider name="Gender" vid="gender" v-slot="{ errors }" rules="required">
                               <label>{{ $t('container.system_config.allowance_program.gender') }}</label>
                               <span style="margin-left: 4px; color: red">*</span>
-                              <v-select v-model="data.gender_id" item-value="id" outlined :items="genders"
+                              <v-select :hide-details="errors[0] ? false : true" v-model="data.gender_id" item-value="id" outlined :items="genders"
                                 :item-text="getItemValue" :error="errors[0] ? true : false"
                                 :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে লিঙ্গ নির্বাচন করুন' : 'Please Select Your Gender.') : ''">
                               </v-select>
@@ -179,7 +219,7 @@
                             <ValidationProvider name="program" vid="program" rules="required" v-slot="{ errors }">
                               <label>{{ $t('container.grievance_management.grievanceEntry.Program_name') }} </label>
                               <span style="margin-left: 4px; color: red">*</span>
-                              <v-select @change="getProgramName()" outlined :items="programs" :item-text="getItemText"
+                              <v-select :hide-details="errors[0] ? false : true" @change="getProgramName()" outlined :items="programs" :item-text="getItemText"
                                 item-value="id" v-model="data.program_id" :error="errors[0] ? true : false"
                                 :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে প্রোগ্রাম নির্বাচন করুন' : 'Please Select Program Name.') : ''">
                               </v-select>
@@ -195,7 +235,7 @@
                                 $t('container.grievance_management.grievanceEntry.email') }} </label><span
                                 style="margin-left: 4px; color: red">*</span>
 
-                              <v-text-field v-model="data.email" outlined type="email" clearable
+                              <v-text-field :hide-details="errors[0] ? false : true" v-model="data.email" outlined type="email" clearable
                                 :error="errors[0] ? true : false"
                                 :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে ইমেইল লিখুন' : 'Please Enter Your Email Address.') : ''">
                               </v-text-field>
@@ -212,7 +252,7 @@
                                 $t('container.application_selection.application.mobile') }} </label><span
                                 style="margin-left: 4px; color: red">*</span>
 
-                              <v-text-field v-model="data.mobile" outlined type="number" clearable
+                              <v-text-field :hide-details="errors[0] ? false : true" v-model="data.mobile" outlined type="number" clearable
                                 :error="errors[0] ? true : false"
                                 :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে মোবাইল নম্বর লিখুন' : 'Please Enter Your Valid Mobile Number.') : ''">
                               </v-text-field>
@@ -221,7 +261,7 @@
 
                           </v-col>
                         </v-row>
-                      </div>
+                    
                     </v-expansion-panel-content>
                   </v-expansion-panel>
                   <!-------------complaint_info end--------------->
@@ -245,7 +285,7 @@
                           <ValidationProvider name="Grievance Type" vid="grievance_type_id" rules="required"
                             v-slot="{ errors }">
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete v-model="data.grievance_type_id" outlined :items="types"
+                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.grievance_type_id" outlined :items="types"
                               :item-text="language === 'bn' ? 'title_bn' : 'title_en'" item-value="id" required
                               :error="errors[0] ? true : false"
                               :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে অভিযোগের ধরন নির্বাচন করুন' : 'Please Select Grievance Type.') : ''"></v-autocomplete>
@@ -256,7 +296,7 @@
                           <ValidationProvider name="Grievance Subject" vid="grievance_subject_id" rules="required"
                             v-slot="{ errors }">
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-autocomplete v-model="data.grievance_subject_id" outlined :items="subjects"
+                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.grievance_subject_id" outlined :items="subjects"
                               :item-text="language === 'bn' ? 'title_bn' : 'title_en'" item-value="id" required
                               :error="errors[0] ? true : false"
                               :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে অভিযোগের বিষয় নির্বাচন করুন' : 'Please Select Grievacne Subject.') : ''"></v-autocomplete>
@@ -268,7 +308,7 @@
                           <label>{{ $t('container.grievance_management.grievanceEntry.details') }}</label>
                           <ValidationProvider name="Grievance Details" vid="details" rules="required" v-slot="{ errors }">
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-textarea v-model="data.details" outlined clearable :error="errors[0] ? true : false"
+                            <v-textarea :hide-details="errors[0] ? false : true" v-model="data.details" outlined clearable :error="errors[0] ? true : false"
                               handleCheckboxChangsa
                               :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে অভিযোগের বিবরণ লিখুন' : 'Please Enter Grievance Details.') : ''">
                             </v-textarea>
@@ -279,7 +319,7 @@
                           <label>{{ $t('container.grievance_management.grievanceEntry.document') }}</label>
                           <!-- <span style="margin-left: 4px; color: red">*</span> -->
                           <ValidationProvider v-slot="{ errors }" name="Document" vid="document">
-                            <v-file-input outlined prepend-outer-icon="mdi-camera" v-model="data.documents"
+                            <v-file-input :hide-details="errors[0] ? false : true" outlined prepend-outer-icon="mdi-camera" v-model="data.documents"
                               accept="file/*" :placeholder="language === 'bn' ? 'সিলেক্ট ফাইল' : 'Select File'">
                             </v-file-input>
                           </ValidationProvider>
@@ -493,20 +533,20 @@
                               $t('container.system_config.demo_graphic.ward.post_code') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
-                            <v-text-field v-model="data.post_code" type="number" outlined clearable
+                            <v-text-field  :hide-details="errors[0] ? false : true" v-model="data.post_code" type="number" outlined clearable
                               :error="errors[0] ? true : false"
                               :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে পোস্ট কোড লিখুন' : 'Please Enter Valid Post Code.') : ''">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
-                        <v-col lg="6" md="6" cols="12" >
+                        <v-col lg="6" md="6" cols="12" pa-0>
                           <ValidationProvider name="Village/House No.,
                                                         Road No., Block No, Section" vid="address" v-slot="{ errors }">
                             <label style="display: inline-block">{{
                               $t('container.system_config.demo_graphic.ward.address') }}
                             </label>
 
-                            <v-text-field v-model="data.address" outlined clearable :error="errors[0] ? true : false"
+                            <v-text-field :hide-details="errors[0] ? false : true" v-model="data.address" outlined clearable :error="errors[0] ? true : false"
                               :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে ঠিকানা লিখুন' : 'Please Enter Your Address.') : ''">
                             </v-text-field>
                           </ValidationProvider>
