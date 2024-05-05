@@ -3,9 +3,95 @@ import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 
 import { mapActions, mapState } from "vuex";
 
+extend('email', {
+    validate: value => {
+        // Regular expression for email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(value);
+    },
+    message: 'Please enter a valid email address'
+});
+extend('bangla', {
+    validate: value => {
+        // Regular expression to match Bangla characters
+        // const banglaRegex = /^[\u0980-\u09FF\s]+$/;
+        const nonBanglaRegex = /^[^\u0980-\u09FF]*$/;
+        return nonBanglaRegex.test(value);
+    },
+    message: 'Bangla characters are not allowed in this field'
+});
+extend('name', {
+    validate: value => {
+        // Regular expression for IP address validation
+        const nameRegex = /^[a-zA-Z\s']+$/;
+        return nameRegex.test(value);
+    },
+    message: 'Please enter a valid  Name'
+});
+extend('mobile', {
+    validate: value => {
+        // Regular expression to match phone numbers with a maximum length of 14 characters
+        const mobileRegex = /^01\d{9}$/;
+        return mobileRegex.test(value);
+
+    },
+    message: 'Please enter a valid phone number'
+});
+extend('end_date', {
+    validate(value, { start_date }) {
+        // Check if both start_date and end_date are provided
+        if (value && start_date) {
+            // Convert start_date and end_date to Date objects
+            const startDate = new Date(start_date);
+            const endDate = new Date(value);
+
+            // Compare start_date and end_date
+            return endDate >= startDate;
+        }
+        // If start_date is not provided, return true
+        return true;
+    },
+    params: ['start_date'],
+    message: 'The End Date must be greater than or equal to the Start Date'
+});
+extend('start_date', {
+    validate(value, { end_date }) {
+        // Check if both start_date and end_date are provided
+        if (value && end_date) {
+            // Convert start_date and end_date to Date objects
+            const endDate = new Date(end_date);
+            const startDate = new Date(value);
+
+            // Compare start_date and end_date
+            return endDate >= startDate;
+        }
+        // If start_date is not provided, return true
+        return true;
+    },
+    params: ['end_date'],
+    message: 'The Start Date must be less than or equal to the End Date'
+});
+
+extend("checkNumber", {
+  validate: (value) => {
+    if (!value && value !== 0) {
+      return false;
+    }
+    // Check if all characters are numeric and not allow special characters
+    const isNumeric = /^[0-9]+$/.test(value);
+
+    // Check if the length is either 10 or 17 characters
+    const isCorrectLength = value.length === 10 || value.length === 17;
+
+    // Return true if both conditions are met
+    return isNumeric && isCorrectLength;
+  },
+  message: "This is required field and field must be a number with either 10 or 17 characters",
+});
+
 export default {
-    name: "CreateDevice",
-    title: "CTM - Create Device",
+    name: "GenerateDataReceiver",
+    title: "CTM - Generate Data Receiver",
     components: {
         ValidationProvider,
         ValidationObserver,
@@ -13,87 +99,128 @@ export default {
 
     data() {
         return {
-            device_types: [
-                { id: 1, name: "Computer Desktop" },
-                { id: 2, name: "Android Mobile" },
-                { id: 3, name: "Ios Mobile" },
-                { id: 4, name: "Laptop" },
-            ],
+     
+            
 
-            add_device: {
-                user_id: "",
-                name: "",
-                device_id: "",
-                ip_address: "",
-                device_type: "",
-                purpose_use: "",
+            data: {
+                name: null,
+                designation: null,
+                mobile_no: null,
+                email:null,
+                address: null,
+                image: null,
+                
             },
+            designations:[]
         };
+    },
+    computed:{
+        language: {
+            get() {
+                return this.$store.getters.getAppLanguage;
+            }
+        },
     },
 
     watch: {
         "$i18n.locale": "updateHeaderTitle",
     },
 
-    computed: {
-        ...mapState({
-            users: (state) => state.Device_registration.users,
-            message: (state) => state.Device_registration.success_message,
-            success_status: (state) => state.Device_registration.success_status,
-            errors: (state) => state.Device_registration.errors,
-            error_status: (state) => state.Device_registration.error_status,
-        }),
-    },
+   
 
     mounted() {
-        this.GetALlUsers();
+        this.GetAPI();
+      
         this.updateHeaderTitle();
     },
 
     methods: {
-        ...mapActions({
-            GetALlUsers: "Device_registration/GetAllUsers",
-        }),
+        previewImage() {
+            if (this.data.image) {
 
-        getUserName(user_id) {
-            this.users.forEach((item, index) => {
-                if (item.id == user_id) {
-                    this.add_device.name = item.full_name;
-                    return this.add_device.name;
+                const maxFileSize = 200 * 1024; // 200 KB in bytes
+
+                if (this.data.image.size > maxFileSize) {
+                    // alert("file size must be 200kb")
+                    // this.confirmDialog =true;
+                    if(this.language==en){
+                        this.$toast.error("File size must be under 200 KB");
+                    }
+                    else{
+                        this.$toast.error("ফাইলের আকার ২০০ কে বি এর কম হতে হবে");
+
+                    }
+                   // Show the alert
+                    this.data.image = '';
+
+                    return false;
                 }
-            });
-        },
+                const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg']; // Allowed file types
+                if (!allowedTypes.includes(this.data.image.type)) {
+                    this.language === 'en' ? this.$toast.error("Only PNG, JPEG, or JPG files are allowed") : this.$toast.error("শুধুমাত্র পিএনজি, জেপিইজি, অথবা জেপিজি ফাইলগুলি অনুমোদিত");
+                    this.data.image = '';
+                    return false;
+                }
+                // return true;
 
-        addDevice: async function () {
-            try {
-                let formData = new FormData();
 
-                formData.append("user_id", this.add_device.user_id);
-                formData.append("name", this.add_device.name);
-                formData.append("device_id", this.add_device.device_id);
-                formData.append("ip_address", this.add_device.ip_address);
-                formData.append("device_type", this.add_device.device_type);
-                formData.append("purpose_use", this.add_device.purpose_use);
 
-                await this.$store
-                    .dispatch("Device_registration/StoreDevice", formData)
-                    .then(() => {
-                        if (this.success_status == 201) {
-                            this.add_device = {};
-                            this.$toast.success(this.message);
-                            this.$router.push("/system-configuration/device-registration");
-                        }
-                        if (this.error_status === 422) {
-                            this.$refs.form.setErrors(this.errors);
-                        } else {
-                            this.$refs.form.setErrors();
-                        }
-                    });
-            } catch (e) {
-                console.log(e);
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    this.imageUrl = e.target.result;
+                };
+                reader.readAsDataURL(this.data.image);
+            } else {
+                // Clear the preview if no file is selected
+                this.imageUrl = null;
             }
+
+        },
+  
+        async GetAPI() {
+
+            this.$axios
+                .get("/admin/get-api-list", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+
+                })
+                .then((result) => {
+
+                    this.apis = result?.data?.data;
+                    console.log(this.apis,"apis")
+
+                });
         },
 
+    
+
+        submitForm() {
+            this.$axios
+                .post("admin/training/trainers", this.data, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((result) => {
+                  
+                        this.$toast.success(result.data.message);
+                        this.$router.push("/training-management/trainer-information");
+                
+
+                })
+                .catch((err) => {
+                    console.log(err, "err")
+                    this.$refs.form.setErrors(err.response.data.errors);   
+
+                });
+
+        },
+       
         updateHeaderTitle() {
             const title = this.$t("container.system_config.device.add");
             this.$store.commit("setHeaderTitle", title);
@@ -109,111 +236,120 @@ export default {
                 <v-row>
                     <v-col cols="12">
                         <v-card>
-                            <v-card-title>
-                                <h3>
-                                    {{ $t("container.system_config.device.add") }}
-                                </h3>
+                            <v-card-title class="justify-center">
+                                <h4 class="mt-5">
+                                    {{ $t("container.training_management.trainer_info.add") }}
+                                </h4>
                             </v-card-title>
 
-                            <v-divider></v-divider>
+                            <!-- <v-divider></v-divider> -->
 
-                            <v-card-text>
+                            <v-card-text class="mt-10">
                                 <ValidationObserver ref="form" v-slot="{ invalid }">
-                                    <v-form v-on:submit.prevent="addDevice">
-                                        <v-col cols="12" class="d-flex">
-                                            <v-row wrap>
-                                                <v-col cols="12" sm="6" lg="6">
-                                                    <ValidationProvider name="User Id" vid="user_id" rules="required"
-                                                        v-slot="{ errors }">
-                                                        <v-autocomplete :items="users" item-text="user_id"
-                                                            item-value="user_id"
-                                                            :label="$t('container.system_config.device.user_id')"
-                                                            menu-props="auto" hide-details persistent-hint outlined
-                                                            :error="errors[0] ? true : false"
-                                                            :error-messages="errors[0]" required
-                                                            v-model="add_device.user_id"
-                                                            @change="getUserName(add_device.user_id)"></v-autocomplete>
-                                                    </ValidationProvider>
-                                                </v-col>
+                                    <v-form v-on:submit.prevent="submitForm()">
 
-                                                <v-col cols="12" sm="6" lg="6">
-                                                    <ValidationProvider name="Full Name" vid="name" rules="required"
-                                                        v-slot="{ errors }">
-                                                        <v-text-field type="text" v-model="add_device.name" :label="$t('container.system_config.device.full_name')
-                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0]"
-                                                            required readonly></v-text-field>
-                                                    </ValidationProvider>
-                                                </v-col>
-                                            </v-row>
-                                        </v-col>
+                                        <v-row class="mx-10 no-gap-row">
+                                            <v-col cols="12" sm="6" lg="6">
+                                                <ValidationProvider name="Full Name" vid="Name" rules="required"
+                                                    v-slot="{ errors }">
+                                                    <v-text-field dense type="text" v-model="data.name"
+                                                        :label="$t('container.training_management.trainer_info.name')
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য নাম প্রদান করুন '
+                                        : 'Please enter a valid Name'): ''"></v-text-field>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols=" 12" sm="6" lg="6">
+                                                <ValidationProvider name="Designation" vid="designation"
+                                                    rules="required" v-slot="{ errors }">
+                                                    <v-select dense type="text" v-model=" data.designation "
+                                                        :label=" $t('container.training_management.trainer_info.designation')"
+                                                        persistent-hint outlined :error="errors[0] ? true : false"
+                                                        :items="apis" item-text="name" item-value="id" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক পদবী প্রদান করুন '
+                                        : 'Please enter Designation') : ''">
 
-                                        <v-col cols="12" class="d-flex">
-                                            <v-row wrap>
-                                                <v-col cols="12" sm="6" lg="6">
-                                                    <ValidationProvider name="Device type" vid="device_type"
-                                                        rules="required" v-slot="{ errors }">
-                                                        <v-select :items="device_types" item-text="name" item-value="id"
-                                                            :label="$t('container.system_config.device.device_type')
-                                        " menu-props="auto" hide-details persistent-hint outlined
-                                                            :error="errors[0] ? true : false"
-                                                            :error-messages="errors[0]" required
-                                                            v-model="add_device.device_type"></v-select>
-                                                    </ValidationProvider>
-                                                </v-col>
 
-                                                <v-col cols="12" sm="6" lg="6">
-                                                    <ValidationProvider name="Device Id" vid="device_id"
-                                                        rules="required" v-slot="{ errors }">
-                                                        <v-text-field type="text" v-model="add_device.device_id" :label="$t('container.system_config.device.unique_id')
-                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0]"
-                                                            required></v-text-field>
-                                                    </ValidationProvider>
-                                                </v-col>
-                                            </v-row>
-                                        </v-col>
 
-                                        <v-col cols="12" class="d-flex">
-                                            <v-row wrap>
-                                                <!--                        <v-col cols="12" sm="6" lg="6">
-                          <ValidationProvider
-                            name="Ip Address"
-                            vid="ip_address"
-                            rules="required"
-                            v-slot="{ errors }"
-                          >
-                            <v-text-field
-                              type="text"
-                              v-model="add_device.ip_address"
-                              :label="
-                                $t('container.system_config.device.ip_address')
-                              "
-                              persistent-hint
-                              outlined
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                              required
-                            ></v-text-field>
-                          </ValidationProvider>
-                        </v-col>-->
+                                                    </v-select>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" lg="6">
+                                                <ValidationProvider name="Mobile" vid="mobile" rules="required||mobile"
+                                                    v-slot="{ errors }">
+                                                    <v-text-field dense type="text" v-model="data.mobile_no"
+                                                        :label="$t('container.training_management.trainer_info.mobile')
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য মোবাইল নম্বর প্রদান করুন '
+                                        : 'Please enter a valid Mobile Number') : ''"></v-text-field>
+                                                </ValidationProvider>
+                                            </v-col>
 
-                                                <v-col cols="12" sm="6" lg="6">
-                                                    <ValidationProvider name="Purpose Use" vid="purpose_use"
-                                                        rules="required" v-slot="{ errors }">
-                                                        <v-text-field type="text" v-model="add_device.purpose_use"
-                                                            :label="$t(
-                                        'container.system_config.device.pupose_of_use'
-                                    )
-                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0]"
-                                                            required></v-text-field>
-                                                    </ValidationProvider>
-                                                </v-col>
-                                            </v-row>
-                                        </v-col>
+                                            <v-col cols="12" sm="6" lg="6">
+                                                <ValidationProvider name="Email" vid="email"
+                                                    rules="required||email||bangla" v-slot="{ errors }">
+                                                    <v-text-field placeholder="xxx@gmail.com" dense type="email"
+                                                        v-model="data.responsible_person_email" :label="$t('container.training_management.trainer_info.email')
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য ইমেইল প্রদান করুন '
+                                        : 'Please enter a valid Email') : ''"></v-text-field>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" lg="6">
+                                                <ValidationProvider name="Address" vid="address" rules="required"
+                                                    v-slot="{ errors }">
+                                                    <v-textarea dense v-model="data.address" :label="$t('container.training_management.trainer_info.address')
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ঠিকানা প্রদান করুন '
+                                        : 'Please enter  Address') : ''"></v-textarea>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" lg="6">
+                                                <v-row align-end>
+                                                    <v-col cols="12" sm="6" lg="6" xl="6" xs="6">
+                                                        <v-img :src="imageUrl" style="
+                                    width: 200px;
+                                    height: 200px;
+                                    border: 1px solid #ccc;
+                                  " class="mb-5" v-if="imageUrl"></v-img>
+                                                        <v-img src="/assets/images/profile.png" v-if="!imageUrl" style="
+                                    width: 150px;
+                                    height: 150px;
+                                    border: 1px solid #ccc;
+                                  " class="mb-5"></v-img>
+                                                    </v-col>
+                                                    <v-col cols="12" sm="6" lg="6" xl="6" xs="6"> <label>{{
+                                                            $t('container.application_selection.application.image') }}
+                                                            ({{
+                                                            $t('container.application_selection.application.image_alert')
+                                                            }})</label>
+                                                        <span style="margin-left: 4px; color: red">*</span>
+                                                        <ValidationProvider v-slot="{ errors }" name="Image"
+                                                            rules="required" vid="image">
+                                                            <v-file-input dense outlined show-size counter
+                                                                prepend-outer-icon="mdi-camera" v-model="data.image"
+                                                                accept="image/*" @change="previewImage" prepend-icon=""
+                                                                id="image">
+                                                            </v-file-input>
+                                                        </ValidationProvider>
+                                                    </v-col>
 
+                                                </v-row>
+
+
+
+
+
+
+                                            </v-col>
+
+
+
+
+
+
+
+
+                                        </v-row>
                                         <v-row class="justify-end mt-5 mb-5">
                                             <v-btn flat color="primary" class="custom-btn mr-2" router
-                                                to="/system-configuration/device-registration">{{
-                                        $t("container.list.back") }}
+                                                to="/api-manager/data-receiver">{{
+                                                $t("container.list.back") }}
                                             </v-btn>
                                             <v-btn flat color="success" type="submit" class="custom-btn mr-2"
                                                 :disabled="invalid">
@@ -231,4 +367,28 @@ export default {
     </div>
 </template>
 
-<style scoped></style>
+<style >
+.gradient-background {
+    background: linear-gradient(to right, #87CEEB, #ADD8E6, #F0F8FF);
+    color: black;
+    /* Adjust text color for better contrast */
+    border-radius: 10px;
+    /* Add rounded corners for a softer look */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Add a subtle shadow for depth */
+
+    /* Add a subtle animation */
+    animation: gradient-animation 10s infinite alternate;
+}
+
+/* Define the animation */
+.no-gap-row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.no-gap-row .v-col {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+</style>

@@ -1,128 +1,171 @@
 <script>
-import { mapActions, mapState } from "vuex";
-import { http } from "@/hooks/httpService";
-
+import {ValidationObserver } from "vee-validate";
 export default {
     name: "Index",
     title: "CTM - Trainer Information",
     data() {
         return {
-            device_types: [
-                { id: 1, name: 'Computer Desktop' },
-                { id: 2, name: 'Android Mobile' },
-                { id: 3, name: 'Ios Mobile' },
-                { id: 4, name: 'Laptop' },
-            ],
+            data: {
+                id: null,
+                code: null,
+                name_en: null,
+                name_bn: null,
+            },
+            showPassword: false,
+            total: null,
+            org_name:null,
+            module_id:null,
+            organization_names:[],
+            trainers: [],
 
-            device_status: null,
-
+            dialogAdd: false,
             deleteDialog: false,
+            dialogEmail: false,
             delete_loading: false,
-            deleted_id: '',
-            totalDevices: 0,
-            devices: [],
-            Alldevices: [],
-            loading: true,
-            options: {},
-            search: '',
-            page: 1
-        }
+            loading: false,
+            search: "",
+            delete_id: "",
+            email_id: "",
+           
+            apis:[],
+
+            errors: {},
+            error_status: {},
+            pagination: {
+                current: 1,
+                total: 0,
+                perPage: 5
+            },
+            sortBy: "name_en",
+            sortDesc: false, //ASC
+            items: [5, 10, 15, 20, 40, 50, 100],
+      
+        };
     },
 
     watch: {
-        options: {
-            handler() {
-                this.getAllDevices()
-            },
-            deep: true,
-        },
-
-        search: {
-            handler() {
-                this.page = this.options.page;
-                this.getAllDevices()
-            },
-        },
 
         "$i18n.locale": "updateHeaderTitle",
     },
 
     computed: {
+        language: {
+            get() {
+                return this.$store.getters.getAppLanguage;
+            }
+        },
         headers() {
             return [
-                { text: this.$t('container.list.sl'), value: "id", align: "start", sortable: false },
-                { text: this.$t('container.system_config.device.user_id'), value: "user.user_id" },
-                { text: this.$t('container.system_config.device.full_name'), value: "name" },
-                { text: this.$t('container.system_config.device.device_type'), value: "device_type" },
-                // { text: this.$t('container.system_config.device.ip_address'), value: "ip_address" },
-                { text: this.$t('container.system_config.device.pupose_of_use'), value: "purpose_use" },
-                { text: this.$t('container.list.status'), value: "status" },
-                { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false },
+                { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, width: "5%" },
+                { text: this.$t('container.training_management.trainer_info.ID'), value: "id", align: "start", width: "5%" },
+                { text: this.$t('container.training_management.trainer_info.name'), value: "name", width: "15%" },
+                { text: this.$t('container.training_management.trainer_info.designation'), value: "designation",  width: "20%" },
+                { text: this.$t('container.training_management.trainer_info.mobile'), value: "mobile", width: "20%" },
+                { text: this.$t('container.training_management.trainer_info.email'), value: "email", width: "15%" },
+
+              
+                { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false, width: "20%" },
             ];
         },
 
-        ...mapState({
-            message: (state) => state.Device_registration.success_message
-        })
+
     },
 
     mounted() {
-        this.updateHeaderTitle();
+        this.GetData();
+        this.GetModule();
+        this.GetOrg();
+
     },
 
     methods: {
-
-        async GeneratePdf() {
+       
+        resetSearch(){
+            this.module_id=null;
+            this.org_name=null;
+            this.GetData();
+        },
+        async GeneratePDF() {
             this.isLoading = true;
-            const { sortBy, sortDesc, page, itemsPerPage } = this.options
+            let page;
+            if (!this.sortBy) {
+                page = this.pagination.current;
+            }
+            const queryParams = {
+                
+                language: this.$i18n.locale,
+                searchText: this.search,
+                perPage: this.search.trim() === '' ? this.total : this.total,
+                page: 1,
+                sortBy: this.sortBy,
+                orderBy: this.sortDesc,
+            };
 
-            await http().get('/admin/device/get', {
-                params: {
-                    sortBy: sortBy[0],
-                    sortDesc: sortDesc[0],
-                    page: page,
-                    itemsPerPage: this.totalDevices,
-                    search: this.search
-                }
-            }).then((result) => {
-                this.Alldevices = result.data.data;
-                this.loading = false;
-            }).catch((err) => {
-                console.log(err);
-            })
+            await this.$axios
+                .get("/admin/api-data-receive", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                    params: queryParams,
+                })
+                .then((result) => {
+                    this.apis = result?.data?.data?.data;
+                    // const parts = this.apis.start_date.split(" ");
+                    // const datePart = parts[0];
+                    // this.apis.start_date = datePart;
+                    // const parts_2 = this.apis.end_date.split(" ");
+                    // const datePart_2 = parts_2[0];
+                    // this.apis.end_date = datePart_2;
+                });
 
             const HeaderInfo = [
                 this.$t("container.list.sl"),
-                this.$t('container.system_config.device.user_name'),
-                this.$t('container.system_config.device.device_type'),
-                this.$t('container.system_config.device.unique_id'),
-                this.$t('container.system_config.device.pupose_of_use'),
+                this.$t('container.api_manager.data_receiver.organization'),
+                this.$t('container.api_manager.data_receiver.api'),
+                this.$t('container.api_manager.data_receiver.email'),
+                this.$t('container.api_manager.data_receiver.phone'),
+                this.$t('container.api_manager.data_receiver.responsible_person_email'),
+                this.$t('container.api_manager.data_receiver.responsible_person_nid'),
+                this.$t('container.api_manager.data_receiver.user_name'),
+                this.$t('container.api_manager.data_receiver.ip'),
+                this.$t('container.api_manager.data_receiver.total_heat'),
+                 this.$t('container.api_manager.data_receiver.start_date'),
+                this.$t('container.api_manager.data_receiver.end_date'),
+                
+
             ]
 
-            const OBJ = this.Alldevices;
+        
+            const CustomInfo = this.apis.map(((i, index) => {
 
-            const deviceTypeMap = {};
-            this.device_types.forEach(device => {
-                deviceTypeMap[device.id] = device.name;
-            });
-
-            const CustomInfo = OBJ.map((((i, index) => {
                 return [
                     this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
-                    i.user?.username,
-                    deviceTypeMap[i.device_type],
-                    i.device_id,
-                    i.purpose_use,
+                    
+                    this.$i18n.locale == 'en' ? i.organization_name : i.organization_name,
+                  
+                    i?.api_list?.map(api => api.name).join(', '),
+                    this.$i18n.locale == 'en' ? i.organization_phone : this.$helpers.englishToBangla(i.organization_phone),
+                    this.$i18n.locale == 'en' ? i?.organization_email : i?.organization_email,
+                    this.$i18n.locale == 'en' ? i?.responsible_person_email : i?.responsible_person_email,
+                    this.$i18n.locale == 'en' ? i.responsible_person_nid : this.$helpers.englishToBangla(i.responsible_person_nid),
+                    this.$i18n.locale == 'en' ? i?.username : i?.username,
+                    this.$i18n.locale == 'en' ? i?.whitelist_ip : this.$helpers.englishToBangla(i?.whitelist_ip),
+                    this.$i18n.locale == 'en' ? i?.total_hit : this.$helpers.englishToBangla(i?.total_hit),
+                    this.$i18n.locale == 'en' ? i?.start_date : this.$helpers.englishToBangla(i?.start_date),
+                    this.$i18n.locale == 'en' ? i?.end_date : this.$helpers.englishToBangla(i?.end_date),
+                
+
+
                 ]
-            })));
+            }));
 
             const queryParam = {
                 language: this.$i18n.locale,
                 data: CustomInfo,
                 header: HeaderInfo,
-                fileName: this.$t("container.system_config.device.list"),
+                fileName: this.$t("container.api_manager.data_receiver.list"),
             };
-
             try {
                 const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
                     headers: {
@@ -141,57 +184,88 @@ export default {
                 console.error('Error generating PDF:', error);
             }
         },
-
         async GenerateExcel() {
+            this.isLoading = true;
+            let page;
+            if (!this.sortBy) {
+                page = this.pagination.current;
+            }
+            const queryParams = {
+                language: this.$i18n.locale,
+                searchText: this.search,
+                perPage: this.search.trim() === '' ? this.total : this.total,
+                page: 1,
+                sortBy: this.sortBy,
+                orderBy: this.sortDesc,
+            };
 
-            const { sortBy, sortDesc, page, itemsPerPage } = this.options
+            await this.$axios
+                .get("/admin/api-data-receive", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                    params: queryParams,
+                })
+                .then((result) => {
+                    this.apis = result?.data?.data?.data;
+                })
+                .catch(error => {
+                    this.isLoading = false;
+                });
 
-            await http().get('/admin/device/get', {
-                params: {
-                    sortBy: sortBy[0],
-                    sortDesc: sortDesc[0],
-                    page: page,
-                    itemsPerPage: this.totalDevices,
-                    search: this.search,
-                    language: this.$i18n.locale,
-                }
-            }).then((result) => {
-                this.Alldevices = result.data.data;
-                this.loading = false;
-
+            try {
                 import('@/plugins/Export2Excel').then((excel) => {
-                    const OBJinfo = this.Alldevices
-                    const deviceTypeMap = {};
-                    this.device_types.forEach(device => {
-                        deviceTypeMap[device.id] = device.name;
-                    });
-                    const CustomInfo = OBJinfo.map(((i, index) => {
-                        return {
-                            "sl": this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
-                            "user_name": i.user.username,
-                            "device_type": deviceTypeMap[i.device_type],
-                            "device_id": i.device_id,
-                            "purpose_use": i.purpose_use,
-                        }
 
-                    }));
-
-                    const Header = [
+                    const HeaderInfo = [
                         this.$t("container.list.sl"),
-                        this.$t('container.system_config.device.user_name'),
-                        this.$t('container.system_config.device.device_type'),
-                        this.$t('container.system_config.device.unique_id'),
-                        this.$t('container.system_config.device.pupose_of_use'),
+                        this.$t('container.api_manager.data_receiver.organization'),
+                        this.$t('container.api_manager.data_receiver.api'),
+                        this.$t('container.api_manager.data_receiver.email'),
+                        this.$t('container.api_manager.data_receiver.phone'),
+                        this.$t('container.api_manager.data_receiver.responsible_person_email'),
+                        this.$t('container.api_manager.data_receiver.responsible_person_nid'),
+                        this.$t('container.api_manager.data_receiver.user_name'),
+                        this.$t('container.api_manager.data_receiver.ip'),
+                        this.$t('container.api_manager.data_receiver.total_heat'),
+                        this.$t('container.api_manager.data_receiver.start_date'),
+                        this.$t('container.api_manager.data_receiver.end_date'),
                     ]
 
-                    const Field = ['sl', 'user_name', 'device_type', 'device_id', 'purpose_use']
+                    const CustomInfo = this.apis.map(((i, index) => {
+                        return {
+                            "sl": this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+                            "organization_name": this.$i18n.locale == 'en' ? i?.organization_name : i?.organization_name,
+
+                            // "ip":i?.api_list?.map(api => api.name).join(', '),
+                            "ip": this.$i18n.locale == 'en' ? i?.api_list?.map(api => api.name).join(', ') : i?.api_list?.map(api => api.name).join(', '),
+                            "organization_email": this.$i18n.locale == 'en' ? i?.organization_email : i?.organization_email,
+                            "organization_phone": this.$i18n.locale == 'en' ? i.organization_phone : this.$helpers.englishToBangla(i.organization_phone),
+                         
+                            "responsible_person_email": this.$i18n.locale == 'en' ? i?.organization_name : i?.responsible_person_email,
+                            "responsible_person_nid": this.$i18n.locale == 'en' ? i?.responsible_person_nid : this.$helpers.englishToBangla(i?.responsible_person_nid),
+                            "username": this.$i18n.locale == 'en' ? i?.username : i?.username,
+                            "whitelist_ip": this.$i18n.locale == 'en' ? i?.whitelist_ip : this.$helpers.englishToBangla(i?.whitelist_ip),
+                            "total_hit": this.$i18n.locale == 'en' ? i?.total_hit : this.$helpers.englishToBangla(i?.total_hit),
+                            "start_date": this.$i18n.locale == 'en' ? i?.start_date : this.$helpers.englishToBangla(i?.start_date),
+                            "end_date": this.$i18n.locale == 'en' ? i?.end_date : this.$helpers.englishToBangla(i?.end_date),
+
+                            
+
+
+                        }
+                    }));
+
+                    const Field = ['sl', 'organization_name', 'ip','organization_email', 'organization_phone',  'responsible_person_email', 'responsible_person_nid', 'username', 'whitelist_ip','total_hit','start_date','end_date']
 
                     const Data = this.FormatJson(Field, CustomInfo)
                     const currentDate = new Date().toISOString().slice(0, 10); //
-                    const filenameWithDate = `${currentDate}_${this.$t("container.system_config.device.list")}`;
+                    let dateinfo = queryParams.language == 'en' ? currentDate : this.$helpers.englishToBangla(currentDate)
+
+                    const filenameWithDate = `${dateinfo}_${this.$t("container.api_manager.api_generate.list_1")}`;
 
                     excel.export_json_to_excel({
-                        header: Header,
+                        header: HeaderInfo,
                         data: Data,
                         sheetName: filenameWithDate,
                         filename: filenameWithDate,
@@ -199,12 +273,13 @@ export default {
                         bookType: "xlsx"
                     })
                 })
-
-            }).catch((err) => {
-                console.log(err);
-            })
+            } catch (error) {
+                // Handle any errors here
+                this.isLoading = false;
+            } finally {
+                this.isLoading = false;
+            }
         },
-
         FormatJson(FilterData, JsonData) {
             return JsonData.map((v) =>
                 FilterData.map((j => {
@@ -212,211 +287,453 @@ export default {
                 })))
         },
 
-        getAllDevices() {
-            const { sortBy, sortDesc, page, itemsPerPage } = this.options
+    
+        localizationPage(item) {
 
-            http().get('/admin/device/get', {
-                params: {
-                    sortBy: sortBy[0],
-                    sortDesc: sortDesc[0],
-                    page: page,
-                    itemsPerPage: itemsPerPage,
-                    search: this.search
-                }
-            }).then((result) => {
-                this.devices = result.data.data;
-                this.totalDevices = result.data.total;
-                this.loading = false;
-            }).catch((err) => {
-                console.log(err);
-            })
+            return this.language === 'bn' ? item.name_bn : item.name_en;
+
+
         },
+        PageSetup() {
+            this.pagination.current = 1;
+            this.GetData();
 
+        },
+       
+        async GetData() {
+            
+            this.loading=true;
+            const queryParams = {
+                module_id: this.module_id,
+            
+                search: this.search,
+                perPage: this.pagination.perPage,
+                page: this.pagination.current,
+                sortBy: this.sortBy,
+                sortDesc: this.sortDesc,
+            };
+            this.$axios
+                .get("/admin/training/trainers", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                    params: queryParams,
+                })
+                .then((result) => {
+                    console.log(result,"result")
+
+                    this.total = result?.data?.data?.total;
+                    this.trainers = result?.data?.data?.data;
+                    console.log(this.trainers,"trainers")
+                    this.pagination.current = result?.data?.data?.current_page;
+                    this.pagination.total = result?.data?.data?.last_page;
+                    this.pagination.grand_total = result?.data?.data?.total;
+                    this.loading=false;
+                  
+                 
+                });
+        },
+        onPageChange($event) {
+            // this.pagination.current = $event;
+            this.GetData();
+        },
+       
+
+
+       
         deleteAlert(id) {
             this.deleteDialog = true;
             this.deleted_id = id;
         },
 
-        deleteDevice: async function () {
-            try {
-                let id = this.deleted_id;
-                await this.$store.dispatch("Device_registration/DestroyDevice", id).then(() => {
-                    this.deleteDialog = false;
-                    this.$toast.success(this.message);
-                    this.getAllDevices();
+        deleteDataReceiver: async function () {
+            this.$axios
+                .delete(`admin/api-data-receive/${this.deleted_id}`, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "application/json", // Use application/json instead of multipart/form-data
+                    },
                 })
-            } catch (e) {
-                console.log(e);
-            }
-        },
-
-        deviceActivate: async function ({ id, device_status }) {
-            try {
-                await this.$store.dispatch("Device_registration/ActivateDevice", id).then(() => {
-
-                    if (device_status == 0) {
-                        this.$toast.success(this.message);
-                    } else {
-                        this.$toast.warning(this.message);
+                .then((res) => {
+                    console.log(res.data, "res.data")
+                    if (res?.data?.success == true) {
+                        this.$toast.success(res.data.message);
+                        this.deleteDialog = false;
+                        this.GetData();
+                    }
+                    if (res?.data?.success == false) {
+                        this.$toast.error(res.data.message);
                     }
 
-                    this.getAllDevices();
+
+
                 })
-            } catch (e) {
-                console.log(e);
-            }
+                .catch((error) => {
+                    console.log(error, "error");
+
+                });
         },
 
-        updateHeaderTitle() {
-            const title = this.$t(
-                "container.system_config.device.list"
-            );
-            this.$store.commit("setHeaderTitle", title);
-        },
+
 
     },
 }
 </script>
 
 <template>
-    <div id="device-registration">
+    <div id="trainer-info">
         <v-row class="mx-5 mt-5">
-            <v-col cols="12">
+            <v-col cols="12" lg="12" md="12" sm="12" xs="12">
                 <v-row wrap>
+                    <v-col cols="12" lg="12" md="12" sm="12" xs="12">
+                        <v-expansion-panels>
+                            <v-expansion-panel>
+
+                                <v-expansion-panel-header color="#8C9EFF">
+                                    <h3 class="white--text">
+                                        {{ $t("container.list.filter") }}
+                                    </h3>
+                                </v-expansion-panel-header>
+                                <v-expansion-panel-content class="mt-5">
+
+                                    <form @submit.prevent="GetData()">
+
+                                        <v-row>
+
+                                            <v-col lg="4" md="4" cols="12">
+                                                <v-autocomplete outlined dense :append-icon-cb="appendIconCallback"
+                                                    append-icon="mdi-plus" class="no-arrow-icon" v-model="module_id"
+                                                    :items="modules" item-text="name" item-value="id"
+                                                    :label="$t('container.api_manager.api_generate.module')">
+                                                </v-autocomplete>
+                                            </v-col>
+                                            <v-col lg="4" md="4" cols="12">
+                                                <v-autocomplete outlined clearable dense
+                                                    :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
+                                                    v-model="org_name" :items="organization_names"
+                                                    item-text="organization_name"
+                                                    :label="$t('container.api_manager.data_receiver.organization') ">
+                                                </v-autocomplete>
+                                            </v-col>
+                                            <v-col lg="4" md="4" cols="12">
+                                                <div class="d-inline d-flex justify-end">
+                                                    <v-btn elevation="2" class="btn" @click="resetSearch">{{
+                                                        $t("container.list.reset")
+                                                        }}</v-btn>
+                                                    <v-btn elevation="2" type="submit" class="btn ml-2"
+                                                        color="success">{{
+                                                        $t("container.list.filter") }}</v-btn>
+                                                </div>
+
+                                            </v-col>
+
+                                        </v-row>
+
+
+                                    </form>
+
+                                </v-expansion-panel-content>
+                            </v-expansion-panel>
+                        </v-expansion-panels>
+                    </v-col>
                     <v-col cols="12">
                         <v-card>
-                            <v-row>
-                                <v-col col="6">
-                                    <v-card-title>
-                                        <h5>{{ $t('container.training_management.trainer_info.list') }}</h5>
-                                    </v-card-title>
-                                </v-col>
-                            </v-row>
 
-                            <v-divider></v-divider>
+                            <v-card-title class="justify-center ">
+                                <h4 class="mt-5">{{ $t('container.training_management.trainer_info.list') }}</h4>
+                            </v-card-title>
 
-                            <v-card-text>
-                                <v-card-title class="mb-5">
+
+                            <!-- <v-divider></v-divider> -->
+
+                            <v-card-text class="mt-10">
+                                <v-card-title class="mb-5 ml-5 ">
                                     <div class="d-flex justify-sm-end flex-wrap">
-                                        <v-text-field @keyup.native="getAllDevices" v-model="search"
+                                        <v-text-field @keyup.native="PageSetup" v-model="search"
                                             append-icon="mdi-magnify" :label="$t(
-                                            'container.list.search'
-                                        )" hide-details class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal" flat
-                                            outlined dense></v-text-field>
+                                    'container.list.search'
+                                )" hide-details class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal" flat outlined
+                                            dense></v-text-field>
                                     </div>
 
                                     <v-spacer></v-spacer>
 
-                                    <v-col lg="4" md="6" cols="12" class="text-right">
-                                        <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4"
-                                            @click="GeneratePdf()">
-                                            <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{
-                                            $t("container.list.PDF") }}
-                                        </v-btn>
-                                        <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2"
-                                            @click="GenerateExcel()">
-                                            <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
-                                            {{ $t("container.list.excel") }}
-                                        </v-btn>
-                                    </v-col>
 
-                                    <v-btn medium flat color="primary" router
+
+
+
+                                    <v-btn flat color="primary" router
                                         to="/training-management/trainer-information/create"
-                                        v-can="'trainer-info-create'">
-                                        <v-icon small left>mdi-plus</v-icon>
-                                        <span>{{
-                                            $t('container.list.add_new') }}</span>
+                                        v-can="'data-receiver-create'">
+                                        <v-icon small>mdi-plus</v-icon>
+                                        {{
+                                        $t('container.training_management.trainer_info.add') }}
                                     </v-btn>
+
                                 </v-card-title>
 
-                                <v-card-subtitle>
-                                    <v-data-table :headers="headers" :items="devices" :search="search"
-                                        :options.sync="options" :server-items-length="totalDevices" :loading="loading"
-                                        :footer-props="{
-                                            'items-per-page-options': [5, 10, 20, 30, 40, 50]
-                                        }" dense class="elevation-1 transparent row-pointer">
+                                <v-row class="ml-6 mr-2">
+                                    <v-col cols="12" lg="6" md="6">
+                                        {{ $t('container.list.total') }}:&nbsp;<span style=" font-weight: bold;">
+                                            {{ language === 'bn' ? $helpers.englishToBangla(
+                                            this.total) : this.total }}
+                                        </span>
 
-                                        <template v-slot:item.id="{ item, index }">
-                                            {{
-                                            (options.page - 1) * options.itemsPerPage + index + 1
-                                            }}
-                                        </template>
+                                    </v-col>
+                                    <v-col cols="12" lg="6" md="6" class="text-right">
+                                        <v-btn elevation="2" class="btn white--text " flat color="red darken-4"
+                                            @click="GeneratePDF()">
+                                            <v-icon class="pl-1"> mdi-tray-arrow-down </v-icon> {{
+                                            $t("container.list.PDF") }}
+                                        </v-btn>
 
-                                        <template v-slot:[`item.device_type`]="{ item }">
-                                            <div v-for="device in device_types" :key="device.id">
-                                                <span v-if="device.id === item.device_type">
-                                                    {{ device.name }}
-                                                </span>
-                                            </div>
-                                        </template>
+                                        <v-btn elevation="2" class="btn white--text ml-2" flat color="teal darken-2"
+                                            @click="GenerateExcel()">
+                                            <v-icon class="pl-1"> mdi-tray-arrow-down </v-icon> {{
+                                            $t("container.list.excel") }}
+                                        </v-btn>
 
-                                        <template v-slot:[`item.status`]="{ item }">
+                                    </v-col>
+
+
+
+
+
+                                </v-row>
+
+                                <v-data-table :loading="loading" item-key="id" :headers="headers" :items="trainers"
+                                    :items-per-page="pagination.perPage" hide-default-footer
+                                    class="elevation-0 transparent row-pointer mt-5 mx-5">
+                                    <template v-slot:item.id="{ item, index }">
+
+                                        {{ language === 'bn' ? $helpers.englishToBangla(
+                                        (pagination.current - 1) * pagination.perPage +
+                                        index +
+                                        1) : (pagination.current - 1) * pagination.perPage +
+                                        index +
+                                        1 }}
+
+
+                                    </template>
+
+
+
+
+                                    <template v-slot:item.api_list_custom="{ item }">
+                                        <div>
+                                            <v-chip label color="#FACD91" v-for="(name, index) in item.api_list"
+                                                class="ma-1" :key="index">{{ name.name
+                                                }}</v-chip>
+                                        </div>
+                                    </template>
+
+                                    <template v-slot:item.api_key_custom="{ item }">
+                                        <v-row align="center">
                                             <span>
-                                                <v-switch :input-value="item.status === 1 ? true : false"
-                                                    @change="deviceActivate({ id: item.id, device_status: item.status })"
-                                                    hide-details color="orange darken-3"></v-switch>
+                                                <span v-if="!item.showApiKey">
+                                                    <span v-for="char in item.api_key" :key="char">*</span>
+                                                </span>
+                                                <span v-else>{{ item.api_key }}</span>
+                                                <v-icon @click="toggleApiKeyVisibility(item)">
+                                                    {{ item.showApiKey ? 'mdi-eye-off' : 'mdi-eye' }}
+                                                </v-icon>
                                             </span>
-                                        </template>
+                                        </v-row>
 
-                                        <template v-slot:[`item.actions`]="{ item }" style="padding: 10px;">
-                                            <v-tooltip top>
-                                                <template v-slot:activator="{ on }">
-                                                    <v-btn fab x-small color="success" v-on="on" router
-                                                        :to="`/system-configuration/device_registration/edit/${item.id}`"
-                                                        v-can="'device-registration-edit'">
-                                                        <v-icon>mdi-account-edit-outline</v-icon>
-                                                    </v-btn>
-                                                </template>
-                                                <span>{{ $t('container.list.edit') }}</span>
-                                            </v-tooltip>
+                                    </template>
 
-                                            <v-tooltip top>
-                                                <template v-slot:activator="{ on }">
-                                                    <v-btn fab x-small color="grey" class="ml-3 white--text" v-on="on"
-                                                        @click="deleteAlert(item.id)"
-                                                        v-can="'device-registration-delete'">
-                                                        <v-icon>mdi-delete</v-icon>
-                                                    </v-btn>
-                                                </template>
-                                                <span>{{ $t('container.list.delete') }}</span>
-                                            </v-tooltip>
-                                        </template>
-                                    </v-data-table>
-                                </v-card-subtitle>
+
+
+
+
+                                    <!-- Action Button -->
+                                    <template v-slot:item.actions="{ item }">
+                                        <v-tooltip top>
+                                            <template v-slot:activator="{ on }">
+                                                <v-btn v-can="'apiDataReceive-view'" fab x-small v-on="on"
+                                                    color="#AFB42B" elevation="0" router class=" white--text"
+                                                    :to="`/api-manager/data-receiver/view/${item.id}`">
+                                                    <v-icon> mdi-eye </v-icon>
+                                                </v-btn>
+                                            </template>
+                                            <span>
+                                                {{ $t("container.list.view") }}
+                                            </span>
+                                        </v-tooltip>
+
+                                        <v-tooltip top>
+                                            <template v-slot:activator="{ on }">
+                                                <v-btn v-can="'apiDataReceive-edit'" class="ml-3" fab x-small v-on=" on"
+                                                    color="success" elevation="0" router
+                                                    :to="`/api-manager/data-receiver/edit/${item.id}`">
+                                                    <v-icon> mdi-account-edit-outline </v-icon>
+                                                </v-btn>
+                                            </template>
+                                            <span>
+                                                {{ $t("container.list.edit") }}
+                                            </span>
+                                        </v-tooltip>
+
+
+                                        <v-tooltip top>
+                                            <template v-slot:activator="{ on }">
+                                                <v-btn v-can="'apiDataReceive-delete'" fab x-small v-on="on"
+                                                    color="grey" class="ml-3 white--text" elevation="0"
+                                                    @click="deleteAlert(item.id)">
+                                                    <v-icon> mdi-delete </v-icon>
+                                                </v-btn>
+                                            </template>
+                                            <span> {{ $t("container.list.delete") }}</span>
+                                        </v-tooltip>
+
+                                    </template>
+
+                                    <!-- End Action Button -->
+
+                                    <template v-slot:footer="item">
+                                  
+                                                    <row class="text-right pt-2 v-data-footer justify-end pb-2">
+
+
+
+                                                        <v-col cols="12" lg="4" md="4" sm="12" xs="12"
+                                                            class="text-right">
+                                                            <v-pagination circle primary v-model="pagination.current"
+                                                                :length="pagination.total" @input="onPageChange"
+                                                                :total-visible="11"
+                                                                class="custom-pagination-item"></v-pagination></v-col>
+                                                        <v-col cols="12" lg="4" md="4" sm="12" xs="12"
+                                                            class="text-right">
+                                                            <v-select style="
+                     
+                            
+                                    
+                                                " :items="items" hide-details dense outlined @change="onPageChange"
+                                                                v-model="pagination.perPage"></v-select>
+
+
+                                                        </v-col>
+                                                    </row>
+                                                
+                                    </template>
+                                </v-data-table>
+
                             </v-card-text>
                         </v-card>
                     </v-col>
                 </v-row>
             </v-col>
-
+            <!-- position: absolute;
+                              right: 25px;
+                              width: 149px;
+                              transform: translate(0px, 0px); -->
             <!-- delete modal  -->
             <v-dialog v-model="deleteDialog" width="350">
                 <v-card style="justify-content: center; text-align: center">
                     <v-card-title class="font-weight-bold justify-center">
-                        Delete Device
+                        {{ $t('container.training_management.trainer_info.delete_header') }}
                     </v-card-title>
                     <v-divider></v-divider>
                     <v-card-text>
                         <div class="subtitle-1 font-weight-medium mt-5">
-                            Are you sure to delete this Device? Division all information will be deleted.
+                            {{ $t('container.training_management.trainer_info.delete_alert') }}
+
+
                         </div>
                     </v-card-text>
                     <v-card-actions style="display: block">
                         <v-row class="mx-0 my-0 py-2" justify="center">
                             <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
-                                Cancel
+                                {{ $t('container.list.cancel') }}
                             </v-btn>
-                            <v-btn text @click="deleteDevice" color="white" :loading="delete_loading"
+
+                            <v-btn text @click="deleteDataReceiver" color="white" :loading="delete_loading"
                                 class="custom-btn-width warning white--text py-2">
-                                Delete
+                                {{ $t('container.list.delete') }}
                             </v-btn>
                         </v-row>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
             <!-- delete modal  -->
+            <!-- Mail modal  -->
+            <v-dialog v-model="dialogEmail" width="350">
+                <v-card style="justify-content: center; text-align: center">
+                    <v-card-title class="font-weight-bold justify-center">
+                        {{ $t('container.api_manager.data_receiver.email_header') }}
+                    </v-card-title>
+                    <v-divider></v-divider>
+                    <v-card-text>
+                        <div class="subtitle-1 font-weight-medium mt-5">
+                            {{ $t('container.api_manager.data_receiver.email_alert') }}
+
+
+                        </div>
+                    </v-card-text>
+                    <v-card-actions style="display: block">
+                        <v-row class="mx-0 my-0 py-2" justify="center">
+                            <v-btn text @click="dialogEmail = false" outlined class="custom-btn-width py-2 mr-10">
+                                {{ $t('container.list.cancel') }}
+                            </v-btn>
+
+                            <v-btn text @click="sendEmail" color="white" :loading="delete_loading"
+                                class="custom-btn-width warning white--text py-2">
+                                {{ $t('container.list.confirm') }}
+                            </v-btn>
+                        </v-row>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+            <!-- Mail modal  -->
         </v-row>
     </div>
 </template>
 
-<style lang="css" scoped></style>
+<style>
+.text-wrap {
+    /* You can adjust these properties as needed */
+    overflow-wrap: break-word;
+    /* Handles long words */
+    word-wrap: break-word;
+    /* Handles long words */
+    white-space: pre-wrap;
+    /* Handles spaces and line breaks */
+}
+
+.word-wrap {
+    overflow-wrap: break-word;
+}
+
+.custom-chip {
+    background-color: blue;
+    color: white;
+}
+.gradient-background {
+    background: linear-gradient(to right, #87CEEB, #ADD8E6, #F0F8FF);
+    color: black;
+    /* Adjust text color for better contrast */
+    border-radius: 10px;
+    /* Add rounded corners for a softer look */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Add a subtle shadow for depth */
+
+    /* Add a subtle animation */
+    animation: gradient-animation 10s infinite alternate;
+}
+
+/* Define the animation */
+@keyframes gradient-animation {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
+}
+.v-expansion-panel-header__icon {
+  color: #ff0000;
+  /* Your desired arrow color */
+  }
+</style>
