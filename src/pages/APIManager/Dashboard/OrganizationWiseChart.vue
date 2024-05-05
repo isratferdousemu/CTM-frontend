@@ -3,51 +3,30 @@
     <v-row>
       <v-col cols="12">
         <label style="color: #1976d2">
-                      <span>
-                        {{ $t("container.api_manager.dashboard.organization_wise_api_requests") }}
-                      </span>
-        </label></v-col
-      >
+          <span>
+            {{ $t("container.api_manager.dashboard.organization_wise_api_requests") }}
+          </span>
+        </label></v-col>
     </v-row>
     <v-row class="ml-1 mr-1">
       <v-col>
 
         <v-row class="ml-1 mr-1">
-          <v-menu
-              ref="menu"
-              v-model="menu"
-              :close-on-content-click="false"
-              transition="scale-transition"
-              offset-y
-              min-width="auto"
-          >
+          <v-menu ref="menu" v-model="menu" :close-on-content-click="false" transition="scale-transition" offset-y
+            min-width="auto">
             <template v-slot:activator="{ on, attrs }">
-              <v-text-field
-                  v-model="dates"
-                  :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
-                  :label="$t('container.system_config_dashboard.enter_start_end_date')"
-                  readonly
-                  v-bind="attrs"
-                  v-on="on"
-              ></v-text-field>
+              <v-text-field v-model="dates" :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
+                :label="$t('container.system_config_dashboard.enter_start_end_date')" readonly v-bind="attrs"
+                v-on="on"></v-text-field>
             </template>
-            <v-date-picker
-                v-model="dates"
-                :range="[dates[0], dates[1]]"
-                no-title
-                scrollable
-                @input="OnChangeDateInfo($event,'total_approve')"
-            >
+            <v-date-picker v-model="dates" :range="[dates[0], dates[1]]" no-title scrollable
+              @input="OnChangeDateInfo($event,'total_approve')">
               <v-spacer></v-spacer>
               <v-btn text color="primary" @click="resetDateRange">
-                Reset
+                {{ $t('container.list.reset') }}
               </v-btn>
-              <v-btn
-                  text
-                  color="primary"
-                  @click="$refs.menu.save(dates)"
-              >
-                OK
+              <v-btn text color="primary" @click="$refs.menu.save(dates)">
+                {{ $t('container.list.ok') }}
               </v-btn>
             </v-date-picker>
           </v-menu>

@@ -15,7 +15,8 @@ export default {
             total: null,
             org_name:null,
             module_id:null,
-            modules:[],
+            organization_names:[],
+            modules: [],
 
             dialogAdd: false,
             deleteDialog: false,
@@ -86,8 +87,8 @@ export default {
             return [
                 { text: this.$t('container.list.sl'), value: "id", align: "start", sortable: false, width: "5%" },
                 { text: this.$t('container.api_manager.data_receiver.organization'), value: "organization_name", width: "20%" },
-                { text: this.$t('container.api_manager.data_receiver.api'), value: "api_list_custom", width: "35%" },
-                { text: this.$t('container.api_manager.data_receiver.total_heat'), value: "total_hit", width: "10%" },
+                { text: this.$t('container.api_manager.data_receiver.api'), value: "api_list_custom", sortable: false, width: "30%" },
+                { text: this.$t('container.api_manager.data_receiver.total_heat'), value: "total_hit", width: "15%" },
               
                 { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false, width: "30%" },
             ];
@@ -99,6 +100,7 @@ export default {
     mounted() {
         this.GetDataReceiver();
         this.GetModule();
+        this.GetOrg();
 
     },
 
@@ -349,10 +351,10 @@ export default {
             this.GetDataReceiver();
 
         },
-        async GetModule(){
+        async GetOrg(){
         
             this.$axios
-                .get("/admin/get-modules", {
+                .get("/admin/api-manager/organization-list", {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -362,9 +364,30 @@ export default {
                 .then((result) => {
 
                     
-                    this.modules = result?.data?.data;
+                    this.organization_names = result?.data?.data;
+                    console.log("organization_names",this.organization_names);
                   
                  
+
+                });
+        },
+        async GetModule() {
+
+            this.$axios
+                .get("/admin/get-modules", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+
+                })
+                .then((result) => {
+
+
+                    this.modules = result?.data?.data;
+                    console.log("organization_names", this.modules);
+
+
 
                 });
         },
@@ -493,6 +516,7 @@ export default {
                     <v-col cols="12" lg="12" md="12" sm="12" xs="12">
                         <v-expansion-panels>
                             <v-expansion-panel>
+
                                 <v-expansion-panel-header color="#8C9EFF">
                                     <h3 class="white--text">
                                         {{ $t("container.list.filter") }}
@@ -512,11 +536,12 @@ export default {
                                                 </v-autocomplete>
                                             </v-col>
                                             <v-col lg="4" md="4" cols="12">
-                                                <v-text-field outlined clearable dense
+                                                <v-autocomplete outlined clearable dense
                                                     :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
-                                                    v-model="org_name"
+                                                    v-model="org_name" :items="organization_names"
+                                                    item-text="organization_name" 
                                                     :label="$t('container.api_manager.data_receiver.organization') ">
-                                                </v-text-field>
+                                                </v-autocomplete>
                                             </v-col>
                                             <v-col lg="4" md="4" cols="12">
                                                 <div class="d-inline d-flex justify-end">
@@ -829,4 +854,8 @@ export default {
         background-position: 100% 50%;
     }
 }
+.v-expansion-panel-header__icon {
+  color: #ff0000;
+  /* Your desired arrow color */
+  }
 </style>
