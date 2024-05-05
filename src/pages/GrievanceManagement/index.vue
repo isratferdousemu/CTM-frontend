@@ -6,7 +6,7 @@
           <v-col cols="12">
 
             <!-- Expantion panels start -->
-            <!-- <v-expansion-panels>
+            <v-expansion-panels>
               <v-expansion-panel class="ma-2">
                 <v-expansion-panel-header color=#8C9EFF>
                   <h3 class="white--text ">
@@ -288,7 +288,7 @@
                   </div>
                 </v-expansion-panel-content>
               </v-expansion-panel>
-            </v-expansion-panels> -->
+            </v-expansion-panels>
             <!-- Expantion panels end -->
             <!-- Application list -->
             <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8 mt-5">
