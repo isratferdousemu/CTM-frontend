@@ -1,29 +1,31 @@
 <template lang="">
   <v-app-bar
     elevation="0"
-    height="70"
+     height="70"
     fixed
     app
     class="mx-5 my-3 rounded-lg header-left menu-top"
     style="box-shadow: 3px 8px 14px -5px rgb(0 0 0 / 14%) !important"
   >
+ 
     <!--  <v-app-bar-nav-icon @click.stop="drawer = !drawer" /> -->
     <v-btn icon @click.stop="Drawer = !Drawer">
       <v-icon>mdi-menu</v-icon>
     </v-btn>
     <v-img
-        class="text-center ma-auto"
+        class="text-center ma-auto mr-2"
         max-height="100%"
         max-width="50px"
         position="center center"
         src="/assets/images/logo.png"
       ></v-img>
+         <v-spacer />
     <!-- <b> {{  this.$t("topSidebar.title") }}  <p :style="{ 'margin-left': '15%', 'margin-top': '15%' }">
    </br> <span v-if="userData?.office">{{ userData?.office?.office_address}}</span>
     <span v-else>{{  this.$t("topSidebar.location") }}</span>
     </p>
     </b> -->
-<v-row no-gutters class="ml-2">
+<!-- <v-row no-gutters class="ml-2">
   <v-col cols="12" md="12" lg="12" sm="12" xs="12">
     <span :class="$vuetify.breakpoint.xs ? 'text-xs' : ''">{{ this.$t("topSidebar.title") }}</span>
   </v-col>
@@ -31,10 +33,25 @@
     <span :class="$vuetify.breakpoint.xs ? 'text-xs' : ''" v-if="userData?.office">{{ userData?.office?.office_address }}</span>
     <span :class="$vuetify.breakpoint.xs ? 'text-xs' : ''" v-else>{{ this.$t("topSidebar.location") }}</span>
   </v-col>
-</v-row>
+</v-row> -->
 
 
-    <v-spacer />
+  <v-spacer class="hidden-xs-only" />
+
+    <v-row no-gutters class="ml-2" v-if="$vuetify.breakpoint.smAndUp">
+      <v-col cols="12" md="12" lg="12" sm="12" xs="12">
+        <span :class="$vuetify.breakpoint.xs ? 'text-xs' : ''">{{ this.$t("topSidebar.title") }}</span>
+      </v-col>
+      <v-col cols="12" md="12" lg="12" sm="12" xs="12">
+        <span :class="$vuetify.breakpoint.xs ? 'text-xs' : ''" v-if="userData?.office">{{ userData?.office?.office_address }}</span>
+        <span :class="$vuetify.breakpoint.xs ? 'text-xs' : ''" v-else>{{ this.$t("topSidebar.location") }}</span>
+      </v-col>
+    </v-row>
+
+   <v-spacer class="hidden-sm-and-down" />
+
+
+   
      <LocaleSwitcher />
 
     <!-- Notification Start -->
