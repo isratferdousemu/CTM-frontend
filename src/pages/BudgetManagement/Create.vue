@@ -25,60 +25,120 @@
                         <v-col cols="12" class="d-flex">
                           <v-row wrap>
                             <v-col cols="12" sm="6" lg="6">
-                              <v-text-field
+                              <!-- <v-text-field
                                 value="1234"
                                 outlined
                                 disabled
                                 label="Budget ID"
                               >
-                              </v-text-field>
+                              </v-text-field> -->
 
-                              <v-select
-                                :items="allowances"
-                                item-text="name_en"
-                                item-value="id"
-                                label="Select Allowance Program"
-                                outlined
-                                @change="getAmount($event)"
-                              >
-                              </v-select>
+                              <ValidationProvider
+                          name="ProgramName"
+                          vid="program_id"
+                          rules="required"
+                          v-slot="{ errors }"
+                        >
+                        <v-autocomplete
+                            outlined
+                            clearable
+                            :items="allowances"
+                            item-text="name_en"
+                            item-value="id"
+                            v-model="data.program_id"
+                            :label="
+                          $t(
+                            'container.application_selection.application.program'
+                          )
+                        "
+                        required
+                            :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"
+                          ></v-autocomplete>
+                      </ValidationProvider>
+
+                           
+                      <ValidationProvider
+                          name="previousYear"
+                          vid="previous_year"
+                          rules="required"
+                          v-slot="{ errors }"
+                        >
 
                               <v-text-field
-                                value="1234"
+                                type="Number"
                                 outlined
-                                disabled
+                                v-model="data.previous_year_value"
                                 label="Number of Previous Year"
+                                required
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
                               >
                               </v-text-field>
+
+                            </ValidationProvider>
+
+                            <ValidationProvider
+                          name="calculationValue"
+                          vid="calculation_value"
+                          rules="required"
+                          v-slot="{ errors }"
+                        >
+                              <v-text-field
+                              type="Number"
+                              v-model="data.calculation_value"
+                                outlined
+                                label="Value"
+                                required
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
+                              >
+                              </v-text-field>
+
+                            </ValidationProvider>
                             </v-col>
 
                             <v-col cols="12" sm="6" lg="6">
+                              <ValidationProvider
+                          name="financialYear"
+                          vid="financial_year"
+                          rules="required"
+                          v-slot="{ errors }"
+                        >
                               <v-select
-                                :items="financial"
+                                :items="financial_years"
                                 item-text="financial_year"
                                 item-value="id"
                                 label="Select Financial Year"
+                                v-model="data.financial_year_id"
                                 outlined
+                                required
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
                               >
                               </v-select>
+                            </ValidationProvider>
 
+                            <ValidationProvider
+                          name="calculationType"
+                          vid="calculation_type"
+                          rules="required"
+                          v-slot="{ errors }"
+                        >
                               <v-select
-                                :items="districts"
-                                item-text="name_en"
+                                :items="calculationType"
+                                item-text="value_en"
                                 item-value="id"
                                 label="Calculation Type"
+                                v-model="data.calculation_type"
                                 outlined
-                                @change="getOffice($event)"
+                                required
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0]"
                               >
                               </v-select>
-
-                              <v-text-field
-                                value="1234"
-                                outlined
-                                disabled
-                                label="Value"
-                              >
-                              </v-text-field>
+                            </ValidationProvider>
+                             
                             </v-col>
 
                             <!-- <v-col cols="12" sm="6" lg="6">
@@ -320,7 +380,7 @@
                     color="primary"
                     class="custom-btn mr-2"
                     router
-                    to="/allotment"
+                    to="/budget"
                     >Back
                   </v-btn>
 
@@ -365,50 +425,79 @@ export default {
         allotment_extra: [],
       },
       data: {
-        division: [
-        //   {
-        //     member_name: null,
-        //     designation: null,
-        //     address: null,
-        //     email: null,
-
-        //     phone: null,
-        //   },
-        ],
-        district:[],
+        program_id:null,
+        financial_year_id:null,
+        calculation_type:null,
+        previous_year_value:null,
+        calculation_value:null,
+        remarks:null
       },
+      district:[],
+      allowances:[],
+      financial_years: [],
+      calculationType:[],
     };
   },
 
   computed: {
     ...mapState({
-      allowances: (state) => state.ManageAllotment.allowances,
-      allowanceAmounts: (state) => state.ManageAllotment.allowanceAmounts,
-      educationGenders: (state) => state.ManageAllotment.educationGender,
-      isDisable: (state) => state.ManageAllotment.is_disable_class,
-      genders: (state) => state.Allowance.genders,
-      genderTypes: (state) => state.Allowance.genderTypes,
-      districts: (state) => state.ManageAllotment.districts,
-      locations: (state) => state.ManageAllotment.locations,
-      financial: (state) => state.ManageAllotment.financial_years,
+      // allowances: (state) => state.ManageAllotment.allowances,
+      // allowanceAmounts: (state) => state.ManageAllotment.allowanceAmounts,
+      // educationGenders: (state) => state.ManageAllotment.educationGender,
+      // isDisable: (state) => state.ManageAllotment.is_disable_class,
+      // genders: (state) => state.Allowance.genders,
+      // genderTypes: (state) => state.Allowance.genderTypes,
+      // districts: (state) => state.ManageAllotment.districts,
+      // locations: (state) => state.ManageAllotment.locations,
+      // financial: (state) => state.ManageAllotment.financial_years,
     }),
   },
 
   mounted() {
-    this.getAllAllowanceProgram();
-    this.GerAllLookUpGender();
-    this.GerAllLookUpGenderType();
-    this.getAllDistrict();
-    this.getAllFinancialYear();
+    //this.getAllAllowanceProgram();
+    // this.GerAllLookUpGender();
+    // this.GerAllLookUpGenderType();
+    // this.getAllDistrict();
+    // this.getAllFinancialYear();
+    this.GetAllowance();
+    this.GetFinancial_Year();
+    this.$store
+      .dispatch("getLookupByType", 23)
+      .then((res) => (this.calculationType = res));
   },
 
   methods: {
     ...mapActions({
-      getAllAllowanceProgram: "ManageAllotment/getAllAllowanceProgram",
-      GerAllLookUpGender: "Allowance/GerAllLookUpGender",
-      GerAllLookUpGenderType: "Allowance/GerAllLookUpGenderType",
-      getAllDistrict: "ManageAllotment/getAllDistrict",
-      getAllFinancialYear: "ManageAllotment/getAllFinancialYear",
+      // getAllAllowanceProgram: "ManageAllotment/getAllAllowanceProgram",
+      // GerAllLookUpGender: "Allowance/GerAllLookUpGender",
+      // GerAllLookUpGenderType: "Allowance/GerAllLookUpGenderType",
+      // getAllDistrict: "ManageAllotment/getAllDistrict",
+      // getAllFinancialYear: "ManageAllotment/getAllFinancialYear",
+
+      GetAllowance() {
+      this.$axios
+        .get("/global/program", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data"
+          }
+        })
+        .then(result => {
+          this.allowances = result.data.data;
+        });
+    },
+    GetFinancial_Year() {
+      this.$axios
+        .get("/admin/financial-year/get", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data"
+          }
+        })
+        .then(result => {
+          this.financial_years = result.data.data;
+        });
+    },
     }),
 
     getAmount(event) {
@@ -419,9 +508,39 @@ export default {
       this.$store.dispatch("ManageAllotment/getAllOfficeLocation", event);
     },
 
-    addBudget: async function () {
+    addBudget () {
+      let fd = new FormData();
+      fd.append("program_id", this.data.program_id);
+      fd.append("financial_year_id", this.data.financial_year_id);
+      fd.append("calculation_type", this.data.calculation_type);
+      fd.append("previous_year_value", this.data.previous_year_value);
+      fd.append("calculation_value", this.data.calculation_value); 
+      fd.append("remarks", this.data.remarks); 
+
       try {
-        console.log("success");
+        this.$store
+          .dispatch("BudgetManagement/StoreBudget", fd)
+          .then((res) => {
+            console.log(res, "submit");
+            if (res.data?.success) {
+              this.$toast.success("Data Inserted Successfully");
+              this.$router.push({ name: "budget" });
+            } else if (res.response?.data?.errors) {
+              this.$refs.form.setErrors(res.response.data.errors);
+              this.errors = res.response.data.errors;
+              //   this.$toast.error(res.response.data.message);
+            }
+            console.log(this.$refs);
+            console.log(this.errors, 'this.errors');
+            //   if (data == null) {
+            //     this.$toast.success("Data Inserted Successfully");
+            //     this.dialogAdd = false;
+            //     this.resetData();
+            //     this.GetOffices();
+            //   } else {
+            //     this.errors = data.errors;
+            //   }
+          });
       } catch (e) {
         console.log(e);
       }
