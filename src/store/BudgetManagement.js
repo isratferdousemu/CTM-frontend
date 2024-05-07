@@ -1,3 +1,5 @@
+import { http } from "@/hooks/httpService";
+import { httpFile } from "../hooks/httpService";
 /* -------------------------------------------------------------------------- */
 /*                                states Define                               */
 /* -------------------------------------------------------------------------- */
@@ -29,6 +31,16 @@ const actions = {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
+  },
+  StoreBudget: ({ commit }, data) => {
+    return http()
+      .post("/admin/budget/add", data)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        return err;
+      });
   },
 };
 /* -------------------------------------------------------------------------- */

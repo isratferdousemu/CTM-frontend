@@ -17,12 +17,44 @@
                   <ValidationObserver ref="formsearch" v-slot="{ invalid }">
                     <form @submit.prevent="submitsearch()">
                       <v-row>
-                        <v-col lg="3" md="3" cols="12" v-if="!userData.committee">
-                          <v-autocomplete outlined clearable class="no-arrow-icon" v-model="data.program_id"
-                            :append-icon-cb="appendIconCallback" append-icon="mdi-plus" :items="allowances"
-                            item-text="name_en" item-value="id"
-                            :label="$t('container.application_selection.application.program')">
-                          </v-autocomplete>
+                        <v-col lg="3" md="3" cols="12">
+                          <v-text-field v-model="data.verification_number" outlined clearable append-icon="mdi-plus"
+                            :append-icon-cb="appendIconCallback" :label="$t(
+                              'container.beneficiary_management.beneficiary_list.nid'
+                            )
+                              ">
+                          </v-text-field>
+                        </v-col>
+                        <v-col lg="3" md="3" cols="12">
+                          <v-text-field v-model="data.tracking_no" outlined clearable append-icon="mdi-plus"
+                            :append-icon-cb="appendIconCallback" :label="$t(
+                              'container.grievance_management.grievanceList.tracking_no'
+                            )
+                              ">
+                          </v-text-field>
+                        </v-col>
+
+                        <v-col lg="3" md="3" cols="12">
+                          <ValidationProvider name="Grievance Type" vid="grievanceType" v-slot="{ errors }">
+                            <v-autocomplete v-model="data.grievanceType" class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
+                              :hide-details="errors[0] ? false : true" outlined
+                              :label="$t('container.grievance_management.main_grievance_type')" :items="types"
+                              :item-text="language === 'bn' ? 'title_bn' : 'title_en'" item-value="id"
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে অভিযোগের ধরন নির্বাচন করুন' : 'Please Select Grievance Type.') : ''"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col lg="3" md="3" cols="12">
+                          <ValidationProvider name="Grievance Subejct" vid="grievanceSubject" v-slot="{ errors }">
+                            <v-autocomplete v-model="data.grievanceSubject" class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
+                              :hide-details="errors[0] ? false : true" outlined
+                              :label="$t('container.grievance_management.grievance_subject')" :items="subjects"
+                              :item-text="language === 'bn' ? 'title_bn' : 'title_en'" item-value="id"
+                              :error="errors[0] ? true : false"
+                              :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে অভিযোগের বিষয় নির্বাচন করুন' : 'Please Select Grievacne Subject.') : ''"></v-autocomplete>
+                          </ValidationProvider>
                         </v-col>
 
                         <v-col lg="3" md="3" cols="12" v-if="!isReadonlyLocationType()">
@@ -30,9 +62,9 @@
                             <v-autocomplete @input="LocationType($event)" v-model="data.location_type"
                               class="no-arrow-icon" :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
                               :hide-details="errors[0] ? false : true" outlined :readonly="isReadonlyLocationType()"
-                              :label="$t('container.list.location_type')" :items="locationType" item-text="value_en"
-                              item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-autocomplete>
+                              :label="$t('container.list.location_type')" :items="locationType"
+                              :item-text="language === 'bn' ? 'value_bn' : 'value_en'" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
                         <v-col lg="3" md="3" cols="12" v-if="!isReadonlyDivision()">
@@ -41,8 +73,8 @@
                               v-model="data.division_id" outlined :label="$t(
                                 'container.system_config.demo_graphic.division.division'
                               )
-                                " :items="divisions" item-text="name_en" item-value="id"
-                              :error="errors[0] ? true : false" :readonly="isReadonlyDivision()"
+                                " :items="divisions" :item-text="language === 'bn' ? 'name_bn' : 'name_en'"
+                              item-value="id" :error="errors[0] ? true : false" :readonly="isReadonlyDivision()"
                               :error-messages="errors[0]" class="no-arrow-icon" :append-icon-cb="appendIconCallback"
                               append-icon="mdi-plus"></v-autocomplete>
                           </ValidationProvider>
@@ -53,8 +85,8 @@
                               @input="onChangeDistrict($event)" :label="$t(
                                 'container.system_config.demo_graphic.district.district'
                               )
-                                " :items="districts" item-text="name_en" item-value="id"
-                              :error="errors[0] ? true : false" :readonly="isReadonlyDistrict()"
+                                " :items="districts" :item-text="language === 'bn' ? 'name_bn' : 'name_en'"
+                              item-value="id" :error="errors[0] ? true : false" :readonly="isReadonlyDistrict()"
                               :error-messages="errors[0]" class="no-arrow-icon" :append-icon-cb="appendIconCallback"
                               append-icon="mdi-plus"></v-autocomplete>
                           </ValidationProvider>
@@ -65,7 +97,8 @@
                               :label="$t(
                                 'container.system_config.demo_graphic.ward.upazila'
                               )
-                                " @change="onChangeUpazila($event)" :items="thanas" item-text="name_en" item-value="id"
+                                " @change="onChangeUpazila($event)" :items="thanas"
+                              :item-text="language === 'bn' ? 'name_bn' : 'name_en'" item-value="id"
                               :error="errors[0] ? true : false" :error-messages="errors[0]" class="no-arrow-icon"
                               :readonly="isReadonlyUpazila()" :append-icon-cb="appendIconCallback"
                               append-icon="mdi-plus"></v-autocomplete>
@@ -80,8 +113,8 @@
                               outlined :label="$t(
                                 'container.system_config.demo_graphic.ward.subLocation_type'
                               )
-                                " :items="subLocationType" item-text="value_en" item-value="id"
-                              :error="errors[0] ? true : false" :readonly="isReadonlySubLocation()"
+                                " :items="subLocationType" :item-text="language === 'bn' ? 'name_bn' : 'name_en'"
+                              item-value="id" :error="errors[0] ? true : false" :readonly="isReadonlySubLocation()"
                               :error-messages="errors[0]" :hide-details="errors[0] ? false : true" class="no-arrow-icon"
                               :append-icon-cb="appendIconCallback" append-icon="mdi-plus"></v-autocomplete>
                           </ValidationProvider>
@@ -95,7 +128,7 @@
                             <v-autocomplete v-model="data.pouro_id" outlined :label="$t(
                               'container.system_config.demo_graphic.ward.pouro'
                             )
-                              " :items="pouros" item-text="name_en" item-value="id"
+                              " :items="pouros" :item-text="language === 'bn' ? 'name_bn' : 'name_en'" item-value="id"
                               @input="onChangePouroGetWard($event)" :error="errors[0] ? true : false"
                               :error-messages="errors[0]" :hide-details="errors[0] ? false : true" class="no-arrow-icon"
                               :readonly="isReadonlyPouro()" :append-icon-cb="appendIconCallback"
@@ -112,8 +145,8 @@
                             <v-autocomplete @input="onChangeUnionGetWard($event)" v-model="data.union_id" outlined :label="$t(
                               'container.system_config.demo_graphic.ward.union'
                             )
-                              " :items="unions" item-text="name_en" item-value="id" :error="errors[0] ? true : false"
-                              :readonly="isReadonlyUnion()" :error-messages="errors[0]"
+                              " :items="unions" :item-text="language === 'bn' ? 'name_bn' : 'name_en'" item-value="id"
+                              :error="errors[0] ? true : false" :readonly="isReadonlyUnion()" :error-messages="errors[0]"
                               :hide-details="errors[0] ? false : true" class="no-arrow-icon"
                               :append-icon-cb="appendIconCallback" append-icon="mdi-plus"></v-autocomplete>
                           </ValidationProvider>
@@ -126,10 +159,10 @@
                               outlined :label="$t(
                                 'container.system_config.demo_graphic.ward.city'
                               )
-                                " :items="cities" item-text="name_en" item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]" class="no-arrow-icon" :readonly="isReadonlyCity()"
-                              v-model="data.city_id" :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"></v-autocomplete>
+                                " :items="cities" :item-text="language === 'bn' ? 'name_bn' : 'name_en'"
+                              item-value="id" :error="errors[0] ? true : false" :error-messages="errors[0]"
+                              class="no-arrow-icon" :readonly="isReadonlyCity()" v-model="data.city_id"
+                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
                         <!-- :readonly="data.city_id !== null" v-model="data.city_id" -->
@@ -141,9 +174,9 @@
                               " :hide-details="errors[0] ? false : true" v-model="data.city_thana_id" outlined :label="$t(
     'container.system_config.demo_graphic.ward.thana'
   )
-    " :items="city_thanas" item-text="name_en" item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]" class="no-arrow-icon" :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"></v-autocomplete>
+    " :items="city_thanas" :item-text="language === 'bn' ? 'name_bn' : 'name_en'" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]" class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
 
@@ -155,9 +188,10 @@
                               v-model="data.district_pouro_id" outlined :label="$t(
                                 'container.system_config.demo_graphic.ward.dist_pouro'
                               )
-                                " :items="district_poros" item-text="name_en" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]" class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"></v-autocomplete>
+                                " :items="district_poros" :item-text="language === 'bn' ? 'name_bn' : 'name_en'"
+                              item-value="id" :error="errors[0] ? true : false" :error-messages="errors[0]"
+                              class="no-arrow-icon" :append-icon-cb="appendIconCallback"
+                              append-icon="mdi-plus"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
 
@@ -169,70 +203,24 @@
                               :label="$t(
                                 'container.system_config.demo_graphic.ward.ward'
                               )
-                                " :items="wards" item-text="name_en" item-value="id" :readonly="permissions?.user?.committee_type_id == 13
-    " :error="errors[0] ? true : false" :error-messages="errors[0]" class="no-arrow-icon"
+                                " :items="wards" :item-text="language === 'bn' ? 'name_bn' : 'name_en'" item-value="id"
+                              :readonly="permissions?.user?.committee_type_id == 13
+                                " :error="errors[0] ? true : false" :error-messages="errors[0]" class="no-arrow-icon"
                               :append-icon-cb="appendIconCallback" append-icon="mdi-plus"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
 
                         <!-- :readonly="permissions?.user?.committee_type_id== 13 && data.ward_id !=null" -->
                       </v-row>
-                      <v-row>
-                        <v-btn elevation="2" class="btn ml-3 mt-3 white--text" color="blue"
-                          @click="toggleFieldVisibility">{{
-                            $t(
-                              "container.beneficiary_management.beneficiary_list.advance_search"
-                            )
-                          }}</v-btn>
-                      </v-row>
-                      <v-row v-if="isFieldVisible" class="mt-10">
-                        <v-col lg="3" md="3" cols="12">
-                          <v-text-field v-model="data.application_id" outlined clearable append-icon="mdi-plus"
-                            :append-icon-cb="appendIconCallback" :label="$t(
-                              'container.application_selection.application.applicant_id'
-                            )
-                              ">
-                          </v-text-field>
-                        </v-col>
-                        <v-col lg="3" md="3" cols="12">
-                          <v-text-field v-model="data.nominee_name" outlined clearable append-icon="mdi-plus"
-                            :append-icon-cb="appendIconCallback" :label="$t(
-                              'container.beneficiary_management.beneficiary_list.nominee'
-                            )
-                              ">
-                          </v-text-field>
-                        </v-col>
-                        <v-col lg="3" md="3" cols="12">
-                          <v-text-field v-model="data.account_no" outlined clearable :append-icon-cb="appendIconCallback"
-                            append-icon="mdi-plus" :label="$t(
-                              'container.application_selection.application.account'
-                            )
-                              ">
-                          </v-text-field>
-                        </v-col>
-                        <v-col lg="3" md="3" cols="12">
-                          <v-text-field v-model="data.nid_no" outlined clearable append-icon="mdi-plus"
-                            :append-icon-cb="appendIconCallback" :label="$t(
-                              'container.beneficiary_management.beneficiary_list.nid'
-                            )
-                              ">
-                          </v-text-field>
-                        </v-col>
 
-                        <v-col lg="3" md="3" cols="12">
-                          <v-select outlined clearable append-icon="mdi-plus" :items="lists" item-text="name_en"
-                            item-value="id" v-model="data.status_list" :append-icon-cb="appendIconCallback"
-                            :label="$t('container.list.status')">
-                          </v-select>
-                        </v-col>
-                      </v-row>
 
                       <div class="d-inline d-flex justify-end">
+
+                        <v-btn elevation="2" class="btn  mr-2" @click="resetForm()">{{
+                          $t("container.list.reset")
+                        }}</v-btn>
                         <v-btn elevation="2" type="submit" class="btn mr-2" color="success">{{
                           $t("container.list.search")
-                        }}</v-btn>
-                        <v-btn elevation="2" class="btn" @click="resetForm()">{{
-                          $t("container.list.reset")
                         }}</v-btn>
                       </div>
                     </form>
@@ -338,7 +326,10 @@
                   <v-row justify="space-between" align="center" class="mx-4">
                     <!-- Checkbox on the left -->
                     <v-col lg="3" md="3" cols="12">
-                      {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">{{ this.total }}</span>
+                      {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">
+                        {{ language === 'bn' ? $helpers.englishToBangla(
+                          this.total) : this.total }}
+                      </span>
                     </v-col>
 
                     <!-- Dropdown on the right -->
@@ -367,38 +358,59 @@
                       class="elevation-0 transparent row-pointer">
                       <!-- Header slot -->
 
-
-                      <!-- <template v-slot:item.id="{ item, index }">
-
-                        <v-checkbox v-model="forward.applications_id" :value="item.id"
-                          :disabled="unselectedItem(item)"></v-checkbox>
-
-
-                      </template> -->
-
-                      <template v-slot:item.sl="{ item, index }">
-                        {{
+                      <template v-slot:item.id="{ item, index }">
+                        {{ language === 'bn' ? $helpers.englishToBangla(
                           (pagination.current - 1) * pagination.perPage +
                           index +
-                          1
-                        }}
+                          1) : (pagination.current - 1) * pagination.perPage +
+                          index +
+                          1 }}
                       </template>
-              
-                      <template v-slot:item.grievanceType="{ item }">
+                      <template v-slot:item.name="{ item }">
                         <span>
-                          {{ language === 'bn' ? item.grievance_type?.title_bn : item.grievance_type?.title_en  }}
+                          {{ item.name }}
                           <!-- {{ item?.grievance_type?.title_en }} -->
                         </span>
                       </template>
 
-                        <template v-slot:item.grievanceSubject="{ item }">
-                          <span>
-                             {{ language === 'bn' ? item.grievance_subject?.title_bn : item.grievance_subject?.title_en }}
-                          </span>
-                        </template>
+                      <template v-slot:item.grievanceType="{ item }">
+                        <span>
+                          {{ language === 'bn' ? item.grievance_type?.title_bn : item.grievance_type?.title_en }}
+                          <!-- {{ item?.grievance_type?.title_en }} -->
+                        </span>
+                      </template>
 
-                    
-                        <template v-slot:item.tracking_no="{ item }">
+                      <template v-slot:item.grievanceSubject="{ item }">
+                        <span>
+                          {{ language === 'bn' ? item.grievance_subject?.title_bn : item.grievance_subject?.title_en }}
+                        </span>
+                      </template>
+
+                      <template v-slot:item.created_at="{ item }">
+                        <span>
+                          {{ language === 'bn' ? formatDate(item.created_at) : formatDate(item.created_at) }}
+                        </span>
+                      </template>
+
+
+                      <template v-slot:item.division="{ item }">
+                        <span>
+                          {{ language === 'bn' ? item.division?.name_bn : item.division?.name_en }}
+                        </span>
+                      </template>
+                      <template v-slot:item.district="{ item }">
+                        <span>
+                          {{ language === 'bn' ? item.district?.name_bn : item.district?.name_en }}
+                        </span>
+                      </template>
+                      <template v-slot:item.location="{ item }">
+                        <span>
+                          {{ language === 'bn' ? item.city_corporation?.name_bn : item.city_corporation?.name_en }}
+                        </span>
+                      </template>
+
+
+                      <template v-slot:item.tracking_no="{ item }">
 
 
                         <span>
@@ -424,10 +436,7 @@
                           style="background-color: #FFD700; padding: 5px; width: 100px;">
                           Solved
                         </span>
-                        <span v-if="item.status == 4" class="rejected"
-                          style="background-color: #FF0000; color: white; padding: 5px; width: 100px;">
-                          Rejected
-                        </span>
+
 
                       </template>
 
@@ -480,40 +489,62 @@
             <v-simple-table dense>
               <template v-slot:default>
                 <thead>
-                  <tr >
-                    <th>{{ $t("container.grievance_management.grievanceList.tracking_no") }} :</th>
-                    <th>{{ data.tracking_no }}</th>
-               
+                  <tr>
+                    <th style="font-size: 16px;">{{ $t("container.grievance_management.grievanceList.tracking_no") }} :
+                    </th>
+                    <th style="font-size: 16px;">{{ data.tracking_no }}</th>
+
                   </tr>
-                    <tr>
-                      <th>{{ $t("container.grievance_management.main_grievance_type") }} :</th>
-                      <th>{{ data.grievanceType }}</th>
-                    </tr>
-                     <tr>
-                        <th>{{ $t("container.grievance_management.grievance_subject") }} :</th>
-                        <th>{{ data.grievanceSubject }}</th>
-                      </tr>
-                       <tr>
-                        <th>{{ $t("container.grievance_management.grievanceList.grievance_date") }} :</th>
-                        <th>{{ data.created_at }}</th>
-                      </tr>
-                       <tr>
-                        <th>{{ $t("container.list.status") }} : </th>
-                        <th>{{ data.status }}</th>
-                      </tr>
-                      <tr>
-                          <th>{{ $t("container.grievance_management.grievanceList.resolved_officer") }} :</th>
-                          <th>{{ data.resolved_officer }}</th>
-                        </tr>
+                  <tr>
+                    <th style="font-size: 16px;">{{ $t("container.grievance_management.main_grievance_type") }} :</th>
+                    <th style="font-size: 16px;">{{ data.grievanceType }}</th>
+                  </tr>
+                  <tr>
+                    <th style="font-size: 16px;">{{ $t("container.grievance_management.grievance_subject") }} :</th>
+                    <th style="font-size: 16px;">{{ data.grievanceSubject }}</th>
+                  </tr>
+                  <tr>
+                    <th style="font-size: 16px;">{{ $t("container.grievance_management.grievanceList.grievance_date") }} :
+                    </th>
+                    <!-- <th>{{ data.created_at }}</th> -->
+                    <th style="font-size: 16px;"> {{ formatDate(data.created_at) }}</th>
+                  </tr>
+                  <tr>
+                    <th style="font-size: 16px;">{{ $t("container.list.status") }} : </th>
+                    <th style="font-size: 16px;">
+                      <span v-if="data.status == 0" class="not-selected"
+                        style="background-color: lightgray; padding: 5px; width: 100px;">
+                        Not Solved
+                      </span>
+                      <span v-if="data.status == 1" class="forwarded"
+                        style="background-color: #4CAF50; color: white; padding: 5px; width: 100px;">
+                        Forwarded
+                      </span>
+                      <span v-if="data.status == 2" class="approved"
+                        style="background-color: #008000; color: white; padding: 5px; width: 100px;">
+                        In Progress
+                      </span>
+                      <span v-if="data.status == 3" class="waiting"
+                        style="background-color: #FFD700; padding: 5px; width: 100px;">
+                        Solved
+                      </span>
+                    </th>
+                  </tr>
+                  <tr>
+                    <th style="font-size: 16px;">{{ $t("container.grievance_management.grievanceList.resolved_officer") }}
+                      :</th>
+                    <th style="font-size: 16px;">{{ data.resolved_officer ?? 'N/A' }}</th>
+                  </tr>
                 </thead>
-         
+
               </template>
             </v-simple-table>
-                 <div style="text-align:right">
-                      <v-btn @click="showDetailsModalClose" outlined class="custom-btn-width py-2 mr-10 text-right">
-                        {{ $t("container.list.cancel") }}
-                      </v-btn>  
-                 </div>
+            <div style="text-align:right">
+              <v-btn style="margin:5px 5px;" @click="showDetailsModalClose" outlined
+                class="custom-btn-width py-2 mr-10 text-right warning">
+                {{ $t("container.list.cancel") }}
+              </v-btn>
+            </div>
           </template>
 
 
@@ -526,6 +557,7 @@
 </template>
 
 <script>
+
 import { mapState, mapActions } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
@@ -539,7 +571,10 @@ export default {
     return {
       data: {
         id: null,
-        name_en: null,
+        verification_number: null,
+        tracking_no: null,
+
+
         name_bn: null,
         code: null,
         division_id: null,
@@ -552,13 +587,13 @@ export default {
         pouro_id: null,
         ward_id: null,
         location_type: null,
+
         sub_location_type: null,
         application_id: null,
         nominee_name: null,
         account_no: null,
         status_list: null,
         program_id: null,
-        tracking_no: null,
         status: null,
         grievanceType: null,
         grievanceSubject: null,
@@ -577,10 +612,8 @@ export default {
       lists: [
         { id: 2, name_en: "Approved" },
         { id: 1, name_en: "Forwarded" },
-        { id: 0, name_en: "Not Selected" },
-        { id: 4, name_en: "Rejected" },
-        { id: 3, name_en: "Waiting" },
-        { id: 5, name_en: "Recommendation" },
+        { id: 0, name_en: "Not Solved" },
+
       ],
 
       selectAll: null,
@@ -601,6 +634,8 @@ export default {
       pouros: [],
       wards: [],
       locationType: [],
+      types: [],
+      subjects: [],
       subLocationType: [
         {
           id: 1,
@@ -622,7 +657,7 @@ export default {
       },
       items: [5, 10, 15, 20, 40, 50, 100],
 
-      selectedColumns: ['grievanceSubject', 'grievanceType', 'tracking_no', 'created_at', 'resolved_officer', 'status'],  // Initially, first 6 columns are selected
+      selectedColumns: ['grievanceSubject', 'grievanceType', 'tracking_no', 'created_at', 'status'],  // Initially, first 6 columns are selected
 
       fixedColumns: ['id', 'sl', 'actions'],  // Two columns that will always remain visible
 
@@ -634,7 +669,7 @@ export default {
     ValidationObserver,
   },
   computed: {
-     language: {
+    language: {
       get() {
         return this.$store.getters.getAppLanguage;
       },
@@ -679,7 +714,19 @@ export default {
         //   value: "id",
         //   fixed: true,
         // },
-        { text: this.$t("container.list.sl"), value: "sl", fixed: true },
+        {
+          text: this.$t("container.list.sl"),
+          value: "id",
+          align: "start",
+          sortable: false,
+        },
+        {
+          text: this.$t(
+            "container.grievance_management.grievanceEntry.name"
+          ),
+          value: "name",
+
+        },
 
         {
           text: this.$t(
@@ -701,6 +748,12 @@ export default {
           value: "grievanceSubject",
 
         },
+
+        {
+          text: this.$t("container.application_selection.application.mobile"),
+          value: "mobile",
+
+        },
         {
           text: this.$t("container.grievance_management.grievanceList.grievance_date"),
           value: "created_at",
@@ -709,11 +762,6 @@ export default {
         {
           text: this.$t("container.grievance_management.grievanceList.resolved_officer"),
           value: "resolved_officer",
-
-        },
-        {
-          text: this.$t("container.list.status"),
-          value: "status",
 
         },
 
@@ -725,28 +773,29 @@ export default {
 
         {
           text: this.$t("container.system_config.demo_graphic.division.division"),
-          value: "division_id",
+          value: "division",
         },
         {
           text: this.$t("container.system_config.demo_graphic.district.district"),
-          value: "district_id",
+          value: "district",
         },
-        {
-          text: this.$t("container.system_config.demo_graphic.ward.upazila_city_district"),
-          value: "location",
-        },
-        {
-          text: this.$t("container.system_config.demo_graphic.ward.union_pouro_city"),
-          value: "union_pouro_city",
-        },
-        {
-          text: this.$t("container.system_config.demo_graphic.ward.ward"),
-          value: "ward_id",
-        },
+        // {
+        //   text: this.$t("container.system_config.demo_graphic.ward.upazila_city_district"),
+        //   value: "location",
+        // },
+        // {
+        //   text: this.$t("container.system_config.demo_graphic.ward.union_pouro_city"),
+        //   value: "union_pouro_city",
+        // },
+        // {
+        //   text: this.$t("container.system_config.demo_graphic.ward.ward"),
+        //   value: "ward_id",
+        // },
+
 
         {
-          text: this.$t("container.application_selection.application.mobile"),
-          value: "mobile",
+          text: this.$t("container.list.status"),
+          value: "status",
 
         },
 
@@ -762,12 +811,15 @@ export default {
   },
 
   methods: {
-    showDetailsModalClose(){
+    getItemText(item) {
+      return this.language === 'bn' ? item.name_bn : item.name_en;
+    },
+    showDetailsModalClose() {
       this.showModal = false;
     },
     // show details modal
     showDetailsModal(item) {
-       console.log(this.language,'languagelanguagelanguage');
+      console.log(this.language, 'languagelanguagelanguage');
       this.showModal = true;
       this.data.status = item.status
       this.data.tracking_no = item.tracking_no
@@ -1138,14 +1190,12 @@ export default {
       this.data.ward_id = null;
       this.data.location_type = null;
       this.data.sub_location_type = null;
-      this.data.application_id = null;
-      this.data.nominee_name = null;
-      this.data.account_no = null;
-      this.data.nid_no = null;
+      this.data.name = null;
+      this.data.tracking_no = null;
+      this.data.verification_number = null;
 
-      this.data.status_list = null;
-      this.data.program_id = null;
-
+      this.data.grievanceSubject = null;
+      this.data.grievanceType = null;
       this.GetPermissions();
       this.GetGrievance();
     },
@@ -1645,15 +1695,14 @@ export default {
       const queryParams = {
 
         searchText: this.search,
-        application_id: this.data.application_id,
-        nominee_name: this.data.nominee_name,
-        account_no: this.data.account_no,
-        status: this.data.status,
-        program_id: this.data.program_id,
-        nid_no: this.data.nid_no,
+        verification_number: this.data.verification_number,
+        tracking_no: this.data.tracking_no,
+        grievanceType: this.data.grievanceType,
+        grievanceSubject: this.data.grievanceSubject,
         division_id: this.data.division_id,
         district_id: this.data.district_id,
-        location_type_id: this.data.location_type,
+        location_type: this.data.location_type,
+
         thana_id: this.data.thana_id,
         union_id: this.data.union_id,
         city_id: this.data.city_id,
@@ -1717,7 +1766,7 @@ export default {
 
       };
       await this.$axios
-        .get("/admin/application/get", {
+        .get("/admin/grievance/get", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -1729,6 +1778,7 @@ export default {
         });
 
       const CustomInfo = this.applications.map(((i, index) => {
+        console.log(i, 'pdf data');
         let divisionName = '';
         let districtName = '';
         let location = '';
@@ -1736,7 +1786,7 @@ export default {
         let status = '';
         if (i) {
           if (i.status === 0) {
-            status = "Not Selected"
+            status = "Not Solved"
           } else if (i.status === 1) {
             status = "Forwarded"
           } else if (i.status === 2) {
@@ -1748,7 +1798,7 @@ export default {
           }
         }
 
-        if (i?.permanent_location_type_id == '1') {
+        if (i?.location_type_id == '1') {
           divisionName = this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.parent?.name_bn;
           districtName = this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.name_bn;
           location = this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.name_en : i?.permanent_location?.parent?.name_bn;
@@ -1761,29 +1811,17 @@ export default {
 
         return {
           'sl': this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
-          'application_id': i?.application_id,
-          'program.name_en': this.$i18n.locale == 'en' ? i?.program?.name_en : i?.program?.name_bn,
-          'name_en': i?.name_en,
+          'tracking_no': i?.tracking_no,
+          'grievanceType': this.$i18n.locale == 'en' ? i?.grievance_type?.title_en : i?.grievance_type?.title_bn,
+          'grievanceSubject': this.$i18n.locale == 'en' ? i?.grievance_subject?.title_en : i?.grievance_subject?.title_bn,
+          'created_at': this.$i18n.locale == 'en' ? i?.created_at : i?.created_at,
+          'name': i?.name,
           'status': status,
-          // 'status': i?.status,
-          'score': i?.score,
-          'account_number': i?.account_number,
           'verification_number': i?.verification_number,
-          'division': divisionName,
-          'district': districtName,
-          // 'division': this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.parent?.parent?.name_bn,
-          // 'district': this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.parent?.name_bn,
-          // 'union_pouro_city': this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.name_bn,
-          'union_pouro_city': union_pouro_city,
-          'location': location,
-          // 'location': this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.name_en : i?.permanent_location?.parent?.name_bn,
-          'ward': this.$i18n.locale == 'en' ? i?.permanent_location?.name_en : i?.permanent_location?.name_bn,
-          'father_name_en': this.$i18n.locale == 'en' ? i?.father_name_en : i?.father_name_bn,
-          'mother_name_en': this.$i18n.locale == 'en' ? i?.mother_name_en : i?.mother_name_bn,
-          'marital_status': i?.marital_status,
-          'spouse_name_en': i?.spouse_name_en,
-          'nominee_en': i?.nominee_en,
-          'nominee_relation_with_beneficiary': i?.nominee_relation_with_beneficiary,
+          'division': this.$i18n.locale == 'en' ? i?.division?.name_en : i?.division?.name_bn,
+          'district': this.$i18n.locale == 'en' ? i?.district?.name_en : i?.district?.name_bn,
+          'district': this.$i18n.locale == 'en' ? i?.district?.name_en : i?.district?.name_bn,
+          'location': this.$i18n.locale == 'en' ? i?.city_corporation?.name_en : i?.city_corporation?.name_bn,
           'mobile': i?.mobile,
         }
       }));
@@ -1809,7 +1847,7 @@ export default {
         language: this.$i18n.locale,
         data: Info,
         header: HeaderInfo,
-        fileName: this.$t("container.application_selection.application.list"),
+        fileName: this.$t("container.grievance_management.grievanceList.grievance_list"),
       };
       try {
         const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
@@ -1861,7 +1899,7 @@ export default {
 
       };
       await this.$axios
-        .get("/admin/application/get", {
+        .get("/admin/grievance/get", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -1879,7 +1917,7 @@ export default {
             let status = '';
             if (i) {
               if (i.status === 0) {
-                status = "Not Selected"
+                status = "Not Solved"
               } else if (i.status === 1) {
                 status = "Forwarded"
               } else if (i.status === 2) {
@@ -1904,29 +1942,17 @@ export default {
 
             return {
               'sl': this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
-              'application_id': i?.application_id,
-              'program.name_en': this.$i18n.locale == 'en' ? i?.program?.name_en : i?.program?.name_bn,
-              'name_en': i?.name_en,
+              'tracking_no': i?.tracking_no,
+              'grievanceType': this.$i18n.locale == 'en' ? i?.grievance_type?.title_en : i?.grievance_type?.title_bn,
+              'grievanceSubject': this.$i18n.locale == 'en' ? i?.grievance_subject?.title_en : i?.grievance_subject?.title_bn,
+              'created_at': this.$i18n.locale == 'en' ? i?.created_at : i?.created_at,
+              'name': i?.name,
               'status': status,
-              // 'status': i?.status,
-              'score': i?.score,
-              'account_number': i?.account_number,
               'verification_number': i?.verification_number,
-              'division': divisionName,
-              'district': districtName,
-              // 'division': this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.parent?.parent?.name_bn,
-              // 'district': this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.parent?.name_bn,
-              // 'union_pouro_city': this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.name_bn,
-              'union_pouro_city': union_pouro_city,
-              'location': location,
-              // 'location': this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.name_en : i?.permanent_location?.parent?.name_bn,
-              'ward': this.$i18n.locale == 'en' ? i?.permanent_location?.name_en : i?.permanent_location?.name_bn,
-              'father_name_en': this.$i18n.locale == 'en' ? i?.father_name_en : i?.father_name_bn,
-              'mother_name_en': this.$i18n.locale == 'en' ? i?.mother_name_en : i?.mother_name_bn,
-              'marital_status': i?.marital_status,
-              'spouse_name_en': i?.spouse_name_en,
-              'nominee_en': i?.nominee_en,
-              'nominee_relation_with_beneficiary': i?.nominee_relation_with_beneficiary,
+              'division': this.$i18n.locale == 'en' ? i?.division?.name_en : i?.division?.name_bn,
+              'district': this.$i18n.locale == 'en' ? i?.district?.name_en : i?.district?.name_bn,
+              'district': this.$i18n.locale == 'en' ? i?.district?.name_en : i?.district?.name_bn,
+              'location': this.$i18n.locale == 'en' ? i?.city_corporation?.name_en : i?.city_corporation?.name_bn,
               'mobile': i?.mobile,
             }
           }));
@@ -1956,7 +1982,7 @@ export default {
               const currentDate = new Date().toISOString().slice(0, 10); //
               let dateinfo = queryParams.language == 'en' ? currentDate : this.$helpers.englishToBangla(currentDate)
 
-              const filenameWithDate = `${dateinfo}_${this.$t("container.application_selection.application.list")}`;
+              const filenameWithDate = `${dateinfo}_${this.$t("container.grievance_management.grievanceList.grievance_list")}`;
 
               excel.export_json_to_excel({
                 header: HeaderInfo,
@@ -1996,20 +2022,56 @@ export default {
       this.$store.commit("setHeaderTitle", title);
     },
     // date formater function
-    formatDate(date) {
-      // Convert date to YYYY-MM-DD format
+    formatDate(dateString) {
+      const date = new Date(dateString);
       const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
+      const month = ('0' + (date.getMonth() + 1)).slice(-2); // Adding 1 because months are zero-based
+      const day = ('0' + date.getDate()).slice(-2);
+      return `${day}-${month}-${year}`;
+    },
+    async GetGrievanceType() {
+      const queryParams = {
+        status: 'active',
+      };
+      this.$axios
+        .get("/global/grievanceType/get", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          this.types = result.data.data;
+          console.log(this.types, ' this.types');
 
-      return `${year}-${month}-${day}`;
-    }
+        });
+    },
+    async GetGrievanceSubject() {
+      const queryParams = {
+        status: 'active',
+      };
+      this.$axios
+        .get("/global/grievanceSubject/get", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          this.subjects = result.data.data;
+
+        });
+    },
   },
   watch: {
     "$i18n.locale": "updateHeaderTitle",
   },
   created() {
     this.GetAllDivisions();
+    this.GetGrievanceType();
+    this.GetGrievanceSubject();
 
     this.GetCommitte();
   },
@@ -2049,5 +2111,4 @@ export default {
 
 .no-arrow-icon .v-input__icon--append {
   font-weight: bold;
-}
-</style>
+}</style>
