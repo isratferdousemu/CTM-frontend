@@ -4,13 +4,13 @@ const TrainingManagementRoutes = [
   //     name: 'Login',
   //     component: Login,
   //   },
-  /*Device Registration route start*/
+  /*Trainer Info route start*/
   {
     path: "/training-management/trainer-information",
     name: "TrainerInformation",
     meta: {
       requiresAuth: true,
-      permission: "trainer-info-view",
+      permission: "trainerInfo-view",
     },
     component: () => import("../pages/TrainingManagement/TrainerInformation/Index.vue")
   },
@@ -20,21 +20,30 @@ const TrainingManagementRoutes = [
     name: "TrainerInformationCreate",
     meta: {
       requiresAuth: true,
-      permission: "trainer-info-create",
+      permission: "trainerInfo-create",
     },
     component: () => import("../pages/TrainingManagement/TrainerInformation/Create.vue")
   },
 
   {
-    path: "/system-configuration/device_registration/edit/:id",
-    name: "DeviceRegistrationEdit",
+    path: "/training-management/trainer-information/edit/:id",
+    name: "trainerInfo-edit",
     meta: {
       requiresAuth: true,
-      permission: "device-registration-edit",
+      permission: "trainerInfo-edit",
     },
-    component: () => import("../pages/SystemConfiguration/device_registration/Edit.vue")
+    component: () => import("../pages/TrainingManagement/TrainerInformation/Edit.vue")
   },
-  /*Device Registration route end*/
+  {
+    path: "/training-management/trainer-information/view/:id",
+    name: "trainerInfo-view",
+    meta: {
+      requiresAuth: true,
+      permission: "trainerInfo-view",
+    },
+    component: () => import("../pages/TrainingManagement/TrainerInformation/View.vue")
+  },
+  /*Trainer Info route end*/
 ];
 
 export default TrainingManagementRoutes;

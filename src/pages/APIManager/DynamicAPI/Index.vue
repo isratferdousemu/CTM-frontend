@@ -365,9 +365,9 @@ export default {
 <template>
     <div id="url-generate">
         <v-row class="mx-5 mt-5">
-            <v-col cols="12">
+            <v-col cols="12" lg="12" md="12" sm="12" xs="12">
                 <v-row wrap>
-                    <v-col cols="12">
+                    <v-col cols="12" lg="12" md="12" sm="12" xs="12">
                         <v-card>
 
                             <v-card-title class="justify-center">
@@ -392,8 +392,8 @@ export default {
 
 
 
-                                    <v-btn medium flat class="mr-5" color="primary" router to="/api-manager/api-generate/create"
-                                        v-can="'api-create'">
+                                    <v-btn medium flat class="mr-5" color="primary" router
+                                        to="/api-manager/api-generate/create" v-can="'api-create'">
                                         <v-icon small left>mdi-plus</v-icon>
                                         <span>{{
                                             $t('container.api_manager.api_generate.add_new') }}</span>
@@ -531,37 +531,37 @@ export default {
                         </v-card>
                     </v-col>
                 </v-row>
-            </v-col>
+                </v-col>
 
-            <!-- delete modal  -->
-            <v-dialog v-model="deleteDialog" width="350">
-                <v-card style="justify-content: center; text-align: center">
-                    <v-card-title class="font-weight-bold justify-center">
-                        {{ $t('container.api_manager.api_generate.delete_header') }}
-                    </v-card-title>
-                    <v-divider></v-divider>
-                    <v-card-text>
-                        <div class="subtitle-1 font-weight-medium mt-5">
-                            {{ $t('container.api_manager.api_generate.delete_alert') }}
+                <!-- delete modal  -->
+                <v-dialog v-model="deleteDialog" width="350">
+                    <v-card style="justify-content: center; text-align: center">
+                        <v-card-title class="font-weight-bold justify-center">
+                            {{ $t('container.api_manager.api_generate.delete_header') }}
+                        </v-card-title>
+                        <v-divider></v-divider>
+                        <v-card-text>
+                            <div class="subtitle-1 font-weight-medium mt-5">
+                                {{ $t('container.api_manager.api_generate.delete_alert') }}
 
 
-                        </div>
-                    </v-card-text>
-                    <v-card-actions style="display: block">
-                        <v-row class="mx-0 my-0 py-2" justify="center">
-                            <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
-                                {{ $t('container.list.cancel') }}
-                            </v-btn>
+                            </div>
+                        </v-card-text>
+                        <v-card-actions style="display: block">
+                            <v-row class="mx-0 my-0 py-2" justify="center">
+                                <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
+                                    {{ $t('container.list.cancel') }}
+                                </v-btn>
 
-                            <v-btn text @click="deleteURL" color="white" :loading="delete_loading"
-                                class="custom-btn-width warning white--text py-2">
-                                {{ $t('container.list.delete') }}
-                            </v-btn>
-                        </v-row>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
-            <!-- delete modal  -->
+                                <v-btn text @click="deleteURL" color="white" :loading="delete_loading"
+                                    class="custom-btn-width warning white--text py-2">
+                                    {{ $t('container.list.delete') }}
+                                </v-btn>
+                            </v-row>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+                <!-- delete modal  -->
         </v-row>
     </div>
 </template>
