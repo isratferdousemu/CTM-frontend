@@ -101,14 +101,15 @@ export default {
         return {
      
             
-
+            imageUrl:null,
             data: {
                 name: null,
-                designation: null,
+                designation_id: null,
                 mobile_no: null,
                 email:null,
                 address: null,
                 image: null,
+               
                 
             },
             designations:[]
@@ -132,9 +133,16 @@ export default {
         this.GetAPI();
       
         this.updateHeaderTitle();
+        this.$store
+            .dispatch("getLookupByType", 24)
+            .then((res) => (this.designations = res));
     },
+    
 
     methods: {
+        getItemText(item) {
+            return this.language === 'bn' ? item.value_bn : item.value_en;
+        },
         previewImage() {
             if (this.data.image) {
 
@@ -199,8 +207,21 @@ export default {
     
 
         submitForm() {
+        
+            const formData = new FormData();
+            // Append data to FormData object
+            formData.append('name', this.data.name);
+            formData.append('designation_id', this.data.designation_id);
+            formData.append('mobile_no', this.data.mobile_no);
+            formData.append('email', this.data.email);
+            formData.append('address', this.data.address);
+            if (this.data.image) {
+                formData.append('image', this.data.image);
+
+            }
+            formData.append('lang', this.language);
             this.$axios
-                .post("admin/training/trainers", this.data, {
+                .post("admin/training/trainers", formData, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -215,6 +236,7 @@ export default {
                 })
                 .catch((err) => {
                     console.log(err, "err")
+                    this.$toast.error(err.response.data.errors.email[0]);
                     this.$refs.form.setErrors(err.response.data.errors);   
 
                 });
@@ -252,8 +274,7 @@ export default {
                                             <v-col cols="12" sm="6" lg="6">
                                                 <ValidationProvider name="Full Name" vid="Name" rules="required"
                                                     v-slot="{ errors }">
-                                                    <v-text-field dense type="text" v-model="data.name"
-                                                        :label="$t('container.training_management.trainer_info.name')
+                                                    <v-text-field dense type="text" v-model="data.name" :label="$t('container.training_management.trainer_info.name')
                                         " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য নাম প্রদান করুন '
                                         : 'Please enter a valid Name'): ''"></v-text-field>
                                                 </ValidationProvider>
@@ -261,10 +282,11 @@ export default {
                                             <v-col cols=" 12" sm="6" lg="6">
                                                 <ValidationProvider name="Designation" vid="designation"
                                                     rules="required" v-slot="{ errors }">
-                                                    <v-select dense type="text" v-model=" data.designation "
+                                                    <v-select dense type="text" v-model="data.designation_id "
                                                         :label=" $t('container.training_management.trainer_info.designation')"
                                                         persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :items="apis" item-text="name" item-value="id" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক পদবী প্রদান করুন '
+                                                        :items="designations" :item-text="getItemText" item-value="id"
+                                                        :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক পদবী প্রদান করুন '
                                         : 'Please enter Designation') : ''">
 
 
@@ -275,8 +297,7 @@ export default {
                                             <v-col cols="12" sm="6" lg="6">
                                                 <ValidationProvider name="Mobile" vid="mobile" rules="required||mobile"
                                                     v-slot="{ errors }">
-                                                    <v-text-field dense type="text" v-model="data.mobile_no"
-                                                        :label="$t('container.training_management.trainer_info.mobile')
+                                                    <v-text-field dense type="text" v-model="data.mobile_no" :label="$t('container.training_management.trainer_info.mobile')
                                         " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য মোবাইল নম্বর প্রদান করুন '
                                         : 'Please enter a valid Mobile Number') : ''"></v-text-field>
                                                 </ValidationProvider>
@@ -286,7 +307,7 @@ export default {
                                                 <ValidationProvider name="Email" vid="email"
                                                     rules="required||email||bangla" v-slot="{ errors }">
                                                     <v-text-field placeholder="xxx@gmail.com" dense type="email"
-                                                        v-model="data.responsible_person_email" :label="$t('container.training_management.trainer_info.email')
+                                                        v-model="data.email" :label="$t('container.training_management.trainer_info.email')
                                         " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য ইমেইল প্রদান করুন '
                                         : 'Please enter a valid Email') : ''"></v-text-field>
                                                 </ValidationProvider>
@@ -316,11 +337,11 @@ export default {
                                                     <v-col cols="12" sm="6" lg="6" xl="6" xs="6"> <label>{{
                                                             $t('container.application_selection.application.image') }}
                                                             ({{
-                                                            $t('container.application_selection.application.image_alert')
+                                                            $t('container.training_management.trainer_info.image_alert')
                                                             }})</label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
+                                                   
                                                         <ValidationProvider v-slot="{ errors }" name="Image"
-                                                            rules="required" vid="image">
+                                                           vid="image">
                                                             <v-file-input dense outlined show-size counter
                                                                 prepend-outer-icon="mdi-camera" v-model="data.image"
                                                                 accept="image/*" @change="previewImage" prepend-icon=""
@@ -348,7 +369,7 @@ export default {
                                         </v-row>
                                         <v-row class="justify-end mt-5 mb-5">
                                             <v-btn flat color="primary" class="custom-btn mr-2" router
-                                                to="/api-manager/data-receiver">{{
+                                                to="/training-management/trainer-information">{{
                                                 $t("container.list.back") }}
                                             </v-btn>
                                             <v-btn flat color="success" type="submit" class="custom-btn mr-2"

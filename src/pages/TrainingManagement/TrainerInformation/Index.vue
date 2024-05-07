@@ -57,14 +57,15 @@ export default {
         headers() {
             return [
                 { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, width: "5%" },
-                { text: this.$t('container.training_management.trainer_info.ID'), value: "id", align: "start", width: "5%" },
+                { text: this.$t('container.training_management.trainer_info.ID'), value: "id_no", align: "start", width: "5%" },
                 { text: this.$t('container.training_management.trainer_info.name'), value: "name", width: "15%" },
-                { text: this.$t('container.training_management.trainer_info.designation'), value: "designation",  width: "20%" },
-                { text: this.$t('container.training_management.trainer_info.mobile'), value: "mobile", width: "20%" },
-                { text: this.$t('container.training_management.trainer_info.email'), value: "email", width: "15%" },
+                { text: this.$t('container.training_management.trainer_info.designation'), value: "designation",  width: "15%" },
+                { text: this.$t('container.training_management.trainer_info.mobile'), value: "mobile", width: "10%" },
+                { text: this.$t('container.training_management.trainer_info.email'), value: "email", width: "10%" },
+                { text: this.$t('container.list.status'), value: "status", width: "10%" },
 
               
-                { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false, width: "20%" },
+                { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false, width: "30%" },
             ];
         },
 
@@ -73,12 +74,40 @@ export default {
 
     mounted() {
         this.GetData();
-        this.GetModule();
-        this.GetOrg();
+       
+    
+   
 
     },
 
     methods: {
+        deviceActivate(id) {
+            console.log(id,"id");
+
+      
+            this.$axios
+                .get(`admin/training/trainers/status/${id}`, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((result) => {
+                    this.GetData();
+                    this.$toast.success(result.data.message);
+                
+              
+
+
+                })
+                .catch((err) => {
+                    console.log(err, "err")
+                    this.$toast.error(err.response.data.errors.email[0]);
+                    this.$refs.form.setErrors(err.response.data.errors);
+
+                });
+
+        },
        
         resetSearch(){
             this.module_id=null;
@@ -102,7 +131,7 @@ export default {
             };
 
             await this.$axios
-                .get("/admin/api-data-receive", {
+                .get("/admin/training/trainers", {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -121,20 +150,18 @@ export default {
 
             const HeaderInfo = [
                 this.$t("container.list.sl"),
-                this.$t('container.api_manager.data_receiver.organization'),
-                this.$t('container.api_manager.data_receiver.api'),
-                this.$t('container.api_manager.data_receiver.email'),
-                this.$t('container.api_manager.data_receiver.phone'),
-                this.$t('container.api_manager.data_receiver.responsible_person_email'),
-                this.$t('container.api_manager.data_receiver.responsible_person_nid'),
-                this.$t('container.api_manager.data_receiver.user_name'),
-                this.$t('container.api_manager.data_receiver.ip'),
-                this.$t('container.api_manager.data_receiver.total_heat'),
-                 this.$t('container.api_manager.data_receiver.start_date'),
-                this.$t('container.api_manager.data_receiver.end_date'),
+                this.$t('container.training_management.trainer_info.ID'),
+                this.$t('container.training_management.trainer_info.name'),
+                this.$t('container.training_management.trainer_info.designation'),
+                this.$t('container.training_management.trainer_info.mobile'),
+                this.$t('container.training_management.trainer_info.email'),
+                 this.$t('container.training_management.trainer_info.address'),
+                this.$t('container.list.status'),
+               
                 
 
             ]
+           
 
         
             const CustomInfo = this.apis.map(((i, index) => {
@@ -142,18 +169,16 @@ export default {
                 return [
                     this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
                     
-                    this.$i18n.locale == 'en' ? i.organization_name : i.organization_name,
+                    this.$i18n.locale == 'en' ? i.id : this.$helpers.englishToBangla(i.id),
+                    this.$i18n.locale == 'en' ? i.name : i.name,
+                    this.$i18n.locale == 'en' ? i?.designation?.value_en : i?.designation?.value_bn,
                   
-                    i?.api_list?.map(api => api.name).join(', '),
-                    this.$i18n.locale == 'en' ? i.organization_phone : this.$helpers.englishToBangla(i.organization_phone),
-                    this.$i18n.locale == 'en' ? i?.organization_email : i?.organization_email,
-                    this.$i18n.locale == 'en' ? i?.responsible_person_email : i?.responsible_person_email,
-                    this.$i18n.locale == 'en' ? i.responsible_person_nid : this.$helpers.englishToBangla(i.responsible_person_nid),
-                    this.$i18n.locale == 'en' ? i?.username : i?.username,
-                    this.$i18n.locale == 'en' ? i?.whitelist_ip : this.$helpers.englishToBangla(i?.whitelist_ip),
-                    this.$i18n.locale == 'en' ? i?.total_hit : this.$helpers.englishToBangla(i?.total_hit),
-                    this.$i18n.locale == 'en' ? i?.start_date : this.$helpers.englishToBangla(i?.start_date),
-                    this.$i18n.locale == 'en' ? i?.end_date : this.$helpers.englishToBangla(i?.end_date),
+               
+                    this.$i18n.locale == 'en' ? i.mobile_no : this.$helpers.englishToBangla(i.mobile_no),
+                    this.$i18n.locale == 'en' ? i?.email : i?.email,
+                    this.$i18n.locale == 'en' ? i?.address : i?.address,
+                   
+                    this.$i18n.locale == 'en' ? (i.status == 0 ? 'Active' : 'Inactive') : (i.status == 0 ? 'সক্রিয়' : 'নিষ্ক্রিয়'),
                 
 
 
@@ -164,7 +189,7 @@ export default {
                 language: this.$i18n.locale,
                 data: CustomInfo,
                 header: HeaderInfo,
-                fileName: this.$t("container.api_manager.data_receiver.list"),
+                fileName: this.$t("container..training_management.trainer_info.list"),
             };
             try {
                 const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
@@ -200,7 +225,7 @@ export default {
             };
 
             await this.$axios
-                .get("/admin/api-data-receive", {
+                .get("/admin/training/trainers", {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -219,50 +244,43 @@ export default {
 
                     const HeaderInfo = [
                         this.$t("container.list.sl"),
-                        this.$t('container.api_manager.data_receiver.organization'),
-                        this.$t('container.api_manager.data_receiver.api'),
-                        this.$t('container.api_manager.data_receiver.email'),
-                        this.$t('container.api_manager.data_receiver.phone'),
-                        this.$t('container.api_manager.data_receiver.responsible_person_email'),
-                        this.$t('container.api_manager.data_receiver.responsible_person_nid'),
-                        this.$t('container.api_manager.data_receiver.user_name'),
-                        this.$t('container.api_manager.data_receiver.ip'),
-                        this.$t('container.api_manager.data_receiver.total_heat'),
-                        this.$t('container.api_manager.data_receiver.start_date'),
-                        this.$t('container.api_manager.data_receiver.end_date'),
+                        this.$t('container.training_management.trainer_info.ID'),
+                        this.$t('container.training_management.trainer_info.name'),
+                        this.$t('container.training_management.trainer_info.designation'),
+                        this.$t('container.training_management.trainer_info.mobile'),
+                        this.$t('container.training_management.trainer_info.email'),
+                        this.$t('container.training_management.trainer_info.address'),
+                        this.$t('container.list.status'),
                     ]
 
                     const CustomInfo = this.apis.map(((i, index) => {
                         return {
+                           
+
                             "sl": this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
-                            "organization_name": this.$i18n.locale == 'en' ? i?.organization_name : i?.organization_name,
 
-                            // "ip":i?.api_list?.map(api => api.name).join(', '),
-                            "ip": this.$i18n.locale == 'en' ? i?.api_list?.map(api => api.name).join(', ') : i?.api_list?.map(api => api.name).join(', '),
-                            "organization_email": this.$i18n.locale == 'en' ? i?.organization_email : i?.organization_email,
-                            "organization_phone": this.$i18n.locale == 'en' ? i.organization_phone : this.$helpers.englishToBangla(i.organization_phone),
-                         
-                            "responsible_person_email": this.$i18n.locale == 'en' ? i?.organization_name : i?.responsible_person_email,
-                            "responsible_person_nid": this.$i18n.locale == 'en' ? i?.responsible_person_nid : this.$helpers.englishToBangla(i?.responsible_person_nid),
-                            "username": this.$i18n.locale == 'en' ? i?.username : i?.username,
-                            "whitelist_ip": this.$i18n.locale == 'en' ? i?.whitelist_ip : this.$helpers.englishToBangla(i?.whitelist_ip),
-                            "total_hit": this.$i18n.locale == 'en' ? i?.total_hit : this.$helpers.englishToBangla(i?.total_hit),
-                            "start_date": this.$i18n.locale == 'en' ? i?.start_date : this.$helpers.englishToBangla(i?.start_date),
-                            "end_date": this.$i18n.locale == 'en' ? i?.end_date : this.$helpers.englishToBangla(i?.end_date),
+                            "id": this.$i18n.locale == 'en' ? i.id : this.$helpers.englishToBangla(i.id),
+                            "name": this.$i18n.locale == 'en' ? i.name : i.name,
+                            "designation": this.$i18n.locale == 'en' ? i?.designation?.value_en : i?.designation?.value_bn,
 
-                            
+
+                            "mobile": this.$i18n.locale == 'en' ? i.mobile_no : this.$helpers.englishToBangla(i.mobile_no),
+                            "email": this.$i18n.locale == 'en' ? i?.email : i?.email,
+                            "address": this.$i18n.locale == 'en' ? i?.address : i?.address,
+
+                            "status": this.$i18n.locale == 'en' ? (i.status == 0 ? 'Active' : 'Inactive') : (i.status == 0 ? 'সক্রিয়' : 'নিষ্ক্রিয়')
 
 
                         }
                     }));
 
-                    const Field = ['sl', 'organization_name', 'ip','organization_email', 'organization_phone',  'responsible_person_email', 'responsible_person_nid', 'username', 'whitelist_ip','total_hit','start_date','end_date']
+                    const Field = ['sl', 'id', 'name', 'designation', 'mobile', 'email', 'address', 'status']
 
                     const Data = this.FormatJson(Field, CustomInfo)
                     const currentDate = new Date().toISOString().slice(0, 10); //
                     let dateinfo = queryParams.language == 'en' ? currentDate : this.$helpers.englishToBangla(currentDate)
 
-                    const filenameWithDate = `${dateinfo}_${this.$t("container.api_manager.api_generate.list_1")}`;
+                    const filenameWithDate = `${dateinfo}_${this.$t("container.training_management.trainer_info.list_1")}`;
 
                     excel.export_json_to_excel({
                         header: HeaderInfo,
@@ -347,9 +365,9 @@ export default {
             this.deleted_id = id;
         },
 
-        deleteDataReceiver: async function () {
+        deleteData: async function () {
             this.$axios
-                .delete(`admin/api-data-receive/${this.deleted_id}`, {
+                .delete(`admin/training/trainers/${this.deleted_id}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "application/json", // Use application/json instead of multipart/form-data
@@ -505,7 +523,7 @@ export default {
                                 <v-data-table :loading="loading" item-key="id" :headers="headers" :items="trainers"
                                     :items-per-page="pagination.perPage" hide-default-footer
                                     class="elevation-0 transparent row-pointer mt-5 mx-5">
-                                    <template v-slot:item.id="{ item, index }">
+                                    <template v-slot:item.sl="{ item, index }">
 
                                         {{ language === 'bn' ? $helpers.englishToBangla(
                                         (pagination.current - 1) * pagination.perPage +
@@ -514,6 +532,13 @@ export default {
                                         index +
                                         1 }}
 
+
+                                    </template>
+                                      <template v-slot:[`item.id_no`]="{ item }">
+                                        <span>
+                                            {{ language == 'bn' ?
+    $helpers.englishToBangla(item.id): item.id }}
+                                        </span>
 
                                     </template>
 
@@ -542,6 +567,37 @@ export default {
                                         </v-row>
 
                                     </template>
+                                    <template v-slot:[`item.status`]="{ item }">
+                                        <span v-if="item.status == 0">
+                                            {{ language == 'bn' ?
+                                            'নিষ্ক্রিয়' : 'Inactive' }}
+                                        </span>
+                                        <span v-else>
+                                            {{ language == 'bn' ?
+                                            'সক্রিয়' : 'Active' }}
+                                        </span>
+
+
+                                        <span>
+                                            <v-switch :input-value="item.status == 1 ? true : false"
+                                                @change="deviceActivate( item.id)" hide-details
+                                                color="orange darken-3"></v-switch>
+                                        </span>
+                                    </template>
+                                    <template v-slot:[`item.designation`]="{ item }">
+                                        <span>
+                                            {{ language == 'bn' ?
+                                            item?.designation?.value_bn : item?.designation?.value_en }}
+                                        </span>
+
+                                    </template>
+                                    <template v-slot:[`item.mobile`]="{ item }">
+                                        <span>
+                                            {{ language == 'bn' ?
+    $helpers.englishToBangla(item.mobile_no): item.mobile_no }}
+                                        </span>
+
+                                    </template>
 
 
 
@@ -551,9 +607,9 @@ export default {
                                     <template v-slot:item.actions="{ item }">
                                         <v-tooltip top>
                                             <template v-slot:activator="{ on }">
-                                                <v-btn v-can="'apiDataReceive-view'" fab x-small v-on="on"
-                                                    color="#AFB42B" elevation="0" router class=" white--text"
-                                                    :to="`/api-manager/data-receiver/view/${item.id}`">
+                                                <v-btn v-can="'trainerInfo-view'" fab x-small v-on="on" color="#AFB42B"
+                                                    elevation="0" router class=" white--text"
+                                                    :to="`/training-management/trainer-information/view/${item.id}`">
                                                     <v-icon> mdi-eye </v-icon>
                                                 </v-btn>
                                             </template>
@@ -564,9 +620,9 @@ export default {
 
                                         <v-tooltip top>
                                             <template v-slot:activator="{ on }">
-                                                <v-btn v-can="'apiDataReceive-edit'" class="ml-3" fab x-small v-on=" on"
+                                                <v-btn v-can="'trainerInfo-edit'" class="ml-3" fab x-small v-on=" on"
                                                     color="success" elevation="0" router
-                                                    :to="`/api-manager/data-receiver/edit/${item.id}`">
+                                                    :to="`/training-management/trainer-information/edit/${item.id}`">
                                                     <v-icon> mdi-account-edit-outline </v-icon>
                                                 </v-btn>
                                             </template>
@@ -578,8 +634,8 @@ export default {
 
                                         <v-tooltip top>
                                             <template v-slot:activator="{ on }">
-                                                <v-btn v-can="'apiDataReceive-delete'" fab x-small v-on="on"
-                                                    color="grey" class="ml-3 white--text" elevation="0"
+                                                <v-btn v-can="'trainerInfo-delete'" fab x-small v-on="on" color="grey"
+                                                    class="ml-3 white--text" elevation="0"
                                                     @click="deleteAlert(item.id)">
                                                     <v-icon> mdi-delete </v-icon>
                                                 </v-btn>
@@ -592,30 +648,27 @@ export default {
                                     <!-- End Action Button -->
 
                                     <template v-slot:footer="item">
-                                  
-                                                    <row class="text-right pt-2 v-data-footer justify-end pb-2">
+
+                                        <row class="text-right pt-2 v-data-footer justify-end pb-2">
 
 
 
-                                                        <v-col cols="12" lg="4" md="4" sm="12" xs="12"
-                                                            class="text-right">
-                                                            <v-pagination circle primary v-model="pagination.current"
-                                                                :length="pagination.total" @input="onPageChange"
-                                                                :total-visible="11"
-                                                                class="custom-pagination-item"></v-pagination></v-col>
-                                                        <v-col cols="12" lg="4" md="4" sm="12" xs="12"
-                                                            class="text-right">
-                                                            <v-select style="
+                                            <v-col cols="12" lg="4" md="4" sm="12" xs="12" class="text-right">
+                                                <v-pagination circle primary v-model="pagination.current"
+                                                    :length="pagination.total" @input="onPageChange" :total-visible="11"
+                                                    class="custom-pagination-item"></v-pagination></v-col>
+                                            <v-col cols="12" lg="4" md="4" sm="12" xs="12" class="text-right">
+                                                <v-select style="
                      
                             
                                     
                                                 " :items="items" hide-details dense outlined @change="onPageChange"
-                                                                v-model="pagination.perPage"></v-select>
+                                                    v-model="pagination.perPage"></v-select>
 
 
-                                                        </v-col>
-                                                    </row>
-                                                
+                                            </v-col>
+                                        </row>
+
                                     </template>
                                 </v-data-table>
 
@@ -648,7 +701,7 @@ export default {
                                 {{ $t('container.list.cancel') }}
                             </v-btn>
 
-                            <v-btn text @click="deleteDataReceiver" color="white" :loading="delete_loading"
+                            <v-btn text @click="deleteData" color="white" :loading="delete_loading"
                                 class="custom-btn-width warning white--text py-2">
                                 {{ $t('container.list.delete') }}
                             </v-btn>

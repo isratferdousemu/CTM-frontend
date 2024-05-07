@@ -983,6 +983,8 @@
       "training_management": {
         "trainer_info": {
           "ID":"ID",
+          "list_1":"Trainer List",
+          "rating": "Rating",
           "list": "Trainer Information List",
           "view": "Trainer Information Details",
           "add": "Add New Trainer",
@@ -993,6 +995,14 @@
             "status": "Status",
             "email": "Email",
             "address":"Address",
+            "contact":"Contact Details",
+           
+            "course":"Courses",
+            "upcoming": "Upcoming Batches",
+            "about": "About",
+              "program": "program",
+                "module": "Module",
+            "image_alert":"The file size should be under 200 KB",
           "delete_header": "Delete Trainer Information",
           "delete_alert": "Are you sure to delete this Trainer Information? Trainer's all information will be deleted."
     

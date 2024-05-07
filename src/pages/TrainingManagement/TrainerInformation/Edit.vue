@@ -20,19 +20,20 @@ extend('bangla', {
     },
     message: 'Bangla characters are not allowed in this field'
 });
-extend('ip_address', {
+extend('name', {
     validate: value => {
         // Regular expression for IP address validation
-        const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
-        return ipRegex.test(value);
+        const nameRegex = /^[a-zA-Z\s']+$/;
+        return nameRegex.test(value);
     },
-    message: 'Please enter a valid IP address'
+    message: 'Please enter a valid  Name'
 });
-extend('phone', {
+extend('mobile', {
     validate: value => {
         // Regular expression to match phone numbers with a maximum length of 14 characters
-        const phoneRegex = /^[0-9]{7,14}$/;
-        return phoneRegex.test(value);
+        const mobileRegex = /^01\d{9}$/;
+        return mobileRegex.test(value);
+
     },
     message: 'Please enter a valid phone number'
 });
@@ -100,22 +101,25 @@ export default {
         return {
 
 
-
+            imageUrl: null,
             data: {
-                organization_name: null,
-                organization_phone: null,
-                organization_email: null,
-                responsible_person_email: null,
-                responsible_person_nid: null,
-                username: null,
-                whitelist_ip: null,
-                start_date: null,
-                end_date: null,
-                api_list: []
+                name: null,
+                designation_id: null,
+                mobile_no: null,
+                email: null,
+                address: null,
+                image: null,
+
             },
-            apis: [],
-            api_list: []
+            designations: []
         };
+    },
+    computed: {
+        language: {
+            get() {
+                return this.$store.getters.getAppLanguage;
+            }
+        },
     },
 
     watch: {
@@ -125,35 +129,64 @@ export default {
 
 
     mounted() {
-        this.ReceiverView();
-        this.GetAPI();
-
         this.updateHeaderTitle();
+        this.$store.dispatch("getLookupByType", 24).then((res) => (this.designations = res));
+        this.DataView();
     },
 
+
     methods: {
-        async GetAPI() {
-
-            this.$axios
-                .get("/admin/get-api-list", {
-                    headers: {
-                        Authorization: "Bearer " + this.$store.state.token,
-                        "Content-Type": "multipart/form-data",
-                    },
-
-                })
-                .then((result) => {
-
-                    this.apis = result?.data?.data;
-                    console.log(this.apis, "apis")
-
-                });
+        getItemText(item) {
+            return this.language === 'bn' ? item.value_bn : item.value_en;
         },
-        ReceiverView() {
+        previewImage() {
+            if (this.data.image) {
 
-            console.log(this.$route.params.id, "params")
+                const maxFileSize = 200 * 2042; // 200 KB in bytes
+
+                if (this.data.image.size > maxFileSize) {
+                    // alert("file size must be 200kb")
+                    // this.confirmDialog =true;
+                    if (this.language == en) {
+                        this.$toast.error("File size must be under 400 KB");
+                    }
+                    else {
+                        this.$toast.error("ফাইলের আকার ৪০০ কে বি এর কম হতে হবে");
+
+                    }
+                    // Show the alert
+                    this.data.image = '';
+
+                    return false;
+                }
+                const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg']; // Allowed file types
+                if (!allowedTypes.includes(this.data.image.type)) {
+                    this.language === 'en' ? this.$toast.error("Only PNG, JPEG, or JPG files are allowed") : this.$toast.error("শুধুমাত্র পিএনজি, জেপিইজি, অথবা জেপিজি ফাইলগুলি অনুমোদিত");
+                    this.data.image = '';
+                    return false;
+                }
+                // return true;
+
+
+
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    this.imageUrl = e.target.result;
+                };
+                reader.readAsDataURL(this.data.image);
+            } else {
+                // Clear the preview if no file is selected
+                this.imageUrl = null;
+            }
+
+        },
+
+        DataView() {
+
+       
             this.$axios
-                .get(`admin/api-data-receive/${this.$route.params.id}`, {
+                .get(`admin/training/trainers/${this.$route.params.id}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -162,22 +195,11 @@ export default {
                 .then((result) => {
                     console.log(result, "result")
                     this.data = result?.data?.data
-                    const parts = this.data.start_date.split(" ");
-                    const datePart = parts[0]; 
-                    this.data.start_date = datePart;
-                    const parts_2 = this.data.end_date.split(" ");
-                    const datePart_2 = parts_2[0];
-                    this.data.end_date = datePart_2;
-                 
-                    this.data.api_list.forEach((item, index) => {
-                        this.api_list.push( item.id);
-                        
-                    });
-                    console.log(this.api_list,"api_list_push")
-                    this.data.api_list = this.api_list;
-                   
-                
-            
+                    this.imageUrl = result?.data?.data?.image;
+                    this.data.image = null;
+
+                    
+              
 
                 })
                 .catch((err) => {
@@ -193,58 +215,43 @@ export default {
         },
 
 
+        updateForm() {
 
-        updateDataReceiver() {
-            console.log(this.data.api_list,"api_list")
-            
             const formData = new FormData();
-       
-            formData.append('organization_name', this.data.organization_name);
-            formData.append('organization_phone', this.data.organization_phone);
-            formData.append('organization_email', this.data.organization_email);
-            formData.append('responsible_person_nid', this.data.responsible_person_nid);
-            formData.append('responsible_person_email', this.data.responsible_person_email);
-            formData.append('username', this.data.username);
-            formData.append('whitelist_ip', this.data.whitelist_ip);
-            formData.append('start_date', this.data.start_date);
-            formData.append('end_date', this.data.end_date);
-     
-            this.data.api_list.forEach((item, index) => {
-                formData.append('api_list[]', item);
-            });
-
-        
-            formData.append('_method', "PUT");
-            console.log(formData,"formData")
+            // Append data to FormData object
+            formData.append('name', this.data.name);
+            formData.append('designation_id', this.data.designation_id);
+            formData.append('mobile_no', this.data.mobile_no);
+            formData.append('email', this.data.email);
+            formData.append('address', this.data.address);
           
+            if(this.data.image){
+                formData.append('image', this.data.image);
 
+            }
+            formData.append('lang', this.language);
+            formData.append('_method', "PUT");
             this.$axios
-                .post(`admin/api-data-receive/${this.$route.params.id}`, formData, {
+                .post(`admin/training/trainers/${this.$route.params.id}`, formData, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
                     },
                 })
                 .then((result) => {
-                    if (result.data.success == true) {
-                        this.$toast.success(result.data.message);
-                        this.$router.push("/api-manager/data-receiver");
-                    } else {
-                        this.$refs.form.setErrors(result.data.errors);
 
+                    this.$toast.success(result.data.message);
+                    this.$router.push("/training-management/trainer-information");
 
-                    }
 
                 })
                 .catch((err) => {
-                    if (this.$refs.formAdd && this.$refs.formAdd.$refs && this.$refs.formAdd.$refs.operator) {
-
-                        this.$refs.formAdd.$refs.operator.setErrors([err.response.data.errors.operator[0]]);
-                    } else {
-                        console.error('Error setting errors:', err);
-                    }
+                    console.log(err, "err")
+                    this.$toast.error(err.response.data.errors.email[0]);
+                    this.$refs.form.setErrors(err.response.data.errors);
 
                 });
+
         },
 
         updateHeaderTitle() {
@@ -262,9 +269,9 @@ export default {
                 <v-row>
                     <v-col cols="12">
                         <v-card>
-                            <v-card-title class="justify-center ">
+                            <v-card-title class="justify-center">
                                 <h4 class="mt-5">
-                                    {{ $t("container.api_manager.data_receiver.edit") }}
+                                    {{ $t("container.training_management.trainer_info.edit") }}
                                 </h4>
                             </v-card-title>
 
@@ -272,111 +279,97 @@ export default {
 
                             <v-card-text class="mt-10">
                                 <ValidationObserver ref="form" v-slot="{ invalid }">
-                                    <v-form v-on:submit.prevent="updateDataReceiver()">
+                                    <v-form v-on:submit.prevent="updateForm()">
 
-                                        <v-row>
+                                        <v-row class="mx-10 no-gap-row">
                                             <v-col cols="12" sm="6" lg="6">
-                                                <ValidationProvider name="Organization Name" vid="organization_name"
+                                                <ValidationProvider name="Full Name" vid="Name" rules="required"
+                                                    v-slot="{ errors }">
+                                                    <v-text-field dense type="text" v-model="data.name" :label="$t('container.training_management.trainer_info.name')
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য নাম প্রদান করুন '
+                                        : 'Please enter a valid Name') : ''"></v-text-field>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols=" 12" sm="6" lg="6">
+                                                <ValidationProvider name="Designation" vid="designation"
                                                     rules="required" v-slot="{ errors }">
-                                                    <v-text-field dense type="text" v-model="data.organization_name"
-                                                        :label="$t('container.api_manager.data_receiver.organization')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]"></v-text-field>
-                                                </ValidationProvider>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" lg="6">
-                                                <ValidationProvider name="Organization Phone" vid="organization_phone"
-                                                    rules="required||phone" v-slot="{ errors }">
-                                                    <v-text-field dense type="text" v-model="data.organization_phone"
-                                                        :label="$t('container.api_manager.data_receiver.phone')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]"></v-text-field>
-                                                </ValidationProvider>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" lg="6">
-                                                <ValidationProvider name="Organization Email" vid="organization_email"
-                                                    rules="required||email||bangla" v-slot="{ errors }">
-                                                    <v-text-field dense type="email" v-model="data.organization_email"
-                                                        :label="$t('container.api_manager.data_receiver.email')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
-                                                        placeholder="xxx@gmail.com"
-                                                        :error-messages="errors[0]"></v-text-field>
-                                                </ValidationProvider>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" lg="6">
-                                                <ValidationProvider name="Responsible Person Email"
-                                                    vid="responsible_person_email" rules="required||email||bangla"
-                                                    v-slot="{ errors }">
-                                                    <v-text-field dense type="email" placeholder="xxx@gmail.com"
-                                                        v-model="data.responsible_person_email" :label="$t('container.api_manager.data_receiver.responsible_person_email')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]"></v-text-field>
-                                                </ValidationProvider>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" lg="6">
-                                                <ValidationProvider name="Responsible Person NID"
-                                                    vid="responsible_person_nid" rules="required||checkNumber"
-                                                    v-slot="{ errors }">
-                                                    <v-text-field dense v-model="data.responsible_person_nid" :label="$t('container.api_manager.data_receiver.responsible_person_nid')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]"></v-text-field>
-                                                </ValidationProvider>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" lg="6">
-                                                <ValidationProvider name="Select API" vid="api_list" rules="required"
-                                                    v-slot="{ errors }">
-                                                    <v-autocomplete dense multiple type="text" v-model="data.api_list"
-                                                        :label="$t('container.api_manager.data_receiver.select_api')"
+                                                    <v-select dense type="text" v-model="data.designation_id"
+                                                        :label="$t('container.training_management.trainer_info.designation')"
                                                         persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :items="apis" item-text="name" item-value="id"
-                                                        :error-messages="errors[0]" class="select-with-chips">
-                                                        <!-- Slot for chips -->
-                                                        <template v-slot:selection="{ item }">
-                                                            <v-chip color="#169BD5" class="white--text ma-1">{{
-                                                                item.name
-                                                                }}</v-chip>
-                                                        </template>
-                                                    </v-autocomplete>
+                                                        :items="designations" :item-text="getItemText" item-value="id"
+                                                        :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক পদবী প্রদান করুন '
+                                        : 'Please enter Designation') : ''">
+
+
+
+                                                    </v-select>
                                                 </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" lg="6">
+                                                <ValidationProvider name="Mobile" vid="mobile" rules="required||mobile"
+                                                    v-slot="{ errors }">
+                                                    <v-text-field dense type="text" v-model="data.mobile_no" :label="$t('container.training_management.trainer_info.mobile')
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য মোবাইল নম্বর প্রদান করুন '
+                                        : 'Please enter a valid Mobile Number') : ''"></v-text-field>
+                                                </ValidationProvider>
+                                            </v-col>
+
+                                            <v-col cols="12" sm="6" lg="6">
+                                                <ValidationProvider name="Email" vid="email"
+                                                    rules="required||email||bangla" v-slot="{ errors }">
+                                                    <v-text-field placeholder="xxx@gmail.com" dense type="email"
+                                                        v-model="data.email" :label="$t('container.training_management.trainer_info.email')
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য ইমেইল প্রদান করুন '
+                                        : 'Please enter a valid Email') : ''"></v-text-field>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" lg="6">
+                                                <ValidationProvider name="Address" vid="address" rules="required"
+                                                    v-slot="{ errors }">
+                                                    <v-textarea dense v-model="data.address" :label="$t('container.training_management.trainer_info.address')
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ঠিকানা প্রদান করুন '
+                                        : 'Please enter  Address') : ''"></v-textarea>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" lg="6">
+                                                <v-row align-end>
+                                                    <v-col cols="12" sm="6" lg="6" xl="6" xs="6">
+                                                        <v-img :src="imageUrl" style="
+                                    width: 200px;
+                                    height: 200px;
+                                    border: 1px solid #ccc;
+                                  " class="mb-5" v-if="imageUrl"></v-img>
+                                                        <v-img src="/assets/images/profile.png" v-if="!imageUrl" style="
+                                    width: 150px;
+                                    height: 150px;
+                                    border: 1px solid #ccc;
+                                  " class="mb-5"></v-img>
+                                                    </v-col>
+                                                    <v-col cols="12" sm="6" lg="6" xl="6" xs="6"> <label>{{
+                                                            $t('container.application_selection.application.image') }}
+                                                            ({{
+    $t('container.training_management.trainer_info.image_alert')
+                                                            }})</label>
+                                                        <span style="margin-left: 4px; color: red">*</span>
+                                                        <ValidationProvider v-slot="{ errors }" name="Image"
+                                                            vid="image">
+                                                            <v-file-input dense outlined show-size counter
+                                                                prepend-outer-icon="mdi-camera" v-model="data.image"
+                                                                accept="image/*" @change="previewImage" prepend-icon=""
+                                                                id="image">
+                                                            </v-file-input>
+                                                        </ValidationProvider>
+                                                    </v-col>
+
+                                                </v-row>
+
+
+
+
 
 
                                             </v-col>
-                                            <v-col cols="12" sm="6" lg="6">
-                                                <ValidationProvider name="Server IP Address" vid="whitelist_ip"
-                                                    rules="required||ip_address" v-slot="{ errors }">
-                                                    <v-text-field placeholder="x.x.x.x" dense
-                                                        v-model="data.whitelist_ip" :label="$t('container.api_manager.data_receiver.ip')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]"></v-text-field>
-                                                </ValidationProvider>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" lg="6">
-                                                <ValidationProvider name="Auth 
-                                                
-                                                key" vid="username" rules="required||bangla" v-slot="{ errors }">
-                                                    <v-text-field dense v-model="data.username" :label="$t('container.api_manager.data_receiver.user_name')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]"></v-text-field>
-                                                </ValidationProvider>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" lg="6">
-                                                <ValidationProvider name="Start Date" vid="start_date"
-                                                    :rules="{ required, start_date: data.end_date }"
-                                                    v-slot="{ errors }">
-                                                    <v-text-field dense type="date" v-model="data.start_date" :label="$t('container.api_manager.data_receiver.start_date')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]"></v-text-field>
-                                                </ValidationProvider>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" lg="6">
-                                                <ValidationProvider name="End Date" vid="end_date"
-                                                    :rules="{ required, end_date: data.start_date }"
-                                                    v-slot="{ errors }">
-                                                    <v-text-field dense type="date" v-model="data.end_date" :label="$t('container.api_manager.data_receiver.end_date')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]"></v-text-field>
-                                                </ValidationProvider>
-                                            </v-col>
+
 
 
 
@@ -387,7 +380,7 @@ export default {
                                         </v-row>
                                         <v-row class="justify-end mt-5 mb-5">
                                             <v-btn flat color="primary" class="custom-btn mr-2" router
-                                                to="/api-manager/data-receiver">{{
+                                                to="/training-management/trainer-information">{{
                                                 $t("container.list.back") }}
                                             </v-btn>
                                             <v-btn flat color="success" type="submit" class="custom-btn mr-2"
@@ -406,7 +399,7 @@ export default {
     </div>
 </template>
 
-<style >
+<style>
 .gradient-background {
     background: linear-gradient(to right, #87CEEB, #ADD8E6, #F0F8FF);
     color: black;
@@ -421,13 +414,13 @@ export default {
 }
 
 /* Define the animation */
-@keyframes gradient-animation {
-    0% {
-        background-position: 0% 50%;
-    }
+.no-gap-row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
 
-    100% {
-        background-position: 100% 50%;
-    }
+.no-gap-row .v-col {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
 </style>
