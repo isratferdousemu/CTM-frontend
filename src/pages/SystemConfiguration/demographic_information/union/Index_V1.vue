@@ -828,6 +828,31 @@ import Spinner from "@/components/Common/Spinner.vue";
 
 
 extend("required", required);
+
+extend("checkName", {
+  validate: (value) => {
+    if (!value && value !== 0) {
+      return false;
+    }
+
+    return /^[a-zA-Z]+$/.test(value);
+  },
+  message: "Please Enter English Letter's in this Field",
+});
+
+extend("checkNameBn", {
+  validate: (value) => {
+    if (!value && value !== 0) {
+      return false;
+    }
+
+    var banglaRegex = /^[\u0980-\u09E5\u09F0-\u09FF\s]+$/;
+
+    return banglaRegex.test(value);
+  },
+  message: "Please Enter Bangla Letter's in this Field",
+});
+
 export default {
   name: "Index",
   title: "CTM - Union",

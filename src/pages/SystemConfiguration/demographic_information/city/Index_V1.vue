@@ -412,7 +412,7 @@
                 <ValidationProvider
                   name="Name English"
                   vid="name_en"
-                  rules="required"
+                  rules="required|checkName"
                   v-slot="{ errors }"
                   v-if="data.location_type != null"
                 >
@@ -429,7 +429,7 @@
                 <ValidationProvider
                   name="Name Bangla"
                   vid="name_bn"
-                  rules="required"
+                  rules="required|checkNameBn"
                   v-slot="{ errors }"
                   v-if="data.location_type != null"
                 >
@@ -575,7 +575,7 @@
                 <ValidationProvider
                   name="Name English"
                   vid="name_en"
-                  rules="required"
+                  rules="required|checkName"
                   v-slot="{ errors }"
                   v-if="data.location_type != null"
                 >
@@ -592,7 +592,7 @@
                 <ValidationProvider
                   name="Name Bangla"
                   vid="name_bn"
-                  rules="required"
+                  rules="required|checkNameBn"
                   v-slot="{ errors }"
                   v-if="data.location_type != null"
                 >
@@ -690,6 +690,31 @@ import { required } from "vee-validate/dist/rules";
 import Spinner from "@/components/Common/Spinner.vue";
 
 extend("required", required);
+
+extend("checkName", {
+  validate: (value) => {
+    if (!value && value !== 0) {
+      return false;
+    }
+
+    return /^[a-zA-Z]+$/.test(value);
+  },
+  message: "Please Enter English Letter's in this Field",
+});
+
+extend("checkNameBn", {
+  validate: (value) => {
+    if (!value && value !== 0) {
+      return false;
+    }
+
+    var banglaRegex = /^[\u0980-\u09E5\u09F0-\u09FF\s]+$/;
+
+    return banglaRegex.test(value);
+  },
+  message: "Please Enter Bangla Letter's in this Field",
+});
+
 export default {
   name: "Index",
   title: "CTM - City",
@@ -905,7 +930,7 @@ export default {
         division_id: this.division_id_search,
         district_id: this.district_id_search,
         perPage: this.search.trim() === '' ? this.total : this.total,
-        page: this.pagination.current,
+        page: 1,
         sortBy: this.sortBy,
         orderBy: this.sortDesc,
       };
@@ -983,7 +1008,7 @@ export default {
         division_id: this.division_id_search,
         district_id: this.district_id_search,
         perPage: this.search.trim() === '' ? this.total : this.total,
-        page: this.pagination.current,
+        page: 1,
         sortBy: this.sortBy,
         orderBy: this.sortDesc,
       };
@@ -1067,8 +1092,10 @@ export default {
     },
     registerCustomRules() {
       extend("codeRules", (value) => {
+        const regex = /^\d{1,3}$/;
+
         return (
-          value.toString().length <= 3 ||
+          regex.test(value.toString()) ||
           this.$t(
             "container.system_config.demo_graphic.city_corporation.code"
           ) + " can have maximum 3 digit"
