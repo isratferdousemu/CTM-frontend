@@ -1744,7 +1744,7 @@ export default {
         ////////////Upazila Corporation////////////////
 
         perPage: this.total,
-        page: this.pagination.current,
+        page: 1,
         sortBy: this.sortBy,
         orderBy: this.sortDesc,
       };
@@ -1903,7 +1903,7 @@ export default {
         ////////////Upazila Corporation////////////////
 
         perPage: this.total,
-        page: this.pagination.current,
+        page: 1,
         sortBy: this.sortBy,
         orderBy: this.sortDesc,
       };

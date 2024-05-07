@@ -752,7 +752,7 @@ export default {
        division_id: this.division_id_search,
        district_id: this.district_id_search,
        perPage: this.total,
-       page: this.pagination.current,
+       page: 1,
        sortBy: this.sortBy,
        orderBy: this.sortDesc,
      };
