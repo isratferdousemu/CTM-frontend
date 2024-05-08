@@ -44,6 +44,46 @@ const TrainingManagementRoutes = [
     component: () => import("../pages/TrainingManagement/TrainerInformation/View.vue")
   },
   /*Trainer Info route end*/
+  /*Training Circular  route start*/
+  {
+    path: "/training-management/trainer-circular",
+    name: "TrainerInformation",
+    meta: {
+      requiresAuth: true,
+      permission: "trainerCircular-view",
+    },
+    component: () => import("../pages/TrainingManagement/TrainingCircular/Index.vue")
+  },
+
+  {
+    path: "/training-management/trainer-circular/create",
+    name: "TrainerInformationCreate",
+    meta: {
+      requiresAuth: true,
+      permission: "trainerCircular-create",
+    },
+    component: () => import("../pages/TrainingManagement/TrainingCircular/Create.vue")
+  },
+
+  {
+    path: "/training-management/trainer-circular/edit/:id",
+    name: "trainerInfo-edit",
+    meta: {
+      requiresAuth: true,
+      permission: "trainerCircular-edit",
+    },
+    component: () => import("../pages/TrainingManagement/TrainingCircular/Edit.vue")
+  },
+  {
+    path: "/training-management/trainer-circular/view/:id",
+    name: "trainerInfo-view",
+    meta: {
+      requiresAuth: true,
+      permission: "trainerCircular-view",
+    },
+    component: () => import("../pages/TrainingManagement/TrainingCircular/View.vue")
+  },
+  /*Training Circular route end*/
 ];
 
 export default TrainingManagementRoutes;
