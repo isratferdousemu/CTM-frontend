@@ -249,7 +249,7 @@
                       )
                     "
                     :items="divisions"
-                    item-text="name_en"
+                    :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
                     item-value="id"
                     required
                     :error="errors[0] ? true : false"
@@ -369,7 +369,7 @@
                       )
                     "
                     :items="divisions"
-                    item-text="name_en"
+                    :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
                     item-value="id"
                     required
                     :error="errors[0] ? true : false"
@@ -518,7 +518,7 @@ extend("checkName", {
       return false;
     }
 
-    return /^[a-zA-Z]+$/.test(value);
+    return /^[a-zA-Z\s]+$/.test(value);
   },
   message: "Please Enter English Letter's in this Field",
 });
@@ -578,6 +578,11 @@ export default {
     ValidationObserver,
   },
   computed: {
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      },
+    },
     headers() {
       return [
         {

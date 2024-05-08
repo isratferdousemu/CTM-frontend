@@ -521,7 +521,7 @@ extend("checkName", {
       return false;
     }
 
-    return /^[a-zA-Z]+$/.test(value);
+    return /^[a-zA-Z\s]+$/.test(value);
   },
   message: "Please Enter English Letter's in this Field",
 });

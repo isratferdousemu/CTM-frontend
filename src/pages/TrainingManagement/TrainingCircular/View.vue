@@ -231,25 +231,31 @@ export default {
 
                                             <v-col cols="12" lg="4" md="4" sm="4" xs="4">
                                                 <b>
-                                                    <div class="increased-font mt-3">{{ data.name }}</div>
-                                                </b>
+                                                    <div class="increased-font">{{ data.name }}</div>
+                                                </b><br>
                                                 <b>
                                                     <div class="increased-contact"> {{
                                                         $t("container.training_management.trainer_info.contact")
                                                         }}</div>
-                                                </b>
+                                                </b><br>
                                                 {{
                                                 $t("container.training_management.trainer_info.mobile")
                                                 }}:{{ language == 'bn' ?
                                                 $helpers.englishToBangla(
                                                 this.data?.mobile_no) : data?.mobile_no }}<br>
                                                 {{
-                                                $t("container.training_management.trainer_info.email")
+                                                $t("container.training_management.trainer_info.contact")
                                                 }}:{{ data.email }}
                                             </v-col>
 
                                             <v-col cols="12" lg="4" md="4" sm="4" xs="4" class="text-right">
-                                            
+                                                <br>
+                                                <br>
+                                                <br>
+                                                <br>
+                                                <br>
+                                                <br>
+                                                <br>
 
 
 
@@ -354,7 +360,7 @@ export default {
                                         </v-row>
                                         <br>
 
-                                        <!-- <v-divider></v-divider> -->
+                                        <v-divider></v-divider>
                                         <br>
                                         <v-row v-if="data.name">
                                             <v-col cols="12" lg="12" md="12" sm="12" xs="12">

@@ -25,7 +25,7 @@
                             class="no-arrow-icon"
                             v-model="location_type_search"
                             :items="locationType"
-                            item-text="value_en"
+                            :item-text="language == 'bn' ? 'value_bn' : 'value_en'"
                             item-value="id"
                             :label="$t('container.list.location_type')"
                           >
@@ -50,7 +50,7 @@
                                 )
                               "
                               :items="divisions"
-                              item-text="name_en"
+                              :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
                               item-value="id"
                               :error="errors[0] ? true : false"
                               :error-messages="errors[0]"
@@ -75,7 +75,7 @@
                               append-icon="mdi-plus"
                               class="no-arrow-icon"
                               :items="districts_search"
-                              item-text="name_en"
+                              :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
                               item-value="id"
                               :error="errors[0] ? true : false"
                               :error-messages="errors[0]"
@@ -343,7 +343,7 @@
                       )
                     "
                     :items="divisions"
-                    item-text="name_en"
+                    :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
                     item-value="id"
                     required
                     :error="errors[0] ? true : false"
@@ -365,7 +365,7 @@
                       )
                     "
                     :items="districts"
-                    item-text="name_en"
+                    :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
                     item-value="id"
                     required
                     :error="errors[0] ? true : false"
@@ -384,7 +384,7 @@
                     outlined
                     :label="$t('container.list.location_type')"
                     :items="locationType"
-                    item-text="value_en"
+                    :item-text="language == 'bn' ? 'value_bn' : 'value_en'"
                     item-value="id"
                     required
                     :error="errors[0] ? true : false"
@@ -502,7 +502,7 @@
                       )
                     "
                     :items="divisions"
-                    item-text="name_en"
+                    :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
                     item-value="id"
                     required
                     :error="errors[0] ? true : false"
@@ -526,7 +526,7 @@
                       )
                     "
                     :items="districts"
-                    item-text="name_en"
+                    :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
                     item-value="id"
                     required
                     :error="errors[0] ? true : false"
@@ -546,7 +546,7 @@
                     outlined
                     :label="$t('container.list.location_type')"
                     :items="locationType"
-                    item-text="value_en"
+                    :item-text="language == 'bn' ? 'value_bn' : 'value_en'"
                     item-value="id"
                     required
                     :error="errors[0] ? true : false"
@@ -697,7 +697,7 @@ extend("checkName", {
       return false;
     }
 
-    return /^[a-zA-Z]+$/.test(value);
+    return /^[a-zA-Z\s]+$/.test(value);
   },
   message: "Please Enter English Letter's in this Field",
 });
@@ -790,6 +790,11 @@ export default {
     ValidationObserver,
   },
   computed: {
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      },
+    },
     headers() {
       return [
         {
