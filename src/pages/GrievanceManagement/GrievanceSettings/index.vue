@@ -162,7 +162,7 @@
                       <v-autocomplete v-model="data.grievance_type_id" outlined :label="$t(
                         'container.grievance_management.main_grievance_type'
                       )
-                        " :items="types" item-text="title_en" item-value="id" required
+                        " @input="OnChnageGetGrievanceSubject($event)" :items="types" item-text="title_en" item-value="id" required
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
@@ -242,7 +242,7 @@
                       <v-autocomplete v-model="data.grievance_type_id" outlined :label="$t(
                         'container.grievance_management.main_grievance_type'
                       )
-                        " :items="types" item-text="title_en" item-value="id" required
+                        " @input="OnChnageGetGrievanceSubject($event)" :items="types" item-text="title_en" item-value="id" required
                         :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
@@ -678,7 +678,6 @@ export default {
         })))
     },
 
-
     createDialog() {
       if (this.$refs.formAdd) {
 
@@ -739,7 +738,12 @@ export default {
 
           })
           .then((res) => {
-            if (res.data?.success) {
+            console.log(res.data,'res.data?.success');
+             if (res.data?.success==201) {
+              this.$toast.error("This Grievance Subject Already Exists");
+              this.dialogAdd = true;
+            }
+            if (res.data?.success !=201) {
               this.$toast.success("Data Inserted Successfully");
               this.resetForm();
               this.dialogAdd = false;
@@ -749,6 +753,7 @@ export default {
             }
           });
       } catch (e) {
+       
       }
     },
     editDialog(items) {
@@ -876,7 +881,8 @@ export default {
         });
     },
 
-    async GetGrievanceSubject() {
+    async OnChnageGetGrievanceSubject($event) {
+      console.log($event,'$event');
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
@@ -886,7 +892,7 @@ export default {
         status: 'active',
       };
       this.$axios
-        .get("/admin/grievanceSubject/get", {
+        .get(`/admin/grievanceSetting/grievanceSubjectType/get/${$event}`, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -894,8 +900,7 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          this.subjects = result.data.data;
-
+          this.subjects = result.data;
         });
     },
     async GetGrievanceSettings() {
@@ -1010,7 +1015,7 @@ export default {
   },
   beforeMount() {
     this.updateHeaderTitle();
-    this.GetGrievanceSubject();
+    // this.GetGrievanceSubject();
   },
 };
 </script>
