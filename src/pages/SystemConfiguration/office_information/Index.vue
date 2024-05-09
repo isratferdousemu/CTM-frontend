@@ -2659,6 +2659,7 @@ export default {
     // console.log(store.state.userData.location, ' -> userData')
 
     async GetOffices() {
+      this.isLoading = true;
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
@@ -2696,8 +2697,10 @@ export default {
           this.pagination.current = result.data.current_page;
           this.pagination.total = result.data.last_page;
           this.pagination.grand_total = result.data.total;
+          this.isLoading = false;
         })
         .catch((err) => {
+          this.isLoading = false;
           console.log(err, "error");
 
         });
