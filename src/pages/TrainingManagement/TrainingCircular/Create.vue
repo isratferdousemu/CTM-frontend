@@ -109,6 +109,8 @@ export default {
                 email:null,
                 address: null,
                 image: null,
+                description:null,
+              
                
                 
             },
@@ -215,6 +217,7 @@ export default {
             formData.append('mobile_no', this.data.mobile_no);
             formData.append('email', this.data.email);
             formData.append('address', this.data.address);
+            formData.append('address', this.data.description);
             if (this.data.image) {
                 formData.append('image', this.data.image);
 

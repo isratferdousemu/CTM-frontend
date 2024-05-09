@@ -1000,17 +1000,35 @@
             "email": "Email",
             "address":"Address",
             "contact":"Contact Details",
+            "description":"Bio",
            
             "course":"Courses",
             "upcoming": "Upcoming Batches",
             "about": "About",
-              "program": "program",
+              "program": "Program",
                 "module": "Module",
             "image_alert":"The file size should be under 200 KB",
           "delete_header": "Delete Trainer Information",
           "delete_alert": "Are you sure to delete this Trainer Information? Trainer's all information will be deleted."
     
         
+        },
+        "training_circular": {
+          "list_1": "Circular List",
+           "list": "Training Circular List",
+          "view": "Training Circular Details",
+          "add": "Add New Circular",
+          "edit": "Edit Training Circular",
+          "name": "Circular Name",
+          "type": "Circular Type",
+          "module": "Module/Course",
+          "class_duration":"Class Duration Hour/Day",
+          "training_type":"Training Type",
+          "description": "Description",
+          "start_date": "Start Date",
+          "end_date": "End Date",
+          "delete_header": "Delete Training Circular",
+          "delete_alert": "Are you sure to delete this Training Circular? Training Circular's all information will be deleted."
         }
       },
       "api_manager": {

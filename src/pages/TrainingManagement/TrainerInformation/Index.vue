@@ -57,15 +57,15 @@ export default {
         headers() {
             return [
                 { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, width: "5%" },
-                { text: this.$t('container.training_management.trainer_info.ID'), value: "id_no", align: "start", width: "5%" },
-                { text: this.$t('container.training_management.trainer_info.name'), value: "name", width: "15%" },
+                { text: this.$t('container.training_management.trainer_info.ID'), value: "id_no", align: "start", width: "15%" },
+                { text: this.$t('container.training_management.trainer_info.name'), value: "name", width: "10%" },
                 { text: this.$t('container.training_management.trainer_info.designation'), value: "designation",  width: "15%" },
-                { text: this.$t('container.training_management.trainer_info.mobile'), value: "mobile", width: "10%" },
+            
                 { text: this.$t('container.training_management.trainer_info.email'), value: "email", width: "10%" },
-                { text: this.$t('container.list.status'), value: "status", width: "10%" },
+                { text: this.$t('container.list.status'), value: "status", width: "15%" },
 
               
-                { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false, width: "30%" },
+                { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false, width: "25%" },
             ];
         },
 
@@ -93,8 +93,10 @@ export default {
                     },
                 })
                 .then((result) => {
+                    this.$toast.success(result?.data?.message);
+       
                     this.GetData();
-                    this.$toast.success(result.data.message);
+                   
                 
               
 
@@ -404,12 +406,14 @@ export default {
         <v-row class="mx-5 mt-5">
             <v-col cols="12" lg="12" md="12" sm="12" xs="12">
                 <v-row wrap>
-                  
+
                     <v-col cols="12">
                         <v-card>
 
-                            <v-card-title class="justify-center ">
-                                <h4 class="mt-5">{{ $t('container.training_management.trainer_info.list') }}</h4>
+                            <v-card-title class="justify-center"
+                                style="background-color: #1C3B68; color: white;font-size: 17px;">
+                                <h4 class=" white--text">{{ $t('container.training_management.trainer_info.list')
+                                    }}</h4>
                             </v-card-title>
 
 
@@ -484,10 +488,10 @@ export default {
 
 
                                     </template>
-                                      <template v-slot:[`item.id_no`]="{ item }">
+                                    <template v-slot:[`item.id_no`]="{ item }">
                                         <span>
                                             {{ language == 'bn' ?
-    $helpers.englishToBangla(item.id): item.id }}
+                                            $helpers.englishToBangla(item.id): item.id }}
                                         </span>
 
                                     </template>
@@ -544,7 +548,7 @@ export default {
                                     <template v-slot:[`item.mobile`]="{ item }">
                                         <span>
                                             {{ language == 'bn' ?
-    $helpers.englishToBangla(item.mobile_no): item.mobile_no }}
+                                            $helpers.englishToBangla(item.mobile_no): item.mobile_no }}
                                         </span>
 
                                     </template>
