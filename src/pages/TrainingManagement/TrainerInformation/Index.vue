@@ -158,6 +158,7 @@ export default {
                 this.$t('container.training_management.trainer_info.mobile'),
                 this.$t('container.training_management.trainer_info.email'),
                  this.$t('container.training_management.trainer_info.address'),
+                this.$t('container.training_management.trainer_info.description'),
                 this.$t('container.list.status'),
                
                 
@@ -179,6 +180,7 @@ export default {
                     this.$i18n.locale == 'en' ? i.mobile_no : this.$helpers.englishToBangla(i.mobile_no),
                     this.$i18n.locale == 'en' ? i?.email : i?.email,
                     this.$i18n.locale == 'en' ? i?.address : i?.address,
+                    this.$i18n.locale == 'en' ? i?.description : i?.description,
                    
                     this.$i18n.locale == 'en' ? (i.status == 0 ? 'Active' : 'Inactive') : (i.status == 0 ? 'সক্রিয়' : 'নিষ্ক্রিয়'),
                 
@@ -252,6 +254,7 @@ export default {
                         this.$t('container.training_management.trainer_info.mobile'),
                         this.$t('container.training_management.trainer_info.email'),
                         this.$t('container.training_management.trainer_info.address'),
+                        this.$t('container.training_management.trainer_info.description'),
                         this.$t('container.list.status'),
                     ]
 
@@ -269,6 +272,7 @@ export default {
                             "mobile": this.$i18n.locale == 'en' ? i.mobile_no : this.$helpers.englishToBangla(i.mobile_no),
                             "email": this.$i18n.locale == 'en' ? i?.email : i?.email,
                             "address": this.$i18n.locale == 'en' ? i?.address : i?.address,
+                            "description": this.$i18n.locale == 'en' ? i?.description : i?.description,
 
                             "status": this.$i18n.locale == 'en' ? (i.status == 0 ? 'Active' : 'Inactive') : (i.status == 0 ? 'সক্রিয়' : 'নিষ্ক্রিয়')
 
@@ -276,7 +280,7 @@ export default {
                         }
                     }));
 
-                    const Field = ['sl', 'id', 'name', 'designation', 'mobile', 'email', 'address', 'status']
+                    const Field = ['sl', 'id', 'name', 'designation', 'mobile', 'email', 'address','description', 'status']
 
                     const Data = this.FormatJson(Field, CustomInfo)
                     const currentDate = new Date().toISOString().slice(0, 10); //
