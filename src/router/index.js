@@ -20,6 +20,7 @@ import SystemAuditRoutes from "./SystemAudit";
 import TrainingManagementRoutes from "./TrainingManagement";
 import GeneralSettingRoutes from "./GeneralSetting";
 import CommonRoutes from "./Common";
+import ProfileRoutes from "./Profile";
 
 // import dependencies
 import store from "../store/index";
@@ -64,7 +65,8 @@ const routes = [
       ...GeneralSettingRoutes,
       ...SystemAuditRoutes,
       ...ActivityLogRoutes,
-      ...APIManagerRoutes
+      ...APIManagerRoutes,
+      ...ProfileRoutes,
     ],
   },
 ];
