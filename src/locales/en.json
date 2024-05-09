@@ -1216,7 +1216,11 @@
           "grievance_date": "Grievance Date",
           "search": "Search",
           "resolved_officer": "Resolved Officer",
-          "grievance_details": "Grievance Details"
+          "grievance_details": "Grievance Details",
+          "forward_to": "Forward To",
+          "solution": "Solution",
+          "remarks": "Remarks",
+          "status_update": "Grievance Status Update"
         }
     }
   }
