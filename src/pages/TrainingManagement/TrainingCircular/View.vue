@@ -398,6 +398,12 @@ export default {
                                                     <v-col cols="12" lg="10" md="10" sm="10" xs="10">
                                                         :&nbsp;&nbsp;&nbsp;{{
                                                         data?.address }}</v-col>
+                                                    <v-col cols="12" lg="2" md="2" sm="2" xs="2"> {{
+                                                        $t("container.training_management.trainer_info.description")
+                                                        }}</v-col>
+                                                    <v-col cols="12" lg="10" md="10" sm="10" xs="10">
+                                                        :&nbsp;&nbsp;&nbsp;{{
+                                                        data?.description }}</v-col>
                                                 </v-row>
                                                 <v-row v-if="selectedTab === 'program'" class="selected-tab-content">
                                                     No data

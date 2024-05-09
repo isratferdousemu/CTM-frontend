@@ -148,8 +148,9 @@ export default {
                 <v-col cols="12" lg="12" md="12" sm="12" xs="12">
                     <v-card class="mx-3">
 
-                        <v-card-title class="justify-center black--text">
-                            <h5 class="mt-5">{{ $t("container.training_management.trainer_info.view") }}</h5>
+                        <v-card-title class="justify-center black--text"
+                            style="background-color: #1C3B68; color: white;font-size: 17px;">
+                            <h5 class="white--text">{{ $t("container.training_management.trainer_info.view") }}</h5>
                         </v-card-title>
 
                         <!-- <v-row class="my-custom-row ma-5">
@@ -221,7 +222,7 @@ export default {
                                                 <v-img :src="data.image" class="rounded-image" height="100%" contain>
                                                     <!-- Circular chip with sign mark -->
 
-                                                    <v-icon v-if="data.image !=null" class="icon" color="white"
+                                                    <v-icon v-if="data.image" class="icon" color="white"
                                                         style="position: absolute; bottom: 40px; right: 40px;">mdi-check</v-icon>
 
                                                 </v-img>
@@ -249,14 +250,16 @@ export default {
                                             </v-col>
 
                                             <v-col cols="12" lg="4" md="4" sm="4" xs="4" class="text-right">
-                                            
+
 
 
 
                                                 <b><span style="font-size:12px;"> {{
                                                         $t("container.training_management.trainer_info.rating")
                                                         }}</span></b><br>
-                                                8.15
+                                                {{ language == 'bn' ?
+                                                $helpers.englishToBangla(
+                                                8.15) : '8.15' }}
                                             </v-col>
                                         </v-row>
                                         <v-divider></v-divider>
@@ -271,7 +274,9 @@ export default {
                                                     <v-col cols="12" lg="4" md="4" sm="4" xs="4">
                                                         <div class="d-flex  flex-column">
                                                             <span class="mdi mdi-school-outline mdi-36px"></span>
-                                                            <span class="ml-3">0</span>
+                                                            <span class="ml-3">{{ language == 'bn' ?
+                                                                $helpers.englishToBangla(
+                                                                0) : '0' }}</span>
                                                             <span>
                                                                 {{$t("container.training_management.trainer_info.program")
                                                                 }}</span>
@@ -281,7 +286,9 @@ export default {
                                                         <div class="d-flex  flex-column">
                                                             <span
                                                                 class="mdi mdi-book-open-blank-variant mdi-36px"></span>
-                                                            <span class="ml-3">0</span>
+                                                            <span class="ml-3">{{ language == 'bn' ?
+                                                                $helpers.englishToBangla(
+                                                                0) : '0' }}</span>
                                                             <span>{{
                                                                 $t("container.training_management.trainer_info.course")
                                                                 }}</span>
@@ -290,7 +297,9 @@ export default {
                                                     <v-col cols="12" lg="4" md="4" sm="4" xs="4">
                                                         <div class="d-flex  flex-column">
                                                             <span class="mdi mdi-crowd mdi-36px"></span>
-                                                            <span class="ml-3">0</span>
+                                                            <span class="ml-3">{{ language == 'bn' ?
+                                                                $helpers.englishToBangla(
+                                                                0) : '0' }}</span>
                                                             <span>{{
                                                                 $t("container.training_management.trainer_info.upcoming")
                                                                 }}</span>
@@ -392,6 +401,17 @@ export default {
                                                     <v-col cols="12" lg="10" md="10" sm="10" xs="10">
                                                         :&nbsp;&nbsp;&nbsp;{{
                                                         data?.address }}</v-col>
+                                                    <v-col cols="12" lg="2" md="2" sm="2" xs="2"> {{
+                                                        $t("container.training_management.trainer_info.description")
+                                                        }}</v-col>
+                                                    <v-col cols="12" lg="10" md="10" sm="10" xs="10"
+                                                        v-if=" data?.description">
+                                                        :&nbsp;&nbsp;&nbsp;{{
+                                                        data?.description }}</v-col>
+                                                    <v-col cols="12" lg="10" md="10" sm="10" xs="10" v-else>
+                                                        :&nbsp;&nbsp;&nbsp;{{ language == 'bn' ?
+                                                        'প্রযোজ্য নয় ' : 'N/A'
+                                                        }}</v-col>
                                                 </v-row>
                                                 <v-row v-if="selectedTab === 'program'" class="selected-tab-content">
                                                     No data
