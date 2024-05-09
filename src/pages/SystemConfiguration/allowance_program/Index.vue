@@ -16,7 +16,12 @@ export default {
       options: {},
       search: '',
       page: 1,
-      total:null
+      total:null,
+      pagination: {
+        current: 1,
+        total: 0,
+        perPage: 15,
+      },
 
     }
   },
@@ -252,9 +257,13 @@ export default {
           search: this.search
         }
       }).then((result) => {
+        console.log(result.data,'tanbeer test data')
         this.allowances = result.data.data;
         this.totalAllowances = result.data.total;
         this.total = result.data.total;
+        this.pagination.current = result.data.current_page;
+        this.pagination.total = result.data.total;
+        this.pagination.perPage = result.data.per_page;
         this.loading = false;
       }).catch((err) => {
         console.log(err);
@@ -333,7 +342,6 @@ export default {
                   <!-- Checkbox on the left -->
                   <v-col lg="3" md="3" cols="12">
 
-                   
                     {{ $t('container.list.total') }}:&nbsp;
                       {{ language === 'bn' ? $helpers.englishToBangla(
                       this.total) : this.total }}
@@ -356,12 +364,16 @@ export default {
                       }" dense class="elevation-1 transparent row-pointer">
 
                     <template v-slot:[`item.id`]="{ item,index }">
+
                       {{
-
-                      language === 'bn' ? $helpers.englishToBangla(
-                      index + 1) : index + 1
-
-
+                        language === 'bn' ?
+                            $helpers.englishToBangla((pagination.current - 1) * pagination.perPage +
+                        index +
+                        1)
+                            :
+                            (pagination.current - 1) * pagination.perPage +
+                            index +
+                            1
                       }}
                       <!-- {{ index + 1 }} -->
                     </template>
@@ -404,16 +416,16 @@ export default {
                     </template>
 
                     <template v-slot:[`item.actions`]="{ item }" style="padding: 10px;">
-                      <v-tooltip top>
-                        <template v-slot:activator="{ on }">
-                          <v-btn :disabled="item.default === 1" fab style="margin-right: 10px;" x-small color="success"
-                            v-on="on" router :to="`/system-configuration/allowance-program/edit/${item.id}`"
-                            v-can="'allowance-edit'">
-                            <v-icon>mdi-account-edit-outline</v-icon>
-                          </v-btn>
-                        </template>
-                        <span>{{ $t('container.list.edit') }}</span>
-                      </v-tooltip>
+<!--                      <v-tooltip top>-->
+<!--                        <template v-slot:activator="{ on }">-->
+<!--                          <v-btn :disabled="item.default === 1" fab style="margin-right: 10px;" x-small color="success"-->
+<!--                            v-on="on" router :to="`/system-configuration/allowance-program/edit/${item.id}`"-->
+<!--                            v-can="'allowance-edit'">-->
+<!--                            <v-icon>mdi-account-edit-outline</v-icon>-->
+<!--                          </v-btn>-->
+<!--                        </template>-->
+<!--                        <span>{{ $t('container.list.edit') }}</span>-->
+<!--                      </v-tooltip>-->
 
                       <v-tooltip top>
                         <template v-slot:activator="{ on }">
@@ -423,7 +435,7 @@ export default {
                             <!-- <v-icon>mdi-account-edit-outline</v-icon> -->
                           </v-btn>
                         </template>
-                        <span>Setings</span>
+                        <span>{{ language == en ? 'Setings' : 'সেটিংস'}}</span>
                       </v-tooltip>
 
 

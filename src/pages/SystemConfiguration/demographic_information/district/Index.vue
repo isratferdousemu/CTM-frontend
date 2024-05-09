@@ -162,7 +162,7 @@
                           </span>
                         </v-tooltip>
 
-                        <v-tooltip top>
+                        <v-tooltip top v-if="!item.children_count">
                           <template v-slot:activator="{ on }">
                             <v-btn
                               v-can="'district-delete'"
@@ -249,7 +249,7 @@
                       )
                     "
                     :items="divisions"
-                    item-text="name_en"
+                    :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
                     item-value="id"
                     required
                     :error="errors[0] ? true : false"
@@ -277,7 +277,7 @@
                 <ValidationProvider
                   name="Name English"
                   vid="name_en"
-                  rules="required"
+                  rules="required|checkName"
                   v-slot="{ errors }"
                 >
                   <v-text-field
@@ -297,7 +297,7 @@
                 <ValidationProvider
                   name="Name Bangla"
                   vid="name_bn"
-                  rules="required"
+                  rules="required|checkNameBn"
                   v-slot="{ errors }"
                 >
                   <v-text-field
@@ -369,7 +369,7 @@
                       )
                     "
                     :items="divisions"
-                    item-text="name_en"
+                    :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
                     item-value="id"
                     required
                     :error="errors[0] ? true : false"
@@ -398,7 +398,7 @@
                 <ValidationProvider
                   name="Name English"
                   vid="name_en"
-                  rules="required"
+                  rules="required|checkName"
                   v-slot="{ errors }"
                 >
                   <v-text-field
@@ -418,7 +418,7 @@
                 <ValidationProvider
                   name="Name Bangla"
                   vid="name_bn"
-                  rules="required"
+                  rules="required|checkNameBn"
                   v-slot="{ errors }"
                 >
                   <v-text-field
@@ -511,6 +511,30 @@ import { required } from "vee-validate/dist/rules";
 import Spinner from "@/components/Common/Spinner.vue";
 
 extend("required", required);
+
+extend("checkName", {
+  validate: (value) => {
+    if (!value && value !== 0) {
+      return false;
+    }
+
+    return /^[a-zA-Z\s]+$/.test(value);
+  },
+  message: "Please Enter English Letter's in this Field",
+});
+
+extend("checkNameBn", {
+  validate: (value) => {
+    if (!value && value !== 0) {
+      return false;
+    }
+
+    var banglaRegex = /^[\u0980-\u09E5\u09F0-\u09FF\s]+$/;
+
+    return banglaRegex.test(value);
+  },
+  message: "Please Enter Bangla Letter's in this Field",
+});
 export default {
   name: "Index",
   title: "CTM - Districts",
@@ -554,6 +578,11 @@ export default {
     ValidationObserver,
   },
   computed: {
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      },
+    },
     headers() {
       return [
         {
@@ -753,8 +782,10 @@ export default {
 
     registerCustomRules() {
       extend("codeRules", (value) => {
+        const regex = /^\d{1,2}$/;
+
         return (
-          value.toString().length <= 2 ||
+          regex.test(value.toString()) ||
           this.$t("container.system_config.demo_graphic.district.code") +
             " can have maximum 2 digit"
         );
