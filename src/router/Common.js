@@ -6,6 +6,7 @@ import ApplicationEdit from "../pages/Common/application/Edit.vue";
 import ApplicationPreView from "../pages/Common/application/ApplicationPreView.vue";
 import SuccessView from "../pages/Common/application/Successpage.vue";
 import APiView from "../pages/Common/api_manager/Index.vue";
+import View from "../pages/Common/TrainingCircular/View_1.vue";
 const CommonRoutes = [
   {
     path: "/forgotPassword",
@@ -60,6 +61,11 @@ const CommonRoutes = [
     path: "/api-documentation",
     name: "APiView",
     component: APiView,
+  },
+  {
+    path: "/circular-details/:id",
+    name: "View",
+    component: View,
   },
 ]
 export default CommonRoutes;
