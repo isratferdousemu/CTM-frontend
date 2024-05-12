@@ -103,7 +103,7 @@ export default {
             };
 
             await this.$axios
-                .get("/admin/training/trainers", {
+                .get("/admin/training/circulars", {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -111,7 +111,7 @@ export default {
                     params: queryParams,
                 })
                 .then((result) => {
-                    this.apis = result?.data?.data?.data;
+                    this.circulars = result?.data?.data?.data;
                     // const parts = this.apis.start_date.split(" ");
                     // const datePart = parts[0];
                     // this.apis.start_date = datePart;
@@ -122,35 +122,39 @@ export default {
 
             const HeaderInfo = [
                 this.$t("container.list.sl"),
-                this.$t('container.training_management.trainer_info.ID'),
-                this.$t('container.training_management.trainer_info.name'),
-                this.$t('container.training_management.trainer_info.designation'),
-                this.$t('container.training_management.trainer_info.mobile'),
-                this.$t('container.training_management.trainer_info.email'),
-                 this.$t('container.training_management.trainer_info.address'),
-                this.$t('container.list.status'),
-               
+                this.$t('container.training_management.training_circular.name'),
+                this.$t('container.training_management.training_circular.type'),
+                this.$t('container.training_management.training_circular.training_type'),
+                this.$t('container.training_management.training_circular.module'),
+                this.$t('container.training_management.training_circular.class_duration'),
+       
+                this.$t('container.training_management.training_circular.no_of_participant'),
+                this.$t('container.training_management.training_circular.start_date'),
+                this.$t('container.training_management.training_circular.end_date'),
+           
                 
 
             ]
            
 
         
-            const CustomInfo = this.apis.map(((i, index) => {
+            const CustomInfo = this.circulars.map(((i, index) => {
 
                 return [
                     this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
                     
-                    this.$i18n.locale == 'en' ? i.id : this.$helpers.englishToBangla(i.id),
-                    this.$i18n.locale == 'en' ? i.name : i.name,
-                    this.$i18n.locale == 'en' ? i?.designation?.value_en : i?.designation?.value_bn,
+          
+                    this.$i18n.locale == 'en' ? i.circular_name : i.circular_name,
+                    this.$i18n.locale == 'en' ? i?.circular_type?.value_en : i?.circular_type?.value_bn,
+                    this.$i18n.locale == 'en' ? i?.training_type?.value_en : i?.training_type?.value_bn,
+                    i?.modules?.map(api => api.value_en).join(', '),
+                    this.$i18n.locale == 'en' ? i?.class_duration : i?.class_duration,
+
+                    this.$i18n.locale == 'en' ? i.no_of_participant : this.$helpers.englishToBangla(i?.no_of_participant),
+                    this.$i18n.locale == 'en' ? i?.start_date : this.$helpers.englishToBangla(i?.start_date),
+
+                    this.$i18n.locale == 'en' ? i?.end_date : this.$helpers.englishToBangla(i?.end_date),
                   
-               
-                    this.$i18n.locale == 'en' ? i.mobile_no : this.$helpers.englishToBangla(i.mobile_no),
-                    this.$i18n.locale == 'en' ? i?.email : i?.email,
-                    this.$i18n.locale == 'en' ? i?.address : i?.address,
-                   
-                    this.$i18n.locale == 'en' ? (i.status == 0 ? 'Active' : 'Inactive') : (i.status == 0 ? 'সক্রিয়' : 'নিষ্ক্রিয়'),
                 
 
 
@@ -161,7 +165,7 @@ export default {
                 language: this.$i18n.locale,
                 data: CustomInfo,
                 header: HeaderInfo,
-                fileName: this.$t("container..training_management.trainer_info.list"),
+                fileName: this.$t("container..training_management.training_circular.list"),
             };
             try {
                 const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
@@ -197,7 +201,7 @@ export default {
             };
 
             await this.$axios
-                .get("/admin/training/trainers", {
+                .get("/admin/training/circulars", {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -205,7 +209,7 @@ export default {
                     params: queryParams,
                 })
                 .then((result) => {
-                    this.apis = result?.data?.data?.data;
+                    this.circulars = result?.data?.data?.data;
                 })
                 .catch(error => {
                     this.isLoading = false;
@@ -216,43 +220,63 @@ export default {
 
                     const HeaderInfo = [
                         this.$t("container.list.sl"),
-                        this.$t('container.training_management.trainer_info.ID'),
-                        this.$t('container.training_management.trainer_info.name'),
-                        this.$t('container.training_management.trainer_info.designation'),
-                        this.$t('container.training_management.trainer_info.mobile'),
-                        this.$t('container.training_management.trainer_info.email'),
-                        this.$t('container.training_management.trainer_info.address'),
-                        this.$t('container.list.status'),
+                        this.$t('container.training_management.training_circular.name'),
+                        this.$t('container.training_management.training_circular.type'),
+                        this.$t('container.training_management.training_circular.training_type'),
+                        this.$t('container.training_management.training_circular.module'),
+                        this.$t('container.training_management.training_circular.class_duration'),
+
+                        this.$t('container.training_management.training_circular.no_of_participant'),
+                        this.$t('container.training_management.training_circular.start_date'),
+                        this.$t('container.training_management.training_circular.end_date'),
                     ]
 
-                    const CustomInfo = this.apis.map(((i, index) => {
+                    const CustomInfo = this.circulars.map(((i, index) => {
                         return {
                            
 
                             "sl": this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
 
-                            "id": this.$i18n.locale == 'en' ? i.id : this.$helpers.englishToBangla(i.id),
-                            "name": this.$i18n.locale == 'en' ? i.name : i.name,
-                            "designation": this.$i18n.locale == 'en' ? i?.designation?.value_en : i?.designation?.value_bn,
+                            "name": this.$i18n.locale == 'en' ? i.circular_name : i.circular_name,
+                            "type": this.$i18n.locale == 'en' ? i?.circular_type?.value_en : i?.circular_type?.value_bn,
 
 
-                            "mobile": this.$i18n.locale == 'en' ? i.mobile_no : this.$helpers.englishToBangla(i.mobile_no),
-                            "email": this.$i18n.locale == 'en' ? i?.email : i?.email,
-                            "address": this.$i18n.locale == 'en' ? i?.address : i?.address,
+                            "training_type": this.$i18n.locale == 'en' ? i?.training_type?.value_en : i?.training_type?.value_bn,
+                            "modules": this.$i18n.locale == 'en' ? i?.modules?.map(api => api.value_en).join(', ') : i?.modules?.map(api => api.value_bn).join(', '),
+                       
+                            "class_duration": this.$i18n.locale == 'en' ? i?.class_duration : i?.class_duration,
+                            "no_of_participant": this.$i18n.locale == 'en' ? i.no_of_participant : this.$helpers.englishToBangla(i?.no_of_participant),
 
-                            "status": this.$i18n.locale == 'en' ? (i.status == 0 ? 'Active' : 'Inactive') : (i.status == 0 ? 'সক্রিয়' : 'নিষ্ক্রিয়')
+                            "start_date": this.$i18n.locale == 'en' ? i?.start_date : this.$helpers.englishToBangla(i?.start_date),
+
+
+                            "end_date":
+                                this.$i18n.locale == 'en' ? i?.end_date : this.$helpers.englishToBangla(i?.end_date),
 
 
                         }
+                        
                     }));
+                
 
-                    const Field = ['sl', 'id', 'name', 'designation', 'mobile', 'email', 'address', 'status']
+
+                        
+                        
+                    
+                       
+                      
+
+                    
+                       
+
+
+                    const Field = ['sl', 'name', 'type', 'training_type', 'modules', 'class_duration', 'no_of_participant', 'start_date', 'end_date']
 
                     const Data = this.FormatJson(Field, CustomInfo)
                     const currentDate = new Date().toISOString().slice(0, 10); //
                     let dateinfo = queryParams.language == 'en' ? currentDate : this.$helpers.englishToBangla(currentDate)
 
-                    const filenameWithDate = `${dateinfo}_${this.$t("container.training_management.trainer_info.list_1")}`;
+                    const filenameWithDate = `${dateinfo}_${this.$t("container.training_management.training_circular.list_1")}`;
 
                     excel.export_json_to_excel({
                         header: HeaderInfo,

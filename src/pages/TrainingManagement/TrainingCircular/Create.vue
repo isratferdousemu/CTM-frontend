@@ -204,9 +204,9 @@ export default {
    
 
     mounted() {
-        this.GetAPI();
+
       
-        this.updateHeaderTitle();
+      
         this.$store
             .dispatch("getLookupByType", 26)
             .then((res) => (this.circular_types = res));
@@ -224,15 +224,18 @@ export default {
 
     methods: {
         change(){
+            
+
             if(this.data.circular_type_id === 59){
                 this.data.no_of_participant=null
 
             }
-            if (this.data.circular_type_id === 560) {
+            if (this.data.circular_type_id === 60) {
                 this.data.no_of_participant_open = null
                 this.data.no_of_participant_selected = null
 
             }
+            console.log(this.data,"data")
 
         },
         getItemText(item) {
@@ -485,7 +488,7 @@ export default {
                                             </v-btn>
                                             <v-btn flat color="success" type="submit" class="custom-btn mr-2"
                                                 :disabled="invalid">
-                                                {{ $t("container.list.update") }}
+                                                {{ $t("container.list.submit") }}
                                             </v-btn>
                                         </v-row>
                                     </v-form>
