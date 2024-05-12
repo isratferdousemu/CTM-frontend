@@ -223,6 +223,21 @@ export default {
 
 
     methods: {
+        change() {
+
+
+            if (this.data.circular_type_id === 59) {
+                this.data.no_of_participant = null
+
+            }
+            if (this.data.circular_type_id === 60) {
+                this.data.no_of_participant_open = null
+                this.data.no_of_participant_selected = null
+
+            }
+            console.log(this.data, "data")
+
+        },
         DataView() {
             this.$axios
                 .get(`admin/training/circulars/${this.$route.params.id}`, {
@@ -376,7 +391,7 @@ export default {
                                             <v-col cols=" 12" sm="6" lg="6">
                                                 <ValidationProvider name="Type" vid="type" rules="required"
                                                     v-slot="{ errors }">
-                                                    <v-select dense type="text" v-model="data.circular_type_id"
+                                                    <v-select @input="change()" dense type="text" v-model="data.circular_type_id"
                                                         :label="$t('container.training_management.training_circular.type')"
                                                         persistent-hint outlined :error="errors[0] ? true : false"
                                                         :items="circular_types" :item-text="getItemText" item-value="id"
