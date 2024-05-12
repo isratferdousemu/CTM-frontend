@@ -57,15 +57,16 @@ export default {
         headers() {
             return [
                 { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, width: "5%" },
-                { text: this.$t('container.training_management.trainer_info.ID'), value: "id_no", align: "start", width: "15%" },
-                { text: this.$t('container.training_management.trainer_info.name'), value: "name", width: "10%" },
-                { text: this.$t('container.training_management.trainer_info.designation'), value: "designation",  width: "15%" },
-            
-                { text: this.$t('container.training_management.trainer_info.email'), value: "email", width: "10%" },
-                { text: this.$t('container.list.status'), value: "status", width: "15%" },
+                { text: this.$t('container.training_management.training_circular.name'), value: "id_no", align: "start", width: "5%" },
+                { text: this.$t('container.training_management.training_circular.type'), value: "name", width: "15%" },
+                { text: this.$t('container.training_management.training_circular.training_type'), value: "designation",  width: "15%" },
+                { text: this.$t('container.training_management.training_circular.module'), value: "mobile", width: "10%" },
+                { text: this.$t('container.training_management.training_circular.start_date'), value: "email", width: "10%" },
+                { text: this.$t('container.training_management.training_circular.end_date'), value: "email", width: "10%" },
+                { text: this.$t('container.list.status'), value: "status", width: "10%" },
 
               
-                { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false, width: "25%" },
+                { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false, width: "30%" },
             ];
         },
 
@@ -93,10 +94,8 @@ export default {
                     },
                 })
                 .then((result) => {
-                    this.$toast.success(result?.data?.message);
-       
                     this.GetData();
-                   
+                    this.$toast.success(result.data.message);
                 
               
 
@@ -158,7 +157,6 @@ export default {
                 this.$t('container.training_management.trainer_info.mobile'),
                 this.$t('container.training_management.trainer_info.email'),
                  this.$t('container.training_management.trainer_info.address'),
-                this.$t('container.training_management.trainer_info.description'),
                 this.$t('container.list.status'),
                
                 
@@ -180,7 +178,6 @@ export default {
                     this.$i18n.locale == 'en' ? i.mobile_no : this.$helpers.englishToBangla(i.mobile_no),
                     this.$i18n.locale == 'en' ? i?.email : i?.email,
                     this.$i18n.locale == 'en' ? i?.address : i?.address,
-                    this.$i18n.locale == 'en' ? i?.description : i?.description,
                    
                     this.$i18n.locale == 'en' ? (i.status == 0 ? 'Active' : 'Inactive') : (i.status == 0 ? 'সক্রিয়' : 'নিষ্ক্রিয়'),
                 
@@ -254,7 +251,6 @@ export default {
                         this.$t('container.training_management.trainer_info.mobile'),
                         this.$t('container.training_management.trainer_info.email'),
                         this.$t('container.training_management.trainer_info.address'),
-                        this.$t('container.training_management.trainer_info.description'),
                         this.$t('container.list.status'),
                     ]
 
@@ -272,7 +268,6 @@ export default {
                             "mobile": this.$i18n.locale == 'en' ? i.mobile_no : this.$helpers.englishToBangla(i.mobile_no),
                             "email": this.$i18n.locale == 'en' ? i?.email : i?.email,
                             "address": this.$i18n.locale == 'en' ? i?.address : i?.address,
-                            "description": this.$i18n.locale == 'en' ? i?.description : i?.description,
 
                             "status": this.$i18n.locale == 'en' ? (i.status == 0 ? 'Active' : 'Inactive') : (i.status == 0 ? 'সক্রিয়' : 'নিষ্ক্রিয়')
 
@@ -280,7 +275,7 @@ export default {
                         }
                     }));
 
-                    const Field = ['sl', 'id', 'name', 'designation', 'mobile', 'email', 'address','description', 'status']
+                    const Field = ['sl', 'id', 'name', 'designation', 'mobile', 'email', 'address', 'status']
 
                     const Data = this.FormatJson(Field, CustomInfo)
                     const currentDate = new Date().toISOString().slice(0, 10); //
@@ -414,10 +409,8 @@ export default {
                     <v-col cols="12">
                         <v-card>
 
-                            <v-card-title class="justify-center"
-                                style="background-color: #1C3B68; color: white;font-size: 17px;">
-                                <h4 class=" white--text">{{ $t('container.training_management.trainer_info.list')
-                                    }}</h4>
+                            <v-card-title class="justify-center ">
+                                <h4 class="mt-5">{{ $t('container.training_management.training_circular.list') }}</h4>
                             </v-card-title>
 
 
@@ -444,7 +437,7 @@ export default {
                                         v-can="'data-receiver-create'">
                                         <v-icon small>mdi-plus</v-icon>
                                         {{
-                                        $t('container.training_management.trainer_info.add') }}
+    $t('container.training_management.training_circular.add') }}
                                     </v-btn>
 
                                 </v-card-title>

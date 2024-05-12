@@ -6,7 +6,7 @@ const BudgetManagementRoutes = [
       requiresAuth: true,
       permission: "budget-list",
     },
-    component: () => import("../pages/SystemConfiguration/user_management/users/index.vue")
+    component: () => import("../pages/BudgetManagement/Index.vue")
   },
   {
     path: "/budget/list",

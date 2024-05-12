@@ -31,8 +31,7 @@ extend('name', {
 extend('mobile', {
     validate: value => {
         // Regular expression to match phone numbers with a maximum length of 14 characters
-    
-        const mobileRegex = /^01[3-9][0-9]{8}$/;;
+        const mobileRegex = /^01\d{9}$/;
         return mobileRegex.test(value);
 
     },
@@ -111,6 +110,7 @@ export default {
                 address: null,
                 image: null,
                 description:null,
+              
                
                 
             },
@@ -153,7 +153,7 @@ export default {
                 if (this.data.image.size > maxFileSize) {
                     // alert("file size must be 200kb")
                     // this.confirmDialog =true;
-                    if(this.language=='en'){
+                    if(this.language==en){
                         this.$toast.error("File size must be under 200 KB");
                     }
                     else{
@@ -217,7 +217,7 @@ export default {
             formData.append('mobile_no', this.data.mobile_no);
             formData.append('email', this.data.email);
             formData.append('address', this.data.address);
-            formData.append('description', this.data.description);
+            formData.append('address', this.data.description);
             if (this.data.image) {
                 formData.append('image', this.data.image);
 
@@ -239,7 +239,7 @@ export default {
                 })
                 .catch((err) => {
                     console.log(err, "err")
-                    this.$toast.error(err?.response?.data?.errors?.email[0]);
+                    this.$toast.error(err.response.data.errors.email[0]);
                     this.$refs.form.setErrors(err.response.data.errors);   
 
                 });
@@ -261,9 +261,8 @@ export default {
                 <v-row>
                     <v-col cols="12">
                         <v-card>
-                            <v-card-title class="justify-center"
-                                style="background-color: #1C3B68; color: white;font-size: 17px;">
-                                <h4 >
+                            <v-card-title class="justify-center">
+                                <h4 class="mt-5">
                                     {{ $t("container.training_management.trainer_info.add") }}
                                 </h4>
                             </v-card-title>
@@ -343,18 +342,16 @@ export default {
                                                             ({{
                                                             $t('container.training_management.trainer_info.image_alert')
                                                             }})</label>
-
+                                                   
                                                         <ValidationProvider v-slot="{ errors }" name="Image"
-                                                            vid="image">
+                                                           vid="image">
                                                             <v-file-input dense outlined show-size counter
                                                                 prepend-outer-icon="mdi-camera" v-model="data.image"
-                                                                :placeholder="language == 'bn' ? 'ফাইল নির্বাচন করুন '
-                                        : 'Choose File'" accept="image/*" @change="previewImage" prepend-icon=""
+                                                                accept="image/*" @change="previewImage" prepend-icon=""
                                                                 id="image">
                                                             </v-file-input>
                                                         </ValidationProvider>
                                                     </v-col>
-
 
                                                 </v-row>
 
@@ -365,13 +362,7 @@ export default {
 
                                             </v-col>
 
-                                            <v-col cols="12" sm="6" lg="6">
-                                                <ValidationProvider name="BIO" vid="description" v-slot="{ errors }">
-                                                    <v-textarea dense v-model="data.description" :label="$t('container.training_management.trainer_info.description')
-                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক বায়ো প্রদান করুন '
-                                        : 'Please enter  Bio') : ''"></v-textarea>
-                                                </ValidationProvider>
-                                            </v-col>
+
 
 
 

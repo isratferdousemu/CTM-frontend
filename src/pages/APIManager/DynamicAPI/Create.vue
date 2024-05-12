@@ -155,7 +155,7 @@ export default {
                                     <v-form v-on:submit.prevent="submitAPI()">
 
                                         <v-row>
-                                            <v-col cols="12" sm="3" lg="3">
+                                            <v-col cols="12" sm="3" lg="3" xs="3" xl="3">
                                                 <ValidationProvider name=" API Name" vid="api_name" rules="required"
                                                     v-slot="{ errors }">
                                                     <v-text-field type="text" v-model="data.name" :label="$t('container.api_manager.api_generate.api_name')
@@ -163,8 +163,8 @@ export default {
                                                         :error-messages="errors[0]"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
-                                            <v-col cols="12" sm="3" lg="3">
-                                                <ValidationProvider name="Module" vid="module" rules="required"
+                                            <v-col cols="12" sm="3" lg="3" xs="3" xl="3">
+                                                <ValidationProvider name=" Module" vid="module" rules="required"
                                                     v-slot="{ errors }">
                                                     <v-select v-model="data.module" :label="$t('container.api_manager.api_generate.module')
                                         " persistent-hint outlined :error="errors[0] ? true : false" :items="modules"
@@ -172,7 +172,7 @@ export default {
                                                         @change="handleChange"></v-select>
                                                 </ValidationProvider>
                                             </v-col>
-                                            <v-col cols="12" sm="3" lg="3">
+                                            <v-col cols="12" sm="3" lg="3" xs="3" xl="3">
                                                 <ValidationProvider name="Purpose" vid="purpose" rules="required"
                                                     v-slot="{ errors }">
 
@@ -182,16 +182,16 @@ export default {
                                                         @change="Change"></v-select>
                                                 </ValidationProvider>
                                             </v-col>
-                                            <v-col cols="12" sm="3" lg="3">
+                                            <v-col cols="12" sm="3" lg="3" xs="3" xl="3">
                                                 <ValidationProvider name="URL" vid="url" rules="required"
                                                     v-slot="{ errors }">
 
                                                     <v-text-field type="text" v-model="data.url" :label="$t('container.api_manager.url_generate.url')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"  :error-messages="errors[0]" disabled
-                                                        ></v-text-field>
+                                        " persistent-hint outlined :error="errors[0] ? true : false"
+                                                        :error-messages="errors[0]" disabled></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
-                                            <v-col cols="12" sm="12" lg="12">
+                                            <v-col cols="12" sm="12" lg="12" xs="12" xl="12">
                                                 <ValidationProvider name="Select Column" vid="Parameter"
                                                     v-slot="{ errors }">
                                                     <!-- <v-select multiple type="text" v-model="data.selected_columns"

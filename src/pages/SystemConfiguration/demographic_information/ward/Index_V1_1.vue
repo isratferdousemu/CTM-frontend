@@ -70,7 +70,7 @@
                         >
                        {{ item?.parent?.parent?.parent.name_en }}
                         </span>
-                        
+
                         <span
                           v-if="item?.location_type.id == '2' || item?.location_type.id == '3'"
                         >
@@ -120,7 +120,7 @@
                           {{ item?.parent?.name_en }}
                         </span>
                       </template>
-                   
+
 
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">

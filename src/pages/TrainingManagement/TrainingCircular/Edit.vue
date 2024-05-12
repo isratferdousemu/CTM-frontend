@@ -31,8 +31,7 @@ extend('name', {
 extend('mobile', {
     validate: value => {
         // Regular expression to match phone numbers with a maximum length of 14 characters
-    
-        const mobileRegex = /^01[3-9][0-9]{8}$/;;
+        const mobileRegex = /^01\d{9}$/;
         return mobileRegex.test(value);
 
     },
@@ -74,20 +73,20 @@ extend('start_date', {
 });
 
 extend("checkNumber", {
-  validate: (value) => {
-    if (!value && value !== 0) {
-      return false;
-    }
-    // Check if all characters are numeric and not allow special characters
-    const isNumeric = /^[0-9]+$/.test(value);
+    validate: (value) => {
+        if (!value && value !== 0) {
+            return false;
+        }
+        // Check if all characters are numeric and not allow special characters
+        const isNumeric = /^[0-9]+$/.test(value);
 
-    // Check if the length is either 10 or 17 characters
-    const isCorrectLength = value.length === 10 || value.length === 17;
+        // Check if the length is either 10 or 17 characters
+        const isCorrectLength = value.length === 10 || value.length === 17;
 
-    // Return true if both conditions are met
-    return isNumeric && isCorrectLength;
-  },
-  message: "This is required field and field must be a number with either 10 or 17 characters",
+        // Return true if both conditions are met
+        return isNumeric && isCorrectLength;
+    },
+    message: "This is required field and field must be a number with either 10 or 17 characters",
 });
 
 export default {
@@ -100,24 +99,23 @@ export default {
 
     data() {
         return {
-     
-            
-            imageUrl:null,
+
+
+            imageUrl: null,
             data: {
                 name: null,
                 designation_id: null,
                 mobile_no: null,
-                email:null,
+                email: null,
                 address: null,
                 image: null,
                 description:null,
-               
-                
+
             },
-            designations:[]
+            designations: []
         };
     },
-    computed:{
+    computed: {
         language: {
             get() {
                 return this.$store.getters.getAppLanguage;
@@ -129,17 +127,14 @@ export default {
         "$i18n.locale": "updateHeaderTitle",
     },
 
-   
+
 
     mounted() {
-        this.GetAPI();
-      
         this.updateHeaderTitle();
-        this.$store
-            .dispatch("getLookupByType", 24)
-            .then((res) => (this.designations = res));
+        this.$store.dispatch("getLookupByType", 24).then((res) => (this.designations = res));
+        this.DataView();
     },
-    
+
 
     methods: {
         getItemText(item) {
@@ -148,19 +143,19 @@ export default {
         previewImage() {
             if (this.data.image) {
 
-                const maxFileSize = 200 * 1024; // 200 KB in bytes
+                const maxFileSize = 200 * 2042; // 200 KB in bytes
 
                 if (this.data.image.size > maxFileSize) {
                     // alert("file size must be 200kb")
                     // this.confirmDialog =true;
-                    if(this.language=='en'){
-                        this.$toast.error("File size must be under 200 KB");
+                    if (this.language == en) {
+                        this.$toast.error("File size must be under 400 KB");
                     }
-                    else{
-                        this.$toast.error("ফাইলের আকার ২০০ কে বি এর কম হতে হবে");
+                    else {
+                        this.$toast.error("ফাইলের আকার ৪০০ কে বি এর কম হতে হবে");
 
                     }
-                   // Show the alert
+                    // Show the alert
                     this.data.image = '';
 
                     return false;
@@ -187,29 +182,42 @@ export default {
             }
 
         },
-  
-        async GetAPI() {
 
+        DataView() {
+
+       
             this.$axios
-                .get("/admin/get-api-list", {
+                .get(`admin/training/trainers/${this.$route.params.id}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
                     },
-
                 })
                 .then((result) => {
+                    console.log(result, "result")
+                    this.data = result?.data?.data
+                    this.imageUrl = result?.data?.data?.image;
+                    this.data.image = null;
 
-                    this.apis = result?.data?.data;
-                    console.log(this.apis,"apis")
+                    
+              
+
+                })
+                .catch((err) => {
+                    if (this.$refs.formAdd && this.$refs.formAdd.$refs && this.$refs.formAdd.$refs.operator) {
+
+                        this.$refs.formAdd.$refs.operator.setErrors([err.response.data.errors.operator[0]]);
+                    } else {
+                        console.error('Error setting errors:', err);
+                    }
 
                 });
+
         },
 
-    
 
-        submitForm() {
-        
+        updateForm() {
+
             const formData = new FormData();
             // Append data to FormData object
             formData.append('name', this.data.name);
@@ -217,35 +225,38 @@ export default {
             formData.append('mobile_no', this.data.mobile_no);
             formData.append('email', this.data.email);
             formData.append('address', this.data.address);
-            formData.append('description', this.data.description);
-            if (this.data.image) {
+            formData.append('address', this.data.description);
+        
+          
+            if(this.data.image){
                 formData.append('image', this.data.image);
 
             }
             formData.append('lang', this.language);
+            formData.append('_method', "PUT");
             this.$axios
-                .post("admin/training/trainers", formData, {
+                .post(`admin/training/trainers/${this.$route.params.id}`, formData, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
                     },
                 })
                 .then((result) => {
-                  
-                        this.$toast.success(result.data.message);
-                        this.$router.push("/training-management/trainer-information");
-                
+
+                    this.$toast.success(result.data.message);
+                    this.$router.push("/training-management/trainer-information");
+
 
                 })
                 .catch((err) => {
                     console.log(err, "err")
-                    this.$toast.error(err?.response?.data?.errors?.email[0]);
-                    this.$refs.form.setErrors(err.response.data.errors);   
+                    this.$toast.error(err.response.data.errors.email[0]);
+                    this.$refs.form.setErrors(err.response.data.errors);
 
                 });
 
         },
-       
+
         updateHeaderTitle() {
             const title = this.$t("container.system_config.device.add");
             this.$store.commit("setHeaderTitle", title);
@@ -261,10 +272,9 @@ export default {
                 <v-row>
                     <v-col cols="12">
                         <v-card>
-                            <v-card-title class="justify-center"
-                                style="background-color: #1C3B68; color: white;font-size: 17px;">
-                                <h4 >
-                                    {{ $t("container.training_management.trainer_info.add") }}
+                            <v-card-title class="justify-center">
+                                <h4 class="mt-5">
+                                    {{ $t("container.training_management.trainer_info.edit") }}
                                 </h4>
                             </v-card-title>
 
@@ -272,7 +282,7 @@ export default {
 
                             <v-card-text class="mt-10">
                                 <ValidationObserver ref="form" v-slot="{ invalid }">
-                                    <v-form v-on:submit.prevent="submitForm()">
+                                    <v-form v-on:submit.prevent="updateForm()">
 
                                         <v-row class="mx-10 no-gap-row">
                                             <v-col cols="12" sm="6" lg="6">
@@ -280,14 +290,14 @@ export default {
                                                     v-slot="{ errors }">
                                                     <v-text-field dense type="text" v-model="data.name" :label="$t('container.training_management.trainer_info.name')
                                         " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য নাম প্রদান করুন '
-                                        : 'Please enter a valid Name'): ''"></v-text-field>
+                                        : 'Please enter a valid Name') : ''"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols=" 12" sm="6" lg="6">
                                                 <ValidationProvider name="Designation" vid="designation"
                                                     rules="required" v-slot="{ errors }">
-                                                    <v-select dense type="text" v-model="data.designation_id "
-                                                        :label=" $t('container.training_management.trainer_info.designation')"
+                                                    <v-select dense type="text" v-model="data.designation_id"
+                                                        :label="$t('container.training_management.trainer_info.designation')"
                                                         persistent-hint outlined :error="errors[0] ? true : false"
                                                         :items="designations" :item-text="getItemText" item-value="id"
                                                         :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক পদবী প্রদান করুন '
@@ -341,20 +351,18 @@ export default {
                                                     <v-col cols="12" sm="6" lg="6" xl="6" xs="6"> <label>{{
                                                             $t('container.application_selection.application.image') }}
                                                             ({{
-                                                            $t('container.training_management.trainer_info.image_alert')
+    $t('container.training_management.trainer_info.image_alert')
                                                             }})</label>
-
+                                                        <span style="margin-left: 4px; color: red">*</span>
                                                         <ValidationProvider v-slot="{ errors }" name="Image"
                                                             vid="image">
                                                             <v-file-input dense outlined show-size counter
                                                                 prepend-outer-icon="mdi-camera" v-model="data.image"
-                                                                :placeholder="language == 'bn' ? 'ফাইল নির্বাচন করুন '
-                                        : 'Choose File'" accept="image/*" @change="previewImage" prepend-icon=""
+                                                                accept="image/*" @change="previewImage" prepend-icon=""
                                                                 id="image">
                                                             </v-file-input>
                                                         </ValidationProvider>
                                                     </v-col>
-
 
                                                 </v-row>
 
@@ -365,13 +373,7 @@ export default {
 
                                             </v-col>
 
-                                            <v-col cols="12" sm="6" lg="6">
-                                                <ValidationProvider name="BIO" vid="description" v-slot="{ errors }">
-                                                    <v-textarea dense v-model="data.description" :label="$t('container.training_management.trainer_info.description')
-                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক বায়ো প্রদান করুন '
-                                        : 'Please enter  Bio') : ''"></v-textarea>
-                                                </ValidationProvider>
-                                            </v-col>
+
 
 
 
@@ -386,7 +388,7 @@ export default {
                                             </v-btn>
                                             <v-btn flat color="success" type="submit" class="custom-btn mr-2"
                                                 :disabled="invalid">
-                                                {{ $t("container.list.submit") }}
+                                                {{ $t("container.list.update") }}
                                             </v-btn>
                                         </v-row>
                                     </v-form>
@@ -400,7 +402,7 @@ export default {
     </div>
 </template>
 
-<style >
+<style>
 .gradient-background {
     background: linear-gradient(to right, #87CEEB, #ADD8E6, #F0F8FF);
     color: black;
