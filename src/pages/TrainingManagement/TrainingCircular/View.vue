@@ -2,17 +2,10 @@
 import { ValidationObserver } from "vee-validate";
 export default {
     name: "Index",
-    title: "CTM - Training Information View",
+    title: "CTM - Training Circular",
     data() {
         return {
-            data: {
-                id: null,
-                code: null,
-                name_en: null,
-                name_bn: null,
-            },
-          
-            selectedTab: 'about',
+            data: [],
             showPassword: false,
             total: null,
             org_name: null,
@@ -79,6 +72,12 @@ export default {
     },
 
     computed: {
+         sanitizedDescription() {
+      // Sanitize HTML content using DOMParser
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(this.data.description, 'text/html');
+      return doc.body.innerHTML;
+    },
         headers() {
             return [
                 { text: this.$t('container.list.sl'), value: "id", align: "start", sortable: false, width: "15%" },
@@ -108,20 +107,21 @@ export default {
             this.email_id = id;
         },
 
-       
+        
         DataView() {
             console.log(this.$route.params.id, "params")
             this.$axios
-                .get(`admin/training/trainers/${this.$route.params.id}`, {
+                .get(`admin/training/circulars/${this.$route.params.id}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
                     },
                 })
                 .then((result) => {
-                    console.log(result, "result")
+                    
                     this.data = result?.data?.data
-                
+                    console.log(this.data.modules,"modules");
+                 
 
                 })
                 .catch((err) => {
@@ -142,58 +142,76 @@ export default {
     },
 }
 </script><template>
-    <div id="trainerInfo-view">
+    <div id="url-generate">
         <v-container>
             <v-row>
-                <v-col cols="12" lg="12" md="12" sm="12" xs="12">
+                <v-col cols="12">
                     <v-card class="mx-3">
-
-                        <v-card-title class="justify-center black--text">
-                            <h5 class="mt-5">{{ $t("container.training_management.trainer_info.view") }}</h5>
+                        <v-card-title class="justify-center black--text"
+                            style="background-color: #1C3C6A; color: white;font-size: 17px;">
+                            <h5 class="white--text">{{ $t("container.training_management.training_circular.view") }}</h5>
                         </v-card-title>
 
-                        <!-- <v-row class="my-custom-row ma-5">
+                        <v-row class="my-custom-row ma-5">
                             <v-col cols="12" sm="6" md="3" style="font-size:15px;">
-                                <b>{{ $t('container.api_manager.data_receiver.organization') }}</b>:
+                                <b>{{ $t('container.training_management.training_circular.name') }}</b>:
                             </v-col>
                             <v-col cols="12" sm="6" md="9" style="font-size:15px;">
-                                <b>:</b> <span class="ml-2">{{ data.organization_name }}</span>
+                                <b>:</b> <span class="ml-2">{{ data?.circular_name }}</span>
                             </v-col>
                             <v-col cols="12" sm="6" md="3" style="font-size:15px;">
-                                <b>{{ $t('container.api_manager.data_receiver.phone') }} }}</b>:
+                                <b>{{ $t('container.training_management.training_circular.type') }}</b>:
                             </v-col>
                             <v-col cols="12" sm="6" md="9" style="font-size:15px;">
-                                <b>:</b> <span class="ml-2">{{ data.organization_phone}}</span>
+                                <b>:</b> <span class="ml-2"> {{ language == 'bn' ?
+                                    data?.circular_type
+                                    ?.value_bn : data?.circular_type
+                                    ?.value_en }}</span>
                             </v-col>
                             <v-col cols="12" sm="6" md="3" style="font-size:15px;">
-                                <b>{{ $t('container.api_manager.data_receiver.email') }}</b>:
+                                <b>{{ $t('container.training_management.training_circular.training_type') }}</b>:
                             </v-col>
                             <v-col cols="12" sm="6" md="9" style="font-size:15px;">
-                                <b>:</b> <span class="ml-2">{{ data?.organization_email }}</span>
+                                <b>:</b> <span class="ml-2">{{ language == 'bn' ?
+                                    data?.training_type
+                                    ?.value_bn : data?.training_type
+                                    ?.value_en }}</span>
                             </v-col>
                             <v-col cols="12" sm="6" md="3" style="font-size:15px;">
-                                <b>{{ $t('container.api_manager.data_receiver.responsible_person_nid') }}</b>:
+                                <b>{{ $t('container.list.status') }}</b>:
                             </v-col>
                             <v-col cols="12" sm="6" md="9" style="font-size:15px;">
-                                <b>:</b> <span class="ml-2">{{ data?.responsible_person_nid }}</span>
+                                <b>:</b> <span class="ml-2">{{ language == 'bn' ?
+                                    data?.status
+                                    ?.value_bn : data?.status
+                                    ?.value_en }}</span>
                             </v-col>
                             <v-col cols="12" sm="6" md="3" style="font-size:15px;">
-                                <b>{{ $t('container.api_manager.data_receiver.user_name') }}</b>:
+                                <b>{{ $t('container.training_management.training_circular.module') }}</b>:
                             </v-col>
                             <v-col cols="12" sm="6" md="9" style="font-size:15px;">
-                                <b>:</b> <span class="ml-2">{{ data?.username}}</span>
+                                <b>:</b>
+                                <!-- <span class="ml-2">{{ language == 'bn' ?
+                                    data?.modules
+                                    ?.value_bn : data?.modules
+                                    ?.value_en }}{{ data?.modules.value_bn }}
+                                </span> -->
+                                <v-chip v-for="(item, index) in data.modules" :key="index" class="ml-2 mt-2">
+                                    {{ language == 'bn' ?
+                                    item.value_bn : item.value_bn }}{{ data?.modules.value_en }}
+                                </v-chip>
                             </v-col>
                             <v-col cols="12" sm="6" md="3" style="font-size:15px;">
-                                <b>{{ $t('container.api_manager.data_receiver.api_key') }}</b>:
+                                <b>{{ $t('container.training_management.training_circular.class_duration') }}</b>:
                             </v-col>
                             <v-col cols="12" sm="6" md="9" style="font-size:15px;">
-                                <b>:</b> <span class="ml-2">{{ data?.api_key }}</span>
+                                <b>:</b> <span class="ml-2">{{ data?.class_duration }}</span>
                             </v-col>
                             <v-col cols="12" sm="6" md="3" style="font-size:15px;">
-                                <b>{{ $t('container.api_manager.data_receiver.ip') }}</b>:
+                                <b>{{ $t('container.training_management.training_circular.description') }}</b>:
                             </v-col>
                             <v-col cols="12" sm="6" md="9" style="font-size:15px;">
-                                <b>:</b> <span class="ml-2">{{ data?.whitelist_ip }}</span>
+                                <b>:</b> <span class="ml-2" v-html="sanitizedDescription"></span>
                             </v-col>
                             <v-col cols="12" sm="6" md="3" style="font-size:15px;">
                                 <b>{{ $t('container.api_manager.data_receiver.start_date') }}</b>:
@@ -208,229 +226,13 @@ export default {
                                 <b>:</b> <span class="ml-2">{{ data?.end_date }}</span>
                             </v-col>
 
-                     
-
-                        </v-row> -->
-                        <v-row v-if="data.name">
-                            <v-col cols="12" lg="12" md="4" sm="12" xs="12">
-                                <v-card class="ma-5 " rounded>
-                                    <v-card-text>
-                                        <!-- Left side for the image -->
-                                        <v-row class="mr-5">
-                                            <v-col cols="12" lg="4" md="4" sm="4" xs="4">
-                                                <v-img :src="data.image" class="rounded-image" height="100%" contain>
-                                                    <!-- Circular chip with sign mark -->
-
-                                                    <v-icon v-if="data.image !=null" class="icon" color="white"
-                                                        style="position: absolute; bottom: 40px; right: 40px;">mdi-check</v-icon>
-
-                                                </v-img>
-
-
-                                            </v-col>
-
-                                            <v-col cols="12" lg="4" md="4" sm="4" xs="4">
-                                                <b>
-                                                    <div class="increased-font">{{ data.name }}</div>
-                                                </b><br>
-                                                <b>
-                                                    <div class="increased-contact"> {{
-                                                        $t("container.training_management.trainer_info.contact")
-                                                        }}</div>
-                                                </b><br>
-                                                {{
-                                                $t("container.training_management.trainer_info.mobile")
-                                                }}:{{ language == 'bn' ?
-                                                $helpers.englishToBangla(
-                                                this.data?.mobile_no) : data?.mobile_no }}<br>
-                                                {{
-                                                $t("container.training_management.trainer_info.contact")
-                                                }}:{{ data.email }}
-                                            </v-col>
-
-                                            <v-col cols="12" lg="4" md="4" sm="4" xs="4" class="text-right">
-                                                <br>
-                                                <br>
-                                                <br>
-                                                <br>
-                                                <br>
-                                                <br>
-                                                <br>
-
-
-
-                                                <b><span style="font-size:12px;"> {{
-                                                        $t("container.training_management.trainer_info.rating")
-                                                        }}</span></b><br>
-                                                8.15
-                                            </v-col>
-                                        </v-row>
-                                        <v-divider></v-divider>
-                                        <br>
-                                        <v-row>
-                                            <v-col cols="12" lg="4" md="4" sm="4" xs="4">
-
-                                            </v-col>
-
-                                            <v-col cols="12" lg="4" md="4" sm="4" xs="4">
-                                                <v-row>
-                                                    <v-col cols="12" lg="4" md="4" sm="4" xs="4">
-                                                        <div class="d-flex  flex-column">
-                                                            <span class="mdi mdi-school-outline mdi-36px"></span>
-                                                            <span class="ml-3">0</span>
-                                                            <span>
-                                                                {{$t("container.training_management.trainer_info.program")
-                                                                }}</span>
-                                                        </div>
-                                                    </v-col>
-                                                    <v-col cols="12" lg="4" md="4" sm="4" xs="4">
-                                                        <div class="d-flex  flex-column">
-                                                            <span
-                                                                class="mdi mdi-book-open-blank-variant mdi-36px"></span>
-                                                            <span class="ml-3">0</span>
-                                                            <span>{{
-                                                                $t("container.training_management.trainer_info.course")
-                                                                }}</span>
-                                                        </div>
-                                                    </v-col>
-                                                    <v-col cols="12" lg="4" md="4" sm="4" xs="4">
-                                                        <div class="d-flex  flex-column">
-                                                            <span class="mdi mdi-crowd mdi-36px"></span>
-                                                            <span class="ml-3">0</span>
-                                                            <span>{{
-                                                                $t("container.training_management.trainer_info.upcoming")
-                                                                }}</span>
-                                                        </div>
-                                                    </v-col>
-
-
-
-                                                </v-row>
-
-
-                                            </v-col>
-
-
-                                            <v-col cols="12" lg="2" md="2" sm="2" xs="2">
-
-                                            </v-col>
-
-                                        </v-row>
-
-                                    </v-card-text>
-                                </v-card>
-                                <!-- Your text content here -->
-
-                            </v-col>
-
-                        </v-row>
-                        <v-row v-if="data.name">
-                            <v-col cols="12" lg="12" md="4" sm="12" xs="12">
-                                <v-card class="ma-5 " rounded>
-                                    <v-card-text>
-                                        <!-- Left side for the image -->
-                                        <v-row class="mr-5">
-
-                                            <v-col cols="12" lg="4" md="4" sm="4" xs="4">
-
-                                            </v-col>
-
-                                            <v-col cols="12" lg="2" md="2" sm="2" xs="2" @click="selectedTab = 'about'"
-                                                :class="{ 'active-tab': selectedTab === 'about' }"
-                                                style="cursor: pointer;">
-                                                {{ $t("container.training_management.trainer_info.about")
-                                                }}
-
-                                            </v-col>
-
-                                            <v-col cols="12" lg="2" md="2" sm="2" xs="2"
-                                                @click="selectedTab = 'program'"
-                                                :class="{ 'active-tab': selectedTab === 'program' }"
-                                                style="cursor: pointer;">
-                                                {{ $t("container.training_management.trainer_info.program")
-                                                }}
-                                            </v-col>
-                                            <v-col cols="12" lg="2" md="2" sm="2" xs="2" @click="selectedTab = 'module'"
-                                                :class="{ 'active-tab': selectedTab === 'module' }"
-                                                style="cursor: pointer;">
-                                                {{ $t("container.training_management.trainer_info.module")
-                                                }}
-                                            </v-col>
-
-                                        </v-row>
-                                        <br>
-
-                                        <v-divider></v-divider>
-                                        <br>
-                                        <v-row v-if="data.name">
-                                            <v-col cols="12" lg="12" md="12" sm="12" xs="12">
-                                                <v-row v-if="selectedTab === 'about'" class="selected-tab-content">
-
-                                                    <v-col cols="12" lg="2" md="2" sm="2" xs="2"> {{
-                                                        $t("container.training_management.trainer_info.name") }}</v-col>
-                                                    <v-col cols="12" lg="10" md="10" sm="10" xs="10">
-                                                        :&nbsp;&nbsp;&nbsp;{{
-                                                        data?.name }}</v-col>
-                                                    <v-col cols="12" lg="2" md="2" sm="2" xs="2"> {{
-                                                        $t("container.training_management.trainer_info.designation")
-                                                        }}</v-col>
-                                                    <v-col cols="12" lg="10" md="10" sm="10" xs="10">
-                                                        :&nbsp;&nbsp;&nbsp; {{ language == 'bn' ?
-                                                        data?.designation?.value_bn : data?.designation?.value_en
-                                                        }}</v-col>
-                                                    <v-col cols="12" lg="2" md="2" sm="2" xs="2"> {{
-                                                        $t("container.training_management.trainer_info.mobile")
-                                                        }}</v-col>
-                                                    <v-col cols="12" lg="10" md="10" sm="10" xs="10">
-                                                        :&nbsp;&nbsp;&nbsp;{{
-                                                        }} {{ language == 'bn' ?
-                                                        $helpers.englishToBangla(
-                                                        this.data?.mobile_no) : data?.mobile_no }}</v-col>
-                                                    <v-col cols="12" lg="2" md="2" sm="2" xs="2"> {{
-                                                        $t("container.training_management.trainer_info.email")
-                                                        }}</v-col>
-                                                    <v-col cols="12" lg="10" md="10" sm="10" xs="10">
-                                                        :&nbsp;&nbsp;&nbsp;{{
-                                                        data?.email }}</v-col>
-                                                    <v-col cols="12" lg="2" md="2" sm="2" xs="2"> {{
-                                                        $t("container.training_management.trainer_info.address")
-                                                        }}</v-col>
-                                                    <v-col cols="12" lg="10" md="10" sm="10" xs="10">
-                                                        :&nbsp;&nbsp;&nbsp;{{
-                                                        data?.address }}</v-col>
-                                                    <v-col cols="12" lg="2" md="2" sm="2" xs="2"> {{
-                                                        $t("container.training_management.trainer_info.description")
-                                                        }}</v-col>
-                                                    <v-col cols="12" lg="10" md="10" sm="10" xs="10">
-                                                        :&nbsp;&nbsp;&nbsp;{{
-                                                        data?.description }}</v-col>
-                                                </v-row>
-                                                <v-row v-if="selectedTab === 'program'" class="selected-tab-content">
-                                                    No data
-                                                </v-row>
-                                                <v-row v-if="selectedTab === 'module'" class="selected-tab-content">
-                                                    No data
-                                                </v-row>
-
-
-
-                                            </v-col>
-
-                                        </v-row>
-
-
-
-                                    </v-card-text>
-                                </v-card>
-                                <!-- Your text content here -->
-
-                            </v-col>
+                            <!-- Other fields -->
 
                         </v-row>
 
                         <v-row class="justify-end ma-5">
                             <v-btn flat color="primary" class="custom-btn mr-2 mb-5" router
-                                to="/training-management/trainer-information">
+                                to="/training-management/trainer-circular">
                                 {{ $t("container.list.back") }}
                             </v-btn>
 
@@ -439,38 +241,92 @@ export default {
                 </v-col>
             </v-row>
 
+            <v-row>
+                <v-col cols="12">
+                    <v-card>
+                        <v-card-title v-if="data.api_list" class="justify-center black--text">
+                            <h5 class="mt-5">{{ $t("container.api_manager.api_generate.api_view") }}</h5>
+                        </v-card-title>
+
+                        <v-data-table :loading="loading" item-key="id" :headers="headers" v-if="data.api_list"
+                            :items="data?.api_list" hide-default-footer
+                            class="elevation-0 transparent row-pointer mt-5 mx-5">
+                            <!-- Your data table content here -->
+                        </v-data-table>
+                    </v-card>
+                </v-col>
+            </v-row>
 
             <!-- Mail modal -->
-
+            <v-dialog v-model="dialogEmail" width="350">
+                <!-- Your modal content here -->
+                <v-card style="justify-content: center; text-align: center">
+                    <v-card-title class="font-weight-bold justify-center">
+                        {{ $t('container.api_manager.data_receiver.email_header') }}
+                    </v-card-title>
+                    <v-divider></v-divider>
+                    <v-card-text>
+                        <div class="subtitle-1 font-weight-medium mt-5">
+                            {{ $t('container.api_manager.data_receiver.email_alert') }}
+                        </div>
+                    </v-card-text>
+                    <v-card-actions style="display: block">
+                        <v-row class="mx-0 my-0 py-2" justify="center">
+                            <v-btn text @click="dialogEmail = false" outlined class="custom-btn-width py-2 mr-10">
+                                {{ $t('container.list.cancel') }}
+                            </v-btn>
+                            <v-btn text @click="sendEmail" color="white" :loading="delete_loading"
+                                class="custom-btn-width warning white--text py-2">
+                                {{ $t('container.list.confirm') }}
+                            </v-btn>
+                        </v-row>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
         </v-container>
     </div>
 </template>
 <style>
-.rounded-image {
-    border-radius: 10%;
-    width:70%;
-    height: 70%;
+.text-wrap {
+    /* You can adjust these properties as needed */
+    overflow-wrap: break-word;
+    /* Handles long words */
+    word-wrap: break-word;
+    /* Handles long words */
+    white-space: pre-wrap;
+    /* Handles spaces and line breaks */
+}
 
+.word-wrap {
+    overflow-wrap: break-word;
 }
-.icon{
-    background: blue;
-    border-radius: 100%;
 
-}
-.increased-font {
-    font-size: 18px;
-}
-.increased-contact {
-    font-size: 15px;
-}
-.active-tab {
-    background-color: #9E9E9E;
+.custom-chip {
+    background-color: blue;
     color: white;
-    /* Change background color of active tab */
 }
 
-.selected-tab-content {
+.gradient-background {
+    background: linear-gradient(to right, #87CEEB, #ADD8E6, #F0F8FF);
+    color: black;
+    /* Adjust text color for better contrast */
+    border-radius: 10px;
+    /* Add rounded corners for a softer look */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Add a subtle shadow for depth */
 
-    /* Add padding for better spacing */
+    /* Add a subtle animation */
+    animation: gradient-animation 10s infinite alternate;
+}
+
+/* Define the animation */
+@keyframes gradient-animation {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
 }
 </style>
