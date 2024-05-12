@@ -14,6 +14,14 @@ import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import HeaderMixins from "./mixins/HeaderMixins";
 import Helpers from "@/helpers/helpers";
+
+
+
+
+
+
+
+
 // import VueTablerIcons from "vue-tabler-icons";
 
 // Vue.use(VueTablerIcons);
@@ -144,6 +152,9 @@ new Vue({
   store,
   vuetify,
   i18n,
+ 
+
+
   render: function (h) {
     return h(App);
   },

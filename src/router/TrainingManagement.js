@@ -47,7 +47,7 @@ const TrainingManagementRoutes = [
   /*Training Circular  route start*/
   {
     path: "/training-management/trainer-circular",
-    name: "TrainerInformation",
+    name: "trainerCircular",
     meta: {
       requiresAuth: true,
       permission: "trainerCircular-view",
@@ -67,7 +67,7 @@ const TrainingManagementRoutes = [
 
   {
     path: "/training-management/trainer-circular/edit/:id",
-    name: "trainerInfo-edit",
+    name: "trainerCircular-edit",
     meta: {
       requiresAuth: true,
       permission: "trainerCircular-edit",
@@ -76,7 +76,7 @@ const TrainingManagementRoutes = [
   },
   {
     path: "/training-management/trainer-circular/view/:id",
-    name: "trainerInfo-view",
+    name: "trainerCircular-view",
     meta: {
       requiresAuth: true,
       permission: "trainerCircular-view",

@@ -173,7 +173,7 @@ export default {
                         this.api_list.push( item.id);
                         
                     });
-                    console.log(this.api_list,"api_list_push")
+           
                     this.data.api_list = this.api_list;
                    
                 
