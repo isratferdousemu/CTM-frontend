@@ -1180,6 +1180,8 @@
 
     "profile": {
       "personal_info": "Personal Information",
+      "upload": "Upload",
+      "upload_type": "Choose a JPG or JPEG image",
       "name_en": "Full Name (English)",
       "username": "Username",
       "brithday": "Brithday",

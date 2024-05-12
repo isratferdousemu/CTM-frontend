@@ -177,10 +177,10 @@
         <v-icon size="20">mdi-account-outline</v-icon>
         <v-list-item-title class="pl-4 text-body-1">My Profile</v-list-item-title>
       </v-list-item>
-      <v-list-item value="item2" active-color="primary" to="/login">
+      <!-- <v-list-item value="item2" active-color="primary" to="/login">
         <v-icon size="20">mdi-cog-outline</v-icon>
         <v-list-item-title class="pl-4 text-body-1">My Account</v-list-item-title>
-      </v-list-item>
+      </v-list-item> -->
     </v-list>
     <div class="pt-4 pb-4 px-5 text-center">
       <v-btn link @click="logout()" color="primary" outlined block>Logout</v-btn>
