@@ -23,11 +23,13 @@
       "banned": "Banned",
       "submit": "Submit",
       "cancel": "cancel",
+      "copy":"Copy Link",
       "ok":"Okay",
       "edit": "Edit",
       "print": "Print",
       "view": "View",
       "search": "Search",
+          "search_circular": "Circular Search",
       "filter": "Filter",
       "reset": "Reset",
       "back": "Back",
@@ -1027,6 +1029,9 @@
           "description": "Description",
           "start_date": "Start Date",
           "end_date": "End Date",
+          "no_of_participant_open":"No of Participant (Open)",
+          "no_of_participant_selected":"No of Participant (Selected)",
+          "no_of_participant": "No of Participant",
           "delete_header": "Delete Training Circular",
           "delete_alert": "Are you sure to delete this Training Circular? Training Circular's all information will be deleted."
         }
@@ -1222,6 +1227,26 @@
           "remarks": "Remarks",
           "status_update": "Grievance Status Update"
         }
+    },
+
+    "profile": {
+      "personal_info": "Personal Information",
+      "upload": "Upload",
+      "upload_type": "Choose a JPG or JPEG image",
+      "name_en": "Full Name (English)",
+      "username": "Username",
+      "brithday": "Brithday",
+      "gender": "Gender",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "address": "Address",
+      "change_pass": "Change Password",
+      "new_pass": "New Password",
+      "retype_pass": "Retype Password",
+      "update_pass": "Update Password",
+      "contact_info": "Contact Information"
     }
+
+
   }
 }
