@@ -1034,7 +1034,17 @@
           "no_of_participant": "No of Participant",
           "delete_header": "Delete Training Circular",
           "delete_alert": "Are you sure to delete this Training Circular? Training Circular's all information will be deleted."
-        }
+        },
+          "time_slot": {
+            "list_1": "Time Slot",
+            "list": "Time Slot List",
+            "view": "Time Slot List Details",
+            "add": "Add New Time Slot",
+            "edit": "Edit Time Slot",
+            "time": "Time",
+            "delete_header": "Delete Time Slot",
+            "delete_alert": "Are you sure to delete this Time Slot? Time Slot's all information will be deleted."
+          }
       },
       "api_manager": {
         "url_generate": {
