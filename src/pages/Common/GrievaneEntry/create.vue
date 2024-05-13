@@ -465,6 +465,18 @@
                               :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে থানা নির্বাচন করুন' : 'Please Select Thana.') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
+                          <v-col v-if="data.location_type == 1" lg="6" md="6" cols="6">
+                            <ValidationProvider name="Thana" vid="district_pouro_id" rules="required" v-slot="{ errors }">
+                              <label style="display: inline-block">{{
+                                $t('container.system_config.demo_graphic.ward.dist_pouro') }}
+                              </label>
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-select :hide-details="errors[0] ? false : true" v-model="data.district_pouro_id"
+                                @input="onChangeDistrictPouro" outlined :items="district_poros" :item-text="getItemText"
+                                item-value="id" :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
+                            </ValidationProvider>
+                          </v-col>
+
                         <v-col v-if="data.location_type == 3" lg="6" md="6" cols="12">
                           <ValidationProvider name="ward_id_city" vid="ward_id_city" rules="required" v-slot="{ errors }">
                             <label style="display: inline-block">{{ $t('container.system_config.demo_graphic.ward.ward')
