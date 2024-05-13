@@ -1,7 +1,7 @@
 <template>
   <div id="application_view">
-    <v-row class="mx-5 my-5 mt-5">
-      <v-col class="mt-5" cols="12">
+    <v-row class="mx-5 my-5">
+      <v-col cols="12">
         <!-- login OTP -->
         <v-dialog persistent v-model="otpDialog" width="350">
           <v-card style="justify-content: center; text-align: center">
@@ -41,180 +41,140 @@
         <ValidationObserver ref="form" v-slot="{ invalid }">
           <form @submit.prevent="submitApplication()">
             <v-card class="pa-5 px-10 mb-4">
-              <div>
-                <!-- personal information -->
-                <v-card class="mt-5">
+              <v-row>
+                <!-- Personal Information title -->
+                <v-col cols="12">
                   <v-card-title style="background-color: #1976d2; color: white">
                     {{ $t("container.profile.personal_info") }}
                   </v-card-title>
+                </v-col>
+              </v-row>
 
-                  <v-card-text class="mt-5">
-                    <div class="pa-2 mb-4">
-                      <v-row>
-                        <v-col cols="6" lg="6">
-                          <v-img
-                            :src="data.photo_url"
-                            style="
-                              width: 200px;
-                              height: 200px;
-                              border: 1px solid #ccc;
-                            "
-                            class="mb-5"
-                          ></v-img>
-                          <span>
-                            <v-file-input
-                              v-model="image"
-                              accept="image/jpeg,image/jpg"
-                              :label="$t('container.profile.upload_type')"
-                            ></v-file-input>
-                            <v-btn @click="uploadImage" color="primary"
-                              ><label>
-                                {{ $t("container.profile.upload") }}
-                              </label></v-btn
-                            >
-                          </span>
-                        </v-col>
-                        <v-col cols="6" align-self="end" lg="6">
-                          <v-img
-                            :src="userData.signUrl"
-                            style="
-                              width: 200px;
-                              height: 80px;
-                              border: 1px solid #ccc;
-                            "
-                            class="mb-5"
-                            v-if="userData.signUrl"
-                          ></v-img>
-                        </v-col>
-                        <v-col cols="6" lg="6">
-                          <v-row>
-                            <v-col cols="4" lg="4">
-                              <label>
-                                {{ $t("container.profile.name_en") }}
-                              </label></v-col
-                            >
-                            <v-col cols="8" lg="8">
-                              :<template>
-                                <span style="20px">
-                                  {{ data.full_name }}
-                                </span>
-                              </template>
-                            </v-col>
-                          </v-row>
-                        </v-col>
+              <!-- Information part -->
+              <v-row>
+                <v-col cols="12" sm="6">
+                  <v-card>
+                    <v-card-text>
+                      <div class="pa-2 mb-4">
+                        <!-- Information content -->
+                        <!-- Name -->
+                        <v-row>
+                          <v-col cols="4" lg="4">
+                            <label style="font-weight: bold">
+                              {{ $t("container.profile.name_en") }}
+                            </label>
+                          </v-col>
+                          <v-col cols="8" lg="8">
+                            :<span style="20px">{{ data.full_name }}</span>
+                          </v-col>
+                        </v-row>
+                        <!-- Username -->
+                        <v-row>
+                          <v-col cols="4" lg="4">
+                            <label style="font-weight: bold">
+                              {{ $t("container.profile.username") }}
+                            </label>
+                          </v-col>
+                          <v-col cols="8" lg="8">
+                            :<span style="20px">{{
+                              data.username ?? "---"
+                            }}</span>
+                          </v-col>
+                        </v-row>
+                        <!-- Email -->
+                        <v-row>
+                          <v-col cols="4" lg="4">
+                            <label style="font-weight: bold">
+                              {{ $t("container.profile.email") }}
+                            </label>
+                          </v-col>
+                          <v-col cols="8" lg="8">
+                            :<span style="20px">{{ data?.email }}</span>
+                          </v-col>
+                        </v-row>
+                        <!-- Phone -->
+                        <v-row>
+                          <v-col cols="4" lg="4">
+                            <label style="font-weight: bold">
+                              {{ $t("container.profile.phone" ?? "---") }}
+                            </label>
+                          </v-col>
+                          <v-col cols="8" lg="8">
+                            :<span style="20px">{{
+                              data.mobile ?? "---"
+                            }}</span>
+                          </v-col>
+                        </v-row>
+                      </div>
+                    </v-card-text>
+                  </v-card>
+                </v-col>
+                <!-- End Information part -->
 
-                        <v-col cols="6" lg="6">
-                          <v-row>
-                            <v-col cols="4" lg="4">
-                              <label>
-                                {{ $t("container.profile.username") }}
-                              </label></v-col
-                            >
-                            <v-col cols="8" lg="8">
-                              :<template>
-                                <span style="20px">
-                                  {{ data.username ?? "---" }}
-                                </span>
-                              </template>
-                            </v-col>
-                          </v-row>
-                        </v-col>
+                <!-- Image part -->
+                <v-col cols="12" sm="6">
+                  <v-img
+                    :src="data.photo_url"
+                    style="width: 200px; height: 200px; border: 1px solid #ccc"
+                    class="mb-5"
+                  ></v-img>
+                  <span>
+                    <v-file-input
+                      v-model="image"
+                      accept="image/jpeg,image/jpg"
+                      :label="$t('container.profile.upload_type')"
+                    ></v-file-input>
+                    <v-btn @click="uploadImage" color="primary"
+                      ><label>{{
+                        $t("container.profile.upload")
+                      }}</label></v-btn
+                    >
+                  </span>
+                </v-col>
+                <!-- End Image part -->
+              </v-row>
 
-                        <v-col lg="6" md="6" cols="12">
-                          <v-row>
-                            <v-col cols="4" lg="4">
-                              <label>
-                                {{ $t("container.profile.email") }}
-                              </label></v-col
-                            >
-                            <v-col cols="8" lg="8">
-                              :<template>
-                                <span style="20px">
-                                  {{ data?.email }}
-                                </span>
-                              </template>
-                            </v-col>
-                          </v-row>
-                        </v-col>
-                        <v-col lg="6" md="6" cols="12">
-                          <v-row>
-                            <v-col cols="4" lg="4">
-                              <label>
-                                {{ $t("container.profile.phone" ?? "---") }}
-                              </label></v-col
-                            >
-                            <v-col cols="8" lg="8">
-                              :<template>
-                                <span style="20px">
-                                  {{ data.mobile ?? "---" }}
-                                </span>
-                              </template>
-                            </v-col>
-                          </v-row>
-                        </v-col>
-                      </v-row>
-                    </div>
-                  </v-card-text>
-                </v-card>
-                <!-- Personal Information end-->
-
-                <v-card class="mt-5">
-                  <v-card-title style="background-color: #1976d2; color: white">
-                    {{ $t("container.profile.change_pass") }}
-                  </v-card-title>
-
-                  <v-card-text class="mt-5">
-                    <v-form ref="passwordForm" @submit.prevent="optSend">
-                      <v-row>
-                        <v-col cols="12" sm="6">
-                          <v-text-field
-                            v-model="password"
-                            :label="$t('container.profile.new_pass')"
-                            type="password"
-                            outlined
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" sm="6">
-                          <v-text-field
-                            v-model="retypePassword"
-                            :label="$t('container.profile.retype_pass')"
-                            type="password"
-                            outlined
-                          ></v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col cols="12">
-                          <v-btn type="submit" color="primary"
-                            ><label>
-                              {{ $t("container.profile.update_pass") }}
-                            </label></v-btn
-                          >
-                        </v-col>
-                      </v-row>
-                    </v-form>
-                  </v-card-text>
-                </v-card>
-                <!-- Contact Information End -->
-
-                <!-- Other Information of Eligibility end-->
-              </div>
-              <div
-                style="display: flex; justify-content: flex-end"
-                class="mt-5"
-              >
-                <!-- Other content on the left -->
-
-                <!-- <v-btn
-                  flat
-                  color="gray"
-                  type="submit"
-                  @click="navigateTolist"
-                  class="custom-btn"
-                >
-                  {{ $t("container.list.back") }}
-                </v-btn> -->
-              </div>
+              <!-- Change Password part -->
+              <v-card class="mt-5">
+                <v-card-title style="background-color: #1976d2; color: white">
+                  {{ $t("container.profile.change_pass") }}
+                </v-card-title>
+                <v-card-text class="mt-5">
+                  <v-form ref="passwordForm" @submit.prevent="optSend">
+                    <v-row>
+                      <v-col cols="12" sm="6">
+                        <v-text-field
+                          v-model="password"
+                          :label="$t('container.profile.new_pass')"
+                          type="password"
+                          outlined
+                          required
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6">
+                        <v-text-field
+                          v-model="retypePassword"
+                          :label="$t('container.profile.retype_pass')"
+                          type="password"
+                          persistent-hint
+                          outlined
+                          required
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col cols="12">
+                        <v-btn type="submit" color="primary"
+                          ><label>{{
+                            $t("container.profile.update_pass")
+                          }}</label></v-btn
+                        >
+                      </v-col>
+                    </v-row>
+                  </v-form>
+                </v-card-text>
+              </v-card>
+              <!-- End Change Password part -->
             </v-card>
           </form>
         </ValidationObserver>
@@ -240,6 +200,10 @@ export default {
       form: {
         otp: "",
       },
+      form: new Form({
+        password: "",
+        retypePassword: "",
+      }),
       password: null,
       retypePassword: null,
       errors: [],
