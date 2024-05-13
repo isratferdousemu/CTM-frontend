@@ -245,7 +245,7 @@ export default {
                                 </span> -->
                             <v-chip v-for="(item, index) in data.modules" :key="index" class="ml-2 mt-2">
                                 {{ language == 'bn' ?
-                                item.value_bn : item.value_bn }}{{ data?.modules.value_en }}
+                                item.value_bn : item.value_en }}
                             </v-chip>
                         </v-col>
                         <v-col cols="12" sm="6" md="3" style="font-size:15px;">
@@ -258,19 +258,23 @@ export default {
                             <b>{{ $t('container.training_management.training_circular.description') }}</b>:
                         </v-col>
                         <v-col cols="12" sm="6" md="9" style="font-size:15px;">
-                            <b>:</b> <span class="ml-2" v-html="sanitizedDescription"></span>
+                            <v-row class="ml-1"><b>:</b>
+                                <p v-html="data?.description"></p>
+                            </v-row>
                         </v-col>
                         <v-col cols="12" sm="6" md="3" style="font-size:15px;">
                             <b>{{ $t('container.api_manager.data_receiver.start_date') }}</b>:
                         </v-col>
                         <v-col cols="12" sm="6" md="9" style="font-size:15px;">
-                            <b>:</b> <span class="ml-2">{{ data?.start_date }}</span>
+                            <b>:</b> <span class="ml-2">{{ language == 'bn' ?
+                                $helpers.englishToBangla(data?.start_date) : data?.start_date }}</span>
                         </v-col>
                         <v-col cols="12" sm="6" md="3" style="font-size:15px;">
                             <b>{{ $t('container.api_manager.data_receiver.end_date') }}</b>:
                         </v-col>
                         <v-col cols="12" sm="6" md="9" style="font-size:15px;">
-                            <b>:</b> <span class="ml-2">{{ data?.end_date }}</span>
+                            <b>:</b> <span class="ml-2">{{ language == 'bn' ?
+                                $helpers.englishToBangla(data?.end_date) : data?.end_date }}</span>
                         </v-col>
 
                         <!-- Other fields -->
@@ -285,7 +289,7 @@ export default {
 
 
         <!-- Mail modal -->
-        <br></br></br>>
+        <br></br>
         <FooterBar />
     </div>
 </template>

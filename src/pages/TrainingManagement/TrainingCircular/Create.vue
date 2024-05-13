@@ -296,9 +296,7 @@ export default {
 
                 })
                 .catch((err) => {
-                    console.log(err, "err")
-                    this.$toast.error(err.response.data.errors.email[0]);
-                    this.$refs.form.setErrors(err.response.data.errors);   
+                   
 
                 });
 
@@ -346,7 +344,7 @@ export default {
                                                 <ValidationProvider name="Type" vid="type" rules="required"
                                                     v-slot="{ errors }">
                                                     <v-select dense type="text" v-model="data.circular_type_id "
-                                                    @input="change()"
+                                                        @input="change()"
                                                         :label="$t('container.training_management.training_circular.type')"
                                                         persistent-hint outlined :error="errors[0] ? true : false"
                                                         :items="circular_types" :item-text="getItemText" item-value="id"
@@ -468,14 +466,13 @@ export default {
                                         : 'Please enter  Address') : ''"></v-textarea>
                                                 </ValidationProvider>
                                             </v-col> -->
-                                         
+
 
                                             <v-col cols="12" sm="6" lg="6">
                                                 <label>{{
                                                     $t('container.training_management.training_circular.description')
                                                     }}</label>
-                                                <vue-editor id="editor" useCustomImageHandler
-                                                    v-model="data.description">
+                                                <vue-editor v-model="data.description">
                                                 </vue-editor>
 
                                             </v-col>
