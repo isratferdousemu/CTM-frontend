@@ -5,6 +5,245 @@
         <v-row>
           <Spinner :loading="isLoading" />
           <v-col cols="12">
+
+            <v-expansion-panels>
+              <v-expansion-panel class="ma-2">
+                <v-expansion-panel-header color="#8C9EFF"
+                                          style="background-color: #1C3B68; color: white;font-size: 17px;">
+                  <h3 class="white--text">
+                    {{
+                      $t(
+                          "container.list.filter"
+                      )
+                    }}
+                  </h3>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content
+                    class="elevation-0 transparent mt-10"
+                >
+                  <ValidationObserver ref="form" v-slot="{ invalid }">
+                    <form @submit.prevent="onSearch($event)">
+                      <v-row>
+                        <v-col lg="3" md="3" cols="12">
+                          <ValidationProvider name="OfficeType" vid="officeType" rules="" v-slot="{ errors }">
+                            <v-autocomplete :hide-details="errors[0] ? false : true" @input="onChangeOfficeType($event)"
+                                            v-model="data.office_type" outlined :label="$t(
+                          'container.system_config.demo_graphic.office.office_type'
+                        )
+                          " :items="officeType" item-text="value_en" item-value="id"
+                                            :error="errors[0] ? true : false"
+                                            :error-messages="errors[0]"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col lg="3" md="3" cols="12" v-if="data.office_type === 6 ||
+                    data.office_type === 7 ||
+                    data.office_type === 8 ||
+                    data.office_type === 35 ||
+                    data.office_type === 10 ||
+                    data.office_type === 11 ||
+                    data.office_type === 9
+                    ">
+                          <ValidationProvider name="Division" vid="division" rules="" v-slot="{ errors }">
+                            <v-autocomplete :hide-details="errors[0] ? false : true" @input="onChangeDivision($event)"
+                                            v-model="data.division_id" outlined :label="$t(
+                          'container.system_config.demo_graphic.division.division'
+                        )
+                          " :items="divisions" item-text="name_en" item-value="id"
+                                            :readonly="((selectedWards.length > 0) && (data.office_type === 35)) || ((selectedWards_UCDUpazila.length > 0) && (data.office_type === 10))"
+                                            :error="errors[0] ? true : false"
+                                            :error-messages="errors[0]"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col lg="3" md="3" cols="12" v-if="data.office_type === 7 ||
+                    data.office_type === 8 ||
+                    data.office_type === 35 ||
+                    data.office_type === 10 ||
+                    data.office_type === 11 ||
+                    data.office_type === 9">
+                          <ValidationProvider name="District" vid="district" rules="" v-slot="{ errors }">
+                            <v-autocomplete :hide-details="errors[0] ? false : true" outlined v-model="data.district_id"
+                                            @input="onChangeDistrict($event)" :label="$t(
+                          'container.system_config.demo_graphic.district.district'
+                        )
+                          " :items="districts" item-text="name_en" item-value="id"
+                                            :error="errors[0] ? true : false"
+                                            :error-messages="errors[0]"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col lg="3" md="3" cols="12" v-if="data.office_type === 8 ||
+                    data.office_type === 10 || data.office_type === 11">
+                          <ValidationProvider name="Upazila" vid="upazila" rules="" v-slot="{ errors }">
+                            <v-autocomplete :hide-details="errors[0] ? false : true" outlined
+                                            :readonly="((selectedWards.length > 0) && (data.office_type === 35)) || ((selectedWards_UCDUpazila.length > 0) && (data.office_type === 10))"
+                                            v-model="data.upazila_id" :label="$t(
+                          'container.system_config.demo_graphic.office.upazila'
+                        )
+                          " :items="upazilas" item-text="name_en" item-value="id"
+                                            :error="errors[0] ? true : false"
+                                            :error-messages="errors[0]"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col v-if="data.office_type == 10" cols="12" md="3" lg="3">
+                          <ValidationProvider name="subLocationType" vid="subLocationType" rules=""
+                                              v-slot="{ errors }">
+                            <v-autocomplete @input="onChangeSubLocationType($event)" v-model="data.sub_location_type"
+                                            outlined
+                                            :label="$t(
+                          'container.system_config.demo_graphic.ward.subLocation_type'
+                        )
+                          " :items="subLocationType" item-text="value_en" item-value="id"
+                                            :error="errors[0] ? true : false" :error-messages="errors[0]"
+                                            :hide-details="errors[0] ? false : true"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+
+                        <v-col v-if="data.office_type == 10 && data.sub_location_type == 1
+                    " cols="12" md="3" lg="3">
+                          <ValidationProvider name="pouros" vid="pouros" rules="" v-slot="{ errors }">
+                            <v-autocomplete v-model="data.pouro_id" outlined
+                                            :label="$t('container.system_config.demo_graphic.ward.pouro')"
+                                            @input="onChangePouro($event)"
+                                            :items="pouros" item-text="name_en" item-value="id"
+                                            :error="errors[0] ? true : false"
+                                            :error-messages="errors[0]"
+                                            :hide-details="errors[0] ? false : true"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+
+                        <v-col v-if="data.sub_location_type == 2 && data.office_type == 10
+                    " cols="12" md="3" lg="3">
+                          <ValidationProvider name="unions" vid="unions" rules="" v-slot="{ errors }">
+                            <v-autocomplete v-model="data.union_id" outlined
+                                            :label="$t('container.system_config.demo_graphic.ward.union')"
+                                            @input="onChangeUnion($event)"
+                                            :items="unions" item-text="name_en" item-value="id"
+                                            :error="errors[0] ? true : false"
+                                            :error-messages="errors[0]"
+                                            :hide-details="errors[0] ? false : true"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+
+                        <v-col lg="3" md="3" cols="12" v-if="data.office_type === 9">
+                          <ValidationProvider name="city" vid="city_id" rules="required" v-slot="{ errors }">
+                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.city_id"
+                                            @change="onChangeCity($event)" outlined :label="$t('container.system_config.demo_graphic.office.city')
+                          " :items="cities" item-text="name_en" item-value="id"
+                                            :error="errors[0] ? true : false"
+                                            :error-messages="errors[0]"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+<!--                        <v-col lg="3" md="3" cols="12" v-if="data.office_type === 9">-->
+<!--                          <ValidationProvider name="city" vid="city_corpo_id" rules="" v-slot="{ errors }">-->
+<!--                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.thana_id"-->
+<!--                                            @change="onChangeThana($event)" outlined :label="$t('container.system_config.demo_graphic.ward.thana')-->
+<!--                          " :items="final_thanas" item-text="name_en" item-value="id"-->
+<!--                                            :error="errors[0] ? true : false"-->
+<!--                                            :error-messages="errors[0]"></v-autocomplete>-->
+<!--                          </ValidationProvider>-->
+<!--                        </v-col>-->
+<!--                        <v-col lg="3" md="3" cols="12" v-if="data.office_type === 9">-->
+<!--                          <ValidationProvider name="ward" vid="ward_id" rules="" v-slot="{ errors }">-->
+<!--                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="selectedWards"-->
+<!--                                            @change="onChangeWards($event)" outlined :label="$t('container.system_config.demo_graphic.ward.ward')-->
+<!--                          " :items="final_wards" item-text="name_en" item-value="id" multiple-->
+<!--                                            :error="errors[0] ? true : false"-->
+<!--                                            :error-messages="errors[0]"></v-autocomplete>-->
+<!--                          </ValidationProvider>-->
+<!--                        </v-col>-->
+<!--                        <v-col lg="3" md="3" cols="12" v-if="data.office_type === 10">-->
+<!--                          <ValidationProvider name="ward" vid="ward_id_upazila_ucd" rules=""-->
+<!--                                              v-slot="{ errors }">-->
+<!--                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="selectedWards_UCDUpazila"-->
+<!--                                            @change="onChangeWards_UCDUpazila($event)" outlined :label="$t('container.system_config.demo_graphic.ward.ward')-->
+<!--                          " :items="final_wards_ucd_upazila" item-text="name_en" item-value="id" multiple-->
+<!--                                            :error="errors[0] ? true : false"-->
+<!--                                            :error-messages="errors[0]"></v-autocomplete>-->
+<!--                          </ValidationProvider>-->
+<!--                        </v-col>-->
+
+
+                        <v-col lg="3" md="3" cols="12" v-if="data.office_type === 35">
+                          <ValidationProvider name="Upazila" vid="upazila" rules="" v-slot="{ errors }">
+                            <v-autocomplete :hide-details="errors[0] ? false : true" outlined
+                                            v-model="data.dist_pouro_id"
+                                            :label="$t(
+                          'container.system_config.demo_graphic.ward.dist_pouro'
+                        )
+                          " :items="dist_pouros" item-text="name_en" item-value="id"
+                                            :error="errors[0] ? true : false"
+                                            :error-messages="errors[0]"></v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+
+                        <v-col lg="3" md="3" cols="12">
+                          <v-row class="ml-1 mr-1">
+                            <v-menu
+                                ref="menu"
+                                v-model="menu"
+                                :close-on-content-click="false"
+                                transition="scale-transition"
+                                offset-y
+                                min-width="auto"
+                            >
+                              <template v-slot:activator="{ on, attrs }">
+                                <v-text-field
+                                    v-model="dates"
+                                    :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
+                                    :label="$t('container.application_selection_dashboard.enter_start_end_date')"
+                                    readonly
+                                    v-bind="attrs"
+                                    v-on="on"
+                                ></v-text-field>
+                              </template>
+                              <v-date-picker
+                                  v-model="dates"
+                                  :range="[dates[0] , dates[1]]"
+                                  no-title
+                                  scrollable
+                                  ref="datePicker"
+                              >
+                                <v-spacer></v-spacer>
+                                <v-btn text color="primary" @click="resetDateRange">
+                                  Cancel
+                                </v-btn>
+                                <v-btn
+                                    text
+                                    color="primary"
+                                    @click="$refs.menu.save(dates)"
+                                >
+                                  OK
+                                </v-btn>
+                              </v-date-picker>
+                            </v-menu>
+                          </v-row>
+                        </v-col>
+
+                      </v-row>
+
+                      <div class="d-inline d-flex justify-end mt-3">
+
+                        <v-btn
+                            elevation="2"
+                            class="btn mr-2"
+                            @click="resetSearch"
+                        >{{
+                            $t("container.list.reset")
+                          }}
+                        </v-btn
+                        >
+                        <v-btn elevation="2"
+                               color="success"
+                               type="submit"
+                               class="btn" >
+                          {{ $t("container.list.search") }}
+                        </v-btn>
+                      </div>
+                    </form>
+                  </ValidationObserver>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-expansion-panels>
+
             <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8">
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
@@ -38,6 +277,9 @@
                     v-can="'office-create'">
                     {{ $t("container.list.add_new") }}
                   </v-btn>
+                  <v-col cols="12">
+                    {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">{{ $i18n.locale == 'en' ? this.pagination.grand_total : $helpers.englishToBangla(this.pagination.grand_total)  }}</span>
+                  </v-col>
                   <v-col cols="12">
                     <v-data-table :loading="loading" item-key="id" :headers="headers" :items="offices"
                       :items-per-page="pagination.perPage" @update:options="handleOptionsUpdate" hide-default-footer
@@ -844,6 +1086,7 @@ export default {
         city_id: null,
         thana_id: null,
         dist_pouro_id: null,
+        pouro_id: null,
         selectedWards: [
 
 
@@ -926,6 +1169,7 @@ export default {
         total: 0,
         perPage: 15,
       },
+      dates: [],
       sortBy: "name_en",
       sortDesc: false, //ASC
       items: [5, 10, 15, 20, 40, 50, 100],
@@ -1154,7 +1398,7 @@ export default {
       const queryParams = {
         searchText: this.search,
         perPage: this.search.trim() === '' ? this.pagination.grand_total : this.pagination.grand_total,
-        page: this.pagination.current,
+        page: 1,
         sortBy: this.sortBy,
         sortDesc: this.sortDesc,
         user_id: this.$store.state.userData.id,
@@ -1695,6 +1939,12 @@ export default {
         console.log(e);
       }
     },
+
+    resetDateRange() {
+      this.dates = [];
+      this.$refs.menu.save();
+    },
+
     async updateOffice() {
       console.log(this.selectedWardsDetails, "this.message 1st start")
 
@@ -2119,21 +2369,14 @@ export default {
 
     async onChangeOfficeType($event) {
 
-
       if ($event === 9) {
         this.location_type = 3;
-        console.log(this.location_type, "this.location_type")
-
       }
       if ($event === 8 || $event === 10 || $event === 11) {
         this.location_type = 2;
-        console.log(this.location_type, "this.location_type")
-
       }
       if ($event === 35) {
         this.location_type = 1;
-        console.log(this.location_type, "this.location_type")
-
       }
 
       if (this.data.district_id != null && this.location_type != null) {
@@ -2146,20 +2389,13 @@ export default {
               },
             })
             .then((result) => {
+              this.upazilas = [];
               this.upazilas = result.data.data;
               this.cities = [];
               this.dist_pouros = [];
-              console.log(this.data.district_id, "this.data.district_id");
-              console.log(this.upazilas, "this.upazilas");
-
-
-
-
             });
         }
         if (this.location_type === 3) {
-
-
           this.$axios
             .get("/admin/city/get/" + this.data.district_id + "/" + this.location_type, {
               headers: {
@@ -2168,16 +2404,11 @@ export default {
               },
             })
             .then((result) => {
+              this.cities = [];
               this.cities = result.data.data;
-              console.log(this.cities, "cities called properly")
-
-
-
-
               this.dist_pouros = [];
               this.upazilas = [];
-
-
+              this.thanas = [];
             })
             .catch((error) => {
               console.error("Error:", error);
@@ -2192,16 +2423,10 @@ export default {
               },
             })
             .then((result) => {
+              this.dist_pouros = [];
               this.dist_pouros = result.data.data;
               this.cities = [];
               this.upazilas = [];
-
-
-
-
-
-
-
             });
         }
 
@@ -2211,7 +2436,6 @@ export default {
 
     },
     async onChangeCity($event) {
-
       await this.$axios
         .get(`/admin/thana/get/city/${$event}`, {
           headers: {
@@ -2221,10 +2445,9 @@ export default {
         })
         .then((result) => {
           this.final_thanas = result.data.data
+          this.data.thana_id = null;
+          this.thanas = [];
           this.thanas = this.thanas.concat(result.data.data);
-          console.log(this.thanas, "city is called properly all thana show");
-
-
         });
 
     },
@@ -2238,13 +2461,8 @@ export default {
         })
         .then((result) => {
           this.selectedWards_edit = this.selectedWards
-          console.log(this.wards, "faka array check");
           this.final_wards = result.data.data
-          console.log(this.final_wards, "final_wards thanaedit wards");
           this.wards = this.wards.concat(result.data.data);
-
-          console.log(this.wards, " wards thanaedit wards");
-
         });
 
     },
@@ -2279,8 +2497,8 @@ export default {
           },
         })
         .then((result) => {
+          this.districts= null;
           this.districts = result.data.data;
-
           console.log(this.districts, " district function called properly")
         });
     },
@@ -2377,6 +2595,36 @@ export default {
         }
       }
     },
+
+    onSearch() {
+      this.loading = false;
+      this.pagination = {
+        ...this.pagination,
+        current: 1,
+      };
+      this.GetOffices()
+    },
+
+    resetSearch(){
+
+      this.data.office_type = null,
+      this.data.division_id = null,
+      this.data.district_id = null,
+      this.data.location_type = null,
+      this.data.city_id = null,
+      this.data.thana_id = null,
+      this.data.upazila_id = null,
+      this.data.union_id = null,
+      this.data.dist_pouro_id = null,
+     this.data.pouro_id = null,
+      this.data.sub_location_type = null,
+      this.data.selectedWards = [],
+
+          this.resetDateRange(),
+          this.GetOffices()
+
+    },
+
     handleOptionsUpdate({ sortBy, sortDesc }) {
       console.log(this.headers, sortBy, sortDesc);
       for (let i = 0; i < this.headers.length; i++) {
@@ -2411,6 +2659,7 @@ export default {
     // console.log(store.state.userData.location, ' -> userData')
 
     async GetOffices() {
+      this.isLoading = true;
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
@@ -2418,9 +2667,22 @@ export default {
         sortBy: this.sortBy,
         sortDesc: this.sortDesc,
         user_id: this.$store.state.userData.id,
+
+        office_type: this.data.office_type,
+        division_id: this.data.division_id,
+        district_id: this.data.district_id,
+        location_type: this.data.location_type,
+        city_id: this.data.city_id,
+        thana_id: this.data.thana_id,
+        upazila_id: this.data.upazila_id,
+        union_id: this.data.union_id,
+        dist_pouro_id: this.data.dist_pouro_id,
+        pouro_id: this.data.pouro_id,
+        sub_location_type: this.data.sub_location_type,
+        wards: this.data.selectedWards,
+        from_date: this.dates[0],
+        to_date: this.dates[1],
       };
-      console.log(queryParams);
-      console.log(this.$store.state.token, "token");
       this.$axios
         .get("/admin/office/get", {
           headers: {
@@ -2435,8 +2697,10 @@ export default {
           this.pagination.current = result.data.current_page;
           this.pagination.total = result.data.last_page;
           this.pagination.grand_total = result.data.total;
+          this.isLoading = false;
         })
         .catch((err) => {
+          this.isLoading = false;
           console.log(err, "error");
 
         });

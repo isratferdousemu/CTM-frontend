@@ -288,6 +288,7 @@
                             <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.grievance_type_id" outlined :items="types"
                               :item-text="language === 'bn' ? 'title_bn' : 'title_en'" item-value="id" required
                               :error="errors[0] ? true : false"
+                              @input="OnChnageGetGrievanceSubject($event)"
                               :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে অভিযোগের ধরন নির্বাচন করুন' : 'Please Select Grievance Type.') : ''"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
@@ -297,7 +298,7 @@
                             v-slot="{ errors }">
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.grievance_subject_id" outlined :items="subjects"
-                              :item-text="language === 'bn' ? 'title_bn' : 'title_en'" item-value="id" required
+                              :item-text="language === 'bn' ? 'title_bn' : 'title_en'"  item-value="id" required
                               :error="errors[0] ? true : false"
                               :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে অভিযোগের বিষয় নির্বাচন করুন' : 'Please Select Grievacne Subject.') : ''"></v-autocomplete>
                           </ValidationProvider>
@@ -859,6 +860,28 @@ export default {
 
   methods:
   {
+   async GetGrievanceSettings() {
+      const queryParams = {
+        status: 'active',
+      };
+      console.log(queryParams, 'queryParams');
+      this.$axios
+        .get("/global/grievanceSetting/get", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          console.log(result, 'all get data seetings');
+
+          this.types = result.data;
+
+
+
+        });
+    },
     verifyCard() {
 
       let data = {
@@ -940,40 +963,30 @@ export default {
       }
 
     },
-    async GetGrievanceType() {
-      const queryParams = {
-        status: 'active',
-      };
+   
+   async OnChnageGetGrievanceSubject($event) {
+      console.log($event, '$event');
+
       this.$axios
-        .get("/global/grievanceType/get", {
+        .get(`/global/grievanceSubject/get/${$event}`, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
           },
-          params: queryParams,
+
         })
         .then((result) => {
-          this.types = result.data.data;
-          console.log(this.types, ' this.types');
-
-        });
-    },
-
-    async GetGrievanceSubject() {
-      const queryParams = {
-        status: 'active',
-      };
-      this.$axios
-        .get("/global/grievanceSubject/get", {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-          params: queryParams,
-        })
-        .then((result) => {
-          this.subjects = result.data.data;
-
+           this.subjects = result.data;
+          const subjectDetails = this.subjects.flatMap(item =>
+            item.subjects.map(subject => ({
+              id: subject.id,
+              title_bn: subject.title_bn,
+              title_en: subject.title_en
+            }))
+          );
+          this.subjects= subjectDetails;
+           console.log(this.subjects,'subject and subject titles');
+           console.log(subjectDetails,'anwar and subject titles');
         });
     },
 
@@ -1033,140 +1046,7 @@ export default {
         this.data.mobile = null
     },
 
-    handleNomineeCheckboxChange(event) {
-      if (event == true) {
-        if (this.data.permanent_location_type == 3) {
-          const selectedDivisionObj = this.permanent_divisions.find(div => div.id === this.data.permanent_division_id);
-          const selectedDistrictObj = this.permanent_districts.find(dis => dis.id === this.data.permanent_district_id);
-          const selectedCityObj = this.permanent_cities.find(city => city.id === this.data.permanent_city_id);
-          const selectedThanaObj = this.permanent_city_thanas.find(thana => thana.id === this.data.permanent_city_thana_id);
-          const selectedWardsCityObj = this.permanent_wards_city.find(ward_city => ward_city.id === this.data.permanent_ward_id_city);
 
-          this.data.nominee_address = this.data.permanent_address + ',' + (selectedThanaObj ? selectedThanaObj.name_en : '') + ',' + (selectedCityObj ? selectedCityObj.name_en : '') + ',' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + '-' + this.data.permanent_post_code;
-
-
-          // }
-
-
-        }
-        if (this.data.permanent_location_type == 2) {
-          const selectedDivisionObj = this.permanent_divisions.find(div => div.id === this.data.permanent_division_id);
-          const selectedDistrictObj = this.permanent_districts.find(dis => dis.id === this.data.permanent_district_id);
-          const selectedUpazilaObj = this.permanent_thanas.find(upazila => upazila.id === this.data.permanent_thana_id);
-          var selectedUnionObj = this.permanent_unions.find(union => union.id === this.data.permanent_union_id);
-          var selectedPouroObj = this.permanent_pouros.find(pouro => pouro.id === this.data.permanent_pouro_id);
-          if (this.permanent_wards_upazila_union) {
-            var selectedWardUnionObj = this.permanent_wards_upazila_union.find(ward_union => ward_union.id === this.data.permanent_ward_id_union);
-          }
-
-          if (this.permanent_wards_upazila_pouro) {
-            var selectedWardPouroObj = this.permanent_wards_upazila_pouro.find(ward_pouro => ward_pouro.id === this.data.permanent_ward_id_pouro);
-          }
-
-          this.data.nominee_address = this.data.permanent_address + ',' + (selectedWardUnionObj ? selectedWardUnionObj.name_en : '') + '' + (selectedWardPouroObj ? selectedWardPouroObj.name_en : '') + ',' + (selectedUnionObj ? selectedUnionObj.name_en : '') + '' + (selectedPouroObj ? selectedPouroObj.name_en : '') + ',' + (selectedUpazilaObj ? selectedUpazilaObj.name_en : '') + ',' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + '-' + this.data.permanent_post_code;
-
-          selectedUnionObj = '';
-          selectedPouroObj = '';
-          selectedWardUnionObj = '';
-          selectedWardPouroObj = '';
-          console.log(selectedWardUnionObj, selectedWardPouroObj, "ward")
-
-
-        }
-        if (this.data.permanent_location_type == 1) {
-          const selectedDivisionObj = this.permanent_divisions.find(div => div.id === this.data.permanent_division_id);
-          const selectedDistrictObj = this.permanent_districts.find(dis => dis.id === this.data.permanent_district_id);
-          const selectedDistObj = this.permanent_district_poros.find(dist => dist.id === this.data.permanent_district_pouro_id);
-          const selectedDistWardObj = this.permanent_wards_dist.find(ward_dist => ward_dist.id === this.data.permanent_ward_id_dist);
-          // this.data.nominee_address = 'Division: ' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + ',' + ' District: ' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + ' District Pourashava: ' + (selectedDistObj ? selectedDistObj.name_en : '') + ',' + (selectedDistWardObj ? selectedDistWardObj.name_en : '') + ',' + ' Post Code: ' + this.data.permanent_post_code + ',' + this.data.permanent_address;
-
-          this.data.nominee_address = this.data.permanent_address + ',' + (selectedDistWardObj ? selectedDistWardObj.name_en : '') + ',' + (selectedDistObj ? selectedDistObj.name_en : '') + ',' + (selectedDistrictObj ? selectedDistrictObj.name_en : '') + ',' + (selectedDivisionObj ? selectedDivisionObj.name_en : '') + '-' + this.data.permanent_post_code;
-
-        }
-      } else {
-        this.data.nominee_address = null;
-
-      }
-    },
-    handleCheckboxChange(event) {
-      console.log(event)
-      if (event) {
-        this.data.permanent_post_code = this.data.post_code
-        this.data.permanent_address = this.data.address
-        this.data.permanent_division_id = this.data.division_id
-        this.permanent_onChangeDivision(this.data.division_id)
-        this.data.permanent_district_id = this.data.district_id
-        this.permanent_onChangeDistrict(this.data.district_id);
-        this.data.permanent_location_type = this.data.location_type
-
-        this.permanent_LocationType(this.data.location_type);
-        this.data.permanent_union_id = this.data.union_id
-        this.data.permanent_pouro_id = this.data.pouro_id
-
-        this.data.permanent_ward_id_pouro = this.data.ward_id_pouro ?? null
-        console.log(this.data.union_id, "union_id", this.data.pouro_id, "pouro_id", this.data.permanent_ward_id_pouro)
-
-        if (this.data.thana_id) {
-          this.data.permanent_thana_id = this.data.thana_id
-          this.data.permanent_sub_location_type = this.data.sub_location_type
-          this.onChangeSubLocationTypePermanent(this.data.sub_location_type)
-
-
-
-
-        }
-        if (this.data.city_id) {
-          this.data.permanent_city_id = this.data.city_id
-          this.permanent_onChangeCity(this.data.permanent_city_id)
-          this.data.permanent_city_thana_id = this.data.city_thana_id
-          this.Permanent_OnChangeCityThana(this.data.permanent_city_thana_id);
-          this.data.permanent_ward_id_city = this.data.ward_id_city
-        }
-        if (this.data.district_pouro_id) {
-          this.data.permanent_district_pouro_id = this.data.district_pouro_id
-          this.Permanent_onChangeDistrictPouro(this.data.permanent_district_pouro_id)
-
-          this.data.permanent_ward_id_dist = this.data.ward_id_dist
-        }
-
-        if (this.data.union_id) {
-          this.permanent_onChangeUnion(this.data.union_id);
-          setTimeout(() => {
-            this.data.permanent_ward_id_union = this.data.ward_id_union ?? null
-            console.log(this.data.permanent_ward_id_union, this.data.ward_id_union, "su")
-          }, 4000);
-
-
-
-
-        }
-        if (this.data.pouro_id) {
-
-          this.Permanent_onChangePouro(this.data.permanent_pouro_id);
-
-          this.data.permanent_ward_id_pouro = this.data.ward_id_pouro ?? null
-
-          console.log(this.data.permanent_ward_id_pouro, this.data.ward_id_pouro, "sp")
-
-        }
-
-
-      }
-      else {
-        this.data.permanent_division_id = null
-        this.data.permanent_district_id = null
-        this.data.permanent_upazila = null
-        this.data.permanent_post_code = null
-        this.data.permanent_address = null
-        this.data.permanent_location_type = null
-        this.data.permanent_thana_id = null
-        this.data.permanent_union_id = null
-        this.data.permanent_city_id = null
-        this.data.permanent_city_thana_id = null
-        this.data.permanent_district_pouro_id = null
-
-      }
-    },
 
     async submitGrievanceCheck() {
       if (this.status_code == null || this.status_code == 300 || this.status_code == '') {
@@ -1214,6 +1094,7 @@ export default {
           "Content-Type": "multipart/form-data",
         }
       }).then((res) => {
+        // return false;
         this.confirmDialog = false
         this.$toast.success("Your Grievance submitted Successfully");
         this.$refs.form.reset();
@@ -1604,7 +1485,6 @@ export default {
       }
     },
 
-
     async onChangeUnion($event) {
 
 
@@ -1704,12 +1584,13 @@ export default {
     }
   },
   created() {
-    this.GetGrievanceSubject();
-    this.GetGrievanceType();
+    // this.GetGrievanceSubject();
+    // this.GetGrievanceType();
     this.getAllProgram();
     this.getAllDivision();
     this.permanent_getAllDivision();
     this.getProgramName();
+    this.GetGrievanceSettings();
 
     this.$store
       .dispatch("getGlobalLookupByType", 20)

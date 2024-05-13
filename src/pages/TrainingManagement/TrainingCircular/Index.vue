@@ -2,7 +2,7 @@
 import {ValidationObserver } from "vee-validate";
 export default {
     name: "Index",
-    title: "CTM - Trainer Information",
+    title: "CTM - Training Circular",
     data() {
         return {
             data: {
@@ -16,7 +16,7 @@ export default {
             org_name:null,
             module_id:null,
             organization_names:[],
-            trainers: [],
+            circulars: [],
 
             dialogAdd: false,
             deleteDialog: false,
@@ -57,15 +57,13 @@ export default {
         headers() {
             return [
                 { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, width: "5%" },
-                { text: this.$t('container.training_management.trainer_info.ID'), value: "id_no", align: "start", width: "15%" },
-                { text: this.$t('container.training_management.trainer_info.name'), value: "name", width: "10%" },
-                { text: this.$t('container.training_management.trainer_info.designation'), value: "designation",  width: "15%" },
-            
-                { text: this.$t('container.training_management.trainer_info.email'), value: "email", width: "10%" },
-                { text: this.$t('container.list.status'), value: "status", width: "15%" },
+                { text: this.$t('container.training_management.training_circular.name'), value: "circular_name", align: "start", width: "10%" },
 
-              
-                { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false, width: "25%" },
+                { text: this.$t('container.training_management.training_circular.module'), value: "modules", width: "20%" },
+                { text: this.$t('container.training_management.training_circular.no_of_participant'), value: "no_of_participant", width: "10%" },
+                { text: this.$t('container.training_management.training_circular.start_date'), value: "start_date", width: "10%" },
+                { text: this.$t('container.training_management.training_circular.end_date'), value: "end_date", width: "10%" },
+                { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false, width: "35%" },
             ];
         },
 
@@ -81,35 +79,7 @@ export default {
     },
 
     methods: {
-        deviceActivate(id) {
-            console.log(id,"id");
 
-      
-            this.$axios
-                .get(`admin/training/trainers/status/${id}`, {
-                    headers: {
-                        Authorization: "Bearer " + this.$store.state.token,
-                        "Content-Type": "multipart/form-data",
-                    },
-                })
-                .then((result) => {
-                    this.$toast.success(result?.data?.message);
-       
-                    this.GetData();
-                   
-                
-              
-
-
-                })
-                .catch((err) => {
-                    console.log(err, "err")
-                    this.$toast.error(err.response.data.errors.email[0]);
-                    this.$refs.form.setErrors(err.response.data.errors);
-
-                });
-
-        },
        
         resetSearch(){
             this.module_id=null;
@@ -133,7 +103,7 @@ export default {
             };
 
             await this.$axios
-                .get("/admin/training/trainers", {
+                .get("/admin/training/circulars", {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -141,7 +111,7 @@ export default {
                     params: queryParams,
                 })
                 .then((result) => {
-                    this.apis = result?.data?.data?.data;
+                    this.circulars = result?.data?.data?.data;
                     // const parts = this.apis.start_date.split(" ");
                     // const datePart = parts[0];
                     // this.apis.start_date = datePart;
@@ -152,37 +122,39 @@ export default {
 
             const HeaderInfo = [
                 this.$t("container.list.sl"),
-                this.$t('container.training_management.trainer_info.ID'),
-                this.$t('container.training_management.trainer_info.name'),
-                this.$t('container.training_management.trainer_info.designation'),
-                this.$t('container.training_management.trainer_info.mobile'),
-                this.$t('container.training_management.trainer_info.email'),
-                 this.$t('container.training_management.trainer_info.address'),
-                this.$t('container.training_management.trainer_info.description'),
-                this.$t('container.list.status'),
-               
+                this.$t('container.training_management.training_circular.name'),
+                this.$t('container.training_management.training_circular.type'),
+                this.$t('container.training_management.training_circular.training_type'),
+                this.$t('container.training_management.training_circular.module'),
+                this.$t('container.training_management.training_circular.class_duration'),
+       
+                this.$t('container.training_management.training_circular.no_of_participant'),
+                this.$t('container.training_management.training_circular.start_date'),
+                this.$t('container.training_management.training_circular.end_date'),
+           
                 
 
             ]
            
 
         
-            const CustomInfo = this.apis.map(((i, index) => {
+            const CustomInfo = this.circulars.map(((i, index) => {
 
                 return [
                     this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
                     
-                    this.$i18n.locale == 'en' ? i.id : this.$helpers.englishToBangla(i.id),
-                    this.$i18n.locale == 'en' ? i.name : i.name,
-                    this.$i18n.locale == 'en' ? i?.designation?.value_en : i?.designation?.value_bn,
+          
+                    this.$i18n.locale == 'en' ? i.circular_name : i.circular_name,
+                    this.$i18n.locale == 'en' ? i?.circular_type?.value_en : i?.circular_type?.value_bn,
+                    this.$i18n.locale == 'en' ? i?.training_type?.value_en : i?.training_type?.value_bn,
+                    i?.modules?.map(api => api.value_en).join(', '),
+                    this.$i18n.locale == 'en' ? i?.class_duration : i?.class_duration,
+
+                    this.$i18n.locale == 'en' ? i.no_of_participant : this.$helpers.englishToBangla(i?.no_of_participant),
+                    this.$i18n.locale == 'en' ? i?.start_date : this.$helpers.englishToBangla(i?.start_date),
+
+                    this.$i18n.locale == 'en' ? i?.end_date : this.$helpers.englishToBangla(i?.end_date),
                   
-               
-                    this.$i18n.locale == 'en' ? i.mobile_no : this.$helpers.englishToBangla(i.mobile_no),
-                    this.$i18n.locale == 'en' ? i?.email : i?.email,
-                    this.$i18n.locale == 'en' ? i?.address : i?.address,
-                    this.$i18n.locale == 'en' ? i?.description : i?.description,
-                   
-                    this.$i18n.locale == 'en' ? (i.status == 0 ? 'Active' : 'Inactive') : (i.status == 0 ? 'সক্রিয়' : 'নিষ্ক্রিয়'),
                 
 
 
@@ -193,7 +165,7 @@ export default {
                 language: this.$i18n.locale,
                 data: CustomInfo,
                 header: HeaderInfo,
-                fileName: this.$t("container..training_management.trainer_info.list"),
+                fileName: this.$t("container..training_management.training_circular.list"),
             };
             try {
                 const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
@@ -229,7 +201,7 @@ export default {
             };
 
             await this.$axios
-                .get("/admin/training/trainers", {
+                .get("/admin/training/circulars", {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -237,7 +209,7 @@ export default {
                     params: queryParams,
                 })
                 .then((result) => {
-                    this.apis = result?.data?.data?.data;
+                    this.circulars = result?.data?.data?.data;
                 })
                 .catch(error => {
                     this.isLoading = false;
@@ -248,45 +220,63 @@ export default {
 
                     const HeaderInfo = [
                         this.$t("container.list.sl"),
-                        this.$t('container.training_management.trainer_info.ID'),
-                        this.$t('container.training_management.trainer_info.name'),
-                        this.$t('container.training_management.trainer_info.designation'),
-                        this.$t('container.training_management.trainer_info.mobile'),
-                        this.$t('container.training_management.trainer_info.email'),
-                        this.$t('container.training_management.trainer_info.address'),
-                        this.$t('container.training_management.trainer_info.description'),
-                        this.$t('container.list.status'),
+                        this.$t('container.training_management.training_circular.name'),
+                        this.$t('container.training_management.training_circular.type'),
+                        this.$t('container.training_management.training_circular.training_type'),
+                        this.$t('container.training_management.training_circular.module'),
+                        this.$t('container.training_management.training_circular.class_duration'),
+
+                        this.$t('container.training_management.training_circular.no_of_participant'),
+                        this.$t('container.training_management.training_circular.start_date'),
+                        this.$t('container.training_management.training_circular.end_date'),
                     ]
 
-                    const CustomInfo = this.apis.map(((i, index) => {
+                    const CustomInfo = this.circulars.map(((i, index) => {
                         return {
                            
 
                             "sl": this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
 
-                            "id": this.$i18n.locale == 'en' ? i.id : this.$helpers.englishToBangla(i.id),
-                            "name": this.$i18n.locale == 'en' ? i.name : i.name,
-                            "designation": this.$i18n.locale == 'en' ? i?.designation?.value_en : i?.designation?.value_bn,
+                            "name": this.$i18n.locale == 'en' ? i.circular_name : i.circular_name,
+                            "type": this.$i18n.locale == 'en' ? i?.circular_type?.value_en : i?.circular_type?.value_bn,
 
 
-                            "mobile": this.$i18n.locale == 'en' ? i.mobile_no : this.$helpers.englishToBangla(i.mobile_no),
-                            "email": this.$i18n.locale == 'en' ? i?.email : i?.email,
-                            "address": this.$i18n.locale == 'en' ? i?.address : i?.address,
-                            "description": this.$i18n.locale == 'en' ? i?.description : i?.description,
+                            "training_type": this.$i18n.locale == 'en' ? i?.training_type?.value_en : i?.training_type?.value_bn,
+                            "modules": this.$i18n.locale == 'en' ? i?.modules?.map(api => api.value_en).join(', ') : i?.modules?.map(api => api.value_bn).join(', '),
+                       
+                            "class_duration": this.$i18n.locale == 'en' ? i?.class_duration : i?.class_duration,
+                            "no_of_participant": this.$i18n.locale == 'en' ? i.no_of_participant : this.$helpers.englishToBangla(i?.no_of_participant),
 
-                            "status": this.$i18n.locale == 'en' ? (i.status == 0 ? 'Active' : 'Inactive') : (i.status == 0 ? 'সক্রিয়' : 'নিষ্ক্রিয়')
+                            "start_date": this.$i18n.locale == 'en' ? i?.start_date : this.$helpers.englishToBangla(i?.start_date),
+
+
+                            "end_date":
+                                this.$i18n.locale == 'en' ? i?.end_date : this.$helpers.englishToBangla(i?.end_date),
 
 
                         }
+                        
                     }));
+                
 
-                    const Field = ['sl', 'id', 'name', 'designation', 'mobile', 'email', 'address','description', 'status']
+
+                        
+                        
+                    
+                       
+                      
+
+                    
+                       
+
+
+                    const Field = ['sl', 'name', 'type', 'training_type', 'modules', 'class_duration', 'no_of_participant', 'start_date', 'end_date']
 
                     const Data = this.FormatJson(Field, CustomInfo)
                     const currentDate = new Date().toISOString().slice(0, 10); //
                     let dateinfo = queryParams.language == 'en' ? currentDate : this.$helpers.englishToBangla(currentDate)
 
-                    const filenameWithDate = `${dateinfo}_${this.$t("container.training_management.trainer_info.list_1")}`;
+                    const filenameWithDate = `${dateinfo}_${this.$t("container.training_management.training_circular.list_1")}`;
 
                     excel.export_json_to_excel({
                         header: HeaderInfo,
@@ -328,7 +318,7 @@ export default {
             
             this.loading=true;
             const queryParams = {
-                module_id: this.module_id,
+             
             
                 search: this.search,
                 perPage: this.pagination.perPage,
@@ -337,7 +327,7 @@ export default {
                 sortDesc: this.sortDesc,
             };
             this.$axios
-                .get("/admin/training/trainers", {
+                .get("/admin/training/circulars", {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -348,8 +338,8 @@ export default {
                     console.log(result,"result")
 
                     this.total = result?.data?.data?.total;
-                    this.trainers = result?.data?.data?.data;
-                    console.log(this.trainers,"trainers")
+                    this.circulars = result?.data?.data?.data;
+               
                     this.pagination.current = result?.data?.data?.current_page;
                     this.pagination.total = result?.data?.data?.last_page;
                     this.pagination.grand_total = result?.data?.data?.total;
@@ -373,7 +363,7 @@ export default {
 
         deleteData: async function () {
             this.$axios
-                .delete(`admin/training/trainers/${this.deleted_id}`, {
+                .delete(`admin/training/circulars/${this.deleted_id}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "application/json", // Use application/json instead of multipart/form-data
@@ -415,9 +405,9 @@ export default {
                         <v-card>
 
                             <v-card-title class="justify-center"
-                                style="background-color: #1C3B68; color: white;font-size: 17px;">
-                                <h4 class=" white--text">{{ $t('container.training_management.trainer_info.list')
-                                    }}</h4>
+                                style="background-color: #1C3C6A; color: white;font-size: 17px;">
+                                <h4 class="white--text">{{ $t('container.training_management.training_circular.list') }}
+                                </h4>
                             </v-card-title>
 
 
@@ -428,7 +418,7 @@ export default {
                                     <div class="d-flex justify-sm-end flex-wrap">
                                         <v-text-field @keyup.native="PageSetup" v-model="search"
                                             append-icon="mdi-magnify" :label="$t(
-                                    'container.list.search'
+                                    'container.list.search_circular'
                                 )" hide-details class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal" flat outlined
                                             dense></v-text-field>
                                     </div>
@@ -439,12 +429,11 @@ export default {
 
 
 
-                                    <v-btn flat color="primary" router
-                                        to="/training-management/trainer-information/create"
-                                        v-can="'data-receiver-create'">
+                                    <v-btn flat color="primary" router to="/training-management/trainer-circular/create"
+                                        v-can="'trainerCircular-create'">
                                         <v-icon small>mdi-plus</v-icon>
                                         {{
-                                        $t('container.training_management.trainer_info.add') }}
+                                        $t('container.training_management.training_circular.add') }}
                                     </v-btn>
 
                                 </v-card-title>
@@ -478,7 +467,7 @@ export default {
 
                                 </v-row>
 
-                                <v-data-table :loading="loading" item-key="id" :headers="headers" :items="trainers"
+                                <v-data-table :loading="loading" item-key="id" :headers="headers" :items="circulars"
                                     :items-per-page="pagination.perPage" hide-default-footer
                                     class="elevation-0 transparent row-pointer mt-5 mx-5">
                                     <template v-slot:item.sl="{ item, index }">
@@ -492,67 +481,34 @@ export default {
 
 
                                     </template>
-                                    <template v-slot:[`item.id_no`]="{ item }">
+                                    <template v-slot:item.modules="{ item }">
+                                        <span v-for="(value, key) in item.modules" :key="key">
+                                            <v-chip small label color="#FACD91" class="ma-1">
+
+                                                {{ language == 'bn' ?
+                                                value.value_bn : value.value_en }}
+                                            </v-chip> &nbsp;
+
+
+                                        </span>
+                                    </template>
+                                    <template v-slot:[`item.no_of_participant`]="{ item }">
                                         <span>
                                             {{ language == 'bn' ?
-                                            $helpers.englishToBangla(item.id): item.id }}
+                                            $helpers.englishToBangla(item.no_of_participant): item.no_of_participant }}
                                         </span>
 
                                     </template>
-
-
-
-
-                                    <template v-slot:item.api_list_custom="{ item }">
-                                        <div>
-                                            <v-chip label color="#FACD91" v-for="(name, index) in item.api_list"
-                                                class="ma-1" :key="index">{{ name.name
-                                                }}</v-chip>
-                                        </div>
-                                    </template>
-
-                                    <template v-slot:item.api_key_custom="{ item }">
-                                        <v-row align="center">
-                                            <span>
-                                                <span v-if="!item.showApiKey">
-                                                    <span v-for="char in item.api_key" :key="char">*</span>
-                                                </span>
-                                                <span v-else>{{ item.api_key }}</span>
-                                                <v-icon @click="toggleApiKeyVisibility(item)">
-                                                    {{ item.showApiKey ? 'mdi-eye-off' : 'mdi-eye' }}
-                                                </v-icon>
-                                            </span>
-                                        </v-row>
-
-                                    </template>
-                                    <template v-slot:[`item.status`]="{ item }">
-                                        <span v-if="item.status == 0">
-                                            {{ language == 'bn' ?
-                                            'নিষ্ক্রিয়' : 'Inactive' }}
-                                        </span>
-                                        <span v-else>
-                                            {{ language == 'bn' ?
-                                            'সক্রিয়' : 'Active' }}
-                                        </span>
-
-
-                                        <span>
-                                            <v-switch :input-value="item.status == 1 ? true : false"
-                                                @change="deviceActivate( item.id)" hide-details
-                                                color="orange darken-3"></v-switch>
-                                        </span>
-                                    </template>
-                                    <template v-slot:[`item.designation`]="{ item }">
+                                    <template v-slot:[`item.start_date`]="{ item }">
                                         <span>
                                             {{ language == 'bn' ?
-                                            item?.designation?.value_bn : item?.designation?.value_en }}
+                                            $helpers.englishToBangla(item.start_date) : item.start_date }}
                                         </span>
 
-                                    </template>
-                                    <template v-slot:[`item.mobile`]="{ item }">
+                                    </template> <template v-slot:[`item.end_date`]="{ item }">
                                         <span>
                                             {{ language == 'bn' ?
-                                            $helpers.englishToBangla(item.mobile_no): item.mobile_no }}
+                                            $helpers.englishToBangla(item.end_date) : item.end_date }}
                                         </span>
 
                                     </template>
@@ -565,9 +521,9 @@ export default {
                                     <template v-slot:item.actions="{ item }">
                                         <v-tooltip top>
                                             <template v-slot:activator="{ on }">
-                                                <v-btn v-can="'trainerInfo-view'" fab x-small v-on="on" color="#AFB42B"
-                                                    elevation="0" router class=" white--text"
-                                                    :to="`/training-management/trainer-information/view/${item.id}`">
+                                                <v-btn v-can="'trainerCircular-view'" fab x-small v-on="on"
+                                                    color="#AFB42B" elevation="0" router class=" white--text mb-1"
+                                                    :to="`/training-management/trainer-circular/view/${item.id}`">
                                                     <v-icon> mdi-eye </v-icon>
                                                 </v-btn>
                                             </template>
@@ -578,9 +534,9 @@ export default {
 
                                         <v-tooltip top>
                                             <template v-slot:activator="{ on }">
-                                                <v-btn v-can="'trainerInfo-edit'" class="ml-3" fab x-small v-on=" on"
-                                                    color="success" elevation="0" router
-                                                    :to="`/training-management/trainer-information/edit/${item.id}`">
+                                                <v-btn v-can="'trainerCircular-edit'" class="ml-3 mb-1" fab x-small
+                                                    v-on=" on" color="success" elevation="0" router
+                                                    :to="`/training-management/trainer-circular/edit/${item.id}`">
                                                     <v-icon> mdi-account-edit-outline </v-icon>
                                                 </v-btn>
                                             </template>
@@ -592,8 +548,8 @@ export default {
 
                                         <v-tooltip top>
                                             <template v-slot:activator="{ on }">
-                                                <v-btn v-can="'trainerInfo-delete'" fab x-small v-on="on" color="grey"
-                                                    class="ml-3 white--text" elevation="0"
+                                                <v-btn v-can="'trainerCircular-delete'" fab x-small v-on="on"
+                                                    color="grey" class="ml-3 white--text mb-1" elevation="0"
                                                     @click="deleteAlert(item.id)">
                                                     <v-icon> mdi-delete </v-icon>
                                                 </v-btn>
@@ -643,12 +599,12 @@ export default {
             <v-dialog v-model="deleteDialog" width="350">
                 <v-card style="justify-content: center; text-align: center">
                     <v-card-title class="font-weight-bold justify-center">
-                        {{ $t('container.training_management.trainer_info.delete_header') }}
+                        {{ $t('container.training_management.training_circular.delete_header') }}
                     </v-card-title>
                     <v-divider></v-divider>
                     <v-card-text>
                         <div class="subtitle-1 font-weight-medium mt-5">
-                            {{ $t('container.training_management.trainer_info.delete_alert') }}
+                            {{ $t('container.training_management.training_circular.delete_alert') }}
 
 
                         </div>

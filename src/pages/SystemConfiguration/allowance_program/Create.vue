@@ -1,6 +1,31 @@
 <script>
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { mapActions, mapState } from "vuex";
+
+extend("checkName", {
+  validate: (value) => {
+    if (!value && value !== 0) {
+      return false;
+    }
+
+    return /^[a-zA-Z\s]+$/.test(value);
+  },
+  message: "Please Enter English Letter's in this Field",
+});
+
+extend("checkNameBn", {
+  validate: (value) => {
+    if (!value && value !== 0) {
+      return false;
+    }
+
+    var banglaRegex = /^[\u0980-\u09E5\u09F0-\u09FF\s]+$/;
+
+    return banglaRegex.test(value);
+  },
+  message: "Please Enter Bangla Letter's in this Field",
+});
+
 export default {
   name: "Create",
   title: "CTM - Create Allowance Program",
@@ -132,12 +157,8 @@ export default {
     }),
       toggleSection(section) {
       this.selectedSection = section;
-     
       this.activeSection = this.activeSection === section ? null : section;
-    
-      console.log(this.selectedSection,"selectedSection");
       if (this.selectedSection=="age_limit"){
-        console.log('age-limit');
         this.ageLimit();
 
       }
@@ -383,7 +404,7 @@ export default {
                           <ValidationProvider
                             name="name english"
                             vid="name_en"
-                            rules="required"
+                            rules="required|checkName"
                             v-slot="{ errors }"
                           >
                             <v-text-field
@@ -407,7 +428,7 @@ export default {
                           <ValidationProvider
                             name="name bangla"
                             vid="name_bn"
-                            rules="required"
+                            rules="required|checkNameBn"
                             v-slot="{ errors }"
                           >
                             <v-text-field
