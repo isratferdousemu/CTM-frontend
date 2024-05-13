@@ -79,6 +79,38 @@ export default {
     },
 
     methods: {
+        copyToClipboard(id) {
+            const baseUrl = window.location.origin;
+            console.log(baseUrl,"baseUrl");
+            // Construct your dynamic link here
+            const dynamicLink = `${baseUrl}/circular-details/${id}`;
+
+            // Create a temporary input element to copy the link
+            const tempInput = document.createElement("input");
+            tempInput.value = dynamicLink;
+            document.body.appendChild(tempInput);
+
+            // Select the link in the input element
+            tempInput.select();
+            tempInput.setSelectionRange(0, 99999); // For mobile devices
+
+            // Copy the link to the clipboard
+            document.execCommand("copy");
+
+            // Remove the temporary input element
+            document.body.removeChild(tempInput);
+            if(this.language =='en'){
+                   this.$toast.success("Link Copied");
+            }
+            else{
+                this.$toast.success("লিঙ্ক কপি করা হয়েছে");
+            }
+            },
+         
+
+            // Optionally, you can show a message to the user indicating that the link has been copied
+         
+        
 
        
         resetSearch(){
@@ -518,18 +550,37 @@ export default {
 
 
                                     <!-- Action Button -->
+
                                     <template v-slot:item.actions="{ item }">
                                         <v-tooltip top>
                                             <template v-slot:activator="{ on }">
+                                                <v-btn v-can="'trainerCircular-view'" fab x-small v-on="on" color="blue"
+                                                    elevation="0" router class=" white--text mb-1"
+                                                    @click="copyToClipboard(item.id)">
+                                                    <v-icon> mdi-link </v-icon>
+                                                </v-btn>
+
+
+                                            </template>
+                                            <span>
+                                                {{ $t("container.list.copy") }}
+                                            </span>
+
+                                        </v-tooltip>
+                                        <v-tooltip top>
+                                            <template v-slot:activator="{ on }">
                                                 <v-btn v-can="'trainerCircular-view'" fab x-small v-on="on"
-                                                    color="#AFB42B" elevation="0" router class=" white--text mb-1"
+                                                    color="#AFB42B" elevation="0" router class=" white--text mb-1 ml-2"
                                                     :to="`/training-management/trainer-circular/view/${item.id}`">
                                                     <v-icon> mdi-eye </v-icon>
                                                 </v-btn>
+
+
                                             </template>
                                             <span>
                                                 {{ $t("container.list.view") }}
                                             </span>
+
                                         </v-tooltip>
 
                                         <v-tooltip top>

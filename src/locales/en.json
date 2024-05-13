@@ -23,6 +23,7 @@
       "banned": "Banned",
       "submit": "Submit",
       "cancel": "cancel",
+      "copy":"Copy Link",
       "ok":"Okay",
       "edit": "Edit",
       "print": "Print",
@@ -1226,6 +1227,26 @@
           "remarks": "Remarks",
           "status_update": "Grievance Status Update"
         }
+    },
+
+    "profile": {
+      "personal_info": "Personal Information",
+      "upload": "Upload",
+      "upload_type": "Choose a JPG or JPEG image",
+      "name_en": "Full Name (English)",
+      "username": "Username",
+      "brithday": "Brithday",
+      "gender": "Gender",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "address": "Address",
+      "change_pass": "Change Password",
+      "new_pass": "New Password",
+      "retype_pass": "Retype Password",
+      "update_pass": "Update Password",
+      "contact_info": "Contact Information"
     }
+
+
   }
 }
