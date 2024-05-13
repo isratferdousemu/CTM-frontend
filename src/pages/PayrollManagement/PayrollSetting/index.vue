@@ -1,25 +1,44 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="4">
-        <v-list>
-          <v-list-item v-for="allowance in allowances" :key="allowance.type">
-            <v-list-item-content>{{ allowance.type }}</v-list-item-content>
-          </v-list-item>
-        </v-list>
-      </v-col>
-      <v-col cols="8">
-        <v-list v-for="allowance in allowances" :key="allowance.type">
-          <v-list-item>
-            <v-list-item-content v-highlight="true" style="display: flex; flex-direction: column;">
-              <v-checkbox v-for="installment in allowance.installments" :key="installment.text" :label="installment.text" hide-details></v-checkbox>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
+      <v-col cols="12">
+        <v-card v-for="allowance in allowances" :key="allowance.type" class="mb-4">
+          <v-card-title>{{ allowance.name }}</v-card-title>
+          <v-card-text>
+            <v-list>
+              <v-list-item v-for="installment in generateInstallments(allowance.payment_cycle)" :key="installment.text">
+                <v-list-item-content>{{ installment.text }}</v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-card-text>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>
 </template>
+
+<!-- <template>
+  <v-container>
+    <v-row>
+      <v-col cols="12">
+        <v-card v-for="allowance in allowances" :key="allowance.type" class="mb-4">
+          <v-row no-gutters>
+            <v-col cols="6">
+              <v-card-title>{{ allowance.name }}</v-card-title>
+            </v-col>
+            <v-col cols="6">
+              <v-card-text>
+                <v-list>
+                  <v-checkbox v-for="installment in generateInstallments(allowance.payment_cycle)" :key="installment.text" v-model="installment.checked" :label="installment.text"></v-checkbox>
+                </v-list>
+              </v-card-text>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
+</template> -->
 
 <script>
 export default {
@@ -27,39 +46,39 @@ export default {
     return {
       allowances: [
         {
-          type: "Financial Year",
-          installments: [
-            { text: "2023-24" },
-          ],
+          name: "Widow Allowance",
+          payment_cycle: "monthly",
         },
         {
-          type: "Widow Allowance",
-          installments: [
-            { text: "1st installment (July 2023 September 2023)" },
-            { text: "2nd installment (Oct 2023 Dec 2023)" },
-            { text: "3rd installment (Jan 2024 Mar 2024)" },
-            { text: "4th installment (April 2024 June 2024)" },
-          ],
+          name: "Widow Allowance2",
+          payment_cycle: "quarterly",
         },
-
-        {
-          type: "Widow Allowance2",
-          installments: [
-            { text: "1st installment (July 2023 September 2023)" },
-            { text: "2nd installment (Oct 2023 Dec 2023)" },
-            { text: "3rd installment (Jan 2024 Mar 2024)" },
-            { text: "4th installment (April 2024 June 2024)" },
-          ],
-        },
-
-        
-        // Add more allowances as needed
       ],
     };
+  },
+  methods: {
+    generateInstallments(paymentCycle) {
+      let numInstallments = 0;
+      if (paymentCycle === "monthly") {
+        numInstallments = 12;
+      } else if (paymentCycle === "quarterly") {
+        numInstallments = 4;
+      }
+
+      const installments = [];
+      for (let i = 1; i <= numInstallments; i++) {
+        const installmentText = `Installment ${i}`;
+        installments.push({ text: installmentText, checked: false });
+      }
+      return installments;
+    },
   },
 };
 </script>
 
-<style lang="scss" scoped>
-
+<style scoped>
+.v-card {
+  height: 100%;
+}
 </style>
+
