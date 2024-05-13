@@ -309,7 +309,7 @@ export default {
             // this.add_role_permission = {};
             // this.selectedModule = null;
             // this.subModules = null;
-            // this.select();
+            this.select();
             this.$refs.form.setErrors();
           }
 

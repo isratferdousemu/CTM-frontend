@@ -1,6 +1,7 @@
 <script>
 import { ValidationObserver } from "vee-validate";
 import LocaleSwitcher from "@/components/Common/LocaleSwitcher"
+import FooterBar from "@/components/Common/FooterBar.vue";
 export default {
     name: "Index",
     title: "CTM - Training Circular",
@@ -73,7 +74,8 @@ export default {
     },
     components: {
     
-        LocaleSwitcher
+        LocaleSwitcher,
+        FooterBar
     },
 
     computed: {
@@ -116,7 +118,7 @@ export default {
         DataView() {
             console.log(this.$route.params.id, "params")
             this.$axios
-                .get(`admin/circulars-details/${this.$route.params.id}`, {
+                .get(`circulars-details/${this.$route.params.id}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -275,54 +277,16 @@ export default {
 
                     </v-row>
 
-                 
+
                 </v-card>
             </v-col>
         </v-row>
 
-        <v-row>
-            <v-col cols="12">
-                <v-card>
-                    <v-card-title v-if="data.api_list" class="justify-center black--text">
-                        <h5 class="mt-5">{{ $t("container.api_manager.api_generate.api_view") }}</h5>
-                    </v-card-title>
 
-                    <v-data-table :loading="loading" item-key="id" :headers="headers" v-if="data.api_list"
-                        :items="data?.api_list" hide-default-footer
-                        class="elevation-0 transparent row-pointer mt-5 mx-5">
-                        <!-- Your data table content here -->
-                    </v-data-table>
-                </v-card>
-            </v-col>
-        </v-row>
 
         <!-- Mail modal -->
-        <v-dialog v-model="dialogEmail" width="350">
-            <!-- Your modal content here -->
-            <v-card style="justify-content: center; text-align: center">
-                <v-card-title class="font-weight-bold justify-center">
-                    {{ $t('container.api_manager.data_receiver.email_header') }}
-                </v-card-title>
-                <v-divider></v-divider>
-                <v-card-text>
-                    <div class="subtitle-1 font-weight-medium mt-5">
-                        {{ $t('container.api_manager.data_receiver.email_alert') }}
-                    </div>
-                </v-card-text>
-                <v-card-actions style="display: block">
-                    <v-row class="mx-0 my-0 py-2" justify="center">
-                        <v-btn text @click="dialogEmail = false" outlined class="custom-btn-width py-2 mr-10">
-                            {{ $t('container.list.cancel') }}
-                        </v-btn>
-                        <v-btn text @click="sendEmail" color="white" :loading="delete_loading"
-                            class="custom-btn-width warning white--text py-2">
-                            {{ $t('container.list.confirm') }}
-                        </v-btn>
-                    </v-row>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-
+        <br></br></br>>
+        <FooterBar />
     </div>
 </template>
 <style>

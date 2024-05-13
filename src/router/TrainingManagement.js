@@ -83,6 +83,15 @@ const TrainingManagementRoutes = [
     },
     component: () => import("../pages/TrainingManagement/TrainingCircular/View.vue")
   },
+  {
+    path: "/training-management/time-slots",
+    name: "timeSlot-view",
+    meta: {
+      requiresAuth: true,
+      permission: "timeSlot-view",
+    },
+    component: () => import("../pages/TrainingManagement/TimeSlot/Index.vue")
+  },
   /*Training Circular route end*/
 ];
 
