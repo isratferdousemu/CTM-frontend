@@ -337,6 +337,12 @@
                           {{ item?.tracking_no }}
                         </span>
                       </template>
+                      <template v-slot:item.resolved_officer="{ item }">
+                          <span>
+                             {{ language === 'bn' ? item.resolver?.name_bn : item.resolver?.name_en }}
+                            <!-- {{ item?.resolved_officer }} -->
+                          </span>
+                       </template>
                       <template v-slot:item.status="{ item }">
                         <span v-if="item.status == 0" class="not-selected"
                           style="background-color: lightgray; padding: 5px; width: 100px;">
@@ -367,15 +373,15 @@
                             {{ $t("container.list.view") }}
                           </span>
                         </v-tooltip>
-                        <v-tooltip top>
+                        <v-tooltip top v-if="userRoleId[0]==item.forward_to && (item.status == 0 || item.status == 1)">
                           <template v-slot:activator="{ on }">
                             <v-btn fab x-small v-on="on" color="#616286" elevation="0" class="white--text"
                               @click="createGrievanceDialog(item)">
-                              <v-icon> mdi-checkbox-multiple-marked-outline </v-icon>
+                              <v-icon> mdi-skip-next-circle </v-icon>
                             </v-btn>
                           </template>
                           <span>
-                            {{ $t("container.list.edit") }}
+                            {{ $t("container.grievance_management.grievanceList.status_update") }}
                           </span>
                         </v-tooltip>
                       </template>
@@ -458,7 +464,10 @@
                   <tr>
                     <th style="font-size: 16px;">{{ $t("container.grievance_management.grievanceList.resolved_officer") }}
                       :</th>
-                    <th style="font-size: 16px;">{{ data.resolved_officer ?? 'N/A' }}</th>
+                    <th style="font-size: 16px;">
+                       {{ data.resolved_officer }}
+                      <!-- {{ data.resolver?.name_bn ?? 'N/A' }} -->
+                      </th>
                   </tr>
                 </thead>
 
@@ -511,13 +520,15 @@
                     </v-select>
                   </v-col>
                   <v-col lg="6" md="6" cols="12" v-if="data.status == '1'">
-                    <v-text-field type="text" outlined v-model="data.forwardOfficer" readonly
-                      :label="$t('container.grievance_management.grievanceList.forward_to')">
-                    </v-text-field>
+                   <v-select outlined :label="$t('container.grievance_management.grievanceList.forward_to')"
+                        v-model="data.forwardOfficer" item-value="id" :items="forward_to" :item-text="language === 'bn' ? 'name_bn' : 'name_en'"
+                     >
+                   </v-select>
                   </v-col>
                   <v-col lg="6" md="6" cols="12">
                     <v-select outlined :label="$t('container.grievance_management.grievanceList.solution')"
-                      v-model="data.solution" rules="required" :items="['Good', 'Bad', 'Poor']">
+                      v-model="data.solution" :items="solutionType" :item-text="language==='bn' ?'value_bn' : 'value_en'"
+                   >
                     </v-select>
                   </v-col>
                 </v-row>
@@ -573,8 +584,6 @@ export default {
         id: null,
         verification_number: null,
         tracking_no: null,
-
-
         name_bn: null,
         code: null,
         division_id: null,
@@ -587,7 +596,6 @@ export default {
         pouro_id: null,
         ward_id: null,
         location_type: null,
-
         sub_location_type: null,
         application_id: null,
         nominee_name: null,
@@ -641,6 +649,9 @@ export default {
       types: [],
       subjects: [],
       setting: [],
+      solutionType: [],
+      forward_to: [],
+      userRoleId:'',
       subLocationType: [
         {
           id: 1,
@@ -809,15 +820,19 @@ export default {
 
       ];
     },
-
-
-
-
   },
 
   methods: {
+    async GetGrievanceSolutionType() {
+      try {
+        this.$store.dispatch("getLookupByType", 25).then((data) => {
+          this.solutionType = data;
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
     submitGrievanceStatus() {
-      console.log(this.data,'test data value');
       const queryParams = {
         id              : this.data.id,
         forwardOfficer  : this.data.forwardOfficer,
@@ -826,7 +841,6 @@ export default {
         remarks         : this.data.remarks,
         documents       : this.data.documents,
       };
-      console.log(queryParams,'queryParamsqueryParams');
       this.$axios
         .post("admin/grievance/update-status", queryParams, {
           headers: {
@@ -864,30 +878,39 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          this.setting = result.data;
-          const totalDay = this.calculateTotalDaysFromToday(item.created_at);
-          const first_tire_solution_time = this.setting?.first_tire_solution_time;
-          console.log(this.setting,'test1');
-          console.log(first_tire_solution_time,'test2');
-          const secound_tire_solution_time = this.setting?.secound_tire_solution_time;
-          const third_tire_solution_time = this.setting?.third_tire_solution_time;
-            console.log(first_tire_solution_time, totalDay,'first_tire_solution_time111');
-        if(this.data.status==1){
-           if (totalDay <= first_tire_solution_time && first_tire_solution_time !=null) {
-              console.log(first_tire_solution_time, 'first_tire_solution_time');
-              this.data.forwardOfficer = this.language === 'bn' ? this.setting?.first_officer?.name_bn : this.setting.first_officer?.name_en
-            } else if (totalDay <= secound_tire_solution_time && secound_tire_solution_time != null) {
-              console.log('secound_tire_solution_time');
-              this.data.forwardOfficer = this.language === 'bn' ? this.setting?.secound_officer?.name_bn : this.setting.secound_officer?.name_en
-            } else if (totalDay <= third_tire_solution_time && third_tire_solution_time != null) {
-              console.log('secound_tire_solution_time');
-              this.data.forwardOfficer = this.language === 'bn' ? this.setting?.secound_officer?.name_bn : this.setting.secound_officer?.name_en
-            } else {
-              console.log('2222222222');
-              this.data.status = 4
+          // this.setting = result.data;
+          const data = result.data;
 
-            }
-        }
+          this.forward_to = [
+            data.first_officer,
+            data.secound_officer,
+            data.third_officer
+          ];
+
+          console.log(this.setting,'anwar')
+
+
+        //   const totalDay = this.calculateTotalDaysFromToday(item.created_at);
+        //   const first_tire_solution_time = this.setting?.first_tire_solution_time;
+        //   const secound_tire_solution_time = this.setting?.secound_tire_solution_time;
+        //   const third_tire_solution_time = this.setting?.third_tire_solution_time;
+        //   console.log(this.data.status,'status');
+        //   console.log(totalDay <= first_tire_solution_time,'time');
+        // if(this.data.status <=1){
+        //    if (this.data.status == 0 || totalDay <= first_tire_solution_time && first_tire_solution_time !=null) {
+        //       console.log(first_tire_solution_time, 'first_tire_solution_time');
+        //       this.data.forwardOfficer = this.language === 'bn' ? this.setting?.first_officer?.name_bn : this.setting.first_officer?.name_en
+        //     } else if (this.data.status==1 || totalDay <= secound_tire_solution_time && secound_tire_solution_time != null) {
+        //       console.log('secound_tire_solution_time');
+        //       this.data.forwardOfficer = this.language === 'bn' ? this.setting?.secound_officer?.name_bn : this.setting.secound_officer?.name_en
+        //     } else if (totalDay <= third_tire_solution_time && third_tire_solution_time != null) {
+        //       console.log('secound_tire_solution_time');
+        //       this.data.forwardOfficer = this.language === 'bn' ? this.setting?.third_officer?.name_bn : this.setting.third_officer?.name_en
+        //     } else {
+        //       console.log('2222222222');
+        //       this.data.status = 4
+        //     }
+        // }
           
         });
       if (this.$refs.formAdd) {
@@ -901,8 +924,6 @@ export default {
       this.data.grievanceSubject = this.language === 'bn' ? item.grievance_subject?.title_bn : item.grievance_subject?.title_en
       this.data.grievanceType = this.language === 'bn' ? item.grievance_type?.title_bn : item.grievance_type?.title_en
       this.data.created_at = item.created_at
-
-
     },
     calculateTotalDaysFromToday(dateString) {
       const date = new Date(dateString);
@@ -931,6 +952,7 @@ export default {
       this.data.resolved_officer = item.resolved_officer
       this.data.grievanceSubject = this.language === 'bn' ? item.grievance_subject?.title_bn : item.grievance_subject?.title_en
       this.data.grievanceType = this.language === 'bn' ? item.grievance_type?.title_bn : item.grievance_type?.title_en
+      this.data.resolved_officer = this.language === 'bn' ? item.resolver?.name_bn : item.resolver?.name_en
       this.data.created_at = item.created_at
 
     },
@@ -1821,6 +1843,9 @@ export default {
         .then((result) => {
           this.applications = result.data.data;
           console.log(this.applications, ' this.applications this.applications');
+          this.userRoleId=this.userData.roles ? this.userData.roles.map(role => role.id) : [];
+          console.log(this.userRoleId[0],'user role name');
+          
           this.total = result.data.total;
           this.pagination.current = result.data.current_page;
           this.pagination.total = result.data.last_page;
@@ -2167,7 +2192,7 @@ export default {
     this.GetAllDivisions();
     this.GetGrievanceType();
     this.GetGrievanceSubject();
-
+    this.GetGrievanceSolutionType();
     this.GetCommitte();
   },
   beforeMount() {
