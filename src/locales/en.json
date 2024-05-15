@@ -1235,7 +1235,8 @@
           "forward_to": "Forward To",
           "solution": "Solution",
           "remarks": "Remarks",
-          "status_update": "Grievance Status Update"
+          "status_update": "Grievance Status Update",
+          "grievance_status": "Grievance Status"
         }
     },
 
