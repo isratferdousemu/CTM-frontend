@@ -43,13 +43,14 @@ export default {
     return {
       // Define data properties here
       dates: [],
+      dateRangeText: "",
       menu: false,
       total_number_of_application_received_line_bar_chart: null,
       total_number_of_application_received_line_bar_info: [],
       total_number_of_application_received_line_bar_levels: [],
       total_number_of_application_received_line_bar_datas: [],
       isLoading: false,
-      dateRangeText: ""
+
     };
   },
   methods: {
