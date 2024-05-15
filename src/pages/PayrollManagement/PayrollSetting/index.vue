@@ -2,7 +2,9 @@
   <v-container>
     <v-row>
       <v-col cols="12">
-        <h2 class="my-4">Financial Year: 2023-24</h2>
+        <h2 class="my-4">
+          Financial Year: {{ financial_year?.financial_year }}
+        </h2>
       </v-col>
     </v-row>
     <v-row>
@@ -13,30 +15,23 @@
           class="mb-4"
         >
           <v-row no-gutters>
-            <v-col cols="6">
-              <v-card-title>{{ allowance.name }}</v-card-title>
+            <v-col cols="12" class="blue-background white-text">
+              <v-card-title class="text-white">{{
+                getItemText(allowance)
+              }}</v-card-title>
             </v-col>
-            <v-col cols="6">
-              <v-card-text>
-                <v-list>
-                  <!-- <v-checkbox
-                    v-for="installment in generateInstallments(
-                      allowance.payment_cycle
-                    )"
-                    :key="installment.start"
-                    v-model="installment.checked"
-                    :label="installment.end ? `${installment.start} - ${installment.end}` : installment.start"
-                  ></v-checkbox> -->
-                  <v-checkbox
-                    v-for="installment in generateInstallments(
-                      allowance.payment_cycle,
-                      '2023-24'
-                    )"
-                    :key="installment.text"
-                    v-model="installment.checked"
-                    :label="installment.text"
-                  ></v-checkbox>
-                </v-list>
+            <v-col cols="12">
+              <v-card-text class="d-flex flex-wrap">
+                <v-checkbox
+                  v-for="installment in generateInstallments(
+                    allowance.payment_cycle
+                  )"
+                  :key="installment.id"
+                  :label="installment.installment_name"
+                  :value="installment.id"
+                  :checked="true"
+                  @change="toggleInstallment(allowance, installment)"
+                ></v-checkbox>
               </v-card-text>
             </v-col>
           </v-row>
@@ -55,155 +50,244 @@
 export default {
   data() {
     return {
-      // allowances: [],
-      // installments: [],
-      allowances: [
-        {
-          name: "Widow Allowance",
-          payment_cycle: "Monthly",
-          installments: []
-        },
-        {
-          name: "Widow Allowance2",
-          payment_cycle: "Quaterly",
-          installments: []
-        },
-      ],
+      data: null,
+      financial_year: null,
+      allowances: [],
+      installments: [],
+      selectedData: [],
+      defaultChecked: true,
     };
   },
-  methods: {
-    generateInstallments(paymentCycle) {
-      console.log("🚀 ~ generateInstallments ~ paymentCycle:", paymentCycle)
-      let numInstallments = 0;
-      if (paymentCycle === "Monthly") {
-        numInstallments = 12;
-      } else if (paymentCycle === "Quaterly") {
-        numInstallments = 4;
-      }
 
-      const installments = [];
-      for (let i = 1; i <= numInstallments; i++) {
-        const installmentText = `Installment ${i}`;
-        installments.push({ text: installmentText, checked: false });
-      }
-      return installments;
+  computed: {
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      },
+    },
+  },
+  methods: {
+    getItemText(item) {
+      return this.language === "bn" ? item.name_bn : item.name_en;
     },
 
-    // generateInstallments(paymentCycle) {
-    //   if (!paymentCycle) return []; 
+    isInstallmentSelected(allowance, installment) {
+      let check = this.installments.some(
+        (selectedInst) => selectedInst.id === installment.id
+      );
+    },
 
-    //   return this.installments.filter((installment) => {
-    //     if (!installment.type) return false;
-    //     console.log("🚀 ~ returnthis.installments.filter ~ paymentCycle.toLowerCase():", paymentCycle.toLowerCase())
-    //     console.log("🚀 ~ returnthis.installments.filter ~ installment.type.toLowerCase():", installment.type.toLowerCase())
-    //     return installment.type.toLowerCase() === paymentCycle.toLowerCase();
-    //   });
-    // },
+    generateInstallments(paymentCycle) {
+      if (!paymentCycle) return [];
 
-    // async getAllAllowance() {
-    //   try {
-    //     this.$axios
-    //       .get(`/admin/payroll/get-all-allowance`, {
-    //         headers: {
-    //           Authorization: "Bearer " + this.$store.state.token,
-    //           "Content-Type": "multipart/form-data",
-    //         },
-    //       })
-    //       .then((res) => {
-    //         if (res.data) {
-    //           this.allowances = res.data;
-    //         } else {
-    //           this.$toast.error("Something went wrong");
-    //         }
-    //       })
-    //       .catch((err) => {
-    //         console.log("🚀 ~ getUserById ~ err:", err);
-    //       });
-    //   } catch (e) {
-    //     console.log(e);
-    //   }
-    // },
+      return this.installments.filter((installment) => {
+        return installment.payment_cycle === paymentCycle;
+      });
+    },
 
-    // async getInstallments() {
-    //   try {
-    //     this.$axios
-    //       .get(`/admin/payroll/get-all-installments`, {
-    //         headers: {
-    //           Authorization: "Bearer " + this.$store.state.token,
-    //           "Content-Type": "multipart/form-data",
-    //         },
-    //       })
-    //       .then((res) => {
-    //         if (res.data) {
-    //           this.installments = res.data;
-    //         } else {
-    //           this.$toast.error("Something went wrong");
-    //         }
-    //       })
-    //       .catch((err) => {
-    //         console.log("🚀 ~ getUserById ~ err:", err);
-    //       });
-    //   } catch (e) {
-    //     console.log(e);
-    //   }
-    // },
+    toggleInstallment(allowance, installment) {
+      // Check if the allowance is already selected
+      const index = this.selectedData.findIndex(
+        (data) => data.allowance === allowance
+      );
+      if (index === -1) {
+        // If not selected, add it to the selectedData array
+        this.selectedData.push({
+          allowance: allowance,
+          installments: [installment],
+        });
+        console.log("Added to selectedData:", this.selectedData);
+      } else {
+        // If already selected, add or remove the installment
+        const existingInstallments = this.selectedData[index].installments;
+        const installmentIndex = existingInstallments.findIndex(
+          (inst) => inst === installment
+        );
+        if (installmentIndex === -1) {
+          // Add the installment if not already present
+          existingInstallments.push(installment);
+          console.log("Added installment to selectedData:", this.selectedData);
+        } else {
+          // Remove the installment if already present
+          existingInstallments.splice(installmentIndex, 1);
+          console.log(
+            "Removed installment from selectedData:",
+            this.selectedData
+          );
+        }
 
-    // generateInstallments(paymentCycle, financialYear) {
-    //   const startMonth = financialYear === "2023-24" ? 7 : 1; // Starting month based on financial year
-    //   const numInstallments = paymentCycle === "monthly" ? 12 : 4; // Number of installments based on payment cycle
-
-    //   const installments = [];
-    //   for (let i = 0; i < numInstallments; i++) {
-    //     const month = startMonth + i;
-    //     const year = month > 12 ? 2024 : 2023; // Adjust year if month goes beyond December
-    //     const monthText = new Date(year, month - 1).toLocaleString("default", {
-    //       month: "long",
-    //     }); // Get month name
-    //     const nextMonth = (month % 12) + 1;
-    //     const nextYear = month === 12 ? year + 1 : year;
-    //     const nextMonthText = new Date(nextYear, nextMonth - 1).toLocaleString(
-    //       "default",
-    //       { month: "long" }
-    //     ); // Get next month name
-    //     const installmentText = `${
-    //       i + 1
-    //     }st installment (${monthText} ${year} - ${nextMonthText} ${nextYear})`; // Construct installment text
-    //     installments.push({ text: installmentText, checked: false });
-    //   }
-    //   return installments;
-    // },
+        // If there are no installments left, remove the allowance from selectedData
+        if (existingInstallments.length === 0) {
+          this.selectedData.splice(index, 1);
+          console.log(
+            "Removed allowance from selectedData:",
+            this.selectedData
+          );
+        }
+      }
+    },
 
     submitForm() {
-      const selectedAllowances = this.allowances.filter((allowance) => {
-        return allowance.installments.some(
-          (installment) => installment.checked
-        );
+      // const dataToSend = {
+      //   financial_year: this.financial_year.id,
+      //   allowances: this.selectedData.map((item) => {
+      //     return {
+      //       allowance_id: item.allowance.id,
+      //       allowanceName: item.allowance.name_en,
+      //       selectedInstallments: item.installments.map((inst) => ({
+      //         installment_id: inst.id,
+      //         installmentName: inst.installment_name,
+      //       })),
+      //     };
+      //   }),
+      // };
+      const dataToSend = this.selectedData.map((item) => {
+        return {
+          allowance_id: item.allowance.id,
+          allowanceName: item.allowance.name_en,
+          selectedInstallments: item.installments.map((inst) => ({
+            installment_id: inst.id,
+            installmentName: inst.installment_name,
+          })),
+        };
       });
-
-      if (selectedAllowances.length > 0) {
-        const dataToSend = selectedAllowances.map((allowance) => {
-          return {
-            name: allowance.name,
-            installments: allowance.installments
-              .filter((installment) => installment.checked)
-              .map((installment) => installment.text),
-          };
+      this.$axios
+        .post("/admin/payroll/setting-submit", dataToSend, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "application/json",
+          },
+        })
+        .then((res) => {
+          this.$toast.success("Setting submitted successfully");
+          // this.$router.push("/admin/payroll/setting");
+        })
+        .catch((error) => {
+          console.error("API error:", error);
         });
+    },
 
-        console.log("API called with data:", dataToSend);
+    async getSettingData() {
+      try {
+        const response = await this.$axios.get(
+          `/admin/payroll/get-setting-data`,
+          {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
 
-        this.validationError = false;
-      } else {
-        this.validationError = true;
+        if (response.data) {
+          this.data = response.data.data;
+          this.data.forEach((item) => {
+            // Find the corresponding allowance
+            const allowance = this.allowances.find(
+              (a) => a.id === item.program_id
+            );
+            if (allowance) {
+              // Select each installment found in the data
+              item.installment_ids.forEach((installmentId) => {
+                const installment = this.installments.find(
+                  (i) => i.id === installmentId
+                );
+                if (installment) {
+                  this.toggleInstallment(allowance, installment);
+                }
+              });
+            }
+          });
+        } else {
+          this.$toast.error("Something went wrong");
+        }
+      } catch (error) {
+        console.error("Error fetching setting data:", error);
+      }
+    },
+
+    async getFinancialYear() {
+      try {
+        this.$axios
+          .get(`/admin/payroll/get-financial-year`, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((res) => {
+            console.log("🚀 ~ .then ~ res:", res);
+            if (res.data) {
+              this.financial_year = res.data;
+            } else {
+              this.$toast.error("Something went wrong");
+            }
+          })
+          .catch((err) => {});
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    async getAllAllowance() {
+      try {
+        this.$axios
+          .get(`/admin/payroll/get-all-allowance`, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((res) => {
+            if (res.data) {
+              this.allowances = res.data;
+            } else {
+              this.$toast.error("Something went wrong");
+            }
+          })
+          .catch((err) => {});
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    async getInstallments() {
+      try {
+        this.$axios
+          .get(`/admin/payroll/get-all-installments`, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((res) => {
+            if (res.data) {
+              this.installments = res.data;
+            } else {
+              this.$toast.error("Something went wrong");
+            }
+          })
+          .catch((err) => {});
+      } catch (e) {
+        console.log(e);
       }
     },
   },
 
-  // mounted() {
-  //   this.getAllAllowance();
-  //   this.getInstallments();
-  // },
+  mounted() {
+    this.getFinancialYear();
+    this.getAllAllowance();
+    this.getInstallments();
+    this.getSettingData();
+  },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.blue-background {
+  background-color: #2b4978;
+}
+.white-text {
+  color: white;
+}
+</style>
