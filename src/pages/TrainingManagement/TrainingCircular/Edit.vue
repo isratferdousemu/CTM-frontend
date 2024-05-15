@@ -391,7 +391,8 @@ export default {
                                             <v-col cols=" 12" sm="6" lg="6">
                                                 <ValidationProvider name="Type" vid="type" rules="required"
                                                     v-slot="{ errors }">
-                                                    <v-select @input="change()" dense type="text" v-model="data.circular_type_id"
+                                                    <v-select @input="change()" dense type="text"
+                                                        v-model="data.circular_type_id"
                                                         :label="$t('container.training_management.training_circular.type')"
                                                         persistent-hint outlined :error="errors[0] ? true : false"
                                                         :items="circular_types" :item-text="getItemText" item-value="id"
@@ -520,9 +521,9 @@ export default {
                                                 <label>{{
                                                     $t('container.training_management.training_circular.description')
                                                     }}</label>
-                                                <vue-editor id="editor" useCustomImageHandler
-                                                    v-model="data.description">
+                                                <vue-editor v-model="data.description">
                                                 </vue-editor>
+                                           
 
                                             </v-col>
 
