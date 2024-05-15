@@ -1,6 +1,6 @@
 <template>
   <div id="aplication_list">
-    <v-row class="mx-5 mt-4">
+    <v-row class="ml-sm-5 mt-0">
       <v-col cols="12">
         <v-row>
           <v-col cols="12">
@@ -27,7 +27,9 @@
                             :append-icon-cb="appendIconCallback" :label="$t(
                               'container.beneficiary_management.beneficiary_list.nid'
                             )
-                              ">
+                              "
+                               :hide-details="true"
+                              >
                           </v-text-field>
                         </v-col>
                         <v-col lg="3" md="3" cols="12">
@@ -35,7 +37,10 @@
                             :append-icon-cb="appendIconCallback" :label="$t(
                               'container.grievance_management.grievanceList.tracking_no'
                             )
-                              ">
+                            
+                              "
+                               :hide-details="true"
+                              >
                           </v-text-field>
                         </v-col>
 
@@ -118,7 +123,7 @@
                               outlined :label="$t(
                                 'container.system_config.demo_graphic.ward.subLocation_type'
                               )
-                                " :items="subLocationType" :item-text="language === 'bn' ? 'name_bn' : 'name_en'"
+                                " :items="subLocationType" :item-text="language === 'bn' ? 'value_bn' : 'value_en'"
                               item-value="id" :error="errors[0] ? true : false" :readonly="isReadonlySubLocation()"
                               :error-messages="errors[0]" :hide-details="errors[0] ? false : true" class="no-arrow-icon"
                               :append-icon-cb="appendIconCallback" append-icon="mdi-plus"></v-autocomplete>
@@ -219,7 +224,7 @@
                       </v-row>
 
 
-                      <div class="d-inline d-flex justify-end">
+                      <div class="d-inline d-flex justify-end mt-2">
 
                         <v-btn elevation="2" class="btn  mr-2" @click="resetForm()">{{
                           $t("container.list.reset")
@@ -235,175 +240,186 @@
             </v-expansion-panels>
             <!-- Expantion panels end -->
             <!-- Application list -->
-            <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8 mt-5">
-              <v-card-title class="justify-center" tag="div"
-                style="background-color:#1c3b68;color:white;margin-bottom: 17px;font-size:17px;">
-                <h3 class="text-uppercase ">
-                  {{ $t("container.grievance_management.grievanceList.grievance_list") }}
-                </h3>
-              </v-card-title>
-              <v-card-text>
-                <v-row justify="space-between" align="center">
-                  <v-col lg="3" md="3" cols="12"> </v-col>
-                  <v-col lg="3" md="3" cols="12" class="text-right">
-                    <v-select v-model="selectedColumns" :items="selectableColumns" :label="$t(
-                      'container.application_selection.application.select_column'
-                    )
-                      " multiple @change="updateVisibleColumns" outlined menu-props="top">
-                      <template v-slot:selection="{ item, index }"> </template>
-                    </v-select>
-                  </v-col>
-                </v-row>
-                <!-- </div> -->
-                <template>
-                  <v-row justify="space-between" align="center" class="mx-4">
-                    <!-- Checkbox on the left -->
-                    <v-col lg="3" md="3" cols="12">
-                      {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">
-                        {{ language === 'bn' ? $helpers.englishToBangla(
-                          this.total) : this.total }}
-                      </span>
-                    </v-col>
-
-                    <!-- Dropdown on the right -->
-                    <v-col lg="4" md="6" cols="12" class="text-right">
-                      <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="GeneratePDF()">
-                        <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
-                      </v-btn>
-                      <v-btn elevation="2" class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
-                        <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
-                        {{ $t("container.list.excel") }}
-                      </v-btn>
+         <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8 mt-5">
+                <v-card-title  tag="div"
+                  style="background-color:#1c3b68;color:white;margin-bottom: 17px;font-size:17px;">
+                  <h3 class="text-uppercase ">
+                    {{ $t("container.grievance_management.grievanceList.grievance_list") }}
+                  </h3>
+                </v-card-title>
+                <v-card-text>
+                  <v-row justify="space-between" align="center">
+                    <v-col lg="3" md="3" cols="12"> </v-col>
+                    <v-col lg="3" md="3" cols="12" class="text-right">
+                      <v-select v-model="selectedColumns" :items="selectableColumns" :label="$t(
+                        'container.application_selection.application.select_column'
+                      )
+                        " multiple @change="updateVisibleColumns" outlined menu-props="top">
+                        <template v-slot:selection="{ item, index }"> </template>
+                      </v-select>
                     </v-col>
                   </v-row>
-                </template>
-                <v-row class="ma-0  white round-border d-flex justify-space-between align-center" justify="center"
-                  justify-lg="space-between">
-                  <v-col cols="12">
-                    <v-data-table :headers="visibleHeaders" :items="applications" :loading="loading" item-key="id"
-                      :items-per-page="pagination.perPage" hide-default-footer
-                      class="elevation-0 transparent row-pointer">
-                      <!-- Header slot -->
-                      <template v-slot:item.id="{ item, index }">
-                        {{ language === 'bn' ? $helpers.englishToBangla(
-                          (pagination.current - 1) * pagination.perPage +
-                          index +
-                          1) : (pagination.current - 1) * pagination.perPage +
-                          index +
-                          1 }}
-                      </template>
-                      <template v-slot:item.name="{ item }">
-                        <span>
-                          {{ item.name }}
-                          <!-- {{ item?.grievance_type?.title_en }} -->
+                  <!-- </div> -->
+                  <template>
+                    <v-row justify="space-between" align="center" class="mx-4">
+                      <!-- Checkbox on the left -->
+                      <v-col sm="6" lg="6" md="6" cols="12">
+                        {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">
+                          {{ language === 'bn' ? $helpers.englishToBangla(
+                            this.total) : this.total }}
                         </span>
-                      </template>
+                      </v-col>
 
-                      <template v-slot:item.grievanceType="{ item }">
-                        <span>
-                          {{ language === 'bn' ? item.grievance_type?.title_bn : item.grievance_type?.title_en }}
-                          <!-- {{ item?.grievance_type?.title_en }} -->
-                        </span>
-                      </template>
+                      <!-- Dropdown on the right -->
+                      <v-col sm="6" lg="6" md="6" cols="12" class="text-right">
+                        <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="GeneratePDF()">
+                          <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
+                        </v-btn>
+                        <v-btn elevation="2" class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
+                          <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                          {{ $t("container.list.excel") }}
+                        </v-btn>
+                      </v-col>
+                    </v-row>
+                  </template>
+                  <v-row class="ma-0  white round-border d-flex justify-space-between align-center" justify="center"
+                    justify-lg="space-between">
+                    <v-col cols="12">
+                      <v-data-table :headers="visibleHeaders" :items="applications" :loading="loading" item-key="id"
+                        :items-per-page="pagination.perPage" hide-default-footer
+                        class="elevation-0 transparent row-pointer table-responsive">
+                        <!-- Header slot -->
+                        <template v-slot:item.sl="{ item, index }">
+                          {{ language === 'bn' ? $helpers.englishToBangla(
+                            (pagination.current - 1) * pagination.perPage +
+                            index +
+                            1) : (pagination.current - 1) * pagination.perPage +
+                            index +
+                            1 }}
+                        </template>
+                        <template v-slot:item.name="{ item }">
+                          <span>
+                            {{ item.name }}
+                            <!-- {{ item?.grievance_type?.title_en }} -->
+                          </span>
+                        </template>
 
-                      <template v-slot:item.grievanceSubject="{ item }">
-                        <span>
-                          {{ language === 'bn' ? item.grievance_subject?.title_bn : item.grievance_subject?.title_en }}
-                        </span>
-                      </template>
+                        <template v-slot:item.grievanceType="{ item }">
+                          <span>
+                            {{ language === 'bn' ? item.grievance_type?.title_bn : item.grievance_type?.title_en }}
+                            <!-- {{ item?.grievance_type?.title_en }} -->
+                          </span>
+                        </template>
 
-                      <template v-slot:item.created_at="{ item }">
-                        <span>
-                          {{ language === 'bn' ? formatDate(item.created_at) : formatDate(item.created_at) }}
-                        </span>
-                      </template>
-                      <template v-slot:item.division="{ item }">
-                        <span>
-                          {{ language === 'bn' ? item.division?.name_bn : item.division?.name_en }}
-                        </span>
-                      </template>
-                      <template v-slot:item.district="{ item }">
-                        <span>
-                          {{ language === 'bn' ? item.district?.name_bn : item.district?.name_en }}
-                        </span>
-                      </template>
-                      <template v-slot:item.location="{ item }">
-                        <span>
-                          {{ language === 'bn' ? item.city_corporation?.name_bn : item.city_corporation?.name_en }}
-                        </span>
-                      </template>
-                      <template v-slot:item.tracking_no="{ item }">
-                        <span>
-                          {{ item?.tracking_no }}
-                        </span>
-                      </template>
-                      <template v-slot:item.resolved_officer="{ item }">
+                        <template v-slot:item.grievanceSubject="{ item }">
                           <span>
-                             {{ language === 'bn' ? item.resolver?.name_bn : item.resolver?.name_en }}
-                            <!-- {{ item?.resolved_officer }} -->
+                            {{ language === 'bn' ? item.grievance_subject?.title_bn : item.grievance_subject?.title_en }}
                           </span>
-                       </template>
-                      <template v-slot:item.status="{ item }">
-                        <span v-if="item.status == 0" class="not-selected"
-                          style="background-color: lightgray; padding: 5px; width: 100px;">
-                          Not Solved
-                        </span>
-                        <span v-if="item.status == 1" class="forwarded"
-                          style="background-color: #4CAF50; color: white; padding: 5px; width: 100px;">
-                          Forwarded
-                        </span>
-                        <span v-if="item.status == 2" class="approved"
-                          style="background-color: #008000; color: white; padding: 5px; width: 100px;">
-                          Solved
-                        </span>
-                        <span v-if="item.status == 3" class="waiting"
-                          style="background-color: #FFD700; padding: 5px; width: 100px;">
-                          Canceled
-                        </span>
-                      </template>
-                      <template v-slot:item.actions="{ item }">
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn fab x-small v-on="on" color="#AFB42B" elevation="0" class="white--text"
-                              @click="showDetailsModal(item)">
-                              <v-icon> mdi-eye </v-icon>
-                            </v-btn>
-                          </template>
+                        </template>
+
+                        <template v-slot:item.created_at="{ item }">
                           <span>
-                            {{ $t("container.list.view") }}
+                            {{ language === 'bn' ? formatDate(item.created_at) : formatDate(item.created_at) }}
                           </span>
-                        </v-tooltip>
-                        <v-tooltip top v-if="userRoleId[0]==item.forward_to && (item.status == 0 || item.status == 1)">
-                          <template v-slot:activator="{ on }">
-                            <v-btn fab x-small v-on="on" color="#616286" elevation="0" class="white--text"
-                              @click="createGrievanceDialog(item)">
-                              <v-icon> mdi-skip-next-circle </v-icon>
-                            </v-btn>
-                          </template>
+                        </template>
+                        <template v-slot:item.division="{ item }">
                           <span>
-                            {{ $t("container.grievance_management.grievanceList.status_update") }}
+                            {{ language === 'bn' ? item.division?.name_bn : item.division?.name_en }}
                           </span>
-                        </v-tooltip>
-                      </template>
-                      <!-- End Action Button -->
-                      <template v-slot:footer="item">
-                        <div class="text-center pt-2 v-data-footer justify-center pb-2">
-                          <v-select style="
+                        </template>
+                        <template v-slot:item.district="{ item }">
+                          <span>
+                            {{ language === 'bn' ? item.district?.name_bn : item.district?.name_en }}
+                          </span>
+                        </template>
+                        <template v-slot:item.location="{ item }">
+                          <span>
+                            {{ language === 'bn' ? item.city_corporation?.name_bn : item.city_corporation?.name_en }}
+                          </span>
+                        </template>
+                        <template v-slot:item.tracking_no="{ item }">
+                          <span>
+                            {{ item?.tracking_no }}
+                          </span>
+                        </template>
+                        <template v-slot:item.resolved_officer="{ item }">
+                            <span>
+                               {{ language === 'bn' ? item.resolver?.name_bn : item.resolver?.name_en }}
+                              <!-- {{ item?.resolved_officer }} -->
+                            </span>
+                         </template>
+                        <template v-slot:item.status="{ item }">
+                          <span v-if="item.status == 0" class="not-selected"
+                            style="background-color: lightgray; padding: 5px; width: 100px;">
+                             {{ language === 'bn' ? "সমাধান হয়নি" : "Not Solved" }}
+                          
+                          </span>
+                          <span v-if="item.status == 1" class="forwarded"
+                            style="background-color: #4CAF50; color: white; padding: 5px; width: 100px;">
+                              {{ language === 'bn' ? "ফরোয়ার্ড করা হয়েছে" : "Forwarded" }}
+                          
+                          </span>
+                          <span v-if="item.status == 2" class="approved"
+                            style="background-color: #008000; color: white; padding: 5px; width: 100px;">
+                              {{ language === 'bn' ? "সমাধান করা হয়েছে" : "Solved" }}
+                          
+                          </span>
+                          <span v-if="item.status == 3" class="waiting"
+                            style="background-color: #FFD700; padding: 5px; width: 100px;">
+                               {{ language === 'bn' ? "বাতিল" : "Canceled" }}
+                          
+                          </span>
+                            <span v-if="item.status === 4" class="waiting"
+                              style="background-color: #FFD700; padding: 5px; width: 100px;">
+                                 {{ language === 'bn' ? "
+                                                                    চলমান" : "In Progress" }}
+                          
+                            </span>
+                        </template>
+                        <template v-slot:item.actions="{ item }">
+                          <v-tooltip top>
+                            <template v-slot:activator="{ on }">
+                              <v-btn fab x-small v-on="on" color="#AFB42B" elevation="0" class="white--text"
+                                @click="showDetailsModal(item)">
+                                <v-icon> mdi-eye </v-icon>
+                              </v-btn>
+                            </template>
+                            <span>
+                              {{ $t("container.list.view") }}
+                            </span>
+                          </v-tooltip>
+                          <v-tooltip top v-if="userRoleId[0] == item.forward_to && (item.status == 0 || item.status == 1) || userRoleId[0]==1">
+                            <template v-slot:activator="{ on }">
+                              <v-btn fab x-small v-on="on" color="#616286" elevation="0" class="white--text"
+                                @click="createGrievanceDialog(item)">
+                                <v-icon> mdi-skip-next-circle </v-icon>
+                              </v-btn>
+                            </template>
+                            <span>
+                              {{ $t("container.grievance_management.grievanceList.status_update") }}
+                            </span>
+                          </v-tooltip>
+                        </template>
+                        <!-- End Action Button -->
+                        <!-- End Action Button -->
+                        <template v-slot:footer="item">
+                          <div class="text-center pt-2 v-data-footer justify-center pb-2">
+                            <v-select style="
                               position: absolute;
                               right: 25px;
                               width: 149px;
                               transform: translate(0px, 0px);
                             " :items="items" hide-details dense outlined @change="onPageChange"
-                            v-model="pagination.perPage"></v-select>
-                          <v-pagination circle primary v-model="pagination.current" :length="pagination.total"
-                            @input="onPageChange" :total-visible="11" class="custom-pagination-item"></v-pagination>
-                        </div>
-                      </template>
-                    </v-data-table>
-                  </v-col>
-                </v-row>
-              </v-card-text>
-            </v-card>
+                              v-model="pagination.perPage"></v-select>
+                            <v-pagination circle primary v-model="pagination.current" :length="pagination.total"
+                              @input="onPageChange" :total-visible="11" class="custom-pagination-item"></v-pagination>
+                          </div>
+                        </template>
+                      </v-data-table>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+              </v-card>
           </v-col>
         </v-row>
       </v-col>
@@ -417,7 +433,7 @@
           </v-card-title>
           <v-divider style="background-color:red;"></v-divider>
           <template>
-            <v-simple-table dense>
+            <v-simple-table dense class="table-responsive">
               <template v-slot:default>
                 <thead>
                   <tr>
@@ -443,22 +459,33 @@
                   <tr>
                     <th style="font-size: 16px;">{{ $t("container.list.status") }} : </th>
                     <th style="font-size: 16px;">
-                      <span v-if="data.status == 0" class="not-selected"
-                        style="background-color: lightgray; padding: 5px; width: 100px;">
-                        Not Solved
-                      </span>
-                      <span v-if="data.status == 1" class="forwarded"
-                        style="background-color: #4CAF50; color: white; padding: 5px; width: 100px;">
-                        Forwarded
-                      </span>
-                      <span v-if="data.status == 2" class="approved"
-                        style="background-color: #008000; color: white; padding: 5px; width: 100px;">
-                        Solved
-                      </span>
-                      <span v-if="data.status == 3" class="waiting"
-                        style="background-color: #FFD700; padding: 5px; width: 100px;">
-                        Canceled
-                      </span>
+                       <span v-if="data.status === 0" class="not-selected"
+                            style="background-color: lightgray; padding: 5px; width: 100px;">
+                             {{ language === 'bn' ? "সমাধান হয়নি" : "Not Solved" }}
+                          
+                          </span>
+                          <span v-if="data.status === 1" class="forwarded"
+                            style="background-color: #4CAF50; color: white; padding: 5px; width: 100px;">
+                              {{ language === 'bn' ? "ফরোয়ার্ড করা হয়েছে" : "Forwarded" }}
+                          
+                          </span>
+                          <span v-if="data.status === 2" class="approved"
+                            style="background-color: #008000; color: white; padding: 5px; width: 100px;">
+                              {{ language === 'bn' ? "সমাধান করা হয়েছে" : "Solved" }}
+                          
+                          </span>
+                          <span v-if="data.status === 3" class="waiting"
+                            style="background-color: #FFD700; padding: 5px; width: 100px;">
+                               {{ language === 'bn' ? "বাতিল" : "Canceled" }}
+                          
+                          </span>     
+                           <span v-if="data.status === 4" class="waiting"
+                            style="background-color: #FFD700; padding: 5px; width: 100px;">
+                               {{ language === 'bn' ? "
+                                 চলমান" : "In Progress" }}
+                          
+                          </span>
+                 
                     </th>
                   </tr>
                   <tr>
@@ -511,12 +538,8 @@
                 </v-row>
                 <v-row dense>
                   <v-col lg="6" md="6" cols="12">
-                    <v-select outlined :label="$t('container.list.status')" v-model="data.status"
-                      :items="[
-                        { text: 'Solved', value: 2 },
-                        { text: 'Cancel', value: 3 },
-                        { text: 'Forward',value: 1 }
-                      ]">
+                    <v-select outlined :label="$t('container.list.status')" v-model="data.status" :items="statusOptions">
+                 
                     </v-select>
                   </v-col>
                   <v-col lg="6" md="6" cols="12" v-if="data.status == '1'">
@@ -525,7 +548,7 @@
                      >
                    </v-select>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12">
+                  <v-col lg="6" md="6" cols="12" v-if="data.status != '1'">
                     <v-select outlined :label="$t('container.grievance_management.grievanceList.solution')"
                       v-model="data.solution" :items="solutionType" :item-text="language==='bn' ?'value_bn' : 'value_en'"
                    >
@@ -541,10 +564,11 @@
                 </v-row>
                 <v-row dense>
                   <v-col lg="6" md="6" cols="12">
-                    <v-file-input outlined v-model="data.documents" accept="file/*"
-                      :placeholder="language === 'bn' ? 'সিলেক্ট ফাইল' : 'Select File'"
-                      :label="$t('container.grievance_management.grievanceEntry.document')">
-                    </v-file-input>
+                 <v-file-input outlined v-model="data.documents" accept=".pdf,.xls,.xlsx,.jpg,.jpeg,.png" 
+                  :rules="[fileTypeRule, fileSizeRule]"
+                  :placeholder="language === 'bn' ? 'সিলেক্ট ফাইল' : 'Select File'"
+                  :label="$t('container.grievance_management.grievanceEntry.document')">
+                </v-file-input>
                   </v-col>
                 </v-row>
                 <v-row dense class="mx-0 my-0 py-2" justify="end">
@@ -612,6 +636,18 @@ export default {
         resolved_officer: null,
         forwardOfficer: null,
       },
+      fileTypeRule: (value) => {
+        if (!value) return 'File is required.';
+        const allowedFormats = ['.pdf', '.xls', '.xlsx', '.jpg', '.jpeg', '.png'];
+        const extension = value.name.slice(((value.name.lastIndexOf(".") - 1) >>> 0) + 2);
+        return allowedFormats.includes(`.${extension}`) || 'Allowed file types are PDF, Excel, JPG, JPEG, and PNG.';
+      },
+      fileSizeRule: (value) => {
+        if (!value) return 'File is required.';
+        const maxSizeMB = 5; // Maximum file size in MB
+        const maxSizeBytes = maxSizeMB * 1024 * 1024; // Convert MB to bytes
+        return value.size <= maxSizeBytes || `File size should be less than ${maxSizeMB} MB.`;
+      },
       total: null,
       showModal: false,
       dialogAdd: false,
@@ -652,6 +688,7 @@ export default {
       solutionType: [],
       forward_to: [],
       userRoleId:'',
+      firstOfficerId:'',
       subLocationType: [
         {
           id: 1,
@@ -669,13 +706,14 @@ export default {
       pagination: {
         current: 1,
         total: 0,
-        perPage: 10,
+        perPage: 5,
       },
       items: [5, 10, 15, 20, 40, 50, 100],
 
       selectedColumns: ['grievanceSubject', 'grievanceType', 'tracking_no', 'created_at', 'status'],  // Initially, first 6 columns are selected
 
-      fixedColumns: ['id', 'sl', 'actions'],  // Two columns that will always remain visible
+      // fixedColumns: ['sl'], 
+       fixedColumns: ['id', 'sl', 'actions'], // Two columns that will always remain visible
 
 
     };
@@ -685,6 +723,22 @@ export default {
     ValidationObserver,
   },
   computed: {
+    statusOptions() {
+      this.userRoleId = this.userData.roles ? this.userData.roles.map(role => role.id) : [];
+      // Define the default options
+      let options = [
+        { text: this.$i18n.locale == 'en' ? 'Solved' : 'সমাধান', value: 2 },
+        { text: this.$i18n.locale == 'en' ? 'Cancel' : 'বাতিল', value: 3 },
+        { text: this.$i18n.locale == 'en' ? 'Forward' : 'ফরোয়ার্ড', value: 1 }
+      ];
+
+      // Conditionally add the "In Progress" option
+      if (this.userRoleId == this.firstOfficerId) {
+        options.push({ text: this.$i18n.locale == 'en' ? 'In Progress' : 'চলমান', value: 4 });
+      }
+
+      return options;
+    },
     language: {
       get() {
         return this.$store.getters.getAppLanguage;
@@ -730,12 +784,7 @@ export default {
         //   value: "id",
         //   fixed: true,
         // },
-        {
-          text: this.$t("container.list.sl"),
-          value: "id",
-          align: "start",
-          sortable: false,
-        },
+        { text: this.$t("container.list.sl"), value: "sl", fixed: true },
         {
           text: this.$t(
             "container.grievance_management.grievanceEntry.name"
@@ -816,7 +865,7 @@ export default {
         },
 
 
-        { text: this.$t("container.list.action"), value: "actions", fixed: true },
+         { text: this.$t("container.list.action"), value: "actions", fixed: true },
 
       ];
     },
@@ -880,16 +929,19 @@ export default {
         .then((result) => {
           // this.setting = result.data;
           const data = result.data;
-
+          this.userRoleId = this.userData.roles ? this.userData.roles.map(role => role.id) : [];
+          console.log(this.userRoleId[0], 'user role name');
           this.forward_to = [
             data.first_officer,
             data.secound_officer,
             data.third_officer
           ];
+        // Filter the forward_to array based on userRoleId
+          this.forward_to = this.forward_to.filter(role => !this.userRoleId.includes(role.id));
+          console.log(this.forward_to,'this.forward_tothis.forward_to');
 
-          console.log(this.setting,'anwar')
-
-
+          this.firstOfficerId= data?.first_officer?.id;
+    
         //   const totalDay = this.calculateTotalDaysFromToday(item.created_at);
         //   const first_tire_solution_time = this.setting?.first_tire_solution_time;
         //   const secound_tire_solution_time = this.setting?.secound_tire_solution_time;
@@ -946,6 +998,7 @@ export default {
     },
     // show details modal
     showDetailsModal(item) {
+      console.log(item.status,'stausss');
       this.showModal = true;
       this.data.status = item.status
       this.data.tracking_no = item.tracking_no
@@ -1832,6 +1885,7 @@ export default {
         perPage: this.pagination.perPage,
         page: this.pagination.current,
       };
+      console.log(queryParams,'page number');
       this.$axios
         .get("/admin/grievance/get", {
           headers: {
@@ -1842,10 +1896,7 @@ export default {
         })
         .then((result) => {
           this.applications = result.data.data;
-          console.log(this.applications, ' this.applications this.applications');
           this.userRoleId=this.userData.roles ? this.userData.roles.map(role => role.id) : [];
-          console.log(this.userRoleId[0],'user role name');
-          
           this.total = result.data.total;
           this.pagination.current = result.data.current_page;
           this.pagination.total = result.data.last_page;
@@ -1905,16 +1956,16 @@ export default {
         let union_pouro_city = '';
         let status = '';
         if (i) {
-          if (i.status === 0) {
-            status = "Not Solved"
+            if (i.status === 0) {
+            status = this.$i18n.locale == 'en' ? "Not Solved" : "সমাধান হয়নি";
           } else if (i.status === 1) {
-            status = "Forwarded"
+            status = this.$i18n.locale == 'en' ? "Forwarded" : "ফরোয়ার্ড করা হয়েছে";
           } else if (i.status === 2) {
-            status = "Approved"
+            status = this.$i18n.locale == 'en' ? "Approved" : "অনুমোদিত";
           } else if (i.status === 3) {
-            status = "Waiting"
+            status = this.$i18n.locale == 'en' ? "Canceled" : "বাতিল";
           } else if (i.status === 4) {
-            status = "Rejected"
+            status = this.$i18n.locale == 'en' ? "In Progress" : "চলমান";
           }
         }
 
@@ -1928,13 +1979,13 @@ export default {
           location = this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.name_bn;
           union_pouro_city = this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.name_en : i?.permanent_location?.parent?.name_bn;
         }
-
         return {
           'sl': this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
           'tracking_no': i?.tracking_no,
           'grievanceType': this.$i18n.locale == 'en' ? i?.grievance_type?.title_en : i?.grievance_type?.title_bn,
           'grievanceSubject': this.$i18n.locale == 'en' ? i?.grievance_subject?.title_en : i?.grievance_subject?.title_bn,
-          'created_at': this.$i18n.locale == 'en' ? i?.created_at : i?.created_at,
+          'resolved_officer': this.$i18n.locale == 'en' ? i?.resolver?.name_en : i?.resolver?.name_bn,
+          'created_at': this.$i18n.locale == 'en' ? this.formatDate(i?.created_at) : this.formatDate(i?.created_at),
           'name': i?.name,
           'status': status,
           'verification_number': i?.verification_number,
@@ -1954,7 +2005,7 @@ export default {
         .filter(header => this.selectedColumns.includes(header.value))
         .map(header => header.value);
 
-      const HeaderInfo = [this.$t("container.list.sl"), ...filteredTexts];
+      const HeaderInfo = [this.$t("container.list.sl"),...filteredTexts];
 
       const selectColumn = ['sl', ...filteredValue]
 
@@ -2037,15 +2088,15 @@ export default {
             let status = '';
             if (i) {
               if (i.status === 0) {
-                status = "Not Solved"
+                status = this.$i18n.locale == 'en' ? "Not Solved" : "সমাধান হয়নি";
               } else if (i.status === 1) {
-                status = "Forwarded"
+                status = this.$i18n.locale == 'en' ? "Forwarded" : "ফরোয়ার্ড করা হয়েছে";
               } else if (i.status === 2) {
-                status = "Approved"
+                status = this.$i18n.locale == 'en' ? "Approved" : "অনুমোদিত";
               } else if (i.status === 3) {
-                status = "Waiting"
+                status = this.$i18n.locale == 'en' ? "Canceled" : "বাতিল";
               } else if (i.status === 4) {
-                status = "Rejected"
+                status = this.$i18n.locale == 'en' ? "In Progress" : "চলমান";
               }
             }
 
@@ -2065,8 +2116,9 @@ export default {
               'tracking_no': i?.tracking_no,
               'grievanceType': this.$i18n.locale == 'en' ? i?.grievance_type?.title_en : i?.grievance_type?.title_bn,
               'grievanceSubject': this.$i18n.locale == 'en' ? i?.grievance_subject?.title_en : i?.grievance_subject?.title_bn,
-              'created_at': this.$i18n.locale == 'en' ? i?.created_at : i?.created_at,
+              'created_at': this.$i18n.locale == 'en' ? this.formatDate(i?.created_at) : this.formatDate(i?.created_at),
               'name': i?.name,
+              'resolved_officer': this.$i18n.locale == 'en' ? i?.resolver?.name_en : i?.resolver?.name_bn,
               'status': status,
               'verification_number': i?.verification_number,
               'division': this.$i18n.locale == 'en' ? i?.division?.name_en : i?.division?.name_bn,

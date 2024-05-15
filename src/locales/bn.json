@@ -1244,7 +1244,8 @@
         "forward_to": "ফরোয়ার্ড টু",
         "solution": "সমাধান",
         "remarks": "মন্তব্য",
-        "status_update": "অভিযোগ স্ট্যাটাস আপডেট"
+        "status_update": "অভিযোগ স্ট্যাটাস আপডেট",
+        "grievance_status": "অভিযোগ স্ট্যাটাস"
       }
     },
 
