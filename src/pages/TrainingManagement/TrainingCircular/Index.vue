@@ -428,12 +428,12 @@ export default {
 </script>
 
 <template>
-    <div id="trainer-info">
+    <div id="trainer-circular">
         <v-row class="mx-5 mt-5">
             <v-col cols="12" lg="12" md="12" sm="12" xs="12">
                 <v-row wrap>
 
-                    <v-col cols="12">
+                    <v-col cols="12" lg="12" md="12" sm="12" xs="12">
                         <v-card>
 
                             <v-card-title class="justify-center"
@@ -471,14 +471,14 @@ export default {
                                 </v-card-title>
 
                                 <v-row class="ml-6 mr-2">
-                                    <v-col cols="12" lg="6" md="6">
+                                    <v-col cols="12" lg="6" md="6" sm="6" xs="6">
                                         {{ $t('container.list.total') }}:&nbsp;<span style=" font-weight: bold;">
                                             {{ language === 'bn' ? $helpers.englishToBangla(
                                             this.total) : this.total }}
                                         </span>
 
                                     </v-col>
-                                    <v-col cols="12" lg="6" md="6" class="text-right">
+                                    <v-col cols="12" lg="6" md="6" sm="6" xs="6" class="text-right">
                                         <v-btn elevation="2" class="btn white--text " flat color="red darken-4"
                                             @click="GeneratePDF()">
                                             <v-icon class="pl-1"> mdi-tray-arrow-down </v-icon> {{
@@ -492,219 +492,194 @@ export default {
                                         </v-btn>
 
                                     </v-col>
-
-
-
-
-
                                 </v-row>
 
-                                <v-data-table :loading="loading" item-key="id" :headers="headers" :items="circulars"
-                                    :items-per-page="pagination.perPage" hide-default-footer
-                                    class="elevation-0 transparent row-pointer mt-5 mx-5">
-                                    <template v-slot:item.sl="{ item, index }">
+                                <v-row class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
+                                    justify="center" justify-lg="space-between">
+                                    <v-col cols="12" lg="12" md="12" sm="12" xs="12">
+                                        <v-data-table :loading="loading" item-key="id" :headers="headers"
+                                            :items="circulars" :items-per-page="pagination.perPage" hide-default-footer
+                                            class="elevation-0 transparent row-pointer mt-5 mx-5">
+                                            <template v-slot:item.sl="{ item, index }">
 
-                                        {{ language === 'bn' ? $helpers.englishToBangla(
-                                        (pagination.current - 1) * pagination.perPage +
-                                        index +
-                                        1) : (pagination.current - 1) * pagination.perPage +
-                                        index +
-                                        1 }}
-
-
-                                    </template>
-                                    <template v-slot:item.modules="{ item }">
-                                        <span v-for="(value, key) in item.modules" :key="key">
-                                            <v-chip small label color="#FACD91" class="ma-1">
-
-                                                {{ language == 'bn' ?
-                                                value.value_bn : value.value_en }}
-                                            </v-chip> &nbsp;
-
-
-                                        </span>
-                                    </template>
-                                    <template v-slot:[`item.no_of_participant`]="{ item }">
-                                        <span>
-                                            {{ language == 'bn' ?
-                                            $helpers.englishToBangla(item.no_of_participant): item.no_of_participant }}
-                                        </span>
-
-                                    </template>
-                                    <template v-slot:[`item.start_date`]="{ item }">
-                                        <span>
-                                            {{ language == 'bn' ?
-                                            $helpers.englishToBangla(item.start_date) : item.start_date }}
-                                        </span>
-
-                                    </template> <template v-slot:[`item.end_date`]="{ item }">
-                                        <span>
-                                            {{ language == 'bn' ?
-                                            $helpers.englishToBangla(item.end_date) : item.end_date }}
-                                        </span>
-
-                                    </template>
-
-
-
-
-
-                                    <!-- Action Button -->
-
-                                    <template v-slot:item.actions="{ item }">
-                                        <v-tooltip top>
-                                            <template v-slot:activator="{ on }">
-                                                <v-btn v-can="'trainerCircular-view'" fab x-small v-on="on" color="blue"
-                                                    elevation="0" router class=" white--text mb-1"
-                                                    @click="copyToClipboard(item.id)">
-                                                    <v-icon> mdi-link </v-icon>
-                                                </v-btn>
+                                                {{ language === 'bn' ? $helpers.englishToBangla(
+                                                (pagination.current - 1) * pagination.perPage +
+                                                index +
+                                                1) : (pagination.current - 1) * pagination.perPage +
+                                                index +
+                                                1 }}
 
 
                                             </template>
-                                            <span>
-                                                {{ $t("container.list.copy") }}
-                                            </span>
+                                            <template v-slot:item.modules="{ item }">
+                                                <span v-for="(value, key) in item.modules" :key="key">
+                                                    <v-chip small label color="#FACD91" class="ma-1">
 
-                                        </v-tooltip>
-                                        <v-tooltip top>
-                                            <template v-slot:activator="{ on }">
-                                                <v-btn v-can="'trainerCircular-view'" fab x-small v-on="on"
-                                                    color="#AFB42B" elevation="0" router class=" white--text mb-1 ml-2"
-                                                    :to="`/training-management/trainer-circular/view/${item.id}`">
-                                                    <v-icon> mdi-eye </v-icon>
-                                                </v-btn>
+                                                        {{ language == 'bn' ?
+                                                        value.value_bn : value.value_en }}
+                                                    </v-chip> &nbsp;
 
+
+                                                </span>
+                                            </template>
+                                            <template v-slot:[`item.no_of_participant`]="{ item }">
+                                                <span>
+                                                    {{ language == 'bn' ?
+                                                    $helpers.englishToBangla(item.no_of_participant) :
+                                                    item.no_of_participant }}
+                                                </span>
 
                                             </template>
-                                            <span>
-                                                {{ $t("container.list.view") }}
-                                            </span>
+                                            <template v-slot:[`item.start_date`]="{ item }">
+                                                <span>
+                                                    {{ language == 'bn' ?
+                                                    $helpers.englishToBangla(item.start_date) : item.start_date }}
+                                                </span>
 
-                                        </v-tooltip>
+                                            </template> <template v-slot:[`item.end_date`]="{ item }">
+                                                <span>
+                                                    {{ language == 'bn' ?
+                                                    $helpers.englishToBangla(item.end_date) : item.end_date }}
+                                                </span>
 
-                                        <v-tooltip top>
-                                            <template v-slot:activator="{ on }">
-                                                <v-btn v-can="'trainerCircular-edit'" class="ml-3 mb-1" fab x-small
-                                                    v-on=" on" color="success" elevation="0" router
-                                                    :to="`/training-management/trainer-circular/edit/${item.id}`">
-                                                    <v-icon> mdi-account-edit-outline </v-icon>
-                                                </v-btn>
                                             </template>
-                                            <span>
-                                                {{ $t("container.list.edit") }}
-                                            </span>
-                                        </v-tooltip>
 
 
-                                        <v-tooltip top>
-                                            <template v-slot:activator="{ on }">
-                                                <v-btn v-can="'trainerCircular-delete'" fab x-small v-on="on"
-                                                    color="grey" class="ml-3 white--text mb-1" elevation="0"
-                                                    @click="deleteAlert(item.id)">
-                                                    <v-icon> mdi-delete </v-icon>
-                                                </v-btn>
+
+
+
+
+
+                                            <template v-slot:item.actions="{ item }">
+                                                <v-tooltip top>
+                                                    <template v-slot:activator="{ on }">
+                                                        <v-btn v-can="'trainerCircular-view'" fab x-small v-on="on"
+                                                            color="blue" elevation="0" router class=" white--text mb-1"
+                                                            @click="copyToClipboard(item.id)">
+                                                            <v-icon> mdi-link </v-icon>
+                                                        </v-btn>
+
+
+                                                    </template>
+                                                    <span>
+                                                        {{ $t("container.list.copy") }}
+                                                    </span>
+
+                                                </v-tooltip>
+                                                <v-tooltip top>
+                                                    <template v-slot:activator="{ on }">
+                                                        <v-btn v-can="'trainerCircular-view'" fab x-small v-on="on"
+                                                            color="#AFB42B" elevation="0" router
+                                                            class=" white--text mb-1 ml-2"
+                                                            :to="`/training-management/trainer-circular/view/${item.id}`">
+                                                            <v-icon> mdi-eye </v-icon>
+                                                        </v-btn>
+
+
+                                                    </template>
+                                                    <span>
+                                                        {{ $t("container.list.view") }}
+                                                    </span>
+
+                                                </v-tooltip>
+
+                                                <v-tooltip top>
+                                                    <template v-slot:activator="{ on }">
+                                                        <v-btn v-can="'trainerCircular-edit'" class="ml-3 mb-1" fab
+                                                            x-small v-on="on" color="success" elevation="0" router
+                                                            :to="`/training-management/trainer-circular/edit/${item.id}`">
+                                                            <v-icon> mdi-account-edit-outline </v-icon>
+                                                        </v-btn>
+                                                    </template>
+                                                    <span>
+                                                        {{ $t("container.list.edit") }}
+                                                    </span>
+                                                </v-tooltip>
+
+
+                                                <v-tooltip top>
+                                                    <template v-slot:activator="{ on }">
+                                                        <v-btn v-can="'trainerCircular-delete'" fab x-small v-on="on"
+                                                            color="grey" class="ml-3 white--text mb-1" elevation="0"
+                                                            @click="deleteAlert(item.id)">
+                                                            <v-icon> mdi-delete </v-icon>
+                                                        </v-btn>
+                                                    </template>
+                                                    <span> {{ $t("container.list.delete") }}</span>
+                                                </v-tooltip>
+
                                             </template>
-                                            <span> {{ $t("container.list.delete") }}</span>
-                                        </v-tooltip>
-
-                                    </template>
-
-                                    <!-- End Action Button -->
-
-                                    <template v-slot:footer="item">
-
-                                        <row class="text-right pt-2 v-data-footer justify-end pb-2">
 
 
 
-                                            <v-col cols="12" lg="4" md="4" sm="12" xs="12" class="text-right">
-                                                <v-pagination circle primary v-model="pagination.current"
-                                                    :length="pagination.total" @input="onPageChange" :total-visible="11"
-                                                    class="custom-pagination-item"></v-pagination></v-col>
-                                            <v-col cols="12" lg="4" md="4" sm="12" xs="12" class="text-right">
-                                                <v-select style="
+                                            <template v-slot:footer="item">
+
+                                                <row class="text-right pt-2 v-data-footer justify-end pb-2">
+
+
+
+                                                    <v-col cols="12" lg="4" md="4" sm="12" xs="12" class="text-right">
+                                                        <v-pagination circle primary v-model="pagination.current"
+                                                            :length="pagination.total" @input="onPageChange"
+                                                            :total-visible="11"
+                                                            class="custom-pagination-item"></v-pagination></v-col>
+                                                    <v-col cols="12" lg="4" md="4" sm="12" xs="12" class="text-right">
+                                                        <v-select style="
                      
                             
                                     
                                                 " :items="items" hide-details dense outlined @change="onPageChange"
-                                                    v-model="pagination.perPage"></v-select>
+                                                            v-model="pagination.perPage"></v-select>
 
 
-                                            </v-col>
-                                        </row>
+                                                    </v-col>
+                                                </row>
 
-                                    </template>
-                                </v-data-table>
+                                            </template>
+                                        </v-data-table>
+
+                                    </v-col>
+                                </v-row>
+
+
 
                             </v-card-text>
                         </v-card>
                     </v-col>
                 </v-row>
             </v-col>
-            <!-- position: absolute;
-                              right: 25px;
-                              width: 149px;
-                              transform: translate(0px, 0px); -->
-            <!-- delete modal  -->
-            <v-dialog v-model="deleteDialog" width="350">
-                <v-card style="justify-content: center; text-align: center">
-                    <v-card-title class="font-weight-bold justify-center">
-                        {{ $t('container.training_management.training_circular.delete_header') }}
-                    </v-card-title>
-                    <v-divider></v-divider>
-                    <v-card-text>
-                        <div class="subtitle-1 font-weight-medium mt-5">
-                            {{ $t('container.training_management.training_circular.delete_alert') }}
 
 
-                        </div>
-                    </v-card-text>
-                    <v-card-actions style="display: block">
-                        <v-row class="mx-0 my-0 py-2" justify="center">
-                            <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
-                                {{ $t('container.list.cancel') }}
-                            </v-btn>
 
-                            <v-btn text @click="deleteData" color="white" :loading="delete_loading"
-                                class="custom-btn-width warning white--text py-2">
-                                {{ $t('container.list.delete') }}
-                            </v-btn>
-                        </v-row>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
-            <!-- delete modal  -->
-            <!-- Mail modal  -->
-            <v-dialog v-model="dialogEmail" width="350">
-                <v-card style="justify-content: center; text-align: center">
-                    <v-card-title class="font-weight-bold justify-center">
-                        {{ $t('container.api_manager.data_receiver.email_header') }}
-                    </v-card-title>
-                    <v-divider></v-divider>
-                    <v-card-text>
-                        <div class="subtitle-1 font-weight-medium mt-5">
-                            {{ $t('container.api_manager.data_receiver.email_alert') }}
-
-
-                        </div>
-                    </v-card-text>
-                    <v-card-actions style="display: block">
-                        <v-row class="mx-0 my-0 py-2" justify="center">
-                            <v-btn text @click="dialogEmail = false" outlined class="custom-btn-width py-2 mr-10">
-                                {{ $t('container.list.cancel') }}
-                            </v-btn>
-
-                            <v-btn text @click="sendEmail" color="white" :loading="delete_loading"
-                                class="custom-btn-width warning white--text py-2">
-                                {{ $t('container.list.confirm') }}
-                            </v-btn>
-                        </v-row>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
-            <!-- Mail modal  -->
         </v-row>
+        <v-dialog v-model="deleteDialog" width="350">
+            <v-card style="justify-content: center; text-align: center">
+                <v-card-title class="font-weight-bold justify-center"
+                    style="background-color: #1C3C6A; color: white;font-size: 12px;">
+                    {{ $t('container.training_management.training_circular.delete_header') }}
+                </v-card-title>
+                <v-divider></v-divider>
+                <v-card-text>
+                    <div class="subtitle-1 font-weight-medium mt-5">
+                        {{ $t('container.training_management.training_circular.delete_alert') }}
+
+
+                    </div>
+                </v-card-text>
+                <v-card-actions style="display: block">
+                    <v-row class="mx-0 my-0 py-2" justify="center">
+                        <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
+                            {{ $t('container.list.cancel') }}
+                        </v-btn>
+
+                        <v-btn text @click="deleteData" color="white" :loading="delete_loading"
+                            class="custom-btn-width warning white--text py-2">
+                            {{ $t('container.list.delete') }}
+                        </v-btn>
+                    </v-row>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
