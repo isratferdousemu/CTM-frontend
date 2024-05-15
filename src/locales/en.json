@@ -971,7 +971,16 @@
       "calculation_type": "Calculation Type",
       "financial_year": "Financial Year",
       "action": "Action",
-      "budget_create": "Budget Create"
+      "budget_create": "Budget Create",
+
+      "budget_verification":"Budget Verification",
+      "approved_by":"Approved By",
+      "approved_date":"Approved Date",
+      "remark":"Remarks",
+      "delete_title":"Delete Budget!!!",
+      "delete_message":"Are you sure to delete this Budget?",
+      "budget_edit": "Budget Edit",
+      "update":"Update"
     },
     "payroll_management": {
       "list": "Payment Processor",
