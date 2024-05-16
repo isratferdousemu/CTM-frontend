@@ -529,7 +529,11 @@ export default {
             // this.pagination.current = $event;
             this.GetData();
         },
-       
+        perPageChange($event) {
+
+            this.pagination.current = 1;
+            this.GetData();
+        },
 
 
        
@@ -900,7 +904,7 @@ export default {
                      
                             
                                     
-                                                " :items="items" hide-details dense outlined @change="onPageChange"
+                                                " :items="items" hide-details dense outlined @change="perPageChange"
                                                             v-model="pagination.perPage"></v-select>
 
 
