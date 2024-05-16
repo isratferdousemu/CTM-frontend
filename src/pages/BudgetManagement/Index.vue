@@ -2,6 +2,7 @@
   <div id="allotment_list">
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
+        <Spinner :loading="isLoading" />
         <v-row>
           <v-col cols="12">
             <div class="d-block text-right">
@@ -62,10 +63,10 @@
                       class="elevation-0 transparent row-pointer">
                       <template v-slot:item.approve_name="{ item }">
                         <span v-if="item.is_approved == 1">
-                          {{ language === "bn" ? "সক্রিয়" : "Approved" }}
+                          {{ language === "bn" ? "অনুমোদিত" : "Approved" }}
                         </span>
                         <span v-else>
-                          {{ language === "bn" ? "নিষ্ক্রিয়" : "Draft" }}
+                          {{ language === "bn" ? "নিষ্ক্রিয়" : "খসড়া" }}
                         </span>
 
                       </template>
@@ -81,7 +82,7 @@
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn :disabled="item.process_flag === 0" v-can="'update-post'" fab x-small v-on="on"
-                              color="#F40F02" elevation="0" class="white--text ml-2">
+                              color="#F40F02" elevation="0" class="white--text ml-2" @click="GeneratePDF(item.id)">
                               <v-icon>mdi-file-pdf-box</v-icon>
                             </v-btn>
                           </template>
@@ -91,7 +92,7 @@
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn :disabled="item.process_flag === 0" v-can="'update-post'" fab x-small v-on="on"
-                              color="#1D6F42" elevation="0" class="white--text ml-2">
+                              color="#1D6F42" elevation="0" class="white--text ml-2" @click="GenerateExcel(item.id)">
                               <v-icon>mdi-file-excel</v-icon>
                             </v-btn>
                           </template>
@@ -122,8 +123,7 @@
                           <v-tooltip top>
                             <template v-slot:activator="{ on }">
                               <v-btn :disabled="item.process_flag === 0" v-can="'update-post'" fab x-small v-on="on"
-                                color="success" elevation="0" class="ml-3"
-                                :to="`/budget/edit/${item.id}`">
+                                color="success" elevation="0" class="ml-3" :to="`/budget/edit/${item.id}`">
                                 <v-icon>mdi-account-edit-outline</v-icon>
                               </v-btn>
                             </template>
@@ -280,6 +280,7 @@
 import { ValidationObserver, ValidationProvider, extend } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 import { mapActions, mapState } from "vuex";
+import Spinner from "@/components/Common/Spinner.vue";
 
 extend("required", required);
 export default {
@@ -299,10 +300,12 @@ export default {
       allotments: [],
       allowances: [],
       financial_years: [],
+      budget_list: [],
       dialogVerify: false,
       deleteDialog: false,
       verify_id: null,
       delete_id: null,
+      isLoading: false,
       budget_verify: {
         program_id: null,
         approve_by: null,
@@ -320,7 +323,8 @@ export default {
   },
   components: {
     ValidationProvider,
-    ValidationObserver
+    ValidationObserver,
+    Spinner
   },
   computed: {
     ...mapState({
@@ -470,9 +474,7 @@ export default {
       }
 
     },
-
     submitVerification() {
-
       if (!this.verify_id) {
         return;
       }
@@ -503,6 +505,141 @@ export default {
       } catch (e) {
         console.log(e);
       }
+    },
+    async GeneratePDF(id) {
+      alert(id)
+      this.isLoading = true;
+      this.$axios
+        .get("/admin/budget/detail/report/" + id, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "application/json",
+          },
+          //  params: queryParams,
+          responseType: "arraybuffer",
+        })
+        .then((result) => {
+          const blob = new Blob([result.data], { type: "application/pdf" });
+          const url = window.URL.createObjectURL(blob);
+          window.open(url, "_blank");
+          this.isLoading = false;
+          // window.open(result.data.data.url, "_blank");
+        })
+        .catch((error) => {
+          this.isLoading = false;
+          console.error("Error generating PDF:", error);
+        });
+    },
+
+    async GenerateExcel(id) {
+      this.isLoading = true;
+      let page;
+      if (!this.sortBy) {
+        page = this.pagination.current;
+      }
+      const queryParams = {
+        // language: this.$i18n.locale,
+        // program_id: this.data.program_id,
+        // financial_year_id: this.data.financial_year_id,
+
+        perPage: 50000,
+        page: 1, // All data loaded
+        // sortBy: this.sortBy,
+        // orderBy: this.sortDesc,
+      };
+
+      await this.$axios
+        .get("/admin/budget/detail/list/" + id, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          this.budget_list = result.data.data;
+        })
+        .catch((error) => {
+          this.isLoading = false;
+          console.error("Error generating PDF:", error);
+        });
+
+      try {
+        import("@/plugins/Export2Excel").then((excel) => {
+          const HeaderInfo = [
+            this.$t("container.list.sl"),
+            this.$t(
+              "container.budget_management.office"
+            ),
+            this.$t(
+              "container.budget_management.allotment_area"
+            ),
+            this.$t(
+              "container.budget_management.total_beneficiary"
+            ),
+            this.$t(
+              "container.budget_management.amount_of_allocated_money"
+            ),
+          ];
+          const CustomInfo = this.budget_list.map((i, index) => {
+            return {
+              sl:
+                this.$i18n.locale == "en"
+                  ? index + 1
+                  : this.$helpers.englishToBangla(index + 1),
+              office_area:
+                this.$i18n.locale == "en" ? i.office_area?.name_en : i.office_area?.name_bn,
+              allotment_area: this.$i18n.locale == "en" ? i.allotment_area?.name_en : i.allotment_area?.name_bn,
+              total_beneficiaries:
+                this.$i18n.locale == "en" ? i.total_beneficiaries : englishToBangla(i.total_beneficiaries),
+              total_amount:
+                this.$i18n.locale == "en" ? i.total_amount : englishToBangla(i.total_amount),
+
+            };
+          });
+
+          const Field = [
+            "sl",
+            "office_area",
+            "allotment_area",
+            "total_beneficiaries",
+            "total_amount",
+          ];
+
+          const Data = this.FormatJson(Field, CustomInfo);
+          const currentDate = new Date().toISOString().slice(0, 10);
+          let dateinfo =
+            queryParams.language == "en"
+              ? currentDate
+              : this.$helpers.englishToBangla(currentDate);
+
+          const filenameWithDate = `${this.$t(
+            "container.beneficiary_management.beneficiary_list.list"
+          )}`;
+
+          excel.export_json_to_excel({
+            header: HeaderInfo,
+            data: Data,
+            sheetName: filenameWithDate,
+            filename: filenameWithDate,
+            autoWidth: true,
+            bookType: "xlsx",
+          });
+        });
+      } catch (error) {
+        // Handle any errors here
+        console.error("An error occurred:", error);
+        this.isLoading = false;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    FormatJson(FilterData, JsonData) {
+      return JsonData.map((v) =>
+        FilterData.map((j) => {
+          return v[j];
+        })
+      );
     },
   },
   watch: {

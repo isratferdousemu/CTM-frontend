@@ -4,13 +4,7 @@
       <v-col cols="12">
         <v-row>
           <v-col cols="12">
-            <v-card
-              elevation="10"
-              color="white"
-              rounded="md"
-              theme="light"
-              class="mb-8"
-            >
+            <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8">
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
                   {{
@@ -22,80 +16,30 @@
               <v-card-text>
                 <ValidationObserver ref="formAdd" v-slot="{ invalid }">
                   <form @submit.prevent="submitCuttOff()">
-                    <v-row
-                      class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
-                      justify="center"
-                      justify-lg="space-between"
-                    >
+                    <v-row class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
+                      justify="center" justify-lg="space-between">
                       <div class="d-flex justify-md-end flex-wrap">
-                        <ValidationProvider
-                          v-slot="{ errors }"
-                          name="Financial Year"
-                          vid="financial_year_id"
-                          rules="required"
-                        >
-                          <v-autocomplete
-                            class="mr-5"
-                            v-model="data.financial_year_id"
-                            :items="financial_years"
-                           :label="$t('container.system_config.demo_graphic.financial_year.financial_year')"
-                            :append-icon-cb="appendIconCallback"
-                            append-icon="mdi-plus" 
-                            outlined
-                            clearable
-                            dense
-                            :item-text="getItemText_financial"
-                            item-value="id"
-                            :error="errors[0] ? true : false"
-                            :error-messages="errors[0]"
-                          ></v-autocomplete>
+                        <ValidationProvider v-slot="{ errors }" name="Financial Year" vid="financial_year_id"
+                          rules="required">
+                          <v-autocomplete class="mr-5" v-model="data.financial_year_id" :items="financial_years"
+                            :label="$t('container.system_config.demo_graphic.financial_year.financial_year')"
+                            :append-icon-cb="appendIconCallback" append-icon="mdi-plus" outlined clearable dense
+                            :item-text="getItemText_financial" item-value="id" :error="errors[0] ? true : false"
+                            :error-messages="errors[0]"></v-autocomplete>
                         </ValidationProvider>
-                        <ValidationProvider
-                          v-slot="{ errors }"
-                          name="type"
-                          vid="type"
-                          rules="required"
-                        >
-                          <v-select
-                            @input="onChangeFilter()"
-                            class="mr-5"
-                            v-model="data.type"
-                            :items="location_types"
-                          :label="$t('container.list.location_type')" 
-                            outlined
-                            clearable
-                            :append-icon-cb="appendIconCallback"
-                            append-icon="mdi-plus" 
-                            dense
-                            :item-text="getItemText"
-                            item-value="id"
-                            :error="errors[0] ? true : false"
-                            :error-messages="errors[0]"
-                          ></v-select>
+                        <ValidationProvider v-slot="{ errors }" name="type" vid="type" rules="required">
+                          <v-select @input="onChangeFilter()" class="mr-5" v-model="data.type" :items="location_types"
+                            :label="$t('container.list.location_type')" outlined clearable
+                            :append-icon-cb="appendIconCallback" append-icon="mdi-plus" dense :item-text="getItemText"
+                            item-value="id" :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
                         </ValidationProvider>
                         <div v-if="data.type === 0">
-                          <ValidationProvider
-                            v-slot="{ errors }"
-                            name="Score"
-                            vid="score"
-                            rules="required"
-                          >
-                            <v-text-field
-                              outlined
-                              dense
-                              clearable
-                              v-model="data.score"
-                              class="my-sm-0 my-3 mx-0v -input--horizontal"
-                              flat
-                              variant="outlined"
-                              :label="
-                                $t(
-                                  'container.application_selection.poverty_cut_off.score'
-                                )
-                              "
-                              hide-details
-                              color="primary"
-                            >
+                          <ValidationProvider v-slot="{ errors }" name="Score" vid="score" rules="required">
+                            <v-text-field outlined dense clearable v-model="data.score"
+                              class="my-sm-0 my-3 mx-0v -input--horizontal" flat variant="outlined" :label="$t(
+                                'container.application_selection.poverty_cut_off.score'
+                              )
+                                " hide-details color="primary">
                             </v-text-field>
                           </ValidationProvider>
                         </div>
@@ -112,43 +56,26 @@
                                                 </v-text-field> -->
                       </div>
                       <v-col cols="12" v-if="filters">
-                        <v-data-table
-                          :loading="loading"
-                          :headers="headers"
-                          :items="filters"
-                          dense
-                          class="elevation-1 transparent row-pointer"
-                          :page.sync="page.current"
-                          :items-per-page.sync="page.perPage"
-                          :total-items="page.total"
-                          @update:options="onOptionsUpdate"
-                        >
+                        <v-data-table :loading="loading" :headers="headers" :items="filters" dense
+                          class="elevation-1 transparent row-pointer" :page.sync="page.current"
+                          :items-per-page.sync="page.perPage" :total-items="page.total"
+                          @update:options="onOptionsUpdate">
                           <template v-slot:item.id="{ item, index }">
-                            {{language === 'bn' ? $helpers.englishToBangla((page.current - 1) * page.perPage + index + 1) : (page.current - 1) * page.perPage + index + 1 }}
+                            {{ language === 'bn' ? $helpers.englishToBangla((page.current - 1) * page.perPage + index +
+                              1) : (page.current - 1) * page.perPage + index + 1 }}
                             <!-- {{ (page.current - 1) * page.perPage + index + 1 }} -->
                           </template>
-                          <template
-                            v-slot:item.division_or_district_cut_off="{ item }"
-                          >
-                            {{ language === 'bn' ? item.name_bn :  item.name_en }}
+                          <template v-slot:item.division_or_district_cut_off="{ item }">
+                            {{ language === 'bn' ? item.name_bn : item.name_en }}
                             <!-- {{ item.name_en }} -->
                           </template>
-           
+
                           <template v-slot:item.score="{ item }">
-                            <ValidationProvider
-                              v-slot="{ errors }"
-                              name="Weight/Score"
-                              vid="inputScore"
-                              rules="required"
-                            >
-                              <v-text-field
-                                v-model="item.inputScore"
-                                outlined
-                                clearable
-                                type="text"
-                              ></v-text-field>
+                            <ValidationProvider v-slot="{ errors }" name="Weight/Score" vid="inputScore"
+                              rules="required">
+                              <v-text-field v-model="item.inputScore" outlined clearable type="text"></v-text-field>
                             </ValidationProvider>
-                   
+
                           </template>
                           <template v-slot:item.name_bn="{ item }">
                             {{ item.name_bn }}
@@ -172,27 +99,14 @@
                         </v-data-table>
                       </v-col>
 
-                      <v-btn
-                        flat
-                        color="gray"
-                        type="submit"
-                        @click="navigateTolist"
-                        class="mr-5 custom-btn ml-auto"
-                      >
+                      <v-btn flat color="gray" type="submit" @click="navigateTolist" class="mr-5 custom-btn ml-auto">
                         {{ $t("container.list.back") }}
                       </v-btn>
 
-                      <v-btn
-                        flat
-                        color="success"
-                        type="submit"
-                        class="mr-5 custom-btn"
-                        :disabled="
-                          !allInputsProvided ||
-                          !data.financial_year_id ||
-                          invalid
-                        "
-                      >
+                      <v-btn flat color="success" type="submit" class="mr-5 custom-btn" :disabled="!allInputsProvided ||
+                        !data.financial_year_id ||
+                        invalid
+                        ">
                         {{ $t("container.list.submit") }}
                       </v-btn>
                     </v-row>
@@ -246,7 +160,7 @@ export default {
       loading: false,
       location_type: null,
       location_type_id: null,
-        location_types: [
+      location_types: [
         {
           id: 0,
           name_en: "All", name_bn: 'সব',
@@ -280,7 +194,7 @@ export default {
     ValidationObserver,
   },
   computed: {
-      language: {
+    language: {
       get() {
         return this.$store.getters.getAppLanguage;
       },
@@ -323,7 +237,7 @@ export default {
   },
 
   methods: {
-       getItemText(item) {
+    getItemText(item) {
       return this.language === 'bn' ? item.name_bn : item.name_en;
     },
     getItemText_financial(item) {
@@ -454,7 +368,7 @@ export default {
               this.$toast.error(result.data.error);
             }
           })
-          .catch((err) => {});
+          .catch((err) => { });
       } else {
         const financialYearId = this.data.financial_year_id;
 
@@ -488,7 +402,7 @@ export default {
               this.$toast.error(result.data.error);
             }
           })
-          .catch((err) => {});
+          .catch((err) => { });
       }
     },
 
