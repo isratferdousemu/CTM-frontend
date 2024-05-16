@@ -534,7 +534,8 @@ export default {
 
                                                                 <v-row>
                                                                     <v-col v-for="(day, index) in data.on_days"
-                                                                        :key="index" cols="2">
+                                                                        :key="index" cols="12" md="2" lg="2" xs="2"
+                                                                        xl="2">
                                                                         <v-checkbox v-model="day.is_active"
                                                                             @change="showTimeSlotModal(day)"
                                                                             :true-value="1" :false-value="0"
@@ -543,7 +544,7 @@ export default {
                                                                     </v-col>
                                                                 </v-row>
 
-                                                                
+
 
                                                             </v-col>
                                                         </v-row>
@@ -594,13 +595,13 @@ export default {
 
 
                         <v-row>
-                            <v-col v-for="slot in time_slots" :key="slot.id" cols="4">
+                            <v-col v-for="slot in time_slots" :key="slot.id" cols="12" md="4" lg="4" sm="4" xs="4">
                                 <v-checkbox v-model="selectedTimeSlots" :value="slot.id"
                                     :label="slot.time"></v-checkbox>
 
                             </v-col>
                         </v-row>
-                      
+
                     </div>
                 </v-card-text>
 
