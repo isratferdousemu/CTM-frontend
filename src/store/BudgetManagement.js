@@ -42,6 +42,55 @@ const actions = {
         return err;
       });
   },
+  BudgetVerification: ({ commit }, data) => {
+    return http()
+      .put(`/admin/budget/approve/${data.id}`, data.formData)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        const data = {
+          errors: err.response.data.errors,
+          error_status: err.response.message,
+        };
+        return err;
+      });
+  },
+  DestroyBudget: ({ commit }, id) => {
+    return http()
+      .delete(`/admin/budget/delete/${id}`)
+      .then((result) => {
+        console.log(result);
+        return result;
+      })
+      .catch((err) => {
+        return err;
+      });
+  },
+  GetSingleBudget: ({ commit }, id) => {
+    return http()
+      .get(`/admin/budget/show/${id}`)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        return err;
+      });
+  },
+  UpdateBudget: ({ commit }, data) => {
+    return http()
+      .put(`/admin/budget/update/${data.id}`, data.formData)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        const data = {
+          errors: err.response.data.errors,
+          error_status: err.response.message,
+        };
+        return err;
+      });
+  },
 };
 /* -------------------------------------------------------------------------- */
 /*                               Getters Define                               */

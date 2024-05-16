@@ -46,43 +46,45 @@ const TrainingManagementRoutes = [
   /*Trainer Info route end*/
   /*Training Circular  route start*/
   {
-    path: "/training-management/trainer-circular",
+    path: "/training-management/training-circular",
     name: "trainerCircular",
     meta: {
       requiresAuth: true,
-      permission: "trainerCircular-view",
+      permission: "trainingCircular-view",
     },
     component: () => import("../pages/TrainingManagement/TrainingCircular/Index.vue")
   },
 
   {
-    path: "/training-management/trainer-circular/create",
+    path: "/training-management/training-circular/create",
     name: "TrainerInformationCreate",
     meta: {
       requiresAuth: true,
-      permission: "trainerCircular-create",
+      permission: "trainingCircular-create",
     },
     component: () => import("../pages/TrainingManagement/TrainingCircular/Create.vue")
   },
 
   {
-    path: "/training-management/trainer-circular/edit/:id",
-    name: "trainerCircular-edit",
+    path: "/training-management/training-circular/edit/:id",
+    name: "trainingCircular-edit",
     meta: {
       requiresAuth: true,
-      permission: "trainerCircular-edit",
+      permission: "trainingCircular-edit",
     },
     component: () => import("../pages/TrainingManagement/TrainingCircular/Edit.vue")
   },
   {
-    path: "/training-management/trainer-circular/view/:id",
-    name: "trainerCircular-view",
+    path: "/training-management/training-circular/view/:id",
+    name: "trainingCircular-view",
     meta: {
       requiresAuth: true,
       permission: "trainerCircular-view",
     },
     component: () => import("../pages/TrainingManagement/TrainingCircular/View.vue")
   },
+
+  /*Training Circular route end*/
   {
     path: "/training-management/time-slots",
     name: "timeSlot-view",
@@ -92,7 +94,48 @@ const TrainingManagementRoutes = [
     },
     component: () => import("../pages/TrainingManagement/TimeSlot/Index.vue")
   },
-  /*Training Circular route end*/
+  /*Time Slot route end*/
+  /*Training Program  route start*/
+  {
+    path: "/training-management/training-program",
+    name: "TrainingProgram",
+    meta: {
+      requiresAuth: true,
+      permission: "trainingProgram-view",
+    },
+    component: () => import("../pages/TrainingManagement/TrainingProgram/Index.vue")
+  },
+
+  {
+    path: "/training-management/training-program/create",
+    name: "TrainingProgramCreate",
+    meta: {
+      requiresAuth: true,
+      permission: "trainingProgram-create",
+    },
+    component: () => import("../pages/TrainingManagement/TrainingProgram/Create.vue")
+  },
+
+  {
+    path: "/training-management/training-program/edit/:id",
+    name: "TrainingProgramEdit",
+    meta: {
+      requiresAuth: true,
+      permission: "trainingProgram-edit",
+    },
+    component: () => import("../pages/TrainingManagement/TrainingProgram/Edit.vue")
+  },
+  {
+    path: "/training-management/training-program/view/:id",
+    name: "TrainingProgramView",
+    meta: {
+      requiresAuth: true,
+      permission: "trainingProgram-view",
+    },
+    component: () => import("../pages/TrainingManagement/TrainingProgram/View.vue")
+  },
+
+  /*Training Program route end*/
 ];
 
 export default TrainingManagementRoutes;

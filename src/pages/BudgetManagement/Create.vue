@@ -105,18 +105,12 @@
                           rules="required"
                           v-slot="{ errors }"
                         >
-                              <v-select
-                                :items="financial_years"
-                                item-text="financial_year"
-                                item-value="id"
-                                label="Select Financial Year"
-                                v-model="data.financial_year_id"
+                              <v-text-field
+                                v-model="active_year.financial_year"
+                                disabled
                                 outlined
-                                required
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
                               >
-                              </v-select>
+                              </v-text-field>
                             </ValidationProvider>
 
                             <ValidationProvider
@@ -435,6 +429,7 @@ export default {
       district:[],
       allowances:[],
       financial_years: [],
+      active_year:'',
       calculationType:[],
     };
   },
@@ -496,6 +491,8 @@ export default {
         })
         .then(result => {
           this.financial_years = result.data.data;
+           this.active_year = this.financial_years.find((item)=> item.status === 1)
+           console.log('active_year',this.active_year)
         });
     },
     }),
@@ -511,7 +508,7 @@ export default {
     addBudget () {
       let fd = new FormData();
       fd.append("program_id", this.data.program_id);
-      fd.append("financial_year_id", this.data.financial_year_id);
+      fd.append("financial_year_id", this.active_year.id);
       fd.append("calculation_type", this.data.calculation_type);
       fd.append("previous_year_value", this.data.previous_year_value);
       fd.append("calculation_value", this.data.calculation_value); 

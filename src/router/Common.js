@@ -7,6 +7,7 @@ import ApplicationPreView from "../pages/Common/application/ApplicationPreView.v
 import SuccessView from "../pages/Common/application/Successpage.vue";
 import APiView from "../pages/Common/api_manager/Index.vue";
 import View from "../pages/Common/TrainingCircular/View_1.vue";
+import ProgramView from "../pages/Common/TrainingProgram/View_1.vue";
 const CommonRoutes = [
   {
     path: "/forgotPassword",
@@ -66,6 +67,11 @@ const CommonRoutes = [
     path: "/circular-details/:id",
     name: "View",
     component: View,
+  },
+    {
+    path: "/program-details/:id",
+    name: "ProgramView",
+    component: ProgramView,
   },
 ]
 export default CommonRoutes;

@@ -971,7 +971,16 @@
       "calculation_type": "Calculation Type",
       "financial_year": "Financial Year",
       "action": "Action",
-      "budget_create": "Budget Create"
+      "budget_create": "Budget Create",
+
+      "budget_verification":"Budget Verification",
+      "approved_by":"Approved By",
+      "approved_date":"Approved Date",
+      "remark":"Remarks",
+      "delete_title":"Delete Budget!!!",
+      "delete_message":"Are you sure to delete this Budget?",
+      "budget_edit": "Budget Edit",
+      "update":"Update"
     },
     "payroll_management": {
       "list": "Payment Processor",
@@ -1035,16 +1044,35 @@
           "delete_header": "Delete Training Circular",
           "delete_alert": "Are you sure to delete this Training Circular? Training Circular's all information will be deleted."
         },
-          "time_slot": {
-            "list_1": "Time Slot",
-            "list": "Time Slot List",
-            "view": "Time Slot List Details",
-            "add": "Add New Time Slot",
-            "edit": "Edit Time Slot",
-            "time": "Time",
-            "delete_header": "Delete Time Slot",
-            "delete_alert": "Are you sure to delete this Time Slot? Time Slot's all information will be deleted."
-          }
+      
+            "time_slot": {
+              "list_1": "Time Slot",
+              "list": "Time Slot List",
+              "view": "Time Slot List Details",
+              "add": "Add New Time Slot",
+              "edit": "Edit Time Slot",
+              "time": "Time",
+              "delete_header": "Delete Time Slot",
+              "delete_alert": "Are you sure to delete this Time Slot? Time Slot's all information will be deleted."
+            },
+                "training_program": {
+                  "list": "Program List",
+                  "view": "Program Details",
+                  "add": "Add New Program",
+                  "edit": "Edit Program",
+                  "program_name": "Program Name",
+                  "program": "Program",
+                  "trainer": "Trainer",
+                  "circular": "Circular",
+                  "class_schedule":"Training Schedule",
+                  "search":"Search Program",
+                  "select_time_slot":"Select Time Slot",
+                  
+
+                  "training_circular":"Training Circular",
+                  "delete_header": "Delete Program",
+                  "delete_alert": "Are you sure to delete this Program? Program's all information will be deleted."
+                }
       },
       "api_manager": {
         "url_generate": {
