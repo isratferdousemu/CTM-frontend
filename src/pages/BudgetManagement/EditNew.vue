@@ -10,7 +10,7 @@
                                 <h3 class="white--text">
                                     {{
                                         $t(
-                                            "container.beneficiary_management.beneficiary_shifting.title"
+                                            "container.budget_management.budget_edit"
                                         )
                                     }}
                                 </h3>
@@ -250,157 +250,93 @@
             </v-col>
 
             <v-col cols="12">
-                <v-card style="margin-bottom: 50px">
-                    <v-row>
-                        <v-col col="6">
-                            <v-card-title>
-                                <h3>Allotment</h3>
-                            </v-card-title>
-                        </v-col>
-                    </v-row>
-
-                    <v-divider></v-divider>
-
-                    <v-card-text>
-                        <v-col cols="12" class="d-flex">
-                            <v-row wrap>
-                                <v-col cols="12" lg="12">
-                                    <v-data-table :loading="loading" :headers="headers" :items="filters" dense
-                                        class="elevation-1 transparent row-pointer" :page.sync="page.current"
-                                        :items-per-page.sync="page.perPage" :total-items="page.total"
-                                        @update:options="onOptionsUpdate">
-                                        <template v-slot:item.id="{ item, index }">
-                                            {{
-                                                (page.current - 1) * page.perPage + index + 1
-                                            }}
-                                        </template>
-                                        <template v-slot:item.division_or_district_cut_off="{
-                                            item,
-                                        }">
-                                            {{ item.name_en }}
-                                        </template>
-                                        <template v-slot:item.score="{ item }">
-                                            <ValidationProvider v-slot="{ errors }" name="Weight/Score" vid="inputScore"
-                                                rules="required">
-                                                <v-text-field v-model="item.inputScore" outlined clearable
-                                                    type="text"></v-text-field>
-                                            </ValidationProvider>
-                                            <!-- <ValidationProvider v-slot="{ errors }" name="Weight/Score" vid="inputScore" rules="required|decimal|numeric|min_value:-999999999|max_value:999999999">
-        <v-text-field v-model="item.inputScore" outlined clearable type="text"></v-text-field>
-    </ValidationProvider> -->
-                                        </template>
-                                        <template v-slot:item.name_bn="{ item }">
-                                            {{ item.name_bn }}
-                                        </template>
-
-                                        <!-- <template v-slot:footer="item">
-                                                        <div class="text-center pt-2 v-data-footer justify-center pb-2">
-                                                            <v-select style="
-                              position: absolute;
-                              right: 25px;
-                              width: 149px;
-                              transform: translate(0px, 0px);
-                            " :items="items" hide-details dense outlined @change="onPageChange"
-                                                                v-model="pagination.perPage"></v-select>
-                                                            <v-pagination circle primary v-model="pagination.current"
-                                                                :length="pagination.total" @input="onPageChange"
-                                                                :total-visible="11"
-                                                                class="custom-pagination-item"></v-pagination>
-                                                        </div>
-                                                    </template> -->
-                                    </v-data-table>
-
-
-                                    <!-- Previous Table -->
-                                    <!-- <table class="custom-table">
-                            <thead>
-                              <tr>
-                                <th class="text-left">#Sl</th>
-                                <th class="text-left">Office</th>
-                                <th class="text-left">Location</th>
-                                <th class="text-left">Beneficiary Regular</th>
-                                <th class="text-center">
-                                  Beneficiary Additional
-                                </th>
-                                <th class="text-left">Total Beneficiary</th>
-                                <th class="text-left">
-                                  Amount of Allocated Money
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>1</td>
-                                <td style="width: 20%"></td>
-                                <td style="width: 10%">test</td>
-                                <td>200</td>
-                                <td style="width: 40%">
-                                  <v-col cols="12" class="d-flex">
-                                    <v-col v-if="isDisable === 1">
-                                      <v-row>
-                                        <v-col
-                                          sm="4"
-                                          v-for="(
-                                            eg, index
-                                          ) in educationGenders"
-                                          :key="index"
-                                        >
-                                          <div v-for="g in genders" :key="g.id">
-                                            <v-text-field
-                                              v-show="eg.gender_id === g.id"
-                                              :label="g.value_en"
-                                              outlined
-                                              dense
-                                            ></v-text-field>
-                                          </div>
-                                        </v-col>
-                                      </v-row>
-                                    </v-col>
-
-                                    <v-col v-if="isDisable === 0">
-                                      <v-row>
-                                        <v-col
-                                          sm="4"
-                                          v-for="(
-                                            aa, index
-                                          ) in allowanceAmounts"
-                                          :key="index"
-                                        >
-                                          <div v-for="g in genders" :key="g.id">
-                                            <v-text-field
-                                              v-if="aa.gender_id === g.id"
-                                              :label="g.value_en"
-                                              outlined
-                                              dense
-                                            ></v-text-field>
-                                          </div>
-                                        </v-col>
-                                      </v-row>
-                                    </v-col>
-                                  </v-col>
-                                </td>
-                                <td>700</td>
-                                <td style="width: 10%">34567</td>
-                              </tr>
-                            </tbody>
-                          </table> -->
+                <ValidationObserver ref="formAdd" v-slot="{ invalid }">
+                    <form @submit.prevent="submitBudgetData()">
+                        <v-card style="margin-bottom: 50px">
+                            <v-row>
+                                <v-col col="6">
+                                    <v-card-title>
+                                        <h3> {{
+                                            $t(
+                                                "container.budget_management.budgets"
+                                            )
+                                        }}</h3>
+                                    </v-card-title>
                                 </v-col>
                             </v-row>
-                        </v-col>
-                    </v-card-text>
-                </v-card>
+
+                            <v-divider></v-divider>
+
+                            <v-card-text>
+                                <v-col cols="12" class="d-flex">
+                                    <v-row wrap>
+                                        <v-col cols="12" lg="12">
+                                            <v-data-table :loading="loading" :headers="headers" :items="budgets" dense
+                                                class="elevation-1 transparent row-pointer" :page.sync="page.current"
+                                                :items-per-page.sync="page.perPage" :total-items="page.total"
+                                                @update:options="onOptionsUpdate">
+                                                <template v-slot:item.id="{ item, index }">
+                                                    {{
+                                                        (page.current - 1) * page.perPage + index + 1
+                                                    }}
+                                                </template>
+                                                <template v-slot:item.division_or_district_cut_off="{
+                                                    item,
+                                                }">
+                                                    {{ item.name_en }}
+                                                </template>
+                                                <template v-slot:item.per_beneficiary_amount="{ item }">
+                                                    <ValidationProvider v-slot="{ errors }" name="Weight/Score"
+                                                        vid="inputScore" rules="required">
+                                                        <v-text-field v-model="item.per_beneficiary_amount" outlined
+                                                            clearable type="number"></v-text-field>
+                                                    </ValidationProvider>
+                                                </template>
+
+                                                <template v-slot:item.total_beneficiaries="{ item }">
+                                                    <ValidationProvider v-slot="{ errors }" name="Weight/Score"
+                                                        vid="inputScore" rules="required">
+                                                        <v-text-field value="0" v-model="item.total_beneficiaries"
+                                                            outlined clearable type="text"></v-text-field>
+                                                    </ValidationProvider>
+                                                </template>
+
+                                                <!-- <template v-slot:item.total_amount="{ item }">
+
+                                                    <v-text-field v-model="item.total_beneficiaries"
+                                                        disabled></v-text-field>
+                                                </template> -->
+
+                                                <template v-slot:item.total_amount="{ item }">
+                                                    {{ item.total_amount = item.total_beneficiaries *
+                                                        item.per_beneficiary_amount }}
+                                                </template>
+
+                                                <template v-slot:item.name_bn="{ item }">
+                                                    {{ item.name_bn }}
+                                                </template>
+
+                                            </v-data-table>
+                                        </v-col>
+                                    </v-row>
+                                </v-col>
+                            </v-card-text>
+
+                            <v-col cols="12">
+                                <v-row class="justify-end mb-5 mr-2">
+                                    <v-btn flat color="primary" class="custom-btn mr-2" router to="/budget">Back
+                                    </v-btn>
+
+                                    <v-btn flat color="success" type="submit" class="custom-btn mr-2"
+                                        :disabled="invalid">Submit
+                                    </v-btn>
+                                </v-row>
+                            </v-col>
+                        </v-card>
+
+                    </form>
+                </ValidationObserver>
             </v-col>
-
-            <v-col cols="12">
-                <v-row class="justify-end mb-5" style="margin-top: -50px">
-                    <v-btn flat color="primary" class="custom-btn mr-2" router to="/allotment">Back
-                    </v-btn>
-
-                    <v-btn flat color="success" type="submit" class="custom-btn mr-2" :disabled="invalid">Submit
-                    </v-btn>
-                </v-row>
-            </v-col>
-
         </v-row>
     </div>
 </template>
@@ -427,7 +363,6 @@ export default {
                 union_id: null,
                 ward_id: null,
             },
-            selectedBeneficiaries: [],
             submit_data: {
                 to_program_id: null,
                 shifting_cause: "",
@@ -444,7 +379,7 @@ export default {
             loading: false,
             isLoading: false,
             search: "",
-            beneficiaries: [],
+            budgets: [],
             cause_types: [],
             programs: [],
             districts: [],
@@ -508,51 +443,37 @@ export default {
         headers() {
             return [
                 // {
-                //   text: this.$t("container.list.select"),
-                //   value: "id",
-                //   align: "start",
-                //   sortable: false,
+                //     text: this.$t("container.list.sl"),
+                //     value: "sl",
+                //     align: "center",
+                //     sortable: false,
                 // },
                 {
-                    text: this.$t("container.list.sl"),
-                    value: "sl",
-                    align: "center",
-                    sortable: false,
-                },
-                {
                     text: this.$t(
-                        "container.beneficiary_management.beneficiary_list.beneficiary_id"
+                        "container.budget_management.office"
                     ),
-                    value: "application_id",
+                    value: "office_area.name_en",
                     align: "center",
                 },
                 {
-                    text: this.$t("container.list.name_en"),
-                    value: "name_en",
+                    text: this.$t("container.budget_management.allotment_area"),
+                    value: "allotment_area.name_en",
                     align: "center",
                 },
                 {
-                    text: this.$t(
-                        "container.application_selection.application.father_name_en"
-                    ),
-                    value: "father_name_en",
+                    text: this.$t("container.budget_management.total_beneficiary"),
+                    value: "total_beneficiaries",
                     align: "center",
                 },
                 {
-                    text: this.$t("container.application_selection.application.program"),
-                    value: "program_name",
+                    text: this.$t("container.budget_management.beneficiary_amount"),
+                    value: "per_beneficiary_amount",
                     align: "center",
                 },
                 {
-                    text: this.$t("container.application_selection.application.mobile"),
-                    value: "mobile",
+                    text: this.$t("container.budget_management.amount_of_allocated_money"),
+                    value: "total_amount",
                     align: "center",
-                },
-                {
-                    text: this.$t("container.list.action"),
-                    value: "actions",
-                    align: "center",
-                    sortable: false,
                 },
             ];
         },
@@ -917,9 +838,9 @@ export default {
         },
         async GetBeneficiary() {
             if (
-                this.data.program_id &&
-                this.data.division_id &&
-                this.data.district_id
+                !this.data.program_id &&
+                !this.data.division_id &&
+                !this.data.district_id
                 // (this.data.city_id || this.data.district_pouro_id || this.data.upazila_id)
             ) {
                 this.loading = true;
@@ -942,7 +863,7 @@ export default {
                     orderBy: this.sortDesc,
                 };
                 this.$axios
-                    .get("/admin/beneficiary/list", {
+                    .get("/admin/budget/detail/list/1", {
                         headers: {
                             Authorization: "Bearer " + this.$store.state.token,
                             "Content-Type": "multipart/form-data",
@@ -950,7 +871,7 @@ export default {
                         params: queryParams,
                     })
                     .then((result) => {
-                        this.beneficiaries = result.data.data;
+                        this.budgets = result.data.data;
 
                         this.pagination.current = result.data.meta.current_page;
                         this.pagination.total = result.data.meta.last_page;
@@ -1028,6 +949,34 @@ export default {
             } catch (e) {
                 console.log(e);
             }
+        },
+        submitBudgetData() {
+
+            let fd = new FormData();
+            this.budgets.forEach((item, index) => {
+                fd.append(`budget_details[${index}][id]`, item?.id);
+                fd.append(`budget_details[${index}][total_beneficiaries]`, item?.total_beneficiaries);
+                fd.append(`budget_details[${index}][per_beneficiary_amount]`, item?.per_beneficiary_amount);
+                fd.append(`budget_details[${index}][total_amount]`, item?.total_amount);
+            });
+
+            try {
+                const data = { formData: fd, id: this.$route.params.id };
+                this.$store
+                    .dispatch("BudgetManagement/UpdateBudgetData", data)
+                    .then((res) => {
+                        console.log(res, "submit");
+                        if (res.data?.success) {
+                            this.$router.push({ name: "budget" });
+                        } else if (res.response?.data?.errors) {
+                            this.$refs.form.setErrors(res.response.data.errors);
+                            this.errors = res.response.data.errors;
+                        }
+                    });
+            } catch (e) {
+                console.log(e);
+            }
+
         },
     },
     watch: {
