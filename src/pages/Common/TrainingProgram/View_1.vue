@@ -150,28 +150,11 @@ export default {
 
 
 
-                <v-col>
-                    <!-- Empty column to create space between title and LocaleSwitcher -->
-                </v-col>
-                <v-col>
-                    <!-- Empty column to create space between title and LocaleSwitcher -->
-                </v-col>
-                <v-col>
-                    <!-- Empty column to create space between title and LocaleSwitcher -->
-                </v-col>
-                <v-col>
-                    <!-- Empty column to create space between title and LocaleSwitcher -->
-                </v-col>
-                <v-col>
-                    <!-- Empty column to create space between title and LocaleSwitcher -->
-                </v-col>
-                <v-col>
-                    <!-- Empty column to create space between title and LocaleSwitcher -->
-                </v-col>
+              
 
                 <v-col>
                     <v-row align="center" justify="end" no-gutters>
-                        <v-col>
+                        <v-col cols="12" class="text-right">
                             <!-- Adjust the styling of LocaleSwitcher as needed -->
                             <LocaleSwitcher />
                         </v-col>
