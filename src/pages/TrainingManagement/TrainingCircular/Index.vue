@@ -56,14 +56,14 @@ export default {
         },
         headers() {
             return [
-                { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, width: "5%" },
-                { text: this.$t('container.training_management.training_circular.name'), value: "circular_name", align: "start", width: "10%" },
+                { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, width: "10%" },
+                { text: this.$t('container.training_management.training_circular.name'), value: "circular_name", align: "start", width: "15%" },
 
                 { text: this.$t('container.training_management.training_circular.module'), value: "modules", width: "20%" },
                 { text: this.$t('container.training_management.training_circular.no_of_participant'), value: "no_of_participant", width: "10%" },
-                { text: this.$t('container.training_management.training_circular.start_date'), value: "start_date", width: "10%" },
-                { text: this.$t('container.training_management.training_circular.end_date'), value: "end_date", width: "10%" },
-                { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false, width: "35%" },
+                { text: this.$t('container.training_management.training_circular.start_date'), value: "start_date", width: "15%" },
+                { text: this.$t('container.training_management.training_circular.end_date'), value: "end_date", width: "15%" },
+                { text: this.$t('container.list.action'), value: "actions", align: "start", sortable: false, width: "15%" },
             ];
         },
 
@@ -385,6 +385,11 @@ export default {
             this.GetData();
         },
        
+        perPageChange($event) {
+
+            this.pagination.current = 1;
+            this.GetData();
+        },
 
 
        
@@ -429,24 +434,23 @@ export default {
 
 <template>
     <div id="trainer-circular">
-        <v-row class="mx-5 mt-5">
-            <v-col cols="12" lg="12" md="12" sm="12" xs="12">
-                <v-row wrap>
-
-                    <v-col cols="12" lg="12" md="12" sm="12" xs="12">
-                        <v-card>
-
-                            <v-card-title class="justify-center"
-                                style="background-color: #1C3C6A; color: white;font-size: 17px;">
-                                <h4 class="white--text">{{ $t('container.training_management.training_circular.list') }}
+        <v-row class="ml-sm-5 mt-0">
+            <v-col cols="12">
+                <v-row>
+                    <v-col cols="12">
+                        <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8 mt-5">
+                            <v-card-title tag="div" class="text-center"
+                                style="background-color:#1c3b68;color:white;margin-bottom: 17px;font-size:17px;">
+                                <h4 class="white--text text-center">{{
+                                    $t('container.training_management.training_circular.list') }}
                                 </h4>
                             </v-card-title>
 
 
                             <!-- <v-divider></v-divider> -->
 
-                            <v-card-text class="mt-10">
-                                <v-card-title class="mb-5 ml-5 ">
+
+                            <!-- <v-card-title class="mb-5 ml-5 ">
                                     <div class="d-flex justify-sm-end flex-wrap">
                                         <v-text-field @keyup.native="PageSetup" v-model="search"
                                             append-icon="mdi-magnify" :label="$t(
@@ -461,42 +465,74 @@ export default {
 
 
 
-                                    <v-btn flat color="primary" router to="/training-management/trainer-circular/create"
+                                    <v-btn flat color="primary" router
+                                        to="/training-management/training-circular/create"
                                         v-can="'trainerCircular-create'">
                                         <v-icon small>mdi-plus</v-icon>
                                         {{
                                         $t('container.training_management.training_circular.add') }}
                                     </v-btn>
 
-                                </v-card-title>
-
-                                <v-row class="ml-6 mr-2">
-                                    <v-col cols="12" lg="6" md="6" sm="6" xs="6">
-                                        {{ $t('container.list.total') }}:&nbsp;<span style=" font-weight: bold;">
-                                            {{ language === 'bn' ? $helpers.englishToBangla(
-                                            this.total) : this.total }}
-                                        </span>
-
-                                    </v-col>
-                                    <v-col cols="12" lg="6" md="6" sm="6" xs="6" class="text-right">
-                                        <v-btn elevation="2" class="btn white--text " flat color="red darken-4"
-                                            @click="GeneratePDF()">
-                                            <v-icon class="pl-1"> mdi-tray-arrow-down </v-icon> {{
-                                            $t("container.list.PDF") }}
-                                        </v-btn>
-
-                                        <v-btn elevation="2" class="btn white--text ml-2" flat color="teal darken-2"
-                                            @click="GenerateExcel()">
-                                            <v-icon class="pl-1"> mdi-tray-arrow-down </v-icon> {{
-                                            $t("container.list.excel") }}
-                                        </v-btn>
+                                </v-card-title> -->
+                            <v-card-text>
+                                <v-row class="mx-5 mt-10">
+                                    <v-col cols="12" md="4">
+                                        <v-text-field @keyup.native="PageSetup" v-model="search"
+                                            append-icon="mdi-magnify" :label="$t(
+                                            'container.training_management.training_program.search'
+                                        )" hide-details class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal" flat
+                                            outlined dense></v-text-field>
 
                                     </v-col>
+
+
+
+
+                                    <v-col class="text-right">
+
+                                        <v-btn flat color="primary" router
+                                            to="/training-management/training-circular/create"
+                                            v-can="'trainerCircular-create'">
+                                            <v-icon small>mdi-plus</v-icon>
+                                            {{
+                                            $t('container.training_management.training_circular.add') }}
+                                        </v-btn>
+                                    </v-col>
+
+
+
+
                                 </v-row>
 
-                                <v-row class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
+                                <template>
+                                    <v-row justify="space-between" align="center" class="mx-4">
+                                        <!-- Checkbox on the left -->
+                                        <v-col sm="6" lg="6" md="6" cols="12">
+                                            {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">
+                                                {{ language === 'bn' ? $helpers.englishToBangla(
+                                                this.total) : this.total }}
+                                            </span>
+                                        </v-col>
+
+                                        <!-- Dropdown on the right -->
+                                        <v-col sm="6" lg="6" md="6" cols="12" class="text-right">
+                                            <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4"
+                                                @click="GeneratePDF()">
+                                                <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{
+                                                $t("container.list.PDF") }}
+                                            </v-btn>
+                                            <v-btn elevation="2" class="btn mr-2 white--text" color="teal darken-2"
+                                                @click="GenerateExcel()">
+                                                <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                                                {{ $t("container.list.excel") }}
+                                            </v-btn>
+                                        </v-col>
+                                    </v-row>
+                                </template>
+
+                                <v-row class="ma-0  white round-border d-flex justify-space-between align-center"
                                     justify="center" justify-lg="space-between">
-                                    <v-col cols="12" lg="12" md="12" sm="12" xs="12">
+                                    <v-col cols="12">
                                         <v-data-table :loading="loading" item-key="id" :headers="headers"
                                             :items="circulars" :items-per-page="pagination.perPage" hide-default-footer
                                             class="elevation-0 transparent row-pointer mt-5 mx-5">
@@ -554,7 +590,7 @@ export default {
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
                                                         <v-btn v-can="'trainerCircular-view'" fab x-small v-on="on"
-                                                            color="blue" elevation="0" router class=" white--text mb-1"
+                                                            color="blue" elevation="0" router class=" white--text  mr-2"
                                                             @click="copyToClipboard(item.id)">
                                                             <v-icon> mdi-link </v-icon>
                                                         </v-btn>
@@ -570,8 +606,8 @@ export default {
                                                     <template v-slot:activator="{ on }">
                                                         <v-btn v-can="'trainerCircular-view'" fab x-small v-on="on"
                                                             color="#AFB42B" elevation="0" router
-                                                            class=" white--text mb-1 ml-2"
-                                                            :to="`/training-management/trainer-circular/view/${item.id}`">
+                                                            class=" white--text  mr-2"
+                                                            :to="`/training-management/training-circular/view/${item.id}`">
                                                             <v-icon> mdi-eye </v-icon>
                                                         </v-btn>
 
@@ -585,9 +621,9 @@ export default {
 
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
-                                                        <v-btn v-can="'trainerCircular-edit'" class="ml-3 mb-1" fab
-                                                            x-small v-on="on" color="success" elevation="0" router
-                                                            :to="`/training-management/trainer-circular/edit/${item.id}`">
+                                                        <v-btn v-can="'trainerCircular-edit'" class="mr-2" fab x-small
+                                                            v-on="on" color="success" elevation="0" router
+                                                            :to="`/training-management/training-circular/edit/${item.id}`">
                                                             <v-icon> mdi-account-edit-outline </v-icon>
                                                         </v-btn>
                                                     </template>
@@ -600,7 +636,7 @@ export default {
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
                                                         <v-btn v-can="'trainerCircular-delete'" fab x-small v-on="on"
-                                                            color="grey" class="ml-3 white--text mb-1" elevation="0"
+                                                            color="grey" class="white--text  mr-2" elevation="0"
                                                             @click="deleteAlert(item.id)">
                                                             <v-icon> mdi-delete </v-icon>
                                                         </v-btn>
@@ -628,7 +664,7 @@ export default {
                      
                             
                                     
-                                                " :items="items" hide-details dense outlined @change="onPageChange"
+                                                " :items="items" hide-details dense outlined @change="perPageChange"
                                                             v-model="pagination.perPage"></v-select>
 
 
@@ -648,9 +684,6 @@ export default {
                     </v-col>
                 </v-row>
             </v-col>
-
-
-
         </v-row>
         <v-dialog v-model="deleteDialog" width="350">
             <v-card style="justify-content: center; text-align: center">
