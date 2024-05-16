@@ -863,7 +863,7 @@ export default {
                     orderBy: this.sortDesc,
                 };
                 this.$axios
-                    .get("/admin/budget/detail/list/1", {
+                    .get("/admin/budget/detail/list/" + this.$route.params.id, {
                         headers: {
                             Authorization: "Bearer " + this.$store.state.token,
                             "Content-Type": "multipart/form-data",

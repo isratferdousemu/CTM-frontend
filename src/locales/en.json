@@ -964,6 +964,8 @@
     },
     "budget_management": {
       "budget_info": "Budget Info",
+      "budget_basic_info": "Budget Basic Information",
+      "budget_details_info": "Budget Details Information",
       "budget_info_list": "Budget Info List",
       "add_new": "Add New",
       "id": "ID",
@@ -990,7 +992,12 @@
       "beneficiary_amount": "Per Beneficiary Amount",
       "total_beneficiary": "Total Beneficiary",
       "amount_of_allocated_money": "Amount of Allocated Money",
-      "allotment_area": "Union/Ward/Pouroshava"
+      "allotment_area": "Union/Ward/Pouroshava",
+      "budget_id": "Budget Id",
+      "program": "Program",
+      "no_of_previous_year": "No of Previous Year",
+      "calculation_value": "Calculation Value",
+      "approval_status": "Status"
     },
     "payroll_management": {
       "list": "Payment Processor",
