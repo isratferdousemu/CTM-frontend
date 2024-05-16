@@ -641,7 +641,6 @@ export default {
       this.delete_id = item.id;
     },
     updateBireport() {
-      alert(this.delete_id)
       if (!this.checkLanguage()) {
         return;
       }
@@ -654,8 +653,9 @@ export default {
         formData.append('image', this.data.image);
       }
       formData.append('lang', this.language);
+      formData.append('_method', "PUT");
       this.$axios
-          .put(`admin/report/power-bi-report/${this.delete_id}`, formData, {
+          .post(`admin/report/power-bi-report/${this.delete_id}`, formData, {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
