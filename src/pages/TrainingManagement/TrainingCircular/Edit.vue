@@ -338,13 +338,13 @@ export default {
                 .then((result) => {
 
                     this.$toast.success(result.data.message);
-                    this.$router.push("/training-management/trainer-circular");
+                    this.$router.push("/training-management/training-circular");
 
 
                 })
                 .catch((err) => {
                     console.log(err, "err")
-                    this.$toast.error(err.response.data.errors.email[0]);
+                    this.$toast.error(err.response.data.errors);
                     this.$refs.form.setErrors(err.response.data.errors);
 
                 });
@@ -530,7 +530,7 @@ export default {
                                         </v-row>
                                         <v-row class="justify-end mt-5 mb-5">
                                             <v-btn flat color="primary" class="custom-btn mr-2" router
-                                                to="/training-management/trainer-circular">{{
+                                                to="/training-management/training-circular">{{
                                                 $t("container.list.back") }}
                                             </v-btn>
                                             <v-btn flat color="success" type="submit" class="custom-btn mr-2"
