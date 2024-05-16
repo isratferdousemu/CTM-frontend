@@ -451,7 +451,7 @@ export default {
 
                                                                 <v-row>
                                                                     <v-col v-for="(day, index) in data.on_days"
-                                                                        :key="index" cols="2">
+                                                                        :key="index" cols="12" md="2" lg="2" xs="2" xl="2">
                                                                         <v-checkbox v-model="day.is_active"
                                                                             @change="showTimeSlotModal(day)"
                                                                             :true-value="1" :false-value="0"
