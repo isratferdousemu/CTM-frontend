@@ -230,6 +230,7 @@ export default {
             },
           })
           .then((res) => {
+            console.log("🚀 ~ .then ~ res:", res)
             if (res.data) {
               this.allowances = res.data;
             } else {
