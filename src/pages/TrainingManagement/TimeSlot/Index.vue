@@ -1,142 +1,106 @@
 <template>
-  <div id="division">
+  <div id="time-slot">
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
         <v-row>
           <Spinner :loading="isLoading" />
           <v-col cols="12">
-            <v-card
-              elevation="10"
-              color="white"
-              rounded="md"
-              theme="light"
-              class="mb-8"
-            >
-
-           
+            <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8">
 
 
-              <v-card-title class="justify-center" tag="div">
-                <h3 class="text-uppercase pt-3">
-                  {{ $t("container.system_config.demo_graphic.division.list") }}
+
+
+              <v-card-title class="justify-center" tag="div"
+                style="background-color: #1C3C6A; color: white;font-size: 17px;">
+                <h3>
+                  {{ $t("container.training_management.time_slot.list") }}
                 </h3>
               </v-card-title>
               <v-card-text>
                 <!-- First row -->
-  <v-row justify="space-between" align="center" class="mx-5">
-      <!-- Checkbox on the left -->
-      <v-col lg="3" md="3" cols="12">
-          <v-text-field
-              @keyup.native="GetDivision"
-              outlined
-              dense
-              v-model="search"
-              prepend-inner-icon="mdi-magnify"
-              class="my-sm-0 my-3 mx-0v -input--horizontal"
-              variant="outlined"
-              :label="$t('container.list.search')"
-              hide-details
-              color="primary"
-          ></v-text-field>
-      </v-col>
+                <v-row justify="space-between" align="center" class="mx-5 mt-10">
+                  <!-- Checkbox on the left -->
+                  <v-col lg="3" md="3" cols="12">
+                    <v-text-field @keyup.native="pagesetup()" outlined dense v-model="search"
+                      prepend-inner-icon="mdi-magnify" class="my-sm-0 my-3 mx-0v -input--horizontal" variant="outlined"
+                      :label="$t('container.list.search')" hide-details color="primary"></v-text-field>
+                  </v-col>
 
-      <!-- Dropdown on the right -->
-      <v-col lg="3" md="3" cols="12" class="text-right ">
-          <v-btn
-              @click="createDialog"
-              color="primary"
-              prepend-icon="mdi-account-multiple-plus"
-              v-can="'timeSlot-create'"
-          >
-              {{ $t("container.list.add_new") }}
-          </v-btn>
-      </v-col>
-  </v-row>
+                  <!-- Dropdown on the right -->
+                  <v-col lg="3" md="3" cols="12" class="text-right ">
+                    <v-btn @click="createDialog" color="primary" prepend-icon="mdi-account-multiple-plus"
+                      v-can="'timeSlot-create'">
+                      {{ $t("container.training_management.time_slot.add") }}
+                    </v-btn>
+                  </v-col>
+                </v-row>
 
-  <!-- Second row without gap -->
-  <v-row justify="space-between" align="center" class="mx-4">
-      <!-- Checkbox on the left -->
- <v-col lg="3" md="3" cols="12">
-    {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">{{ this.total }}</span>
-  </v-col>
+                <!-- Second row without gap -->
+                <v-row class="ml-6 mr-2">
+                  <v-col cols="12" lg="6" md="6">
+                    {{ $t('container.list.total') }}:&nbsp;<span style=" font-weight: bold;">
+                      {{ language === 'bn' ? $helpers.englishToBangla(
+                      this.total) : this.total }}
+                    </span>
 
-      <!-- Dropdown on the right -->
-    <v-col lg="4" md="6" cols="12" class="text-right">
-      <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="GeneratePDF()">
-        <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
-      </v-btn>
-      <v-btn elevation="2" class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
-        <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
-        {{ $t("container.list.excel") }}
-      </v-btn>
-    </v-col>
-  </v-row>
+                  </v-col>
+                  <v-col cols="12" lg="6" md="6" class="text-right">
+                    <v-btn elevation="2" class="btn white--text " flat color="red darken-4" @click="GeneratePDF()">
+                      <v-icon class="pl-1"> mdi-tray-arrow-down </v-icon> {{
+                      $t("container.list.PDF") }}
+                    </v-btn>
 
-                <v-row
-                  class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
-                  justify="center"
-                  justify-lg="space-between"
-                >
+                    <v-btn elevation="2" class="btn white--text ml-2" flat color="teal darken-2"
+                      @click="GenerateExcel()">
+                      <v-icon class="pl-1"> mdi-tray-arrow-down </v-icon> {{
+                      $t("container.list.excel") }}
+                    </v-btn>
+
+                  </v-col>
+
+
+
+
+
+                </v-row>
+
+                <v-row class="ma-0 pa-3 white round-border d-flex justify-space-between align-center" justify="center"
+                  justify-lg="space-between">
                   <v-col cols="12">
-                    <v-data-table
-                      :loading="loading"
-                      item-key="id"
-                      :headers="headers"
-                      :items="divisions"
-                      :items-per-page="pagination.perPage"
-                      @update:options="handleOptionsUpdate"
-                      hide-default-footer
-                      class="elevation-0 transparent row-pointer"
-                    >
+                    <v-data-table :loading="loading" item-key="id" :headers="headers" :items="divisions"
+                      :items-per-page="pagination.perPage" @update:options="handleOptionsUpdate" hide-default-footer
+                      class="elevation-0 transparent row-pointer">
                       <template v-slot:item.id="{ item, index }">
-                        {{
-                          (pagination.current - 1) * pagination.perPage +
-                          index +
-                          1
-                        }}
-                      </template>
-                  
 
-                      <template v-slot:item.name_en="{ item }">
-                        {{ item.name_en }}
+                        {{ language== 'en' ? (pagination.current - 1) * pagination.perPage +
+                        index +
+                        1 : $helpers.englishToBangla((pagination.current - 1) * pagination.perPage +
+                        index +
+                        1 )}}
                       </template>
-                      <template v-slot:item.name_bn="{ item }">
-                        {{ item.name_bn }}
-                      </template>
+
+
+
+
 
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'division-edit'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="success"
-                              elevation="0"
-                              @click="editDialog(item)"
-                            >
+                            <v-btn v-can="'time_slot-edit'" fab x-small v-on="on" color="success" elevation="0"
+                              @click="editDialog(item)">
                               <v-icon> mdi-account-edit-outline </v-icon>
                             </v-btn>
                           </template>
                           <span>
-                            {{ $t("container.list.edit") }}
+                            {{ $t("container.list.update") }}
                           </span>
                         </v-tooltip>
 
                         <v-tooltip top v-if="!item.children_count">
                           <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'division-delete'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="grey"
-                              class="ml-3 white--text"
-                              elevation="0"
-                              @click="deleteAlert(item.id)"
-                            >
+                            <v-btn v-can="'time_slot-delete'" fab x-small v-on="on" color="grey"
+                              class="ml-3 white--text" elevation="0" @click="deleteAlert(item.id)">
                               <v-icon> mdi-delete </v-icon>
                             </v-btn>
                           </template>
@@ -146,33 +110,36 @@
                       <!-- End Action Button -->
 
                       <template v-slot:footer="item">
-                        <div
-                          class="text-center pt-2 v-data-footer justify-center pb-2"
-                        >
-                          <v-select
-                            style="
+                        <!-- <div class="text-center pt-2 v-data-footer justify-center pb-2">
+                          <v-select style="
                               position: absolute;
                               right: 25px;
                               width: 149px;
                               transform: translate(0px, 0px);
-                            "
-                            :items="items"
-                            hide-details
-                            dense
-                            outlined
-                            @change="onPageChange"
-                            v-model="pagination.perPage"
-                          ></v-select>
-                          <v-pagination
-                            circle
-                            primary
-                            v-model="pagination.current"
-                            :length="pagination.total"
-                            @input="onPageChange"
-                            :total-visible="11"
-                            class="custom-pagination-item"
-                          ></v-pagination>
-                        </div>
+                            " :items="items" hide-details dense outlined @change="onPageChange"
+                            v-model="pagination.perPage"></v-select>
+                          <v-pagination circle primary v-model="pagination.current" :length="pagination.total"
+                            @input="onPageChange" :total-visible="11" class="custom-pagination-item"></v-pagination>
+                        </div> -->
+                        <row class="text-right pt-2 v-data-footer justify-end pb-2">
+
+
+
+                          <v-col cols="12" lg="4" md="4" sm="12" xs="12" class="text-right">
+                            <v-pagination circle primary v-model="pagination.current" :length="pagination.total"
+                              @input="onPageChange" :total-visible="11"
+                              class="custom-pagination-item"></v-pagination></v-col>
+                          <v-col cols="12" lg="4" md="4" sm="12" xs="12" class="text-right">
+                            <v-select style="
+                     
+                            
+                                    
+                                                " :items="items" hide-details dense outlined @change="onPageChange"
+                              v-model="pagination.perPage"></v-select>
+
+
+                          </v-col>
+                        </row>
                       </template>
                     </v-data-table>
                   </v-col>
@@ -186,8 +153,9 @@
       <!-- division add modal  -->
       <v-dialog v-model="dialogAdd" width="650">
         <v-card style="justify-content: center; text-align: center">
-          <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.system_config.demo_graphic.division.add_new") }}
+          <v-card-title class="font-weight-bold justify-center"
+            style="background-color: #1C3C6A; color: white;font-size: 12px;">
+            {{ $t("container.training_management.time_slot.add") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
@@ -196,43 +164,20 @@
                 <!-- {{errors.code}}
                   {{errors.name_en}} -->
 
-                <ValidationProvider
-                  v-slot="{ errors }"
-                  name="Time Slot"
-                  vid="time"
-                  rules="required|checkName"
-                >
-                  <v-text-field
-                    outlined
-                    type="text"
-                    v-model="data.time"
-                    :label="
-                      $t(
-                        'container.system_config.demo_graphic.division.name_en'
-                      )
-                    "
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                    >></v-text-field
-                  >
+                <ValidationProvider v-slot="{ errors }" name="Time Slot" vid="time" rules="required||checklength">
+                  <v-text-field outlined type="text" v-model="data.time"
+                    :label="$t('container.training_management.time_slot.time')"
+                    :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক  শুধুমাত্র ইংরেজি অক্ষর, সংখ্যা এবং হাইফেন (-) সহ সর্বাধিক 20 অক্ষর প্রদান করুন ' : 'Please enter time up to 20 characters with only English letters, numbers, and hyphen (-).') : ''">
+
+                  </v-text-field>
+
                 </ValidationProvider>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
-                  <v-btn
-                    @click="dialogAdd = false"
-                    outlined
-                    class="custom-btn-width py-2 mr-10"
-                  >
+                  <v-btn @click="dialogAdd = false" outlined class="custom-btn-width py-2 mr-10">
                     {{ $t("container.list.cancel") }}
                   </v-btn>
-                  <v-btn
-                    type="submit"
-                    color="primary"
-                    :disabled="invalid"
-                    :loading="loading"
-                    class="custom-btn-width warning white--text py-2"
-                  >
+                  <v-btn type="submit" color="primary" :disabled="invalid" class="custom-btn-width  white--text py-2">
                     {{ $t("container.list.submit") }}
                   </v-btn>
                 </v-row>
@@ -246,90 +191,30 @@
       <!-- division Edit modal  -->
       <v-dialog v-model="dialogEdit" width="650">
         <v-card style="justify-content: center; text-align: center">
-          <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.system_config.demo_graphic.division.edit") }}
+          <v-card-title class="font-weight-bold justify-center"
+            style="background-color: #1C3C6A; color: white;font-size: 12px;">
+            {{ $t("container.training_management.time_slot.edit") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
             <ValidationObserver ref="formEdit" v-slot="{ invalid }">
               <form @submit.prevent="updateDivision()">
                 <!-- {{errors.code}}
-                {{errors.name_en}} -->
+                  {{errors.name_en}} -->
 
-                <ValidationProvider
-                  name="Code"
-                  vid="code"
-                  rules="required|codeRules"
-                  v-slot="{ errors }"
-                >
-                  <v-text-field
-                    outlined
-                    type="text"
-                    v-model="data.code"
-                    :label="
-                      $t('container.system_config.demo_graphic.division.code')
-                    "
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-text-field>
-                </ValidationProvider>
-                <ValidationProvider
-                  name="Name English"
-                  vid="name_en"
-                  rules="required|checkName"
-                  v-slot="{ errors }"
-                >
-                  <v-text-field
-                    outlined
-                    type="text"
-                    v-model="data.name_en"
-                    :label="
-                      $t(
-                        'container.system_config.demo_graphic.division.name_en'
-                      )
-                    "
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-text-field>
-                </ValidationProvider>
-                <ValidationProvider
-                  name="Name Bangla"
-                  vid="name_bn"
-                  rules="required|checkNameBn"
-                  v-slot="{ errors }"
-                >
-                  <v-text-field
-                    outlined
-                    type="text"
-                    v-model="data.name_bn"
-                    :label="
-                      $t(
-                        'container.system_config.demo_graphic.division.name_bn'
-                      )
-                    "
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-text-field>
+                <ValidationProvider v-slot="{ errors }" name="Time Slot" vid="time" rules="required||checklength">
+                  <v-text-field outlined type="text" v-model="data.time"
+                    :label="$t('container.training_management.time_slot.time')"
+                    :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক  শুধুমাত্র ইংরেজি অক্ষর, সংখ্যা এবং হাইফেন (-) সহ সর্বাধিক 20 অক্ষর প্রদান করুন ' : 'Please enter time up to 20 characters with only English letters, numbers, and hyphen (-).') : ''">
+
+                  </v-text-field>
                 </ValidationProvider>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
-                  <v-btn
-                    @click="dialogEdit = false"
-                    outlined
-                    class="custom-btn-width py-2 mr-10"
-                  >
+                  <v-btn @click="dialogEdit = false" outlined class="custom-btn-width py-2 mr-10">
                     {{ $t("container.list.cancel") }}
                   </v-btn>
-                  <v-btn
-                    type="submit"
-                    color="primary"
-                    :disabled="invalid"
-                    :loading="loading"
-                    class="custom-btn-width primary white--text py-2"
-                  >
+                  <v-btn type="submit" color="primary" :disabled="invalid" class="custom-btn-width  white--text py-2">
                     {{ $t("container.list.update") }}
                   </v-btn>
                 </v-row>
@@ -343,34 +228,24 @@
       <!-- delete modal  -->
       <v-dialog v-model="deleteDialog" width="350">
         <v-card style="justify-content: center; text-align: center">
-          <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.system_config.demo_graphic.division.delete") }}
+          <v-card-title class="font-weight-bold justify-center"
+            style="background-color: #1C3C6A; color: white;font-size: 12px;">
+            {{ $t("container.training_management.time_slot.delete_header") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
               {{
-                $t("container.system_config.demo_graphic.division.delete_alert")
+              $t("container.training_management.time_slot.delete_alert")
               }}
             </div>
           </v-card-text>
           <v-card-actions style="display: block">
             <v-row class="mx-0 my-0 py-2" justify="center">
-              <v-btn
-                text
-                @click="deleteDialog = false"
-                outlined
-                class="custom-btn-width py-2 mr-10"
-              >
+              <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
                 {{ $t("container.list.cancel") }}
               </v-btn>
-              <v-btn
-                text
-                @click="deleteDivision()"
-                color="white"
-                :loading="delete_loading"
-                class="custom-btn-width warning white--text py-2"
-              >
+              <v-btn text @click="deleteDivision()" color="white" class="custom-btn-width warning white--text py-2">
                 {{ $t("container.list.delete") }}
               </v-btn>
             </v-row>
@@ -390,6 +265,14 @@ import { http } from "@/hooks/httpService";
 import Spinner from "@/components/Common/Spinner.vue";
 
 extend("required", required);
+extend('checklength', {
+  validate: value => {
+    // Regular expression to match only English letters, numbers, and hyphen
+    const regex = /^[a-zA-Z0-9-]+$/;
+    return value.length <= 20 && regex.test(value);
+  },
+  message: 'Please enter time up to 20 characters with only English letters, numbers, and hyphen (-).'
+});
 
 extend("checkName", {
   validate: (value) => {
@@ -416,13 +299,14 @@ extend("checkNameBn", {
 });
 export default {
   name: "Index",
-  title: "CTM - Divisions",
+  title: "CTM - Time Slot",
   data() {
     return {
       data: {
         id: null,
         time: null,
       },
+      loading:false,
       total:null,
       isLoading:false,
       dialogAdd: false,
@@ -458,6 +342,12 @@ export default {
     ValidationObserver,
   },
   computed: {
+
+      language: {
+        get() {
+          return this.$store.getters.getAppLanguage;
+        }
+      },
     headers() {
       return [
         {
@@ -466,22 +356,12 @@ export default {
           align: "start",
           sortable: false,
         },
-        {
-          text: this.$t("container.system_config.demo_graphic.division.code"),
-          value: "code",
-        },
+       
         {
           text: this.$t(
-            "container.system_config.demo_graphic.division.name_en"
+            "container.training_management.time_slot.time"
           ),
-          value: "name_en",
-          class: "highlight-column ",
-        },
-        {
-          text: this.$t(
-            "container.system_config.demo_graphic.division.name_bn"
-          ),
-          value: "name_bn",
+          value: "time",
         },
         {
           text: this.$t("container.list.action"),
@@ -500,9 +380,13 @@ export default {
     }),
   },
   methods: {
+    pagesetup(){
+      this.pagination.current=1;
+      this.GetData();
+    },
 
     async GeneratePDF() {
-      this.isLoading = true;
+      // this.isLoading = true;
       let page;
       if(!this.sortBy){
         page = this.pagination.current;
@@ -517,7 +401,7 @@ export default {
       };
 
       await this.$axios
-          .get("/admin/division/get", {
+        .get("/admin/training/time-slots", {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
@@ -525,20 +409,20 @@ export default {
             params: queryParams,
           })
           .then((result) => {
-            this.Alldivisions = result.data.data;
+            this.Alldivisions = result?.data?.data?.data;
           });
 
       const HeaderInfo = [
         this.$t("container.list.sl"),
-        this.$t("container.system_config.demo_graphic.division.code"),
-        this.$t("container.system_config.demo_graphic.division.division"),
+        this.$t("container.training_management.time_slot.time"),
+    
       ]
 
       const CustomInfo = this.Alldivisions.map(((i,index) => {
         return [
           this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
-          this.$i18n.locale == 'en' ? i.code : this.$helpers.englishToBangla(i.code),
-          this.$i18n.locale == 'en' ? i.name_en : i.name_bn ,
+     
+           i?.time ,
         ]
       }));
 
@@ -546,7 +430,7 @@ export default {
         language: this.$i18n.locale,
         data:CustomInfo,
         header:HeaderInfo,
-        fileName:this.$t("container.system_config.demo_graphic.division.list"),
+        fileName: this.$t("container.training_management.time_slot.list"),
       };
       try {
         const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
@@ -568,7 +452,7 @@ export default {
     },
 
     async GenerateExcel(){
-      this.isLoading = true;
+    
       let page;
       if(!this.sortBy){
         page = this.pagination.current;
@@ -583,7 +467,7 @@ export default {
       };
 
       await this.$axios
-          .get("/admin/division/get", {
+        .get("/admin/training/time-slots", {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
               "Content-Type": "multipart/form-data",
@@ -591,7 +475,7 @@ export default {
             params: queryParams,
           })
           .then((result) => {
-            this.Alldivisions = result.data.data;
+            this.Alldivisions = result?.data?.data?.data;
           })
           .catch(error => {
             this.isLoading = false;
@@ -602,25 +486,25 @@ export default {
 
           const HeaderInfo = [
             this.$t("container.list.sl"),
-            this.$t("container.system_config.demo_graphic.district.code"),
-            this.$t("container.system_config.demo_graphic.division.division"),
+            this.$t("container.training_management.time_slot.time"),
+          
           ]
 
           const CustomInfo = this.Alldivisions.map(((i,index) => {
             return {
               "sl" : this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
-              "code" :this.$i18n.locale == 'en' ? i.code : this.$helpers.englishToBangla(i.code),
-              "division" :this.$i18n.locale == 'en' ? i.name_en : i.name_bn ,
+              "time" :i?.time,
+              
             }
           }));
 
-          const Field = ['sl','code', 'division']
+          const Field = ['sl','time']
 
           const Data = this.FormatJson(Field, CustomInfo)
           const currentDate = new Date().toISOString().slice(0, 10); //
           let dateinfo = queryParams.language == 'en' ? currentDate : this.$helpers.englishToBangla(currentDate)
 
-          const filenameWithDate = `${dateinfo}_${this.$t("container.system_config.demo_graphic.division.list")}`;
+          const filenameWithDate = `${dateinfo}_${this.$t("container.training_management.time_slot.list_1")}`;
 
           excel.export_json_to_excel({
             header: HeaderInfo,
@@ -704,50 +588,67 @@ export default {
       return fd;
     },
     submitDivision() {
-      try {
-        this.$store
-          .dispatch("Division/StoreDivision", this.validator())
-          .then((res) => {
-            if (res.data?.success) {
-              this.$toast.success("Data Inserted Successfully");
-              this.resetForm();
-              this.dialogAdd = false;
-              this.GetDivision();
-            } else if (res.response?.data?.errors) {
-              this.$refs.formAdd.setErrors(res.response.data.errors);
-            }
-          });
-      } catch (e) {
-      }
+      this.loading = true;
+      this.$axios
+        .post("admin/training/time-slots", this.data, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
+
+          this.$toast.success(result.data.message);
+          this.dialogAdd = false;
+          this.loading = false;
+          this.GetData();
+       
+
+
+        })
+        .catch((err) => {
+        
+
+        });
+      
     },
     editDialog(item) {
       this.dialogEdit = true;
-      this.data.code = item.code;
-      this.data.name_en = item.name_en;
-      this.data.name_bn = item.name_bn;
       this.data.id = item.id;
+      this.data.time = item.time;
       this.errors = {};
     },
     updateDivision() {
-      if (!this.checkLanguage()) {
-        return;
-      }
+      this.loading = true;
+      const formData = new FormData();
+      // Append data to FormData object
+      formData.append('time', this.data.time);
+      
+      formData.append('_method', "PUT");
+      this.$axios
+        .post(`admin/training/time-slots/${this.data.id}`, formData, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
 
-      try {
-        this.$store
-          .dispatch("Division/UpdateDivision", this.validator())
-          .then((data) => {
-            if (data == null) {
-              this.$toast.success("Data Updated Successfully");
-              this.dialogEdit = false;
-              this.resetForm();
-              this.GetDivision();
-            } else {
-              this.$refs.formEdit.setErrors(data.errors);
-            }
-          });
-      } catch (e) {
-      }
+          this.$toast.success(result.data.message);
+          this.dialogEdit = false;
+          this.loading= false;
+          this.GetData();
+
+
+
+        })
+        .catch((err) => {
+          console.log(err, "err")
+   
+
+        });
+
+      
     },
     resetForm() {
       // Reset the form data
@@ -762,7 +663,7 @@ export default {
 
     onPageChange($event) {
       // this.pagination.current = $event;
-      this.GetDivision();
+      this.GetData();
     },
     setInitialHeader() {
       for (let i = 0; i < this.headers.length; i++) {
@@ -790,7 +691,8 @@ export default {
         this.sortBy = sortBy[0];
         this.sortDesc = sortDesc[0] == true ? "desc" : "asc";
       }
-      this.GetDivision();
+      this.GetData();
+      this.loading = true;
 
       const queryParams = {
         sortBy: this.sortBy,
@@ -800,16 +702,16 @@ export default {
       // alert(JSON.stringify(queryParams));
     },
 
-    async GetDivision() {
+    async GetData() {
       const queryParams = {
-        searchText: this.search,
+        search: this.search,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
         sortBy: this.sortBy,
         sortDesc: this.sortDesc,
       };
       this.$axios
-        .get("/admin/division/get", {
+        .get("/admin/training/time-slots", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -817,39 +719,50 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          this.total = result.data.meta.total;
-          this.divisions = result.data.data;
-          this.pagination.current = result.data.meta.current_page;
-          this.pagination.total = result.data.meta.last_page;
-          this.pagination.grand_total = result.data.meta.total;
+          this.total = result?.data?.data?.total;
+          console.log(result,"result")
+          this.divisions = result.data.data.data;
+          this.pagination.current = result?.data?.data?.current_page;
+          this.pagination.total = result?.data?.data?.last_page;
+          this.pagination.grand_total = result?.data?.data?.total;
+          this.loading = false;
         });
     },
     deleteDivision: async function () {
-      try {
-        await this.$store
-          .dispatch("Division/DestroyDivision", this.delete_id)
-          .then((res) => {
-            // check if the request was successful
-            if (res?.data?.success) {
-              this.$toast.success(res.data.message);
-            } else {
-              this.$toast.error(res.response.data.message);
-            }
+      this.$axios
+        .delete(`admin/training/time-slots/${this.delete_id}`, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "application/json", // Use application/json instead of multipart/form-data
+          },
+        })
+        .then((res) => {
+          console.log(res.data, "res.data")
+          if (res?.data?.success == true) {
+            this.$toast.success(res.data.message);
             this.deleteDialog = false;
-            this.GetDivision();
-          })
-          .catch((error) => {
-            console.log(error, "error");
-          });
-      } catch (e) {
-        console.log(e);
-      }
+            this.GetData();
+          }
+          if (res?.data?.success == false) {
+            this.$toast.error(res.data.message);
+          }
+
+
+
+        })
+        .catch((error) => {
+          console.log(error, "error");
+
+        });
+      
     },
     deleteAlert(id) {
-      this.data.id = id;
+      console.log(id,"this.delete_id");
+  
       // alert(JSON.stringify(id));
       this.deleteDialog = true;
       this.delete_id = id;
+      console.log(this.delete_id, "this.delete_id");
     },
     updateHeaderTitle() {
       const title = this.$t(
@@ -882,7 +795,7 @@ export default {
   },
   created() {
     this.registerCustomRules();
-    // this.GetDivision();
+    // this.GetData();
   },
   beforeMount() {
     this.updateHeaderTitle();

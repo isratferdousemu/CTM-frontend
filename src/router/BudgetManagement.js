@@ -8,14 +8,23 @@ const BudgetManagementRoutes = [
     },
     component: () => import("../pages/BudgetManagement/Index.vue")
   },
+  // {
+  //   path: "/budget/edit/:id",
+  //   name: "budget_edit",
+  //   meta: {
+  //     requiresAuth: true,
+  //     permission: "budget-edit",
+  //   },
+  //   component: () => import("../pages/BudgetManagement/Edit.vue")
+  // },
   {
-    path: "/budget/list",
-    name: "budget_list",
+    path: "/budget/edit/:id",
+    name: "budget_edit",
     meta: {
       requiresAuth: true,
-      permission: "budget-list",
+      permission: "budget-edit",
     },
-    component: () => import("../pages/BudgetManagement/Index.vue")
+    component: () => import("../pages/BudgetManagement/EditNew.vue")
   },
   {
     path: "/budget/create",

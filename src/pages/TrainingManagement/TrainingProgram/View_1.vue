@@ -1,7 +1,6 @@
 <script>
 import { ValidationObserver } from "vee-validate";
 import LocaleSwitcher from "@/components/Common/LocaleSwitcher"
-import FooterBar from "@/components/Common/FooterBar.vue";
 export default {
     name: "Index",
     title: "CTM - Training Circular",
@@ -72,11 +71,6 @@ export default {
 
         "$i18n.locale": "updateHeaderTitle",
     },
-    components: {
-    
-        LocaleSwitcher,
-        FooterBar
-    },
 
     computed: {
         sanitizedDescription() {
@@ -118,7 +112,7 @@ export default {
         DataView() {
             console.log(this.$route.params.id, "params")
             this.$axios
-                .get(`circulars-details/${this.$route.params.id}`, {
+                .get(`admin/training/circulars/${this.$route.params.id}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -192,14 +186,13 @@ export default {
         <v-row>
             <v-col cols="10" offset="1">
                 <v-card class="mx-3">
-
+                    <v-card-title class="justify-center black--text"
+                        style="background-color: #1C3C6A; color: white;font-size: 17px;">
+                        <h5 class="white--text">{{ $t("container.training_management.training_circular.view") }}
+                        </h5>
+                    </v-card-title>
 
                     <v-row class="my-custom-row ma-5">
-
-                        <v-col cols="12" sm="12" md="12" class="mt-15 text-center">{{
-                            $t('container.training_management.training_circular.view') }}</v-col>
-
-
                         <v-col cols="12" sm="6" md="3" style="font-size:15px;">
                             <b>{{ $t('container.training_management.training_circular.name') }}</b>:
                         </v-col>
@@ -245,7 +238,7 @@ export default {
                                 </span> -->
                             <v-chip v-for="(item, index) in data.modules" :key="index" class="ml-2 mt-2">
                                 {{ language == 'bn' ?
-                                item.value_bn : item.value_en }}
+                                item.value_bn : item.value_bn }}{{ data?.modules.value_en }}
                             </v-chip>
                         </v-col>
                         <v-col cols="12" sm="6" md="3" style="font-size:15px;">
@@ -258,39 +251,79 @@ export default {
                             <b>{{ $t('container.training_management.training_circular.description') }}</b>:
                         </v-col>
                         <v-col cols="12" sm="6" md="9" style="font-size:15px;">
-                            <v-row class="ml-1"><b>:</b>
-                                <p v-html="data?.description"></p>
-                            </v-row>
+                            <b>:</b> <span class="ml-2" v-html="sanitizedDescription"></span>
                         </v-col>
                         <v-col cols="12" sm="6" md="3" style="font-size:15px;">
                             <b>{{ $t('container.api_manager.data_receiver.start_date') }}</b>:
                         </v-col>
                         <v-col cols="12" sm="6" md="9" style="font-size:15px;">
-                            <b>:</b> <span class="ml-2">{{ language == 'bn' ?
-                                $helpers.englishToBangla(data?.start_date) : data?.start_date }}</span>
+                            <b>:</b> <span class="ml-2">{{ data?.start_date }}</span>
                         </v-col>
                         <v-col cols="12" sm="6" md="3" style="font-size:15px;">
                             <b>{{ $t('container.api_manager.data_receiver.end_date') }}</b>:
                         </v-col>
                         <v-col cols="12" sm="6" md="9" style="font-size:15px;">
-                            <b>:</b> <span class="ml-2">{{ language == 'bn' ?
-                                $helpers.englishToBangla(data?.end_date) : data?.end_date }}</span>
+                            <b>:</b> <span class="ml-2">{{ data?.end_date }}</span>
                         </v-col>
 
                         <!-- Other fields -->
 
                     </v-row>
 
+                    <v-row class="justify-end ma-5">
+                        <v-btn flat color="primary" class="custom-btn mr-2 mb-5" router
+                            to="/training-management/trainer-circular">
+                            {{ $t("container.list.back") }}
+                        </v-btn>
 
+                    </v-row>
                 </v-card>
             </v-col>
         </v-row>
 
+        <v-row>
+            <v-col cols="12">
+                <v-card>
+                    <v-card-title v-if="data.api_list" class="justify-center black--text">
+                        <h5 class="mt-5">{{ $t("container.api_manager.api_generate.api_view") }}</h5>
+                    </v-card-title>
 
+                    <v-data-table :loading="loading" item-key="id" :headers="headers" v-if="data.api_list"
+                        :items="data?.api_list" hide-default-footer
+                        class="elevation-0 transparent row-pointer mt-5 mx-5">
+                        <!-- Your data table content here -->
+                    </v-data-table>
+                </v-card>
+            </v-col>
+        </v-row>
 
         <!-- Mail modal -->
-        <br></br>
-        <FooterBar />
+        <v-dialog v-model="dialogEmail" width="350">
+            <!-- Your modal content here -->
+            <v-card style="justify-content: center; text-align: center">
+                <v-card-title class="font-weight-bold justify-center">
+                    {{ $t('container.api_manager.data_receiver.email_header') }}
+                </v-card-title>
+                <v-divider></v-divider>
+                <v-card-text>
+                    <div class="subtitle-1 font-weight-medium mt-5">
+                        {{ $t('container.api_manager.data_receiver.email_alert') }}
+                    </div>
+                </v-card-text>
+                <v-card-actions style="display: block">
+                    <v-row class="mx-0 my-0 py-2" justify="center">
+                        <v-btn text @click="dialogEmail = false" outlined class="custom-btn-width py-2 mr-10">
+                            {{ $t('container.list.cancel') }}
+                        </v-btn>
+                        <v-btn text @click="sendEmail" color="white" :loading="delete_loading"
+                            class="custom-btn-width warning white--text py-2">
+                            {{ $t('container.list.confirm') }}
+                        </v-btn>
+                    </v-row>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
     </div>
 </template>
 <style>

@@ -319,11 +319,13 @@
 
                           <label>{{ $t('container.grievance_management.grievanceEntry.document') }}</label>
                           <!-- <span style="margin-left: 4px; color: red">*</span> -->
-                          <ValidationProvider v-slot="{ errors }" name="Document" vid="document">
-                            <v-file-input :hide-details="errors[0] ? false : true" outlined prepend-outer-icon="mdi-camera" v-model="data.documents"
-                              accept="file/*" :placeholder="language === 'bn' ? 'সিলেক্ট ফাইল' : 'Select File'">
-                            </v-file-input>
-                          </ValidationProvider>
+                          <!-- <ValidationProvider v-slot="{ errors }" name="Document" vid="document"> -->
+                         <v-file-input outlined v-model="data.documents" accept=".pdf,.xls,.xlsx,.jpg,.jpeg,.png" 
+                             :rules="[fileTypeRule, fileSizeRule]"
+                             :placeholder="language === 'bn' ? 'সিলেক্ট ফাইল' : 'Select File'"
+                             :label="$t('container.grievance_management.grievanceEntry.document')">
+                       </v-file-input>
+                          <!-- </ValidationProvider> -->
 
                         </v-col>
                       </v-row>
@@ -796,6 +798,19 @@ export default {
       confirmDialog: false,
       showAlert: false,
 
+     fileTypeRule: (value) => {
+      if (!value) return 'File is required.';
+      const allowedFormats = ['.pdf', '.xls', '.xlsx', '.jpg', '.jpeg', '.png'];
+      const extension = value.name.slice(((value.name.lastIndexOf(".") - 1) >>> 0) + 2);
+      return allowedFormats.includes(`.${extension}`) || 'Allowed file types are PDF, Excel, JPG, JPEG, and PNG.';
+    },
+    fileSizeRule: (value) => {
+      if (!value) return 'File is required.';
+      const maxSizeMB = 5; // Maximum file size in MB
+      const maxSizeBytes = maxSizeMB * 1024 * 1024; // Convert MB to bytes
+      return value.size <= maxSizeBytes || `File size should be less than ${maxSizeMB} MB.`;
+    },
+
       data: {
         is_existing_beneficiary: null,
         verification_number: null,
@@ -1055,7 +1070,8 @@ export default {
         this.data.ward_id_upazila_union = null,
         this.data.ward_id_upazila_pouro = null,
         this.data.ward_id_dist = null,
-        this.data.mobile = null
+        this.data.mobile = null,
+        this.checkboxChecked = false
     },
 
 

@@ -1,6 +1,6 @@
 const ManageAllotmentRoutes = [
     {
-      path: '/allotment/list',
+      path: '/allotment',
       name: 'ManageAllotment',
       component: () => import("../pages/ManageAllotment/Index.vue"),
     },
