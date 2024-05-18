@@ -33,7 +33,7 @@ const BudgetManagementRoutes = [
       requiresAuth: true,
       permission: 'budget-edit',
     },
-    component: () => import('../pages/BudgetManagement/Details.vue'),
+    component: () => import('../pages/BudgetManagement/Details_V2.vue'),
   },
   {
     path: '/budget/create',

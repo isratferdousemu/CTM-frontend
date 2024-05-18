@@ -950,17 +950,23 @@
     "manage_allotment": {
       "id": "ID",
       "list": "Allotment List",
-      "program": "Allotment Distribution Program",
+      "program": "Allotment Program",
       "regular_payment": "Regular Payment",
       "additional": "Additional Payment",
       "post": "Post",
       "download": "Download",
       "allotment_setup_list": "Allotment Area Setup",
-      "area_type": "Area Type",
-      "allotment_area": "Allotment Area",
+      "area_type": "Upazila/City Corporation/ District Pouroshava",
+      "allotment_area": "Union/Ward/Pouroshava",
       "add_new_setup": "Update Allotment  Setup",
       "setupdelete": "Delete Allotment Area ",
-      "setupdelete_alert": "Are you sure to delete this Allotment Area?"
+      "setupdelete_alert": "Are you sure to delete this Allotment Area?",
+      "regular_beneficiaries": "Regular Beneficiaries",
+      "additional_beneficiaries": "Additional Beneficiaries",
+      "total_beneficiaries": "Total Beneficiaries",
+      "total_amount": "Total Amount",
+      "detail_budget_list": "Deatil Budget List",
+      "allotment_basic_info": "Allotment Basic Information"
     },
     "budget_management": {
       "budget_info": "Budget Info",

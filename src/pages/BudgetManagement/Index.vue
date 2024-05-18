@@ -513,13 +513,16 @@ export default {
     },
     async GeneratePDF(id) {
       this.isLoading = true;
+      const queryParams = {
+        language: this.$i18n.locale,
+      };
       this.$axios
         .get("/admin/budget/detail/report/" + id, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "application/json",
           },
-          //  params: queryParams,
+          params: queryParams,
           responseType: "arraybuffer",
         })
         .then((result) => {

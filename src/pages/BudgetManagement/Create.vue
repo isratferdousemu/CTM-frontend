@@ -47,17 +47,20 @@
                               <ValidationProvider name="previousYear" vid="previous_year" rules="required"
                                 v-slot="{ errors }">
 
-                                <v-text-field type="Number" outlined v-model="data.previous_year_value"
-                                  label="Number of Previous Year" required :error="errors[0] ? true : false"
-                                  :error-messages="errors[0]">
+                                <v-text-field type="Number" outlined v-model="data.previous_year_value" :label="$t(
+                                  'container.budget_management.no_of_previous_year'
+                                )
+                                  " required :error="errors[0] ? true : false" :error-messages="errors[0]">
                                 </v-text-field>
 
                               </ValidationProvider>
 
                               <ValidationProvider name="calculationValue" vid="calculation_value" rules="required"
                                 v-slot="{ errors }">
-                                <v-text-field type="Number" v-model="data.calculation_value" outlined label="Value"
-                                  required :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                <v-text-field type="Number" v-model="data.calculation_value" outlined :label="$t(
+                                  'container.budget_management.calculation_value'
+                                )
+                                  " required :error="errors[0] ? true : false" :error-messages="errors[0]">
                                 </v-text-field>
 
                               </ValidationProvider>
@@ -72,9 +75,11 @@
 
                               <ValidationProvider name="calculationType" vid="calculation_type" rules="required"
                                 v-slot="{ errors }">
-                                <v-select :items="calculationType" item-text="value_en" item-value="id"
-                                  label="Calculation Type" v-model="data.calculation_type" outlined required
-                                  :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                <v-select :items="calculationType" item-text="value_en" item-value="id" :label="$t(
+                                  'container.budget_management.calculation_type'
+                                )
+                                  " v-model="data.calculation_type" outlined required :error="errors[0] ? true : false"
+                                  :error-messages="errors[0]">
                                 </v-select>
                               </ValidationProvider>
 
@@ -143,10 +148,12 @@
 
                   <v-col cols="12">
                     <v-row class="justify-end mb-5 mr-2">
-                      <v-btn flat color="primary" class="custom-btn mr-2" router to="/budget">Back
+                      <v-btn flat color="primary" class="custom-btn mr-2" router
+                        to="/budget">{{ $t("container.list.back") }}
                       </v-btn>
 
-                      <v-btn flat color="success" type="submit" class="custom-btn mr-2" :disabled="invalid">Submit
+                      <v-btn flat color="success" type="submit" class="custom-btn mr-2"
+                        :disabled="invalid">{{ $t("container.list.submit") }}
                       </v-btn>
                     </v-row>
                   </v-col>
@@ -276,7 +283,7 @@ export default {
       fd.append("program_id", this.data.program_id);
       fd.append("financial_year_id", this.active_year.id);
       fd.append("calculation_type", this.data.calculation_type);
-      fd.append("previous_year_value", this.data.previous_year_value);
+      fd.append("no_of_previous_year", this.data.previous_year_value);
       fd.append("calculation_value", this.data.calculation_value);
       fd.append("remarks", this.data.remarks);
 
