@@ -47,7 +47,7 @@ const TrainingManagementRoutes = [
   /*Training Circular  route start*/
   {
     path: "/training-management/training-circular",
-    name: "trainerCircular",
+    name: "trainingCircular",
     meta: {
       requiresAuth: true,
       permission: "trainingCircular-view",
@@ -57,7 +57,7 @@ const TrainingManagementRoutes = [
 
   {
     path: "/training-management/training-circular/create",
-    name: "TrainerInformationCreate",
+    name: "trainingCircularCreate",
     meta: {
       requiresAuth: true,
       permission: "trainingCircular-create",
@@ -67,7 +67,7 @@ const TrainingManagementRoutes = [
 
   {
     path: "/training-management/training-circular/edit/:id",
-    name: "trainingCircular-edit",
+    name: "trainingCircularEdit",
     meta: {
       requiresAuth: true,
       permission: "trainingCircular-edit",
@@ -76,10 +76,10 @@ const TrainingManagementRoutes = [
   },
   {
     path: "/training-management/training-circular/view/:id",
-    name: "trainingCircular-view",
+    name: "trainingCircularView",
     meta: {
       requiresAuth: true,
-      permission: "trainerCircular-view",
+      permission: "trainingCircular-view",
     },
     component: () => import("../pages/TrainingManagement/TrainingCircular/View.vue")
   },
