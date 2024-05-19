@@ -172,7 +172,7 @@ export default {
                                 <b>{{ $t('container.training_management.training_circular.training_type') }}</b>:
                             </v-col>
                             <v-col cols="7" style="font-size:13px;">
-                                <b>:</b> <span class="ml-2"> 
+                                <b>:</b> <span class="ml-2">
                                     {{ language == 'bn' ?
                                     data?.training_circular?.training_type.value_bn :
                                     data?.training_circular?.training_type.value_en }}</span>
