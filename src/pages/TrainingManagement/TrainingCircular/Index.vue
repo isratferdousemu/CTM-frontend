@@ -11,11 +11,19 @@ export default {
                 name_en: null,
                 name_bn: null,
             },
+            dates:[],
+        
+            all_modules:[],
+            training_types:[],
+            circular_types:[],
             showPassword: false,
             total: null,
-            org_name:null,
+            circular_type_id:null,
+            training_type_id:null,
+            start_date:null,
+            end_date:null,
             module_id:null,
-            organization_names:[],
+    
             circulars: [],
 
             dialogAdd: false,
@@ -58,7 +66,6 @@ export default {
             return [
                 { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, width: "10%" },
                 { text: this.$t('container.training_management.training_circular.name'), value: "circular_name", align: "start", width: "15%" },
-
                 { text: this.$t('container.training_management.training_circular.module'), value: "modules", width: "20%" },
                 { text: this.$t('container.training_management.training_circular.no_of_participant'), value: "no_of_participant", width: "10%" },
                 { text: this.$t('container.training_management.training_circular.start_date'), value: "start_date", width: "15%" },
@@ -72,6 +79,18 @@ export default {
 
     mounted() {
         this.GetData();
+        this.$store
+            .dispatch("getLookupByType", 26)
+            .then((res) => (this.circular_types = res));
+      
+      
+        this.$store
+            .dispatch("getLookupByType", 27)
+            .then((res) => (this.training_types = res));
+        this.$store
+            .dispatch("getLookupByType", 29)
+            .then((res) => (this.all_modules = res));
+
        
     
    
@@ -79,6 +98,44 @@ export default {
     },
 
     methods: {
+        OnChangeDateInfo(event, type) {
+            this.start_date = null;
+            this.end_date = null;
+            if (this.dates.length < 2) {
+
+                const message = this.language === 'bn' ? 'অনুগ্রহ করে শুরুর তারিখ এবং শেষ তারিখ উভয়ই  প্রদান করুন ' : 'Please select both Start Date and End Date';
+                this.$toast.error(message);
+                return;
+            }
+
+            if (event.length === 2) {
+                const startDate = event[0];
+                const endDate = event[1];
+
+                if (startDate < endDate) {
+                    this.start_date = startDate;
+                    this.end_date = endDate;
+                } else {
+                    const error = this.language === 'bn' ? 'শুরুর তারিখ শেষের তারিখের আগে হতে হবে। ' : 'Date of start must precede date of end.';
+                    this.$toast.error(error);
+                    this.resetDateRange();
+
+                    // Optionally reset the start and end dates
+                    // this.start_date = null;
+                    // this.end_date = null;
+                }
+            }
+
+        },
+        resetDateRange() {
+            this.dates = [];
+            this.menu = false;
+
+        },
+        getItemText(item) {
+            return this.language == 'bn' ? item.value_bn : item.value_en;
+        },
+       
         copyToClipboard(id) {
             const baseUrl = window.location.origin;
             console.log(baseUrl,"baseUrl");
@@ -114,9 +171,15 @@ export default {
 
        
         resetSearch(){
-            this.module_id=null;
-            this.org_name=null;
-            this.GetData();
+          this.training_type_id=null;
+          this.circular_type_id=null;
+          this.module_id=null;
+          this.start_date=null;
+          this.end_date=null;
+            this.start_date = null;
+            this.end_date = null;
+            this.dates = [];
+          this.GetData();
         },
         async GeneratePDF() {
             this.isLoading = true;
@@ -357,6 +420,11 @@ export default {
                 page: this.pagination.current,
                 sortBy: this.sortBy,
                 sortDesc: this.sortDesc,
+                training_type_id: this.training_type_id,
+                circular_type_id: this.circular_type_id,
+                module_id: this.module_id,
+                start_date: this.start_date,
+                end_date: this.end_date,
             };
             this.$axios
                 .get("/admin/training/circulars", {
@@ -438,6 +506,85 @@ export default {
             <v-col cols="12">
                 <v-row>
                     <v-col cols="12">
+                        <v-expansion-panels>
+                            <v-expansion-panel class="ma-2">
+                                <v-expansion-panel-header color=#1c3b68>
+                                    <template v-slot:actions>
+                                        <v-icon color="white">
+                                            $expand
+                                        </v-icon>
+                                    </template>
+                                    <h3 class="white--text">
+                                        {{ $t("container.list.filter") }}
+                                    </h3>
+                                </v-expansion-panel-header>
+                                <v-expansion-panel-content class="elevation-0 transparent mt-10">
+
+                                    <form @submit.prevent="PageSetup()">
+
+                                        <v-row>
+
+
+                                            <v-col lg="4" md="4" cols="12">
+                                                <v-select outlined dense clearable :append-icon-cb="appendIconCallback"
+                                                    append-icon="mdi-plus" class="no-arrow-icon"
+                                                    v-model="training_type_id" :items="training_types"
+                                                    :item-text="getItemText" item-value="id"
+                                                    :label="$t('container.training_management.training_circular.training_type') ">
+                                                </v-select>
+                                            </v-col>
+                                            <v-col lg="4" md="4" cols="12">
+                                                <v-select outlined dense clearable :append-icon-cb="appendIconCallback"
+                                                    append-icon="mdi-plus" class="no-arrow-icon"
+                                                    v-model="circular_type_id" :items="circular_types"
+                                                    :item-text="getItemText" item-value="id"
+                                                    :label="$t('container.training_management.training_circular.type') ">
+                                                </v-select>
+                                            </v-col>
+                                          
+                                            <v-col lg="4" md="4" cols="12">
+                                                <v-menu ref="menu" v-model="menu" :close-on-content-click="false"
+                                                    transition="scale-transition" offset-y min-width="auto">
+                                                    <template v-slot:activator="{ on, attrs }">
+                                                        <v-text-field v-model="dates" outlined dense
+                                                            :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
+                                                            :label="$t('container.application_selection_dashboard.enter_start_end_date')"
+                                                            readonly v-bind="attrs" v-on="on"></v-text-field>
+                                                    </template>
+                                                    <v-date-picker v-model="dates" :range="[dates[0], dates[1]]"
+                                                        no-title scrollable
+                                                        @input="OnChangeDateInfo($event, 'total_received')">
+                                                        <v-spacer></v-spacer>
+                                                        <v-btn text color="primary" @click="resetDateRange">
+                                                            {{ $t('container.list.reset') }}
+                                                        </v-btn>
+                                                        <v-btn text color="primary" @click="$refs.menu.save(dates)">
+                                                            {{ $t('container.list.ok') }}
+                                                        </v-btn>
+                                                    </v-date-picker>
+                                                </v-menu>
+                                            </v-col>
+
+                                            <v-col lg="12" md="12" cols="12">
+                                                <div class="d-inline d-flex justify-end">
+                                                    <v-btn elevation="2" class="btn" @click="resetSearch">{{
+                                                        $t("container.list.reset")
+                                                        }}</v-btn>
+                                                    <v-btn elevation="2" type="submit" class="btn ml-2"
+                                                        color="success">{{
+                                                        $t("container.list.filter") }}</v-btn>
+                                                </div>
+
+                                            </v-col>
+
+                                        </v-row>
+
+
+                                    </form>
+
+                                </v-expansion-panel-content>
+                            </v-expansion-panel>
+                        </v-expansion-panels>
                         <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8 mt-5">
                             <v-card-title tag="div" class="text-center"
                                 style="background-color:#1c3b68;color:white;margin-bottom: 17px;font-size:17px;">

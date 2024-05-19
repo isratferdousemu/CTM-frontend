@@ -52,11 +52,8 @@ export default {
     },
 
     computed: {
-        sanitizedDescription() {
-            // Sanitize HTML content using DOMParser
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(this.data.description, 'text/html');
-            return doc.body.innerHTML;
+        rowClass() {
+            return this.windowWidth <= 600 ? 'small-font' : 'default-font';
         },
         headers() {
             return [
@@ -140,105 +137,106 @@ export default {
 }
 </script><template>
     <div id="url-generate">
-        <v-app-bar color="#405c61" fixed height="80" class="px-4" dense dark>
+        <v-app-bar color="#405c61" fixed height="60" class="px-4 mb-10" dense dark>
             <v-row align="center" no-gutters>
-                <v-img class="p-3 mr-4" max-height="100%" max-width="60px" position="center center"
-                    src="/assets/images/logo.png"></v-img>
-                <v-toolbar-title>{{ $t('container.application_selection.application.title_online_1') }}<br>{{
-                    $t('container.application_selection.application.title_online_2') }}
-                </v-toolbar-title>
+                <v-col cols="2">
+                    <v-img class="p-3 mr-4" max-height="100%" max-width="60px" position="center center"
+                        src="/assets/images/logo.png"></v-img>
+                </v-col>
+                <v-col cols="4">
+                    <v-toolbar-title>{{ $t('container.application_selection.application.title_online_1')
+                        }}<br>{{
+                        $t('container.application_selection.application.title_online_2') }}
+                    </v-toolbar-title>
+
+                </v-col>
 
 
 
-              
 
-                <v-col>
-                    <v-row align="center" justify="end" no-gutters>
-                        <v-col cols="12" class="text-right">
-                            <!-- Adjust the styling of LocaleSwitcher as needed -->
-                            <LocaleSwitcher />
-                        </v-col>
-                    </v-row>
+
+
+
+                <v-col cols="6" class="text-right">
+
+                    <!-- Adjust the styling of LocaleSwitcher as needed -->
+                    <LocaleSwitcher />
+
                 </v-col>
             </v-row>
         </v-app-bar>
         <v-row>
             <v-col cols="10" offset="1">
                 <v-card class="mx-3">
-
-
-                    <v-row class="my-custom-row ma-5">
-
-                        <v-col cols="12" sm="12" md="12" class="mt-15 text-center">{{
-                            $t("container.training_management.training_program.view") }}</v-col>
-                        <v-col cols="12" sm="6" md="3" style="font-size:15px;">
-                            <b>{{ $t('container.training_management.training_program.program') }}</b>:
+                    <v-row class="my-custom-row ma-5 mt-15">
+                        <v-col cols="5" style="font-size:13px;">
+                            <b>{{ $t('container.training_management.training_program.program_name') }}</b>:
                         </v-col>
-                        <v-col cols="12" sm="6" md="9" style="font-size:15px;">
+                        <v-col cols="7" style="font-size:13px;">
                             <b>:</b> <span class="ml-2">{{ data?.program_name }}</span>
                         </v-col>
-                        <v-col cols="12" sm="6" md="3" style="font-size:15px;">
+                        <v-col cols="5" style="font-size:13px;">
                             <b>{{ $t('container.training_management.training_program.training_circular') }}</b>:
                         </v-col>
-                        <v-col cols="12" sm="6" md="9" style="font-size:15px;">
+                        <v-col cols="7" style="font-size:13px;">
                             <b>:</b> <span class="ml-2"> {{ data?.training_circular?.circular_name
                                 }}</span>
                         </v-col>
-                        <v-col cols="12" sm="6" md="3" style="font-size:15px;">
+                        <v-col cols="5" style="font-size:13px;">
+                            <b>{{ $t('container.training_management.training_circular.training_type') }}</b>:
+                        </v-col>
+                        <v-col cols="7" style="font-size:13px;">
+                            <b>:</b> <span class="ml-2">
+                                {{ language == 'bn' ?
+                        data?.training_circular?.training_type.value_bn :
+                        data?.training_circular?.training_type.value_en }}</span>
+                        </v-col>
+                        <v-col cols="5" style="font-size:13px;">
                             <b>{{ $t('container.training_management.training_program.trainer') }}</b>:
                         </v-col>
-                        <v-col cols="12" sm="6" md="9" style="font-size:15px;">
+                        <v-col cols="7" style="font-size:13px;">
                             <b>:</b> <v-chip v-for="(item, index) in data.trainers" :key="index" class="ml-2 mt-2">
                                 {{ item.name }}
                             </v-chip>
                         </v-col>
 
-                        <v-col cols="12" sm="6" md="3" style="font-size:15px;">
+                        <v-col cols="5" style="font-size:13px;">
                             <b>{{ $t('container.training_management.training_circular.module') }}</b>:
                         </v-col>
-                        <v-col cols="12" sm="6" md="9" style="font-size:15px;">
+                        <v-col cols="7" style="font-size:13px;">
                             <b>:</b>
-                            <!-- <span class="ml-2">{{ language == 'bn' ?
-                                    data?.modules
-                                    ?.value_bn : data?.modules
-                                    ?.value_en }}{{ data?.modules.value_bn }}
-                                </span> -->
+
                             <v-chip v-for="(item, index) in data.modules" :key="index" class="ml-2 mt-2">
                                 {{ language == 'bn' ?
                                 item.value_bn : item.value_en }}
                             </v-chip>
                         </v-col>
-                        <!-- <v-col cols="12" sm="6" md="3" style="font-size:15px;">
-                                <b>{{ $t('container.training_management.training_circular.class_duration') }}</b>:
-                            </v-col>
-                            <v-col cols="12" sm="6" md="9" style="font-size:15px;">
-                                <b>:</b> <span class="ml-2">{{ data?.class_duration }}</span>
-                            </v-col> -->
-                        <v-col cols="12" sm="6" md="3" style="font-size:15px;">
+
+                        <v-col cols="5" style="font-size:13px;">
                             <b>{{ $t('container.training_management.training_circular.description') }}</b>:
                         </v-col>
-                        <v-col cols="12" sm="6" md="9" style="font-size:15px;">
+                        <v-col cols="7" style="font-size:13px;">
                             <b>:</b> <span class="ml-2"> {{ data?.description
                                 }}</span>
                         </v-col>
-                        <v-col cols="12" sm="6" md="3" style="font-size:15px;">
+                        <v-col cols="5" style="font-size:13px;">
                             <b>{{ $t('container.api_manager.data_receiver.start_date') }}</b>:
                         </v-col>
-                        <v-col cols="12" sm="6" md="9" style="font-size:15px;">
+                        <v-col cols="7" style="font-size:13px;">
                             <b>:</b> <span class="ml-2">{{ language == 'bn' ?
                                 $helpers.englishToBangla(data?.start_date) : data?.start_date }}</span>
                         </v-col>
-                        <v-col cols="12" sm="6" md="3" style="font-size:15px;">
+                        <v-col cols="5" style="font-size:13px;">
                             <b>{{ $t('container.api_manager.data_receiver.end_date') }}</b>:
                         </v-col>
-                        <v-col cols="12" sm="6" md="9" style="font-size:15px;">
+                        <v-col cols="7" style="font-size:13px;">
                             <b>:</b> <span class="ml-2">{{ language == 'bn' ?
                                 $helpers.englishToBangla(data?.end_date) : data?.end_date }}</span>
                         </v-col>
-                        <v-col cols="12" sm="6" md="3" style="font-size:15px;">
+                        <v-col cols="5" style="font-size:13px;">
                             <b>{{ $t('container.list.status') }}</b>:
                         </v-col>
-                        <v-col cols="12" sm="6" md="9" style="font-size:15px;">
+                        <v-col cols="7" style="font-size:13px;">
                             <b>:</b> <span class="ml-2" v-if="data?.status == 0">
                                 {{ language == 'bn' ?
                                 'নিষ্ক্রিয়' : 'Inactive' }}
@@ -248,8 +246,6 @@ export default {
                                 'সক্রিয়' : 'Active' }}
                             </span>
                         </v-col>
-
-
 
                         <!-- Other fields -->
 
@@ -320,46 +316,11 @@ export default {
     </div>
 </template>
 <style>
-.text-wrap {
-    /* You can adjust these properties as needed */
-    overflow-wrap: break-word;
-    /* Handles long words */
-    word-wrap: break-word;
-    /* Handles long words */
-    white-space: pre-wrap;
-    /* Handles spaces and line breaks */
+/* Default font size */
+
+
+.title{
+    font-size: 10px;
 }
 
-.word-wrap {
-    overflow-wrap: break-word;
-}
-
-.custom-chip {
-    background-color: blue;
-    color: white;
-}
-
-.gradient-background {
-    background: linear-gradient(to right, #87CEEB, #ADD8E6, #F0F8FF);
-    color: black;
-    /* Adjust text color for better contrast */
-    border-radius: 10px;
-    /* Add rounded corners for a softer look */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    /* Add a subtle shadow for depth */
-
-    /* Add a subtle animation */
-    animation: gradient-animation 10s infinite alternate;
-}
-
-/* Define the animation */
-@keyframes gradient-animation {
-    0% {
-        background-position: 0% 50%;
-    }
-
-    100% {
-        background-position: 100% 50%;
-    }
-}
 </style>
