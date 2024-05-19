@@ -1018,7 +1018,15 @@
       "bank_name": "Bank Name",
       "branch_name": "Branch Name",
       "delete": "Delete Payment Processor ",
-      "delete_alert": "Are you sure to delete this Payment Processor?"
+      "delete_alert": "Are you sure to delete this Payment Processor?",
+      "location_type": "Location Type",
+      "division": "Division",
+      "district": "District",
+      "upazila": "Upazila",
+      "union": "Union",
+      "thana": "Thana",
+      "city_corporation": "City Corporation",
+      "district_pourashava": "District Pourashava"
     },
       "training_management": {
         "trainer_info": {
@@ -1214,6 +1222,22 @@
         "beneficiary_id": "Beneficiary Id",
         "user_name": "User Name",
         "action_type": "Action Type"
+      }
+    },
+    "power_bi_report": {
+      "index": {
+        "title": "Power BI Report List",
+        "add": "Add Power BI Report ",
+        "update": "Update Power BI Report ",
+        "title_en": "Title En",
+        "title_bn": "Title Bn",
+        "embaded_code": "Embaded Code",
+        "image": "Image",
+        "delete": "Delete Power BI Report",
+        "delete_alert": "Are you sure to delete this Report?"
+      },
+      "view": {
+        "title": "কার্যকলাপ লগ ফিল্টার"
       }
     },
     "system_config_dashboard": {
