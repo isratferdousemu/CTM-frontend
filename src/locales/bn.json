@@ -48,7 +48,7 @@
       "add_new": "যোগ করুন",
       "add": "যোগ করুন",
       "update": "আপডেট করুন",
-      "delete": "ডিলিট করুন",
+      "delete": "মুছে ফেলুন",
         "email": "ইমেইল পাঠান",
       "saved": "ডেটা সফলভাবে সংরক্ষিত হয়েছে",
       "updated": "ডেটা সফলভাবে আপডেট হয়েছে",
@@ -372,7 +372,7 @@
         },
         "role": {
           "select_all": "সব সিলেক্ট করুন",
-          "select_role":"রোল নির্বাচন করুন",
+          "select_role": "রোল নির্বাচন করুন",
           "select_module": "মডিউল নির্বাচন করুন",
           "list": "রোলের তালিকা ",
           "code": "কোড",
@@ -583,7 +583,7 @@
         "personal_info": "ব্যক্তিগত তথ্য",
         "name_en": "সম্পূর্ণ নাম (ইংরেজিতে)",
         "name_bn": "সম্পূর্ণ নাম (বাংলায়)",
-          "email": "ইমেইল",
+        "email": "ইমেইল",
         "religion": "ধর্ম",
         "nationality": "জাতীয়তা",
         "age": "বয়স",
@@ -602,7 +602,7 @@
         "bank_name": "ব্যাংকের নাম",
         "branch_name": "শাখার নাম",
         "bank_account_number": "ব্যাংক একাউন্ট নম্বর",
-     
+
         "mobile_account": "এমএফএস (মোবাইল ফিনান্সিয়াল সার্ভিস)",
         "bank_account": "ব্যাংক অ্যাকাউন্ট",
         "nominee_info": "নমিনী তথ্য",
@@ -948,17 +948,24 @@
     "manage_allotment": {
       "id": "আইডি",
       "list": "বরাদ্দ তালিকা",
-      "program": "বরাদ্দ বিতরণ কর্মসূচি",
+      "program": "বরাদ্দ প্রোগ্রাম",
       "regular_payment": "নিয়মিত অর্থপ্রদান",
       "additional": "অতিরিক্ত অর্থপ্রদান",
       "post": "পোস্ট",
       "download": "ডাউনলোড",
-      "allotment_setup_list": "বরাদ্দ এলাকা সেটআপ",
-      "area_type": "এলাকার ধরন",
-      "allotment_area": "বরাদ্দ এলাকা",
+      "area_type": "উপজেলা/সিটি কর্পোরেশন/জেলা পৌরসভা",
+      "allotment_area": "ইউনিয়ন/ওয়ার্ড/পৌরসভা",
       "add_new_setup": " বরাদ্দ সেটআপ আপডেট",
       "setupdelete": "বরাদ্দ এলাকা মুছুন ",
-      "setupdelete_alert": "আপনি কি এই বরাদ্দ এলাকা মুছে ফেলার বিষয়ে নিশ্চিত??"
+      "setupdelete_alert": "আপনি কি এই বরাদ্দ এলাকা মুছে ফেলার বিষয়ে নিশ্চিত??",
+      "regular_beneficiaries": "নিয়মিত উপকারভোগী",
+      "additional_beneficiaries": "অতিরিক্ত উপকারভোগী",
+      "total_beneficiaries": "মোট উপকারভোগী",
+      "total_amount": "সর্বমোট পরিমাণ",
+      "detail_budget_list": "বিস্তারিত বাজেট তালিকা",
+      "allotment_basic_info": "বরাদ্দের প্রাথমিক তথ্য",
+      "allotment_edit": "বরাদ্দ এডিট",
+      "financial_year": "আর্থিক বর্ষ"
     },
     "budget_management": {
       "budget_info": "বাজেটের তথ্য",
@@ -968,7 +975,35 @@
       "program_name": "প্রোগ্রামের নাম",
       "calculation_type": "গণনার ধরন",
       "financial_year": "আর্থিক বর্ষ",
-      "action": "অ্যাকশন"
+      "action": "অ্যাকশন",
+
+      "budget_basic_info": "বাজেটের মৌলিক তথ্য",
+      "budget_details_info": "বাজেটের বিস্তারিত তথ্য",
+      "budget_create": "বাজেট তৈরি",
+
+      "budget_verification": "বাজেট যাচাইকরণ",
+      "approved_by": "অনুমোদনকারী",
+      "approved_date": "অনুমোদিত তারিখ",
+      "remark": "মন্তব্য",
+      "delete_title": "বাজেট মুছুন!!!",
+      "delete_message": "আপনি এই বাজেট মুছে ফেলার বিষয়ে নিশ্চিত?",
+      "budget_edit": "বাজেট এডিট",
+      "update": "আপডেট",
+      "budgets": "বাজেট",
+      "office": "উপজেলা/সিটি কর্পোরেশন/জেলা পৌরসভা",
+      "upazila": "উপজেলা",
+      "union_pourashava": "ইউনিয়ন/পৌরসভা",
+      "beneficiary_regular": "উপকারভোগীর নিয়মিত",
+      "beneficiary_additional": "উপকারভোগীর অতিরিক্ত",
+      "beneficiary_amount": "প্রতি উপকারভোগীর পরিমাণ",
+      "total_beneficiary": "মোট উপকারভোগীর",
+      "amount_of_allocated_money": "বরাদ্দকৃত অর্থের পরিমাণ",
+      "allotment_area": "ইউনিয়ন/ওয়ার্ড/পৌরসভা",
+      "budget_id": "বাজেট আইডি",
+      "program": "প্রোগ্রাম",
+      "no_of_previous_year": "আগের বছরের সংখ্যা",
+      "calculation_value": "গণনার মান",
+      "approval_status": "স্ট্যাটাস"
     },
     "payroll_management": {
       "list": "পেমেন্ট প্রসেসর",
@@ -1016,11 +1051,11 @@
             "add": "নতুন সার্কুলার যোগ করুন",
             "edit": "প্রশিক্ষণ সার্কুলার এডিট করুন",
             "training_type": "প্রশিক্ষণের ধরন",
-              "start_date": "শুরুর  তারিখ",
+              "start_date": "শুরুর তারিখ",
               "end_date": "শেষের তারিখ",
             "name": "সার্কুলারের নাম",
             "type": "সার্কুলারের ধরন",
-            "module": "মডিউল/কোর্স",
+            "module": "মডিউল",
             "class_duration": "ক্লাসের সময়কাল ঘন্টা/দিন",
             "description": "বিবরণ",
             "date": "তারিখ",
@@ -1144,7 +1179,7 @@
       "applicant_details": "আবেদনকারীর বিবরণ"
     },
     "activity_log": {
-      "table":{
+      "table": {
         "title": "এক্টিভিটি লগের তালিকা",
         "log_view": "এক্টিভিটি লগের বিস্তারিত তথ্য",
         "name": "লগের নাম",
@@ -1189,7 +1224,7 @@
       "total_number_of_application_received_application": "প্রাপ্ত আবেদনপত্রের মোট সংখ্যা",
       "number_of_application_forwarded": "ফরোয়ার্ড করা আবেদনের সংখ্যা"
     },
-    "grievance_management":{
+    "grievance_management": {
       "add_new_type": "নতুন টাইপ যোগ করুন",
       "grievanceType": "অভিযোগের ধরন",
       "title_en": "শিরোনাম (ইংরেজি)",
@@ -1234,7 +1269,7 @@
         "grievance_question": "আপনি কি অভিযোগ জমা দিতে নিশ্চিত? জমা দেওয়ার পরে সম্পাদনা প্রযোজ্য হবে না।",
         "note": "আপনি কি চান যে অভিযোগের বিবরণ এবং সমাধানের স্থিতি সর্বজনীনভাবে প্রকাশ করা হোক? [বিশেষ দ্রষ্টব্য: ব্যক্তিগত এবং যোগাযোগের বিবরণ গোপন থাকবে]"
       },
-      "grievanceList":{
+      "grievanceList": {
         "grievance_list": "অভিযোগের তালিকা",
         "tracking_no": "ট্র্যাকিং আইডি",
         "grievance_date": "অভিযোগের তারিখ",
@@ -1263,7 +1298,7 @@
       "change_pass": "পাসওয়ার্ড পরিবর্তন করুন",
       "new_pass": "নতুন পাসওয়ার্ড",
       "retype_pass": "পাসওয়ার্ড পুনরায় লিখুন",
-      "update_pass": "পাসওয়ার্ড আপডেট করুন",   
+      "update_pass": "পাসওয়ার্ড আপডেট করুন",
       "contact_info": "যোগাযোগের তথ্য"
     }
   }

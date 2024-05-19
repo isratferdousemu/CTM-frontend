@@ -448,7 +448,7 @@ export default {
                                                                 </ValidationProvider>
                                                             </v-col>
                                                             <v-col cols="12" sm="12" lg="12">
-                                                                <h5 class="text-center mb-10">{{ $t('container.training_management.training_program.class_schedule') }}</h5>
+                                                                <h3 class="text-center mb-10">{{ $t('container.training_management.training_program.class_schedule') }}</h3>
 
                                                                 <v-row>
                                                                     <v-col v-for="(day, index) in data.on_days"
