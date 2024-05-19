@@ -66,7 +66,7 @@
                           {{ language === "bn" ? "অনুমোদিত" : "Approved" }}
                         </span>
                         <span v-else>
-                          {{ language === "bn" ? "নিষ্ক্রিয়" : "খসড়া" }}
+                          {{ language === "bn" ? "খসড়া" : "Draft" }}
                         </span>
 
                       </template>
@@ -102,7 +102,7 @@
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn :disabled="item.process_flag === 0" v-can="'update-post'" fab x-small v-on="on"
-                              color="#AFB42B" elevation="0" class="white--text ml-2">
+                              color="#AFB42B" elevation="0" class="white--text ml-2" :to="`/budget/detail/${item.id}`">
                               <v-icon>mdi-eye</v-icon>
                             </v-btn>
                           </template>
@@ -327,6 +327,11 @@ export default {
     Spinner
   },
   computed: {
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      },
+    },
     ...mapState({
       divisions: state => state.Division.divisions
     }),
@@ -347,7 +352,7 @@ export default {
           value: "financial_year.financial_year"
         },
         {
-          text: this.$t("Status"),
+          text: this.$t("container.budget_management.approval_status"),
           value: "approve_name"
         },
         {
@@ -507,15 +512,17 @@ export default {
       }
     },
     async GeneratePDF(id) {
-      alert(id)
       this.isLoading = true;
+      const queryParams = {
+        language: this.$i18n.locale,
+      };
       this.$axios
         .get("/admin/budget/detail/report/" + id, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "application/json",
           },
-          //  params: queryParams,
+          params: queryParams,
           responseType: "arraybuffer",
         })
         .then((result) => {
@@ -586,14 +593,14 @@ export default {
               sl:
                 this.$i18n.locale == "en"
                   ? index + 1
-                  : this.$helpers.englishToBangla(index + 1),
+                  : index + 1,
               office_area:
                 this.$i18n.locale == "en" ? i.office_area?.name_en : i.office_area?.name_bn,
               allotment_area: this.$i18n.locale == "en" ? i.allotment_area?.name_en : i.allotment_area?.name_bn,
               total_beneficiaries:
-                this.$i18n.locale == "en" ? i.total_beneficiaries : englishToBangla(i.total_beneficiaries),
+                this.$i18n.locale == "en" ? i.total_beneficiaries : i.total_beneficiaries,
               total_amount:
-                this.$i18n.locale == "en" ? i.total_amount : englishToBangla(i.total_amount),
+                this.$i18n.locale == "en" ? i.total_amount : i.total_amount,
 
             };
           });
@@ -614,7 +621,7 @@ export default {
               : this.$helpers.englishToBangla(currentDate);
 
           const filenameWithDate = `${this.$t(
-            "container.beneficiary_management.beneficiary_list.list"
+            "container.budget_management.budget_info_list"
           )}`;
 
           excel.export_json_to_excel({

@@ -91,7 +91,20 @@ const actions = {
         return err;
       });
   },
-
+  updateAllotment: ({ commit }, data) => {
+    return http()
+      .put(`/admin/allotment/update/${data.id}`, data.formData)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        const data = {
+          errors: err.response.data.errors,
+          error_status: err.response.message,
+        };
+        return err;
+      });
+  },
   UpdateBudgetData: ({ commit }, data) => {
     return http()
       .put(`/admin/budget/detail/update/${data.id}`, data.formData)
