@@ -163,21 +163,21 @@ export default {
                     console.log(result, "result")
                     this.data = result?.data?.data
                     const parts = this.data.start_date.split(" ");
-                    const datePart = parts[0]; 
+                    const datePart = parts[0];
                     this.data.start_date = datePart;
                     const parts_2 = this.data.end_date.split(" ");
                     const datePart_2 = parts_2[0];
                     this.data.end_date = datePart_2;
-                 
+
                     this.data.api_list.forEach((item, index) => {
-                        this.api_list.push( item.id);
-                        
+                        this.api_list.push(item.id);
+
                     });
-           
+
                     this.data.api_list = this.api_list;
-                   
-                
-            
+
+
+
 
                 })
                 .catch((err) => {
@@ -195,10 +195,10 @@ export default {
 
 
         updateDataReceiver() {
-            console.log(this.data.api_list,"api_list")
-            
+            console.log(this.data.api_list, "api_list")
+
             const formData = new FormData();
-       
+
             formData.append('organization_name', this.data.organization_name);
             formData.append('organization_phone', this.data.organization_phone);
             formData.append('organization_email', this.data.organization_email);
@@ -208,15 +208,15 @@ export default {
             formData.append('whitelist_ip', this.data.whitelist_ip);
             formData.append('start_date', this.data.start_date);
             formData.append('end_date', this.data.end_date);
-     
+
             this.data.api_list.forEach((item, index) => {
                 formData.append('api_list[]', item);
             });
 
-        
+
             formData.append('_method', "PUT");
-            console.log(formData,"formData")
-          
+            console.log(formData, "formData")
+
 
             this.$axios
                 .post(`admin/api-data-receive/${this.$route.params.id}`, formData, {
@@ -280,7 +280,7 @@ export default {
                                                     rules="required" v-slot="{ errors }">
                                                     <v-text-field dense type="text" v-model="data.organization_name"
                                                         :label="$t('container.api_manager.data_receiver.organization')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
+                                                            " persistent-hint outlined :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
@@ -289,7 +289,7 @@ export default {
                                                     rules="required||phone" v-slot="{ errors }">
                                                     <v-text-field dense type="text" v-model="data.organization_phone"
                                                         :label="$t('container.api_manager.data_receiver.phone')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
+                                                            " persistent-hint outlined :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
@@ -298,7 +298,7 @@ export default {
                                                     rules="required||email||bangla" v-slot="{ errors }">
                                                     <v-text-field dense type="email" v-model="data.organization_email"
                                                         :label="$t('container.api_manager.data_receiver.email')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
+                                                            " persistent-hint outlined :error="errors[0] ? true : false"
                                                         placeholder="xxx@gmail.com"
                                                         :error-messages="errors[0]"></v-text-field>
                                                 </ValidationProvider>
@@ -309,7 +309,7 @@ export default {
                                                     v-slot="{ errors }">
                                                     <v-text-field dense type="email" placeholder="xxx@gmail.com"
                                                         v-model="data.responsible_person_email" :label="$t('container.api_manager.data_receiver.responsible_person_email')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
+                                                            " persistent-hint outlined :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
@@ -318,7 +318,7 @@ export default {
                                                     vid="responsible_person_nid" rules="required||checkNumber"
                                                     v-slot="{ errors }">
                                                     <v-text-field dense v-model="data.responsible_person_nid" :label="$t('container.api_manager.data_receiver.responsible_person_nid')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
+                                                        " persistent-hint outlined :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
@@ -334,7 +334,7 @@ export default {
                                                         <template v-slot:selection="{ item }">
                                                             <v-chip color="#169BD5" class="white--text ma-1">{{
                                                                 item.name
-                                                                }}</v-chip>
+                                                            }}</v-chip>
                                                         </template>
                                                     </v-autocomplete>
                                                 </ValidationProvider>
@@ -346,7 +346,7 @@ export default {
                                                     rules="required||ip_address" v-slot="{ errors }">
                                                     <v-text-field placeholder="x.x.x.x" dense
                                                         v-model="data.whitelist_ip" :label="$t('container.api_manager.data_receiver.ip')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
+                                                            " persistent-hint outlined :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
@@ -355,7 +355,7 @@ export default {
                                                 
                                                 key" vid="username" rules="required||bangla" v-slot="{ errors }">
                                                     <v-text-field dense v-model="data.username" :label="$t('container.api_manager.data_receiver.user_name')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
+                                                        " persistent-hint outlined :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
@@ -364,7 +364,7 @@ export default {
                                                     :rules="{ required, start_date: data.end_date }"
                                                     v-slot="{ errors }">
                                                     <v-text-field dense type="date" v-model="data.start_date" :label="$t('container.api_manager.data_receiver.start_date')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
+                                                        " persistent-hint outlined :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
@@ -373,7 +373,7 @@ export default {
                                                     :rules="{ required, end_date: data.start_date }"
                                                     v-slot="{ errors }">
                                                     <v-text-field dense type="date" v-model="data.end_date" :label="$t('container.api_manager.data_receiver.end_date')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
+                                                        " persistent-hint outlined :error="errors[0] ? true : false"
                                                         :error-messages="errors[0]"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
@@ -388,7 +388,7 @@ export default {
                                         <v-row class="justify-end mt-5 mb-5">
                                             <v-btn flat color="primary" class="custom-btn mr-2" router
                                                 to="/api-manager/data-receiver">{{
-                                                $t("container.list.back") }}
+                                                    $t("container.list.back") }}
                                             </v-btn>
                                             <v-btn flat color="success" type="submit" class="custom-btn mr-2"
                                                 :disabled="invalid">
@@ -406,7 +406,7 @@ export default {
     </div>
 </template>
 
-<style >
+<style>
 .gradient-background {
     background: linear-gradient(to right, #87CEEB, #ADD8E6, #F0F8FF);
     color: black;

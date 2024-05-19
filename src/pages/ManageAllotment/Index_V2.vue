@@ -2,8 +2,9 @@
     <div id="allotment_list">
         <v-row class="mx-5 mt-4">
             <v-col cols="12">
+                <Spinner :loading="isLoading" />
                 <!-- Expantion panels start -->
-                <v-card :loading="isLoading" height="100%">
+                <v-card height="100%">
                     <v-expansion-panels v-model="panel" multiple>
                         <v-expansion-panel>
                             <v-expansion-panel-header color="#8C9EFF">
@@ -268,6 +269,23 @@
                         </h3>
                     </v-card-title>
                     <v-card-text>
+                        <v-row justify="end" align="center" class="mx-4">
+                            <!-- Dropdown on the right -->
+                            <v-col lg="4" md="4" cols="12" class="text-right">
+                                <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4"
+                                    @click="GeneratePDF()" :disabled="!data.program_id ||
+                                        !data.financial_year_id || !data.division_id || !data.district_id
+                                        ">
+                                    <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                                    {{ $t("container.list.PDF") }}
+                                </v-btn>
+                                <v-btn elevation="2" class="btn mr-2 white--text" color="teal darken-2"
+                                    @click="GenerateExcel()">
+                                    <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                                    {{ $t("container.list.excel") }}
+                                </v-btn>
+                            </v-col>
+                        </v-row>
                         <v-row class="ma-0 white round-border d-flex justify-space-between align-center"
                             justify="center" justify-lg="space-between">
                             <v-col cols="12">
@@ -313,7 +331,7 @@
                                         <v-tooltip top>
                                             <template v-slot:activator="{ on }">
                                                 <v-btn v-can="'update-post'" fab x-small v-on="on" color="success"
-                                                    elevation="0" class="ml-3">
+                                                    elevation="0" class="ml-3" :to="`/allotment/edit/${item.id}`">
                                                     <v-icon> mdi-account-edit-outline </v-icon>
                                                 </v-btn>
                                             </template>
@@ -351,6 +369,7 @@
 import { mapState, mapActions } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
+import Spinner from "@/components/Common/Spinner.vue";
 
 extend("required", required);
 export default {
@@ -374,6 +393,7 @@ export default {
             },
 
             loading: true,
+            isLoading: false,
             search: "",
             delete_id: "",
             districts: [],
@@ -411,6 +431,7 @@ export default {
     components: {
         ValidationProvider,
         ValidationObserver,
+        Spinner
     },
     computed: {
         language: {
@@ -423,21 +444,21 @@ export default {
         }),
         headers() {
             return [
-                // { text: this.$t("container.list.sl"), value: "sl" },
+                { text: this.$t("container.list.sl"), value: "sl" },
+                // {
+                //     text: this.$t("container.manage_allotment.id"),
+                //     value: "id",
+                // },
                 {
-                    text: this.$t("container.manage_allotment.id"),
-                    value: "id",
+                    text: this.$t("container.manage_allotment.program"),
+                    value: "program.name_en",
+                    align: "center",
                 },
                 {
                     text: this.$t(
                         "container.system_config.demo_graphic.financial_year.financial_year"
                     ),
                     value: "financialYear.financial_year",
-                    align: "center",
-                },
-                {
-                    text: this.$t("container.manage_allotment.program"),
-                    value: "program.name_en",
                     align: "center",
                 },
                 {
@@ -554,7 +575,6 @@ export default {
 
             this.GetAllotment();
         },
-
         async GetAllProgram() {
             try {
                 this.$axios
@@ -581,7 +601,7 @@ export default {
             }
         },
         async GetUserPermission() {
-            this.isLoading = true;
+            // this.isLoading = true;
             try {
                 await this.$axios
                     .get("/admin/beneficiary/getUserLocation", {
@@ -648,7 +668,7 @@ export default {
                                     ? item?.city_corp?.name_en
                                     : item?.city_corp?.name_bn;
                         }
-                        this.isLoading = false;
+                        //this.isLoading = false;
                         this.GetAllotment();
                     })
                     .catch((err) => {
@@ -742,7 +762,6 @@ export default {
                 }
             }
         },
-
         async onChangeUpazila(event) {
             this.data.union_id = null;
             this.data.ward_id = null;
@@ -927,6 +946,176 @@ export default {
         updateHeaderTitle() {
             const title = this.$t("container.manage_allotment.list");
             this.$store.commit("setHeaderTitle", title);
+        },
+        async GeneratePDF(id) {
+            this.isLoading = true;
+            const queryParams = {
+                language: this.$i18n.locale,
+                program_id: this.data.program_id,
+                financial_year_id: this.data.financial_year_id,
+                division_id: this.data.division_id,
+                district_id: this.data.district_id
+            };
+            this.$axios
+                .get("/admin/allotment/report/", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "application/json",
+                    },
+                    params: queryParams,
+                    responseType: "arraybuffer",
+                })
+                .then((result) => {
+                    const blob = new Blob([result.data], { type: "application/pdf" });
+                    const url = window.URL.createObjectURL(blob);
+                    window.open(url, "_blank");
+                    this.isLoading = false;
+                    // window.open(result.data.data.url, "_blank");
+                })
+                .catch((error) => {
+                    this.isLoading = false;
+                    console.error("Error generating PDF:", error);
+                });
+        },
+
+        async GenerateExcel(id) {
+            this.isLoading = true;
+            let page;
+            if (!this.sortBy) {
+                page = this.pagination.current;
+            }
+            const queryParams = {
+                // language: this.$i18n.locale,
+                // program_id: this.data.program_id,
+                // financial_year_id: this.data.financial_year_id,
+
+                perPage: 50000,
+                page: 1, // All data loaded
+                // sortBy: this.sortBy,
+                // orderBy: this.sortDesc,
+            };
+
+            await this.$axios
+                .get("/admin/allotment/list", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                    params: queryParams,
+                })
+                .then((result) => {
+                    this.budget_list = result.data.data;
+                })
+                .catch((error) => {
+                    this.isLoading = false;
+                    console.error("Error generating PDF:", error);
+                });
+
+            try {
+                import("@/plugins/Export2Excel").then((excel) => {
+                    const HeaderInfo = [
+                        this.$t("container.list.sl"),
+                        this.$t("container.manage_allotment.id"),
+                        this.$t(
+                            "container.system_config.demo_graphic.financial_year.financial_year"),
+                        this.$t(
+                            "container.system_config.demo_graphic.division.division"
+                        ),
+                        this.$t(
+                            "container.system_config.demo_graphic.district.district"),
+                        this.$t(
+                            "container.budget_management.office"
+                        ),
+                        this.$t(
+                            "container.budget_management.allotment_area"
+                        ),
+                        this.$t("container.manage_allotment.regular_beneficiaries"),
+                        this.$t("container.manage_allotment.additional_beneficiaries"),
+                        this.$t(
+                            "container.budget_management.total_beneficiary"
+                        ),
+                        this.$t("container.manage_allotment.total_amount"),
+                    ];
+                    const CustomInfo = this.budget_list.map((i, index) => {
+                        return {
+                            sl:
+                                this.$i18n.locale == "en"
+                                    ? index + 1
+                                    : index + 1,
+                            program:
+                                this.$i18n.locale == "en" ? i.program?.name_en : i.program?.name_bn,
+                            financialYear:
+                                this.$i18n.locale == "en" ? i.financialYear?.financial_year : i.financialYear?.financial_year,
+
+                            division:
+                                this.$i18n.locale == "en" ? i.division?.name_en : i.division?.name_bn,
+                            district:
+                                this.$i18n.locale == "en" ? i.district?.name_en : i.district?.name_bn,
+
+                            office_area: this.$i18n.locale == "en" ? i.office_area?.name_en : i.office_area?.name_bn,
+                            allotment_area: this.$i18n.locale == "en" ? i.allotment_area?.name_en : i.allotment_area?.name_bn,
+
+                            regular_beneficiaries:
+                                this.$i18n.locale == "en" ? i.regular_beneficiaries : i.regular_beneficiaries,
+
+                            additional_beneficiaries:
+                                this.$i18n.locale == "en" ? i.additional_beneficiaries : i.additional_beneficiaries,
+                            total_beneficiaries:
+                                this.$i18n.locale == "en" ? i.total_beneficiaries : i.total_beneficiaries,
+                            total_amount:
+                                this.$i18n.locale == "en" ? i.total_amount : i.total_amount,
+
+                        };
+                    });
+
+                    const Field = [
+                        "sl",
+                        "program",
+                        "financialYear",
+                        "division",
+                        "district",
+                        "office_area",
+                        "allotment_area",
+                        "regular_beneficiaries",
+                        "additional_beneficiaries",
+                        "total_beneficiaries",
+                        "total_amount",
+                    ];
+
+                    const Data = this.FormatJson(Field, CustomInfo);
+                    const currentDate = new Date().toISOString().slice(0, 10);
+                    let dateinfo =
+                        queryParams.language == "en"
+                            ? currentDate
+                            : this.$helpers.englishToBangla(currentDate);
+
+                    const filenameWithDate = `${this.$t(
+                        "container.budget_management.budget_info_list"
+                    )}`;
+
+                    excel.export_json_to_excel({
+                        header: HeaderInfo,
+                        data: Data,
+                        sheetName: filenameWithDate,
+                        filename: filenameWithDate,
+                        autoWidth: true,
+                        bookType: "xlsx",
+                    });
+                });
+            } catch (error) {
+                // Handle any errors here
+                console.error("An error occurred:", error);
+                this.isLoading = false;
+            } finally {
+                this.isLoading = false;
+            }
+        },
+        FormatJson(FilterData, JsonData) {
+            return JsonData.map((v) =>
+                FilterData.map((j) => {
+                    return v[j];
+                })
+            );
         },
     },
     watch: {

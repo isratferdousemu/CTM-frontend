@@ -963,7 +963,9 @@
       "total_beneficiaries": "মোট উপকারভোগী",
       "total_amount": "সর্বমোট পরিমাণ",
       "detail_budget_list": "বিস্তারিত বাজেট তালিকা",
-      "allotment_basic_info": "বরাদ্দের প্রাথমিক তথ্য"
+      "allotment_basic_info": "বরাদ্দের প্রাথমিক তথ্য",
+      "allotment_edit": "বরাদ্দ এডিট",
+      "financial_year": "আর্থিক বর্ষ"
     },
     "budget_management": {
       "budget_info": "বাজেটের তথ্য",
@@ -985,7 +987,7 @@
       "remark": "মন্তব্য",
       "delete_title": "বাজেট মুছুন!!!",
       "delete_message": "আপনি এই বাজেট মুছে ফেলার বিষয়ে নিশ্চিত?",
-      "budget_edit": "বাজেট সম্পাদনা",
+      "budget_edit": "বাজেট এডিট",
       "update": "আপডেট",
       "budgets": "বাজেট",
       "office": "উপজেলা/সিটি কর্পোরেশন/জেলা পৌরসভা",

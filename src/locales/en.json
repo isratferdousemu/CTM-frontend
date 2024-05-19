@@ -966,7 +966,9 @@
       "total_beneficiaries": "Total Beneficiaries",
       "total_amount": "Total Amount",
       "detail_budget_list": "Deatil Budget List",
-      "allotment_basic_info": "Allotment Basic Information"
+      "allotment_basic_info": "Allotment Basic Information",
+      "allotment_edit": "Allotment Edit",
+      "financial_year": "Financial Year"
     },
     "budget_management": {
       "budget_info": "Budget Info",
