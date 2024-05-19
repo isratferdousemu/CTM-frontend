@@ -768,7 +768,7 @@ export default {
 
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
-                                                        <v-btn v-can="'trainerCircular-edit'" class="mr-2" fab x-small
+                                                        <v-btn v-can="'trainingCircular-edit'" class="mr-2" fab x-small
                                                             v-on="on" color="success" elevation="0" router
                                                             :to="`/training-management/training-circular/edit/${item.id}`">
                                                             <v-icon> mdi-account-edit-outline </v-icon>
@@ -782,7 +782,7 @@ export default {
 
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
-                                                        <v-btn v-can="'trainerCircular-delete'" fab x-small v-on="on"
+                                                        <v-btn v-can="'trainingCircular-delete'" fab x-small v-on="on"
                                                             color="grey" class="white--text  mr-2" elevation="0"
                                                             @click="deleteAlert(item.id)">
                                                             <v-icon> mdi-delete </v-icon>
