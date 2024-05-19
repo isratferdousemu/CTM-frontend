@@ -626,7 +626,7 @@ export default {
                                     <v-col cols="12" md="4">
                                         <v-text-field @keyup.native="PageSetup" v-model="search"
                                             append-icon="mdi-magnify" :label="$t(
-                                            'container.training_management.training_program.search'
+                                            'container.list.search_circular'
                                         )" hide-details class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal" flat
                                             outlined dense></v-text-field>
 
