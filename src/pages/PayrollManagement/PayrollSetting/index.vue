@@ -28,8 +28,10 @@
                   )"
                   :key="installment.id"
                   :label="installment.installment_name"
-                  :value="installment.id"
-                  style="margin-right: 2px;"
+                  style="margin: 0px 10px 0px 0px;"
+                  :input-value="
+                    isInstallmentSelected(installment.id, allowance.id)
+                  "
                   @change="toggleInstallment(allowance, installment)"
                 ></v-checkbox>
               </v-card-text>
@@ -40,7 +42,9 @@
     </v-row>
     <v-row>
       <v-col cols="12" class="text-right">
-        <v-btn color="primary" @click="submitForm">Submit</v-btn>
+        <v-btn color="primary" @click="submitForm">
+          {{ language === "bn" ? "জমা দিন" : "Submit" }}
+        </v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -55,6 +59,7 @@ export default {
       allowances: [],
       installments: [],
       selectedData: [],
+      activeInstallments: [],
       defaultChecked: true,
     };
   },
@@ -71,11 +76,11 @@ export default {
       return this.language === "bn" ? item.name_bn : item.name_en;
     },
 
-    isInstallmentSelected(allowance, installment) {
-      let check = this.installments.some(
-        (selectedInst) => selectedInst.id === installment.id
-      );
-    },
+    isInstallmentSelected(installmentId, allowanceId) {
+       return this.selectedData.some(data => {
+         return data.allowance.id === allowanceId && data.installments.some(inst => inst.id === installmentId);
+       });
+     },
 
     generateInstallments(paymentCycle) {
       if (!paymentCycle) return [];
@@ -141,7 +146,7 @@ export default {
           };
         }),
       };
-      
+
       this.$axios
         .post("/admin/payroll/setting-submit", dataToSend, {
           headers: {
@@ -150,7 +155,9 @@ export default {
           },
         })
         .then((res) => {
+          this.selectedData = [],
           this.$toast.success("Setting submitted successfully");
+          this.getSettingData();
           // this.$router.push("/admin/payroll/setting");
         })
         .catch((error) => {
@@ -158,44 +165,46 @@ export default {
         });
     },
 
-    // async getSettingData() {
-    //   try {
-    //     const response = await this.$axios.get(
-    //       `/admin/payroll/get-setting-data`,
-    //       {
-    //         headers: {
-    //           Authorization: "Bearer " + this.$store.state.token,
-    //           "Content-Type": "multipart/form-data",
-    //         },
-    //       }
-    //     );
+    async getSettingData() {
+      try {
+        const response = await this.$axios.get(
+          `/admin/payroll/get-setting-data`,
+          {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
 
-    //     if (response.data) {
-    //       this.data = response.data.data;
-    //       this.data.forEach((item) => {
-    //         // Find the corresponding allowance
-    //         const allowance = this.allowances.find(
-    //           (a) => a.id === item.program_id
-    //         );
-    //         if (allowance) {
-    //           // Select each installment found in the data
-    //           item.installment_ids.forEach((installmentId) => {
-    //             const installment = this.installments.find(
-    //               (i) => i.id === installmentId
-    //             );
-    //             if (installment) {
-    //               this.toggleInstallment(allowance, installment);
-    //             }
-    //           });
-    //         }
-    //       });
-    //     } else {
-    //       this.$toast.error("Something went wrong");
-    //     }
-    //   } catch (error) {
-    //     console.error("Error fetching setting data:", error);
-    //   }
-    // },
+        if (response.data) {
+          this.data = response.data.data;
+          this.data.forEach((item) => {
+            // Find the corresponding allowance
+            const allowance = this.allowances.find(
+              (a) => a.id === item.program_id
+            );
+            if (allowance) {
+              // Select each installment found in the data
+              item.installment_ids.forEach((installmentId) => {
+                const installment = this.installments.find(
+                  (i) => i.id === installmentId
+                );
+                if (installment) {
+                  this.toggleInstallment(allowance, installment);
+                  // this.activeInstallments.push({installment_id:installmentId,allowance_id:allowance.id});
+                  // this.activeInstallments.push(installmentId);
+                }
+              });
+            }
+          });
+        } else {
+          this.$toast.error("Something went wrong");
+        }
+      } catch (error) {
+        console.error("Error fetching setting data:", error);
+      }
+    },
 
     async getFinancialYear() {
       try {
@@ -207,7 +216,6 @@ export default {
             },
           })
           .then((res) => {
-            console.log("🚀 ~ .then ~ res:", res);
             if (res.data) {
               this.financial_year = res.data;
             } else {
@@ -230,7 +238,6 @@ export default {
             },
           })
           .then((res) => {
-            console.log("🚀 ~ .then ~ res:", res)
             if (res.data) {
               this.allowances = res.data;
             } else {
@@ -270,7 +277,7 @@ export default {
     this.getFinancialYear();
     this.getAllAllowance();
     this.getInstallments();
-    // this.getSettingData();
+    this.getSettingData();
   },
 };
 </script>
