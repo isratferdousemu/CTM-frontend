@@ -1018,7 +1018,15 @@
       "bank_name": "Bank Name",
       "branch_name": "Branch Name",
       "delete": "Delete Payment Processor ",
-      "delete_alert": "Are you sure to delete this Payment Processor?"
+      "delete_alert": "Are you sure to delete this Payment Processor?",
+      "location_type": "Location Type",
+      "division": "Division",
+      "district": "District",
+      "upazila": "Upazila",
+      "union": "Union",
+      "thana": "Thana",
+      "city_corporation": "City Corporation",
+      "district_pourashava": "District Pourashava"
     },
       "training_management": {
         "trainer_info": {
