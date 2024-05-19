@@ -29,7 +29,7 @@
                   <!-- Dropdown on the right -->
                   <v-col lg="3" md="3" cols="12" class="text-right ">
                     <v-btn @click="createDialog" color="primary" prepend-icon="mdi-account-multiple-plus"
-                      v-can="'timeSlot-create'">
+                      v-can="'timeStot-create'">
                       {{ $t("container.training_management.time_slot.add") }}
                     </v-btn>
                   </v-col>
@@ -87,7 +87,7 @@
                       <template v-slot:item.actions="{ item }">
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn v-can="'time_slot-edit'" fab x-small v-on="on" color="success" elevation="0"
+                            <v-btn v-can="'timeStot-edit'" fab x-small v-on="on" color="success" elevation="0"
                               @click="editDialog(item)">
                               <v-icon> mdi-account-edit-outline </v-icon>
                             </v-btn>
@@ -99,8 +99,8 @@
 
                         <v-tooltip top v-if="!item.children_count">
                           <template v-slot:activator="{ on }">
-                            <v-btn v-can="'time_slot-delete'" fab x-small v-on="on" color="grey"
-                              class="ml-3 white--text" elevation="0" @click="deleteAlert(item.id)">
+                            <v-btn v-can="'timeStot-delete'" fab x-small v-on="on" color="grey" class="ml-3 white--text"
+                              elevation="0" @click="deleteAlert(item.id)">
                               <v-icon> mdi-delete </v-icon>
                             </v-btn>
                           </template>
