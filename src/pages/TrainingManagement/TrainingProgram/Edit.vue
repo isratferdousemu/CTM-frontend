@@ -175,6 +175,22 @@ export default {
 
 
     methods: {
+        handleMouseOver(day) {
+            // Your logic for handling mouse over event
+        
+            if (day.is_active == 1) {
+                this.selected_day = day.day
+                this.timeSlotModal = true;
+               
+
+                if (day.timeSlots && day.timeSlots.length != 0) {
+                    this.selectedTimeSlots = day.timeSlots.map(slot => parseInt(slot));
+                }
+
+            }
+            console.log(this.selectedTimeSlots, "selectedTimeSlots")
+            console.log(day, "hovered day data");
+        },
         DataView() {
             this.$axios
                 .get(`admin/training/programs/${this.$route.params.id}`, {
@@ -229,11 +245,7 @@ export default {
                 .then((result) => {
 
                     this.time_slots = result?.data?.data;
-                    console.log(this.time_slots,"time_slots");
-
-
-
-
+                    console.log(this.time_slots,"time_slots")
 
                 });
         },
@@ -254,17 +266,12 @@ export default {
                 if (day.timeSlots && day.timeSlots.length != 0){
                     this.selectedTimeSlots = day.timeSlots.map(slot => parseInt(slot));
                 }
-              
-          
-
-              
+                  
             }
             console.log(this.selectedTimeSlots,"selectedTimeSlots")
-            // else {
-            //     const inactiveDay = this.data.on_days.find(d => d.day == day.day);
-            //     inactiveDay.timeSlots = [];
-            // }
+         
         },
+       
         saveTimeSlots() {
             // Add selected time slots to the active day's timeSlots array
             console.log(this.selected_day,'selected_day');
@@ -531,18 +538,21 @@ export default {
                                                                 </ValidationProvider>
                                                             </v-col>
                                                             <v-col cols="12" sm="12" lg="12">
-                                                                <h5 class="text-center mb-10">{{
-    $t('container.training_management.training_program.class_schedule')
-                                                                    }}</h5>
+                                                                <h3 class="text-center mb-10">{{
+                                                                    $t('container.training_management.training_program.class_schedule')
+                                                                    }}</h3>
                                                                 <v-row>
 
                                                                     <v-col v-for="(day, index) in data.on_days"
                                                                         :key="index" cols="12" md="2" lg="2" xs="2"
                                                                         xl="2">
-                                                                        <v-checkbox v-model="day.is_active"
-                                                                            @change="showTimeSlotModal(day)"
-                                                                            :true-value="1" :false-value="0"
-                                                                            :label="day.day"></v-checkbox>
+                                                                        <div @mouseover="handleMouseOver(day)">
+                                                                            <v-checkbox v-model="day.is_active"
+                                                                                @change="showTimeSlotModal(day)"
+                                                                                @mouseover="handleMouseOver(day)"
+                                                                                :true-value="1" :false-value="0"
+                                                                                :label="day.day"></v-checkbox>
+                                                                        </div>
 
                                                                     </v-col>
                                                                 </v-row>

@@ -142,6 +142,7 @@ export default {
                 .then((result) => {
 
                     this.all_circulars = result?.data?.data;
+                    console.log(this.all_circulars,"all_ciculars")
 
 
 
@@ -239,6 +240,15 @@ export default {
         resetSearch(){
             this.module_id=null;
             this.org_name=null;
+           this.training_type_id=null;
+           this.training_circular_id = null;
+           this.module_id = null;
+           this.status = null;
+           this.trainer_id=null;
+           this.start_date =null;
+                this.end_date = null;
+            this.dates = [];
+          
             this.GetData();
         },
         async GeneratePDF() {
@@ -429,20 +439,15 @@ export default {
                       
 
                       
-
-                     
-                        
-                    
-                       
-                      
-
-                    
-                       
-
-
                     const Field = ['sl', 'name', 'circular_name', 'trainer', 'modules', 'description', 'start_date', 'end_date']
 
                     const Data = this.FormatJson(Field, CustomInfo)
+                    const prefixHeader = [
+                        "Government of the People's Republic of Bangladesh",
+                        "Department of Social Services",
+                        "Cash Transfer Modernization(CTM) Project",
+                        "Social Service Building, E-8/B-1, Agargaon, Sherbangla Nagar, Dhaka-1207, Bangladesh."
+                    ];
                     const currentDate = new Date().toISOString().slice(0, 10); //
                     let dateinfo = queryParams.language == 'en' ? currentDate : this.$helpers.englishToBangla(currentDate)
 
@@ -454,7 +459,8 @@ export default {
                         sheetName: filenameWithDate,
                         filename: filenameWithDate,
                         autoWidth: true,
-                        bookType: "xlsx"
+                        bookType: "xlsx",
+                        extraHeaders: prefixHeader,
                     })
                 })
             } catch (error) {
@@ -591,9 +597,8 @@ export default {
                                             $expand
                                         </v-icon>
                                     </template>
-                                    <h3 class="white--text">
-                                        {{ $t("container.list.filter") }}
-                                    </h3>
+                                    <h3 class="white--text ">
+                                        {{ $t("container.list.filter") }} </h3>
                                 </v-expansion-panel-header>
                                 <v-expansion-panel-content class="elevation-0 transparent mt-10">
 
@@ -686,11 +691,10 @@ export default {
 
 
                         <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8 mt-5">
-                            <v-card-title tag="div"
-                                style="background-color:#1c3b68;color:white;margin-bottom: 17px;font-size:17px;">
-                                <h3 class="text-uppercase ">
+                            <v-card-title tag="div" style="background-color:#1c3b68;color:white;margin-bottom: 17px;">
+                                <h5>
                                     {{ $t("container.training_management.training_program.list") }}
-                                </h3>
+                                </h5>
                             </v-card-title>
                             <v-card-text>
 
