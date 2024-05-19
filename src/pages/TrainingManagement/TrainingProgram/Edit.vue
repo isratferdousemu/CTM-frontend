@@ -94,6 +94,10 @@ export default {
             time_slots: [
         
             ],
+            time_slots_view:[],
+
+            view_on_days:[],
+            edited_on_days:[],
 
             data: {
                 _method:"PUT",
@@ -175,6 +179,22 @@ export default {
 
 
     methods: {
+        handleMouseOver(day) {
+            // Your logic for handling mouse over event
+        
+            if (day.is_active == 1) {
+                this.selected_day = day.day
+                this.timeSlotModal = true;
+               
+
+                if (day.timeSlots && day.timeSlots.length != 0) {
+                    this.selectedTimeSlots = day.timeSlots.map(slot => parseInt(slot));
+                }
+
+            }
+            console.log(this.selectedTimeSlots, "selectedTimeSlots")
+            console.log(day, "hovered day data");
+        },
         DataView() {
             this.$axios
                 .get(`admin/training/programs/${this.$route.params.id}`, {
@@ -203,6 +223,25 @@ export default {
                         day.is_active = parseInt(day.is_active); // Convert string to number
                     });
 
+
+                    // this.view_on_days = result?.data?.data.on_days;
+                    // const timeSlotsMap = new Map();
+                    // this.time_slots_view.forEach(slot => {
+                    //     timeSlotsMap.set(slot.id.toString(), slot.time);
+                    // });
+
+                    // // Replace time slot IDs with time values
+
+                    // const updatedData = this.view_on_days.map(day => {
+                    //     if (day.is_active === '1') {
+                    //         const updatedTimeSlots = (day.timeSlots || []).map(slotId => timeSlotsMap.get(slotId) || slotId);
+                    //         return { ...day, timeSlots: updatedTimeSlots };
+                    //     } else {
+                    //         return { ...day, timeSlots: null }; // If the day is not active, return it unchanged
+                    //     }
+                    // });
+                    // this.edited_on_days = updatedData;
+
                    
                 })
                 .catch((err) => {
@@ -229,17 +268,14 @@ export default {
                 .then((result) => {
 
                     this.time_slots = result?.data?.data;
-                    console.log(this.time_slots,"time_slots");
-
-
-
-
+                    this.time_slots_view = result?.data?.data;
+                    console.log(this.time_slots,"time_slots")
 
                 });
         },
         change() {
             this.data.circular_modules=[];
-            const selected_circular = this.circulars.find(circular => circular.id == this.data.training_circular_id);
+            const selected_circular = this.circulars?.find(circular => circular.id == this.data.training_circular_id);
             this.modules = selected_circular?.modules
 
 
@@ -254,17 +290,12 @@ export default {
                 if (day.timeSlots && day.timeSlots.length != 0){
                     this.selectedTimeSlots = day.timeSlots.map(slot => parseInt(slot));
                 }
-              
-          
-
-              
+                  
             }
             console.log(this.selectedTimeSlots,"selectedTimeSlots")
-            // else {
-            //     const inactiveDay = this.data.on_days.find(d => d.day == day.day);
-            //     inactiveDay.timeSlots = [];
-            // }
+         
         },
+       
         saveTimeSlots() {
             // Add selected time slots to the active day's timeSlots array
             console.log(this.selected_day,'selected_day');
@@ -531,18 +562,21 @@ export default {
                                                                 </ValidationProvider>
                                                             </v-col>
                                                             <v-col cols="12" sm="12" lg="12">
-                                                                <h5 class="text-center mb-10">{{
-    $t('container.training_management.training_program.class_schedule')
-                                                                    }}</h5>
+                                                                <h3 class="text-center mb-10">{{
+                                                                    $t('container.training_management.training_program.class_schedule')
+                                                                    }}</h3>
                                                                 <v-row>
 
                                                                     <v-col v-for="(day, index) in data.on_days"
-                                                                        :key="index" cols="12" md="2" lg="2" xs="2"
-                                                                        xl="2">
-                                                                        <v-checkbox v-model="day.is_active"
-                                                                            @change="showTimeSlotModal(day)"
-                                                                            :true-value="1" :false-value="0"
-                                                                            :label="day.day"></v-checkbox>
+                                                                        :key="index" cols="12" md="4" lg="4" xs="4"
+                                                                        xl="4" >
+                                                              
+                                                                            <v-checkbox v-model="day.is_active"
+                                                                                @change="showTimeSlotModal(day)"
+                                                                               
+                                                                                :true-value="1" :false-value="0"
+                                                                                :label="day.day"></v-checkbox>
+                                                                    
 
                                                                     </v-col>
                                                                 </v-row>
@@ -560,12 +594,64 @@ export default {
 
 
 
-                                            <v-col cols="12" sm="6" lg="6">
-
-
-                                            </v-col>
 
                                         </v-row>
+                                        <!-- <v-row class="ma-5">
+                                            <v-col cols="12">
+                                                <h4 class="text-center mb-5">{{
+                                        $t('container.training_management.training_program.class_schedule')
+                                    }}</h4>
+
+                                                <v-simple-table dense class=" mt-10">
+                                                    <template v-slot:default>
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="text-left">
+
+                                                                    {{ language == 'bn' ?
+                                        'দিন' : ' Day' }}
+                                                                </th>
+
+                                                                <th class="text-left">
+                                                                    {{ language == 'bn' ?
+                                        'স্ট্যাটাস' : 'Status' }}
+                                                                </th>
+                                                                <th class="text-left">
+                                                                    {{ language == 'bn' ?
+                                        'টাইম স্লট' : ' Time Slots' }}
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr v-for="(day, index) in edited_on_days" :key="index">
+                                                                <td>{{ day.day }}</td>
+                                                                <td>
+                                                                    <span
+                                                                        :style="{ color: day.is_active == '1' ? 'green' : 'red', fontSize: '24px' }">
+                                                                        <span
+                                                                            v-if="day.is_active == '1'">&#10003;</span>
+                                                                        <span v-else>-</span>
+                                                                    </span>
+                                                                </td>
+                                                                <td>
+                                                                    <span v-if="day.timeSlots && day.timeSlots.length">
+                                                                        <span
+                                                                            v-for="(timeSlot, slotIndex) in day.timeSlots"
+                                                                            :key="slotIndex">
+                                                                            {{ timeSlot }}<span
+                                                                                v-if="slotIndex !== day.timeSlots.length - 1">,
+                                                                            </span>
+                                                                        </span>
+                                                                    </span>
+                                                                    <span v-else> {{ language == 'bn' ?
+                                                                        'টাইম স্লট নেই' : 'No Time Slots' }}</span>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </template>
+                                                </v-simple-table>
+                                            </v-col>
+                                        </v-row> -->
                                         <v-row class="justify-end mt-5 mb-5">
                                             <v-btn flat color="primary" class="custom-btn mr-2" router
                                                 to="/training-management/training-program">{{

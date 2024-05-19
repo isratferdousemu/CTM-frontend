@@ -93,7 +93,7 @@
                             </v-btn>
                           </template>
                           <span>
-                            {{ $t("container.list.update") }}
+                            {{ $t("container.list.edit") }}
                           </span>
                         </v-tooltip>
 

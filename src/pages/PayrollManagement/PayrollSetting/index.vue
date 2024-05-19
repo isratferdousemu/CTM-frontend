@@ -28,8 +28,10 @@
                   )"
                   :key="installment.id"
                   :label="installment.installment_name"
-                  style="margin-right: 2px;"
-                  :input-value="isInstallmentSelected(installment.id)"
+                  style="margin: 0px 10px 0px 0px;"
+                  :input-value="
+                    isInstallmentSelected(installment.id, allowance.id)
+                  "
                   @change="toggleInstallment(allowance, installment)"
                 ></v-checkbox>
               </v-card-text>
@@ -41,8 +43,8 @@
     <v-row>
       <v-col cols="12" class="text-right">
         <v-btn color="primary" @click="submitForm">
-        {{ language === 'bn' ? 'জমা দিন' : 'Submit' }}
-      </v-btn>
+          {{ language === "bn" ? "জমা দিন" : "Submit" }}
+        </v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -74,9 +76,11 @@ export default {
       return this.language === "bn" ? item.name_bn : item.name_en;
     },
 
-    isInstallmentSelected(installmentId) {
-      return this.activeInstallments.includes(installmentId);
-    },
+    isInstallmentSelected(installmentId, allowanceId) {
+       return this.selectedData.some(data => {
+         return data.allowance.id === allowanceId && data.installments.some(inst => inst.id === installmentId);
+       });
+     },
 
     generateInstallments(paymentCycle) {
       if (!paymentCycle) return [];
@@ -142,7 +146,7 @@ export default {
           };
         }),
       };
-      
+
       this.$axios
         .post("/admin/payroll/setting-submit", dataToSend, {
           headers: {
@@ -151,8 +155,9 @@ export default {
           },
         })
         .then((res) => {
-          this.getSettingData();
+          this.selectedData = [],
           this.$toast.success("Setting submitted successfully");
+          this.getSettingData();
           // this.$router.push("/admin/payroll/setting");
         })
         .catch((error) => {
@@ -187,7 +192,8 @@ export default {
                 );
                 if (installment) {
                   this.toggleInstallment(allowance, installment);
-                  this.activeInstallments.push(installmentId);
+                  // this.activeInstallments.push({installment_id:installmentId,allowance_id:allowance.id});
+                  // this.activeInstallments.push(installmentId);
                 }
               });
             }

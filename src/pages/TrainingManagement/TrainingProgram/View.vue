@@ -42,6 +42,7 @@ export default {
     watch: {
 
         "$i18n.locale": "updateHeaderTitle",
+     
     },
 
     computed: {
@@ -65,7 +66,7 @@ export default {
     methods: {
         async GetTimeSlot() {
 
-            this.$axios
+          await  this.$axios
                 .get("/admin/training/program-time-slots", {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
@@ -90,9 +91,9 @@ export default {
         },
 
         
-        DataView() {
+        async  DataView() {
             console.log(this.$route.params.id, "params")
-            this.$axios
+            await  this.$axios
                 .get(`admin/training/programs/${this.$route.params.id}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
@@ -142,86 +143,86 @@ export default {
     },
 }
 </script><template>
-    <div id="url-generate">
+    <div id="training-program">
         <v-container>
             <v-row>
                 <v-col cols="12">
                     <v-card class="mx-3">
                         <v-card-title class="justify-center black--text"
                             style="background-color: #1C3C6A; color: white;font-size: 17px;">
-                            <h5 class="white--text">{{ $t("container.training_management.training_program.view") }}
-                            </h5>
+                            <h4 class="white--text">{{ $t("container.training_management.training_program.view") }}
+                            </h4>
                         </v-card-title>
 
                         <v-row class="my-custom-row ma-5">
-                            <v-col cols="12" sm="6" md="3" style="font-size:15px;">
+                            <v-col cols="5" style="font-size:13px;">
                                 <b>{{ $t('container.training_management.training_program.program_name') }}</b>:
                             </v-col>
-                            <v-col cols="12" sm="6" md="9" style="font-size:15px;">
+                            <v-col cols="7" style="font-size:13px;">
                                 <b>:</b> <span class="ml-2">{{ data?.program_name }}</span>
                             </v-col>
-                            <v-col cols="12" sm="6" md="3" style="font-size:15px;">
+                            <v-col cols="5" style="font-size:13px;">
                                 <b>{{ $t('container.training_management.training_program.training_circular') }}</b>:
                             </v-col>
-                            <v-col cols="12" sm="6" md="9" style="font-size:15px;">
+                            <v-col cols="7" style="font-size:13px;">
                                 <b>:</b> <span class="ml-2"> {{data?.training_circular?.circular_name
                                     }}</span>
                             </v-col>
-                            <v-col cols="12" sm="6" md="3" style="font-size:15px;">
+                            <v-col cols="5" style="font-size:13px;">
+                                <b>{{ $t('container.training_management.training_circular.training_type') }}</b>:
+                            </v-col>
+                            <v-col cols="7" style="font-size:13px;">
+                                <b>:</b> <span class="ml-2">
+                                    {{ language == 'bn' ?
+                                    data?.training_circular?.training_type.value_bn :
+                                    data?.training_circular?.training_type.value_en }}</span>
+                            </v-col>
+                            <v-col cols="5" style="font-size:13px;">
                                 <b>{{ $t('container.training_management.training_program.trainer') }}</b>:
                             </v-col>
-                            <v-col cols="12" sm="6" md="9" style="font-size:15px;">
+                            <v-col cols="7" style="font-size:13px;">
                                 <b>:</b> <v-chip v-for="(item, index) in data.trainers" :key="index" class="ml-2 mt-2">
                                     {{ item.name}}
                                 </v-chip>
                             </v-col>
 
-                            <v-col cols="12" sm="6" md="3" style="font-size:15px;">
+                            <v-col cols="5" style="font-size:13px;">
                                 <b>{{ $t('container.training_management.training_circular.module') }}</b>:
                             </v-col>
-                            <v-col cols="12" sm="6" md="9" style="font-size:15px;">
+                            <v-col cols="7" style="font-size:13px;">
                                 <b>:</b>
-                                <!-- <span class="ml-2">{{ language == 'bn' ?
-                                    data?.modules
-                                    ?.value_bn : data?.modules
-                                    ?.value_en }}{{ data?.modules.value_bn }}
-                                </span> -->
+
                                 <v-chip v-for="(item, index) in data.modules" :key="index" class="ml-2 mt-2">
                                     {{ language == 'bn' ?
                                     item.value_bn : item.value_en }}
                                 </v-chip>
                             </v-col>
-                            <!-- <v-col cols="12" sm="6" md="3" style="font-size:15px;">
-                                <b>{{ $t('container.training_management.training_circular.class_duration') }}</b>:
-                            </v-col>
-                            <v-col cols="12" sm="6" md="9" style="font-size:15px;">
-                                <b>:</b> <span class="ml-2">{{ data?.class_duration }}</span>
-                            </v-col> -->
-                            <v-col cols="12" sm="6" md="3" style="font-size:15px;">
+
+                            <v-col cols="5" style="font-size:13px;">
                                 <b>{{ $t('container.training_management.training_circular.description') }}</b>:
                             </v-col>
-                            <v-col cols="12" sm="6" md="9" style="font-size:15px;">
+                            <v-col cols="7" style="font-size:13px;">
                                 <b>:</b> <span class="ml-2"> {{ data?.description
                                     }}</span>
                             </v-col>
-                            <v-col cols="12" sm="6" md="3" style="font-size:15px;">
+                            <v-col cols="5" style="font-size:13px;">
                                 <b>{{ $t('container.api_manager.data_receiver.start_date') }}</b>:
                             </v-col>
-                            <v-col cols="12" sm="6" md="9" style="font-size:15px;">
+                            <v-col cols="7" style="font-size:13px;">
                                 <b>:</b> <span class="ml-2">{{ language == 'bn' ?
                                     $helpers.englishToBangla(data?.start_date) : data?.start_date }}</span>
                             </v-col>
-                            <v-col cols="12" sm="6" md="3" style="font-size:15px;">
+                            <v-col cols="5" style="font-size:13px;">
                                 <b>{{ $t('container.api_manager.data_receiver.end_date') }}</b>:
                             </v-col>
-                            <v-col cols="12" sm="6" md="9" style="font-size:15px;">
+                            <v-col cols="7" style="font-size:13px;">
                                 <b>:</b> <span class="ml-2">{{ language == 'bn' ?
                                     $helpers.englishToBangla(data?.end_date) : data?.end_date }}</span>
                             </v-col>
-                            <v-col cols="12" sm="6" md="3" style="font-size:15px;">
+                            <v-col cols="5" style="font-size:13px;">
                                 <b>{{ $t('container.list.status') }}</b>:
                             </v-col>
-                            <v-col cols="12" sm="6" md="9" style="font-size:15px;">
+                            <v-col cols="7" style="font-size:13px;">
                                 <b>:</b> <span class="ml-2" v-if="data?.status == 0">
                                     {{ language == 'bn' ?
                                     'নিষ্ক্রিয়' : 'Inactive' }}
@@ -238,8 +239,8 @@ export default {
 
                         <v-row class="ma-5">
                             <v-col cols="12">
-                                <h5 class="text-center mb-5">{{
-                                    $t('container.training_management.training_program.class_schedule') }}</h5>
+                                <h4 class="text-center mb-5">{{
+                                    $t('container.training_management.training_program.class_schedule') }}</h4>
 
                                 <v-simple-table dense class=" mt-10">
                                     <template v-slot:default>
@@ -306,47 +307,20 @@ export default {
         </v-container>
     </div>
 </template>
-<style>
-.text-wrap {
-    /* You can adjust these properties as needed */
-    overflow-wrap: break-word;
-    /* Handles long words */
-    word-wrap: break-word;
-    /* Handles long words */
-    white-space: pre-wrap;
-    /* Handles spaces and line breaks */
+</script>
+
+<style scoped>
+.my-custom-row {
+    font-size: 16px;
+    /* Default font size for other devices */
 }
 
-.word-wrap {
-    overflow-wrap: break-word;
-}
+@media (max-width: 600px) {
 
-.custom-chip {
-    background-color: blue;
-    color: white;
-}
-
-.gradient-background {
-    background: linear-gradient(to right, #87CEEB, #ADD8E6, #F0F8FF);
-    color: black;
-    /* Adjust text color for better contrast */
-    border-radius: 10px;
-    /* Add rounded corners for a softer look */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    /* Add a subtle shadow for depth */
-
-    /* Add a subtle animation */
-    animation: gradient-animation 10s infinite alternate;
-}
-
-/* Define the animation */
-@keyframes gradient-animation {
-    0% {
-        background-position: 0% 50%;
-    }
-
-    100% {
-        background-position: 100% 50%;
+    /* Vuetify xs breakpoint */
+    .my-custom-row {
+        font-size: 12px;
+        /* Smaller font size for extra small devices */
     }
 }
 </style>
