@@ -237,7 +237,7 @@ export default {
 
                         <v-row class="justify-end ma-5">
                             <v-btn flat color="primary" class="custom-btn mr-2 mb-5" router
-                                to="/training-management/trainer-circular">
+                                to="/training-management/training-circular">
                                 {{ $t("container.list.back") }}
                             </v-btn>
 

@@ -3,7 +3,7 @@
     <v-row class="mx-5 mt-5">
       <v-col cols="12">
         <ValidationObserver ref="form" v-slot="{ invalid }">
-          <v-form v-on:submit.prevent="addBudget">
+          <v-form v-on:submit.prevent="updateBudget">
             <v-row wrap>
               <v-col cols="12">
                 <v-card>
@@ -11,7 +11,7 @@
                     <v-col col="6">
                       <v-card-title>
                         <h3>
-                          {{ $t("container.budget_management.budget_create") }}
+                          {{ $t("container.budget_management.budget_edit") }}
                         </h3>
                       </v-card-title>
                     </v-col>
@@ -26,12 +26,12 @@
                           <v-row wrap>
                             <v-col cols="12" sm="6" lg="6">
                               <!-- <v-text-field
-                                value="1234"
-                                outlined
-                                disabled
-                                label="Budget ID"
-                              >
-                              </v-text-field> -->
+                                  value="1234"
+                                  outlined
+                                  disabled
+                                  label="Budget ID"
+                                >
+                                </v-text-field> -->
 
                               <ValidationProvider name="ProgramName" vid="program_id" rules="required"
                                 v-slot="{ errors }">
@@ -47,20 +47,17 @@
                               <ValidationProvider name="previousYear" vid="previous_year" rules="required"
                                 v-slot="{ errors }">
 
-                                <v-text-field type="Number" outlined v-model="data.previous_year_value" :label="$t(
-                                  'container.budget_management.no_of_previous_year'
-                                )
-                                  " required :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                <v-text-field type="Number" outlined v-model="data.no_of_previous_year"
+                                  label="Number of Previous Year" required :error="errors[0] ? true : false"
+                                  :error-messages="errors[0]">
                                 </v-text-field>
 
                               </ValidationProvider>
 
                               <ValidationProvider name="calculationValue" vid="calculation_value" rules="required"
                                 v-slot="{ errors }">
-                                <v-text-field type="Number" v-model="data.calculation_value" outlined :label="$t(
-                                  'container.budget_management.calculation_value'
-                                )
-                                  " required :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                <v-text-field type="Number" v-model="data.calculation_value" outlined label="Value"
+                                  required :error="errors[0] ? true : false" :error-messages="errors[0]">
                                 </v-text-field>
 
                               </ValidationProvider>
@@ -75,91 +72,29 @@
 
                               <ValidationProvider name="calculationType" vid="calculation_type" rules="required"
                                 v-slot="{ errors }">
-                                <v-select :items="calculationType" item-text="value_en" item-value="id" :label="$t(
-                                  'container.budget_management.calculation_type'
-                                )
-                                  " v-model="data.calculation_type" outlined required :error="errors[0] ? true : false"
-                                  :error-messages="errors[0]">
+                                <v-select :items="calculationType" item-text="value_en" item-value="id"
+                                  label="Calculation Type" v-model="data.calculation_type" outlined required
+                                  :error="errors[0] ? true : false" :error-messages="errors[0]">
                                 </v-select>
                               </ValidationProvider>
 
                             </v-col>
-
-                            <!-- <v-col cols="12" sm="6" lg="6">
-                              <v-card elevation="2" shaped outlined>
-                                <v-card-title class="justify-center"
-                                  >Program</v-card-title
-                                >
-                                <hr
-                                  style="
-                                    width: 50%;
-                                    margin-left: 25% !important;
-                                    margin-right: 25% !important;
-                                  "
-                                />
-                                <v-card-text>
-                                  <h4>
-                                    Amount of Monthly Allowance per Beneficiary
-                                  </h4>
-
-                                  <div v-show="isDisable === 0">
-                                    <div
-                                      v-show="allowanceAmounts.length > 0"
-                                      v-for="(
-                                        amount, index
-                                      ) in allowanceAmounts"
-                                      :key="index"
-                                    >
-                                      <div v-for="g in genders" :key="g.id">
-                                        <h5 v-if="amount.gender_id === g.id">
-                                          {{ g.value_en }} : {{ amount.amount }}
-                                        </h5>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  <div v-show="isDisable === 1">
-                                    <div
-                                      v-show="allowanceAmounts.length > 0"
-                                      v-for="(
-                                        amount, index
-                                      ) in allowanceAmounts"
-                                      :key="index"
-                                    >
-                                      <div v-for="gt in genderTypes" :key="gt.id">
-                                        <h5 v-if="amount.type_id === gt.id">
-                                          {{ gt.value_en }} :
-                                          {{ amount.amount }}
-                                        </h5>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  <h4>Distribution Medium</h4>
-                                  <h4>Bank Account</h4>
-                                </v-card-text>
-                              </v-card>
-                            </v-col> -->
                           </v-row>
                         </v-col>
                       </v-row>
                     </v-col>
                   </v-card-text>
-
                   <v-col cols="12">
-                    <v-row class="justify-end mb-5 mr-2">
-                      <v-btn flat color="primary" class="custom-btn mr-2" router
-                        to="/budget">{{ $t("container.list.back") }}
+                    <v-row class="justify-end mb-5">
+                      <v-btn flat color="primary" class="custom-btn mr-2" router to="/budget">Back
                       </v-btn>
 
-                      <v-btn flat color="success" type="submit" class="custom-btn mr-2"
-                        :disabled="invalid">{{ $t("container.list.submit") }}
+                      <v-btn flat color="success" type="submit" class="custom-btn mr-2" :disabled="invalid">Update
                       </v-btn>
                     </v-row>
                   </v-col>
                 </v-card>
               </v-col>
-
 
             </v-row>
           </v-form>
@@ -172,11 +107,10 @@
 <script>
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { mapActions, mapState } from "vuex";
-import office from "@/store/modules/system_configuration/office";
 
 export default {
-  name: "Create",
-  title: "CTM - Budget Create ",
+  name: "Edit",
+  title: "CTM - Edit Create ",
   components: {
     ValidationProvider,
     ValidationObserver,
@@ -184,18 +118,11 @@ export default {
 
   data() {
     return {
-      add_allotment: {
-        program_id: "",
-        location_id: "",
-        financial_year_id: "",
-        allotment_details: [],
-        allotment_extra: [],
-      },
       data: {
         program_id: null,
         financial_year_id: null,
         calculation_type: null,
-        previous_year_value: null,
+        no_of_previous_year: null,
         calculation_value: null,
         remarks: null
       },
@@ -233,6 +160,9 @@ export default {
       .dispatch("getLookupByType", 23)
       .then((res) => (this.calculationType = res));
   },
+  beforeMount() {
+    this.GetBudgetById();
+  },
 
   methods: {
     ...mapActions({
@@ -268,6 +198,29 @@ export default {
             console.log('active_year', this.active_year)
           });
       },
+      async GetBudgetById() {
+        console.log(this.$route.params.id, "GetCommitteeById");
+        try {
+          this.$store
+            .dispatch(
+              "BudgetManagement/GetSingleBudget",
+              this.$route.params.id
+            )
+            .then((res) => {
+              console.log(res.data.data, "GetBudgetById");
+
+              let item = res.data.data
+
+              this.data.calculation_value = item.calculation_value;
+              this.data.no_of_previous_year = item.no_of_previous_year
+              this.data.program_id = item.program.id
+              this.data.calculation_type = item.calculation_type.id
+
+            });
+        } catch (e) {
+          console.log(e);
+        }
+      },
     }),
 
     getAmount(event) {
@@ -278,108 +231,32 @@ export default {
       this.$store.dispatch("ManageAllotment/getAllOfficeLocation", event);
     },
 
-    addBudget() {
+    updateBudget() {
       let fd = new FormData();
       fd.append("program_id", this.data.program_id);
       fd.append("financial_year_id", this.active_year.id);
       fd.append("calculation_type", this.data.calculation_type);
-      fd.append("no_of_previous_year", this.data.previous_year_value);
+      fd.append("no_of_previous_year", this.data.no_of_previous_year);
       fd.append("calculation_value", this.data.calculation_value);
       fd.append("remarks", this.data.remarks);
 
       try {
+        const data = { formData: fd, id: this.$route.params.id };
         this.$store
-          .dispatch("BudgetManagement/StoreBudget", fd)
+          .dispatch("BudgetManagement/UpdateBudget", data)
           .then((res) => {
             console.log(res, "submit");
             if (res.data?.success) {
-              this.$toast.success("Data Inserted Successfully");
               this.$router.push({ name: "budget" });
             } else if (res.response?.data?.errors) {
               this.$refs.form.setErrors(res.response.data.errors);
               this.errors = res.response.data.errors;
-              //   this.$toast.error(res.response.data.message);
             }
-            console.log(this.$refs);
-            console.log(this.errors, 'this.errors');
-            //   if (data == null) {
-            //     this.$toast.success("Data Inserted Successfully");
-            //     this.dialogAdd = false;
-            //     this.resetData();
-            //     this.GetOffices();
-            //   } else {
-            //     this.errors = data.errors;
-            //   }
           });
       } catch (e) {
         console.log(e);
       }
     },
-    callback() {
-      //   alert("hello");
-
-      let data = [{
-        name: null,
-        designation: null,
-        email: null,
-        address: null,
-        phone: null,
-      },
-      {
-        name: null,
-        designation: null,
-        email: null,
-        address: null,
-        phone: null,
-      },
-      ];
-      this.data.division = data;
-      //   this.data.division = [...this.data.division, data];
-    },
-    callback2() {
-      //   alert("hello");
-
-      let data = [{
-        name: null,
-        designation: null,
-        email: null,
-        address: null,
-        phone: null,
-      },
-      {
-        name: null,
-        designation: null,
-        email: null,
-        address: null,
-        phone: null,
-      },
-      ];
-      this.data.district = data;
-      //   this.data.district = [...this.data.district, data];
-    },
   },
 };
 </script>
-<style scoped>
-.custom-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.custom-table th,
-.custom-table td {
-  border: 1px solid black;
-  padding: 10px;
-  text-align: center;
-}
-
-.custom-table th {
-  background-color: #afc6e9;
-  color: #000;
-}
-
-/* Hover effect on rows */
-.custom-table tbody tr:hover {
-  background-color: #ffffff;
-}
-</style>

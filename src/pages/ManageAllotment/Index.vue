@@ -12,69 +12,35 @@
                     {{ $t("container.list.search") }}
                   </h3>
                 </v-expansion-panel-header>
-                <v-expansion-panel-content
-                  class="elevation-0 transparent mt-10"
-                >
+                <v-expansion-panel-content class="elevation-0 transparent mt-10">
                   <v-row>
                     <v-col lg="6" md="6" cols="12">
-                      <v-autocomplete
-                        outlined
-                        clearable
-                        :items="allowances"
-                        item-text="name_en"
-                        item-value="id"
-                        :label="
-                          $t(
-                            'container.application_selection.application.program'
-                          )
-                        "
-                      >
+                      <v-autocomplete outlined clearable :items="allowances" item-text="name_en" item-value="id" :label="$t(
+                        'container.application_selection.application.program'
+                      )
+                        ">
                       </v-autocomplete>
                     </v-col>
                     <v-col lg="6" md="6" cols="12">
-                      <v-select
-                        outlined
-                        clearable
-                        :items="financial_years"
-                        item-text="financial_year"
-                        item-value="id"
-                        :label="
-                          $t(
-                            'container.system_config.demo_graphic.financial_year.financial_year'
-                          )
-                        "
-                      >
+                      <v-select outlined clearable :items="financial_years" item-text="financial_year" item-value="id"
+                        :label="$t(
+                          'container.system_config.demo_graphic.financial_year.financial_year'
+                        )
+                          ">
                       </v-select>
                     </v-col>
                     <v-col lg="6" md="6" cols="12">
-                      <v-autocomplete
-                        outlined
-                        clearable
-                        @input="onChangeDivision($event)"
-                        :label="
-                          $t(
-                            'container.system_config.demo_graphic.division.division'
-                          )
-                        "
-                        :items="divisions"
-                        item-text="name_en"
-                        item-value="id"
-                      >
+                      <v-autocomplete outlined clearable @input="onChangeDivision($event)" :label="$t(
+                        'container.system_config.demo_graphic.division.division'
+                      )
+                        " :items="divisions" item-text="name_en" item-value="id">
                       </v-autocomplete>
                     </v-col>
                     <v-col lg="6" md="6" cols="12">
-                      <v-autocomplete
-                        outlined
-                        clearable
-                        :label="
-                          $t(
-                            'container.system_config.demo_graphic.district.district'
-                          )
-                        "
-                        :items="districts"
-                        item-text="name_en"
-                        item-value="id"
-                      >
+                      <v-autocomplete outlined clearable :label="$t(
+                        'container.system_config.demo_graphic.district.district'
+                      )
+                        " :items="districts" item-text="name_en" item-value="id">
                       </v-autocomplete>
                     </v-col>
                   </v-row>
@@ -91,34 +57,19 @@
             </v-expansion-panels>
             <!-- Expantion panels end -->
             <!-- Application list -->
-            <v-card
-              elevation="10"
-              color="white"
-              rounded="md"
-              theme="light"
-              class="mb-8 mt-5"
-            >
+            <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8 mt-5">
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
                   {{ $t("container.manage_allotment.list") }}
                 </h3>
               </v-card-title>
               <v-card-text>
-                <v-row
-                  class="ma-0 white round-border d-flex justify-space-between align-center"
-                  justify="center"
-                  justify-lg="space-between"
-                >
+                <v-row class="ma-0 white round-border d-flex justify-space-between align-center" justify="center"
+                  justify-lg="space-between">
                   <v-col cols="12">
-                    <v-data-table
-                      :headers="headers"
-                      :items="allotments"
-                      :loading="loading"
-                      item-key="id"
-                      :items-per-page="pagination.perPage"
-                      hide-default-footer
-                      class="elevation-0 transparent row-pointer"
-                    >
+                    <v-data-table :headers="headers" :items="allotments" :loading="loading" item-key="id"
+                      :items-per-page="pagination.perPage" hide-default-footer
+                      class="elevation-0 transparent row-pointer">
                       <template v-slot:item.sl="{ item, index }">
                         {{
                           (pagination.current - 1) * pagination.perPage +
@@ -130,15 +81,8 @@
                       <template v-slot:item.download="{ item }">
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'update-post'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="#AFB42B"
-                              elevation="0"
-                              class="white--text"
-                            >
+                            <v-btn v-can="'update-post'" fab x-small v-on="on" color="#AFB42B" elevation="0"
+                              class="white--text">
                               <v-icon> mdi-download </v-icon>
                             </v-btn>
                           </template>
@@ -152,15 +96,8 @@
                       <template v-slot:item.actions="{ item }">
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'update-post'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="#AFB42B"
-                              elevation="0"
-                              class="white--text"
-                            >
+                            <v-btn v-can="'update-post'" fab x-small v-on="on" color="#AFB42B" elevation="0"
+                              class="white--text">
                               <v-icon> mdi-eye </v-icon>
                             </v-btn>
                           </template>
@@ -170,15 +107,8 @@
                         </v-tooltip>
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'update-post'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="success"
-                              elevation="0"
-                              class="ml-3"
-                            >
+                            <v-btn v-can="'update-post'" fab x-small v-on="on" color="success" elevation="0"
+                              class="ml-3">
                               <v-icon> mdi-account-edit-outline </v-icon>
                             </v-btn>
                           </template>
@@ -189,15 +119,8 @@
 
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'delete-allotment'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="grey"
-                              class="ml-3 white--text"
-                              elevation="0"
-                            >
+                            <v-btn v-can="'delete-allotment'" fab x-small v-on="on" color="grey"
+                              class="ml-3 white--text" elevation="0">
                               <v-icon> mdi-delete </v-icon>
                             </v-btn>
                           </template>
@@ -206,32 +129,16 @@
                       </template>
                       <!-- End Action Button -->
                       <template v-slot:footer="item">
-                        <div
-                          class="text-center pt-2 v-data-footer justify-center pb-2"
-                        >
-                          <v-select
-                            style="
+                        <div class="text-center pt-2 v-data-footer justify-center pb-2">
+                          <v-select style="
                               position: absolute;
                               right: 25px;
                               width: 149px;
                               transform: translate(0px, 0px);
-                            "
-                            :items="items"
-                            hide-details
-                            dense
-                            outlined
-                            @change="onPageChange"
-                            v-model="pagination.perPage"
-                          ></v-select>
-                          <v-pagination
-                            circle
-                            primary
-                            v-model="pagination.current"
-                            :length="pagination.total"
-                            @input="onPageChange"
-                            :total-visible="11"
-                            class="custom-pagination-item"
-                          ></v-pagination>
+                            " :items="items" hide-details dense outlined @change="onPageChange"
+                            v-model="pagination.perPage"></v-select>
+                          <v-pagination circle primary v-model="pagination.current" :length="pagination.total"
+                            @input="onPageChange" :total-visible="11" class="custom-pagination-item"></v-pagination>
                         </div>
                       </template>
                     </v-data-table>
@@ -259,30 +166,11 @@ export default {
     return {
       data: {},
 
-      loading: false,
+      loading: true,
       search: "",
       delete_id: "",
       districts: [],
-      allotments: [
-        {
-          id: "1001",
-          financial_year: "2022-2023",
-          program: "Disability Allowance Program",
-          division: "Dhaka",
-          district: "Gopalganj",
-          regular_payment: "8400000",
-          additional_payment: "0",
-        },
-        {
-          id: "1002",
-          financial_year: "2022-2023",
-          program: "Education Special Scholarship for Dolito, Horizon & Bede",
-          division: "Dhaka",
-          district: "Narayanganj",
-          regular_payment: "4200000",
-          additional_payment: "0",
-        },
-      ],
+      allotments: [],
       allowances: [],
       financial_years: [],
       pagination: {
@@ -303,7 +191,7 @@ export default {
     }),
     headers() {
       return [
-        { text: this.$t("container.list.sl"), value: "sl" },
+        // { text: this.$t("container.list.sl"), value: "sl" },
         {
           text: this.$t("container.manage_allotment.id"),
           value: "id",
@@ -312,36 +200,56 @@ export default {
           text: this.$t(
             "container.system_config.demo_graphic.financial_year.financial_year"
           ),
-          value: "financial_year",
+          value: "financialYear.financial_year",
+          align: "center",
         },
         {
           text: this.$t("container.manage_allotment.program"),
-          value: "program",
+          value: "program.name_en",
+          align: "center",
         },
         {
           text: this.$t(
             "container.system_config.demo_graphic.division.division"
           ),
-          value: "division",
-        },
-        {
-          text: this.$t(
-            "container.system_config.demo_graphic.district.district"
-          ),
-          value: "district",
-        },
-        {
-          text: this.$t("container.manage_allotment.regular_payment"),
-          value: "regular_payment",
-        },
-        {
-          text: this.$t("container.manage_allotment.additional"),
-          value: "additional_payment",
+          value: "division.name_en",
           align: "center",
         },
         {
-          text: this.$t("container.manage_allotment.download"),
-          value: "download",
+          text: this.$t(
+            "container.system_config.demo_graphic.district.district"),
+          value: "district.name_en",
+          align: "center",
+        },
+        {
+          text: this.$t(
+            "container.manage_allotment.area_type"),
+          value: "office_area.name_en",
+          align: "center",
+        },
+        {
+          text: this.$t("container.manage_allotment.area_type"),
+          value: "allotment_area.name_en",
+          align: "center",
+        },
+        {
+          text: this.$t("container.manage_allotment.regular_beneficiaries"),
+          value: "regular_beneficiaries",
+          align: "center",
+        },
+        {
+          text: this.$t("container.manage_allotment.additional_beneficiaries"),
+          value: "additional_beneficiaries",
+          align: "center",
+        },
+        {
+          text: this.$t("container.manage_allotment.total_beneficiaries"),
+          value: "total_beneficiaries",
+          align: "center",
+        },
+        {
+          text: this.$t("container.manage_allotment.total_amount"),
+          value: "total_amount",
           align: "center",
         },
         {
@@ -374,15 +282,36 @@ export default {
 
     onPageChange($event) {
       // this.pagination.current = $event;
+      this.loading = true;
       this.GetAllotment();
     },
 
     async GetAllotment() {
       const queryParams = {
-        searchText: this.search,
+        program_id: this.data.program_id,
+        financial_year_id: this.data.financial_year_id,
         perPage: this.pagination.perPage,
-        page: this.pagination.current,
+        page: this.pagination.current
       };
+      this.$axios
+        .get("/admin/allotment/list", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data"
+          },
+          params: queryParams
+        })
+        .then(result => {
+          this.allotments = result.data.data;
+          this.total = result.data.meta.total;
+          console.log("results_total__", this.total);
+
+          this.pagination.current = result.data.meta.current_page;
+          this.pagination.total = result.data.meta.last_page;
+          this.pagination.grand_total = result.data.meta.total;
+          this.loading = false;
+        });
+
     },
     GetAllowance() {
       this.$axios

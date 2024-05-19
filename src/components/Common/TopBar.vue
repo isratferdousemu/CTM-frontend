@@ -67,7 +67,7 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <div style="margin-top: 15px; margin-left: 5px">
-          <b>{{ userData.full_name }}</b>
+         <b class="d-none d-sm-inline">{{ userData.full_name }}</b>
           <p style="font-size: 14px">{{ userData.roleNames.join(", ") }}</p>
         </div>
 
