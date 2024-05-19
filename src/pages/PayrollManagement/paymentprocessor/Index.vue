@@ -357,6 +357,8 @@
                         :label="$t('container.payroll_management.district')"
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
+                        @change="getUpazilas(data.district)"
+
                       >
                       </v-autocomplete>
                     </ValidationProvider>
@@ -374,7 +376,7 @@
                         v-model="data.location_type"
                         :items="location_types"
                         :item-text="language === 'bn' ? 'name_bn' : 'name_en'"
-                        item-value="value"
+                        item-value="id"
                         :label="
                           $t('container.payroll_management.location_type')
                         "
@@ -389,7 +391,7 @@
                     lg="6"
                     md="6"
                     cols="12"
-                    v-if="data.location_type === 'upazila'"
+                    v-if="data.location_type === 2"
                   >
                     <ValidationProvider
                       v-slot="{ errors }"
@@ -407,6 +409,8 @@
                         :label="$t('container.payroll_management.upazila')"
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
+                        @change="getUnions(data.upazila)"
+
                       >
                       </v-autocomplete>
                     </ValidationProvider>
@@ -415,7 +419,7 @@
                     lg="6"
                     md="6"
                     cols="12"
-                    v-if="data.location_type === 'upazila'"
+                    v-if="data.location_type === 2"
                   >
                     <ValidationProvider
                       v-slot="{ errors }"
@@ -442,7 +446,7 @@
                     lg="6"
                     md="6"
                     cols="12"
-                    v-if="data.location_type === 'city_corporation'"
+                    v-if="data.location_type === 3"
                   >
                     <ValidationProvider
                       v-slot="{ errors }"
@@ -470,7 +474,7 @@
                     lg="6"
                     md="6"
                     cols="12"
-                    v-if="data.location_type === 'city_corporation'"
+                    v-if="data.location_type === 3"
                   >
                     <ValidationProvider
                       v-slot="{ errors }"
@@ -497,7 +501,7 @@
                     lg="6"
                     md="6"
                     cols="12"
-                    v-if="data.location_type === 'district_pourashava'"
+                    v-if="data.location_type === 1"
                   >
                     <ValidationProvider
                       v-slot="{ errors }"
@@ -864,9 +868,19 @@ export default {
       filteredBankBranches: [],
 
       location_types: [
-        { id: 1, name_en: "Upazila", name_bn: "উপজেলা", value: "upazila" },
-        { id: 2, name_en: "City Corporation", name_bn: "সিটি কর্পোরেশন", value: "city_corporation" },
-        { id: 2, name_en: "District Pourashava", name_bn: "জেলা পৌরসভা", value: "district_pourashava" },
+        {
+          id: 1,
+          name_en: "District Pourashava",
+          name_bn: "জেলা পৌরসভা",
+          value: "district_pourashava",
+        },
+        { id: 2, name_en: "Upazila", name_bn: "উপজেলা", value: "upazila" },
+        {
+          id: 3,
+          name_en: "City Corporation",
+          name_bn: "সিটি কর্পোরেশন",
+          value: "city_corporation",
+        },
       ],
 
       errors: {},
@@ -977,7 +991,56 @@ export default {
         });
         if (response.status == "200") {
           this.districts = response.data.data;
-          console.log("🚀 ~ getDistricts ~ this.districts:", this.districts)
+          console.log("🚀 ~ getDistricts ~ this.districts:", this.districts);
+        } else {
+          this.$toast.error("Something went wrong");
+        }
+      } catch (error) {
+        console.error("Error fetching divisions:", error);
+      }
+    },
+
+    async getUpazilas(districtId) {
+      try {
+        if(this.data.location_type == 2){
+            const response = await this.$axios.get(`get-upazilas/${districtId}`, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        }
+        // else if(this.location_type==3){
+        //     const response = await this.$axios.get(`get-upazilas/${districtId}`, {
+        //   headers: {
+        //     Authorization: "Bearer " + this.$store.state.token,
+        //     "Content-Type": "multipart/form-data",
+        //   },
+        // });
+        // }
+        
+        if (response.status == "200") {
+          this.upazilas = response.data.data;
+          console.log("🚀 ~ getDistricts ~ this.districts:", this.districts);
+        } else {
+          this.$toast.error("Something went wrong");
+        }
+      } catch (error) {
+        console.error("Error fetching divisions:", error);
+      }
+    },
+
+    async getUnions(upazilaId) {
+      try {
+        const response = await this.$axios.get(`get-unions/${upazilaId}`, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        if (response.status == "200") {
+          this.upazilas = response.data.data;
+          console.log("🚀 ~ getDistricts ~ this.districts:", this.districts);
         } else {
           this.$toast.error("Something went wrong");
         }
@@ -1001,7 +1064,6 @@ export default {
       // this.pagination.current = $event;
       this.GetPaymentProcessor()();
     },
-
 
     deleteAlert(id) {
       this.data.id = id;
