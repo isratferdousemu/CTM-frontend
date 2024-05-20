@@ -1,5 +1,14 @@
 const BudgetManagementRoutes = [
   {
+    path: '/budget/dashboard',
+    name: 'dashboard',
+    meta: {
+      requiresAuth: true,
+      permission: 'dashboard-view',
+    },
+    component: () => import('../pages/BudgetManagement/Dashboard/Index.vue'),
+  },
+  {
     path: '/budget',
     name: 'budget',
     meta: {
