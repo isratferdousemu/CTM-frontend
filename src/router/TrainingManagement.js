@@ -136,6 +136,48 @@ const TrainingManagementRoutes = [
   },
 
   /*Training Program route end*/
+  /*participant Management   route start*/
+  {
+    path: "/training-management/participant",
+    name: "Participant",
+    meta: {
+      requiresAuth: true,
+      permission: "participant-view",
+    },
+    component: () => import("../pages/TrainingManagement/Participant/Index.vue")
+  },
+
+  {
+    path: "/training-management/participant/create",
+    name: "ParticipantCreate",
+    meta: {
+      requiresAuth: true,
+      permission: "participant-create",
+    },
+    component: () => import("../pages/TrainingManagement/Participant/Create.vue")
+  },
+
+  {
+    path: "/training-management/participant/edit/:id",
+    name: "ParticipantEdit",
+    meta: {
+      requiresAuth: true,
+      permission: "participant-edit",
+    },
+    component: () => import("../pages/TrainingManagement/Participant/Edit.vue")
+  },
+  {
+    path: "/training-management/participant/view/:id",
+    name: "ParticipantView",
+    meta: {
+      requiresAuth: true,
+      permission: "participant-view",
+    },
+    component: () => import("../pages/TrainingManagement/Participant/View.vue")
+  },
+
+  /*participant Management route end*/
 ];
+
 
 export default TrainingManagementRoutes;

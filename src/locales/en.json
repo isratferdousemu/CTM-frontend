@@ -1067,11 +1067,25 @@
                   "class_schedule":"Training Schedule",
                   "search":"Search Program",
                   "select_time_slot":"Select Time Slot",
-                  
-
                   "training_circular":"Training Circular",
                   "delete_header": "Delete Program",
                   "delete_alert": "Are you sure to delete this Program? Program's all information will be deleted."
+                },
+                "training_registration": {
+                  "list_1": "Participant List",
+                  "view": "Participant Details",
+                  "add_1": "Assign Participant",
+                  "add_2": "Training Poll",
+                  "program_name": "Program Name",
+                  "program": "Program",
+                  "trainer": "Trainer",
+                  "circular": "Circular",
+                  "class_schedule": "Training Schedule",
+                  "search": "Search Program",
+                  "select_time_slot": "Select Time Slot",
+                  "training_circular": "Training Circular",
+                  "delete_header": "Remove Participant",
+                  "delete_alert": "Are you sure to remove this Participant? Participant's all details will be removed."
                 }
       },
       "api_manager": {

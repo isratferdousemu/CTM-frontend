@@ -541,7 +541,7 @@ export default {
                                                     :label="$t('container.training_management.training_circular.type') ">
                                                 </v-select>
                                             </v-col>
-                                          
+
                                             <v-col lg="4" md="4" cols="12">
                                                 <v-menu ref="menu" v-model="menu" :close-on-content-click="false"
                                                     transition="scale-transition" offset-y min-width="auto">
@@ -586,9 +586,9 @@ export default {
                             </v-expansion-panel>
                         </v-expansion-panels>
                         <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8 mt-5">
-                            <v-card-title tag="div" class="text-center"
+                            <v-card-title tag="div" class="text-center "
                                 style="background-color:#1c3b68;color:white;margin-bottom: 17px;font-size:17px;">
-                                <h4 class="white--text text-center">{{
+                                <h4 class="white--text text-center ml-2">{{
                                     $t('container.training_management.training_circular.list') }}
                                 </h4>
                             </v-card-title>

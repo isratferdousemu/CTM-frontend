@@ -2,72 +2,16 @@
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 
 
-extend('checklength', {
-    validate: value => {
-        return value.length <= 10;
-    },
-    message: 'Please enter a 10 character'
-});
 
-extend('bangla', {
-    validate: value => {
-        // Regular expression to match Bangla characters
-        // const banglaRegex = /^[\u0980-\u09FF\s]+$/;
-        const nonBanglaRegex = /^[^\u0980-\u09FF]*$/;
-        return nonBanglaRegex.test(value);
-    },
-    message: 'Bangla characters are not allowed in this field'
-});
-extend('name', {
-    validate: value => {
-        // Regular expression for IP address validation
-        const nameRegex = /^[a-zA-Z\s']+$/;
-        return nameRegex.test(value);
-    },
-    message: 'Please enter a valid  Name'
-});
 
-extend('end_date', {
-    validate(value, { start_date }) {
-        // Check if both start_date and end_date are provided
-        if (value && start_date) {
-            // Convert start_date and end_date to Date objects
-            const startDate = new Date(start_date);
-            const endDate = new Date(value);
 
-            // Compare start_date and end_date
-            return endDate >= startDate;
-        }
-        // If start_date is not provided, return true
-        return true;
-    },
-    params: ['start_date'],
-    message: 'The End Date must be greater than or equal to the Start Date'
-});
-extend('start_date', {
-    validate(value, { end_date }) {
-        // Check if both start_date and end_date are provided
-        if (value && end_date) {
-            // Convert start_date and end_date to Date objects
-            const endDate = new Date(end_date);
-            const startDate = new Date(value);
-
-            // Compare start_date and end_date
-            return endDate >= startDate;
-        }
-        // If start_date is not provided, return true
-        return true;
-    },
-    params: ['end_date'],
-    message: 'The Start Date must be less than or equal to the End Date'
-});
 
 
 
 
 export default {
-    name: "TrainingProgramCreate",
-    title: "CTM -Training program",
+    name: "ParticipantCreate",
+    title: "CTM -Training Registration",
     components: {
         ValidationProvider,
         ValidationObserver,
@@ -83,65 +27,23 @@ export default {
      
          
           
-            circular_types:[],
-            modules:[],
-            program_trainers:[],
-            timeSlotModal:false,
-            selected_day:null,
-            selectedTimeSlots:[],
-            time_slots: [
-                
-            ],
+            circulars:[],
+            users:[],
+            organisations:[],
+            getPartipant:0,
+            
        
             data: {
-                 program_name: null,
+                 program_id: null,
                  training_circular_id: null,
-                 circular_modules: [],
-                  trainers: [],
+                  user_id: [],
+                  organization_id: null,
                   description: null,
                   start_date: null,
                   end_date: null,
-                
-                  on_days: [
-                    {
-                        "day": "Sat",
-                        "is_active": 0,
-                        "timeSlots": []
-                    },
-                    {
-                        "day": "Sun",
-                        "is_active": 0,
-                        "timeSlots": []
-                    },
-                    {
-                        "day": "Mon",
-                        "is_active": 0,
-                        "timeSlots": [
-                         ]
-                    },
-                    {
-                        "day": "Tue",
-                        "is_active": 0,
-                        "timeSlots": []
-                    },
-                    {
-                        "day": "Wed",
-                        "is_active": 0,
-                        "timeSlots": []
-                    },
-                    {
-                        "day": "Thu",
-                        "is_active": 0,
-                        "timeSlots": []
-                    },
-                    {
-                        "day": "Fri",
-                        "is_active": 0,
-                        "timeSlots": []
-                    }
-                ]
+              
             },
-            designations:[]
+          
         };
     },
     computed:{
@@ -157,7 +59,7 @@ export default {
    
 
     mounted() {
-        this.Programtrainers();
+        // this.Program();
         this.GetCircular();
         this.GetTimeSlot();
       
@@ -166,66 +68,12 @@ export default {
     
 
     methods: {
-        change(){
-            this.data.circular_modules = [];
-            const selected_circular = this.circulars.find(circular => circular.id == this.data.training_circular_id);
-            this.modules = selected_circular?.modules
-      
-          
-
-        },
-        showTimeSlotModal(day) {
-            if (day.is_active == 1) {
-                this.selected_day=day.day
-                this.timeSlotModal = true;
-            }
-            else{
-                const inactiveDay = this.data.on_days.find(d => d.day == day.day);
-                inactiveDay.timeSlots = [];
-            }
-        },
-        saveTimeSlots() {
-            // Add selected time slots to the active day's timeSlots array
-        
-            const activeDay = this.data.on_days.find(day => day.is_active == 1 && this.selected_day==day.day);
-            console.log(activeDay,"activeDay");
-            console.log(this.selectedTimeSlots,"selectedTimeSlots")
-            
-            activeDay.timeSlots.push(...this.selectedTimeSlots);
-           
-            this.closeTimeSlotModal();
-        },
-        closeTimeSlotModal() {
-            this.timeSlotModal = false;
-            this.selectedTimeSlots = []; 
-            this.selected_day = null;// Clear selected time slots
-        },
-      
         
         getItemText(item) {
             return this.language === 'bn' ? item.value_bn : item.value_en;
         },
         
-        async GetTimeSlot() {
-
-            this.$axios
-                .get("/admin/training/program-time-slots", {
-                    headers: {
-                        Authorization: "Bearer " + this.$store.state.token,
-                        "Content-Type": "multipart/form-data",
-                    },
-
-                })
-                .then((result) => {
-
-                    this.time_slots = result?.data?.data;
-
-
-
-
-
-                });
-        },
+       
         async GetCircular() {
 
           this.$axios
@@ -246,27 +94,23 @@ export default {
 
                 });
         },
-        async Programtrainers() {
+        // async Program() {
 
-            this.$axios
-                .get("/admin/training/program-trainers", {
-                    headers: {
-                        Authorization: "Bearer " + this.$store.state.token,
-                        "Content-Type": "multipart/form-data",
-                    },
+        //     this.$axios
+        //         .get("/admin/training/participant-programs", {
+        //             headers: {
+        //                 Authorization: "Bearer " + this.$store.state.token,
+        //                 "Content-Type": "multipart/form-data",
+        //             },
 
-                })
-                .then((result) => {
+        //         })
+        //         .then((result) => {
 
-                    this.program_trainers = result?.data?.data;
-                    console.log(this.program_trainers,"program_trainers")
+        //             this.programs = result?.data?.data;
+                  
 
-
-
-
-
-                });
-        },
+        //         });
+        // },
        
 
     
@@ -312,8 +156,6 @@ export default {
 
                 })
                 .catch((err) => {
-                    this.$toast.error(err?.response?.data?.errors?.program_name[0]);
-                 
                    
 
                 });
@@ -326,7 +168,7 @@ export default {
 </script>
 
 <template>
-    <div id="circular_create">
+    <div id="participant_create">
         <v-row class="mx-5 mt-5">
             <v-col cols="12">
                 <v-row>
@@ -334,16 +176,33 @@ export default {
                     <v-col cols="12">
                         <v-card>
 
+
                             <v-card-title class="justify-center"
                                 style="background-color: #1C3B68; color: white;font-size: 17px;">
                                 <h4 class="white--text">
-                                    {{ $t("container.training_management.training_program.add") }}
+
+
+                               
+                                    {{ getPartipant }}
+                                    {{ getParticipant == 0 ?
+    $t('container.training_management.training_registration.add_1') :
+                                    $t('container.training_management.training_registration.add_2')
+                                    }}
+
                                 </h4>
                             </v-card-title>
 
-                            <v-divider></v-divider>
 
-
+                            <v-btn-toggle v-model="getPartipant" class="ma-5">
+                                <v-btn small :color="getPartipant === 0 ? '#00C4FF' : undefined"
+                                    :class="{ 'white--text': getPartipant === 0 } ">
+                                    {{ $t("container.training_management.training_registration.add_1") }}
+                                </v-btn>
+                                <v-btn small :color="getPartipant === 1 ? '#00C4FF' : undefined"
+                                    :class="{ 'white--text': getPartipant === 1 }">
+                                    {{ $t("container.training_management.training_registration.add_2") }}
+                                </v-btn>
+                            </v-btn-toggle>
 
                             <v-card-text class="mt-10">
                                 <ValidationObserver ref="form" v-slot="{ invalid }">
@@ -454,7 +313,7 @@ export default {
                                                                     $t('container.training_management.training_program.class_schedule')
                                                                     }}</h3>
 
-                                                                <v-row no-gutters>
+                                                                <v-row>
                                                                     <v-col v-for="(day, index) in data.on_days"
                                                                         :key="index" cols="12" md="2" lg="2" xs="2"
                                                                         xl="2">
@@ -517,7 +376,7 @@ export default {
                     <div class="subtitle-1 font-weight-medium mt-5">
 
 
-                        <v-row no-gutters>
+                        <v-row>
                             <v-col v-for="slot in time_slots" :key="slot.id" cols="4">
                                 <v-checkbox v-model="selectedTimeSlots" :value="slot.id"
                                     :label="slot.time"></v-checkbox>
