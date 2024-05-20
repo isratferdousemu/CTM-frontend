@@ -1206,7 +1206,7 @@
       "grievance_setting_delete": "Delete Grievance Setting",
       "grievance_setting_delete_message": "Are you sure to delete this Grievance Setting?",
       "grievanceEntry":{
-        "complaint_area": "Complaint Area Concerned Office",
+        "complaint_area": "Complainant's   Address",
         "is_existing_beneficiary": "Are you an existing beneficiary?",
         "complaint_details": "Provide Details of the Complaint",
         "details": "Complaint Details",
@@ -1227,6 +1227,7 @@
       },
       "grievanceList": {
           "grievance_list": "Grievacne List",
+          "grievance_tracking": "Grievacne List",
           "tracking_no": "Tracking ID",
           "grievance_date": "Grievance Date",
           "search": "Search",
