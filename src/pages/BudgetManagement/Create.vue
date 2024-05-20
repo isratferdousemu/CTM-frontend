@@ -9,11 +9,11 @@
                 <v-card>
                   <v-row>
                     <v-col col="6">
-                      <v-card-title
-                        ><h3>
+                      <v-card-title>
+                        <h3>
                           {{ $t("container.budget_management.budget_create") }}
-                        </h3></v-card-title
-                      >
+                        </h3>
+                      </v-card-title>
                     </v-col>
                   </v-row>
 
@@ -33,112 +33,56 @@
                               >
                               </v-text-field> -->
 
-                              <ValidationProvider
-                          name="ProgramName"
-                          vid="program_id"
-                          rules="required"
-                          v-slot="{ errors }"
-                        >
-                        <v-autocomplete
-                            outlined
-                            clearable
-                            :items="allowances"
-                            item-text="name_en"
-                            item-value="id"
-                            v-model="data.program_id"
-                            :label="
-                          $t(
-                            'container.application_selection.application.program'
-                          )
-                        "
-                        required
-                            :error="errors[0] ? true : false"
-                            :error-messages="errors[0]"
-                          ></v-autocomplete>
-                      </ValidationProvider>
+                              <ValidationProvider name="ProgramName" vid="program_id" rules="required"
+                                v-slot="{ errors }">
+                                <v-autocomplete outlined clearable :items="allowances" item-text="name_en"
+                                  item-value="id" v-model="data.program_id" :label="$t(
+                                    'container.application_selection.application.program'
+                                  )
+                                    " required :error="errors[0] ? true : false"
+                                  :error-messages="errors[0]"></v-autocomplete>
+                              </ValidationProvider>
 
-                           
-                      <ValidationProvider
-                          name="previousYear"
-                          vid="previous_year"
-                          rules="required"
-                          v-slot="{ errors }"
-                        >
 
-                              <v-text-field
-                                type="Number"
-                                outlined
-                                v-model="data.previous_year_value"
-                                label="Number of Previous Year"
-                                required
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
-                              </v-text-field>
+                              <ValidationProvider name="previousYear" vid="previous_year" rules="required"
+                                v-slot="{ errors }">
 
-                            </ValidationProvider>
+                                <v-text-field type="Number" outlined v-model="data.previous_year_value" :label="$t(
+                                  'container.budget_management.no_of_previous_year'
+                                )
+                                  " required :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                </v-text-field>
 
-                            <ValidationProvider
-                          name="calculationValue"
-                          vid="calculation_value"
-                          rules="required"
-                          v-slot="{ errors }"
-                        >
-                              <v-text-field
-                              type="Number"
-                              v-model="data.calculation_value"
-                                outlined
-                                label="Value"
-                                required
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
-                              </v-text-field>
+                              </ValidationProvider>
 
-                            </ValidationProvider>
+                              <ValidationProvider name="calculationValue" vid="calculation_value" rules="required"
+                                v-slot="{ errors }">
+                                <v-text-field type="Number" v-model="data.calculation_value" outlined :label="$t(
+                                  'container.budget_management.calculation_value'
+                                )
+                                  " required :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                </v-text-field>
+
+                              </ValidationProvider>
                             </v-col>
 
                             <v-col cols="12" sm="6" lg="6">
-                              <ValidationProvider
-                          name="financialYear"
-                          vid="financial_year"
-                          rules="required"
-                          v-slot="{ errors }"
-                        >
-                              <v-select
-                                :items="financial_years"
-                                item-text="financial_year"
-                                item-value="id"
-                                label="Select Financial Year"
-                                v-model="data.financial_year_id"
-                                outlined
-                                required
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
-                              </v-select>
-                            </ValidationProvider>
+                              <ValidationProvider name="financialYear" vid="financial_year" rules="required"
+                                v-slot="{ errors }">
+                                <v-text-field v-model="active_year.financial_year" disabled outlined>
+                                </v-text-field>
+                              </ValidationProvider>
 
-                            <ValidationProvider
-                          name="calculationType"
-                          vid="calculation_type"
-                          rules="required"
-                          v-slot="{ errors }"
-                        >
-                              <v-select
-                                :items="calculationType"
-                                item-text="value_en"
-                                item-value="id"
-                                label="Calculation Type"
-                                v-model="data.calculation_type"
-                                outlined
-                                required
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                              >
-                              </v-select>
-                            </ValidationProvider>
-                             
+                              <ValidationProvider name="calculationType" vid="calculation_type" rules="required"
+                                v-slot="{ errors }">
+                                <v-select :items="calculationType" item-text="value_en" item-value="id" :label="$t(
+                                  'container.budget_management.calculation_type'
+                                )
+                                  " v-model="data.calculation_type" outlined required :error="errors[0] ? true : false"
+                                  :error-messages="errors[0]">
+                                </v-select>
+                              </ValidationProvider>
+
                             </v-col>
 
                             <!-- <v-col cols="12" sm="6" lg="6">
@@ -201,206 +145,29 @@
                       </v-row>
                     </v-col>
                   </v-card-text>
+
+                  <v-col cols="12">
+                    <v-row class="justify-end mb-5 mr-2">
+                      <v-btn flat color="primary" class="custom-btn mr-2" router
+                        to="/budget">{{ $t("container.list.back") }}
+                      </v-btn>
+
+                      <v-btn flat color="success" type="submit" class="custom-btn mr-2"
+                        :disabled="invalid">{{ $t("container.list.submit") }}
+                      </v-btn>
+                    </v-row>
+                  </v-col>
                 </v-card>
               </v-col>
 
-              <v-col cols="12">
-                <v-card style="margin-bottom: 50px">
-                  <v-row>
-                    <v-col col="6">
-                      <v-card-title><h3>Budget</h3></v-card-title>
-                    </v-col>
-                  </v-row>
 
-                  <v-divider></v-divider>
-
-                  <v-card-text>
-                    <v-col cols="12" class="d-flex">
-                      <v-row wrap>
-                        <v-col cols="12" lg="12">
-                          <table class="custom-table">
-                            <thead>
-                              <tr>
-                                <th class="text-left">#Sl</th>
-                                <th class="text-left">Office</th>
-                                <th class="text-left">Location</th>
-                                <th class="text-left">Beneficiary Regular</th>
-                                <th class="text-center">
-                                  Beneficiary Additional
-                                </th>
-                                <th class="text-left">Total Beneficiary</th>
-                                <th class="text-left">
-                                  Amount of Allocated Money
-                                </th>
-                              </tr>
-                            </thead>
-
-                            <tbody>
-                              <tr>
-                                <td @click="callback">+</td>
-                                <td style="width: 20%">ALL</td>
-                                <td style="width: 10%">test</td>
-                                <td>200</td>
-                                <td style="width: 40%">abc</td>
-                                <td>700</td>
-                                <td style="width: 10%">34567</td>
-                              </tr>
-                            </tbody>
-                            <tbody
-                              v-for="(member, index) in data.division"
-                              :key="index"
-                            >
-                              <tr>
-                                <td @click="callback2">+</td>
-
-                                <td style="width: 20%">Division</td>
-                                <td style="width: 10%">test</td>
-                                <td>200</td>
-                                <td style="width: 40%">
-                                  <v-col cols="12" class="d-flex">
-                                    <v-col v-if="isDisable === 1">
-                                      <v-row>
-                                        <v-col
-                                          sm="4"
-                                          v-for="(
-                                            eg, index
-                                          ) in educationGenders"
-                                          :key="index"
-                                        >
-                                          <div v-for="g in genders" :key="g.id">
-                                            <v-text-field
-                                              v-show="eg.gender_id === g.id"
-                                              :label="g.value_en"
-                                              outlined
-                                              dense
-                                            ></v-text-field>
-                                          </div>
-                                        </v-col>
-                                      </v-row>
-                                    </v-col>
-
-                                    <v-col v-if="isDisable === 0">
-                                      <v-row>
-                                        <v-col
-                                          sm="4"
-                                          v-for="(
-                                            aa, index
-                                          ) in allowanceAmounts"
-                                          :key="index"
-                                        >
-                                          <div v-for="g in genders" :key="g.id">
-                                            <v-text-field
-                                              v-if="aa.gender_id === g.id"
-                                              :label="g.value_en"
-                                              outlined
-                                              dense
-                                            ></v-text-field>
-                                          </div>
-                                        </v-col>
-                                      </v-row>
-                                    </v-col>
-                                  </v-col>
-                                </td>
-                                <td>700</td>
-                                <td style="width: 10%">34567</td>
-                              </tr>
-                            </tbody>
-
-                            <tbody
-                              v-for="(member, index) in data.district"
-                              :key="index"
-                            >
-                              <tr>
-                                <td>+</td>
-
-                                <td style="width: 20%">District</td>
-                                <td style="width: 10%">test</td>
-                                <td>200</td>
-                                <td style="width: 40%">
-                                  <v-col cols="12" class="d-flex">
-                                    <v-col v-if="isDisable === 1">
-                                      <v-row>
-                                        <v-col
-                                          sm="4"
-                                          v-for="(
-                                            eg, index
-                                          ) in educationGenders"
-                                          :key="index"
-                                        >
-                                          <div v-for="g in genders" :key="g.id">
-                                            <v-text-field
-                                              v-show="eg.gender_id === g.id"
-                                              :label="g.value_en"
-                                              outlined
-                                              dense
-                                            ></v-text-field>
-                                          </div>
-                                        </v-col>
-                                      </v-row>
-                                    </v-col>
-
-                                    <v-col v-if="isDisable === 0">
-                                      <v-row>
-                                        <v-col
-                                          sm="4"
-                                          v-for="(
-                                            aa, index
-                                          ) in allowanceAmounts"
-                                          :key="index"
-                                        >
-                                          <div v-for="g in genders" :key="g.id">
-                                            <v-text-field
-                                              v-if="aa.gender_id === g.id"
-                                              :label="g.value_en"
-                                              outlined
-                                              dense
-                                            ></v-text-field>
-                                          </div>
-                                        </v-col>
-                                      </v-row>
-                                    </v-col>
-                                  </v-col>
-                                </td>
-                                <td>700</td>
-                                <td style="width: 10%">34567</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </v-col>
-                      </v-row>
-                    </v-col>
-                  </v-card-text>
-                </v-card>
-              </v-col>
-
-              <v-col cols="12">
-                <v-row class="justify-end mb-5" style="margin-top: -50px">
-                  <v-btn
-                    flat
-                    color="primary"
-                    class="custom-btn mr-2"
-                    router
-                    to="/budget"
-                    >Back
-                  </v-btn>
-
-                  <v-btn
-                    flat
-                    color="success"
-                    type="submit"
-                    class="custom-btn mr-2"
-                    :disabled="invalid"
-                    >Submit
-                  </v-btn>
-                </v-row>
-              </v-col>
             </v-row>
           </v-form>
         </ValidationObserver>
       </v-col>
     </v-row>
   </div>
-</template>  
+</template>
 
 <script>
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
@@ -425,17 +192,18 @@ export default {
         allotment_extra: [],
       },
       data: {
-        program_id:null,
-        financial_year_id:null,
-        calculation_type:null,
-        previous_year_value:null,
-        calculation_value:null,
-        remarks:null
+        program_id: null,
+        financial_year_id: null,
+        calculation_type: null,
+        previous_year_value: null,
+        calculation_value: null,
+        remarks: null
       },
-      district:[],
-      allowances:[],
+      district: [],
+      allowances: [],
       financial_years: [],
-      calculationType:[],
+      active_year: '',
+      calculationType: [],
     };
   },
 
@@ -475,29 +243,31 @@ export default {
       // getAllFinancialYear: "ManageAllotment/getAllFinancialYear",
 
       GetAllowance() {
-      this.$axios
-        .get("/global/program", {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data"
-          }
-        })
-        .then(result => {
-          this.allowances = result.data.data;
-        });
-    },
-    GetFinancial_Year() {
-      this.$axios
-        .get("/admin/financial-year/get", {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data"
-          }
-        })
-        .then(result => {
-          this.financial_years = result.data.data;
-        });
-    },
+        this.$axios
+          .get("/global/program", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data"
+            }
+          })
+          .then(result => {
+            this.allowances = result.data.data;
+          });
+      },
+      GetFinancial_Year() {
+        this.$axios
+          .get("/admin/financial-year/get", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data"
+            }
+          })
+          .then(result => {
+            this.financial_years = result.data.data;
+            this.active_year = this.financial_years.find((item) => item.status === 1)
+            console.log('active_year', this.active_year)
+          });
+      },
     }),
 
     getAmount(event) {
@@ -508,14 +278,14 @@ export default {
       this.$store.dispatch("ManageAllotment/getAllOfficeLocation", event);
     },
 
-    addBudget () {
+    addBudget() {
       let fd = new FormData();
       fd.append("program_id", this.data.program_id);
-      fd.append("financial_year_id", this.data.financial_year_id);
+      fd.append("financial_year_id", this.active_year.id);
       fd.append("calculation_type", this.data.calculation_type);
-      fd.append("previous_year_value", this.data.previous_year_value);
-      fd.append("calculation_value", this.data.calculation_value); 
-      fd.append("remarks", this.data.remarks); 
+      fd.append("no_of_previous_year", this.data.previous_year_value);
+      fd.append("calculation_value", this.data.calculation_value);
+      fd.append("remarks", this.data.remarks);
 
       try {
         this.$store
@@ -546,7 +316,7 @@ export default {
       }
     },
     callback() {
-    //   alert("hello");
+      //   alert("hello");
 
       let data = [{
         name: null,
@@ -562,12 +332,12 @@ export default {
         address: null,
         phone: null,
       },
-    ];
-    this.data.division = data;
-    //   this.data.division = [...this.data.division, data];
+      ];
+      this.data.division = data;
+      //   this.data.division = [...this.data.division, data];
     },
     callback2() {
-    //   alert("hello");
+      //   alert("hello");
 
       let data = [{
         name: null,
@@ -583,9 +353,9 @@ export default {
         address: null,
         phone: null,
       },
-    ];
-    this.data.district = data;
-    //   this.data.district = [...this.data.district, data];
+      ];
+      this.data.district = data;
+      //   this.data.district = [...this.data.district, data];
     },
   },
 };

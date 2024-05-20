@@ -29,7 +29,7 @@
                   <!-- Dropdown on the right -->
                   <v-col lg="3" md="3" cols="12" class="text-right ">
                     <v-btn @click="createDialog" color="primary" prepend-icon="mdi-account-multiple-plus"
-                      v-can="'timeSlot-create'">
+                      v-can="'timeStot-create'">
                       {{ $t("container.training_management.time_slot.add") }}
                     </v-btn>
                   </v-col>
@@ -87,20 +87,20 @@
                       <template v-slot:item.actions="{ item }">
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn v-can="'time_slot-edit'" fab x-small v-on="on" color="success" elevation="0"
+                            <v-btn v-can="'timeStot-edit'" fab x-small v-on="on" color="success" elevation="0"
                               @click="editDialog(item)">
                               <v-icon> mdi-account-edit-outline </v-icon>
                             </v-btn>
                           </template>
                           <span>
-                            {{ $t("container.list.update") }}
+                            {{ $t("container.list.edit") }}
                           </span>
                         </v-tooltip>
 
                         <v-tooltip top v-if="!item.children_count">
                           <template v-slot:activator="{ on }">
-                            <v-btn v-can="'time_slot-delete'" fab x-small v-on="on" color="grey"
-                              class="ml-3 white--text" elevation="0" @click="deleteAlert(item.id)">
+                            <v-btn v-can="'timeStot-delete'" fab x-small v-on="on" color="grey" class="ml-3 white--text"
+                              elevation="0" @click="deleteAlert(item.id)">
                               <v-icon> mdi-delete </v-icon>
                             </v-btn>
                           </template>
@@ -134,7 +134,7 @@
                      
                             
                                     
-                                                " :items="items" hide-details dense outlined @change="onPageChange"
+                                                " :items="items" hide-details dense outlined @change="perPageChange"
                               v-model="pagination.perPage"></v-select>
 
 
@@ -205,7 +205,7 @@
                 <ValidationProvider v-slot="{ errors }" name="Time Slot" vid="time" rules="required||checklength">
                   <v-text-field outlined type="text" v-model="data.time"
                     :label="$t('container.training_management.time_slot.time')"
-                    :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক  শুধুমাত্র ইংরেজি অক্ষর, সংখ্যা এবং হাইফেন (-) সহ সর্বাধিক 20 অক্ষর প্রদান করুন ' : 'Please enter time up to 20 characters with only English letters, numbers, and hyphen (-).') : ''">
+                    :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক  শুধুমাত্র ইংরেজি অক্ষর, সংখ্যা এবং হাইফেন (-) ,কোলন (:) এবং স্পেসসহ সর্বাধিক 20 অক্ষর প্রদান করুন ' : 'Please enter time up to 20 characters with only English letters, numbers, and hyphen (-),colon (:) and Space') : ''">
 
                   </v-text-field>
                 </ValidationProvider>
@@ -268,7 +268,7 @@ extend("required", required);
 extend('checklength', {
   validate: value => {
     // Regular expression to match only English letters, numbers, and hyphen
-    const regex = /^[a-zA-Z0-9-]+$/;
+    const regex = /^[a-zA-Z0-9-: ]+$/;
     return value.length <= 20 && regex.test(value);
   },
   message: 'Please enter time up to 20 characters with only English letters, numbers, and hyphen (-).'
@@ -355,6 +355,7 @@ export default {
           value: "id",
           align: "start",
           sortable: false,
+          width:"30%",
         },
        
         {
@@ -362,12 +363,14 @@ export default {
             "container.training_management.time_slot.time"
           ),
           value: "time",
+          width:"30%",
         },
         {
           text: this.$t("container.list.action"),
           value: "actions",
           align: "center",
           sortable: false,
+          width: "30%",
         },
       ];
     },
@@ -662,9 +665,17 @@ export default {
     },
 
     onPageChange($event) {
-      // this.pagination.current = $event;
+     
+      // this.pagination.current = 1;
       this.GetData();
     },
+    perPageChange($event) {
+
+      this.pagination.current = 1;
+      this.GetData();
+    },
+
+    
     setInitialHeader() {
       for (let i = 0; i < this.headers.length; i++) {
         if (this.headers[i].value == "name_en") {
@@ -710,6 +721,7 @@ export default {
         sortBy: this.sortBy,
         sortDesc: this.sortDesc,
       };
+      console.log(queryParams,"queryParams")
       this.$axios
         .get("/admin/training/time-slots", {
           headers: {
