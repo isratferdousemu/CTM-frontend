@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12">
         <h2 class="my-4">
-          Financial Year: {{ financial_year?.financial_year }}
+           {{ language === "bn" ? "অর্থ বছর" : "Financial year" }}: {{ financial_year?.financial_year }}
         </h2>
       </v-col>
     </v-row>
@@ -27,7 +27,7 @@
                     allowance.payment_cycle
                   )"
                   :key="installment.id"
-                  :label="installment.installment_name"
+                  :label="language === 'bn' ? installment.installment_name_bn : installment.installment_name"
                   style="margin: 0px 10px 0px 0px;"
                   :input-value="
                     isInstallmentSelected(installment.id, allowance.id)

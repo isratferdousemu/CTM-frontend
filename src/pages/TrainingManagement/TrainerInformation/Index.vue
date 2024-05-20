@@ -57,15 +57,15 @@ export default {
         headers() {
             return [
                 { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, width: "5%" },
-                { text: this.$t('container.training_management.trainer_info.ID'), value: "id_no", align: "start", width: "15%" },
-                { text: this.$t('container.training_management.trainer_info.name'), value: "name", width: "10%" },
-                { text: this.$t('container.training_management.trainer_info.designation'), value: "designation",  width: "15%" },
+                { text: this.$t('container.training_management.trainer_info.ID'), value: "id_no", align: "start", width: "15%", sortable: false, },
+                { text: this.$t('container.training_management.trainer_info.name'), value: "name", width: "20%" },
+                { text: this.$t('container.training_management.trainer_info.designation'), value: "designation", width: "15%", sortable: false, },
             
                 { text: this.$t('container.training_management.trainer_info.email'), value: "email", width: "10%" },
-                { text: this.$t('container.list.status'), value: "status", width: "15%" },
+                { text: this.$t('container.list.status'), value: "status", width: "15%", sortable: false, },
 
               
-                { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false, width: "25%" },
+                { text: this.$t('container.list.action'), value: "actions", align: "start", sortable: false, width: "15%" },
             ];
         },
 
@@ -193,7 +193,7 @@ export default {
                 language: this.$i18n.locale,
                 data: CustomInfo,
                 header: HeaderInfo,
-                fileName: this.$t("container..training_management.trainer_info.list"),
+                fileName: this.$t("container.training_management.trainer_info.list"),
             };
             try {
                 const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
@@ -566,7 +566,8 @@ export default {
                                         <v-tooltip top>
                                             <template v-slot:activator="{ on }">
                                                 <v-btn v-can="'trainerInfo-view'" fab x-small v-on="on" color="#AFB42B"
-                                                    elevation="0" router class=" white--text"
+                                                    elevation="0" router class="white--text mt-1 
+                                                     mr-2"
                                                     :to="`/training-management/trainer-information/view/${item.id}`">
                                                     <v-icon> mdi-eye </v-icon>
                                                 </v-btn>
@@ -578,8 +579,8 @@ export default {
 
                                         <v-tooltip top>
                                             <template v-slot:activator="{ on }">
-                                                <v-btn v-can="'trainerInfo-edit'" class="ml-3" fab x-small v-on=" on"
-                                                    color="success" elevation="0" router
+                                                <v-btn v-can="'trainerInfo-edit'" class="mr-2  mt-1" fab x-small
+                                                    v-on=" on" color="success" elevation="0" router
                                                     :to="`/training-management/trainer-information/edit/${item.id}`">
                                                     <v-icon> mdi-account-edit-outline </v-icon>
                                                 </v-btn>
@@ -593,7 +594,7 @@ export default {
                                         <v-tooltip top>
                                             <template v-slot:activator="{ on }">
                                                 <v-btn v-can="'trainerInfo-delete'" fab x-small v-on="on" color="grey"
-                                                    class="ml-3 white--text" elevation="0"
+                                                    class="mr-2 white--text  mt-1" elevation="0"
                                                     @click="deleteAlert(item.id)">
                                                     <v-icon> mdi-delete </v-icon>
                                                 </v-btn>
@@ -641,8 +642,9 @@ export default {
                               transform: translate(0px, 0px); -->
             <!-- delete modal  -->
             <v-dialog v-model="deleteDialog" width="350">
-                <v-card style="justify-content: center; text-align: center">
-                    <v-card-title class="font-weight-bold justify-center">
+                <v-card style="justify-content: center; ">
+                    <v-card-title class="font-weight-bold justify-center"
+                        style="background-color: #1C3B68; color: white;font-size: 17px;">
                         {{ $t('container.training_management.trainer_info.delete_header') }}
                     </v-card-title>
                     <v-divider></v-divider>

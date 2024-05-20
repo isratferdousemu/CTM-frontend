@@ -768,7 +768,7 @@ export default {
 
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
-                                                        <v-btn v-can="'trainerCircular-edit'" class="mr-2" fab x-small
+                                                        <v-btn v-can="'trainingCircular-edit'" class="mr-2" fab x-small
                                                             v-on="on" color="success" elevation="0" router
                                                             :to="`/training-management/training-circular/edit/${item.id}`">
                                                             <v-icon> mdi-account-edit-outline </v-icon>
@@ -782,7 +782,7 @@ export default {
 
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
-                                                        <v-btn v-can="'trainerCircular-delete'" fab x-small v-on="on"
+                                                        <v-btn v-can="'trainingCircular-delete'" fab x-small v-on="on"
                                                             color="grey" class="white--text  mr-2" elevation="0"
                                                             @click="deleteAlert(item.id)">
                                                             <v-icon> mdi-delete </v-icon>
@@ -833,9 +833,9 @@ export default {
             </v-col>
         </v-row>
         <v-dialog v-model="deleteDialog" width="350">
-            <v-card style="justify-content: center; text-align: center">
+            <v-card style="justify-content: start; ">
                 <v-card-title class="font-weight-bold justify-center"
-                    style="background-color: #1C3C6A; color: white;font-size: 12px;">
+                    style="background-color: #1C3C6A; color: white;font-size: 17px;">
                     {{ $t('container.training_management.training_circular.delete_header') }}
                 </v-card-title>
                 <v-divider></v-divider>
