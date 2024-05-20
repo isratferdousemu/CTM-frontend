@@ -51,7 +51,7 @@ export default {
             },
         })
         .then((res) => {
-            this.$toast.success("Verification type submitted successfully");
+            this.$toast.success(this.language === "bn" ? "পেরোল যাচাইকরণ সেটিং সফলভাবে জমা দেওয়া হয়েছে" : "Payroll Verification Setting submitted successfully");
         })
         .catch((error) => {
             console.error("API error:", error);

@@ -156,7 +156,7 @@ export default {
         })
         .then((res) => {
           this.selectedData = [],
-          this.$toast.success("Setting submitted successfully");
+          this.$toast.success(this.language === "bn" ? "সেটিং সফলভাবে জমা দেওয়া হয়েছে" : "Setting submitted successfully");
           this.getSettingData();
           // this.$router.push("/admin/payroll/setting");
         })

@@ -191,8 +191,8 @@
                   >
                     <ValidationProvider
                       v-slot="{ errors }"
-                      name="Code"
-                      vid="code"
+                      name="Bank name"
+                      vid="bank_name"
                       rules="required"
                     >
                       <v-autocomplete
@@ -209,6 +209,7 @@
                       </v-autocomplete>
                     </ValidationProvider>
                   </v-col>
+
                   <v-col
                     lg="6"
                     md="6"
@@ -218,7 +219,7 @@
                     <ValidationProvider
                       v-slot="{ errors }"
                       name="Branch Name"
-                      vid="name_en"
+                      vid="branch_name"
                       rules="required"
                     >
                       <v-text-field
@@ -234,12 +235,37 @@
                     </ValidationProvider>
                   </v-col>
 
+                  <v-col
+                    lg="6"
+                    md="6"
+                    cols="12"
+                    v-if="data.processor_type === 1"
+                  >
+                    <ValidationProvider
+                      v-slot="{ errors }"
+                      name="Routing number"
+                      vid="routing_number"
+                      rules="required"
+                    >
+                      <v-text-field
+                        outlined
+                        type="number"
+                        v-model="data.routing_number"
+                        :label="$t('container.payroll_management.routing_number')"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                        >></v-text-field
+                      >
+                    </ValidationProvider>
+                  </v-col>
+
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       v-slot="{ errors }"
                       name="Name English"
                       vid="name_en"
-                      rules="required"
+                      rules="required|checkName"
                     >
                       <v-text-field
                         outlined
@@ -257,14 +283,14 @@
                     <ValidationProvider
                       v-slot="{ errors }"
                       name="Name in Bangla"
-                      vid="name_en"
-                      rules="required"
+                      vid="name_bn"
+                      rules="required|checkNameBn"
                     >
                       <v-text-field
                         outlined
                         type="text"
                         v-model="data.name_bn"
-                        :label="$t('container.list.name_en')"
+                        :label="$t('container.list.name_bn')"
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
@@ -276,8 +302,8 @@
                     <ValidationProvider
                       v-slot="{ errors }"
                       name="Focal Phone"
-                      vid="name_en"
-                      rules="required"
+                      vid="focal_phone"
+                      rules="required|bangladeshiPhone"
                     >
                       <v-text-field
                         outlined
@@ -295,8 +321,8 @@
                     <ValidationProvider
                       v-slot="{ errors }"
                       name="Focal Email"
-                      vid="name_en"
-                      rules="required"
+                      vid="focal_email"
+                      rules="required|email"
                     >
                       <v-text-field
                         outlined
@@ -313,7 +339,7 @@
 
                   <v-col lg="12" md="12" cols="12">
                     <v-divider></v-divider>
-                    <v-card-title class="font-weight-bold justify-center mt-4">
+                    <v-card-title class="font-weight-bold justify-center">
                       {{ $t("container.payroll_management.coverage_area") }}
                     </v-card-title>
                   </v-col>
@@ -357,8 +383,6 @@
                         :label="$t('container.payroll_management.district')"
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
-                        @change="getUpazilas(data.district)"
-
                       >
                       </v-autocomplete>
                     </ValidationProvider>
@@ -382,16 +406,24 @@
                         "
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
+                        @change="
+                          getDistrictPourashava(
+                            data.district,
+                            data.location_type
+                          )
+                        "
+                        v-if="data.district != null"
                       >
                       </v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-
+                  <!-- locationType upazila start -->
+                  <!-- upazila start -->
                   <v-col
                     lg="6"
                     md="6"
                     cols="12"
-                    v-if="data.location_type === 2"
+                    v-if="data.location_type !=null && data.location_type === 2 && data.district != null"
                   >
                     <ValidationProvider
                       v-slot="{ errors }"
@@ -409,17 +441,21 @@
                         :label="$t('container.payroll_management.upazila')"
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
-                        @change="getUnions(data.upazila)"
-
+                        @change="
+                          getUnionOrThana(data.upazila, data.location_type)
+                        "
                       >
                       </v-autocomplete>
                     </ValidationProvider>
                   </v-col>
+                  <!-- upazila end -->
+
+                  <!-- union start -->
                   <v-col
                     lg="6"
                     md="6"
                     cols="12"
-                    v-if="data.location_type === 2"
+                    v-if="data.location_type !=null && data.location_type==2 && data.upazila != null"
                   >
                     <ValidationProvider
                       v-slot="{ errors }"
@@ -441,12 +477,15 @@
                       </v-autocomplete>
                     </ValidationProvider>
                   </v-col>
+                  <!-- union end -->
+                  <!-- locationType upazila start -->
 
+                  <!-- location Type city corp start -->
                   <v-col
                     lg="6"
                     md="6"
                     cols="12"
-                    v-if="data.location_type === 3"
+                    v-if="data.location_type !=null && data.location_type === 3 && data.district != null"
                   >
                     <ValidationProvider
                       v-slot="{ errors }"
@@ -474,7 +513,7 @@
                     lg="6"
                     md="6"
                     cols="12"
-                    v-if="data.location_type === 3"
+                    v-if="data.location_type !=null && data.location_type == 3 && data.city_corporation != null"
                   >
                     <ValidationProvider
                       v-slot="{ errors }"
@@ -496,12 +535,14 @@
                       </v-autocomplete>
                     </ValidationProvider>
                   </v-col>
+                  <!-- location Type city corp end -->
 
+                  <!-- location Type district poruoshava start -->
                   <v-col
                     lg="6"
                     md="6"
                     cols="12"
-                    v-if="data.location_type === 1"
+                    v-if="data.location_type === 1 && data.district != null"
                   >
                     <ValidationProvider
                       v-slot="{ errors }"
@@ -513,8 +554,8 @@
                         outlined
                         clearable
                         v-model="data.district_pourashava"
+                        :item-text="language === 'bn' ? 'name_bn' : 'name_en'"
                         :items="district_pourashavas"
-                        item-text="name"
                         item-value="id"
                         :label="
                           $t('container.payroll_management.district_pourashava')
@@ -525,6 +566,7 @@
                       </v-autocomplete>
                     </ValidationProvider>
                   </v-col>
+                  <!-- location Type district poruoshava start -->
                 </v-row>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
@@ -815,9 +857,51 @@
 <script>
 import { mapState } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
-import { required } from "vee-validate/dist/rules";
+import { required,email } from "vee-validate/dist/rules";
 
 extend("required", required);
+
+extend('email', {
+  ...email,
+  message: 'Please enter a valid email address',
+});
+
+extend('bangladeshiPhone', {
+  validate: (value) => {
+    if (!value && value !== 0) {
+      return false;
+    }
+
+    // Regex for Bangladeshi phone number
+    var banglaPhoneRegex = /^(?:\+88|88)?(01[3-9]\d{8})$/;
+
+    return banglaPhoneRegex.test(value);
+  },
+  message: "Please enter a valid Bangladeshi phone number",
+});
+extend("checkName", {
+  validate: (value) => {
+    if (!value && value !== 0) {
+      return false;
+    }
+
+    return /^[a-zA-Z\s]+$/.test(value);
+  },
+  message: "Please Enter English Letter's in this Field",
+});
+
+extend("checkNameBn", {
+  validate: (value) => {
+    if (!value && value !== 0) {
+      return false;
+    }
+
+    var banglaRegex = /^[\u0980-\u09E5\u09F0-\u09FF\s]+$/;
+
+    return banglaRegex.test(value);
+  },
+  message: "Please Enter Bangla Letter's in this Field",
+});
 export default {
   name: "Index",
   title: "CTM - Payment Processor",
@@ -825,12 +909,21 @@ export default {
     return {
       data: {
         processor_type: null,
+        bank_name: null,
+        branch_name: null,
+        routing_number: null,
+        name_en: '',
+        name_bn: '',
+        focal_phone: '',
+        focal_email: '',
         division: null,
         district: null,
+        upazila: null,
         union: null,
-        city_corporation: null,
         thana: null,
+        city_corporation: null,
         district_pourashava: null,
+        location_type: null,
       },
       dialogAdd: false,
       deleteDialog: false,
@@ -962,6 +1055,32 @@ export default {
       return fd;
     },
 
+    async submitPaymentProcessor() {
+      console.log("🚀 ~ submitPaymentProcessor ~ this.data:", this.data)
+      this.loading = true;
+      try {
+        const response = await this.$axios.post('admin/payroll/payment-processor', this.data, {
+          headers: {
+            Authorization: `Bearer ${this.$store.state.token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.status === 200) {
+          this.$toast.success("Form submitted successfully");
+          this.dialogAdd = false;
+          // Reset form data or perform other actions as needed
+        } else {
+          this.$toast.error("Form submission failed");
+        }
+      } catch (error) {
+        console.error("Error submitting form:", error);
+        this.$toast.error("An error occurred while submitting the form");
+      } finally {
+        this.loading = false;
+      }
+    },
+
     async getDivisions() {
       try {
         const response = await this.$axios.get("/admin/division/get", {
@@ -972,7 +1091,6 @@ export default {
         });
         if (response.status == "200") {
           this.divisions = response.data.data;
-          console.log("🚀 ~ getDivisions ~ this.divisions:", this.divisions);
         } else {
           this.$toast.error("Something went wrong");
         }
@@ -991,7 +1109,6 @@ export default {
         });
         if (response.status == "200") {
           this.districts = response.data.data;
-          console.log("🚀 ~ getDistricts ~ this.districts:", this.districts);
         } else {
           this.$toast.error("Something went wrong");
         }
@@ -1000,28 +1117,42 @@ export default {
       }
     },
 
-    async getUpazilas(districtId) {
+    async getDistrictPourashava(districtId, locationTypeId) {
+      if (districtId == null) {
+        this.$toast.warning("Please select a district");
+        return;
+      }
+      let response;
       try {
-        if(this.data.location_type == 2){
-            const response = await this.$axios.get(`get-upazilas/${districtId}`, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        if (this.data.location_type == 1 || this.data.location_type == 3) {
+          // for district upazila or city corporation
+          response = await this.$axios.get(
+            `get-cities-pouroshavas/${districtId}/${locationTypeId}`,
+            {
+              headers: {
+                Authorization: "Bearer " + this.$store.state.token,
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+        } else {
+          // otherwise get upazila
+          response = await this.$axios.get(`get-upazilas/${districtId}`, {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          });
         }
-        // else if(this.location_type==3){
-        //     const response = await this.$axios.get(`get-upazilas/${districtId}`, {
-        //   headers: {
-        //     Authorization: "Bearer " + this.$store.state.token,
-        //     "Content-Type": "multipart/form-data",
-        //   },
-        // });
-        // }
-        
+
         if (response.status == "200") {
-          this.upazilas = response.data.data;
-          console.log("🚀 ~ getDistricts ~ this.districts:", this.districts);
+          if (this.data.location_type == 1) {
+            this.district_pourashavas = response.data.data;
+          } else if (this.data.location_type == 3) {
+            this.city_corporations = response.data.data;
+          } else {
+            this.upazilas = response.data.data;
+          }
         } else {
           this.$toast.error("Something went wrong");
         }
@@ -1030,17 +1161,29 @@ export default {
       }
     },
 
-    async getUnions(upazilaId) {
+    async getUnionOrThana(upazilaId, locationTypeId) {
+      if (upazilaId == null) {
+        this.$toast.warning("Please select a district");
+        return;
+      }
+      let response;
       try {
-        const response = await this.$axios.get(`get-unions/${upazilaId}`, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        response = await this.$axios.get(
+          `get-union-or-thana/${upazilaId}/${locationTypeId}`,
+          {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+
         if (response.status == "200") {
-          this.upazilas = response.data.data;
-          console.log("🚀 ~ getDistricts ~ this.districts:", this.districts);
+          if (this.data.location_type == 2) {
+            this.unions = response.data.data;
+          } else {
+            this.thanas = response.data.data;
+          }
         } else {
           this.$toast.error("Something went wrong");
         }
@@ -1048,6 +1191,24 @@ export default {
         console.error("Error fetching divisions:", error);
       }
     },
+
+    // async getUnions(upazilaId) {
+    //   try {
+    //     const response = await this.$axios.get(`get-unions/${upazilaId}`, {
+    //       headers: {
+    //         Authorization: "Bearer " + this.$store.state.token,
+    //         "Content-Type": "multipart/form-data",
+    //       },
+    //     });
+    //     if (response.status == "200") {
+    //       this.upazilas = response.data.data;
+    //     } else {
+    //       this.$toast.error("Something went wrong");
+    //     }
+    //   } catch (error) {
+    //     console.error("Error fetching divisions:", error);
+    //   }
+    // },
 
     editDialog(item) {
       this.dialogEdit = true;
