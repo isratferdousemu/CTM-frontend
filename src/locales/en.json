@@ -1218,15 +1218,16 @@
     },
     "power_bi_report": {
       "index": {
-        "title": "Power BI Report List",
+        "title": "Power BI Report",
         "add": "Add Power BI Report ",
         "update": "Update Power BI Report ",
-        "title_en": "Title En",
-        "title_bn": "Title Bn",
+        "title_en": "Title English",
+        "title_bn": "Title Bangla",
         "embaded_code": "Embaded Code",
         "image": "Image",
         "delete": "Delete Power BI Report",
-        "delete_alert": "Are you sure to delete this Report?"
+        "delete_alert": "Are you sure to delete this Report?",
+        "go_power_bi": "GO TO POWER BI"
       },
       "view": {
         "title": "কার্যকলাপ লগ ফিল্টার"
