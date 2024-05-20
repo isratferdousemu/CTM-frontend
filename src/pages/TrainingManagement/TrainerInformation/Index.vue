@@ -642,8 +642,9 @@ export default {
                               transform: translate(0px, 0px); -->
             <!-- delete modal  -->
             <v-dialog v-model="deleteDialog" width="350">
-                <v-card style="justify-content: center; text-align: center">
-                    <v-card-title class="font-weight-bold justify-center">
+                <v-card style="justify-content: center; ">
+                    <v-card-title class="font-weight-bold justify-center"
+                        style="background-color: #1C3B68; color: white;font-size: 17px;">
                         {{ $t('container.training_management.trainer_info.delete_header') }}
                     </v-card-title>
                     <v-divider></v-divider>
