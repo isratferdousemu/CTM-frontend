@@ -14,7 +14,7 @@
                       $expand
                     </v-icon>
                   </template>
-                  <h3 class="white--text ">
+                  <h3 class="white--text">
                     {{ $t("container.grievance_management.grievanceList.search") }}
                   </h3>
                 </v-expansion-panel-header>
@@ -243,7 +243,7 @@
          <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8 mt-5">
                 <v-card-title  tag="div"
                   style="background-color:#1c3b68;color:white;margin-bottom: 17px;font-size:17px;">
-                  <h3 class="text-uppercase ">
+                  <h3 class="white--text">
                     {{ $t("container.grievance_management.grievanceList.grievance_list") }}
                   </h3>
                 </v-card-title>
@@ -402,19 +402,34 @@
                         </template>
                         <!-- End Action Button -->
                         <!-- End Action Button -->
-                        <template v-slot:footer="item">
-                          <div class="text-center pt-2 v-data-footer justify-center pb-2">
-                            <v-select style="
-                              position: absolute;
-                              right: 25px;
-                              width: 149px;
-                              transform: translate(0px, 0px);
-                            " :items="items" hide-details dense outlined @change="onPageChange"
-                              v-model="pagination.perPage"></v-select>
-                            <v-pagination circle primary v-model="pagination.current" :length="pagination.total"
-                              @input="onPageChange" :total-visible="11" class="custom-pagination-item"></v-pagination>
-                          </div>
-                        </template>
+                     <template v-slot:footer="item">
+    <v-container class="pa-0" fluid>
+      <v-row class="align-center" cols="12">
+        <v-col cols="12" lg="10" md="10" sm="4"  class="d-flex justify-center mb-2 mb-sm-0">
+          <v-pagination
+            circle
+            primary
+            v-model="pagination.current"
+            :length="pagination.total"
+            @input="onPageChange"
+            :total-visible="11"
+            class="custom-pagination-item"
+          ></v-pagination>
+        </v-col>
+        <v-col cols="12" lg="2" md="2" sm="4" class="">
+          <v-select
+            :items="items"
+            hide-details
+            dense
+            outlined
+            @change="onPageSetup"
+            v-model="pagination.perPage"
+           
+          ></v-select>
+        </v-col>
+      </v-row>
+    </v-container>
+  </template>
                       </v-data-table>
                     </v-col>
                   </v-row>
@@ -449,6 +464,10 @@
                   <tr>
                     <th style="font-size: 16px;">{{ $t("container.grievance_management.grievance_subject") }} :</th>
                     <th style="font-size: 16px;">{{ data.grievanceSubject }}</th>
+                  </tr>    
+                   <tr>
+                    <th style="font-size: 16px;">{{ $t("container.grievance_management.grievanceEntry.details") }} :</th>
+                    <th style="font-size: 16px;">{{ data.details }}</th>
                   </tr>
                   <tr>
                     <th style="font-size: 16px;">{{ $t("container.grievance_management.grievanceList.grievance_date") }} :
@@ -543,10 +562,13 @@
                     </v-select>
                   </v-col>
                   <v-col lg="6" md="6" cols="12" v-if="data.status == '1'">
-                   <v-select outlined :label="$t('container.grievance_management.grievanceList.forward_to')"
+                <ValidationProvider name="Forward To" vid="forward_to"
+                              v-slot="{ errors }" rules="required">
+                   <v-select outlined  :label="$t('container.grievance_management.grievanceList.forward_to')"
                         v-model="data.forwardOfficer" item-value="id" :items="forward_to" :item-text="language === 'bn' ? 'name_bn' : 'name_en'"
                      >
                    </v-select>
+                </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12" v-if="data.status != '1'">
                     <v-select outlined :label="$t('container.grievance_management.grievanceList.solution')"
@@ -610,6 +632,7 @@ export default {
         tracking_no: null,
         name_bn: null,
         code: null,
+        details: null,
         division_id: null,
         district_id: null,
         thana_id: null,
@@ -637,13 +660,11 @@ export default {
         forwardOfficer: null,
       },
       fileTypeRule: (value) => {
-        if (!value) return 'File is required.';
         const allowedFormats = ['.pdf', '.xls', '.xlsx', '.jpg', '.jpeg', '.png'];
         const extension = value.name.slice(((value.name.lastIndexOf(".") - 1) >>> 0) + 2);
         return allowedFormats.includes(`.${extension}`) || 'Allowed file types are PDF, Excel, JPG, JPEG, and PNG.';
       },
-      fileSizeRule: (value) => {
-        if (!value) return 'File is required.';
+      fileSizeRule: (value) => { 
         const maxSizeMB = 5; // Maximum file size in MB
         const maxSizeBytes = maxSizeMB * 1024 * 1024; // Convert MB to bytes
         return value.size <= maxSizeBytes || `File size should be less than ${maxSizeMB} MB.`;
@@ -657,13 +678,6 @@ export default {
         status: null,
         applications_id: [],
       },
-      lists: [
-        { id: 2, name_en: "Approved" },
-        { id: 1, name_en: "Forwarded" },
-        { id: 0, name_en: "Not Solved" },
-
-      ],
-
       selectAll: null,
       committe: [],
       permissions: [],
@@ -1007,6 +1021,7 @@ export default {
       this.data.grievanceType = this.language === 'bn' ? item.grievance_type?.title_bn : item.grievance_type?.title_en
       this.data.resolved_officer = this.language === 'bn' ? item.resolver?.name_bn : item.resolver?.name_en
       this.data.created_at = item.created_at
+      this.data.details = item.details
 
     },
     Division() {
@@ -1859,6 +1874,10 @@ export default {
     onPageChange($event) {
       // this.pagination.current = $event;
       this.GetGrievance();
+    },  
+    onPageSetup($event) {
+      this.pagination.current = 1;
+      this.GetGrievance();
     },
 
     async GetGrievance() {
@@ -2271,6 +2290,7 @@ export default {
 };
 </script>
 <style >
+
 .no-arrow-icon .v-input__icon--clear {
   display: none;
 
