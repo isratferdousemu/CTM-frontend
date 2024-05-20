@@ -1098,6 +1098,22 @@
               "class_schedule": "প্রশিক্ষণের সময়সূচী",
               "delete_header": "প্রোগ্রাম মুছুন",
               "delete_alert": "আপনি এই প্রোগ্রাম মুছে ফেলার বিষয়ে নিশ্চিত? প্রোগ্রামের সমস্ত তথ্য মুছে ফেলা হবে।"
+            },
+            "training_registration": {
+              "list_1": "অংশগ্রহণকারীদের তালিকা",
+              "view": "অংশগ্রহণকারীর বিবরণ",
+              "add_1": "অংশগ্রহণকারী যোগ করুন",
+              "add_2": "প্রশিক্ষণ পোল",
+              "program_name": "Program Name",
+              "program": "Program",
+              "trainer": "Trainer",
+              "circular": "Circular",
+              "class_schedule": "Training Schedule",
+              "search": "Search Program",
+              "select_time_slot": "Select Time Slot",
+              "training_circular": "Training Circular",
+              "delete_header": "অংশগ্রহণকারীকে সরান",
+              "delete_alert": "আপনি কি এই অংশগ্রহণকারীকে সরানোর বিষয়ে নিশ্চিত? অংশগ্রহণকারীর সমস্ত বিবরণ মুছে ফেলা হবে।"
             }
       },
       "api_manager": {
