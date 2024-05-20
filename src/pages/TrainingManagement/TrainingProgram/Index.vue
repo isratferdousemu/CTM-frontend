@@ -820,9 +820,9 @@ export default {
             </v-col>
         </v-row>
         <v-dialog v-model="deleteDialog" width="350">
-            <v-card style="justify-content: center; text-align: center">
+            <v-card style="justify-content: center;">
                 <v-card-title class="font-weight-bold justify-center"
-                    style="background-color: #1C3C6A; color: white;font-size: 12px;">
+                    style="background-color: #1C3C6A; color: white;font-size: 17px;">
                     {{ $t('container.training_management.training_program.delete_header') }}
                 </v-card-title>
                 <v-divider></v-divider>
