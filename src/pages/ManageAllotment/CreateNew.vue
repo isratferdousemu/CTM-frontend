@@ -9,7 +9,9 @@
                 <v-card>
                   <v-row>
                     <v-col col="6">
-                      <v-card-title><h3>Allotment Create</h3></v-card-title>
+                      <v-card-title>
+                        <h3>Allotment Create</h3>
+                      </v-card-title>
                     </v-col>
                   </v-row>
 
@@ -21,61 +23,36 @@
                         <v-col cols="12" class="d-flex">
                           <v-row wrap>
                             <v-col cols="12" sm="6" lg="6">
-                              <v-select
-                                :items="allowances"
-                                item-text="name_en"
-                                item-value="id"
-                                label="Select Allowance Program"
-                                outlined
-                                @change="getAmount($event)"
-                              >
+                              <v-select :items="allowances" item-text="name_en" item-value="id"
+                                label="Select Allowance Program" outlined @change="getAmount($event)">
                               </v-select>
 
-                              <v-select
-                                :items="districts"
-                                item-text="name_en"
-                                item-value="id"
-                                label="Select District"
-                                outlined
-                                @change="getOffice($event)"
-                              >
+                              <v-select :items="districts" item-text="name_en" item-value="id" label="Select District"
+                                outlined @change="getOffice($event)">
                               </v-select>
 
-                              <v-select
-                                :items="financial"
-                                item-text="financial_year"
-                                item-value="id"
-                                label="Select Financial Year"
-                                outlined
-                              >
+                              <v-select :items="financial" item-text="financial_year" item-value="id"
+                                label="Select Financial Year" outlined>
                               </v-select>
                             </v-col>
 
                             <v-col cols="12" sm="6" lg="6">
                               <v-card elevation="2" shaped outlined>
-                                <v-card-title class="justify-center"
-                                  >Program</v-card-title
-                                >
-                                <hr
-                                  style="
+                                <v-card-title class="justify-center">Program</v-card-title>
+                                <hr style="
                                     width: 50%;
                                     margin-left: 25% !important;
                                     margin-right: 25% !important;
-                                  "
-                                />
+                                  " />
                                 <v-card-text>
                                   <h4>
                                     Amount of Monthly Allowance per Beneficiary
                                   </h4>
 
                                   <div v-show="isDisable === 0">
-                                    <div
-                                      v-show="allowanceAmounts.length > 0"
-                                      v-for="(
+                                    <div v-show="allowanceAmounts.length > 0" v-for="(
                                         amount, index
-                                      ) in allowanceAmounts"
-                                      :key="index"
-                                    >
+                                      ) in allowanceAmounts" :key="index">
                                       <div v-for="g in genders">
                                         <h5 v-if="amount.gender_id === g.id">
                                           {{ g.value_en }} : {{ amount.amount }}
@@ -85,13 +62,9 @@
                                   </div>
 
                                   <div v-show="isDisable === 1">
-                                    <div
-                                      v-show="allowanceAmounts.length > 0"
-                                      v-for="(
+                                    <div v-show="allowanceAmounts.length > 0" v-for="(
                                         amount, index
-                                      ) in allowanceAmounts"
-                                      :key="index"
-                                    >
+                                      ) in allowanceAmounts" :key="index">
                                       <div v-for="gt in genderTypes">
                                         <h5 v-if="amount.type_id === gt.id">
                                           {{ gt.value_en }} :
@@ -118,7 +91,9 @@
                 <v-card style="margin-bottom: 50px">
                   <v-row>
                     <v-col col="6">
-                      <v-card-title><h3>Allotment</h3></v-card-title>
+                      <v-card-title>
+                        <h3>Allotment</h3>
+                      </v-card-title>
                     </v-col>
                   </v-row>
 
@@ -128,42 +103,24 @@
                     <v-col cols="12" class="d-flex">
                       <v-row wrap>
                         <v-col cols="12" lg="12">
-                          <v-data-table
-                            :loading="loading"
-                            :headers="headers"
-                            :items="filters"
-                            dense
-                            class="elevation-1 transparent row-pointer"
-                            :page.sync="page.current"
-                            :items-per-page.sync="page.perPage"
-                            :total-items="page.total"
-                            @update:options="onOptionsUpdate"
-                          >
+                          <v-data-table :loading="loading" :headers="headers" :items="filters" dense
+                            class="elevation-1 transparent row-pointer" :page.sync="page.current"
+                            :items-per-page.sync="page.perPage" :total-items="page.total"
+                            @update:options="onOptionsUpdate">
                             <template v-slot:item.id="{ item, index }">
                               {{
                                 (page.current - 1) * page.perPage + index + 1
                               }}
                             </template>
-                            <template
-                              v-slot:item.division_or_district_cut_off="{
-                                item,
-                              }"
-                            >
+                            <template v-slot:item.division_or_district_cut_off="{
+                              item,
+                            }">
                               {{ item.name_en }}
                             </template>
                             <template v-slot:item.score="{ item }">
-                              <ValidationProvider
-                                v-slot="{ errors }"
-                                name="Weight/Score"
-                                vid="inputScore"
-                                rules="required"
-                              >
-                                <v-text-field
-                                  v-model="item.inputScore"
-                                  outlined
-                                  clearable
-                                  type="text"
-                                ></v-text-field>
+                              <ValidationProvider v-slot="{ errors }" name="Weight/Score" vid="inputScore"
+                                rules="required">
+                                <v-text-field v-model="item.inputScore" outlined clearable type="text"></v-text-field>
                               </ValidationProvider>
                               <!-- <ValidationProvider v-slot="{ errors }" name="Weight/Score" vid="inputScore" rules="required|decimal|numeric|min_value:-999999999|max_value:999999999">
         <v-text-field v-model="item.inputScore" outlined clearable type="text"></v-text-field>
@@ -273,22 +230,10 @@
 
               <v-col cols="12">
                 <v-row class="justify-end mb-5" style="margin-top: -50px">
-                  <v-btn
-                    flat
-                    color="primary"
-                    class="custom-btn mr-2"
-                    router
-                    to="/allotment"
-                    >Back
+                  <v-btn flat color="primary" class="custom-btn mr-2" router to="/allotment">Back
                   </v-btn>
 
-                  <v-btn
-                    flat
-                    color="success"
-                    type="submit"
-                    class="custom-btn mr-2"
-                    :disabled="invalid"
-                    >Submit
+                  <v-btn flat color="success" type="submit" class="custom-btn mr-2" :disabled="invalid">Submit
                   </v-btn>
                 </v-row>
               </v-col>
@@ -299,7 +244,7 @@
     </v-row>
   </div>
 </template>
-    
+
 <script>
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { mapActions, mapState } from "vuex";

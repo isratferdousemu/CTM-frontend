@@ -21,6 +21,9 @@ const mutations = {
   setSuccessId(state, id) {
     state.successId = id;
   },
+  setTrackingNo(state, id) {
+    state.trackingNo = id;
+  },
 };
 /* -------------------------------------------------------------------------- */
 /*                               Actions Define                               */

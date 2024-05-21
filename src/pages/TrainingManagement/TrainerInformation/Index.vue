@@ -57,15 +57,15 @@ export default {
         headers() {
             return [
                 { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, width: "5%" },
-                { text: this.$t('container.training_management.trainer_info.ID'), value: "id_no", align: "start", width: "15%" },
-                { text: this.$t('container.training_management.trainer_info.name'), value: "name", width: "10%" },
-                { text: this.$t('container.training_management.trainer_info.designation'), value: "designation",  width: "15%" },
+                { text: this.$t('container.training_management.trainer_info.ID'), value: "id_no", align: "start", width: "15%", sortable: false, },
+                { text: this.$t('container.training_management.trainer_info.name'), value: "name", width: "20%" },
+                { text: this.$t('container.training_management.trainer_info.designation'), value: "designation", width: "15%", sortable: false, },
             
                 { text: this.$t('container.training_management.trainer_info.email'), value: "email", width: "10%" },
-                { text: this.$t('container.list.status'), value: "status", width: "15%" },
+                { text: this.$t('container.list.status'), value: "status", width: "15%", sortable: false, },
 
               
-                { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false, width: "25%" },
+                { text: this.$t('container.list.action'), value: "actions", align: "start", sortable: false, width: "15%" },
             ];
         },
 
@@ -193,7 +193,7 @@ export default {
                 language: this.$i18n.locale,
                 data: CustomInfo,
                 header: HeaderInfo,
-                fileName: this.$t("container..training_management.trainer_info.list"),
+                fileName: this.$t("container.training_management.trainer_info.list"),
             };
             try {
                 const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
@@ -407,12 +407,11 @@ export default {
 
 <template>
     <div id="trainer-info">
-        <v-row class="mx-5 mt-5">
-            <v-col cols="12" lg="12" md="12" sm="12" xs="12">
-                <v-row wrap>
-
+        <v-row class="ml-sm-5 mt-0">
+            <v-col cols="12">
+                <v-row>
                     <v-col cols="12">
-                        <v-card>
+                        <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8 mt-5">
 
                             <v-card-title class="justify-center"
                                 style="background-color: #1C3B68; color: white;font-size: 17px;">
@@ -424,7 +423,7 @@ export default {
                             <!-- <v-divider></v-divider> -->
 
                             <v-card-text class="mt-10">
-                                <v-card-title class="mb-5 ml-5 ">
+                                <!-- <v-card-title class="mb-5 ml-5 ">
                                     <div class="d-flex justify-sm-end flex-wrap">
                                         <v-text-field @keyup.native="PageSetup" v-model="search"
                                             append-icon="mdi-magnify" :label="$t(
@@ -447,188 +446,220 @@ export default {
                                         $t('container.training_management.trainer_info.add') }}
                                     </v-btn>
 
-                                </v-card-title>
-
-                                <v-row class="ml-6 mr-2">
-                                    <v-col cols="12" lg="6" md="6">
-                                        {{ $t('container.list.total') }}:&nbsp;<span style=" font-weight: bold;">
-                                            {{ language === 'bn' ? $helpers.englishToBangla(
-                                            this.total) : this.total }}
-                                        </span>
-
-                                    </v-col>
-                                    <v-col cols="12" lg="6" md="6" class="text-right">
-                                        <v-btn elevation="2" class="btn white--text " flat color="red darken-4"
-                                            @click="GeneratePDF()">
-                                            <v-icon class="pl-1"> mdi-tray-arrow-down </v-icon> {{
-                                            $t("container.list.PDF") }}
-                                        </v-btn>
-
-                                        <v-btn elevation="2" class="btn white--text ml-2" flat color="teal darken-2"
-                                            @click="GenerateExcel()">
-                                            <v-icon class="pl-1"> mdi-tray-arrow-down </v-icon> {{
-                                            $t("container.list.excel") }}
-                                        </v-btn>
+                                </v-card-title> -->
+                                <v-row class="mx-5 mt-10">
+                                    <v-col cols="12" md="4">
+                                        <v-text-field @keyup.native="PageSetup" v-model="search"
+                                            append-icon="mdi-magnify" :label="$t(
+                                    'container.list.search_circular'
+                                )" hide-details class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal" flat outlined
+                                            dense></v-text-field>
 
                                     </v-col>
 
+
+
+
+                                    <v-col class="text-right">
+
+                                        <v-btn flat color="primary" router
+                                            to="/training-management/trainer-information/create"
+                                            v-can="'trainerCircular-create'">
+                                            <v-icon small>mdi-plus</v-icon>
+                                            {{
+                                            $t('container.training_management.trainer_info.add') }}
+                                        </v-btn>
+                                    </v-col>
 
 
 
 
                                 </v-row>
 
-                                <v-data-table :loading="loading" item-key="id" :headers="headers" :items="trainers"
-                                    :items-per-page="pagination.perPage" hide-default-footer
-                                    class="elevation-0 transparent row-pointer mt-5 mx-5">
-                                    <template v-slot:item.sl="{ item, index }">
+                                <template>
+                                    <v-row justify="space-between" align="center" class="mx-4">
+                                        <!-- Checkbox on the left -->
+                                        <v-col sm="6" lg="6" md="6" cols="12">
+                                            {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">
+                                                {{ language === 'bn' ? $helpers.englishToBangla(
+                                                this.total) : this.total }}
+                                            </span>
+                                        </v-col>
 
-                                        {{ language === 'bn' ? $helpers.englishToBangla(
-                                        (pagination.current - 1) * pagination.perPage +
-                                        index +
-                                        1) : (pagination.current - 1) * pagination.perPage +
-                                        index +
-                                        1 }}
+                                        <!-- Dropdown on the right -->
+                                        <v-col sm="6" lg="6" md="6" cols="12" class="text-right">
+                                            <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4"
+                                                @click="GeneratePDF()">
+                                                <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{
+                                                $t("container.list.PDF") }}
+                                            </v-btn>
+                                            <v-btn elevation="2" class="btn mr-2 white--text" color="teal darken-2"
+                                                @click="GenerateExcel()">
+                                                <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                                                {{ $t("container.list.excel") }}
+                                            </v-btn>
+                                        </v-col>
+                                    </v-row>
+                                </template>
+                                <v-row class="ma-0  white round-border d-flex justify-space-between align-center"
+                                    justify="center" justify-lg="space-between">
+                                    <v-col cols="12">
+
+                                        <v-data-table :loading="loading" item-key="id" :headers="headers"
+                                            :items="trainers" :items-per-page="pagination.perPage" hide-default-footer
+                                            class="elevation-0 transparent row-pointer mt-5 mx-5">
+                                            <template v-slot:item.sl="{ item, index }">
+
+                                                {{ language === 'bn' ? $helpers.englishToBangla(
+                                                (pagination.current - 1) * pagination.perPage +
+                                                index +
+                                                1) : (pagination.current - 1) * pagination.perPage +
+                                                index +
+                                                1 }}
 
 
-                                    </template>
-                                    <template v-slot:[`item.id_no`]="{ item }">
-                                        <span>
-                                            {{ language == 'bn' ?
-                                            $helpers.englishToBangla(item.id): item.id }}
-                                        </span>
-
-                                    </template>
-
-
-
-
-                                    <template v-slot:item.api_list_custom="{ item }">
-                                        <div>
-                                            <v-chip label color="#FACD91" v-for="(name, index) in item.api_list"
-                                                class="ma-1" :key="index">{{ name.name
-                                                }}</v-chip>
-                                        </div>
-                                    </template>
-
-                                    <template v-slot:item.api_key_custom="{ item }">
-                                        <v-row align="center">
-                                            <span>
-                                                <span v-if="!item.showApiKey">
-                                                    <span v-for="char in item.api_key" :key="char">*</span>
+                                            </template>
+                                            <template v-slot:[`item.id_no`]="{ item }">
+                                                <span>
+                                                    {{ language == 'bn' ?
+                                                    $helpers.englishToBangla(item.id): item.id }}
                                                 </span>
-                                                <span v-else>{{ item.api_key }}</span>
-                                                <v-icon @click="toggleApiKeyVisibility(item)">
-                                                    {{ item.showApiKey ? 'mdi-eye-off' : 'mdi-eye' }}
-                                                </v-icon>
-                                            </span>
-                                        </v-row>
 
-                                    </template>
-                                    <template v-slot:[`item.status`]="{ item }">
-                                        <span v-if="item.status == 0">
-                                            {{ language == 'bn' ?
-                                            'নিষ্ক্রিয়' : 'Inactive' }}
-                                        </span>
-                                        <span v-else>
-                                            {{ language == 'bn' ?
-                                            'সক্রিয়' : 'Active' }}
-                                        </span>
-
-
-                                        <span>
-                                            <v-switch :input-value="item.status == 1 ? true : false"
-                                                @change="deviceActivate( item.id)" hide-details
-                                                color="orange darken-3"></v-switch>
-                                        </span>
-                                    </template>
-                                    <template v-slot:[`item.designation`]="{ item }">
-                                        <span>
-                                            {{ language == 'bn' ?
-                                            item?.designation?.value_bn : item?.designation?.value_en }}
-                                        </span>
-
-                                    </template>
-                                    <template v-slot:[`item.mobile`]="{ item }">
-                                        <span>
-                                            {{ language == 'bn' ?
-                                            $helpers.englishToBangla(item.mobile_no): item.mobile_no }}
-                                        </span>
-
-                                    </template>
-
-
-
-
-
-                                    <!-- Action Button -->
-                                    <template v-slot:item.actions="{ item }">
-                                        <v-tooltip top>
-                                            <template v-slot:activator="{ on }">
-                                                <v-btn v-can="'trainerInfo-view'" fab x-small v-on="on" color="#AFB42B"
-                                                    elevation="0" router class=" white--text"
-                                                    :to="`/training-management/trainer-information/view/${item.id}`">
-                                                    <v-icon> mdi-eye </v-icon>
-                                                </v-btn>
                                             </template>
-                                            <span>
-                                                {{ $t("container.list.view") }}
-                                            </span>
-                                        </v-tooltip>
 
-                                        <v-tooltip top>
-                                            <template v-slot:activator="{ on }">
-                                                <v-btn v-can="'trainerInfo-edit'" class="ml-3" fab x-small v-on=" on"
-                                                    color="success" elevation="0" router
-                                                    :to="`/training-management/trainer-information/edit/${item.id}`">
-                                                    <v-icon> mdi-account-edit-outline </v-icon>
-                                                </v-btn>
+
+
+
+                                            <template v-slot:item.api_list_custom="{ item }">
+                                                <div>
+                                                    <v-chip label color="#FACD91" v-for="(name, index) in item.api_list"
+                                                        class="ma-1" :key="index">{{ name.name
+                                                        }}</v-chip>
+                                                </div>
                                             </template>
-                                            <span>
-                                                {{ $t("container.list.edit") }}
-                                            </span>
-                                        </v-tooltip>
 
+                                            <template v-slot:item.api_key_custom="{ item }">
+                                                <v-row align="center">
+                                                    <span>
+                                                        <span v-if="!item.showApiKey">
+                                                            <span v-for="char in item.api_key" :key="char">*</span>
+                                                        </span>
+                                                        <span v-else>{{ item.api_key }}</span>
+                                                        <v-icon @click="toggleApiKeyVisibility(item)">
+                                                            {{ item.showApiKey ? 'mdi-eye-off' : 'mdi-eye' }}
+                                                        </v-icon>
+                                                    </span>
+                                                </v-row>
 
-                                        <v-tooltip top>
-                                            <template v-slot:activator="{ on }">
-                                                <v-btn v-can="'trainerInfo-delete'" fab x-small v-on="on" color="grey"
-                                                    class="ml-3 white--text" elevation="0"
-                                                    @click="deleteAlert(item.id)">
-                                                    <v-icon> mdi-delete </v-icon>
-                                                </v-btn>
                                             </template>
-                                            <span> {{ $t("container.list.delete") }}</span>
-                                        </v-tooltip>
-
-                                    </template>
-
-                                    <!-- End Action Button -->
-
-                                    <template v-slot:footer="item">
-
-                                        <row class="text-right pt-2 v-data-footer justify-end pb-2">
-
+                                            <template v-slot:[`item.status`]="{ item }">
+                                                <span v-if="item.status == 0">
+                                                    {{ language == 'bn' ?
+                                                    'নিষ্ক্রিয়' : 'Inactive' }}
+                                                </span>
+                                                <span v-else>
+                                                    {{ language == 'bn' ?
+                                                    'সক্রিয়' : 'Active' }}
+                                                </span>
 
 
-                                            <v-col cols="12" lg="4" md="4" sm="12" xs="12" class="text-right">
-                                                <v-pagination circle primary v-model="pagination.current"
-                                                    :length="pagination.total" @input="onPageChange" :total-visible="11"
-                                                    class="custom-pagination-item"></v-pagination></v-col>
-                                            <v-col cols="12" lg="4" md="4" sm="12" xs="12" class="text-right">
-                                                <v-select style="
+                                                <span>
+                                                    <v-switch :input-value="item.status == 1 ? true : false"
+                                                        @change="deviceActivate( item.id)" hide-details
+                                                        color="orange darken-3"></v-switch>
+                                                </span>
+                                            </template>
+                                            <template v-slot:[`item.designation`]="{ item }">
+                                                <span>
+                                                    {{ language == 'bn' ?
+                                                    item?.designation?.value_bn : item?.designation?.value_en }}
+                                                </span>
+
+                                            </template>
+                                            <template v-slot:[`item.mobile`]="{ item }">
+                                                <span>
+                                                    {{ language == 'bn' ?
+                                                    $helpers.englishToBangla(item.mobile_no): item.mobile_no }}
+                                                </span>
+
+                                            </template>
+
+
+
+
+
+                                            <!-- Action Button -->
+                                            <template v-slot:item.actions="{ item }">
+                                                <v-tooltip top>
+                                                    <template v-slot:activator="{ on }">
+                                                        <v-btn v-can="'trainerInfo-view'" fab x-small v-on="on"
+                                                            color="#AFB42B" elevation="0" router class="white--text mt-1 
+                                                     mr-2"
+                                                            :to="`/training-management/trainer-information/view/${item.id}`">
+                                                            <v-icon> mdi-eye </v-icon>
+                                                        </v-btn>
+                                                    </template>
+                                                    <span>
+                                                        {{ $t("container.list.view") }}
+                                                    </span>
+                                                </v-tooltip>
+
+                                                <v-tooltip top>
+                                                    <template v-slot:activator="{ on }">
+                                                        <v-btn v-can="'trainerInfo-edit'" class="mr-2  mt-1" fab x-small
+                                                            v-on=" on" color="success" elevation="0" router
+                                                            :to="`/training-management/trainer-information/edit/${item.id}`">
+                                                            <v-icon> mdi-account-edit-outline </v-icon>
+                                                        </v-btn>
+                                                    </template>
+                                                    <span>
+                                                        {{ $t("container.list.edit") }}
+                                                    </span>
+                                                </v-tooltip>
+
+
+                                                <v-tooltip top>
+                                                    <template v-slot:activator="{ on }">
+                                                        <v-btn v-can="'trainerInfo-delete'" fab x-small v-on="on"
+                                                            color="grey" class="mr-2 white--text  mt-1" elevation="0"
+                                                            @click="deleteAlert(item.id)">
+                                                            <v-icon> mdi-delete </v-icon>
+                                                        </v-btn>
+                                                    </template>
+                                                    <span> {{ $t("container.list.delete") }}</span>
+                                                </v-tooltip>
+
+                                            </template>
+
+                                            <!-- End Action Button -->
+
+                                            <template v-slot:footer="item">
+
+                                                <row class="text-right pt-2 v-data-footer justify-end pb-2">
+
+
+
+                                                    <v-col cols="12" lg="4" md="4" sm="12" xs="12" class="text-right">
+                                                        <v-pagination circle primary v-model="pagination.current"
+                                                            :length="pagination.total" @input="onPageChange"
+                                                            :total-visible="11"
+                                                            class="custom-pagination-item"></v-pagination></v-col>
+                                                    <v-col cols="12" lg="4" md="4" sm="12" xs="12" class="text-right">
+                                                        <v-select style="
                      
                             
                                     
                                                 " :items="items" hide-details dense outlined @change="onPageChange"
-                                                    v-model="pagination.perPage"></v-select>
+                                                            v-model="pagination.perPage"></v-select>
 
 
-                                            </v-col>
-                                        </row>
+                                                    </v-col>
+                                                </row>
 
-                                    </template>
-                                </v-data-table>
+                                            </template>
+                                        </v-data-table>
+                                    </v-col>
+                                </v-row>
 
                             </v-card-text>
                         </v-card>
@@ -641,8 +672,9 @@ export default {
                               transform: translate(0px, 0px); -->
             <!-- delete modal  -->
             <v-dialog v-model="deleteDialog" width="350">
-                <v-card style="justify-content: center; text-align: center">
-                    <v-card-title class="font-weight-bold justify-center">
+                <v-card style="justify-content: center; ">
+                    <v-card-title class="font-weight-bold justify-center"
+                        style="background-color: #1C3B68; color: white;font-size: 17px;">
                         {{ $t('container.training_management.trainer_info.delete_header') }}
                     </v-card-title>
                     <v-divider></v-divider>

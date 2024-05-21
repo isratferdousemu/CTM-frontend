@@ -10,14 +10,36 @@ const PayrollManagementRoutes = [
   },
 
   {
-    path: "/payroll-management/payroll-settings",
-    name: "payroll-settings",
-    // meta: {
-    //   requiresAuth: true,
-    //   permission: "payroll-settings-view",
-    // },
+    path: "/payroll-management/payroll-setting",
+    name: "payroll-setting",
+    meta: {
+      requiresAuth: true,
+      permission: "payroll-setting-view",
+    },
     component: () => import("../pages/PayrollManagement/PayrollSetting/index.vue")
   },
+
+  {
+    path: "/payroll-management/payroll-verification-setting",
+    name: "payroll-setting",
+    meta: {
+      requiresAuth: true,
+      permission: "payroll-setting-view",
+    },
+    component: () => import("../pages/PayrollManagement/PayrollSetting/PayrollVerificationSetting.vue")
+  },
+
+  //payment processor
+  // {
+  //   path: "/payroll-management/payment-processor",
+  //   name: "payroll-setting",
+  //   // meta: {
+  //   //   requiresAuth: true,
+  //   //   permission: "payroll-setting-view",
+  //   // },
+  //   component: () => import("../pages/PayrollManagement/PaymentProcessor/Index.vue")
+  // },
+
   // {
   //   path: "/payroll-management/application-selection",
   //   name: "payment-payment",

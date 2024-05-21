@@ -1,6 +1,6 @@
 <template>
   <div id="application">
-    <v-app-bar color="#405c61" fixed height="100%" class="px-4" dense dark>
+    <v-app-bar color="rgb(28, 59, 104)" fixed height="100%" class="px-4" dense dark>
       <v-row align="center" no-gutters>
         <v-img class="p-3 mr-4" max-height="100%" max-width="60px" position="center center"
           src="/assets/images/logo.png"></v-img>
@@ -39,7 +39,7 @@
     </v-app-bar>
     <br />
     <v-row justify="center" class="ma-0 pa-0 mt-16">
-      <v-col lg="8" md="6" cols="12" >
+      <v-col lg="9" md="6" cols="12" >
         <ValidationObserver ref="form" v-slot="{ invalid }">
           <form @submit.prevent="submitGrievanceCheck()">
             <v-card class="pa-1 px-3 mb-1">
@@ -47,7 +47,7 @@
                 <v-expansion-panels v-model="panel" multiple>
                   <!-------------complaint entry--------------->
                   <v-expansion-panel class="mb-4">
-                    <v-expansion-panel-header color="primary">
+                    <v-expansion-panel-header color="rgb(28, 59, 104)">
                       <template v-slot:actions>
                         <v-icon color="white">
                           $expand
@@ -70,7 +70,7 @@
                               { text: language === 'bn' ? 'না' : 'No', value: 2 },]" item-text="text"
                               :error="errors[0] ? true : false"
                               :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে নির্বাচন করুন' : 'Please Select Yes or No.') : ''"
-                              @change="handleSelectChange">
+                              >
                             </v-select>
                           </ValidationProvider>
                         </v-col>
@@ -181,7 +181,7 @@
                   <!-------------complaint entry end--------------->
                   <!-------------complaint_info--------------->
                   <v-expansion-panel class="mb-4">
-                    <v-expansion-panel-header color="primary">
+                    <v-expansion-panel-header color="rgb(28, 59, 104)">
                       <template v-slot:actions>
                         <v-icon color="white">
                           $expand
@@ -268,7 +268,7 @@
 
                   <!-- complaint complaint_details --------------->
                   <v-expansion-panel class="mb-4">
-                    <v-expansion-panel-header color="primary">
+                    <v-expansion-panel-header color="rgb(28, 59, 104)">
                       <template v-slot:actions>
                         <v-icon color="white">
                           $expand
@@ -335,7 +335,7 @@
                   <!-- complaint complaint_details end ----------->
                   <!-- complaint complaint_area ------ ----------->
                   <v-expansion-panel class="mb-4">
-                    <v-expansion-panel-header color="primary">
+                    <v-expansion-panel-header color="rgb(28, 59, 104)">
                       <template v-slot:actions>
                         <v-icon color="white">
                           $expand
@@ -598,7 +598,7 @@
               </v-card-text>
 
               <v-card-actions class="d-flex justify-center">
-                <v-btn text @click="confirmDialog = false" outlined class="custom-btn-width">
+                <v-btn  @click="confirmDialog = false" outlined class="custom-btn-width">
                   {{ $t("container.list.cancel") }}
                 </v-btn>
                 <v-btn @click="submitGrievance()" flat color="primary" :loading="loading" type="submit"
@@ -799,13 +799,11 @@ export default {
       showAlert: false,
 
      fileTypeRule: (value) => {
-      if (!value) return 'File is required.';
       const allowedFormats = ['.pdf', '.xls', '.xlsx', '.jpg', '.jpeg', '.png'];
       const extension = value.name.slice(((value.name.lastIndexOf(".") - 1) >>> 0) + 2);
       return allowedFormats.includes(`.${extension}`) || 'Allowed file types are PDF, Excel, JPG, JPEG, and PNG.';
     },
     fileSizeRule: (value) => {
-      if (!value) return 'File is required.';
       const maxSizeMB = 5; // Maximum file size in MB
       const maxSizeBytes = maxSizeMB * 1024 * 1024; // Convert MB to bytes
       return value.size <= maxSizeBytes || `File size should be less than ${maxSizeMB} MB.`;
@@ -1128,8 +1126,10 @@ export default {
         this.$refs.form.reset();
         this.loading = false;
         this.resetForm();
-        // console.log(res.data.data, "data")
-        //  this.$router.push("/grievance/entry");
+
+        this.$store.commit('ApplicationSelection/setSuccessId', res.data.data.id);
+        this.$store.commit('ApplicationSelection/setTrackingNo', res.data.data.tracking_no);
+        this.$router.push("/submitted-grievance");
 
       })
         .catch((err) => {

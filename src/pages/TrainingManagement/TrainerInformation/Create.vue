@@ -23,7 +23,7 @@ extend('bangla', {
 extend('name', {
     validate: value => {
         // Regular expression for IP address validation
-        const nameRegex = /^[a-zA-Z\s']+$/;
+        const nameRegex = /^[a-zA-Z\s'().]+$/;
         return nameRegex.test(value);
     },
     message: 'Please enter a valid  Name'
@@ -276,7 +276,7 @@ export default {
 
                                         <v-row class="mx-10 no-gap-row">
                                             <v-col cols="12" sm="6" lg="6">
-                                                <ValidationProvider name="Full Name" vid="Name" rules="required"
+                                                <ValidationProvider name="Full Name" vid="Name" rules="required||name"
                                                     v-slot="{ errors }">
                                                     <v-text-field dense type="text" v-model="data.name" :label="$t('container.training_management.trainer_info.name')
                                         " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য নাম প্রদান করুন '
