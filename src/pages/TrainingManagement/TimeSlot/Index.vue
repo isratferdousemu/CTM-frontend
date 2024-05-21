@@ -731,6 +731,7 @@ export default {
           params: queryParams,
         })
         .then((result) => {
+          console.log("🚀 ~ .then ~ result:", result)
           this.total = result?.data?.data?.total;
           console.log(result,"result")
           this.divisions = result.data.data.data;

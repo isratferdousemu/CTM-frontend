@@ -8,13 +8,13 @@
             </v-card-title>
           <v-card-text>
             <v-radio-group v-model="verificationType" row>
-              <v-radio :label="language === 'bn' ? 'পেরোল অনুমোদনের মাধ্যমে যাচাই প্রক্রিয়া' : 'Payroll Approval Through Verification Process'" value="verification_process"></v-radio>
-              <v-radio :label="language === 'bn' ? 'পেরোল অনুমোদনের মাধ্যমে সরাসরি অনুমোদন প্রক্রিয়া' : 'Payroll Approval Through Direct Approval Process'" value="direct_approval"></v-radio>
+              <v-radio :label="language === 'bn' ? 'পেরোল যাচাই প্রক্রিয়ার মাধ্যমে অনুমোদন' : 'Payroll Approval Through Verification Process'" value="verification_process"></v-radio>
+              <v-radio :label="language === 'bn' ? 'পেরোল সরাসরি অনুমোদন' : 'Payroll Approval Through Direct Approval Process'" value="direct_approval"></v-radio>
             </v-radio-group>
           </v-card-text>
           <v-card-actions class="justify-end">
             <v-btn color="primary" @click="submit">
-            {{ language === 'bn' ? 'জমা দিন' : 'Submit' }}
+            {{ language === 'bn' ? 'সাবমিট করুন' : 'Submit' }}
             </v-btn>
           </v-card-actions>
         </v-card>

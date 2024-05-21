@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="12">
         <h2 class="my-4">
-           {{ language === "bn" ? "অর্থ বছর" : "Financial year" }}: {{ financial_year?.financial_year }}
+           {{ language === "bn" ? "অর্থ বছর" : "Financial year" }}: {{ displayFinancialYear }}
         </h2>
       </v-col>
     </v-row>
@@ -43,7 +43,7 @@
     <v-row>
       <v-col cols="12" class="text-right">
         <v-btn color="primary" @click="submitForm">
-          {{ language === "bn" ? "জমা দিন" : "Submit" }}
+          {{ language === "bn" ? "সাবমিট করুন" : "Submit" }}
         </v-btn>
       </v-col>
     </v-row>
@@ -55,7 +55,7 @@ export default {
   data() {
     return {
       data: null,
-      financial_year: null,
+      financial_year: '',
       allowances: [],
       installments: [],
       selectedData: [],
@@ -69,6 +69,12 @@ export default {
       get() {
         return this.$store.getters.getAppLanguage;
       },
+    },
+    displayFinancialYear() {
+      if (this.language === 'bn' && this.financial_year) {
+        return this.convertToBengaliNumerals(this.financial_year.financial_year);
+      }
+      return this.financial_year.financial_year;
     },
   },
   methods: {
@@ -226,6 +232,12 @@ export default {
       } catch (e) {
         console.log(e);
       }
+    },
+
+    convertToBengaliNumerals(number) {
+      if (!number) return '';
+      const bengaliNumerals = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+      return number.replace(/[0-9]/g, digit => bengaliNumerals[digit]);
     },
 
     async getAllAllowance() {

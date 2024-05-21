@@ -1018,6 +1018,7 @@
       "bank_name": "Bank Name",
       "branch_name": "Branch Name",
       "routing_number": "Routing Number",
+      "charge": "Charge Percentage",
       "delete": "Delete Payment Processor ",
       "delete_alert": "Are you sure to delete this Payment Processor?",
       "location_type": "Location Type",

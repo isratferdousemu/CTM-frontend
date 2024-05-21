@@ -24,7 +24,7 @@
                 >
                   <div class="d-flex justify-sm-end flex-wrap">
                     <v-text-field
-                      @keyup.native="GetPaymentProcessor"
+                      @keyup.native="getPaymentProcessor"
                       outlined
                       dense
                       v-model="search"
@@ -51,7 +51,7 @@
                       :loading="loading"
                       item-key="id"
                       :headers="headers"
-                      :items="divisions"
+                      :items="values"
                       :items-per-page="pagination.perPage"
                       hide-default-footer
                       class="elevation-0 transparent row-pointer"
@@ -63,11 +63,8 @@
                           1
                         }}
                       </template>
-                      <template v-slot:item.name_en="{ item }">
-                        {{ item.name_en }}
-                      </template>
-                      <template v-slot:item.name_bn="{ item }">
-                        {{ item.name_bn }}
+                      <template v-slot:item.charge="{ item }">
+                        {{ item.charge }}%
                       </template>
 
                       <!-- Action Button -->
@@ -172,8 +169,8 @@
                         clearable
                         v-model="data.processor_type"
                         :items="processor_types"
-                        item-text="name"
-                        item-value="id"
+                        :item-text="language === 'bn' ? 'name_bn' : 'name_en'"
+                        item-value="value"
                         :label="
                           $t('container.payroll_management.processor_type')
                         "
@@ -187,7 +184,7 @@
                     lg="6"
                     md="6"
                     cols="12"
-                    v-if="data.processor_type === 1"
+                    v-if="data.processor_type === 'bank'"
                   >
                     <ValidationProvider
                       v-slot="{ errors }"
@@ -198,9 +195,9 @@
                       <v-autocomplete
                         outlined
                         clearable
-                        v-model="data.bank_name"
-                        :items="bank_names"
-                        item-text="name"
+                        v-model="data.bank_id"
+                        :items="banks"
+                        :item-text="language === 'bn' ? 'name_bn' : 'name_en'"
                         item-value="id"
                         :label="$t('container.payroll_management.bank_name')"
                         :error="errors[0] ? true : false"
@@ -214,7 +211,7 @@
                     lg="6"
                     md="6"
                     cols="12"
-                    v-if="data.processor_type === 1"
+                    v-if="data.processor_type === 'bank'"
                   >
                     <ValidationProvider
                       v-slot="{ errors }"
@@ -239,7 +236,7 @@
                     lg="6"
                     md="6"
                     cols="12"
-                    v-if="data.processor_type === 1"
+                    v-if="data.processor_type === 'bank'"
                   >
                     <ValidationProvider
                       v-slot="{ errors }"
@@ -251,7 +248,9 @@
                         outlined
                         type="number"
                         v-model="data.routing_number"
-                        :label="$t('container.payroll_management.routing_number')"
+                        :label="
+                          $t('container.payroll_management.routing_number')
+                        "
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
@@ -329,6 +328,26 @@
                         type="text"
                         v-model="data.focal_email"
                         :label="$t('container.payroll_management.email')"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                        >></v-text-field
+                      >
+                    </ValidationProvider>
+                  </v-col>
+
+                  <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                      v-slot="{ errors }"
+                      name="Charge"
+                      vid="charge"
+                      rules="required"
+                    >
+                      <v-text-field
+                        outlined
+                        type="number"
+                        v-model="data.charge"
+                        :label="$t('container.payroll_management.charge')"
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="errors[0]"
@@ -423,7 +442,11 @@
                     lg="6"
                     md="6"
                     cols="12"
-                    v-if="data.location_type !=null && data.location_type === 2 && data.district != null"
+                    v-if="
+                      data.location_type != null &&
+                      data.location_type === 2 &&
+                      data.district != null
+                    "
                   >
                     <ValidationProvider
                       v-slot="{ errors }"
@@ -455,7 +478,11 @@
                     lg="6"
                     md="6"
                     cols="12"
-                    v-if="data.location_type !=null && data.location_type==2 && data.upazila != null"
+                    v-if="
+                      data.location_type != null &&
+                      data.location_type == 2 &&
+                      data.upazila != null
+                    "
                   >
                     <ValidationProvider
                       v-slot="{ errors }"
@@ -485,7 +512,11 @@
                     lg="6"
                     md="6"
                     cols="12"
-                    v-if="data.location_type !=null && data.location_type === 3 && data.district != null"
+                    v-if="
+                      data.location_type != null &&
+                      data.location_type === 3 &&
+                      data.district != null
+                    "
                   >
                     <ValidationProvider
                       v-slot="{ errors }"
@@ -513,7 +544,11 @@
                     lg="6"
                     md="6"
                     cols="12"
-                    v-if="data.location_type !=null && data.location_type == 3 && data.city_corporation != null"
+                    v-if="
+                      data.location_type != null &&
+                      data.location_type == 3 &&
+                      data.city_corporation != null
+                    "
                   >
                     <ValidationProvider
                       v-slot="{ errors }"
@@ -857,16 +892,16 @@
 <script>
 import { mapState } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
-import { required,email } from "vee-validate/dist/rules";
+import { required, email } from "vee-validate/dist/rules";
 
 extend("required", required);
 
-extend('email', {
+extend("email", {
   ...email,
-  message: 'Please enter a valid email address',
+  message: "Please enter a valid email address",
 });
 
-extend('bangladeshiPhone', {
+extend("bangladeshiPhone", {
   validate: (value) => {
     if (!value && value !== 0) {
       return false;
@@ -909,13 +944,14 @@ export default {
     return {
       data: {
         processor_type: null,
-        bank_name: null,
+        bank_id: null,
         branch_name: null,
         routing_number: null,
-        name_en: '',
-        name_bn: '',
-        focal_phone: '',
-        focal_email: '',
+        name_en: "",
+        name_bn: "",
+        focal_phone: "",
+        focal_email: "",
+        charge: null,
         division: null,
         district: null,
         upazila: null,
@@ -924,6 +960,7 @@ export default {
         city_corporation: null,
         district_pourashava: null,
         location_type: null,
+        office: null,
       },
       dialogAdd: false,
       deleteDialog: false,
@@ -933,6 +970,7 @@ export default {
       search: "",
       delete_id: "",
 
+      values: [],
       divisions: [],
       districts: [],
       upazilas: [],
@@ -940,25 +978,18 @@ export default {
       thanas: [],
       city_corporations: [],
       district_pourashavas: [],
+      banks: [],
 
       processor_types: [
-        { id: 1, name: "Bank" },
-        { id: 2, name: "MFS" },
+        { id: 1, name_en: "Bank", name_bn: "ব্যাংক", value: "bank" },
+        { id: 2, name_en: "MFS", name_bn: "এমএফএস", value: "mfs" },
+        {
+          id: 3,
+          name_en: "Agent Banking",
+          name_bn: "এজেন্ট ব্যাংকিং",
+          value: "agent_banking",
+        },
       ],
-
-      bank_names: [
-        { id: 1, name: "Bank A" },
-        { id: 2, name: "Bank B" },
-        // Add more banks as needed
-      ],
-      bankBranches: [
-        { id: 1, name: "Branch 1", bank_id: 1 },
-        { id: 2, name: "Branch 2", bank_id: 1 },
-        { id: 3, name: "Branch 3", bank_id: 2 },
-        { id: 4, name: "Branch 4", bank_id: 2 },
-        // Add more branches as needed
-      ],
-      filteredBankBranches: [],
 
       location_types: [
         {
@@ -1001,25 +1032,32 @@ export default {
         },
         {
           text: this.$t("container.payroll_management.processor_type"),
-          value: "code",
+          value: "processor_type",
         },
         {
           text: this.$t("container.list.name_en"),
           value: "name_en",
         },
         {
-          text: this.$t("container.list.name_en"),
+          text: this.$t("container.list.name_bn"),
           value: "name_bn",
         },
         {
           text: this.$t("container.payroll_management.coverage_area"),
-          value: "code",
+          value: "processor_area.district.name_en",
         },
         {
           text: this.$t("container.payroll_management.focal_phone"),
-          value: "code",
+          value: "focal_phone_no",
         },
-        { text: this.$t("container.payroll_management.email"), value: "code" },
+        {
+          text: this.$t("container.payroll_management.email"),
+          value: "focal_email_address",
+        },
+        {
+          text: this.$t("container.payroll_management.charge"),
+          value: "charge",
+        },
         {
           text: this.$t("container.list.action"),
           value: "actions",
@@ -1056,15 +1094,18 @@ export default {
     },
 
     async submitPaymentProcessor() {
-      console.log("🚀 ~ submitPaymentProcessor ~ this.data:", this.data)
       this.loading = true;
       try {
-        const response = await this.$axios.post('admin/payroll/payment-processor', this.data, {
-          headers: {
-            Authorization: `Bearer ${this.$store.state.token}`,
-            'Content-Type': 'application/json',
-          },
-        });
+        const response = await this.$axios.post(
+          "admin/payroll/payment-processor",
+          this.data,
+          {
+            headers: {
+              Authorization: `Bearer ${this.$store.state.token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (response.status === 200) {
           this.$toast.success("Form submitted successfully");
@@ -1078,6 +1119,39 @@ export default {
         this.$toast.error("An error occurred while submitting the form");
       } finally {
         this.loading = false;
+      }
+    },
+
+    async getPaymentProcessor() {
+      const queryParams = {
+        search: this.search,
+        perPage: this.pagination.perPage,
+        page: this.pagination.current,
+        sortBy: this.sortBy,
+        sortDesc: this.sortDesc,
+      };
+      try {
+        const response = await this.$axios.get(
+          "/admin/payroll/payment-processor",
+          {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+            params: queryParams,
+          }
+        );
+        if (response.status == "200") {
+          this.values = response.data.data.data;
+          this.pagination.current = response?.data?.data?.current_page;
+          this.pagination.total = response?.data?.data?.last_page;
+          this.pagination.grand_total = response?.data?.data?.total;
+          this.loading = false;
+        } else {
+          this.$toast.error("Something went wrong");
+        }
+      } catch (error) {
+        console.error("Error fetching divisions:", error);
       }
     },
 
@@ -1192,23 +1266,25 @@ export default {
       }
     },
 
-    // async getUnions(upazilaId) {
-    //   try {
-    //     const response = await this.$axios.get(`get-unions/${upazilaId}`, {
-    //       headers: {
-    //         Authorization: "Bearer " + this.$store.state.token,
-    //         "Content-Type": "multipart/form-data",
-    //       },
-    //     });
-    //     if (response.status == "200") {
-    //       this.upazilas = response.data.data;
-    //     } else {
-    //       this.$toast.error("Something went wrong");
-    //     }
-    //   } catch (error) {
-    //     console.error("Error fetching divisions:", error);
-    //   }
-    // },
+    async getBanks() {
+      let response;
+      try {
+        response = await this.$axios.get(`admin/payroll/get-banks`, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        if (response.status == "200") {
+          this.banks = response.data;
+        } else {
+          this.$toast.error("Something went wrong");
+        }
+      } catch (error) {
+        console.error("Error fetching divisions:", error);
+      }
+    },
 
     editDialog(item) {
       this.dialogEdit = true;
@@ -1223,7 +1299,7 @@ export default {
 
     onPageChange($event) {
       // this.pagination.current = $event;
-      this.GetPaymentProcessor()();
+      this.getPaymentProcessor();
     },
 
     deleteAlert(id) {
@@ -1242,7 +1318,9 @@ export default {
   },
   created() {
     // this.GetPaymentProcessor()();
+    this.getPaymentProcessor();
     this.getDivisions();
+    this.getBanks();
   },
   beforeMount() {
     this.updateHeaderTitle();
