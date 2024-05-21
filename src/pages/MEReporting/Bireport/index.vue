@@ -14,12 +14,12 @@
             >
               <v-card-title style="text-align:center; background-color: #1C3B68; color: white;font-size: 17px;padding-top:1px !important;" class="justify-center" tag="div">
                 <h4 class="text-uppercase mt-3">
-                  {{ $t("BI Report") }}
+                  {{ $t("container.power_bi_report.index.title") }}
                 </h4>
               </v-card-title>
               <v-card-text>
 
-                <v-row justify="space-between" align="center" class="mx-5 mt-1">
+                <v-row justify="space-between" align="center" class="mt-1">
                   <!-- Checkbox on the left -->
                   <v-col lg="3" md="3" cols="12">
                     <v-text-field
@@ -42,7 +42,7 @@
                         @click="createDialog"
                         color="primary"
                         prepend-icon="mdi-account-multiple-plus"
-                        v-can="'biReport-create'"
+                        v-can="'bireport-create'"
                     >
                       {{ $t("container.list.add_new") }}
                     </v-btn>
@@ -57,22 +57,31 @@
                       sm="6"
                       md="4"
                       lg="3"
+                      v-can="'bireport-view'"
                       class="card-column"
                   >
                     <v-card class="card-item" @mouseenter="showIcons(index)" @mouseleave="hideIcons()">
+                      <router-link target="" :to="`/reports/bi-report/${item.id}`" style="text-decoration: none;">
                       <!-- Title -->
-                      <v-card-title>{{ item.name_en }}</v-card-title>
+
+                        <v-card-title class="card-title">
+                          <span v-html="truncateTitle(item)"></span>
+                        </v-card-title>
+
+<!--                      <v-card-title class="card-title">{{ $i18n.locale == 'en' ? item.name_en : item.name_bn }}</v-card-title>-->
 
                       <!-- Image -->
-                      <v-img :src="item.image" height="100px"></v-img>
-
+                        <div class="image-wrapper">
+                          <v-img class="card-image" :src="item.image != null ? item.image : '/assets/images/no_image_icon.png'"></v-img>
+                        </div>
+                      </router-link>
                       <!-- Actions (Edit & Delete Icons) -->
                       <v-card-actions class="icon-actions" v-show="showIconsIndex === index">
                         <!-- Edit Icon -->
-                        <v-icon @click="editDialog(item)">mdi-pencil</v-icon>
+                        <v-icon v-can="'bireport-edit'" @click="editDialog(item)">mdi-pencil</v-icon>
 
                         <!-- Delete Icon -->
-                        <v-icon @click="deleteAlert(item.id)">mdi-delete</v-icon>
+                        <v-icon v-can="'bireport-delete'" @click="deleteAlert(item.id)">mdi-delete</v-icon>
                       </v-card-actions>
                     </v-card>
                   </v-col>
@@ -87,8 +96,8 @@
       <!-- Bi Report add modal  -->
       <v-dialog v-model="dialogAdd" width="650">
         <v-card style="justify-content: center; text-align: center">
-          <v-card-title class="font-weight-bold justify-center">
-            {{ $t("Add Bi Report") }}
+          <v-card-title style="text-align:center; background-color: #1C3B68; color: white;font-size: 17px;padding-top:3px !important;" class="font-weight-bold justify-center">
+            {{ $t("container.power_bi_report.index.add") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
@@ -108,7 +117,7 @@
                       v-model="data.name_en"
                       :label="
                       $t(
-                        'Ttile English'
+                        'container.power_bi_report.index.title_en'
                       )
                     "
                       required
@@ -131,7 +140,7 @@
                       v-model="data.name_bn"
                       :label="
                       $t(
-                        'Title Bangla'
+                        'container.power_bi_report.index.title_bn'
                       )
                     "
                       required
@@ -142,23 +151,32 @@
                 </ValidationProvider>
                 </v-col>
                 </v-row>
-                <ValidationProvider
-                    v-slot="{ errors }"
-                    name="Embaded Code"
-                    vid="embaded_code"
-                    rules="required"
-                >
-                  <v-textarea
-                      v-model="data.embaded_code"
-                      color="teal"
-                      required
-                      outlined
-                      label="Embaded Code"
-                      :error="errors[0] ? true : false"
-                      :error-messages="errors[0]"
+                <div class="textarea-container">
+                  <div class="button-container">
+                    <v-btn small class="extra-small-button">
+                      <a href="https://app.powerbi.com/" target="_blank" style="text-decoration: none; color: white;">{{ $t(
+                          'container.power_bi_report.index.go_power_bi'
+                      )}} </a>
+                    </v-btn>
+                  </div>
+                  <ValidationProvider
+                      v-slot="{ errors }"
+                      name="Embaded Code"
+                      vid="embaded_code"
+                      rules="required"
                   >
-                  </v-textarea>
-                </ValidationProvider>
+                    <v-textarea
+                        v-model="data.embaded_code"
+                        color="teal"
+                        required
+                        outlined
+                        :label="$t('container.power_bi_report.index.embaded_code')"
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                    >
+                    </v-textarea>
+                  </ValidationProvider>
+                </div>
 
                 <v-row align-end>
                   <v-col cols="12" sm="3" lg="3" xl="6" xs="6">
@@ -170,7 +188,7 @@
                     " class="mb-5"></v-img>
                   </v-col>
                   <v-col cols="12" sm="9" lg="9" xl="6" xs="6"> <label>{{
-                      $t('container.application_selection.application.image') }}
+                      $t('container.power_bi_report.index.image') }}
                     ({{
                       $t('container.training_management.trainer_info.image_alert')
                     }})</label>
@@ -217,8 +235,8 @@
       <!-- Bi Report Edit modal  -->
       <v-dialog v-model="dialogEdit" width="650">
         <v-card style="justify-content: center; text-align: center">
-          <v-card-title class="font-weight-bold justify-center">
-            {{ $t("BI Report Update") }}
+          <v-card-title style="text-align:center; background-color: #1C3B68; color: white;font-size: 17px;padding-top:3px !important;" class="font-weight-bold justify-center">
+            {{ $t("container.power_bi_report.index.update") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
@@ -240,7 +258,7 @@
                         v-model="data.name_en"
                         :label="
                       $t(
-                        'Ttile English'
+                        'container.power_bi_report.index.title_en'
                       )
                     "
                         required
@@ -263,7 +281,7 @@
                         v-model="data.name_bn"
                         :label="
                       $t(
-                        'Title Bangla'
+                        'container.power_bi_report.index.title_bn'
                       )
                     "
                         required
@@ -285,7 +303,7 @@
           color="teal"
           required
           outlined
-          label="Embaded Code"
+          :label="$t('container.power_bi_report.index.embaded_code')"
           :error="errors[0] ? true : false"
           :error-messages="errors[0]"
       >
@@ -302,7 +320,7 @@
                     " class="mb-5"></v-img>
       </v-col>
       <v-col cols="12" sm="9" lg="9" xl="6" xs="6"> <label>{{
-          $t('container.application_selection.application.image') }}
+          $t('container.power_bi_report.index.image') }}
         ({{
           $t('container.training_management.trainer_info.image_alert')
         }})</label>
@@ -350,13 +368,13 @@
       <v-dialog v-model="deleteDialog" width="350">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.system_config.demo_graphic.division.delete") }}
+            {{ $t("container.power_bi_report.index.delete") }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
               {{
-                $t("container.system_config.demo_graphic.division.delete_alert")
+                $t("container.power_bi_report.index.delete_alert")
               }}
             </div>
           </v-card-text>
@@ -470,39 +488,6 @@ export default {
     ValidationObserver,
   },
   computed: {
-    headers() {
-      return [
-        {
-          text: this.$t("container.list.sl"),
-          value: "id",
-          align: "start",
-          sortable: false,
-        },
-        {
-          text: this.$t("container.system_config.demo_graphic.division.code"),
-          value: "code",
-        },
-        {
-          text: this.$t(
-              "container.system_config.demo_graphic.division.name_en"
-          ),
-          value: "name_en",
-          class: "highlight-column ",
-        },
-        {
-          text: this.$t(
-              "container.system_config.demo_graphic.division.name_bn"
-          ),
-          value: "name_bn",
-        },
-        {
-          text: this.$t("container.list.action"),
-          value: "actions",
-          align: "center",
-          sortable: false,
-        },
-      ];
-    },
 
     displayedImageUrl() {
       return this.imageUrl ? this.imageUrl : '/assets/images/no_image_icon.png';
@@ -510,6 +495,19 @@ export default {
 
   },
   methods: {
+
+    truncateTitle(item) {
+      const maxWords = 4;
+      const locale = this.$i18n.locale;
+      const title = locale === 'en' ? item.name_en : item.name_bn;
+      const words = title.split(' ');
+
+      if (words.length > maxWords) {
+        return words.slice(0, maxWords).join(' ') + '...';
+      } else {
+        return title;
+      }
+    },
 
     showIcons(index) {
       this.showIconsIndex = index;
@@ -601,7 +599,9 @@ export default {
       return fd;
     },
     submitBiReport() {
+      this.isLoading = true;
       if (!this.checkLanguage()) {
+        this.isLoading = false;
         return;
       }
       const formData = new FormData();
@@ -620,10 +620,13 @@ export default {
             },
           })
           .then((result) => {
+            this.dialogAdd = false;
             this.$toast.success(result.data.message);
             this.GetBiReport();
+            this.isLoading = false;
           })
           .catch((err) => {
+            this.isLoading = false;
             console.log(err, "err")
             this.$toast.error(err?.response?.data?.errors?.email[0]);
             this.$refs.form.setErrors(err.response.data.errors);
@@ -641,7 +644,9 @@ export default {
       this.delete_id = item.id;
     },
     updateBireport() {
+      this.isLoading = true
       if (!this.checkLanguage()) {
+        this.isLoading = false;
         return;
       }
       const formData = new FormData();
@@ -664,8 +669,11 @@ export default {
           .then((result) => {
             this.$toast.success(result.data.message);
             this.GetBiReport();
+            this.dialogEdit = false;
+            this.isLoading = false;
           })
           .catch((err) => {
+            this.isLoading = false;
             this.$toast.error(err?.response?.data?.errors?.email[0]);
             this.$refs.form.setErrors(err.response.data.errors);
           });
@@ -673,7 +681,7 @@ export default {
     resetForm() {
       this.data = {
         name_en: "",
-        name_bn: "আমাদের",
+        name_bn: "",
         embaded_code: "",
       };
       this.imageUrl = null;
@@ -720,6 +728,7 @@ export default {
     },
 
     async GetBiReport() {
+      this.isLoading = true;
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
@@ -727,6 +736,7 @@ export default {
         sortBy: this.sortBy,
         sortDesc: this.sortDesc,
       };
+
       await this.$axios
           .get("/admin/report/power-bi-report", {
             headers: {
@@ -737,11 +747,14 @@ export default {
           })
           .then((result) => {
             this.total = result.data.total;
-            this.allBiReports = result.data.data.data;
-            console.log(this.allBiReports,'all bi reports')
+            this.allBiReports = result.data.data;
             this.pagination.current = result.data.current_page;
             this.pagination.total = result.data.last_page;
             this.pagination.grand_total = result.data.total;
+            this.isLoading = false;
+          })
+          .catch((err) => {
+            this.isLoading = false;
           });
     },
     deleteAlert(id) {
@@ -791,7 +804,7 @@ export default {
 }
 
 .card-item {
-  /* Add any additional styling for the card itself */
+  position: relative;
 }
 
 .icon-actions {
@@ -800,9 +813,43 @@ export default {
   right: 0;
   opacity: 0;
   transition: opacity 0.5s;
+  padding: 0px;
+  margin: 0px;
 }
 
 .card-item:hover .icon-actions {
   opacity: 1;
 }
+.image-wrapper {
+  display: flex;
+  justify-content: center; /* Center the image horizontally */
+  align-items: center; /* Center the image vertically */
+  /* Hide overflow to ensure image doesn't exceed div boundaries */
+}
+
+.card-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 10px;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.card-title{
+  font-weight: 600;
+  color: #000000;
+  line-height: 18px;
+  margin-top:5px; min-height: 100px !important; font-size: 12px
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 2px;
+}
+
+.theme--light.v-btn.v-btn--has-bg {
+  background-color: rgb(28, 59, 104);
+}
+
 </style>

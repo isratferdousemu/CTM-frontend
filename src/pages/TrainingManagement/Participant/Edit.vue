@@ -565,17 +565,18 @@ export default {
                                                                 <h3 class="text-center mb-10">{{
                                                                     $t('container.training_management.training_program.class_schedule')
                                                                     }}</h3>
-                                                                <v-row no-gutters>
+                                                                <v-row>
 
                                                                     <v-col v-for="(day, index) in data.on_days"
-                                                                        :key="index" cols="2" md="2" lg="2" xs="2"
-                                                                        xl="2">
-
-                                                                        <v-checkbox v-model="day.is_active"
-                                                                            @change="showTimeSlotModal(day)"
-                                                                            :true-value="1" :false-value="0"
-                                                                            :label="day.day"></v-checkbox>
-
+                                                                        :key="index" cols="12" md="4" lg="4" xs="4"
+                                                                        xl="4" >
+                                                              
+                                                                            <v-checkbox v-model="day.is_active"
+                                                                                @change="showTimeSlotModal(day)"
+                                                                               
+                                                                                :true-value="1" :false-value="0"
+                                                                                :label="day.day"></v-checkbox>
+                                                                    
 
                                                                     </v-col>
                                                                 </v-row>
@@ -682,8 +683,8 @@ export default {
                     <div class="subtitle-1 font-weight-medium mt-5">
 
 
-                        <v-row no-gutters>
-                            <v-col v-for="slot in time_slots" :key="slot.id" cols="4" md="4" lg="4" sm="4" xs="4">
+                        <v-row>
+                            <v-col v-for="slot in time_slots" :key="slot.id" cols="12" md="4" lg="4" sm="4" xs="4">
                                 <v-checkbox v-model="selectedTimeSlots" :value="slot.id"
                                     :label="slot.time"></v-checkbox>
 

@@ -1,12 +1,21 @@
 const BiReportManagerRoutes = [
     {
         path: "/reports/bi-report",
-        name: "biReport",
+        name: "Bireport",
         meta: {
             requiresAuth: true,
-            permission: "activityLog-view",
+            permission: "bireport-view",
         },
         component: () => import("../../pages/MEReporting/Bireport")
+    },
+    {
+        path: "/reports/bi-report/:id",
+        name: "Bireport",
+        meta: {
+            requiresAuth: true,
+            permission: "bireport-view",
+        },
+        component: () => import("../../pages/MEReporting/Bireport/view.vue")
     },
 
 ];

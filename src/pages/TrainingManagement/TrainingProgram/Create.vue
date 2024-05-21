@@ -312,6 +312,8 @@ export default {
 
                 })
                 .catch((err) => {
+                    this.$toast.error(err?.response?.data?.errors?.program_name[0]);
+                 
                    
 
                 });
@@ -448,11 +450,14 @@ export default {
                                                                 </ValidationProvider>
                                                             </v-col>
                                                             <v-col cols="12" sm="12" lg="12">
-                                                                <h3 class="text-center mb-10">{{ $t('container.training_management.training_program.class_schedule') }}</h3>
+                                                                <h3 class="text-center mb-10">{{
+                                                                    $t('container.training_management.training_program.class_schedule')
+                                                                    }}</h3>
 
-                                                                <v-row>
+                                                                <v-row no-gutters>
                                                                     <v-col v-for="(day, index) in data.on_days"
-                                                                        :key="index" cols="12" md="2" lg="2" xs="2" xl="2">
+                                                                        :key="index" cols="12" md="2" lg="2" xs="2"
+                                                                        xl="2">
                                                                         <v-checkbox v-model="day.is_active"
                                                                             @change="showTimeSlotModal(day)"
                                                                             :true-value="1" :false-value="0"
@@ -461,7 +466,7 @@ export default {
                                                                     </v-col>
                                                                 </v-row>
 
-                                                         
+
 
 
                                                             </v-col>
@@ -512,7 +517,7 @@ export default {
                     <div class="subtitle-1 font-weight-medium mt-5">
 
 
-                        <v-row>
+                        <v-row no-gutters>
                             <v-col v-for="slot in time_slots" :key="slot.id" cols="4">
                                 <v-checkbox v-model="selectedTimeSlots" :value="slot.id"
                                     :label="slot.time"></v-checkbox>
