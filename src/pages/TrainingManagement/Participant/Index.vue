@@ -2,15 +2,11 @@
 import {ValidationObserver } from "vee-validate";
 export default {
     name: "Index",
-    title: "CTM - Training Program",
+    title: "CTM - Training Participant",
     data() {
         return {
-            data: {
-                id: null,
-                code: null,
-                name_en: null,
-                name_bn: null,
-            },
+          
+            participants:[],
             start_date:null,
             end_date: null,
             dates: [],
@@ -20,16 +16,8 @@ export default {
             total: null,
             Programs: [],
             program_trainers: [],
-            training_types: [],
-            all_status: [{
-                "id": 1, "value_en": "Active", "value_bn": "সক্রিয়"
-            }, {
-                "id": 0, "value_en": "Inactive", "value_bn": "নিষ্ক্রিয়"
-                }],
-                status:null,
-            dialogAdd: false,
+            training_types: [],   
             deleteDialog: false,
-            dialogEmail: false,
             delete_loading: false,
             loading: false,
             search: "",
@@ -61,11 +49,13 @@ export default {
         },
         headers() {
             return [
-                { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, width: "5%" },
-                { text: this.$t('container.training_management.training_program.program_name'), value: "program_name", align: "start", width: "10%" },
+                { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, width: "10%" },
+               
                 { text: this.$t('container.training_management.training_program.circular'), value: "circular", align: "start", width: "15%", sortable: false, },
-                { text: this.$t('container.training_management.training_circular.module'), value: "modules", width: "25%" },
-                { text: this.$t('container.training_management.training_program.trainer'), value: "trainer", width: "15%", sortable: false, },
+                { text: this.$t('container.training_management.training_program.program_name'), value: "program", align: "start", width: "20%" },
+             
+                { text: this.$t('container.training_management.training_registration.participant'), value: "participant", width: "15%", sortable: false, },
+                { text: this.$t('container.training_management.trainer_info.ID'), value: "id", width: "10%", sortable: false, },
                 { text: this.$t('container.list.status'), value: "status", width: "15%" },
               
                 { text: this.$t('container.list.action'), value: "actions", align: "start", sortable: false, width: "15%" },
@@ -77,14 +67,7 @@ export default {
 
     mounted() {
         this.GetData();
-        this.Programtrainers();
-        this.GetCircular();
-        this.$store
-            .dispatch("getLookupByType", 27)
-            .then((res) => (this.training_types = res));
-        this.$store
-            .dispatch("getLookupByType", 29)
-            .then((res) => (this.all_modules = res));
+       
        
     
    
@@ -189,6 +172,9 @@ export default {
                     this.$toast.success(result?.data?.message);
 
                     this.GetData();
+
+
+
 
 
 
@@ -510,7 +496,7 @@ export default {
                 end_date: this.end_date,
             };
             this.$axios
-                .get("/admin/training/programs", {
+                .get("/admin/training/participants", {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -521,7 +507,7 @@ export default {
                     console.log(result,"result")
 
                     this.total = result?.data?.data?.total;
-                    this.circulars = result?.data?.data?.data;
+                    this.participants = result?.data?.data?.data;
                
                     this.pagination.current = result?.data?.data?.current_page;
                     this.pagination.total = result?.data?.data?.last_page;
@@ -681,10 +667,10 @@ export default {
                                     </v-col>
                                     <v-col class="text-right">
                                         <v-btn flat color="primary" router
-                                            to="/training-management/training-program/create"
-                                            v-can="'trainerProgram-create'">
+                                            to="/training-management/participant/create"
+                                            v-can="'participant-create'">
                                             <v-icon small>mdi-plus</v-icon>
-                                            {{ $t('container.training_management.training_program.add') }}
+                                            {{ $t('container.training_management.training_registration.add_1') }}
                                         </v-btn>
                                     </v-col>
                                 </v-row>
@@ -716,8 +702,8 @@ export default {
                                     justify="center" justify-lg="space-between">
                                     <v-col cols="12">
                                         <v-data-table :loading="loading" item-key="id" :headers="headers"
-                                            :items="circulars" :items-per-page="pagination.perPage" hide-default-footer
-                                            class="elevation-0 transparent row-pointer mt-5 mx-5">
+                                            :items="participants" :items-per-page="pagination.perPage"
+                                            hide-default-footer class="elevation-0 transparent row-pointer mt-5 mx-5">
                                             <template v-slot:item.sl="{ item, index }">
                                                 {{ language === 'bn' ? $helpers.englishToBangla((pagination.current - 1)
                                                 * pagination.perPage + index + 1) : (pagination.current - 1) *
@@ -726,28 +712,27 @@ export default {
                                             <template v-slot:item.circular="{ item }">
                                                 <span>{{ item.training_circular?.circular_name }}</span>
                                             </template>
-                                            <template v-slot:item.modules="{ item }">
-                                                <span v-for="(value, key) in item.modules" :key="key">
-                                                    <v-chip small label color="#FACD91" class="ma-1">
-                                                        {{ language == 'bn' ? value.value_bn : value.value_en }}
-                                                    </v-chip>
-                                                </span>
+                                            <template v-slot:item.program="{ item }">
+                                                <span>{{ item.training_program?.program_name }}</span>
                                             </template>
-                                            <template v-slot:item.trainer="{ item }">
-                                                <span v-for="(value, key) in item.trainers" :key="key">
-                                                    <v-chip small label color="#FACD91" class="ma-1">
-                                                        {{ value.name }}
-                                                    </v-chip>
+
+                                            <template v-slot:item.participant="{ item }">
+                                                <span v-if="item.is_by_poll == 0">{{item.user.full_name}}
+
+                                                </span>
+                                                <span v-else>
+                                                    {{item.full_name}}
+
                                                 </span>
                                             </template>
                                             <template v-slot:[`item.status`]="{ item }">
-                                                <span v-if="item.status == 0">{{ language == 'bn' ? 'নিষ্ক্রিয়' :
-                                                    'Inactive' }}</span>
-                                                <span v-else>{{ language == 'bn' ? 'সক্রিয়' : 'Active' }}</span>
+                                                <span v-if="item.is_by_poll == 0">{{ language == 'bn' ? 'অভ্যন্তরীণ
+                                                    ব্যবহারকারী' :
+                                                    'Internal User' }}</span>
+                                                <span v-else>{{ language == 'bn' ? 'বাহ্যিক ব্যবহারকারী' : 'External
+                                                    User' }}</span>
                                                 <span>
-                                                    <v-switch :input-value="item.status == 1 ? true : false"
-                                                        @change="deviceActivate(item.id)" hide-details
-                                                        color="orange darken-3"></v-switch>
+
                                                 </span>
                                             </template>
                                             <template v-slot:item.actions="{ item }">
