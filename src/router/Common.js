@@ -8,6 +8,7 @@ import SuccessView from "../pages/Common/application/Successpage.vue";
 import APiView from "../pages/Common/api_manager/Index.vue";
 import View from "../pages/Common/TrainingCircular/View_1.vue";
 import ProgramView from "../pages/Common/TrainingProgram/View_1.vue";
+import PollviewView from "../pages/Common/Participant/View.vue";
 const CommonRoutes = [
   {
     path: "/forgotPassword",
@@ -72,6 +73,11 @@ const CommonRoutes = [
     path: "/program-details/:id",
     name: "ProgramView",
     component: ProgramView,
+  },
+  {
+    path: "/participant-external-registration",
+    name: "PollviewView",
+    component: PollviewView,
   },
 ]
 export default CommonRoutes;
