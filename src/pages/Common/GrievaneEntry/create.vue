@@ -70,7 +70,7 @@
                               { text: language === 'bn' ? 'না' : 'No', value: 2 },]" item-text="text"
                               :error="errors[0] ? true : false"
                               :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে নির্বাচন করুন' : 'Please Select Yes or No.') : ''"
-                              @change="handleSelectChange">
+                              >
                             </v-select>
                           </ValidationProvider>
                         </v-col>
@@ -598,7 +598,7 @@
               </v-card-text>
 
               <v-card-actions class="d-flex justify-center">
-                <v-btn text @click="confirmDialog = false" outlined class="custom-btn-width">
+                <v-btn  @click="confirmDialog = false" outlined class="custom-btn-width">
                   {{ $t("container.list.cancel") }}
                 </v-btn>
                 <v-btn @click="submitGrievance()" flat color="primary" :loading="loading" type="submit"
@@ -1126,8 +1126,10 @@ export default {
         this.$refs.form.reset();
         this.loading = false;
         this.resetForm();
-        // console.log(res.data.data, "data")
-        //  this.$router.push("/grievance/entry");
+
+        this.$store.commit('ApplicationSelection/setSuccessId', res.data.data.id);
+        this.$store.commit('ApplicationSelection/setTrackingNo', res.data.data.tracking_no);
+        this.$router.push("/submitted-grievance");
 
       })
         .catch((err) => {
