@@ -1109,14 +1109,9 @@
                   "view": "Participant Details",
                   "add_1": "Assign Participant",
                   "add_2": "Training Poll",
-                  "program_name": "Program Name",
-                  "program": "Program",
-                  "trainer": "Trainer",
-                  "circular": "Circular",
-                  "class_schedule": "Training Schedule",
-                  "search": "Search Program",
-                  "select_time_slot": "Select Time Slot",
-                  "training_circular": "Training Circular",
+                  "participant": "Participant",
+                  "organization": "Organization",
+                    "user_name": "Username",
                   "delete_header": "Remove Participant",
                   "delete_alert": "Are you sure to remove this Participant? Participant's all details will be removed."
                 }
