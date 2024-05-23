@@ -69,7 +69,7 @@
 
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
-                        <v-tooltip top>
+                        <!-- <v-tooltip top>
                           <template v-slot:activator="{ on }">
                             <v-btn
                               v-can="'update-post'"
@@ -86,6 +86,22 @@
                           <span>
                             {{ $t("container.list.edit") }}
                           </span>
+                        </v-tooltip> -->
+
+                        <v-tooltip top>
+                          <template v-slot:activator="{ on }">
+                            <router-link :to="`/payroll-management/payment-processor-show/${item.id}`" tag="span" v-on="on">
+                              <v-btn
+                                fab
+                                x-small
+                                color="success"
+                                elevation="0"
+                              >
+                                <v-icon>mdi-eye-outline</v-icon>
+                              </v-btn>
+                            </router-link>
+                          </template>
+                          <span>{{ $t("container.list.edit") }}</span>
                         </v-tooltip>
 
                         <v-tooltip top>
@@ -160,8 +176,8 @@
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       v-slot="{ errors }"
-                      name="Code"
-                      vid="code"
+                      name="Processor type"
+                      vid="processor_type"
                       rules="required"
                     >
                       <v-autocomplete
@@ -175,7 +191,7 @@
                           $t('container.payroll_management.processor_type')
                         "
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                        :error-messages="errors[0] ? (language === 'bn' ? 'একটি প্রসেসরের ধরন নির্বাচন করুন' : 'Select a processor type'):''"
                       >
                       </v-autocomplete>
                     </ValidationProvider>
@@ -201,7 +217,7 @@
                         item-value="id"
                         :label="$t('container.payroll_management.bank_name')"
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                        :error-messages="errors[0] ? (language === 'bn' ? 'একটি ব্যাংক নির্বাচন করুন' : 'Select a bank'):''"
                       >
                       </v-autocomplete>
                     </ValidationProvider>
@@ -226,7 +242,7 @@
                         :label="$t('container.payroll_management.branch_name')"
                         required
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                        :error-messages="errors[0] ? (language === 'bn' ? 'শাখার নাম বৈধ নয়' : 'Branch name is not valid'):''"
                         >></v-text-field
                       >
                     </ValidationProvider>
@@ -253,7 +269,7 @@
                         "
                         required
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                        :error-messages="errors[0] ? (language === 'bn' ? 'রাউটিং নম্বর বৈধ নয়' : 'Routing number is not valid'):''"
                         >></v-text-field
                       >
                     </ValidationProvider>
@@ -273,7 +289,7 @@
                         :label="$t('container.list.name_en')"
                         required
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                        :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে এই ক্ষেত্রে ইংরেজি অক্ষর লিখুন' : 'Please Enter English Letters in this Field') : ''"
                         >></v-text-field
                       >
                     </ValidationProvider>
@@ -292,7 +308,7 @@
                         :label="$t('container.list.name_bn')"
                         required
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                        :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে এই ক্ষেত্রে বাংলা অক্ষর লিখুন' : 'Please Enter bangla Letters in this Field') : ''"
                         >></v-text-field
                       >
                     </ValidationProvider>
@@ -311,7 +327,7 @@
                         :label="$t('container.payroll_management.focal_phone')"
                         required
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                        :error-messages="errors[0] ? (language === 'bn' ? 'একটি বাংলাদেশী ফোন নম্বর লিখুন' : 'Enter a bangladeshi phone number') : ''"
                         >></v-text-field
                       >
                     </ValidationProvider>
@@ -330,7 +346,7 @@
                         :label="$t('container.payroll_management.email')"
                         required
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                        :error-messages="errors[0] ? (language === 'bn' ? 'একটি বৈধ ইমেইল ঠিকানা লিখুন' : 'Enter a valid email address') : ''"
                         >></v-text-field
                       >
                     </ValidationProvider>
@@ -350,7 +366,7 @@
                         :label="$t('container.payroll_management.charge')"
                         required
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                        :error-messages="errors[0] ? (language === 'bn' ? 'চার্জ শতাংশ লিখুন' : 'Enter charge percentage') : ''"
                         >></v-text-field
                       >
                     </ValidationProvider>
@@ -379,7 +395,7 @@
                         item-value="id"
                         :label="$t('container.payroll_management.division')"
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                        :error-messages="errors[0] ? (language === 'bn' ? 'একটি বিভাগ নির্বাচন করুন' : 'Select a division') : ''"
                         @change="getDistricts(data.division)"
                       >
                       </v-autocomplete>
@@ -401,7 +417,7 @@
                         item-value="id"
                         :label="$t('container.payroll_management.district')"
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                        :error-messages="errors[0] ? (language === 'bn' ? 'একটি জেলা নির্বাচন করুন' : 'Select a district') : ''"
                       >
                       </v-autocomplete>
                     </ValidationProvider>
@@ -424,7 +440,7 @@
                           $t('container.payroll_management.location_type')
                         "
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                        :error-messages="errors[0] ? (language === 'bn' ? 'একটি অবস্থানের ধরন নির্বাচন করুন' : 'Select a location type') : ''"
                         @change="
                           getDistrictPourashava(
                             data.district,
@@ -463,7 +479,7 @@
                         item-value="id"
                         :label="$t('container.payroll_management.upazila')"
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                        :error-messages="errors[0] ? (language === 'bn' ? 'একটি উপজেলা নির্বাচন করুন' : 'Select a upazila') : ''"
                         @change="
                           getUnionOrThana(data.upazila, data.location_type)
                         "
@@ -499,7 +515,7 @@
                         item-value="id"
                         :label="$t('container.payroll_management.union')"
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                        :error-messages="errors[0] ? (language === 'bn' ? 'একটি ইউনিয়ন নির্বাচন করুন' : 'Select a union') : ''"
                       >
                       </v-autocomplete>
                     </ValidationProvider>
@@ -535,7 +551,7 @@
                           $t('container.payroll_management.city_corporation')
                         "
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                        :error-messages="errors[0] ? (language === 'bn' ? 'একটি সিটি কর্পোরেশন নির্বাচন করুন' : 'Select a city corporation') : ''"
                       >
                       </v-autocomplete>
                     </ValidationProvider>
@@ -565,7 +581,7 @@
                         item-value="id"
                         :label="$t('container.payroll_management.thana')"
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                        :error-messages="errors[0] ? (language === 'bn' ? 'একটি থানা নির্বাচন করুন' : 'Select a thana') : ''"
                       >
                       </v-autocomplete>
                     </ValidationProvider>
@@ -596,7 +612,7 @@
                           $t('container.payroll_management.district_pourashava')
                         "
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                        :error-messages="errors[0] ? (language === 'bn' ? 'একটি জেলা পৌরসভা নির্বাচন করুন' : 'Select a district pourashava') : ''"
                       >
                       </v-autocomplete>
                     </ValidationProvider>
@@ -873,7 +889,7 @@
               </v-btn>
               <v-btn
                 text
-                @click="deleteDivision()"
+                @click="deleteItem()"
                 color="white"
                 :loading="delete_loading"
                 class="custom-btn-width warning white--text py-2"
@@ -943,6 +959,7 @@ export default {
   data() {
     return {
       data: {
+        id:null,
         processor_type: null,
         bank_id: null,
         branch_name: null,
@@ -1093,6 +1110,41 @@ export default {
       return fd;
     },
 
+    deleteAlert(id) {
+      this.data.id = id;
+      this.deleteDialog = true;
+    },
+    async deleteItem() {
+      console.log("🚀 ~ deleteItem ~ this.data.id:", this.data.id)
+      
+      this.loading = true;
+      try {
+        const response = await this.$axios.delete(
+          `admin/payroll/payment-processor/${this.data.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${this.$store.state.token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          this.getPaymentProcessor();
+          this.$toast.success(this.language === "bn" ? "পেমেন্ট প্রসেসর সফলভাবে মুছে ফেলা হয়েছে" : "Payment Processor deleted successfully");
+          this.data.id = null;
+          this.deleteDialog = false;
+        } else {
+          this.$toast.error("Form submission failed");
+        }
+      } catch (error) {
+        console.error("Error submitting form:", error);
+        this.$toast.error("An error occurred while submitting the form");
+      } finally {
+        this.loading = false;
+      }
+    },
+
     async submitPaymentProcessor() {
       this.loading = true;
       try {
@@ -1108,7 +1160,8 @@ export default {
         );
 
         if (response.status === 200) {
-          this.$toast.success("Form submitted successfully");
+          this.getPaymentProcessor();
+          this.$toast.success(this.language === "bn" ? "পেমেন্ট প্রসেসর সফলভাবে জমা দেওয়া হয়েছে" : "Payment Processor submitted successfully");
           this.dialogAdd = false;
           // Reset form data or perform other actions as needed
         } else {
@@ -1174,6 +1227,12 @@ export default {
     },
 
     async getDistricts(divisionId) {
+    // this.data.location_type == null
+    // this.data.upazila == null
+    // this.data.union == null
+    // this.data.thana == null
+    // this.data.city_corporation == null
+    // this.data.district_pourashava == null
       try {
         const response = await this.$axios.get(`get-districts/${divisionId}`, {
           headers: {
@@ -1302,12 +1361,6 @@ export default {
       this.getPaymentProcessor();
     },
 
-    deleteAlert(id) {
-      this.data.id = id;
-      // alert(JSON.stringify(id));
-      this.deleteDialog = true;
-      this.delete_id = id;
-    },
     updateHeaderTitle() {
       const title = this.$t("container.payroll_management.list");
       this.$store.commit("setHeaderTitle", title);

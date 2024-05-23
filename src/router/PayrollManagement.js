@@ -32,12 +32,22 @@ const PayrollManagementRoutes = [
   //payment processor
   {
     path: "/payroll-management/payment-processor",
-    name: "payroll-setting",
+    name: "payment-processor",
     // meta: {
     //   requiresAuth: true,
     //   permission: "payroll-setting-view",
     // },
     component: () => import("../pages/PayrollManagement/PaymentProcessor/Index.vue")
+  },
+
+  {
+    path: "/payroll-management/payment-processor-show/:id",
+    name: "payment-processor-show",
+    // meta: {
+    //   requiresAuth: true,
+    //   permission: "payroll-setting-view",
+    // },
+    component: () => import("../pages/PayrollManagement/PaymentProcessor/show.vue")
   },
 
   // {
