@@ -154,7 +154,9 @@
                 <div class="textarea-container">
                   <div class="button-container">
                     <v-btn small class="extra-small-button">
-                      <a href="https://app.powerbi.com/" target="_blank" style="text-decoration: none; color: white;">Go To Power BI </a>
+                      <a href="https://app.powerbi.com/" target="_blank" style="text-decoration: none; color: white;">{{ $t(
+                          'container.power_bi_report.index.go_power_bi'
+                      )}} </a>
                     </v-btn>
                   </div>
                   <ValidationProvider
@@ -826,8 +828,8 @@ export default {
 }
 
 .card-image {
-  width: 100%;
-  height: 100%;
+  width: 200px;
+  height: 200px;
   border-radius: 10px;
   padding: 5px;
   box-sizing: border-box;

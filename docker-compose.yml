@@ -1,10 +1,4 @@
-version: '3.5'
-
-networks:
-  web-ctm-app-net:
-    name: my-ctm-web-app-net
-    driver: bridge
-    external: true
+version: '3.0'
 
 services:
   frontend-stage:
@@ -12,13 +6,17 @@ services:
     image: 'ctm-app-frontend'
     environment:
       - TZ=Asia/Dhaka
+    networks:
+      - ppims_net
+
     ports:
-      - 80:80
+      - 8070:80
     restart: always
     build:
       context: "./"
       dockerfile: "Dockerfile"
 
-    networks:
-      - web-ctm-app-net
-##End of Scripts
+networks:
+   ppims_net:
+     name: ppims_net
+

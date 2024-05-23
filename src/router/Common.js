@@ -8,12 +8,13 @@ import SuccessView from "../pages/Common/application/Successpage.vue";
 import APiView from "../pages/Common/api_manager/Index.vue";
 import View from "../pages/Common/TrainingCircular/View_1.vue";
 import ProgramView from "../pages/Common/TrainingProgram/View_1.vue";
+import PollviewView from "../pages/Common/Participant/View.vue";
 const CommonRoutes = [
   {
     path: "/forgotPassword",
     name: "ForgotPassword",
     meta: {
-      guest: true
+      guest: true,
     },
     component: ForgotPassword,
   },
@@ -21,7 +22,7 @@ const CommonRoutes = [
     path: "/login",
     name: "Login",
     meta: {
-      guest: true
+      guest: true,
     },
     component: Login,
   },
@@ -46,7 +47,6 @@ const CommonRoutes = [
     component: ApplicationEdit,
   },
 
-
   {
     path: "/submitted-application",
     name: "SuccessView",
@@ -55,8 +55,12 @@ const CommonRoutes = [
   {
     path: "/grievance-entry",
     name: "GrievanceEntry",
-    component: () =>
-      import("../pages/Common/GrievaneEntry/create.vue"),
+    component: () => import("../pages/Common/GrievaneEntry/create.vue"),
+  },
+  {
+    path: "/submitted-grievance",
+    name: "GrievanceSubmitted",
+    component: () => import("../pages/Common/GrievaneEntry/Successpage.vue"),
   },
   {
     path: "/api-documentation",
@@ -68,10 +72,17 @@ const CommonRoutes = [
     name: "View",
     component: View,
   },
-    {
+  {
     path: "/program-details/:id",
     name: "ProgramView",
     component: ProgramView,
   },
+
+  {
+    path: "/participant-external-registration",
+    name: "PollviewView",
+    component: PollviewView,
+  },
 ]
+
 export default CommonRoutes;

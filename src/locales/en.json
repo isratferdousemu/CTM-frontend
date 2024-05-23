@@ -1103,11 +1103,20 @@
                   "class_schedule":"Training Schedule",
                   "search":"Search Program",
                   "select_time_slot":"Select Time Slot",
-                  
-
                   "training_circular":"Training Circular",
                   "delete_header": "Delete Program",
                   "delete_alert": "Are you sure to delete this Program? Program's all information will be deleted."
+                },
+                "training_registration": {
+                  "list_1": "Participant List",
+                  "view": "Participant Details",
+                  "add_1": "Assign Participant",
+                  "add_2": "Training Poll",
+                  "participant": "Participant",
+                  "organization": "Organization",
+                    "user_name": "Username",
+                  "delete_header": "Remove Participant",
+                  "delete_alert": "Are you sure to remove this Participant? Participant's all details will be removed."
                 }
       },
       "api_manager": {
@@ -1229,15 +1238,16 @@
     },
     "power_bi_report": {
       "index": {
-        "title": "Power BI Report List",
+        "title": "Power BI Report",
         "add": "Add Power BI Report ",
         "update": "Update Power BI Report ",
-        "title_en": "Title En",
-        "title_bn": "Title Bn",
+        "title_en": "Title English",
+        "title_bn": "Title Bangla",
         "embaded_code": "Embaded Code",
         "image": "Image",
         "delete": "Delete Power BI Report",
-        "delete_alert": "Are you sure to delete this Report?"
+        "delete_alert": "Are you sure to delete this Report?",
+        "go_power_bi": "GO TO POWER BI"
       },
       "view": {
         "title": "কার্যকলাপ লগ ফিল্টার"
@@ -1285,8 +1295,8 @@
       "3rdOfficer": "3rd Tire (3rd Resolver)",
       "grievance_setting_delete": "Delete Grievance Setting",
       "grievance_setting_delete_message": "Are you sure to delete this Grievance Setting?",
-      "grievanceEntry": {
-        "complaint_area": "Complaint Area Concerned Office",
+      "grievanceEntry":{
+        "complaint_area": "Complainant's   Address",
         "is_existing_beneficiary": "Are you an existing beneficiary?",
         "complaint_details": "Provide Details of the Complaint",
         "details": "Complaint Details",

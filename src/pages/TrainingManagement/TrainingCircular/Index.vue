@@ -541,7 +541,7 @@ export default {
                                                     :label="$t('container.training_management.training_circular.type') ">
                                                 </v-select>
                                             </v-col>
-                                          
+
                                             <v-col lg="4" md="4" cols="12">
                                                 <v-menu ref="menu" v-model="menu" :close-on-content-click="false"
                                                     transition="scale-transition" offset-y min-width="auto">
@@ -586,9 +586,9 @@ export default {
                             </v-expansion-panel>
                         </v-expansion-panels>
                         <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8 mt-5">
-                            <v-card-title tag="div" class="text-center"
+                            <v-card-title tag="div" class="text-center "
                                 style="background-color:#1c3b68;color:white;margin-bottom: 17px;font-size:17px;">
-                                <h4 class="white--text text-center">{{
+                                <h4 class="white--text text-center ml-2">{{
                                     $t('container.training_management.training_circular.list') }}
                                 </h4>
                             </v-card-title>
@@ -768,7 +768,7 @@ export default {
 
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
-                                                        <v-btn v-can="'trainerCircular-edit'" class="mr-2" fab x-small
+                                                        <v-btn v-can="'trainingCircular-edit'" class="mr-2" fab x-small
                                                             v-on="on" color="success" elevation="0" router
                                                             :to="`/training-management/training-circular/edit/${item.id}`">
                                                             <v-icon> mdi-account-edit-outline </v-icon>
@@ -782,7 +782,7 @@ export default {
 
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
-                                                        <v-btn v-can="'trainerCircular-delete'" fab x-small v-on="on"
+                                                        <v-btn v-can="'trainingCircular-delete'" fab x-small v-on="on"
                                                             color="grey" class="white--text  mr-2" elevation="0"
                                                             @click="deleteAlert(item.id)">
                                                             <v-icon> mdi-delete </v-icon>
@@ -833,9 +833,9 @@ export default {
             </v-col>
         </v-row>
         <v-dialog v-model="deleteDialog" width="350">
-            <v-card style="justify-content: center; text-align: center">
+            <v-card style="justify-content: start; ">
                 <v-card-title class="font-weight-bold justify-center"
-                    style="background-color: #1C3C6A; color: white;font-size: 12px;">
+                    style="background-color: #1C3C6A; color: white;font-size: 17px;">
                     {{ $t('container.training_management.training_circular.delete_header') }}
                 </v-card-title>
                 <v-divider></v-divider>
