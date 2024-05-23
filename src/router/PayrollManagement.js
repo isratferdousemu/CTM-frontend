@@ -37,7 +37,7 @@ const PayrollManagementRoutes = [
       requiresAuth: true,
       permission: "payment-processor-create",
     },
-    component: () => import("../pages/PayrollManagement/PaymentProcessor/Index.vue")
+    component: () => import("../pages/PayrollManagement/paymentprocessor/Index.vue")
   },
 
   {
@@ -47,7 +47,7 @@ const PayrollManagementRoutes = [
       requiresAuth: true,
       permission: "payment-processor-edit",
     },
-    component: () => import("../pages/PayrollManagement/PaymentProcessor/show.vue")
+    component: () => import("../pages/PayrollManagement/paymentprocessor/show.vue")
   },
 
   // {
