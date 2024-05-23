@@ -1,12 +1,14 @@
-version: '4.0'
+version: '3.0'
+
 services:
-  frontend:
+  frontend-stage:
     container_name: ctm-frontend
-    image: 'frontend'
+    image: 'ctm-app-frontend'
     environment:
       - TZ=Asia/Dhaka
     networks:
       - ppims_net
+
     ports:
       - 8070:80
     restart: always
@@ -14,7 +16,7 @@ services:
       context: "./"
       dockerfile: "Dockerfile"
 
-    networks:
+networks:
    ppims_net:
      name: ppims_net
-##End of Scripts
+
