@@ -7,7 +7,7 @@ services:
     environment:
       - TZ=Asia/Dhaka
     networks:
-      - ppims_net
+      - ppmis_net
 
     ports:
       - 8070:80
@@ -17,6 +17,6 @@ services:
       dockerfile: "Dockerfile"
 
 networks:
-   ppims_net:
-     name: ppims_net
+   ppmis_net:
+     name: ppmis_net
 
