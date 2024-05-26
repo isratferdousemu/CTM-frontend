@@ -122,12 +122,21 @@ export default {
                     this.$toast.success(result.data.message);
                     setTimeout(() => {
                         window.location.reload();
-                    }, 500); 
+                    }, 1000); 
 
 
                 })
                 .catch((err) => {
+                    if (err?.response?.data?.errors?.training_program_id[0]) {
+                        if (this.language == 'en') {
+                            this.$toast.error("This program has already been taken by this participant");
+                        }
+                        else {
+                            this.$toast.error("এই প্রোগ্রামটি ইতিমধ্যে এই অংশগ্রহণকারী দ্বারা নেওয়া হয়েছে");
+                        }
 
+
+                    }
 
                 });
 
@@ -204,7 +213,7 @@ export default {
                 <v-card class="mx-3">
                     <v-card-title class="justify-center">
                         <h4 class="white--center mt-10">
-                            {{ $t('container.training_management.training_registration.add_2') }}
+                            {{ $t('container.training_management.training_registration.registration') }}
                         </h4>
                     </v-card-title>
                     <v-card-text class="mt-10">
@@ -239,7 +248,7 @@ export default {
                                         </ValidationProvider>
                                     </v-col>
 
-                                  
+
                                     <v-col cols="12" sm="6" lg="6">
                                         <ValidationProvider name="Participant" rules="required||name"
                                             vid="poll.participant" v-slot="{ errors }">
@@ -248,7 +257,7 @@ export default {
                         : 'Please enter  participant') : ''"></v-text-field>
                                         </ValidationProvider>
                                     </v-col>
-                                    
+
                                     <v-col cols="12" sm="6" lg="6">
                                         <ValidationProvider name="Email" vid="email" rules="required||email||bangla"
                                             v-slot="{ errors }">
@@ -265,10 +274,7 @@ export default {
 
                                 </v-row>
                                 <v-row class="justify-end mt-5 mb-5">
-                                    <v-btn flat color="primary" class="custom-btn mr-2" router
-                                        to="/training-management/training-program">{{
-                                        $t("container.list.back") }}
-                                    </v-btn>
+
                                     <v-btn flat color="success" @click="submitPoll()" class="custom-btn mr-2"
                                         :disabled="invalid">
                                         {{ $t("container.list.submit") }}

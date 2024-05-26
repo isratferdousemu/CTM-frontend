@@ -1,23 +1,15 @@
 
 
 <style>
-.small-text {
-    font-size: 9px;
-    /* Adjust the font size as needed */
-}
-
-.no-striped-table .v-simple-table tbody tr:nth-child(even) {
-    background-color: transparent;
-    /* Set the background color to transparent for even rows */
-}
-
 .custom-title {
     background-color: rgb(28, 59, 104);
-    /* Set your desired background color */
     color: white;
-    /* Set the text color */
     padding: 10px;
-    /* Adjust padding as needed */
+}
+
+.header-row {
+    background-color: rgb(28, 59, 104);
+    color: white;
 }
 
 .tracking-item {
@@ -25,23 +17,8 @@
     margin-bottom: 16px;
 }
 
-.status-cell,
-.timeline-cell,
-.state-cell,
-.time-date-cell {
+.status-cell, .timeline-cell, .state-cell, .time-date-cell {
     padding: 8px 0;
-}
-
-@media (max-width: 599px) {
-    .tracking-item {
-        font-size: 14px;
-    }
-}
-
-@media (min-width: 600px) and (max-width: 959px) {
-    .tracking-item {
-        font-size: 15px;
-    }
 }
 
 .tracking-summary-item {
@@ -49,55 +26,65 @@
     margin-top: 8px;
 }
 
-@media (max-width: 599px) {
+@media (max-width: 1024px) {
+    .tracking-item {
+        font-size: 14px;
+        text-align: center;
+    }
     .tracking-summary-item {
         font-size: 14px;
-        /* Slightly smaller font size for extra small screens */
         margin-top: 8px;
     }
-}
-
-@media (min-width: 600px) and (max-width: 959px) {
-    .tracking-summary-item {
-        font-size: 15px;
-        /* Adjust font size for small screens */
-        margin-top: 8px;
-    }
-}
-
-@media (min-width: 960px) {
-    .tracking-summary-item {
-        font-size: 16px;
-        /* Default font size for medium and larger screens */
-        margin-top: 8px;
+    .timeline-cell {
+        text-align: center !important;
     }
 }
 
 @media (max-width: 599px) {
+    .tracking-item {
+        font-size: 14px;
+        text-align: center;
+    }
+    .tracking-summary-item {
+        font-size: 14px;
+        margin-top: 8px;
+    }
     .v-radio-group label {
         display: block;
         margin-bottom: 8px;
     }
-
     .v-btn.custom-btn-width {
         width: 100%;
     }
-
     .text-right {
         text-align: center;
     }
 }
 
 @media (min-width: 600px) and (max-width: 959px) {
+    .tracking-item {
+        font-size: 15px;
+        text-align: center;
+    }
+    .tracking-summary-item {
+        font-size: 15px;
+        margin-top: 8px;
+    }
     .v-radio-group label {
         margin-right: 0;
         display: block;
         text-align: center;
         margin-bottom: 8px;
     }
-
     .text-right {
         text-align: center;
+    }
+}
+
+@media (min-width: 960px) {
+    .tracking-summary-item {
+        font-size: 16px;
+        margin-top: 8px;
     }
 }
 </style>
@@ -162,7 +149,7 @@
                             <v-card-text>
                                 <v-row cols="12" dense style="background-color:rgb(28, 59, 104);color:white">
                                     <v-col md="6" sm="6" lg="6" cols="12">
-                                        <h4 class="text-h6">
+                                        <h4 style="font-size:16.6px;">
                                             {{ $t('container.grievance_management.grievanceList.grievance_details') }}</h4>
                                     </v-col>
                                 </v-row>
@@ -172,59 +159,46 @@
                                         <b>{{ data.name }}:</b> {{ data.value }}
                                     </v-col>
                                 </v-row>
-                                <v-row cols="12">
-                                    <v-col cols="12" lg="12" md="6" sm="6">
-                                        <v-card elevation="0">
-                                            <v-card-title class="custom-title">
-                                                <h5 class="text-center">{{
-                                                    $t('container.grievance_management.grievanceList.grievance_status')
-                                                }}</h5>
-                                            </v-card-title>
-                                            <v-card-text class="m-0">
-                                                <v-container fluid>
-                                                    <v-row v-for="(item, index) in tracking" :key="index"
-                                                       v-show="item.status !='' && item.length !=0"  :style="{ color: getFontColor(item.status) }"
-                                                        class="tracking-item mt-2">
-                                                        <v-col cols="12" sm="6" md="3" class="text-center status-cell">
-                                                            {{ getStatusName(item.status) }}
-                                                        </v-col>
-                                                        <v-col cols="12" sm="6" md="2" class="text-center timeline-cell"
-                                                            style="margin-top:-30px;">
-                                                            <v-timeline align-top truncate-line="both">
-                                                                <v-timeline-item :color="getTimelineColor(item.status)"
-                                                                    :icon="getTimelineIcon(item.status)">
-                                                                </v-timeline-item>
-                                                            </v-timeline>
-                                                        </v-col>
-                                                        <v-col cols="12" md="5" class="text-center state-cell">
-                                                            {{ getStateName(item.status) }}
-                                                        </v-col>
-                                                        <v-col cols="12" md="2" class="text-center time-date-cell" v-show="item.status !=''">
-                                                            {{ language == 'bn' ? "সময়:" : "Time:" }} {{ language == 'bn' ?
-                                                                $helpers.englishToBangla(item.time ?? '') : item.time ?? ''
-                                                            }}<br>
-                                                            {{ language == 'bn' ? "তারিখ :" : "Date:" }} {{ language == 'bn'
-                                                                ? $helpers.englishToBangla(item.date ?? '') : item.date ?? ''
-                                                            }}<br>
-                                                            <span v-if="item.daysToken > 0">
-                                                                {{ language == 'bn' ? "প্রাপ্ত কার্য সম্পাদনের গৃহীত সময়কাল:" : "Days Taken: " }} {{ language == 'bn' ?
-                                                                    $helpers.englishToBangla(item.daysToken ?? '') :
-                                                                    item.daysToken ?? '' }}
-                                                            </span>
-                                                        </v-col>
-                                                    </v-row>
-                                                </v-container>
-                                            </v-card-text>
-                                        </v-card>
-                                    </v-col>
-                                    <v-row class="justify-end mt-2">
-                                        <v-col v-for="legend in legends" :key="legend.status" cols="4" md="1" lg="1">
-                                            <v-icon :color="legend.color">{{ legend.icon }}</v-icon> <br>
-                                            <span>{{ legend.label }}</span>
-                                        </v-col>
-                                    </v-row>
-
-                                </v-row>
+                       <v-row cols="12">
+        <v-col cols="12">
+          <v-card elevation="0">
+            <v-card-title class="custom-title">
+              <h5 class="text-center">{{ $t('container.grievance_management.grievanceList.grievance_status') }}</h5>
+            </v-card-title>
+            <v-card-text class="m-0">
+              <v-container fluid>
+                <v-row v-for="(item, index) in tracking" :key="index" v-show="item.status != '' && item.length != 0" :style="{ color: getFontColor(item.status) }" class="tracking-item mt-2">
+                  <v-col cols="12" sm="6" md="3" class="text-center status-cell">
+                    {{ getStatusName(item.status) }}
+                  </v-col>
+                  <v-col cols="12" sm="6" md="2" class="text-center timeline-cell" style="margin-top:-30px;">
+                    <v-timeline align-top truncate-line="both">
+                      <v-timeline-item :color="getTimelineColor(item.status)" :icon="getTimelineIcon(item.status)">
+                      </v-timeline-item>
+                    </v-timeline>
+                  </v-col>
+                  <v-col cols="12" md="5" class="text-center state-cell">
+                    {{ getStateName(item.status) }}
+                  </v-col>
+                  <v-col cols="12" md="2" class="time-date-cell" v-show="item.status != ''">
+                    {{ language == 'bn' ? "সময়:" : "Time:" }} {{ language == 'bn' ? $helpers.englishToBangla(item.time ?? '') : item.time ?? '' }}<br>
+                    {{ language == 'bn' ? "তারিখ :" : "Date:" }} {{ language == 'bn' ? $helpers.englishToBangla(item.date ?? '') : item.date ?? '' }}<br>
+                    <span v-if="item.daysToken > 0">
+                      {{ language == 'bn' ? "প্রাপ্ত কার্য সম্পাদনের গৃহীত সময়কাল:" : "Days Taken: " }} {{ language == 'bn' ? $helpers.englishToBangla(item.daysToken ?? '') : item.daysToken ?? '' }}
+                    </span>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+          </v-card>
+        </v-col>
+        <v-row class="justify-end mt-2">
+          <v-col v-for="legend in legends" :key="legend.status" cols="4" sm="3" md="1" lg="1" class="text-center">
+            <v-icon :color="legend.color">{{ legend.icon }}</v-icon><br>
+            <span>{{ legend.label }}</span>
+          </v-col>
+        </v-row>
+      </v-row>
 
 
                             </v-card-text>
