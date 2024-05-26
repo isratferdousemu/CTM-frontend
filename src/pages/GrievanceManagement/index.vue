@@ -660,14 +660,24 @@ export default {
         forwardOfficer: null,
       },
       fileTypeRule: (value) => {
-        const allowedFormats = ['.pdf', '.xls', '.xlsx', '.jpg', '.jpeg', '.png'];
-        const extension = value.name.slice(((value.name.lastIndexOf(".") - 1) >>> 0) + 2);
-        return allowedFormats.includes(`.${extension}`) || 'Allowed file types are PDF, Excel, JPG, JPEG, and PNG.';
+        // alert(value);
+        if(value !=null){
+          const allowedFormats = ['.pdf', '.xls', '.xlsx', '.jpg', '.jpeg', '.png'];
+          const extension = value.name.slice(((value.name.lastIndexOf(".") - 1) >>> 0) + 2);
+          return allowedFormats.includes(`.${extension}`) || 'Allowed file types are PDF, Excel, JPG, JPEG, and PNG.';
+        }else{
+            this.data.documents = '';
+        }
+
       },
       fileSizeRule: (value) => { 
+        if (value != null) {
         const maxSizeMB = 5; // Maximum file size in MB
         const maxSizeBytes = maxSizeMB * 1024 * 1024; // Convert MB to bytes
         return value.size <= maxSizeBytes || `File size should be less than ${maxSizeMB} MB.`;
+      }else{
+          this.data.documents='';
+        }
       },
       loading:true,
       total: null,
@@ -794,11 +804,7 @@ export default {
     },
     headers() {
       return [
-        // {
-        //   text: this.$t("container.application_selection.application.select"),
-        //   value: "id",
-        //   fixed: true,
-        // },
+
         { text: this.$t("container.list.sl"), value: "sl", fixed: true },
         {
           text: this.$t(
@@ -859,18 +865,7 @@ export default {
           text: this.$t("container.system_config.demo_graphic.district.district"),
           value: "district",
         },
-        // {
-        //   text: this.$t("container.system_config.demo_graphic.ward.upazila_city_district"),
-        //   value: "location",
-        // },
-        // {
-        //   text: this.$t("container.system_config.demo_graphic.ward.union_pouro_city"),
-        //   value: "union_pouro_city",
-        // },
-        // {
-        //   text: this.$t("container.system_config.demo_graphic.ward.ward"),
-        //   value: "ward_id",
-        // },
+
 
 
         {
@@ -927,7 +922,7 @@ export default {
         });
     },
     createGrievanceDialog(item) {
-
+       this.resetForm()
       const queryParams = {
         subjectId: item.grievance_subject?.id,
         typeId: item.grievance_type?.id,
@@ -1013,7 +1008,6 @@ export default {
     },
     // show details modal
     showDetailsModal(item) {
-      console.log(item.status,'stausss');
       this.showModal = true;
       this.data.status = item.status
       this.data.tracking_no = item.tracking_no
@@ -1389,6 +1383,7 @@ export default {
       this.data.name = null;
       this.data.tracking_no = null;
       this.data.verification_number = null;
+      this.data.documents = null;
 
       this.data.grievanceSubject = null;
       this.data.grievanceType = null;

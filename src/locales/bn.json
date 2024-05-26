@@ -1280,7 +1280,7 @@
       "add_grievance_type": "নতুন অভিযোগের ধরন যোগ করুন",
       "edit_grievance_type": "অভিযোগের ধরন আপডেট করুন",
       "add_new_subject": "নতুন অভিযোগের বিষয় যোগ করুন",
-      "grievance_subject": "অভিযোগ বিষয়",
+      "grievance_subject": "অভিযোগের বিষয়",
       "add_grievance_subject": "নতুন বিষয় যোগ করুন",
       "edit_grievance_subject": "অভিযোগের বিষয় আপডেট করুন",
       "main_grievance_type": "অভিযোগের ধরন",
@@ -1319,7 +1319,7 @@
       },
       "grievanceList": {
         "grievance_list": "অভিযোগের তালিকা",
-        "grievance_tracking": "অভিযোগের ট্র্যাকিং",
+        "grievance_tracking": "অভিযোগ ট্র্যাকিং",
         "tracking_no": "ট্র্যাকিং আইডি",
         "grievance_date": "অভিযোগের তারিখ",
         "search": "অনুসন্ধান করুন",
