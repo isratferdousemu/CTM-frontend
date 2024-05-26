@@ -23,13 +23,13 @@
       "banned": "Banned",
       "submit": "Submit",
       "cancel": "cancel",
-      "copy":"Copy Link",
-      "ok":"Okay",
+      "copy": "Copy Link",
+      "ok": "Okay",
       "edit": "Edit",
       "print": "Print",
       "view": "View",
       "search": "Search",
-          "search_circular": "Circular Search",
+      "search_circular": "Circular Search",
       "filter": "Filter",
       "reset": "Reset",
       "back": "Back",
@@ -49,7 +49,7 @@
       "add": "Add",
       "update": "Update",
       "delete": "Delete",
-      "email":"Send Email",
+      "email": "Send Email",
       "saved": "Data saved Successfully",
       "updated": "Data updated Successfully৷",
       "deleted": "Data deleted Successfully",
@@ -373,8 +373,8 @@
         },
         "role": {
           "select_all": "Select All",
-            "select_role": "Select Role",
-            "select_module": "Select Module",
+          "select_role": "Select Role",
+          "select_module": "Select Module",
           "list": "Role Lists",
           "code": "Code",
           "name_en": "Role Name (EN)",
@@ -950,20 +950,30 @@
     "manage_allotment": {
       "id": "ID",
       "list": "Allotment List",
-      "program": "Allotment Distribution Program",
+      "program": "Allotment Program",
       "regular_payment": "Regular Payment",
       "additional": "Additional Payment",
       "post": "Post",
       "download": "Download",
       "allotment_setup_list": "Allotment Area Setup",
-      "area_type": "Area Type",
-      "allotment_area": "Allotment Area",
+      "area_type": "Upazila/City Corporation/ District Pouroshava",
+      "allotment_area": "Union/Ward/Pouroshava",
       "add_new_setup": "Update Allotment  Setup",
       "setupdelete": "Delete Allotment Area ",
-      "setupdelete_alert": "Are you sure to delete this Allotment Area?"
+      "setupdelete_alert": "Are you sure to delete this Allotment Area?",
+      "regular_beneficiaries": "Regular Beneficiaries",
+      "additional_beneficiaries": "Additional Beneficiaries",
+      "total_beneficiaries": "Total Beneficiaries",
+      "total_amount": "Total Amount",
+      "detail_budget_list": "Deatil Budget List",
+      "allotment_basic_info": "Allotment Basic Information",
+      "allotment_edit": "Allotment Edit",
+      "financial_year": "Financial Year"
     },
     "budget_management": {
       "budget_info": "Budget Info",
+      "budget_basic_info": "Budget Basic Information",
+      "budget_details_info": "Budget Details Information",
       "budget_info_list": "Budget Info List",
       "add_new": "Add New",
       "id": "ID",
@@ -973,14 +983,29 @@
       "action": "Action",
       "budget_create": "Budget Create",
 
-      "budget_verification":"Budget Verification",
-      "approved_by":"Approved By",
-      "approved_date":"Approved Date",
-      "remark":"Remarks",
-      "delete_title":"Delete Budget!!!",
-      "delete_message":"Are you sure to delete this Budget?",
+      "budget_verification": "Budget Verification",
+      "approved_by": "Approved By",
+      "approved_date": "Approved Date",
+      "remark": "Remarks",
+      "delete_title": "Delete Budget!!!",
+      "delete_message": "Are you sure to delete this Budget?",
       "budget_edit": "Budget Edit",
-      "update":"Update"
+      "update": "Update",
+      "budgets": "Budgets",
+      "office": "Upazila/City Corporation/ District Pouroshava",
+      "upazila": "Upazila",
+      "union_pourashava": "Union/Pourashava",
+      "beneficiary_regular": "Beneficiary Regular",
+      "beneficiary_additional": "Beneficiary Additional",
+      "beneficiary_amount": "Per Beneficiary Amount",
+      "total_beneficiary": "Total Beneficiary",
+      "amount_of_allocated_money": "Amount of Allocated Money",
+      "allotment_area": "Union/Ward/Pouroshava",
+      "budget_id": "Budget Id",
+      "program": "Program",
+      "no_of_previous_year": "No of Previous Year",
+      "calculation_value": "Calculation Value",
+      "approval_status": "Status"
     },
     "payroll_management": {
       "list": "Payment Processor",
@@ -992,8 +1017,19 @@
       "email": "Focal Email",
       "bank_name": "Bank Name",
       "branch_name": "Branch Name",
+      "routing_number": "Routing Number",
+      "charge": "Charge Percentage",
       "delete": "Delete Payment Processor ",
-      "delete_alert": "Are you sure to delete this Payment Processor?"
+      "delete_alert": "Are you sure to delete this Payment Processor?",
+      "location_type": "Location Type",
+      "division": "Division",
+      "district": "District",
+      "upazila": "Upazila",
+      "union": "Union",
+      "thana": "Thana",
+      "city_corporation": "City Corporation",
+      "district_pourashava": "District Pourashava",
+      "verification_success_msg": "Verification Setting submitted successfully"
     },
       "training_management": {
         "trainer_info": {
@@ -1144,11 +1180,11 @@
            
           },
 
-        "dashboard": {
-          "organization_wise_api_requests": "Organization Wise API Requests",
-          "number_of_api_request": "Number Of API Requests"
-        }
-      },
+      "dashboard": {
+        "organization_wise_api_requests": "Organization Wise API Requests",
+        "number_of_api_request": "Number Of API Requests"
+      }
+    },
     "system_audit": {
       "application_tracking": "Application Tracking",
       "grievance_tracking": "Grievance Tracking",
@@ -1174,7 +1210,7 @@
       "office": "Office",
       "applicant_details": "Applicant Details"
     },
-   
+
     "activity_log": {
       "table": {
         "title": "Activity Log Lists",
@@ -1203,6 +1239,23 @@
         "beneficiary_id": "Beneficiary Id",
         "user_name": "User Name",
         "action_type": "Action Type"
+      }
+    },
+    "power_bi_report": {
+      "index": {
+        "title": "Power BI Report",
+        "add": "Add Power BI Report ",
+        "update": "Update Power BI Report ",
+        "title_en": "Title English",
+        "title_bn": "Title Bangla",
+        "embaded_code": "Embaded Code",
+        "image": "Image",
+        "delete": "Delete Power BI Report",
+        "delete_alert": "Are you sure to delete this Report?",
+        "go_power_bi": "GO TO POWER BI"
+      },
+      "view": {
+        "title": "কার্যকলাপ লগ ফিল্টার"
       }
     },
     "system_config_dashboard": {
@@ -1248,7 +1301,7 @@
       "grievance_setting_delete": "Delete Grievance Setting",
       "grievance_setting_delete_message": "Are you sure to delete this Grievance Setting?",
       "grievanceEntry":{
-        "complaint_area": "Complaint Area Concerned Office",
+        "complaint_area": "Complainant's   Address",
         "is_existing_beneficiary": "Are you an existing beneficiary?",
         "complaint_details": "Provide Details of the Complaint",
         "details": "Complaint Details",
@@ -1265,21 +1318,20 @@
         "national_identity": "National Identity (NID)",
         "grievance_question": "Are you sure to submit the Grievance? After submission editing will not be applicable.",
         "note": "Do you want the grievance details and resolution status to be publicly disclosed? [N:B: personal and contact details will remain confidential]"
-  
       },
       "grievanceList": {
-          "grievance_list": "Grievacne List",
-          "tracking_no": "Tracking ID",
-          "grievance_date": "Grievance Date",
-          "search": "Search",
-          "resolved_officer": "Resolved Officer",
-          "grievance_details": "Grievance Details",
-          "forward_to": "Forward To",
-          "solution": "Solution",
-          "remarks": "Remarks",
-          "status_update": "Grievance Status Update",
-          "grievance_status": "Grievance Status"
-        }
+        "grievance_list": "Grievacne List",
+        "tracking_no": "Tracking ID",
+        "grievance_date": "Grievance Date",
+        "search": "Search",
+        "resolved_officer": "Resolved Officer",
+        "grievance_details": "Grievance Details",
+        "forward_to": "Forward To",
+        "solution": "Solution",
+        "remarks": "Remarks",
+        "status_update": "Grievance Status Update",
+        "grievance_status": "Grievance Status"
+      }
     },
 
     "profile": {
@@ -1299,7 +1351,5 @@
       "update_pass": "Update Password",
       "contact_info": "Contact Information"
     }
-
-
   }
 }

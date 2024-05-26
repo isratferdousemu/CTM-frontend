@@ -1,5 +1,5 @@
-import { http } from "@/hooks/httpService";
-import { httpFile } from "../hooks/httpService";
+import { http } from '@/hooks/httpService';
+import { httpFile } from '../hooks/httpService';
 /* -------------------------------------------------------------------------- */
 /*                                states Define                               */
 /* -------------------------------------------------------------------------- */
@@ -27,14 +27,14 @@ const actions = {
     try {
       // Simulate an async operation
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      commit("incrementValue");
+      commit('incrementValue');
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error('Error fetching data:', error);
     }
   },
   StoreBudget: ({ commit }, data) => {
     return http()
-      .post("/admin/budget/add", data)
+      .post('/admin/budget/add', data)
       .then((result) => {
         return result;
       })
@@ -80,6 +80,34 @@ const actions = {
   UpdateBudget: ({ commit }, data) => {
     return http()
       .put(`/admin/budget/update/${data.id}`, data.formData)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        const data = {
+          errors: err.response.data.errors,
+          error_status: err.response.message,
+        };
+        return err;
+      });
+  },
+  updateAllotment: ({ commit }, data) => {
+    return http()
+      .put(`/admin/allotment/update/${data.id}`, data.formData)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        const data = {
+          errors: err.response.data.errors,
+          error_status: err.response.message,
+        };
+        return err;
+      });
+  },
+  UpdateBudgetData: ({ commit }, data) => {
+    return http()
+      .put(`/admin/budget/detail/update/${data.id}`, data.formData)
       .then((result) => {
         return result;
       })

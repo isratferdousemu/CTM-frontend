@@ -1,33 +1,33 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import createPersistedState from "vuex-persistedstate";
-import { http } from "@/hooks/httpService";
-import axios from 'axios'
+import Vue from 'vue';
+import Vuex from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
+import { http } from '@/hooks/httpService';
+import axios from 'axios';
 // import axios from 'axios'
 
-import ApplicationSelection from "./ApplicationSelection";
-import BeneficiaryManagement from "./BeneficiaryManagement";
-import BudgetManagement from "./BudgetManagement";
-import EmergencyPaymentManagement from "./EmergencyPaymentManagement";
-import GrievanceManagement from "./GrievanceManagement";
-import GeneralSetting from "./GeneralSetting";
-import MEReporting from "./MEReporting";
-import PayrollManagement from "./PayrollManagement";
-import SystemConfiguration from "./SystemConfiguration";
-import TrainingManagement from "./TrainingManagement";
-import Division from "@/store/modules/system_configuration/division";
-import District from "@/store/modules/system_configuration/district";
-import City from "@/store/modules/system_configuration/city";
-import Union from "@/store/modules/system_configuration/union";
-import Ward from "@/store/modules/system_configuration/ward";
-import Thana from "@/store/modules/system_configuration/thana";
-import Menu from "@/store/modules/system_configuration/menu";
-import Device_registration from "@/store/modules/system_configuration/device_registration";
-import Role from "@/store/modules/system_configuration/role";
-import Role_permission from "@/store/modules/system_configuration/role_permission";
-import Office from "@/store/modules/system_configuration/office";
-import Allowance from "@/store/modules/system_configuration/allowance";
-import ManageAllotment from "@/store/modules/manage_allotment";
+import ApplicationSelection from './ApplicationSelection';
+import BeneficiaryManagement from './BeneficiaryManagement';
+import BudgetManagement from './BudgetManagement';
+import EmergencyPaymentManagement from './EmergencyPaymentManagement';
+import GrievanceManagement from './GrievanceManagement';
+import GeneralSetting from './GeneralSetting';
+import MEReporting from './MEReporting';
+import PayrollManagement from './PayrollManagement';
+import SystemConfiguration from './SystemConfiguration';
+import TrainingManagement from './TrainingManagement';
+import Division from '@/store/modules/system_configuration/division';
+import District from '@/store/modules/system_configuration/district';
+import City from '@/store/modules/system_configuration/city';
+import Union from '@/store/modules/system_configuration/union';
+import Ward from '@/store/modules/system_configuration/ward';
+import Thana from '@/store/modules/system_configuration/thana';
+import Menu from '@/store/modules/system_configuration/menu';
+import Device_registration from '@/store/modules/system_configuration/device_registration';
+import Role from '@/store/modules/system_configuration/role';
+import Role_permission from '@/store/modules/system_configuration/role_permission';
+import Office from '@/store/modules/system_configuration/office';
+import Allowance from '@/store/modules/system_configuration/allowance';
+import ManageAllotment from '@/store/modules/manage_allotment';
 
 // Import other modules as needed
 
@@ -38,7 +38,7 @@ export default new Vuex.Store({
   /*                                states Define                               */
   /* -------------------------------------------------------------------------- */
   state: {
-    headerTitle: "Dashboard",
+    headerTitle: 'Dashboard',
     Drawer: true,
     menus: [],
     notification: [],
@@ -56,14 +56,14 @@ export default new Vuex.Store({
     //practice
     forms: [],
     division: {},
-    success_message: "",
+    success_message: '',
     errors: [],
-    error_message: "",
-    error_status: "",
-    error_status_login: "",
-    error_code_login: "",
-    success_status: "",
-    login_message: "",
+    error_message: '',
+    error_status: '',
+    error_status_login: '',
+    error_code_login: '',
+    success_status: '',
+    login_message: '',
     loginData: [],
     otpData: [],
     lookupTypes: [
@@ -90,24 +90,31 @@ export default new Vuex.Store({
       { id: 20, name: 'Class' },
       { id: 24, name: 'Trainer Designation' },
       { id: 25, name: 'Grievance Solution Type' },
+      { id: 26, name: "Training Circular Type"},
+      { id: 27, name: "Training Type"},
+      { id: 28, name: "Training Circular Status"},
+      { id: 29, name: "Training Module"},
+      { id: 30, name: "Training Participant Designation"}
     ],
-    appLanguage: localStorage.getItem("appLanguage") || process.env.VUE_APP_I18N_LOCALE || 'bn'
-
+    appLanguage:
+      localStorage.getItem('appLanguage') ||
+      process.env.VUE_APP_I18N_LOCALE ||
+      'bn',
   },
   /* -------------------------------------------------------------------------- */
   /*                               Getters Define                               */
   /* -------------------------------------------------------------------------- */
   getters: {
     getOtpresponse(state) {
-      return state.otpData
+      return state.otpData;
     },
     getLoginresponse(state) {
-      return state.loginData
+      return state.loginData;
     },
     GetToken: function (state) {
       return state.token;
     },
-    getAppLanguage: state => state.appLanguage,
+    getAppLanguage: (state) => state.appLanguage,
     GetUserPermissions: function (state) {
       return state.userPermissions;
     },
@@ -117,10 +124,9 @@ export default new Vuex.Store({
   /*                               Actions Define                               */
   /* -------------------------------------------------------------------------- */
   actions: {
-
     sendOtpForgetPassword: ({ commit, state }, data) => {
       return http()
-        .post("admin/forgot-password", data)
+        .post('admin/forgot-password', data)
         .then((result) => {
           // commit("setStep", 2);
           return result.data;
@@ -134,12 +140,11 @@ export default new Vuex.Store({
           return data;
           // console.log(err);
           // commit("setforgotPasswordErrors", err.response.data.errors);
-
         });
     },
     forgotPasswordSubmit: ({ commit, state }, data) => {
       return http()
-        .post("admin/forgot-password/submit", data)
+        .post('admin/forgot-password/submit', data)
         .then((result) => {
           console.log(result, 'submit working');
         })
@@ -176,19 +181,18 @@ export default new Vuex.Store({
       commit('setToken', null);
       commit('setUserPermissions', []);
       commit('setUser', []);
-
     },
     LoginSubmit: ({ commit, state }, data) => {
       return http()
-        .post("admin/login/otp", data)
+        .post('admin/login/otp', data)
         .then((result) => {
-          commit("setOtpresponse", result);
-          return result
+          commit('setOtpresponse', result);
+          return result;
         })
         .catch((err) => {
           state.errors = err.response.data.errors;
           console.log(err.response.data.message);
-          state.login_message = err.response.data.message
+          state.login_message = err.response.data.message;
           state.error_status_login = err.response.status;
           state.error_code_login = err.response.error_code;
           return err;
@@ -196,21 +200,20 @@ export default new Vuex.Store({
     },
     sendOtp: ({ commit, state }, data) => {
       return http()
-        .post("admin/login", data)
+        .post('admin/login', data)
         .then((result) => {
-          commit("setOtp", result);
+          commit('setOtp', result);
           return result;
         })
         .catch((err) => {
           state.errors = err.response.data.errors;
           state.error_status = err.response.status;
           return err;
-
         });
     },
     getAllMenus: ({ commit, state }) => {
       return http()
-        .get("/admin/menu/get-all")
+        .get('/admin/menu/get-all')
         .then((result) => {
           commit('setMenus', result.data.data);
         })
@@ -218,26 +221,25 @@ export default new Vuex.Store({
           state.errors = err.response.data.errors;
           state.error_status = err.response.status;
           return err;
-
         });
     },
     async getLookupByType({ state }, type) {
-      return await axios.get("/admin/lookup/get/" + type, {
-        headers: {
-          Authorization: "Bearer " + state.token,
-          "Content-Type": "multipart/form-data",
-        }
-      }).then((result) => {
-
-        return result.data.data
-      });
+      return await axios
+        .get('/admin/lookup/get/' + type, {
+          headers: {
+            Authorization: 'Bearer ' + state.token,
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then((result) => {
+          return result.data.data;
+        });
     },
     async getGlobalLookupByType({ state }, type) {
-      return await axios.get("/global/lookup/get/" + type).then((result) => {
-        return result.data.data
+      return await axios.get('/global/lookup/get/' + type).then((result) => {
+        return result.data.data;
       });
     },
-  
 
     /*start get all City*/
     GetAllCityByDistrict: ({ commit }, data) => {
@@ -258,7 +260,6 @@ export default new Vuex.Store({
     },
     /*end get all City*/
   },
-
 
   mutations: {
     setDrawer(state, payload) {
@@ -316,23 +317,22 @@ export default new Vuex.Store({
         state.loginData = data.data;
         // state.success_status = data.status;
       } else {
-        state.success_message = "";
+        state.success_message = '';
       }
     },
     setOtp(state, loginData) {
-      state.loginData = loginData
+      state.loginData = loginData;
     },
     setOtpresponse(state, otpData) {
-      state.otpData = otpData
+      state.otpData = otpData;
     },
     setAppLanguage(state, newLocale) {
       state.appLanguage = newLocale;
-      localStorage.setItem("appLanguage", newLocale); // Whenever we change the appLanguage we save it to the localStorage
+      localStorage.setItem('appLanguage', newLocale); // Whenever we change the appLanguage we save it to the localStorage
     },
     updateMyLocale(state, newLocale) {
       state.appLanguage = newLocale;
     },
-
   },
   // use modules
   modules: {
@@ -358,11 +358,18 @@ export default new Vuex.Store({
     Role_permission,
     Office,
     Allowance,
-    ManageAllotment
+    ManageAllotment,
   },
   plugins: [
     createPersistedState({
-      paths: ["userData", "token", "userPermissions", "loginData", "appLanguage", "menus"],
+      paths: [
+        'userData',
+        'token',
+        'userPermissions',
+        'loginData',
+        'appLanguage',
+        'menus',
+      ],
     }),
   ],
 });

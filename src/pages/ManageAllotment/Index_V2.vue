@@ -1,18 +1,15 @@
 <template>
-    <div id="information_tracking">
+    <div id="allotment_list">
         <v-row class="mx-5 mt-4">
             <v-col cols="12">
+                <Spinner :loading="isLoading" />
                 <!-- Expantion panels start -->
-                <v-card :loading="isLoading" height="100%">
+                <v-card height="100%">
                     <v-expansion-panels v-model="panel" multiple>
                         <v-expansion-panel>
                             <v-expansion-panel-header color="#8C9EFF">
                                 <h3 class="white--text">
-                                    {{
-                                        $t(
-                                            "container.budget_management.budget_edit"
-                                        )
-                                    }}
+                                    {{ $t("container.list.search") }}
                                 </h3>
                             </v-expansion-panel-header>
                             <v-expansion-panel-content class="elevation-0 transparent mt-10">
@@ -34,6 +31,22 @@
                                                         clearable></v-select>
                                                 </ValidationProvider>
                                             </v-col>
+                                            <v-col lg="3" md="3" cols="12">
+                                                <ValidationProvider name="ProgramName" vid="program_id"
+                                                    v-slot="{ errors }">
+                                                    <v-select outlined clearable :items="financial_years"
+                                                        v-model="data.financial_year_id"
+                                                        :item-text="getFinancialItemText" item-value="id" :label="$t(
+                                                            'container.system_config.demo_graphic.financial_year.financial_year'
+                                                        )
+                                                            " class="no-arrow-icon"
+                                                        :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
+                                                        :error="errors[0] ? true : false" :error-messages="errors[0]">
+
+                                                    </v-select>
+                                                </ValidationProvider>
+                                            </v-col>
+
                                             <v-col lg="3" md="3" cols="12">
                                                 <ValidationProvider name="Division" vid="division" v-slot="{ errors }">
                                                     <v-text-field outlined readonly
@@ -231,12 +244,11 @@
                                         <div class="d-inline d-flex justify-end">
                                             <v-btn elevation="2" class="btn mr-2" color="success" type="submit"
                                                 :disabled="!data.program_id ||
-                                                    !data.division_id ||
-                                                    !data.district_id
+                                                    !data.financial_year_id
                                                     ">{{ $t("container.list.search") }}</v-btn>
                                             <v-btn elevation="2" class="btn" @click="resetSearch">{{
                                                 $t("container.list.reset")
-                                            }}</v-btn>
+                                                }}</v-btn>
                                         </div>
                                     </form>
                                 </ValidationObserver>
@@ -250,110 +262,124 @@
             </v-col>
 
             <v-col cols="12">
-                <ValidationObserver ref="formAdd" v-slot="{ invalid }">
-                    <form @submit.prevent="submitBudgetData()">
-                        <v-card style="margin-bottom: 50px">
-                            <v-row>
-                                <v-col col="6">
-                                    <v-card-title>
-                                        <h3> {{
-                                            $t(
-                                                "container.budget_management.budgets"
-                                            )
-                                        }}</h3>
-                                    </v-card-title>
-                                </v-col>
-                            </v-row>
-
-                            <v-divider></v-divider>
-
-                            <v-card-text>
-                                <v-col cols="12" class="d-flex">
-                                    <v-row wrap>
-                                        <v-col cols="12" lg="12">
-                                            <v-data-table :loading="loading" :headers="headers" :items="budgets" dense
-                                                class="elevation-1 transparent row-pointer" :page.sync="page.current"
-                                                :items-per-page.sync="page.perPage" :total-items="page.total"
-                                                @update:options="onOptionsUpdate">
-                                                <template v-slot:item.id="{ item, index }">
-                                                    {{
-                                                        (page.current - 1) * page.perPage + index + 1
-                                                    }}
-                                                </template>
-                                                <template v-slot:item.division_or_district_cut_off="{
-                                                    item,
-                                                }">
-                                                    {{ item.name_en }}
-                                                </template>
-                                                <template v-slot:item.per_beneficiary_amount="{ item }">
-                                                    <ValidationProvider v-slot="{ errors }" name="Weight/Score"
-                                                        vid="inputScore" rules="required">
-                                                        <v-text-field v-model="item.per_beneficiary_amount" outlined
-                                                            clearable type="number"></v-text-field>
-                                                    </ValidationProvider>
-                                                </template>
-
-                                                <template v-slot:item.total_beneficiaries="{ item }">
-                                                    <ValidationProvider v-slot="{ errors }" name="Weight/Score"
-                                                        vid="inputScore" rules="required">
-                                                        <v-text-field value="0" v-model="item.total_beneficiaries"
-                                                            outlined clearable type="text"></v-text-field>
-                                                    </ValidationProvider>
-                                                </template>
-
-                                                <!-- <template v-slot:item.total_amount="{ item }">
-
-                                                    <v-text-field v-model="item.total_beneficiaries"
-                                                        disabled></v-text-field>
-                                                </template> -->
-
-                                                <template v-slot:item.total_amount="{ item }">
-                                                    {{ item.total_amount = item.total_beneficiaries *
-                                                        item.per_beneficiary_amount }}
-                                                </template>
-
-                                                <template v-slot:item.name_bn="{ item }">
-                                                    {{ item.name_bn }}
-                                                </template>
-
-                                            </v-data-table>
-                                        </v-col>
-                                    </v-row>
-                                </v-col>
-                            </v-card-text>
-
-                            <v-col cols="12">
-                                <v-row class="justify-end mb-5 mr-2">
-                                    <v-btn flat color="primary" class="custom-btn mr-2" router to="/budget">{{
-                                        $t("container.list.back") }}
-                                    </v-btn>
-
-                                    <v-btn flat color="success" type="submit" class="custom-btn mr-2"
-                                        :disabled="invalid"> {{
-                                            $t("container.list.update") }}
-                                    </v-btn>
-                                </v-row>
+                <v-card elevation="2" color="white" rounded="md" theme="light" class="mb-8 mt-1">
+                    <v-card-title class="justify-center" tag="div">
+                        <h3 class="text-uppercase pt-3">
+                            {{ $t("container.manage_allotment.list") }}
+                        </h3>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-row justify="end" align="center" class="mx-4">
+                            <!-- Dropdown on the right -->
+                            <v-col lg="4" md="4" cols="12" class="text-right">
+                                <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4"
+                                    @click="GeneratePDF()" :disabled="!data.program_id ||
+                                        !data.financial_year_id || !data.division_id || !data.district_id
+                                        ">
+                                    <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                                    {{ $t("container.list.PDF") }}
+                                </v-btn>
+                                <v-btn elevation="2" class="btn mr-2 white--text" color="teal darken-2"
+                                    @click="GenerateExcel()">
+                                    <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                                    {{ $t("container.list.excel") }}
+                                </v-btn>
                             </v-col>
-                        </v-card>
-
-                    </form>
-                </ValidationObserver>
+                        </v-row>
+                        <v-row class="ma-0 white round-border d-flex justify-space-between align-center"
+                            justify="center" justify-lg="space-between">
+                            <v-col cols="12">
+                                <v-data-table :headers="headers" :items="allotments" :loading="loading" item-key="id"
+                                    :items-per-page="pagination.perPage" hide-default-footer
+                                    class="elevation-0 transparent row-pointer">
+                                    <template v-slot:item.sl="{ item, index }">
+                                        {{
+                                            (pagination.current - 1) * pagination.perPage +
+                                            index +
+                                            1
+                                        }}
+                                    </template>
+                                    <!-- Download Action Button -->
+                                    <template v-slot:item.download="{ item }">
+                                        <v-tooltip top>
+                                            <template v-slot:activator="{ on }">
+                                                <v-btn v-can="'update-post'" fab x-small v-on="on" color="#AFB42B"
+                                                    elevation="0" class="white--text">
+                                                    <v-icon> mdi-download </v-icon>
+                                                </v-btn>
+                                            </template>
+                                            <span>
+                                                {{ $t("container.list.view") }}
+                                            </span>
+                                        </v-tooltip>
+                                    </template>
+                                    <!-- End Download Action Button -->
+                                    <!-- Action Button -->
+                                    <template v-slot:item.actions="{ item }">
+                                        <v-tooltip top>
+                                            <template v-slot:activator="{ on }">
+                                                <v-btn v-can="'update-post'" fab x-small v-on="on" color="#AFB42B"
+                                                    elevation="0" class="white--text"
+                                                    :to="`/allotment/detail/${item.id}`">
+                                                    <v-icon> mdi-eye </v-icon>
+                                                </v-btn>
+                                            </template>
+                                            <span>
+                                                {{ $t("container.list.view") }}
+                                            </span>
+                                        </v-tooltip>
+                                        <v-tooltip top>
+                                            <template v-slot:activator="{ on }">
+                                                <v-btn v-can="'update-post'" fab x-small v-on="on" color="success"
+                                                    elevation="0" class="ml-3" :to="`/allotment/edit/${item.id}`">
+                                                    <v-icon> mdi-account-edit-outline </v-icon>
+                                                </v-btn>
+                                            </template>
+                                            <span>
+                                                {{ $t("container.list.edit") }}
+                                            </span>
+                                        </v-tooltip>
+                                    </template>
+                                    <!-- End Action Button -->
+                                    <template v-slot:footer="item">
+                                        <div class="text-center pt-2 v-data-footer justify-center pb-2">
+                                            <v-select style="
+                                position: absolute;
+                                right: 25px;
+                                width: 149px;
+                                transform: translate(0px, 0px);
+                              " :items="items" hide-details dense outlined @change="onPageChange"
+                                                v-model="pagination.perPage"></v-select>
+                                            <v-pagination circle primary v-model="pagination.current"
+                                                :length="pagination.total" @input="onPageChange" :total-visible="11"
+                                                class="custom-pagination-item"></v-pagination>
+                                        </div>
+                                    </template>
+                                </v-data-table>
+                            </v-col>
+                        </v-row>
+                    </v-card-text>
+                </v-card>
             </v-col>
         </v-row>
     </div>
 </template>
+
 <script>
 import { mapState, mapActions } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
-export default {
-    name: "Budget Edit",
-    title: "CTM - Budget Edit",
+import Spinner from "@/components/Common/Spinner.vue";
 
+extend("required", required);
+export default {
+    name: "Index",
+    title: "CTM - Allotment List",
     data() {
         return {
             data: {
                 program_id: null,
+                financial_year_id: null,
                 division_id: null,
                 district_id: null,
                 location_type: null,
@@ -365,33 +391,22 @@ export default {
                 union_id: null,
                 ward_id: null,
             },
-            submit_data: {
-                to_program_id: null,
-                shifting_cause: "",
-                activation_date: "",
-                beneficiaries: [],
-            },
-            date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-                .toISOString()
-                .substr(0, 10),
-            menu: false,
-            modal: false,
-            menu2: false,
 
-            loading: false,
+            loading: true,
             isLoading: false,
             search: "",
-            budgets: [],
-            cause_types: [],
-            programs: [],
+            delete_id: "",
             districts: [],
-            locationType: [],
-            thanas: [],
-            cities: [],
-            unions: [],
-            wards: [],
-            district_pouros: [],
-            cb: {},
+            allotments: [],
+            allowances: [],
+            financial_years: [],
+            pagination: {
+                current: 1,
+                total: 0,
+                perPage: 10,
+            },
+            items: [5, 10, 15, 20, 40, 50, 100],
+
             user_permission: {
                 division: null,
                 division_name: null,
@@ -411,19 +426,12 @@ export default {
                 perPage: 10, // You can set the desired default page size
                 total: 0,
             },
-            pagination: {
-                current: 1,
-                total: 0,
-                perPage: 10,
-            },
-            items: [5, 10, 15, 20, 40, 50, 100],
-            value: ["name_bn"],
-            panel: [0],
         };
     },
     components: {
         ValidationProvider,
         ValidationObserver,
+        Spinner
     },
     computed: {
         language: {
@@ -434,47 +442,73 @@ export default {
         ...mapState({
             divisions: (state) => state.Division.divisions,
         }),
-        checked() {
-            var obj = Object.entries(this.cb) // [key, value]
-                .filter((o) => o[1]) // filter by truthy values
-                .map((o) => o[0]); // map the keys
-
-            console.log("checked__", obj.length);
-            return obj;
-        },
         headers() {
             return [
+                { text: this.$t("container.list.sl"), value: "sl" },
                 // {
-                //     text: this.$t("container.list.sl"),
-                //     value: "sl",
-                //     align: "center",
-                //     sortable: false,
+                //     text: this.$t("container.manage_allotment.id"),
+                //     value: "id",
                 // },
                 {
+                    text: this.$t("container.manage_allotment.program"),
+                    value: "program.name_en",
+                    align: "center",
+                },
+                {
                     text: this.$t(
-                        "container.budget_management.office"
+                        "container.system_config.demo_graphic.financial_year.financial_year"
                     ),
+                    value: "financialYear.financial_year",
+                    align: "center",
+                },
+                {
+                    text: this.$t(
+                        "container.system_config.demo_graphic.division.division"
+                    ),
+                    value: "division.name_en",
+                    align: "center",
+                },
+                {
+                    text: this.$t(
+                        "container.system_config.demo_graphic.district.district"),
+                    value: "district.name_en",
+                    align: "center",
+                },
+                {
+                    text: this.$t(
+                        "container.manage_allotment.area_type"),
                     value: "office_area.name_en",
                     align: "center",
                 },
                 {
-                    text: this.$t("container.budget_management.allotment_area"),
+                    text: this.$t("container.manage_allotment.allotment_area"),
                     value: "allotment_area.name_en",
                     align: "center",
                 },
                 {
-                    text: this.$t("container.budget_management.total_beneficiary"),
+                    text: this.$t("container.manage_allotment.regular_beneficiaries"),
+                    value: "regular_beneficiaries",
+                    align: "center",
+                },
+                {
+                    text: this.$t("container.manage_allotment.additional_beneficiaries"),
+                    value: "additional_beneficiaries",
+                    align: "center",
+                },
+                {
+                    text: this.$t("container.manage_allotment.total_beneficiaries"),
                     value: "total_beneficiaries",
                     align: "center",
                 },
                 {
-                    text: this.$t("container.budget_management.beneficiary_amount"),
-                    value: "per_beneficiary_amount",
+                    text: this.$t("container.manage_allotment.total_amount"),
+                    value: "total_amount",
                     align: "center",
                 },
                 {
-                    text: this.$t("container.budget_management.amount_of_allocated_money"),
-                    value: "total_amount",
+                    text: this.$t("container.list.action"),
+                    value: "actions",
+                    width: "15%",
                     align: "center",
                 },
             ];
@@ -506,6 +540,9 @@ export default {
         getLocationText(item) {
             return this.language === "bn" ? item.value_bn : item.value_en;
         },
+        getFinancialItemText(item) {
+            return this.language === "bn" ? item.financial_year : item.financial_year;
+        },
         resetSearch() {
             if (!this.user_permission.division) {
                 this.data.division_id = null;
@@ -526,6 +563,7 @@ export default {
                 this.data.location_type = null;
             }
             this.data.program_id = null;
+            this.data.financial_year_id = null;
 
             this.data.sub_location_type = null;
             this.data.city_id = null;
@@ -534,8 +572,9 @@ export default {
             this.upazila_id = null;
             this.data.union_id = null;
             this.data.ward_id = null;
-        },
 
+            this.GetAllotment();
+        },
         async GetAllProgram() {
             try {
                 this.$axios
@@ -562,7 +601,7 @@ export default {
             }
         },
         async GetUserPermission() {
-            this.isLoading = true;
+            // this.isLoading = true;
             try {
                 await this.$axios
                     .get("/admin/beneficiary/getUserLocation", {
@@ -629,8 +668,8 @@ export default {
                                     ? item?.city_corp?.name_en
                                     : item?.city_corp?.name_bn;
                         }
-                        this.isLoading = false;
-                        this.GetBeneficiary();
+                        //this.isLoading = false;
+                        this.GetAllotment();
                     })
                     .catch((err) => {
                         console.log(err, "error");
@@ -723,7 +762,6 @@ export default {
                 }
             }
         },
-
         async onChangeUpazila(event) {
             this.data.union_id = null;
             this.data.ward_id = null;
@@ -830,25 +868,22 @@ export default {
         },
         onPageChange($event) {
             // this.pagination.current = $event;
-            this.GetBeneficiary();
+            this.loading = true;
+            this.GetAllotment();
         },
         onSearch() {
+
             this.pagination = {
                 ...this.pagination,
                 current: 1,
             };
-            this.GetBeneficiary();
+            this.GetAllotment();
         },
-        async GetBeneficiary() {
-            // if (
-            //     !this.data.program_id &&
-            //     !this.data.division_id &&
-            //     !this.data.district_id
-            //     // (this.data.city_id || this.data.district_pouro_id || this.data.upazila_id)
-            // ) {
+        async GetAllotment() {
             this.loading = true;
             const queryParams = {
                 program_id: this.data.program_id,
+                financial_year_id: this.data.financial_year_id,
                 division_id: this.data.division_id,
                 district_id: this.data.district_id,
                 location_type_id: this.data.location_type,
@@ -864,8 +899,104 @@ export default {
                 sortBy: this.sortBy,
                 orderBy: this.sortDesc,
             };
+
             await this.$axios
-                .get("/admin/budget/detail/list/" + this.$route.params.id, {
+                .get("/admin/allotment/list", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data"
+                    },
+                    params: queryParams
+                })
+                .then(result => {
+                    this.allotments = result.data.data;
+                    this.total = result.data.meta.total;
+                    console.log("results_total__", this.total);
+
+                    this.pagination.current = result.data.meta.current_page;
+                    this.pagination.total = result.data.meta.last_page;
+                    this.pagination.grand_total = result.data.meta.total;
+                    this.loading = false;
+                });
+        },
+        GetAllowance() {
+            this.$axios
+                .get("/global/program", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((result) => {
+                    this.allowances = result.data.data;
+                });
+        },
+        GetFinancial_Year() {
+            this.$axios
+                .get("/admin/financial-year/get", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((result) => {
+                    this.financial_years = result.data.data;
+                });
+        },
+        updateHeaderTitle() {
+            const title = this.$t("container.manage_allotment.list");
+            this.$store.commit("setHeaderTitle", title);
+        },
+        async GeneratePDF(id) {
+            this.isLoading = true;
+            const queryParams = {
+                language: this.$i18n.locale,
+                program_id: this.data.program_id,
+                financial_year_id: this.data.financial_year_id,
+                division_id: this.data.division_id,
+                district_id: this.data.district_id
+            };
+            this.$axios
+                .get("/admin/allotment/report/", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "application/json",
+                    },
+                    params: queryParams,
+                    responseType: "arraybuffer",
+                })
+                .then((result) => {
+                    const blob = new Blob([result.data], { type: "application/pdf" });
+                    const url = window.URL.createObjectURL(blob);
+                    window.open(url, "_blank");
+                    this.isLoading = false;
+                    // window.open(result.data.data.url, "_blank");
+                })
+                .catch((error) => {
+                    this.isLoading = false;
+                    console.error("Error generating PDF:", error);
+                });
+        },
+
+        async GenerateExcel(id) {
+            this.isLoading = true;
+            let page;
+            if (!this.sortBy) {
+                page = this.pagination.current;
+            }
+            const queryParams = {
+                // language: this.$i18n.locale,
+                // program_id: this.data.program_id,
+                // financial_year_id: this.data.financial_year_id,
+
+                perPage: 50000,
+                page: 1, // All data loaded
+                // sortBy: this.sortBy,
+                // orderBy: this.sortDesc,
+            };
+
+            await this.$axios
+                .get("/admin/allotment/list", {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -873,130 +1004,136 @@ export default {
                     params: queryParams,
                 })
                 .then((result) => {
-                    this.budgets = result.data.data;
-
-                    this.pagination.current = result.data.meta.current_page;
-                    this.pagination.total = result.data.meta.last_page;
-                    this.pagination.grand_total = result.data.meta.total;
-                    this.loading = false;
+                    this.budget_list = result.data.data;
+                })
+                .catch((error) => {
+                    this.isLoading = false;
+                    console.error("Error generating PDF:", error);
                 });
-            // }
-        },
-        submitBeneficiaryShifting() {
-            //   const beneficiaries = [];
-            //   this.checked.map((item) => {
-            //     const data = {
-            //       beneficiary_id: item,
-            //     };
-            //     beneficiaries.push(data);
-            //   });
-
-            if (this.selectedBeneficiaries.length === 0) {
-                this.$toast.error("Please select at least one Beneficiary for Exit");
-                return;
-            }
-            let fd = new FormData();
-
-            fd.append("to_program_id", this.submit_data.to_program_id);
-            fd.append("shifting_cause", this.submit_data.shifting_cause);
-            fd.append("activation_date", this.submit_data.activation_date);
-
-            console.log("to_program_id", this.submit_data.to_program_id);
-
-            // Convert each object in the beneficiaries array to a JSON string
-            this.selectedBeneficiaries.forEach((beneficiary, index) => {
-                fd.append(`beneficiaries[${index}][beneficiary_id]`, beneficiary?.id);
-                fd.append(
-                    `beneficiaries[${index}][from_program_id]`,
-                    beneficiary?.program?.id
-                );
-            });
 
             try {
-                this.$store
-                    .dispatch("BeneficiaryManagement/BeneficiaryShifting", fd)
-                    .then((res) => {
-                        console.log(res, "submit__");
-                        if (res.data?.success) {
-                            console.log(res.data?.success, "submit__");
-                            this.$toast.success("Beneficiary Shifting Successfully");
-                            this.$router.push({ name: "beneficiary_shifting_list" });
-                        } else if (res.response?.data?.errors) {
-                            this.$refs.form.setErrors(res.response.data.errors);
-                            this.errors = res.response.data.errors;
-                            //   this.$toast.error(res.response.data.message);
-                        }
-                        console.log(this.$refs);
-                        console.log(this.errors, "this.errors");
+                import("@/plugins/Export2Excel").then((excel) => {
+                    const HeaderInfo = [
+                        this.$t("container.list.sl"),
+                        this.$t("container.manage_allotment.id"),
+                        this.$t(
+                            "container.system_config.demo_graphic.financial_year.financial_year"),
+                        this.$t(
+                            "container.system_config.demo_graphic.division.division"
+                        ),
+                        this.$t(
+                            "container.system_config.demo_graphic.district.district"),
+                        this.$t(
+                            "container.budget_management.office"
+                        ),
+                        this.$t(
+                            "container.budget_management.allotment_area"
+                        ),
+                        this.$t("container.manage_allotment.regular_beneficiaries"),
+                        this.$t("container.manage_allotment.additional_beneficiaries"),
+                        this.$t(
+                            "container.budget_management.total_beneficiary"
+                        ),
+                        this.$t("container.manage_allotment.total_amount"),
+                    ];
+                    const CustomInfo = this.budget_list.map((i, index) => {
+                        return {
+                            sl:
+                                this.$i18n.locale == "en"
+                                    ? index + 1
+                                    : index + 1,
+                            program:
+                                this.$i18n.locale == "en" ? i.program?.name_en : i.program?.name_bn,
+                            financialYear:
+                                this.$i18n.locale == "en" ? i.financialYear?.financial_year : i.financialYear?.financial_year,
+
+                            division:
+                                this.$i18n.locale == "en" ? i.division?.name_en : i.division?.name_bn,
+                            district:
+                                this.$i18n.locale == "en" ? i.district?.name_en : i.district?.name_bn,
+
+                            office_area: this.$i18n.locale == "en" ? i.office_area?.name_en : i.office_area?.name_bn,
+                            allotment_area: this.$i18n.locale == "en" ? i.allotment_area?.name_en : i.allotment_area?.name_bn,
+
+                            regular_beneficiaries:
+                                this.$i18n.locale == "en" ? i.regular_beneficiaries : i.regular_beneficiaries,
+
+                            additional_beneficiaries:
+                                this.$i18n.locale == "en" ? i.additional_beneficiaries : i.additional_beneficiaries,
+                            total_beneficiaries:
+                                this.$i18n.locale == "en" ? i.total_beneficiaries : i.total_beneficiaries,
+                            total_amount:
+                                this.$i18n.locale == "en" ? i.total_amount : i.total_amount,
+
+                        };
                     });
-            } catch (e) {
-                console.log(e);
+
+                    const Field = [
+                        "sl",
+                        "program",
+                        "financialYear",
+                        "division",
+                        "district",
+                        "office_area",
+                        "allotment_area",
+                        "regular_beneficiaries",
+                        "additional_beneficiaries",
+                        "total_beneficiaries",
+                        "total_amount",
+                    ];
+
+                    const Data = this.FormatJson(Field, CustomInfo);
+                    const currentDate = new Date().toISOString().slice(0, 10);
+                    let dateinfo =
+                        queryParams.language == "en"
+                            ? currentDate
+                            : this.$helpers.englishToBangla(currentDate);
+
+                    const filenameWithDate = `${this.$t(
+                        "container.budget_management.budget_info_list"
+                    )}`;
+
+                    excel.export_json_to_excel({
+                        header: HeaderInfo,
+                        data: Data,
+                        sheetName: filenameWithDate,
+                        filename: filenameWithDate,
+                        autoWidth: true,
+                        bookType: "xlsx",
+                    });
+                });
+            } catch (error) {
+                // Handle any errors here
+                console.error("An error occurred:", error);
+                this.isLoading = false;
+            } finally {
+                this.isLoading = false;
             }
         },
-        resetSearchShiftInfo() {
-            this.submit_data = {};
-        },
-        updateHeaderTitle() {
-            const title = this.$t(
-                "container.beneficiary_management.beneficiary_exit.title"
+        FormatJson(FilterData, JsonData) {
+            return JsonData.map((v) =>
+                FilterData.map((j) => {
+                    return v[j];
+                })
             );
-            this.$store.commit("setHeaderTitle", title);
-        },
-        async GetAllCommitteeType() {
-            try {
-                this.$store.dispatch("getLookupByType", 22).then((data) => {
-                    this.cause_types = data;
-                    console.log(this.cause_types, "Cause_type");
-                });
-            } catch (e) {
-                console.log(e);
-            }
-        },
-        submitBudgetData() {
-
-            let fd = new FormData();
-            this.budgets.forEach((item, index) => {
-                fd.append(`budget_details[${index}][id]`, item?.id);
-                fd.append(`budget_details[${index}][total_beneficiaries]`, item?.total_beneficiaries);
-                fd.append(`budget_details[${index}][per_beneficiary_amount]`, item?.per_beneficiary_amount);
-                fd.append(`budget_details[${index}][total_amount]`, item?.total_amount);
-            });
-
-            try {
-                const data = { formData: fd, id: this.$route.params.id };
-                this.$store
-                    .dispatch("BudgetManagement/UpdateBudgetData", data)
-                    .then((res) => {
-                        console.log(res, "submit");
-                        if (res.data?.success) {
-                            this.$router.push({ name: "budget" });
-                        } else if (res.response?.data?.errors) {
-                            this.$refs.form.setErrors(res.response.data.errors);
-                            this.errors = res.response.data.errors;
-                        }
-                    });
-            } catch (e) {
-                console.log(e);
-            }
-
         },
     },
     watch: {
         "$i18n.locale": "updateHeaderTitle",
-        value(val) { },
     },
     created() {
-        // this.GetBeneficiary();
+        // this.GetAllotment();
     },
-
     beforeMount() {
         this.updateHeaderTitle();
-        this.GetAllCommitteeType();
     },
     mounted() {
+        this.GetAllDivisions();
+        this.GetAllowance();
+        this.GetFinancial_Year();
+
         this.GetUserPermission();
         this.GetAllProgram();
-        this.GetAllDivisions();
         this.$store
             .dispatch("getLookupByType", 1)
             .then((res) => (this.locationType = res));

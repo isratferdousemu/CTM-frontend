@@ -43,8 +43,8 @@
             <v-card class="pa-5 px-10 mb-4">
               <v-row>
                 <!-- Personal Information title -->
-                <v-col cols="12">
-                  <v-card-title style="background-color: #1976d2; color: white">
+                <v-col cols="12" >
+                  <v-card-title style="background-color: #2b4978; color: white">
                     {{ $t("container.profile.personal_info") }}
                   </v-card-title>
                 </v-col>
@@ -136,7 +136,7 @@
 
               <!-- Change Password part -->
               <v-card class="mt-5">
-                <v-card-title style="background-color: #1976d2; color: white">
+                <v-card-title style="background-color: #2b4978; color: white">
                   {{ $t("container.profile.change_pass") }}
                 </v-card-title>
                 <v-card-text class="mt-5">
@@ -286,7 +286,7 @@ export default {
 
         // handle the response accordingly
         if (response?.data?.success) {
-          this.$toast.success(response?.data.message);
+          this.$toast.success(this.language === "bn" ? "ছবি সফলভাবে আপলোড করা হয়েছে৷" : "Image uploaded successfully");
           this.image = null;
           this.getUserById();
         }
@@ -358,7 +358,7 @@ export default {
         if (response.data.success) {
           this.$refs.passwordForm.reset();
           this.otpDialog = false;
-          this.$toast.success(response.data.message);
+          this.$toast.success(this.language === "bn" ? "পাসওয়ার্ড সফলভাবে আপডেট করা হয়েছে" : "Password updated successfully");
         }
       } catch (error) {
         console.error("Error updating password:", error);
