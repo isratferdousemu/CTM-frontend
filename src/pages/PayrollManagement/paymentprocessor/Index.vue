@@ -90,13 +90,12 @@
 
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <router-link :to="`/payroll-management/payment-processor-show/${item.id}`" tag="span" v-on="on">
-                              <v-btn
-                                fab
-                                x-small
-                                color="success"
-                                elevation="0"
-                              >
+                            <router-link
+                              :to="`/payroll-management/payment-processor-show/${item.id}`"
+                              tag="span"
+                              v-on="on"
+                            >
+                              <v-btn fab x-small color="success" elevation="0">
                                 <v-icon>mdi-eye-outline</v-icon>
                               </v-btn>
                             </router-link>
@@ -191,7 +190,13 @@
                           $t('container.payroll_management.processor_type')
                         "
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0] ? (language === 'bn' ? 'একটি প্রসেসরের ধরন নির্বাচন করুন' : 'Select a processor type'):''"
+                        :error-messages="
+                          errors[0]
+                            ? language === 'bn'
+                              ? 'একটি প্রসেসরের ধরন নির্বাচন করুন'
+                              : 'Select a processor type'
+                            : ''
+                        "
                       >
                       </v-autocomplete>
                     </ValidationProvider>
@@ -217,7 +222,13 @@
                         item-value="id"
                         :label="$t('container.payroll_management.bank_name')"
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0] ? (language === 'bn' ? 'একটি ব্যাংক নির্বাচন করুন' : 'Select a bank'):''"
+                        :error-messages="
+                          errors[0]
+                            ? language === 'bn'
+                              ? 'একটি ব্যাংক নির্বাচন করুন'
+                              : 'Select a bank'
+                            : ''
+                        "
                       >
                       </v-autocomplete>
                     </ValidationProvider>
@@ -242,7 +253,13 @@
                         :label="$t('container.payroll_management.branch_name')"
                         required
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0] ? (language === 'bn' ? 'শাখার নাম বৈধ নয়' : 'Branch name is not valid'):''"
+                        :error-messages="
+                          errors[0]
+                            ? language === 'bn'
+                              ? 'শাখার নাম বৈধ নয়'
+                              : 'Branch name is not valid'
+                            : ''
+                        "
                         >></v-text-field
                       >
                     </ValidationProvider>
@@ -269,7 +286,13 @@
                         "
                         required
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0] ? (language === 'bn' ? 'রাউটিং নম্বর বৈধ নয়' : 'Routing number is not valid'):''"
+                        :error-messages="
+                          errors[0]
+                            ? language === 'bn'
+                              ? 'রাউটিং নম্বর বৈধ নয়'
+                              : 'Routing number is not valid'
+                            : ''
+                        "
                         >></v-text-field
                       >
                     </ValidationProvider>
@@ -289,7 +312,13 @@
                         :label="$t('container.list.name_en')"
                         required
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে এই ক্ষেত্রে ইংরেজি অক্ষর লিখুন' : 'Please Enter English Letters in this Field') : ''"
+                        :error-messages="
+                          errors[0]
+                            ? language === 'bn'
+                              ? 'অনুগ্রহ করে এই ক্ষেত্রে ইংরেজি অক্ষর লিখুন'
+                              : 'Please Enter English Letters in this Field'
+                            : ''
+                        "
                         >></v-text-field
                       >
                     </ValidationProvider>
@@ -308,7 +337,13 @@
                         :label="$t('container.list.name_bn')"
                         required
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে এই ক্ষেত্রে বাংলা অক্ষর লিখুন' : 'Please Enter bangla Letters in this Field') : ''"
+                        :error-messages="
+                          errors[0]
+                            ? language === 'bn'
+                              ? 'অনুগ্রহ করে এই ক্ষেত্রে বাংলা অক্ষর লিখুন'
+                              : 'Please Enter bangla Letters in this Field'
+                            : ''
+                        "
                         >></v-text-field
                       >
                     </ValidationProvider>
@@ -327,7 +362,13 @@
                         :label="$t('container.payroll_management.focal_phone')"
                         required
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0] ? (language === 'bn' ? 'একটি বাংলাদেশী ফোন নম্বর লিখুন' : 'Enter a bangladeshi phone number') : ''"
+                        :error-messages="
+                          errors[0]
+                            ? language === 'bn'
+                              ? 'একটি বাংলাদেশী ফোন নম্বর লিখুন'
+                              : 'Enter a bangladeshi phone number'
+                            : ''
+                        "
                         >></v-text-field
                       >
                     </ValidationProvider>
@@ -346,7 +387,13 @@
                         :label="$t('container.payroll_management.email')"
                         required
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0] ? (language === 'bn' ? 'একটি বৈধ ইমেইল ঠিকানা লিখুন' : 'Enter a valid email address') : ''"
+                        :error-messages="
+                          errors[0]
+                            ? language === 'bn'
+                              ? 'একটি বৈধ ইমেইল ঠিকানা লিখুন'
+                              : 'Enter a valid email address'
+                            : ''
+                        "
                         >></v-text-field
                       >
                     </ValidationProvider>
@@ -366,7 +413,13 @@
                         :label="$t('container.payroll_management.charge')"
                         required
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0] ? (language === 'bn' ? 'চার্জ শতাংশ লিখুন' : 'Enter charge percentage') : ''"
+                        :error-messages="
+                          errors[0]
+                            ? language === 'bn'
+                              ? 'চার্জ শতাংশ লিখুন'
+                              : 'Enter charge percentage'
+                            : ''
+                        "
                         >></v-text-field
                       >
                     </ValidationProvider>
@@ -395,7 +448,13 @@
                         item-value="id"
                         :label="$t('container.payroll_management.division')"
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0] ? (language === 'bn' ? 'একটি বিভাগ নির্বাচন করুন' : 'Select a division') : ''"
+                        :error-messages="
+                          errors[0]
+                            ? language === 'bn'
+                              ? 'একটি বিভাগ নির্বাচন করুন'
+                              : 'Select a division'
+                            : ''
+                        "
                         @change="getDistricts(data.division)"
                       >
                       </v-autocomplete>
@@ -417,7 +476,14 @@
                         item-value="id"
                         :label="$t('container.payroll_management.district')"
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0] ? (language === 'bn' ? 'একটি জেলা নির্বাচন করুন' : 'Select a district') : ''"
+                        :error-messages="
+                          errors[0]
+                            ? language === 'bn'
+                              ? 'একটি জেলা নির্বাচন করুন'
+                              : 'Select a district'
+                            : ''
+                        "
+                        @change="clearField()"
                       >
                       </v-autocomplete>
                     </ValidationProvider>
@@ -431,7 +497,7 @@
                     >
                       <v-autocomplete
                         outlined
-                        clearable
+                        :clearable="clearLocation"
                         v-model="data.location_type"
                         :items="location_types"
                         :item-text="language === 'bn' ? 'name_bn' : 'name_en'"
@@ -440,7 +506,13 @@
                           $t('container.payroll_management.location_type')
                         "
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0] ? (language === 'bn' ? 'একটি অবস্থানের ধরন নির্বাচন করুন' : 'Select a location type') : ''"
+                        :error-messages="
+                          errors[0]
+                            ? language === 'bn'
+                              ? 'একটি অবস্থানের ধরন নির্বাচন করুন'
+                              : 'Select a location type'
+                            : ''
+                        "
                         @change="
                           getDistrictPourashava(
                             data.district,
@@ -472,14 +544,20 @@
                     >
                       <v-autocomplete
                         outlined
-                        clearable
+                        :clearable="clearUpazila"
                         v-model="data.upazila"
                         :items="upazilas"
                         :item-text="language === 'bn' ? 'name_bn' : 'name_en'"
                         item-value="id"
                         :label="$t('container.payroll_management.upazila')"
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0] ? (language === 'bn' ? 'একটি উপজেলা নির্বাচন করুন' : 'Select a upazila') : ''"
+                        :error-messages="
+                          errors[0]
+                            ? language === 'bn'
+                              ? 'একটি উপজেলা নির্বাচন করুন'
+                              : 'Select a upazila'
+                            : ''
+                        "
                         @change="
                           getUnionOrThana(data.upazila, data.location_type)
                         "
@@ -497,7 +575,8 @@
                     v-if="
                       data.location_type != null &&
                       data.location_type == 2 &&
-                      data.upazila != null
+                      data.upazila != null &&
+                      data.district != null
                     "
                   >
                     <ValidationProvider
@@ -508,14 +587,20 @@
                     >
                       <v-autocomplete
                         outlined
-                        clearable
+                        :clearable="clearUnion"
                         v-model="data.union"
                         :items="unions"
                         :item-text="language === 'bn' ? 'name_bn' : 'name_en'"
                         item-value="id"
                         :label="$t('container.payroll_management.union')"
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0] ? (language === 'bn' ? 'একটি ইউনিয়ন নির্বাচন করুন' : 'Select a union') : ''"
+                        :error-messages="
+                          errors[0]
+                            ? language === 'bn'
+                              ? 'একটি ইউনিয়ন নির্বাচন করুন'
+                              : 'Select a union'
+                            : ''
+                        "
                       >
                       </v-autocomplete>
                     </ValidationProvider>
@@ -542,7 +627,7 @@
                     >
                       <v-autocomplete
                         outlined
-                        clearable
+                        :clearable="clearCityCorporation"
                         v-model="data.city_corporation"
                         :items="city_corporations"
                         :item-text="language === 'bn' ? 'name_bn' : 'name_en'"
@@ -551,7 +636,19 @@
                           $t('container.payroll_management.city_corporation')
                         "
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0] ? (language === 'bn' ? 'একটি সিটি কর্পোরেশন নির্বাচন করুন' : 'Select a city corporation') : ''"
+                        :error-messages="
+                          errors[0]
+                            ? language === 'bn'
+                              ? 'একটি সিটি কর্পোরেশন নির্বাচন করুন'
+                              : 'Select a city corporation'
+                            : ''
+                        "
+                        @change="
+                          getUnionOrThana(
+                            data.city_corporation,
+                            data.location_type
+                          )
+                        "
                       >
                       </v-autocomplete>
                     </ValidationProvider>
@@ -563,7 +660,8 @@
                     v-if="
                       data.location_type != null &&
                       data.location_type == 3 &&
-                      data.city_corporation != null
+                      data.city_corporation != null &&
+                      data.district != null
                     "
                   >
                     <ValidationProvider
@@ -574,14 +672,20 @@
                     >
                       <v-autocomplete
                         outlined
-                        clearable
+                        :clearable="clearThana"
                         v-model="data.thana"
                         :items="thanas"
-                        item-text="name"
+                        :item-text="language === 'bn' ? 'name_bn' : 'name_en'"
                         item-value="id"
                         :label="$t('container.payroll_management.thana')"
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0] ? (language === 'bn' ? 'একটি থানা নির্বাচন করুন' : 'Select a thana') : ''"
+                        :error-messages="
+                          errors[0]
+                            ? language === 'bn'
+                              ? 'একটি থানা নির্বাচন করুন'
+                              : 'Select a thana'
+                            : ''
+                        "
                       >
                       </v-autocomplete>
                     </ValidationProvider>
@@ -603,7 +707,7 @@
                     >
                       <v-autocomplete
                         outlined
-                        clearable
+                        :clearable="clearDistrictPourashava"
                         v-model="data.district_pourashava"
                         :item-text="language === 'bn' ? 'name_bn' : 'name_en'"
                         :items="district_pourashavas"
@@ -612,7 +716,13 @@
                           $t('container.payroll_management.district_pourashava')
                         "
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0] ? (language === 'bn' ? 'একটি জেলা পৌরসভা নির্বাচন করুন' : 'Select a district pourashava') : ''"
+                        :error-messages="
+                          errors[0]
+                            ? language === 'bn'
+                              ? 'একটি জেলা পৌরসভা নির্বাচন করুন'
+                              : 'Select a district pourashava'
+                            : ''
+                        "
                       >
                       </v-autocomplete>
                     </ValidationProvider>
@@ -959,7 +1069,7 @@ export default {
   data() {
     return {
       data: {
-        id:null,
+        id: null,
         processor_type: null,
         bank_id: null,
         branch_name: null,
@@ -979,6 +1089,8 @@ export default {
         location_type: null,
         office: null,
       },
+      clearLocation: false,
+      clearUpazila: false,
       dialogAdd: false,
       deleteDialog: false,
       dialogEdit: false,
@@ -1000,12 +1112,12 @@ export default {
       processor_types: [
         { id: 1, name_en: "Bank", name_bn: "ব্যাংক", value: "bank" },
         { id: 2, name_en: "MFS", name_bn: "এমএফএস", value: "mfs" },
-        {
-          id: 3,
-          name_en: "Agent Banking",
-          name_bn: "এজেন্ট ব্যাংকিং",
-          value: "agent_banking",
-        },
+        // {
+        //   id: 3,
+        //   name_en: "Agent Banking",
+        //   name_bn: "এজেন্ট ব্যাংকিং",
+        //   value: "agent_banking",
+        // },
       ],
 
       location_types: [
@@ -1110,13 +1222,63 @@ export default {
       return fd;
     },
 
+    clear() {
+      this.clearLocation = true;
+      this.clearUpazila = true;
+      this.clearUnion = true;
+      this.clearThana = true;
+      this.clearCityCorporation = true;
+      this.clearDistrictPourashava = true;
+      // Reset other properties
+      this.data.location_type = null;
+      this.data.upazila = null;
+      this.data.union = null;
+      this.data.thana = null;
+      this.data.city_corporation = null;
+      this.data.district_pourashava = null;
+    },
+
+    clearableFalse() {
+      this.clearLocation = false;
+      this.clearUpazila = false;
+      this.clearUnion = false;
+      this.clearThana = false;
+      this.clearCityCorporation = false;
+      this.clearDistrictPourashava = false;
+    },
+    clearField() {
+      this.clear();
+      this.clearableFalse();
+    },
+
+    resetForm(){
+      this.data = {
+        processor_type: null,
+        bank_id: null,
+        branch_name: '',
+        routing_number: '',
+        name_en: '',
+        name_bn: '',
+        focal_phone: '',
+        focal_email: '',
+        charge: '',
+        division: null,
+        district: null,
+        location_type: null,
+        upazila: null,
+        union: null,
+        city_corporation: null,
+        thana: null,
+        district_pourashava: null
+      };
+      this.clearField();
+    },
+
     deleteAlert(id) {
       this.data.id = id;
       this.deleteDialog = true;
     },
     async deleteItem() {
-      console.log("🚀 ~ deleteItem ~ this.data.id:", this.data.id)
-      
       this.loading = true;
       try {
         const response = await this.$axios.delete(
@@ -1131,7 +1293,11 @@ export default {
 
         if (response.status === 200) {
           this.getPaymentProcessor();
-          this.$toast.success(this.language === "bn" ? "পেমেন্ট প্রসেসর সফলভাবে মুছে ফেলা হয়েছে" : "Payment Processor deleted successfully");
+          this.$toast.success(
+            this.language === "bn"
+              ? "পেমেন্ট প্রসেসর সফলভাবে মুছে ফেলা হয়েছে"
+              : "Payment Processor deleted successfully"
+          );
           this.data.id = null;
           this.deleteDialog = false;
         } else {
@@ -1160,8 +1326,14 @@ export default {
         );
 
         if (response.status === 200) {
+          this.$refs.formAdd.reset();
+          this.resetForm();
           this.getPaymentProcessor();
-          this.$toast.success(this.language === "bn" ? "পেমেন্ট প্রসেসর সফলভাবে জমা দেওয়া হয়েছে" : "Payment Processor submitted successfully");
+          this.$toast.success(
+            this.language === "bn"
+              ? "পেমেন্ট প্রসেসর সফলভাবে জমা দেওয়া হয়েছে"
+              : "Payment Processor submitted successfully"
+          );
           this.dialogAdd = false;
           // Reset form data or perform other actions as needed
         } else {
@@ -1226,28 +1398,28 @@ export default {
       }
     },
 
-    async getDistricts(divisionId) {
-    // this.data.location_type == null
-    // this.data.upazila == null
-    // this.data.union == null
-    // this.data.thana == null
-    // this.data.city_corporation == null
-    // this.data.district_pourashava == null
-      try {
-        const response = await this.$axios.get(`get-districts/${divisionId}`, {
+    getDistricts(divisionId) {
+      this.clear();
+
+      this.$axios
+        .get(`get-districts/${divisionId}`, {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
           },
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            this.clearableFalse();
+            this.districts = response.data.data;
+          } else {
+            this.$toast.error("Something went wrong");
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching divisions:", error);
+          this.$toast.error("Error fetching divisions");
         });
-        if (response.status == "200") {
-          this.districts = response.data.data;
-        } else {
-          this.$toast.error("Something went wrong");
-        }
-      } catch (error) {
-        console.error("Error fetching divisions:", error);
-      }
     },
 
     async getDistrictPourashava(districtId, locationTypeId) {
@@ -1353,8 +1525,6 @@ export default {
 
       this.errors = {};
     },
-
-    resetForm() {},
 
     onPageChange($event) {
       // this.pagination.current = $event;
