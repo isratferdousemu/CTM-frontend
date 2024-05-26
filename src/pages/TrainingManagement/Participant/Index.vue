@@ -256,7 +256,7 @@ export default {
                 training_circular_id: this.training_circular_id,
                 office_type: this.office_type,
                 office_id: this.office_id,
-                organization_id: this.organization_id,
+              
               
             };
 
@@ -478,7 +478,7 @@ export default {
                 training_circular_id:this.training_circular_id,
                 office_type:this.office_type,
                 office_id: this.office_id,
-                organization_id:this.organization_id,
+             
                 
             
             };
@@ -590,15 +590,7 @@ export default {
 
                                             </v-col>
 
-                                            <v-col cols=" 12" sm="4" lg="4">
 
-                                                <v-select dense v-model="organization_id" append-icon="mdi-plus"
-                                                    :label="$t('container.training_management.training_registration.organization')"
-                                                    persistent-hint outlined :error="errors[0] ? true : false"
-                                                    :items="organizations" :item-text="getItemText" item-value="id">
-                                                </v-select>
-
-                                            </v-col>
                                             <v-col cols=" 12" sm="4" lg="4">
 
                                                 <v-select dense :hide-details="errors[0] ? false : true"
@@ -701,6 +693,10 @@ export default {
                                             <template v-slot:item.circular="{ item }">
                                                 <span>{{ item.training_circular?.circular_name }}</span>
                                             </template>
+                                            <template v-slot:item.id="{ item }">
+                                                <span> {{ language == 'bn' ?
+    $helpers.englishToBangla(item.id) :  item.id }}</span>
+                                            </template>
                                             <template v-slot:item.program="{ item }">
                                                 <span>{{ item.training_program?.program_name }}</span>
                                             </template>
@@ -718,7 +714,7 @@ export default {
                                                 <span v-if="item.is_by_poll == 0">{{ language == 'bn' ? 'অভ্যন্তরীণ
                                                     অংশগ্রহণকারী' :
                                                     'Internal Participant' }}</span>
-                                                <span v-else>{{ language == 'bn' ? 'বাহ্যিক অংশগ্রহণকারী' : 'External
+                                                <span v-else>{{ language == 'bn' ? 'বহিরাগত অংশগ্রহণকারী' : 'External
                                                     Participant' }}</span>
                                                 <span>
 

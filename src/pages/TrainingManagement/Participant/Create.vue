@@ -98,10 +98,7 @@ export default {
                 training_program_id: null,
                  training_circular_id: null,
                   user_id: [],
-                  organization_id: null,
-                  description: null,
-                  start_date: null,
-                  end_date: null,
+              
               
             },
             poll: {
@@ -308,7 +305,7 @@ export default {
                             <v-card-title class="justify-center"
                                 style="background-color: #1C3B68; color: white; font-size: 17px;">
                                 <h4 class="white--text" v-if="getPartipant === 0">
-                                    {{ $t('container.training_management.training_registration.add_1') }}
+                                    {{ $t('container.training_management.training_registration.add_3') }}
                                 </h4>
                                 <h4 class="white--text" v-if="getPartipant === 1">
                                     {{ $t('container.training_management.training_registration.add_2') }}
@@ -318,11 +315,11 @@ export default {
                             <v-btn-toggle v-model="getPartipant" class="ma-5 ml-15">
                                 <v-btn small :color="getPartipant === 0 ? '#00C4FF' : undefined"
                                     :class="{ 'white--text': getPartipant === 0 }" @click="setParticipant(0)">
-                                    {{ $t('container.training_management.training_registration.add_1') }}
+                                    {{ $t('container.training_management.training_registration.add_3') }}
                                 </v-btn>
                                 <v-btn small :color="getPartipant === 1 ? '#00C4FF' : undefined"
                                     :class="{ 'white--text': getPartipant === 1 }" @click="setParticipant(1)">
-                                    {{ $t('container.training_management.training_registration.add_2') }}
+                                    {{ $t('container.training_management.training_registration.by_poll') }}
                                 </v-btn>
                             </v-btn-toggle>
 
@@ -385,28 +382,8 @@ export default {
                                                     </v-select>
                                                 </ValidationProvider>
                                             </v-col>
-                                            <v-col cols=" 12" sm="6" lg="6">
-                                                <ValidationProvider name="Organization" vid="organization"
-                                                    rules="required" v-slot="{ errors }">
-                                                    <v-select dense type="text" v-model="data.organization_id"
-                                                        :label="$t('container.training_management.training_registration.organization')"
-                                                        persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :items="organizations" :item-text="getItemText" item-value="id"
-                                                        :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সংস্থা প্রদান করুন '
-    : 'Please enter Organization') : ''">
 
-                                                    </v-select>
-                                                </ValidationProvider>
-                                            </v-col>
 
-                                            <v-col cols="12" sm="6" lg="6">
-                                                <ValidationProvider name="Designation" rules="required"
-                                                    vid="designation" v-slot="{ errors }">
-                                                    <v-text-field dense v-model="data.designation" :label="$t('container.training_management.trainer_info.designation')
-                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক পদবী প্রদান করুন '
-                                        : 'Please enter  Description') : ''"></v-text-field>
-                                                </ValidationProvider>
-                                            </v-col>
 
 
 
@@ -472,9 +449,9 @@ export default {
                                             <v-col cols="12" sm="6" lg="6">
                                                 <ValidationProvider name="Participant" rules="required||name"
                                                     vid="poll.participant" v-slot="{ errors }">
-                                                    <v-text-field dense v-model="poll.full_name" :label="$t('container.training_management.training_registration.participant')
-                                    " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য অংশগ্রহণকারী প্রদান করুন ।'
-                                    : 'Please enter valid  participant') : ''"></v-text-field>
+                                                    <v-text-field dense v-model="poll.full_name" :label="$t('container.training_management.training_registration.full_name')
+                                    " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য সম্পূর্ণ নাম প্রদান করুন ।'
+                                    : 'Please enter valid  Full Name') : ''"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
                                             <!-- <v-col cols="12" sm="6" lg="6">
