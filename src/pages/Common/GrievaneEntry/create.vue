@@ -800,13 +800,13 @@ export default {
 
      fileTypeRule: (value) => {
       const allowedFormats = ['.pdf', '.xls', '.xlsx', '.jpg', '.jpeg', '.png'];
-      const extension = value.name.slice(((value.name.lastIndexOf(".") - 1) >>> 0) + 2);
+      const extension = value?.name.slice(((value?.name.lastIndexOf(".") - 1) >>> 0) + 2);
       return allowedFormats.includes(`.${extension}`) || 'Allowed file types are PDF, Excel, JPG, JPEG, and PNG.';
     },
     fileSizeRule: (value) => {
       const maxSizeMB = 5; // Maximum file size in MB
       const maxSizeBytes = maxSizeMB * 1024 * 1024; // Convert MB to bytes
-      return value.size <= maxSizeBytes || `File size should be less than ${maxSizeMB} MB.`;
+      return value?.size <= maxSizeBytes || `File size should be less than ${maxSizeMB} MB.`;
     },
 
       data: {
