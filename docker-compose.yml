@@ -1,10 +1,4 @@
-version: '3.5'
-
-networks:
-  web-ctm-app-net:
-    name: my-ctm-web-app-net
-    driver: bridge
-    external: true
+version: '3.0'
 
 services:
   frontend-stage:
@@ -13,6 +7,9 @@ services:
 
     environment:
       - TZ=Asia/Dhaka
+    networks:
+      - ppims_net
+
     ports:
       - 8060:80
     restart: always

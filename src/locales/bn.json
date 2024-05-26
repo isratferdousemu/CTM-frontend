@@ -1013,8 +1013,10 @@
       "coverage_area": "অন্তর্ভুক্ত এলাকা",
       "focal_phone": "ফোকাল ফোন",
       "email": "ফোকাল ইমেইল",
-      "bank_name": "",
-      "branch_name": "",
+      "bank_name": "ব্যাংকের নাম",
+      "branch_name": "শাখার নাম",
+      "charge": "চার্জ শতাংশ",
+      "routing_number": "রাউটিং নম্বর",
       "delete": "পেমেন্ট প্রসেসর মুছুন ",
       "delete_alert": "আপনি এই পেমেন্ট প্রসেসর মুছে ফেলার বিষয়ে নিশ্চিত??",
       "location_type": "অবস্থানের ধরন",
@@ -1024,7 +1026,8 @@
       "union": "ইউনিয়ন",
       "thana": "থানা",
       "city_corporation": "সিটি কর্পোরেশন",
-      "district_pourashava": "জেলা_পৌরসভা"
+      "district_pourashava": "জেলা পৌরসভা",
+      "verification_success_msg": "যাচাইকরণ সেটিং সফলভাবে জমা দেওয়া হয়েছে"
     },
       "training_management": {
         "trainer_info": {

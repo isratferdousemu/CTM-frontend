@@ -1017,6 +1017,8 @@
       "email": "Focal Email",
       "bank_name": "Bank Name",
       "branch_name": "Branch Name",
+      "routing_number": "Routing Number",
+      "charge": "Charge Percentage",
       "delete": "Delete Payment Processor ",
       "delete_alert": "Are you sure to delete this Payment Processor?",
       "location_type": "Location Type",
@@ -1026,7 +1028,8 @@
       "union": "Union",
       "thana": "Thana",
       "city_corporation": "City Corporation",
-      "district_pourashava": "District Pourashava"
+      "district_pourashava": "District Pourashava",
+      "verification_success_msg": "Verification Setting submitted successfully"
     },
       "training_management": {
         "trainer_info": {
