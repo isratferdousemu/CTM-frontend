@@ -1073,14 +1073,19 @@
                 },
                 "training_registration": {
                   "list_1": "Participant List",
+                  "list_2": "Participants",
+                  "search":" Search Participant",
                   "view": "Participant Details",
                   "add_1": "Assign Participant",
                   "add_2": "Training Poll",
                   "participant": "Participant",
                   "organization": "Organization",
+                  "registration":"Training Registration",
                     "user_name": "Username",
+                      "user_type": "Participant Type",
+                    "alert":"Go to this link for external registration",
                   "delete_header": "Remove Participant",
-                  "delete_alert": "Are you sure to remove this Participant? Participant's all details will be removed."
+                  "delete_alert": "Are you sure to remove this Participant? Participant's all details will be removed from this traning."
                 }
       },
       "api_manager": {

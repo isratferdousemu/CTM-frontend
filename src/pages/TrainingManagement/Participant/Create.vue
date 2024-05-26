@@ -238,6 +238,19 @@ export default {
 
                 })
                 .catch((err) => {
+                    if (err?.response?.data?.errors?.training_program_id[0]){
+                        if (this.language == 'en') {
+                            this.$toast.error("This program has already been taken by this participant");
+                        }
+                        else {
+                            this.$toast.error("এই প্রোগ্রামটি ইতিমধ্যে এই অংশগ্রহণকারী দ্বারা নেওয়া হয়েছে");
+                        }
+
+
+                    }
+                       
+                
+                       
                    
 
                 });
@@ -260,6 +273,17 @@ export default {
 
                 })
                 .catch((err) => {
+                    if (err?.response?.data?.errors?.training_program_id[0]) {
+                        if (this.language == 'en') {
+                            this.$toast.error("This program has already been taken by this participant");
+                        }
+                        else {
+                            this.$toast.error("এই প্রোগ্রামটি ইতিমধ্যে এই অংশগ্রহণকারী দ্বারা নেওয়া হয়েছে");
+                        }
+
+
+                    }
+
 
 
                 });
@@ -356,7 +380,7 @@ export default {
                                                         persistent-hint outlined :error="errors[0] ? true : false"
                                                         :items="users" item-text="full_name" item-value="id"
                                                         :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক অংশগ্রহণকারী প্রদান করুন '
-    : 'Please enter Participant') : ''">
+    : 'Please enter valid participant') : ''">
 
                                                     </v-select>
                                                 </ValidationProvider>
@@ -449,8 +473,8 @@ export default {
                                                 <ValidationProvider name="Participant" rules="required||name"
                                                     vid="poll.participant" v-slot="{ errors }">
                                                     <v-text-field dense v-model="poll.full_name" :label="$t('container.training_management.training_registration.participant')
-                                    " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক  অংশগ্রহণকারী প্রদান করুন ।'
-                                    : 'Please enter  participant') : ''"></v-text-field>
+                                    " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য অংশগ্রহণকারী প্রদান করুন ।'
+                                    : 'Please enter valid  participant') : ''"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
                                             <!-- <v-col cols="12" sm="6" lg="6">
@@ -481,7 +505,7 @@ export default {
                                         <v-row class="justify-end mt-5 mb-5">
                                             <v-btn color="primary" class="custom-btn mr-2" router
                                                 to="/training-management/participant" v-can="'participant-view'">{{
-                                    $t("container.list.back") }}
+                                                $t("container.list.back") }}
                                             </v-btn>
                                             <v-btn color="success" @click="submitPoll()" class="custom-btn mr-2"
                                                 :disabled="invalid">
@@ -491,7 +515,8 @@ export default {
                                     </v-form>
                                 </ValidationObserver>
                                 <h4 class="text-center">
-                                    Go to this link for external registration
+                                    {{ $t('container.training_management.training_registration.alert') }}
+
                                     <router-link
                                         :to="{ path: '/participant-external-registration' }">participant-external-registration</router-link>
                                 </h4>
