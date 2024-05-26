@@ -5,7 +5,7 @@ export default {
     title: "CTM - Training Participant",
     data() {
         return {
-          
+            all_participants:[],
             participants:[],
             start_date:null,
             end_date: null,
@@ -32,6 +32,15 @@ export default {
             sortBy: "name_en",
             sortDesc: false, //ASC
             items: [5, 10, 15, 20, 40, 50, 100],
+            training_circular_id:null,
+            training_program_id:null,
+            designation:null,
+            organization_id: null,
+            office_type: null,
+            office_id: null,
+            offices:[],
+            officeType: [],
+            organizations:[],
       
         };
     },
@@ -49,14 +58,16 @@ export default {
         },
         headers() {
             return [
-                { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, width: "10%" },
+                { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, width: "5%" },
                
                 { text: this.$t('container.training_management.training_program.circular'), value: "circular", align: "start", width: "15%", sortable: false, },
-                { text: this.$t('container.training_management.training_program.program_name'), value: "program", align: "start", width: "20%" },
+                { text: this.$t('container.training_management.training_program.program'), value: "program", align: "start", width: "15%" },
              
                 { text: this.$t('container.training_management.training_registration.participant'), value: "participant", width: "15%", sortable: false, },
+                { text: this.$t('container.training_management.training_registration.user_type'), value: "user_type", width: "15%" },
                 { text: this.$t('container.training_management.trainer_info.ID'), value: "id", width: "10%", sortable: false, },
-                { text: this.$t('container.list.status'), value: "status", width: "15%" },
+             
+                   { text: this.$t('container.list.status'), value: "status", width: "10%" },
               
                 { text: this.$t('container.list.action'), value: "actions", align: "start", sortable: false, width: "15%" },
             ];
@@ -67,7 +78,15 @@ export default {
 
     mounted() {
         this.GetData();
-       
+        this.GetCircular();
+         this.GetOffice();
+        this.$store
+            .dispatch("getLookupByType", 30)
+            .then((res) => (this.organizations = res));
+        this.$store
+            .dispatch("getLookupByType", 3)
+            .then((res) => (this.officeType = res));
+   
        
     
    
@@ -75,47 +94,39 @@ export default {
     },
 
     methods: {
-        OnChangeDateInfo(event, type) {
-            this.start_date=null;
-            this.end_date = null;
-            if (this.dates.length < 2) {
-              
-                const message = this.language === 'bn' ? 'অনুগ্রহ করে শুরুর তারিখ এবং শেষ তারিখ উভয়ই  প্রদান করুন ' : 'Please select both Start Date and End Date';
-                this.$toast.error(message);
-                return;
-            }
+        change() {
+            this.programs = [];
+            this.training_program_id =null;
+            const selected_programs = this.all_circulars.find(circular => circular.id == this.training_circular_id);
+            this.programs = selected_programs?.programs
+            console.log(this.programs, "programs");
 
-            if (event.length === 2) {
-                const startDate = event[0];
-                const endDate = event[1];
 
-                if (startDate < endDate) {
-                    this.start_date = startDate;
-                    this.end_date = endDate;
-                } else {
-                    const error = this.language === 'bn' ? 'শুরুর তারিখ শেষের তারিখের আগে হতে হবে। ' : 'Date of start must precede date of end.';
-                    this.$toast.error(error);
-                    this.resetDateRange();
 
-                    // Optionally reset the start and end dates
-                    // this.start_date = null;
-                    // this.end_date = null;
-                }
-            }
-            
         },
-          resetDateRange() {
-      this.dates = [];
-      this.menu = false;
+        getItemText(item) {
+            return this.language === 'bn' ? item.value_bn : item.value_en;
+        },
+
+         getItemName(item) {
+            return this.language === 'bn' ? item.name_bn : item.name_en;
+        },
+        itemText(item) {
+            return `${item.circular_name} - ${item.id}`;
+        }
+        ,
+        getprogram(item) {
+            return `${item.program_name} - ${item.id}`;
+        },
    
-    },
+   
         getItemText(item) {
             return this.language === 'bn' ? item.value_bn : item.value_en;
         },
         async GetCircular() {
 
             this.$axios
-                .get("/admin/training/program-circulars", {
+                .get("/admin/training/participants/circulars", {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -126,6 +137,27 @@ export default {
 
                     this.all_circulars = result?.data?.data;
                     console.log(this.all_circulars,"all_ciculars")
+
+
+
+
+
+                });
+        },
+         async GetOffice() {
+
+            this.$axios
+                .get("/global/office-list", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+
+                })
+                .then((result) => {
+
+                    this.offices = result?.data?.data;
+                    
 
 
 
@@ -189,33 +221,7 @@ export default {
                 });
 
         },
-        copyToClipboard(id) {
-            const baseUrl = window.location.origin;
-            console.log(baseUrl,"baseUrl");
-            // Construct your dynamic link here
-            const dynamicLink = `${baseUrl}/program-details/${id}`;
-
-            // Create a temporary input element to copy the link
-            const tempInput = document.createElement("input");
-            tempInput.value = dynamicLink;
-            document.body.appendChild(tempInput);
-
-            // Select the link in the input element
-            tempInput.select();
-            tempInput.setSelectionRange(0, 99999); // For mobile devices
-
-            // Copy the link to the clipboard
-            document.execCommand("copy");
-
-            // Remove the temporary input element
-            document.body.removeChild(tempInput);
-            if(this.language =='en'){
-                   this.$toast.success("Link Copied");
-            }
-            else{
-                this.$toast.success("লিঙ্ক কপি করা হয়েছে");
-            }
-            },
+        
          
 
             // Optionally, you can show a message to the user indicating that the link has been copied
@@ -224,17 +230,12 @@ export default {
 
        
         resetSearch(){
-            this.module_id=null;
-            this.org_name=null;
-           this.training_type_id=null;
-           this.training_circular_id = null;
-           this.module_id = null;
-           this.status = null;
-           this.trainer_id=null;
-           this.start_date =null;
-                this.end_date = null;
-            this.dates = [];
-          
+           this.training_program_id=null,
+           this.training_circular_id = null,
+           this.office_type = null,
+           this.office_id=null,
+           this.organization_id = null,
+ 
             this.GetData();
         },
         async GeneratePDF() {
@@ -250,18 +251,17 @@ export default {
                 page: 1,
                 sortBy: this.sortBy,
                 orderBy: this.sortDesc,
-                search: this.search,
-                training_type_id: this.training_type_id,
+                name: this.search,
+                training_program_id: this.training_program_id,
                 training_circular_id: this.training_circular_id,
-                module_id: this.module_id,
-                status: this.status,
-                trainer_id: this.trainer_id,
-                start_date: this.start_date,
-                end_date: this.end_date,
+                office_type: this.office_type,
+                office_id: this.office_id,
+              
+              
             };
 
             await this.$axios
-                .get("/admin/training/programs", {
+                .get("/admin/training/participants", {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -269,26 +269,23 @@ export default {
                     params: queryParams,
                 })
                 .then((result) => {
-                    this.programs = result?.data?.data?.data;
+                    this.all_participants = result?.data?.data?.data;
                  
-                    
-                    // const parts = this.apis.start_date.split(" ");
-                    // const datePart = parts[0];
-                    // this.apis.start_date = datePart;
-                    // const parts_2 = this.apis.end_date.split(" ");
-                    // const datePart_2 = parts_2[0];
-                    // this.apis.end_date = datePart_2;
                 });
 
             const HeaderInfo = [
                 this.$t("container.list.sl"),
-                this.$t('container.training_management.training_program.program'),
                 this.$t('container.training_management.training_program.training_circular'),
-                this.$t('container.training_management.training_program.trainer'),
-                this.$t('container.training_management.training_circular.module'),
-                this.$t('container.training_management.training_circular.description'),
-                this.$t('container.training_management.training_circular.start_date'),
-                this.$t('container.training_management.training_circular.end_date'),
+                this.$t('container.training_management.training_program.program'),
+                  this.$t('container.training_management.trainer_info.ID'),
+                this.$t('container.training_management.training_registration.participant'),
+                   this.$t('container.training_management.training_registration.user_type'),
+                this.$t('container.training_management.training_registration.organization'),
+                this.$t('container.training_management.trainer_info.designation'),
+                this.$t('container.training_management.trainer_info.email'),
+                this.$t('container.list.status'),
+                
+             
            
                 
 
@@ -296,24 +293,21 @@ export default {
            
 
         
-            const CustomInfo = this.programs.map(((i, index) => {
+            const CustomInfo = this.all_participants.map(((i, index) => {
 
                 return [
                     this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
                     
-                    this.$i18n.locale == 'en' ? i.program_name : i.program_name,
-                    this.$i18n.locale == 'en' ? i?.training_circular?.circular_name : i?.training_circular?.circular_name,
-                    i?.trainers?.map(api => api.name).join(', '),
-                    this.$i18n.locale == 'en' ? i?.modules?.map(api => api.value_en).join(', ') : i?.modules?.map(api => api.value_bn).join(', '),
-                    
-                    this.$i18n.locale == 'en' ? i?.description : i?.description,
-
-                    this.$i18n.locale == 'en' ? i?.start_date : this.$helpers.englishToBangla(i?.start_date),
-
-                    this.$i18n.locale == 'en' ? i?.end_date : this.$helpers.englishToBangla(i?.end_date),
-                  
-                
-
+                    this.$i18n.locale == 'en' ? i?.training_program.program_name : i?.training_program.program_name,
+                    this.$i18n.locale == 'en' ? i?.training_circular.circular_name : i?.training_circular.circular_name,
+                    this.$i18n.locale == 'en' ? i?.id : this.$helpers.englishToBangla(i?.id),
+                    i.is_by_poll== 0 ? i?.user?.full_name : i?.full_name,
+                    this.$i18n.locale == 'en' ? (i.is_by_poll == 0 ? 'Internal Participant' : 'External Participant') : (i.status == 0 ? 'অভ্যন্তরীণ অংশগ্রহণকারী' : 'বাহ্যিক অংশগ্রহণকারী'),
+    
+                    this.$i18n.locale == 'en' ? i?.organization?.value_en : i?.organization?.value_en,
+                    this.$i18n.locale == 'en' ? i?.designation : i?.designation,
+                    this.$i18n.locale == 'en' ? i?.email : i?.email,
+                    this.$i18n.locale == 'en' ? (i.status == 0 ? 'Active' : 'Inactive') : (i.status == 0 ? 'সক্রিয়' : 'নিষ্ক্রিয়'),
 
                 ]
             }));
@@ -322,7 +316,7 @@ export default {
                 language: this.$i18n.locale,
                 data: CustomInfo,
                 header: HeaderInfo,
-                fileName: this.$t("container.training_management.training_program.list"),
+                fileName: this.$t("container.training_management.training_registration.list_1"),
             };
             try {
                 const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
@@ -355,10 +349,16 @@ export default {
                 page: 1,
                 sortBy: this.sortBy,
                 orderBy: this.sortDesc,
+                name: this.search,
+                training_program_id: this.training_program_id,
+                training_circular_id: this.training_circular_id,
+                office_type: this.office_type,
+                office_id: this.office_id,
+                organization_id: this.organization_id,
             };
 
             await this.$axios
-                .get("/admin/training/circulars", {
+                .get("/admin/training/participants", {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -366,7 +366,7 @@ export default {
                     params: queryParams,
                 })
                 .then((result) => {
-                    this.programs = result?.data?.data?.data;
+                    this.all_participants = result?.data?.data?.data;
                 })
                 .catch(error => {
                     this.isLoading = false;
@@ -377,55 +377,41 @@ export default {
 
                     const HeaderInfo = [
                         this.$t("container.list.sl"),
-                        this.$t('container.training_management.training_program.program'),
                         this.$t('container.training_management.training_program.training_circular'),
-                        this.$t('container.training_management.training_program.trainer'),
-                        this.$t('container.training_management.training_circular.module'),
-                        this.$t('container.training_management.training_circular.description'),
-                        this.$t('container.training_management.training_circular.start_date'),
-                        this.$t('container.training_management.training_circular.end_date'),
+                        this.$t('container.training_management.training_program.program'),
+                        this.$t('container.training_management.trainer_info.ID'),
+                        this.$t('container.training_management.training_registration.participant'),
+                        this.$t('container.training_management.training_registration.user_type'),
+            
+                        this.$t('container.training_management.training_registration.organization'),
+                        this.$t('container.training_management.trainer_info.designation'),
+                        this.$t('container.training_management.trainer_info.email'),
+                        this.$t('container.list.status'),
                     ]
 
-                    const CustomInfo = this.circulars.map(((i, index) => {
+                    const CustomInfo = this.all_participants.map(((i, index) => {
                         return {
                            
 
-                            "sl": this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
-
-                            "name": this.$i18n.locale == 'en' ? i.program_name : i.program_name,
-                            "circular_name": this.$i18n.locale == 'en' ? i?.training_circular?.circular_name : i?.training_circular?.circular_name,
-
-
-                            "trainer": i?.trainers?.map(api => api.name).join(', '),
-                            "modules": this.$i18n.locale == 'en' ? i?.modules?.map(api => api.value_en).join(', ') : i?.modules?.map(api => api.value_bn).join(', '),
+                            "sl": this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1), 
+                            "circular": this.$i18n.locale == 'en' ? i?.training_circular.circular_name : i?.training_circular.circular_name,
+                            "program": this.$i18n.locale == 'en' ? i?.training_program.program_name : i?.training_program.program_name,
+                                      "id": this.$i18n.locale == 'en' ? i?.id : this.$helpers.englishToBangla(i?.id), 
+                            "participant": i.is_by_poll == 0 ? i?.user?.full_name : i?.full_name,
+                            "user_type": this.$i18n.locale == 'en' ? (i.is_by_poll == 0 ? 'Internal Participant' : 'External Participant') : (i.status == 0 ? 'অভ্যন্তরীণ অংশগ্রহণকারী' : 'বাহ্যিক অংশগ্রহণকারী'),
                        
-                            "description": this.$i18n.locale == 'en' ? i?.description : i?.description,
-                            "no_of_participant": this.$i18n.locale == 'en' ? i.no_of_participant : this.$helpers.englishToBangla(i?.no_of_participant),
+                            "organization": this.$i18n.locale == 'en' ? i?.organization?.value_en : i?.organization?.value_en,
+                            "designation": this.$i18n.locale == 'en' ? i?.designation : i?.designation,
 
-                            "start_date": this.$i18n.locale == 'en' ? i?.start_date : this.$helpers.englishToBangla(i?.start_date),
-
-
-                            "end_date":
-                                this.$i18n.locale == 'en' ? i?.end_date : this.$helpers.englishToBangla(i?.end_date),
-
+                            "email": this.$i18n.locale == 'en' ? i?.email : i?.email,
+                            "status": this.$i18n.locale == 'en' ? (i.status == 0 ? 'Active' : 'Inactive') : (i.status == 0 ? 'সক্রিয়' : 'নিষ্ক্রিয়'),
 
                         }
                         
                     }));
                 
-
-
-                  
-
-                      
-                        
-                       
-                       
-
-                      
-
-                      
-                    const Field = ['sl', 'name', 'circular_name', 'trainer', 'modules', 'description', 'start_date', 'end_date']
+    
+                    const Field = ['sl', 'circular', 'program',"id" ,'participant', 'user_type', 'organization', 'designation','email','status']
 
                     const Data = this.FormatJson(Field, CustomInfo)
                     const prefixHeader = [
@@ -437,7 +423,7 @@ export default {
                     const currentDate = new Date().toISOString().slice(0, 10); //
                     let dateinfo = queryParams.language == 'en' ? currentDate : this.$helpers.englishToBangla(currentDate)
 
-                    const filenameWithDate = `${dateinfo}_${this.$t("container.training_management.training_program.list")}`;
+                    const filenameWithDate = `${dateinfo}_${this.$t("container.training_management.training_registration.list_2")}`;
 
                     excel.export_json_to_excel({
                         header: HeaderInfo,
@@ -482,18 +468,19 @@ export default {
             const queryParams = {
              
             
-                search: this.search,
+              
                 perPage: this.pagination.perPage,
                 page: this.pagination.current,
                 sortBy: this.sortBy,
                 sortDesc: this.sortDesc,
-                training_type_id: this.training_type_id,
+                name: this.search,
+                training_program_id: this.training_program_id,
                 training_circular_id:this.training_circular_id,
-                module_id: this.module_id,
-                status: this.status,
-                trainer_id: this.trainer_id,
-                start_date: this.start_date,
-                end_date: this.end_date,
+                office_type:this.office_type,
+                office_id: this.office_id,
+             
+                
+            
             };
             this.$axios
                 .get("/admin/training/participants", {
@@ -586,57 +573,51 @@ export default {
                                     <form @submit.prevent="PageSetup()">
                                         <v-row>
                                             <v-col lg="4" md="6" sm="12" cols="12">
-                                                <v-select outlined dense clearable append-icon="mdi-plus"
-                                                    class="no-arrow-icon" v-model="training_circular_id"
-                                                    :items="all_circulars" item-text="circular_name" item-value="id"
-                                                    :label="$t('container.training_management.training_program.circular')"></v-select>
+                                                <v-autocomplete dense type="text" v-model="training_circular_id"
+                                                    append-icon="mdi-plus" @input="change()"
+                                                    :label="$t('container.training_management.training_program.training_circular')"
+                                                    persistent-hint outlined :error="errors[0] ? true : false"
+                                                    :items="all_circulars" :item-text="itemText" item-value="id">
+
+                                                </v-autocomplete>
                                             </v-col>
                                             <v-col lg="4" md="6" sm="12" cols="12">
-                                                <v-select outlined dense clearable append-icon="mdi-plus"
-                                                    class="no-arrow-icon" v-model="training_type_id"
-                                                    :items="training_types" :item-text="getItemText" item-value="id"
-                                                    :label="$t('container.training_management.training_circular.training_type')"></v-select>
+
+                                                <v-autocomplete dense type="text" v-model="training_program_id"
+                                                    append-icon="mdi-plus" :items="programs" :item-text="getprogram"
+                                                    item-value="id" :label="$t('container.training_management.training_program.program')
+                                        " persistent-hint outlined :error="errors[0] ? true : false"></v-autocomplete>
+
                                             </v-col>
-                                            <v-col lg="4" md="6" sm="12" cols="12">
-                                                <v-select outlined dense clearable append-icon="mdi-plus"
-                                                    class="no-arrow-icon" v-model="status" :items="all_status"
-                                                    :item-text="getItemText" item-value="id"
-                                                    :label="$t('container.list.status')"></v-select>
+
+
+                                            <v-col cols=" 12" sm="4" lg="4">
+
+                                                <v-select dense :hide-details="errors[0] ? false : true"
+                                                    append-icon="mdi-plus" v-model="office_type" outlined :label="$t(
+                                        'container.system_config.demo_graphic.office.office_type'
+                                    )
+                                        " :items="officeType" :item-text="getItemText" item-value="id"
+                                                    :error="errors[0] ? true : false"
+                                                    :error-messages="errors[0]"></v-select>
+
                                             </v-col>
-                                            <v-col lg="4" md="6" sm="12" cols="12">
-                                                <v-select outlined dense clearable append-icon="mdi-plus"
-                                                    class="no-arrow-icon" v-model="module_id" :items="all_modules"
-                                                    :item-text="getItemText" item-value="id"
-                                                    :label="$t('container.training_management.training_circular.module')"></v-select>
+                                            <v-col cols=" 12" sm="4" lg="4">
+
+                                                <v-select v-model="office_id" dense
+                                                    :hide-details="errors[0] ? false : true" append-icon="mdi-plus"
+                                                    outlined :label="$t(
+                                        'container.system_config.demo_graphic.office.office'
+                                    )
+                                        " :items="offices" :item-text="getItemName" item-value="id"
+                                                    :error="errors[0] ? true : false"
+                                                    :error-messages="errors[0]"></v-select>
+
                                             </v-col>
-                                            <v-col lg="4" md="6" sm="12" cols="12">
-                                                <v-select outlined dense clearable append-icon="mdi-plus"
-                                                    class="no-arrow-icon" v-model="trainer_id" :items="program_trainers"
-                                                    item-text="name" item-value="id"
-                                                    :label="$t('container.training_management.training_program.trainer')"></v-select>
-                                            </v-col>
-                                            <v-col lg="4" md="6" sm="12" cols="12">
-                                                <v-menu ref="menu" v-model="menu" :close-on-content-click="false"
-                                                    transition="scale-transition" offset-y min-width="auto">
-                                                    <template v-slot:activator="{ on, attrs }">
-                                                        <v-text-field v-model="dates" outlined dense
-                                                            :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
-                                                            :label="$t('container.application_selection_dashboard.enter_start_end_date')"
-                                                            readonly v-bind="attrs" v-on="on"></v-text-field>
-                                                    </template>
-                                                    <v-date-picker v-model="dates" :range="[dates[0], dates[1]]"
-                                                        no-title scrollable
-                                                        @input="OnChangeDateInfo($event, 'total_received')">
-                                                        <v-spacer></v-spacer>
-                                                        <v-btn text color="primary" @click="resetDateRange">
-                                                            {{ $t('container.list.reset') }}
-                                                        </v-btn>
-                                                        <v-btn text color="primary" @click="$refs.menu.save(dates)">
-                                                            {{ $t('container.list.ok') }}
-                                                        </v-btn>
-                                                    </v-date-picker>
-                                                </v-menu>
-                                            </v-col>
+
+
+
+
                                             <v-col lg="12" md="12" cols="12">
                                                 <div class="d-inline d-flex justify-end">
                                                     <v-btn elevation="2" class="btn" @click="resetSearch">
@@ -654,20 +635,20 @@ export default {
                         </v-expansion-panels>
                         <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8 mt-5">
                             <v-card-title tag="div" style="background-color:#1c3b68;color:white;margin-bottom: 17px;">
-                                <h5 class="ml-2">{{ $t("container.training_management.training_program.list") }}</h5>
+                                <h5 class="ml-2">{{ $t("container.training_management.training_registration.list_1") }}
+                                </h5>
                             </v-card-title>
                             <v-card-text>
                                 <v-row class="mx-5 mt-10">
                                     <v-col cols="12" md="4">
                                         <v-text-field @keyup.native="PageSetup" v-model="search"
                                             append-icon="mdi-magnify"
-                                            :label="$t('container.training_management.training_program.search')"
+                                            :label="$t('container.training_management.training_registration.search')"
                                             hide-details class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal" flat
                                             outlined dense></v-text-field>
                                     </v-col>
                                     <v-col class="text-right">
-                                        <v-btn flat color="primary" router
-                                            to="/training-management/participant/create"
+                                        <v-btn flat color="primary" router to="/training-management/participant/create"
                                             v-can="'participant-create'">
                                             <v-icon small>mdi-plus</v-icon>
                                             {{ $t('container.training_management.training_registration.add_1') }}
@@ -712,6 +693,10 @@ export default {
                                             <template v-slot:item.circular="{ item }">
                                                 <span>{{ item.training_circular?.circular_name }}</span>
                                             </template>
+                                            <template v-slot:item.id="{ item }">
+                                                <span> {{ language == 'bn' ?
+    $helpers.englishToBangla(item.id) :  item.id }}</span>
+                                            </template>
                                             <template v-slot:item.program="{ item }">
                                                 <span>{{ item.training_program?.program_name }}</span>
                                             </template>
@@ -725,27 +710,35 @@ export default {
 
                                                 </span>
                                             </template>
-                                            <template v-slot:[`item.status`]="{ item }">
+                                            <template v-slot:[`item.user_type`]="{ item }">
                                                 <span v-if="item.is_by_poll == 0">{{ language == 'bn' ? 'অভ্যন্তরীণ
-                                                    ব্যবহারকারী' :
-                                                    'Internal User' }}</span>
-                                                <span v-else>{{ language == 'bn' ? 'বাহ্যিক ব্যবহারকারী' : 'External
-                                                    User' }}</span>
+                                                    অংশগ্রহণকারী' :
+                                                    'Internal Participant' }}</span>
+                                                <span v-else>{{ language == 'bn' ? 'বহিরাগত অংশগ্রহণকারী' : 'External
+                                                    Participant' }}</span>
                                                 <span>
 
                                                 </span>
                                             </template>
+                                            <template v-slot:[`item.status`]="{ item }">
+                                                <span v-if="item.status == 0">
+                                                    {{ language == 'bn' ?
+                                                    'নিষ্ক্রিয়' : 'Inactive' }}
+                                                </span>
+                                                <span v-else>
+                                                    {{ language == 'bn' ?
+                                                    'সক্রিয়' : 'Active' }}
+                                                </span>
+
+
+                                                <span>
+                                                    <v-switch :input-value="item.status == 1 ? true : false"
+                                                        @change="deviceActivate(item.id)" hide-details
+                                                        color="orange darken-3"></v-switch>
+                                                </span>
+                                            </template>
                                             <template v-slot:item.actions="{ item }">
-                                                <v-tooltip top>
-                                                    <template v-slot:activator="{ on }">
-                                                        <v-btn v-can="'trainerCircular-view'" fab x-small v-on="on"
-                                                            color="blue" elevation="0" router class=" white--text  mr-2"
-                                                            @click="copyToClipboard(item.id)">
-                                                            <v-icon> mdi-link </v-icon>
-                                                        </v-btn>
-                                                    </template>
-                                                    <span>{{ $t("container.list.copy") }}</span>
-                                                </v-tooltip>
+
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
                                                         <v-btn v-can="'trainingProgram-view'" fab x-small v-on="on"
@@ -806,12 +799,12 @@ export default {
             <v-card style="justify-content: center;">
                 <v-card-title class="font-weight-bold justify-center"
                     style="background-color: #1C3C6A; color: white;font-size: 17px;">
-                    {{ $t('container.training_management.training_program.delete_header') }}
+                    {{ $t('container.training_management.training_registration.delete_header') }}
                 </v-card-title>
                 <v-divider></v-divider>
                 <v-card-text>
                     <div class="subtitle-1 font-weight-medium mt-5">
-                        {{ $t('container.training_management.training_program.delete_alert') }}
+                        {{ $t('container.training_management.training_registration.delete_alert') }}
                     </div>
                 </v-card-text>
                 <v-card-actions style="display: block">

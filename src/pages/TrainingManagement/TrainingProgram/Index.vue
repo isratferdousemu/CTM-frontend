@@ -62,13 +62,13 @@ export default {
         headers() {
             return [
                 { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, width: "5%" },
-                { text: this.$t('container.training_management.training_program.program_name'), value: "program_name", align: "start", width: "10%" },
-                { text: this.$t('container.training_management.training_program.circular'), value: "circular", align: "start", width: "15%", sortable: false, },
-                { text: this.$t('container.training_management.training_circular.module'), value: "modules", width: "25%" },
+                { text: this.$t('container.training_management.training_program.program_name'), value: "program_name", align: "start", width: "20%" },
+                { text: this.$t('container.training_management.training_program.circular'), value: "circular", align: "start", width: "20%", sortable: false, },
+                
                 { text: this.$t('container.training_management.training_program.trainer'), value: "trainer", width: "15%", sortable: false, },
                 { text: this.$t('container.list.status'), value: "status", width: "15%" },
               
-                { text: this.$t('container.list.action'), value: "actions", align: "start", sortable: false, width: "15%" },
+                { text: this.$t('container.list.action'), value: "actions", align: "start", sortable: false, width: "25%" },
             ];
         },
 
