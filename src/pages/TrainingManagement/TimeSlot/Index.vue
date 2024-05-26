@@ -10,11 +10,11 @@
 
 
 
-              <v-card-title class="justify-center" tag="div"
-                style="background-color: #1C3C6A; color: white;font-size: 17px;">
-                <h3>
+              <v-card-title  tag="div"
+                style="background-color: #1C3C6A; color: white;">
+                <h5>
                   {{ $t("container.training_management.time_slot.list") }}
-                </h3>
+                </h5>
               </v-card-title>
               <v-card-text>
                 <!-- First row -->
@@ -154,7 +154,7 @@
       <v-dialog v-model="dialogAdd" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center"
-            style="background-color: #1C3C6A; color: white;font-size: 12px;">
+            style="background-color: #1C3C6A; color: white;font-size: 17px;">
             {{ $t("container.training_management.time_slot.add") }}
           </v-card-title>
           <v-divider></v-divider>
@@ -192,7 +192,7 @@
       <v-dialog v-model="dialogEdit" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center"
-            style="background-color: #1C3C6A; color: white;font-size: 12px;">
+            style="background-color: #1C3C6A; color: white;font-size: 17px;">
             {{ $t("container.training_management.time_slot.edit") }}
           </v-card-title>
           <v-divider></v-divider>
@@ -229,7 +229,7 @@
       <v-dialog v-model="deleteDialog" width="350">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center"
-            style="background-color: #1C3C6A; color: white;font-size: 12px;">
+            style="background-color: #1C3C6A; color: white;font-size: 17px;">
             {{ $t("container.training_management.time_slot.delete_header") }}
           </v-card-title>
           <v-divider></v-divider>
