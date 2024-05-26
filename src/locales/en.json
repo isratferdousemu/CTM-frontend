@@ -1316,6 +1316,7 @@
       },
       "grievanceList": {
         "grievance_list": "Grievacne List",
+        "grievance_tracking": "Grievance Tracking",
         "tracking_no": "Tracking ID",
         "grievance_date": "Grievance Date",
         "search": "Search",
@@ -1326,6 +1327,16 @@
         "remarks": "Remarks",
         "status_update": "Grievance Status Update",
         "grievance_status": "Grievance Status"
+      },
+      "dashboard":{
+        "grievance_dashboard": "Grievacne Dashboard",
+        "total_grievance": "Total Grievance",
+        "total_resolved": "Total Resolved",
+        "total_pending": "Total Pending",
+        "total_rejected": "Total Rejected",
+        "total_forwarded": "Total Forwarded",
+        "total_received": "Total Received",
+        "total_unresolved": "Total Unresolved"
       }
     },
 
