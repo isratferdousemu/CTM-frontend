@@ -1013,8 +1013,10 @@
       "coverage_area": "অন্তর্ভুক্ত এলাকা",
       "focal_phone": "ফোকাল ফোন",
       "email": "ফোকাল ইমেইল",
-      "bank_name": "",
-      "branch_name": "",
+      "bank_name": "ব্যাংকের নাম",
+      "branch_name": "শাখার নাম",
+      "charge": "চার্জ শতাংশ",
+      "routing_number": "রাউটিং নম্বর",
       "delete": "পেমেন্ট প্রসেসর মুছুন ",
       "delete_alert": "আপনি এই পেমেন্ট প্রসেসর মুছে ফেলার বিষয়ে নিশ্চিত??",
       "location_type": "অবস্থানের ধরন",
@@ -1024,7 +1026,8 @@
       "union": "ইউনিয়ন",
       "thana": "থানা",
       "city_corporation": "সিটি কর্পোরেশন",
-      "district_pourashava": "জেলা_পৌরসভা"
+      "district_pourashava": "জেলা পৌরসভা",
+      "verification_success_msg": "যাচাইকরণ সেটিং সফলভাবে জমা দেওয়া হয়েছে"
     },
       "training_management": {
         "trainer_info": {
@@ -1290,7 +1293,7 @@
       "grievanceEntry": {
         "complaint_area": "অভিযোগকারীর ঠিকানা",
         "is_existing_beneficiary": "আপনি একটি বিদ্যমান সুবিধাভোগী?",
-        "complaint_details": "অভিযোগের বিশদ বিবরণ প্রদান করুন",
+        "complaint_details": "অভিযোগের বিস্তারিত বিবরণ",
         "details": "অভিযোগের বিস্তারিত বিবরন",
         "document": "নথি সংযুক্তি (যদি প্রযোজ্য হয়)",
         "document1": "(doc, docx, pdf, xls, xlsx, txt, jpg, jpeg, png)",
@@ -1303,7 +1306,7 @@
         "grievance_entry": "অভিযোগ এন্ট্রি",
         "birth_registration_number": "জন্ম নিবন্ধন নম্বর",
         "national_identity": "জাতীয় পরিচয় (এনআইডি)",
-        "grievance_question": "আপনি কি অভিযোগ জমা দিতে নিশ্চিত? জমা দেওয়ার পরে সম্পাদনা প্রযোজ্য হবে না।",
+        "grievance_question": "আপনি কি অভিযোগ জমা দিতে নিশ্চিত? জমা দেওয়ার পরে এডিট প্রযোজ্য হবে না।",
         "note": "আপনি কি চান যে অভিযোগের বিবরণ এবং সমাধানের স্থিতি সর্বজনীনভাবে প্রকাশ করা হোক? [বিশেষ দ্রষ্টব্য: ব্যক্তিগত এবং যোগাযোগের বিবরণ গোপন থাকবে]"
       },
       "grievanceList": {
@@ -1319,6 +1322,16 @@
         "remarks": "মন্তব্য",
         "status_update": "অভিযোগ স্ট্যাটাস আপডেট",
         "grievance_status": "অভিযোগ স্ট্যাটাস"
+      },
+      "dashboard": {
+        "grievance_dashboard": "অভিযোগ ড্যাশবোর্ড",
+        "total_grievance": "Total Grievance",
+        "total_resolved": "Total Resolved",
+        "total_pending": "Total Pending",
+        "total_rejected": "Total Rejected",
+        "total_forwarded": "Total Forwarded",
+        "total_received": "Total Received",
+        "total_unresolved": "Total Unresolved"
       }
     },
 

@@ -7,19 +7,17 @@ networks:
     external: true
 
 services:
-  frontend-stage:
-    container_name: ctm-frontend-stage
-    image: 'ctm-app-frontend-stage'
-
-    environment:
-      - TZ=Asia/Dhaka
-    ports:
-      - 8060:80
-    restart: always
-    build:
-      context: "./"
-      dockerfile: "Dockerfile"
-
-    networks:
-      - web-ctm-app-net
-##End of Scripts
+   frontend-prod:
+     container_name: ctm-frontend-stage
+     image: 'ctm-app-frontend-stage'
+     environment:
+            - TZ=Asia/Dhaka
+     ports:
+       - 8060:80
+     restart: always
+     build:
+         context: "./"
+         dockerfile: "Dockerfile"
+ 
+     networks:
+       - web-ctm-app-net

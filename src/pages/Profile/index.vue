@@ -286,7 +286,7 @@ export default {
 
         // handle the response accordingly
         if (response?.data?.success) {
-          this.$toast.success(response?.data.message);
+          this.$toast.success(this.language === "bn" ? "ছবি সফলভাবে আপলোড করা হয়েছে৷" : "Image uploaded successfully");
           this.image = null;
           this.getUserById();
         }
@@ -358,7 +358,7 @@ export default {
         if (response.data.success) {
           this.$refs.passwordForm.reset();
           this.otpDialog = false;
-          this.$toast.success(response.data.message);
+          this.$toast.success(this.language === "bn" ? "পাসওয়ার্ড সফলভাবে আপডেট করা হয়েছে" : "Password updated successfully");
         }
       } catch (error) {
         console.error("Error updating password:", error);
