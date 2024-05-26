@@ -1,5 +1,14 @@
 const GrievanceManagementRoutes = [
   {
+    path: "/grievance/dashboard",
+    name: "grievanceDashboard",
+    meta: {
+      requiresAuth: true,
+      permission: "grievanceDashboard-view",
+    },
+    component: () => import("../pages/GrievanceManagement/Dashboard/Index.vue"),
+  },
+  {
     path: "/grievance-management/type",
     name: "grievanceType",
     meta: {

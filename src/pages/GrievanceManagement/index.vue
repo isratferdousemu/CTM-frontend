@@ -669,6 +669,7 @@ export default {
         const maxSizeBytes = maxSizeMB * 1024 * 1024; // Convert MB to bytes
         return value.size <= maxSizeBytes || `File size should be less than ${maxSizeMB} MB.`;
       },
+      loading:true,
       total: null,
       showModal: false,
       dialogAdd: false,
@@ -1914,6 +1915,7 @@ export default {
           params: queryParams,
         })
         .then((result) => {
+          this.loading=false;
           this.applications = result.data.data;
           this.userRoleId=this.userData.roles ? this.userData.roles.map(role => role.id) : [];
           this.total = result.data.total;
