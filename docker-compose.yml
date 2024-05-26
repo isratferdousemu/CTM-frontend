@@ -1,5 +1,12 @@
 version: '3.0'
 
+networks:
+  web-ctm-app-net:
+    name: my-ctm-web-app-net
+    driver: bridge
+    external: true
+
+
 services:
   frontend-stage:
     container_name: ctm-frontend-stage
@@ -7,8 +14,6 @@ services:
 
     environment:
       - TZ=Asia/Dhaka
-    networks:
-      - ppims_net
 
     ports:
       - 8060:80
