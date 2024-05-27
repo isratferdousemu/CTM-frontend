@@ -95,7 +95,7 @@
                         <ValidationObserver ref="formAdd" v-slot="{ invalid }">
                             <form @submit.prevent="submitVariable()">
 
-                                <ValidationProvider name="Name in English" vid="name_en" rules="required"
+                                <ValidationProvider name="Name in English" vid="name_en" rules="required||name"
                                     v-slot="{ errors }">
                                     <v-text-field outlined type="text" v-model="data.name_en" :label="$t(
                                         'container.application_selection.variable.name_en'
@@ -217,7 +217,7 @@
                         <ValidationObserver ref="formAdd" v-slot="{ invalid }">
                             <form @submit.prevent="updateVariable()">
 
-                                <ValidationProvider name="Name in English" vid="name_en" rules="required"
+                                <ValidationProvider name="Name in English" vid="name_en" rules="required||name"
                                     v-slot="{ errors }">
                                     <v-text-field outlined type="text" v-model="data.name_en" :label="$t(
                                         'container.application_selection.variable.name_en'
@@ -372,6 +372,14 @@ import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 
 extend("required", required);
+extend('name', {
+    validate: value => {
+        // Regular expression for validating names with English letters, digits, spaces, and apostrophes
+        const nameRegex = /^[a-zA-Z0-9\s':]+$/;
+        return nameRegex.test(value);
+    },
+    message: 'Please enter a valid Name in English without special character'
+});
 
 export default {
     name: "Index",
