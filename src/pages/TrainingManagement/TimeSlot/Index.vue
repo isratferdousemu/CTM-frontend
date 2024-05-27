@@ -610,7 +610,9 @@ export default {
 
         })
         .catch((err) => {
+          this.$toast.error(err?.response?.data?.errors?.time[0]);
         
+     
 
         });
       
@@ -647,6 +649,7 @@ export default {
         })
         .catch((err) => {
           console.log(err, "err")
+          this.$toast.error(err?.response?.data?.errors?.time[0]);
    
 
         });
