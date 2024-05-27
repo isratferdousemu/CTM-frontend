@@ -65,11 +65,11 @@ export default {
              
                 { text: this.$t('container.training_management.training_registration.participant'), value: "participant", width: "15%", sortable: false, },
                 { text: this.$t('container.training_management.training_registration.user_type'), value: "user_type", width: "15%" },
-                { text: this.$t('container.training_management.trainer_info.ID'), value: "id", width: "10%", sortable: false, },
              
-                   { text: this.$t('container.list.status'), value: "status", width: "10%" },
+             
+                   { text: this.$t('container.list.status'), value: "status", width: "15%" },
               
-                { text: this.$t('container.list.action'), value: "actions", align: "start", sortable: false, width: "15%" },
+                { text: this.$t('container.list.action'), value: "actions", align: "start", sortable: false, width: "20%" },
             ];
         },
 
@@ -523,7 +523,7 @@ export default {
 
         deleteData: async function () {
             this.$axios
-                .delete(`admin/training/programs/${this.deleted_id}`, {
+                .delete(`admin/training/participants/${this.deleted_id}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "application/json", // Use application/json instead of multipart/form-data
@@ -741,7 +741,7 @@ export default {
 
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
-                                                        <v-btn v-can="'trainingProgram-view'" fab x-small v-on="on"
+                                                        <v-btn v-can="'Program-view'" fab x-small v-on="on"
                                                             color="#AFB42B" elevation="0" router
                                                             class=" white--text mb-1 mr-2"
                                                             :to="`/training-management/training-program/view/${item.id}`">
@@ -752,9 +752,9 @@ export default {
                                                 </v-tooltip>
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
-                                                        <v-btn v-can="'trainingProgram-edit'" class=" mr-2 mb-1" fab
+                                                        <v-btn v-can="'Program-edit'" class=" mr-2 mb-1" fab
                                                             x-small v-on="on" color="success" elevation="0" router
-                                                            :to="`/training-management/training-program/edit/${item.id}`">
+                                                            :to="`/training-management/participant/edit/${item.id}`">
                                                             <v-icon> mdi-account-edit-outline </v-icon>
                                                         </v-btn>
                                                     </template>
@@ -762,7 +762,7 @@ export default {
                                                 </v-tooltip>
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
-                                                        <v-btn v-can="'trainingProgram-delete'" fab x-small v-on="on"
+                                                        <v-btn v-can="'Program-delete'" fab x-small v-on="on"
                                                             color="grey" class=" mr-2 white--text mb-1" elevation="0"
                                                             @click="deleteAlert(item.id)">
                                                             <v-icon> mdi-delete </v-icon>
