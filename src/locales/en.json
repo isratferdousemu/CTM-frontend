@@ -1034,6 +1034,7 @@
       "training_management": {
         "trainer_info": {
           "ID":"ID",
+          "trainer_type":"Trainer Type",
           "list_1":"Trainer List",
           "rating": "Rating",
           "list": "Trainer Information List",

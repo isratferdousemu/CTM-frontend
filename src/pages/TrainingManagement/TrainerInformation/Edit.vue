@@ -1,7 +1,28 @@
 <script>
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
-
+import { VueEditor } from "vue2-editor";
 import { mapActions, mapState } from "vuex";
+extend("checkUsername", {
+    validate: (value) => {
+        if (!value && value !== 0) {
+            return false;
+        }
+        // Check if all characters are numeric and not allow special characters
+        const isValid = /^[a-z][a-z0-9._]*$/.test(value);
+
+        // Return true if both conditions are met
+        return isValid;
+    },
+    message: "Username should be in lowercase and without any special character",
+});
+extend('name', {
+    validate: value => {
+        // Regular expression for IP address validation
+        const nameRegex = /^[a-zA-Z\s'().]+$/;
+        return nameRegex.test(value);
+    },
+    message: 'Please enter a valid  Name'
+});
 
 extend('email', {
     validate: value => {
@@ -23,7 +44,7 @@ extend('bangla', {
 extend('name', {
     validate: value => {
         // Regular expression for IP address validation
-        const nameRegex = /^[a-zA-Z\s']+$/;
+        const nameRegex = /^[a-zA-Z\s'().]+$/;
         return nameRegex.test(value);
     },
     message: 'Please enter a valid  Name'
@@ -31,7 +52,8 @@ extend('name', {
 extend('mobile', {
     validate: value => {
         // Regular expression to match phone numbers with a maximum length of 14 characters
-        const mobileRegex = /^01\d{9}$/;
+
+        const mobileRegex = /^01[3-9][0-9]{8}$/;;
         return mobileRegex.test(value);
 
     },
@@ -95,6 +117,7 @@ export default {
     components: {
         ValidationProvider,
         ValidationObserver,
+        VueEditor,
     },
 
     data() {
@@ -110,9 +133,15 @@ export default {
                 address: null,
                 image: null,
                 description: null,
+                is_external: 0,
+                username: null,
+                full_name: null,
+
 
             },
-            designations: []
+            designations: [],
+            users: [],
+            trainer_types: [{ "id": 0, "value_en": "Internal Trainer", "value_bn": "অভ্যন্তরীণ প্রশিক্ষক" }, { "id": 1, "value_en": "External Trainer", "value_bn": "বহিরাগত প্রশিক্ষক" }],
         };
     },
     computed: {
@@ -130,29 +159,58 @@ export default {
 
 
     mounted() {
+        this.GetUser();
+        this.GetData();
+
         this.updateHeaderTitle();
-        this.$store.dispatch("getLookupByType", 24).then((res) => (this.designations = res));
-        this.DataView();
+        this.$store
+            .dispatch("getLookupByType", 24)
+            .then((res) => (this.designations = res));
     },
 
 
     methods: {
+        change() {
+
+
+            this.data.name = null;
+            this.imageUrl = null;
+
+            this.data.mobile_no = null;
+            this.data.email = null;
+            const selected_user = this.users.find(circular => circular.id == this.data.user_id);
+            this.data.name = selected_user.full_name
+            this.imageUrl = selected_user.photo_url;
+            this.data.email = selected_user.email;
+            this.data.mobile_no = selected_user.mobile;
+
+        },
+        changeTrainer() {
+
+            this.data.user_id = null;
+            this.data.name = null;
+            this.imageUrl = null;
+            this.data.address = null;
+            this.data.mobile_no = null;
+            this.data.email = null;
+
+        },
         getItemText(item) {
             return this.language === 'bn' ? item.value_bn : item.value_en;
         },
         previewImage() {
             if (this.data.image) {
 
-                const maxFileSize = 200 * 2042; // 200 KB in bytes
+                const maxFileSize = 200 * 1024; // 200 KB in bytes
 
                 if (this.data.image.size > maxFileSize) {
                     // alert("file size must be 200kb")
                     // this.confirmDialog =true;
                     if (this.language == 'en') {
-                        this.$toast.error("File size must be under 400 KB");
+                        this.$toast.error("File size must be under 200 KB");
                     }
                     else {
-                        this.$toast.error("ফাইলের আকার ৪০০ কে বি এর কম হতে হবে");
+                        this.$toast.error("ফাইলের আকার ২০০ কে বি এর কম হতে হবে");
 
                     }
                     // Show the alert
@@ -183,37 +241,44 @@ export default {
 
         },
 
-        DataView() {
+        async GetUser() {
 
-       
             this.$axios
-                .get(`admin/training/trainers/${this.$route.params.id}`, {
+                .get(`/admin/training/participants/users/3`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
                     },
+
                 })
                 .then((result) => {
-                    console.log(result, "result")
-                    this.data = result?.data?.data
-                    this.imageUrl = result?.data?.data?.image;
-                    this.data.image = null;
 
-                    
-              
+                    this.users = result?.data?.data;
 
-                })
-                .catch((err) => {
-                    if (this.$refs.formAdd && this.$refs.formAdd.$refs && this.$refs.formAdd.$refs.operator) {
 
-                        this.$refs.formAdd.$refs.operator.setErrors([err.response.data.errors.operator[0]]);
-                    } else {
-                        console.error('Error setting errors:', err);
-                    }
 
                 });
-
         },
+        async GetData() {
+
+            this.$axios
+                .get(`/admin/training/participants/users/${this.$route.params.id}`,  {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+
+                })
+                .then((result) => {
+
+                    this.users = result?.data?.data;
+
+
+
+                });
+        },
+
+
 
 
         updateForm() {
@@ -226,8 +291,8 @@ export default {
             formData.append('email', this.data.email);
             formData.append('address', this.data.address);
             formData.append('description', this.data.description);
-          
-            if(this.data.image){
+
+            if (this.data.image) {
                 formData.append('image', this.data.image);
 
             }
@@ -273,8 +338,8 @@ export default {
                         <v-card>
                             <v-card-title class="justify-center"
                                 style="background-color: #1C3B68; color: white;font-size: 17px;">
-                                <h4 >
-                                    {{ $t("container.training_management.trainer_info.edit") }}
+                                <h4>
+                                    {{ $t("container.training_management.trainer_info.add") }}
                                 </h4>
                             </v-card-title>
 
@@ -286,13 +351,49 @@ export default {
 
                                         <v-row class="mx-10 no-gap-row">
                                             <v-col cols="12" sm="6" lg="6">
-                                                <ValidationProvider name="Full Name" vid="Name" rules="required"
-                                                    v-slot="{ errors }">
-                                                    <v-text-field dense type="text" v-model="data.name" :label="$t('container.training_management.trainer_info.name')
-                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য নাম প্রদান করুন '
-                                        : 'Please enter a valid Name') : ''"></v-text-field>
+                                                <ValidationProvider name="Trainer Type" vid="is_external"
+                                                    rules="required" @input="changeTrainer()" v-slot="{ errors }">
+                                                    <v-select @input="changeTrainer()" dense type="text"
+                                                        v-model="data.is_external" :label="$t('container.training_management.trainer_info.trainer_type')
+                                        " :items="trainer_types" :item-text="getItemText" item-value="id"
+                                                        persistent-hint outlined :error="errors[0] ? true : false"
+                                                        :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক প্রশিক্ষকের ধরন প্রদান করুন '
+                                        : 'Please enter a Trainer Type') : ''"></v-select>
                                                 </ValidationProvider>
                                             </v-col>
+                                            <v-col cols="12" sm="6" lg="6" v-if="data.is_external == 0">
+                                                <ValidationProvider name="User" vid="user_id" rules="required"
+                                                    v-slot="{ errors }">
+                                                    <v-select dense @input="change()" type="text" v-model="data.user_id"
+                                                        :label="$t('container.training_management.training_registration.user_name')
+                                        " :items="users" item-text="username" item-value="id" persistent-hint outlined
+                                                        :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ব্যবহারকারীর নাম প্রদান করুন '
+                                        : 'Please enter a UserName') : ''"></v-select>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" lg="6" v-if="data.is_external == 1">
+                                                <ValidationProvider name="User" vid="user_id"
+                                                    rules="required||checkUsername" v-slot="{ errors }">
+                                                    <v-text-field dense type="text" v-model="data.username" :label="$t('container.training_management.training_registration.user_name')
+                                        " persistent-hint outlined :error="errors[0] ? true : false"
+                                                        :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক  ছোট হাতের এবং কোনো বিশেষ অক্ষর ছাড়া  ব্যবহারকারীর নাম লিখুন প্রদান করুন '
+                                        : 'Please enter a UserName with lowercase and without any special character') : ''"></v-text-field>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" lg="6">
+                                                <ValidationProvider name="Participant" rules="required||name" vid="name"
+                                                    v-slot="{ errors }">
+                                                    <v-text-field dense v-model="data.name" :label="$t('container.training_management.training_registration.full_name')
+                                        " persistent-hint :readonly="data.is_external == 0" outlined
+                                                        :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য সম্পূর্ণ নাম প্রদান করুন ।'
+                                        : 'Please enter valid  Full Name') : ''"></v-text-field>
+                                                </ValidationProvider>
+                                            </v-col>
+
+
+
+
+
                                             <v-col cols=" 12" sm="6" lg="6">
                                                 <ValidationProvider name="Designation" vid="designation"
                                                     rules="required" v-slot="{ errors }">
@@ -311,7 +412,8 @@ export default {
                                             <v-col cols="12" sm="6" lg="6">
                                                 <ValidationProvider name="Mobile" vid="mobile" rules="required||mobile"
                                                     v-slot="{ errors }">
-                                                    <v-text-field dense type="text" v-model="data.mobile_no" :label="$t('container.training_management.trainer_info.mobile')
+                                                    <v-text-field dense type="text" :readonly="data.is_external == 0"
+                                                        v-model="data.mobile_no" :label="$t('container.training_management.trainer_info.mobile')
                                         " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য মোবাইল নম্বর প্রদান করুন '
                                         : 'Please enter a valid Mobile Number') : ''"></v-text-field>
                                                 </ValidationProvider>
@@ -321,7 +423,7 @@ export default {
                                                 <ValidationProvider name="Email" vid="email"
                                                     rules="required||email||bangla" v-slot="{ errors }">
                                                     <v-text-field placeholder="xxx@gmail.com" dense type="email"
-                                                        v-model="data.email" :label="$t('container.training_management.trainer_info.email')
+                                                        :readonly="data.is_external == 0" v-model="data.email" :label="$t('container.training_management.trainer_info.email')
                                         " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য ইমেইল প্রদান করুন '
                                         : 'Please enter a valid Email') : ''"></v-text-field>
                                                 </ValidationProvider>
@@ -338,31 +440,34 @@ export default {
                                                 <v-row align-end>
                                                     <v-col cols="12" sm="6" lg="6" xl="6" xs="6">
                                                         <v-img :src="imageUrl" style="
-                                    width: 200px;
-                                    height: 200px;
+                                    width: 145px;
+                                    height: 145px;
                                     border: 1px solid #ccc;
                                   " class="mb-5" v-if="imageUrl"></v-img>
                                                         <v-img src="/assets/images/profile.png" v-if="!imageUrl" style="
-                                    width: 150px;
-                                    height: 150px;
+                                    width: 145px;
+                                    height: 145px;
                                     border: 1px solid #ccc;
                                   " class="mb-5"></v-img>
+
                                                     </v-col>
                                                     <v-col cols="12" sm="6" lg="6" xl="6" xs="6"> <label>{{
                                                             $t('container.application_selection.application.image') }}
                                                             ({{
                                                             $t('container.training_management.trainer_info.image_alert')
                                                             }})</label>
-                                                        <span style="margin-left: 4px; color: red">*</span>
+
                                                         <ValidationProvider v-slot="{ errors }" name="Image"
                                                             vid="image">
                                                             <v-file-input dense outlined show-size counter
                                                                 prepend-outer-icon="mdi-camera" v-model="data.image"
-                                                                accept="image/*" @change="previewImage" prepend-icon=""
+                                                                :placeholder="language == 'bn' ? 'ফাইল নির্বাচন করুন '
+                                        : 'Choose File'" accept="image/*" @change="previewImage" prepend-icon=""
                                                                 id="image">
                                                             </v-file-input>
                                                         </ValidationProvider>
                                                     </v-col>
+
 
                                                 </v-row>
 
@@ -373,15 +478,22 @@ export default {
 
                                             </v-col>
 
-
-
-                                            <v-col cols="12" sm="6" lg="6">
-                                                <ValidationProvider name="BIO" vid="description" v-slot="{ errors }">
+                                            <!-- <ValidationProvider name="BIO" vid="description" v-slot="{ errors }">
                                                     <v-textarea dense v-model="data.description" :label="$t('container.training_management.trainer_info.description')
                                         " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক বায়ো প্রদান করুন '
                                         : 'Please enter  Bio') : ''"></v-textarea>
-                                                </ValidationProvider>
+                                                </ValidationProvider> -->
+                                            <v-col cols="12" sm="12" lg="12">
+
+                                                <label>{{ $t('container.training_management.trainer_info.description')
+                                                    }}</label>
+
+                                                <vue-editor v-model="data.description">
+                                                </vue-editor>
+
                                             </v-col>
+
+
 
 
 
@@ -394,7 +506,7 @@ export default {
                                             </v-btn>
                                             <v-btn flat color="success" type="submit" class="custom-btn mr-2"
                                                 :disabled="invalid">
-                                                {{ $t("container.list.update") }}
+                                                {{ $t("container.list.submit") }}
                                             </v-btn>
                                         </v-row>
                                     </v-form>
