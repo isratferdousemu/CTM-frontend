@@ -153,7 +153,7 @@ export default {
                             <h5 class="white--text">{{ $t("container.training_management.trainer_info.view") }}</h5>
                         </v-card-title>
 
-                
+
                         <v-row v-if="data.name">
                             <v-col cols="12" lg="12" md="4" sm="12" xs="12">
                                 <v-card class="ma-5 " rounded>
@@ -288,8 +288,7 @@ export default {
 
                                             </v-col>
 
-                                            <v-col cols="2" lg="2" md="2" sm="2" xs="2"
-                                                @click="selectedTab = 'program'"
+                                            <v-col cols="2" lg="2" md="2" sm="2" xs="2" @click="selectedTab = 'program'"
                                                 :class="{ 'active-tab': selectedTab === 'program' }"
                                                 style="cursor: pointer;">
                                                 {{ $t("container.training_management.trainer_info.program")
@@ -349,10 +348,11 @@ export default {
                                                         }}</v-col>
                                                     <v-col cols="7" class="d-flex align-items-start">
                                                         <b>:</b>
-                                                        <div class="ml-2"
+                                                        <!-- <div class="ml-2"
                                                             style="white-space: normal; word-break: break-word;">
                                                             {{ data?.description }}
-                                                        </div>
+                                                        </div> -->
+                                                        <div v-html="data?.description"></div>
                                                     </v-col>
 
                                                     <!-- <v-col cols="7"  v-else>
