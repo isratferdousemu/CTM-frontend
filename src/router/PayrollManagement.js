@@ -47,7 +47,7 @@ const PayrollManagementRoutes = [
       requiresAuth: true,
       permission: "payment-processor-edit",
     },
-    component: () => import("../pages/PayrollManagement/paymentprocessor/show.vue")
+    component: () => import("../pages/PayrollManagement/paymentprocessor/show.vue") 
   },
 
   {

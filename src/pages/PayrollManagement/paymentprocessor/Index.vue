@@ -69,57 +69,64 @@
 
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
-                        <!-- <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'update-post'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="success"
-                              elevation="0"
-                              @click="editDialog(item)"
-                            >
-                              <v-icon> mdi-account-edit-outline </v-icon>
-                            </v-btn>
-                          </template>
-                          <span>
-                            {{ $t("container.list.edit") }}
-                          </span>
-                        </v-tooltip> -->
-
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <router-link
-                              :to="`/payroll-management/payment-processor-show/${item.id}`"
-                              tag="span"
-                              v-on="on"
-                            >
-                              <v-btn fab x-small color="success" elevation="0">
-                                <v-icon>mdi-eye-outline</v-icon>
+                        <div class="action-buttons">
+                          <v-tooltip top>
+                            <template v-slot:activator="{ on }">
+                              <v-btn
+                                v-can="'update-post'"
+                                fab
+                                x-small
+                                v-on="on"
+                                color="success"
+                                elevation="0"
+                                @click="editDialog(item)"
+                              >
+                                <v-icon> mdi-account-edit-outline </v-icon>
                               </v-btn>
-                            </router-link>
-                          </template>
-                          <span>{{ $t("container.list.edit") }}</span>
-                        </v-tooltip>
+                            </template>
+                            <span>{{ $t("container.list.edit") }}</span>
+                          </v-tooltip>
 
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'delete-division'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="grey"
-                              class="ml-3 white--text"
-                              elevation="0"
-                              @click="deleteAlert(item.id)"
-                            >
-                              <v-icon> mdi-delete </v-icon>
-                            </v-btn>
-                          </template>
-                          <span> {{ $t("container.list.delete") }}</span>
-                        </v-tooltip>
+                          <v-tooltip top>
+                            <template v-slot:activator="{ on }">
+                              <router-link
+                                :to="`/payroll-management/payment-processor-show/${item.id}`"
+                                tag="span"
+                                v-on="on"
+                              >
+                                <v-btn
+                                  fab
+                                x-small
+                                v-on="on"
+                                color="success"
+                                class="white--text"
+                                elevation="0"
+                                >
+                                  <v-icon>mdi-eye-outline</v-icon>
+                                </v-btn>
+                              </router-link>
+                            </template>
+                            <span>{{ $t("container.list.show") }}</span>
+                          </v-tooltip>
+
+                          <v-tooltip top>
+                            <template v-slot:activator="{ on }">
+                              <v-btn
+                                v-can="'delete-division'"
+                                fab
+                                x-small
+                                v-on="on"
+                                color="grey"
+                                class="white--text"
+                                elevation="0"
+                                @click="deleteAlert(item.id)"
+                              >
+                                <v-icon> mdi-delete </v-icon>
+                              </v-btn>
+                            </template>
+                            <span>{{ $t("container.list.delete") }}</span>
+                          </v-tooltip>
+                        </div>
                       </template>
                       <!-- End Action Button -->
 
@@ -500,7 +507,7 @@
                         :clearable="clearLocation"
                         v-model="data.location_type"
                         :items="location_types"
-                        :item-text="language === 'bn' ? 'name_bn' : 'name_en'"
+                        :item-text="language === 'bn' ? 'value_bn' : 'value_en'"
                         item-value="id"
                         :label="
                           $t('container.payroll_management.location_type')
@@ -514,7 +521,7 @@
                             : ''
                         "
                         @change="
-                          getDistrictPourashava(
+                          getArea(
                             data.district,
                             data.location_type
                           )
@@ -761,7 +768,7 @@
       <!-- division add modal  -->
 
       <!-- Payment processor Edit modal  -->
-      <v-dialog v-model="dialogEdit" width="950">
+      <!-- <v-dialog v-model="dialogEdit" width="950">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
             {{ $t("container.payroll_management.edit") }}
@@ -971,7 +978,7 @@
             </p>
           </v-card-text>
         </v-card>
-      </v-dialog>
+      </v-dialog> -->
 
       <!-- Payment processor Edit modal  -->
 
@@ -1123,15 +1130,15 @@ export default {
       location_types: [
         {
           id: 1,
-          name_en: "District Pourashava",
-          name_bn: "জেলা পৌরসভা",
+          value_en: "District Pourashava",
+          value_bn: "জেলা পৌরসভা",
           value: "district_pourashava",
         },
-        { id: 2, name_en: "Upazila", name_bn: "উপজেলা", value: "upazila" },
+        { id: 2, value_en: "Upazila", value_bn: "উপজেলা", value: "upazila" },
         {
           id: 3,
-          name_en: "City Corporation",
-          name_bn: "সিটি কর্পোরেশন",
+          value_en: "City Corporation",
+          value_bn: "সিটি কর্পোরেশন",
           value: "city_corporation",
         },
       ],
@@ -1251,17 +1258,17 @@ export default {
       this.clearableFalse();
     },
 
-    resetForm(){
+    resetForm() {
       this.data = {
         processor_type: null,
         bank_id: null,
-        branch_name: '',
-        routing_number: '',
-        name_en: '',
-        name_bn: '',
-        focal_phone: '',
-        focal_email: '',
-        charge: '',
+        branch_name: "",
+        routing_number: "",
+        name_en: "",
+        name_bn: "",
+        focal_phone: "",
+        focal_email: "",
+        charge: "",
         division: null,
         district: null,
         location_type: null,
@@ -1269,7 +1276,7 @@ export default {
         union: null,
         city_corporation: null,
         thana: null,
-        district_pourashava: null
+        district_pourashava: null,
       };
       this.clearField();
     },
@@ -1422,7 +1429,7 @@ export default {
         });
     },
 
-    async getDistrictPourashava(districtId, locationTypeId) {
+    async getArea(districtId, locationTypeId) {
       if (districtId == null) {
         this.$toast.warning("Please select a district");
         return;
@@ -1517,14 +1524,130 @@ export default {
       }
     },
 
-    editDialog(item) {
-      this.dialogEdit = true;
+    // editDialog(item) {
+    //   console.log("🚀 ~ editDialog ~ item:", item)
+    //   this.dialogAdd = true;
+    //   this.data = {
+    //     processor_type: item.processor_type,
+    //     bank_id: item.bank,
+    //     branch_name: item.bank_branch_name,
+    //     routing_number: item.bank_routing_number,
+    //     name_en: item.name_en,
+    //     name_bn: item.name_bn,
+    //     focal_phone: item.focal_phone_no,
+    //     focal_email: item.focal_email_address,
+    //     charge: item.charge,
+    //     division: item.processor_area.division.id,
+    //     // district: item.processor_area.district,
+    //     //location_type: item.processor_area.location_type,
+    //     // upazila: item.processor_area?.upazila,
+    //     // union: item.processor_area?.union,
+    //     // city_corporation: item.processor_area?.city_corporation,
+    //     // thana: item.processor_area?.thana,
+    //     // district_pourashava: item.processor_area?.district_pourashava
+    //   };
 
-      this.data.name_en = item.name_en;
-      this.data.name_bn = item.name_bn;
+    //   if(this.data.division != null){
+    //     this.getDistricts(this.data.division)
+    //     this.data.district = item.processor_area.district.id
+        
+    //   }
+    //   if(this.data.district != null){
+    //     this.data.location_type= item.processor_area.location_type.id
+    //   }
+    //   if(this.data.location_type!=null){
 
-      this.errors = {};
-    },
+    //     this.getArea(this.data.district, this.data.location_type)
+
+    //     if(this.data.location_type == 1){
+    //   console.log("🚀 ~ editDialog ~ this.data.location_type-for-1:", this.data.location_type)
+
+    //       // this.data.location_type = 1
+    //       this.data.district_pourashava=item.processor_area?.district_pourashava.id
+
+
+    //     }else if(this.data.location_type == 2){
+    //   console.log("🚀 ~ editDialog ~ this.data.location_type-for-2:", this.data.location_type)
+
+    //       // this.data.location_type = 2
+    //       this.data.upazila=item.processor_area?.upazila.id
+    //       this.getUnionOrThana(this.data.upazila, this.data.location_type)
+    //       this.data.union=item.processor_area?.union.id
+
+    //     }else{
+    //   console.log("🚀 ~ editDialog ~ this.data.location_type-for-3:", this.data.location_type)
+
+    //       // this.data.location_type = 3
+    //       this.data.city_corporation=item.processor_area?.city_corporation.id
+    //       this.getUnionOrThana(this.data.upazila, this.data.location_type)
+    //       this.data.thana=item.processor_area?.thana.id
+    //     }
+    //   }
+    //   // if(this.data.location_type != null && this.data.upazila != null  && this.data.upazila != null){
+    //   //   this.getUnionOrThana(this.data.upazila.id, this.data.location_type.id)
+    //   // }
+    //     console.log("🚀 ~ editDialog ~ this.data:", this.data)
+
+    //   // this.errors = {};
+    // },
+
+
+    async editDialog(item) {
+    console.log("🚀 ~ editDialog ~ item:", item);
+    this.dialogAdd = true;
+    this.data = {
+      processor_type: item.processor_type,
+      bank_id: item.bank,
+      branch_name: item.bank_branch_name,
+      routing_number: item.bank_routing_number,
+      name_en: item.name_en,
+      name_bn: item.name_bn,
+      focal_phone: item.focal_phone_no,
+      focal_email: item.focal_email_address,
+      charge: item.charge,
+      division: item.processor_area.division.id,
+      district: null,
+      location_type: null,
+      district_pourashava: null,
+      upazila: null,
+      union: null,
+      city_corporation: null,
+      thana: null,
+    };
+
+    try {
+      if (this.data.division) {
+        await this.getDistricts(this.data.division);
+        this.data.district = item.processor_area.district.id;
+      }
+
+      if (this.data.district) {
+        this.data.location_type = item.processor_area.location_type.id;
+      }
+
+      if (this.data.location_type) {
+        await this.getArea(this.data.district, this.data.location_type);
+
+        if (this.data.location_type == 1) {
+          this.data.district_pourashava = item.processor_area?.district_pourashava?.id;
+        } else if (this.data.location_type == 2) {
+          this.data.upazila = item.processor_area?.upazila?.id;
+          await this.getUnionOrThana(this.data.upazila, this.data.location_type);
+          this.data.union = item.processor_area?.union?.id;
+        } else {
+          this.data.city_corporation = item.processor_area?.city_corporation?.id;
+          await this.getUnionOrThana(this.data.upazila, this.data.location_type);
+          this.data.thana = item.processor_area?.thana?.id;
+        }
+      }
+    } catch (error) {
+      console.error("Error in editDialog:", error);
+      this.$toast.error("An error occurred while initializing the edit dialog");
+    }
+
+    console.log("🚀 ~ editDialog ~ this.data:", this.data);
+  },
+
 
     onPageChange($event) {
       // this.pagination.current = $event;
@@ -1550,3 +1673,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+</style>

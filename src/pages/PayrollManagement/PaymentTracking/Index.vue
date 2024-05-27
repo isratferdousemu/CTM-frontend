@@ -70,28 +70,22 @@
                             <v-card-text>
                                 <v-row dense class="ml-5">
                                     <v-col cols="12">
-                                        <h4 style="color: blue !important;">Program Name</h4>
+                                        <h4 style="color: blue !important;">Payment Details</h4>
                                         <br>
                                         <hr style="border-top: 1px solid gray; width: 40%;">
                                         <br>
-                                        <h4>Applicant Details</h4>
+                                        <h4>Beneficiary Details</h4>
                                     </v-col>
                                 </v-row>
                                 <v-row dense class="ml-5">
                                     <v-col cols="12">
-                                        <b>NBR:</b> 1234567890
+                                        <b>ID:</b> 1234567890
                                     </v-col>
                                     <v-col cols="12">
-                                        <b>Application Time:</b> 10:00 AM
+                                        <b>Name:</b> Shohorab Ahmed
                                     </v-col>
                                     <v-col cols="12">
-                                        <b>Application Date:</b> 01/01/2024
-                                    </v-col>
-                                    <v-col cols="12">
-                                        <b>Office:</b> Dhaka Office
-                                    </v-col>
-                                    <v-col cols="12">
-                                        <b>Tracking No:</b> TRK123456
+                                        <b>Address:</b> Dhaka North
                                     </v-col>
                                 </v-row>
                                 <v-row class="ma-1">
