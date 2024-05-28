@@ -1,13 +1,19 @@
 <template>
-  <v-col>
+
+  <v-col cols="12">
   <v-row>
+
     <v-col cols="12">
+      <v-card style="text-align: center" :loading="isLoading">
       <label style="color: #1976d2">
                       <span>
                         {{ $t("container.application_selection_dashboard.total_number_of_application_received_application") }}
                       </span>
-      </label></v-col
+      </label>
+      </v-card>
+    </v-col
     >
+
   </v-row>
   <v-row class="ml-1 mr-1">
     <v-menu
@@ -37,21 +43,22 @@
       >
         <v-spacer></v-spacer>
         <v-btn text color="primary" @click="resetDateRange">
-          Cancel
+          {{ $t('container.list.reset')}}
         </v-btn>
         <v-btn
             text
             color="primary"
             @click="$refs.menu.save(dates)"
         >
-          OK
+          {{ $t('container.list.ok')}}
         </v-btn>
       </v-date-picker>
     </v-menu>
   </v-row>
-  <v-row>
+  <v-row :loading="isLoading">
     <canvas id="total_number_of_application_received_line_bar_info"></canvas>
   </v-row>
+<!--    </v-card>-->
   </v-col>
 
 </template>
@@ -68,7 +75,7 @@ export default {
       total_number_of_application_received_line_bar_info: [],
       total_number_of_application_received_line_bar_levels: [],
       total_number_of_application_received_line_bar_datas: [],
-      isLoading: false,
+      isLoading: true,
       dateRangeText: ""
     };
   },
@@ -83,6 +90,7 @@ export default {
       this.createTotalReceivedLineBarApplicentChart();
     },
     async getTotalReceivedLineBarApplication(status, from_date = null, to_date = null) {
+      this.isLoading = true
       const queryParams = {
         status: status,
         start_date: from_date,
@@ -98,11 +106,12 @@ export default {
         });
 
         this.total_number_of_application_received_line_bar_info = result.data.data;
-        this.total_number_of_application_received_line_bar_levels = this.total_number_of_application_received_line_bar_info.map((row) => row.name_en.substring(0,10));
+        this.total_number_of_application_received_line_bar_levels = this.total_number_of_application_received_line_bar_info.map((row) => this.language == 'en' ? row.name_en.substring(0,10) : row.name_bn.substring(0,10));
         this.total_number_of_application_received_line_bar_datas = this.total_number_of_application_received_line_bar_info.map((row) => row.applications_count);
         this.isLoading = false;
 
       } catch (error) {
+        this.isLoading = false;
         console.error("Error fetching data:", error);
         // Handle error if necessary
       }
@@ -116,21 +125,10 @@ export default {
         this.total_number_of_application_received_line_bar_chart = new Chart(document.getElementById("total_number_of_application_received_line_bar_info"), {
           data: {
             labels:this.total_number_of_application_received_line_bar_levels,
-            // labels: [
-            //   "2024",
-            //   "2023",
-            //   "2022",
-            //   "2021",
-            //   "2021",
-            //   "2020",
-            //   "2019",
-            //   "2018",
-            // ],
             datasets: [
               {
                 type: "line",
-                label: "Line Dataset",
-                // data: [1600, 3000, 4500, 8000, 12000, 8000, 8500, 7500, 10000],
+                label: "",
                 data: this.total_number_of_application_received_line_bar_datas,
                 fill: false,
                 // borderColor: "rgb(75, 192, 192)",
@@ -138,7 +136,7 @@ export default {
               },
               {
                 type: "bar",
-                label: "Bar Dataset",
+                label: "",
                 data: this.total_number_of_application_received_line_bar_datas,
                 barPercentage: 0.5,
                 barThickness: 16,
@@ -153,6 +151,10 @@ export default {
       }
     },
     OnChangeDateInfo(event, type) {
+      if (this.dates[1] && this.dates[1] < this.dates[0]) {
+        this.$toast.error(this.language == 'en' ? 'End date cannot be before start date' : 'শেষ তারিখ শুরুর তারিখের আগে হতে পারে না')
+        this.resetDateRange();
+      }
       if (this.dates.length < 2) {
         return;
       }
@@ -169,6 +171,23 @@ export default {
 
   mounted() {
     this.fetchTotalReceivedLineBarApplicationChartData();
-  }
+  },
+  computed:{
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      }
+    },
+  },
+  watch: {
+    '$i18n.locale': {
+      handler(newLocale, oldLocale) {
+        if (newLocale != oldLocale) {
+          this.fetchTotalReceivedLineBarApplicationChartData();
+        }
+      },
+      immediate: true // Call the handler immediately to initialize the levels
+    }
+  },
 }
 </script>
