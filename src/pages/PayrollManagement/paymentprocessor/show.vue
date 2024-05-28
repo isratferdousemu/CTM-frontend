@@ -22,6 +22,7 @@
                     >
                     {{ data.processor_type ?? "--" }}
                   </div>
+                  <div v-if="data.processor_type === 'bank'">
                   <div style="padding-bottom: 8px">
                     <strong
                       >{{
@@ -45,6 +46,7 @@
                       }}:</strong
                     >
                     {{ data.bank_routing_number ?? "--" }}
+                  </div>
                   </div>
                   <div style="padding-bottom: 8px">
                     <strong
@@ -108,19 +110,19 @@
                     >
                     {{ data.location_type ?? "--" }}
                   </div>
-                  <div style="padding-bottom: 8px">
+                  <div style="padding-bottom: 8px" v-if="data.processor_area?.location_type == 2">
                     <strong
                       >{{ $t("container.payroll_management.upazila") }}:</strong
                     >
                     {{ language ==='bn' ? data.processor_area?.upazila?.name_bn : data.processor_area?.upazila?.name_en ?? "--"}}
                   </div>
-                  <div style="padding-bottom: 8px">
+                  <div style="padding-bottom: 8px" v-if="data.processor_area?.location_type == 2">
                     <strong
                       >{{ $t("container.payroll_management.union") }}:</strong
                     >
                     {{ language ==='bn' ? data.processor_area?.union?.name_bn : data.processor_area?.union?.name_en ?? "--"}}
                   </div>
-                  <div style="padding-bottom: 8px">
+                  <div style="padding-bottom: 8px" v-if="data.processor_area?.location_type == 3">
                     <strong
                       >{{
                         $t("container.payroll_management.city_corporation")
@@ -128,13 +130,13 @@
                     >
                     {{ language ==='bn' ? data.processor_area?.city_corporation?.name_bn : data.processor_area?.city_corporation?.name_en ?? "--"}}
                   </div>
-                  <div style="padding-bottom: 8px">
+                  <div style="padding-bottom: 8px" v-if="data.processor_area?.location_type == 3">
                     <strong
                       >{{ $t("container.payroll_management.thana") }}:</strong
                     >
                     {{ language ==='bn' ? data.processor_area?.thana?.name_bn : data.processor_area?.thana?.name_en ?? "--"}}
                   </div>
-                  <div>
+                  <div v-if="data.processor_area?.location_type == 1">
                     <strong
                       >{{
                         $t("container.payroll_management.district_pourashava")
