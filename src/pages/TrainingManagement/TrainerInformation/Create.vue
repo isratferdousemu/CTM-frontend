@@ -112,8 +112,8 @@ extend("checkNumber", {
 });
 
 export default {
-    name: "GenerateDataReceiver",
-    title: "CTM - Generate Data Receiver",
+
+    title: "CTM - Trainer Information",
     components: {
         ValidationProvider,
         ValidationObserver,
@@ -125,6 +125,17 @@ export default {
      
             
             imageUrl:null,
+            customToolbar: [
+                [{ 'header': [1, 2, false] }],
+                ['bold', 'italic', 'underline'],
+                // ['blockquote', 'code-block'],
+                [{ list: 'ordered' }, { list: 'bullet' }, { list: 'check' }],
+                [{ 'indent': '-1' }, { 'indent': '+1' }],
+                [{ 'align': [] }],
+                ['clean'], // remove formatting button
+                ['link'] ,
+                [{ 'color': [] }, { 'background': [] }]// removed 'image' from the default toolbar
+            ],
             data: {
                 name: null,
                 designation_id: null,
@@ -266,9 +277,19 @@ export default {
             const formData = new FormData();
             // Append data to FormData object
             formData.append('name', this.data.name);
-            formData.append('user_id', this.data.user_id);
+            if (this.data.user_id) {
+                formData.append('user_id', this.data.user_id);
+
+            }
+            if (this.data.username) {
+                formData.append('username', this.data.username);
+
+            }
+
+           
           
             formData.append('designation_id', this.data.designation_id);
+            formData.append('is_external', this.data.is_external);
             formData.append('mobile_no', this.data.mobile_no);
             formData.append('email', this.data.email);
             formData.append('address', this.data.address);
@@ -293,8 +314,15 @@ export default {
 
                 })
                 .catch((err) => {
-                    console.log(err, "err")
-                    this.$toast.error(err?.response?.data?.errors?.email[0]);
+                 
+                    if (err?.response?.data?.errors?.email && Array.isArray(err.response.data.errors.email) && err.response.data.errors.email.length > 0) {
+                        this.$toast.error(err.response.data.errors.email[0]);
+                    }
+
+                    if (err?.response?.data?.errors?.username && Array.isArray(err.response.data.errors.username) && err.response.data.errors.username.length > 0) {
+                        this.$toast.error(err.response.data.errors.username[0]);
+                    }
+                    // this.$toast.error(err.response.data.errors);
                     this.$refs.form.setErrors(err.response.data.errors);   
 
                 });
@@ -338,7 +366,7 @@ export default {
                                         " :items="trainer_types" :item-text="getItemText" item-value="id"
                                                         persistent-hint outlined :error="errors[0] ? true : false"
                                                         :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক প্রশিক্ষকের ধরন প্রদান করুন '
-                                        : 'Please enter a Trainer Type') : ''"></v-select>
+                                        : 'Please enter  Trainer Type') : ''"></v-select>
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols="12" sm="6" lg="6" v-if="data.is_external == 0">
@@ -348,7 +376,7 @@ export default {
                                                         :label="$t('container.training_management.training_registration.user_name')
                                         " :items="users" item-text="username" item-value="id" persistent-hint outlined
                                                         :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ব্যবহারকারীর নাম প্রদান করুন '
-    : 'Please enter a UserName') : ''"></v-select>
+    : 'Please enter  UserName') : ''"></v-select>
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols="12" sm="6" lg="6" v-if="data.is_external == 1">
@@ -356,7 +384,7 @@ export default {
                                                     rules="required||checkUsername" v-slot="{ errors }">
                                                     <v-text-field dense type="text" v-model="data.username" :label="$t('container.training_management.training_registration.user_name')
                                         " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক  ছোট হাতের এবং কোনো বিশেষ অক্ষর ছাড়া  ব্যবহারকারীর নাম লিখুন প্রদান করুন '
-    : 'Please enter a UserName with lowercase and without any special character') : ''"></v-text-field>
+    : 'Please enter  UserName with lowercase and without any special character') : ''"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols="12" sm="6" lg="6">
@@ -394,7 +422,7 @@ export default {
                                                     <v-text-field dense type="text" :readonly="data.is_external == 0"
                                                         v-model="data.mobile_no" :label="$t('container.training_management.trainer_info.mobile')
                                         " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য মোবাইল নম্বর প্রদান করুন '
-                                        : 'Please enter a valid Mobile Number') : ''"></v-text-field>
+                                        : 'Please enter  valid Mobile Number') : ''"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
 
@@ -404,7 +432,7 @@ export default {
                                                     <v-text-field placeholder="xxx@gmail.com" dense type="email"
                                                         :readonly="data.is_external == 0" v-model="data.email" :label="$t('container.training_management.trainer_info.email')
                                         " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য ইমেইল প্রদান করুন '
-                                        : 'Please enter a valid Email') : ''"></v-text-field>
+                                        : 'Please enter  valid Email') : ''"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols="12" sm="6" lg="6">
@@ -466,8 +494,8 @@ export default {
 
                                                 <label>{{ $t('container.training_management.trainer_info.description')
                                                     }}</label>
-                                               
-                                                <vue-editor v-model="data.description">
+
+                                                <vue-editor v-model="data.description" :editor-toolbar="customToolbar">
                                                 </vue-editor>
 
                                             </v-col>

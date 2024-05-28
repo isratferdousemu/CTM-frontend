@@ -150,8 +150,8 @@ export default {
                     <v-card class="mx-3">
                         <v-card-title class="justify-center black--text"
                             style="background-color: #1C3C6A; color: white;font-size: 17px;">
-                            <h4 class="white--text">{{ $t("container.training_management.training_program.view") }}
-                            </h4>
+                            <h3 class="white--text">{{ $t("container.training_management.training_program.view") }}
+                            </h3>
                         </v-card-title>
 
                         <v-row class="my-custom-row ma-5">

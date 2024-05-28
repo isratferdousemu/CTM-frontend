@@ -167,6 +167,17 @@ export default {
             circular_types: [],
             modules: [],
             edited_modules:[],
+            customToolbar: [
+                [{ 'header': [1, 2, false] }],
+                ['bold', 'italic', 'underline'],
+                // ['blockquote', 'code-block'],
+                [{ list: 'ordered' }, { list: 'bullet' }, { list: 'check' }],
+                [{ 'indent': '-1' }, { 'indent': '+1' }],
+                [{ 'align': [] }],
+                ['clean'], // remove formatting button
+                ['link'],
+                [{ 'color': [] }, { 'background': [] }]// removed 'image' from the default toolbar
+            ],
 
             data: {
                 circular_name: null,
@@ -517,13 +528,13 @@ export default {
                                             </v-col> -->
 
 
-                                            <v-col cols="12" sm="6" lg="6">
+                                            <v-col cols="12" sm="12" lg="12">
                                                 <label>{{
                                                     $t('container.training_management.training_circular.description')
                                                     }}</label>
-                                                <vue-editor v-model="data.description">
+                                                <vue-editor v-model="data.description" :editor-toolbar="customToolbar">
                                                 </vue-editor>
-                                           
+
 
                                             </v-col>
 

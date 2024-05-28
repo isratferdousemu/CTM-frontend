@@ -75,6 +75,7 @@ export default {
 
     mounted() {
         this.DataView();
+        this.GetTimeSlot();
 
     },
 
@@ -82,6 +83,26 @@ export default {
         emailAlert(id) {
             this.dialogEmail = true;
             this.email_id = id;
+        },
+        async GetTimeSlot() {
+
+            await this.$axios
+                .get("/admin/training/program-time-slots", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+
+                })
+                .then((result) => {
+
+                    this.time_slots = result?.data?.data;
+
+
+
+
+
+                });
         },
 
 
@@ -97,26 +118,32 @@ export default {
                 .then((result) => {
 
                     this.data = result?.data?.data;
-                    const timeSlotsMap = new Map();
-                    this.time_slots.forEach(slot => {
-                        timeSlotsMap.set(slot.id.toString(), slot.time);
-                    });
-
-                    // Replace time slot IDs with time values
-
-
-                    const updatedData = this.data.on_days.map(day => {
-                        if (day.is_active === '1') {
-                            const updatedTimeSlots = (day.timeSlots || []).map(slotId => timeSlotsMap.get(slotId) || slotId);
-                            return { ...day, timeSlots: updatedTimeSlots };
-                        } else {
-                            return { ...day, timeSlots: null }; // If the day is not active, return it unchanged
-                        }
-                    });
-
-                    this.edited_on_days = updatedData;
+                    setTimeout(() => {
+                        const timeSlotsMap = new Map();
+                        this.time_slots.forEach(slot => {
+                            timeSlotsMap.set(slot.id.toString(), slot.time);
+                        });
+                        // Code to execute after delay
 
 
+
+
+
+                        const updatedData = this.data.on_days.map(day => {
+                            if (day.is_active == '1') {
+                                const updatedTimeSlots = (day.timeSlots || []).map(slotId => timeSlotsMap.get(slotId) || slotId);
+                                return { ...day, timeSlots: updatedTimeSlots };
+                            } else {
+                                return { ...day, timeSlots: null }; // If the day is not active, return it unchanged
+                            }
+                        });
+
+
+                        this.edited_on_days = updatedData;
+                        console.log(this.edited_on_days, "updatedData")
+                    }, 1500);
+                    // Replace time slot IDs withalert
+               
                 })
                 .catch((err) => {
                     if (this.$refs.formAdd && this.$refs.formAdd.$refs && this.$refs.formAdd.$refs.operator) {
@@ -167,9 +194,8 @@ export default {
         </v-app-bar>
         <v-row>
             <v-col cols="10" offset="1">
-                <v-card class="mx-3 mt-5" >
-                    <v-card-title class="justify-center black--text mt-15"
-                       >
+                <v-card class="mx-3 mt-5">
+                    <v-card-title class="justify-center black--text mt-15">
                         <h4>{{ $t("container.training_management.training_program.view") }}
                         </h4>
                     </v-card-title>
@@ -260,7 +286,7 @@ export default {
                             <h5 class="text-center mb-5">{{
                                 $t('container.training_management.training_program.class_schedule') }}</h5>
 
-                            <v-simple-table dense class=" mt-10">
+                            <v-simple-table dense class=" mt-10" v-if="edited_on_days">
                                 <template v-slot:default>
                                     <thead>
                                         <tr>

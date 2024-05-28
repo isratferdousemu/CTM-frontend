@@ -427,7 +427,7 @@ export default {
                 })
                 .catch((err) => {
 
-
+                    this.$toast.error(err?.response?.data?.errors?.program_name[0]);
                 });
 
         },
