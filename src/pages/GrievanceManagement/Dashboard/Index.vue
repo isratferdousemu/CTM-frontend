@@ -8,52 +8,124 @@
 
     <!-------start  header Card component ---->
     <v-row align="center" justify="center" dense>
-      <v-col cols="12" md="4">
-        <v-card>
-          <v-row>
-            <v-col cols="12" md="3" lg="2" sm="2">
-              <v-card-title>
-                <v-icon large color="green darken-2">
-                  mdi-domain
-                </v-icon>
-              </v-card-title>
-            </v-col>
-            <v-col cols="12" lg="9" md="6" sm="6">
-              <v-card-title>Total Grievance Recived</v-card-title>
-            </v-col>
-          </v-row>
-          <v-row class="justify-content-center">
-            <v-col cols="12" md="12">
-              <v-card-title>
-                12345
-              </v-card-title>
-            </v-col>
-          </v-row>
+      <v-col cols="12" md="3">
+        <v-card class="mx-auto" color="grey lighten-4" max-width="600">
+          <v-card-title>
+            <v-icon :color="checking ? 'red lighten-2' : 'indigo'" class="mr-8" size="64" @click="takePulse">
+              mdi-heart-pulse
+            </v-icon>
+            <v-row align="start">
+              <div class="text-caption black--text text-uppercase">
+                Total Grievance Received
+              </div>
+            </v-row>
+          </v-card-title>
+          <h1 align="center">{{  totalRecivedGrievance }}</h1>
         </v-card>
       </v-col>
 
-      <v-col cols="12" md="4">
-        <v-card class="mx-auto" subtitle="prepend and append" title="Icons">
-          <template v-slot:prepend>
-            <v-icon color="primary" icon="mdi-account"></v-icon>
-          </template>
-          <template v-slot:append>
-            <v-icon color="success" icon="mdi-check"></v-icon>
-          </template>
-          <v-card-text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</v-card-text>
+      <v-col cols="12" md="3">
+        <v-card class="mx-auto" color="grey lighten-4" max-width="600">
+          <v-card-title>
+            <v-icon :color="checking ? 'red lighten-2' : 'indigo'" class="mr-8" size="64" @click="takePulse">
+              mdi-heart-pulse
+            </v-icon>
+            <v-row align="start">
+              <div class="text-caption black--text text-uppercase">
+                Total Grievance Solved
+              </div>
+            </v-row>
+          </v-card-title>
+          <h1 align="center">{{ totalSolvedGrievance }}</h1>
         </v-card>
       </v-col>
 
-      <v-col cols="12" md="4">
-        <v-card append-avatar="https://cdn.vuetifyjs.com/images/john.jpg" class="mx-auto"
-          prepend-avatar="https://cdn.vuetifyjs.com/images/logos/v-alt.svg" subtitle="prepend-avatar and append-avatar"
-          title="Avatars">
-          <v-card-text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</v-card-text>
+      <v-col cols="12" md="3">
+        <v-card class="mx-auto" color="grey lighten-4" max-width="600">
+          <v-card-title>
+            <v-icon :color="checking ? 'red lighten-2' : 'indigo'" class="mr-8" size="64" @click="takePulse">
+              mdi-heart-pulse
+            </v-icon>
+            <v-row align="start">
+              <div class="text-caption black--text text-uppercase">
+                Total Grievance Canceled
+              </div>
+            </v-row>
+          </v-card-title>
+          <h1 align="center">{{ totalCanceledGrievance }}</h1>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="3">
+        <v-card class="mx-auto" color="grey lighten-4" max-width="600">
+          <v-card-title>
+            <v-icon :color="checking ? 'red lighten-2' : 'indigo'" class="mr-8" size="64" @click="takePulse">
+              mdi-heart-pulse
+            </v-icon>
+            <v-row align="start">
+              <div class="text-caption black--text text-uppercase">
+                Total Grievance Pending
+              </div>
+            </v-row>
+          </v-card-title>
+          <h1 align="center">{{ totalPendingGrievance }}</h1>
         </v-card>
       </v-col>
 
     </v-row>
     <!-------End  header Card component ------->
+    <!-------Start  table  component ------->
+    <!-- <div style="margin-top: 10px;">
+        <v-card-title>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
+      </v-card-title>
+      <v-simple-table fixed-header height="300px" class="table-responsive">
+        <template v-slot:default>
+          <thead>
+            <tr>
+              <th class="text-left">
+                SL
+              </th>
+              <th class="text-left">
+                Division
+              </th>
+              <th class="text-left">
+                New Grievance
+              </th>
+              <th class="text-left">
+                Total Solved Grievacne
+              </th>
+              <th class="text-left">
+               Avarage Resolved
+              </th>
+              <th class="text-left">
+                 Resolved Rate
+              </th>
+              <th class="text-left">
+                Total Grievacne
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>01</td>
+              <td>Dhaka</td>
+              <td>Dhaka</td>
+              <td>Dhaka</td>
+              <td>Dhaka</td>
+              <td>Dhaka</td>
+              <td>Dhaka</td>
+            </tr>
+          </tbody>
+        </template>
+      </v-simple-table>
+    </div> -->
+    <!-------End  table component ------->
 
     <v-row class="mt-3">
 
@@ -75,27 +147,9 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="12" md="6" lg="6">
-        <v-card height="100%">
-          <v-card-text>
-            <V-row>
-              <ProgramWiseWaitingPieChart />
-            </V-row>
-          </v-card-text>
-        </v-card>
-      </v-col>
-      <v-col cols="12" md="6" lg="6">
-        <v-card height="100%">
-          <v-card-text>
-            <V-row>
-              <NumerofApplicationRejectedDoughnutChart />
-            </V-row>
-          </v-card-text>
-        </v-card>
-      </v-col>
     </v-row>
 
-    <v-row class="mt-3">
+    <!-- <v-row class="mt-3">
       <v-col cols="12" md="6" lg="6">
         <v-card height="100%">
           <v-card-text>
@@ -116,7 +170,7 @@
         </v-card>
       </v-col>
 
-    </v-row>
+    </v-row> -->
 
   </v-container>
 </template>
@@ -124,20 +178,23 @@
 <script>
 import Chart from "chart.js/auto";
 import TotalNumerReceivedDoughnutChart
-  from "@/pages/ApplicationSelection/Dashboard/TotalNumerReceivedDoughnutChart.vue";
-import TotalNumerApprovePieChart from "@/pages/ApplicationSelection/Dashboard/TotalNumerApprovePieChart.vue";
-import ProgramWiseWaitingPieChart from "@/pages/ApplicationSelection/Dashboard/ProgramWiseWaitingPieChart.vue";
+  from "@/pages/GrievanceManagement/Dashboard/TotalNumerReceivedDoughnutChart.vue";
+import TotalNumerApprovePieChart from "@/pages/GrievanceManagement/Dashboard/TotalNumerApprovePieChart.vue";
+import ProgramWiseWaitingPieChart from "@/pages/GrievanceManagement/Dashboard/ProgramWiseWaitingPieChart.vue";
 import NumerofApplicationRejectedDoughnutChart
-  from "@/pages/ApplicationSelection/Dashboard/NumerofApplicationRejectedDoughnutChart.vue";
-import TotalNumerReceivedLineBarChart from "@/pages/ApplicationSelection/Dashboard/TotalNumerReceivedLineBarChart.vue";
-import TotalNumerForwardedBarChart from "@/pages/ApplicationSelection/Dashboard/TotalNumerForwardedBarChart.vue";
+  from "@/pages/GrievanceManagement/Dashboard/NumerofApplicationRejectedDoughnutChart.vue";
+import TotalNumerReceivedLineBarChart from "@/pages/GrievanceManagement/Dashboard/TotalNumerReceivedLineBarChart.vue";
+import TotalNumerForwardedBarChart from "@/pages/GrievanceManagement/Dashboard/TotalNumerForwardedBarChart.vue";
 import { GChart } from "vue-google-charts/legacy";
 export default {
   name: "Index",
-  title: "Application Dashboard",
+  title: "Grievance Dashboard",
   data() {
     return {
-
+      totalRecivedGrievance: null,
+      totalSolvedGrievance: null,
+      totalCanceledGrievance: null,
+      totalPendingGrievance:null,
     };
   },
   components: {
@@ -160,6 +217,70 @@ export default {
     },
   },
   methods: {
+   async getTotalRecivedNumberOfGrievance(){
+      const queryParams = {
+        status: 1,
+       };
+      this.$axios.get("admin/grievance-dashboard/numberReceivedOfGrievance",{
+       headers: {
+          Authorization: "Bearer " + this.$store.state.token,
+          "Content-Type": "multipart/form-data",
+        },
+        params: queryParams,
+      }).then((result) => {
+         console.log(result.data.data,'total');
+        this.totalRecivedGrievance = result?.data?.data;
+      });
+    },
+
+   async getTotalSolvedNumberOfGrievance() {
+      const queryParams = {
+        status: 2,
+      };
+      this.$axios.get("admin/grievance-dashboard/numberOfSolvedGrievance", {
+        headers: {
+          Authorization: "Bearer " + this.$store.state.token,
+          "Content-Type": "multipart/form-data",
+        },
+        params: queryParams,
+      }).then((result) => {
+        console.log(result?.data?.data,'result?.data?.data')
+        this.totalSolvedGrievance = result?.data?.data;
+        console.log(this.totalSolvedGrievance,'this.totalSolvedGrievance');
+      });
+    },
+    async getTotalCanceledNumberOfGrievance() {
+      const queryParams = {
+        status: 3,
+      };
+      this.$axios.get("admin/grievance-dashboard/numberOfCanceledGrievance", {
+        headers: {
+          Authorization: "Bearer " + this.$store.state.token,
+          "Content-Type": "multipart/form-data",
+        },
+        params: queryParams,
+      }).then((result) => {
+        console.log(result?.data?.data, 'result?.data?.data')
+        this.totalCanceledGrievance = result?.data?.data;
+        console.log(this.totalCanceledGrievance, 'this.totalCanceledGrievance');
+      });
+    },
+    async getTotalPendingNumberOfGrievance() {
+      const queryParams = {
+        status: 4,
+      };
+      this.$axios.get("admin/grievance-dashboard/numberOfPendingdGrievance", {
+        headers: {
+          Authorization: "Bearer " + this.$store.state.token,
+          "Content-Type": "multipart/form-data",
+        },
+        params: queryParams,
+      }).then((result) => {
+        console.log(result?.data?.data, 'result?.data?.data')
+        this.totalPendingGrievance = result?.data?.data;
+        console.log(this.totalPendingGrievance, 'this.totalPendingGrievance');
+      });
+    }
 
   },
   mounted() {
@@ -173,7 +294,10 @@ export default {
   },
 
   created() {
-
+    this.getTotalRecivedNumberOfGrievance();
+    this.getTotalSolvedNumberOfGrievance();
+    this.getTotalCanceledNumberOfGrievance();
+    this.getTotalPendingNumberOfGrievance();
   },
 
 }

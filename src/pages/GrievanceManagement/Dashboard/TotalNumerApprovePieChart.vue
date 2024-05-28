@@ -91,7 +91,7 @@ export default {
         end_date: to_date,
       };
       try {
-        const result = await this.$axios.get("/admin/application-dashboard/get-total-received-application", {
+        const result = await this.$axios.get("/admin/grievance-dashboard/get-total-approve-grievance", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -101,7 +101,7 @@ export default {
 
         this.programwise_application_approve_info = result.data.data;
         this.programwise_application_approve_levels = this.programwise_application_approve_info.map((row) => this.$i18n.locale == 'en' ? row.name_en : row.name_bn);
-        this.programwise_application_approve_datas = this.programwise_application_approve_info.map((row) => row.applications_count);
+        this.programwise_application_approve_datas = this.programwise_application_approve_info.map((row) => row.grievances_count);
         this.isLoading = false;
 
       } catch (error) {

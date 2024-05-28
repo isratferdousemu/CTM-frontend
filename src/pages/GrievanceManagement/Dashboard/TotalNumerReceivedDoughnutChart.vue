@@ -91,7 +91,7 @@ export default {
         end_date: to_date,
       };
       try {
-        const result = await this.$axios.get("/admin/application-dashboard/get-total-numberof-application", {
+        const result = await this.$axios.get("admin/grievance-dashboard/total-numberof-grievance", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -101,7 +101,7 @@ export default {
         console.log(result.data.data,777)
         this.total_number_of_application_received_info = result.data.data;
         this.total_number_of_application_received_levels = this.total_number_of_application_received_info.map((row) => this.$i18n.locale == 'en' ? row.name_en : row.name_bn);;
-        this.total_number_of_application_received_datas = this.total_number_of_application_received_info.map((row) => row.applications_count);
+        this.total_number_of_application_received_datas = this.total_number_of_application_received_info.map((row) => row.grievances_count);
         this.isLoading = false;
 
       } catch (error) {

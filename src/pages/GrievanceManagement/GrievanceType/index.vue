@@ -696,7 +696,6 @@ export default {
         .then((result) => {
           this.total = result?.data?.meta?.total;
           this.grievanceType = result.data.data;
-          console.log(this.grievanceType, 'all data');
           this.pagination.current = result.data.meta.current_page;
           this.pagination.total = result.data.meta.last_page;
           this.pagination.grand_total = result.data.meta.total;
