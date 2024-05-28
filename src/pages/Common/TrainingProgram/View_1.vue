@@ -167,8 +167,13 @@ export default {
         </v-app-bar>
         <v-row>
             <v-col cols="10" offset="1">
-                <v-card class="mx-3">
-                    <v-row class="my-custom-row ma-5 mt-15">
+                <v-card class="mx-3 mt-5" >
+                    <v-card-title class="justify-center black--text mt-15"
+                       >
+                        <h4>{{ $t("container.training_management.training_program.view") }}
+                        </h4>
+                    </v-card-title>
+                    <v-row class="my-custom-row ma-5 mt-10">
                         <v-col cols="5" style="font-size:13px;">
                             <b>{{ $t('container.training_management.training_program.program_name') }}</b>:
                         </v-col>
@@ -188,8 +193,8 @@ export default {
                         <v-col cols="7" style="font-size:13px;">
                             <b>:</b> <span class="ml-2">
                                 {{ language == 'bn' ?
-                        data?.training_circular?.training_type.value_bn :
-                        data?.training_circular?.training_type.value_en }}</span>
+                                data?.training_circular?.training_type.value_bn :
+                                data?.training_circular?.training_type.value_en }}</span>
                         </v-col>
                         <v-col cols="5" style="font-size:13px;">
                             <b>{{ $t('container.training_management.training_program.trainer') }}</b>:

@@ -313,11 +313,11 @@ export default {
                             </v-card-title>
 
                             <v-btn-toggle v-model="getPartipant" class="ma-5 ml-15">
-                                <v-btn small :color="getPartipant === 0 ? '#00C4FF' : undefined"
+                                <v-btn small :color="getPartipant === 0 ? '#1C3B68' : undefined"
                                     :class="{ 'white--text': getPartipant === 0 }" @click="setParticipant(0)">
                                     {{ $t('container.training_management.training_registration.add_3') }}
                                 </v-btn>
-                                <v-btn small :color="getPartipant === 1 ? '#00C4FF' : undefined"
+                                <v-btn small :color="getPartipant === 1 ? '#1C3B68' : undefined"
                                     :class="{ 'white--text': getPartipant === 1 }" @click="setParticipant(1)">
                                     {{ $t('container.training_management.training_registration.by_poll') }}
                                 </v-btn>

@@ -58,8 +58,18 @@ export default {
             //     "None"
             // ],
 
-            marital_items: [{ name: "Married" }, { name: "UnMarried" }, { name: "Widow" }, { name: "Other" }],
-            payment_cycle_items: [{ name: "Monthly" }, { name: "Quarterly" }, { name: "Half Yearly" }, { name: "Yearly" }],
+            marital_items: [{ name_en: 'Married', name_bn: 'বিবাহিত' },
+            { name_en: 'Unmarried', name_bn: 'অবিবাহিত' },
+            { name_en: 'Widow', name_bn: 'বিধবা' },
+            { name_en: 'Other', name_bn: 'অন্যান্য' }
+
+            ],
+            payment_cycle_items: [
+                { name_en: 'Monthly', name_bn: 'মাসিক' },
+                { name_en: 'Quarterly', name_bn: 'ত্রৈমাসিক' },
+                { name_en: 'Half Yearly', name_bn: 'অর্ধবার্ষিক' },
+                { name_en: 'Yearly', name_bn: 'বার্ষিক' }
+            ],
 
             index: 0,
 
@@ -80,6 +90,11 @@ export default {
     },
 
     computed: {
+        language: {
+            get() {
+                return this.$store.getters.getAppLanguage;
+            },
+        },
         ...mapState({
             additionalFields: (state) => state.Allowance.additionalFields,
             editAllowanceProgram: (state) => state.Allowance.allowancePrograme,
@@ -102,7 +117,7 @@ export default {
                 v => (v >= 5 && v <= 150) || 'Age must be between 5 and 150',
                 v => {
                     const invalidValue = this.updateAllowanceAge.some(item => parseInt(v) > parseInt(item.max_age));
-                    return invalidValue ? 'Minimum value cannot be greater than the maximum value' : true;
+                    return invalidValue ? 'Min age cannot be greater than the maximum value' : true;
                 },
                 v => {
                     const invalidValues = this.updateAllowanceAge.some(item => parseInt(v) === parseInt(item.max_age));
@@ -181,6 +196,16 @@ export default {
             GerAllLookUpGender: "Allowance/GerAllLookUpGender",
             GerAllLookUpGenderType: "Allowance/GerAllLookUpGenderType"
         }),
+        getItemText(item) {
+            return this.language === 'bn' ? item.name_bn : item.name_en;
+        },
+        getItemValue(item) {
+            return this.language === 'bn' ? item.value_bn : item.value_en;
+        },
+        getLabel(field) {
+      // Determine which language to display based on the current language setting
+      return this.language === 'en' ? field.name_en : field.name_bn;
+    },
 
         maritalStatus(marital) {
             if (marital === true) {
@@ -429,24 +454,24 @@ export default {
                                         <v-col cols="12" class="d-flex">
                                             <v-row wrap>
                                                 <v-col cols="12" sm="6" lg="6">
-                                                    <ValidationProvider name="name english" vid="name_en" rules="required|checkName"
-                                                        v-slot="{ errors }">
+                                                    <ValidationProvider name="name english" vid="name_en"
+                                                        rules="required|checkName" v-slot="{ errors }">
                                                         <v-text-field v-model="editAllowanceProgram.name_en"
                                                             :label="$t('container.system_config.allowance_program.name_en')"
                                                             menu-props="auto" persistent-hint outlined
-                                                            :error="errors[0] ? true : false" :error-messages="errors[0]"
-                                                            required></v-text-field>
+                                                            :error="errors[0] ? true : false"
+                                                            :error-messages="errors[0]" required></v-text-field>
                                                     </ValidationProvider>
                                                 </v-col>
 
                                                 <v-col cols="12" sm="6" lg="6">
-                                                    <ValidationProvider name="name bangla" vid="name_bn" rules="required|checkNameBn"
-                                                        v-slot="{ errors }">
+                                                    <ValidationProvider name="name bangla" vid="name_bn"
+                                                        rules="required|checkNameBn" v-slot="{ errors }">
                                                         <v-text-field v-model="editAllowanceProgram.name_bn"
                                                             :label="$t('container.system_config.allowance_program.name_bn')"
                                                             menu-props="auto" persistent-hint outlined
-                                                            :error="errors[0] ? true : false" :error-messages="errors[0]"
-                                                            required></v-text-field>
+                                                            :error="errors[0] ? true : false"
+                                                            :error-messages="errors[0]" required></v-text-field>
                                                     </ValidationProvider>
                                                 </v-col>
                                             </v-row>
@@ -458,11 +483,11 @@ export default {
                                                     <ValidationProvider name="gender" vid="gender" rules="required"
                                                         v-slot="{ errors }">
                                                         <v-select v-model="genderUpdatevalue" :items="genders"
-                                                            item-text="value_en" item-value="id" chips
+                                                            :item-text="getItemValue" item-value="id" chips
                                                             :label="$t('container.system_config.allowance_program.gender')"
                                                             multiple outlined @change="removeGender($event)"
-                                                            :error="errors[0] ? true : false" :error-messages="errors[0]"
-                                                            required></v-select>
+                                                            :error="errors[0] ? true : false"
+                                                            :error-messages="errors[0]" required></v-select>
                                                     </ValidationProvider>
                                                 </v-col>
 
@@ -470,8 +495,8 @@ export default {
                                                     <ValidationProvider name="payment cycle" vid="payment_cycle"
                                                         rules="required" v-slot="{ errors }">
                                                         <v-select v-model="editAllowanceProgram.payment_cycle"
-                                                            :items="payment_cycle_items" item-text="name" item-value="name"
-                                                            chips
+                                                            :items="payment_cycle_items" item-value="name_en"
+                                                            :item-text="getItemText" chips
                                                             :label="$t('container.system_config.allowance_program.payment_cycle')"
                                                             outlined :error="errors[0] ? true : false"
                                                             :error-messages="errors[0]" required></v-select>
@@ -497,11 +522,12 @@ export default {
                                                         </v-col>
                                                         <v-col cols="12" sm="8" lg="8"
                                                             v-if="editAllowanceProgram.is_marital === 1 || is_marital_toggle === true">
-                                                            <ValidationProvider name="marital status" vid="marital_status"
-                                                                rules="required" v-slot="{ errors }">
+                                                            <ValidationProvider name="marital status"
+                                                                vid="marital_status" rules="required"
+                                                                v-slot="{ errors }">
                                                                 <v-select v-model="editAllowanceProgram.marital_status"
-                                                                    :items="marital_items" item-text="name"
-                                                                    item-value="name"
+                                                                    :items="marital_items" item-value="name_en"
+                                                                    :item-text="getItemText"
                                                                     :label="$t('container.system_config.allowance_program.marital_status')"
                                                                     outlined :error="errors[0] ? true : false"
                                                                     :error-messages="errors[0]" required></v-select>
@@ -527,29 +553,33 @@ export default {
                                                         :label="$t('container.system_config.allowance_program.age_limit_amount')"
                                                         @click="ageLimit(editAllowanceProgram.is_age_limit)"></v-checkbox>
 
-                                                    <table
-                                                        v-if="editAllowanceProgram.is_age_limit">
+                                                    <table v-if="editAllowanceProgram.is_age_limit">
                                                         <thead>
                                                             <tr v-show="updateAllowanceAge.length">
-                                                                <td>Gender</td>
-                                                                <td>Min Age</td>
-                                                                <td>Max Age</td>
+                                                                <td>{{ language == 'en' ? 'Gender' : '
+                                                                    লিঙ্গ' }}</td>
+                                                                <td>{{ language == 'en' ? 'Minimum Age' : '
+                                                                    সর্বনিম্ন বয়স' }}</td>
+                                                                <td>{{ language == 'en' ? 'Maximum Age' : '
+                                                                    সর্বোচ্চ বয়স' }}</td>
                                                                 <td>
                                                                     <span>
-                                                                        Amount
+                                                                        {{ language == 'en' ? 'Amount' : '
+                                                                        পরিমাণ' }}
                                                                     </span>
 
                                                                 </td>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr v-for="(g, index) in updateAllowanceAge" :key="index">
+                                                            <tr v-for="(g, index) in updateAllowanceAge" :key="index" class="mt-10">
                                                                 <td>
                                                                     <ValidationProvider name="gender" vid="gender_id"
                                                                         rules="required" v-slot="{ errors }">
                                                                         <v-select v-model="g.gender_id" :items="genders"
-                                                                            item-text="value_en" item-value="id" dense
-                                                                            outlined :error="errors[0] ? true : false"
+                                                                            :item-text="getItemValue" item-value="id"
+                                                                            dense outlined
+                                                                            :error="errors[0] ? true : false"
                                                                             :error-messages="errors[0]" required
                                                                             readonly></v-select>
                                                                     </ValidationProvider>
@@ -561,7 +591,8 @@ export default {
                                                                             step="any" min="0" dense outlined
                                                                             :error="errors[0] ? true : false"
                                                                             :error-messages="errors[0]" required
-                                                                            :rules="minValueRules" @keyup="minValueRules"
+                                                                            :rules="minValueRules"
+                                                                            @keyup="minValueRules"
                                                                             style="height: 64px;"></v-text-field>
                                                                     </ValidationProvider>
                                                                 </td>
@@ -572,7 +603,8 @@ export default {
                                                                             step="any" min="0" dense outlined
                                                                             :error="errors[0] ? true : false"
                                                                             :error-messages="errors[0]" required
-                                                                            :rules="maxValueRules" @keyup="maxValueRules"
+                                                                            :rules="maxValueRules"
+                                                                            @keyup="maxValueRules"
                                                                             style="height: 64px;"></v-text-field>
                                                                     </ValidationProvider>
                                                                 </td>
@@ -580,9 +612,9 @@ export default {
                                                                     <div>
                                                                         <ValidationProvider name="amount" vid="amount"
                                                                             rules="required" v-slot="{ errors }">
-                                                                            <v-text-field v-model="g.amount" type="number"
-                                                                                step="any" min="0" :rules="[numberRule]"
-                                                                                dense outlined
+                                                                            <v-text-field v-model="g.amount"
+                                                                                type="number" step="any" min="0"
+                                                                                :rules="[numberRule]" dense outlined
                                                                                 :error="errors[0] ? true : false"
                                                                                 :error-messages="errors[0]" required
                                                                                 style="height: 64px;"></v-text-field>
@@ -598,38 +630,42 @@ export default {
                                                 </v-col>
 
                                                 <v-col cols="12" sm="6" lg="6">
-                                                  <v-checkbox v-model="editAllowanceProgram.is_disable_class"
-                                                              :label="$t('container.system_config.allowance_program.class_wise_amount')"
-                                                              @click="allowanceAmount(editAllowanceProgram.is_disable_class)"></v-checkbox>
+                                                    <v-checkbox v-model="editAllowanceProgram.is_disable_class"
+                                                        :label="$t('container.system_config.allowance_program.class_wise_amount')"
+                                                        @click="allowanceAmount(editAllowanceProgram.is_disable_class)"></v-checkbox>
 
 
 
-                                                    <table
-                                                        v-if="editAllowanceProgram.is_disable_class">
+                                                    <table v-if="editAllowanceProgram.is_disable_class">
                                                         <thead>
                                                             <tr v-show="updateAllowanceAmount.length">
-                                                                <td>Class</td>
-                                                                <td>Amount</td>
-                                                                <td>Add/Remove</td>
+                                                                <td>{{ language == 'en' ? 'Class' : 'শ্রেণী' }}</td>
+                                                                <td>{{ language == 'en' ? 'Amount' : 'পরিমাণ' }}</td>
+                                                                <td>{{ language == 'en' ? 'Add/Remove' : 'যোগ/অপসারণ' }}
+                                                                </td>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <tr v-if="updateAllowanceAmount.length"
-                                                                v-for="(aa, index) in updateAllowanceAmount" :key="aa.id">
+                                                                v-for="(aa, index) in updateAllowanceAmount"
+                                                                :key="aa.id">
                                                                 <td>
-                                                                    <ValidationProvider name="education class" vid="type_id"
-                                                                        rules="required" v-slot="{ errors }">
-                                                                        <v-select v-model="aa.type_id" :items="genderTypes"
-                                                                            item-value="id" item-text="value_en"
-                                                                            label="Please Select" dense outlined
-                                                                            :error="errors[0] ? true : false"
+                                                                    <ValidationProvider name="education class"
+                                                                        vid="type_id" rules="required"
+                                                                        v-slot="{ errors }">
+                                                                        <v-select v-model="aa.type_id"
+                                                                            :items="genderTypes" item-value="id"
+                                                                            :item-text="getItemValue"
+                                                                            :label="$t('container.list.select')" dense
+                                                                            outlined :error="errors[0] ? true : false"
                                                                             :error-messages="errors[0]" required
                                                                             style="height: 64px;"></v-select>
                                                                     </ValidationProvider>
                                                                 </td>
                                                                 <td>
                                                                     <ValidationProvider name="education class amount"
-                                                                        vid="amount" rules="required" v-slot="{ errors }">
+                                                                        vid="amount" rules="required"
+                                                                        v-slot="{ errors }">
                                                                         <v-text-field v-model="aa.amount" type="number"
                                                                             step="any" min="0" ref="input"
                                                                             :rules="[numberRule]" dense outlined
@@ -679,13 +715,13 @@ export default {
                                         <v-col cols="12" class="d-flex">
                                             <v-row wrap>
 
-                                                <v-col cols="12" sm="4" lg="4" v-for="(field, index) in additionalFields"
-                                                    :key="field.id">
+                                                <v-col cols="12" sm="4" lg="4"
+                                                    v-for="(field, index) in additionalFields" :key="field.id">
                                                     <ValidationProvider name="add_field_id" vid="add_field_id"
                                                         rules="required" v-slot="{ errors }">
-                                                        <v-checkbox v-model="allowance_field_data" :label="field.name_en"
-                                                            :value="field.id" menu-props="auto" persistent-hint
-                                                            outlined></v-checkbox>
+                                                        <v-checkbox v-model="allowance_field_data"
+                                                            :label="getLabel(field)" :value="field.id" menu-props="auto"
+                                                            persistent-hint outlined></v-checkbox>
                                                     </ValidationProvider>
                                                 </v-col>
                                                 <v-col cols="12" sm="4" lg="4">
@@ -723,7 +759,8 @@ export default {
                     <v-divider></v-divider>
                     <v-card-text>
                         <div class="subtitle-1 font-weight-medium mt-5">
-                            Are you sure to delete this allowance program age ? Allowance program age all information will
+                            Are you sure to delete this allowance program age ? Allowance program age all information
+                            will
                             be deleted.
                         </div>
                     </v-card-text>
@@ -750,5 +787,10 @@ export default {
     margin-top: 0px !important;
     margin-left: 10px;
     margin-bottom: 25px !important;
+    
+}
+.mt-10 {
+    margin-top: 50px;
+    /* Adjust the value as needed */
 }
 </style>
