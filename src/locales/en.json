@@ -1035,6 +1035,7 @@
       "training_management": {
         "trainer_info": {
           "ID":"ID",
+          "trainer_type":"Trainer Type",
           "list_1":"Trainer List",
           "rating": "Rating",
           "list": "Trainer Information List",
@@ -1110,14 +1111,22 @@
                 },
                 "training_registration": {
                   "list_1": "Participant List",
+                  "list_2": "Participants",
+                  "by_poll":"By Poll",
+                  "search":" Search Participant",
                   "view": "Participant Details",
                   "add_1": "Assign Participant",
-                  "add_2": "Training Poll",
+                  "add_2": "External Registration",
+                    "add_3": "Internal Registration",
                   "participant": "Participant",
+                    "full_name": "Full Name",
                   "organization": "Organization",
+                  "registration":"External Registration",
                     "user_name": "Username",
+                      "user_type": "Participant Type",
+                    "alert":"Go to this link for external registration",
                   "delete_header": "Remove Participant",
-                  "delete_alert": "Are you sure to remove this Participant? Participant's all details will be removed."
+                  "delete_alert": "Are you sure to remove this Participant? Participant's all details will be removed from this traning."
                 }
       },
       "api_manager": {
@@ -1317,6 +1326,7 @@
       },
       "grievanceList": {
         "grievance_list": "Grievacne List",
+        "grievance_tracking": "Grievance Tracking",
         "tracking_no": "Tracking ID",
         "grievance_date": "Grievance Date",
         "search": "Search",
@@ -1327,6 +1337,16 @@
         "remarks": "Remarks",
         "status_update": "Grievance Status Update",
         "grievance_status": "Grievance Status"
+      },
+      "dashboard":{
+        "grievance_dashboard": "Grievacne Dashboard",
+        "total_grievance": "Total Grievance",
+        "total_resolved": "Total Resolved",
+        "total_pending": "Total Pending",
+        "total_rejected": "Total Rejected",
+        "total_forwarded": "Total Forwarded",
+        "total_received": "Total Received",
+        "total_unresolved": "Total Unresolved"
       }
     },
 

@@ -102,23 +102,36 @@ export default {
                 })
                 .then((result) => {
                     
+                    
+             
+                 
                     this.data = result?.data?.data;
-                    const timeSlotsMap = new Map();
-                    this.time_slots.forEach(slot => {
-                        timeSlotsMap.set(slot.id.toString(), slot.time);
-                    });
+                    setTimeout(() => {
+                        const timeSlotsMap = new Map();
+                        this.time_slots.forEach(slot => {
+                            timeSlotsMap.set(slot.id.toString(), slot.time);
+                        });
+                        // Code to execute after delay
+               
+                    
+                    
+                   
 
+                        const updatedData = this.data.on_days.map(day => {
+                            if (day.is_active === '1') {
+                                const updatedTimeSlots = (day.timeSlots || []).map(slotId => timeSlotsMap.get(slotId) || slotId);
+                                return { ...day, timeSlots: updatedTimeSlots };
+                            } else {
+                                return { ...day, timeSlots: null }; // If the day is not active, return it unchanged
+                            }
+                        });
+                
+
+                        this.edited_on_days = updatedData;
+                    }, 1500);
                     // Replace time slot IDs with time values
                   
-                    const updatedData = this.data.on_days.map(day => {
-                        if (day.is_active === '1') {
-                            const updatedTimeSlots = (day.timeSlots || []).map(slotId => timeSlotsMap.get(slotId) || slotId);
-                            return { ...day, timeSlots: updatedTimeSlots };
-                        } else {
-                            return { ...day, timeSlots: null }; // If the day is not active, return it unchanged
-                        }
-                    });
-                    this.edited_on_days = updatedData;
+                 
                
                    
                     
@@ -242,7 +255,7 @@ export default {
                                 <h4 class="text-center mb-5">{{
                                     $t('container.training_management.training_program.class_schedule') }}</h4>
 
-                                <v-simple-table dense class=" mt-10">
+                                <v-simple-table dense class=" mt-10" v-if="edited_on_days">
                                     <template v-slot:default>
                                         <thead>
                                             <tr>

@@ -57,15 +57,15 @@ export default {
         headers() {
             return [
                 { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, width: "5%" },
-                { text: this.$t('container.training_management.trainer_info.ID'), value: "id_no", align: "start", width: "15%", sortable: false, },
-                { text: this.$t('container.training_management.trainer_info.name'), value: "name", width: "20%" },
+                { text: this.$t('container.training_management.trainer_info.ID'), value: "id_no", align: "start", width: "10%", sortable: false, },
+                { text: this.$t('container.training_management.trainer_info.name'), value: "name", width: "15%" },
                 { text: this.$t('container.training_management.trainer_info.designation'), value: "designation", width: "15%", sortable: false, },
             
                 { text: this.$t('container.training_management.trainer_info.email'), value: "email", width: "10%" },
                 { text: this.$t('container.list.status'), value: "status", width: "15%", sortable: false, },
 
               
-                { text: this.$t('container.list.action'), value: "actions", align: "start", sortable: false, width: "15%" },
+                { text: this.$t('container.list.action'), value: "actions", align: "start", sortable: false, width: "25%" },
             ];
         },
 
@@ -451,7 +451,7 @@ export default {
                                     <v-col cols="12" md="4">
                                         <v-text-field @keyup.native="PageSetup" v-model="search"
                                             append-icon="mdi-magnify" :label="$t(
-                                    'container.list.search_circular'
+                                    'container.list.search'
                                 )" hide-details class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal" flat outlined
                                             dense></v-text-field>
 
@@ -553,14 +553,14 @@ export default {
 
                                             </template>
                                             <template v-slot:[`item.status`]="{ item }">
-                                                <span v-if="item.status == 0">
+                                                <!-- <span v-if="item.status == 0">
                                                     {{ language == 'bn' ?
                                                     'নিষ্ক্রিয়' : 'Inactive' }}
                                                 </span>
                                                 <span v-else>
                                                     {{ language == 'bn' ?
                                                     'সক্রিয়' : 'Active' }}
-                                                </span>
+                                                </span> -->
 
 
                                                 <span>

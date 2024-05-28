@@ -2,14 +2,11 @@
   <v-col>
   <v-row>
     <v-col cols="12">
-      <v-card style="text-align: center" :loading="isLoading">
       <label style="color: #1976d2">
                       <span>
-                        {{ $t("container.application_selection_dashboard.program_wise_number_of_waiting_application") }}
+                        {{ $t("container.application_selection_dashboard.number_of_application_rejected") }}
                       </span>
-      </label>
-      </v-card>
-    </v-col
+      </label></v-col
     >
   </v-row>
   <v-row class="ml-1 mr-1">
@@ -36,25 +33,24 @@
           :range="[dates[0], dates[1]]"
           no-title
           scrollable
-          @input="OnChangeDateInfo($event,'total_waiting')"
+          @input="OnChangeDateInfo($event,'total_received')"
       >
         <v-spacer></v-spacer>
         <v-btn text color="primary" @click="resetDateRange">
-          {{ $t('container.list.reset')}}
+          Cancel
         </v-btn>
         <v-btn
             text
             color="primary"
             @click="$refs.menu.save(dates)"
         >
-          {{ $t('container.list.ok')}}
+          OK
         </v-btn>
       </v-date-picker>
     </v-menu>
   </v-row>
   <v-row>
-    <img  v-if="allZeros == true" style="margin-left:80px;margin-top:10px;width: 300px;height: 300px" src="/assets/images/pie_chart_default.png" alt="ddd">
-    <canvas v-else id="programwise_application_waiting"></canvas>
+    <canvas id="total_number_of_application_rejected_info"></canvas>
   </v-row>
   </v-col>
 
@@ -70,10 +66,10 @@ export default {
       // Define data properties here
       dates: [],
       menu: false,
-      programwise_application_waiting_chart: null,
-      programwise_application_waiting_info: [],
-      programwise_application_waiting_levels: [],
-      programwise_application_waiting_datas: [],
+      total_number_of_application_rejected_chart: null,
+      total_number_of_application_rejected_info: [],
+      total_number_of_application_rejected_levels: [],
+      total_number_of_application_rejected_datas: [],
       isLoading: false,
       dateRangeText: ""
     };
@@ -82,16 +78,13 @@ export default {
     resetDateRange() {
       this.dates = [];
       this.menu = false;
-      this.fetchProgramwiseWaitingApplicationChartData()
+      this.fetchTotalRejectedApplicationChartData()
     },
-    async fetchProgramwiseWaitingApplicationChartData(from_date = null, to_date = null) {
-      await this.getProgramwiseWaitingApplication(3, from_date, to_date);
-      if(this.allZeros != true){
-        this.createProgramwiseWaitingApplicentChart();
-      }
+    async fetchTotalRejectedApplicationChartData(from_date = null, to_date = null) {
+      await this.getTotalRejectedApplication(4, from_date, to_date);
+      this.createTotalRejectedApplicentChart();
     },
-    async getProgramwiseWaitingApplication(status, from_date = null, to_date = null) {
-     this.isLoading = true;
+    async getTotalRejectedApplication(status, from_date = null, to_date = null) {
       const queryParams = {
         status: status,
         start_date: from_date,
@@ -105,46 +98,44 @@ export default {
           },
           params: queryParams,
         });
-        this.programwise_application_waiting_info = result.data.data;
-        this.programwise_application_waiting_levels = this.programwise_application_waiting_info.map((row) => this.$i18n.locale == 'en' ? row.name_en : row.name_bn);
-        this.programwise_application_waiting_datas = this.programwise_application_waiting_info.map((row) => row.applications_count);
+
+        this.total_number_of_application_rejected_info = result.data.data;
+        this.total_number_of_application_rejected_levels = this.total_number_of_application_rejected_info.map((row) => this.$i18n.locale == 'en' ? row.name_en : row.name_bn);
+        this.total_number_of_application_rejected_datas = this.total_number_of_application_rejected_info.map((row) => row.applications_count);
         this.isLoading = false;
 
       } catch (error) {
-        this.isLoading = false;
         console.error("Error fetching data:", error);
         // Handle error if necessary
       }
     },
-    createProgramwiseWaitingApplicentChart() {
-      if (this.programwise_application_waiting_chart) {
-        this.programwise_application_waiting_chart.destroy();
+    createTotalRejectedApplicentChart() {
+      if (this.total_number_of_application_rejected_chart) {
+        this.total_number_of_application_rejected_chart.destroy();
       }
 
-      if (this.programwise_application_waiting_levels && this.programwise_application_waiting_datas) {
-
-        const total = this.programwise_application_waiting_datas.reduce((acc, value) => acc + value, 0);
-        // const percentages = this.programwise_application_waiting_datas.map(value => ((value / total) * 100).toFixed(2) + '%');
-        const percentages = this.programwise_application_waiting_datas.map(value => {
+      if (this.total_number_of_application_rejected_levels && this.total_number_of_application_rejected_datas) {
+        const total = this.total_number_of_application_rejected_datas.reduce((acc, value) => acc + value, 0);
+        // const percentages = this.total_number_of_application_rejected_datas.map(value => ((value / total) * 100).toFixed(2) + '%');
+        const percentages = this.total_number_of_application_rejected_datas.map(value => {
           const percentage = ((value / total) * 100).toFixed(2);
           return isNaN(percentage) ? '0.00%' : percentage + '%';
         });
-        this.programwise_application_waiting_chart = new Chart(document.getElementById("programwise_application_waiting"), {
-          type: "pie",
+        this.total_number_of_application_rejected_chart = new Chart(document.getElementById("total_number_of_application_rejected_info"), {
+          type: "doughnut",
           data: {
-            // labels: this.programwise_application_waiting_levels,
-            // labels: this.programwise_application_waiting_levels.map((label, index) => `${label} (${percentages[index]})`),
-            labels: this.programwise_application_waiting_levels.map((label, index) => `${label} (${this.$i18n.locale == 'en' ? this.programwise_application_waiting_datas[index] : this.$helpers.englishToBangla(this.programwise_application_waiting_datas[index])} - ${this.$i18n.locale == 'en' ? percentages[index]  : this.$helpers.englishToBangla(percentages[index])})`),
+            // labels: this.total_number_of_application_rejected_levels,
+            // labels: this.total_number_of_application_rejected_levels.map((label, index) => `${label} (${percentages[index]})`),
+            labels: this.total_number_of_application_rejected_levels.map((label, index) => `${label} (${this.$i18n.locale == 'en' ? this.total_number_of_application_rejected_datas[index] : this.$helpers.englishToBangla(this.total_number_of_application_rejected_datas[index])} - ${this.$i18n.locale == 'en' ? percentages[index]  : this.$helpers.englishToBangla(percentages[index])})`),
             percentages:percentages,
-            datasets: [
-              {
-                label: "Values",
-                data: this.programwise_application_waiting_datas,
-                backgroundColor: this.programwise_application_waiting_datas.map(() => this.generateRandomColor()),
-                // backgroundColor: ["Purple", "Red", "Green", "Blue", "Yellow"],
-                hoverOffset: 4,
-              },
-            ],
+            datasets: [{
+              label: "Count",
+              data: this.total_number_of_application_rejected_datas,
+              backgroundColor: this.total_number_of_application_rejected_datas.map(() => this.generateRandomColor()),
+              // backgroundColor: ["Red", "Green", "blue", "Purple", "Yellow"],
+              fill: false,
+              tension: 0.1,
+            }],
           },
           options: {
             plugins: {
@@ -182,24 +173,18 @@ export default {
             aspectRatio: 1, // Aspect ratio of 1 w
           },
         });
-        document.getElementById("programwise_application_waiting").style.width = '400px';
-        document.getElementById("programwise_application_waiting").style.height = '435px';
+        document.getElementById("total_number_of_application_rejected_info").style.width = '400px';
+        document.getElementById("total_number_of_application_rejected_info").style.height = '435px';
       } else {
         console.error("Data is not available to create chart.");
       }
     },
-
     generateRandomColor() {
       return '#' + Math.floor(Math.random() * 16777215).toString(16);
     },
-
     OnChangeDateInfo(event, type) {
       if (this.dates.length < 2) {
         return;
-      }
-      if (this.dates[1] && this.dates[1] < this.dates[0]) {
-        this.$toast.error(this.language == 'en' ? 'End date cannot be before start date' : 'শেষ তারিখ শুরুর তারিখের আগে হতে পারে না')
-        this.resetDateRange();
       }
       let from_date = null;
       let to_date = null;
@@ -208,28 +193,18 @@ export default {
         from_date = event[0];
         to_date = event[1];
       }
-      this.fetchProgramwiseWaitingApplicationChartData(from_date, to_date);
+      this.fetchTotalRejectedApplicationChartData(from_date, to_date);
     },
   },
 
   mounted() {
-    this.fetchProgramwiseWaitingApplicationChartData();
-  },
-  computed:{
-    language: {
-      get() {
-        return this.$store.getters.getAppLanguage;
-      }
-    },
-    allZeros() {
-      return this.programwise_application_waiting_datas.every(value => value === 0);
-    }
+    this.fetchTotalRejectedApplicationChartData();
   },
   watch: {
     '$i18n.locale': {
       handler(newLocale, oldLocale) {
         if (newLocale != oldLocale) {
-          this.fetchProgramwiseWaitingApplicationChartData();
+          this.fetchTotalRejectedApplicationChartData();
         }
       },
       immediate: true // Call the handler immediately to initialize the levels

@@ -1033,6 +1033,7 @@
       "training_management": {
         "trainer_info": {
           "ID": "আইডি",
+          "trainer_type": "প্রশিক্ষকের ধরন",
           "list_1": "প্রশিক্ষক তালিকা",
           "list": "প্রশিক্ষকের  তথ্য তালিকা",
           "view": "প্রশিক্ষকের তথ্য বিবরণ",
@@ -1050,7 +1051,7 @@
                 "contact": "যোগাযোগের ঠিকানা",
               "upcoming": "আসন্ন ব্যাচসমূহ",
               "about": "সম্পর্কিত",
-              "program": "কার্যক্রম",
+              "program": "প্রোগ্রাম",
               "module": "মডিউল",
           "image_alert": "ফাইলের আকার ২০০ কে বি এর কম হতে হবে",
           "delete_header": "প্রশিক্ষক তথ্য ডিলিট করুন ",
@@ -1105,12 +1106,20 @@
             },
             "training_registration": {
               "list_1": "অংশগ্রহণকারীদের তালিকা",
+              "list_2": "অংশগ্রহণকারী",
+                "by_poll": "পোল",
+              "search": "অংশগ্রহণকারী অনুসন্ধান করুন",
               "view": "অংশগ্রহণকারীর বিবরণ",
               "add_1": "অংশগ্রহণকারী যোগ করুন",
-              "add_2": "প্রশিক্ষণ পোল",
+              "add_2": "বহিরাগত নিবন্ধন",
+              "add_3": "অভ্যন্তরীণ নিবন্ধন",
+              "registration": "বহিরাগত নিবন্ধন",
               "participant": "অংশগ্রহণকারী",
+                "full_name": "সম্পূর্ণ নাম",
               "organization": "সংস্থা",
+              "user_type": "অংশগ্রহণকারীর ধরন",
               "training_circular": "Training Circular",
+                "alert": "বহিরাগত অংশগ্রহণকারী নিবন্ধনের জন্য এই লিঙ্কে যান",
               "user_name":"ব্যবহারকারীর নাম",
               "delete_header": "অংশগ্রহণকারীকে সরান",
               "delete_alert": "আপনি কি এই অংশগ্রহণকারীকে সরানোর বিষয়ে নিশ্চিত? অংশগ্রহণকারীর সমস্ত বিবরণ মুছে ফেলা হবে।"
@@ -1273,7 +1282,7 @@
       "add_grievance_type": "নতুন অভিযোগের ধরন যোগ করুন",
       "edit_grievance_type": "অভিযোগের ধরন আপডেট করুন",
       "add_new_subject": "নতুন অভিযোগের বিষয় যোগ করুন",
-      "grievance_subject": "অভিযোগ বিষয়",
+      "grievance_subject": "অভিযোগের বিষয়",
       "add_grievance_subject": "নতুন বিষয় যোগ করুন",
       "edit_grievance_subject": "অভিযোগের বিষয় আপডেট করুন",
       "main_grievance_type": "অভিযোগের ধরন",
@@ -1294,7 +1303,7 @@
       "grievanceEntry": {
         "complaint_area": "অভিযোগকারীর ঠিকানা",
         "is_existing_beneficiary": "আপনি একটি বিদ্যমান সুবিধাভোগী?",
-        "complaint_details": "অভিযোগের বিশদ বিবরণ প্রদান করুন",
+        "complaint_details": "অভিযোগের বিস্তারিত বিবরণ",
         "details": "অভিযোগের বিস্তারিত বিবরন",
         "document": "নথি সংযুক্তি (যদি প্রযোজ্য হয়)",
         "document1": "(doc, docx, pdf, xls, xlsx, txt, jpg, jpeg, png)",
@@ -1307,12 +1316,12 @@
         "grievance_entry": "অভিযোগ এন্ট্রি",
         "birth_registration_number": "জন্ম নিবন্ধন নম্বর",
         "national_identity": "জাতীয় পরিচয় (এনআইডি)",
-        "grievance_question": "আপনি কি অভিযোগ জমা দিতে নিশ্চিত? জমা দেওয়ার পরে সম্পাদনা প্রযোজ্য হবে না।",
+        "grievance_question": "আপনি কি অভিযোগ জমা দিতে নিশ্চিত? জমা দেওয়ার পরে এডিট প্রযোজ্য হবে না।",
         "note": "আপনি কি চান যে অভিযোগের বিবরণ এবং সমাধানের স্থিতি সর্বজনীনভাবে প্রকাশ করা হোক? [বিশেষ দ্রষ্টব্য: ব্যক্তিগত এবং যোগাযোগের বিবরণ গোপন থাকবে]"
       },
       "grievanceList": {
         "grievance_list": "অভিযোগের তালিকা",
-        "grievance_tracking": "অভিযোগের ট্র্যাকিং",
+        "grievance_tracking": "অভিযোগ ট্র্যাকিং",
         "tracking_no": "ট্র্যাকিং আইডি",
         "grievance_date": "অভিযোগের তারিখ",
         "search": "অনুসন্ধান করুন",
@@ -1323,6 +1332,16 @@
         "remarks": "মন্তব্য",
         "status_update": "অভিযোগ স্ট্যাটাস আপডেট",
         "grievance_status": "অভিযোগ স্ট্যাটাস"
+      },
+      "dashboard": {
+        "grievance_dashboard": "অভিযোগ ড্যাশবোর্ড",
+        "total_grievance": "Total Grievance",
+        "total_resolved": "Total Resolved",
+        "total_pending": "Total Pending",
+        "total_rejected": "Total Rejected",
+        "total_forwarded": "Total Forwarded",
+        "total_received": "Total Received",
+        "total_unresolved": "Total Unresolved"
       }
     },
 

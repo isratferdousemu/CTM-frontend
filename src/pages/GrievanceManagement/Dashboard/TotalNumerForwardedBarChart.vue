@@ -2,14 +2,11 @@
   <v-col>
   <v-row>
     <v-col cols="12">
-      <v-card style="text-align: center" :loading="isLoading">
       <label style="color: #1976d2">
                       <span>
                         {{ $t("container.application_selection_dashboard.number_of_application_forwarded") }}
                       </span>
-      </label>
-      </v-card>
-    </v-col
+      </label></v-col
     >
   </v-row>
   <v-row class="ml-1 mr-1">
@@ -40,14 +37,14 @@
       >
         <v-spacer></v-spacer>
         <v-btn text color="primary" @click="resetDateRange">
-          {{ $t('container.list.reset')}}
+          Cancel
         </v-btn>
         <v-btn
             text
             color="primary"
             @click="$refs.menu.save(dates)"
         >
-          {{ $t('container.list.ok')}}
+          OK
         </v-btn>
       </v-date-picker>
     </v-menu>
@@ -82,11 +79,10 @@ export default {
       this.fetchTotalForwardedBarApplicationChartData()
     },
     async fetchTotalForwardedBarApplicationChartData(from_date = null, to_date = null) {
-      await this.getTotalForwardedBarApplication(1, from_date, to_date);
+      await this.getTotalForwardedBarApplication(2, from_date, to_date);
       this.createTotalForwardedBarApplicentChart();
     },
     async getTotalForwardedBarApplication(status, from_date = null, to_date = null) {
-      this.isLoading = true
       const queryParams = {
         status: status,
         start_date: from_date,
@@ -102,12 +98,11 @@ export default {
         });
 
         this.total_number_of_application_forwarded_bar_info = result.data.data;
-        this.total_number_of_application_forwarded_bar_levels = this.total_number_of_application_forwarded_bar_info.map((row) => this.language == 'en' ? row.name_en.substring(0,10) : row.name_bn.substring(0,10));
+        this.total_number_of_application_forwarded_bar_levels = this.total_number_of_application_forwarded_bar_info.map((row) => row.name_en.substring(0,10));
         this.total_number_of_application_forwarded_bar_datas = this.total_number_of_application_forwarded_bar_info.map((row) => row.applications_count);
         this.isLoading = false;
 
       } catch (error) {
-        this.isLoading = false;
         console.error("Error fetching data:", error);
         // Handle error if necessary
       }
@@ -128,7 +123,7 @@ export default {
                 barThickness: 16,
                 maxBarThickness: 18,
                 minBarLength: 12,
-                label: "",
+                label: "Number of Application Forwarded",
                 data: this.total_number_of_application_forwarded_bar_datas,
                 backgroundColor: [
                   "rgba(255, 99, 132, 0.2)",
@@ -168,10 +163,6 @@ export default {
       }
     },
     OnChangeDateInfo(event, type) {
-      if (this.dates[1] && this.dates[1] < this.dates[0]) {
-        this.$toast.error(this.language == 'en' ? 'End date cannot be before start date' : 'শেষ তারিখ শুরুর তারিখের আগে হতে পারে না')
-        this.resetDateRange();
-      }
       if (this.dates.length < 2) {
         return;
       }
@@ -188,23 +179,6 @@ export default {
 
   mounted() {
     this.fetchTotalForwardedBarApplicationChartData();
-  },
-  computed:{
-    language: {
-      get() {
-        return this.$store.getters.getAppLanguage;
-      }
-    },
-  },
-  watch: {
-    '$i18n.locale': {
-      handler(newLocale, oldLocale) {
-        if (newLocale != oldLocale) {
-          this.fetchTotalForwardedBarApplicationChartData();
-        }
-      },
-      immediate: true // Call the handler immediately to initialize the levels
-    }
-  },
+  }
 }
 </script>
