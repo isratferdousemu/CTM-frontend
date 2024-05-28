@@ -9,7 +9,7 @@
           <v-card-text>
             <v-radio-group v-model="verificationType" row>
               <v-radio :label="language === 'bn' ? 'পেরোল যাচাই প্রক্রিয়ার মাধ্যমে অনুমোদন' : 'Payroll Approval Through Verification Process'" value="verification_process"></v-radio>
-              <v-radio :label="language === 'bn' ? 'পেরোল সরাসরি অনুমোদন' : 'Payroll Approval Through Direct Approval Process'" value="direct_approval"></v-radio>
+              <v-radio class="mt-4 mt-sm-0" :label="language === 'bn' ? 'পেরোল সরাসরি অনুমোদন' : 'Payroll Approval Through Direct Approval Process'" value="direct_approval"></v-radio>
             </v-radio-group>
           </v-card-text>
           <v-card-actions class="justify-end">

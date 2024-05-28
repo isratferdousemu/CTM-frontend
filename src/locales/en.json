@@ -82,7 +82,8 @@
       "create": "Create",
       "download": "Download Application",
       "pouroshava": "Pouroshava",
-      "union": "Union"
+      "union": "Union",
+      "show": "Show"
     },
     "system_config": {
       "demo_graphic": {
@@ -1034,6 +1035,7 @@
       "training_management": {
         "trainer_info": {
           "ID":"ID",
+          "trainer_type":"Trainer Type",
           "list_1":"Trainer List",
           "rating": "Rating",
           "list": "Trainer Information List",
