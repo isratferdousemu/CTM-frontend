@@ -12,7 +12,7 @@
               class="mb-8"
             >
               <v-card-title class="justify-center" tag="div">
-                <h3 class="text-uppercase pt-3">
+                <h3 class="pt-3">
                   {{ $t("container.payroll_management.list") }}
                 </h3>
               </v-card-title>
@@ -79,7 +79,7 @@
                                 v-on="on"
                                 color="success"
                                 elevation="0"
-                                @click="editDialog(item)"
+                                @click="editItem(item)"
                               >
                                 <v-icon> mdi-account-edit-outline </v-icon>
                               </v-btn>
@@ -96,11 +96,11 @@
                               >
                                 <v-btn
                                   fab
-                                x-small
-                                v-on="on"
-                                color="success"
-                                class="white--text"
-                                elevation="0"
+                                  x-small
+                                  v-on="on"
+                                  color="success"
+                                  class="white--text"
+                                  elevation="0"
                                 >
                                   <v-icon>mdi-eye-outline</v-icon>
                                 </v-btn>
@@ -168,11 +168,15 @@
         </v-row>
       </v-col>
 
-      <!-- division add modal  -->
+      <!-- add or edit modal  -->
       <v-dialog v-model="dialogAdd" width="950">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.payroll_management.add_new") }}
+            {{
+              this.data?.id != null
+                ? this.$t("container.payroll_management.edit")
+                : this.$t("container.payroll_management.add_new")
+            }}
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text class="mt-7">
@@ -520,12 +524,7 @@
                               : 'Select a location type'
                             : ''
                         "
-                        @change="
-                          getArea(
-                            data.district,
-                            data.location_type
-                          )
-                        "
+                        @change="getArea(data.district, data.location_type)"
                         v-if="data.district != null"
                       >
                       </v-autocomplete>
@@ -759,228 +758,13 @@
                 </v-row>
               </form>
             </ValidationObserver>
-            <p class="red--text mt-2">
+            <!-- <p class="red--text mt-2">
               Active field only Visible to Update Page. ***
-            </p>
+            </p> -->
           </v-card-text>
         </v-card>
       </v-dialog>
-      <!-- division add modal  -->
-
-      <!-- Payment processor Edit modal  -->
-      <!-- <v-dialog v-model="dialogEdit" width="950">
-        <v-card style="justify-content: center; text-align: center">
-          <v-card-title class="font-weight-bold justify-center">
-            {{ $t("container.payroll_management.edit") }}
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text class="mt-7">
-            <ValidationObserver ref="formAdd" v-slot="{ invalid }">
-              <form @submit.prevent="submitPaymentProcessor()">
-                <v-row>
-                  <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      v-slot="{ errors }"
-                      name="Code"
-                      vid="code"
-                      rules="required"
-                    >
-                      <v-autocomplete
-                        outlined
-                        clearable
-                        v-model="data.processor_type"
-                        :items="processor_types"
-                        item-text="name"
-                        item-value="id"
-                        :label="
-                          $t('container.payroll_management.processor_type')
-                        "
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      >
-                      </v-autocomplete>
-                    </ValidationProvider>
-                  </v-col>
-                  <v-col
-                    lg="6"
-                    md="6"
-                    cols="12"
-                    v-if="data.processor_type === 1"
-                  >
-                    <ValidationProvider
-                      v-slot="{ errors }"
-                      name="Code"
-                      vid="code"
-                      rules="required"
-                    >
-                      <v-autocomplete
-                        outlined
-                        clearable
-                        v-model="data.bank_name"
-                        :items="bank_names"
-                        item-text="name"
-                        item-value="id"
-                        :label="$t('container.payroll_management.bank_name')"
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      >
-                      </v-autocomplete>
-                    </ValidationProvider>
-                  </v-col>
-                  <v-col
-                    lg="6"
-                    md="6"
-                    cols="12"
-                    v-if="data.processor_type === 1"
-                  >
-                    <ValidationProvider
-                      v-slot="{ errors }"
-                      name="Branch Name"
-                      vid="name_en"
-                      rules="required"
-                    >
-                      <v-text-field
-                        outlined
-                        type="text"
-                        v-model="data.branch_name"
-                        :label="$t('container.payroll_management.branch_name')"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                        >></v-text-field
-                      >
-                    </ValidationProvider>
-                  </v-col>
-
-                  <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      v-slot="{ errors }"
-                      name="Name English"
-                      vid="name_en"
-                      rules="required"
-                    >
-                      <v-text-field
-                        outlined
-                        type="text"
-                        v-model="data.name_en"
-                        :label="$t('container.list.name_en')"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                        >></v-text-field
-                      >
-                    </ValidationProvider>
-                  </v-col>
-                  <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      v-slot="{ errors }"
-                      name="Name in Bangla"
-                      vid="name_en"
-                      rules="required"
-                    >
-                      <v-text-field
-                        outlined
-                        type="text"
-                        v-model="data.name_bn"
-                        :label="$t('container.list.name_en')"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                        >></v-text-field
-                      >
-                    </ValidationProvider>
-                  </v-col>
-                  <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      v-slot="{ errors }"
-                      name="Covearge Area"
-                      vid="name_en"
-                      rules="required"
-                    >
-                      <v-text-field
-                        outlined
-                        type="text"
-                        v-model="data.covearge_area"
-                        :label="
-                          $t('container.payroll_management.coverage_area')
-                        "
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                        >></v-text-field
-                      >
-                    </ValidationProvider>
-                  </v-col>
-                  <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      v-slot="{ errors }"
-                      name="Focal Phone"
-                      vid="name_en"
-                      rules="required"
-                    >
-                      <v-text-field
-                        outlined
-                        type="text"
-                        v-model="data.focal_phone"
-                        :label="$t('container.payroll_management.focal_phone')"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                        >></v-text-field
-                      >
-                    </ValidationProvider>
-                  </v-col>
-                  <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      v-slot="{ errors }"
-                      name="Focal Email"
-                      vid="name_en"
-                      rules="required"
-                    >
-                      <v-text-field
-                        outlined
-                        type="text"
-                        v-model="data.focal_email"
-                        :label="$t('container.payroll_management.email')"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                        >></v-text-field
-                      >
-                    </ValidationProvider>
-                  </v-col>
-                </v-row>
-
-                <v-row class="mx-0 my-0 py-2" justify="center">
-                  <v-btn
-                    flat
-                    @click="dialogEdit = false"
-                    outlined
-                    class="custom-btn-width py-2 mr-10"
-                  >
-                    {{ $t("container.list.cancel") }}
-                  </v-btn>
-                  <v-btn
-                    type="submit"
-                    flat
-                    color="primary"
-                    :disabled="invalid"
-                    :loading="loading"
-                    class="custom-btn-width warning white--text py-2"
-                  >
-                    {{ $t("container.list.update") }}
-                  </v-btn>
-                </v-row>
-              </form>
-            </ValidationObserver>
-            <p class="red--text mt-2">
-              Active field only Visible to Update Page. ***
-            </p>
-          </v-card-text>
-        </v-card>
-      </v-dialog> -->
-
-      <!-- Payment processor Edit modal  -->
+      <!--  add or edit modal  -->
 
       <!-- delete modal  -->
       <v-dialog v-model="deleteDialog" width="350">
@@ -1099,6 +883,7 @@ export default {
       clearLocation: false,
       clearUpazila: false,
       dialogAdd: false,
+      onEdit: false,
       deleteDialog: false,
       dialogEdit: false,
       delete_loading: false,
@@ -1321,37 +1106,101 @@ export default {
     async submitPaymentProcessor() {
       this.loading = true;
       try {
-        const response = await this.$axios.post(
-          "admin/payroll/payment-processor",
-          this.data,
-          {
-            headers: {
-              Authorization: `Bearer ${this.$store.state.token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        let response;
+        if (this.data.id != null) {
+          response = await this.$axios.put(
+            `admin/payroll/payment-processor/${this.data.id}`,
+            this.data,
+            {
+              headers: {
+                Authorization: `Bearer ${this.$store.state.token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+        } else {
+          response = await this.$axios.post(
+            "admin/payroll/payment-processor",
+            this.data,
+            {
+              headers: {
+                Authorization: `Bearer ${this.$store.state.token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+        }
+        console.log("🚀 ~ submitPaymentProcessor ~ response:", response);
 
         if (response.status === 200) {
-          this.$refs.formAdd.reset();
+          // this.$refs.formAdd.reset();
+
+          if (this.data.id != null) {
+            this.$toast.success(
+              this.language === "bn"
+                ? "পেমেন্ট প্রসেসর সফলভাবে আপডেট হয়েছে"
+                : "Payment Processor updated successfully"
+            );
+            this.onEdit = false;
+          } else {
+            this.$toast.success(
+              this.language === "bn"
+                ? "পেমেন্ট প্রসেসর সফলভাবে সংরক্ষিত হয়েছে"
+                : "Payment Processor submitted successfully"
+            );
+          }
           this.resetForm();
           this.getPaymentProcessor();
-          this.$toast.success(
-            this.language === "bn"
-              ? "পেমেন্ট প্রসেসর সফলভাবে জমা দেওয়া হয়েছে"
-              : "Payment Processor submitted successfully"
-          );
           this.dialogAdd = false;
-          // Reset form data or perform other actions as needed
         } else {
           this.$toast.error("Form submission failed");
         }
       } catch (error) {
-        console.error("Error submitting form:", error);
-        this.$toast.error("An error occurred while submitting the form");
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.errors
+        ) {
+          Object.values(error.response.data.errors).forEach((errMessages) => {
+            errMessages.forEach((errMessage) => {
+              const errorMessage =
+                this.language == "bn"
+                  ? this.translateErrorToBangla(errMessage)
+                  : errMessage;
+              this.$toast.error(errorMessage);
+            });
+          });
+        } else {
+          console.error("Error submitting form:", error);
+          this.$toast.error(
+            this.language == "bn"
+              ? "ফর্ম জমা দেওয়ার সময় একটি ত্রুটি ঘটেছে"
+              : "An error occurred while submitting the form"
+          );
+        }
       } finally {
         this.loading = false;
       }
+    },
+
+    translateErrorToBangla(message) {
+      const translations = {
+        "The name en has already been taken.":
+          "ইংরেজি নামটি ইতিমধ্যেই নেওয়া হয়েছে।",
+        "The name bn has already been taken.":
+          "বাংলা নামটি ইতিমধ্যেই নেওয়া হয়েছে।",
+        "The focal phone has already been taken.":
+          "ফোকাল ফোনটি ইতিমধ্যেই নেওয়া হয়েছে।",
+        "The focal email has already been taken.":
+          "ফোকাল ইমেলটি ইতিমধ্যেই নেওয়া হয়েছে।",
+        "The name en field is required.": "ইংরেজি নামের ফিল্ডটি প্রয়োজন।",
+        "The name bn field is required.": "বাংলা নামের ফিল্ডটি প্রয়োজন।",
+        "The focal phone field is required.": "ফোকাল ফোনের ফিল্ডটি প্রয়োজন।",
+        "The focal email field is required.": "ফোকাল ইমেলের ফিল্ডটি প্রয়োজন।",
+        "The focal email must be a valid email address.":
+          "ফোকাল ইমেল একটি বৈধ ইমেল ঠিকানা হতে হবে।",
+      };
+      return translations[message] || message;
     },
 
     async getPaymentProcessor() {
@@ -1379,6 +1228,26 @@ export default {
           this.pagination.total = response?.data?.data?.last_page;
           this.pagination.grand_total = response?.data?.data?.total;
           this.loading = false;
+        } else {
+          this.$toast.error("Something went wrong");
+        }
+      } catch (error) {
+        console.error("Error fetching divisions:", error);
+      }
+    },
+
+    async getBanks() {
+      let response;
+      try {
+        response = await this.$axios.get(`admin/payroll/get-banks`, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        if (response.status == "200") {
+          this.banks = response.data;
         } else {
           this.$toast.error("Something went wrong");
         }
@@ -1504,150 +1373,80 @@ export default {
       }
     },
 
-    async getBanks() {
-      let response;
-      try {
-        response = await this.$axios.get(`admin/payroll/get-banks`, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-        });
+    editItem(item) {
+      this.editDialog(item);
+    },
+    // on edit
+    async editDialog(item) {
+      console.log("🚀 ~ editDialog ~ item:", item);
+      // this.onEdit = true;
+      this.resetForm();
+      this.dialogAdd = true;
+      this.data = {
+        id:item.id,
+        processor_type: item.processor_type || null,
+        bank_id: item.bank.id || null,
+        branch_name: item.bank_branch_name || "",
+        routing_number: item.bank_routing_number || "",
+        name_en: item.name_en || "",
+        name_bn: item.name_bn || "",
+        focal_phone: item.focal_phone_no || "",
+        focal_email: item.focal_email_address || "",
+        charge: item.charge || 0,
+        division: item.processor_area?.division?.id || null,
+        district: item.processor_area?.district?.id || null,
+        location_type: item.processor_area?.location_type || null,
+        district_pourashava: item.processor_area?.district_pourashava?.id || null,
+        upazila: item.processor_area?.upazila?.id || null,
+        union: item.processor_area?.union?.id || null,
+        city_corporation: item.processor_area?.city_corporation?.id || null,
+        thana: item.processor_area?.thana?.id || null,
+      };
 
-        if (response.status == "200") {
-          this.banks = response.data;
-        } else {
-          this.$toast.error("Something went wrong");
+      try {
+        if (this.data.division) {
+          await this.getDistricts(this.data.division);
+          this.data.district = item?.processor_area?.district?.id;
+        }
+
+        if (this.data.district) {
+          this.data.location_type = item?.processor_area?.location_type?.id;
+        }
+
+        if (this.data.location_type && this.data.district) {
+          await this.getArea(this.data.district, this.data.location_type);
+
+          switch (this.data.location_type) {
+            case 1:
+              this.data.district_pourashava =
+                item?.processor_area?.district_pourashava?.id;
+              break;
+            case 2:
+              this.data.upazila = item?.processor_area?.upazila?.id;
+              await this.getUnionOrThana(
+                this.data.upazila,
+                this.data.location_type
+              );
+              this.data.union = item?.processor_area?.union?.id;
+              break;
+            default:
+              this.data.city_corporation =
+                item?.processor_area?.city_corporation?.id;
+              await this.getUnionOrThana(
+                this.data.city_corporation,
+                this.data.location_type
+              );
+              this.data.thana = item?.processor_area?.thana?.id;
+              break;
+          }
         }
       } catch (error) {
-        console.error("Error fetching divisions:", error);
+        console.error("Error in editDialog:", error);
+        this.$toast.error(
+          "An error occurred while initializing the edit dialog"
+        );
       }
     },
-
-    // editDialog(item) {
-    //   console.log("🚀 ~ editDialog ~ item:", item)
-    //   this.dialogAdd = true;
-    //   this.data = {
-    //     processor_type: item.processor_type,
-    //     bank_id: item.bank,
-    //     branch_name: item.bank_branch_name,
-    //     routing_number: item.bank_routing_number,
-    //     name_en: item.name_en,
-    //     name_bn: item.name_bn,
-    //     focal_phone: item.focal_phone_no,
-    //     focal_email: item.focal_email_address,
-    //     charge: item.charge,
-    //     division: item.processor_area.division.id,
-    //     // district: item.processor_area.district,
-    //     //location_type: item.processor_area.location_type,
-    //     // upazila: item.processor_area?.upazila,
-    //     // union: item.processor_area?.union,
-    //     // city_corporation: item.processor_area?.city_corporation,
-    //     // thana: item.processor_area?.thana,
-    //     // district_pourashava: item.processor_area?.district_pourashava
-    //   };
-
-    //   if(this.data.division != null){
-    //     this.getDistricts(this.data.division)
-    //     this.data.district = item.processor_area.district.id
-        
-    //   }
-    //   if(this.data.district != null){
-    //     this.data.location_type= item.processor_area.location_type.id
-    //   }
-    //   if(this.data.location_type!=null){
-
-    //     this.getArea(this.data.district, this.data.location_type)
-
-    //     if(this.data.location_type == 1){
-    //   console.log("🚀 ~ editDialog ~ this.data.location_type-for-1:", this.data.location_type)
-
-    //       // this.data.location_type = 1
-    //       this.data.district_pourashava=item.processor_area?.district_pourashava.id
-
-
-    //     }else if(this.data.location_type == 2){
-    //   console.log("🚀 ~ editDialog ~ this.data.location_type-for-2:", this.data.location_type)
-
-    //       // this.data.location_type = 2
-    //       this.data.upazila=item.processor_area?.upazila.id
-    //       this.getUnionOrThana(this.data.upazila, this.data.location_type)
-    //       this.data.union=item.processor_area?.union.id
-
-    //     }else{
-    //   console.log("🚀 ~ editDialog ~ this.data.location_type-for-3:", this.data.location_type)
-
-    //       // this.data.location_type = 3
-    //       this.data.city_corporation=item.processor_area?.city_corporation.id
-    //       this.getUnionOrThana(this.data.upazila, this.data.location_type)
-    //       this.data.thana=item.processor_area?.thana.id
-    //     }
-    //   }
-    //   // if(this.data.location_type != null && this.data.upazila != null  && this.data.upazila != null){
-    //   //   this.getUnionOrThana(this.data.upazila.id, this.data.location_type.id)
-    //   // }
-    //     console.log("🚀 ~ editDialog ~ this.data:", this.data)
-
-    //   // this.errors = {};
-    // },
-
-
-    async editDialog(item) {
-    console.log("🚀 ~ editDialog ~ item:", item);
-    this.dialogAdd = true;
-    this.data = {
-      processor_type: item.processor_type,
-      bank_id: item.bank,
-      branch_name: item.bank_branch_name,
-      routing_number: item.bank_routing_number,
-      name_en: item.name_en,
-      name_bn: item.name_bn,
-      focal_phone: item.focal_phone_no,
-      focal_email: item.focal_email_address,
-      charge: item.charge,
-      division: item.processor_area.division.id,
-      district: null,
-      location_type: null,
-      district_pourashava: null,
-      upazila: null,
-      union: null,
-      city_corporation: null,
-      thana: null,
-    };
-
-    try {
-      if (this.data.division) {
-        await this.getDistricts(this.data.division);
-        this.data.district = item.processor_area.district.id;
-      }
-
-      if (this.data.district) {
-        this.data.location_type = item.processor_area.location_type.id;
-      }
-
-      if (this.data.location_type) {
-        await this.getArea(this.data.district, this.data.location_type);
-
-        if (this.data.location_type == 1) {
-          this.data.district_pourashava = item.processor_area?.district_pourashava?.id;
-        } else if (this.data.location_type == 2) {
-          this.data.upazila = item.processor_area?.upazila?.id;
-          await this.getUnionOrThana(this.data.upazila, this.data.location_type);
-          this.data.union = item.processor_area?.union?.id;
-        } else {
-          this.data.city_corporation = item.processor_area?.city_corporation?.id;
-          await this.getUnionOrThana(this.data.upazila, this.data.location_type);
-          this.data.thana = item.processor_area?.thana?.id;
-        }
-      }
-    } catch (error) {
-      console.error("Error in editDialog:", error);
-      this.$toast.error("An error occurred while initializing the edit dialog");
-    }
-
-    console.log("🚀 ~ editDialog ~ this.data:", this.data);
-  },
-
 
     onPageChange($event) {
       // this.pagination.current = $event;
