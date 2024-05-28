@@ -72,6 +72,12 @@ export default {
     },
 
     computed: {
+         getDescriptionText() {
+      // Use DOMParser to parse the HTML string and then extract the text content
+      const parser = new DOMParser();
+      const parsedHtml = parser.parseFromString(this.data.description, 'text/html');
+      return parsedHtml.body.textContent;
+    },
          sanitizedDescription() {
       // Sanitize HTML content using DOMParser
       const parser = new DOMParser();
@@ -149,48 +155,48 @@ export default {
                     <v-card class="mx-3">
                         <v-card-title class="justify-center black--text"
                             style="background-color: #1C3C6A; color: white;font-size: 17px;">
-                            <h5 class="white--text">{{ $t("container.training_management.training_circular.view") }}
-                            </h5>
+                            <h4 class="white--text">{{ $t("container.training_management.training_circular.view") }}
+                            </h4>
                         </v-card-title>
 
                         <v-row class="my-custom-row ma-5">
-                            <v-col cols="5"  style="font-size:15px;">
+                            <v-col cols="5" style="font-size:12px;">
                                 <b>{{ $t('container.training_management.training_circular.name') }}</b>:
                             </v-col>
-                            <v-col cols="7"  style="font-size:15px;">
+                            <v-col cols="7" style="font-size:12px;">
                                 <b>:</b> <span class="ml-2">{{ data?.circular_name }}</span>
                             </v-col>
-                            <v-col cols="5"  style="font-size:15px;">
+                            <v-col cols="5" style="font-size:12px;">
                                 <b>{{ $t('container.training_management.training_circular.type') }}</b>:
                             </v-col>
-                            <v-col cols="7" style="font-size:15px;">
+                            <v-col cols="7" style="font-size:12px;">
                                 <b>:</b> <span class="ml-2"> {{ language == 'bn' ?
                                     data?.circular_type
                                     ?.value_bn : data?.circular_type
                                     ?.value_en }}</span>
                             </v-col>
-                            <v-col cols="5"  style="font-size:15px;">
+                            <v-col cols="5" style="font-size:12px;">
                                 <b>{{ $t('container.training_management.training_circular.training_type') }}</b>:
                             </v-col>
-                            <v-col cols="7"  style="font-size:15px;">
+                            <v-col cols="7" style="font-size:12px;">
                                 <b>:</b> <span class="ml-2">{{ language == 'bn' ?
                                     data?.training_type
                                     ?.value_bn : data?.training_type
                                     ?.value_en }}</span>
                             </v-col>
-                            <v-col cols="5"  style="font-size:15px;">
+                            <v-col cols="5" style="font-size:12px;">
                                 <b>{{ $t('container.list.status') }}</b>:
                             </v-col>
-                            <v-col cols="7"  style="font-size:15px;">
+                            <v-col cols="7" style="font-size:12px;">
                                 <b>:</b> <span class="ml-2">{{ language == 'bn' ?
                                     data?.status
                                     ?.value_bn : data?.status
                                     ?.value_en }}</span>
                             </v-col>
-                            <v-col cols="5" style="font-size:15px;">
+                            <v-col cols="5" style="font-size:12px;">
                                 <b>{{ $t('container.training_management.training_circular.module') }}</b>:
                             </v-col>
-                            <v-col cols="7"  style="font-size:15px;">
+                            <v-col cols="7" style="font-size:12px;">
                                 <b>:</b>
                                 <!-- <span class="ml-2">{{ language == 'bn' ?
                                     data?.modules
@@ -202,31 +208,32 @@ export default {
                                     item.value_bn : item.value_en }}
                                 </v-chip>
                             </v-col>
-                            <v-col cols="5"  style="font-size:15px;">
+                            <v-col cols="5" style="font-size:12px;">
                                 <b>{{ $t('container.training_management.training_circular.class_duration') }}</b>:
                             </v-col>
-                            <v-col cols="7"  style="font-size:15px;">
+                            <v-col cols="7" style="font-size:12px;">
                                 <b>:</b> <span class="ml-2">{{ data?.class_duration }}</span>
                             </v-col>
-                            <v-col cols="5"  style="font-size:15px;">
+                            <v-col cols="5" style="font-size:12px;">
                                 <b>{{ $t('container.training_management.training_circular.description') }}</b>:
                             </v-col>
-                            <v-col cols="7"  style="font-size:15px;">
-                                <v-row class="ml-1"><b>:</b>
-                                    <p v-html="data?.description"></p>
-                                </v-row>
+                            <v-col cols="7" style="font-size: 15px;">
+
+
+                                <b>:</b> <span class="ml-2">{{ getDescriptionText }}</span>
+
                             </v-col>
-                            <v-col cols="5"  style="font-size:15px;">
+                            <v-col cols="5" style="font-size:12px;">
                                 <b>{{ $t('container.api_manager.data_receiver.start_date') }}</b>:
                             </v-col>
-                            <v-col cols="7"  style="font-size:15px;">
+                            <v-col cols="7" style="font-size:12px;">
                                 <b>:</b> <span class="ml-2">{{ language == 'bn' ?
                                     $helpers.englishToBangla(data?.start_date) : data?.start_date }}</span>
                             </v-col>
-                            <v-col cols="5"  style="font-size:15px;">
+                            <v-col cols="5" style="font-size:12px;">
                                 <b>{{ $t('container.api_manager.data_receiver.end_date') }}</b>:
                             </v-col>
-                            <v-col cols="7"  style="font-size:15px;">
+                            <v-col cols="7" style="font-size:12px;">
                                 <b>:</b> <span class="ml-2">{{ language == 'bn' ?
                                     $helpers.englishToBangla(data?.end_date) : data?.end_date }}</span>
                             </v-col>

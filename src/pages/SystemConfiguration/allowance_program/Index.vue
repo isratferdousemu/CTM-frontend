@@ -435,7 +435,7 @@ export default {
                             <!-- <v-icon>mdi-account-edit-outline</v-icon> -->
                           </v-btn>
                         </template>
-                        <span>{{ language == en ? 'Setings' : 'সেটিংস'}}</span>
+                        <span>{{ language == 'en' ? 'Settings' : 'সেটিংস'}}</span>
                       </v-tooltip>
 
 

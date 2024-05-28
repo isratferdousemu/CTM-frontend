@@ -753,7 +753,7 @@ export default {
                                             <template v-slot:item.actions="{ item }">
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
-                                                        <v-btn v-can="'trainerCircular-view'" fab x-small v-on="on"
+                                                        <v-btn v-can="'trainingProgram-view'" fab x-small v-on="on"
                                                             color="blue" elevation="0" router class=" white--text  mr-2"
                                                             @click="copyToClipboard(item.id)">
                                                             <v-icon> mdi-link </v-icon>
