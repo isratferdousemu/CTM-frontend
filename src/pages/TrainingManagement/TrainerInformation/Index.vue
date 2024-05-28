@@ -553,14 +553,14 @@ export default {
 
                                             </template>
                                             <template v-slot:[`item.status`]="{ item }">
-                                                <span v-if="item.status == 0">
+                                                <!-- <span v-if="item.status == 0">
                                                     {{ language == 'bn' ?
                                                     'নিষ্ক্রিয়' : 'Inactive' }}
                                                 </span>
                                                 <span v-else>
                                                     {{ language == 'bn' ?
                                                     'সক্রিয়' : 'Active' }}
-                                                </span>
+                                                </span> -->
 
 
                                                 <span>

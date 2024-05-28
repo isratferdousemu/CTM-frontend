@@ -150,7 +150,7 @@ export default {
 
                         <v-card-title class="justify-center black--text"
                             style="background-color: #1C3B68; color: white;font-size: 17px;">
-                            <h5 class="white--text">{{ $t("container.training_management.trainer_info.view") }}</h5>
+                            <h4 class="white--text">{{ $t("container.training_management.trainer_info.view") }}</h4>
                         </v-card-title>
 
 
@@ -217,10 +217,11 @@ export default {
                                                         <div class="d-flex  flex-column">
                                                             <span class="mdi mdi-school-outline mdi-36px"></span>
                                                             <span class="ml-3">{{ language == 'bn' ?
-                                                                $helpers.englishToBangla(
-                                                                0) : '0' }}</span>
+                                                                $helpers.englishToBangla(data?.programs_count) :
+                                                                data?.programs_count }}</span>
                                                             <span>
-                                                                {{$t("container.training_management.trainer_info.program")
+                                                                {{
+                                                                $t("container.training_management.trainer_info.program")
                                                                 }}</span>
                                                         </div>
                                                     </v-col>
@@ -230,13 +231,13 @@ export default {
                                                                 class="mdi mdi-book-open-blank-variant mdi-36px"></span>
                                                             <span class="ml-3">{{ language == 'bn' ?
                                                                 $helpers.englishToBangla(
-                                                                0) : '0' }}</span>
+                                                                data?.modules_count) : data?.modules_count }}</span>
                                                             <span>{{
                                                                 $t("container.training_management.trainer_info.course")
                                                                 }}</span>
                                                         </div>
                                                     </v-col>
-                                                    <v-col cols="12" lg="4" md="4" sm="4" xs="4">
+                                                    <!-- <v-col cols="12" lg="4" md="4" sm="4" xs="4">
                                                         <div class="d-flex  flex-column">
                                                             <span class="mdi mdi-crowd mdi-36px"></span>
                                                             <span class="ml-3">{{ language == 'bn' ?
@@ -246,7 +247,7 @@ export default {
                                                                 $t("container.training_management.trainer_info.upcoming")
                                                                 }}</span>
                                                         </div>
-                                                    </v-col>
+                                                    </v-col> -->
 
 
 
@@ -294,12 +295,7 @@ export default {
                                                 {{ $t("container.training_management.trainer_info.program")
                                                 }}
                                             </v-col>
-                                            <v-col cols="2" lg="2" md="2" sm="2" xs="2" @click="selectedTab = 'module'"
-                                                :class="{ 'active-tab': selectedTab === 'module' }"
-                                                style="cursor: pointer;">
-                                                {{ $t("container.training_management.trainer_info.module")
-                                                }}
-                                            </v-col>
+
 
                                         </v-row>
                                         <br>
@@ -321,6 +317,22 @@ export default {
                                                     <v-col cols="7">
                                                         <b>:</b> <span class="ml-2">{{ language == 'bn' ?
                                                             data?.designation?.value_bn : data?.designation?.value_en
+                                                            }}
+                                                        </span></v-col>
+                                                    <v-col cols="5"> {{
+                                                        $t("container.training_management.trainer_info.trainer_type")
+                                                        }}</v-col>
+                                                    <v-col cols="7">
+                                                        <b>:</b> <span class="ml-2">
+                                                            {{ language === 'en'
+                                                            ? (data?.is_external === 0
+                                                            ? 'Internal Trainer'
+                                                            : 'External Trainer')
+                                                            : (language === 'bn'
+                                                            ? (data?.is_external === 0
+                                                            ? 'অভ্যন্তরীণ প্রশিক্ষক'
+                                                            : 'বহিরাগত প্রশিক্ষক')
+                                                            : '')
                                                             }}
                                                         </span></v-col>
                                                     <v-col cols="5"> {{
@@ -348,11 +360,8 @@ export default {
                                                         }}</v-col>
                                                     <v-col cols="7" class="d-flex align-items-start">
                                                         <b>:</b>
-                                                        <!-- <div class="ml-2"
-                                                            style="white-space: normal; word-break: break-word;">
-                                                            {{ data?.description }}
-                                                        </div> -->
-                                                        <div v-html="data?.description"></div>
+
+                                                        <div v-html="data?.description" class="ml-3"></div>
                                                     </v-col>
 
                                                     <!-- <v-col cols="7"  v-else>
@@ -361,11 +370,62 @@ export default {
                                                             }}</span></v-col> -->
                                                 </v-row>
                                                 <v-row v-if="selectedTab === 'program'" class="selected-tab-content">
-                                                    No data
+                                                    <v-col cols="12"
+                                                        v-if="data?.programs && data?.programs.length > 0 ">
+                                                        <v-simple-table>
+                                                            <template v-slot:default>
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>{{
+                                                                            $t("container.training_management.training_program.program_name")
+                                                                            }}</th>
+                                                                        <th>{{
+                                                                            $t("container.training_management.training_circular.start_date")
+                                                                            }}</th>
+                                                                        <th>{{
+                                                                            $t("container.training_management.training_circular.end_date")
+                                                                            }}</th>
+                                                                        <th>{{
+                                                                            $t("container.training_management.training_circular.module")
+                                                                            }}</th>
+                                                                        <!-- Add more headers if needed -->
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr v-for="program in data?.programs"
+                                                                        :key="program.id">
+                                                                        <td>{{ program.program_name }}</td>
+                                                                        <td>{{ language == 'bn' ?
+                                                                            $helpers.englishToBangla(program.start_date)
+                                                                            : program.start_date }}</td>
+                                                                        <td>{{ language == 'bn' ?
+                                                                            $helpers.englishToBangla(program.end_date) :
+                                                                            program.end_date }}</td>
+                                                                        <td>
+                                                                            <!-- v-chips to display modules -->
+                                                                            <v-chip label
+                                                                                v-for="module in program.modules"
+                                                                                :key="module.id" class="ma-1">
+                                                                                {{ language == 'bn' ? module.value_bn :
+                                                                                module.value_en }}
+                                                                            </v-chip>
+                                                                        </td>
+                                                                        <!-- Add more columns if needed -->
+                                                                    </tr>
+                                                                </tbody>
+                                                            </template>
+                                                        </v-simple-table>
+
+                                                    </v-col>
+                                                    <v-col cols="12" v-else  class="text-center">
+                                                     
+                                                        {{ language == 'bn' ?
+                                                        'এই প্রশিক্ষকের কোন নির্ধারিত প্রোগ্রাম নেই' : 'This trainer has no assigned programs.'}}
+                                                    </v-col>
+
+
                                                 </v-row>
-                                                <v-row v-if="selectedTab === 'module'" class="selected-tab-content">
-                                                    No data
-                                                </v-row>
+
 
 
 
