@@ -72,18 +72,7 @@ export default {
     },
 
     computed: {
-         getDescriptionText() {
-      // Use DOMParser to parse the HTML string and then extract the text content
-      const parser = new DOMParser();
-      const parsedHtml = parser.parseFromString(this.data.description, 'text/html');
-      return parsedHtml.body.textContent;
-    },
-         sanitizedDescription() {
-      // Sanitize HTML content using DOMParser
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(this.data.description, 'text/html');
-      return doc.body.innerHTML;
-    },
+         
         headers() {
             return [
                 { text: this.$t('container.list.sl'), value: "id", align: "start", sortable: false, width: "15%" },
@@ -217,12 +206,16 @@ export default {
                             <v-col cols="5" style="font-size:12px;">
                                 <b>{{ $t('container.training_management.training_circular.description') }}</b>:
                             </v-col>
-                            <v-col cols="7" style="font-size: 15px;">
+                          
 
 
-                                <b>:</b> <span class="ml-2">{{ getDescriptionText }}</span>
+                                <v-col cols="7" class="d-flex align-items-start" style="font-size: 12px;">
+                                    <b>:</b>
 
-                            </v-col>
+                                    <div v-html="data?.description" class="ml-3"></div>
+                                </v-col>
+
+                          
                             <v-col cols="5" style="font-size:12px;">
                                 <b>{{ $t('container.api_manager.data_receiver.start_date') }}</b>:
                             </v-col>
