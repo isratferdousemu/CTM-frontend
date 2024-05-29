@@ -4,7 +4,7 @@
     <v-col cols="12">
       <label style="color: #1976d2">
                       <span>
-                        {{ $t("container.application_selection_dashboard.total_number_of_application_received") }}
+                        {{ $t("container.grievance_management.dashboard.program_wise_total_received") }}
                       </span>
       </label></v-col
     >
@@ -50,7 +50,7 @@
     </v-menu>
   </v-row>
   <v-row>
-    <canvas id="total_number_of_application_received_info"></canvas>
+    <canvas id="total_number_received"></canvas>
   </v-row>
   </v-col>
 
@@ -67,7 +67,7 @@ export default {
       dates: [],
       menu: false,
       total_number_of_application_received_chart: null,
-      total_number_of_application_received_info: [],
+      total_number_received: [],
       total_number_of_application_received_levels: [],
       total_number_of_application_received_datas: [],
       isLoading: false,
@@ -99,9 +99,9 @@ export default {
           params: queryParams,
         });
         console.log(result.data.data,777)
-        this.total_number_of_application_received_info = result.data.data;
-        this.total_number_of_application_received_levels = this.total_number_of_application_received_info.map((row) => this.$i18n.locale == 'en' ? row.name_en : row.name_bn);;
-        this.total_number_of_application_received_datas = this.total_number_of_application_received_info.map((row) => row.grievances_count);
+        this.total_number_received = result.data.data;
+        this.total_number_of_application_received_levels = this.total_number_received.map((row) => this.$i18n.locale == 'en' ? row.name_en : row.name_bn);;
+        this.total_number_of_application_received_datas = this.total_number_received.map((row) => row.grievances_count);
         this.isLoading = false;
 
       } catch (error) {
@@ -122,7 +122,7 @@ export default {
           return isNaN(percentage) ? '0.00%' : percentage + '%';
         });
 
-        this.total_number_of_application_received_chart = new Chart(document.getElementById("total_number_of_application_received_info"), {
+        this.total_number_of_application_received_chart = new Chart(document.getElementById("total_number_received"), {
           type: "doughnut",
           data: {
             // labels: this.total_number_of_application_received_levels,
@@ -173,8 +173,8 @@ export default {
             aspectRatio: 1, // Aspect ratio of 1 w
           },
         });
-        document.getElementById("total_number_of_application_received_info").style.width = '400px';
-        document.getElementById("total_number_of_application_received_info").style.height = '435px';
+        document.getElementById("total_number_received").style.width = '400px';
+        document.getElementById("total_number_received").style.height = '435px';
       } else {
         console.error("Data is not available to create chart.");
       }

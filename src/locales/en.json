@@ -1341,12 +1341,19 @@
       "dashboard":{
         "grievance_dashboard": "Grievacne Dashboard",
         "total_grievance": "Total Grievance",
-        "total_resolved": "Total Resolved",
-        "total_pending": "Total Pending",
-        "total_rejected": "Total Rejected",
-        "total_forwarded": "Total Forwarded",
-        "total_received": "Total Received",
-        "total_unresolved": "Total Unresolved"
+        "total_new": "Total New",
+        "division": "Division",
+        "action": "Action",
+        "total_resolved": "Total Grievance Solved",
+        "total_pending": "Total Grievance Pending",
+        "total_rejected": "Total Grievance Canceled",
+        "total_received": "Total Grievanc Received",
+        "total_not_solved": "Total Not Solved",
+        "header": "In The Last 30 Days",
+        "program_wise_total_received": "Program Wise Total Grievance",
+        "program_wise_total_approved": "Program Wise Grievance Approved",
+        "program_wise_total_canceled": "Program Wise Grievance Canceled",
+        "location_wise_total_grievance": "Location Wise Grievance"
       }
     },
 

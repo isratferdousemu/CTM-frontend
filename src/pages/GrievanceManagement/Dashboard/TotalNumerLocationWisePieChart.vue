@@ -1,59 +1,37 @@
 <template>
   <v-col>
-  <v-row>
-    <v-col cols="12">
-      <label style="color: #1976d2">
-                      <span>
-                      {{ $t("container.grievance_management.dashboard.program_wise_total_approved") }}
-                      </span>
-      </label></v-col
-    >
-  </v-row>
-  <v-row class="ml-1 mr-1">
-    <v-menu
-        ref="menu"
-        v-model="menu"
-        :close-on-content-click="false"
-        transition="scale-transition"
-        offset-y
-        min-width="auto"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-text-field
-            v-model="dates"
-            :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
-            :label="$t('container.application_selection_dashboard.enter_start_end_date')"
-            readonly
-            v-bind="attrs"
-            v-on="on"
-        ></v-text-field>
-      </template>
-      <v-date-picker
-          v-model="dates"
-          :range="[dates[0], dates[1]]"
-          no-title
-          scrollable
-          @input="OnChangeDateInfo($event,'total_approve')"
-      >
-        <v-spacer></v-spacer>
-        <v-btn text color="primary" @click="resetDateRange">
-          Cancel
-        </v-btn>
-        <v-btn
-            text
-            color="primary"
-            @click="$refs.menu.save(dates)"
-        >
-          OK
-        </v-btn>
-      </v-date-picker>
-    </v-menu>
-  </v-row>
-  <v-row>
-    <canvas id="programwise_application_approval"></canvas>
-  </v-row>
+    <v-row>
+      <v-col cols="12">
+        <label style="color: #1976d2">
+          <span>
+               {{ $t("container.grievance_management.dashboard.location_wise_total_grievance") }}
+          </span>
+        </label></v-col>
+    </v-row>
+    <v-row class="ml-1 mr-1">
+      <v-menu ref="menu" v-model="menu" :close-on-content-click="false" transition="scale-transition" offset-y
+        min-width="auto">
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field v-model="dates" :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
+            :label="$t('container.application_selection_dashboard.enter_start_end_date')" readonly v-bind="attrs"
+            v-on="on"></v-text-field>
+        </template>
+        <v-date-picker v-model="dates" :range="[dates[0], dates[1]]" no-title scrollable
+          @input="OnChangeDateInfo($event, 'total_approve')">
+          <v-spacer></v-spacer>
+          <v-btn text color="primary" @click="resetDateRange">
+            Cancel
+          </v-btn>
+          <v-btn text color="primary" @click="$refs.menu.save(dates)">
+            OK
+          </v-btn>
+        </v-date-picker>
+      </v-menu>
+    </v-row>
+    <v-row>
+      <canvas id="locationWise"></canvas>
+    </v-row>
   </v-col>
-
 </template>
 
 <script>
@@ -91,7 +69,7 @@ export default {
         end_date: to_date,
       };
       try {
-        const result = await this.$axios.get("/admin/grievance-dashboard/get-total-approve-grievance", {
+        const result = await this.$axios.get("/admin/grievance-dashboard/location-wise-grievance", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -122,13 +100,13 @@ export default {
           return isNaN(percentage) ? '0.00%' : percentage + '%';
         });
 
-        this.programwise_application_approve_chart = new Chart(document.getElementById("programwise_application_approval"), {
+        this.programwise_application_approve_chart = new Chart(document.getElementById("locationWise"), {
           type: "pie",
           data: {
             // labels: this.programwise_application_approve_levels,
             // labels: this.programwise_application_approve_levels.map((label, index) => `${label} (${percentages[index]})`),
-            labels: this.programwise_application_approve_levels.map((label, index) => `${label} (${this.$i18n.locale == 'en' ? this.programwise_application_approve_datas[index] : this.$helpers.englishToBangla(this.programwise_application_approve_datas[index])} - ${this.$i18n.locale == 'en' ? percentages[index]  : this.$helpers.englishToBangla(percentages[index])})`),
-            percentages:percentages,
+            labels: this.programwise_application_approve_levels.map((label, index) => `${label} (${this.$i18n.locale == 'en' ? this.programwise_application_approve_datas[index] : this.$helpers.englishToBangla(this.programwise_application_approve_datas[index])} - ${this.$i18n.locale == 'en' ? percentages[index] : this.$helpers.englishToBangla(percentages[index])})`),
+            percentages: percentages,
             datasets: [
               {
                 label: "Values",
@@ -175,8 +153,8 @@ export default {
             aspectRatio: 1, // Aspect ratio of 1 w
           },
         });
-        document.getElementById("programwise_application_approval").style.width = '400px';
-        document.getElementById("programwise_application_approval").style.height = '435px';
+        document.getElementById("locationWise").style.width = '400px';
+        document.getElementById("locationWise").style.height = '435px';
       } else {
         console.error("Data is not available to create chart.");
       }

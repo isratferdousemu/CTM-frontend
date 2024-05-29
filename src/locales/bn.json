@@ -1335,13 +1335,20 @@
       },
       "dashboard": {
         "grievance_dashboard": "অভিযোগ ড্যাশবোর্ড",
-        "total_grievance": "Total Grievance",
-        "total_resolved": "Total Resolved",
-        "total_pending": "Total Pending",
-        "total_rejected": "Total Rejected",
-        "total_forwarded": "Total Forwarded",
-        "total_received": "Total Received",
-        "total_unresolved": "Total Unresolved"
+        "total_grievance": "মোট অভিযোগ",
+        "total_new": "মোট নতুন",
+        "division": "বিভাগ",
+        "action": "অ্যাকশন",
+        "total_resolved": "মোট অভিযোগ সমাধান",
+        "total_pending": "মোট অভিযোগ স্থগিত",
+        "total_rejected": "মোট অভিযোগ বাতিল",
+        "total_received": "প্রাপ্ত মোট অভিযোগ",
+        "total_not_solved": "সমাধান হয়নি",
+        "header": "শেষ 30 দিনে",
+        "program_wise_total_received": "প্রোগ্রাম অনুসারে প্রাপ্ত মোট অভিযোগ",
+        "program_wise_total_approved": "প্রোগ্রাম অনুসারে মোট অভিযোগ অনুমোদিত",
+        "program_wise_total_canceled": "প্রোগ্রাম অনুসারে মোট অভিযোগ বাতিল",
+        "location_wise_total_grievance": "অবস্থান অনুসারে মোট অভিযোগ"
       }
     },
 

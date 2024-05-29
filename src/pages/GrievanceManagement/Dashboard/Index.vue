@@ -11,122 +11,68 @@
       <v-col cols="12" md="3">
         <v-card class="mx-auto" color="grey lighten-4" max-width="600">
           <v-card-title>
-            <v-icon :color="checking ? 'red lighten-2' : 'indigo'" class="mr-8" size="64" @click="takePulse">
+            <v-icon color= 'indigo' class="mr-8" size="64" >
               mdi-heart-pulse
             </v-icon>
             <v-row align="start">
               <div class="text-caption black--text text-uppercase">
-                Total Grievance Received
+                 {{ $t("container.grievance_management.dashboard.total_received")}}
               </div>
             </v-row>
           </v-card-title>
-          <h1 align="center">{{  totalRecivedGrievance }}</h1>
+          <h1 align="center">{{ language ==='bn' ? $helpers.englishToBangla(this.totalRecivedGrievance) : this.totalRecivedGrievance }}</h1>
         </v-card>
       </v-col>
 
       <v-col cols="12" md="3">
         <v-card class="mx-auto" color="grey lighten-4" max-width="600">
           <v-card-title>
-            <v-icon :color="checking ? 'red lighten-2' : 'indigo'" class="mr-8" size="64" @click="takePulse">
+            <v-icon color= 'indigo' class="mr-8" size="64" >
               mdi-heart-pulse
             </v-icon>
             <v-row align="start">
               <div class="text-caption black--text text-uppercase">
-                Total Grievance Solved
+                 {{ $t("container.grievance_management.dashboard.total_resolved") }}
               </div>
             </v-row>
           </v-card-title>
-          <h1 align="center">{{ totalSolvedGrievance }}</h1>
+              <h1 align="center">{{ language === 'bn' ? $helpers.englishToBangla(this.totalSolvedGrievance) : this.totalSolvedGrievance }}</h1>
         </v-card>
       </v-col>
 
       <v-col cols="12" md="3">
         <v-card class="mx-auto" color="grey lighten-4" max-width="600">
           <v-card-title>
-            <v-icon :color="checking ? 'red lighten-2' : 'indigo'" class="mr-8" size="64" @click="takePulse">
+            <v-icon color='indigo' class="mr-8" size="64" >
               mdi-heart-pulse
             </v-icon>
             <v-row align="start">
               <div class="text-caption black--text text-uppercase">
-                Total Grievance Canceled
+                 {{ $t("container.grievance_management.dashboard.total_rejected") }}
               </div>
             </v-row>
           </v-card-title>
-          <h1 align="center">{{ totalCanceledGrievance }}</h1>
+             <h1 align="center">{{ language === 'bn' ? $helpers.englishToBangla(this.totalCanceledGrievance) : this.totalCanceledGrievance }}</h1>
         </v-card>
       </v-col>
       <v-col cols="12" md="3">
         <v-card class="mx-auto" color="grey lighten-4" max-width="600">
           <v-card-title>
-            <v-icon :color="checking ? 'red lighten-2' : 'indigo'" class="mr-8" size="64" @click="takePulse">
+            <v-icon color='indigo' class="mr-8" size="64" >
               mdi-heart-pulse
             </v-icon>
             <v-row align="start">
               <div class="text-caption black--text text-uppercase">
-                Total Grievance Pending
+                 {{ $t("container.grievance_management.dashboard.total_pending") }}
               </div>
             </v-row>
           </v-card-title>
-          <h1 align="center">{{ totalPendingGrievance }}</h1>
+           <h1 align="center">{{ language === 'bn' ? $helpers.englishToBangla(this.totalPendingGrievance) : this.totalPendingGrievance }}</h1>
         </v-card>
       </v-col>
 
     </v-row>
     <!-------End  header Card component ------->
-    <!-------Start  table  component ------->
-    <!-- <div style="margin-top: 10px;">
-        <v-card-title>
-        <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="Search"
-          single-line
-          hide-details
-        ></v-text-field>
-      </v-card-title>
-      <v-simple-table fixed-header height="300px" class="table-responsive">
-        <template v-slot:default>
-          <thead>
-            <tr>
-              <th class="text-left">
-                SL
-              </th>
-              <th class="text-left">
-                Division
-              </th>
-              <th class="text-left">
-                New Grievance
-              </th>
-              <th class="text-left">
-                Total Solved Grievacne
-              </th>
-              <th class="text-left">
-               Avarage Resolved
-              </th>
-              <th class="text-left">
-                 Resolved Rate
-              </th>
-              <th class="text-left">
-                Total Grievacne
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>01</td>
-              <td>Dhaka</td>
-              <td>Dhaka</td>
-              <td>Dhaka</td>
-              <td>Dhaka</td>
-              <td>Dhaka</td>
-              <td>Dhaka</td>
-            </tr>
-          </tbody>
-        </template>
-      </v-simple-table>
-    </div> -->
-    <!-------End  table component ------->
-
     <v-row class="mt-3">
 
       <v-col cols="12" md="6" lg="6">
@@ -148,13 +94,13 @@
         </v-card>
       </v-col>
     </v-row>
-
-    <!-- <v-row class="mt-3">
+  
+    <v-row class="mt-3">
       <v-col cols="12" md="6" lg="6">
         <v-card height="100%">
           <v-card-text>
             <V-row>
-              <TotalNumerReceivedLineBarChart />
+              <TotalNumerLocationWisePieChart />
             </V-row>
           </v-card-text>
         </v-card>
@@ -164,14 +110,75 @@
         <v-card height="100%">
           <v-card-text>
             <V-row>
-              <TotalNumerForwardedBarChart />
+              <TotalNumerStatusWisePieChart />
             </V-row>
           </v-card-text>
         </v-card>
       </v-col>
 
-    </v-row> -->
+    </v-row>
 
+    <!-------Start  table  component ------->
+      <div style="margin-top: 10px;">
+      <v-simple-table fixed-header height="300px" class="table-responsive">
+       
+        <template v-slot:default>
+            <caption>
+                   <v-card-title class="custom-title">
+                              <h6 class="text-center" style="font-size:16.16px;">  {{ $t("container.grievance_management.dashboard.header") }}</h6>
+                    </v-card-title>
+                  <!-- <v-expansion-panel-header color=#1c3b68>
+                    <h3 class="white--text" style="font-size:19.89px;">
+                      {{ $t("container.grievance_management.dashboard.header") }}
+                    </h3>
+                  </v-expansion-panel-header> -->
+            </caption>
+          <thead class="primary lighten-1">
+            <tr>
+              <th class="text-left">
+                 {{ $t("container.list.sl") }}
+              </th>
+              <th class="text-left">
+                {{ $t("container.grievance_management.dashboard.division") }}
+              </th>
+              <th class="text-left">
+                {{ $t("container.grievance_management.dashboard.total_new") }}
+              </th>
+              <th class="text-left">
+                  {{ $t("container.grievance_management.dashboard.total_resolved") }}
+              </th>
+              <th class="text-left">
+                 {{ $t("container.grievance_management.dashboard.total_rejected") }}
+              </th>
+              <th class="text-left">
+                  {{ $t("container.grievance_management.dashboard.total_not_solved") }}
+              </th>
+              <th class="text-left">
+                {{ $t("container.grievance_management.dashboard.action") }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, index) in locationWisegrievacne" :key="item.index">
+              <td>{{ language==='bn'? $helpers.englishToBangla(index + 1): index + 1}}</td>
+              <td>{{ language==='bn' ? item.name_bn : item.name_en}}</td>
+              <td>{{ language==='bn' ? $helpers.englishToBangla(item.total_grievance_new) : item.total_grievance_new }}</td>
+              <td>{{ language==='bn' ? $helpers.englishToBangla(item.total_grievance_approved) : item.total_grievance_approved }}</td>
+              <td>{{ language==='bn' ? $helpers.englishToBangla(item.total_grievance_canceled) : item.total_grievance_canceled }}</td>
+              <td>{{ language==='bn' ? $helpers.englishToBangla(item.total_grievance_pending) : item.total_grievance_pending }}</td>
+              <td>
+                  <v-btn v-can="'division-edit'" fab x-small v-on="on" color="success" elevation="0">
+                     <v-icon>mdi-arrow-collapse-right </v-icon>
+                   </v-btn>
+              </td>
+               
+              
+            </tr>
+          </tbody>
+        </template>
+      </v-simple-table>
+    </div>
+      <!-------End  table component ------->
   </v-container>
 </template>
 
@@ -180,59 +187,57 @@ import Chart from "chart.js/auto";
 import TotalNumerReceivedDoughnutChart
   from "@/pages/GrievanceManagement/Dashboard/TotalNumerReceivedDoughnutChart.vue";
 import TotalNumerApprovePieChart from "@/pages/GrievanceManagement/Dashboard/TotalNumerApprovePieChart.vue";
-import ProgramWiseWaitingPieChart from "@/pages/GrievanceManagement/Dashboard/ProgramWiseWaitingPieChart.vue";
-import NumerofApplicationRejectedDoughnutChart
-  from "@/pages/GrievanceManagement/Dashboard/NumerofApplicationRejectedDoughnutChart.vue";
-import TotalNumerReceivedLineBarChart from "@/pages/GrievanceManagement/Dashboard/TotalNumerReceivedLineBarChart.vue";
-import TotalNumerForwardedBarChart from "@/pages/GrievanceManagement/Dashboard/TotalNumerForwardedBarChart.vue";
+import TotalNumerLocationWisePieChart from "@/pages/GrievanceManagement/Dashboard/TotalNumerLocationWisePieChart.vue";
+import TotalNumerStatusWisePieChart from "@/pages/GrievanceManagement/Dashboard/TotalNumerStatusWisePieChart.vue";
 import { GChart } from "vue-google-charts/legacy";
 export default {
   name: "Index",
   title: "Grievance Dashboard",
   data() {
     return {
-      totalRecivedGrievance: null,
+      totalRecivedGrievance:null,
       totalSolvedGrievance: null,
       totalCanceledGrievance: null,
       totalPendingGrievance:null,
+      locationWisegrievacne:null,
     };
   },
   components: {
     GChart,
     TotalNumerReceivedDoughnutChart,
     TotalNumerApprovePieChart,
-    ProgramWiseWaitingPieChart,
-    NumerofApplicationRejectedDoughnutChart,
-    TotalNumerReceivedLineBarChart,
-    TotalNumerForwardedBarChart,
+    TotalNumerLocationWisePieChart,
+    TotalNumerStatusWisePieChart
   },
   computed: {
-    drawer: {
+     language: {
       get() {
-        return this.$store.state.Drawer;
-      },
-      set(v) {
-        return this.$store.commit("setDrawer", v);
-      },
+        return this.$store.getters.getAppLanguage;
+      }
     },
+    // drawer: {
+    //   get() {
+    //     return this.$store.state.Drawer;
+    //   },
+    //   set(v) {
+    //     return this.$store.commit("setDrawer", v);
+    //   },
+    // },
   },
   methods: {
    async getTotalRecivedNumberOfGrievance(){
-      const queryParams = {
-        status: 1,
-       };
+
       this.$axios.get("admin/grievance-dashboard/numberReceivedOfGrievance",{
        headers: {
           Authorization: "Bearer " + this.$store.state.token,
           "Content-Type": "multipart/form-data",
         },
-        params: queryParams,
+        // params: queryParams,
       }).then((result) => {
          console.log(result.data.data,'total');
         this.totalRecivedGrievance = result?.data?.data;
       });
     },
-
    async getTotalSolvedNumberOfGrievance() {
       const queryParams = {
         status: 2,
@@ -244,9 +249,8 @@ export default {
         },
         params: queryParams,
       }).then((result) => {
-        console.log(result?.data?.data,'result?.data?.data')
+        console.log(result,'response');
         this.totalSolvedGrievance = result?.data?.data;
-        console.log(this.totalSolvedGrievance,'this.totalSolvedGrievance');
       });
     },
     async getTotalCanceledNumberOfGrievance() {
@@ -260,14 +264,12 @@ export default {
         },
         params: queryParams,
       }).then((result) => {
-        console.log(result?.data?.data, 'result?.data?.data')
         this.totalCanceledGrievance = result?.data?.data;
-        console.log(this.totalCanceledGrievance, 'this.totalCanceledGrievance');
       });
     },
     async getTotalPendingNumberOfGrievance() {
       const queryParams = {
-        status: 4,
+        status: 0,
       };
       this.$axios.get("admin/grievance-dashboard/numberOfPendingdGrievance", {
         headers: {
@@ -276,9 +278,22 @@ export default {
         },
         params: queryParams,
       }).then((result) => {
-        console.log(result?.data?.data, 'result?.data?.data')
         this.totalPendingGrievance = result?.data?.data;
-        console.log(this.totalPendingGrievance, 'this.totalPendingGrievance');
+      });
+    },
+    async getLocationoWiseNumberOfGrievance() {
+      const queryParams = {
+        status: 'location',
+      };
+      this.$axios.get("/admin/grievance-dashboard/location-wise-grievance", {
+        headers: {
+          Authorization: "Bearer " + this.$store.state.token,
+          "Content-Type": "multipart/form-data",
+        },
+        params: queryParams,
+      }).then((result) => {
+        this.locationWisegrievacne = result?.data?.data;
+        console.log(this.locationWisegrievacne,'anwar');
       });
     }
 
@@ -298,6 +313,7 @@ export default {
     this.getTotalSolvedNumberOfGrievance();
     this.getTotalCanceledNumberOfGrievance();
     this.getTotalPendingNumberOfGrievance();
+    this.getLocationoWiseNumberOfGrievance();
   },
 
 }
@@ -305,5 +321,10 @@ export default {
 <style>
 .highlight-column {
   background-color: #e0eaf1;
+}
+.custom-title {
+    background-color: rgb(28, 59, 104);
+    color: white;
+    padding: 10px;
 }
 </style>
