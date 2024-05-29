@@ -7,10 +7,10 @@
                     <v-col cols="12">
                         <v-card>
                             <v-card-title class="justify-center"
-                                style="background-color: #1C3B68; color: white;font-size: 17px;">
-                                <h4>
+                                style="background-color: #1C3B68; color: white;">
+                                <h3>
                                     {{ $t("container.training_management.trainer_info.edit") }}
-                                </h4>
+                                </h3>
                             </v-card-title>
 
                             <!-- <v-divider></v-divider> -->

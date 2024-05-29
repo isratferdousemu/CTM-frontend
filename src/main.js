@@ -15,6 +15,9 @@ import "vue-toastification/dist/index.css";
 import HeaderMixins from "./mixins/HeaderMixins";
 import Helpers from "@/helpers/helpers";
 
+import { url } from '@vee-validate/rules';
+
+
 
 
 
