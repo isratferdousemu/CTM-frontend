@@ -1,19 +1,3 @@
-<style>
-.small-text {
-    font-size: 9px;
-}
-
-.no-striped-table .v-simple-table tbody tr:nth-child(even) {
-    background-color: transparent;
-}
-
-.custom-title {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px;
-}
-</style>
-
 <template>
     <div id="application_tracking">
         <v-row class="ma-1">
@@ -26,24 +10,20 @@
                             <v-card-text>
                                 <v-row class="ma-2">
                                     <v-col cols="12" lg="4" md="4">
+                                            <label class="mr-5">Payment Tracking</label>
                                         <v-radio-group required row v-model="data.tracking_type">
-                                            <label class="mr-5">Application Tracking</label>
-                                            <v-radio label="NBR" value="1"></v-radio>
-                                            <v-radio label="Tracking No" value="2"></v-radio>
+                                            <v-radio label="Date of birth" value="1"></v-radio>
+                                            <v-radio label="Application ID" value="2"></v-radio>
                                         </v-radio-group>
                                     </v-col>
                                     <v-col cols="12" lg="6" md="6">
                                         <br>
                                         <div v-if="data.tracking_type == 2">
-                                            <label>Tracking No</label>
+                                            <label>Application ID</label>
                                             <v-text-field v-model="data.tracking_no" outlined clearable></v-text-field>
                                         </div>
                                         <div v-if="data.tracking_type == 1">
                                             <v-row>
-                                                <v-col>
-                                                    <label>NBR</label>
-                                                    <v-text-field outlined clearable v-model="data.nid"></v-text-field>
-                                                </v-col>
                                                 <v-col>
                                                     <label>Date of Birth</label>
                                                     <v-text-field outlined clearable v-model="data.date_of_birth" type="date"></v-text-field>
@@ -55,7 +35,7 @@
                                         <br>
                                         <br>
                                         <div class="text-right">
-                                            <v-btn type="submit" flat color="success" class="custom-btn-width white--text py-2">
+                                            <v-btn @click="preview" flat color="success" class="custom-btn-width white--text py-2">
                                                 <span class="mdi mdi-television mr-2"></span>
                                                 Preview
                                             </v-btn>
@@ -65,15 +45,11 @@
                             </v-card-text>
                         </v-card>
                     </v-col>
-                    <v-col cols="12">
+                    <v-col cols="12" v-if="showDetails">
                         <v-card elevation="0">
                             <v-card-text>
                                 <v-row dense class="ml-5">
                                     <v-col cols="12">
-                                        <h4 style="color: blue !important;">Payment Details</h4>
-                                        <br>
-                                        <hr style="border-top: 1px solid gray; width: 40%;">
-                                        <br>
                                         <h4>Beneficiary Details</h4>
                                     </v-col>
                                 </v-row>
@@ -92,14 +68,14 @@
                                     <v-col cols="12" lg="12" md="12">
                                         <v-card elevation="0">
                                             <v-card-title class="custom-title">
-                                                <h5 class="text-center">Application Status</h5>
+                                                <h5 class="text-center">Payment Status</h5>
                                             </v-card-title>
                                             <v-card-text>
                                                 <br>
                                                 <table style="margin: 0 auto; width: 100%; font-size: 12px;">
                                                     <tbody>
                                                         <tr>
-                                                            <td>Application Accepted</td>
+                                                            <td>Payroll Generated</td>
                                                             <td>
                                                                 <v-timeline>
                                                                     <v-timeline-item color="#26A69A" icon="mdi-check"></v-timeline-item>
@@ -197,8 +173,32 @@ export default {
                 nid: null,
                 date_of_birth: null,
                 tracking_type: 2
-            }
+            },
+            showDetails: false
         };
+    },
+    methods: {
+        preview() {
+            // Logic to fetch data based on tracking_no or nid and date_of_birth
+            // For now, we simply display the beneficiary details and payment status
+            this.showDetails = true;
+        }
     }
 };
 </script>
+
+<style>
+.small-text {
+    font-size: 9px;
+}
+
+.no-striped-table .v-simple-table tbody tr:nth-child(even) {
+    background-color: transparent;
+}
+
+.custom-title {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+}
+</style>
