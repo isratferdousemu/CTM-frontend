@@ -16,7 +16,7 @@
 
 <template>
     <div id="application_tracking">
-        <v-row class="ma-5">
+        <v-row class="ma-1">
             <v-col cols="12">
                 <v-row>
                     <v-col cols="12">
@@ -24,7 +24,7 @@
                     <v-col cols="12">
                         <v-card elevation="0">
                             <v-card-text>
-                                <v-row class="ma-5">
+                                <v-row class="ma-2">
                                     <v-col cols="12" lg="4" md="4">
                                         <v-radio-group required row v-model="data.tracking_type">
                                             <label class="mr-5">Application Tracking</label>

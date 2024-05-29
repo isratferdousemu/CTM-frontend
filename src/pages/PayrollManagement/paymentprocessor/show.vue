@@ -108,21 +108,21 @@
                         $t("container.payroll_management.location_type")
                       }}:</strong
                     >
-                    {{ data.location_type ?? "--" }}
+                    {{ language === 'bn' ? data.processor_area?.location_type?.value_bn : data.processor_area?.location_type?.value_en ?? "--" }}
                   </div>
-                  <div style="padding-bottom: 8px" v-if="data.processor_area?.location_type == 2">
+                  <div style="padding-bottom: 8px" v-if="data.processor_area?.location_type?.id == 2">
                     <strong
                       >{{ $t("container.payroll_management.upazila") }}:</strong
                     >
                     {{ language ==='bn' ? data.processor_area?.upazila?.name_bn : data.processor_area?.upazila?.name_en ?? "--"}}
                   </div>
-                  <div style="padding-bottom: 8px" v-if="data.processor_area?.location_type == 2">
+                  <div style="padding-bottom: 8px" v-if="data.processor_area?.location_type?.id == 2">
                     <strong
                       >{{ $t("container.payroll_management.union") }}:</strong
                     >
                     {{ language ==='bn' ? data.processor_area?.union?.name_bn : data.processor_area?.union?.name_en ?? "--"}}
                   </div>
-                  <div style="padding-bottom: 8px" v-if="data.processor_area?.location_type == 3">
+                  <div style="padding-bottom: 8px" v-if="data.processor_area?.location_type?.id == 3">
                     <strong
                       >{{
                         $t("container.payroll_management.city_corporation")
@@ -130,7 +130,7 @@
                     >
                     {{ language ==='bn' ? data.processor_area?.city_corporation?.name_bn : data.processor_area?.city_corporation?.name_en ?? "--"}}
                   </div>
-                  <div style="padding-bottom: 8px" v-if="data.processor_area?.location_type == 3">
+                  <div style="padding-bottom: 8px" v-if="data.processor_area?.location_type?.id == 3">
                     <strong
                       >{{ $t("container.payroll_management.thana") }}:</strong
                     >

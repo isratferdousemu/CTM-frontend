@@ -150,7 +150,7 @@ export default {
 }
 </script><template>
     <div id="url-generate">
-        <v-app-bar color="#405c61" fixed height="80" class="px-4" dense dark>
+        <v-app-bar color="#1C3C6A" fixed height="80" class="px-4 mb-10" dense dark>
             <v-row align="center" no-gutters>
                 <v-img class="p-3 mr-4" max-height="100%" max-width="60px" position="center center"
                     src="/assets/images/logo.png"></v-img>
@@ -189,15 +189,22 @@ export default {
                 </v-col>
             </v-row>
         </v-app-bar>
-        <v-row>
+        <v-row class="mt-3">
             <v-col cols="10" offset="1">
-                <v-card class="mx-3">
+                <v-card class="mx-3 mt-10">
+
+                    <v-card-title class="mt-15 text-center" style="background-color: #1C3B68; color: white;">
+                        <div class="text-center" style="width: 100%;">
+                            {{ $t('container.training_management.training_circular.view') }}
+                        </div>
+                    </v-card-title>
+                    <!-- <v-row cols="12" sm="12" md="12" class="mt-15 text-center"
+                        style="background-color: #1C3B68; color: white;">{{
+                    $t('container.training_management.training_circular.view') }}</v-row> -->
+
+                    <v-row class="my-custom-row ma-5 ">
 
 
-                    <v-row class="my-custom-row ma-5">
-
-                        <v-col cols="12" sm="12" md="12" class="mt-15 text-center">{{
-                            $t('container.training_management.training_circular.view') }}</v-col>
 
 
                         <v-col cols="12" sm="6" md="3" style="font-size:12px;">
