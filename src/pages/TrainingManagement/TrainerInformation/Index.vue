@@ -157,8 +157,8 @@ export default {
                 this.$t('container.training_management.trainer_info.designation'),
                 this.$t('container.training_management.trainer_info.mobile'),
                 this.$t('container.training_management.trainer_info.email'),
-                 this.$t('container.training_management.trainer_info.address'),
-                this.$t('container.training_management.trainer_info.description'),
+                this.$t('container.training_management.trainer_info.address'),
+                
                 this.$t('container.list.status'),
                
                 
@@ -180,7 +180,7 @@ export default {
                     this.$i18n.locale == 'en' ? i.mobile_no : this.$helpers.englishToBangla(i.mobile_no),
                     this.$i18n.locale == 'en' ? i?.email : i?.email,
                     this.$i18n.locale == 'en' ? i?.address : i?.address,
-                    this.$i18n.locale == 'en' ? i?.description : i?.description,
+                  
                    
                     this.$i18n.locale == 'en' ? (i.status == 0 ? 'Active' : 'Inactive') : (i.status == 0 ? 'সক্রিয়' : 'নিষ্ক্রিয়'),
                 
@@ -254,7 +254,7 @@ export default {
                         this.$t('container.training_management.trainer_info.mobile'),
                         this.$t('container.training_management.trainer_info.email'),
                         this.$t('container.training_management.trainer_info.address'),
-                        this.$t('container.training_management.trainer_info.description'),
+                       
                         this.$t('container.list.status'),
                     ]
 
@@ -272,7 +272,7 @@ export default {
                             "mobile": this.$i18n.locale == 'en' ? i.mobile_no : this.$helpers.englishToBangla(i.mobile_no),
                             "email": this.$i18n.locale == 'en' ? i?.email : i?.email,
                             "address": this.$i18n.locale == 'en' ? i?.address : i?.address,
-                            "description": this.$i18n.locale == 'en' ? i?.description : i?.description,
+                          
 
                             "status": this.$i18n.locale == 'en' ? (i.status == 0 ? 'Active' : 'Inactive') : (i.status == 0 ? 'সক্রিয়' : 'নিষ্ক্রিয়')
 
@@ -280,7 +280,7 @@ export default {
                         }
                     }));
 
-                    const Field = ['sl', 'id', 'name', 'designation', 'mobile', 'email', 'address','description', 'status']
+                    const Field = ['sl', 'id', 'name', 'designation', 'mobile', 'email', 'address', 'status']
 
                     const Data = this.FormatJson(Field, CustomInfo)
                     const currentDate = new Date().toISOString().slice(0, 10); //
@@ -415,8 +415,8 @@ export default {
 
                             <v-card-title class="justify-center"
                                 style="background-color: #1C3B68; color: white;font-size: 17px;">
-                                <h4 class=" white--text">{{ $t('container.training_management.trainer_info.list')
-                                    }}</h4>
+                                <h3 class=" white--text">{{ $t('container.training_management.trainer_info.list')
+                                    }}</h3>
                             </v-card-title>
 
 
@@ -674,7 +674,7 @@ export default {
             <v-dialog v-model="deleteDialog" width="350">
                 <v-card style="justify-content: center; ">
                     <v-card-title class="font-weight-bold justify-center"
-                        style="background-color: #1C3B68; color: white;font-size: 17px;">
+                        style="background-color: #1C3B68; color: white;font-size: 20px;">
                         {{ $t('container.training_management.trainer_info.delete_header') }}
                     </v-card-title>
                     <v-divider></v-divider>

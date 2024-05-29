@@ -2,7 +2,7 @@
 import { ValidationObserver } from "vee-validate";
 export default {
     name: "Index",
-    title: "CTM - Training Information View",
+    title: "CTM - Trainer Information",
     data() {
         return {
             data: {
@@ -149,8 +149,8 @@ export default {
                     <v-card class="mx-3">
 
                         <v-card-title class="justify-center black--text"
-                            style="background-color: #1C3B68; color: white;font-size: 17px;">
-                            <h4 class="white--text">{{ $t("container.training_management.trainer_info.view") }}</h4>
+                            style="background-color: #1C3B68; color: white;">
+                            <h3 class="white--text">{{ $t("container.training_management.trainer_info.view") }}</h3>
                         </v-card-title>
 
 
