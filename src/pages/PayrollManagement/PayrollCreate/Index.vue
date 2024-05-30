@@ -13,7 +13,7 @@
                                         style="background-color: #1C3B68; color: white;font-size: 17px;">
                                         <h4 class=" white--text">{{
                                             $t('container.payroll_management.payroll_create')
-                                        }}</h4>
+                                            }}</h4>
                                     </v-card-title>
 
 

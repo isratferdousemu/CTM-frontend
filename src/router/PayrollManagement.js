@@ -88,6 +88,17 @@ const PayrollManagementRoutes = [
   //   },
   //   component: () => import("../pages/PayrollManagement/PaymentProcessor/Index.vue")
   // },
+
+  {
+    path: '/payroll-management/payroll-create',
+    name: 'payroll-create',
+    meta: {
+      requiresAuth: true,
+      permission: 'payroll-create',
+    },
+    component: () =>
+      import('../pages/PayrollManagement/PayrollCreate/Index.vue'),
+  },
 ];
 
 export default PayrollManagementRoutes;
