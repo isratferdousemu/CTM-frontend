@@ -8,148 +8,12 @@
                             <div>
                                 <!-- Budget Information -->
                                 <v-card class="mt-5">
-                                    <v-card-title style="background-color: #1976d2; color: white">
+                                    <v-card-title style="background-color: #1C3B68; color: white;font-size: 17px;">
                                         {{ $t("container.budget_management.budget_basic_info") }}
                                     </v-card-title>
 
                                     <v-card-text class="mt-5">
                                         <v-row>
-                                            <v-col cols="6" lg="6">
-                                                <v-row>
-                                                    <v-col cols="4" lg="4">
-                                                        <label>
-                                                            {{
-                                                                $t(
-                                                                    "container.budget_management.program"
-                                                                )
-                                                            }}
-                                                        </label></v-col>
-                                                    <v-col cols="8" lg="8">
-                                                        :<template>
-                                                            <span style="20px">
-                                                                {{ beneficiary?.program.name_en }}
-                                                            </span>
-                                                        </template>
-                                                    </v-col>
-                                                </v-row>
-                                            </v-col>
-                                            <v-col cols="6" lg="6">
-                                                <v-row>
-                                                    <v-col cols="4" lg="4">
-                                                        <label>
-                                                            {{
-                                                                $t(
-                                                                    "container.budget_management.financial_year"
-                                                                )
-                                                            }}
-                                                        </label>
-                                                    </v-col>
-
-                                                    <v-col cols="8" lg="8">
-                                                        :<template>
-                                                            <span style="20px">
-                                                                {{ beneficiary?.financial_year?.financial_year }}
-                                                            </span>
-                                                        </template>
-                                                    </v-col>
-                                                </v-row>
-                                            </v-col>
-
-
-                                            <v-col cols="6" lg="6">
-                                                <v-row>
-                                                    <v-col cols="4" lg="4">
-                                                        <label>
-                                                            {{
-                                                                $t(
-                                                                    "container.budget_management.calculation_type"
-                                                                )
-                                                            }}
-                                                        </label></v-col>
-                                                    <v-col cols="8" lg="8">
-                                                        :<template>
-                                                            <span style="20px">
-                                                                {{ beneficiary?.calculation_type?.value_en }}
-                                                            </span>
-                                                        </template>
-                                                    </v-col>
-                                                </v-row>
-                                            </v-col>
-
-                                            <v-col cols="6" lg="6">
-                                                <v-row>
-                                                    <v-col cols="4" lg="4">
-                                                        <label>
-                                                            {{
-                                                                $t(
-                                                                    "container.budget_management.approval_status"
-                                                                )
-                                                            }}
-                                                        </label></v-col>
-                                                    <v-col cols="8" lg="8">
-                                                        :<template>
-                                                            <span style="20px">
-                                                                {{ beneficiary?.approval_status }}
-                                                            </span>
-                                                        </template>
-                                                    </v-col>
-                                                </v-row>
-                                            </v-col>
-
-                                            <v-col cols="6" lg="6">
-                                                <v-row>
-                                                    <v-col cols="4" lg="4">
-                                                        <label>
-                                                            {{
-                                                                $t(
-                                                                    "container.budget_management.no_of_previous_year"
-                                                                )
-                                                            }}
-                                                        </label></v-col>
-                                                    <v-col cols="8" lg="8">
-                                                        :<template>
-                                                            <span style="20px">
-                                                                {{ beneficiary?.no_of_previous_year }}
-                                                            </span>
-                                                        </template>
-                                                    </v-col>
-                                                </v-row>
-                                            </v-col>
-
-                                            <v-col cols="6" lg="6">
-                                                <v-row>
-                                                    <v-col cols="4" lg="4">
-                                                        <label>
-                                                            {{
-                                                                $t(
-                                                                    "container.budget_management.calculation_value"
-                                                                )
-                                                            }}
-                                                        </label></v-col>
-                                                    <v-col cols="8" lg="8">
-                                                        :<template>
-                                                            <span style="20px">
-                                                                {{ beneficiary?.calculation_value }}
-                                                            </span>
-                                                        </template>
-                                                    </v-col>
-                                                </v-row>
-                                            </v-col>
-
-
-                                        </v-row>
-                                    </v-card-text>
-                                </v-card>
-                                <!-- Budget End -- -->
-
-                                <!--  Budget Information Details -->
-                                <v-card class="mt-5">
-                                    <v-card-title style="background-color: #1976d2; color: white">
-                                        {{ $t("container.budget_management.budget_details_info") }}
-                                    </v-card-title>
-
-                                    <v-card-text class="mt-2">
-                                        <div class=" mb-4">
                                             <v-col cols="12">
                                                 <ValidationObserver ref="form" v-slot="{ invalid }">
                                                     <form @submit.prevent="onSearch()">
@@ -409,118 +273,250 @@
                                                                 }}</v-btn>
                                                             <v-btn elevation="2" class="btn" @click="resetSearch">{{
                                                                 $t("container.list.reset")
-                                                            }}</v-btn>
+                                                                }}</v-btn>
                                                         </div>
                                                     </form>
                                                 </ValidationObserver>
                                             </v-col>
-                                            <v-col cols="12">
-                                                <!-- <div justify="center">
-                                                    <h3 class="text-uppercase pt-3">
-                                                        {{ $t("container.manage_allotment.list") }}
-                                                    </h3>
-                                                </div> -->
+                                        </v-row>
+                                    </v-card-text>
+                                </v-card>
+                                <!-- Budget End -- -->
 
-                                                <v-card-title class="justify-center" tag="div">
-                                                    <h5 class="text-uppercase pt-3">
-                                                        {{ $t("container.manage_allotment.detail_budget_list") }}
-                                                    </h5>
-                                                </v-card-title>
-                                                <v-row
-                                                    class="ma-0 white round-border d-flex justify-space-between align-center"
-                                                    justify="center" justify-lg="space-between">
-                                                    <v-col cols="12">
-                                                        <v-data-table :headers="headers" :items="allotments"
-                                                            :loading="loading" item-key="id"
-                                                            :items-per-page="pagination.perPage" hide-default-footer
-                                                            class="elevation-0 transparent row-pointer">
-                                                            <template v-slot:item.sl="{ item, index }">
+                                <!--  Budget  Details -->
+                                <v-card class="mt-5">
+                                    <v-card-title style="background-color: #1C3B68; color: white;font-size: 17px;">
+                                        {{ $t("container.budget_management.budget_details_info") }}
+                                    </v-card-title>
+
+                                    <v-card-text class="mt-5">
+                                        <div class="mb-4">
+                                            <v-row class="mb-4">
+                                                <v-col cols="6" lg="6">
+                                                    <v-row>
+                                                        <v-col cols="4" lg="4">
+                                                            <label>
                                                                 {{
-                                                                    (pagination.current - 1) * pagination.perPage +
-                                                                    index +
-                                                                    1
+                                                                    $t(
+                                                                        "container.budget_management.program"
+                                                                    )
                                                                 }}
+                                                            </label></v-col>
+                                                        <v-col cols="8" lg="8">
+                                                            :<template>
+                                                                <span style="20px">
+                                                                    {{ beneficiary?.program.name_en }}
+                                                                </span>
                                                             </template>
-                                                            <!-- Download Action Button -->
-                                                            <template v-slot:item.download="{ item }">
-                                                                <v-tooltip top>
-                                                                    <template v-slot:activator="{ on }">
-                                                                        <v-btn v-can="'update-post'" fab x-small
-                                                                            v-on="on" color="#AFB42B" elevation="0"
-                                                                            class="white--text">
-                                                                            <v-icon> mdi-download </v-icon>
-                                                                        </v-btn>
-                                                                    </template>
-                                                                    <span>
-                                                                        {{ $t("container.list.view") }}
-                                                                    </span>
-                                                                </v-tooltip>
-                                                            </template>
-                                                            <!-- End Download Action Button -->
-                                                            <!-- Action Button -->
-                                                            <template v-slot:item.actions="{ item }">
-                                                                <v-tooltip top>
-                                                                    <template v-slot:activator="{ on }">
-                                                                        <v-btn v-can="'update-post'" fab x-small
-                                                                            v-on="on" color="#AFB42B" elevation="0"
-                                                                            class="white--text">
-                                                                            <v-icon> mdi-eye </v-icon>
-                                                                        </v-btn>
-                                                                    </template>
-                                                                    <span>
-                                                                        {{ $t("container.list.view") }}
-                                                                    </span>
-                                                                </v-tooltip>
-                                                                <v-tooltip top>
-                                                                    <template v-slot:activator="{ on }">
-                                                                        <v-btn v-can="'update-post'" fab x-small
-                                                                            v-on="on" color="success" elevation="0"
-                                                                            class="ml-3">
-                                                                            <v-icon> mdi-account-edit-outline
-                                                                            </v-icon>
-                                                                        </v-btn>
-                                                                    </template>
-                                                                    <span>
-                                                                        {{ $t("container.list.edit") }}
-                                                                    </span>
-                                                                </v-tooltip>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-col>
+                                                <v-col cols="6" lg="6">
+                                                    <v-row>
+                                                        <v-col cols="4" lg="4">
+                                                            <label>
+                                                                {{
+                                                                    $t(
+                                                                        "container.budget_management.financial_year"
+                                                                    )
+                                                                }}
+                                                            </label>
+                                                        </v-col>
 
-                                                                <v-tooltip top>
-                                                                    <template v-slot:activator="{ on }">
-                                                                        <v-btn v-can="'delete-allotment'" fab x-small
-                                                                            v-on="on" color="grey"
-                                                                            class="ml-3 white--text" elevation="0">
-                                                                            <v-icon> mdi-delete </v-icon>
-                                                                        </v-btn>
-                                                                    </template>
-                                                                    <span> {{ $t("container.list.delete")
-                                                                        }}</span>
-                                                                </v-tooltip>
+                                                        <v-col cols="8" lg="8">
+                                                            :<template>
+                                                                <span style="20px">
+                                                                    {{ beneficiary?.financial_year?.financial_year }}
+                                                                </span>
                                                             </template>
-                                                            <!-- End Action Button -->
-                                                            <template v-slot:footer="item">
-                                                                <div
-                                                                    class="text-center pt-2 v-data-footer justify-center pb-2">
-                                                                    <v-select
-                                                                        style="position: absolute; right: 25px; width: 149px; transform: translate(0px, 0px);"
-                                                                        :items="items" hide-details dense outlined
-                                                                        @change="onPageChange"
-                                                                        v-model="pagination.perPage"></v-select>
-                                                                    <v-pagination circle primary
-                                                                        v-model="pagination.current"
-                                                                        :length="pagination.total" @input="onPageChange"
-                                                                        :total-visible="11"
-                                                                        class="custom-pagination-item"></v-pagination>
-                                                                </div>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-col>
+                                                <v-col cols="6" lg="6">
+                                                    <v-row>
+                                                        <v-col cols="4" lg="4">
+                                                            <label>
+                                                                {{
+                                                                    $t(
+                                                                        "container.budget_management.calculation_type"
+                                                                    )
+                                                                }}
+                                                            </label></v-col>
+                                                        <v-col cols="8" lg="8">
+                                                            :<template>
+                                                                <span style="20px">
+                                                                    {{ beneficiary?.calculation_type?.value_en }}
+                                                                </span>
                                                             </template>
-                                                        </v-data-table>
-                                                    </v-col>
-                                                </v-row>
-                                            </v-col>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-col>
+                                                <v-col cols="6" lg="6">
+                                                    <v-row>
+                                                        <v-col cols="4" lg="4">
+                                                            <label>
+                                                                {{
+                                                                    $t(
+                                                                        "container.budget_management.approval_status"
+                                                                    )
+                                                                }}
+                                                            </label></v-col>
+                                                        <v-col cols="8" lg="8">
+                                                            :<template>
+                                                                <span style="20px">
+                                                                    {{ beneficiary?.approval_status }}
+                                                                </span>
+                                                            </template>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-col>
+                                                <v-col cols="6" lg="6">
+                                                    <v-row>
+                                                        <v-col cols="4" lg="4">
+                                                            <label>
+                                                                {{
+                                                                    $t(
+                                                                        "container.budget_management.no_of_previous_year"
+                                                                    )
+                                                                }}
+                                                            </label></v-col>
+                                                        <v-col cols="8" lg="8">
+                                                            :<template>
+                                                                <span style="20px">
+                                                                    {{ beneficiary?.no_of_previous_year }}
+                                                                </span>
+                                                            </template>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-col>
+                                                <v-col cols="6" lg="6">
+                                                    <v-row>
+                                                        <v-col cols="4" lg="4">
+                                                            <label>
+                                                                {{
+                                                                    $t(
+                                                                        "container.budget_management.calculation_value"
+                                                                    )
+                                                                }}
+                                                            </label></v-col>
+                                                        <v-col cols="8" lg="8">
+                                                            :<template>
+                                                                <span style="20px">
+                                                                    {{ beneficiary?.calculation_value }}
+                                                                </span>
+                                                            </template>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-col>
+                                            </v-row>
+
+                                        </div>
+                                    </v-card-text>
+                                </v-card>
+                                <!--  Budget  Details -->
+
+                                <!--  Budget Information Details -->
+                                <v-card class="mt-5">
+                                    <v-card-title style="background-color: #1C3B68; color: white;font-size: 17px;">
+                                        {{ $t("container.manage_allotment.detail_budget_list") }}
+                                    </v-card-title>
+                                    <v-card-text>
+                                        <div class="mt-2">
+
+                                            <v-row
+                                                class="ma-0 white round-border d-flex justify-space-between align-center"
+                                                justify="center" justify-lg="space-between">
+                                                <v-col cols="12">
+                                                    <v-data-table :headers="headers" :items="allotments"
+                                                        :loading="loading" item-key="id"
+                                                        :items-per-page="pagination.perPage" hide-default-footer
+                                                        class="elevation-0 transparent row-pointer">
+                                                        <template v-slot:item.sl="{ item, index }">
+                                                            {{
+                                                                (pagination.current - 1) * pagination.perPage +
+                                                                index +
+                                                                1
+                                                            }}
+                                                        </template>
+                                                        <!-- Download Action Button -->
+                                                        <template v-slot:item.download="{ item }">
+                                                            <v-tooltip top>
+                                                                <template v-slot:activator="{ on }">
+                                                                    <v-btn v-can="'update-post'" fab x-small v-on="on"
+                                                                        color="#AFB42B" elevation="0"
+                                                                        class="white--text">
+                                                                        <v-icon> mdi-download </v-icon>
+                                                                    </v-btn>
+                                                                </template>
+                                                                <span>
+                                                                    {{ $t("container.list.view") }}
+                                                                </span>
+                                                            </v-tooltip>
+                                                        </template>
+                                                        <!-- End Download Action Button -->
+                                                        <!-- Action Button -->
+                                                        <template v-slot:item.actions="{ item }">
+                                                            <v-tooltip top>
+                                                                <template v-slot:activator="{ on }">
+                                                                    <v-btn v-can="'update-post'" fab x-small v-on="on"
+                                                                        color="#AFB42B" elevation="0"
+                                                                        class="white--text">
+                                                                        <v-icon> mdi-eye </v-icon>
+                                                                    </v-btn>
+                                                                </template>
+                                                                <span>
+                                                                    {{ $t("container.list.view") }}
+                                                                </span>
+                                                            </v-tooltip>
+                                                            <v-tooltip top>
+                                                                <template v-slot:activator="{ on }">
+                                                                    <v-btn v-can="'update-post'" fab x-small v-on="on"
+                                                                        color="success" elevation="0" class="ml-3">
+                                                                        <v-icon> mdi-account-edit-outline
+                                                                        </v-icon>
+                                                                    </v-btn>
+                                                                </template>
+                                                                <span>
+                                                                    {{ $t("container.list.edit") }}
+                                                                </span>
+                                                            </v-tooltip>
+
+                                                            <v-tooltip top>
+                                                                <template v-slot:activator="{ on }">
+                                                                    <v-btn v-can="'delete-allotment'" fab x-small
+                                                                        v-on="on" color="grey" class="ml-3 white--text"
+                                                                        elevation="0">
+                                                                        <v-icon> mdi-delete </v-icon>
+                                                                    </v-btn>
+                                                                </template>
+                                                                <span> {{ $t("container.list.delete")
+                                                                    }}</span>
+                                                            </v-tooltip>
+                                                        </template>
+                                                        <!-- End Action Button -->
+                                                        <template v-slot:footer="item">
+                                                            <div
+                                                                class="text-center pt-2 v-data-footer justify-center pb-2">
+                                                                <v-select
+                                                                    style="position: absolute; right: 25px; width: 149px; transform: translate(0px, 0px);"
+                                                                    :items="items" hide-details dense outlined
+                                                                    @change="onPageChange"
+                                                                    v-model="pagination.perPage"></v-select>
+                                                                <v-pagination circle primary
+                                                                    v-model="pagination.current"
+                                                                    :length="pagination.total" @input="onPageChange"
+                                                                    :total-visible="11"
+                                                                    class="custom-pagination-item"></v-pagination>
+                                                            </div>
+                                                        </template>
+                                                    </v-data-table>
+                                                </v-col>
+                                            </v-row>
                                         </div>
                                     </v-card-text>
                                 </v-card>
                                 <!--  Budget Information Details -->
+
 
 
                             </div>
