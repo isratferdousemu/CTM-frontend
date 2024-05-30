@@ -1350,7 +1350,7 @@ export default {
       // alert(JSON.stringify(queryParams));
     },
     async GetCity() {
-      this.search = this.search.replace(/%/g, '');
+      // this.search = this.search.replace(/%/g, '');
       let page;
       if (!this.sortBy) {
         page = this.pagination.current;
