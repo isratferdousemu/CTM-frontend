@@ -156,7 +156,8 @@
       <v-row justify="space-between" align="center" class="mx-4">
           <!-- Checkbox on the left -->
           <v-col lg="3" md="3" cols="12">
-              {{ $t('container.list.total') }} &nbsp;:&nbsp;{{ this.total }}
+              {{ $t('container.list.total') }} &nbsp;:&nbsp; {{ language === 'bn' ? $helpers.englishToBangla(
+                this.total) : this.total }}
           </v-col>
 
           <!-- Dropdown on the right -->
@@ -215,12 +216,17 @@
                       class="elevation-0 transparent row-pointer"
                     >
                       <template v-slot:item.id="{ item, index }">
-                        {{
-                          (pagination.current - 1) * pagination.perPage +
-                          index +
-                          1
-                        }}
+                       {{ language === 'bn' ? $helpers.englishToBangla(
+                         (pagination.current - 1) * pagination.perPage +
+                         index +
+                         1) : (pagination.current - 1) * pagination.perPage +
+                         index +
+                         1 }}
                       </template>
+                      <template v-slot:item.code="{ item }">
+                             {{ language === 'bn' ? $helpers.englishToBangla(
+                               item.code) : item.code }}
+                        </template>
                       <template v-slot:item.name_en="{ item }">
                         {{ item.name_en }}
                       </template>
@@ -816,31 +822,36 @@ export default {
             "container.system_config.demo_graphic.division.division"
           ),
           // value: "district.division.name_en",
-          value: "parent.parent.name_en",
+          value: this.language === 'bn' ? "parent.parent.name_bn" : "parent.parent.name_en",
+          // value: "parent.parent.name_en",
         },
         {
           text: this.$t(
             "container.system_config.demo_graphic.district.district"
           ),
-          value: "parent.name_en",
+          value: this.language === 'bn' ? "parent.name_bn" : "parent.name_en",
+          // value: "parent.name_en",
         },
         {
           text: this.$t("container.list.location_type"),
-          value: "location_type.value_en",
+          value: this.language === 'bn' ? "location_type.value_bn" : "location_type.value_en",
+          // value: "location_type.value_en",
           sortable: false,
         },
         {
           text: this.$t(
             "container.system_config.demo_graphic.city_corporation.customtitleEn"
           ),
-          value: "name_en",
+          value: this.language === 'bn' ? "name_bn" : "name_en",
+          // value: "name_en",
           class: "highlight-column",
         },
         {
           text: this.$t(
             "container.system_config.demo_graphic.city_corporation.customtitleBn"
           ),
-          value: "name_bn",
+          value: this.language === 'bn' ? "name_bn" : "name_en",
+
         },
         {
           text: this.$t("container.list.action"),
@@ -1339,6 +1350,7 @@ export default {
       // alert(JSON.stringify(queryParams));
     },
     async GetCity() {
+      this.search = this.search.replace(/%/g, '');
       let page;
       if (!this.sortBy) {
         page = this.pagination.current;

@@ -289,7 +289,7 @@
                       <v-text-field
                         outlined
                         :hide-details="errors[0] ? false : true"
-                        type="text"
+                        type="number"
                         v-model="data.code"
                         :label="
                           $t('container.system_config.demo_graphic.thana.code')
@@ -505,7 +505,7 @@
                     >
                       <v-text-field
                         outlined
-                        type="text"
+                        type="number"
                         v-model="data.code"
                         
                         :label="
@@ -748,7 +748,7 @@ export default {
   methods: {
     registerCustomRules() {
       extend('codeRules', (value) => {
-        return (value.toString().length <= 5) || this.$t("container.system_config.demo_graphic.thana.code")+' can have maximum 5 digit';
+        return (value.toString().length <= 5) || this.$t("container.system_config.demo_graphic.thana.code")+' can have maximumddddddd 5 digit';
       });
     },
     createDialog() {
