@@ -1005,50 +1005,58 @@ export default {
   },
   computed: {
     headers() {
-      return [
-        {
-          text: this.$t("container.list.sl"),
-          value: "id",
-          align: "start",
-          sortable: false,
-        },
-        {
-          text: this.$t("container.payroll_management.processor_type"),
-          value: "processor_type",
-        },
-        {
-          text: this.$t("container.list.name_en"),
-          value: "name_en",
-        },
-        {
-          text: this.$t("container.list.name_bn"),
-          value: "name_bn",
-        },
-        {
-          text: this.$t("container.payroll_management.coverage_area"),
-          value: "processor_area.district.name_en",
-        },
-        {
-          text: this.$t("container.payroll_management.focal_phone"),
-          value: "focal_phone_no",
-        },
-        {
-          text: this.$t("container.payroll_management.email"),
-          value: "focal_email_address",
-        },
-        {
-          text: this.$t("container.payroll_management.charge"),
-          value: "charge",
-        },
-        {
-          text: this.$t("container.list.action"),
-          value: "actions",
-          align: "center",
-          width: "15%",
-          sortable: false,
-        },
-      ];
-    },
+    return [
+      {
+        text: this.$t("container.list.sl"),
+        value: "id",
+        align: "start",
+        sortable: false,
+        class: 'table-header',
+      },
+      {
+        text: this.$t("container.payroll_management.processor_type"),
+        value: "processor_type",
+        align: "center",
+        class: 'table-header',
+      },
+      {
+        text: this.$t("container.list.name_en"),
+        value: "name_en",
+        class: 'table-header',
+      },
+      {
+        text: this.$t("container.list.name_bn"),
+        value: "name_bn",
+        class: 'table-header',
+      },
+      {
+        text: this.$t("container.payroll_management.coverage_area"),
+        value: "processor_area.district.name_en",
+        class: 'table-header',
+      },
+      {
+        text: this.$t("container.payroll_management.focal_phone"),
+        value: "focal_phone_no",
+        class: 'table-header',
+      },
+      {
+        text: this.$t("container.payroll_management.email"),
+        value: "focal_email_address",
+        class: 'table-header',
+      },
+      {
+        text: this.$t("container.payroll_management.charge"),
+        value: "charge",
+        class: 'table-header',
+      },
+      {
+        text: this.$t("container.list.action"),
+        value: "actions",
+        sortable: false,
+        class: 'table-header',
+      },
+    ];
+  },
     language: {
       get() {
         return this.$store.getters.getAppLanguage;
@@ -1559,5 +1567,10 @@ export default {
 .action-buttons {
   display: flex;
   gap: 10px;
+}
+.table-header {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
