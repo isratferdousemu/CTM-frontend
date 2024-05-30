@@ -8,230 +8,115 @@
 
             <v-expansion-panels>
               <v-expansion-panel class="ma-2">
-                <v-expansion-panel-header color="#8C9EFF" style="background-color: #1C3B68; color: white;font-size: 17px;">
+                <v-expansion-panel-header color="#8C9EFF"
+                  style="background-color: #1C3B68; color: white;font-size: 17px;">
                   <h3 class="white--text">
                     {{
                       $t(
-                          "container.activity_log.filter.title"
+                        "container.activity_log.filter.title"
                       )
                     }}
                   </h3>
                 </v-expansion-panel-header>
-                <v-expansion-panel-content
-                    class="elevation-0 transparent mt-10"
-                >
+                <v-expansion-panel-content class="elevation-0 transparent mt-10">
                   <ValidationObserver ref="form" v-slot="{ invalid }">
                     <form @submit.prevent="onSearch($event)">
                       <v-row>
                         <v-col lg="3" md="3" cols="12">
-                          <ValidationProvider
-                              name="Division"
-                              vid="division"
-                              v-slot="{ errors }"
-                          >
-                            <v-select
-                                outlined
-                                @input="onChangeDivision($event)"
-                                v-model="data.division_id"
-                                :label="
-                                $t(
-                                  'container.activity_log.filter.division'
-                                )
-                              "
-                                :items="divisions"
-                                :item-text="getItemText"
-                                item-value="id"
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                                class="no-arrow-icon"
-                                append-icon="mdi-plus"
-                                clearable
-                            >
+                          <ValidationProvider name="Division" vid="division" v-slot="{ errors }">
+                            <v-select outlined @input="onChangeDivision($event)" v-model="data.division_id" :label="$t(
+                              'container.activity_log.filter.division'
+                            )
+                              " :items="divisions" :item-text="getItemText" item-value="id"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]" class="no-arrow-icon"
+                              append-icon="mdi-plus" clearable>
                             </v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col lg="3" md="3" cols="12">
-                          <ValidationProvider
-                              name="District"
-                              vid="district"
-                              v-slot="{ errors }"
-                          >
-                            <v-select
-                                outlined
-                                v-model="data.district_id"
-                                @input="onChangeDistrict($event)"
-                                :label="
-                                $t(
-                                  'container.activity_log.filter.district'
-                                )
-                              "
-                                :items="districts"
-                                :item-text="getItemText"
-                                item-value="id"
-                                class="no-arrow-icon"
-                                append-icon="mdi-plus"
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                                clearable
-                            ></v-select>
+                          <ValidationProvider name="District" vid="district" v-slot="{ errors }">
+                            <v-select outlined v-model="data.district_id" @input="onChangeDistrict($event)" :label="$t(
+                              'container.activity_log.filter.district'
+                            )
+                              " :items="districts" :item-text="getItemText" item-value="id" class="no-arrow-icon"
+                              append-icon="mdi-plus" :error="errors[0] ? true : false" :error-messages="errors[0]"
+                              clearable></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col lg="3" md="3" cols="12">
-                          <ValidationProvider
-                              name="Office Name"
-                              vid="office_name"
-                              v-slot="{ errors }"
-                          >
+                          <ValidationProvider name="Office Name" vid="office_name" v-slot="{ errors }">
 
-                            <v-select
-                                outlined
-                                v-model="data.office_id"
-                                :label="
-                                $t(
-                                  'container.activity_log.filter.office'
-                                )
-                              "
-                                :items="offices"
-                                item-value="id"
-                                item-text="name_en"
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                                class="no-arrow-icon"
-                                append-icon="mdi-plus"
-                                clearable
-                            >
+                            <v-select outlined v-model="data.office_id" :label="$t(
+                              'container.activity_log.filter.office'
+                            )
+                              " :items="offices" item-value="id" item-text="name_en" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]" class="no-arrow-icon" append-icon="mdi-plus" clearable>
                             </v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col lg="3" md="3" cols="12">
-                          <ValidationProvider
-                              name="Device Type"
-                              vid="device_type"
-                              v-slot="{ errors }"
-                          >
-                            <v-select
-                                outlined
-                                v-model="data.device_type"
-                                :label="
-                                $t(
-                                  'container.activity_log.filter.device_type'
-                                )
-                              "
-                                :items="device_types.map(device => device.toLowerCase())"
-                                item-value="id"
-                                class="no-arrow-icon"
-                                append-icon="mdi-plus"
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                                clearable
-                            ></v-select>
+                          <ValidationProvider name="Device Type" vid="device_type" v-slot="{ errors }">
+                            <v-select outlined v-model="data.device_type" :label="$t(
+                              'container.activity_log.filter.device_type'
+                            )
+                              " :items="device_types.map(device => device.toLowerCase())" item-value="id"
+                              class="no-arrow-icon" append-icon="mdi-plus" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]" clearable></v-select>
                           </ValidationProvider>
                         </v-col>
                       </v-row>
 
                       <v-row>
                         <v-col lg="3" md="3" cols="12">
-                          <v-text-field
-                              outlined
-                              clearable
-                              :label="
-                              $t(
-                                'container.activity_log.filter.user_id'
-                              )
-                            "
-                              v-model="data.user_id"
-                          >
+                          <v-text-field outlined clearable :label="$t(
+                            'container.activity_log.filter.user_id'
+                          )
+                            " v-model="data.user_id">
                           </v-text-field>
                         </v-col>
                         <v-col lg="3" md="3" cols="12">
-                          <v-text-field
-                              outlined
-                              clearable
-                              :label="
-                              $t(
-                                'container.activity_log.filter.user_name'
-                              )
-                            "
-                              v-model="data.user_name"
-                          >
+                          <v-text-field outlined clearable :label="$t(
+                            'container.activity_log.filter.user_name'
+                          )
+                            " v-model="data.user_name">
                           </v-text-field>
                         </v-col>
 
                         <v-col lg="3" md="3" cols="12">
-                          <ValidationProvider
-                              name="Action Type"
-                              vid="action_type"
-                              v-slot="{ errors }"
-                          >
-                            <v-select
-                                outlined
-                                v-model="data.action_type"
-                                :label="
-                                $t(
-                                  'container.activity_log.filter.action_type'
-                                )
-                              "
-                                :items="action_types.map(name => name.log_name)"
-                                item-value="id"
-                                class="no-arrow-icon"
-                                append-icon="mdi-plus"
-                                :error="errors[0] ? true : false"
-                                :error-messages="errors[0]"
-                                clearable
-                            ></v-select>
+                          <ValidationProvider name="Action Type" vid="action_type" v-slot="{ errors }">
+                            <v-select outlined v-model="data.action_type" :label="$t(
+                              'container.activity_log.filter.action_type'
+                            )
+                              " :items="action_types.map(name => name.log_name)" item-value="id" class="no-arrow-icon"
+                              append-icon="mdi-plus" :error="errors[0] ? true : false" :error-messages="errors[0]"
+                              clearable></v-select>
                           </ValidationProvider>
                         </v-col>
 
                         <v-col lg="3" md="3" cols="12">
-                          <v-text-field
-                              outlined
-                              clearable
-                              :label="
-                              $t(
-                                'container.activity_log.filter.beneficiary_id'
-                              )
-                            "
-                              v-model="data.beneficiary_id"
-                          >
+                          <v-text-field outlined clearable :label="$t(
+                            'container.activity_log.filter.beneficiary_id'
+                          )
+                            " v-model="data.beneficiary_id">
                           </v-text-field>
                         </v-col>
 
                         <v-col lg="3" md="3" cols="12">
                           <v-row class="ml-1 mr-1">
-                            <v-menu
-                                ref="menu"
-                                v-model="menu"
-                                :close-on-content-click="false"
-                                transition="scale-transition"
-                                offset-y
-                                min-width="auto"
-                            >
+                            <v-menu ref="menu" v-model="menu" :close-on-content-click="false"
+                              transition="scale-transition" offset-y min-width="auto">
                               <template v-slot:activator="{ on, attrs }">
-                                <v-text-field
-                                    v-model="dates"
-                                    :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
-                                    :label="$t('container.application_selection_dashboard.enter_start_end_date')"
-                                    readonly
-                                    v-bind="attrs"
-                                    v-on="on"
-                                ></v-text-field>
+                                <v-text-field v-model="dates" :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
+                                  :label="$t('container.application_selection_dashboard.enter_start_end_date')" readonly
+                                  v-bind="attrs" v-on="on"></v-text-field>
                               </template>
-                              <v-date-picker
-                                  v-model="dates"
-                                  :range="[dates[0] , dates[1]]"
-                                  no-title
-                                  scrollable
-                                  ref="datePicker"
-                              >
+                              <v-date-picker v-model="dates" :range="[dates[0], dates[1]]" no-title scrollable
+                                ref="datePicker">
                                 <v-spacer></v-spacer>
                                 <v-btn text color="primary" @click="resetDateRange">
                                   Cancel
                                 </v-btn>
-                                <v-btn
-                                    text
-                                    color="primary"
-                                    @click="$refs.menu.save(dates)"
-                                >
+                                <v-btn text color="primary" @click="$refs.menu.save(dates)">
                                   OK
                                 </v-btn>
                               </v-date-picker>
@@ -242,16 +127,11 @@
                       </v-row>
 
                       <div class="d-inline d-flex justify-end">
-                        <v-btn
-                            elevation="2"
-                            class="btn mr-2"
-                            color="success"
-                            type="submit"
-                        >{{ $t("container.list.search") }}</v-btn
-                        >
+                        <v-btn elevation="2" class="btn mr-2" color="success" type="submit">{{
+                          $t("container.list.search") }}</v-btn>
                         <v-btn elevation="2" class="btn" @click="resetSearch">{{
-                            $t("container.list.reset")
-                          }}</v-btn>
+                          $t("container.list.reset")
+                        }}</v-btn>
                       </div>
                     </form>
                   </ValidationObserver>
@@ -259,78 +139,71 @@
               </v-expansion-panel>
             </v-expansion-panels>
 
-            <v-card
-                elevation="10"
-                color="white"
-                rounded="md"
-                theme="light"
-                class="mb-8"
-            >
+            <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8">
               <v-card-title class="justify-center" tag="div"
-                            style="text-align:center; background-color: #1C3B68; color: white;font-size: 17px;padding-top:2px !important;"
-              >
+                style="text-align:center; background-color: #1C3B68; color: white;font-size: 17px;padding-top:2px !important;">
                 <h3 class="text-uppercase pt-3">
                   {{ $t('container.activity_log.table.title') }}
                 </h3>
               </v-card-title>
               <v-card-text>
                 <v-row justify="space-between" align="center" class="mx-5">
-<!--                  <v-col lg="3" md="3" cols="12">-->
-<!--                    <v-text-field-->
-<!--                        outlined-->
-<!--                        dense-->
-<!--                        v-model="search"-->
-<!--                        prepend-inner-icon="mdi-magnify"-->
-<!--                        class="my-sm-0 my-3 mx-0v -input&#45;&#45;horizontal"-->
-<!--                        variant="outlined"-->
-<!--                        :label="$t('container.list.search')"-->
-<!--                        hide-details-->
-<!--                        color="primary"-->
-<!--                    ></v-text-field>-->
-<!--                  </v-col>-->
+                  <!--                  <v-col lg="3" md="3" cols="12">-->
+                  <!--                    <v-text-field-->
+                  <!--                        outlined-->
+                  <!--                        dense-->
+                  <!--                        v-model="search"-->
+                  <!--                        prepend-inner-icon="mdi-magnify"-->
+                  <!--                        class="my-sm-0 my-3 mx-0v -input&#45;&#45;horizontal"-->
+                  <!--                        variant="outlined"-->
+                  <!--                        :label="$t('container.list.search')"-->
+                  <!--                        hide-details-->
+                  <!--                        color="primary"-->
+                  <!--                    ></v-text-field>-->
+                  <!--                  </v-col>-->
 
-<!--                  <v-col lg="4" md="4" cols="12">-->
-<!--                    <v-row class="ml-1 mr-1">-->
-<!--                      <v-menu-->
-<!--                          ref="menu"-->
-<!--                          v-model="menu"-->
-<!--                          :close-on-content-click="false"-->
-<!--                          transition="scale-transition"-->
-<!--                          offset-y-->
-<!--                          min-width="auto"-->
-<!--                      >-->
-<!--                        <template v-slot:activator="{ on, attrs }">-->
-<!--                          <v-text-field-->
-<!--                              v-model="dates"-->
-<!--                              :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"-->
-<!--                              :label="$t('container.application_selection_dashboard.enter_start_end_date')"-->
-<!--                              readonly-->
-<!--                              v-bind="attrs"-->
-<!--                              v-on="on"-->
-<!--                          ></v-text-field>-->
-<!--                        </template>-->
-<!--                        <v-date-picker-->
-<!--                            v-model="dates"-->
-<!--                            :range="[dates[0] , dates[1]]"-->
-<!--                            no-title-->
-<!--                            scrollable-->
-<!--                            @input="OnChangeDateInfo($event,'total_received')"-->
-<!--                        >-->
-<!--                          <v-spacer></v-spacer>-->
-<!--                          <v-btn text color="primary" @click="resetDateRange">-->
-<!--                            Cancel-->
-<!--                          </v-btn>-->
-<!--                          <v-btn-->
-<!--                              text-->
-<!--                              color="primary"-->
-<!--                              @click="$refs.menu.save(dates)"-->
-<!--                          >-->
-<!--                            OK-->
-<!--                          </v-btn>-->
-<!--                        </v-date-picker>-->
-<!--                      </v-menu>-->
-<!--                    </v-row>-->
-<!--                  </v-col>-->
+                  <!--                  <v-col lg="4" md="4" cols="12">-->
+                  <!--                    <v-row class="ml-1 mr-1">-->
+                  <!--                      <v-menu-->
+                  <!--                          ref="menu"-->
+                  <!--                          v-model="menu"-->
+                  <!--                          :close-on-content-click="false"-->
+                  <!--                          transition="scale-transition"-->
+                  <!--                          offset-y-->
+                  <!--                          min-width="auto"-->
+                  <!--                      >-->
+                  <!--                        <template v-slot:activator="{ on, attrs }">-->
+                  <!--                          <v-text-field-->
+                  <!--                              v-model="dates"-->
+                  <!--                              :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"-->
+                  <!--                              :label="$t('container.application_selection_dashboard.enter_start_end_date')"-->
+                  <!--                              readonly-->
+                  <!--                              v-bind="attrs"-->
+                  <!--                              v-on="on"-->
+                  <!--                          ></v-text-field>-->
+                  <!--                        </template>-->
+                  <!--                        <v-date-picker-->
+                  <!--                            v-model="dates"-->
+                  <!--                            :range="[dates[0] , dates[1]]"-->
+                  <!--                            no-title-->
+                  <!--                            scrollable-->
+                  <!--                            @input="OnChangeDateInfo($event,'total_received')"-->
+                  <!--                        >-->
+                  <!--                          <v-spacer></v-spacer>-->
+                  <!--                          <v-btn text color="primary" @click="resetDateRange">-->
+                  <!--                            Cancel-->
+                  <!--                          </v-btn>-->
+                  <!--                          <v-btn-->
+                  <!--                              text-->
+                  <!--                              color="primary"-->
+                  <!--                              @click="$refs.menu.save(dates)"-->
+                  <!--                          >-->
+                  <!--                            OK-->
+                  <!--                          </v-btn>-->
+                  <!--                        </v-date-picker>-->
+                  <!--                      </v-menu>-->
+                  <!--                    </v-row>-->
+                  <!--                  </v-col>-->
 
                   <v-col lg="3" md="3" cols="12">
 
@@ -340,37 +213,29 @@
                 <v-row justify="space-between" align="center" class="mx-4">
 
                   <v-col lg="3" md="3" cols="12">
-                    {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">{{ $i18n.locale == 'en' ? this.total : $helpers.englishToBangla(this.total)  }}</span>
+                    {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">{{ $i18n.locale == 'en' ?
+                      this.total :
+                      $helpers.englishToBangla(this.total) }}</span>
                   </v-col>
 
                   <v-col lg="4" md="6" cols="12" class="text-right">
                     <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4" @click="GeneratePdf()">
                       <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
                     </v-btn>
-                    <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
+                    <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2"
+                      @click="GenerateExcel()">
                       <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
                       {{ $t("container.list.excel") }}
                     </v-btn>
                   </v-col>
 
                 </v-row>
-                <v-row
-                    class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
-                    justify="center"
-                    justify-lg="space-between"
-                >
+                <v-row class="ma-0 pa-3 white round-border d-flex justify-space-between align-center" justify="center"
+                  justify-lg="space-between">
                   <v-col cols="12">
-                    <v-data-table
-                        :loading="loading"
-                        item-key="id"
-                        :headers="headers"
-                        :items="activity_logs"
-                        :items-per-page="pagination.perPage"
-                        @update:options="handleOptionsUpdate($event)"
-
-                        hide-default-footer
-                        class="elevation-0 transparent row-pointer"
-                    >
+                    <v-data-table :loading="loading" item-key="id" :headers="headers" :items="activity_logs"
+                      :items-per-page="pagination.perPage" @update:options="handleOptionsUpdate($event)"
+                      hide-default-footer class="elevation-0 transparent row-pointer">
                       <template v-slot:item.id="{ item, index }">
                         {{
                           (pagination.current - 1) * pagination.perPage +
@@ -385,105 +250,81 @@
 
                       <template v-slot:item.causer.user_name="{ item }">
 
-                                                                  <span>
-                                                                    {{
-                                                                      item.causer != null ? item.causer['User Name'] : "Anonymous"
-                                                                    }}
-                                                                  </span>
+                        <span>
+                          {{
+                            item.causer != null ? item.causer['User Name'] : "Anonymous"
+                          }}
+                        </span>
                       </template>
 
                       <template v-slot:item.causer.email="{ item }">
 
-                                                                  <span>
-                                                                    {{
-                                                                      item.causer != null ? item.causer['Email'] : ""
-                                                                    }}
-                                                                  </span>
+                        <span>
+                          {{
+                            item.causer != null ? item.causer['Email'] : ""
+                          }}
+                        </span>
                       </template>
 
                       <template v-slot:item.properties.device="{ item }">
 
-                                                                  <span>
-                                                                    {{
-                                                                      item.properties['userInfo'] != null ? item.properties['userInfo']['Device Type'] : ""
-                                                                    }}
-                                                                  </span>
+                        <span>
+                          {{
+                            item.properties['userInfo'] != null ? item.properties['userInfo']['Device Type'] : ""
+                          }}
+                        </span>
                       </template>
                       <template v-slot:item.properties.ip="{ item }">
 
-                                                                  <span>
-                                                                    {{
-                                                                      item.properties['userInfo'] != null ? item.properties['userInfo']['Ip Address'] : ""
-                                                                    }}
-                                                                  </span>
+                        <span>
+                          {{
+                            item.properties['userInfo'] != null ? item.properties['userInfo']['Ip Address'] : ""
+                          }}
+                        </span>
                       </template>
 
                       <template v-slot:item.actions="{ item }">
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn
-                                :disabled="item.default === 1"
-                                fab
-                                style="margin-right: 10px;"
-                                x-small
-                                color="success"
-                                v-on="on"
-                                router
-                                :to="`/activity-logs/view/${item.id}`"
-                                v-can="'activity_log-view'"
-                            >
+                            <v-btn :disabled="item.default === 1" fab style="margin-right: 10px;" x-small
+                              color="success" v-on="on" router :to="`/activity-logs/view/${item.id}`"
+                              v-can="'activity_log-view'">
                               <v-icon>mdi-eye-outline</v-icon>
                             </v-btn>
                           </template>
                           <span>{{ $t('container.list.view') }}</span>
                         </v-tooltip>
 
-<!--                        <v-tooltip top>-->
-<!--                          <template v-slot:activator="{ on }">-->
-<!--                            <v-btn-->
-<!--                                v-can="'activity_log-delete'"-->
-<!--                                fab-->
-<!--                                x-small-->
-<!--                                v-on="on"-->
-<!--                                color="grey"-->
-<!--                                class="ml-3 white&#45;&#45;text"-->
-<!--                                elevation="0"-->
-<!--                                @click="deleteAlert(item.id)"-->
-<!--                            >-->
-<!--                              <v-icon> mdi-delete </v-icon>-->
-<!--                            </v-btn>-->
-<!--                          </template>-->
-<!--                          <span> {{ $t("container.list.delete") }}</span>-->
-<!--                        </v-tooltip>-->
+                        <!--                        <v-tooltip top>-->
+                        <!--                          <template v-slot:activator="{ on }">-->
+                        <!--                            <v-btn-->
+                        <!--                                v-can="'activity_log-delete'"-->
+                        <!--                                fab-->
+                        <!--                                x-small-->
+                        <!--                                v-on="on"-->
+                        <!--                                color="grey"-->
+                        <!--                                class="ml-3 white&#45;&#45;text"-->
+                        <!--                                elevation="0"-->
+                        <!--                                @click="deleteAlert(item.id)"-->
+                        <!--                            >-->
+                        <!--                              <v-icon> mdi-delete </v-icon>-->
+                        <!--                            </v-btn>-->
+                        <!--                          </template>-->
+                        <!--                          <span> {{ $t("container.list.delete") }}</span>-->
+                        <!--                        </v-tooltip>-->
                       </template>
                       <!-- End Action Button -->
                       <template v-slot:footer="item">
-                        <div
-                            class="text-center pt-2 v-data-footer justify-center pb-2"
-                        >
-                          <v-select
-                              style="
+                        <div class="text-center pt-2 v-data-footer justify-center pb-2">
+                          <v-select style="
                               position: absolute;
                               right: 25px;
                               width: 149px;
                               transform: translate(0px, 0px);
-                            "
-                              :items="items"
-                              hide-details
-                              dense
-                              outlined
-                              @change="onPageChange"
-                              v-model="pagination.perPage"
-                          ></v-select>
-                          <v-pagination
-                              circle
-                              primary
-                              v-model="pagination.current"
-                              :length="pagination.total"
-                              @input="onPageChange"
-                              :total-visible="11"
-                              class="custom-pagination-item"
-                          ></v-pagination>
+                            " :items="items" hide-details dense outlined @change="onPageChange"
+                            v-model="pagination.perPage"></v-select>
+                          <v-pagination circle primary v-model="pagination.current" :length="pagination.total"
+                            @input="onPageChange" :total-visible="11" class="custom-pagination-item"></v-pagination>
                         </div>
                       </template>
                     </v-data-table>
@@ -509,21 +350,11 @@
           </v-card-text>
           <v-card-actions style="display: block">
             <v-row class="mx-0 my-0 py-2" justify="center">
-              <v-btn
-                  text
-                  @click="deleteDialog = false"
-                  outlined
-                  class="custom-btn-width py-2 mr-10"
-              >
+              <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
                 {{ $t("container.list.cancel") }}
               </v-btn>
-              <v-btn
-                  text
-                  @click="deleteActivityLog()"
-                  color="white"
-                  :loading="delete_loading"
-                  class="custom-btn-width warning white--text py-2"
-              >
+              <v-btn text @click="deleteActivityLog()" color="white" :loading="delete_loading"
+                class="custom-btn-width warning white--text py-2">
                 {{ $t("container.list.delete") }}
               </v-btn>
             </v-row>
@@ -536,7 +367,7 @@
 </template>
 
 <script>
-import {mapActions, mapState} from "vuex";
+import { mapActions, mapState } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 import Spinner from "@/components/Common/Spinner.vue";
@@ -558,11 +389,11 @@ export default {
         beneficiary_id: '',
         user_name: '',
       },
-      action_types:[],
+      action_types: [],
       dates: [],
       menu: false,
-      isLoading:false,
-      total:null,
+      isLoading: false,
+      total: null,
       deleteDialog: false,
       delete_loading: false,
       loading: false,
@@ -657,7 +488,7 @@ export default {
       GetAllDivisions: "Division/GetAllDivisions",
     }),
 
-    async GeneratePdf(){
+    async GeneratePdf() {
       this.isLoading = true;
       const queryParams = {
         language: this.$i18n.locale,
@@ -678,20 +509,20 @@ export default {
       };
 
       await this.$axios
-          .get("/admin/activity-log/all/filtered", {
-            headers: {
-              Authorization: "Bearer " + this.$store.state.token,
-              "Content-Type": "multipart/form-data",
-            },
-            params: queryParams,
-          })
-          .then((result) => {
-            this.Allactivitylogs = result?.data?.data;
-          })
-          .catch((err) => {
-            console.log(err, "error");
+        .get("/admin/activity-log/all/filtered", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          this.Allactivitylogs = result?.data?.data;
+        })
+        .catch((err) => {
+          console.log(err, "error");
 
-          });
+        });
 
       const HeaderInfo = [
         this.$t("container.list.sl"),
@@ -706,16 +537,16 @@ export default {
 
       const OBJ = this.Allactivitylogs;
 
-      const CustomInfo = OBJ.map((((i,index) => {
+      const CustomInfo = OBJ.map((((i, index) => {
         return [
           this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
-           i?.log_name,
-           i?.description,
-           i?.causer != null ? i.causer['User Name']: "Anonymous",
-           i?.causer != null ? i.causer['Email']: "",
-           i?.properties['userInfo'] != null ? i?.properties['userInfo']['Device Type'] : '',
-           i?.properties['userInfo'] != null ? i?.properties['userInfo']['Ip Address'] : '',
-           i?.created_at,
+          i?.log_name,
+          i?.description,
+          i?.causer != null ? i.causer['User Name'] : "Anonymous",
+          i?.causer != null ? i.causer['Email'] : "",
+          i?.properties['userInfo'] != null ? i?.properties['userInfo']['Device Type'] : '',
+          i?.properties['userInfo'] != null ? i?.properties['userInfo']['Ip Address'] : '',
+          i?.created_at,
         ]
       })));
 
@@ -768,32 +599,32 @@ export default {
       };
 
       await this.$axios
-          .get("/admin/activity-log/all/filtered", {
-            headers: {
-              Authorization: "Bearer " + this.$store.state.token,
-              "Content-Type": "multipart/form-data",
-            },
-            params: queryParams,
-          })
-          .then((result) => {
-            this.Allactivitylogs = result?.data?.data;
-          })
-          .catch((err) => {
-            console.log(err, "error");
+        .get("/admin/activity-log/all/filtered", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          this.Allactivitylogs = result?.data?.data;
+        })
+        .catch((err) => {
+          console.log(err, "error");
 
-          });
+        });
 
       try {
         import('@/plugins/Export2Excel').then((excel) => {
           const OBJ = this.Allactivitylogs;
 
-          const CustomInfo = OBJ.map(((i,index) => {
+          const CustomInfo = OBJ.map(((i, index) => {
             return {
               "sl": queryParams.language == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
               "log_name": i?.log_name,
               "description": i?.description,
-              "user_name": i?.causer != null ? i.causer['User Name']: "Anonymous",
-              "email": i?.causer != null ? i.causer['Email']: "",
+              "user_name": i?.causer != null ? i.causer['User Name'] : "Anonymous",
+              "email": i?.causer != null ? i.causer['Email'] : "",
               "device_type": i?.properties['userInfo'] != null ? i?.properties['userInfo']['Device Type'] : '',
               "ip_address": i?.properties['userInfo'] != null ? i?.properties['userInfo']['Ip Address'] : '',
               "created_at": i?.created_at,
@@ -811,7 +642,7 @@ export default {
             this.$t("container.activity_log.table.create"),
           ]
 
-          const Field = ['sl','log_name', 'description', 'user_name', 'email','device_type','ip_address','created_at']
+          const Field = ['sl', 'log_name', 'description', 'user_name', 'email', 'device_type', 'ip_address', 'created_at']
 
           const Data = this.FormatJson(Field, CustomInfo)
           const currentDate = new Date().toISOString().slice(0, 10); //
@@ -837,24 +668,24 @@ export default {
       }
     },
 
-    FormatJson(FilterData,JsonData){
+    FormatJson(FilterData, JsonData) {
       return JsonData.map((v) =>
-          FilterData.map((j => {
-            return v[j];
-          })))
+        FilterData.map((j => {
+          return v[j];
+        })))
     },
 
     getAllLogName() {
-       this.$axios
-          .get(`/admin/activity-log/all-log-name`, {
-            headers: {
-              Authorization: "Bearer " + this.$store.state.token,
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then((result) => {
-            this.action_types = result.data.data;
-          });
+      this.$axios
+        .get(`/admin/activity-log/all-log-name`, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
+          this.action_types = result.data.data;
+        });
     },
 
     onSearch(event) {
@@ -870,7 +701,7 @@ export default {
       return this.language === "bn" ? item.name_bn : item.name_en;
     },
 
-    async onChangeDistrict(event){
+    async onChangeDistrict(event) {
       try {
         const headers = {
           Authorization: "Bearer " + this.$store.state.token,
@@ -931,15 +762,15 @@ export default {
         to_date = event[1];
       }
 
-      this.GetActivityLog(from_date,to_date)
+      this.GetActivityLog(from_date, to_date)
     },
 
     registerCustomRules() {
       extend("codeRules", (value) => {
         return (
-            value.toString().length <= 2 ||
-            this.$t("container.system_config.demo_graphic.district.code") +
-            " can have maximum 2 digit"
+          value.toString().length <= 2 ||
+          this.$t("container.system_config.demo_graphic.district.code") +
+          " can have maximum 2 digit"
         );
       });
     },
@@ -975,7 +806,7 @@ export default {
         this.sortDesc = 'asc';
       } else {
         this.sortBy = sortBy[0];
-        this.sortDesc = sortDesc[0]==true?'desc':'asc';
+        this.sortDesc = sortDesc[0] == true ? 'desc' : 'asc';
       }
       this.GetActivityLog();
 
@@ -986,10 +817,10 @@ export default {
       };
 
     },
-    async GetActivityLog( from_date = null, to_date = null ) {
+    async GetActivityLog(from_date = null, to_date = null) {
       this.isLoading = true;
       let page;
-      if(!this.sortBy){
+      if (!this.sortBy) {
         page = this.pagination.current;
       }
 
@@ -1013,43 +844,43 @@ export default {
 
       // return;
       this.$axios
-          .get("/admin/activity-log/all/filtered", {
-            headers: {
-              Authorization: "Bearer " + this.$store.state.token,
-              "Content-Type": "multipart/form-data",
-            },
-            params: queryParams,
-          })  
-          .then((result) => {
-            this.activity_logs = result.data?.data;
-            this.pagination.current = result.data?.meta?.current_page[0];
-            this.pagination.total = result.data?.meta?.last_page[0];
-            this.pagination.grand_total = result.data?.meta?.total[0];
-            this.total = result.data?.meta?.total[0];
-            this.isLoading = false;
-          })
-          .catch((error) => {
-              console.error(error);
-            this.isLoading = false;
-            })
-          .finally(() => {
-            this.isLoading = false;
-          });
+        .get("/admin/activity-log/all/filtered", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          this.activity_logs = result.data?.data;
+          this.pagination.current = result.data?.meta?.current_page[0];
+          this.pagination.total = result.data?.meta?.last_page[0];
+          this.pagination.grand_total = result.data?.meta?.total[0];
+          this.total = result.data?.meta?.total[0];
+          this.isLoading = false;
+        })
+        .catch((error) => {
+          console.error(error);
+          this.isLoading = false;
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
 
     resetSearch() {
 
       this.dates = [];
       this.menu = false;
-      this.data.division_id= null,
-          this.data.district_id= null,
-          this.data.action_type= null,
-          this.data.office_id= null,
-          this.data.device_type= null,
-          this.data.user_id= '',
-          this.data.beneficiary_id= '',
-          this.data.user_name= '',
-          this.GetActivityLog()
+      this.data.division_id = null,
+        this.data.district_id = null,
+        this.data.action_type = null,
+        this.data.office_id = null,
+        this.data.device_type = null,
+        this.data.user_id = '',
+        this.data.beneficiary_id = '',
+        this.data.user_name = '',
+        this.GetActivityLog()
 
       // this.resetDateRange();
     },
@@ -1057,17 +888,17 @@ export default {
     deleteActivityLogs: async function () {
       try {
         await this.$store
-            .dispatch("District/DestroyDistrict", this.delete_id)
-            .then((res) => {
-              // check if the request was successful
-              if (res?.data?.success) {
-                this.$toast.success(res.data.message);
-              } else {
-                this.$toast.error(res.response.data.message);
-              }
-              this.deleteDialog = false;
-              this.GetActivityLog();
-            });
+          .dispatch("District/DestroyDistrict", this.delete_id)
+          .then((res) => {
+            // check if the request was successful
+            if (res?.data?.success) {
+              this.$toast.success(res.data.message);
+            } else {
+              this.$toast.error(res.response.data.message);
+            }
+            this.deleteDialog = false;
+            this.GetActivityLog();
+          });
       } catch (e) {
         console.log(e);
       }
@@ -1075,30 +906,30 @@ export default {
 
     deleteActivityLog: async function () {
       this.$axios
-          .delete("/admin/activity-log/destroy/" + this.delete_id, {
-            headers: {
-              Authorization: "Bearer " + this.$store.state.token,
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then((res) => {
-            this.deleteDialog = false;
-            // check if the request was successful
-            if (res?.data?.success) {
-              this.$toast.success(res.data.message);
-            } else {
-              this.$toast.error(res.response.data.message);
-            }
-            this.GetActivityLog();
-          })
-          .catch((err) => {
-            console.log(err, "error");
-            if (err.response?.data?.errors) {
-              this.$refs.form.setErrors(err.response.data.errors);
-            }
-            console.log(err.response);
-            this.$toast.error(err?.response?.data?.message);
-          });
+        .delete("/admin/activity-log/destroy/" + this.delete_id, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          this.deleteDialog = false;
+          // check if the request was successful
+          if (res?.data?.success) {
+            this.$toast.success(res.data.message);
+          } else {
+            this.$toast.error(res.response.data.message);
+          }
+          this.GetActivityLog();
+        })
+        .catch((err) => {
+          console.log(err, "error");
+          if (err.response?.data?.errors) {
+            this.$refs.form.setErrors(err.response.data.errors);
+          }
+          console.log(err.response);
+          this.$toast.error(err?.response?.data?.message);
+        });
     },
     deleteAlert(id) {
       this.data.id = id;
@@ -1108,7 +939,7 @@ export default {
     },
     updateHeaderTitle() {
       const title = this.$t(
-          "container.system_config.demo_graphic.district.list"
+        "container.system_config.demo_graphic.district.list"
       );
       this.$store.commit("setHeaderTitle", title);
     },
@@ -1124,7 +955,7 @@ export default {
     this.registerCustomRules();
     this.getAllLogName()
   },
-  mounted(){
+  mounted() {
     this.setInitialHeader();
   },
   beforeMount() {
