@@ -222,17 +222,18 @@
                                   no-title
                                   scrollable
                                   ref="datePicker"
+                                  @input="OnChangeDateInfo($event)"
                               >
                                 <v-spacer></v-spacer>
                                 <v-btn text color="primary" @click="resetDateRange">
-                                  Cancel
+                                  {{ $t('container.list.reset')}}
                                 </v-btn>
                                 <v-btn
                                     text
                                     color="primary"
                                     @click="$refs.menu.save(dates)"
                                 >
-                                  OK
+                                  {{ $t('container.list.ok')}}
                                 </v-btn>
                               </v-date-picker>
                             </v-menu>
@@ -242,16 +243,17 @@
                       </v-row>
 
                       <div class="d-inline d-flex justify-end">
+                        <v-btn elevation="2" class="btn mr-2" @click="resetSearch">{{
+                            $t("container.list.reset")
+                          }}</v-btn>
                         <v-btn
                             elevation="2"
-                            class="btn mr-2"
+                            class="btn"
                             color="success"
                             type="submit"
                         >{{ $t("container.list.search") }}</v-btn
                         >
-                        <v-btn elevation="2" class="btn" @click="resetSearch">{{
-                            $t("container.list.reset")
-                          }}</v-btn>
+
                       </div>
                     </form>
                   </ValidationObserver>
@@ -591,6 +593,11 @@ export default {
     ValidationObserver,
   },
   computed: {
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      }
+    },
     headers() {
       return [
         {
@@ -921,17 +928,21 @@ export default {
     },
 
     async OnChangeDateInfo(event, type) {
-      if (this.dates.length < 2) {
-        return;
+      if (this.dates[1] && this.dates[1] < this.dates[0]) {
+        this.$toast.error(this.language == 'en' ? 'End date cannot be before start date' : 'শেষ তারিখ শুরুর তারিখের আগে হতে পারে না')
+        this.resetDateRange();
       }
-      let from_date = null;
-      let to_date = null;
-      if (event.length === 2) {
-        from_date = event[0];
-        to_date = event[1];
-      }
-
-      this.GetActivityLog(from_date,to_date)
+      // if (this.dates.length < 2) {
+      //   return;
+      // }
+      // let from_date = null;
+      // let to_date = null;
+      // if (event.length === 2) {
+      //   from_date = event[0];
+      //   to_date = event[1];
+      // }
+      //
+      // this.GetActivityLog(from_date,to_date)
     },
 
     registerCustomRules() {
