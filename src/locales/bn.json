@@ -1097,6 +1097,8 @@
                   "rating_link": "রেটিং লিঙ্ক",
                   "exam": "পরীক্ষা",
                   "rating": "রেটিং",
+                  "trainer_rating_status": "প্রশিক্ষক রেটিং ",
+                  "exam_status": "পরীক্ষা",
               "program": "প্রোগ্রাম",
               "trainer": "প্রশিক্ষক",
               "circular": "সার্কুলার",

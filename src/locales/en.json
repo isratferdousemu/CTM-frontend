@@ -1101,6 +1101,8 @@
                   "exam_link": "Exam Link",
                   "rating_link": "Rating Link",
                   "exam":"Exam",
+                  "trainer_rating_status": "Trainer Rating ",
+                  "exam_status": "Exam ",
                   "rating": "Rating",
                   "program": "Program",
                   "trainer": "Trainer",
