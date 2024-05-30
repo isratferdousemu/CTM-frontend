@@ -11,8 +11,12 @@
               theme="light"
               class="mb-8"
             >
-              <v-card-title class="justify-center" tag="div">
-                <h3 class="pt-3">
+              <v-card-title
+                class="justify-center"
+                tag="div"
+                style="background-color: #2b4978; color: white"
+              >
+                <h3>
                   {{ $t("container.payroll_management.list") }}
                 </h3>
               </v-card-title>
@@ -58,9 +62,15 @@
                     >
                       <template v-slot:item.id="{ item, index }">
                         {{
-                          (pagination.current - 1) * pagination.perPage +
-                          index +
-                          1
+                          language === "bn"
+                            ? englishToBanglaNumber(
+                                (pagination.current - 1) * pagination.perPage +
+                                  index +
+                                  1
+                              )
+                            : (pagination.current - 1) * pagination.perPage +
+                              index +
+                              1
                         }}
                       </template>
                       <template v-slot:item.charge="{ item }">
@@ -98,7 +108,7 @@
                                   fab
                                   x-small
                                   v-on="on"
-                                  color="success"
+                                  color="#AFB42B"
                                   class="white--text"
                                   elevation="0"
                                 >
@@ -116,7 +126,7 @@
                                 fab
                                 x-small
                                 v-on="on"
-                                color="grey"
+                                color="#b71c1c"
                                 class="white--text"
                                 elevation="0"
                                 @click="deleteAlert(item.id)"
@@ -145,7 +155,7 @@
                             hide-details
                             dense
                             outlined
-                            @change="onPageChange"
+                            @change="onPageSetup"
                             v-model="pagination.perPage"
                           ></v-select>
                           <v-pagination
@@ -158,6 +168,38 @@
                             class="custom-pagination-item"
                           ></v-pagination>
                         </div>
+
+                        <!-- <v-container class="pa-0" fluid>
+                          <v-row class="align-center" cols="12">
+                            <v-col
+                              cols="12"
+                              lg="10"
+                              md="10"
+                              sm="4"
+                              class="d-flex justify-center mb-2 mb-sm-0"
+                            >
+                              <v-pagination
+                                circle
+                                primary
+                                v-model="pagination.current"
+                                :length="pagination.total"
+                                @input="onPageChange"
+                                :total-visible="11"
+                                class="custom-pagination-item"
+                              ></v-pagination>
+                            </v-col>
+                            <v-col cols="12" lg="2" md="2" sm="4" class="">
+                              <v-select
+                                :items="items"
+                                hide-details
+                                dense
+                                outlined
+                                @change="onPageChange"
+                                v-model="pagination.perPage"
+                              ></v-select>
+                            </v-col>
+                          </v-row>
+                        </v-container> -->
                       </template>
                     </v-data-table>
                   </v-col>
@@ -171,7 +213,10 @@
       <!-- add or edit modal  -->
       <v-dialog v-model="dialogAdd" width="950">
         <v-card style="justify-content: center; text-align: center">
-          <v-card-title class="font-weight-bold justify-center">
+          <v-card-title
+            class="font-weight-bold justify-center"
+            style="background-color: #2b4978; color: white"
+          >
             {{
               this.data?.id != null
                 ? this.$t("container.payroll_management.edit")
@@ -437,8 +482,11 @@
                   </v-col>
 
                   <v-col lg="12" md="12" cols="12">
-                    <v-divider></v-divider>
-                    <v-card-title class="font-weight-bold justify-center">
+                    <!-- <v-divider></v-divider> -->
+                    <v-card-title
+                      class="font-weight-bold justify-center"
+                      style="background-color: #2b4978; color: white"
+                    >
                       {{ $t("container.payroll_management.coverage_area") }}
                     </v-card-title>
                   </v-col>
@@ -745,22 +793,35 @@
                   >
                     {{ $t("container.list.cancel") }}
                   </v-btn>
-                  <v-btn
-                    type="submit"
-                    flat
-                    color="primary"
-                    :disabled="invalid"
-                    :loading="loading"
-                    class="custom-btn-width warning white--text py-2"
-                  >
-                    {{ $t("container.list.submit") }}
-                  </v-btn>
+
+                  <div>
+                    <v-btn
+                      v-if="data.id != null"
+                      type="submit"
+                      flat
+                      color="primary"
+                      :disabled="invalid"
+                      :loading="loading"
+                      class="custom-btn-width success white--text py-2"
+                    >
+                      {{ $t("container.list.update") }}
+                    </v-btn>
+
+                    <v-btn
+                      v-else
+                      type="submit"
+                      flat
+                      color="primary"
+                      :disabled="invalid"
+                      :loading="loading"
+                      class="custom-btn-width success white--text py-2"
+                    >
+                      {{ $t("container.list.submit") }}
+                    </v-btn>
+                  </div>
                 </v-row>
               </form>
             </ValidationObserver>
-            <!-- <p class="red--text mt-2">
-              Active field only Visible to Update Page. ***
-            </p> -->
           </v-card-text>
         </v-card>
       </v-dialog>
@@ -944,58 +1005,85 @@ export default {
   },
   computed: {
     headers() {
-      return [
-        {
-          text: this.$t("container.list.sl"),
-          value: "id",
-          align: "start",
-          sortable: false,
-        },
-        {
-          text: this.$t("container.payroll_management.processor_type"),
-          value: "processor_type",
-        },
-        {
-          text: this.$t("container.list.name_en"),
-          value: "name_en",
-        },
-        {
-          text: this.$t("container.list.name_bn"),
-          value: "name_bn",
-        },
-        {
-          text: this.$t("container.payroll_management.coverage_area"),
-          value: "processor_area.district.name_en",
-        },
-        {
-          text: this.$t("container.payroll_management.focal_phone"),
-          value: "focal_phone_no",
-        },
-        {
-          text: this.$t("container.payroll_management.email"),
-          value: "focal_email_address",
-        },
-        {
-          text: this.$t("container.payroll_management.charge"),
-          value: "charge",
-        },
-        {
-          text: this.$t("container.list.action"),
-          value: "actions",
-          align: "center",
-          width: "15%",
-          sortable: false,
-        },
-      ];
-    },
+    return [
+      {
+        text: this.$t("container.list.sl"),
+        value: "id",
+        align: "start",
+        sortable: false,
+        class: 'table-header',
+      },
+      {
+        text: this.$t("container.payroll_management.processor_type"),
+        value: "processor_type",
+        align: "center",
+        class: 'table-header',
+      },
+      {
+        text: this.$t("container.list.name_en"),
+        value: "name_en",
+        class: 'table-header',
+      },
+      {
+        text: this.$t("container.list.name_bn"),
+        value: "name_bn",
+        class: 'table-header',
+      },
+      {
+        text: this.$t("container.payroll_management.coverage_area"),
+        value: "processor_area.district.name_en",
+        class: 'table-header',
+      },
+      {
+        text: this.$t("container.payroll_management.focal_phone"),
+        value: "focal_phone_no",
+        class: 'table-header',
+      },
+      {
+        text: this.$t("container.payroll_management.email"),
+        value: "focal_email_address",
+        class: 'table-header',
+      },
+      {
+        text: this.$t("container.payroll_management.charge"),
+        value: "charge",
+        class: 'table-header',
+      },
+      {
+        text: this.$t("container.list.action"),
+        value: "actions",
+        sortable: false,
+        class: 'table-header',
+      },
+    ];
+  },
     language: {
       get() {
         return this.$store.getters.getAppLanguage;
       },
     },
+
+    translatedPagination() {
+      return {
+        ...this.pagination,
+        current:
+          this.language === "bn"
+            ? englishToBanglaNumber(this.pagination.current)
+            : this.pagination.current,
+        total:
+          this.language === "bn"
+            ? englishToBanglaNumber(this.pagination.total)
+            : this.pagination.total,
+      };
+    },
   },
 
   methods: {
+    englishToBanglaNumber(number) {
+      const banglaNumbers = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
+      return number.toString().replace(/\d/g, (digit) => banglaNumbers[digit]);
+    },
+
     createDialog() {
       if (this.$refs.formAdd) {
         this.$refs.formAdd.reset();
@@ -1130,8 +1218,6 @@ export default {
             }
           );
         }
-        console.log("🚀 ~ submitPaymentProcessor ~ response:", response);
-
         if (response.status === 200) {
           // this.$refs.formAdd.reset();
 
@@ -1378,14 +1464,13 @@ export default {
     },
     // on edit
     async editDialog(item) {
-      console.log("🚀 ~ editDialog ~ item:", item);
       // this.onEdit = true;
       this.resetForm();
       this.dialogAdd = true;
       this.data = {
-        id:item.id,
+        id: item.id,
         processor_type: item.processor_type || null,
-        bank_id: item.bank.id || null,
+        bank_id: item.bank?.id || null,
         branch_name: item.bank_branch_name || "",
         routing_number: item.bank_routing_number || "",
         name_en: item.name_en || "",
@@ -1396,7 +1481,8 @@ export default {
         division: item.processor_area?.division?.id || null,
         district: item.processor_area?.district?.id || null,
         location_type: item.processor_area?.location_type || null,
-        district_pourashava: item.processor_area?.district_pourashava?.id || null,
+        district_pourashava:
+          item.processor_area?.district_pourashava?.id || null,
         upazila: item.processor_area?.upazila?.id || null,
         union: item.processor_area?.union?.id || null,
         city_corporation: item.processor_area?.city_corporation?.id || null,
@@ -1449,7 +1535,11 @@ export default {
     },
 
     onPageChange($event) {
-      // this.pagination.current = $event;
+      this.getPaymentProcessor();
+    },
+
+    onPageSetup($event) {
+      this.pagination.current = 1;
       this.getPaymentProcessor();
     },
 
@@ -1477,5 +1567,10 @@ export default {
 .action-buttons {
   display: flex;
   gap: 10px;
+}
+.table-header {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>

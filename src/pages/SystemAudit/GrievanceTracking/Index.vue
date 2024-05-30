@@ -149,11 +149,12 @@
                             <v-card-text>
                                 <v-row cols="12" dense style="background-color:rgb(28, 59, 104);color:white">
                                     <v-col md="6" sm="6" lg="6" cols="12">
-                                        <h4 style="font-size:16.6px;">
-                                            {{ $t('container.grievance_management.grievanceList.grievance_details') }}</h4>
+                                            <v-card-title class="custom-title">
+                                                <h6 class="text-center" style="font-size:16.16px;">{{ $t('container.grievance_management.grievanceList.grievance_details') }}</h6>
+                                          </v-card-title>
                                     </v-col>
                                 </v-row>
-                                <v-row dense>
+                                <v-row dense style="margin-left:9px;">
                                     <v-col v-for="data in tracking_summary" :key="data.name" cols="12" sm="6" md="4" lg="3"
                                         class="tracking-summary-item">
                                         <b>{{ data.name }}:</b> {{ data.value }}

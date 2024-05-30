@@ -345,7 +345,7 @@ export default {
                     <v-col cols="12">
                         <v-card>
                             <v-card-title class="justify-center"
-                                style="background-color: #1C3B68; color: white;font-size: 17px;">
+                                style="background-color: #1C3B68; color: white;">
                                 <h4>
                                     {{ $t("container.training_management.trainer_info.add") }}
                                 </h4>
