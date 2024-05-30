@@ -427,7 +427,7 @@ export default {
                 })
                 .catch((err) => {
 
-
+                    this.$toast.error(err?.response?.data?.errors?.program_name[0]);
                 });
 
         },
@@ -511,7 +511,7 @@ export default {
                                             <v-col cols=" 12" sm="6" lg="6">
                                                 <ValidationProvider name="Trainer" vid="trainers" rules="required"
                                                     v-slot="{ errors }">
-                                                    <v-select multiple dense v-model="data.trainers"
+                                                    <v-autocomplete multiple dense v-model="data.trainers"
                                                         :label="$t('container.training_management.training_program.trainer')"
                                                         persistent-hint outlined :error="errors[0] ? true : false"
                                                         :items="program_trainers" item-text="name" item-value="id"
@@ -524,7 +524,7 @@ export default {
 
 
                                                         </template>
-                                                    </v-select>
+                                                    </v-autocomplete>
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols="12" sm="6" lg="6">

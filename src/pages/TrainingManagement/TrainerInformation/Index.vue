@@ -57,15 +57,15 @@ export default {
         headers() {
             return [
                 { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, width: "5%" },
-                { text: this.$t('container.training_management.trainer_info.ID'), value: "id_no", align: "start", width: "15%", sortable: false, },
-                { text: this.$t('container.training_management.trainer_info.name'), value: "name", width: "20%" },
+                { text: this.$t('container.training_management.trainer_info.ID'), value: "id_no", align: "start", width: "10%", sortable: false, },
+                { text: this.$t('container.training_management.trainer_info.name'), value: "name", width: "15%" },
                 { text: this.$t('container.training_management.trainer_info.designation'), value: "designation", width: "15%", sortable: false, },
 
                 { text: this.$t('container.training_management.trainer_info.email'), value: "email", width: "10%" },
                 { text: this.$t('container.list.status'), value: "status", width: "15%", sortable: false, },
 
 
-                { text: this.$t('container.list.action'), value: "actions", align: "start", sortable: false, width: "15%" },
+                { text: this.$t('container.list.action'), value: "actions", align: "start", sortable: false, width: "25%" },
             ];
         },
 
@@ -158,7 +158,7 @@ export default {
                 this.$t('container.training_management.trainer_info.mobile'),
                 this.$t('container.training_management.trainer_info.email'),
                 this.$t('container.training_management.trainer_info.address'),
-                this.$t('container.training_management.trainer_info.description'),
+
                 this.$t('container.list.status'),
 
 
@@ -180,7 +180,7 @@ export default {
                     this.$i18n.locale == 'en' ? i.mobile_no : this.$helpers.englishToBangla(i.mobile_no),
                     this.$i18n.locale == 'en' ? i?.email : i?.email,
                     this.$i18n.locale == 'en' ? i?.address : i?.address,
-                    this.$i18n.locale == 'en' ? i?.description : i?.description,
+
 
                     this.$i18n.locale == 'en' ? (i.status == 0 ? 'Active' : 'Inactive') : (i.status == 0 ? 'সক্রিয়' : 'নিষ্ক্রিয়'),
 
@@ -254,7 +254,7 @@ export default {
                         this.$t('container.training_management.trainer_info.mobile'),
                         this.$t('container.training_management.trainer_info.email'),
                         this.$t('container.training_management.trainer_info.address'),
-                        this.$t('container.training_management.trainer_info.description'),
+
                         this.$t('container.list.status'),
                     ]
 
@@ -272,7 +272,7 @@ export default {
                             "mobile": this.$i18n.locale == 'en' ? i.mobile_no : this.$helpers.englishToBangla(i.mobile_no),
                             "email": this.$i18n.locale == 'en' ? i?.email : i?.email,
                             "address": this.$i18n.locale == 'en' ? i?.address : i?.address,
-                            "description": this.$i18n.locale == 'en' ? i?.description : i?.description,
+
 
                             "status": this.$i18n.locale == 'en' ? (i.status == 0 ? 'Active' : 'Inactive') : (i.status == 0 ? 'সক্রিয়' : 'নিষ্ক্রিয়')
 
@@ -280,7 +280,7 @@ export default {
                         }
                     }));
 
-                    const Field = ['sl', 'id', 'name', 'designation', 'mobile', 'email', 'address', 'description', 'status']
+                    const Field = ['sl', 'id', 'name', 'designation', 'mobile', 'email', 'address', 'status']
 
                     const Data = this.FormatJson(Field, CustomInfo)
                     const currentDate = new Date().toISOString().slice(0, 10); //
@@ -415,8 +415,8 @@ export default {
 
                             <v-card-title class="justify-center"
                                 style="background-color: #1C3B68; color: white;font-size: 17px;">
-                                <h4 class=" white--text">{{ $t('container.training_management.trainer_info.list')
-                                    }}</h4>
+                                <h3 class=" white--text">{{ $t('container.training_management.trainer_info.list')
+                                    }}</h3>
                             </v-card-title>
 
 
@@ -451,7 +451,7 @@ export default {
                                     <v-col cols="12" md="4">
                                         <v-text-field @keyup.native="PageSetup" v-model="search"
                                             append-icon="mdi-magnify" :label="$t(
-                                                'container.list.search_circular'
+                                                'container.list.search'
                                             )" hide-details class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal" flat outlined
                                             dense></v-text-field>
 
@@ -553,14 +553,14 @@ export default {
 
                                             </template>
                                             <template v-slot:[`item.status`]="{ item }">
-                                                <span v-if="item.status == 0">
+                                                <!-- <span v-if="item.status == 0">
                                                     {{ language == 'bn' ?
                                                         'নিষ্ক্রিয়' : 'Inactive' }}
                                                 </span>
                                                 <span v-else>
                                                     {{ language == 'bn' ?
-                                                        'সক্রিয়' : 'Active' }}
-                                                </span>
+                                                    'সক্রিয়' : 'Active' }}
+                                                </span> -->
 
 
                                                 <span>
@@ -674,7 +674,7 @@ export default {
             <v-dialog v-model="deleteDialog" width="350">
                 <v-card style="justify-content: center; ">
                     <v-card-title class="font-weight-bold justify-center"
-                        style="background-color: #1C3B68; color: white;font-size: 17px;">
+                        style="background-color: #1C3B68; color: white;font-size: 20px;">
                         {{ $t('container.training_management.trainer_info.delete_header') }}
                     </v-card-title>
                     <v-divider></v-divider>

@@ -64,8 +64,8 @@ export default {
         },
         headers() {
             return [
-                { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, width: "10%" },
-                { text: this.$t('container.training_management.training_circular.name'), value: "circular_name", align: "start", width: "10%" },
+                { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, width: "5%" },
+                { text: this.$t('container.training_management.training_circular.name'), value: "circular_name", align: "start", width: "15%" },
            
                 { text: this.$t('container.training_management.training_circular.no_of_participant'), value: "no_of_participant", width: "10%" },
                 { text: this.$t('container.training_management.training_circular.start_date'), value: "start_date", width: "15%" },
@@ -727,7 +727,7 @@ export default {
                                             <template v-slot:item.actions="{ item }">
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
-                                                        <v-btn v-can="'trainerCircular-view'" fab x-small v-on="on"
+                                                        <v-btn v-can="'trainingCircular-view'" fab x-small v-on="on"
                                                             color="blue" elevation="0" router
                                                             class="white--text mr-2 ma-1 small-font"
                                                             @click="copyToClipboard(item.id)">
@@ -805,7 +805,7 @@ export default {
         <v-dialog v-model="deleteDialog" width="350">
             <v-card style="justify-content: start; ">
                 <v-card-title class="font-weight-bold justify-center"
-                    style="background-color: #1C3C6A; color: white;font-size: 10px;">
+                    style="background-color: #1C3C6A; color: white;font-size: 17px;">
                     {{ $t('container.training_management.training_circular.delete_header') }}
                 </v-card-title>
                 <v-divider></v-divider>

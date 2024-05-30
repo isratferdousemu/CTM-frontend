@@ -82,7 +82,8 @@
       "create": "ক্রিয়েট",
       "download": "আবেদন ডাউনলোড করুন",
       "pouroshava": "পৌরসভা",
-      "union": "ইউনিয়ন"
+      "union": "ইউনিয়ন",
+      "show": "দেখুন"
     },
     "system_config": {
       "demo_graphic": {
@@ -1034,6 +1035,7 @@
     "training_management": {
       "trainer_info": {
         "ID": "আইডি",
+        "trainer_type": "প্রশিক্ষকের ধরন",
         "list_1": "প্রশিক্ষক তালিকা",
         "list": "প্রশিক্ষকের  তথ্য তালিকা",
         "view": "প্রশিক্ষকের তথ্য বিবরণ",
@@ -1051,7 +1053,7 @@
         "contact": "যোগাযোগের ঠিকানা",
         "upcoming": "আসন্ন ব্যাচসমূহ",
         "about": "সম্পর্কিত",
-        "program": "কার্যক্রম",
+        "program": "প্রোগ্রাম",
         "module": "মডিউল",
         "image_alert": "ফাইলের আকার ২০০ কে বি এর কম হতে হবে",
         "delete_header": "প্রশিক্ষক তথ্য ডিলিট করুন ",
@@ -1094,6 +1096,10 @@
         "add": "নতুন প্রোগ্রাম যোগ করুন",
         "edit": "প্রোগ্রাম এডিট করুন",
         "program_name": "প্রোগ্রামের নাম",
+        "exam_link": "পরীক্ষার লিঙ্ক",
+        "rating_link": "রেটিং লিঙ্ক",
+        "exam": "পরীক্ষা",
+        "rating": "রেটিং",
         "program": "প্রোগ্রাম",
         "trainer": "প্রশিক্ষক",
         "circular": "সার্কুলার",
@@ -1332,13 +1338,20 @@
       },
       "dashboard": {
         "grievance_dashboard": "অভিযোগ ড্যাশবোর্ড",
-        "total_grievance": "Total Grievance",
-        "total_resolved": "Total Resolved",
-        "total_pending": "Total Pending",
-        "total_rejected": "Total Rejected",
-        "total_forwarded": "Total Forwarded",
-        "total_received": "Total Received",
-        "total_unresolved": "Total Unresolved"
+        "total_grievance": "মোট অভিযোগ",
+        "total_new": "মোট নতুন",
+        "division": "বিভাগ",
+        "action": "অ্যাকশন",
+        "total_resolved": "মোট অভিযোগ সমাধান",
+        "total_pending": "মোট অভিযোগ স্থগিত",
+        "total_rejected": "মোট অভিযোগ বাতিল",
+        "total_received": "প্রাপ্ত মোট অভিযোগ",
+        "total_not_solved": "সমাধান হয়নি",
+        "header": "শেষ 30 দিনে",
+        "program_wise_total_received": "প্রোগ্রাম অনুসারে প্রাপ্ত মোট অভিযোগ",
+        "program_wise_total_approved": "প্রোগ্রাম অনুসারে মোট অভিযোগ অনুমোদিত",
+        "program_wise_total_canceled": "প্রোগ্রাম অনুসারে মোট অভিযোগ বাতিল",
+        "location_wise_total_grievance": "অবস্থান অনুসারে মোট অভিযোগ"
       }
     },
 

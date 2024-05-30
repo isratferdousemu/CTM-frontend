@@ -10,8 +10,7 @@
 
 
 
-              <v-card-title  tag="div"
-                style="background-color: #1C3C6A; color: white;">
+              <v-card-title tag="div" style="background-color: #1C3C6A; color: white;">
                 <h5>
                   {{ $t("container.training_management.time_slot.list") }}
                 </h5>
@@ -30,6 +29,7 @@
                   <v-col lg="3" md="3" cols="12" class="text-right ">
                     <v-btn @click="createDialog" color="primary" prepend-icon="mdi-account-multiple-plus"
                       v-can="'timeStot-create'">
+                      <v-icon small>mdi-plus</v-icon>
                       {{ $t("container.training_management.time_slot.add") }}
                     </v-btn>
                   </v-col>
@@ -610,7 +610,9 @@ export default {
 
         })
         .catch((err) => {
+          this.$toast.error(err?.response?.data?.errors?.time[0]);
         
+     
 
         });
       
@@ -647,6 +649,7 @@ export default {
         })
         .catch((err) => {
           console.log(err, "err")
+          this.$toast.error(err?.response?.data?.errors?.time[0]);
    
 
         });

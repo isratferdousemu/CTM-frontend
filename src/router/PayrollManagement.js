@@ -65,7 +65,18 @@ const PayrollManagementRoutes = [
       permission: 'payment-processor-edit',
     },
     component: () =>
-      import('../pages/PayrollManagement/PayrollCreate/Index.vue'),
+      import('../pages/PayrollManagement/paymentprocessor/show.vue'),
+  },
+
+  {
+    path: '/payroll-management/payment-tracking',
+    name: 'payment-tracking',
+    // meta: {
+    //   requiresAuth: true,
+    //   permission: "payment-processor-edit",
+    // },
+    component: () =>
+      import('../pages/PayrollManagement/PaymentTracking/Index.vue'),
   },
 
   // {

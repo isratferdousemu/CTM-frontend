@@ -2,11 +2,14 @@
   <v-col>
   <v-row>
     <v-col cols="12">
+      <v-card style="text-align: center" :loading="isLoading">
       <label style="color: #1976d2">
                       <span>
                         {{ $t("container.application_selection_dashboard.number_of_application_rejected") }}
                       </span>
-      </label></v-col
+      </label>
+      </v-card>
+    </v-col
     >
   </v-row>
   <v-row class="ml-1 mr-1">
@@ -37,20 +40,21 @@
       >
         <v-spacer></v-spacer>
         <v-btn text color="primary" @click="resetDateRange">
-          Cancel
+          {{ $t('container.list.reset')}}
         </v-btn>
         <v-btn
             text
             color="primary"
             @click="$refs.menu.save(dates)"
         >
-          OK
+          {{ $t('container.list.ok')}}
         </v-btn>
       </v-date-picker>
     </v-menu>
   </v-row>
   <v-row>
-    <canvas id="total_number_of_application_rejected_info"></canvas>
+    <img  v-if="allZeros == true" style="margin-left:80px;margin-top:10px;width: 300px;height: 300px" src="/assets/images/pie_chart_default.png" alt="default chart">
+    <canvas v-else id="total_number_of_application_rejected_info"></canvas>
   </v-row>
   </v-col>
 
@@ -82,9 +86,12 @@ export default {
     },
     async fetchTotalRejectedApplicationChartData(from_date = null, to_date = null) {
       await this.getTotalRejectedApplication(4, from_date, to_date);
-      this.createTotalRejectedApplicentChart();
+      if(this.allZeros != true) {
+        this.createTotalRejectedApplicentChart();
+      }
     },
     async getTotalRejectedApplication(status, from_date = null, to_date = null) {
+      this.isLoading = true;
       const queryParams = {
         status: status,
         start_date: from_date,
@@ -105,6 +112,7 @@ export default {
         this.isLoading = false;
 
       } catch (error) {
+        this.isLoading = false;
         console.error("Error fetching data:", error);
         // Handle error if necessary
       }
@@ -183,6 +191,10 @@ export default {
       return '#' + Math.floor(Math.random() * 16777215).toString(16);
     },
     OnChangeDateInfo(event, type) {
+      if (this.dates[1] && this.dates[1] < this.dates[0]) {
+        this.$toast.error(this.language == 'en' ? 'End date cannot be before start date' : 'শেষ তারিখ শুরুর তারিখের আগে হতে পারে না')
+        this.resetDateRange();
+      }
       if (this.dates.length < 2) {
         return;
       }
@@ -199,6 +211,16 @@ export default {
 
   mounted() {
     this.fetchTotalRejectedApplicationChartData();
+  },
+  computed:{
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      }
+    },
+    allZeros() {
+      return this.total_number_of_application_rejected_datas.every(value => value === 0);
+    }
   },
   watch: {
     '$i18n.locale': {
