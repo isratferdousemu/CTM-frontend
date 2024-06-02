@@ -175,6 +175,11 @@ export default {
       if (this.dates.length < 2) {
         return;
       }
+      if (this.dates[1] && this.dates[1] < this.dates[0]) {
+        this.$toast.error(this.language == 'en' ? 'End date cannot be before start date' : 'শেষ তারিখ শুরুর তারিখের আগে হতে পারে না')
+        this.resetDateRange();
+      }
+
       let from_date = null;
       let to_date = null;
 
@@ -188,6 +193,14 @@ export default {
     handleOfficeTypeChange() {
       this.fetchOrganizationWiseChartData()
     }
+  },
+
+  computed:{
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      }
+    },
   },
 
   mounted() {

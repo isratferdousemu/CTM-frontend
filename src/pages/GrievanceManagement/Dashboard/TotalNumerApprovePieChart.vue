@@ -1,13 +1,15 @@
 <template>
   <v-col>
   <v-row>
-    <v-col cols="12">
-      <label style="color: #1976d2">
-                      <span>
-                      {{ $t("container.grievance_management.dashboard.program_wise_total_approved") }}
-                      </span>
-      </label></v-col
-    >
+    <v-col cols="12" style="padding: 0px;">
+      <v-card :loading="isLoading" style="background-color:#1c3b68;color:white;font-size:12px;">
+         <v-card-title>
+             <h5 class="white--text">
+               {{ $t("container.grievance_management.dashboard.program_wise_total_approved") }}
+            </h5>
+        </v-card-title>
+      </v-card>
+     </v-col>
   </v-row>
   <v-row class="ml-1 mr-1">
     <v-menu
@@ -50,6 +52,7 @@
     </v-menu>
   </v-row>
   <v-row>
+    <img  v-if="allZeros == true" style="margin-left:80px;margin-top:10px;width: 300px;height: 300px" src="/assets/images/pie_chart_default.png" alt="default chart">
     <canvas id="programwise_application_approval"></canvas>
   </v-row>
   </v-col>
@@ -82,9 +85,12 @@ export default {
     },
     async fetchProgramwiseApproveApplicationChartData(from_date = null, to_date = null) {
       await this.getProgramwiseApproveApplication(2, from_date, to_date);
-      this.createProgramwiseApproveApplicentChart();
+       if (this.allZeros != true) {
+        this.createProgramwiseApproveApplicentChart();
+      }
     },
     async getProgramwiseApproveApplication(status, from_date = null, to_date = null) {
+       this.isLoading = true
       const queryParams = {
         status: status,
         start_date: from_date,
@@ -105,6 +111,7 @@ export default {
         this.isLoading = false;
 
       } catch (error) {
+         this.isLoading = false;
         console.error("Error fetching data:", error);
         // Handle error if necessary
       }
@@ -185,10 +192,16 @@ export default {
       return '#' + Math.floor(Math.random() * 16777215).toString(16);
     },
 
-    OnChangeDateInfo(event, type) {
+     OnChangeDateInfo(event, type) {
       if (this.dates.length < 2) {
         return;
       }
+
+      if (this.dates[1] && this.dates[1] < this.dates[0]) {
+        this.$toast.error(this.language == 'en' ? 'End date cannot be before start date' : 'শেষ তারিখ শুরুর তারিখের আগে হতে পারে না')
+        this.resetDateRange();
+      }
+
       let from_date = null;
       let to_date = null;
 
@@ -202,6 +215,16 @@ export default {
 
   mounted() {
     this.fetchProgramwiseApproveApplicationChartData();
+  },
+ computed: {
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      }
+    },
+    allZeros() {
+      return this.programwise_application_approve_datas.every(value => value === 0);
+    }
   },
   watch: {
     '$i18n.locale': {

@@ -1,13 +1,15 @@
 <template>
   <v-col>
   <v-row>
-    <v-col cols="12">
-      <label style="color: #1976d2">
-                      <span>
-                        {{ $t("container.grievance_management.dashboard.program_wise_total_received") }}
-                      </span>
-      </label></v-col
-    >
+        <v-col cols="12" style="padding: 0px;">
+        <v-card :loading="isLoading" style="background-color:#1c3b68;color:white;font-size:12px;">
+           <v-card-title>
+               <h5 class="white--text">
+                 {{ $t("container.grievance_management.dashboard.program_wise_total_received") }}
+              </h5>
+          </v-card-title>
+        </v-card>
+       </v-col>
   </v-row>
   <v-row class="ml-1 mr-1">
     <v-menu
@@ -50,6 +52,7 @@
     </v-menu>
   </v-row>
   <v-row>
+     <img  v-if="allZeros == true" style="margin-left:80px;margin-top:10px;width: 300px;height: 300px" src="/assets/images/pie_chart_default.png" alt="default chart">
     <canvas id="total_number_received"></canvas>
   </v-row>
   </v-col>
@@ -82,9 +85,13 @@ export default {
     },
     async fetchTotalReceivedApplicationChartData(from_date = null, to_date = null) {
       await this.getTotalReceivedApplication(2, from_date, to_date);
-      this.createTotalReceivedApplicentChart();
+     if (this.allZeros != true) {
+        this.createTotalReceivedApplicentChart();
+      }
+      // this.createTotalReceivedApplicentChart();
     },
     async getTotalReceivedApplication(status, from_date = null, to_date = null) {
+      this.isLoading = true;
       const queryParams = {
         status: status,
         start_date: from_date,
@@ -98,14 +105,13 @@ export default {
           },
           params: queryParams,
         });
-        console.log(result.data.data,777)
         this.total_number_received = result.data.data;
         this.total_number_of_application_received_levels = this.total_number_received.map((row) => this.$i18n.locale == 'en' ? row.name_en : row.name_bn);;
         this.total_number_of_application_received_datas = this.total_number_received.map((row) => row.grievances_count);
         this.isLoading = false;
 
       } catch (error) {
-        console.error("Error fetching data:", error);
+          this.isLoading = false;
         // Handle error if necessary
       }
     },
@@ -182,10 +188,16 @@ export default {
     generateRandomColor() {
       return '#' + Math.floor(Math.random() * 16777215).toString(16);
     },
-    OnChangeDateInfo(event, type) {
+       OnChangeDateInfo(event, type) {
       if (this.dates.length < 2) {
         return;
       }
+
+      if (this.dates[1] && this.dates[1] < this.dates[0]) {
+        this.$toast.error(this.language == 'en' ? 'End date cannot be before start date' : 'শেষ তারিখ শুরুর তারিখের আগে হতে পারে না')
+        this.resetDateRange();
+      }
+
       let from_date = null;
       let to_date = null;
 
@@ -195,10 +207,21 @@ export default {
       }
       this.fetchTotalReceivedApplicationChartData(from_date, to_date);
     },
+
   },
 
   mounted() {
     this.fetchTotalReceivedApplicationChartData();
+  },
+   computed: {
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      }
+    },
+    allZeros() {
+      return this.total_number_of_application_received_datas.every(value => value === 0);
+    }
   },
   watch: {
     '$i18n.locale': {

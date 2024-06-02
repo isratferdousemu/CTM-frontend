@@ -409,44 +409,41 @@
 
                       </template>
                       <template v-slot:item.sl="{ item, index }">
-                        {{
-  (pagination.current - 1) * pagination.perPage +
-                        index +
-                        1
-                        }}
+                        {{ $i18n.locale == 'en' ? (pagination.current - 1) * pagination.perPage + index + 1 :
+                          $helpers.englishToBangla((pagination.current - 1) * pagination.perPage + index + 1) }}
                       </template>
                       <template v-slot:item.division="{ item }">
                         <span v-if="item?.permanent_location.location_type == '1'">
-                          {{ item?.permanent_location?.parent?.parent?.parent?.name_en }}
+                          {{ $i18n.locale == 'en' ? item?.permanent_location?.parent?.parent?.parent?.name_en : item?.permanent_location?.parent?.parent?.parent?.name_bn }}
                         </span>
 
                         <span
                           v-if="item?.permanent_location.location_type == '2' || item?.permanent_location.location_type == '3'">
-                          {{ item?.permanent_location.parent?.parent?.parent?.parent?.name_en }}
+                          {{ $i18n.locale == 'en' ? item?.permanent_location.parent?.parent?.parent?.parent?.name_en : item?.permanent_location.parent?.parent?.parent?.parent?.name_bn }}
                         </span>
 
 
                       </template>
                       <template v-slot:item.district="{ item }">
                         <span v-if="item?.permanent_location.location_type == '1'">
-                          {{ item?.permanent_location?.parent?.parent?.name_en }}
+                          {{ $i18n.locale == 'en' ? item?.permanent_location?.parent?.parent?.name_en : item?.permanent_location?.parent?.parent?.name_bn}}
                         </span>
 
                         <span
                           v-if="item?.permanent_location.location_type == '2' || item?.permanent_location.location_type == '3'">
-                          {{ item?.permanent_location.parent?.parent?.parent?.name_en }}
+                          {{ $i18n.locale == 'en' ? item?.permanent_location.parent?.parent?.parent?.name_en : item?.permanent_location.parent?.parent?.parent?.name_bn}}
                         </span>
 
 
                       </template>
                       <template v-slot:item.location="{ item }">
                         <span v-if="item?.permanent_location.location_type == '1'">
-                          {{ item?.permanent_location?.parent?.name_en }}
+                          {{ $i18n.locale == 'en' ? item?.permanent_location?.parent?.name_en : item?.permanent_location?.parent?.name_bn }}
                         </span>
 
                         <span
                           v-if="item?.permanent_location.location_type == '2' || item?.permanent_location.location_type == '3'">
-                          {{ item?.permanent_location.parent?.parent?.name_en }}
+                          {{ $i18n.locale == 'en' ? item?.permanent_location.parent?.parent?.name_en : item?.permanent_location.parent?.parent?.name_bn }}
                         </span>
 
 
@@ -457,7 +454,7 @@
 
                         <span
                           v-if="item?.permanent_location.location_type == '2' || item?.permanent_location.location_type == '3'">
-                          {{ item?.permanent_location.parent?.name_en }}
+                          {{ $i18n.locale == 'en' ? item?.permanent_location.parent?.name_en : item?.permanent_location.parent?.name_bn}}
                         </span>
 
 
@@ -467,7 +464,7 @@
                       <template v-slot:item.ward="{ item }">
                         <span>
 
-                          {{ item?.permanent_location.name_en }}
+                          {{ $i18n.locale == 'en' ? item?.permanent_location.name_en : item?.permanent_location.name_bn}}
                         </span>
                       </template>
 
@@ -486,6 +483,30 @@
                       <template v-slot:item.age="{ item }">
                        <span>
                           {{ $i18n.locale == 'en' ? item.age : $helpers.englishToBangla(item.age) }}
+                        </span>
+                      </template>
+
+                      <template v-slot:item.account_number="{ item }">
+                       <span>
+                          {{ $i18n.locale == 'en' ? item.account_number : $helpers.englishToBangla(item.account_number) }}
+                        </span>
+                      </template>
+
+                      <template v-slot:item.verification_number="{ item }">
+                       <span>
+                          {{ $i18n.locale == 'en' ? item.verification_number : $helpers.englishToBangla(item.verification_number) }}
+                        </span>
+                      </template>
+
+                      <template v-slot:item.mobile="{ item }">
+                       <span>
+                          {{ $i18n.locale == 'en' ? item.mobile : $helpers.englishToBangla(item.mobile) }}
+                        </span>
+                      </template>
+
+                      <template v-slot:item.score="{ item }">
+                       <span>
+                          {{ $i18n.locale == 'en' ? item.score : $helpers.englishToBangla(item.score) }}
                         </span>
                       </template>
 
@@ -1852,15 +1873,15 @@ export default {
         let union_pouro_city = '';
         let status = '';
         if (i) {
-          if (i.status === 0) {
+          if (i.status == 0) {
             status = "Not Selected"
-          } else if (i.status === 1) {
+          } else if (i.status == 1) {
             status = "Forwarded"
-          } else if (i.status === 2) {
+          } else if (i.status == 2) {
             status = "Approved"
-          } else if (i.status === 3) {
+          } else if (i.status == 3) {
             status = "Waiting"
-          } else if (i.status === 4) {
+          } else if (i.status == 4) {
             status = "Rejected"
           }
         }
@@ -1889,12 +1910,12 @@ export default {
           'sl': this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
           'application_id': i?.application_id,
           'program.name_en': this.$i18n.locale == 'en' ? i?.program?.name_en : i?.program?.name_bn,
-          'name_en':  i?.name_en,
+          'name_en':  this.$i18n.locale == 'en' ? i?.name_en : i?.name_bn,
           'status': status,
           // 'status': i?.status,
-          'score': i?.score,
-          'account_number': i?.account_number,
-          'verification_number': i?.verification_number,
+          'score': this.$i18n.locale == 'en' ? i?.score : this.$helpers.englishToBangla(i?.score),
+          'account_number': this.$i18n.locale == 'en' ? i?.account_number : this.$helpers.englishToBangla(i?.account_number),
+          'verification_number': this.$i18n.locale == 'en' ? i?.verification_number : this.$helpers.englishToBangla(i?.verification_number),
           'division': divisionName,
           'district': districtName,
           // 'division': this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.parent?.parent?.name_bn,
@@ -1910,7 +1931,7 @@ export default {
           'spouse_name_en': i?.spouse_name_en,
           'nominee_en': i?.nominee_en,
           'nominee_relation_with_beneficiary': i?.nominee_relation_with_beneficiary,
-          'mobile': i?.mobile,
+          'mobile': this.$i18n.locale == 'en' ? i?.mobile : this.$helpers.englishToBangla(i?.mobile),
 
           'age': this.$i18n.locale == 'en' ? i?.age : this.$helpers.englishToBangla(i?.age),
           'gender': this.$i18n.locale == 'en' ? i?.gender.value_en : i?.gender.value_bn,
@@ -2008,15 +2029,15 @@ export default {
               let union_pouro_city = '';
               let status = '';
               if (i) {
-                if (i.status === 0) {
+                if (i.status == 0) {
                   status = "Not Selected"
-                } else if (i.status === 1) {
+                } else if (i.status == 1) {
                   status = "Forwarded"
-                } else if (i.status === 2) {
+                } else if (i.status == 2) {
                   status = "Approved"
-                } else if (i.status === 3) {
+                } else if (i.status == 3) {
                   status = "Waiting"
-                } else if (i.status === 4) {
+                } else if (i.status == 4) {
                   status = "Rejected"
                 }
               }
@@ -2044,12 +2065,13 @@ export default {
                 'sl': this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
                 'application_id': i?.application_id,
                 'program.name_en': this.$i18n.locale == 'en' ? i?.program?.name_en : i?.program?.name_bn,
-                'name_en':  i?.name_en,
+                'name_en':  this.$i18n.locale == 'en' ? i?.name_en : i?.name_bn,
                 'status': status,
                 // 'status': i?.status,
-                'score': i?.score,
-                'account_number': i?.account_number,
-                'verification_number': i?.verification_number,
+                'score': this.$i18n.locale == 'en' ? i?.score : this.$helpers.englishToBangla(i?.score),
+
+                'account_number': this.$i18n.locale == 'en' ? i?.account_number : this.$helpers.englishToBangla(i?.account_number),
+                'verification_number': this.$i18n.locale == 'en' ? i?.verification_number : this.$helpers.englishToBangla(i?.verification_number),
                 'division': divisionName,
                 'district': districtName,
                 // 'division': this.$i18n.locale == 'en' ? i?.permanent_location?.parent?.parent?.parent?.parent?.name_en : i?.permanent_location?.parent?.parent?.parent?.parent?.name_bn,
@@ -2065,7 +2087,7 @@ export default {
                 'spouse_name_en': i?.spouse_name_en,
                 'nominee_en': i?.nominee_en,
                 'nominee_relation_with_beneficiary': i?.nominee_relation_with_beneficiary,
-                'mobile': i?.mobile,
+                'mobile': this.$i18n.locale == 'en' ? i?.mobile : this.$helpers.englishToBangla(i?.mobile),
 
                 'age': this.$i18n.locale == 'en' ? i?.age : this.$helpers.englishToBangla(i?.age),
                 'gender': this.$i18n.locale == 'en' ? i?.gender.value_en : i?.gender.value_bn,

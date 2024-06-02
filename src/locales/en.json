@@ -180,6 +180,7 @@
           "thana": "Thana",
           "list": "Thana List",
           "code": "Thana Geo Code",
+          "error_code": "Thana Geo Code Can have maximum 6 digit",
           "name_en": "Thana Name English",
           "name_bn": "Thana Name Bangla",
           "add_new": "Add New Thana",
@@ -194,6 +195,7 @@
           "pouroshava": "Pouroshava",
           "list": "Union List",
           "code": "Union Geo Code",
+          "error_code": "Union Geo Code Can have maximum 6 digit",
           "name_en": "Union Name English",
           "name_bn": "Union Name Bangla",
           "add_new": "Add New Union/Thana/Pouroshava",
@@ -209,6 +211,7 @@
           "union": "Pouroshava",
           "list": "Pouroshava List",
           "code": "Pourashava Geo Code",
+          "error_code": "Pourashava Geo Code Can have maximum 6 digit",
           "custom_code": "Thana/Union/Poorashava Geo Code",
           "name_en": "Pouroshava Name English",
           "name_bn": "Pouroshava Name Bangla",
@@ -472,7 +475,9 @@
         "edit": "Edit Allowance Program",
         "setting": "Allowance Program Setting",
         "system_status": "System Status",
-        "is_pmt_toggle": "Is PMT Active"
+        "is_pmt_toggle": "Is PMT Active",
+          "delete_header": "Delete Allowance Program",
+          "delete_alert": "Are you sure to delete this Allowance Program? Allowance Program's all information will be deleted."
       },
       "allowance_program_additiona_field": {
         "variable": "Allowance Program Additional Field",

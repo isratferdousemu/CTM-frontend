@@ -260,7 +260,7 @@
                     >
                       <v-text-field
                         outlined
-                        type="text"
+                        type="number"
                         v-model="data.code"
                         :label="
                           $t('container.system_config.demo_graphic.union.code')
@@ -600,7 +600,7 @@
                     >
                       <v-text-field
                         outlined
-                        type="text"
+                        type="number"
                         v-model="data.code"
 
                         :label="
@@ -840,7 +840,7 @@ export default {
   methods: {
     registerCustomRules() {
       extend('codeRules', (value) => {
-        return (value.toString().length <= 6) || this.$t("container.system_config.demo_graphic.union.code")+' can have maximum 6 digit';
+        return (value.toString().length <= 6) || this.$t("container.system_config.demo_graphic.union.code")+' can have maximum 6dd digit';
       });
     },
     createDialog() {
