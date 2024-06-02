@@ -391,7 +391,7 @@
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6" v-if="data.marital_status == 'Married'">
-                            <ValidationProvider name="Spouse Name in English" vid="spouse_name_en" rules="required"
+                            <ValidationProvider name="Spouse Name in English" vid="spouse_name_en" 
                               v-slot="{ errors }">
                               <label>{{ $t('container.application_selection.application.spouse_name_en') }}</label>
                               <v-text-field v-model="data.spouse_name_en" outlined clearable
@@ -1418,6 +1418,7 @@
                             <ValidationProvider name="Nominee Natinality" readonly vid="nominee_nationality"
                               v-slot="{ errors }" rules="required">
                               <label>{{ $t('container.application_selection.application.nationality') }} </label>
+                                <span style="margin-left: 4px; color: red">*</span>
                               <v-text-field v-model="data.nominee_nationality" outlined readonly
                                 :error="errors[0] ? true : false" :error-messages="errors[0]">
                               </v-text-field>
@@ -2537,6 +2538,7 @@ export default {
           
           
           this.status_code = res.status;
+        
          
 
          

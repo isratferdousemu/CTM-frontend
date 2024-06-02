@@ -62,20 +62,16 @@ export default {
         },
         headers() {
             return [
-                { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, },
-                { text: this.$t('container.training_management.training_program.program_name'), value: "program_name", align: "start",  },
-                { text: this.$t('container.training_management.training_program.circular'), value: "circular", align: "start",  sortable: false, },
-                 { text: this.$t('container.training_management.training_circular.module'), value: "modules", align: "start",  sortable: false, },
-                { text: this.$t('container.training_management.training_circular.training_type'), value: "training_type", align: "start", sortable: false, },
-                
-                { text: this.$t('container.training_management.training_program.trainer'), value: "trainer", width: "15%", sortable: false, },
-                { text: this.$t('container.list.status'), value: "status" },
-      
-                { text: this.$t('container.training_management.training_program.exam_status'), value: "exam_status" },
-                { text: this.$t('container.training_management.training_program.trainer_rating_status'), value: "rating_status"},
-                { text: this.$t('container.list.action'), value: "actions", align: "start", sortable: false, style: "width: 300px;" },
-              
-                
+                { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, class: "align-middle" },
+                { text: this.$t('container.training_management.training_program.program_name'), value: "program_name", align: "start", class: "align-middle" },
+                { text: this.$t('container.training_management.training_program.circular'), value: "circular", align: "start", sortable: false, class: "align-middle" },
+                { text: this.$t('container.training_management.training_circular.module'), value: "modules", align: "start", sortable: false, class: "align-middle" },
+                { text: this.$t('container.training_management.training_circular.training_type'), value: "training_type", align: "start", sortable: false, class: "align-middle" },
+                { text: this.$t('container.training_management.training_program.trainer'), value: "trainer", width: "15%", align: "start", sortable: false, class: "align-middle" },
+                { text: this.$t('container.list.status'), value: "status", align: "start", class: "align-middle" },
+                { text: this.$t('container.training_management.training_program.exam_status'), value: "exam_status", align: "start", class: "align-middle" },
+                { text: this.$t('container.training_management.training_program.trainer_rating_status'), value: "rating_status", align: "start", class: "align-middle" },
+                { text: this.$t('container.list.action'), value: "actions", align: "start", sortable: false, style: "width:300px;", class: "align-middle" },
             ];
         },
 
@@ -783,17 +779,23 @@ export default {
                                                         pagination.perPage + index + 1 }}
                                                     </template>
                                                     <template v-slot:item.circular="{ item }">
-                                                        <span>{{ item.training_circular?.circular_name }}</span>
+                                                        <span style="width:130px;">{{
+                                                            item.training_circular?.circular_name }}</span>
                                                     </template>
                                                     <template v-slot:item.modules="{ item }">
-                                                        <span v-for="(value, key) in item.modules" :key="key">
-                                                            <v-chip small label color="#FACD91" class="ma-1">
-                                                                {{ language == 'bn' ? value.value_bn : value.value_en }}
-                                                            </v-chip>
-                                                        </span>
+                                                        <div style="width:130px;">
+                                                            <span v-for="(value, key) in item.modules" :key="key">
+                                                                <v-chip small label color="#FACD91" class="ma-1">
+                                                                    {{ language == 'bn' ? value.value_bn :
+                                                                    value.value_en }}
+                                                                </v-chip>
+                                                            </span>
+
+                                                        </div>
+
                                                     </template>
                                                     <template v-slot:item.training_type="{ item }">
-                                                        <span>
+                                                        <span style="width:130px;">
                                                             {{ language == 'bn' ?
                                                             item.training_circular?.training_type.value_bn
                                                             :item.training_circular?.training_type?.value_en }}
@@ -801,35 +803,42 @@ export default {
                                                         </span>
                                                     </template>
                                                     <template v-slot:item.trainer="{ item }">
-                                                        <span v-for="(value, key) in item.trainers" :key="key">
-                                                            <v-chip small label color="#FACD91" class="ma-1">
-                                                                {{ value.name }}
-                                                            </v-chip>
-                                                        </span>
+                                                        <div style="width:130px;">
+                                                            <span v-for="(value, key) in item.trainers" :key="key">
+                                                                <v-chip small label color="#FACD91" class="ma-1">
+                                                                    {{ value.name }}
+                                                                </v-chip>
+                                                            </span>
+                                                        </div>
                                                     </template>
                                                     <template v-slot:[`item.status`]="{ item }">
-                                                        <div style="width:100px;">
-                                                            {{language == 'en' ? item.status_name.value_en:
-                                                            item.status_name.value_bn}}
+                                                        <div style="width:130px;">
+                                                            <span>
+
+                                                                {{ language == 'en' ? item.status_name.value_en :
+                                        item.status_name.value_bn }}
+
+                                                            </span>
 
                                                         </div>
 
 
+
+
                                                     </template>
                                                     <template v-slot:[`item.exam_status`]="{ item }">
-                                                        <div style="width:100px;">
+                                                        <div style="width:130px;">
                                                             <span>
                                                                 <v-switch
                                                                     :input-value="item.exam_status == 1 ? true : false"
                                                                     @change="deviceActivate_exam(item.id)" hide-details
                                                                     color="orange darken-3"></v-switch>
                                                             </span>
-
                                                         </div>
 
                                                     </template>
                                                     <template v-slot:[`item.rating_status`]="{ item }">
-                                                        <div style="width:100px;">
+                                                        <div style="width:130px;">
                                                             <span>
                                                                 <v-switch
                                                                     :input-value="item.rating_status == 1 ? true : false"
@@ -946,11 +955,10 @@ export default {
     </div>
 </template>
 
-<!-- <style scoped>
-.table-container {
-  width: 1000px; 
-  Adjust the height as needed
-  overflow: auto;
+<style scoped>
+.align-middle {
+    display: flex;
+    align-items: center;
 }
 
-</style> -->
+</style>
