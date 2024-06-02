@@ -51,7 +51,8 @@
       <v-row justify="space-between" align="center" class="mx-4">
           <!-- Checkbox on the left -->
           <v-col lg="3" md="3" cols="12">
-              {{ $t('container.list.total') }} &nbsp;:&nbsp;{{ this.total }}
+              {{ $t('container.list.total') }} &nbsp;:&nbsp; {{ language === 'bn' ? $helpers.englishToBangla(
+                this.total) : this.total }}
           </v-col>
 
           <!-- Dropdown on the right -->
@@ -600,6 +601,11 @@ export default {
     ValidationObserver,
   },
   computed: {
+  language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      },
+    },
     headers() {
       return [
         {
