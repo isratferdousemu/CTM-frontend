@@ -1358,7 +1358,7 @@
     "profile": {
       "personal_info": "ব্যক্তিগত তথ্য",
       "upload": "আপলোড",
-      "upload_type": "একটি JPG বা JPEG ছবি বেছে নিন",
+      "upload_type": "একটি JPG, JPEG বা PNG ছবি সিলেক্ট করুন (সর্বোচ্চ 2MB)",
       "name_en": "সম্পূর্ণ নাম (বাংলায়)",
       "username": "ব্যবহারকারীর নাম",
       "brithday": "জন্মদিন",
@@ -1370,7 +1370,10 @@
       "new_pass": "নতুন পাসওয়ার্ড",
       "retype_pass": "পাসওয়ার্ড পুনরায় লিখুন",
       "update_pass": "পাসওয়ার্ড আপডেট করুন",
-      "contact_info": "যোগাযোগের তথ্য"
+      "contact_info": "যোগাযোগের তথ্য",
+      "image_reqired": "ছবি আবশ্যক",
+      "image_size": "ফাইল সাইজ সর্বোচ্চ 2MB",
+      "image_format": "ছবির বিন্যাস"
     }
   }
 }
