@@ -43,7 +43,7 @@
             <v-card class="pa-5 px-10 mb-4">
               <v-row>
                 <!-- Personal Information title -->
-                <v-col cols="12" >
+                <v-col cols="12">
                   <v-card-title style="background-color: #2b4978; color: white">
                     {{ $t("container.profile.personal_info") }}
                   </v-card-title>
@@ -112,7 +112,7 @@
                 <!-- End Information part -->
 
                 <!-- Image part -->
-                <v-col cols="12" sm="6">
+                <!-- <v-col cols="12" sm="6">
                   <v-img
                     :src="data.photo_url"
                     style="width: 200px; height: 200px; border: 1px solid #ccc"
@@ -121,7 +121,7 @@
                   <span>
                     <v-file-input
                       v-model="image"
-                      accept="image/jpeg,image/jpg"
+                      accept="image/jpeg,image/jpg,image/png"
                       :label="$t('container.profile.upload_type')"
                     ></v-file-input>
                     <v-btn @click="uploadImage" color="primary"
@@ -130,6 +130,29 @@
                       }}</label></v-btn
                     >
                   </span>
+                </v-col> -->
+
+                <v-col cols="12" sm="6">
+                  <v-img
+                    :src="data.photo_url"
+                    style="width: 200px; height: 200px; border: 1px solid #ccc"
+                    class="mb-5"
+                  ></v-img>
+                  <v-form ref="form" v-model="valid" lazy-validation>
+                    <v-file-input
+                      v-model="image"
+                      :rules="imageRules"
+                      accept="image/jpeg,image/jpg,image/png"
+                      :label="$t('container.profile.upload_type')"
+                    ></v-file-input>
+                    <v-btn
+                      @click="uploadImage"
+                      :disabled="!valid"
+                      color="primary"
+                    >
+                      <label>{{ $t("container.profile.upload") }}</label>
+                    </v-btn>
+                  </v-form>
                 </v-col>
                 <!-- End Image part -->
               </v-row>
@@ -209,7 +232,17 @@ export default {
       errors: [],
       otpDialog: false,
       remainingTime: 60,
+      valid: false,
       image: null,
+      imageRules: [
+        // (v) => !!v || this.$t("container.profile.image_required"),
+        (v) =>
+          !v || v.size < 2000000 || this.$t("container.profile.image_size"),
+        // (v) =>
+        //   !v ||
+        //   ["image/jpeg", "image/jpg"].includes(v.type) ||
+        //   this.$t("container.profile.image_format"),
+      ],
     };
   },
   computed: {
@@ -218,6 +251,11 @@ export default {
     }),
     userId() {
       return this.userData ? this.userData.id : null;
+    },
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      },
     },
   },
 
@@ -269,6 +307,14 @@ export default {
 
     // photo upload method
     async uploadImage() {
+      if (this.image == null) {
+        this.$toast.warning(
+          this.language === "bn"
+            ? "অনুগ্রহ করে একটি JPG/JPEG বা PNG ফাইল নির্বাচন করুন"
+            : "Please select a JPG/JPEG or PNG file"
+        );
+        return;
+      }
       try {
         const formData = new FormData();
         formData.append("image", this.image);
@@ -286,23 +332,39 @@ export default {
 
         // handle the response accordingly
         if (response?.data?.success) {
-          this.$toast.success(this.language === "bn" ? "ছবি সফলভাবে আপলোড করা হয়েছে৷" : "Image uploaded successfully");
+          this.$toast.success(
+            this.language == 'bn'
+              ? "ছবি সফলভাবে আপলোড করা হয়েছে৷"
+              : "Image uploaded successfully"
+          );
           this.image = null;
           this.getUserById();
         }
       } catch (error) {
         console.error("Error uploading image:", error);
-        this.$toast.error("Error uploading image. Please try again later.");
+        this.$toast.error(
+          this.language == 'bn'
+            ? "ছবি আপলোড করার সময় ত্রুটি। অনুগ্রহ করে একটু পরে আবার চেষ্টা করুন."
+            : "Error uploading image. Please try again later."
+        );
       }
     },
 
     optSend: async function () {
       if (this.password == null || this.password.length < 6) {
-        this.$toast.warning("Password must be at least 6 characters long");
+        this.$toast.warning(
+          this.language == 'bn'
+            ? "পাসওয়ার্ড তালিকা সর্বাধিক 6 অক্ষর দীর্ঘ"
+            : "Password must be at least 6 characters long"
+        );
         return;
       }
       if (this.password !== this.retypePassword) {
-        this.$toast.error("Passwords do not match");
+        this.$toast.error(
+          this.language == 'bn'
+            ? "পাসওয়ার্ড মিলছে না"
+            : "Passwords do not match"
+        );
         return;
       }
       this.loading = true;
@@ -316,7 +378,11 @@ export default {
         .then((result) => {
           this.loading = false;
           if (result.data.success == true) {
-            this.$toast.success(result.data.message);
+            this.$toast.success(
+              this.language == 'bn'
+                ? "OTP সফলভাবে পাঠানো হয়েছে"
+                : "OTP sent successfully"
+            );
             this.otpDialog = true;
             this.startCountdown();
           } else {
@@ -331,11 +397,19 @@ export default {
 
     async updatePassword() {
       if (this.password == null || this.password.length < 6) {
-        this.$toast.warning("Password must be at least 6 characters long");
+        this.$toast.warning(
+          this.language == 'bn'
+            ? "পাসওয়ার্ড তালিকা সর্বাধিক 6 অক্ষর দীর্ঘ হতে হবে"
+            : "Password must be at least 6 characters long"
+        );
         return;
       }
       if (this.password !== this.retypePassword) {
-        this.$toast.error("Passwords do not match");
+        this.$toast.error(
+          this.language == 'bn'
+            ? "পাসওয়ার্ড মিলছে না"
+            : "Passwords do not match"
+        );
         return;
       }
 
@@ -358,7 +432,11 @@ export default {
         if (response.data.success) {
           this.$refs.passwordForm.reset();
           this.otpDialog = false;
-          this.$toast.success(this.language === "bn" ? "পাসওয়ার্ড সফলভাবে আপডেট করা হয়েছে" : "Password updated successfully");
+          this.$toast.success(
+            this.language == 'bn'
+              ? "পাসওয়ার্ড সফলভাবে আপডেট করা হয়েছে"
+              : "Password updated successfully"
+          );
         }
       } catch (error) {
         console.error("Error updating password:", error);

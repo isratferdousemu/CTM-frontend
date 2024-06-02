@@ -1373,7 +1373,7 @@
     "profile": {
       "personal_info": "Personal Information",
       "upload": "Upload",
-      "upload_type": "Choose a JPG or JPEG image",
+      "upload_type": "Choose a JPG, JPEG or PNG image (max 2MB)",
       "name_en": "Full Name (English)",
       "username": "Username",
       "brithday": "Brithday",
@@ -1385,7 +1385,10 @@
       "new_pass": "New Password",
       "retype_pass": "Retype Password",
       "update_pass": "Update Password",
-      "contact_info": "Contact Information"
+      "contact_info": "Contact Information",
+      "image_reqired": "Image Required",
+      "image_size": "File size maximum 2MB",
+      "image_format": "Image Format"
     }
   }
 }
