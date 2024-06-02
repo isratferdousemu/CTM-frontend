@@ -7,8 +7,13 @@
           <v-col cols="12">
             <v-expansion-panels>
               <v-expansion-panel>
-                <v-expansion-panel-header color="#8C9EFF">
-                  <h3 class="white--text">
+                <v-expansion-panel-header color="#1c3b68">
+                   <template v-slot:actions>
+                      <v-icon color="white">
+                        $expand
+                      </v-icon>
+                    </template>
+                  <h3 class="white--text" style="font-size:19.89px;">
                     {{ $t("container.list.filter") }}
                   </h3>
                 </v-expansion-panel-header>
@@ -114,15 +119,11 @@
           </v-col>
           <v-col cols="12">
             <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8">
-              <v-card-title class="justify-center" tag="div">
-                <h3 class="text-uppercase pt-3">
-                  {{
-                  $t(
-                  "container.system_config.demo_graphic.union1.customtitle"
-                  )
-                  }}
-                </h3>
-              </v-card-title>
+               <v-card-title tag="div" style="background-color:#1c3b68;color:white;margin-bottom: 17px;font-size:17px;">
+                    <h3 class="white--text">
+                      {{ $t("container.system_config.demo_graphic.union1.customtitle") }}
+                    </h3>
+                  </v-card-title>
               <v-card-text>
                 <v-row justify="space-between" align="center" class="mx-5">
                   <!-- Checkbox on the left -->
@@ -144,7 +145,10 @@
                 <v-row justify="space-between" align="center" class="mx-4">
                   <!-- Checkbox on the left -->
                   <v-col lg="3" md="3" cols="12">
-                    {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">{{ this.total }}</span>
+                    {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">
+                        {{ language === 'bn' ? $helpers.englishToBangla(
+                          this.total) : this.total }}
+                    </span>
                   </v-col>
 
 
@@ -196,14 +200,19 @@
                       :items-per-page="pagination.perPage" @update:options="handleOptionsUpdate" hide-default-footer
                       class="elevation-0 transparent row-pointer">
                       <template v-slot:item.id="{ item, index }">
-                        {{
-                        (pagination.current - 1) * pagination.perPage +
-                        index +
-                        1
-                        }}
+                        {{ language === 'bn' ? $helpers.englishToBangla(
+                          (pagination.current - 1) * pagination.perPage +
+                          index +
+                          1) : (pagination.current - 1) * pagination.perPage +
+                          index +
+                          1 }}
+                      </template>
+                        <template v-slot:item.code="{ item }">
+                           {{ language === 'bn' ? $helpers.englishToBangla(
+                            item.code) : item.code }}
                       </template>
                       <template v-slot:item.division="{ item }">
-                        {{ item.thana.district.division.name_en }}
+                         {{ language === 'bn' ? item.thana.district.division.name_bn : item.thana.district.division.name_en }}
                       </template>
                       <template v-slot:item.district="{ item }">
                         {{ item.thana?.district.name_en }}
@@ -288,7 +297,7 @@
                         " :items="divisions"
                                       :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
                                       item-value="id" required
-                        :error="errors[0] ? true : false" :error-messages="errors[0]"
+                        :error="errors[0] ? true : false"  :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে বিভাগ নির্বাচন করুন' : 'Please Select Division.') : ''"
                         :hide-details="errors[0] ? false : true"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
@@ -301,7 +310,7 @@
                         " :items="districts"
                                       :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
                                       item-value="id" required
-                        :error="errors[0] ? true : false" :error-messages="errors[0]"
+                        :error="errors[0] ? true : false" :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে জেলা নির্বাচন করুন' : 'Please Select Distrcit.') : ''"
                         :hide-details="errors[0] ? false : true"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
@@ -310,7 +319,7 @@
                     <ValidationProvider name="LocationType" vid="locationType" rules="required" v-slot="{ errors }">
                       <v-autocomplete @input="onChangeLocationType($event)" v-model="data.location_type" outlined
                         :label="$t('container.list.location_type')" :items="locationType" :item-text="getItemText"
-                        item-value="id" required :error="errors[0] ? true : false" :error-messages="errors[0]"
+                        item-value="id" required :error="errors[0] ? true : false" :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে লোকেশন টাইপ নির্বাচন করুন' : 'Please Select Loction Type.') : ''"
                         :hide-details="errors[0] ? false : true" :readonly="false"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
@@ -335,29 +344,29 @@
                         " :items="thanas"
                                       :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
                                       item-value="id" required
-                        :error="errors[0] ? true : false" :error-messages="errors[0]"
+                        :error="errors[0] ? true : false"  :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে উপজেলা নির্বাচন করুন' : 'Please Select Upazila.') : ''"
                         :hide-details="errors[0] ? false : true"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
 
                   <v-col lg="12" md="12" cols="12" v-if="data.location_type != null">
                     <ValidationProvider name="Code" vid="code" rules="required|codeRules" v-slot="{ errors }">
-                      <v-text-field outlined type="text" v-model="data.code" :label="codeLabel" required
-                        :error="errors[0] ? true : false" :error-messages="errors[0]"
+                      <v-text-field outlined type="number" v-model="data.code" :label="codeLabel" required
+                        :error="errors[0] ? true : false"  :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে সঠিক কোড লিখুন' : 'Please Enter Valid Geo Code.') : ''"
                         :hide-details="errors[0] ? false : true"></v-text-field>
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="12" md="12" cols="12" v-if="data.location_type != null">
                     <ValidationProvider name="Name English" vid="name_en" rules="required|checkName" v-slot="{ errors }">
                       <v-text-field outlined type="text" v-model="data.name_en" :label="nameEnLabel" required
-                        :error="errors[0] ? true : false" :error-messages="errors[0]"
+                        :error="errors[0] ? true : false"  :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে ইংরেজি নাম লিখুন' : 'Please Enter English Name.') : ''"
                         :hide-details="errors[0] ? false : true"></v-text-field>
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="12" md="12" cols="12" v-if="data.location_type != null">
                     <ValidationProvider name="Name Bangla" vid="name_bn" rules="required|checkNameBn" v-slot="{ errors }">
                       <v-text-field outlined type="text" v-model="data.name_bn" :label="nameBnLabel" required
-                        :error="errors[0] ? true : false" :error-messages="errors[0]"
+                        :error="errors[0] ? true : false" :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে বাংলা নাম লিখুন' : 'Please Enter Bangla Name.') : ''"
                         :hide-details="errors[0] ? false : true"></v-text-field>
                     </ValidationProvider>
                   </v-col>
@@ -456,7 +465,7 @@
 
                   <v-col lg="12" md="12" cols="12" v-if="data.location_type != null">
                     <ValidationProvider name="Code" vid="code" rules="required|codeRules" v-slot="{ errors }">
-                      <v-text-field outlined type="text" v-model="data.code" :label="codeLabel" required
+                      <v-text-field outlined type="number" v-model="data.code" :label="codeLabel" required
                         :error="errors[0] ? true : false" :error-messages="errors[0]"
                         :hide-details="errors[0] ? false : true"></v-text-field>
                     </ValidationProvider>
@@ -483,7 +492,7 @@
                   </v-btn>
                   <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
                     class="custom-btn-width warning white--text py-2">
-                    {{ $t("container.list.submit") }}
+                    {{ $t("container.list.update") }}
                   </v-btn>
                 </v-row>
               </form>
@@ -650,30 +659,31 @@ export default {
             "container.system_config.demo_graphic.union.custom_code"
           ),
           value: "code",
+        
         },
         {
           text: this.$t(
             "container.system_config.demo_graphic.division.division"
           ),
-          value: "parent.parent.parent.name_en",
+          value: this.language==='bn'? "parent.parent.parent.name_bn": "parent.parent.parent.name_en",
         },
         {
           text: this.$t(
             "container.system_config.demo_graphic.district.district"
           ),
-          value: "parent.parent.name_en",
+           value: this.language === 'bn' ? "parent.parent.name_bn" : "parent.parent.name_en",
         },
         {
           text: this.$t("container.system_config.demo_graphic.thana.thana"),
-          value: "parent.name_en",
+           value: this.language === 'bn' ? "parent.name_bn" : "parent.name_en",
         },
         {
           text: this.$t("container.system_config.demo_graphic.union.name_en"),
-          value: "name_en",
+           value: this.language === 'bn' ? "name_bn" : "name_en",
         },
         {
           text: this.$t("container.system_config.demo_graphic.union.name_bn"),
-          value: "name_bn",
+          value: this.language === 'bn' ? "name_bn" : "name_en",
         },
         {
           text: this.$t("container.list.action"),
@@ -960,15 +970,13 @@ export default {
         if (this.data.location_type === 1) {
           return (
               regex.test(value.toString()) ||
-            this.$t("container.system_config.demo_graphic.pouro.code") +
-              " can have maximum 6 digit"
+            this.$t("container.system_config.demo_graphic.pouro.error_code")
           );
         }
         if (this.data.location_type === 2) {
           return (
               regex.test(value.toString()) ||
-            this.$t("container.system_config.demo_graphic.thana1.code") +
-              " can have maximum 6 digit"
+            this.$t("container.system_config.demo_graphic.thana1.error_code")
           );
         }
       });
@@ -1207,6 +1215,7 @@ export default {
       this.GetUnion();
     },
     async GetUnion() {
+      this.search = this.search.replace(/%/g, '');
       let page;
       if (!this.sortBy) {
         page = this.pagination.current;
@@ -1423,6 +1432,7 @@ export default {
         (this.districts = []),
         (this.thanas = []),
         (this.data.thana_id = null);
+        (this.data.location_type = null);
     },
     editUnion(item) {
       console.log(item, "editUnion");

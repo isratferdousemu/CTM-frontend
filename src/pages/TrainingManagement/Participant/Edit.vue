@@ -1,14 +1,46 @@
 <script>
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
+extend("checkUsername", {
+    validate: (value) => {
+        if (!value && value !== 0) {
+            return false;
+        }
+        // Check if all characters are numeric and not allow special characters
+        const isValid = /^[a-z][a-z0-9._]*$/.test(value);
 
-
-extend('checklength', {
-    validate: value => {
-        return value.length <= 10;
+        // Return true if both conditions are met
+        return isValid;
     },
-    message: 'Please enter a 10 character'
+    message: "Username should be in lowercase and without any special character",
 });
 
+
+extend('name', {
+    validate: value => {
+        // Regular expression for IP address validation
+        const nameRegex = /^[a-zA-Z\s'().]+$/;
+        return nameRegex.test(value);
+    },
+    message: 'Please enter a valid  Name'
+});
+extend('mobile', {
+    validate: value => {
+        // Regular expression to match phone numbers with a maximum length of 14 characters
+
+        const mobileRegex = /^01[3-9][0-9]{8}$/;;
+        return mobileRegex.test(value);
+
+    },
+    message: 'Please enter a valid phone number'
+});
+extend('email', {
+    validate: value => {
+        // Regular expression for email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(value);
+    },
+    message: 'Please enter a valid email address'
+});
 extend('bangla', {
     validate: value => {
         // Regular expression to match Bangla characters
@@ -18,56 +50,13 @@ extend('bangla', {
     },
     message: 'Bangla characters are not allowed in this field'
 });
-extend('name', {
-    validate: value => {
-        // Regular expression for IP address validation
-        const nameRegex = /^[a-zA-Z\s']+$/;
-        return nameRegex.test(value);
-    },
-    message: 'Please enter a valid  Name'
-});
-
-extend('end_date', {
-    validate(value, { start_date }) {
-        // Check if both start_date and end_date are provided
-        if (value && start_date) {
-            // Convert start_date and end_date to Date objects
-            const startDate = new Date(start_date);
-            const endDate = new Date(value);
-
-            // Compare start_date and end_date
-            return endDate >= startDate;
-        }
-        // If start_date is not provided, return true
-        return true;
-    },
-    params: ['start_date'],
-    message: 'The End Date must be greater than or equal to the Start Date'
-});
-extend('start_date', {
-    validate(value, { end_date }) {
-        // Check if both start_date and end_date are provided
-        if (value && end_date) {
-            // Convert start_date and end_date to Date objects
-            const endDate = new Date(end_date);
-            const startDate = new Date(value);
-
-            // Compare start_date and end_date
-            return endDate >= startDate;
-        }
-        // If start_date is not provided, return true
-        return true;
-    },
-    params: ['end_date'],
-    message: 'The Start Date must be less than or equal to the End Date'
-});
 
 
 
 
 export default {
-    name: "TrainingProgramCreate",
-    title: "CTM -Training program",
+    name: "ParticipantCreate",
+    title: "CTM -Training Registration",
     components: {
         ValidationProvider,
         ValidationObserver,
@@ -83,77 +72,45 @@ export default {
 
 
 
-            circular_types: [],
-            edited_modules:[],
-            edited_trainers: [],
-            modules: [],
-            program_trainers: [],
-            timeSlotModal: false,
-            selected_day: null,
-            selectedTimeSlots: [],
-            time_slots: [
-        
-            ],
-            time_slots_view:[],
 
-            view_on_days:[],
-            edited_on_days:[],
+            users: [],
+            organizations: [],
+            poll_programs: [],
+            circulars: [],
+            programs: [],
+            getPartipant: 0,
+            user_type_id: null,
+            userType: [
+                {
+                    id: 1,
+                    value_en: "Office User",
+                    value_bn: "অফিস ব্যবহারকারী",
+                },
+                {
+                    id: 2,
+                    value_en: "Committee User",
+                    value_bn: "কমিটির ব্যবহারকারী",
+                },
+            ],
+
 
             data: {
-                _method:"PUT",
-                program_name: null,
+                training_program_id: null,
                 training_circular_id: null,
-                circular_modules: [],
-                trainers: [
-                  
+                user_id: [],
 
-                ],
-                description: null,
-                start_date: null,
-                end_date: null,
 
-                on_days: [
-                    {
-                        "day": "Sat",
-                        "is_active": 0,
-                        "timeSlots": []
-                    },
-                    {
-                        "day": "Sun",
-                        "is_active": 0,
-                        "timeSlots": []
-                    },
-                    {
-                        "day": "Mon",
-                        "is_active": 0,
-                        "timeSlots": [
-                            2,
-                            4
-                        ]
-                    },
-                    {
-                        "day": "Tue",
-                        "is_active": 0,
-                        "timeSlots": []
-                    },
-                    {
-                        "day": "Wed",
-                        "is_active": 0,
-                        "timeSlots": []
-                    },
-                    {
-                        "day": "Thu",
-                        "is_active": 0,
-                        "timeSlots": []
-                    },
-                    {
-                        "day": "Fri",
-                        "is_active": 0,
-                        "timeSlots": []
-                    }
-                ]
             },
-            designations: []
+            poll: {
+                training_program_id: null,
+                training_circular_id: null,
+                full_name: null,
+                email: null,
+
+
+
+            },
+
         };
     },
     computed: {
@@ -162,87 +119,71 @@ export default {
                 return this.$store.getters.getAppLanguage;
             }
         },
+
+
     },
 
 
 
-
-
     mounted() {
-        this.Programtrainers();
+        // this.Program();
+        this.$store
+            .dispatch("getLookupByType", 30)
+            .then((res) => (this.organizations = res));
         this.GetCircular();
-        this.GetTimeSlot();
         this.DataView();
+
 
 
     },
 
 
     methods: {
-        handleMouseOver(day) {
-            // Your logic for handling mouse over event
-        
-            if (day.is_active == 1) {
-                this.selected_day = day.day
-                this.timeSlotModal = true;
-               
-
-                if (day.timeSlots && day.timeSlots.length != 0) {
-                    this.selectedTimeSlots = day.timeSlots.map(slot => parseInt(slot));
-                }
-
-            }
-            console.log(this.selectedTimeSlots, "selectedTimeSlots")
-            console.log(day, "hovered day data");
-        },
         DataView() {
             this.$axios
-                .get(`admin/training/programs/${this.$route.params.id}`, {
+                .get(`admin/training/participants/${this.$route.params.id}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
                     },
                 })
                 .then((result) => {
+                    console.log(result?.data?.data.is_by_poll,"by_poll")
 
-
-                    this.data = result?.data?.data;
-                    this.data._method="PUT"
-                    this.edited_modules = result?.data?.data.modules;
-                    this.edited_trainers = result?.data?.data.trainers;
-                    this.change();
-                    this.data.circular_modules = [];
-                    this.edited_modules.forEach((item, index) => {
-                        this.data.circular_modules.push(item.id);
-                    });
-                    this.data.trainers = [];
-                    this.edited_trainers.forEach((item, index) => {
-                        this.data.trainers.push(item.id);
-                    });
-                    this.data.on_days.forEach(day => {
-                        day.is_active = parseInt(day.is_active); // Convert string to number
-                    });
-
-
-                    // this.view_on_days = result?.data?.data.on_days;
-                    // const timeSlotsMap = new Map();
-                    // this.time_slots_view.forEach(slot => {
-                    //     timeSlotsMap.set(slot.id.toString(), slot.time);
-                    // });
-
-                    // // Replace time slot IDs with time values
-
-                    // const updatedData = this.view_on_days.map(day => {
-                    //     if (day.is_active === '1') {
-                    //         const updatedTimeSlots = (day.timeSlots || []).map(slotId => timeSlotsMap.get(slotId) || slotId);
-                    //         return { ...day, timeSlots: updatedTimeSlots };
-                    //     } else {
-                    //         return { ...day, timeSlots: null }; // If the day is not active, return it unchanged
-                    //     }
-                    // });
-                    // this.edited_on_days = updatedData;
-
+                    if(result?.data?.data.is_by_poll==1){
+                        this.getPartipant = result?.data?.data.is_by_poll
+                        this.poll.training_circular_id = result?.data?.data.training_circular_id;
+                        this.changePoll();
+                        this.poll.training_program_id = result?.data?.data.training_program_id;
                    
+                        this.poll.full_name = result?.data?.data.full_name;
+                        this.poll.email = result?.data?.data.email;
+
+
+                    }
+
+                    if (result?.data?.data.is_by_poll == 0) {
+                        this.getPartipant = result?.data?.data.is_by_poll
+                        this.data = result?.data?.data;
+                        this.change();
+                        this.data.training_program_id = result?.data?.data.training_program_id;
+                      
+                        this.user_type_id = result?.data?.data.user?.user_type;
+                        this.onChangeUserType();
+                        this.data.user_id = result?.data?.data?.user_id;
+                        console.log(this.data.user_id,"user_id")
+
+
+                    }
+                  
+                    console.log(this.data,"dataview")
+                    console.log(result?.data?.data, "resultdataview")
+                    
+
+
+                
+
+
                 })
                 .catch((err) => {
                     if (this.$refs.formAdd && this.$refs.formAdd.$refs && this.$refs.formAdd.$refs.operator) {
@@ -255,79 +196,53 @@ export default {
                 });
 
         },
-        async GetTimeSlot() {
 
-            this.$axios
-                .get("/admin/training/program-time-slots", {
-                    headers: {
-                        Authorization: "Bearer " + this.$store.state.token,
-                        "Content-Type": "multipart/form-data",
-                    },
-
-                })
-                .then((result) => {
-
-                    this.time_slots = result?.data?.data;
-                    this.time_slots_view = result?.data?.data;
-                    console.log(this.time_slots,"time_slots")
-
+        setParticipant(value) {
+            // Toggle value to trigger re-render
+            if (this.getPartipant === value) {
+                this.getPartipant = null;
+                this.$nextTick(() => {
+                    this.getPartipant = value;
                 });
-        },
+            } else {
+                this.getPartipant = value;
+            }
+            console.log(value, "value");
+            console.log(this.getPartipant, "getPartipant");
+        }
+        ,
         change() {
-            this.data.circular_modules=[];
-            const selected_circular = this.circulars?.find(circular => circular.id == this.data.training_circular_id);
-            this.modules = selected_circular?.modules
+            this.programs = [];
+            const selected_programs = this.circulars.find(circular => circular.id == this.data.training_circular_id);
+            this.programs = selected_programs?.programs
+            console.log(this.programs, "programs");
 
 
 
         },
-        showTimeSlotModal(day) {
-        
-            if (day.is_active == 1) {
-                this.selected_day = day.day
-                this.timeSlotModal = true;
-             
-                if (day.timeSlots && day.timeSlots.length != 0){
-                    this.selectedTimeSlots = day.timeSlots.map(slot => parseInt(slot));
-                }
-                  
-            }
-            console.log(this.selectedTimeSlots,"selectedTimeSlots")
-         
-        },
-       
-        saveTimeSlots() {
-            // Add selected time slots to the active day's timeSlots array
-            console.log(this.selected_day,'selected_day');
-            console.log(this.selectedTimeSlots, 'selectedTimeSlots');
-          
-          
-            const activeDay = this.data.on_days.find(day => day.is_active == 1 && this.selected_day == day.day);
-            activeDay.timeSlots = [];
-            if (activeDay){
-             
-                activeDay.timeSlots.push(...this.selectedTimeSlots);
+        changePoll() {
+            this.poll_programs = [];
+            const selected_programs = this.circulars.find(circular => circular.id == this.poll.training_circular_id);
+            this.poll_programs = selected_programs?.programs
 
-            }
-           
 
-            this.closeTimeSlotModal();
         },
-        closeTimeSlotModal() {
-            this.timeSlotModal = false;
-            this.selectedTimeSlots = [];
-            this.selected_day = null;// Clear selected time slots
-        },
-
 
         getItemText(item) {
             return this.language === 'bn' ? item.value_bn : item.value_en;
         },
 
+        itemText(item) {
+            return `${item.circular_name} - ${item.id}`;
+        }
+        ,
+        getprogram(item) {
+            return `${item.program_name} - ${item.id}`;
+        },
         async GetCircular() {
 
             this.$axios
-                .get("/admin/training/program-circulars", {
+                .get("/admin/training/participants/circulars", {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -338,16 +253,12 @@ export default {
 
                     this.circulars = result?.data?.data;
 
-
-
-
-
                 });
         },
-        async Programtrainers() {
+        async onChangeUserType() {
 
             this.$axios
-                .get("/admin/training/program-trainers", {
+                .get(`/admin/training/participants/users/${this.user_type_id}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -356,11 +267,7 @@ export default {
                 })
                 .then((result) => {
 
-                    this.program_trainers = result?.data?.data;
-                    console.log(this.program_trainers, "program_trainers")
-
-
-
+                    this.users = result?.data?.data;
 
 
                 });
@@ -369,50 +276,10 @@ export default {
 
 
 
-        submitForm() {
+        async submitForm() {
 
-            const inactiveDay = this.data.on_days.find(day => day.is_active == 1);
-            if (!inactiveDay) {
-                const message = this.language === 'bn' ? 'অনুগ্রহ করে   দিন নির্বাচন করুন সময় স্লট সহ' : 'Please select  day with time slots';
-                this.$toast.error(message);
-
-                return false;
-            }
-            const activeDayWithEmpty = this.data.on_days.find(day => day.is_active === 1 && day.timeSlots.length === 0);
-
-            if (activeDayWithEmpty) {
-                const message = this.language === 'bn' ? `অনুগ্রহ করে ${activeDayWithEmpty.day} Day  তে সময় স্লট যোগ করুন` : `Please add time slots On ${activeDayWithEmpty.day} Day`;
-                this.$toast.error(message);
-                return false;
-            }
-
-
-
-            // const formData = new FormData();
-            // // Append data to FormData object
-            // formData.append('program_name', this.data.program_name);
-            // formData.append('training_circular_id', this.data.training_circular_id);
-            // if (this.data?.circular_modules) {
-            //     this.data?.circular_modules.forEach((item, index) => {
-            //         formData.append('circular_modules[]', item);
-            //     });
-            // }
-            // if (this.data?.trainers) {
-            //     this.data?.trainers.forEach((item, index) => {
-            //         formData.append('trainers[]', item);
-            //     });
-            // }
-
-            // formData.append('description', this.data.description);
-            // formData.append('start_date', this.data.start_date);
-            // formData.append('end_date', this.data.start_date);
-            // formData.append('class_duration', this.data.class_duration);
-            // formData.append('description', this.data.description);
-
-            // formData.append('lang', this.language);
-            console.log(this.data,"data")
-            this.$axios
-                .post(`admin/training/programs/${this.$route.params.id}`, this.data, {
+            await this.$axios
+                .post("admin/training/participants", this.data, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -421,11 +288,57 @@ export default {
                 .then((result) => {
 
                     this.$toast.success(result.data.message);
-                    this.$router.push("/training-management/training-program");
+                    this.$router.push("/training-management/participant");
 
 
                 })
                 .catch((err) => {
+                    if (err?.response?.data?.errors?.training_program_id[0]) {
+                        if (this.language == 'en') {
+                            this.$toast.error("This program has already been taken by this participant");
+                        }
+                        else {
+                            this.$toast.error("এই প্রোগ্রামটি ইতিমধ্যে এই অংশগ্রহণকারী দ্বারা নেওয়া হয়েছে");
+                        }
+
+
+                    }
+
+
+
+
+
+                });
+
+        },
+        async submitPoll() {
+
+            await this.$axios
+                .post("admin/training/participants/external", this.poll, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((result) => {
+
+                    this.$toast.success(result.data.message);
+                    this.$router.push("/training-management/participant");
+
+
+                })
+                .catch((err) => {
+                    if (err?.response?.data?.errors?.training_program_id[0]) {
+                        if (this.language == 'en') {
+                            this.$toast.error("This program has already been taken by this participant");
+                        }
+                        else {
+                            this.$toast.error("এই প্রোগ্রামটি ইতিমধ্যে এই অংশগ্রহণকারী দ্বারা নেওয়া হয়েছে");
+                        }
+
+
+                    }
+
 
 
                 });
@@ -433,12 +346,13 @@ export default {
         },
 
 
+
     },
 };
 </script>
 
 <template>
-    <div id="circular_create">
+    <div id="participant_create">
         <v-row class="mx-5 mt-5">
             <v-col cols="12">
                 <v-row>
@@ -447,29 +361,32 @@ export default {
                         <v-card>
 
                             <v-card-title class="justify-center"
-                                style="background-color: #1C3B68; color: white;font-size: 17px;">
-                                <h4 class="white--text">
-                                    {{ $t("container.training_management.training_program.add") }}
+                                style="background-color: #1C3B68; color: white; font-size: 17px;">
+                                <h4 class="white--text" v-if="getPartipant === 0">
+                                    {{ $t('container.training_management.training_registration.add_3') }}
+                                </h4>
+                                <h4 class="white--text" v-if="getPartipant === 1">
+                                    {{ $t('container.training_management.training_registration.add_2') }}
                                 </h4>
                             </v-card-title>
 
-                            <v-divider></v-divider>
+                            <v-btn-toggle v-model="getPartipant" class="ma-5 ml-15">
+                                <v-btn small :color="getPartipant === 0 ? '#1C3B68' : undefined"
+                                    :class="{ 'white--text': getPartipant === 0 }" @click="setParticipant(0)">
+                                    {{ $t('container.training_management.training_registration.add_3') }}
+                                </v-btn>
+                                <v-btn small :color="getPartipant === 1 ? '#1C3B68' : undefined"
+                                    :class="{ 'white--text': getPartipant === 1 }" @click="setParticipant(1)">
+                                    {{ $t('container.training_management.training_registration.by_poll') }}
+                                </v-btn>
+                            </v-btn-toggle>
 
-
-
-                            <v-card-text class="mt-10">
+                            <v-card-text class="mt-10" v-if="getPartipant == 0">
                                 <ValidationObserver ref="form" v-slot="{ invalid }">
                                     <v-form v-on:submit.prevent="submitForm()">
 
                                         <v-row class="mx-10 no-gap-row">
-                                            <v-col cols="12" sm="6" lg="6">
-                                                <ValidationProvider name="Program Name" vid="program_name"
-                                                    rules="required" v-slot="{ errors }">
-                                                    <v-text-field dense type="text" v-model="data.program_name" :label="$t('container.training_management.training_program.program_name')
-                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক প্রোগ্রামের  নাম প্রদান করুন '
-                                        : 'Please enter a Program Name') : ''"></v-text-field>
-                                                </ValidationProvider>
-                                            </v-col>
+
                                             <v-col cols=" 12" sm="6" lg="6">
                                                 <ValidationProvider name="training_circular_id"
                                                     vid="training_circular_id" rules="required" v-slot="{ errors }">
@@ -477,118 +394,54 @@ export default {
                                                         v-model="data.training_circular_id" @input="change()"
                                                         :label="$t('container.training_management.training_program.training_circular')"
                                                         persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :items="circulars" item-text="circular_name" item-value="id"
+                                                        :items="circulars" :item-text="itemText" item-value="id"
                                                         :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সার্কুলার প্রদান করুন '
-                                        : 'Please enter Circular') : ''">
+                                    : 'Please enter Circular') : ''">
 
                                                     </v-autocomplete>
                                                 </ValidationProvider>
                                             </v-col>
-
-
-
-                                            <v-col cols=" 12" sm="6" lg="6">
-                                                <ValidationProvider name="Module" vid="module" rules="required"
-                                                    v-slot="{ errors }">
-                                                    <v-select multiple dense type="text" v-model="data.circular_modules"
-                                                        :label="$t('container.training_management.training_circular.module')"
-                                                        persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :items="modules" :item-text="getItemText" item-value="id"
-                                                        :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক মডিউল/কোর্স প্রদান করুন '
-                                        : 'Please enter Module/Course') : ''">
-                                                        <template v-slot:selection="{ item }">
-                                                            <v-chip class="ma-1 white--text" color="blue"
-                                                                v-if="language == 'en'">{{
-                                                                item.value_en }}</v-chip>
-                                                            <v-chip class="ma-1 white--text" color="blue" v-else>{{
-                                                                item.value_bn }}</v-chip>
-
-
-                                                        </template>
-                                                    </v-select>
-                                                </ValidationProvider>
-                                            </v-col>
-                                            <v-col cols=" 12" sm="6" lg="6">
-                                                <ValidationProvider name="Trainer" vid="trainers" rules="required"
-                                                    v-slot="{ errors }">
-                                                    <v-select multiple dense v-model="data.trainers"
-                                                        :label="$t('container.training_management.training_program.trainer')"
-                                                        persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :items="program_trainers" item-text="name" item-value="id"
-                                                        :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক প্রশিক্ষক প্রদান করুন '
-                                        : 'Please enter Trainer') : ''">
-                                                        <template v-slot:selection="{ item }">
-                                                            <v-chip class="ma-1 white--text" color="blue">{{
-                                                                item.name }}</v-chip>
-
-
-
-                                                        </template>
-                                                    </v-select>
-                                                </ValidationProvider>
-                                            </v-col>
                                             <v-col cols="12" sm="6" lg="6">
-                                                <ValidationProvider name="BIO" vid="description" v-slot="{ errors }">
-                                                    <v-textarea dense v-model="data.description" :label="$t('container.training_management.training_circular.description')
-                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক বিবরণ প্রদান করুন '
-                                        : 'Please enter  Description') : ''"></v-textarea>
+                                                <ValidationProvider name="Program Name" vid="training_program_id"
+                                                    rules="required" v-slot="{ errors }">
+                                                    <v-autocomplete dense type="text" v-model="data.training_program_id"
+                                                        :items="programs" :item-text="getprogram" item-value="id"
+                                                        :label="$t('container.training_management.training_program.program')
+                                    " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক প্রোগ্রাম প্রদান করুন '
+                                    : 'Please enter a Program') : ''"></v-autocomplete>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col lg="6" md="6" cols="12">
+                                                <ValidationProvider name="UserType" vid="user_type_id" rules="required"
+                                                    v-slot="{ errors }">
+                                                    <v-select dense :hide-details="errors[0] ? false : true"
+                                                        @input="onChangeUserType($event)" v-model="user_type_id"
+                                                        outlined :label="$t(
+                                    'container.system_config.demo_graphic.user.user_type'
+                                )
+                                    " :items="userType" :item-text="getItemText" item-value="id"
+                                                        :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ব্যবহারকারীর ধরন প্রদান করুন '
+                                    : 'Please enter user type') : ''"></v-select>
                                                 </ValidationProvider>
                                             </v-col>
 
 
-                                            <v-col cols=" 12" sm="12" lg="12" xs="12" xl="12">
-                                                <v-card>
-                                                    <v-card-text>
-                                                        <v-row>
 
-                                                            <v-col cols="12" sm="6" lg="6" xs="6" xl="6">
-                                                                <ValidationProvider name="start_date" vid="start_date"
-                                                                    :rules="{ required, start_date: data.end_date }"
-                                                                    v-slot="{ errors }">
-                                                                    <v-text-field dense type="date"
-                                                                        v-model="data.start_date" :label="$t('container.training_management.training_circular.start_date')
-                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য শুরুর তারিখ প্রদান করুন '
-                                        : 'Please enter a valid Start Date') : ''"></v-text-field>
-                                                                </ValidationProvider>
-                                                            </v-col>
-                                                            <v-col cols="12" sm="6" lg="6" xs="6" xl="6">
-                                                                <ValidationProvider name="end_date" vid="end_date"
-                                                                    :rules="{ required, end_date: data.start_date }"
-                                                                    v-slot="{ errors }">
-                                                                    <v-text-field dense type="date"
-                                                                        v-model="data.end_date" :label="$t('container.training_management.training_circular.end_date')
-                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য শেষ তারিখ  প্রদান করুন '
-                                        : 'Please enter a valid End Date') : ''"></v-text-field>
-                                                                </ValidationProvider>
-                                                            </v-col>
-                                                            <v-col cols="12" sm="12" lg="12">
-                                                                <h3 class="text-center mb-10">{{
-                                                                    $t('container.training_management.training_program.class_schedule')
-                                                                    }}</h3>
-                                                                <v-row>
+                                            <v-col cols=" 12" sm="6" lg="6">
+                                                <ValidationProvider name="Participant" vid="user_id" rules="required"
+                                                    v-slot="{ errors }">
+                                                    <v-select dense type="text" v-model="data.user_id"
+                                                        :label="$t('container.training_management.training_registration.participant')"
+                                                        persistent-hint outlined :error="errors[0] ? true : false"
+                                                        :items="users" item-text="full_name" item-value="id"
+                                                        :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক অংশগ্রহণকারী প্রদান করুন '
+                                    : 'Please enter valid participant') : ''">
 
-                                                                    <v-col v-for="(day, index) in data.on_days"
-                                                                        :key="index" cols="12" md="4" lg="4" xs="4"
-                                                                        xl="4" >
-                                                              
-                                                                            <v-checkbox v-model="day.is_active"
-                                                                                @change="showTimeSlotModal(day)"
-                                                                               
-                                                                                :true-value="1" :false-value="0"
-                                                                                :label="day.day"></v-checkbox>
-                                                                    
-
-                                                                    </v-col>
-                                                                </v-row>
-
-
-
-                                                            </v-col>
-                                                        </v-row>
-                                                    </v-card-text>
-                                                </v-card>
-
+                                                    </v-select>
+                                                </ValidationProvider>
                                             </v-col>
+
+
 
 
 
@@ -596,70 +449,14 @@ export default {
 
 
                                         </v-row>
-                                        <!-- <v-row class="ma-5">
-                                            <v-col cols="12">
-                                                <h4 class="text-center mb-5">{{
-                                        $t('container.training_management.training_program.class_schedule')
-                                    }}</h4>
-
-                                                <v-simple-table dense class=" mt-10">
-                                                    <template v-slot:default>
-                                                        <thead>
-                                                            <tr>
-                                                                <th class="text-left">
-
-                                                                    {{ language == 'bn' ?
-                                        'দিন' : ' Day' }}
-                                                                </th>
-
-                                                                <th class="text-left">
-                                                                    {{ language == 'bn' ?
-                                        'স্ট্যাটাস' : 'Status' }}
-                                                                </th>
-                                                                <th class="text-left">
-                                                                    {{ language == 'bn' ?
-                                        'টাইম স্লট' : ' Time Slots' }}
-                                                                </th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr v-for="(day, index) in edited_on_days" :key="index">
-                                                                <td>{{ day.day }}</td>
-                                                                <td>
-                                                                    <span
-                                                                        :style="{ color: day.is_active == '1' ? 'green' : 'red', fontSize: '24px' }">
-                                                                        <span
-                                                                            v-if="day.is_active == '1'">&#10003;</span>
-                                                                        <span v-else>-</span>
-                                                                    </span>
-                                                                </td>
-                                                                <td>
-                                                                    <span v-if="day.timeSlots && day.timeSlots.length">
-                                                                        <span
-                                                                            v-for="(timeSlot, slotIndex) in day.timeSlots"
-                                                                            :key="slotIndex">
-                                                                            {{ timeSlot }}<span
-                                                                                v-if="slotIndex !== day.timeSlots.length - 1">,
-                                                                            </span>
-                                                                        </span>
-                                                                    </span>
-                                                                    <span v-else> {{ language == 'bn' ?
-                                                                        'টাইম স্লট নেই' : 'No Time Slots' }}</span>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </template>
-                                                </v-simple-table>
-                                            </v-col>
-                                        </v-row> -->
                                         <v-row class="justify-end mt-5 mb-5">
-                                            <v-btn flat color="primary" class="custom-btn mr-2" router
-                                                to="/training-management/training-program">{{
-                                                $t("container.list.back") }}
+                                            <v-btn color="primary" class="custom-btn mr-2" router
+                                                to="/training-management/participant" v-can="'participant-view'">{{
+                                    $t("container.list.back") }}
                                             </v-btn>
-                                            <v-btn flat color="success" type="submit" class="custom-btn mr-2"
+                                            <v-btn color="success" type="submit" class="custom-btn mr-2"
                                                 :disabled="invalid">
-                                                {{ $t("container.list.update") }}
+                                                {{ $t("container.list.submit") }}
                                             </v-btn>
                                         </v-row>
                                     </v-form>
@@ -667,47 +464,105 @@ export default {
 
 
                             </v-card-text>
+                            <v-card-text class="mt-10" v-if="getPartipant == 1">
+                                <ValidationObserver ref="form" v-slot="{ invalid }">
+                                    <v-form v-on:submit.prevent="submitPoll()">
+
+                                        <v-row class="mx-10 no-gap-row">
+
+                                            <v-col cols=" 12" sm="6" lg="6">
+                                                <ValidationProvider name="training_circular_id" vid="circular_id"
+                                                    rules="required" v-slot="{ errors }">
+                                                    <v-autocomplete dense type="text"
+                                                        v-model="poll.training_circular_id" @input="changePoll()"
+                                                        :label="$t('container.training_management.training_program.training_circular')"
+                                                        persistent-hint outlined :error="errors[0] ? true : false"
+                                                        :items="circulars" :item-text="itemText" item-value="id"
+                                                        :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সার্কুলার প্রদান করুন '
+                                    : 'Please enter Circular') : ''">
+
+                                                    </v-autocomplete>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" lg="6">
+                                                <ValidationProvider name="Program Name" vid="program_name"
+                                                    rules="required" v-slot="{ errors }">
+                                                    <v-autocomplete dense type="text" v-model="poll.training_program_id"
+                                                        :items="poll_programs" :item-text="getprogram" item-value="id"
+                                                        :label="$t('container.training_management.training_program.program')
+                                    " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক প্রোগ্রাম প্রদান করুন '
+                                    : 'Please enter a Program') : ''"></v-autocomplete>
+                                                </ValidationProvider>
+                                            </v-col>
+
+                                            <!-- <v-col cols="12" sm="6" lg="6">
+                                                <ValidationProvider name="Username" rules="required||checkUsername"
+                                                    vid="user_name" v-slot="{ errors }">
+                                                    <v-text-field dense v-model="poll.designation" :label="$t('container.training_management.training_registration.user_name')
+                                    " persistent-hint outlined :error="errors[0] ? true : false"
+                                                        :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ব্যবহারকারীর নাম প্রদান করুন। ব্যবহারকারীর নাম অবশ্যই ছোট হাতের অক্ষরে এবং কোনো বিশেষ অক্ষর ছাড়াই হতে হবে'
+                                    : 'Please enter  Username.Username should be in lowercase and without any special character') : ''"></v-text-field>
+                                                </ValidationProvider>
+                                            </v-col> -->
+                                            <v-col cols="12" sm="6" lg="6">
+                                                <ValidationProvider name="Participant" rules="required||name"
+                                                    vid="poll.participant" v-slot="{ errors }">
+                                                    <v-text-field dense v-model="poll.full_name" :label="$t('container.training_management.training_registration.full_name')
+                                    " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য সম্পূর্ণ নাম প্রদান করুন ।'
+                                    : 'Please enter valid  Full Name') : ''"></v-text-field>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <!-- <v-col cols="12" sm="6" lg="6">
+                                                <ValidationProvider name="Mobile" vid="mobile" rules="required||mobile"
+                                                    v-slot="{ errors }">
+                                                    <v-text-field dense type="text" v-model="poll.participant_mobile"
+                                                        :label="$t('container.training_management.trainer_info.mobile')
+                                    " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য মোবাইল নম্বর প্রদান করুন '
+                                    : 'Please enter a valid Mobile Number') : ''"></v-text-field>
+                                                </ValidationProvider>
+                                            </v-col> -->
+
+                                            <v-col cols="12" sm="6" lg="6">
+                                                <ValidationProvider name="Email" vid="email"
+                                                    rules="required||email||bangla" v-slot="{ errors }">
+                                                    <v-text-field placeholder="xxx@gmail.com" dense type="email"
+                                                        v-model="poll.email" :label="$t('container.training_management.trainer_info.email')
+                                    " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য ইমেইল প্রদান করুন '
+                                    : 'Please enter a valid Email') : ''"></v-text-field>
+                                                </ValidationProvider>
+                                            </v-col>
+
+
+
+
+
+                                        </v-row>
+                                        <v-row class="justify-end mt-5 mb-5">
+                                            <v-btn color="primary" class="custom-btn mr-2" router
+                                                to="/training-management/participant" v-can="'participant-view'">{{
+                                    $t("container.list.back") }}
+                                            </v-btn>
+                                            <v-btn color="success" @click="submitPoll()" class="custom-btn mr-2"
+                                                :disabled="invalid">
+                                                {{ $t("container.list.submit") }}
+                                            </v-btn>
+                                        </v-row>
+                                    </v-form>
+                                </ValidationObserver>
+                                <h4 class="text-center">
+                                    {{ $t('container.training_management.training_registration.alert') }}
+
+                                    <router-link
+                                        :to="{ path: '/participant-external-registration' }">participant-external-registration</router-link>
+                                </h4>
+
+                            </v-card-text>
                         </v-card>
                     </v-col>
                 </v-row>
             </v-col>
         </v-row>
-        <v-dialog v-model="timeSlotModal" max-width="500">
-            <v-card style="justify-content: center; text-align: center">
-                <v-card-title class="font-weight-bold justify-center"
-                    style="background-color: #1C3C6A; color: white;font-size: 12px;">
-                    {{ $t('container.training_management.training_program.select_time_slot') }}
-                </v-card-title>
-                <v-divider></v-divider>
-                <v-card-text>
-                    <div class="subtitle-1 font-weight-medium mt-5">
 
-
-                        <v-row>
-                            <v-col v-for="slot in time_slots" :key="slot.id" cols="12" md="4" lg="4" sm="4" xs="4">
-                                <v-checkbox v-model="selectedTimeSlots" :value="slot.id"
-                                    :label="slot.time"></v-checkbox>
-
-                            </v-col>
-                        </v-row>
-
-                    </div>
-                </v-card-text>
-
-                <v-card-actions style="display: block">
-                    <v-row class="mx-0 my-0 py-2" justify="center">
-                        <v-btn text @click="closeTimeSlotModal" outlined class="custom-btn-width py-2 mr-10">
-                            {{ $t('container.list.cancel') }}
-                        </v-btn>
-
-                        <v-btn text @click="saveTimeSlots" color="white" :loading="delete_loading"
-                            class="custom-btn-width primary white--text py-2">
-                            {{ $t('container.list.save') }}
-                        </v-btn>
-                    </v-row>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
 
     </div>
 </template>

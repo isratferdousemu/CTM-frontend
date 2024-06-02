@@ -1,329 +1,4 @@
-<script>
-import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 
-
-extend('checklength', {
-    validate: value => {
-        return value.length <= 10;
-    },
-    message: 'Please enter a 10 character'
-});
-
-extend('bangla', {
-    validate: value => {
-        // Regular expression to match Bangla characters
-        // const banglaRegex = /^[\u0980-\u09FF\s]+$/;
-        const nonBanglaRegex = /^[^\u0980-\u09FF]*$/;
-        return nonBanglaRegex.test(value);
-    },
-    message: 'Bangla characters are not allowed in this field'
-});
-extend('name', {
-    validate: value => {
-        // Regular expression for IP address validation
-        const nameRegex = /^[a-zA-Z\s']+$/;
-        return nameRegex.test(value);
-    },
-    message: 'Please enter a valid  Name'
-});
-
-extend('end_date', {
-    validate(value, { start_date }) {
-        // Check if both start_date and end_date are provided
-        if (value && start_date) {
-            // Convert start_date and end_date to Date objects
-            const startDate = new Date(start_date);
-            const endDate = new Date(value);
-
-            // Compare start_date and end_date
-            return endDate >= startDate;
-        }
-        // If start_date is not provided, return true
-        return true;
-    },
-    params: ['start_date'],
-    message: 'The End Date must be greater than or equal to the Start Date'
-});
-extend('start_date', {
-    validate(value, { end_date }) {
-        // Check if both start_date and end_date are provided
-        if (value && end_date) {
-            // Convert start_date and end_date to Date objects
-            const endDate = new Date(end_date);
-            const startDate = new Date(value);
-
-            // Compare start_date and end_date
-            return endDate >= startDate;
-        }
-        // If start_date is not provided, return true
-        return true;
-    },
-    params: ['end_date'],
-    message: 'The Start Date must be less than or equal to the End Date'
-});
-
-
-
-
-export default {
-    name: "TrainingProgramCreate",
-    title: "CTM -Training program",
-    components: {
-        ValidationProvider,
-        ValidationObserver,
-       
-     
-            // Use the <ckeditor> component in this view.
-           
-        
-    },
-
-    data() {
-        return {
-     
-         
-          
-            circular_types:[],
-            modules:[],
-            program_trainers:[],
-            timeSlotModal:false,
-            selected_day:null,
-            selectedTimeSlots:[],
-            time_slots: [
-                
-            ],
-       
-            data: {
-                 program_name: null,
-                 training_circular_id: null,
-                 circular_modules: [],
-                  trainers: [],
-                  description: null,
-                  start_date: null,
-                  end_date: null,
-                
-                  on_days: [
-                    {
-                        "day": "Sat",
-                        "is_active": 0,
-                        "timeSlots": []
-                    },
-                    {
-                        "day": "Sun",
-                        "is_active": 0,
-                        "timeSlots": []
-                    },
-                    {
-                        "day": "Mon",
-                        "is_active": 0,
-                        "timeSlots": [
-                         ]
-                    },
-                    {
-                        "day": "Tue",
-                        "is_active": 0,
-                        "timeSlots": []
-                    },
-                    {
-                        "day": "Wed",
-                        "is_active": 0,
-                        "timeSlots": []
-                    },
-                    {
-                        "day": "Thu",
-                        "is_active": 0,
-                        "timeSlots": []
-                    },
-                    {
-                        "day": "Fri",
-                        "is_active": 0,
-                        "timeSlots": []
-                    }
-                ]
-            },
-            designations:[]
-        };
-    },
-    computed:{
-        language: {
-            get() {
-                return this.$store.getters.getAppLanguage;
-            }
-        },
-    },
-
-   
-
-   
-
-    mounted() {
-        this.Programtrainers();
-        this.GetCircular();
-        this.GetTimeSlot();
-      
-        
-    },
-    
-
-    methods: {
-        change(){
-            this.data.circular_modules = [];
-            const selected_circular = this.circulars.find(circular => circular.id == this.data.training_circular_id);
-            this.modules = selected_circular?.modules
-      
-          
-
-        },
-        showTimeSlotModal(day) {
-            if (day.is_active == 1) {
-                this.selected_day=day.day
-                this.timeSlotModal = true;
-            }
-            else{
-                const inactiveDay = this.data.on_days.find(d => d.day == day.day);
-                inactiveDay.timeSlots = [];
-            }
-        },
-        saveTimeSlots() {
-            // Add selected time slots to the active day's timeSlots array
-        
-            const activeDay = this.data.on_days.find(day => day.is_active == 1 && this.selected_day==day.day);
-            console.log(activeDay,"activeDay");
-            console.log(this.selectedTimeSlots,"selectedTimeSlots")
-            
-            activeDay.timeSlots.push(...this.selectedTimeSlots);
-           
-            this.closeTimeSlotModal();
-        },
-        closeTimeSlotModal() {
-            this.timeSlotModal = false;
-            this.selectedTimeSlots = []; 
-            this.selected_day = null;// Clear selected time slots
-        },
-      
-        
-        getItemText(item) {
-            return this.language === 'bn' ? item.value_bn : item.value_en;
-        },
-        
-        async GetTimeSlot() {
-
-            this.$axios
-                .get("/admin/training/program-time-slots", {
-                    headers: {
-                        Authorization: "Bearer " + this.$store.state.token,
-                        "Content-Type": "multipart/form-data",
-                    },
-
-                })
-                .then((result) => {
-
-                    this.time_slots = result?.data?.data;
-
-
-
-
-
-                });
-        },
-        async GetCircular() {
-
-          this.$axios
-              .get("/admin/training/program-circulars", {
-                    headers: {
-                        Authorization: "Bearer " + this.$store.state.token,
-                        "Content-Type": "multipart/form-data",
-                    },
-                
-                })
-                .then((result) => {
-                   
-                    this.circulars = result?.data?.data;
-                  
-
-                
-
-
-                });
-        },
-        async Programtrainers() {
-
-            this.$axios
-                .get("/admin/training/program-trainers", {
-                    headers: {
-                        Authorization: "Bearer " + this.$store.state.token,
-                        "Content-Type": "multipart/form-data",
-                    },
-
-                })
-                .then((result) => {
-
-                    this.program_trainers = result?.data?.data;
-                    console.log(this.program_trainers,"program_trainers")
-
-
-
-
-
-                });
-        },
-       
-
-    
-
-        submitForm() {
-           
-            const inactiveDay = this.data.on_days.find(day => day.is_active == 1 );
-            if (!inactiveDay) {
-                const message = this.language === 'bn' ? 'অনুগ্রহ করে   দিন নির্বাচন করুন সময় স্লট সহ' : 'Please select  day with time slots';
-                this.$toast.error(message);
-            
-                return false;
-            }
-            const activeDayWithEmpty = this.data.on_days.find(day => day.is_active == 1 && day.timeSlots.length === 0);
-
-            if (activeDayWithEmpty) {
-                const message = this.language === 'bn' ? `অনুগ্রহ করে ${activeDayWithEmpty.day} এ সময় স্লট যোগ করুন` : `Please add time slots On ${activeDayWithEmpty.day} `;
-                this.$toast.error(message);
-                return false;
-            }
-             
-           console.log(this.data,"submitdata")
-
-       
-            this.data.on_days.forEach(day => {
-                if (!day.timeSlots) {
-                    day.timeSlots = []; // If timeSlots array doesn't exist, create it as an empty array
-                }
-                console.log(this.data,"submitted");
-            });
-            this.$axios
-                .post("admin/training/programs", this.data, {
-                    headers: {
-                        Authorization: "Bearer " + this.$store.state.token,
-                        "Content-Type": "multipart/form-data",
-                    },
-                })
-                .then((result) => {
-                  
-                    this.$toast.success(result.data.message);
-                    this.$router.push("/training-management/training-program");
-                
-
-                })
-                .catch((err) => {
-                    this.$toast.error(err?.response?.data?.errors?.program_name[0]);
-                 
-                   
-
-                });
-
-        },
-       
-     
-    },
-};
-</script>
 
 <template>
     <div id="circular_create">
@@ -334,11 +9,10 @@ export default {
                     <v-col cols="12">
                         <v-card>
 
-                            <v-card-title class="justify-center"
-                                style="background-color: #1C3B68; color: white;font-size: 17px;">
-                                <h4 class="white--text">
+                            <v-card-title class="justify-center" style="background-color: #1C3B68; color: white;">
+                                <h3 class="white--text">
                                     {{ $t("container.training_management.training_program.add") }}
-                                </h4>
+                                </h3>
                             </v-card-title>
 
                             <v-divider></v-divider>
@@ -399,7 +73,7 @@ export default {
                                             <v-col cols=" 12" sm="6" lg="6">
                                                 <ValidationProvider name="Trainer" vid="trainers" rules="required"
                                                     v-slot="{ errors }">
-                                                    <v-select multiple dense v-model="data.trainers"
+                                                    <v-autocomplete multiple dense v-model="data.trainers"
                                                         :label="$t('container.training_management.training_program.trainer')"
                                                         persistent-hint outlined :error="errors[0] ? true : false"
                                                         :items="program_trainers" item-text="name" item-value="id"
@@ -412,15 +86,84 @@ export default {
 
 
                                                         </template>
-                                                    </v-select>
+                                                    </v-autocomplete>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" lg="6" xs="6" xl="6">
+                                                <ValidationProvider name="start_date" vid="start_date"
+                                                    :rules="{ required, start_date: data.end_date }"
+                                                    v-slot="{ errors }">
+                                                    <v-text-field dense type="date" v-model="data.start_date" :label="$t('container.training_management.training_circular.start_date')
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য শুরুর তারিখ প্রদান করুন '
+                                        : 'Please enter a valid Start Date') : ''"></v-text-field>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" lg="6" xs="6" xl="6">
+                                                <ValidationProvider name="end_date" vid="end_date"
+                                                    :rules="{ required, end_date: data.start_date }"
+                                                    v-slot="{ errors }">
+                                                    <v-text-field dense type="date" v-model="data.end_date" :label="$t('container.training_management.training_circular.end_date')
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য শেষ তারিখ  প্রদান করুন '
+                                        : 'Please enter a valid End Date') : ''"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols="12" sm="6" lg="6">
-                                                <ValidationProvider name="BIO" vid="description" v-slot="{ errors }">
+                                                <ValidationProvider name="exam_link" vid="question_link" rules="url"
+                                                    v-slot="{ errors }">
+                                                    <v-text-field dense type="text" v-model="data.question_link" :label="$t('container.training_management.training_program.exam_link')
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক পরীক্ষার লিংক নাম প্রদান করুন '
+                                        : 'Please enter valid Exam Link') : ''"></v-text-field>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" lg="6">
+                                                <ValidationProvider name="rating_link" vid="rating_link" rules="url"
+                                                    v-slot="{ errors }">
+                                                    <v-text-field dense type="text" v-model="data.trainer_ratings_link"
+                                                        :label="$t('container.training_management.training_program.rating_link')
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক রেটিং লিংক প্রদান করুন '
+                                        : 'Please enter valid Rating Link') : ''"></v-text-field>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <!-- <v-col cols="12" sm="6" lg="6">
+                                                <v-row>
+                                                    <v-col class="d-flex align-center" cols="auto">
+                                                        <v-checkbox v-model="exam_status" :true-value="1"
+                                                            :false-value="0"
+                                                            :label="$t('container.training_management.training_program.exam')">
+                                                        </v-checkbox>
+                                                    </v-col>
+                                                    <v-col class="d-flex align-center" cols="auto">
+                                                        <v-checkbox v-model="rating_status" :true-value="1"
+                                                            :false-value="0"
+                                                            :label="$t('container.training_management.training_program.rating')">
+                                                        </v-checkbox>
+                                                    </v-col>
+                                                </v-row>
+                                            </v-col> -->
+
+                                            <!-- <ValidationProvider name="BIO" vid="description" v-slot="{ errors }">
                                                     <v-textarea dense v-model="data.description" :label="$t('container.training_management.training_circular.description')
                                         " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক বিবরণ প্রদান করুন '
                                         : 'Please enter  Description') : ''"></v-textarea>
+                                                </ValidationProvider> -->
+                                            <v-col cols=" 12" sm="6" lg="6">
+                                                <ValidationProvider name="Module" vid="module" rules="required"
+                                                    v-slot="{ errors }">
+                                                    <v-select dense type="text" v-model="data.status"
+                                                        :label="$t('container.list.status')" persistent-hint outlined
+                                                        :error="errors[0] ? true : false" :items="status_types"
+                                                        :item-text="getItemText" item-value="id" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক স্ট্যাটাস প্রদান করুন '
+                                        : 'Please enter status') : ''">
+                                                    </v-select>
                                                 </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols=" 12" sm="12" lg="12">
+                                                <label>{{
+                                                    $t('container.training_management.trainer_info.description')
+                                                    }}</label>
+
+                                                <vue-editor v-model="data.description" :editor-toolbar="customToolbar">
+                                                </vue-editor>
                                             </v-col>
 
 
@@ -429,26 +172,7 @@ export default {
                                                     <v-card-text>
                                                         <v-row>
 
-                                                            <v-col cols="12" sm="6" lg="6" xs="6" xl="6">
-                                                                <ValidationProvider name="start_date" vid="start_date"
-                                                                    :rules="{ required, start_date: data.end_date }"
-                                                                    v-slot="{ errors }">
-                                                                    <v-text-field dense type="date"
-                                                                        v-model="data.start_date" :label="$t('container.training_management.training_circular.start_date')
-                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য শুরুর তারিখ প্রদান করুন '
-                                        : 'Please enter a valid Start Date') : ''"></v-text-field>
-                                                                </ValidationProvider>
-                                                            </v-col>
-                                                            <v-col cols="12" sm="6" lg="6" xs="6" xl="6">
-                                                                <ValidationProvider name="end_date" vid="end_date"
-                                                                    :rules="{ required, end_date: data.start_date }"
-                                                                    v-slot="{ errors }">
-                                                                    <v-text-field dense type="date"
-                                                                        v-model="data.end_date" :label="$t('container.training_management.training_circular.end_date')
-                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য শেষ তারিখ  প্রদান করুন '
-                                        : 'Please enter a valid End Date') : ''"></v-text-field>
-                                                                </ValidationProvider>
-                                                            </v-col>
+
                                                             <v-col cols="12" sm="12" lg="12">
                                                                 <h3 class="text-center mb-10">{{
                                                                     $t('container.training_management.training_program.class_schedule')
@@ -571,3 +295,369 @@ export default {
     padding-right: 0 !important;
 }
 </style>
+<script>
+import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
+import { VueEditor } from "vue2-editor";
+
+
+
+
+
+extend('checklength', {
+    validate: value => {
+        return value.length <= 10;
+    },
+    message: 'Please enter a 10 character'
+});
+extend('url', {
+    validate: value => {
+      
+        const url = new RegExp('^((https?:\\/\\/)?' + // protocol (optional)
+            ')?((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+            '(\\#[-a-z\\d_]*)?$', 'i');
+        return url.test(value);
+    },
+    message: 'Please enter valid url'
+});
+
+
+extend('bangla', {
+    validate: value => {
+        // Regular expression to match Bangla characters
+        // const banglaRegex = /^[\u0980-\u09FF\s]+$/;
+        const nonBanglaRegex = /^[^\u0980-\u09FF]*$/;
+        return nonBanglaRegex.test(value);
+    },
+    message: 'Bangla characters are not allowed in this field'
+});
+extend('name', {
+    validate: value => {
+        // Regular expression for IP address validation
+        const nameRegex = /^[a-zA-Z\s']+$/;
+        return nameRegex.test(value);
+    },
+    message: 'Please enter a valid  Name'
+});
+
+extend('end_date', {
+    validate(value, { start_date }) {
+        // Check if both start_date and end_date are provided
+        if (value && start_date) {
+            // Convert start_date and end_date to Date objects
+            const startDate = new Date(start_date);
+            const endDate = new Date(value);
+
+            // Compare start_date and end_date
+            return endDate >= startDate;
+        }
+        // If start_date is not provided, return true
+        return true;
+    },
+    params: ['start_date'],
+    message: 'The End Date must be greater than or equal to the Start Date'
+});
+extend('start_date', {
+    validate(value, { end_date }) {
+        // Check if both start_date and end_date are provided
+        if (value && end_date) {
+            // Convert start_date and end_date to Date objects
+            const endDate = new Date(end_date);
+            const startDate = new Date(value);
+
+            // Compare start_date and end_date
+            return endDate >= startDate;
+        }
+        // If start_date is not provided, return true
+        return true;
+    },
+    params: ['end_date'],
+    message: 'The Start Date must be less than or equal to the End Date'
+});
+
+
+
+
+export default {
+    name: "TrainingProgramCreate",
+    title: "CTM -Training program",
+    components: {
+        ValidationProvider,
+        ValidationObserver,
+        VueEditor,
+
+
+        // Use the <ckeditor> component in this view.
+
+
+    },
+
+    data() {
+        return {
+
+
+
+            circular_types: [],
+            modules: [],
+            program_trainers: [],
+            timeSlotModal: false,
+            selected_day: null,
+            selectedTimeSlots: [],
+            time_slots: [
+
+            ],
+            customToolbar: [
+                [{ 'header': [1, 2, false] }],
+                ['bold', 'italic', 'underline'],
+                // ['blockquote', 'code-block'],
+                [{ list: 'ordered' }, { list: 'bullet' }, { list: 'check' }],
+                [{ 'indent': '-1' }, { 'indent': '+1' }],
+                // [{ 'align': [] }],
+                ['clean'], // remove formatting button
+                ['link'],
+                [{ 'color': [] }, { 'background': [] }]// removed 'image' from the default toolbar
+            ],
+
+            data: {
+                program_name: null,
+                training_circular_id: null,
+                circular_modules: [],
+                trainers: [],
+                description: null,
+                start_date: null,
+                end_date: null,
+                question_link:null,
+                trainer_ratings_link:null,
+                status:null,
+                // exam_status:null,
+                // rating_status:null,
+                status_types:[],
+
+                on_days: [
+                    {
+                        "day": "Sat",
+                        "is_active": 0,
+                        "timeSlots": []
+                    },
+                    {
+                        "day": "Sun",
+                        "is_active": 0,
+                        "timeSlots": []
+                    },
+                    {
+                        "day": "Mon",
+                        "is_active": 0,
+                        "timeSlots": [
+                        ]
+                    },
+                    {
+                        "day": "Tue",
+                        "is_active": 0,
+                        "timeSlots": []
+                    },
+                    {
+                        "day": "Wed",
+                        "is_active": 0,
+                        "timeSlots": []
+                    },
+                    {
+                        "day": "Thu",
+                        "is_active": 0,
+                        "timeSlots": []
+                    },
+                    {
+                        "day": "Fri",
+                        "is_active": 0,
+                        "timeSlots": []
+                    }
+                ]
+            },
+            designations: []
+        };
+    },
+    computed: {
+        language: {
+            get() {
+                return this.$store.getters.getAppLanguage;
+            }
+        },
+    },
+
+
+
+
+
+    mounted() {
+        this.Programtrainers();
+        this.GetCircular();
+        this.GetTimeSlot();
+        this.$store
+            .dispatch("getLookupByType", 31)
+            .then((res) => (this.status_types = res));
+       
+
+
+    },
+
+
+    methods: {
+        change() {
+            this.data.circular_modules = [];
+            const selected_circular = this.circulars.find(circular => circular.id == this.data.training_circular_id);
+            this.modules = selected_circular?.modules
+
+
+
+        },
+        showTimeSlotModal(day) {
+            if (day.is_active == 1) {
+                this.selected_day = day.day
+                this.timeSlotModal = true;
+            }
+            else {
+                const inactiveDay = this.data.on_days.find(d => d.day == day.day);
+                inactiveDay.timeSlots = [];
+            }
+        },
+        saveTimeSlots() {
+            // Add selected time slots to the active day's timeSlots array
+
+            const activeDay = this.data.on_days.find(day => day.is_active == 1 && this.selected_day == day.day);
+            console.log(activeDay, "activeDay");
+            console.log(this.selectedTimeSlots, "selectedTimeSlots")
+
+            activeDay.timeSlots.push(...this.selectedTimeSlots);
+
+            this.closeTimeSlotModal();
+        },
+        closeTimeSlotModal() {
+            this.timeSlotModal = false;
+            this.selectedTimeSlots = [];
+            this.selected_day = null;// Clear selected time slots
+        },
+
+
+        getItemText(item) {
+            return this.language === 'bn' ? item.value_bn : item.value_en;
+        },
+
+        async GetTimeSlot() {
+
+            this.$axios
+                .get("/admin/training/program-time-slots", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+
+                })
+                .then((result) => {
+
+                    this.time_slots = result?.data?.data;
+
+
+
+
+
+                });
+        },
+        async GetCircular() {
+
+            this.$axios
+                .get("/admin/training/program-circulars", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+
+                })
+                .then((result) => {
+
+                    this.circulars = result?.data?.data;
+
+
+
+
+
+                });
+        },
+        async Programtrainers() {
+
+            this.$axios
+                .get("/admin/training/program-trainers", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+
+                })
+                .then((result) => {
+
+                    this.program_trainers = result?.data?.data;
+                    console.log(this.program_trainers, "program_trainers")
+
+
+
+
+
+                });
+        },
+
+
+
+
+        submitForm() {
+
+            const inactiveDay = this.data.on_days.find(day => day.is_active == 1);
+            if (!inactiveDay) {
+                const message = this.language === 'bn' ? 'অনুগ্রহ করে   দিন নির্বাচন করুন সময় স্লট সহ' : 'Please select  day with time slots';
+                this.$toast.error(message);
+
+                return false;
+            }
+            const activeDayWithEmpty = this.data.on_days.find(day => day.is_active == 1 && day.timeSlots.length === 0);
+
+            if (activeDayWithEmpty) {
+                const message = this.language === 'bn' ? `অনুগ্রহ করে ${activeDayWithEmpty.day} এ সময় স্লট যোগ করুন` : `Please add time slots On ${activeDayWithEmpty.day} `;
+                this.$toast.error(message);
+                return false;
+            }
+
+            console.log(this.data, "submitdata")
+
+
+            this.data.on_days.forEach(day => {
+                if (!day.timeSlots) {
+                    day.timeSlots = []; // If timeSlots array doesn't exist, create it as an empty array
+                }
+                console.log(this.data, "submitted");
+            });
+            this.$axios
+                .post("admin/training/programs", this.data, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((result) => {
+
+                    this.$toast.success(result.data.message);
+                    this.$router.push("/training-management/training-program");
+
+
+                })
+                .catch((err) => {
+                    this.$toast.error(err?.response?.data?.errors?.program_name[0]);
+
+
+
+                });
+
+        },
+
+
+    },
+};
+</script>

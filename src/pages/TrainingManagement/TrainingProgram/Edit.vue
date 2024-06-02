@@ -1,5 +1,6 @@
 <script>
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
+import { VueEditor } from "vue2-editor";
 
 
 extend('checklength', {
@@ -8,6 +9,21 @@ extend('checklength', {
     },
     message: 'Please enter a 10 character'
 });
+
+extend('url', {
+    validate: value => {
+
+        const url = new RegExp('^((https?:\\/\\/)?' + // protocol (optional)
+            ')?((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.?)+[a-z]{2,}|' + // domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+            '(\\#[-a-z\\d_]*)?$', 'i');
+        return url.test(value);
+    },
+    message: 'Please enter valid url'
+});
+
 
 extend('bangla', {
     validate: value => {
@@ -71,6 +87,7 @@ export default {
     components: {
         ValidationProvider,
         ValidationObserver,
+        VueEditor,
 
 
         // Use the <ckeditor> component in this view.
@@ -98,12 +115,28 @@ export default {
 
             view_on_days:[],
             edited_on_days:[],
+            customToolbar: [
+                [{ 'header': [1, 2, false] }],
+                ['bold', 'italic', 'underline'],
+                // ['blockquote', 'code-block'],
+                [{ list: 'ordered' }, { list: 'bullet' }, { list: 'check' }],
+                [{ 'indent': '-1' }, { 'indent': '+1' }],
+                // [{ 'align': [] }],
+                ['clean'], // remove formatting button
+                ['link'],
+                [{ 'color': [] }, { 'background': [] }]// removed 'image' from the default toolbar
+            ],
+            status_types:[],
 
             data: {
                 _method:"PUT",
                 program_name: null,
                 training_circular_id: null,
+                trainer_ratings_link:null,
+                trainer_ratings_link:null,
                 circular_modules: [],
+                status:null,
+                
                 trainers: [
                   
 
@@ -173,6 +206,9 @@ export default {
         this.GetCircular();
         this.GetTimeSlot();
         this.DataView();
+        this.$store
+            .dispatch("getLookupByType", 31)
+            .then((res) => (this.status_types = res));
 
 
     },
@@ -369,7 +405,7 @@ export default {
 
 
 
-        submitForm() {
+        updateForm() {
 
             const inactiveDay = this.data.on_days.find(day => day.is_active == 1);
             if (!inactiveDay) {
@@ -427,7 +463,7 @@ export default {
                 })
                 .catch((err) => {
 
-
+                    this.$toast.error(err?.response?.data?.errors?.program_name[0]);
                 });
 
         },
@@ -449,7 +485,7 @@ export default {
                             <v-card-title class="justify-center"
                                 style="background-color: #1C3B68; color: white;font-size: 17px;">
                                 <h4 class="white--text">
-                                    {{ $t("container.training_management.training_program.add") }}
+                                    {{ $t("container.training_management.training_program.edit") }}
                                 </h4>
                             </v-card-title>
 
@@ -459,7 +495,7 @@ export default {
 
                             <v-card-text class="mt-10">
                                 <ValidationObserver ref="form" v-slot="{ invalid }">
-                                    <v-form v-on:submit.prevent="submitForm()">
+                                    <v-form v-on:submit.prevent="updateForm()">
 
                                         <v-row class="mx-10 no-gap-row">
                                             <v-col cols="12" sm="6" lg="6">
@@ -511,7 +547,7 @@ export default {
                                             <v-col cols=" 12" sm="6" lg="6">
                                                 <ValidationProvider name="Trainer" vid="trainers" rules="required"
                                                     v-slot="{ errors }">
-                                                    <v-select multiple dense v-model="data.trainers"
+                                                    <v-autocomplete multiple dense v-model="data.trainers"
                                                         :label="$t('container.training_management.training_program.trainer')"
                                                         persistent-hint outlined :error="errors[0] ? true : false"
                                                         :items="program_trainers" item-text="name" item-value="id"
@@ -524,15 +560,68 @@ export default {
 
 
                                                         </template>
-                                                    </v-select>
+                                                    </v-autocomplete>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" lg="6" xs="6" xl="6">
+                                                <ValidationProvider name="start_date" vid="start_date"
+                                                    :rules="{ required, start_date: data.end_date }"
+                                                    v-slot="{ errors }">
+                                                    <v-text-field dense type="date" v-model="data.start_date" :label="$t('container.training_management.training_circular.start_date')
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য শুরুর তারিখ প্রদান করুন '
+                                        : 'Please enter a valid Start Date') : ''"></v-text-field>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" lg="6" xs="6" xl="6">
+                                                <ValidationProvider name="end_date" vid="end_date"
+                                                    :rules="{ required, end_date: data.start_date }"
+                                                    v-slot="{ errors }">
+                                                    <v-text-field dense type="date" v-model="data.end_date" :label="$t('container.training_management.training_circular.end_date')
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য শেষ তারিখ  প্রদান করুন '
+                                        : 'Please enter a valid End Date') : ''"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols="12" sm="6" lg="6">
-                                                <ValidationProvider name="BIO" vid="description" v-slot="{ errors }">
+                                                <ValidationProvider name="exam_link" vid="question_link" rules="url"
+                                                    v-slot="{ errors }">
+                                                    <v-text-field dense type="text" v-model="data.question_link" :label="$t('container.training_management.training_program.exam_link')
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক পরীক্ষার লিংক নাম প্রদান করুন '
+                                        : 'Please enter valid Exam Link') : ''"></v-text-field>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" lg="6">
+                                                <ValidationProvider name="rating_link" vid="rating_link" rules="url"
+                                                    v-slot="{ errors }">
+                                                    <v-text-field dense type="text" v-model="data.trainer_ratings_link"
+                                                        :label="$t('container.training_management.training_program.rating_link')
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক রেটিং লিংক প্রদান করুন '
+                                        : 'Please enter valid Rating Link') : ''"></v-text-field>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols=" 12" sm="6" lg="6">
+                                                <ValidationProvider name="Module" vid="module" rules="required"
+                                                    v-slot="{ errors }">
+                                                    <v-select  dense type="text" v-model="data.status"
+                                                        :label="$t('container.list.status')" persistent-hint outlined
+                                                        :error="errors[0] ? true : false" :items="status_types"
+                                                        :item-text="getItemText" item-value="id" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক স্ট্যাটাস প্রদান করুন '
+                                        : 'Please enter status') : ''">
+                                                    </v-select>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols="12" sm="12" lg="12">
+                                                <!-- <ValidationProvider name="BIO" vid="description" v-slot="{ errors }">
                                                     <v-textarea dense v-model="data.description" :label="$t('container.training_management.training_circular.description')
                                         " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক বিবরণ প্রদান করুন '
                                         : 'Please enter  Description') : ''"></v-textarea>
-                                                </ValidationProvider>
+                                                </ValidationProvider> -->
+                                                <label>{{
+                                                    $t('container.training_management.trainer_info.description')
+                                                    }}</label>
+
+                                                <vue-editor v-model="data.description" :editor-toolbar="customToolbar">
+                                                </vue-editor>
+
                                             </v-col>
 
 
@@ -541,26 +630,7 @@ export default {
                                                     <v-card-text>
                                                         <v-row>
 
-                                                            <v-col cols="12" sm="6" lg="6" xs="6" xl="6">
-                                                                <ValidationProvider name="start_date" vid="start_date"
-                                                                    :rules="{ required, start_date: data.end_date }"
-                                                                    v-slot="{ errors }">
-                                                                    <v-text-field dense type="date"
-                                                                        v-model="data.start_date" :label="$t('container.training_management.training_circular.start_date')
-                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য শুরুর তারিখ প্রদান করুন '
-                                        : 'Please enter a valid Start Date') : ''"></v-text-field>
-                                                                </ValidationProvider>
-                                                            </v-col>
-                                                            <v-col cols="12" sm="6" lg="6" xs="6" xl="6">
-                                                                <ValidationProvider name="end_date" vid="end_date"
-                                                                    :rules="{ required, end_date: data.start_date }"
-                                                                    v-slot="{ errors }">
-                                                                    <v-text-field dense type="date"
-                                                                        v-model="data.end_date" :label="$t('container.training_management.training_circular.end_date')
-                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য শেষ তারিখ  প্রদান করুন '
-                                        : 'Please enter a valid End Date') : ''"></v-text-field>
-                                                                </ValidationProvider>
-                                                            </v-col>
+
                                                             <v-col cols="12" sm="12" lg="12">
                                                                 <h3 class="text-center mb-10">{{
                                                                     $t('container.training_management.training_program.class_schedule')

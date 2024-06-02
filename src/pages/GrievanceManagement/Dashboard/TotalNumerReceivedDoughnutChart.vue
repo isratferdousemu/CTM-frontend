@@ -1,13 +1,15 @@
 <template>
   <v-col>
   <v-row>
-    <v-col cols="12">
-      <label style="color: #1976d2">
-                      <span>
-                        {{ $t("container.system_config_dashboard.total_number_of_program_wise_beneficiary") }}
-                      </span>
-      </label></v-col
-    >
+        <v-col cols="12" style="padding: 0px;">
+        <v-card :loading="isLoading" style="background-color:#1c3b68;color:white;font-size:12px;">
+           <v-card-title>
+               <h5 class="white--text">
+                 {{ $t("container.grievance_management.dashboard.program_wise_total_received") }}
+              </h5>
+          </v-card-title>
+        </v-card>
+       </v-col>
   </v-row>
   <v-row class="ml-1 mr-1">
     <v-menu
@@ -37,20 +39,21 @@
       >
         <v-spacer></v-spacer>
         <v-btn text color="primary" @click="resetDateRange">
-          {{ $t('container.list.reset')}}
+          Cancel
         </v-btn>
         <v-btn
             text
             color="primary"
             @click="$refs.menu.save(dates)"
         >
-          {{ $t('container.list.ok')}}
+          OK
         </v-btn>
       </v-date-picker>
     </v-menu>
   </v-row>
   <v-row>
-    <canvas id="total_number_of_office_typewise_user_info"></canvas>
+     <img  v-if="allZeros == true" style="margin-left:80px;margin-top:10px;width: 300px;height: 300px" src="/assets/images/pie_chart_default.png" alt="default chart">
+    <canvas id="total_number_received"></canvas>
   </v-row>
   </v-col>
 
@@ -66,10 +69,10 @@ export default {
       // Define data properties here
       dates: [],
       menu: false,
-      total_number_of_office_typewise_user_chart: null,
-      total_number_of_office_typewise_user_info: [],
-      total_number_of_office_typewise_user_levels: [],
-      total_number_of_office_typewise_user_datas: [],
+      total_number_of_application_received_chart: null,
+      total_number_received: [],
+      total_number_of_application_received_levels: [],
+      total_number_of_application_received_datas: [],
       isLoading: false,
       dateRangeText: ""
     };
@@ -78,59 +81,65 @@ export default {
     resetDateRange() {
       this.dates = [];
       this.menu = false;
-      this.fetchTotalOfficeTypewiseUserChartData()
+      this.fetchTotalReceivedApplicationChartData()
     },
-    async fetchTotalOfficeTypewiseUserChartData(from_date = null, to_date = null) {
-      await this.getTotalOfficeTypewiseUser(2, from_date, to_date);
-      this.createTotalOfficeTypewiseUserChart();
+    async fetchTotalReceivedApplicationChartData(from_date = null, to_date = null) {
+      await this.getTotalReceivedApplication(2, from_date, to_date);
+     if (this.allZeros != true) {
+        this.createTotalReceivedApplicentChart();
+      }
+      // this.createTotalReceivedApplicentChart();
     },
-    async getTotalOfficeTypewiseUser(status, from_date = null, to_date = null) {
+    async getTotalReceivedApplication(status, from_date = null, to_date = null) {
+      this.isLoading = true;
       const queryParams = {
         status: status,
         start_date: from_date,
         end_date: to_date,
       };
       try {
-        const result = await this.$axios.get("/admin/system-configuration/dashboard/get-program-wise-beneficiary-count", {
+        const result = await this.$axios.get("admin/grievance-dashboard/total-numberof-grievance", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
           },
           params: queryParams,
         });
-        this.total_number_of_office_typewise_user_info = result.data.data;
-        this.total_number_of_office_typewise_user_levels = this.total_number_of_office_typewise_user_info.map((row) => this.$i18n.locale == 'en' ? row.name_en : row.name_bn);
-        this.total_number_of_office_typewise_user_datas = this.total_number_of_office_typewise_user_info.map((row) =>  row.beneficiaries_count);
+        this.total_number_received = result.data.data;
+        this.total_number_of_application_received_levels = this.total_number_received.map((row) => this.$i18n.locale == 'en' ? row.name_en : row.name_bn);;
+        this.total_number_of_application_received_datas = this.total_number_received.map((row) => row.grievances_count);
         this.isLoading = false;
 
       } catch (error) {
-        console.error("Error fetching data:", error);
+          this.isLoading = false;
         // Handle error if necessary
       }
     },
-    createTotalOfficeTypewiseUserChart() {
-      if (this.total_number_of_office_typewise_user_chart) {
-        this.total_number_of_office_typewise_user_chart.destroy();
+    createTotalReceivedApplicentChart() {
+      if (this.total_number_of_application_received_chart) {
+        this.total_number_of_application_received_chart.destroy();
       }
 
-      if (this.total_number_of_office_typewise_user_levels && this.total_number_of_office_typewise_user_datas) {
-        const total = this.total_number_of_office_typewise_user_datas.reduce((acc, value) => acc + value, 0);
-        const percentages = this.total_number_of_office_typewise_user_datas.map(value => {
+      if (this.total_number_of_application_received_levels && this.total_number_of_application_received_datas) {
+        const total = this.total_number_of_application_received_datas.reduce((acc, value) => acc + value, 0);
+        // const percentages = this.total_number_of_application_received_datas.map(value => ((value / total) * 100).toFixed(2) + '%');
+        const percentages = this.total_number_of_application_received_datas.map(value => {
           const percentage = ((value / total) * 100).toFixed(2);
           return isNaN(percentage) ? '0.00%' : percentage + '%';
         });
 
-        this.total_number_of_office_typewise_user_chart = new Chart(document.getElementById("total_number_of_office_typewise_user_info"), {
+        this.total_number_of_application_received_chart = new Chart(document.getElementById("total_number_received"), {
           type: "doughnut",
           data: {
-            // labels: this.total_number_of_office_typewise_user_levels.map((label, index) => `${label} (${percentages[index]})`),
-            labels: this.total_number_of_office_typewise_user_levels.map((label, index) => `${label} (${this.$i18n.locale == 'en' ? this.total_number_of_office_typewise_user_datas[index] : this.$helpers.englishToBangla(this.total_number_of_office_typewise_user_datas[index])} - ${this.$i18n.locale == 'en' ? percentages[index]  : this.$helpers.englishToBangla(percentages[index])})`),
+            // labels: this.total_number_of_application_received_levels,
+            // labels: this.total_number_of_application_received_levels.map((label, index) => `${label} (${percentages[index]})`),
+            labels: this.total_number_of_application_received_levels.map((label, index) => `${label} (${this.$i18n.locale == 'en' ? this.total_number_of_application_received_datas[index] : this.$helpers.englishToBangla(this.total_number_of_application_received_datas[index])} - ${this.$i18n.locale == 'en' ? percentages[index]  : this.$helpers.englishToBangla(percentages[index])})`),
             percentages:percentages,
             datasets: [{
               label: "Count",
-              data: this.total_number_of_office_typewise_user_datas,
-              backgroundColor: this.total_number_of_office_typewise_user_datas.map(() => this.generateRandomColor()),
-              fill: true,
+              backgroundColor: this.total_number_of_application_received_datas.map(() => this.generateRandomColor()),
+              data: this.total_number_of_application_received_datas,
+              fill: false,
               tension: 0.1,
             }],
           },
@@ -170,25 +179,25 @@ export default {
             aspectRatio: 1, // Aspect ratio of 1 w
           },
         });
-        document.getElementById("total_number_of_office_typewise_user_info").style.width = '400px';
-        document.getElementById("total_number_of_office_typewise_user_info").style.height = '435px';
+        document.getElementById("total_number_received").style.width = '400px';
+        document.getElementById("total_number_received").style.height = '435px';
       } else {
         console.error("Data is not available to create chart.");
       }
     },
-
     generateRandomColor() {
       return '#' + Math.floor(Math.random() * 16777215).toString(16);
     },
-
-    OnChangeDateInfo(event, type) {
+       OnChangeDateInfo(event, type) {
       if (this.dates.length < 2) {
         return;
       }
+
       if (this.dates[1] && this.dates[1] < this.dates[0]) {
         this.$toast.error(this.language == 'en' ? 'End date cannot be before start date' : 'শেষ তারিখ শুরুর তারিখের আগে হতে পারে না')
         this.resetDateRange();
       }
+
       let from_date = null;
       let to_date = null;
 
@@ -196,26 +205,29 @@ export default {
         from_date = event[0];
         to_date = event[1];
       }
-      this.fetchTotalOfficeTypewiseUserChartData(from_date, to_date);
+      this.fetchTotalReceivedApplicationChartData(from_date, to_date);
     },
+
   },
 
-  computed:{
+  mounted() {
+    this.fetchTotalReceivedApplicationChartData();
+  },
+   computed: {
     language: {
       get() {
         return this.$store.getters.getAppLanguage;
       }
     },
-  },
-
-  mounted() {
-    this.fetchTotalOfficeTypewiseUserChartData();
+    allZeros() {
+      return this.total_number_of_application_received_datas.every(value => value === 0);
+    }
   },
   watch: {
     '$i18n.locale': {
       handler(newLocale, oldLocale) {
         if (newLocale != oldLocale) {
-          this.fetchTotalOfficeTypewiseUserChartData();
+          this.fetchTotalReceivedApplicationChartData();
         }
       },
       immediate: true // Call the handler immediately to initialize the levels

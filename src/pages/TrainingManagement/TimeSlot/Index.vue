@@ -10,11 +10,10 @@
 
 
 
-              <v-card-title class="justify-center" tag="div"
-                style="background-color: #1C3C6A; color: white;font-size: 17px;">
-                <h3>
+              <v-card-title tag="div" style="background-color: #1C3C6A; color: white;">
+                <h5>
                   {{ $t("container.training_management.time_slot.list") }}
-                </h3>
+                </h5>
               </v-card-title>
               <v-card-text>
                 <!-- First row -->
@@ -30,6 +29,7 @@
                   <v-col lg="3" md="3" cols="12" class="text-right ">
                     <v-btn @click="createDialog" color="primary" prepend-icon="mdi-account-multiple-plus"
                       v-can="'timeStot-create'">
+                      <v-icon small>mdi-plus</v-icon>
                       {{ $t("container.training_management.time_slot.add") }}
                     </v-btn>
                   </v-col>
@@ -154,7 +154,7 @@
       <v-dialog v-model="dialogAdd" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center"
-            style="background-color: #1C3C6A; color: white;font-size: 12px;">
+            style="background-color: #1C3C6A; color: white;font-size: 17px;">
             {{ $t("container.training_management.time_slot.add") }}
           </v-card-title>
           <v-divider></v-divider>
@@ -192,7 +192,7 @@
       <v-dialog v-model="dialogEdit" width="650">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center"
-            style="background-color: #1C3C6A; color: white;font-size: 12px;">
+            style="background-color: #1C3C6A; color: white;font-size: 17px;">
             {{ $t("container.training_management.time_slot.edit") }}
           </v-card-title>
           <v-divider></v-divider>
@@ -229,7 +229,7 @@
       <v-dialog v-model="deleteDialog" width="350">
         <v-card style="justify-content: center; text-align: center">
           <v-card-title class="font-weight-bold justify-center"
-            style="background-color: #1C3C6A; color: white;font-size: 12px;">
+            style="background-color: #1C3C6A; color: white;font-size: 17px;">
             {{ $t("container.training_management.time_slot.delete_header") }}
           </v-card-title>
           <v-divider></v-divider>
@@ -610,7 +610,9 @@ export default {
 
         })
         .catch((err) => {
+          this.$toast.error(err?.response?.data?.errors?.time[0]);
         
+     
 
         });
       
@@ -647,6 +649,7 @@ export default {
         })
         .catch((err) => {
           console.log(err, "err")
+          this.$toast.error(err?.response?.data?.errors?.time[0]);
    
 
         });
@@ -731,6 +734,7 @@ export default {
           params: queryParams,
         })
         .then((result) => {
+          console.log("🚀 ~ .then ~ result:", result)
           this.total = result?.data?.data?.total;
           console.log(result,"result")
           this.divisions = result.data.data.data;

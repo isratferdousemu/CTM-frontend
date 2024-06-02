@@ -48,6 +48,11 @@ export default {
   },
 
   computed: {
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      }
+    },
     headers() {
       return [
         { text: this.$t('container.list.sl'), value: "id", align: "start", sortable: false },
@@ -354,8 +359,14 @@ export default {
                   >
 
                     <template v-slot:item.id="{ item, index }">
-                      {{
+                      {{ language === 'bn' ? $helpers.englishToBangla((options.page - 1) * options.itemsPerPage + index + 1) :
                         (options.page - 1) * options.itemsPerPage + index + 1
+                      }}
+                    </template>
+
+                    <template v-slot:item.user.user_id="{ item, index }">
+                      {{ language === 'bn' ? $helpers.englishToBangla(item.user.user_id) :
+                        item.user.user_id
                       }}
                     </template>
 

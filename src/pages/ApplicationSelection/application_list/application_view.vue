@@ -71,7 +71,7 @@
                                                     <v-col cols="8" lg="8">
                                                         :<template>
                                                             <span style="20px">
-                                                                {{ data.verification_number }}
+                                                              {{ language == 'en' ? data.verification_number : $helpers.englishToBangla(data.verification_number) }}
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -88,7 +88,8 @@
                                                     <v-col cols="8" lg="8">
                                                         :<template>
                                                             <span style="20px">
-                                                                {{ data.date_of_birth }}
+                                                              {{ language == 'en' ? data.date_of_birth : $helpers.englishToBangla(data.date_of_birth) }}
+
                                                             </span>
                                                         </template>
                                                     </v-col>
@@ -307,7 +308,7 @@
                                                         <v-col cols="8" lg="8">
                                                             :<template>
                                                                 <span style="20px">
-                                                                    {{ data.mobile }}
+                                                              {{ language == 'en' ? data.mobile : $helpers.englishToBangla(data.mobile) }}
                                                                 </span>
                                                             </template>
                                                         </v-col>
@@ -340,7 +341,7 @@
                                                         <v-col cols="8" lg="8">
                                                             :<template>
                                                                 <span style="20px">
-                                                                    {{ data.age }}
+                                                              {{ language == 'en' ? data.age : $helpers.englishToBangla(data.age) }}
                                                                 </span>
                                                             </template>
                                                         </v-col>
@@ -360,7 +361,8 @@
                                                             :<template>
                                                                 <span style="20px">
                                                                     
-                                                                    {{ genderName .value_en}},
+                                                              {{ language == 'en' ? genderName .value_en : genderName .value_bn }}
+                                                                  
                                                                 </span>
                                                             </template>
                                                         </v-col>

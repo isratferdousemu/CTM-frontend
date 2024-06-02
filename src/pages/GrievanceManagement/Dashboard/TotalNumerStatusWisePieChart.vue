@@ -1,64 +1,42 @@
 <template>
   <v-col>
-  <v-row>
-    <v-col cols="12">
-      <v-card style="text-align: center" :loading="isLoading">
-      <label style="color: #1976d2">
-                      <span>
-                        {{ $t("container.application_selection_dashboard.program_wise_number_of_application_approve") }}
-                      </span>
-      </label>
-      </v-card>
-    </v-col
-    >
-  </v-row>
-  <v-row class="ml-1 mr-1">
-    <v-menu
-        ref="menu"
-        v-model="menu"
-        :close-on-content-click="false"
-        transition="scale-transition"
-        offset-y
-        min-width="auto"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-text-field
-            v-model="dates"
-            :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
-            :label="$t('container.application_selection_dashboard.enter_start_end_date')"
-            readonly
-            v-bind="attrs"
-            v-on="on"
-        ></v-text-field>
-      </template>
-      <v-date-picker
-          v-model="dates"
-          :range="[dates[0], dates[1]]"
-          no-title
-          scrollable
-          @input="OnChangeDateInfo($event,'total_approve')"
-      >
-        <v-spacer></v-spacer>
-        <v-btn text color="primary" @click="resetDateRange">
-          {{ $t('container.list.reset')}}
+    <v-row>
 
-        </v-btn>
-        <v-btn
-            text
-            color="primary"
-            @click="$refs.menu.save(dates)"
-        >
-          {{ $t('container.list.ok')}}
-        </v-btn>
-      </v-date-picker>
-    </v-menu>
-  </v-row>
-  <v-row>
-    <img  v-if="allZeros == true" style="margin-left:80px;margin-top:10px;width: 300px;height: 300px" src="/assets/images/pie_chart_default.png" alt="default chart">
-    <canvas v-else id="programwise_application_approval"></canvas>
-  </v-row>
+      <v-col cols="12" style="padding: 0px;">
+        <v-card :loading="isLoading" style="background-color:#1c3b68;color:white;font-size:12px;">
+           <v-card-title>
+               <h5 class="white--text">
+                   {{ $t("container.grievance_management.dashboard.program_wise_total_canceled") }}
+              </h5>
+          </v-card-title>
+        </v-card>
+       </v-col>
+    </v-row>
+    <v-row class="ml-1 mr-1">
+      <v-menu ref="menu" v-model="menu" :close-on-content-click="false" transition="scale-transition" offset-y
+        min-width="auto">
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field v-model="dates" :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
+            :label="$t('container.application_selection_dashboard.enter_start_end_date')" readonly v-bind="attrs"
+            v-on="on"></v-text-field>
+        </template>
+        <v-date-picker v-model="dates" :range="[dates[0], dates[1]]" no-title scrollable
+          @input="OnChangeDateInfo($event, 'total_approve')">
+          <v-spacer></v-spacer>
+          <v-btn text color="primary" @click="resetDateRange">
+            Cancel
+          </v-btn>
+          <v-btn text color="primary" @click="$refs.menu.save(dates)">
+            OK
+          </v-btn>
+        </v-date-picker>
+      </v-menu>
+    </v-row>
+    <v-row>
+       <img  v-if="allZeros == true" style="margin-left:80px;margin-top:10px;width: 300px;height: 300px" src="/assets/images/pie_chart_default.png" alt="default chart">
+      <canvas id="statusWise"></canvas>
+    </v-row>
   </v-col>
-
 </template>
 
 <script>
@@ -87,19 +65,20 @@ export default {
     },
     async fetchProgramwiseApproveApplicationChartData(from_date = null, to_date = null) {
       await this.getProgramwiseApproveApplication(2, from_date, to_date);
-      if(this.allZeros != true) {
+       if (this.allZeros != true) {
         this.createProgramwiseApproveApplicentChart();
       }
+      // this.createProgramwiseApproveApplicentChart();
     },
     async getProgramwiseApproveApplication(status, from_date = null, to_date = null) {
-      this.isLoading = true
+      this.isLoading=true;
       const queryParams = {
-        status: status,
+        status: 3,
         start_date: from_date,
         end_date: to_date,
       };
       try {
-        const result = await this.$axios.get("/admin/application-dashboard/get-total-received-application", {
+        const result = await this.$axios.get("/admin/grievance-dashboard/status-wise-grievance", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -109,12 +88,11 @@ export default {
 
         this.programwise_application_approve_info = result.data.data;
         this.programwise_application_approve_levels = this.programwise_application_approve_info.map((row) => this.$i18n.locale == 'en' ? row.name_en : row.name_bn);
-        this.programwise_application_approve_datas = this.programwise_application_approve_info.map((row) => row.applications_count);
+        this.programwise_application_approve_datas = this.programwise_application_approve_info.map((row) => row.grievances_count);
         this.isLoading = false;
 
       } catch (error) {
         this.isLoading = false;
-        console.error("Error fetching data:", error);
         // Handle error if necessary
       }
     },
@@ -131,13 +109,13 @@ export default {
           return isNaN(percentage) ? '0.00%' : percentage + '%';
         });
 
-        this.programwise_application_approve_chart = new Chart(document.getElementById("programwise_application_approval"), {
+        this.programwise_application_approve_chart = new Chart(document.getElementById("statusWise"), {
           type: "pie",
           data: {
             // labels: this.programwise_application_approve_levels,
             // labels: this.programwise_application_approve_levels.map((label, index) => `${label} (${percentages[index]})`),
-            labels: this.programwise_application_approve_levels.map((label, index) => `${label} (${this.$i18n.locale == 'en' ? this.programwise_application_approve_datas[index] : this.$helpers.englishToBangla(this.programwise_application_approve_datas[index])} - ${this.$i18n.locale == 'en' ? percentages[index]  : this.$helpers.englishToBangla(percentages[index])})`),
-            percentages:percentages,
+            labels: this.programwise_application_approve_levels.map((label, index) => `${label} (${this.$i18n.locale == 'en' ? this.programwise_application_approve_datas[index] : this.$helpers.englishToBangla(this.programwise_application_approve_datas[index])} - ${this.$i18n.locale == 'en' ? percentages[index] : this.$helpers.englishToBangla(percentages[index])})`),
+            percentages: percentages,
             datasets: [
               {
                 label: "Values",
@@ -184,8 +162,8 @@ export default {
             aspectRatio: 1, // Aspect ratio of 1 w
           },
         });
-        document.getElementById("programwise_application_approval").style.width = '400px';
-        document.getElementById("programwise_application_approval").style.height = '435px';
+        document.getElementById("statusWise").style.width = '400px';
+        document.getElementById("statusWise").style.height = '435px';
       } else {
         console.error("Data is not available to create chart.");
       }
@@ -194,7 +172,20 @@ export default {
       return '#' + Math.floor(Math.random() * 16777215).toString(16);
     },
 
-    OnChangeDateInfo(event, type) {
+    // OnChangeDateInfo(event, type) {
+    //   if (this.dates.length < 2) {
+    //     return;
+    //   }
+    //   let from_date = null;
+    //   let to_date = null;
+
+    //   if (event.length === 2) {
+    //     from_date = event[0];
+    //     to_date = event[1];
+    //   }
+    //   this.fetchProgramwiseApproveApplicationChartData(from_date, to_date);
+    // },
+      OnChangeDateInfo(event, type) {
       if (this.dates.length < 2) {
         return;
       }
@@ -218,7 +209,7 @@ export default {
   mounted() {
     this.fetchProgramwiseApproveApplicationChartData();
   },
-  computed:{
+  computed: {
     language: {
       get() {
         return this.$store.getters.getAppLanguage;

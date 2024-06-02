@@ -75,6 +75,7 @@ export default {
 
     mounted() {
         this.DataView();
+        this.GetTimeSlot();
 
     },
 
@@ -82,6 +83,26 @@ export default {
         emailAlert(id) {
             this.dialogEmail = true;
             this.email_id = id;
+        },
+        async GetTimeSlot() {
+
+            await this.$axios
+                .get("/admin/training/program-time-slots", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+
+                })
+                .then((result) => {
+
+                    this.time_slots = result?.data?.data;
+
+
+
+
+
+                });
         },
 
 
@@ -97,26 +118,32 @@ export default {
                 .then((result) => {
 
                     this.data = result?.data?.data;
-                    const timeSlotsMap = new Map();
-                    this.time_slots.forEach(slot => {
-                        timeSlotsMap.set(slot.id.toString(), slot.time);
-                    });
-
-                    // Replace time slot IDs with time values
-
-
-                    const updatedData = this.data.on_days.map(day => {
-                        if (day.is_active === '1') {
-                            const updatedTimeSlots = (day.timeSlots || []).map(slotId => timeSlotsMap.get(slotId) || slotId);
-                            return { ...day, timeSlots: updatedTimeSlots };
-                        } else {
-                            return { ...day, timeSlots: null }; // If the day is not active, return it unchanged
-                        }
-                    });
-
-                    this.edited_on_days = updatedData;
+                    setTimeout(() => {
+                        const timeSlotsMap = new Map();
+                        this.time_slots.forEach(slot => {
+                            timeSlotsMap.set(slot.id.toString(), slot.time);
+                        });
+                        // Code to execute after delay
 
 
+
+
+
+                        const updatedData = this.data.on_days.map(day => {
+                            if (day.is_active == '1') {
+                                const updatedTimeSlots = (day.timeSlots || []).map(slotId => timeSlotsMap.get(slotId) || slotId);
+                                return { ...day, timeSlots: updatedTimeSlots };
+                            } else {
+                                return { ...day, timeSlots: null }; // If the day is not active, return it unchanged
+                            }
+                        });
+
+
+                        this.edited_on_days = updatedData;
+                        console.log(this.edited_on_days, "updatedData")
+                    }, 1500);
+                    // Replace time slot IDs withalert
+               
                 })
                 .catch((err) => {
                     if (this.$refs.formAdd && this.$refs.formAdd.$refs && this.$refs.formAdd.$refs.operator) {
@@ -137,7 +164,7 @@ export default {
 }
 </script><template>
     <div id="url-generate">
-        <v-app-bar color="#405c61" fixed height="60" class="px-4 mb-10" dense dark>
+        <v-app-bar color="#1C3C6A" fixed height="60" class="px-4 mb-10" dense dark>
             <v-row align="center" no-gutters>
                 <v-col cols="2">
                     <v-img class="p-3 mr-4" max-height="100%" max-width="60px" position="center center"
@@ -165,10 +192,15 @@ export default {
                 </v-col>
             </v-row>
         </v-app-bar>
-        <v-row>
+        <v-row class="mt-1">
             <v-col cols="10" offset="1">
-                <v-card class="mx-3">
-                    <v-row class="my-custom-row ma-5 mt-15">
+                <v-card class="mx-3 mt-5">
+                    <v-card-title class="justify-center black--text mt-15"
+                        style="background-color: #1C3B68; color: white;">
+                        <h4 class="white--text">{{ $t("container.training_management.training_program.view") }}
+                        </h4>
+                    </v-card-title>
+                    <v-row class="my-custom-row ma-5 mt-10">
                         <v-col cols="5" style="font-size:13px;">
                             <b>{{ $t('container.training_management.training_program.program_name') }}</b>:
                         </v-col>
@@ -188,8 +220,8 @@ export default {
                         <v-col cols="7" style="font-size:13px;">
                             <b>:</b> <span class="ml-2">
                                 {{ language == 'bn' ?
-                        data?.training_circular?.training_type.value_bn :
-                        data?.training_circular?.training_type.value_en }}</span>
+                                data?.training_circular?.training_type.value_bn :
+                                data?.training_circular?.training_type.value_en }}</span>
                         </v-col>
                         <v-col cols="5" style="font-size:13px;">
                             <b>{{ $t('container.training_management.training_program.trainer') }}</b>:
@@ -215,9 +247,10 @@ export default {
                         <v-col cols="5" style="font-size:13px;">
                             <b>{{ $t('container.training_management.training_circular.description') }}</b>:
                         </v-col>
-                        <v-col cols="7" style="font-size:13px;">
-                            <b>:</b> <span class="ml-2"> {{ data?.description
-                                }}</span>
+                        <v-col cols="7" class="d-flex align-items-start">
+                            <b>:</b>
+
+                            <div v-html="data?.description" class="ml-3"></div>
                         </v-col>
                         <v-col cols="5" style="font-size:13px;">
                             <b>{{ $t('container.api_manager.data_receiver.start_date') }}</b>:
@@ -234,10 +267,48 @@ export default {
                                 $helpers.englishToBangla(data?.end_date) : data?.end_date }}</span>
                         </v-col>
                         <v-col cols="5" style="font-size:13px;">
+                            <b>{{ $t('container.training_management.training_program.exam_link') }}</b>:
+                        </v-col>
+                        <v-col cols="7" style="font-size:13px;">
+                            <b>:</b> <span class="ml-2">{{ data?.question_link }}</span>
+                        </v-col>
+                        <v-col cols="5" style="font-size:13px;">
+                            <b>{{ $t('container.training_management.training_program.rating_link') }}</b>:
+                        </v-col>
+                        <v-col cols="7" style="font-size:13px;">
+                            <b>:</b> <span class="ml-2">{{ data?.trainer_ratings_link }}</span>
+                        </v-col>
+                        <v-col cols="5" style="font-size:13px;">
                             <b>{{ $t('container.list.status') }}</b>:
                         </v-col>
                         <v-col cols="7" style="font-size:13px;">
-                            <b>:</b> <span class="ml-2" v-if="data?.status == 0">
+                            <b>:</b> <span class="ml-2">
+                                {{ language == 'bn' ?
+                                data?.status_name.value_bn : data?.status_name.value_en }}
+                            </span>
+
+                        </v-col>
+
+                        <v-col cols="5" style="font-size:13px;">
+                            <b>{{ $t('container.training_management.training_program.exam_status') }}</b>:
+                        </v-col>
+                        <v-col cols="7" style="font-size:13px;">
+                            <b>:</b> <span class="ml-2" v-if="data?.exam_status == 0">
+                                {{ language == 'bn' ?
+                                'নিষ্ক্রিয়' : 'Inactive' }}
+                            </span>
+                            <span class="ml-2" v-else>
+                                {{ language == 'bn' ?
+                                'সক্রিয়' : 'Active' }}
+                            </span>
+                        </v-col>
+                        <v-col cols="5" style="font-size:13px;">
+                            <b>{{
+                                $t('container.training_management.training_program.trainer_rating_status')
+                                }}</b>:
+                        </v-col>
+                        <v-col cols="7" style="font-size:13px;">
+                            <b>:</b> <span class="ml-2" v-if="data?.rating_status == 0">
                                 {{ language == 'bn' ?
                                 'নিষ্ক্রিয়' : 'Inactive' }}
                             </span>
@@ -250,12 +321,20 @@ export default {
                         <!-- Other fields -->
 
                     </v-row>
-                    <v-row class="ma-5">
-                        <v-col cols="12">
-                            <h5 class="text-center mb-5">{{
-                                $t('container.training_management.training_program.class_schedule') }}</h5>
+                    <v-card-title class="justify-center black--text "
+                        style="background-color: #1C3B68; color: white;">
+                        <h4 class="text-center white--text  ">{{
+                        $t('container.training_management.training_program.class_schedule') }}</h4>
 
-                            <v-simple-table dense class=" mt-10">
+                    </v-card-title>
+
+
+
+                    <v-row  class="mx-5" v-if="edited_on_days && edited_on_days.length > 0">
+                        <v-col cols="12">
+
+
+                            <v-simple-table dense class=" mt-10" v-if="edited_on_days">
                                 <template v-slot:default>
                                     <thead>
                                         <tr>
@@ -302,7 +381,6 @@ export default {
                             </v-simple-table>
                         </v-col>
                     </v-row>
-
 
                 </v-card>
             </v-col>

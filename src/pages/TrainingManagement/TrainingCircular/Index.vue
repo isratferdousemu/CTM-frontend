@@ -64,13 +64,13 @@ export default {
         },
         headers() {
             return [
-                { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, width: "10%" },
+                { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, width: "5%" },
                 { text: this.$t('container.training_management.training_circular.name'), value: "circular_name", align: "start", width: "15%" },
-                { text: this.$t('container.training_management.training_circular.module'), value: "modules", width: "20%" },
+           
                 { text: this.$t('container.training_management.training_circular.no_of_participant'), value: "no_of_participant", width: "10%" },
                 { text: this.$t('container.training_management.training_circular.start_date'), value: "start_date", width: "15%" },
                 { text: this.$t('container.training_management.training_circular.end_date'), value: "end_date", width: "15%" },
-                { text: this.$t('container.list.action'), value: "actions", align: "start", sortable: false, width: "15%" },
+                { text: this.$t('container.list.action'), value: "actions", align: "start", sortable: false, width: "25%" },
             ];
         },
 
@@ -682,144 +682,114 @@ export default {
                                     <v-col cols="12">
                                         <v-data-table :loading="loading" item-key="id" :headers="headers"
                                             :items="circulars" :items-per-page="pagination.perPage" hide-default-footer
-                                            class="elevation-0 transparent row-pointer mt-5 mx-5">
+                                            class="elevation-0 transparent row-pointer mt-5 mx-5 small-font">
                                             <template v-slot:item.sl="{ item, index }">
-
-                                                {{ language === 'bn' ? $helpers.englishToBangla(
-                                                (pagination.current - 1) * pagination.perPage +
-                                                index +
-                                                1) : (pagination.current - 1) * pagination.perPage +
-                                                index +
-                                                1 }}
-
-
+                                                <span class="small-font">
+                                                    {{ language === 'bn' ? $helpers.englishToBangla(
+                                            (pagination.current - 1) * pagination.perPage +
+                                            index +
+                                            1) : (pagination.current - 1) * pagination.perPage +
+                                            index +
+                                            1 }}
+                                                </span>
                                             </template>
+
                                             <template v-slot:item.modules="{ item }">
                                                 <span v-for="(value, key) in item.modules" :key="key">
-                                                    <v-chip small label color="#FACD91" class="ma-1">
-
-                                                        {{ language == 'bn' ?
-                                                        value.value_bn : value.value_en }}
+                                                    <v-chip small label color="#FACD91" class="ma-1 small-font">
+                                                        {{ language == 'bn' ? value.value_bn : value.value_en }}
                                                     </v-chip> &nbsp;
-
-
                                                 </span>
                                             </template>
+
                                             <template v-slot:[`item.no_of_participant`]="{ item }">
-                                                <span>
+                                                <span class="small-font">
                                                     {{ language == 'bn' ?
-                                                    $helpers.englishToBangla(item.no_of_participant) :
-                                                    item.no_of_participant }}
+                                            $helpers.englishToBangla(item.no_of_participant) :
+                                            item.no_of_participant }}
                                                 </span>
-
                                             </template>
+
                                             <template v-slot:[`item.start_date`]="{ item }">
-                                                <span>
-                                                    {{ language == 'bn' ?
-                                                    $helpers.englishToBangla(item.start_date) : item.start_date }}
+                                                <span class="small-font">
+                                                    {{ language == 'bn' ? $helpers.englishToBangla(item.start_date) :
+                                            item.start_date }}
                                                 </span>
-
-                                            </template> <template v-slot:[`item.end_date`]="{ item }">
-                                                <span>
-                                                    {{ language == 'bn' ?
-                                                    $helpers.englishToBangla(item.end_date) : item.end_date }}
-                                                </span>
-
                                             </template>
 
-
-
-
-
-
+                                            <template v-slot:[`item.end_date`]="{ item }">
+                                                <span class="small-font">
+                                                    {{ language == 'bn' ? $helpers.englishToBangla(item.end_date) :
+                                            item.end_date }}
+                                                </span>
+                                            </template>
 
                                             <template v-slot:item.actions="{ item }">
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
-                                                        <v-btn v-can="'trainerCircular-view'" fab x-small v-on="on"
-                                                            color="blue" elevation="0" router class=" white--text  mr-2"
+                                                        <v-btn v-can="'trainingCircular-view'" fab x-small v-on="on"
+                                                            color="blue" elevation="0" router
+                                                            class="white--text mr-2 ma-1 small-font"
                                                             @click="copyToClipboard(item.id)">
                                                             <v-icon> mdi-link </v-icon>
                                                         </v-btn>
-
-
                                                     </template>
-                                                    <span>
-                                                        {{ $t("container.list.copy") }}
-                                                    </span>
-
+                                                    <span class="small-font">{{ $t("container.list.copy") }}</span>
                                                 </v-tooltip>
+
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
                                                         <v-btn v-can="'trainerCircular-view'" fab x-small v-on="on"
                                                             color="#AFB42B" elevation="0" router
-                                                            class=" white--text  mr-2"
+                                                            class="white--text mr-2 ma-1 small-font"
                                                             :to="`/training-management/training-circular/view/${item.id}`">
                                                             <v-icon> mdi-eye </v-icon>
                                                         </v-btn>
-
-
                                                     </template>
-                                                    <span>
-                                                        {{ $t("container.list.view") }}
-                                                    </span>
-
+                                                    <span class="small-font">{{ $t("container.list.view") }}</span>
                                                 </v-tooltip>
 
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
-                                                        <v-btn v-can="'trainingCircular-edit'" class="mr-2" fab x-small
-                                                            v-on="on" color="success" elevation="0" router
+                                                        <v-btn v-can="'trainingCircular-edit'"
+                                                            class="mr-2 ma-1 small-font" fab x-small v-on="on"
+                                                            color="success" elevation="0" router
                                                             :to="`/training-management/training-circular/edit/${item.id}`">
                                                             <v-icon> mdi-account-edit-outline </v-icon>
                                                         </v-btn>
                                                     </template>
-                                                    <span>
-                                                        {{ $t("container.list.edit") }}
-                                                    </span>
+                                                    <span class="small-font">{{ $t("container.list.edit") }}</span>
                                                 </v-tooltip>
-
 
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
                                                         <v-btn v-can="'trainingCircular-delete'" fab x-small v-on="on"
-                                                            color="grey" class="white--text  mr-2" elevation="0"
-                                                            @click="deleteAlert(item.id)">
+                                                            color="grey" class="white--text ma-1 mr-2 small-font"
+                                                            elevation="0" @click="deleteAlert(item.id)">
                                                             <v-icon> mdi-delete </v-icon>
                                                         </v-btn>
                                                     </template>
-                                                    <span> {{ $t("container.list.delete") }}</span>
+                                                    <span class="small-font">{{ $t("container.list.delete") }}</span>
                                                 </v-tooltip>
-
                                             </template>
 
-
-
                                             <template v-slot:footer="item">
-
-                                                <row class="text-right pt-2 v-data-footer justify-end pb-2">
-
-
-
+                                                <row class="text-right pt-2 v-data-footer justify-end pb-2 small-font">
                                                     <v-col cols="12" lg="4" md="4" sm="12" xs="12" class="text-right">
                                                         <v-pagination circle primary v-model="pagination.current"
                                                             :length="pagination.total" @input="onPageChange"
                                                             :total-visible="11"
-                                                            class="custom-pagination-item"></v-pagination></v-col>
+                                                            class="custom-pagination-item small-font"></v-pagination>
+                                                    </v-col>
                                                     <v-col cols="12" lg="4" md="4" sm="12" xs="12" class="text-right">
-                                                        <v-select style="
-                     
-                            
-                                    
-                                                " :items="items" hide-details dense outlined @change="perPageChange"
-                                                            v-model="pagination.perPage"></v-select>
-
-
+                                                        <v-select style="" :items="items" hide-details dense outlined
+                                                            @change="perPageChange" v-model="pagination.perPage"
+                                                            class="small-font"></v-select>
                                                     </v-col>
                                                 </row>
-
                                             </template>
                                         </v-data-table>
+
 
                                     </v-col>
                                 </v-row>
@@ -864,49 +834,5 @@ export default {
 </template>
 
 <style>
-.text-wrap {
-    /* You can adjust these properties as needed */
-    overflow-wrap: break-word;
-    /* Handles long words */
-    word-wrap: break-word;
-    /* Handles long words */
-    white-space: pre-wrap;
-    /* Handles spaces and line breaks */
-}
 
-.word-wrap {
-    overflow-wrap: break-word;
-}
-
-.custom-chip {
-    background-color: blue;
-    color: white;
-}
-.gradient-background {
-    background: linear-gradient(to right, #87CEEB, #ADD8E6, #F0F8FF);
-    color: black;
-    /* Adjust text color for better contrast */
-    border-radius: 10px;
-    /* Add rounded corners for a softer look */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    /* Add a subtle shadow for depth */
-
-    /* Add a subtle animation */
-    animation: gradient-animation 10s infinite alternate;
-}
-
-/* Define the animation */
-@keyframes gradient-animation {
-    0% {
-        background-position: 0% 50%;
-    }
-
-    100% {
-        background-position: 100% 50%;
-    }
-}
-.v-expansion-panel-header__icon {
-  color: #ff0000;
-  /* Your desired arrow color */
-  }
 </style>

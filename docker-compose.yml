@@ -7,10 +7,9 @@ networks:
     external: true
 
 services:
-  frontend-stage:
+  frontend-prod:
     container_name: ctm-frontend-stage
     image: 'ctm-app-frontend-stage'
-
     environment:
       - TZ=Asia/Dhaka
     ports:
@@ -22,4 +21,3 @@ services:
 
     networks:
       - web-ctm-app-net
-##End of Scripts
