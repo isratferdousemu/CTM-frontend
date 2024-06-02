@@ -8,7 +8,9 @@
               <v-card-text>
                 <v-row class="ma-2">
                   <v-col cols="12" lg="6" md="6">
-                    <label>beneficiary ID</label>
+                    <label>{{
+                      language === "bn" ? "উপকারভোগীর আইডি" : "Beneficiary ID"
+                    }}</label>
                     <v-text-field
                       v-model="data.beneficiary_id"
                       outlined
@@ -24,7 +26,9 @@
                   </v-col>
 
                   <v-col cols="12" lg="6" md="6">
-                    <label>Date of Birth</label>
+                    <label>{{
+                      language === "bn" ? "জন্ম তারিখ" : "Date of Birth"
+                    }}</label>
                     <v-text-field
                       v-model="data.date_of_birth"
                       outlined
@@ -42,7 +46,7 @@
                         class="custom-btn-width white--text"
                       >
                         <span class="mdi mdi-television mr-2"></span>
-                        Preview
+                        {{ language == "bn" ? "পূর্বরূপ" : "Preview" }}
                       </v-btn>
                     </div>
                   </v-col>
@@ -55,19 +59,40 @@
               <v-card-text>
                 <v-row dense class="ml-5">
                   <v-col cols="12">
-                    <h4>Beneficiary Details</h4>
+                    <h4>
+                      {{
+                        language == "bn"
+                          ? "উপকারভোগীর আইডি"
+                          : "Beneficiary Details"
+                      }}
+                    </h4>
                   </v-col>
                 </v-row>
                 <v-row dense class="ml-5">
-                  <v-col cols="12"> <b>ID:</b> 1234567890 </v-col>
-                  <v-col cols="12"> <b>Name:</b> Shohorab Ahmed </v-col>
-                  <v-col cols="12"> <b>Address:</b> Dhaka North </v-col>
+                  <v-col cols="12">
+                    <b>{{ language === "bn" ? "আইডি:" : "ID:" }}</b>
+                    {{ items.verification_number }}
+                  </v-col>
+                  <v-col cols="12">
+                    <b>{{ language === "bn" ? "নাম:" : "Name:" }}</b>
+                    {{ language === "bn" ? items.name_bn : items.name_en }}
+                  </v-col>
+                  <v-col cols="12">
+                    <b>{{ language === "bn" ? "ঠিকানা:" : "Address:" }}</b>
+                    {{ items.beneficiary_address }}
+                  </v-col>
                 </v-row>
                 <v-row class="ma-1">
                   <v-col cols="12" lg="12" md="12">
                     <v-card elevation="0">
-                      <v-card-title class="custom-title">
-                        <h5 class="text-center">Payment Status</h5>
+                      <v-card-title class="custom-title" style="background-color: #2b4978; color: white;">
+                        <h5 class="text-center">
+                          {{
+                            language == "bn"
+                              ? "লেনদেনের অবস্থা"
+                              : "Payment Status"
+                          }}
+                        </h5>
                       </v-card-title>
                       <v-card-text>
                         <br />
@@ -114,17 +139,23 @@
                     </v-card>
                   </v-col>
                   <v-row class="justify-end mt-2">
-                    <v-col cols="4" md="1" lg="1">
+                    <v-col cols="4" md="2" lg="2">
                       <v-icon color="#26A69A">mdi-circle</v-icon>
-                      <span>Completed</span>
+                      <span>{{
+                        language === "bn" ? "সম্পন্ন" : "Completed"
+                      }}</span>
                     </v-col>
-                    <v-col cols="4" md="1" lg="1">
+                    <!-- <v-col cols="4" md="1" lg="1">
                       <v-icon color="#FFEB3B">mdi-circle</v-icon>
                       <span>Process Running</span>
-                    </v-col>
-                    <v-col cols="4" md="1" lg="1">
+                    </v-col> -->
+                    <v-col cols="4" md="2" lg="2">
                       <v-icon color="#757575">mdi-circle</v-icon>
-                      <span>Future Program</span>
+                      <span>{{
+                        language === "bn"
+                          ? "ভবিষ্যত প্রোগ্রাম"
+                          : "Future Program"
+                      }}</span>
                     </v-col>
                   </v-row>
                 </v-row>
@@ -138,6 +169,9 @@
 </template>
 
 <script>
+import moment from "moment";
+import "moment/locale/bn";
+
 export default {
   name: "FrontendIndex",
   data() {
@@ -233,23 +267,29 @@ export default {
   },
   methods: {
     formatDateTime(value) {
-      const timeAndDate = new Date(value);
-      const formattedDate = timeAndDate.toLocaleDateString("en-GB"); // Format: DD/MM/YYYY
-      const formattedTime = timeAndDate.toLocaleTimeString("en-GB", {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: true,
-      });
+      const dateTime = new Date(value);
+      if (this.language === "bn") {
+        // Format time and date in Bangla
+        const formattedDate = moment(dateTime).locale("bn").format("ll");
+        const formattedTime = moment(dateTime).locale("bn").format("LT");
+        return { date: formattedDate, time: formattedTime };
+      } else {
+        // Format time and date in English
+        const formattedDate = dateTime.toLocaleDateString("en-GB");
+        const formattedTime = dateTime.toLocaleTimeString("en-GB", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        });
+        return { date: formattedDate, time: formattedTime };
+      }
 
-      return {
-        date: formattedDate,
-        time: formattedTime,
-      };
+      return { date: null, time: null };
     },
     async preview() {
       if (!this.data.beneficiary_id) {
         this.$toast.warning(
-          this.language === "bn"
+          this.language == "bn"
             ? "একটি বৈধ ID লিখুন"
             : "Please enter a valid ID"
         );
@@ -257,7 +297,7 @@ export default {
       }
       if (!this.data.date_of_birth) {
         this.$toast.warning(
-          this.language === "bn"
+          this.language == "bn"
             ? "একটি জন্ম তারিখ নির্বাচন করুন"
             : "Please select a date of birth"
         );
@@ -277,7 +317,9 @@ export default {
           },
         })
         .then((res) => {
-          this.items = res.data;
+          console.log("🚀 ~ .then ~ res:", res);
+          this.items = res?.data?.data;
+          console.log("🚀 ~ .then ~ this.items:", this.items);
           this.showDetails = true;
           if (this.items?.payroll != null) {
             const formatted = this.formatDateTime(
@@ -288,14 +330,14 @@ export default {
             this.tracking[0].date = formatted.date;
           }
 
-          if (this.items?.payroll.status == "Approved") {
+          if (this.items?.payroll?.status == "Approved") {
             const formatted = this.formatDateTime(
               this.items.payroll.updated_at
             );
             this.tracking[1].completed = true;
             this.tracking[1].time = formatted.time;
             this.tracking[1].date = formatted.date;
-          } else {
+          } else if (this.items?.payroll?.status == "Rejected") {
             this.tracking[1].completed = true;
             this.tracking[1].message.en = "Your payroll is rejected";
             this.tracking[1].message.bn = "আপনার পেরোল প্রত্যাখ্যান হয়েছে";
@@ -305,7 +347,7 @@ export default {
             this.tracking[1].time = formatted.time;
             this.tracking[1].date = formatted.date;
           }
-          if (this.items?.payment_cycle.status == "Completed") {
+          if (this.items?.payment_cycle?.status == "Completed") {
             this.tracking[2].completed = true;
             const formatted = this.formatDateTime(
               this.items.payroll.updated_at
@@ -313,19 +355,19 @@ export default {
             this.tracking[2].time = formatted.time;
             this.tracking[2].date = formatted.date;
           }
-          this.$toast.success(
-            this.language === "bn"
-              ? "তথ্য সফলভাবে প্রাপ্ত হয়েছে"
-              : "Data retrieved successfully"
-          );
+          // this.$toast.success(
+          //   this.language == 'bn'
+          //     ? "তথ্য সফলভাবে প্রাপ্ত হয়েছে"
+          //     : "Data retrieved successfully"
+          // );
         })
         .catch((error) => {
           console.error("There was an error fetching the data:", error);
-          this.$toast.error(
-            this.language === "bn"
-              ? "তথ্য আনতে একটি ত্রুটি ঘটেছে"
-              : "An error occurred while fetching the data"
-          );
+          // this.$toast.error(
+          //   this.language == 'bn'
+          //     ? "তথ্য আনতে একটি ত্রুটি ঘটেছে"
+          //     : "An error occurred while fetching the data"
+          // );
         });
     },
   },
