@@ -37,14 +37,14 @@
       >
         <v-spacer></v-spacer>
         <v-btn text color="primary" @click="resetDateRange">
-          Reset
+          {{ $t('container.list.reset')}}
         </v-btn>
         <v-btn
             text
             color="primary"
             @click="$refs.menu.save(dates)"
         >
-          OK
+          {{ $t('container.list.ok')}}
         </v-btn>
       </v-date-picker>
     </v-menu>
@@ -185,6 +185,10 @@ export default {
       if (this.dates.length < 2) {
         return;
       }
+      if (this.dates[1] && this.dates[1] < this.dates[0]) {
+        this.$toast.error(this.language == 'en' ? 'End date cannot be before start date' : 'শেষ তারিখ শুরুর তারিখের আগে হতে পারে না')
+        this.resetDateRange();
+      }
       let from_date = null;
       let to_date = null;
 
@@ -193,6 +197,14 @@ export default {
         to_date = event[1];
       }
       this.fetchTotalOfficeTypewiseUserChartData(from_date, to_date);
+    },
+  },
+
+  computed:{
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      }
     },
   },
 
