@@ -7,8 +7,13 @@
           <v-col cols="12">
             <v-expansion-panels>
               <v-expansion-panel>
-                <v-expansion-panel-header color="#8C9EFF">
-                  <h3 class="white--text">
+                <v-expansion-panel-header color="#1c3b68">
+                  <template v-slot:actions>
+                    <v-icon color="white">
+                      $expand
+                    </v-icon>
+                  </template>
+                  <h3 class="white--text" style="font-size:19.89px;">
                     {{ $t("container.list.filter") }}
                   </h3>
                 </v-expansion-panel-header>
@@ -17,70 +22,32 @@
                     <form @submit.prevent="GetCity()">
                       <v-row>
                         <v-col lg="4" md="4" cols="12">
-                          <v-autocomplete
-                            outlined
-                            clearable
-                            :append-icon-cb="appendIconCallback"
-                            append-icon="mdi-plus"
-                            class="no-arrow-icon"
-                            v-model="location_type_search"
-                            :items="locationType"
-                            :item-text="language == 'bn' ? 'value_bn' : 'value_en'"
-                            item-value="id"
-                            :label="$t('container.list.location_type')"
-                          >
+                          <v-autocomplete outlined clearable :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
+                            class="no-arrow-icon" v-model="location_type_search" :items="locationType"
+                            :item-text="language == 'bn' ? 'value_bn' : 'value_en'" item-value="id"
+                            :label="$t('container.list.location_type')">
                           </v-autocomplete>
                         </v-col>
                         <v-col lg="4" md="4" cols="12">
-                          <ValidationProvider
-                            name="Division"
-                            vid="division"
-                            v-slot="{ errors }"
-                          >
-                            <v-autocomplete
-                              @input="onChangeDivisionSearch($event)"
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                              class="no-arrow-icon"
-                              v-model="division_id_search"
-                              outlined
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.division.division'
-                                )
-                              "
-                              :items="divisions"
-                              :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            ></v-autocomplete>
+                          <ValidationProvider name="Division" vid="division" v-slot="{ errors }">
+                            <v-autocomplete @input="onChangeDivisionSearch($event)" :append-icon-cb="appendIconCallback"
+                              append-icon="mdi-plus" class="no-arrow-icon" v-model="division_id_search" outlined :label="$t(
+                                'container.system_config.demo_graphic.division.division'
+                              )
+                                " :items="divisions" :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
+                              item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
                         <v-col lg="4" md="4" cols="12">
-                          <ValidationProvider
-                            name="District"
-                            vid="district"
-                            v-slot="{ errors }"
-                          >
-                            <v-autocomplete
-                              v-model="district_id_search"
-                              outlined
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.district.district'
-                                )
-                              "
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                              class="no-arrow-icon"
-                              :items="districts_search"
-                              :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                              :readonly="false"
-                            ></v-autocomplete>
+                          <ValidationProvider name="District" vid="district" v-slot="{ errors }">
+                            <v-autocomplete v-model="district_id_search" outlined :label="$t(
+                              'container.system_config.demo_graphic.district.district'
+                            )
+                              " :append-icon-cb="appendIconCallback" append-icon="mdi-plus" class="no-arrow-icon"
+                              :items="districts_search" :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
+                              item-value="id" :error="errors[0] ? true : false" :error-messages="errors[0]"
+                              :readonly="false"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
                       </v-row>
@@ -89,13 +56,8 @@
                         <v-btn elevation="2" class="btn" @click="resetSearch">{{
                           $t("container.list.reset")
                         }}</v-btn>
-                        <v-btn
-                          elevation="2"
-                          type="submit"
-                          class="btn ml-2"
-                          color="success"
-                          >{{ $t("container.list.filter") }}</v-btn
-                        >
+                        <v-btn elevation="2" type="submit" class="btn ml-2" color="success">{{ $t("container.list.filter")
+                        }}</v-btn>
                       </div>
                     </form>
                   </ValidationObserver>
@@ -104,78 +66,49 @@
             </v-expansion-panels>
           </v-col>
           <v-col cols="12">
-            <v-card
-              elevation="10"
-              color="white"
-              rounded="md"
-              theme="light"
-              class="mb-8"
-            >
-              <v-card-title class="justify-center" tag="div">
-                <h3 class="text-uppercase pt-3">
-                  {{
-                    $t(
-                      "container.system_config.demo_graphic.city_corporation.customtitle"
-                    )
-                  }}
-                </h3>
-              </v-card-title>
+            <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8">
+             <v-card-title tag="div" style="background-color:#1c3b68;color:white;margin-bottom: 17px;font-size:17px;">
+                  <h3 class="white--text">
+                    {{ $t("container.system_config.demo_graphic.city_corporation.customtitle") }}
+                  </h3>
+                </v-card-title>
               <v-card-text>
-                           <v-row justify="space-between" align="center" class="mx-5">
-          <!-- Checkbox on the left -->
-          <v-col lg="3" md="3" cols="12">
-              <v-text-field
-                  @keyup.native="GetCity"
-                  outlined
-                  dense
-                  v-model="search"
-                  prepend-inner-icon="mdi-magnify"
-                  class="my-sm-0 my-3 mx-0v -input--horizontal"
-                  flat
-                  variant="outlined"
-                  :label="$t('container.list.search')"
-                  hide-details
-                  color="primary"
-              ></v-text-field>
-          </v-col>
+                <v-row justify="space-between" align="center" class="mx-5">
+                  <!-- Checkbox on the left -->
+                  <v-col lg="3" md="3" cols="12">
+                    <v-text-field @keyup.native="GetCity" outlined dense v-model="search" prepend-inner-icon="mdi-magnify"
+                      class="my-sm-0 my-3 mx-0v -input--horizontal" flat variant="outlined"
+                      :label="$t('container.list.search')" hide-details color="primary"></v-text-field>
+                  </v-col>
 
-          <!-- Dropdown on the right -->
-          <v-col lg="3" md="3" cols="12" class="text-right ">
-              <v-btn
-                  @click="createDialog"
-                  flat
-                  color="primary"
-                  prepend-icon="mdi-account-multiple-plus"
-                  v-can="'city-create'"
+                  <!-- Dropdown on the right -->
+                  <v-col lg="3" md="3" cols="12" class="text-right ">
+                    <v-btn @click="createDialog" flat color="primary" prepend-icon="mdi-account-multiple-plus"
+                      v-can="'city-create'">
+                      {{ $t("container.list.add_new") }}
+                    </v-btn>
+                  </v-col>
+                </v-row>
+                <v-row justify="space-between" align="center" class="mx-4">
+                  <!-- Checkbox on the left -->
+                  <v-col lg="3" md="3" cols="12">
+                    {{ $t('container.list.total') }} &nbsp;:&nbsp; {{ language === 'bn' ? $helpers.englishToBangla(
+                      this.total) : this.total }}
+                  </v-col>
 
-              >
-                  {{ $t("container.list.add_new") }}
-              </v-btn>
-          </v-col>
-      </v-row>
-      <v-row justify="space-between" align="center" class="mx-4">
-          <!-- Checkbox on the left -->
-          <v-col lg="3" md="3" cols="12">
-              {{ $t('container.list.total') }} &nbsp;:&nbsp; {{ language === 'bn' ? $helpers.englishToBangla(
-                this.total) : this.total }}
-          </v-col>
-
-          <!-- Dropdown on the right -->
-        <v-col lg="4" md="6" cols="12" class="text-right">
-          <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4" @click="GeneratePdf()">
-            <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
-          </v-btn>
-          <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
-            <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
-            {{ $t("container.list.excel") }}
-          </v-btn>
-        </v-col>
-      </v-row>
-                <v-row
-                  class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
-                  justify="center"
-                  justify-lg="space-between"
-                >
+                  <!-- Dropdown on the right -->
+                  <v-col lg="4" md="6" cols="12" class="text-right">
+                    <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4" @click="GeneratePdf()">
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{ $t("container.list.PDF") }}
+                    </v-btn>
+                    <v-btn elevation="2" flat class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                      {{ $t("container.list.excel") }}
+                    </v-btn>
+                  </v-col>
+                </v-row>
+                <v-row class="ma-0 pa-3 white round-border d-flex justify-space-between align-center" justify="center"
+                  justify-lg="space-between">
                   <!-- <div class="d-flex justify-sm-end flex-wrap">
                     <v-text-field
                       @keyup.native="GetCity"
@@ -205,28 +138,21 @@
                     {{ $t("container.list.add_new") }}
                   </v-btn> -->
                   <v-col cols="12">
-                    <v-data-table
-                      :loading="loading"
-                      item-key="id"
-                      :headers="headers"
-                      :items="city"
-                      :items-per-page="pagination.perPage"
-                      @update:options="handleOptionsUpdate"
-                      hide-default-footer
-                      class="elevation-0 transparent row-pointer"
-                    >
+                    <v-data-table :loading="loading" item-key="id" :headers="headers" :items="city"
+                      :items-per-page="pagination.perPage" @update:options="handleOptionsUpdate" hide-default-footer
+                      class="elevation-0 transparent row-pointer">
                       <template v-slot:item.id="{ item, index }">
-                       {{ language === 'bn' ? $helpers.englishToBangla(
-                         (pagination.current - 1) * pagination.perPage +
-                         index +
-                         1) : (pagination.current - 1) * pagination.perPage +
-                         index +
-                         1 }}
+                        {{ language === 'bn' ? $helpers.englishToBangla(
+                          (pagination.current - 1) * pagination.perPage +
+                          index +
+                          1) : (pagination.current - 1) * pagination.perPage +
+                          index +
+                          1 }}
                       </template>
                       <template v-slot:item.code="{ item }">
-                             {{ language === 'bn' ? $helpers.englishToBangla(
-                               item.code) : item.code }}
-                        </template>
+                        {{ language === 'bn' ? $helpers.englishToBangla(
+                          item.code) : item.code }}
+                      </template>
                       <template v-slot:item.name_en="{ item }">
                         {{ item.name_en }}
                       </template>
@@ -241,15 +167,8 @@
                       <template v-slot:item.actions="{ item }">
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'city-edit'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="success"
-                              elevation="0"
-                              @click="editDialog(item)"
-                            >
+                            <v-btn v-can="'city-edit'" fab x-small v-on="on" color="success" elevation="0"
+                              @click="editDialog(item)">
                               <v-icon> mdi-account-edit-outline </v-icon>
                             </v-btn>
                           </template>
@@ -260,16 +179,8 @@
 
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'city-delete'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="grey"
-                              class="ml-3 white--text"
-                              elevation="0"
-                              @click="deleteAlert(item.id)"
-                            >
+                            <v-btn v-can="'city-delete'" fab x-small v-on="on" color="grey" class="ml-3 white--text"
+                              elevation="0" @click="deleteAlert(item.id)">
                               <v-icon> mdi-delete </v-icon>
                             </v-btn>
                           </template>
@@ -279,32 +190,16 @@
                       <!-- End Action Button -->
 
                       <template v-slot:footer="item">
-                        <div
-                          class="text-center pt-2 v-data-footer justify-center pb-2"
-                        >
-                          <v-select
-                            style="
+                        <div class="text-center pt-2 v-data-footer justify-center pb-2">
+                          <v-select style="
                               position: absolute;
                               right: 25px;
                               width: 149px;
                               transform: translate(0px, 0px);
-                            "
-                            :items="items"
-                            hide-details
-                            dense
-                            outlined
-                            @change="onPageChange"
-                            v-model="pagination.perPage"
-                          ></v-select>
-                          <v-pagination
-                            circle
-                            primary
-                            v-model="pagination.current"
-                            :length="pagination.total"
-                            @input="onPageChange"
-                            :total-visible="11"
-                            class="custom-pagination-item"
-                          ></v-pagination>
+                            " :items="items" hide-details dense outlined @change="onPageChange"
+                            v-model="pagination.perPage"></v-select>
+                          <v-pagination circle primary v-model="pagination.current" :length="pagination.total"
+                            @input="onPageChange" :total-visible="11" class="custom-pagination-item"></v-pagination>
                         </div>
                       </template>
                     </v-data-table>
@@ -333,140 +228,49 @@
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
 
-                <ValidationProvider
-                  name="Division"
-                  vid="division"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <v-autocomplete
-                    @input="onChangeDivision($event)"
-                    v-model="data.division_id"
-                    outlined
-                    :label="
-                      $t(
-                        'container.system_config.demo_graphic.division.division'
-                      )
-                    "
-                    :items="divisions"
-                    :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
-                    item-value="id"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-autocomplete>
+                <ValidationProvider name="Division" vid="division" rules="required" v-slot="{ errors }">
+                  <v-autocomplete @input="onChangeDivision($event)" v-model="data.division_id" outlined :label="$t(
+                    'container.system_config.demo_graphic.division.division'
+                  )
+                    " :items="divisions" :item-text="language == 'bn' ? 'name_bn' : 'name_en'" item-value="id" required
+                    :error="errors[0] ? true : false" :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে বিভাগ নির্বাচন করুন' : 'Please Select Division.') : ''"></v-autocomplete>
                 </ValidationProvider>
-                <ValidationProvider
-                  name="District"
-                  vid="district"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <v-autocomplete
-                    v-model="data.district_id"
-                    outlined
-                    :label="
-                      $t(
-                        'container.system_config.demo_graphic.district.district'
-                      )
-                    "
-                    :items="districts"
-                    :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
-                    item-value="id"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-autocomplete>
+                <ValidationProvider name="District" vid="district" rules="required" v-slot="{ errors }">
+                  <v-autocomplete v-model="data.district_id" outlined :label="$t(
+                    'container.system_config.demo_graphic.district.district'
+                  )
+                    " :items="districts" :item-text="language == 'bn' ? 'name_bn' : 'name_en'" item-value="id" required
+                    :error="errors[0] ? true : false" :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে জেলা নির্বাচন করুন' : 'Please Select Distrcit.') : ''"></v-autocomplete>
                 </ValidationProvider>
 
-                <ValidationProvider
-                  name="LocationType"
-                  vid="locationType"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <v-autocomplete
-                    v-model="data.location_type"
-                    outlined
-                    :label="$t('container.list.location_type')"
-                    :items="locationType"
-                    :item-text="language == 'bn' ? 'value_bn' : 'value_en'"
-                    item-value="id"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-autocomplete>
+                <ValidationProvider name="LocationType" vid="locationType" rules="required" v-slot="{ errors }">
+                  <v-autocomplete v-model="data.location_type" outlined :label="$t('container.list.location_type')"
+                    :items="locationType" :item-text="language == 'bn' ? 'value_bn' : 'value_en'" item-value="id" required
+                    :error="errors[0] ? true : false" :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে লোকেশন টাইপ নির্বাচন করুন' : 'Please Select Loction Type.') : ''"></v-autocomplete>
                 </ValidationProvider>
 
-                <ValidationProvider
-                  name="Code"
-                  vid="code"
-                  rules="required|codeRules"
-                  v-slot="{ errors }"
-                  v-if="data.location_type != null"
-                >
-                  <v-text-field
-                    outlined
-                    type="text"
-                    v-model="data.code"
-                    :label="codeLabel"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-text-field>
+                <ValidationProvider name="Code" vid="code" rules="required|codeRules" v-slot="{ errors }"
+                  v-if="data.location_type != null">
+                  <v-text-field outlined type="text" v-model="data.code" :label="codeLabel" required
+                    :error="errors[0] ? true : false" :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে সঠিক কোড লিখুন' : 'Please Enter Valid Geo Code.') : ''"></v-text-field>
                 </ValidationProvider>
-                <ValidationProvider
-                  name="Name English"
-                  vid="name_en"
-                  rules="required|checkName"
-                  v-slot="{ errors }"
-                  v-if="data.location_type != null"
-                >
-                  <v-text-field
-                    outlined
-                    type="text"
-                    v-model="data.name_en"
-                    :label="nameEnLabel"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-text-field>
+                <ValidationProvider name="Name English" vid="name_en" rules="required|checkName" v-slot="{ errors }"
+                  v-if="data.location_type != null">
+                  <v-text-field outlined type="text" v-model="data.name_en" :label="nameEnLabel" required
+                    :error="errors[0] ? true : false" :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে ইংরেজি নাম লিখুন' : 'Please Enter English Name.') : ''"></v-text-field>
                 </ValidationProvider>
-                <ValidationProvider
-                  name="Name Bangla"
-                  vid="name_bn"
-                  rules="required|checkNameBn"
-                  v-slot="{ errors }"
-                  v-if="data.location_type != null"
-                >
-                  <v-text-field
-                    outlined
-                    type="text"
-                    v-model="data.name_bn"
-                    :label="nameBnLabel"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-text-field>
+                <ValidationProvider name="Name Bangla" vid="name_bn" rules="required|checkNameBn" v-slot="{ errors }"
+                  v-if="data.location_type != null">
+                  <v-text-field outlined type="text" v-model="data.name_bn" :label="nameBnLabel" required
+                    :error="errors[0] ? true : false" :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে বাংলা নাম লিখুন' : 'Please Enter Bangla Name.') : ''"></v-text-field>
                 </ValidationProvider>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
-                  <v-btn
-                    flat
-                    @click="dialogAdd = false"
-                    outlined
-                    class="custom-btn-width py-2 mr-10"
-                  >
+                  <v-btn flat @click="dialogAdd = false" outlined class="custom-btn-width py-2 mr-10">
                     {{ $t("container.list.cancel") }}
                   </v-btn>
-                  <v-btn
-                    type="submit"
-                    flat
-                    color="primary"
-                    :disabled="invalid"
-                    :loading="loading"
-                    class="custom-btn-width primary white--text py-2"
-                  >
+                  <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
+                    class="custom-btn-width primary white--text py-2">
                     {{ $t("container.list.submit") }}
                   </v-btn>
                 </v-row>
@@ -492,144 +296,49 @@
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
 
-                <ValidationProvider
-                  name="Division"
-                  vid="division"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <v-autocomplete
-                    @input="onChangeDivision($event)"
-                    v-model="data.division_id"
-                    outlined
-                    :label="
-                      $t(
-                        'container.system_config.demo_graphic.division.division'
-                      )
-                    "
-                    :items="divisions"
-                    :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
-                    item-value="id"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                    :readonly="false"
-                  ></v-autocomplete>
+                <ValidationProvider name="Division" vid="division" rules="required" v-slot="{ errors }">
+                  <v-autocomplete @input="onChangeDivision($event)" v-model="data.division_id" outlined :label="$t(
+                    'container.system_config.demo_graphic.division.division'
+                  )
+                    " :items="divisions" :item-text="language == 'bn' ? 'name_bn' : 'name_en'" item-value="id" required
+                    :error="errors[0] ? true : false" :error-messages="errors[0]" :readonly="false"></v-autocomplete>
                 </ValidationProvider>
-                <ValidationProvider
-                  name="District"
-                  vid="district"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <v-autocomplete
-                    @input="onChangeDistrict($event)"
-                    v-model="data.district_id"
-                    outlined
-                    :label="
-                      $t(
-                        'container.system_config.demo_graphic.district.district'
-                      )
-                    "
-                    :items="districts"
-                    :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
-                    item-value="id"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                    :readonly="false"
-                  ></v-autocomplete>
+                <ValidationProvider name="District" vid="district" rules="required" v-slot="{ errors }">
+                  <v-autocomplete @input="onChangeDistrict($event)" v-model="data.district_id" outlined :label="$t(
+                    'container.system_config.demo_graphic.district.district'
+                  )
+                    " :items="districts" :item-text="language == 'bn' ? 'name_bn' : 'name_en'" item-value="id" required
+                    :error="errors[0] ? true : false" :error-messages="errors[0]" :readonly="false"></v-autocomplete>
                 </ValidationProvider>
 
-                <ValidationProvider
-                  name="LocationType"
-                  vid="locationType"
-                  rules="required"
-                  v-slot="{ errors }"
-                >
-                  <v-autocomplete
-                    v-model="data.location_type"
-                    outlined
-                    :label="$t('container.list.location_type')"
-                    :items="locationType"
-                    :item-text="language == 'bn' ? 'value_bn' : 'value_en'"
-                    item-value="id"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                    :readonly="false"
-                  ></v-autocomplete>
+                <ValidationProvider name="LocationType" vid="locationType" rules="required" v-slot="{ errors }">
+                  <v-autocomplete v-model="data.location_type" outlined :label="$t('container.list.location_type')"
+                    :items="locationType" :item-text="language == 'bn' ? 'value_bn' : 'value_en'" item-value="id" required
+                    :error="errors[0] ? true : false" :error-messages="errors[0]" :readonly="false"></v-autocomplete>
                 </ValidationProvider>
 
-                <ValidationProvider
-                  name="Code"
-                  vid="code"
-                  rules="required|codeRules"
-                  v-slot="{ errors }"
-                  v-if="data.location_type != null"
-                >
-                  <v-text-field
-                    outlined
-                    type="text"
-                    v-model="data.code"
-                    :label="codeLabel"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-text-field>
+                <ValidationProvider name="Code" vid="code" rules="required|codeRules" v-slot="{ errors }"
+                  v-if="data.location_type != null">
+                  <v-text-field outlined type="text" v-model="data.code" :label="codeLabel" required
+                    :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
                 </ValidationProvider>
-                <ValidationProvider
-                  name="Name English"
-                  vid="name_en"
-                  rules="required|checkName"
-                  v-slot="{ errors }"
-                  v-if="data.location_type != null"
-                >
-                  <v-text-field
-                    outlined
-                    type="text"
-                    v-model="data.name_en"
-                    :label="nameEnLabel"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-text-field>
+                <ValidationProvider name="Name English" vid="name_en" rules="required|checkName" v-slot="{ errors }"
+                  v-if="data.location_type != null">
+                  <v-text-field outlined type="text" v-model="data.name_en" :label="nameEnLabel" required
+                    :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
                 </ValidationProvider>
-                <ValidationProvider
-                  name="Name Bangla"
-                  vid="name_bn"
-                  rules="required|checkNameBn"
-                  v-slot="{ errors }"
-                  v-if="data.location_type != null"
-                >
-                  <v-text-field
-                    outlined
-                    type="text"
-                    v-model="data.name_bn"
-                    :label="nameBnLabel"
-                    required
-                    :error="errors[0] ? true : false"
-                    :error-messages="errors[0]"
-                  ></v-text-field>
+                <ValidationProvider name="Name Bangla" vid="name_bn" rules="required|checkNameBn" v-slot="{ errors }"
+                  v-if="data.location_type != null">
+                  <v-text-field outlined type="text" v-model="data.name_bn" :label="nameBnLabel" required
+                    :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
                 </ValidationProvider>
 
                 <v-row class="mx-0 my-0 py-2" justify="center">
-                  <v-btn
-                    flat
-                    @click="dialogEdit = false"
-                    outlined
-                    class="custom-btn-width py-2 mr-10"
-                  >
+                  <v-btn flat @click="dialogEdit = false" outlined class="custom-btn-width py-2 mr-10">
                     {{ $t("container.list.cancel") }}
                   </v-btn>
-                  <v-btn
-                    type="submit"
-                    flat
-                    color="primary"
-                    :disabled="invalid"
-                    :loading="loading"
-                    class="custom-btn-width primary white--text py-2"
-                  >
+                  <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
+                    class="custom-btn-width primary white--text py-2">
                     {{ $t("container.list.update") }}
                   </v-btn>
                 </v-row>
@@ -660,21 +369,11 @@
           </v-card-text>
           <v-card-actions style="display: block">
             <v-row class="mx-0 my-0 py-2" justify="center">
-              <v-btn
-                text
-                @click="deleteDialog = false"
-                outlined
-                class="custom-btn-width py-2 mr-10"
-              >
+              <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
                 {{ $t("container.list.cancel") }}
               </v-btn>
-              <v-btn
-                text
-                @click="deleteCity()"
-                color="white"
-                :loading="delete_loading"
-                class="custom-btn-width warning white--text py-2"
-              >
+              <v-btn text @click="deleteCity()" color="white" :loading="delete_loading"
+                class="custom-btn-width warning white--text py-2">
                 {{ $t("container.list.delete") }}
               </v-btn>
             </v-row>
@@ -736,8 +435,8 @@ export default {
         locationType: null,
         location_type: null,
       },
-      total:null,
-      isLoading:false,
+      total: null,
+      isLoading: false,
       locationType: [],
       districts: [],
       Allupazila: [],
@@ -937,7 +636,7 @@ export default {
   },
   methods: {
 
-    async GeneratePdf(){
+    async GeneratePdf() {
       this.isLoading = true;
       const queryParams = {
         language: this.$i18n.locale,
@@ -952,20 +651,20 @@ export default {
       };
 
       await this.$axios
-          .get("/admin/city/get", {
-            headers: {
-              Authorization: "Bearer " + this.$store.state.token,
-              "Content-Type": "multipart/form-data",
-            },
-            params: queryParams,
-          })
-          .then((result) => {
-            this.Allupazila = result.data.data;
-          })
-          .catch((err) => {
-            console.log(err, "error");
+        .get("/admin/city/get", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          this.Allupazila = result.data.data;
+        })
+        .catch((err) => {
+          console.log(err, "error");
 
-          });
+        });
 
       const HeaderInfo = [
         this.$t("container.list.sl"),
@@ -977,7 +676,7 @@ export default {
 
       const OBJ = this.Allupazila;
 
-      const CustomInfo = OBJ.map((((i,index) => {
+      const CustomInfo = OBJ.map((((i, index) => {
         return [
           this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
           this.$i18n.locale == 'en' ? i.parent.parent?.name_en : i.parent.parent?.name_bn,
@@ -1030,26 +729,26 @@ export default {
       };
 
       await this.$axios
-          .get("/admin/city/get", {
-            headers: {
-              Authorization: "Bearer " + this.$store.state.token,
-              "Content-Type": "multipart/form-data",
-            },
-            params: queryParams,
-          })
-          .then((result) => {
-            this.Allupazila = result.data.data;
-          })
-          .catch((err) => {
-            console.log(err, "error");
+        .get("/admin/city/get", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          this.Allupazila = result.data.data;
+        })
+        .catch((err) => {
+          console.log(err, "error");
 
-          });
+        });
 
       try {
         import('@/plugins/Export2Excel').then((excel) => {
           const OBJ = this.Allupazila;
 
-          const CustomInfo = OBJ.map(((i,index) => {
+          const CustomInfo = OBJ.map(((i, index) => {
             return {
               "sl": queryParams.language == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
               "division_name": queryParams.language == 'en' ? i.parent.parent?.name_en : i.parent.parent?.name_bn,
@@ -1067,7 +766,7 @@ export default {
             this.$t("container.system_config.demo_graphic.upazila.thana"),
           ]
 
-          const Field = ['sl','division_name', 'district_name', 'code', 'thana_name']
+          const Field = ['sl', 'division_name', 'district_name', 'code', 'thana_name']
 
           const Data = this.FormatJson(Field, CustomInfo)
           const currentDate = new Date().toISOString().slice(0, 10); //
@@ -1093,11 +792,11 @@ export default {
       }
     },
 
-    FormatJson(FilterData,JsonData){
+    FormatJson(FilterData, JsonData) {
       return JsonData.map((v) =>
-          FilterData.map((j => {
-            return v[j];
-          })))
+        FilterData.map((j => {
+          return v[j];
+        })))
     },
 
     resetSearch() {
@@ -1350,7 +1049,7 @@ export default {
       // alert(JSON.stringify(queryParams));
     },
     async GetCity() {
-      // this.search = this.search.replace(/%/g, '');
+      this.search = this.search.replace(/%/g, '');
       let page;
       if (!this.sortBy) {
         page = this.pagination.current;
@@ -1469,7 +1168,7 @@ export default {
           try {
             this.$store
               .dispatch("District/SetDistrict", result.data)
-              .then(() => {});
+              .then(() => { });
           } catch (e) {
             console.log(e);
           }
@@ -1495,7 +1194,7 @@ export default {
         };
 
         try {
-          this.$store.dispatch("District/SetDistrict", payload).then(() => {});
+          this.$store.dispatch("District/SetDistrict", payload).then(() => { });
         } catch (e) {
           console.log(e);
         }
@@ -1559,6 +1258,7 @@ export default {
 .highlight-column {
   background-color: #e0eaf1;
 }
+
 .no-arrow-icon .v-input__icon--clear {
   display: none;
 }

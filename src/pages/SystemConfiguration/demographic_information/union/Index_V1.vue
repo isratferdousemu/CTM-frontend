@@ -7,8 +7,13 @@
           <v-col cols="12">
             <v-expansion-panels>
               <v-expansion-panel>
-                <v-expansion-panel-header color="#8C9EFF">
-                  <h3 class="white--text">
+                <v-expansion-panel-header color="#1c3b68">
+                   <template v-slot:actions>
+                      <v-icon color="white">
+                        $expand
+                      </v-icon>
+                    </template>
+                  <h3 class="white--text" style="font-size:19.89px;">
                     {{ $t("container.list.filter") }}
                   </h3>
                 </v-expansion-panel-header>
@@ -114,15 +119,11 @@
           </v-col>
           <v-col cols="12">
             <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8">
-              <v-card-title class="justify-center" tag="div">
-                <h3 class="text-uppercase pt-3">
-                  {{
-                  $t(
-                  "container.system_config.demo_graphic.union1.customtitle"
-                  )
-                  }}
-                </h3>
-              </v-card-title>
+               <v-card-title tag="div" style="background-color:#1c3b68;color:white;margin-bottom: 17px;font-size:17px;">
+                    <h3 class="white--text">
+                      {{ $t("container.system_config.demo_graphic.union1.customtitle") }}
+                    </h3>
+                  </v-card-title>
               <v-card-text>
                 <v-row justify="space-between" align="center" class="mx-5">
                   <!-- Checkbox on the left -->

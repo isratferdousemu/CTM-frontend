@@ -119,19 +119,14 @@
     </v-row>
 
     <!-------Start  table  component ------->
-      <div style="margin-top: 10px;">
-      <v-simple-table fixed-header height="300px" class="table-responsive">
+    <div style="margin-top: 10px;">
+      <v-simple-table fixed-header class="table-responsive">
        
         <template v-slot:default>
             <caption>
                    <v-card-title class="custom-title">
                               <h6 class="text-center" style="font-size:16.16px;">  {{ $t("container.grievance_management.dashboard.header") }}</h6>
                     </v-card-title>
-                  <!-- <v-expansion-panel-header color=#1c3b68>
-                    <h3 class="white--text" style="font-size:19.89px;">
-                      {{ $t("container.grievance_management.dashboard.header") }}
-                    </h3>
-                  </v-expansion-panel-header> -->
             </caption>
           <thead class="primary lighten-1">
             <tr>
