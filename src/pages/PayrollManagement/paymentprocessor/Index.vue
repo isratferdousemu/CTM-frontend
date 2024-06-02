@@ -953,7 +953,7 @@ extend("checkNameBn", {
 });
 export default {
   name: "Index",
-  title: "CTM - Payment Processor",
+  title: "Payment Processor",
   data() {
     return {
       data: {

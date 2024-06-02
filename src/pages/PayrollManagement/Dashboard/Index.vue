@@ -187,7 +187,7 @@ import TotalNumerStatusWisePieChart from "@/pages/GrievanceManagement/Dashboard/
 import { GChart } from "vue-google-charts/legacy";
 export default {
   name: "Index",
-  title: "Grievance Dashboard",
+  title: "Payroll Dashboard",
   data() {
     return {
       totalRecivedGrievance:null,
