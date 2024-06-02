@@ -277,7 +277,6 @@ export default {
       });
     },
     async getLocationoWiseNumberOfGrievance(type=null, parentId = null) {
-      alert()
       const queryParams = {
         status: 'location',
       };
