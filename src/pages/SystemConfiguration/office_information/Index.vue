@@ -285,11 +285,7 @@
                       :items-per-page="pagination.perPage" @update:options="handleOptionsUpdate" hide-default-footer
                       class="elevation-0 transparent row-pointer">
                       <template v-slot:item.id="{ item, index }">
-                        {{
-                          (pagination.current - 1) * pagination.perPage +
-                          index +
-                          1
-                        }}
+                        {{$i18n.locale == "en" ? ((pagination.current - 1) * pagination.perPage + index + 1) : $helpers.englishToBangla((pagination.current - 1) * pagination.perPage + index + 1) }}
                       </template>
 
                       <template v-slot:item.status="{ item }">
@@ -491,7 +487,7 @@
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider name="Office Name English" vid="name_en" rules="required" v-slot="{ errors }">
+                    <ValidationProvider name="Office Name English" vid="name_en" rules="required|checkName" v-slot="{ errors }">
                       <v-text-field outlined type="text" :hide-details="errors[0] ? false : true" v-model="data.name_en"
                         :label="$t(
                           'container.system_config.demo_graphic.office.name_en'
@@ -500,7 +496,7 @@
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider name="Office Name Bangla" vid="name_bn" rules="required" v-slot="{ errors }">
+                    <ValidationProvider name="Office Name Bangla" vid="name_bn" rules="required|checkNameBn" v-slot="{ errors }">
                       <v-text-field :hide-details="errors[0] ? false : true" outlined type="text" v-model="data.name_bn"
                         :label="$t(
                           'container.system_config.demo_graphic.office.name_bn'
@@ -765,7 +761,7 @@
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider name="Office Name English" vid="name_en" rules="required" v-slot="{ errors }">
+                    <ValidationProvider name="Office Name English" vid="name_en" rules="required|checkName" v-slot="{ errors }">
                       <v-text-field outlined type="text" :hide-details="errors[0] ? false : true" v-model="data.name_en"
                         :label="$t(
                           'container.system_config.demo_graphic.office.name_en'
@@ -774,7 +770,7 @@
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider name="Office Name Bangla" vid="name_bn" rules="required" v-slot="{ errors }">
+                    <ValidationProvider name="Office Name Bangla" vid="name_bn" rules="required|checkNameBn" v-slot="{ errors }">
                       <v-text-field :hide-details="errors[0] ? false : true" outlined type="text" v-model="data.name_bn"
                         :label="$t(
                           'container.system_config.demo_graphic.office.name_bn'
@@ -810,10 +806,6 @@
                     </ValidationProvider>
                   </v-col>
                 </v-row>
-
-
-
-
                 <v-row class="my-10">
                   <v-col cols="12" v-if="selectedWards.length > 0">
                     <!-- <h1>{{ selectedWardsDetails }}</h1> -->
@@ -1066,6 +1058,30 @@ import Spinner from "@/components/Common/Spinner.vue";
 
 extend("required", required);
 
+extend("checkName", {
+  validate: (value) => {
+    if (!value && value !== 0) {
+      return false;
+    }
+
+    return /^[a-zA-Z\s]+$/.test(value);
+  },
+  message: "Please Enter English Letter's in this Field",
+});
+
+extend("checkNameBn", {
+  validate: (value) => {
+    if (!value && value !== 0) {
+      return false;
+    }
+
+    var banglaRegex = /^[\u0980-\u09E5\u09F0-\u09FF\s]+$/;
+
+    return banglaRegex.test(value);
+  },
+  message: "Allowance Program  Field Name in Bangla",
+});
+
 export default {
   name: "Index",
   title: "CTM - Office",
@@ -1202,7 +1218,7 @@ export default {
           text: this.$t(
             "container.system_config.demo_graphic.office.office_type"
           ),
-          value: "office_type.value_en",
+          value: this.$i18n.locale == "en" ? "office_type.value_en" : "office_type.value_bn",
           sortable: false,
         },
         {
@@ -1474,7 +1490,7 @@ export default {
         language: this.$i18n.locale,
         searchText: this.search,
         perPage: this.search.trim() === '' ? this.pagination.grand_total : this.pagination.grand_total,
-        page: this.pagination.current,
+        page: 1,
         sortBy: this.sortBy,
         sortDesc: this.sortDesc,
         user_id: this.$store.state.userData.id,
@@ -1554,9 +1570,6 @@ export default {
 
 
     async onChangePouro($event) {
-
-      console.log(this.data.pouro_id, "called pouro_id properly")
-
       await this.$axios
         .get(`/admin/ward/get/pouro/${$event}`, {
           headers: {
@@ -1567,18 +1580,11 @@ export default {
         .then((result) => {
           this.selectedWards_UCDUpazila_edit = this.selectedWards_UCDUpazila
           this.final_wards_ucd_upazila = result.data.data;
-          console.log(this.final_wards_ucd_upazila, "only pouro wards")
           this.wards_ucd_upazila = this.wards_ucd_upazila.concat(result.data.data);
-          console.log(this.wards_ucd_upazila, "poro cancat wards in pouro")
-
-
         });
 
     },
     async onChangePouro_1($event) {
-
-      console.log(this.data.pouro_id, "called pouro_id properly")
-
       await this.$axios
         .get(`/admin/ward/get/pouro/${$event}`, {
           headers: {
@@ -1587,23 +1593,12 @@ export default {
           },
         })
         .then((result) => {
-
           this.final_wards_ucd_upazila = result.data.data;
-          console.log(this.final_wards_ucd_upazila, "only pouro wards")
           this.wards_ucd_upazila = this.wards_ucd_upazila.concat(result.data.data);
-          console.log(this.wards_ucd_upazila, "poro cancat wards in pouro")
-          //    if (this.data.pouro_id) {
-          //   this.selectedWards_UCDUpazila = selectedWards_UCDUpazila_edit
-          // }
-          // else {
-          //   this.selectedWards_UCDUpazila = []
-          // }
-
         });
 
     },
     async onChangeUnion($event) {
-      console.log($event)
       await this.$axios
         .get(`/admin/ward/get/${$event}`, {
           headers: {
@@ -1615,13 +1610,10 @@ export default {
           this.selectedWards_UCDUpazila_edit = this.selectedWards_UCDUpazila
           this.final_wards_ucd_upazila = result.data.data;
           this.wards_ucd_upazila = this.wards_ucd_upazila.concat(result.data.data);
-
-
         });
 
     },
     async onChangeUnion_1($event) {
-      console.log($event)
       await this.$axios
         .get(`/admin/ward/get/${$event}`, {
           headers: {
@@ -1630,14 +1622,8 @@ export default {
           },
         })
         .then((result) => {
-
           this.final_wards_ucd_upazila = result.data.data;
-          console.log(this.final_wards_ucd_upazila, "only union wards")
           this.wards_ucd_upazila = this.wards_ucd_upazila.concat(result.data.data);
-          console.log(this.wards_ucd_upazila, "cancat wards union")
-
-
-
         });
 
     },
@@ -1657,13 +1643,7 @@ export default {
             this.data.pouro_id = null;
             this.data.union_id = null;
             this.pouros_all = result.data.data;
-            console.log(this.pouros_all, "all pouros_all called properly")
-
-
-
             this.final_wards_ucd_upazila = [];
-
-
           });
 
       }
@@ -1680,27 +1660,16 @@ export default {
             this.data.union_id = null;
             this.data.pouro_id = null;
             this.unions_all = result.data.data;
-            console.log(this.unions_all, "all unions called properly")
-
             this.final_wards_ucd_upazila = [];
-
-
           });
 
       }
     },
 
-
     remove(item) {
-      console.log(item); // Check if item is correct
-      console.log(this.selectedWardsDetails); // Check the current state of selectedWards
       const index = this.selectedWardsDetails.findIndex(ward => ward.ward_id === item.ward_id);
-      console.log(index); // Check the index found by findIndex
       if (index !== -1) {
         this.selectedWardsDetails.splice(index, 1);
-        console.log(this.selectedWardsDetails); // Check the updated selectedWards
-      } else {
-        console.log('Item not found in selectedWards');
       }
     },
 
@@ -1717,7 +1686,6 @@ export default {
     },
 
     onChangeWards(selectedWards) {
-      console.log(selectedWards, 'ward9999999');
       const division = this.divisions.find(div => div.id === this.data.division_id);
       const district = this.districts.find(d => d.id === this.data.district_id);
       const city = this.cities.find(c => c.id === this.data.city_id);
@@ -1810,10 +1778,6 @@ export default {
     onChangeWards_UCDUpazila_edit(selectedWards_UCDUpazila_edit) {
       // Update selectedWardsDetails based on the selectedWards
       this.selectedWards = [];
-      console.log(this.selectedWards_UCDUpazila, "selectedWards_UCDUpazila");
-      console.log(this.wards_ucd_upazila, "all wards");
-
-
       this.selectedWardsDetails_UCDUpazila = selectedWards_UCDUpazila_edit.map(wardId => {
         const ward_ucd_upazila_const = this.wards_ucd_upazila.find(w => w.id === wardId);
         const district_ucd_upazila = this.districts.find(d => d.id === this.data.district_id);
@@ -1821,9 +1785,6 @@ export default {
         const upazila = this.upazilas.find(c => c.id === this.data.upazila_id);
         const pouro = this.pouros_all?.find(t => t.id === ward_ucd_upazila_const?.parent?.id);
         const union = this.unions_all?.find(u => u.id === ward_ucd_upazila_const?.parent?.id);
-
-        console.log(ward_ucd_upazila_const, "ward_ucd_upazila_const")
-
         return {
           division_ucd_upazila: division_ucd_upazila.name_en,
           district_ucd_upazila: district_ucd_upazila.name_en,
@@ -1842,10 +1803,6 @@ export default {
     onChangeWards_UCDUpazila(selectedWards_UCDUpazila) {
       // Update selectedWardsDetails based on the selectedWards
       this.selectedWards = [];
-      console.log(this.selectedWards_UCDUpazila, "selectedWards_UCDUpazila");
-      console.log(this.wards_ucd_upazila, "all wards");
-
-
       this.selectedWardsDetails_UCDUpazila = selectedWards_UCDUpazila.map(wardId => {
         const ward_ucd_upazila_const = this.wards_ucd_upazila.find(w => w.id === wardId);
         const district_ucd_upazila = this.districts.find(d => d.id === this.data.district_id);
@@ -1853,8 +1810,6 @@ export default {
         const upazila = this.upazilas.find(c => c.id === this.data.upazila_id);
         const pouro = this.pouros_all?.find(t => t.id === ward_ucd_upazila_const?.parent?.id);
         const union = this.unions_all?.find(u => u.id === ward_ucd_upazila_const?.parent?.id);
-
-        console.log(ward_ucd_upazila_const, "ward_ucd_upazila_const")
 
         return {
           division_ucd_upazila: division_ucd_upazila.name_en,
@@ -1883,13 +1838,12 @@ export default {
 
       let fd = new FormData();
       for (const [key, value] of Object.entries(this.data)) {
-        console.log(key, 'key value check');
+
         if (key === "status" && value === null) {
           fd.append(key, "0");
         }
         if (value !== null) {
           // fd.append(key, value);
-          console.log(key, value, "fd values");
           if (key == "selectedWards") {
             for (let i = 0; i < value.length; i++) {
               fd.append("selectedWards[" + i + "]", value[i]);
@@ -1902,27 +1856,10 @@ export default {
         }
       }
 
-      //  for (let i = 0; i < this.selectedWardsDetails.length; i++) {
-      //       const d = this.selectedWardsDetails[i]; // Get the current item
-      //       fd.append('dddd[city_id][]', d.city_id);
-      //       fd.append('dddd[division_id][]', d.division_id);
-      //       fd.append('dddd[district_id][]', d.district_id);
-      //     }
-      // fd.append("city_id", this.selectedWardsDetails[i].city_id);
-      // fd.append("division_id", this.selectedWardsDetails[i].division_id);
-      // fd.append("district_id", this.selectedWardsDetails[i].district_id);
-
-
-      // fd.append('all',this.selectedWardsDetails);
-      // for (const [key, value] of fd.entries()) {
-      //   console.log(`${key}: ${value}`);
-      // }
-      // console.log(this.selectedWardsDetails);
       var x = this.selectedWardsDetails;
       fd.append("selectedWardsDetails", JSON.stringify(this.selectedWardsDetails));
       try {
         this.$store.dispatch("Office/StoreOffice", fd).then((data) => {
-          console.log(data, "submit");
           if (data == null) {
             this.$toast.success("Data Inserted Successfully");
             this.dialogAdd = false;
@@ -1946,45 +1883,29 @@ export default {
     },
 
     async updateOffice() {
-      console.log(this.selectedWardsDetails, "this.message 1st start")
-
-      console.log(this.selectedWards_edit, "this.selectedWards_edit")
-      console.log(this.selectedWards, "this.selectedWards")
-
-
       if (this.data.office_type === 9 && this.selectedWards_edit && this.selectedWards_edit.length > 0) {
         this.data.selectedWards = this.selectedWards_edit;
-        console.log(this.selectedWards, "this.selectedWards city if")
 
       }
       else if (this.data.office_type === 9 && this.selectedWards_edit && this.selectedWards_edit.length === 0) {
-
         this.data.selectedWards = this.selectedWards;
-        console.log(this.selectedWards, "this.selectedWards city else")
       }
       //console.log(this.data.selectedWards, "this.data.selectedWards")
       if (this.data.office_type === 10 && this.selectedWards_UCDUpazila_edit && this.selectedWards_UCDUpazila_edit.length > 0) {
         this.data.selectedWards = this.selectedWards_UCDUpazila_edit;
-        console.log(this.selectedWards, "this.selectedWards upazila if")
-
       }
       else if (this.data.office_type === 10 && this.selectedWards_UCDUpazila_edit && this.selectedWards_UCDUpazila_edit.length === 0) {
         this.data.selectedWards = this.selectedWards_UCDUpazila;
-        console.log(this.selectedWards, "this.selectedWards upazila else")
       }
 
       if ((this.data.selectedWards.length === 0 && this.data.office_type === 10) || (this.data.selectedWards.length === 0 && this.data.office_type === 9)) {
         this.message = "wards need to add under this Office type"
-        console.log(this.message, "this.message not null")
       }
       else {
         this.message = null;
-        console.log(this.message, "this.message  null")
-
       }
 
       if (this.message === null) {
-        console.log(this.message, "this.message  null")
         let fd = new FormData();
         for (const [key, value] of Object.entries(this.data)) {
           if (key === "status" && value === null) {
@@ -2003,11 +1924,9 @@ export default {
 
           }
         }
-        console.log(this.selectedWardsDetails, 'test anwar data')
         fd.append("selectedWardsDetails", JSON.stringify(this.selectedWardsDetails));
         try {
           this.$store.dispatch("Office/UpdateOffice", fd).then((data) => {
-            console.log(data, "update");
             if (data == null) {
               this.$toast.success("Data Updated Successfully");
               this.dialogEdit = false;
@@ -2021,16 +1940,7 @@ export default {
         } catch (e) {
           console.log(e);
         }
-
       }
-      console.log(this.data.selectedWards, " this.data.selectedWards final")
-
-
-
-
-
-
-
     },
     async editOffice(item) {
 
@@ -2052,31 +1962,22 @@ export default {
 
 
       if (item?.assign_location?.type == "division") {
-        console.log("division here");
         this.data.division_id = item?.assign_location?.id;
         this.onChangeDivision(this.data.division_id);
-        // this.data.division_id = item?.parent?.id; //
       }
       if (item?.assign_location?.type == "district") {
-        console.log("district here");
         this.data.division_id = item?.assign_location?.parent?.id;
         this.onChangeDivision(this.data.division_id);
         this.data.district_id = item?.assign_location?.id;
       }
       if (item?.assign_location?.parent?.parent?.type == "division") {
         this.data.division_id = item?.assign_location?.parent?.parent?.id;
-        console.log("division here 2nd");
         await this.onChangeDivision(this.data.division_id);
-        console.log(this.districts, "districts in division here 3rd");
-
       }
 
       if (item?.assign_location?.parent?.type == "district") {
         this.data.district_id = item?.assign_location?.parent?.id;
-        console.log("district here 2nd");
         await this.onChangeDistrict(this.data.district_id);
-        console.log(this.cities, "cities district here 2nd");
-
       }
 
       if (this.edit[0]?.wards[0]?.parent?.parent?.parent?.type == "city") {
@@ -2102,21 +2003,12 @@ export default {
         })
         .then((result) => {
           this.edit = result.data;
-
-          console.log(this.edit, 'editinf')
           return false;
-
-          console.log(this.edit[0], "viewinfo :)")
-
-
         });
-
-
 
       if (item?.assign_location?.location_type?.value_en == "Upazila") {
         this.data.upazila_id = item?.assign_location?.id;
         this.selectedWards_UCDUpazila = this.edit[0].wards?.map(ward => ward.ward_id);
-        console.log(this.selectedWards_UCDUpazila, "upazila");
         let uniqueParentIds = new Set();
 
         this.edit[0].wards?.forEach((ward) => {
@@ -2126,7 +2018,6 @@ export default {
             if (parentId !== undefined && parentId !== null && !uniqueParentIds.has(parentId)) {
               uniqueParentIds.add(parentId);
               this.data.pouro_id = parentId
-              console.log(this.data.pouro_id, "Pouro id")
 
               setTimeout(() => {
                 this.data.pouro_id = parentId
@@ -2135,7 +2026,6 @@ export default {
               }, 1000);
               setTimeout(() => {
                 this.onChangePouro_1(parentId)
-                console.log(this.wards_ucd_upazila, "wards_ucd_upazila_pouro")
               }, 2000);
             }
 
@@ -2146,7 +2036,6 @@ export default {
             if (parentId !== undefined && parentId !== null && !uniqueParentIds.has(parentId)) {
               uniqueParentIds.add(parentId);
               this.data.union_id = parentId
-              console.log(this.data.union_id, "Union id")
               this.thanas_for_edit.push(parentId);
               setTimeout(() => {
                 this.data.union_id = parentId
@@ -2155,7 +2044,6 @@ export default {
               }, 1000);
               setTimeout(() => {
                 this.onChangeUnion_1(parentId)
-                console.log(this.wards_ucd_upazila, "wards_ucd_upazila_union")
               }, 2000);
 
             }
@@ -2174,11 +2062,6 @@ export default {
       }
       if (item?.assign_location?.location_type?.value_en == "City Corporation") {
         this.data.city_id = item?.assign_location?.id;
-
-
-
-        console.log(this.edit[0].wards, "item wards");
-        console.log(this.edit[0], "anwarrr");
         // this.selectedWards = this.edit[0].wards?.map(ward => ward.ward_id);
         this.selectedWards = this.edit[0].wards?.map(ward => ({
           ward_id: ward.ward_id,
@@ -2186,43 +2069,10 @@ export default {
           division_id: ward.division_id,
           district_id: ward.district_id
         }));
-        console.log(this.selectedWards, "wards works properly or not2222222")
-
-
-
-
-        // let uniqueParentIds = new Set();
-
-        // this.edit[0].wards?.forEach((ward) => {
-        //   const parentId = ward.parent?.parent?.id;
-        //   console.log(parentId,'parentId ward33333');
-
-        //   if (parentId !== undefined && parentId !== null && !uniqueParentIds.has(parentId)) {
-
-
-        //     uniqueParentIds.add(parentId);
-        //     //   console.log(parentId, "thana_id")
-
-        //     this.onChangeThana_1(parentId);
-
-
-
-
-        //   }
-        // });
-        // console.log(uniqueParentIds,'44444444');
-
-
 
         setTimeout(() => {
           this.onChangeCity(this.data.city_id);
         }, 3000);
-
-        // setTimeout(() => {
-        //   console.log(this.selectedWards, "this.selectedWards before onwards call")
-        //   this.onChangeWards(this.selectedWards);
-        // }, 10000);
-        // setTimeout(this.onchangeWards(this.selectedWards), 5000);
       }
       if (item?.assign_location?.location_type?.value_en == "District Pouroshava") {
         this.data.dist_pouro_id = item?.assign_location?.id;
@@ -2233,47 +2083,6 @@ export default {
         this.data.thana_id = item?.assign_location?.id;
       }
 
-
-
-
-      // console.log(this.edit[0].wards,"edit wards")
-      // alert(123);
-
-
-      // // const division = this.divisions.find(div => div.id === this.data.division_id);
-      // // const district = this.districts.find(d => d.id === this.data.district_id);
-      // // const city = this.cities.find(c => c.id === this.data.city_id);
-
-      // let infos = {};
-      // this.edit[0].wards.forEach(wardId => {
-
-      //   // Prepare information object
-      //   const infos = {
-      //     division: 'ddd',
-      //     district: 'yyy',
-      //     city: 'zzzz',
-      //     thana: 'Unknown Thana',
-      //     ward: 'Unknown Ward',
-      //     ward_id: '222',
-      //   };
-
-      //   // Do something with infos object
-      //   console.log(infos);
-      // });
-
-
-
-      // // const ward = this.wards.find(w => w.id === selectedWards[0]);
-      // // const thana = this.thanas.find(t => t.id === ward.parent.id);
-
-
-
-
-
-      // this.selectedWardsDetails.push(infos)
-      // // this.officeInfo.push(info)
-
-      // console.log(this.selectedWardsDetails, "officeInfos")
       this.selectedWardsDetails = [];
       let info = [];
       for (const wardId of item.wards) {
@@ -2354,12 +2163,10 @@ export default {
 
 
     async GetAllUpazila(id) {
-      console.log(id, "GetAllUpazila");
       try {
         this.$store
           .dispatch("Thana/GetAllUpazilaByDistrict", id)
           .then((data) => {
-            console.log(data, "GetAllUpazilaByDistrict");
             this.upazilas = data;
           });
       } catch (e) {
@@ -2475,13 +2282,8 @@ export default {
           },
         })
         .then((result) => {
-          console.log(this.wards, "faka array check55555");
           this.final_wards = result.data.data
-          console.log(this.final_wards, "final_wards thanaedit wards66666");
           this.wards = this.wards.concat(result.data.data);
-
-          console.log(this.wards, " wards thanaedit wards");
-
         });
 
     },
@@ -2499,45 +2301,10 @@ export default {
         .then((result) => {
           this.districts= null;
           this.districts = result.data.data;
-          console.log(this.districts, " district function called properly")
         });
     },
     async onChangeDistrict($event) {
-
-
       this.onChangeOfficeType(this.data.office_type);
-
-      //juned vai
-      // event = 3; //Lookup.id = 3 , Look.name_en = 'City Corporation'
-      // const payload = {
-      //   district_id: this.data.district_id,
-      //   lookup_id: "3",
-      // };
-      // console.log(JSON.stringify(payload));
-      // // return;
-      // if (
-      //   this.office_type_id == 8 ||
-      //   this.office_type_id == 10 ||
-      //   this.office_type_id == 11
-      // ) {
-      //   console.log("load Upazila");
-      //   this.GetAllUpazila(this.data.district_id);
-      // } else {
-      //   console.log("load City Corporation");
-      //   await this.$axios
-      //     .get(`/admin/city/get/` + this.data.district_id + "/" + event, {
-      //       headers: {
-      //         Authorization: "Bearer " + this.$store.state.token,
-      //         "Content-Type": "multipart/form-data",
-      //       },
-      //     })
-      //     .then((result) => {
-      //       this.city = result.data.data;
-      //       console.log(this.city, "onChangeDistrict");
-      //     });
-      // }
-
-
     },
     async onChangeDivisionChange(event) {
       await this.$axios
@@ -2589,7 +2356,6 @@ export default {
       for (let i = 0; i < this.headers.length; i++) {
         if (this.headers[i].value == "name_en") {
           this.headers[i].class = "highlight-column";
-          console.log(this.headers[i], "headers after");
         } else {
           this.headers[i].class = "";
         }
@@ -2626,13 +2392,9 @@ export default {
     },
 
     handleOptionsUpdate({ sortBy, sortDesc }) {
-      console.log(this.headers, sortBy, sortDesc);
       for (let i = 0; i < this.headers.length; i++) {
-        console.log(this.headers[i]);
-
         if (this.headers[i].value == sortBy) {
           this.headers[i].class = "highlight-column";
-          console.log(this.headers[i], "headers after");
         } else {
           this.headers[i].class = "";
         }
@@ -2653,11 +2415,7 @@ export default {
         sortBy: this.sortBy,
         orderBy: this.sortDesc,
       };
-
-      // alert(JSON.stringify(queryParams));
     },
-    // console.log(store.state.userData.location, ' -> userData')
-
     async GetOffices() {
       this.isLoading = true;
       const queryParams = {
@@ -2709,8 +2467,6 @@ export default {
       await this.$store
         .dispatch("Office/DestroyOffice", this.delete_id)
         .then((res) => {
-          // console.log(res);
-          // check if the request was successful
           if (res?.data?.success) {
             this.$toast.success(res.data.message);
           } else {
@@ -2778,17 +2534,10 @@ export default {
     this.setInitialHeader();
     this.$store.dispatch("getLookupByType", 3).then((data) => {
       this.officeType = data;
-      console.log(this.officeType, "Office");
-
     });
-    // this.GetOffices();
+
     this.GetAllDivisions();
-    // this.GetLocationType();
     this.GetAllUpazila();
-    // this.GetCityCorporation();
-    // this.$store
-    //   .dispatch("getLookupByType", 1)
-    //   .then((res) => (this.locationType = res));
   },
   watch: {
     "$i18n.locale": "updateHeaderTitle",

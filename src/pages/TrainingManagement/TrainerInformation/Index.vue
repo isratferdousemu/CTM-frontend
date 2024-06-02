@@ -81,6 +81,11 @@ export default {
     },
 
     methods: {
+        perPageChange($event) {
+
+            this.pagination.current = 1;
+            this.GetData();
+        },
         deviceActivate(id) {
             console.log(id, "id");
 
@@ -180,10 +185,10 @@ export default {
                     this.$i18n.locale == 'en' ? i.mobile_no : this.$helpers.englishToBangla(i.mobile_no),
                     this.$i18n.locale == 'en' ? i?.email : i?.email,
                     this.$i18n.locale == 'en' ? i?.address : i?.address,
-
-
-                    this.$i18n.locale == 'en' ? (i.status == 0 ? 'Active' : 'Inactive') : (i.status == 0 ? 'সক্রিয়' : 'নিষ্ক্রিয়'),
-
+                  
+                   
+                    this.$i18n.locale == 'en' ? (i.status == 1 ? 'Active' : 'Inactive') : (i.status == 1 ? 'সক্রিয়' : 'নিষ্ক্রিয়'),
+                
 
 
                 ]
@@ -649,7 +654,7 @@ export default {
                      
                             
                                     
-                                                " :items="items" hide-details dense outlined @change="onPageChange"
+                                                " :items="items" hide-details dense outlined @change="perPageChange"
                                                             v-model="pagination.perPage"></v-select>
 
 

@@ -118,7 +118,8 @@
                                             <v-col cols="12" sm="6" lg="6">
                                                 <ValidationProvider name="rating_link" vid="rating_link" rules="url"
                                                     v-slot="{ errors }">
-                                                    <v-text-field dense type="text" v-model="data.rating_link" :label="$t('container.training_management.training_program.rating_link')
+                                                    <v-text-field dense type="text" v-model="data.trainer_ratings_link"
+                                                        :label="$t('container.training_management.training_program.rating_link')
                                         " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক রেটিং লিংক প্রদান করুন '
                                         : 'Please enter valid Rating Link') : ''"></v-text-field>
                                                 </ValidationProvider>
@@ -139,12 +140,24 @@
                                                     </v-col>
                                                 </v-row>
                                             </v-col> -->
-                                            <v-col cols=" 12" sm="12" lg="12">
-                                                <!-- <ValidationProvider name="BIO" vid="description" v-slot="{ errors }">
+
+                                            <!-- <ValidationProvider name="BIO" vid="description" v-slot="{ errors }">
                                                     <v-textarea dense v-model="data.description" :label="$t('container.training_management.training_circular.description')
                                         " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক বিবরণ প্রদান করুন '
                                         : 'Please enter  Description') : ''"></v-textarea>
                                                 </ValidationProvider> -->
+                                            <v-col cols=" 12" sm="6" lg="6">
+                                                <ValidationProvider name="Module" vid="module" rules="required"
+                                                    v-slot="{ errors }">
+                                                    <v-select dense type="text" v-model="data.status"
+                                                        :label="$t('container.list.status')" persistent-hint outlined
+                                                        :error="errors[0] ? true : false" :items="status_types"
+                                                        :item-text="getItemText" item-value="id" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক স্ট্যাটাস প্রদান করুন '
+                                        : 'Please enter status') : ''">
+                                                    </v-select>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols=" 12" sm="12" lg="12">
                                                 <label>{{
                                                     $t('container.training_management.trainer_info.description')
                                                     }}</label>
@@ -416,9 +429,11 @@ export default {
                 start_date: null,
                 end_date: null,
                 question_link:null,
-                rating_link:null,
+                trainer_ratings_link:null,
+                status:null,
                 // exam_status:null,
                 // rating_status:null,
+                status_types:[],
 
                 on_days: [
                     {
@@ -478,6 +493,9 @@ export default {
         this.Programtrainers();
         this.GetCircular();
         this.GetTimeSlot();
+        this.$store
+            .dispatch("getLookupByType", 31)
+            .then((res) => (this.status_types = res));
        
 
 
