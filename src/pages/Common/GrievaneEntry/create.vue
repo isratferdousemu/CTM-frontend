@@ -799,14 +799,22 @@ export default {
       showAlert: false,
 
      fileTypeRule: (value) => {
+      if(value !=null){
       const allowedFormats = ['.pdf', '.xls', '.xlsx', '.jpg', '.jpeg', '.png'];
       const extension = value?.name.slice(((value?.name.lastIndexOf(".") - 1) >>> 0) + 2);
       return allowedFormats.includes(`.${extension}`) || 'Allowed file types are PDF, Excel, JPG, JPEG, and PNG.';
+      }else{
+        this.data.document='';
+      }
     },
     fileSizeRule: (value) => {
+     if (value != null) {
       const maxSizeMB = 5; // Maximum file size in MB
       const maxSizeBytes = maxSizeMB * 1024 * 1024; // Convert MB to bytes
       return value?.size <= maxSizeBytes || `File size should be less than ${maxSizeMB} MB.`;
+     } else {
+          this.data.document = '';
+     }
     },
 
       data: {

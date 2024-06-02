@@ -1,53 +1,82 @@
 const PayrollManagementRoutes = [
   {
-    path: "/payroll-management/approval-selection",
-    name: "payment-payment",
+    path: '/payroll-management/approval-selection',
+    name: 'payment-payment',
     meta: {
       requiresAuth: true,
-      permission: "approval-selection",
+      permission: 'approval-selection',
     },
-    component: () => import("../pages/PayrollManagement/ApprovalSelection/Index.vue")
+    component: () =>
+      import('../pages/PayrollManagement/ApprovalSelection/Index.vue'),
   },
 
   {
-    path: "/payroll-management/payroll-setting",
-    name: "payroll-setting",
+    path: '/payroll-management/payroll-setting',
+    name: 'payroll-setting',
     meta: {
       requiresAuth: true,
-      permission: "payroll-setting-view",
+      permission: 'payroll-setting-view',
     },
-    component: () => import("../pages/PayrollManagement/PayrollSetting/index.vue")
+    component: () =>
+      import('../pages/PayrollManagement/PayrollSetting/index.vue'),
   },
 
   {
-    path: "/payroll-management/payroll-verification-setting",
-    name: "payroll-setting",
+    path: '/payroll-management/payroll-verification-setting',
+    name: 'payroll-setting',
     meta: {
       requiresAuth: true,
-      permission: "payroll-setting-view",
+      permission: 'payroll-setting-view',
     },
-    component: () => import("../pages/PayrollManagement/PayrollSetting/PayrollVerificationSetting.vue")
+    component: () =>
+      import(
+        '../pages/PayrollManagement/PayrollSetting/PayrollVerificationSetting.vue'
+      ),
   },
 
   //payment processor
   {
-    path: "/payroll-management/payment-processor",
-    name: "payment-processor",
+    path: '/payroll-management/payment-processor',
+    name: 'payment-processor',
     meta: {
       requiresAuth: true,
-      permission: "payment-processor-create",
+      permission: 'payment-processor-create',
     },
-    component: () => import("../pages/PayrollManagement/paymentprocessor/Index.vue")
+    component: () =>
+      import('../pages/PayrollManagement/paymentprocessor/Index.vue'),
   },
 
   {
-    path: "/payroll-management/payment-processor-show/:id",
-    name: "payment-processor-show",
+    path: '/payroll-management/payment-processor-show/:id',
+    name: 'payment-processor-show',
     meta: {
       requiresAuth: true,
-      permission: "payment-processor-edit",
+      permission: 'payment-processor-edit',
     },
-    component: () => import("../pages/PayrollManagement/paymentprocessor/show.vue")
+    component: () =>
+      import('../pages/PayrollManagement/paymentprocessor/show.vue'),
+  },
+
+  {
+    path: '/payroll-management/create',
+    name: 'payment-processor-show',
+    meta: {
+      requiresAuth: true,
+      permission: 'payment-processor-edit',
+    },
+    component: () =>
+      import('../pages/PayrollManagement/paymentprocessor/show.vue'),
+  },
+
+  {
+    path: '/payroll-management/payment-tracking',
+    name: 'payment-tracking',
+    // meta: {
+    //   requiresAuth: true,
+    //   permission: "payment-processor-edit",
+    // },
+    component: () =>
+      import('../pages/PayrollManagement/PaymentTracking/Index.vue'),
   },
 
   // {
@@ -59,6 +88,17 @@ const PayrollManagementRoutes = [
   //   },
   //   component: () => import("../pages/PayrollManagement/PaymentProcessor/Index.vue")
   // },
+
+  {
+    path: '/payroll-management/payroll-create',
+    name: 'payroll-create',
+    meta: {
+      requiresAuth: true,
+      permission: 'payroll-create',
+    },
+    component: () =>
+      import('../pages/PayrollManagement/PayrollCreate/Index.vue'),
+  },
 ];
 
 export default PayrollManagementRoutes;
