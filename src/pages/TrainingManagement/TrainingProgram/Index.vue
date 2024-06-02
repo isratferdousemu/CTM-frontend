@@ -11,6 +11,7 @@ export default {
                 name_en: null,
                 name_bn: null,
             },
+            status_types:[],
             start_date:null,
             end_date: null,
             dates: [],
@@ -61,14 +62,16 @@ export default {
         },
         headers() {
             return [
-                { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, width: "5%" },
-                { text: this.$t('container.training_management.training_program.program_name'), value: "program_name", align: "start", width: "20%" },
-                { text: this.$t('container.training_management.training_program.circular'), value: "circular", align: "start", width: "20%", sortable: false, },
-                
-                { text: this.$t('container.training_management.training_program.trainer'), value: "trainer", width: "15%", sortable: false, },
-                { text: this.$t('container.list.status'), value: "status", width: "15%" },
-              
-                { text: this.$t('container.list.action'), value: "actions", align: "start", sortable: false, width: "25%" },
+                { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, class: "align-middle" },
+                { text: this.$t('container.training_management.training_program.program_name'), value: "program_name", align: "start", class: "align-middle" },
+                { text: this.$t('container.training_management.training_program.circular'), value: "circular", align: "start", sortable: false, class: "align-middle" },
+                { text: this.$t('container.training_management.training_circular.module'), value: "modules", align: "start", sortable: false, class: "align-middle" },
+                { text: this.$t('container.training_management.training_circular.training_type'), value: "training_type", align: "start", sortable: false, class: "align-middle" },
+                { text: this.$t('container.training_management.training_program.trainer'), value: "trainer", width: "15%", align: "start", sortable: false, class: "align-middle" },
+                { text: this.$t('container.list.status'), value: "status", align: "start", class: "align-middle" },
+                { text: this.$t('container.training_management.training_program.exam_status'), value: "exam_status", align: "start", class: "align-middle" },
+                { text: this.$t('container.training_management.training_program.trainer_rating_status'), value: "rating_status", align: "start", class: "align-middle" },
+                { text: this.$t('container.list.action'), value: "actions", align: "start", sortable: false, style: "width:300px;", class: "align-middle" },
             ];
         },
 
@@ -85,6 +88,10 @@ export default {
         this.$store
             .dispatch("getLookupByType", 29)
             .then((res) => (this.all_modules = res));
+        this.$store
+            .dispatch("getLookupByType", 31)
+            .then((res) => (this.status_types = res));
+       
        
     
    
@@ -171,7 +178,7 @@ export default {
 
                 });
         },
-        deviceActivate(id) {
+        deviceActivate_exam(id) {
      
             const formData = new FormData();
             
@@ -179,7 +186,7 @@ export default {
             formData.append('_method', "PUT");
 
             this.$axios
-                .post(`admin/training/programs/status/${id}`, formData, {
+                .post(`admin/training/programs/exam-status/${id}`, formData, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -199,6 +206,38 @@ export default {
                     console.log(err, "err")
                     this.$toast.error(err.response.data.errors);
              
+
+                });
+
+        },
+        deviceActivate_rating(id) {
+
+            const formData = new FormData();
+
+            formData.append('lang', this.language);
+            formData.append('_method', "PUT");
+
+            this.$axios
+                .post(`admin/training/programs/rating-status/${id}`, formData, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((result) => {
+                    this.$toast.success(result?.data?.message);
+
+                    this.GetData();
+
+
+
+
+
+                })
+                .catch((err) => {
+                    console.log(err, "err")
+                    this.$toast.error(err.response.data.errors);
+
 
                 });
 
@@ -300,9 +339,12 @@ export default {
                 this.$t('container.training_management.training_program.training_circular'),
                 this.$t('container.training_management.training_program.trainer'),
                 this.$t('container.training_management.training_circular.module'),
-                this.$t('container.training_management.training_circular.description'),
+                this.$t('container.training_management.training_circular.training_type'),
                 this.$t('container.training_management.training_circular.start_date'),
                 this.$t('container.training_management.training_circular.end_date'),
+                this.$t('container.training_management.training_program.exam_status'),
+                this.$t('container.training_management.training_program.trainer_rating_status'),
+                this.$t('container.list.status'),
            
                 
 
@@ -319,12 +361,16 @@ export default {
                     this.$i18n.locale == 'en' ? i?.training_circular?.circular_name : i?.training_circular?.circular_name,
                     i?.trainers?.map(api => api.name).join(', '),
                     this.$i18n.locale == 'en' ? i?.modules?.map(api => api.value_en).join(', ') : i?.modules?.map(api => api.value_bn).join(', '),
-                    
-                    this.$i18n.locale == 'en' ? i?.description : i?.description,
+                    this.$i18n.locale == 'bn' ?i?.training_circular?.training_type?.value_bn:i?.training_circular?.training_type?.value_en ,
+               
 
                     this.$i18n.locale == 'en' ? i?.start_date : this.$helpers.englishToBangla(i?.start_date),
 
                     this.$i18n.locale == 'en' ? i?.end_date : this.$helpers.englishToBangla(i?.end_date),
+                    this.$i18n.locale == 'en' ? (i.exam_status == 1 ? 'Active' : 'Inactive') : (i.exam_status == 1 ? 'সক্রিয়' : 'নিষ্ক্রিয়'),
+                    this.$i18n.locale == 'en' ? (i.rating_status
+                        == 1 ? 'Active' : 'Inactive') : (i.rating_status == 1 ? 'সক্রিয়' : 'নিষ্ক্রিয়'),
+                    this.$i18n.locale == 'en' ? i.status_name.value_en: i.status_name.value_bn,
                   
                 
 
@@ -395,9 +441,14 @@ export default {
                         this.$t('container.training_management.training_program.training_circular'),
                         this.$t('container.training_management.training_program.trainer'),
                         this.$t('container.training_management.training_circular.module'),
-                        this.$t('container.training_management.training_circular.description'),
+                        this.$t('container.training_management.training_circular.training_type'),
                         this.$t('container.training_management.training_circular.start_date'),
                         this.$t('container.training_management.training_circular.end_date'),
+                        this.$t('container.training_management.training_program.exam_status'),
+                     
+                        this.$t('container.training_management.training_program.trainer_rating_status'),
+                        this.$t('container.list.status'),
+
                     ]
 
                     const CustomInfo = this.circulars.map(((i, index) => {
@@ -408,19 +459,19 @@ export default {
 
                             "name": this.$i18n.locale == 'en' ? i.program_name : i.program_name,
                             "circular_name": this.$i18n.locale == 'en' ? i?.training_circular?.circular_name : i?.training_circular?.circular_name,
-
-
                             "trainer": i?.trainers?.map(api => api.name).join(', '),
                             "modules": this.$i18n.locale == 'en' ? i?.modules?.map(api => api.value_en).join(', ') : i?.modules?.map(api => api.value_bn).join(', '),
-                       
-                            "description": this.$i18n.locale == 'en' ? i?.description : i?.description,
-                            "no_of_participant": this.$i18n.locale == 'en' ? i.no_of_participant : this.$helpers.englishToBangla(i?.no_of_participant),
-
+                            "training_type": this.$i18n.locale == 'bn' ? i?.training_circular?.training_type?.value_bn : i?.training_circular?.training_type?.value_en,
+                    
                             "start_date": this.$i18n.locale == 'en' ? i?.start_date : this.$helpers.englishToBangla(i?.start_date),
 
 
-                            "end_date":
-                                this.$i18n.locale == 'en' ? i?.end_date : this.$helpers.englishToBangla(i?.end_date),
+                            "end_date": this.$i18n.locale == 'en' ? i?.end_date : this.$helpers.englishToBangla(i?.end_date),
+                               
+                            "exam_status":this.$i18n.locale == 'en' ? (i.exam_status == 1 ? 'Active' : 'Inactive') : (i.exam_status == 1 ? 'সক্রিয়' : 'নিষ্ক্রিয়'),
+                            "rating_status":this.$i18n.locale == 'en' ? (i.rating_status
+                                == 1 ? 'Active' : 'Inactive') : (i.rating_status == 1 ? 'সক্রিয়' : 'নিষ্ক্রিয়'),
+                            "status":  this.$i18n.locale == 'en' ? i.status_name.value_en: i.status_name.value_bn,
 
 
                         }
@@ -439,7 +490,7 @@ export default {
                       
 
                       
-                    const Field = ['sl', 'name', 'circular_name', 'trainer', 'modules', 'description', 'start_date', 'end_date']
+                    const Field = ['sl', 'name', 'circular_name', 'trainer', 'modules',"training_type", 'start_date', 'end_date',"exam_status","rating_status","status"]
 
                     const Data = this.FormatJson(Field, CustomInfo)
                     const prefixHeader = [
@@ -613,7 +664,7 @@ export default {
                                             </v-col>
                                             <v-col lg="4" md="6" sm="12" cols="12">
                                                 <v-select outlined dense clearable append-icon="mdi-plus"
-                                                    class="no-arrow-icon" v-model="status" :items="all_status"
+                                                    class="no-arrow-icon" v-model="status" :items="status_types"
                                                     :item-text="getItemText" item-value="id"
                                                     :label="$t('container.list.status')"></v-select>
                                             </v-col>
@@ -715,100 +766,159 @@ export default {
                                 <v-row class="ma-0 white round-border d-flex justify-space-between align-center"
                                     justify="center" justify-lg="space-between">
                                     <v-col cols="12">
-                                        <v-data-table :loading="loading" item-key="id" :headers="headers"
-                                            :items="circulars" :items-per-page="pagination.perPage" hide-default-footer
-                                            class="elevation-0 transparent row-pointer mt-5 mx-5">
-                                            <template v-slot:item.sl="{ item, index }">
-                                                {{ language === 'bn' ? $helpers.englishToBangla((pagination.current - 1)
-                                                * pagination.perPage + index + 1) : (pagination.current - 1) *
-                                                pagination.perPage + index + 1 }}
-                                            </template>
-                                            <template v-slot:item.circular="{ item }">
-                                                <span>{{ item.training_circular?.circular_name }}</span>
-                                            </template>
-                                            <template v-slot:item.modules="{ item }">
-                                                <span v-for="(value, key) in item.modules" :key="key">
-                                                    <v-chip small label color="#FACD91" class="ma-1">
-                                                        {{ language == 'bn' ? value.value_bn : value.value_en }}
-                                                    </v-chip>
-                                                </span>
-                                            </template>
-                                            <template v-slot:item.trainer="{ item }">
-                                                <span v-for="(value, key) in item.trainers" :key="key">
-                                                    <v-chip small label color="#FACD91" class="ma-1">
-                                                        {{ value.name }}
-                                                    </v-chip>
-                                                </span>
-                                            </template>
-                                            <template v-slot:[`item.status`]="{ item }">
-                                                <span v-if="item.status == 0">{{ language == 'bn' ? 'নিষ্ক্রিয়' :
-                                                    'Inactive' }}</span>
-                                                <span v-else>{{ language == 'bn' ? 'সক্রিয়' : 'Active' }}</span>
-                                                <span>
-                                                    <v-switch :input-value="item.status == 1 ? true : false"
-                                                        @change="deviceActivate(item.id)" hide-details
-                                                        color="orange darken-3"></v-switch>
-                                                </span>
-                                            </template>
-                                            <template v-slot:item.actions="{ item }">
-                                                <v-tooltip top>
-                                                    <template v-slot:activator="{ on }">
-                                                        <v-btn v-can="'trainingProgram-view'" fab x-small v-on="on"
-                                                            color="blue" elevation="0" router class=" white--text  mr-2"
-                                                            @click="copyToClipboard(item.id)">
-                                                            <v-icon> mdi-link </v-icon>
-                                                        </v-btn>
+                                        <template>
+                                            <div class="table-container">
+                                                <v-data-table :loading="loading" item-key="id" :headers="headers"
+                                                    :items="circulars" :items-per-page="pagination.perPage"
+                                                    hide-default-footer
+                                                    class="elevation-0 transparent row-pointer mt-5 mx-5">
+                                                    <template v-slot:item.sl="{ item, index }">
+                                                        {{ language === 'bn' ?
+                                                        $helpers.englishToBangla((pagination.current - 1)
+                                                        * pagination.perPage + index + 1) : (pagination.current - 1) *
+                                                        pagination.perPage + index + 1 }}
                                                     </template>
-                                                    <span>{{ $t("container.list.copy") }}</span>
-                                                </v-tooltip>
-                                                <v-tooltip top>
-                                                    <template v-slot:activator="{ on }">
-                                                        <v-btn v-can="'trainingProgram-view'" fab x-small v-on="on"
-                                                            color="#AFB42B" elevation="0" router
-                                                            class=" white--text mb-1 mr-2"
-                                                            :to="`/training-management/training-program/view/${item.id}`">
-                                                            <v-icon> mdi-eye </v-icon>
-                                                        </v-btn>
+                                                    <template v-slot:item.circular="{ item }">
+                                                        <span style="width:130px;">{{
+                                                            item.training_circular?.circular_name }}</span>
                                                     </template>
-                                                    <span>{{ $t("container.list.view") }}</span>
-                                                </v-tooltip>
-                                                <v-tooltip top>
-                                                    <template v-slot:activator="{ on }">
-                                                        <v-btn v-can="'trainingProgram-edit'" class=" mr-2 mb-1" fab
-                                                            x-small v-on="on" color="success" elevation="0" router
-                                                            :to="`/training-management/training-program/edit/${item.id}`">
-                                                            <v-icon> mdi-account-edit-outline </v-icon>
-                                                        </v-btn>
+                                                    <template v-slot:item.modules="{ item }">
+                                                        <div style="width:130px;">
+                                                            <span v-for="(value, key) in item.modules" :key="key">
+                                                                <v-chip small label color="#FACD91" class="ma-1">
+                                                                    {{ language == 'bn' ? value.value_bn :
+                                                                    value.value_en }}
+                                                                </v-chip>
+                                                            </span>
+
+                                                        </div>
+
                                                     </template>
-                                                    <span>{{ $t("container.list.edit") }}</span>
-                                                </v-tooltip>
-                                                <v-tooltip top>
-                                                    <template v-slot:activator="{ on }">
-                                                        <v-btn v-can="'trainingProgram-delete'" fab x-small v-on="on"
-                                                            color="grey" class=" mr-2 white--text mb-1" elevation="0"
-                                                            @click="deleteAlert(item.id)">
-                                                            <v-icon> mdi-delete </v-icon>
-                                                        </v-btn>
+                                                    <template v-slot:item.training_type="{ item }">
+                                                        <span style="width:130px;">
+                                                            {{ language == 'bn' ?
+                                                            item.training_circular?.training_type.value_bn
+                                                            :item.training_circular?.training_type?.value_en }}
+
+                                                        </span>
                                                     </template>
-                                                    <span>{{ $t("container.list.delete") }}</span>
-                                                </v-tooltip>
-                                            </template>
-                                            <template v-slot:footer="item">
-                                                <v-row class="text-right pt-2 v-data-footer justify-end pb-2">
-                                                    <v-col cols="12" lg="4" md="4" sm="12" xs="12" class="text-right">
-                                                        <v-pagination circle primary v-model="pagination.current"
-                                                            :length="pagination.total" @input="onPageChange"
-                                                            :total-visible="11"
-                                                            class="custom-pagination-item"></v-pagination>
-                                                    </v-col>
-                                                    <v-col cols="12" lg="4" md="4" sm="12" xs="12" class="text-right">
-                                                        <v-select :items="items" hide-details dense outlined
-                                                            @change="perPageChange"
-                                                            v-model="pagination.perPage"></v-select>
-                                                    </v-col>
-                                                </v-row>
-                                            </template>
-                                        </v-data-table>
+                                                    <template v-slot:item.trainer="{ item }">
+                                                        <div style="width:130px;">
+                                                            <span v-for="(value, key) in item.trainers" :key="key">
+                                                                <v-chip small label color="#FACD91" class="ma-1">
+                                                                    {{ value.name }}
+                                                                </v-chip>
+                                                            </span>
+                                                        </div>
+                                                    </template>
+                                                    <template v-slot:[`item.status`]="{ item }">
+                                                        <div style="width:130px;">
+                                                            <span>
+
+                                                                {{ language == 'en' ? item.status_name.value_en :
+                                        item.status_name.value_bn }}
+
+                                                            </span>
+
+                                                        </div>
+
+
+
+
+                                                    </template>
+                                                    <template v-slot:[`item.exam_status`]="{ item }">
+                                                        <div style="width:130px;">
+                                                            <span>
+                                                                <v-switch
+                                                                    :input-value="item.exam_status == 1 ? true : false"
+                                                                    @change="deviceActivate_exam(item.id)" hide-details
+                                                                    color="orange darken-3"></v-switch>
+                                                            </span>
+                                                        </div>
+
+                                                    </template>
+                                                    <template v-slot:[`item.rating_status`]="{ item }">
+                                                        <div style="width:130px;">
+                                                            <span>
+                                                                <v-switch
+                                                                    :input-value="item.rating_status == 1 ? true : false"
+                                                                    @change="deviceActivate_rating(item.id)"
+                                                                    hide-details color="orange darken-3"></v-switch>
+                                                            </span>
+
+                                                        </div>
+
+                                                    </template>
+                                                    <template v-slot:item.actions="{ item }">
+                                                        <div style="width:200px;">
+                                                            <v-tooltip top>
+                                                                <template v-slot:activator="{ on }">
+                                                                    <v-btn v-can="'trainingProgram-view'" fab x-small
+                                                                        v-on="on" color="primary" elevation="0" router
+                                                                        class=" white--text  mr-2"
+                                                                        @click="copyToClipboard(item.id)">
+                                                                        <v-icon> mdi-link </v-icon>
+                                                                    </v-btn>
+                                                                </template>
+                                                                <span>{{ $t("container.list.copy") }}</span>
+                                                            </v-tooltip>
+                                                            <v-tooltip top>
+                                                                <template v-slot:activator="{ on }">
+                                                                    <v-btn v-can="'trainingProgram-view'" fab x-small
+                                                                        v-on="on" color="#AFB42B" elevation="0" router
+                                                                        class=" white--text mb-1 mr-2"
+                                                                        :to="`/training-management/training-program/view/${item.id}`">
+                                                                        <v-icon> mdi-eye </v-icon>
+                                                                    </v-btn>
+                                                                </template>
+                                                                <span>{{ $t("container.list.view") }}</span>
+                                                            </v-tooltip>
+                                                            <v-tooltip top>
+                                                                <template v-slot:activator="{ on }">
+                                                                    <v-btn v-can="'trainingProgram-edit'"
+                                                                        class=" mr-2 mb-1" fab x-small v-on="on"
+                                                                        color="success" elevation="0" router
+                                                                        :to="`/training-management/training-program/edit/${item.id}`">
+                                                                        <v-icon> mdi-account-edit-outline </v-icon>
+                                                                    </v-btn>
+                                                                </template>
+                                                                <span>{{ $t("container.list.edit") }}</span>
+                                                            </v-tooltip>
+                                                            <v-tooltip top>
+                                                                <template v-slot:activator="{ on }">
+                                                                    <v-btn v-can="'trainingProgram-delete'" fab x-small
+                                                                        v-on="on" color="grey"
+                                                                        class=" mr-2 white--text mb-1" elevation="0"
+                                                                        @click="deleteAlert(item.id)">
+                                                                        <v-icon> mdi-delete </v-icon>
+                                                                    </v-btn>
+                                                                </template>
+                                                                <span>{{ $t("container.list.delete") }}</span>
+                                                            </v-tooltip>
+
+                                                        </div>
+                                                    </template>
+                                                    <template v-slot:footer="item">
+                                                        <v-row class="text-right pt-2 v-data-footer justify-end pb-2">
+                                                            <v-col cols="12" lg="4" md="4" sm="12" xs="12"
+                                                                class="text-right">
+                                                                <v-pagination circle primary
+                                                                    v-model="pagination.current"
+                                                                    :length="pagination.total" @input="onPageChange"
+                                                                    :total-visible="11"
+                                                                    class="custom-pagination-item"></v-pagination>
+                                                            </v-col>
+                                                            <v-col cols="12" lg="4" md="4" sm="12" xs="12"
+                                                                class="text-right">
+                                                                <v-select :items="items" hide-details dense outlined
+                                                                    @change="perPageChange"
+                                                                    v-model="pagination.perPage"></v-select>
+                                                            </v-col>
+                                                        </v-row>
+                                                    </template>
+                                                </v-data-table>
+                                            </div>
+                                        </template>
                                     </v-col>
                                 </v-row>
                             </v-card-text>
@@ -845,6 +955,10 @@ export default {
     </div>
 </template>
 
-<style>
+<style scoped>
+.align-middle {
+    display: flex;
+    align-items: center;
+}
 
 </style>

@@ -548,7 +548,7 @@ export default {
 
                                         <v-col cols="12" class="d-flex">
                                             <v-row wrap>
-                                                <v-col cols="12" sm="6" lg="6">
+                                                <v-col cols="12" sm="12" lg="12">
                                                     <v-checkbox v-model="editAllowanceProgram.is_age_limit"
                                                         :label="$t('container.system_config.allowance_program.age_limit_amount')"
                                                         @click="ageLimit(editAllowanceProgram.is_age_limit)"></v-checkbox>
@@ -572,7 +572,8 @@ export default {
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr v-for="(g, index) in updateAllowanceAge" :key="index" class="mt-10">
+                                                            <tr v-for="(g, index) in updateAllowanceAge" :key="index"
+                                                                class="mt-10">
                                                                 <td>
                                                                     <ValidationProvider name="gender" vid="gender_id"
                                                                         rules="required" v-slot="{ errors }">
@@ -627,9 +628,10 @@ export default {
                                                             </tr>
                                                         </tbody>
                                                     </table>
+
                                                 </v-col>
 
-                                                <v-col cols="12" sm="6" lg="6">
+                                                <v-col cols="12" sm="12" lg="12">
                                                     <v-checkbox v-model="editAllowanceProgram.is_disable_class"
                                                         :label="$t('container.system_config.allowance_program.class_wise_amount')"
                                                         @click="allowanceAmount(editAllowanceProgram.is_disable_class)"></v-checkbox>
@@ -754,14 +756,12 @@ export default {
             <v-dialog v-model="deleteDialog" width="350">
                 <v-card style="justify-content: center; text-align: center">
                     <v-card-title class="font-weight-bold justify-center">
-                        Delete Allowance Program Age
+                        {{ $t('container.system_config.allowance_program.delete') }}
                     </v-card-title>
                     <v-divider></v-divider>
                     <v-card-text>
                         <div class="subtitle-1 font-weight-medium mt-5">
-                            Are you sure to delete this allowance program age ? Allowance program age all information
-                            will
-                            be deleted.
+                            {{ $t('container.system_config.allowance_program.delete_header') }}
                         </div>
                     </v-card-text>
                     <v-card-actions style="display: block">
