@@ -207,19 +207,7 @@ export default {
       }
       this.fetchTotalReceivedApplicationChartData(from_date, to_date);
     },
-    // OnChangeDateInfo(event, type) {
-    //   if (this.dates.length < 2) {
-    //     return;
-    //   }
-    //   let from_date = null;
-    //   let to_date = null;
 
-    //   if (event.length === 2) {
-    //     from_date = event[0];
-    //     to_date = event[1];
-    //   }
-    //   this.fetchTotalReceivedApplicationChartData(from_date, to_date);
-    // },
   },
 
   mounted() {
