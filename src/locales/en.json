@@ -1033,9 +1033,19 @@
       "verification_success_msg": "Verification Setting submitted successfully"
     },
     "emergency_payment": {
+      "slNo": "Sl No",
       "list": "Emergency Allotment",
-      "add_new": "Add New Payment Processor",
-      "edit": "Edit Payment Processor"
+      "add_new": "Create Emergency Allotment",
+      "payment_name": "Emergency Payment Name",
+      "edit": "Edit Emergency Allotment",
+      "program_name": "Program Name",
+      "no_of_new_benificiary": "No of new benificiary",
+      "no_of_existing_benificiary": "No of existing benificiary",
+      "per_person_amount": "Per person amount",
+      "payment_cycle": "Payment Cycle",
+      "starting_period": "Started Period",
+      "closing_period": "Closing Period",
+      "search": "Search Emergency Allotment"
     },
     "training_management": {
       "trainer_info": {

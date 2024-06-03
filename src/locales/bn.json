@@ -1031,9 +1031,19 @@
       "verification_success_msg": "যাচাইকরণ সেটিং সফলভাবে জমা দেওয়া হয়েছে"
     },
     "emergency_payment": {
+      "slNo": "ক্রমিক নং",
       "list": "জরুরী বরাদ্দ",
-      "add_new": "জরুরী বরাদ্দ",
-      "edit": "জরুরী বরাদ্দ"
+      "add_new": "জরুরী বরাদ্দ তৈরি করুন",
+      "payment_name": "জরুরী অর্থ প্রদানের নাম",
+      "edit": "জরুরী বরাদ্দ সম্পাদনা করুন",
+      "program_name": "প্রোগ্রামের নাম",
+      "no_of_new_benificiary": "নতুন সুবিধাভোগীর সংখ্যা",
+      "no_of_existing_benificiary": "বিদ্যমান সুবিধাভোগীর সংখ্যা",
+      "per_person_amount": "জনপ্রতি পরিমাণ",
+      "payment_cycle": "পেমেন্ট চক্র",
+      "starting_period": "প্রারম্ভিক সময়কাল",
+      "closing_period": "সমাপনী সময়কাল",
+      "search": "জরুরী বরাদ্দ অনুসন্ধান করুন"
     },
     "training_management": {
       "trainer_info": {

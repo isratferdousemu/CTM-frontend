@@ -17,7 +17,7 @@
       <v-card-text>
         <v-col cols="12" lg="12" md="6">
           <ValidationObserver ref="form">
-            <v-form @submit.prevent="createEmergencyAllotment()">
+            <v-form @submit.prevent="updateEmergencyAllotment()">
               <v-container class="px-0 py-0">
                 <v-row>
                   <v-col lg="6" md="6" cols="12">
@@ -140,12 +140,12 @@
                       <v-text-field
                         :hide-details="errors[0] ? false : true"
                         outlined
-                        type="number"
                         v-model="data.per_person_amount"
                         :label="
                           $t('container.emergency_payment.per_person_amount')
                         "
                         required
+                        type="number"
                         :error="errors[0] ? true : false"
                         :error-messages="
                           errors[0]
@@ -194,7 +194,7 @@
                     >
                       <v-autocomplete
                         :hide-details="errors[0] ? false : true"
-                        @input="onChangeDivision($event)"
+                        @change="getDistrictList"
                         v-model="data.division_id"
                         outlined
                         :label="
@@ -228,7 +228,7 @@
                         :hide-details="errors[0] ? false : true"
                         outlined
                         v-model="data.district_id"
-                        @input="onChangeDistrict($event)"
+                        @input="getThanaList"
                         :label="
                           $t(
                             'container.system_config.demo_graphic.district.district'
@@ -291,7 +291,7 @@
                         :label="
                           $t('container.system_config.demo_graphic.thana.thana')
                         "
-                        @change="onChangeUpazila($event)"
+                        @change="getUnionList"
                         :items="thanas"
                         item-text="name_en"
                         item-value="id"
@@ -346,7 +346,7 @@
                       <v-autocomplete
                         :hide-details="errors[0] ? false : true"
                         v-model="data.city_id"
-                        @change="onChangeCity($event)"
+                        @change="getCityThanaList"
                         outlined
                         :label="
                           $t('container.system_config.demo_graphic.ward.city')
@@ -447,7 +447,7 @@
                         :error-messages="
                           errors[0]
                             ? language === 'bn'
-                              ? 'অনুগ্রহ করে নতুন সুবিধাভোগীর সংখ্যা লিখুন৷'
+                              ? 'অনুগ্রহ করে নতুন সুবিধাভোগীর সংখ্যা লিখুন'
                               : 'Please enter the no of new beneficiary'
                             : ''
                         "
@@ -483,7 +483,25 @@
                       ></v-text-field>
                     </ValidationProvider>
                   </v-col>
-
+                  <!-- <v-col lg="6" md="6" cols="12">
+                    <ValidationProvider
+                      name="Ward Name Bangla"
+                      vid="name_bn"
+                      rules="required"
+                      v-slot="{ errors }"
+                    >
+                      <v-text-field
+                        :hide-details="errors[0] ? false : true"
+                        outlined
+                        type="text"
+                        v-model="data.name_bn"
+                        :label="$t('container.list.name_bn')"
+                        required
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0]"
+                      ></v-text-field>
+                    </ValidationProvider>
+                  </v-col> -->
                   <!-- Button Part -->
                   <v-col cols="12" class="text-right">
                     <v-btn
@@ -499,7 +517,7 @@
                       type="submit"
                       class="custom-btn mr-2"
                       :loading="loading"
-                      >{{ $t("container.list.submit") }}
+                      >{{ $t("container.list.update") }}
                     </v-btn>
                     <!-- :disabled="invalid" -->
                   </v-col>
@@ -516,7 +534,7 @@
 import { mapState, mapActions } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
-
+import ApiService from "@/services/ApiService";
 extend("required", required);
 export default {
   name: "Index",
@@ -579,98 +597,97 @@ export default {
           name: "Half Yearly",
         },
       ],
+      editedItem: {},
     };
   },
   computed: {
-    ...mapState({
-      divisions: (state) => state.Division.divisions,
-      allowanceProgrames: (state) => state.Allowance.allowanceProgrames,
-    }),
     language: {
       get() {
         return this.$store.getters.getAppLanguage;
       },
     },
+    ...mapState({
+      divisions: (state) => state.Division.divisions,
+      allowanceProgrames: (state) => state.Allowance.allowanceProgrames,
+    }),
   },
   watch: {
     "$i18n.locale": "updateHeaderTitle",
   },
-  created() {
-    this.registerCustomRules();
-  },
+  created() {},
   mounted() {
     this.updateHeaderTitle();
     this.GetAllDivisions();
     this.GetAllAllownceProgram();
     this.getLocationType();
+    this.loadEditableForm();
   },
   methods: {
+    loadEditableForm() {
+      const edit_id = this.$route.params.id;
+      if (edit_id) {
+        ApiService.get(`admin/emergency/allotments/edit/${edit_id}`)
+          .then((res) => {
+            console.log(res);
+            this.setEditData(res.data.data);
+          })
+          .catch((errors) => {
+            this.$toast.error(errors.response);
+          });
+      }
+    },
+    setEditData(item) {
+      console.log(item);
+      this.editedItem = item;
+      this.data.payment_name = item.emergency_payment_name;
+      this.data.program_id = item.program_id;
+      this.data.starting_period = item.starting_period;
+      this.data.closing_period = item.closing_period;
+      this.data.per_person_amount = item.amount_per_person;
+      this.data.payment_cycle = item.payment_cycle;
+      this.data.division_id = item.division_id;
+      this.data.district_id = item.district_id;
+      this.data.location_type = item.location_type;
+      this.data.thana_id = item.upazila_id;
+      this.data.union_id = item.union_id;
+      this.data.city_id = item.city_corp_id;
+      this.data.district_pouro_id = item.district_pourashava_id;
+      this.data.city_thana_id = item.thana_id;
+      this.data.no_of_new_benificiary = item.no_of_new_benificiariy;
+      this.data.no_of_existing_benificiary = item.no_of_existing_benificiariy;
+      this.getDistrictList(item.division_id);
+      this.LocationType(item.location_type);
+      this.getThanaList(item.district_id);
+      this.getUnionList(item.thana_id);
+      this.getCityThanaList(item.city_corp_id);
+    },
     getLocationType() {
       this.$store
         .dispatch("getLookupByType", 1)
         .then((res) => (this.locationType = res));
     },
-    GeneratePDF() {
-      this.$axios
-        .get("/admin/union/generate-pdf", {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-          params: queryParams,
-        })
-        .then((result) => {
-          window.open(result.data.data.url, "_blank");
-        })
-        .catch((error) => {
-          console.error("Error generating PDF:", error);
-        });
-    },
-    registerCustomRules() {
-      extend("codeRules", (value) => {
-        return (
-          value.toString().length <= 6 ||
-          this.$t("container.system_config.demo_graphic.ward.code") +
-            " can have maximum 6 digit"
-        );
-      });
-    },
-    async createEmergencyAllotment() {
-      try {
-        let fd = new FormData();
-        for (const [key, value] of Object.entries(this.data)) {
-          if (value !== null) {
-            fd.append(key, value);
+    updateEmergencyAllotment() {
+      ApiService.update(
+        "admin/emergency/allotments/update/" + this.editedItem.id,
+        this.data
+      )
+        .then((res) => {
+          if (res?.data?.success) {
+            this.$toast.success(
+              this.language === "bn"
+                ? "ডেটা সফলভাবে আপডেট করা হয়েছে"
+                : "Data Updated successfully"
+            );
+            this.resetData();
+            this.$router.push("/emergency-payment/emergency-allotment");
+          } else if (res?.data?.errors) {
+            this.$refs.form.setErrors(res.data.errors);
+            this.$toast.error(res.data.message);
           }
-        }
-        this.$axios
-          .post("/admin/emergency/allotments", fd, {
-            headers: {
-              Authorization: "Bearer " + this.$store.state.token,
-              "Content-Type": "application/json",
-            },
-          })
-          .then((res) => {
-            console.log(res);
-            if (res.data?.success) {
-              this.$toast.success(
-                this.language === "bn"
-                  ? "ডেটা সফলভাবে জমা দেওয়া হয়েছে"
-                  : "Data inserted successfully"
-              );
-              this.resetData();
-              this.$router.push("/emergency-payment/emergency-allotment");
-            } else if (res?.data?.errors) {
-              this.$refs.form.setErrors(res.data.errors);
-              this.$toast.error(res.data.message);
-            }
-          })
-          .catch((error) => {
-            console.error("API error:", error);
-          });
-      } catch (e) {
-        console.log(e, "err");
-      }
+        })
+        .catch((errors) => {
+          console.log(errors);
+        });
     },
     async LocationType($event) {
       if (this.data.district_id != null && this.data.location_type != null) {
@@ -712,66 +729,57 @@ export default {
         }
       }
     },
-    async onChangeUpazila(event) {
-      await this.$axios
-        .get(`/admin/union/get/${this.data.thana_id}`, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
+    async getDistrictList(division_id = null) {
+      let divisionId = division_id ? division_id : this.data.division_id;
+      var queryData = {
+        table_name: "locations",
+        field_name: ["id", "parent_id", "type", "name_en"],
+        condition: { parent_id: divisionId, deleted_at: null },
+      };
+      ApiService.getDropData("global/common-dropdown", queryData)
+        .then((res) => {
+          this.districts = res.data;
         })
-        .then((result) => {
-          this.unions = result.data.data;
-        });
+        .catch((error) => console.log(error));
     },
-    async onChangeDivision(event) {
-      await this.$axios
-        .get(`/admin/district/get/${event}`, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
+    async getThanaList(district_id = null) {
+      let districtId = district_id ? district_id : this.data.district_id;
+      var queryData = {
+        table_name: "locations",
+        field_name: ["id", "parent_id", "type", "name_en"],
+        condition: { parent_id: districtId, deleted_at: null },
+      };
+      ApiService.getDropData("global/common-dropdown", queryData)
+        .then((res) => {
+          this.thanas = res.data;
         })
-        .then((result) => {
-          this.districts = result.data.data;
-        });
+        .catch((error) => console.log(error));
     },
-    async onChangeDistrict(event) {
-      await this.$axios
-        .get(`/admin/thana/get/${event}`, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
+    async getUnionList(thana_id = null) {
+      let thanaId = thana_id ? thana_id : this.data.thana_id;
+      var queryData = {
+        table_name: "locations",
+        field_name: ["id", "parent_id", "type", "name_en"],
+        condition: { parent_id: thanaId, deleted_at: null },
+      };
+      ApiService.getDropData("global/common-dropdown", queryData)
+        .then((res) => {
+          this.unions = res.data;
         })
-        .then((result) => {
-          this.LocationType(this.data.location_type);
-          this.thanas = result.data.data;
-        });
+        .catch((error) => console.log(error));
     },
-    async onChangeThana(event) {
-      await this.$axios
-        .get(`/admin/union/get/${event}`, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
+    async getCityThanaList(city_id = null) {
+      let cityId = city_id ? city_id : this.data.city_id;
+      var queryData = {
+        table_name: "locations",
+        field_name: ["id", "parent_id", "type", "name_en"],
+        condition: { parent_id: cityId, deleted_at: null },
+      };
+      ApiService.getDropData("global/common-dropdown", queryData)
+        .then((res) => {
+          this.city_thanas = res.data;
         })
-        .then((result) => {
-          this.unions = result.data.data;
-        });
-    },
-    async onChangeCity(event) {
-      await this.$axios
-        .get(`/admin/thana/get/city/${this.data.city_id}`, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((result) => {
-          this.city_thanas = result.data.data;
-        });
+        .catch((error) => console.log(error));
     },
     ...mapActions({
       GetAllDivisions: "Division/GetAllDivisions",
@@ -783,6 +791,34 @@ export default {
     },
     resetData() {
       this.data = {};
+    },
+    submitFormResponse(res) {
+      let message = "";
+      if (res.data.code == 2003) {
+        Object.values(res.data.errors).map((ele) => {
+          ele.map((msg) => {
+            message = message + msg + "<br>";
+          });
+        });
+        // Toast.fire({
+        //   icon: "error",
+        //   title: message,
+        // });
+        this.$toast.error(message);
+      } else if (res.data.success) {
+        // Toast.fire({
+        //   icon: "success",
+        //   title: res.data.message,
+        // });
+
+        this.$toast.success(
+          this.language === "bn"
+            ? "ডেটা সফলভাবে আপডেট করা হয়েছে"
+            : "Data updated successfully"
+        );
+        this.$router.push("/emergency-payment/emergency-allotment");
+        this.resetData();
+      }
     },
   },
 };
