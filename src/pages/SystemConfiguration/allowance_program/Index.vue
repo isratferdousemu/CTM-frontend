@@ -20,7 +20,7 @@ export default {
       pagination: {
         current: 1,
         total: 0,
-        perPage: 10,
+        perPage: 5,
       },
       sortBy: "name_en",
       sortDesc: false, //ASC
