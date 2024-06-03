@@ -65,9 +65,9 @@ export default {
         headers() {
             return [
                 { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, width: "5%" },
-                { text: this.$t('container.training_management.training_circular.name'), value: "circular_name", align: "start", width: "10%" },
+                { text: this.$t('container.training_management.training_circular.name'), value: "circular_name", align: "start", width: "15%" },
            
-                { text: this.$t('container.training_management.training_circular.no_of_participant'), value: "no_of_participant", width: "15%" },
+                { text: this.$t('container.training_management.training_circular.no_of_participant'), value: "no_of_participant", width: "10%" },
                 { text: this.$t('container.training_management.training_circular.start_date'), value: "start_date", width: "15%" },
                 { text: this.$t('container.training_management.training_circular.end_date'), value: "end_date", width: "15%" },
                 { text: this.$t('container.list.action'), value: "actions", align: "start", sortable: false, width: "25%" },

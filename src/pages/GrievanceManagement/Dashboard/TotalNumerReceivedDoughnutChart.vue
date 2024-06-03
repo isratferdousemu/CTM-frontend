@@ -1,13 +1,15 @@
 <template>
   <v-col>
   <v-row>
-    <v-col cols="12">
-      <label style="color: #1976d2">
-                      <span>
-                        {{ $t("container.application_selection_dashboard.total_number_of_application_received") }}
-                      </span>
-      </label></v-col
-    >
+        <v-col cols="12" style="padding: 0px;">
+        <v-card :loading="isLoading" style="background-color:#1c3b68;color:white;font-size:12px;">
+           <v-card-title style=" padding: 10px;">
+               <h5 class="white--text">
+                 {{ $t("container.grievance_management.dashboard.program_wise_total_received") }}
+              </h5>
+          </v-card-title>
+        </v-card>
+       </v-col>
   </v-row>
   <v-row class="ml-1 mr-1">
     <v-menu
@@ -50,7 +52,8 @@
     </v-menu>
   </v-row>
   <v-row>
-    <canvas id="total_number_of_application_received_info"></canvas>
+     <img  v-if="allZeros == true" style="margin-left:80px;margin-top:10px;width: 300px;height: 300px" src="/assets/images/pie_chart_default.png" alt="default chart">
+    <canvas v-else id="total_number_received"></canvas>
   </v-row>
   </v-col>
 
@@ -67,7 +70,7 @@ export default {
       dates: [],
       menu: false,
       total_number_of_application_received_chart: null,
-      total_number_of_application_received_info: [],
+      total_number_received: [],
       total_number_of_application_received_levels: [],
       total_number_of_application_received_datas: [],
       isLoading: false,
@@ -81,31 +84,43 @@ export default {
       this.fetchTotalReceivedApplicationChartData()
     },
     async fetchTotalReceivedApplicationChartData(from_date = null, to_date = null) {
-      await this.getTotalReceivedApplication(2, from_date, to_date);
-      this.createTotalReceivedApplicentChart();
+      await this.getTotalReceivedApplication(0, from_date, to_date);
+     if (this.allZeros != true) {
+        this.createTotalReceivedApplicentChart();
+      }
+      // this.createTotalReceivedApplicentChart();
     },
     async getTotalReceivedApplication(status, from_date = null, to_date = null) {
+      console.log(from_date, to_date,'date by anwar')
+      this.isLoading = true;
       const queryParams = {
         status: status,
         start_date: from_date,
         end_date: to_date,
       };
       try {
-        const result = await this.$axios.get("/admin/application-dashboard/get-total-numberof-application", {
+        const result = await this.$axios.get("admin/grievance-dashboard/total-numberof-grievance", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
           },
           params: queryParams,
         });
-        console.log(result.data.data,777)
-        this.total_number_of_application_received_info = result.data.data;
-        this.total_number_of_application_received_levels = this.total_number_of_application_received_info.map((row) => this.$i18n.locale == 'en' ? row.name_en : row.name_bn);;
-        this.total_number_of_application_received_datas = this.total_number_of_application_received_info.map((row) => row.applications_count);
+         this.total_number_received = result.data.data;
+         console.log(this.total_number_received,'fsfdsd');
+
+        this.total_number_of_application_received_levels = this.total_number_received.map((row) => {
+          return this.$i18n.locale == 'en' ? row?.name_en : row?.name_bn;
+        });
+
+        this.total_number_of_application_received_datas = this.total_number_received.map((row) => {
+          return row.grievances_count !== 0 ? row?.grievances_count : 0;
+        });
+
         this.isLoading = false;
 
       } catch (error) {
-        console.error("Error fetching data:", error);
+          this.isLoading = false;
         // Handle error if necessary
       }
     },
@@ -122,7 +137,7 @@ export default {
           return isNaN(percentage) ? '0.00%' : percentage + '%';
         });
 
-        this.total_number_of_application_received_chart = new Chart(document.getElementById("total_number_of_application_received_info"), {
+        this.total_number_of_application_received_chart = new Chart(document.getElementById("total_number_received"), {
           type: "doughnut",
           data: {
             // labels: this.total_number_of_application_received_levels,
@@ -173,8 +188,8 @@ export default {
             aspectRatio: 1, // Aspect ratio of 1 w
           },
         });
-        document.getElementById("total_number_of_application_received_info").style.width = '400px';
-        document.getElementById("total_number_of_application_received_info").style.height = '435px';
+        document.getElementById("total_number_received").style.width = '400px';
+        document.getElementById("total_number_received").style.height = '435px';
       } else {
         console.error("Data is not available to create chart.");
       }
@@ -186,6 +201,12 @@ export default {
       if (this.dates.length < 2) {
         return;
       }
+
+      if (this.dates[1] && this.dates[1] < this.dates[0]) {
+        this.$toast.error(this.language == 'en' ? 'End date cannot be before start date' : 'শেষ তারিখ শুরুর তারিখের আগে হতে পারে না')
+        this.resetDateRange();
+      }
+
       let from_date = null;
       let to_date = null;
 
@@ -195,10 +216,21 @@ export default {
       }
       this.fetchTotalReceivedApplicationChartData(from_date, to_date);
     },
+
   },
 
   mounted() {
     this.fetchTotalReceivedApplicationChartData();
+  },
+   computed: {
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      }
+    },
+    allZeros() {
+      return this.total_number_of_application_received_datas.every(value => value === 0);
+    }
   },
   watch: {
     '$i18n.locale': {

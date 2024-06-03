@@ -23,41 +23,41 @@
                     {{ data.processor_type ?? "--" }}
                   </div>
                   <div v-if="data.processor_type === 'bank'">
-                  <div style="padding-bottom: 8px">
-                    <strong
-                      >{{
-                        $t("container.payroll_management.bank_name")
-                      }}:</strong
-                    >
-                    {{ language ==='bn' ? data.bank?.name_bn : data.bank?.name_en}}
+                    <div style="padding-bottom: 8px">
+                      <strong
+                        >{{
+                          $t("container.payroll_management.bank_name")
+                        }}:</strong
+                      >
+                      {{
+                        language === "bn"
+                          ? data.bank?.name_bn
+                          : data.bank?.name_en
+                      }}
+                    </div>
+                    <div style="padding-bottom: 8px">
+                      <strong
+                        >{{
+                          $t("container.payroll_management.branch_name")
+                        }}:</strong
+                      >
+                      {{ data.bank_branch_name ?? "--" }}
+                    </div>
+                    <div style="padding-bottom: 8px">
+                      <strong
+                        >{{
+                          $t("container.payroll_management.routing_number")
+                        }}:</strong
+                      >
+                      {{ data.bank_routing_number ?? "--" }}
+                    </div>
                   </div>
                   <div style="padding-bottom: 8px">
-                    <strong
-                      >{{
-                        $t("container.payroll_management.branch_name")
-                      }}:</strong
-                    >
-                    {{ data.bank_branch_name ?? "--" }}
-                  </div>
-                  <div style="padding-bottom: 8px">
-                    <strong
-                      >{{
-                        $t("container.payroll_management.routing_number")
-                      }}:</strong
-                    >
-                    {{ data.bank_routing_number ?? "--" }}
-                  </div>
-                  </div>
-                  <div style="padding-bottom: 8px">
-                    <strong
-                      >{{ $t("container.list.name_en") }}:</strong
-                    >
+                    <strong>{{ $t("container.list.name_en") }}:</strong>
                     {{ data.name_en ?? "--" }}
                   </div>
                   <div style="padding-bottom: 8px">
-                    <strong
-                      >{{ $t("container.list.name_bn") }}:</strong
-                    >
+                    <strong>{{ $t("container.list.name_bn") }}:</strong>
                     {{ data.name_bn ?? "--" }}
                   </div>
                   <div style="padding-bottom: 8px">
@@ -92,7 +92,11 @@
                         $t("container.payroll_management.division")
                       }}:</strong
                     >
-                    {{ language ==='bn' ? data.processor_area?.division?.name_bn : data.processor_area?.division?.name_en}}
+                    {{
+                      language === "bn"
+                        ? data.processor_area?.division?.name_bn
+                        : data.processor_area?.division?.name_en
+                    }}
                   </div>
                   <div style="padding-bottom: 8px">
                     <strong
@@ -100,7 +104,11 @@
                         $t("container.payroll_management.district")
                       }}:</strong
                     >
-                    {{ language ==='bn' ? data.processor_area?.district?.name_bn : data.processor_area?.district?.name_en}}
+                    {{
+                      language === "bn"
+                        ? data.processor_area?.district?.name_bn
+                        : data.processor_area?.district?.name_en
+                    }}
                   </div>
                   <div style="padding-bottom: 8px">
                     <strong
@@ -108,33 +116,65 @@
                         $t("container.payroll_management.location_type")
                       }}:</strong
                     >
-                    {{ data.location_type ?? "--" }}
+                    {{
+                      language === "bn"
+                        ? data.processor_area?.location_type?.value_bn
+                        : data.processor_area?.location_type?.value_en ?? "--"
+                    }}
                   </div>
-                  <div style="padding-bottom: 8px" v-if="data.processor_area?.location_type == 2">
+                  <div
+                    style="padding-bottom: 8px"
+                    v-if="data.processor_area?.location_type?.id == 2"
+                  >
                     <strong
                       >{{ $t("container.payroll_management.upazila") }}:</strong
                     >
-                    {{ language ==='bn' ? data.processor_area?.upazila?.name_bn : data.processor_area?.upazila?.name_en ?? "--"}}
+                    {{
+                      language === "bn"
+                        ? data.processor_area?.upazila?.name_bn
+                        : data.processor_area?.upazila?.name_en ?? "--"
+                    }}
                   </div>
-                  <div style="padding-bottom: 8px" v-if="data.processor_area?.location_type == 2">
+                  <div
+                    style="padding-bottom: 8px"
+                    v-if="data.processor_area?.location_type?.id == 2"
+                  >
                     <strong
                       >{{ $t("container.payroll_management.union") }}:</strong
                     >
-                    {{ language ==='bn' ? data.processor_area?.union?.name_bn : data.processor_area?.union?.name_en ?? "--"}}
+                    {{
+                      language === "bn"
+                        ? data.processor_area?.union?.name_bn
+                        : data.processor_area?.union?.name_en ?? "--"
+                    }}
                   </div>
-                  <div style="padding-bottom: 8px" v-if="data.processor_area?.location_type == 3">
+                  <div
+                    style="padding-bottom: 8px"
+                    v-if="data.processor_area?.location_type?.id == 3"
+                  >
                     <strong
                       >{{
                         $t("container.payroll_management.city_corporation")
                       }}:</strong
                     >
-                    {{ language ==='bn' ? data.processor_area?.city_corporation?.name_bn : data.processor_area?.city_corporation?.name_en ?? "--"}}
+                    {{
+                      language === "bn"
+                        ? data.processor_area?.city_corporation?.name_bn
+                        : data.processor_area?.city_corporation?.name_en ?? "--"
+                    }}
                   </div>
-                  <div style="padding-bottom: 8px" v-if="data.processor_area?.location_type == 3">
+                  <div
+                    style="padding-bottom: 8px"
+                    v-if="data.processor_area?.location_type?.id == 3"
+                  >
                     <strong
                       >{{ $t("container.payroll_management.thana") }}:</strong
                     >
-                    {{ language ==='bn' ? data.processor_area?.thana?.name_bn : data.processor_area?.thana?.name_en ?? "--"}}
+                    {{
+                      language === "bn"
+                        ? data.processor_area?.thana?.name_bn
+                        : data.processor_area?.thana?.name_en ?? "--"
+                    }}
                   </div>
                   <div v-if="data.processor_area?.location_type == 1">
                     <strong
@@ -142,9 +182,21 @@
                         $t("container.payroll_management.district_pourashava")
                       }}:</strong
                     >
-                    {{ language ==='bn' ? data.processor_area?.district_pourashava?.name_bn : data.processor_area?.district_pourashava?.name_en ?? "--"}}
+                    {{
+                      language === "bn"
+                        ? data.processor_area?.district_pourashava?.name_bn
+                        : data.processor_area?.district_pourashava?.name_en ??
+                          "--"
+                    }}
                   </div>
                 </div>
+              </v-col>
+              <v-col cols="12" class="text-right">
+                <router-link to="/payroll-management/payment-processor">
+                  <v-btn outlined color="primary">
+                    {{ language === "bn" ? "পিছনে যান" : "Go Back" }}
+                  </v-btn>
+                </router-link>
               </v-col>
             </v-row>
           </v-card-text>

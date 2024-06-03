@@ -92,25 +92,19 @@ export default {
                     value_bn: "কমিটির ব্যবহারকারী",
                 },
             ],
+            status_types: [{ "id": 0, "value_en": "Exam Pending", "value_bn": "পেন্ডিং" }, { "id": 1, "value_en": "Pass", "value_bn": "উত্তীর্ণ" }, { "id": 2, "value_en": "Fail", "value_bn": "অনুত্তীর্ণ" }],
 
 
             data: {
                 training_program_id: null,
                 training_circular_id: null,
-                user_id: [],
+               
+                status: null,
+        
 
 
             },
-            poll: {
-                training_program_id: null,
-                training_circular_id: null,
-                full_name: null,
-                email: null,
-
-
-
-            },
-
+            
         };
     },
     computed: {
@@ -127,9 +121,8 @@ export default {
 
     mounted() {
         // this.Program();
-        this.$store
-            .dispatch("getLookupByType", 30)
-            .then((res) => (this.organizations = res));
+        this.onChangeUserType();
+
         this.GetCircular();
         this.DataView();
 
@@ -148,41 +141,15 @@ export default {
                     },
                 })
                 .then((result) => {
-                    console.log(result?.data?.data.is_by_poll,"by_poll")
-
-                    if(result?.data?.data.is_by_poll==1){
-                        this.getPartipant = result?.data?.data.is_by_poll
-                        this.poll.training_circular_id = result?.data?.data.training_circular_id;
-                        this.changePoll();
-                        this.poll.training_program_id = result?.data?.data.training_program_id;
-                   
-                        this.poll.full_name = result?.data?.data.full_name;
-                        this.poll.email = result?.data?.data.email;
 
 
-                    }
-
-                    if (result?.data?.data.is_by_poll == 0) {
-                        this.getPartipant = result?.data?.data.is_by_poll
-                        this.data = result?.data?.data;
-                        this.change();
-                        this.data.training_program_id = result?.data?.data.training_program_id;
-                      
-                        this.user_type_id = result?.data?.data.user?.user_type;
-                        this.onChangeUserType();
-                        this.data.user_id = result?.data?.data?.user_id;
-                        console.log(this.data.user_id,"user_id")
-
-
-                    }
+                    this.data.training_circular_id = result?.data?.data.training_circular_id;
+                    this.change();
+                    this.data.training_program_id = result?.data?.data.training_program_id;
+                    this.data.status = result?.data?.data.status;
+                    this.data._method = "PUT"
                   
-                    console.log(this.data,"dataview")
-                    console.log(result?.data?.data, "resultdataview")
                     
-
-
-                
-
 
                 })
                 .catch((err) => {
@@ -195,6 +162,14 @@ export default {
 
                 });
 
+        },
+        change() {
+            this.data.training_circular_id = null;
+            this.data.training_program_id = null;
+            this.data.username = null;
+            this.data.email = null;
+            this.data.full_name = null;
+            this.data.mobile = null;
         },
 
         setParticipant(value) {
@@ -213,6 +188,7 @@ export default {
         ,
         change() {
             this.programs = [];
+            this.training_program_id=null;
             const selected_programs = this.circulars.find(circular => circular.id == this.data.training_circular_id);
             this.programs = selected_programs?.programs
             console.log(this.programs, "programs");
@@ -220,13 +196,7 @@ export default {
 
 
         },
-        changePoll() {
-            this.poll_programs = [];
-            const selected_programs = this.circulars.find(circular => circular.id == this.poll.training_circular_id);
-            this.poll_programs = selected_programs?.programs
-
-
-        },
+      
 
         getItemText(item) {
             return this.language === 'bn' ? item.value_bn : item.value_en;
@@ -258,7 +228,7 @@ export default {
         async onChangeUserType() {
 
             this.$axios
-                .get(`/admin/training/participants/users/${this.user_type_id}`, {
+                .get(`/admin/training/participants/users/3`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -276,10 +246,11 @@ export default {
 
 
 
-        async submitForm() {
+        async updateForm() {
+            // this.data.is_external = parseInt(this.data.is_external, 10); // or +this.data.is_external
 
             await this.$axios
-                .post("admin/training/participants", this.data, {
+                .post(`admin/training/participants/${this.$route.params.id}`, this.data, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -293,17 +264,16 @@ export default {
 
                 })
                 .catch((err) => {
-                    if (err?.response?.data?.errors?.training_program_id[0]) {
-                        if (this.language == 'en') {
-                            this.$toast.error("This program has already been taken by this participant");
-                        }
-                        else {
-                            this.$toast.error("এই প্রোগ্রামটি ইতিমধ্যে এই অংশগ্রহণকারী দ্বারা নেওয়া হয়েছে");
-                        }
-
-
+              
+                    // this.$toast.error(err.response.data.errors);
+                    if (err?.response?.data?.errors?.training_program_id && Array.isArray(err.response.data.errors.training_program_id) && err.response.data.errors.training_program_id.length > 0) {
+                        this.$toast.error(err.response.data.errors.training_program_id[0]);
                     }
-
+                    if (err?.response?.data?.errors?.training_circular_id && Array.isArray(err.response.data.errors.training_circular_id) && err.response.data.errors.training_circular_id.length > 0) {
+                        this.$toast.error(err.response.data.errors.training_circular_id[0]);
+                    }
+                    // 
+                    // this.$refs.form.setErrors(err.response.data.errors);  
 
 
 
@@ -360,32 +330,43 @@ export default {
                     <v-col cols="12">
                         <v-card>
 
-                            <v-card-title class="justify-center"
-                                style="background-color: #1C3B68; color: white; font-size: 17px;">
-                                <h4 class="white--text" v-if="getPartipant === 0">
+                            <v-card-title class="justify-center" style="background-color: #1C3B68; color: white;">
+                                <h4 class="white--text">
                                     {{ $t('container.training_management.training_registration.add_3') }}
-                                </h4>
-                                <h4 class="white--text" v-if="getPartipant === 1">
-                                    {{ $t('container.training_management.training_registration.add_2') }}
                                 </h4>
                             </v-card-title>
 
-                            <v-btn-toggle v-model="getPartipant" class="ma-5 ml-15">
-                                <v-btn small :color="getPartipant === 0 ? '#1C3B68' : undefined"
-                                    :class="{ 'white--text': getPartipant === 0 }" @click="setParticipant(0)">
-                                    {{ $t('container.training_management.training_registration.add_3') }}
-                                </v-btn>
-                                <v-btn small :color="getPartipant === 1 ? '#1C3B68' : undefined"
-                                    :class="{ 'white--text': getPartipant === 1 }" @click="setParticipant(1)">
-                                    {{ $t('container.training_management.training_registration.by_poll') }}
-                                </v-btn>
-                            </v-btn-toggle>
 
-                            <v-card-text class="mt-10" v-if="getPartipant == 0">
+
+                            <v-card-text class="mt-10">
                                 <ValidationObserver ref="form" v-slot="{ invalid }">
-                                    <v-form v-on:submit.prevent="submitForm()">
+                                    <v-form v-on:submit.prevent="updateForm()">
 
                                         <v-row class="mx-10 no-gap-row">
+                                            <!-- <v-col cols="12" sm="6" lg="6">
+                                                <ValidationProvider name="Trainer Type" vid="is_external"
+                                                    rules="required" v-slot="{ errors }">
+                                                    <v-select @input="change()" dense type="text"
+                                                        v-model="data.is_external" :label="$t('container.training_management.trainer_info.trainer_type')
+                                        " :items="training_types" :item-text="getItemText" item-value="id"
+                                                        persistent-hint outlined :error="errors[0] ? true : false"
+                                                        :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক প্রশিক্ষকের ধরন প্রদান করুন '
+                                        : 'Please enter  Trainer Type') : ''"></v-select>
+                                                </ValidationProvider>
+                                            </v-col> -->
+                                            <!-- <v-col cols=" 12" smdata.="6" lg="6" v-if="data.is_external == 0">
+                                                <ValidationProvider name="Participant" vid="user_id" rules="required"
+                                                    v-slot="{ errors }">
+                                                    <v-autocomplete dense type="text" v-model="data.user_id"
+                                                        :label="$t('container.training_management.training_registration.participant')"
+                                                        persistent-hint outlined :error="errors[0] ? true : false"
+                                                        :items="users" item-text="full_name" item-value="id"
+                                                        :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক অংশগ্রহণকারী প্রদান করুন '
+                                        : 'Please enter valid participant') : ''">
+
+                                                    </v-autocomplete>
+                                                </ValidationProvider>
+                                            </v-col> -->
 
                                             <v-col cols=" 12" sm="6" lg="6">
                                                 <ValidationProvider name="training_circular_id"
@@ -396,7 +377,7 @@ export default {
                                                         persistent-hint outlined :error="errors[0] ? true : false"
                                                         :items="circulars" :item-text="itemText" item-value="id"
                                                         :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সার্কুলার প্রদান করুন '
-                                    : 'Please enter Circular') : ''">
+                                        : 'Please enter Circular') : ''">
 
                                                     </v-autocomplete>
                                                 </ValidationProvider>
@@ -407,132 +388,56 @@ export default {
                                                     <v-autocomplete dense type="text" v-model="data.training_program_id"
                                                         :items="programs" :item-text="getprogram" item-value="id"
                                                         :label="$t('container.training_management.training_program.program')
-                                    " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক প্রোগ্রাম প্রদান করুন '
-                                    : 'Please enter a Program') : ''"></v-autocomplete>
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক প্রোগ্রাম প্রদান করুন '
+                                        : 'Please enter a Program') : ''"></v-autocomplete>
                                                 </ValidationProvider>
                                             </v-col>
-                                            <v-col lg="6" md="6" cols="12">
-                                                <ValidationProvider name="UserType" vid="user_type_id" rules="required"
-                                                    v-slot="{ errors }">
-                                                    <v-select dense :hide-details="errors[0] ? false : true"
-                                                        @input="onChangeUserType($event)" v-model="user_type_id"
-                                                        outlined :label="$t(
-                                    'container.system_config.demo_graphic.user.user_type'
-                                )
-                                    " :items="userType" :item-text="getItemText" item-value="id"
-                                                        :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ব্যবহারকারীর ধরন প্রদান করুন '
-                                    : 'Please enter user type') : ''"></v-select>
-                                                </ValidationProvider>
-                                            </v-col>
-
-
-
-                                            <v-col cols=" 12" sm="6" lg="6">
-                                                <ValidationProvider name="Participant" vid="user_id" rules="required"
-                                                    v-slot="{ errors }">
-                                                    <v-select dense type="text" v-model="data.user_id"
-                                                        :label="$t('container.training_management.training_registration.participant')"
-                                                        persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :items="users" item-text="full_name" item-value="id"
-                                                        :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক অংশগ্রহণকারী প্রদান করুন '
-                                    : 'Please enter valid participant') : ''">
-
-                                                    </v-select>
-                                                </ValidationProvider>
-                                            </v-col>
-
-
-
-
-
-
-
-
-                                        </v-row>
-                                        <v-row class="justify-end mt-5 mb-5">
-                                            <v-btn color="primary" class="custom-btn mr-2" router
-                                                to="/training-management/participant" v-can="'participant-view'">{{
-                                    $t("container.list.back") }}
-                                            </v-btn>
-                                            <v-btn color="success" type="submit" class="custom-btn mr-2"
-                                                :disabled="invalid">
-                                                {{ $t("container.list.submit") }}
-                                            </v-btn>
-                                        </v-row>
-                                    </v-form>
-                                </ValidationObserver>
-
-
-                            </v-card-text>
-                            <v-card-text class="mt-10" v-if="getPartipant == 1">
-                                <ValidationObserver ref="form" v-slot="{ invalid }">
-                                    <v-form v-on:submit.prevent="submitPoll()">
-
-                                        <v-row class="mx-10 no-gap-row">
-
-                                            <v-col cols=" 12" sm="6" lg="6">
-                                                <ValidationProvider name="training_circular_id" vid="circular_id"
-                                                    rules="required" v-slot="{ errors }">
-                                                    <v-autocomplete dense type="text"
-                                                        v-model="poll.training_circular_id" @input="changePoll()"
-                                                        :label="$t('container.training_management.training_program.training_circular')"
-                                                        persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :items="circulars" :item-text="itemText" item-value="id"
-                                                        :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সার্কুলার প্রদান করুন '
-                                    : 'Please enter Circular') : ''">
-
-                                                    </v-autocomplete>
-                                                </ValidationProvider>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" lg="6">
-                                                <ValidationProvider name="Program Name" vid="program_name"
-                                                    rules="required" v-slot="{ errors }">
-                                                    <v-autocomplete dense type="text" v-model="poll.training_program_id"
-                                                        :items="poll_programs" :item-text="getprogram" item-value="id"
-                                                        :label="$t('container.training_management.training_program.program')
-                                    " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক প্রোগ্রাম প্রদান করুন '
-                                    : 'Please enter a Program') : ''"></v-autocomplete>
-                                                </ValidationProvider>
-                                            </v-col>
-
-                                            <!-- <v-col cols="12" sm="6" lg="6">
+                                            <!-- <v-col cols="12" sm="6" lg="6" v-if="data.is_external == 1">
                                                 <ValidationProvider name="Username" rules="required||checkUsername"
                                                     vid="user_name" v-slot="{ errors }">
-                                                    <v-text-field dense v-model="poll.designation" :label="$t('container.training_management.training_registration.user_name')
-                                    " persistent-hint outlined :error="errors[0] ? true : false"
+                                                    <v-text-field dense v-model="data.username" :label="$t('container.training_management.training_registration.user_name')
+                                        " persistent-hint outlined :error="errors[0] ? true : false"
                                                         :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ব্যবহারকারীর নাম প্রদান করুন। ব্যবহারকারীর নাম অবশ্যই ছোট হাতের অক্ষরে এবং কোনো বিশেষ অক্ষর ছাড়াই হতে হবে'
-                                    : 'Please enter  Username.Username should be in lowercase and without any special character') : ''"></v-text-field>
-                                                </ValidationProvider>
-                                            </v-col> -->
-                                            <v-col cols="12" sm="6" lg="6">
-                                                <ValidationProvider name="Participant" rules="required||name"
-                                                    vid="poll.participant" v-slot="{ errors }">
-                                                    <v-text-field dense v-model="poll.full_name" :label="$t('container.training_management.training_registration.full_name')
-                                    " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য সম্পূর্ণ নাম প্রদান করুন ।'
-                                    : 'Please enter valid  Full Name') : ''"></v-text-field>
+                                        : 'Please enter  Username.Username should be in lowercase and without any special character') : ''"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
-                                            <!-- <v-col cols="12" sm="6" lg="6">
+                                            <v-col cols="12" sm="6" lg="6" v-if="data.is_external == 1">
+                                                <ValidationProvider name="Participant" rules="required||name"
+                                                    vid="poll.participant" v-slot="{ errors }">
+                                                    <v-text-field dense v-model="data.full_name" :label="$t('container.training_management.training_registration.full_name')
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য সম্পূর্ণ নাম প্রদান করুন ।'
+                                        : 'Please enter valid  Full Name') : ''"></v-text-field>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" lg="6" v-if="data.is_external == 1">
                                                 <ValidationProvider name="Mobile" vid="mobile" rules="required||mobile"
                                                     v-slot="{ errors }">
-                                                    <v-text-field dense type="text" v-model="poll.participant_mobile"
-                                                        :label="$t('container.training_management.trainer_info.mobile')
-                                    " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য মোবাইল নম্বর প্রদান করুন '
-                                    : 'Please enter a valid Mobile Number') : ''"></v-text-field>
+                                                    <v-text-field dense type="text" v-model="data.mobile" :label="$t('container.training_management.trainer_info.mobile')
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য মোবাইল নম্বর প্রদান করুন '
+                                        : 'Please enter a valid Mobile Number') : ''"></v-text-field>
                                                 </ValidationProvider>
-                                            </v-col> -->
+                                            </v-col>
 
-                                            <v-col cols="12" sm="6" lg="6">
+                                            <v-col cols="12" sm="6" lg="6" v-if="data.is_external == 1">
                                                 <ValidationProvider name="Email" vid="email"
                                                     rules="required||email||bangla" v-slot="{ errors }">
                                                     <v-text-field placeholder="xxx@gmail.com" dense type="email"
-                                                        v-model="poll.email" :label="$t('container.training_management.trainer_info.email')
-                                    " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য ইমেইল প্রদান করুন '
-                                    : 'Please enter a valid Email') : ''"></v-text-field>
+                                                        v-model="data.email" :label="$t('container.training_management.trainer_info.email')
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য ইমেইল প্রদান করুন '
+                                        : 'Please enter a valid Email') : ''"></v-text-field>
+                                                </ValidationProvider>
+                                            </v-col> -->
+                                            <v-col cols="12" sm="6" lg="6">
+                                                <ValidationProvider name="Trainer Type" vid="is_external"
+                                                    rules="required" v-slot="{ errors }">
+                                                    <v-select dense type="text"
+                                                        v-model="data.status" :label="$t('container.list.status')
+                                        " :items="status_types" :item-text="getItemText" item-value="id"
+                                                        persistent-hint outlined :error="errors[0] ? true : false"
+                                                        :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক প্রশিক্ষকের ধরন প্রদান করুন '
+                                        : 'Please enter  Trainer Type') : ''"></v-select>
                                                 </ValidationProvider>
                                             </v-col>
-
-
 
 
 
@@ -540,23 +445,19 @@ export default {
                                         <v-row class="justify-end mt-5 mb-5">
                                             <v-btn color="primary" class="custom-btn mr-2" router
                                                 to="/training-management/participant" v-can="'participant-view'">{{
-                                    $t("container.list.back") }}
+                                                $t("container.list.back") }}
                                             </v-btn>
-                                            <v-btn color="success" @click="submitPoll()" class="custom-btn mr-2"
+                                            <v-btn color="success" type="submit" class="custom-btn mr-2"
                                                 :disabled="invalid">
-                                                {{ $t("container.list.submit") }}
+                                                {{ $t("container.list.update") }}
                                             </v-btn>
                                         </v-row>
                                     </v-form>
                                 </ValidationObserver>
-                                <h4 class="text-center">
-                                    {{ $t('container.training_management.training_registration.alert') }}
 
-                                    <router-link
-                                        :to="{ path: '/participant-external-registration' }">participant-external-registration</router-link>
-                                </h4>
 
                             </v-card-text>
+
                         </v-card>
                     </v-col>
                 </v-row>

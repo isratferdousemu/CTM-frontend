@@ -12,7 +12,7 @@
 }
 
 .custom-title {
-    background-color: #4CAF50;
+    background-color:  rgb(28, 59, 104);
     /* Set your desired background color */
     color: white;
     /* Set the text color */
@@ -23,7 +23,7 @@
 
 <template>
     <div id="application_tracking">
-        <v-row class="ma-5">
+        <v-row class="ml-sm-5 mt-0">
             <v-col cols="12">
                 <v-row>
                     <v-col cols="12">
@@ -94,14 +94,9 @@
 
                         </v-card>
                     </v-col>
-
-
                     <v-col cols="12" v-if="tracking_details !== null && tracking_details?.length!=0">
                         <v-card elevation="0">
-
                             <v-card-text>
-
-
                                 <v-row dense class="ml-5">
                                     <v-col cols="12">
                                         <h4 style=" color: blue !important;">
@@ -109,8 +104,6 @@
                                             tracking_details.program?.name_en }}</h4>
                                         <br>
                                         <hr style="border-top: 1px solid gray; width: 40%;">
-
-
                                         <br>
                                         <h4>{{
                                             $t('container.system_audit.applicant_details')
@@ -124,8 +117,6 @@
                                 </v-row>
 
                                 <v-row class="ma-1">
-
-
                                     <v-col cols="12" lg="12" md="12">
                                         <v-card elevation="0">
                                             <v-card-title class="custom-title">
@@ -138,7 +129,7 @@
                                                 <table style="margin: 0 auto; width: 100%; font-size: 12px;">
                                                     <tbody>
                                                            <tr>
-                                                                <td>Application Accepted</td>
+                                                                <td>{{ language==='bn'?'আবেদন গৃহীত':'Application Accepted'}}</td>
                                                                 <td>
                                                                <v-timeline>
                                                                    <v-timeline-item :color="getTimelineColor(1)"
@@ -146,8 +137,14 @@
                                                                    </v-timeline-item>
                                                                </v-timeline>
                                                                 </td>
-                                                                 <td>Your application is accepte</td>
-                                                                 <br>Time : {{ this.localTime }} </br> Date: {{ this.localDate }}</td>
+                                                                 <td>{{language==='bn'?'আপনার আবেদন গৃহীত হয়েছে':'Your application is accepted'}}</td>
+                                                                 <br> {{ language == 'bn' ? "সময়:" : "Time:" }} {{
+                                                                     language == 'bn' ?
+                                                                     $helpers.englishToBangla(this.localTime ?? '')
+                                                                     : this.localTime ?? '' }} </br>  {{ language == 'bn' ? "তারিখ :" : "Date:" }}{{
+                                                                         language == 'bn' ?
+                                                                         $helpers.englishToBangla(this.localDate ?? '')
+                                                                         : this.localDate ?? '' }} </td>
                                                             </tr>
                                                         <tr v-for="item in tracking" :key="item.name">
                                                             <td style="width: 20%;">{{ language == 'bn' ?
@@ -188,19 +185,12 @@
                                                         </tr>
                                                     </tbody>
                                                 </table>
-
-
-
-
-
-
-
-
                                             </v-card-text>
                                         </v-card>
                                     </v-col>
+                                    
                                     <v-row class="justify-end mt-2">
-                                        <v-col v-for="legend in legends" :key="legend.status" cols="4" md="1" lg="1">
+                                        <v-col v-for="legend in legends" :key="legend.status" cols="12" md="2" lg="2">
                                             <v-icon :color="legend.color">{{ legend.icon }}</v-icon>
                                             <span>{{ legend.label }}</span>
                                         </v-col>

@@ -180,6 +180,7 @@
           "thana": "থানা",
           "list": "থানার তালিকা",
           "code": "থানা জিও কোড",
+          "error_code": "থানা জিও কোডে সর্বোচ্চ ৬ সংখ্যা থাকতে পারে",
           "name_en": "থানার নাম ইংরেজি",
           "name_bn": "থানার নাম বাংলা",
           "add_new": "নতুন থানা যোগ করুন",
@@ -194,6 +195,7 @@
           "pouroshava": "পৌরসভা",
           "list": "ইউনিয়ন তালিকা",
           "code": "ইউনিয়ন জিও কোড",
+          "error_code": "ইউনিয়ন জিও কোডে সর্বোচ্চ ৬ সংখ্যা থাকতে পারে",
           "name_en": "ইউনিয়নের নাম ইংরেজি ",
           "name_bn": "ইউনিয়নের নাম বাংলা",
           "add_new": "নতুন ইউনিয়ন/থানা/পৌরসভা যোগ করুন",
@@ -223,6 +225,7 @@
           "union": "পৌরসভা",
           "list": "পৌরসভার তালিকা",
           "code": "পৌরসভা জিও কোড",
+          "error_code": "পৌরসভা জিও কোডে সর্বোচ্চ ৬ সংখ্যা থাকতে পারে",
           "name_en": "পৌরসভা নাম ইংরেজি",
           "name_bn": "পৌরসভা নাম বাংলা",
           "add_new": "নতুন পৌরসভা যোগ করুন",
@@ -450,9 +453,9 @@
         "delete_alert": "আপনি কি এই ডিভাইস নিবন্ধন মুছে ফেলার বিষয়ে নিশ্চিত?"
       },
       "allowance_program": {
-        "list": "ভাতা প্রোগ্রাম তালিকা",
-        "name_en": "প্রোগ্রামের নাম ইংরেজিতে",
-        "name_bn": "প্রোগ্রামের নাম বাংলায়",
+        "list": "ভাতা কার্যক্রম তালিকা",
+        "name_en": "ভাতা কার্যক্রমের নাম ইংরেজিতে",
+        "name_bn": "ভাতা কার্যক্রমের নাম বাংলায়",
         "gender": "লিঙ্গ",
         "payment_cycle": "পেমেন্ট চক্র",
         "is_marital_toggle": "বৈবাহিক অবস্থা",
@@ -464,15 +467,17 @@
         "type_id": "Type ID",
         "add_field_id": "Add Field ID",
         "age_limit_amount": "বয়স সীমা এবং পরিমাণ",
-        "class_wise_amount": "শ্রেণী অনুসারে পরিমাণ",
+        "class_wise_amount": "শ্রেণী অনুসারে ভাতার পরিমাণ",
         "status": "অবস্থা",
         "add_field": "ক্ষেত্র যোগ করুন",
         "is_active": "সক্রিয়",
-        "add": "ভাতা প্রোগ্রাম যোগ করুন",
-        "edit": "ভাতা প্রোগ্রাম সম্পাদনা করুন",
-        "setting": "ভাতা প্রোগ্রাম সেটিং",
+        "add": "ভাতা কার্যক্রম যোগ করুন",
+        "edit": "ভাতা কার্যক্রম সম্পাদনা করুন",
+        "setting": "ভাতা কার্যক্রম সেটিং",
         "system_status": "সিস্টেম স্ট্যাটাস",
-        "is_pmt_toggle": "পিএমটি কি সক্রিয়"
+        "is_pmt_toggle": "পিএমটি কি সক্রিয়",
+        "delete_header": "ভাতা কার্যক্রম মুছুন",
+        "delete_alert": "আপনি এই ভাতা কার্যক্রম মুছে ফেলার বিষয়ে নিশ্চিত? ভাতা কার্যক্রমের সমস্ত তথ্য মুছে ফেলা হবে।"
       },
       "allowance_program_additiona_field": {
         "variable": "ভাতা প্রোগ্রাম ক্ষেত্র",
@@ -979,7 +984,7 @@
       "action": "অ্যাকশন",
 
       "budget_basic_info": "বাজেটের মৌলিক তথ্য",
-      "budget_details_info": "বাজেটের বিস্তারিত তথ্য",
+      "budget_details_info": "বাজেটের তথ্য",
       "budget_create": "বাজেট তৈরি",
 
       "budget_verification": "বাজেট যাচাইকরণ",
@@ -1028,7 +1033,9 @@
       "thana": "থানা",
       "city_corporation": "সিটি কর্পোরেশন",
       "district_pourashava": "জেলা পৌরসভা",
-      "verification_success_msg": "যাচাইকরণ সেটিং সফলভাবে জমা দেওয়া হয়েছে"
+      "verification_success_msg": "যাচাইকরণ সেটিং সফলভাবে জমা দেওয়া হয়েছে",
+      "payroll_create": "পেরোল তৈরি",
+      "allotment_distribution": "বরাদ্দ বিতরণ"
     },
     "emergency_payment": {
       "slNo": "ক্রমিক নং",
@@ -1346,20 +1353,27 @@
       },
       "dashboard": {
         "grievance_dashboard": "অভিযোগ ড্যাশবোর্ড",
-        "total_grievance": "Total Grievance",
-        "total_resolved": "Total Resolved",
-        "total_pending": "Total Pending",
-        "total_rejected": "Total Rejected",
-        "total_forwarded": "Total Forwarded",
-        "total_received": "Total Received",
-        "total_unresolved": "Total Unresolved"
+        "total_grievance": "মোট অভিযোগ",
+        "total_new": "মোট নতুন",
+        "division": "বিভাগ",
+        "action": "অ্যাকশন",
+        "total_resolved": "মোট অভিযোগ সমাধান",
+        "total_pending": "মোট অভিযোগ স্থগিত",
+        "total_rejected": "মোট অভিযোগ বাতিল",
+        "total_received": "প্রাপ্ত মোট অভিযোগ",
+        "total_not_solved": "সমাধান হয়নি",
+        "header": "শেষ 30 দিনে",
+        "program_wise_total_received": "প্রোগ্রাম অনুসারে প্রাপ্ত মোট অভিযোগ",
+        "program_wise_total_approved": "প্রোগ্রাম অনুসারে মোট অভিযোগ অনুমোদিত",
+        "program_wise_total_canceled": "প্রোগ্রাম অনুসারে মোট অভিযোগ বাতিল",
+        "location_wise_total_grievance": "অবস্থান অনুসারে মোট অভিযোগ"
       }
     },
 
     "profile": {
       "personal_info": "ব্যক্তিগত তথ্য",
       "upload": "আপলোড",
-      "upload_type": "একটি JPG বা JPEG ছবি বেছে নিন",
+      "upload_type": "একটি JPG, JPEG বা PNG ছবি সিলেক্ট করুন (সর্বোচ্চ 2MB)",
       "name_en": "সম্পূর্ণ নাম (বাংলায়)",
       "username": "ব্যবহারকারীর নাম",
       "brithday": "জন্মদিন",
@@ -1371,7 +1385,10 @@
       "new_pass": "নতুন পাসওয়ার্ড",
       "retype_pass": "পাসওয়ার্ড পুনরায় লিখুন",
       "update_pass": "পাসওয়ার্ড আপডেট করুন",
-      "contact_info": "যোগাযোগের তথ্য"
+      "contact_info": "যোগাযোগের তথ্য",
+      "image_reqired": "ছবি আবশ্যক",
+      "image_size": "ফাইল সাইজ সর্বোচ্চ 2MB",
+      "image_format": "ছবির বিন্যাস"
     }
   }
 }

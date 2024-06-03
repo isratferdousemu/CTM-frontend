@@ -141,14 +141,14 @@
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
 
-                <ValidationProvider name="Name English" vid="name_en" rules="required" v-slot="{ errors }">
+                <ValidationProvider name="Name English" vid="name_en" rules="required|checkName" v-slot="{ errors }">
                   <v-text-field outlined type="text" v-model="data.name_en" :label="
                       $t(
                         'container.system_config.allowance_program_additiona_field.name_en'
                       )
                     " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
                 </ValidationProvider>
-                <ValidationProvider name="Name Bangla" vid="name_bn" rules="required" v-slot="{ errors }">
+                <ValidationProvider name="Name Bangla" vid="name_bn" rules="required|checkNameBn" v-slot="{ errors }">
                   <v-text-field outlined type="text" v-model="data.name_bn" :label="$t(
                         'container.system_config.allowance_program_additiona_field.name_bn'
                       )
@@ -156,7 +156,7 @@
                 </ValidationProvider>
 
                 <ValidationProvider name="Field Type" vid="type" rules="required" v-slot="{ errors }">
-                  <v-select outlined v-model="data.type" :items="field_types" item-text="value" item-value="id" :label="
+                  <v-select outlined v-model="data.type" :items="field_types" :item-text="language == 'en' ? 'value_en' : 'value_bn'" item-value="id" :label="
                       $t(
                         'container.system_config.allowance_program_additiona_field.field_type'
                       )
@@ -229,14 +229,14 @@
               <form @submit.prevent="updateField()">
                 <!-- {{errors.code}}
                 {{errors.name_en}} -->
-                <ValidationProvider name="Name English" vid="name_en" rules="required" v-slot="{ errors }">
+                <ValidationProvider name="Name English" vid="name_en" rules="required|checkName" v-slot="{ errors }">
                   <v-text-field outlined type="text" v-model="data.name_en" :label="
                       $t(
                         'container.system_config.allowance_program_additiona_field.name_en'
                       )
                     " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-text-field>
                 </ValidationProvider>
-                <ValidationProvider name="Name English" vid="name_bn" rules="required" v-slot="{ errors }">
+                <ValidationProvider name="Name Bangla" vid="name_bn" rules="required|checkNameBn" v-slot="{ errors }">
                   <v-text-field outlined type="text" v-model="data.name_bn" :label="$t(
                         'container.system_config.allowance_program_additiona_field.name_en'
                       )
@@ -360,6 +360,30 @@ import {http} from "@/hooks/httpService";
 
 extend("required", required);
 
+extend("checkName", {
+  validate: (value) => {
+    if (!value && value !== 0) {
+      return false;
+    }
+
+    return /^[a-zA-Z\s]+$/.test(value);
+  },
+  message: "Please Enter English Letter's in this Field",
+});
+
+extend("checkNameBn", {
+  validate: (value) => {
+    if (!value && value !== 0) {
+      return false;
+    }
+
+    var banglaRegex = /^[\u0980-\u09E5\u09F0-\u09FF\s]+$/;
+
+    return banglaRegex.test(value);
+  },
+  message: "Allowance Program  Field Name in Bangla",
+});
+
 export default {
   name: "Index",
   title: "CTM - Additional Field",
@@ -379,10 +403,10 @@ export default {
       },
       field_types: [
 
-        { id: 2, value: "Dropdown" },
-        { id: 3, value: "Date" },
-        { id: 4, value: "Number" },
-        { id: 5, value: "Text" },
+        { id: 2, value_en:  "Dropdown", value_bn: "ড্রপডাউন" },
+        { id: 3, value_en:  "Date", value_bn: "ডেট" },
+        { id: 4, value_en:  "Number", value_bn: "নাম্বার" },
+        { id: 5, value_en:  "Text", value_bn: "টেক্সট" }
 
       ],
       additional_field_value: [],
@@ -461,11 +485,22 @@ export default {
           sortable: false,
         },
         {
+          text: this.$t("container.system_config.allowance_program_additiona_field.name_en"),
+          value: "name_en",
+          width: "40%"
+        },
+        {
+          text: this.$t("container.system_config.allowance_program_additiona_field.name_bn"),
+          value: "name_bn",
+          width: "40%"
+        },
+        {
           text: this.$t("container.system_config.allowance_program_additiona_field.field_type"),
           value: "field_type",
           width: "20%",
           sortable: false,
         },
+
         {
           text: this.$t("container.list.action"),
           value: "actions",
@@ -475,21 +510,6 @@ export default {
           width: "13%",
         },
       ];
-
-      if (this.language == 'en') {
-        headers.splice(1, 0, {
-          text: this.$t("container.system_config.allowance_program_additiona_field.name_en"),
-          value: "name_en",
-           width: "40%"
-        });
-      } else if (this.language == 'bn') {
-        headers.splice(1, 0, {
-          text: this.$t("container.system_config.allowance_program_additiona_field.name_bn"),
-          value: "name_bn",
-          width: "40%"
-        });
-      }
-
       return headers;
     },
     headersWard() {
@@ -1115,6 +1135,7 @@ export default {
     },
 
     async GetOffices() {
+      this.search = this.search.replace(/%/g, '');
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,

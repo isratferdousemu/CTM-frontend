@@ -3,6 +3,16 @@ import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 
 import { mapActions, mapState } from "vuex";
 
+extend("checkLength", {
+  validate: (value) => {
+    if (value.length > 255) {
+      return false; // Invalid, the string is too long
+    }
+    return true;
+  },
+  message: "Please Enter less than 255 characters",
+});
+
 export default {
   name: "CreateDevice",
   title: "CTM - Create Device",
@@ -128,11 +138,12 @@ export default {
                             vid="user_id"
                             rules="required"
                             v-slot="{ errors }">
+                            <label>{{$t('container.system_config.device.user_id')}}</label>
+                            <span style="margin-left: 4px; color: red">*</span>
                             <v-autocomplete
                               :items="users"
                               item-text="user_id"
                               item-value="user_id"
-                              :label="$t('container.system_config.device.user_id')"
                               menu-props="auto"
                               hide-details
                               persistent-hint
@@ -153,12 +164,12 @@ export default {
                             rules="required"
                             v-slot="{ errors }"
                           >
+
+                            <label>{{$t('container.system_config.device.full_name')}}</label>
+                            <span style="margin-left: 4px; color: red">*</span>
                             <v-text-field
                               type="text"
                               v-model="add_device.name"
-                              :label="
-                                $t('container.system_config.device.full_name')
-                              "
                               persistent-hint
                               outlined
                               :error="errors[0] ? true : false"
@@ -180,13 +191,12 @@ export default {
                             rules="required"
                             v-slot="{ errors }"
                           >
+                            <label>{{$t('container.system_config.device.device_type')}}</label>
+                            <span style="margin-left: 4px; color: red">*</span>
                             <v-select
                               :items="device_types"
                               item-text="name"
                               item-value="id"
-                              :label="
-                                $t('container.system_config.device.device_type')
-                              "
                               menu-props="auto"
                               hide-details
                               persistent-hint
@@ -206,12 +216,11 @@ export default {
                             rules="required"
                             v-slot="{ errors }"
                           >
+                            <label>{{$t('container.system_config.device.unique_id')}}</label>
+                            <span style="margin-left: 4px; color: red">*</span>
                             <v-text-field
                               type="text"
                               v-model="add_device.device_id"
-                              :label="
-                                $t('container.system_config.device.unique_id')
-                              "
                               persistent-hint
                               outlined
                               :error="errors[0] ? true : false"
@@ -251,17 +260,16 @@ export default {
                           <ValidationProvider
                             name="Purpose Use"
                             vid="purpose_use"
-                            rules="required"
+                            rules="required|checkLength"
                             v-slot="{ errors }"
                           >
+
+                            <label>{{ $t('container.system_config.device.pupose_of_use') }}</label>
+                            <span style="margin-left: 4px; color: red">*</span>
+
                             <v-text-field
                               type="text"
                               v-model="add_device.purpose_use"
-                              :label="
-                                $t(
-                                  'container.system_config.device.pupose_of_use'
-                                )
-                              "
                               persistent-hint
                               outlined
                               :error="errors[0] ? true : false"
