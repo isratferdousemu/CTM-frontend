@@ -83,6 +83,7 @@
       "download": "Download Application",
       "pouroshava": "Pouroshava",
       "union": "Union"
+    
     },
     "system_config": {
       "demo_graphic": {
@@ -1124,7 +1125,7 @@
                   "view": "Participant Details",
                   "add_1": "Assign Participant",
                   "add_2": "External Registration",
-                    "add_3": "Internal Registration",
+                    "add_3": "Training Registration",
                   "participant": "Participant",
                     "full_name": "Full Name",
                   "organization": "Organization",
