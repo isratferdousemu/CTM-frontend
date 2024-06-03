@@ -3,7 +3,7 @@
   <v-row>
     <v-col cols="12" style="padding: 0px;">
       <v-card :loading="isLoading" style="background-color:#1c3b68;color:white;font-size:12px;">
-         <v-card-title>
+         <v-card-title style=" padding: 10px;">
              <h5 class="white--text">
                {{ $t("container.grievance_management.dashboard.program_wise_total_approved") }}
             </h5>
@@ -53,7 +53,7 @@
   </v-row>
   <v-row>
     <img  v-if="allZeros == true" style="margin-left:80px;margin-top:10px;width: 300px;height: 300px" src="/assets/images/pie_chart_default.png" alt="default chart">
-    <canvas id="programwise_application_approval"></canvas>
+    <canvas v-else id="programwise_application_approval"></canvas>
   </v-row>
   </v-col>
 

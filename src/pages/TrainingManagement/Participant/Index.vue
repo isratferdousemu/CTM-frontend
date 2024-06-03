@@ -64,7 +64,7 @@ export default {
                 { text: this.$t('container.training_management.training_program.program'), value: "program", align: "start", width: "15%" },
              
                 { text: this.$t('container.training_management.training_registration.participant'), value: "participant", width: "15%", sortable: false, },
-                { text: this.$t('container.training_management.training_registration.user_type'), value: "user_type", width: "15%" },
+               
              
              
                    { text: this.$t('container.list.status'), value: "status", width: "15%" },
@@ -75,17 +75,32 @@ export default {
 
 
     },
+   
 
-    mounted() {
-        this.GetData();
-        this.GetCircular();
-         this.GetOffice();
-        this.$store
-            .dispatch("getLookupByType", 30)
-            .then((res) => (this.organizations = res));
+    mounted() {  
+        this.GetCircular()
+        this.GetOffice();
+        console.log(this.all_circulars,"circular")
         this.$store
             .dispatch("getLookupByType", 3)
             .then((res) => (this.officeType = res));
+ 
+            if (this.$route.params.training_circular_id) {
+                this.training_circular_id = this.$route.params.training_circular_id;
+            }
+            this.change();
+            console.log(this.training_circular_id, this.programs,"program")
+            if (this.$route.params.id) {
+                this.training_program_id = this.$route.params.id;
+            }
+            console.log(this.training_program_id, this.training_circular_id, "program")
+  
+    
+            this.GetData();
+     
+     
+     
+     
    
        
     
@@ -94,6 +109,7 @@ export default {
     },
 
     methods: {
+ 
         change() {
             this.programs = [];
             this.training_program_id =null;
@@ -277,12 +293,10 @@ export default {
                 this.$t("container.list.sl"),
                 this.$t('container.training_management.training_program.training_circular'),
                 this.$t('container.training_management.training_program.program'),
-                  this.$t('container.training_management.trainer_info.ID'),
-                this.$t('container.training_management.training_registration.participant'),
-                   this.$t('container.training_management.training_registration.user_type'),
-                this.$t('container.training_management.training_registration.organization'),
-                this.$t('container.training_management.trainer_info.designation'),
+                this.$t('container.training_management.training_registration.user_name'),
+                this.$t('container.training_management.training_registration.full_name'),
                 this.$t('container.training_management.trainer_info.email'),
+                this.$t('container.training_management.trainer_info.mobile'),
                 this.$t('container.list.status'),
                 
              
@@ -294,20 +308,30 @@ export default {
 
         
             const CustomInfo = this.all_participants.map(((i, index) => {
+                let paymentCycle;
+                switch (i.status.toString()) {
+                    case '0':
+                        paymentCycle = this.language == 'bn' ? "পেন্ডিং" : "Pending";
+                        break;
+                    case '1':
+                        paymentCycle = this.language == 'bn' ? "উত্তীর্ণ" : "Pass";
+                        break;
+                    case '2':
+                        paymentCycle = this.language == 'bn' ? "অনুত্তীর্ণ" : "Fail";
+                       
+                    default:
+                        paymentCycle = i?.status;
+                }
 
                 return [
                     this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
-                    
-                    this.$i18n.locale == 'en' ? i?.training_program.program_name : i?.training_program.program_name,
                     this.$i18n.locale == 'en' ? i?.training_circular.circular_name : i?.training_circular.circular_name,
-                    this.$i18n.locale == 'en' ? i?.id : this.$helpers.englishToBangla(i?.id),
-                    i.is_by_poll== 0 ? i?.user?.full_name : i?.full_name,
-                    this.$i18n.locale == 'en' ? (i.is_by_poll == 0 ? 'Internal Participant' : 'External Participant') : (i.status == 0 ? 'অভ্যন্তরীণ অংশগ্রহণকারী' : 'বাহ্যিক অংশগ্রহণকারী'),
-    
-                    this.$i18n.locale == 'en' ? i?.organization?.value_en : i?.organization?.value_en,
-                    this.$i18n.locale == 'en' ? i?.designation : i?.designation,
-                    this.$i18n.locale == 'en' ? i?.email : i?.email,
-                    this.$i18n.locale == 'en' ? (i.status == 0 ? 'Active' : 'Inactive') : (i.status == 0 ? 'সক্রিয়' : 'নিষ্ক্রিয়'),
+                    this.$i18n.locale == 'en' ? i?.training_program.program_name : i?.training_program.program_name,
+                    i?.user?.full_name,
+                    i?.user?.username,
+                    i?.user?.email,
+                    this.$i18n.locale == 'en' ? i?.user?.mobile : this.$helpers.englishToBangla(i?.user?.mobile),
+                    paymentCycle,
 
                 ]
             }));
@@ -379,39 +403,47 @@ export default {
                         this.$t("container.list.sl"),
                         this.$t('container.training_management.training_program.training_circular'),
                         this.$t('container.training_management.training_program.program'),
-                        this.$t('container.training_management.trainer_info.ID'),
-                        this.$t('container.training_management.training_registration.participant'),
-                        this.$t('container.training_management.training_registration.user_type'),
-            
-                        this.$t('container.training_management.training_registration.organization'),
-                        this.$t('container.training_management.trainer_info.designation'),
+                        this.$t('container.training_management.training_registration.user_name'),
+                        this.$t('container.training_management.training_registration.full_name'),
                         this.$t('container.training_management.trainer_info.email'),
+                        this.$t('container.training_management.trainer_info.mobile'),
                         this.$t('container.list.status'),
+
                     ]
 
                     const CustomInfo = this.all_participants.map(((i, index) => {
+                        let paymentCycle;
+                        switch (i.status.toString()) {
+                            case '0':
+                                paymentCycle = this.language == 'bn' ? "পেন্ডিং" : "Pending";
+                                break;
+                            case '1':
+                                paymentCycle = this.language == 'bn' ? "উত্তীর্ণ" : "Pass";
+                                break;
+                            case '2':
+                                paymentCycle = this.language == 'bn' ? "অনুত্তীর্ণ" : "Fail";
+
+                            default:
+                                paymentCycle = i?.status;
+                        }
                         return {
                            
 
                             "sl": this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1), 
                             "circular": this.$i18n.locale == 'en' ? i?.training_circular.circular_name : i?.training_circular.circular_name,
                             "program": this.$i18n.locale == 'en' ? i?.training_program.program_name : i?.training_program.program_name,
-                                      "id": this.$i18n.locale == 'en' ? i?.id : this.$helpers.englishToBangla(i?.id), 
-                            "participant": i.is_by_poll == 0 ? i?.user?.full_name : i?.full_name,
-                            "user_type": this.$i18n.locale == 'en' ? (i.is_by_poll == 0 ? 'Internal Participant' : 'External Participant') : (i.status == 0 ? 'অভ্যন্তরীণ অংশগ্রহণকারী' : 'বাহ্যিক অংশগ্রহণকারী'),
-                       
-                            "organization": this.$i18n.locale == 'en' ? i?.organization?.value_en : i?.organization?.value_en,
-                            "designation": this.$i18n.locale == 'en' ? i?.designation : i?.designation,
-
-                            "email": this.$i18n.locale == 'en' ? i?.email : i?.email,
-                            "status": this.$i18n.locale == 'en' ? (i.status == 0 ? 'Active' : 'Inactive') : (i.status == 0 ? 'সক্রিয়' : 'নিষ্ক্রিয়'),
+                            "username":i?.user?.username,
+                            "full_name":i?.user?.full_name,
+                            "email": i?.user?.email,
+                            "mobile": this.$i18n.locale == 'en' ? i?.user?.mobile : this.$helpers.englishToBangla(i?.user?.mobile),
+                            "status": paymentCycle,
 
                         }
                         
                     }));
                 
     
-                    const Field = ['sl', 'circular', 'program',"id" ,'participant', 'user_type', 'organization', 'designation','email','status']
+                    const Field = ['sl', 'circular', 'program', "username", 'full_name', 'email','mobile' ,'status']
 
                     const Data = this.FormatJson(Field, CustomInfo)
                     const prefixHeader = [
@@ -695,56 +727,48 @@ export default {
                                             </template>
                                             <template v-slot:item.id="{ item }">
                                                 <span> {{ language == 'bn' ?
-    $helpers.englishToBangla(item.id) :  item.id }}</span>
+                                                    $helpers.englishToBangla(item.id) : item.id }}</span>
                                             </template>
                                             <template v-slot:item.program="{ item }">
                                                 <span>{{ item.training_program?.program_name }}</span>
                                             </template>
 
                                             <template v-slot:item.participant="{ item }">
-                                                <span v-if="item.is_by_poll == 0">{{item.user.full_name}}
+                                                <span>{{item.user.full_name}}
 
                                                 </span>
-                                                <span v-else>
-                                                    {{item.full_name}}
 
-                                                </span>
                                             </template>
-                                            <template v-slot:[`item.user_type`]="{ item }">
-                                                <span v-if="item.is_by_poll == 0">{{ language == 'bn' ? 'অভ্যন্তরীণ
-                                                    অংশগ্রহণকারী' :
-                                                    'Internal Participant' }}</span>
-                                                <span v-else>{{ language == 'bn' ? 'বহিরাগত অংশগ্রহণকারী' : 'External
-                                                    Participant' }}</span>
-                                                <span>
 
-                                                </span>
-                                            </template>
                                             <template v-slot:[`item.status`]="{ item }">
-                                                <span v-if="item.status == 0">
-                                                    {{ language == 'bn' ?
-                                                    'নিষ্ক্রিয়' : 'Inactive' }}
-                                                </span>
-                                                <span v-else>
-                                                    {{ language == 'bn' ?
-                                                    'সক্রিয়' : 'Active' }}
-                                                </span>
 
 
-                                                <span>
-                                                    <v-switch :input-value="item.status == 1 ? true : false"
-                                                        @change="deviceActivate(item.id)" hide-details
-                                                        color="orange darken-3"></v-switch>
+
+
+
+                                                <span v-if="item.status==0">
+
+                                                    {{ language === 'en' ? 'Pending' : 'পেন্ডিং' }}
                                                 </span>
+
+                                                <span v-if="item.status == 1">
+
+                                                    {{ language === 'en' ? 'Pass' : 'উত্তীর্ণ' }}
+                                                </span>
+                                                <span v-if="item.status == 2">
+
+                                                    {{ language === 'en' ? 'Fail' : 'অনুত্তীর্ণ' }}
+                                                </span>
+
                                             </template>
                                             <template v-slot:item.actions="{ item }">
 
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
-                                                        <v-btn v-can="'Program-view'" fab x-small v-on="on"
+                                                        <v-btn v-can="'Participant-view'" fab x-small v-on="on"
                                                             color="#AFB42B" elevation="0" router
                                                             class=" white--text mb-1 mr-2"
-                                                            :to="`/training-management/training-program/view/${item.id}`">
+                                                            :to="`/training-management/participant/view/${item.id}`">
                                                             <v-icon> mdi-eye </v-icon>
                                                         </v-btn>
                                                     </template>
@@ -752,8 +776,8 @@ export default {
                                                 </v-tooltip>
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
-                                                        <v-btn v-can="'Program-edit'" class=" mr-2 mb-1" fab
-                                                            x-small v-on="on" color="success" elevation="0" router
+                                                        <v-btn v-can="'Participant-edit'" class=" mr-2 mb-1" fab x-small
+                                                            v-on="on" color="success" elevation="0" router
                                                             :to="`/training-management/participant/edit/${item.id}`">
                                                             <v-icon> mdi-account-edit-outline </v-icon>
                                                         </v-btn>
@@ -762,7 +786,7 @@ export default {
                                                 </v-tooltip>
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
-                                                        <v-btn v-can="'Program-delete'" fab x-small v-on="on"
+                                                        <v-btn v-can="'Participant-delete'" fab x-small v-on="on"
                                                             color="grey" class=" mr-2 white--text mb-1" elevation="0"
                                                             @click="deleteAlert(item.id)">
                                                             <v-icon> mdi-delete </v-icon>

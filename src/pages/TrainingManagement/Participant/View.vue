@@ -94,7 +94,7 @@ export default {
         async  DataView() {
             console.log(this.$route.params.id, "params")
             await  this.$axios
-                .get(`admin/training/programs/${this.$route.params.id}`, {
+                .get(`admin/training/participants/${this.$route.params.id}`, {
                     headers: {
                         Authorization: "Bearer " + this.$store.state.token,
                         "Content-Type": "multipart/form-data",
@@ -103,27 +103,6 @@ export default {
                 .then((result) => {
                     
                     this.data = result?.data?.data;
-                    const timeSlotsMap = new Map();
-                    this.time_slots.forEach(slot => {
-                        timeSlotsMap.set(slot.id.toString(), slot.time);
-                    });
-
-                    // Replace time slot IDs with time values
-                  
-                    const updatedData = this.data.on_days.map(day => {
-                        if (day.is_active === '1') {
-                            const updatedTimeSlots = (day.timeSlots || []).map(slotId => timeSlotsMap.get(slotId) || slotId);
-                            return { ...day, timeSlots: updatedTimeSlots };
-                        } else {
-                            return { ...day, timeSlots: null }; // If the day is not active, return it unchanged
-                        }
-                    });
-                    this.edited_on_days = updatedData;
-               
-                   
-                    
-                 
-
                 })
                 .catch((err) => {
                     if (this.$refs.formAdd && this.$refs.formAdd.$refs && this.$refs.formAdd.$refs.operator) {
@@ -149,150 +128,81 @@ export default {
                 <v-col cols="12">
                     <v-card class="mx-3">
                         <v-card-title class="justify-center black--text"
-                            style="background-color: #1C3C6A; color: white;font-size: 17px;">
-                            <h3 class="white--text">{{ $t("container.training_management.training_program.view") }}
-                            </h3>
+                            style="background-color: #1C3C6A; color: white;">
+                            <h4 class="white--text">{{ $t("container.training_management.training_registration.view") }}
+                            </h4>
                         </v-card-title>
 
                         <v-row class="my-custom-row ma-5">
                             <v-col cols="5" style="font-size:13px;">
-                                <b>{{ $t('container.training_management.training_program.program_name') }}</b>:
-                            </v-col>
-                            <v-col cols="7" style="font-size:13px;">
-                                <b>:</b> <span class="ml-2">{{ data?.program_name }}</span>
-                            </v-col>
-                            <v-col cols="5" style="font-size:13px;">
-                                <b>{{ $t('container.training_management.training_program.training_circular') }}</b>:
+                                <b>{{ $t('container.training_management.training_program.training_circular') }}</b>
                             </v-col>
                             <v-col cols="7" style="font-size:13px;">
                                 <b>:</b> <span class="ml-2"> {{data?.training_circular?.circular_name
                                     }}</span>
                             </v-col>
                             <v-col cols="5" style="font-size:13px;">
-                                <b>{{ $t('container.training_management.training_circular.training_type') }}</b>:
+                                <b>{{ $t('container.training_management.training_program.program_name') }}</b>
                             </v-col>
                             <v-col cols="7" style="font-size:13px;">
-                                <b>:</b> <span class="ml-2">
-                                    {{ language == 'bn' ?
-                                    data?.training_circular?.training_type.value_bn :
-                                    data?.training_circular?.training_type.value_en }}</span>
+                                <b>:</b> <span class="ml-2">{{ data?.training_program?.program_name }}</span>
                             </v-col>
                             <v-col cols="5" style="font-size:13px;">
-                                <b>{{ $t('container.training_management.training_program.trainer') }}</b>:
+                                <b>{{ $t('container.training_management.training_registration.user_name') }}</b>
                             </v-col>
                             <v-col cols="7" style="font-size:13px;">
-                                <b>:</b> <v-chip v-for="(item, index) in data.trainers" :key="index" class="ml-2 mt-2">
-                                    {{ item.name}}
-                                </v-chip>
+                                <b>:</b> <span class="ml-2">{{ data?.user?.username }}</span>
                             </v-col>
-
                             <v-col cols="5" style="font-size:13px;">
-                                <b>{{ $t('container.training_management.training_circular.module') }}</b>:
+                                <b>{{ $t('container.training_management.training_registration.full_name') }}</b>
                             </v-col>
                             <v-col cols="7" style="font-size:13px;">
-                                <b>:</b>
-
-                                <v-chip v-for="(item, index) in data.modules" :key="index" class="ml-2 mt-2">
-                                    {{ language == 'bn' ?
-                                    item.value_bn : item.value_en }}
-                                </v-chip>
+                                <b>:</b> <span class="ml-2">{{ data?.user?.full_name }}</span>
                             </v-col>
-
                             <v-col cols="5" style="font-size:13px;">
-                                <b>{{ $t('container.training_management.training_circular.description') }}</b>:
+                                <b>{{ $t('container.training_management.trainer_info.email') }}</b>
                             </v-col>
                             <v-col cols="7" style="font-size:13px;">
-                                <b>:</b> <span class="ml-2"> {{ data?.description
+                                <b>:</b> <span class="ml-2">{{ data?.user?.email }}</span>
+                            </v-col>
+                            <v-col cols="5" style="font-size:13px;">
+                                <b>{{ $t('container.training_management.trainer_info.mobile') }}</b>
+                            </v-col>
+                            <v-col cols="7" style="font-size:13px;">
+                                <b>:</b> <span class="ml-2">{{
+                                    language == 'en' ? data?.user?.mobile : $helpers.englishToBangla(data?.user?.mobile)
                                     }}</span>
                             </v-col>
                             <v-col cols="5" style="font-size:13px;">
-                                <b>{{ $t('container.api_manager.data_receiver.start_date') }}</b>:
+                                <b>{{ $t('container.list.status') }}</b>
                             </v-col>
                             <v-col cols="7" style="font-size:13px;">
-                                <b>:</b> <span class="ml-2">{{ language == 'bn' ?
-                                    $helpers.englishToBangla(data?.start_date) : data?.start_date }}</span>
-                            </v-col>
-                            <v-col cols="5" style="font-size:13px;">
-                                <b>{{ $t('container.api_manager.data_receiver.end_date') }}</b>:
-                            </v-col>
-                            <v-col cols="7" style="font-size:13px;">
-                                <b>:</b> <span class="ml-2">{{ language == 'bn' ?
-                                    $helpers.englishToBangla(data?.end_date) : data?.end_date }}</span>
-                            </v-col>
-                            <v-col cols="5" style="font-size:13px;">
-                                <b>{{ $t('container.list.status') }}</b>:
-                            </v-col>
-                            <v-col cols="7" style="font-size:13px;">
-                                <b>:</b> <span class="ml-2" v-if="data?.status == 0">
-                                    {{ language == 'bn' ?
-                                    'নিষ্ক্রিয়' : 'Inactive' }}
+                                <b>:</b> <span v-if="data?.status == 0" class="ml-2">
+
+                                    {{ language === 'en' ? 'Pending' : 'পেন্ডিং' }}
                                 </span>
-                                <span class="ml-2" v-else>
-                                    {{ language == 'bn' ?
-                                    'সক্রিয়' : 'Active' }}
+
+                                <span v-if="data?.status == 1" class="ml-2">
+
+                                    {{ language === 'en' ? 'Pass' : 'উত্তীর্ণ' }}
                                 </span>
+                                <span v-if="data?.status == 2" class="ml-2">
+
+                                    {{ language === 'en' ? 'Fail' : 'অনুত্তীর্ণ' }}
+                                </span>
+
                             </v-col>
+
 
                             <!-- Other fields -->
 
                         </v-row>
 
-                        <v-row class="ma-5">
-                            <v-col cols="12">
-                                <h4 class="text-center mb-5">{{
-                                    $t('container.training_management.training_program.class_schedule') }}</h4>
 
-                                <v-simple-table dense class=" mt-10">
-                                    <template v-slot:default>
-                                        <thead>
-                                            <tr>
-                                                <th class="text-left">
-
-                                                    {{ language == 'bn' ?
-                                                    'দিন' : ' Day' }}
-                                                </th>
-
-                                                <th class="text-left">
-                                                    {{ language == 'bn' ?
-                                                    'স্ট্যাটাস' : 'Status' }}
-                                                </th>
-                                                <th class="text-left">
-                                                    {{ language == 'bn' ?
-                                                    'টাইম স্লট' : ' Time Slots' }}
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="(day, index) in edited_on_days" :key="index">
-                                                <td>{{ day.day }}</td>
-                                                <td>
-                                                    <span
-                                                        :style="{ color: day.is_active == '1' ? 'green' : 'red', fontSize: '24px' }">
-                                                        <span v-if="day.is_active == '1'">&#10003;</span>
-                                                        <span v-else>-</span>
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span v-if="day.timeSlots && day.timeSlots.length">
-                                                        <span v-for="(timeSlot, slotIndex) in day.timeSlots"
-                                                            :key="slotIndex">
-                                                            {{ timeSlot }}<span
-                                                                v-if="slotIndex !== day.timeSlots.length - 1">, </span>
-                                                        </span>
-                                                    </span>
-                                                    <span v-else> {{ language == 'bn' ?
-                                                        'টাইম স্লট নেই' : 'No Time Slots' }}</span>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </template>
-                                </v-simple-table>
-                            </v-col>
-                        </v-row>
 
                         <v-row class="justify-end ma-5">
                             <v-btn flat color="primary" class="custom-btn mr-2 mb-5" router
-                                to="/training-management/training-program">
+                                to="/training-management/participant">
                                 {{ $t("container.list.back") }}
                             </v-btn>
 

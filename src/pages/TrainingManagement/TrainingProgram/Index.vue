@@ -733,7 +733,7 @@ export default {
                                     <v-col class="text-right">
                                         <v-btn flat color="primary" router
                                             to="/training-management/training-program/create"
-                                            v-can="'trainerProgram-create'">
+                                            v-can="'trainerInfo-create'">
                                             <v-icon small>mdi-plus</v-icon>
                                             {{ $t('container.training_management.training_program.add') }}
                                         </v-btn>
@@ -816,7 +816,7 @@ export default {
                                                             <span>
 
                                                                 {{ language == 'en' ? item.status_name.value_en :
-                                        item.status_name.value_bn }}
+                                                                item.status_name.value_bn }}
 
                                                             </span>
 
@@ -886,6 +886,23 @@ export default {
                                                             </v-tooltip>
                                                             <v-tooltip top>
                                                                 <template v-slot:activator="{ on }">
+                                                                    <v-btn v-can="'participant-view'"
+                                                                        class="mr-2 mb-1 white--text " fab x-small
+                                                                        v-on="on" color="#BD2E2E" elevation="0"
+                                                                        :to="`/training-management/participant/${item.id}/${item.training_circular_id}`">
+                                                                        <v-icon class="text--white">
+                                                                            mdi mdi-crowd
+                                                                        </v-icon>
+                                                                    </v-btn>
+                                                                </template>
+                                                                <span>{{
+                                                                    $t("container.training_management.training_registration.list_1")
+                                                                    }}</span>
+                                                            </v-tooltip>
+                                                         
+                                                                
+                                                            <v-tooltip top>
+                                                                <template v-slot:activator="{ on }">
                                                                     <v-btn v-can="'trainingProgram-delete'" fab x-small
                                                                         v-on="on" color="grey"
                                                                         class=" mr-2 white--text mb-1" elevation="0"
@@ -895,6 +912,7 @@ export default {
                                                                 </template>
                                                                 <span>{{ $t("container.list.delete") }}</span>
                                                             </v-tooltip>
+
 
                                                         </div>
                                                     </template>

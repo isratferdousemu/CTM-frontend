@@ -9,6 +9,11 @@
             <v-expansion-panels>
               <v-expansion-panel class="ma-2">
                 <v-expansion-panel-header color="#8C9EFF" style="background-color: #1C3B68; color: white;font-size: 17px;">
+                  <template v-slot:actions>
+                      <v-icon color="white">
+                        $expand
+                      </v-icon>
+                    </template>
                   <h3 class="white--text">
                     {{
                       $t(
@@ -932,7 +937,7 @@
                     <ValidationProvider
                       name="Full Name"
                       vid="full_name"
-                      rules="required"
+                      rules="required|checkBanglaAndEnglish"
                       v-slot="{ errors }"
                     >
                       <v-text-field
@@ -947,7 +952,7 @@
                         "
                         required
                         :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
+                        :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে আপনার নাম লিখুন' : 'Please Enter Your Name.') : ''"
                       ></v-text-field>
                     </ValidationProvider>
                   </v-col>
@@ -999,7 +1004,7 @@
                     <ValidationProvider
                       name="Email"
                       vid="email"
-                      rules="required"
+                      rules="required|checkCaseSensitiveEmail"
                       v-slot="{ errors }"
                     >
                       <v-text-field
@@ -1752,7 +1757,7 @@
                     <ValidationProvider
                         name="Full Name"
                         vid="full_name"
-                        rules="required"
+                        rules="required|checkBanglaAndEnglish"
                         v-slot="{ errors }"
                     >
                       <v-text-field
@@ -1820,7 +1825,7 @@
                     <ValidationProvider
                         name="Email"
                         vid="email"
-                        rules="required"
+                        rules="required|checkCaseSensitiveEmail"
                         v-slot="{ errors }"
                     >
                       <v-text-field
@@ -2673,6 +2678,31 @@ extend("checkPhoneNumber", {
   },
   message: "Enter a valid number eg. 017xxxxxxxx",
 });
+  extend('checkBanglaAndEnglish', {
+    validate: (value) => {
+      // Check if the value is defined and not null
+      if (value === null || value === undefined || value === '') {
+        return false;
+      }
+
+      // Check if the value contains only Bangla and English characters
+      return /^[\u0980-\u09FFa-zA-Z\s]+$/.test(value);
+    },
+    message: "Please enter Bangla and English values only in this field",
+  });
+  extend('checkCaseSensitiveEmail', {
+    validate: (value) => {
+      // Check if the value is defined and not null
+      if (value === null || value === undefined || value === '') {
+        return false;
+      }
+
+      // Check if the value matches the standard email pattern
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      return emailPattern.test(value);
+    },
+    message: "Please enter a valid email address with case sensitivity",
+  });
 
 export default {
   name: "Index",
@@ -3279,6 +3309,7 @@ export default {
       }
     },
     async getUsers() {
+      this.search = this.search.replace(/%/g, '');
       this.isLoading = true
       const queryParams = {
         searchText: this.search,

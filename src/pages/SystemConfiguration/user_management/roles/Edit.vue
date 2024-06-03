@@ -11,6 +11,45 @@ import {
   required
 } from "vee-validate/dist/rules";
 
+extend("required", required);
+
+extend("checkName", {
+  validate: (value) => {
+    if (!value && value !== 0) {
+      return false;
+    }
+
+    return /^[a-zA-Z\s]+$/.test(value);
+  },
+  message: "Please Enter English Letter's in this Field",
+});
+
+extend('checkNumeric', {
+  validate: (value) => {
+    // Check if the value is defined and not null
+    if (value === null || value === undefined || value === '') {
+      return false;
+    }
+
+    // Check if the value contains only numeric characters
+    return /^[\u0980-\u09FFa-zA-Z\s]+$/.test(value);
+  },
+  message: "Please enter only numeric values in this field",
+});
+
+extend("checkNameBn", {
+  validate: (value) => {
+    if (!value && value !== 0) {
+      return false;
+    }
+
+    var banglaRegex = /^[\u0980-\u09E5\u09F0-\u09FF\s]+$/;
+
+    return banglaRegex.test(value);
+  },
+  message: "Please Enter Bangla Letter's in this Field",
+});
+
 export default {
   name: "Edit",
   title: "CTM - Edit Role",
@@ -119,7 +158,7 @@ export default {
                       >
                         <ValidationProvider name="Code" vid="code" rules="required" v-slot="{ errors }">
                           <v-text-field
-                              type="text"
+                              type="number"
                               v-model="update_role.code"
                               :label="$t('container.system_config.demo_graphic.role.code')"
                               persistent-hint
@@ -133,7 +172,7 @@ export default {
                       </v-col>
 
                       <v-col cols="12" sm="6" lg="6">
-                        <ValidationProvider name="name_bn" vid="name_bn" rules="required" v-slot="{ errors }">
+                        <ValidationProvider name="name_bn" vid="name_bn" rules="required|checkName" v-slot="{ errors }">
                           <v-text-field
                               type="text"
                               v-model="update_role.name_bn"
@@ -157,7 +196,7 @@ export default {
                           sm="6"
                           lg="6"
                       >
-                        <ValidationProvider name="name_en" vid="name_en" rules="required" v-slot="{ errors }">
+                        <ValidationProvider name="name_en" vid="name_en" rules="required|checkNameBn" v-slot="{ errors }">
                           <v-text-field
                               type="text"
                               v-model="update_role.name_en"
@@ -173,7 +212,7 @@ export default {
                       </v-col>
 
                       <v-col cols="12" sm="6" lg="6">
-                        <ValidationProvider name="comment" vid="comment" rules="required" v-slot="{ errors }">
+                        <ValidationProvider name="comment" vid="comment" rules="required|checkNumeric" v-slot="{ errors }">
                           <v-text-field
                               type="text"
                               v-model="update_role.comment"
