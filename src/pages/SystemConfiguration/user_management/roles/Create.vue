@@ -11,6 +11,45 @@ import {
   required
 } from "vee-validate/dist/rules";
 
+extend("required", required);
+
+extend("checkName", {
+  validate: (value) => {
+    if (!value && value !== 0) {
+      return false;
+    }
+
+    return /^[a-zA-Z\s]+$/.test(value);
+  },
+  message: "Please Enter English Letter's in this Field",
+});
+
+extend('checkNumeric', {
+  validate: (value) => {
+    // Check if the value is defined and not null
+    if (value === null || value === undefined || value === '') {
+      return false;
+    }
+
+    // Check if the value contains only numeric characters
+   return /^[\u0980-\u09FFa-zA-Z\s]+$/.test(value);
+  },
+  message: "Please enter only numeric values in this field",
+});
+
+extend("checkNameBn", {
+  validate: (value) => {
+    if (!value && value !== 0) {
+      return false;
+    }
+
+    var banglaRegex = /^[\u0980-\u09E5\u09F0-\u09FF\s]+$/;
+
+    return banglaRegex.test(value);
+  },
+  message: "Please Enter Bangla Letter's in this Field",
+});
+
 export default {
   name: "Create",
   title: "CTM - Create Role",
@@ -26,7 +65,7 @@ export default {
         name_en: '',
         name_bn: '',
         comment: '',
-        status: ''
+        status: 1
       },
       loading: false
     }
@@ -38,7 +77,13 @@ export default {
       success_status: (state) => state.Role.success_status,
       errors: (state) => state.Role.errors,
       error_status: (state) => state.Role.error_status
-    })
+    }),
+     language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      },
+    },
+
 
   },
 
@@ -105,20 +150,20 @@ export default {
                       >
                         <ValidationProvider name="code" vid="code" rules="required" v-slot="{ errors }">
                         <v-text-field
-                            type="text"
+                            type="number"
                             v-model="add_role.code"
                             :label="$t('container.system_config.demo_graphic.role.code')"
                             persistent-hint
                             outlined
                             :error="errors[0] ? true : false"
-                            :error-messages="errors[0]"
+                             :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে কোড লিখুন' : 'Please Enter Valid Code.') : ''"
                             required
                         ></v-text-field>
                         </ValidationProvider>
                       </v-col>
 
                       <v-col cols="12" sm="6" lg="6">
-                        <ValidationProvider name="name_bn" vid="name_bn" rules="required" v-slot="{ errors }">
+                        <ValidationProvider name="name_bn" vid="name_bn" rules="required|checkNameBn" v-slot="{ errors }">
                         <v-text-field
                             type="text"
                             v-model="add_role.name_bn"
@@ -126,7 +171,7 @@ export default {
                             persistent-hint
                             outlined
                             :error="errors[0] ? true : false"
-                            :error-messages="errors[0]"
+                            :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে বাংলা রোল নাম লিখুন' : 'Please Enter Bangla Role Name.') : ''"
                             required
                         ></v-text-field>
                         </ValidationProvider>
@@ -141,7 +186,7 @@ export default {
                           sm="6"
                           lg="6"
                       >
-                        <ValidationProvider name="name_en" vid="name_en" rules="required" v-slot="{ errors }">
+                        <ValidationProvider name="name_en" vid="name_en" rules="required|checkName" v-slot="{ errors }">
                         <v-text-field
                             type="text"
                             v-model="add_role.name_en"
@@ -149,14 +194,14 @@ export default {
                             persistent-hint
                             outlined
                             :error="errors[0] ? true : false"
-                            :error-messages="errors[0]"
+                             :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে ইংরেজি রোল নাম লিখুন' : 'Please Enter English Role Name.') : ''"
                             required
                         ></v-text-field>
                         </ValidationProvider>
                       </v-col>
 
                       <v-col cols="12" sm="6" lg="6">
-                        <ValidationProvider name="comment" vid="comment" rules="required" v-slot="{ errors }">
+                        <ValidationProvider name="comment" vid="comment" rules="checkNumeric" v-slot="{ errors }">
                         <v-text-field
                             type="text"
                             v-model="add_role.comment"
@@ -164,19 +209,19 @@ export default {
                             persistent-hint
                             outlined
                             :error="errors[0] ? true : false"
-                            :error-messages="errors[0]"
+                             :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে মন্তব্য লিখুন' : 'Please Enter Comments.') : ''"
                             required
                         ></v-text-field>
                         </ValidationProvider>
                       </v-col>
 
                       <v-col lg="6" md="6" cols="12">
-                        <ValidationProvider name="Status" vid="status" v-slot="{ errors }">
+                        <ValidationProvider name="Status" vid="status" rules="required" v-slot="{ errors }">
                           <v-checkbox v-model="add_role.status" :label="$t(
                         'container.system_config.demo_graphic.office.active'
                       )
                         " color="green" value="1" :hide-details="errors[0] ? false : true"
-                                      :error="errors[0] ? true : false" :error-messages="errors[0]"></v-checkbox>
+                                      :error="errors[0] ? true : false"  :error-messages="errors[0] ? (language === 'bn' ? ' অনুগ্রহ করে চেকবক্স নির্বাচন করুন' : 'Please Select Checkbox.') : ''"></v-checkbox>
                         </ValidationProvider>
                       </v-col>
 

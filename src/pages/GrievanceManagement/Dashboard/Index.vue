@@ -12,7 +12,7 @@
         <v-card class="mx-auto" color="grey lighten-4" max-width="600">
           <v-card-title>
             <v-icon color= 'indigo' class="mr-8" size="64" >
-              mdi-heart-pulse
+             mdi-account-multiple-plus
             </v-icon>
             <v-row align="start">
               <div class="text-caption black--text text-uppercase">
@@ -28,7 +28,7 @@
         <v-card class="mx-auto" color="grey lighten-4" max-width="600">
           <v-card-title>
             <v-icon color= 'indigo' class="mr-8" size="64" >
-              mdi-heart-pulse
+             mdi-account-multiple-plus
             </v-icon>
             <v-row align="start">
               <div class="text-caption black--text text-uppercase">
@@ -44,7 +44,7 @@
         <v-card class="mx-auto" color="grey lighten-4" max-width="600">
           <v-card-title>
             <v-icon color='indigo' class="mr-8" size="64" >
-              mdi-heart-pulse
+             mdi-account-multiple-plus
             </v-icon>
             <v-row align="start">
               <div class="text-caption black--text text-uppercase">
@@ -59,7 +59,7 @@
         <v-card class="mx-auto" color="grey lighten-4" max-width="600">
           <v-card-title>
             <v-icon color='indigo' class="mr-8" size="64" >
-              mdi-heart-pulse
+              mdi-account-multiple-plus
             </v-icon>
             <v-row align="start">
               <div class="text-caption black--text text-uppercase">
@@ -162,7 +162,7 @@
               <td>{{ language==='bn' ? $helpers.englishToBangla(item.total_grievance_canceled) : item.total_grievance_canceled }}</td>
               <td>{{ language==='bn' ? $helpers.englishToBangla(item.total_grievance_pending) : item.total_grievance_pending }}</td>
               <td>
-                  <v-btn v-can="'division-edit'" fab x-small v-on="on" color="success" elevation="0">
+                  <v-btn @click="getLocationoWiseNumberOfGrievance(item.id)" fab x-small v-on="on" color="success" elevation="0">
                      <v-icon>mdi-arrow-collapse-right </v-icon>
                    </v-btn>
               </td>
@@ -276,7 +276,7 @@ export default {
         this.totalPendingGrievance = result?.data?.data;
       });
     },
-    async getLocationoWiseNumberOfGrievance() {
+    async getLocationoWiseNumberOfGrievance(type=null, parentId = null) {
       const queryParams = {
         status: 'location',
       };

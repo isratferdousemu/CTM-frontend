@@ -7,11 +7,21 @@
             <!-- Expantion panels start -->
             <v-expansion-panels>
               <v-expansion-panel class="ma-2">
-                <v-expansion-panel-header color="#8C9EFF">
-                  <h3 class="white--text">
-                    {{ $t("container.list.filter") }}
-                  </h3>
-                </v-expansion-panel-header>
+              <v-expansion-panel-header color="#8C9EFF"
+                    style="background-color: #1C3B68; color: white;font-size: 17px;">
+                    <template v-slot:actions>
+                      <v-icon color="white">
+                        $expand
+                      </v-icon>
+                    </template>
+                    <h3 class="white--text">
+                      {{
+                        $t(
+                          "container.list.filter"
+                        )
+                      }}
+                    </h3>
+                  </v-expansion-panel-header>
                 <v-expansion-panel-content
                     class="elevation-0 transparent mt-10"
                 >
@@ -1461,7 +1471,7 @@
                       :loading="loading"
                       class="custom-btn-width black white--text py-2"
                   >
-                    {{ $t("container.list.submit") }}
+                    {{ $t("container.list.update") }}
                   </v-btn>
                 </v-row>
               </form>
@@ -2420,6 +2430,7 @@ export default {
       // alert(JSON.stringify(queryParams));
     },
     async GetWard() {
+      this.search = this.search.replace(/%/g, '');
       const queryParams = {
         searchText: this.search,
         location_type: this.location_type_search,

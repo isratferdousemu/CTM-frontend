@@ -3,7 +3,7 @@
   <v-row>
         <v-col cols="12" style="padding: 0px;">
         <v-card :loading="isLoading" style="background-color:#1c3b68;color:white;font-size:12px;">
-           <v-card-title>
+           <v-card-title style=" padding: 10px;">
                <h5 class="white--text">
                  {{ $t("container.grievance_management.dashboard.program_wise_total_received") }}
               </h5>
@@ -53,7 +53,7 @@
   </v-row>
   <v-row>
      <img  v-if="allZeros == true" style="margin-left:80px;margin-top:10px;width: 300px;height: 300px" src="/assets/images/pie_chart_default.png" alt="default chart">
-    <canvas id="total_number_received"></canvas>
+    <canvas v-else id="total_number_received"></canvas>
   </v-row>
   </v-col>
 
@@ -84,13 +84,14 @@ export default {
       this.fetchTotalReceivedApplicationChartData()
     },
     async fetchTotalReceivedApplicationChartData(from_date = null, to_date = null) {
-      await this.getTotalReceivedApplication(2, from_date, to_date);
+      await this.getTotalReceivedApplication(0, from_date, to_date);
      if (this.allZeros != true) {
         this.createTotalReceivedApplicentChart();
       }
       // this.createTotalReceivedApplicentChart();
     },
     async getTotalReceivedApplication(status, from_date = null, to_date = null) {
+      console.log(from_date, to_date,'date by anwar')
       this.isLoading = true;
       const queryParams = {
         status: status,
@@ -105,9 +106,17 @@ export default {
           },
           params: queryParams,
         });
-        this.total_number_received = result.data.data;
-        this.total_number_of_application_received_levels = this.total_number_received.map((row) => this.$i18n.locale == 'en' ? row.name_en : row.name_bn);;
-        this.total_number_of_application_received_datas = this.total_number_received.map((row) => row.grievances_count);
+         this.total_number_received = result.data.data;
+         console.log(this.total_number_received,'fsfdsd');
+
+        this.total_number_of_application_received_levels = this.total_number_received.map((row) => {
+          return this.$i18n.locale == 'en' ? row?.name_en : row?.name_bn;
+        });
+
+        this.total_number_of_application_received_datas = this.total_number_received.map((row) => {
+          return row.grievances_count !== 0 ? row?.grievances_count : 0;
+        });
+
         this.isLoading = false;
 
       } catch (error) {
@@ -188,7 +197,7 @@ export default {
     generateRandomColor() {
       return '#' + Math.floor(Math.random() * 16777215).toString(16);
     },
-       OnChangeDateInfo(event, type) {
+    OnChangeDateInfo(event, type) {
       if (this.dates.length < 2) {
         return;
       }
