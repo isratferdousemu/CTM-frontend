@@ -335,36 +335,6 @@
                         </v-tooltip>
                       </template>
                       <!-- End Action Button -->
-                      <!-- <template v-slot:footer="item">
-                        <div
-                          class="text-center pt-2 v-data-footer justify-center pb-2"
-                        >
-                          <v-select
-                            style="
-                              position: absolute;
-                              right: 25px;
-                              width: 149px;
-                              transform: translate(0px, 0px);
-                            "
-                            :items="items"
-                            hide-details
-                            dense
-                            outlined
-                            @change="onPageChange"
-                            v-model="pagination.perPage"
-                          ></v-select>
-                          <v-pagination
-                            circle
-                            primary
-                            v-model="pagination.current"
-                            :length="pagination.total"
-                            @input="onPageChange"
-                            :total-visible="11"
-                            class="custom-pagination-item"
-                          ></v-pagination>
-                        </div>
-                      </template> -->
-
                       <template v-slot:footer="item">
                         <v-container class="pa-0 py-0" fluid>
                           <v-row class="align-center" cols="12">
@@ -731,6 +701,10 @@ export default {
       return "mdi-plus"; // Use the appropriate Material Design Icons (MDI) class for the "+" icon
     },
     submitsearch() {
+      // this.pagination = {
+      //   ...this.pagination,
+      //   current: 1,
+      // };
       this.getListData();
     },
     updateVisibleColumns() {
@@ -778,6 +752,7 @@ export default {
       });
     },
     getListData() {
+      this.loading = true;
       const queryParams = {
         searchText: this.search,
         perPage: this.pagination.perPage,
@@ -805,6 +780,7 @@ export default {
           this.pagination.current = result.data.meta.current_page;
           this.pagination.total = result.data.meta.last_page;
           this.pagination.grand_total = result.data.meta.total;
+          this.loading = false;
         });
     },
     getPaymentName() {
