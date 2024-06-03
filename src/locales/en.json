@@ -448,6 +448,7 @@
         "ip_address": "IP Address",
         "pupose_of_use": "Purpose of Use",
         "unique_id": "Unique ID",
+        "details": "Device Registration Details",
         "add": "Add Device",
         "edit": "Edit device",
         "delete_title": "Delete Device Registration",

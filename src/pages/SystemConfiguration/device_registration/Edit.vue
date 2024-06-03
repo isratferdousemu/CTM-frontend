@@ -107,6 +107,7 @@ export default {
           <v-col cols="12">
             <v-card>
               <v-card-title
+                  class="justify-center"
                 ><h3>
                   {{ $t("container.system_config.device.edit") }}
                 </h3></v-card-title
@@ -130,7 +131,7 @@ export default {
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-select
                               :items="users"
-                              item-text="username"
+                              item-text="user_id"
                               item-value="user_id"
                               menu-props="auto"
                               hide-details
@@ -139,8 +140,8 @@ export default {
                               :error="errors[0] ? true : false"
                               :error-messages="errors[0]"
                               required
-                              readonly
                               v-model="editDevice.user_id"
+                              readonly
                             ></v-select>
                           </ValidationProvider>
                         </v-col>
