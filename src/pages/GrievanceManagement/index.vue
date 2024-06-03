@@ -216,7 +216,71 @@
                           </ValidationProvider>
                         </v-col>
 
-                        <!-- :readonly="permissions?.user?.committee_type_id== 13 && data.ward_id !=null" -->
+                        <!-----------extra Filed added for search------------->
+                          <v-col lg="3" md="3" cols="12">
+                            <v-text-field v-model="data.name" outlined clearable append-icon="mdi-plus"
+                              :append-icon-cb="appendIconCallback" :label="$t(
+                                'container.grievance_management.grievanceEntry.name'
+                              )
+                                " :hide-details="true">
+                            </v-text-field>
+                          </v-col>
+                          <v-col lg="3" md="3" cols="12">
+                            <v-text-field v-model="data.mobile" outlined clearable append-icon="mdi-plus"
+                              :append-icon-cb="appendIconCallback" :label="$t(
+                                'container.application_selection.application.mobile'
+                              )
+
+                                " :hide-details="true">
+                            </v-text-field>
+                          </v-col>
+
+                          <v-col lg="3" md="3" cols="12">
+                              <v-select outlined :label="$t('container.list.status')" v-model="data.status" :items="statusFilter">
+
+                             </v-select>
+                          </v-col>
+                          <v-col lg="3" md="3" cols="12">
+                          <v-menu
+          ref="menu"
+          v-model="menu"
+          :close-on-content-click="false"
+          transition="scale-transition"
+          offset-y
+          min-width="auto"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+              v-model="dates"
+              :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
+              :label="$t('container.application_selection_dashboard.enter_start_end_date')"
+              readonly
+              v-bind="attrs"
+              v-on="on"
+          ></v-text-field>
+        </template>
+        <v-date-picker
+            v-model="dates"
+            :range="[dates[0], dates[1]]"
+            no-title
+            scrollable
+            @input="OnChangeDateInfo($event, 'total_approve')"
+        >
+          <v-spacer></v-spacer>
+          <v-btn text color="primary" @click="resetDateRange">
+            Cancel
+          </v-btn>
+          <v-btn
+              text
+              color="primary"
+              @click="$refs.menu.save(dates)"
+          >
+            OK
+          </v-btn>
+        </v-date-picker>
+      </v-menu>
+                          </v-col>
+
                       </v-row>
 
 
@@ -345,29 +409,48 @@
                       </template>
                       <template v-slot:item.status="{ item }">
                         <span v-if="item.status == 0" class="not-selected"
-                          style="background-color: lightgray; padding: 5px; width: 100px;">
-                          {{ language === 'bn' ? "সমাধান হয়নি" : "Not Solved" }}
+                          style="background-color: lightgray;  width: 100px;">
+                          <!-- {{ language === 'bn' ? "সমাধান হয়নি" : "Not Solved" }} -->
+                              <v-badge
+                                  color="secondary"
+                                  :content="(language === 'bn' ? 'সমাধান হয়নি' : 'Not Solved') ">
+                              </v-badge>
 
                         </span>
                         <span v-if="item.status == 1" class="forwarded"
-                          style="background-color: #4CAF50; color: white; padding: 5px; width: 100px;">
-                          {{ language === 'bn' ? "ফরোয়ার্ড করা হয়েছে" : "Forwarded" }}
+                          style="background-color: #bdc749; color: white;  width: 100px;">
+                          <!-- {{ language === 'bn' ? "ফরোয়ার্ড করা হয়েছে" : "Forwarded" }} -->
+                              <v-badge
+                                    color="primary"
+                                    :content="(language === 'bn' ? 'ফরোয়ার্ড করা হয়েছে' : 'Forwarded')">
+                            </v-badge>
 
                         </span>
                         <span v-if="item.status == 2" class="approved"
-                          style="background-color: #008000; color: white; padding: 5px; width: 100px;">
-                          {{ language === 'bn' ? "সমাধান করা হয়েছে" : "Solved" }}
+                          style="background-color: #008000; color: white; width: 100px;">
+                          <!-- {{ language === 'bn' ? "সমাধান করা হয়েছে" : "Solved" }} -->
+                               <v-badge
+                                      color="success"
+                                      :content="(language === 'bn' ? 'সমাধান করা হয়েছে' : 'Solved')">
+                              </v-badge>
 
                         </span>
                         <span v-if="item.status == 3" class="waiting"
-                          style="background-color: #FFD700; padding: 5px; width: 100px;">
-                          {{ language === 'bn' ? "বাতিল" : "Canceled" }}
+                          style="background-color: #FFD700;  width: 100px;">
+                          <!-- {{ language === 'bn' ? "বাতিল" : "Canceled" }} -->
+                             <v-badge
+                                   color="warning"
+                                   :content="(language === 'bn' ? 'বাতিল' : 'Canceled')">
+                                </v-badge>
 
                         </span>
                         <span v-if="item.status === 4" class="waiting"
-                          style="background-color: #FFD700; padding: 5px; width: 100px;">
-                          {{ language === 'bn' ? "
-                                                    চলমান" : "In Progress" }}
+                          style="background-color: #FFD700;  width: 100px;">
+              
+                               <v-badge
+                                     color="#009688"
+                                     :content="(language === 'bn' ? 'চলমান' : 'In Progress')">
+                              </v-badge>
 
                         </span>
                       </template>
@@ -612,7 +695,7 @@ export default {
         id: null,
         verification_number: null,
         tracking_no: null,
-        name_bn: null,
+        name: null,
         code: null,
         details: null,
         division_id: null,
@@ -640,6 +723,7 @@ export default {
         created_at: null,
         resolved_officer: null,
         forwardOfficer: null,
+        mobile: null,
       },
       fileTypeRule: (value) => {
         // alert(value);
@@ -661,7 +745,8 @@ export default {
           this.data.documents = '';
         }
       },
-      loading: true,
+      dates: [],
+      menu: false,
       total: null,
       showModal: false,
       dialogAdd: false,
@@ -730,6 +815,16 @@ export default {
     ValidationObserver,
   },
   computed: {
+      statusFilter() {
+      // Define the default options
+      let options = [
+        { text: this.$i18n.locale == 'en' ? 'Solved' : 'সমাধান', value: 2 },
+        { text: this.$i18n.locale == 'en' ? 'Cancel' : 'বাতিল', value: 3 },
+        { text: this.$i18n.locale == 'en' ? 'Forward' : 'ফরোয়ার্ড', value: 1 },
+        { text: this.$i18n.locale == 'en' ? 'In Progress' : 'চলমান', value: 4 }
+      ];
+      return options;
+    },
     statusOptions() {
       this.userRoleId = this.userData.roles ? this.userData.roles.map(role => role.id) : [];
       // Define the default options
@@ -864,6 +959,35 @@ export default {
   },
 
   methods: {
+   resetDateRange() {
+      this.dates = [];
+      this.menu = false;
+      this.fetchProgramwiseApproveApplicationChartData()
+    },
+    async fetchProgramwiseApproveApplicationChartData(from_date = null, to_date = null) {
+      await this.GetGrievance(from_date, to_date);
+    },
+    OnChangeDateInfo(event, type) {
+      console.log(event.length,'length');
+      if (this.dates.length < 2) {
+        return;
+      }
+
+      if (this.dates[1] && this.dates[1] < this.dates[0]) {
+        this.$toast.error(this.language == 'en' ? 'End date cannot be before start date' : 'শেষ তারিখ শুরুর তারিখের আগে হতে পারে না')
+        this.resetDateRange();
+      }
+
+      let from_date = null;
+      let to_date = null;
+
+      if (event.length === 2) {
+        from_date = event[0];
+        to_date = event[1];
+      }
+      console.log(from_date, to_date,'check date');
+      this.fetchProgramwiseApproveApplicationChartData(from_date, to_date);
+    },
     async GetGrievanceSolutionType() {
       try {
         this.$store.dispatch("getLookupByType", 25).then((data) => {
@@ -1004,20 +1128,7 @@ export default {
     Division() {
       this.data.division_id != null;
     },
-    toggleSelectAll() {
-      // Toggle the state of selectAll
-      if (this.selectAll) {
-        // Select all items based on the unselectedItem logic
-        this.forward.applications_id = this.applications
-          .filter((item) => !this.unselectedItem(item))
-          .map((app) => app.id);
-      } else {
-        // Deselect all items
-        this.forward.applications_id = [];
-      }
 
-      console.log(this.forward.applications_id, "applications");
-    },
     isReadonlyDivision() {
       if (this.permissions?.user?.office_type) {
         const officeType = this.permissions?.user?.office_type;
@@ -1105,251 +1216,7 @@ export default {
       }
       return false;
     },
-    unselectedItem(item) {
-      if (
-        this.permissions?.user?.office_type !== null &&
-        this.permissions?.user?.committee_type_id == null
-      ) {
-        return item.status != 0;
-      }
-      if (this.permissions?.user?.committee_type_id !== null) {
-        if (this.permissions?.permission?.approve && item.status == 5) {
-          return false;
-        } else if (this.permissions?.permission?.recommendation && item.status == 3) {
-          return true;
-        } else if (this.permissions?.permission?.approve && item.status == 3) {
-          return false;
-        } else {
-          return item.status == 2 || item.status == 4 || item.status == 5;
-        }
-      }
-      return false;
-    },
-    SubmitForward() {
-      this.forward.status = 1;
-      console.log("Selected Items:", this.forward.applications_id);
-      console.log("status:", this.forward.status);
-      console.log("committee:", this.forward.committee_id);
-      let fd = new FormData();
-      for (const [key, value] of Object.entries(this.forward)) {
-        if (value !== null) {
-          fd.append(key, value);
-          console.log(key, value, "fd values");
-          if (key == "applications_id") {
-            console.log(key, value, " values");
-            for (let i = 0; i < value.length; i++) {
-              fd.append("applications_id[" + i + "]", value[i]);
-              console.log(key, value, "applications values");
-            }
-          } else {
-            fd.append(key, value);
-          }
-        }
-      }
 
-      this.$axios
-        .post("admin/application/update-status", fd, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((result) => {
-          this.forward = [];
-          this.forward.applications_id = [];
-          this.selectAll = false;
-          this.GetGrievance();
-        })
-        .catch((err) => {
-          if (err.response && err.response.data && err.response.data.errors) {
-            const errorMessage = err.response.data.errors.applications_id[0];
-            this.$toast.error(errorMessage);
-          } else {
-            this.$toast.error('An error occurred. Please try again later.');
-          }
-
-        });
-    },
-    SubmitRecommendation() {
-      this.forward.status = 5;
-      console.log("Selected Items:", this.forward.applications_id);
-      console.log("status:", this.forward.status);
-      console.log("committee:", this.forward.committee_id);
-      let fd = new FormData();
-      for (const [key, value] of Object.entries(this.forward)) {
-        if (value !== null) {
-          fd.append(key, value);
-          console.log(key, value, "fd values");
-          if (key == "applications_id") {
-            console.log(key, value, " values");
-            for (let i = 0; i < value.length; i++) {
-              fd.append("applications_id[" + i + "]", value[i]);
-              console.log(key, value, "applications values");
-            }
-          } else {
-            fd.append(key, value);
-          }
-        }
-      }
-
-      this.$axios
-        .post("admin/application/update-status", fd, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((result) => {
-          this.forward = [];
-          this.forward.applications_id = [];
-          this.selectAll = false;
-          this.GetGrievance();
-        })
-        .catch((err) => {
-          if (err.response && err.response.data && err.response.data.errors) {
-            const errorMessage = err.response.data.errors.applications_id[0];
-            this.$toast.error(errorMessage);
-          } else {
-            this.$toast.error('An error occurred. Please try again later.');
-          }
-
-        });
-    },
-    SubmitApproved() {
-      this.forward.status = 2;
-      console.log("Selected Items:", this.forward.applications_id);
-      console.log("status:", this.forward.status);
-      console.log("committee:", this.forward.committee_id);
-      let fd = new FormData();
-      for (const [key, value] of Object.entries(this.forward)) {
-        if (value !== null) {
-          fd.append(key, value);
-          console.log(key, value, "fd values");
-          if (key == "applications_id") {
-            console.log(key, value, " values");
-            for (let i = 0; i < value.length; i++) {
-              fd.append("applications_id[" + i + "]", value[i]);
-              console.log(key, value, "applications values");
-            }
-          } else {
-            fd.append(key, value);
-          }
-        }
-      }
-
-      this.$axios
-        .post("admin/application/update-status", fd, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((result) => {
-
-          this.forward = [];
-          this.selectAll = false;
-          this.forward.applications_id = [];
-          this.GetGrievance();
-        })
-        .catch((err) => {
-          if (err.response && err.response.data && err.response.data.errors) {
-            const errorMessage = err.response.data.errors.applications_id[0];
-            this.$toast.error(errorMessage);
-          } else {
-            this.$toast.error('An error occurred. Please try again later.');
-          }
-        });
-    },
-    SubmitWaiting() {
-      this.forward.status = 3;
-      console.log("Selected Items:", this.forward.applications_id);
-      console.log("status:", this.forward.status);
-      console.log("committee:", this.forward.committee_id);
-      let fd = new FormData();
-      for (const [key, value] of Object.entries(this.forward)) {
-        if (value !== null) {
-          fd.append(key, value);
-          console.log(key, value, "fd values");
-          if (key == "applications_id") {
-            console.log(key, value, " values");
-            for (let i = 0; i < value.length; i++) {
-              fd.append("applications_id[" + i + "]", value[i]);
-              console.log(key, value, "applications values");
-            }
-          } else {
-            fd.append(key, value);
-          }
-        }
-      }
-
-      this.$axios
-        .post("admin/application/update-status", fd, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((result) => {
-          this.forward = [];
-          this.selectAll = false;
-          console.log(this.selectAll, "select_all");
-          this.forward.applications_id = [];
-          this.GetGrievance();
-        })
-        .catch((err) => {
-          if (err.response && err.response.data && err.response.data.errors) {
-            const errorMessage = err.response.data.errors.applications_id[0];
-            this.$toast.error(errorMessage);
-          } else {
-            this.$toast.error('An error occurred. Please try again later.');
-          }
-
-        });
-    },
-    SubmitReject() {
-      this.forward.status = 4;
-      console.log("Selected Items:", this.forward.applications_id);
-      console.log("status:", this.forward.status);
-      console.log("committee:", this.forward.committee_id);
-      let fd = new FormData();
-      for (const [key, value] of Object.entries(this.forward)) {
-        if (value !== null) {
-          fd.append(key, value);
-          console.log(key, value, "fd values");
-          if (key == "applications_id") {
-            console.log(key, value, " values");
-            for (let i = 0; i < value.length; i++) {
-              fd.append("applications_id[" + i + "]", value[i]);
-              console.log(key, value, "applications values");
-            }
-          } else {
-            fd.append(key, value);
-          }
-        }
-      }
-
-      this.$axios
-        .post("admin/application/update-status", fd, {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((result) => {
-          this.forward = [];
-          this.forward.applications_id = [];
-          this.GetGrievance();
-          this.selectAll = false;
-        })
-        .catch((err) => {
-          if (err.response && err.response.data && err.response.data.errors) {
-            const errorMessage = err.response.data.errors.applications_id[0];
-            this.$toast.error(errorMessage);
-          } else {
-            this.$toast.error('An error occurred. Please try again later.');
-          }
-        });
-    },
     resetForm() {
       this.data.division_id = null;
       this.data.district_id = null;
@@ -1366,11 +1233,18 @@ export default {
       this.data.tracking_no = null;
       this.data.verification_number = null;
       this.data.documents = null;
+      this.data.dates = null;
+      this.data.name = null;
+      this.data.mobile = null;
+      this.data.status = null;
 
       this.data.grievanceSubject = null;
       this.data.grievanceType = null;
       this.GetPermissions();
       this.GetGrievance();
+      this.dates = [];
+      this.menu = false;
+      this.fetchProgramwiseApproveApplicationChartData()
     },
     GetPermissions() {
       http()
@@ -1605,17 +1479,7 @@ export default {
         this.selectedColumns.includes(column.value)
       );
     },
-    GetCommitte() {
-      http()
-        .get("/admin/application/committee-list", {})
-        .then((result) => {
-          this.committe = result.data;
-          console.log(this.committe, "called properly");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
+
 
     async LocationType($event) {
       this.wards = [];
@@ -1785,9 +1649,6 @@ export default {
         });
     },
     async onChangeUnionGetWard(event) {
-      //emu
-      // this.wards = [];
-      // this.data.ward_id = null;
       await this.$axios
         .get(`/global/ward/get/${event}`, {
           headers: {
@@ -1800,9 +1661,6 @@ export default {
         });
     },
     async onChangePouroGetWard(event) {
-      //emu
-      // this.wards = [];
-      // this.data.ward_id = null;
       await this.$axios
         .get(`/global/ward/get/pouro/${event}`, {
           headers: {
@@ -1816,9 +1674,6 @@ export default {
     },
 
     async onChangeDistrictPouroGetWard(event) {
-      //emu
-      // this.wards = [];
-      // this.data.ward_id = null;
       await this.$axios
         .get(`/global/ward/get/pouro/${this.data.district_pouro_id}`, {
           headers: {
@@ -1828,14 +1683,9 @@ export default {
         })
         .then((result) => {
           this.wards = result.data.data;
-          console.log(this.wards, "wards in function dist");
-          console.log(this.data.ward_id, "ward");
         });
     },
     async onChangeThanaGetWard(event) {
-      //emu
-      // this.wards = [];
-      // this.data.ward_id = null;
       await this.$axios
         .get(`/global/ward/get/thana/${event}`, {
           headers: {
@@ -1845,7 +1695,6 @@ export default {
         })
         .then((result) => {
           this.wards = result.data.data;
-          console.log(this.wards, "thanawards");
         });
     },
 
@@ -1858,9 +1707,8 @@ export default {
       this.GetGrievance();
     },
 
-    async GetGrievance() {
+    async GetGrievance(from_date = null, to_date = null) {
       const queryParams = {
-
         searchText: this.search,
         verification_number: this.data.verification_number,
         tracking_no: this.data.tracking_no,
@@ -1881,8 +1729,13 @@ export default {
         status: this.data.status_list,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
+
+        name: this.data.name,
+        mobile: this.data.mobile,
+        status: this.data.status,
+        start_date: from_date,
+        end_date: to_date,
       };
-      console.log(queryParams, 'page number');
       this.$axios
         .get("/admin/grievance/get", {
           headers: {
@@ -1947,7 +1800,6 @@ export default {
         });
 
       const CustomInfo = this.applications.map(((i, index) => {
-        console.log(i, 'pdf data');
         let divisionName = '';
         let districtName = '';
         let location = '';
@@ -2243,7 +2095,6 @@ export default {
     this.GetGrievanceType();
     this.GetGrievanceSubject();
     this.GetGrievanceSolutionType();
-    this.GetCommitte();
   },
   beforeMount() {
     this.updateHeaderTitle();

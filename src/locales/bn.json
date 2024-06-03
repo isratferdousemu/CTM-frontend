@@ -1346,6 +1346,7 @@
         "total_grievance": "মোট অভিযোগ",
         "total_new": "মোট নতুন",
         "division": "বিভাগ",
+        "locationName": "বিভাগ/ জেলা/ থানা",
         "action": "অ্যাকশন",
         "total_resolved": "মোট অভিযোগ সমাধান",
         "total_pending": "মোট অভিযোগ স্থগিত",

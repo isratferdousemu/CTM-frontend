@@ -1356,6 +1356,7 @@
         "total_grievance": "Total Grievance",
         "total_new": "Total New",
         "division": "Division",
+        "locationName": "Division/ District/ thana",
         "action": "Action",
         "total_resolved": "Total Grievance Solved",
         "total_pending": "Total Grievance Pending",
