@@ -133,13 +133,7 @@
         <!--Table header & Body part -->
         <v-row>
           <v-col cols="12">
-            <v-card
-              elevation="10"
-              color="white"
-              rounded="md"
-              theme="light"
-              class="mb-8 mt-5"
-            >
+            <v-card elevation="10" color="white" rounded="md" theme="light">
               <v-card-title
                 tag="div"
                 style="
@@ -153,11 +147,20 @@
                   {{ $t("container.emergency_payment.list") }}
                 </h3>
               </v-card-title>
-
               <!-- Data Table -->
               <v-card-text>
                 <v-row justify="space-between" align="center">
-                  <v-col lg="3" md="3" cols="12"> </v-col>
+                  <v-col lg="3" md="3" cols="12">
+                    {{ $t("container.list.total") }}:&nbsp;<span
+                      style="font-weight: bold"
+                    >
+                      {{
+                        language === "bn"
+                          ? $helpers.englishToBangla(this.total)
+                          : this.total
+                      }}
+                    </span>
+                  </v-col>
                   <v-col lg="3" md="3" cols="12" class="text-right">
                     <v-select
                       v-model="selectedColumns"
@@ -177,50 +180,9 @@
                   </v-col>
                 </v-row>
 
-                <template>
-                  <v-row
-                    justify="space-between"
-                    align="center"
-                    class="custom-margin-left"
-                  >
-                    <v-col sm="6" lg="6" md="6" cols="12">
-                      {{ $t("container.list.total") }}:&nbsp;<span
-                        style="font-weight: bold"
-                      >
-                        {{
-                          language === "bn"
-                            ? $helpers.englishToBangla(this.total)
-                            : this.total
-                        }}
-                      </span>
-                    </v-col>
-
-                    <v-col sm="6" lg="6" md="6" cols="12" class="text-right">
-                      <v-btn
-                        elevation="2"
-                        class="btn mr-2 white--text"
-                        color="red darken-4"
-                        @click="generatePDF()"
-                      >
-                        <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
-                        {{ $t("container.list.PDF") }}
-                      </v-btn>
-                      <v-btn
-                        elevation="2"
-                        class="btn mr-2 white--text"
-                        color="teal darken-2"
-                        @click="generateExcel()"
-                      >
-                        <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
-                        {{ $t("container.list.excel") }}
-                      </v-btn>
-                    </v-col>
-                  </v-row>
-                </template>
-
                 <!-- data table -->
                 <v-row
-                  class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
+                  class="ma-0 pa-0 white round-border d-flex justify-space-between align-center"
                   justify="space-between"
                 >
                   <div class="d-flex justify-sm-end flex-wrap">
@@ -238,14 +200,34 @@
                     >
                     </v-text-field>
                   </div>
-                  <v-btn
-                    router
-                    to="/emergency-payment/emergency-allotment/create"
-                    color="primary"
-                    prepend-icon="mdi-account-multiple-plus"
-                  >
-                    {{ $t("container.list.add_new") }}
-                  </v-btn>
+                  <div>
+                    <v-btn
+                      elevation="2"
+                      class="btn mr-2 white--text"
+                      color="red darken-4"
+                      @click="generatePDF()"
+                    >
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                      {{ $t("container.list.PDF") }}
+                    </v-btn>
+                    <v-btn
+                      elevation="2"
+                      class="btn mr-2 white--text"
+                      color="teal darken-2"
+                      @click="generateExcel()"
+                    >
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                      {{ $t("container.list.excel") }}
+                    </v-btn>
+                    <v-btn
+                      router
+                      to="/emergency-payment/emergency-allotment/create"
+                      color="primary"
+                      prepend-icon="mdi-account-multiple-plus"
+                    >
+                      {{ $t("container.list.add_new") }}
+                    </v-btn>
+                  </div>
 
                   <v-col cols="12">
                     <v-data-table
