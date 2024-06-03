@@ -83,6 +83,7 @@
       "download": "Download Application",
       "pouroshava": "Pouroshava",
       "union": "Union",
+      "no_data":"No gender was selected.",
       "show": "Show"
     },
     "system_config": {
@@ -627,11 +628,11 @@
         "year": "Year",
         "image": "Image",
         "signature": "Signature",
-        "image_alert": "Image dimension must be 300x300 pixels and the file size should be under 200 KB",
-        "signature_alert": "Signature dimension must be 200x80 pixels and the file size should be under 200 KB",
+        "image_alert": "Image  file size should be under 200 KB",
+        "signature_alert": "Signature  file size should be under 200 KB",
         "mobile_operator": "Mobile Operator",
         "bank_alert": "Must have active Nagad / Bkash account where applicable",
-        "same_address": "Same Address",
+        "same_address": "Same as Present",
         "form_submission": "Form Submission Confirmation",
         "question": "Are you sure to submit the application? After submission editing will not be applicable.",
         "successfull": "Your application successfully submitted. Your application tracking ID",
@@ -1046,10 +1047,24 @@
         "status": "Status"
       }
     },
+    "emergency_payment": {
+      "slNo": "Sl No",
+      "list": "Emergency Allotment",
+      "add_new": "Create Emergency Allotment",
+      "payment_name": "Emergency Payment Name",
+      "edit": "Edit Emergency Allotment",
+      "program_name": "Program Name",
+      "no_of_new_benificiary": "No of new benificiary",
+      "no_of_existing_benificiary": "No of existing benificiary",
+      "per_person_amount": "Per person amount",
+      "payment_cycle": "Payment Cycle",
+      "starting_period": "Started Period",
+      "closing_period": "Closing Period",
+      "search": "Search Emergency Allotment"
+    },
     "training_management": {
       "trainer_info": {
         "ID": "ID",
-        "trainer_type": "Trainer Type",
         "list_1": "Trainer List",
         "rating": "Rating",
         "list": "Trainer Information List",
@@ -1111,10 +1126,6 @@
         "add": "Add New Program",
         "edit": "Edit Program",
         "program_name": "Program Name",
-        "exam_link": "Exam Link",
-        "rating_link": "Rating Link",
-        "exam": "Exam",
-        "rating": "Rating",
         "program": "Program",
         "trainer": "Trainer",
         "circular": "Circular",
