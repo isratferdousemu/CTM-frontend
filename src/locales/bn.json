@@ -1012,6 +1012,8 @@
       "approval_status": "স্ট্যাটাস"
     },
     "payroll_management": {
+      "view": "দেখুন",
+      "add_new_processor": "নতুন প্রসেসর যোগ করুন",
       "list": "পেমেন্ট প্রসেসর",
       "add_new": "নতুন পেমেন্ট প্রসেসর যোগ করুন",
       "edit": "পেমেন্ট প্রসেসর সম্পাদন",
@@ -1035,7 +1037,14 @@
       "district_pourashava": "জেলা পৌরসভা",
       "verification_success_msg": "যাচাইকরণ সেটিং সফলভাবে জমা দেওয়া হয়েছে",
       "payroll_create": "পেরোল তৈরি",
-      "allotment_distribution": "বরাদ্দ বিতরণ"
+      "allotment_distribution": "বরাদ্দ বিতরণ",
+      "dashboard": {
+        "header": "পেরোল ড্যাশবোর্ড",
+        "approved_payroll": "মোট অনুমোদিত পেরোল",
+        "rejected_payroll": "মোট প্রত্যাখ্যাত পেরোল",
+        "total_payment_cycle": "মোট অর্থপ্রদান চক্র",
+        "completed_payment_cycle": "IBAS ++ এ প্রক্রিয়া করা হচ্ছে"
+      }
     },
     "training_management": {
       "trainer_info": {

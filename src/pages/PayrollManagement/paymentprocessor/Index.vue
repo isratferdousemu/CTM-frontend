@@ -49,7 +49,7 @@
                     color="primary"
                     prepend-icon="mdi-account-multiple-plus"
                   >
-                    {{ $t("container.list.add_new") }}
+                    {{ $t("container.payroll_management.add_new_processor") }}
                   </v-btn>
 
                   <!-- <div class="d-flex flex-column align-items-end ml-auto mb-4">
@@ -152,7 +152,7 @@
                                 </v-btn>
                               </router-link>
                             </template>
-                            <span>{{ $t("container.list.show") }}</span>
+                            <span>{{ $t("container.payroll_management.view") }}</span>
                           </v-tooltip>
 
                           <v-tooltip top>

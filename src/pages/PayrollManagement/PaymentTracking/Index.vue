@@ -173,7 +173,7 @@ import moment from "moment";
 import "moment/locale/bn";
 
 export default {
-  name: "FrontendIndex",
+  title: "Payment Tracking",
   data() {
     return {
       data: {

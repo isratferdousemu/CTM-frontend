@@ -1014,6 +1014,8 @@
       "approval_status": "Status"
     },
     "payroll_management": {
+      "view": "View",
+      "add_new_processor": "Add New Processor",
       "list": "Payment Processor",
       "add_new": "Add New Payment Processor",
       "edit": "Edit Payment Processor",
@@ -1044,6 +1046,13 @@
         "allocated_beneficiary": "Allocated Beneficiary",
         "active_beneficiary": "Active Beneficiary",
         "status": "Status"
+      },
+      "dashboard": {
+        "header": "Payroll Dashboard",
+        "approved_payroll": "Total Approved Payroll",
+        "rejected_payroll": "Total Rejected Payroll",
+        "total_payment_cycle": "Total Payment Cycle",
+        "completed_payment_cycle": "Processing at IBAS ++"
       }
     },
     "training_management": {

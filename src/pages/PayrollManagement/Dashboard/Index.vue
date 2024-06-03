@@ -1,8 +1,16 @@
 <template>
   <v-container fluid>
-    <v-card-title tag="div" style="background-color:#1c3b68;color:white;margin-bottom: 17px;font-size:17px;">
+    <v-card-title
+      tag="div"
+      style="
+        background-color: #1c3b68;
+        color: white;
+        margin-bottom: 17px;
+        font-size: 17px;
+      "
+    >
       <h3 class="white--text">
-        {{ $t("container.grievance_management.dashboard.grievance_dashboard") }}
+        {{ $t("container.payroll_management.dashboard.header") }}
       </h3>
     </v-card-title>
 
@@ -11,70 +19,99 @@
       <v-col cols="12" md="3">
         <v-card class="mx-auto" color="grey lighten-4" max-width="600">
           <v-card-title>
-            <v-icon color= 'indigo' class="mr-8" size="64" >
-              mdi-heart-pulse
+            <v-icon color="indigo" class="mr-8 mb-2" size="64">
+              mdi-check-circle
             </v-icon>
             <v-row align="start">
               <div class="text-caption black--text text-uppercase">
-                 {{ $t("container.grievance_management.dashboard.total_received")}}
+                {{
+                  $t("container.payroll_management.dashboard.approved_payroll")
+                }}
               </div>
             </v-row>
           </v-card-title>
-          <h1 align="center">{{ language ==='bn' ? $helpers.englishToBangla(this.totalRecivedGrievance) : this.totalRecivedGrievance }}</h1>
+          <h1 align="center">
+            {{
+              language === "bn"
+                ? $helpers.englishToBangla(this.totalRecivedGrievance)
+                : this.totalRecivedGrievance
+            }}
+          </h1>
         </v-card>
       </v-col>
 
       <v-col cols="12" md="3">
         <v-card class="mx-auto" color="grey lighten-4" max-width="600">
           <v-card-title>
-            <v-icon color= 'indigo' class="mr-8" size="64" >
-              mdi-heart-pulse
-            </v-icon>
+            <v-icon color="indigo" class="mr-8 mb-2" size="64"> mdi-cancel </v-icon>
             <v-row align="start">
               <div class="text-caption black--text text-uppercase">
-                 {{ $t("container.grievance_management.dashboard.total_resolved") }}
+                {{
+                  $t("container.payroll_management.dashboard.rejected_payroll")
+                }}
               </div>
             </v-row>
           </v-card-title>
-              <h1 align="center">{{ language === 'bn' ? $helpers.englishToBangla(this.totalSolvedGrievance) : this.totalSolvedGrievance }}</h1>
+          <h1 align="center">
+            {{
+              language === "bn"
+                ? $helpers.englishToBangla(this.totalSolvedGrievance)
+                : this.totalSolvedGrievance
+            }}
+          </h1>
         </v-card>
       </v-col>
 
       <v-col cols="12" md="3">
         <v-card class="mx-auto" color="grey lighten-4" max-width="600">
           <v-card-title>
-            <v-icon color='indigo' class="mr-8" size="64" >
-              mdi-heart-pulse
-            </v-icon>
+            <v-icon color="indigo" class="mr-8 mb-2" size="64"> mdi-refresh </v-icon>
             <v-row align="start">
               <div class="text-caption black--text text-uppercase">
-                 {{ $t("container.grievance_management.dashboard.total_rejected") }}
+                {{
+                  $t(
+                    "container.payroll_management.dashboard.total_payment_cycle"
+                  )
+                }}
               </div>
             </v-row>
           </v-card-title>
-             <h1 align="center">{{ language === 'bn' ? $helpers.englishToBangla(this.totalCanceledGrievance) : this.totalCanceledGrievance }}</h1>
-        </v-card>
-      </v-col>
-      <v-col cols="12" md="3">
-        <v-card class="mx-auto" color="grey lighten-4" max-width="600">
-          <v-card-title>
-            <v-icon color='indigo' class="mr-8" size="64" >
-              mdi-heart-pulse
-            </v-icon>
-            <v-row align="start">
-              <div class="text-caption black--text text-uppercase">
-                 {{ $t("container.grievance_management.dashboard.total_pending") }}
-              </div>
-            </v-row>
-          </v-card-title>
-           <h1 align="center">{{ language === 'bn' ? $helpers.englishToBangla(this.totalPendingGrievance) : this.totalPendingGrievance }}</h1>
+          <h1 align="center">
+            {{
+              language === "bn"
+                ? $helpers.englishToBangla(this.totalCanceledGrievance)
+                : this.totalCanceledGrievance
+            }}
+          </h1>
         </v-card>
       </v-col>
 
+      <v-col cols="12" md="3">
+        <v-card class="mx-auto" color="grey lighten-4" max-width="600">
+          <v-card-title>
+            <v-icon color="indigo" class="mr-8 mb-2" size="64"> mdi-check </v-icon>
+            <v-row align="start">
+              <div class="text-caption black--text text-uppercase">
+                {{
+                  $t(
+                    "container.payroll_management.dashboard.completed_payment_cycle"
+                  )
+                }}
+              </div>
+            </v-row>
+          </v-card-title>
+          <h1 align="center">
+            {{
+              language === "bn"
+                ? $helpers.englishToBangla(this.totalPendingGrievance)
+                : this.totalPendingGrievance
+            }}
+          </h1>
+        </v-card>
+      </v-col>
     </v-row>
     <!-------End  header Card component ------->
     <v-row class="mt-3">
-
       <v-col cols="12" md="6" lg="6">
         <v-card>
           <v-card-text>
@@ -94,7 +131,7 @@
         </v-card>
       </v-col>
     </v-row>
-  
+
     <v-row class="mt-3">
       <v-col cols="12" md="6" lg="6">
         <v-card height="100%">
@@ -115,23 +152,23 @@
           </v-card-text>
         </v-card>
       </v-col>
-
     </v-row>
 
     <!-------Start  table  component ------->
-    <div style="margin-top: 10px;">
+    <!-- <div style="margin-top: 10px">
       <v-simple-table fixed-header class="table-responsive">
-       
         <template v-slot:default>
-            <caption>
-                   <v-card-title class="custom-title">
-                              <h6 class="text-center" style="font-size:16.16px;">  {{ $t("container.grievance_management.dashboard.header") }}</h6>
-                    </v-card-title>
-            </caption>
+          <caption>
+            <v-card-title class="custom-title">
+              <h6 class="text-center" style="font-size: 16.16px">
+                {{ $t("container.payroll_management.dashboard.header") }}
+              </h6>
+            </v-card-title>
+          </caption>
           <thead class="primary lighten-1">
             <tr>
               <th class="text-left">
-                 {{ $t("container.list.sl") }}
+                {{ $t("container.list.sl") }}
               </th>
               <th class="text-left">
                 {{ $t("container.grievance_management.dashboard.division") }}
@@ -140,13 +177,21 @@
                 {{ $t("container.grievance_management.dashboard.total_new") }}
               </th>
               <th class="text-left">
-                  {{ $t("container.grievance_management.dashboard.total_resolved") }}
+                {{
+                  $t("container.grievance_management.dashboard.total_resolved")
+                }}
               </th>
               <th class="text-left">
-                 {{ $t("container.grievance_management.dashboard.total_rejected") }}
+                {{
+                  $t("container.grievance_management.dashboard.total_rejected")
+                }}
               </th>
               <th class="text-left">
-                  {{ $t("container.grievance_management.dashboard.total_not_solved") }}
+                {{
+                  $t(
+                    "container.grievance_management.dashboard.total_not_solved"
+                  )
+                }}
               </th>
               <th class="text-left">
                 {{ $t("container.grievance_management.dashboard.action") }}
@@ -154,47 +199,84 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, index) in locationWisegrievacne" :key="item.index">
-              <td>{{ language==='bn'? $helpers.englishToBangla(index + 1): index + 1}}</td>
-              <td>{{ language==='bn' ? item.name_bn : item.name_en}}</td>
-              <td>{{ language==='bn' ? $helpers.englishToBangla(item.total_grievance_new) : item.total_grievance_new }}</td>
-              <td>{{ language==='bn' ? $helpers.englishToBangla(item.total_grievance_approved) : item.total_grievance_approved }}</td>
-              <td>{{ language==='bn' ? $helpers.englishToBangla(item.total_grievance_canceled) : item.total_grievance_canceled }}</td>
-              <td>{{ language==='bn' ? $helpers.englishToBangla(item.total_grievance_pending) : item.total_grievance_pending }}</td>
+            <tr
+              v-for="(item, index) in locationWisegrievacne"
+              :key="item.index"
+            >
               <td>
-                  <v-btn v-can="'division-edit'" fab x-small v-on="on" color="success" elevation="0">
-                     <v-icon>mdi-arrow-collapse-right </v-icon>
-                   </v-btn>
+                {{
+                  language === "bn"
+                    ? $helpers.englishToBangla(index + 1)
+                    : index + 1
+                }}
               </td>
-               
-              
+              <td>{{ language === "bn" ? item.name_bn : item.name_en }}</td>
+              <td>
+                {{
+                  language === "bn"
+                    ? $helpers.englishToBangla(item.total_grievance_new)
+                    : item.total_grievance_new
+                }}
+              </td>
+              <td>
+                {{
+                  language === "bn"
+                    ? $helpers.englishToBangla(item.total_grievance_approved)
+                    : item.total_grievance_approved
+                }}
+              </td>
+              <td>
+                {{
+                  language === "bn"
+                    ? $helpers.englishToBangla(item.total_grievance_canceled)
+                    : item.total_grievance_canceled
+                }}
+              </td>
+              <td>
+                {{
+                  language === "bn"
+                    ? $helpers.englishToBangla(item.total_grievance_pending)
+                    : item.total_grievance_pending
+                }}
+              </td>
+              <td>
+                <v-btn
+                  v-can="'division-edit'"
+                  fab
+                  x-small
+                  v-on="on"
+                  color="success"
+                  elevation="0"
+                >
+                  <v-icon>mdi-arrow-collapse-right </v-icon>
+                </v-btn>
+              </td>
             </tr>
           </tbody>
         </template>
       </v-simple-table>
-    </div>
-      <!-------End  table component ------->
+    </div> -->
+    <!-------End  table component ------->
   </v-container>
 </template>
 
 <script>
 import Chart from "chart.js/auto";
-import TotalNumerReceivedDoughnutChart
-  from "@/pages/GrievanceManagement/Dashboard/TotalNumerReceivedDoughnutChart.vue";
-import TotalNumerApprovePieChart from "@/pages/GrievanceManagement/Dashboard/TotalNumerApprovePieChart.vue";
-import TotalNumerLocationWisePieChart from "@/pages/GrievanceManagement/Dashboard/TotalNumerLocationWisePieChart.vue";
-import TotalNumerStatusWisePieChart from "@/pages/GrievanceManagement/Dashboard/TotalNumerStatusWisePieChart.vue";
+import TotalNumerReceivedDoughnutChart from "@/pages/PayrollManagement/Dashboard/TotalNumerReceivedDoughnutChart.vue";
+import TotalNumerApprovePieChart from "@/pages/PayrollManagement/Dashboard/TotalNumerApprovePieChart.vue";
+import TotalNumerLocationWisePieChart from "@/pages/PayrollManagement/Dashboard/TotalNumerLocationWisePieChart.vue";
+import TotalNumerStatusWisePieChart from "@/pages/PayrollManagement/Dashboard/TotalNumerStatusWisePieChart.vue";
 import { GChart } from "vue-google-charts/legacy";
 export default {
   name: "Index",
   title: "Payroll Dashboard",
   data() {
     return {
-      totalRecivedGrievance:null,
+      totalRecivedGrievance: null,
       totalSolvedGrievance: null,
       totalCanceledGrievance: null,
-      totalPendingGrievance:null,
-      locationWisegrievacne:null,
+      totalPendingGrievance: null,
+      locationWisegrievacne: null,
     };
   },
   components: {
@@ -202,13 +284,13 @@ export default {
     TotalNumerReceivedDoughnutChart,
     TotalNumerApprovePieChart,
     TotalNumerLocationWisePieChart,
-    TotalNumerStatusWisePieChart
+    TotalNumerStatusWisePieChart,
   },
   computed: {
-     language: {
+    language: {
       get() {
         return this.$store.getters.getAppLanguage;
-      }
+      },
     },
     // drawer: {
     //   get() {
@@ -220,88 +302,92 @@ export default {
     // },
   },
   methods: {
-   async getTotalRecivedNumberOfGrievance(){
-
-      this.$axios.get("admin/grievance-dashboard/numberReceivedOfGrievance",{
-       headers: {
-          Authorization: "Bearer " + this.$store.state.token,
-          "Content-Type": "multipart/form-data",
-        },
-        // params: queryParams,
-      }).then((result) => {
-         console.log(result.data.data,'total');
-        this.totalRecivedGrievance = result?.data?.data;
-      });
+    async getTotalRecivedNumberOfGrievance() {
+      this.$axios
+        .get("admin/grievance-dashboard/numberReceivedOfGrievance", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          // params: queryParams,
+        })
+        .then((result) => {
+          console.log(result.data.data, "total");
+          this.totalRecivedGrievance = result?.data?.data;
+        });
     },
-   async getTotalSolvedNumberOfGrievance() {
+    async getTotalSolvedNumberOfGrievance() {
       const queryParams = {
         status: 2,
       };
-      this.$axios.get("admin/grievance-dashboard/numberOfSolvedGrievance", {
-        headers: {
-          Authorization: "Bearer " + this.$store.state.token,
-          "Content-Type": "multipart/form-data",
-        },
-        params: queryParams,
-      }).then((result) => {
-        console.log(result,'response');
-        this.totalSolvedGrievance = result?.data?.data;
-      });
+      this.$axios
+        .get("admin/grievance-dashboard/numberOfSolvedGrievance", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          console.log(result, "response");
+          this.totalSolvedGrievance = result?.data?.data;
+        });
     },
     async getTotalCanceledNumberOfGrievance() {
       const queryParams = {
         status: 3,
       };
-      this.$axios.get("admin/grievance-dashboard/numberOfCanceledGrievance", {
-        headers: {
-          Authorization: "Bearer " + this.$store.state.token,
-          "Content-Type": "multipart/form-data",
-        },
-        params: queryParams,
-      }).then((result) => {
-        this.totalCanceledGrievance = result?.data?.data;
-      });
+      this.$axios
+        .get("admin/grievance-dashboard/numberOfCanceledGrievance", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          this.totalCanceledGrievance = result?.data?.data;
+        });
     },
     async getTotalPendingNumberOfGrievance() {
       const queryParams = {
         status: 0,
       };
-      this.$axios.get("admin/grievance-dashboard/numberOfPendingdGrievance", {
-        headers: {
-          Authorization: "Bearer " + this.$store.state.token,
-          "Content-Type": "multipart/form-data",
-        },
-        params: queryParams,
-      }).then((result) => {
-        this.totalPendingGrievance = result?.data?.data;
-      });
+      this.$axios
+        .get("admin/grievance-dashboard/numberOfPendingdGrievance", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          this.totalPendingGrievance = result?.data?.data;
+        });
     },
     async getLocationoWiseNumberOfGrievance() {
       const queryParams = {
-        status: 'location',
+        status: "location",
       };
-      this.$axios.get("/admin/grievance-dashboard/location-wise-grievance", {
-        headers: {
-          Authorization: "Bearer " + this.$store.state.token,
-          "Content-Type": "multipart/form-data",
-        },
-        params: queryParams,
-      }).then((result) => {
-        this.locationWisegrievacne = result?.data?.data;
-        console.log(this.locationWisegrievacne,'anwar');
-      });
-    }
-
+      this.$axios
+        .get("/admin/grievance-dashboard/location-wise-grievance", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          this.locationWisegrievacne = result?.data?.data;
+          console.log(this.locationWisegrievacne, "anwar");
+        });
+    },
   },
   mounted() {
     this.drawer = false;
   },
-  beforeMount() {
-
-  },
-  watch: {
-
-  },
+  beforeMount() {},
+  watch: {},
 
   created() {
     this.getTotalRecivedNumberOfGrievance();
@@ -310,16 +396,15 @@ export default {
     this.getTotalPendingNumberOfGrievance();
     this.getLocationoWiseNumberOfGrievance();
   },
-
-}
+};
 </script>
 <style>
 .highlight-column {
   background-color: #e0eaf1;
 }
 .custom-title {
-    background-color: rgb(28, 59, 104);
-    color: white;
-    padding: 10px;
+  background-color: rgb(28, 59, 104);
+  color: white;
+  padding: 10px;
 }
 </style>
