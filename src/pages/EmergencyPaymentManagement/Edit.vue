@@ -5,11 +5,7 @@
         <div class="clearfix">
           <div class="title-left">
             <h4 class="title-text">
-              {{
-                !isEdit
-                  ? $t("container.emergency_payment.add_new")
-                  : $t("container.emergency_payment.edit")
-              }}
+              {{ $t("container.emergency_payment.edit") }}
             </h4>
           </div>
         </div>
