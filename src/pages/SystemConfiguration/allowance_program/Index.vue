@@ -20,7 +20,7 @@ export default {
       pagination: {
         current: 1,
         total: 0,
-        perPage: 10,
+        perPage: 5,
       },
       sortBy: "name_en",
       sortDesc: false, //ASC
@@ -58,9 +58,9 @@ export default {
    [
           { text: this.$t('container.list.sl'), value: "id", align: "start", sortable: false, width:"5%"},
        
-          { text: this.$t('container.system_config.allowance_program.payment_cycle'), value: "payment", width: "10%" },
+          { text: this.$t('container.system_config.allowance_program.payment_cycle'), value: "payment", width: "10%", sortable: false, },
           { text: this.$t('container.system_config.allowance_program.status'), value: "is_active", width: "10%" },
-          { text: this.$t('container.system_config.allowance_program.system_status'), value: "system_status", width: "15%" },
+          { text: this.$t('container.system_config.allowance_program.system_status'), value: "system_status", width: "15%", sortable: false, },
           { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false, width: "20%" },
       ];
       if (this.language == 'en') {
@@ -381,7 +381,7 @@ export default {
               <v-card-text>
                 <v-card-title class="mb-5">
                   <div class="d-flex justify-sm-end flex-wrap">
-                    <v-text-field @keyup.native="getAllowance" v-model="search" append-icon="mdi-magnify" label="Search"
+                    <v-text-field @keyup.native="getAllowance" v-model="search" append-icon="mdi-magnify" :label="$t('container.list.search')"
                       hide-details class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal" flat outlined
                       dense></v-text-field>
                   </div>
