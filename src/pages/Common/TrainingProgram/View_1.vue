@@ -192,15 +192,15 @@ export default {
                 </v-col>
             </v-row>
         </v-app-bar>
-        <v-row class="mt-1">
+        <v-row class="mt-1 mb-10">
             <v-col cols="10" offset="1">
                 <v-card class="mx-3 mt-5">
                     <v-card-title class="justify-center black--text mt-15"
                         style="background-color: #1C3B68; color: white;">
-                        <h4 class="white--text">{{ $t("container.training_management.training_program.view") }}
-                        </h4>
+                        <h5 class="white--text">{{ $t("container.training_management.training_program.view") }}
+                        </h5>
                     </v-card-title>
-                    <v-row class="my-custom-row ma-5 mt-10">
+                    <v-row class="my-custom-row ma-5">
                         <v-col cols="5" style="font-size:13px;">
                             <b>{{ $t('container.training_management.training_program.program_name') }}</b>:
                         </v-col>
@@ -317,24 +317,15 @@ export default {
                                 'সক্রিয়' : 'Active' }}
                             </span>
                         </v-col>
-
-                        <!-- Other fields -->
-
                     </v-row>
-                    <v-card-title class="justify-center black--text "
-                        style="background-color: #1C3B68; color: white;">
-                        <h4 class="text-center white--text  ">{{
-                        $t('container.training_management.training_program.class_schedule') }}</h4>
+                    <v-card-title class="justify-center black--text " style="background-color: #1C3B68; color: white;">
+                        <h5 class="text-center white--text  ">{{
+                            $t('container.training_management.training_program.class_schedule') }}</h5>
 
                     </v-card-title>
-
-
-
-                    <v-row  class="mx-5" v-if="edited_on_days && edited_on_days.length > 0">
+                    <v-row class="mx-5" v-if="edited_on_days && edited_on_days.length > 0">
                         <v-col cols="12">
-
-
-                            <v-simple-table dense class=" mt-10" v-if="edited_on_days">
+                            <v-simple-table dense class="mt-2" v-if="edited_on_days">
                                 <template v-slot:default>
                                     <thead>
                                         <tr>
@@ -389,7 +380,9 @@ export default {
 
 
         <!-- Mail modal -->
-        <br></br>
+       
+    <br>
+    </br></br>
         <FooterBar />
     </div>
 </template>
