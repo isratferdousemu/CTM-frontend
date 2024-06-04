@@ -8,49 +8,71 @@
               <v-card-title class="justify-center" tag="div">
                 <h3 class="text-uppercase pt-3">
                   {{
-                    $t("container.application_selection.poverty_cut_off.list")
+                  $t("container.application_selection.poverty_cut_off.list")
                   }}
                 </h3>
               </v-card-title>
 
               <v-card-text>
 
-               <v-row class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
-                                      justify="center" justify-lg="space-between">
-                                      <div class="d-flex justify-sm-end flex-wrap">
-                                          <!-- <v-text-field @keyup.native="GetAllotmentSetup" outlined dense v-model="search"
-                                              prepend-inner-icon="mdi-magnify" class="my-sm-0 my-3 mx-0v -input--horizontal"
-                                              flat variant="outlined" :label="$t(
-                                                'container.list.search'
-                                              )
-                                                " hide-details color="primary">
-                                          </v-text-field> -->
-                                         
+                <v-row class="ma-5 pa-3 white round-border d-flex justify-space-between align-center" justify="center"
+                  justify-lg="space-between">
+                  <v-col cols="4">
+                    <v-select class="mr-5 no-arrow-icon" v-model="data.financial_year_id" @input="GetPovertyCutOff()"
+                      :items="financial_years"
+                      :label="$t('container.system_config.demo_graphic.financial_year.financial_year')" outlined
+                      clearable dense :item-text="getItemText_financial" item-value="id"
+                      :append-icon-cb="appendIconCallback" append-icon="mdi-plus" :error="errors[0] ? true : false"
+                      :error-messages="errors[0]"></v-select>
 
-                                                      <v-select class="mr-5 no-arrow-icon" v-model="data.financial_year_id"  @input="GetPovertyCutOff()"
-                                                          :items="financial_years" :label="$t('container.system_config.demo_graphic.financial_year.financial_year')" outlined clearable
-                                                          dense :item-text="getItemText_financial" item-value="id"
-                                                          :append-icon-cb="appendIconCallback"
-                                                          append-icon="mdi-plus" 
-                                                          :error="errors[0] ? true : false"
-                                                          :error-messages="errors[0]"></v-select>
-                                                
 
-                                                      <v-select @input="GetPovertyCutOff()" class="mr-5 no-arrow-icon" v-model="data.type"
-                                                          :items="location_types" :label="$t('container.list.location_type')"  outlined clearable
-                                                          dense :item-text="getItemText"  item-value="id"
-                                                          :error="errors[0] ? true : false"
-                                                          :append-icon-cb="appendIconCallback"
-                                                            append-icon="mdi-plus" 
-                                                          :error-messages="errors[0]"></v-select>
-                                                
-                                      </div>
-                                      <v-btn @click="navigateToPovertyScore" flat color="primary"
-                                          prepend-icon="mdi-account-multiple-plus"
-                                             v-can="'poverty-cut-off-score-create'"
-                                      >
-                                          {{ $t("container.list.add_new") }}
-                                      </v-btn>
+                  </v-col>
+                  <v-col cols="4">
+                    <v-select @input="GetPovertyCutOff()" class="mr-5 no-arrow-icon" v-model="data.type"
+                      :items="location_types" :label="$t('container.list.location_type')" outlined clearable dense
+                      :item-text="getItemText" item-value="id" :error="errors[0] ? true : false"
+                      :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
+                      :error-messages="errors[0]"></v-select>
+
+
+                  </v-col>
+                  <v-col cols="4" class="text-right">
+                    <v-btn @click="navigateToPovertyScore" flat color="primary" prepend-icon="mdi-account-multiple-plus"
+                      v-can="'poverty-cut-off-score-create'">
+                      {{ $t("container.list.add_new") }}
+                    </v-btn>
+
+                  </v-col>
+
+
+
+
+
+
+
+                </v-row>
+                <v-row justify="space-between" align="center" class="mx-4">
+                  <!-- Checkbox on the left -->
+                  <v-col sm="6" lg="6" md="6" cols="12">
+                    {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">
+                      {{ language === 'bn' ? $helpers.englishToBangla(this.total) : this.total
+                      }}
+                    </span>
+                  </v-col>
+                  <!-- Dropdown on the right -->
+                  <v-col sm="6" lg="6" md="6" cols="12" class="text-right">
+                    <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="GeneratePDF()">
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                      {{ $t("container.list.PDF") }}
+                    </v-btn>
+                    <v-btn elevation="2" class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
+                      <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                      {{ $t("container.list.excel") }}
+                    </v-btn>
+                  </v-col>
+                </v-row>
+                <v-row class="ma-0 pa-3 white round-border d-flex justify-space-between align-center" justify="center"
+                  justify-lg="space-between">
 
                   <v-col cols="12">
                     <v-data-table :loading="loading" item-key="id" :headers="headers" :items="cut_off"
@@ -58,42 +80,42 @@
                       class="elevation-0 transparent row-pointer">
                       <template v-slot:item.id="{ item, index }">
                         {{
-                    
-    language === 'bn' ?  $helpers.englishToBangla(
-                            (pagination.current - 1) * pagination.perPage +
-                            index +
-                            1) : (pagination.current - 1) * pagination.perPage +
-                            index + 1  
-                    
- 
+
+                        language === 'bn' ? $helpers.englishToBangla(
+                        (pagination.current - 1) * pagination.perPage +
+                        index +
+                        1) : (pagination.current - 1) * pagination.perPage +
+                        index + 1
+
+
                         }}
                       </template>
-                   
+
                       <template v-slot:item.division_or_district_cut_off="{ item }">
                         <span v-if="item.type === 1">
                           {{ language === 'bn' ? 'বিভাগ' : 'Division' }}
                         </span>
                         <span v-else>
-                          {{   language === 'bn' ? 'জেলা' : 'District' }}
-                         
-                           
+                          {{ language === 'bn' ? 'জেলা' : 'District' }}
+
+
                         </span>
                       </template>
-                         <template v-slot:item.financial_year="{ item }">
-                         
-                            {{  language === 'bn' ? $helpers.englishToBangla(item.financial_year) : item.financial_year  }}
-                         
-                          
-                        </template>
-                      
+                      <template v-slot:item.financial_year="{ item }">
+
+                        {{ language === 'bn' ? $helpers.englishToBangla(item.financial_year) : item.financial_year }}
+
+
+                      </template>
+
 
 
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn v-can="'poverty-cut-off-score-edit'" fab x-small v-on="on" color="success" elevation="0"
-                              @click="editDialog(item.financial_year_id, item.type)">
+                            <v-btn v-can="'poverty-cut-off-score-edit'" fab x-small v-on="on" color="success"
+                              elevation="0" @click="editDialog(item.financial_year_id, item.type)">
                               <v-icon> mdi-account-edit-outline </v-icon>
                             </v-btn>
                           </template>
@@ -104,8 +126,8 @@
 
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn v-can="'poverty-cut-off-score-delete'" fab x-small v-on="on" color="grey" class="ml-3 white--text"
-                              elevation="0" @click="deleteAlert(item)">
+                            <v-btn v-can="'poverty-cut-off-score-delete'" fab x-small v-on="on" color="grey"
+                              class="ml-3 white--text" elevation="0" @click="deleteAlert(item)">
                               <v-icon> mdi-delete </v-icon>
                             </v-btn>
                           </template>
@@ -121,7 +143,7 @@
                               right: 25px;
                               width: 149px;
                               transform: translate(0px, 0px);
-                            " :items="items" hide-details dense outlined @change="onPageChange"
+                            " :items="items" hide-details dense outlined @change="perPageChange"
                             v-model="pagination.perPage"></v-select>
                           <v-pagination circle primary v-model="pagination.current" :length="pagination.total"
                             @input="onPageChange" :total-visible="11" class="custom-pagination-item"></v-pagination>
@@ -154,7 +176,7 @@
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
               {{
-                $t("container.application_selection.poverty_cut_off.delete_alert")
+              $t("container.application_selection.poverty_cut_off.delete_alert")
               }}
             </div>
           </v-card-text>
@@ -194,6 +216,8 @@ export default {
         type: null,
         score: null,
       },
+      reports:[],
+      total:null,
       delete_item: [],
       filters: [],
       dialogAdd: false,
@@ -281,6 +305,198 @@ export default {
   },
 
   methods: {
+    async GeneratePDF() {
+      this.isLoading = true;
+      let page;
+      if (!this.sortBy) {
+        page = this.pagination.current;
+      }
+      const queryParams = {
+
+        language: this.$i18n.locale,
+        perPage: this.search.trim() === '' ? this.total : this.total,
+        page: 1,
+        sortBy: this.sortBy,
+        orderBy: this.sortDesc,
+        search: this.search,
+       
+      };
+
+      await this.$axios
+        .get("/admin/poverty/get", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          this.reports = result?.data?.data;
+
+        });
+
+      const HeaderInfo = [
+        this.$t("container.list.sl"),
+        this.$t('container.application_selection.poverty_cut_off.poverty_cut_off'),
+        this.$t('container.system_config.demo_graphic.financial_year.financial_year'),
+       
+
+
+      ]
+
+
+
+      const CustomInfo = this.reports.map(((i, index) => {
+        let paymentCycle;
+        switch (i.type) {
+          case 1:
+           
+            paymentCycle = this.language  == 'bn' ? 'বিভাগ' : 'Division';
+            break;
+          case 2:
+            paymentCycle = this.language == 'bn' ? 'জেলা' : 'District';
+            break;
+         
+          default:
+            paymentCycle = i.payment_cycle;
+        }
+
+        return [
+          this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+
+          paymentCycle,
+          this.$i18n.locale == 'en' ? i?.financial_year : this.$helpers.englishToBangla(i?.financial_year),
+        ]
+      }));
+
+      const queryParam = {
+        language: this.$i18n.locale,
+        data: CustomInfo,
+        header: HeaderInfo,
+        fileName: this.$t("container.application_selection.poverty_cut_off.list"),
+      };
+      try {
+        const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "application/json", // Set content type to JSON
+          },
+          responseType: 'arraybuffer',
+        });
+
+        const blob = new Blob([response.data], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        window.open(url, '_blank');
+        this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
+        console.error('Error generating PDF:', error);
+      }
+    },
+    async GenerateExcel() {
+      this.isLoading = true;
+      let page;
+      if (!this.sortBy) {
+        page = this.pagination.current;
+      }
+      const queryParams = {
+        language: this.$i18n.locale,
+        searchText: this.search,
+        perPage: this.search.trim() === '' ? this.total : this.total,
+        page: 1,
+        sortBy: this.sortBy,
+        orderBy: this.sortDesc,
+      };
+
+      await this.$axios
+        .get("/admin/poverty/get", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          this.reports = result?.data?.data;
+        })
+        .catch(error => {
+          this.isLoading = false;
+        });
+
+      try {
+        import('@/plugins/Export2Excel').then((excel) => {
+
+          const HeaderInfo = [
+            this.$t("container.list.sl"),
+            this.$t('container.application_selection.poverty_cut_off.poverty_cut_off'),
+            this.$t('container.system_config.demo_graphic.financial_year.financial_year'),
+
+          ]
+
+          const CustomInfo = this.reports.map(((i, index) => {
+            let paymentCycle;
+            switch (i.type) {
+              case 1:
+
+                paymentCycle = this.language == 'bn' ? 'বিভাগ' : 'Division';
+                break;
+              case 2:
+                paymentCycle = this.language == 'bn' ? 'জেলা' : 'District';
+                break;
+
+              default:
+                paymentCycle = i.payment_cycle;
+            }
+            return {
+
+
+              "sl": this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+
+              "cutt_off": paymentCycle,
+              "year": this.$i18n.locale == 'en' ? i?.financial_year : this.$helpers.englishToBangla(i?.financial_year),
+            
+            }
+
+          }));
+
+          const Field = ['sl', 'cutt_off', 'year']
+
+          const Data = this.FormatJson(Field, CustomInfo)
+          const prefixHeader = [
+            "Government of the People's Republic of Bangladesh",
+            "Department of Social Services",
+            "Cash Transfer Modernization(CTM) Project",
+            "Social Service Building, E-8/B-1, Agargaon, Sherbangla Nagar, Dhaka-1207, Bangladesh."
+          ];
+          const currentDate = new Date().toISOString().slice(0, 10); //
+          let dateinfo = queryParams.language == 'en' ? currentDate : this.$helpers.englishToBangla(currentDate)
+
+          const filenameWithDate = `${dateinfo}_${this.$t("container.application_selection.poverty_cut_off.list")}`;
+
+          excel.export_json_to_excel({
+            header: HeaderInfo,
+            data: Data,
+            sheetName: filenameWithDate,
+            filename: filenameWithDate,
+            autoWidth: true,
+            bookType: "xlsx",
+            extraHeaders: prefixHeader,
+          })
+        })
+      } catch (error) {
+        // Handle any errors here
+        this.isLoading = false;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    FormatJson(FilterData, JsonData) {
+      return JsonData.map((v) =>
+        FilterData.map((j => {
+          return v[j];
+        })))
+    },
+
       getItemText(item) {
       return this.language === 'bn' ? item.name_bn : item.name_en;
     },
@@ -453,6 +669,10 @@ export default {
       // this.pagination.current = $event;
       this.GetPovertyCutOff();
     },
+    perPageChange($event) {
+      this.pagination.current = 1;
+      this.GetPovertyCutOff();
+    },
 
     async GetPovertyCutOff() {
       const queryParams = {
@@ -478,6 +698,8 @@ export default {
           this.pagination.current = result.data.current_page;
           this.pagination.total = result.data.last_page;
           this.pagination.grand_total = result.data.total;
+          this.total=result.data.total;
+          
         });
     },
     async GetFinancialYear() {
