@@ -6,7 +6,10 @@ const EmergencyPaymentManagementRoutes = [
       requiresAuth: true,
       permission: "emergency-allotment-view",
     },
-    component: () => import("../pages/EmergencyPaymentManagement/Index.vue"),
+    component: () =>
+      import(
+        "../pages/EmergencyPaymentManagement/EmergencyAllotment/Index.vue"
+      ),
   },
   {
     path: "/emergency-payment/emergency-allotment/create",
@@ -15,7 +18,10 @@ const EmergencyPaymentManagementRoutes = [
       requiresAuth: true,
       permission: "emergency-allotment-create",
     },
-    component: () => import("../pages/EmergencyPaymentManagement/Create.vue"),
+    component: () =>
+      import(
+        "../pages/EmergencyPaymentManagement/EmergencyAllotment/Create.vue"
+      ),
   },
   {
     path: "/emergency-payment/emergency-allotment/edit/:id",
@@ -24,7 +30,8 @@ const EmergencyPaymentManagementRoutes = [
       requiresAuth: true,
       permission: "emergency-allotment-edit",
     },
-    component: () => import("../pages/EmergencyPaymentManagement/Edit.vue"),
+    component: () =>
+      import("../pages/EmergencyPaymentManagement/EmergencyAllotment/Edit.vue"),
   },
 ];
 
