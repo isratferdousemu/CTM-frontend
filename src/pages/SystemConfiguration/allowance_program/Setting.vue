@@ -243,7 +243,7 @@ export default {
             id: '',
             name: '',
             type_id: '',
-            amount: '',
+            amount: 0,
           }
 
           this.updateAllowanceAmount.push(disable_class);
@@ -271,7 +271,7 @@ export default {
                         gender_id: event[i],
                         min_age: '',
                         max_age: '',
-                        amount: ''
+                        amount: 0
                     };
                     console.log(this.updateAllowanceAge[i], 'not got', event[i]);
                     arr.push(age_limit)
@@ -320,7 +320,7 @@ export default {
             this.updateAllowanceAmount.push({
                 id: (id + 1),
                 type_id: '',
-                amount: '',
+                amount: 0,
             });
         },
 
@@ -624,7 +624,7 @@ export default {
                                                                 </td>
                                                             </tr>
                                                             <tr v-show="!updateAllowanceAge.length">
-                                                                <td colspan="5">No Data Found</td>
+                                                                <td colspan="5">{{ $t('container.list.no_data') }}</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
