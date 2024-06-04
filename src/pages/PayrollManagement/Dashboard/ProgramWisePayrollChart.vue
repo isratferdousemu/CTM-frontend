@@ -5,7 +5,7 @@
       <v-card :loading="isLoading" style="background-color:#1c3b68;color:white;font-size:12px;">
          <v-card-title style=" padding: 10px;">
              <h5 class="white--text">
-               {{ $t("container.grievance_management.dashboard.program_wise_total_approved") }}
+               {{ $t("container.payroll_management.dashboard.program_wise_payroll") }}
             </h5>
         </v-card-title>
       </v-card>
@@ -71,8 +71,8 @@ export default {
       menu: false,
       programwise_application_approve_chart: null,
       programwise_application_approve_info: [],
-      programwise_application_approve_levels: [],
-      programwise_application_approve_datas: [],
+      chart_levels: [],
+      chart_datas: [],
       isLoading: false,
       dateRangeText: ""
     };
@@ -84,7 +84,7 @@ export default {
       this.fetchProgramwiseApproveApplicationChartData()
     },
     async fetchProgramwiseApproveApplicationChartData(from_date = null, to_date = null) {
-      await this.getProgramwiseApproveApplication(2, from_date, to_date);
+      await this.getProgramwiseApproveApplication(null, from_date, to_date);
        if (this.allZeros != true) {
         this.createProgramwiseApproveApplicentChart();
       }
@@ -97,17 +97,18 @@ export default {
         end_date: to_date,
       };
       try {
-        const result = await this.$axios.get("/admin/grievance-dashboard/get-total-approve-grievance", {
+        const result = await this.$axios.get("/admin/payroll/program-wise-payroll", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
           },
           params: queryParams,
         });
+        console.log("🚀 ~ getProgramwiseApproveApplication ~ result:", result)
 
         this.programwise_application_approve_info = result.data.data;
-        this.programwise_application_approve_levels = this.programwise_application_approve_info.map((row) => this.$i18n.locale == 'en' ? row.name_en : row.name_bn);
-        this.programwise_application_approve_datas = this.programwise_application_approve_info.map((row) => row.grievances_count);
+        this.chart_levels = result?.data?.data?.map((row) => this.$i18n.locale == 'en' ? row?.name_en : row?.name_bn);
+        this.chart_datas = result?.data?.data?.map((row) => row?.payroll_count);
         this.isLoading = false;
 
       } catch (error) {
@@ -120,11 +121,11 @@ export default {
       if (this.programwise_application_approve_chart) {
         this.programwise_application_approve_chart.destroy();
       }
-      if (this.programwise_application_approve_levels && this.programwise_application_approve_datas) {
-        const total = this.programwise_application_approve_datas.reduce((acc, value) => acc + value, 0);
-        // const percentages = this.programwise_application_approve_datas.map(value => ((value / total) * 100).toFixed(2) + '%');
+      if (this.chart_levels && this.chart_datas) {
+        const total = this.chart_datas.reduce((acc, value) => acc + value, 0);
+        // const percentages = this.chart_datas.map(value => ((value / total) * 100).toFixed(2) + '%');
 
-        const percentages = this.programwise_application_approve_datas.map(value => {
+        const percentages = this.chart_datas.map(value => {
           const percentage = ((value / total) * 100).toFixed(2);
           return isNaN(percentage) ? '0.00%' : percentage + '%';
         });
@@ -132,15 +133,15 @@ export default {
         this.programwise_application_approve_chart = new Chart(document.getElementById("programwise_application_approval"), {
           type: "pie",
           data: {
-            // labels: this.programwise_application_approve_levels,
-            // labels: this.programwise_application_approve_levels.map((label, index) => `${label} (${percentages[index]})`),
-            labels: this.programwise_application_approve_levels.map((label, index) => `${label} (${this.$i18n.locale == 'en' ? this.programwise_application_approve_datas[index] : this.$helpers.englishToBangla(this.programwise_application_approve_datas[index])} - ${this.$i18n.locale == 'en' ? percentages[index]  : this.$helpers.englishToBangla(percentages[index])})`),
+            // labels: this.chart_levels,
+            // labels: this.chart_levels.map((label, index) => `${label} (${percentages[index]})`),
+            labels: this.chart_levels.map((label, index) => `${label} (${this.$i18n.locale == 'en' ? this.chart_datas[index] : this.$helpers.englishToBangla(this.chart_datas[index])} - ${this.$i18n.locale == 'en' ? percentages[index]  : this.$helpers.englishToBangla(percentages[index])})`),
             percentages:percentages,
             datasets: [
               {
                 label: "Values",
-                data: this.programwise_application_approve_datas,
-                backgroundColor: this.programwise_application_approve_datas.map(() => this.generateRandomColor()),
+                data: this.chart_datas,
+                backgroundColor: this.chart_datas.map(() => this.generateRandomColor()),
                 // backgroundColor: ["Green", "Red", "blue", "Purple", "Yellow"],
                 hoverOffset: 4,
               },
@@ -223,7 +224,7 @@ export default {
       }
     },
     allZeros() {
-      return this.programwise_application_approve_datas.every(value => value === 0);
+      return this.chart_datas.every(value => value === 0);
     }
   },
   watch: {
@@ -233,7 +234,7 @@ export default {
           this.fetchProgramwiseApproveApplicationChartData();
         }
       },
-      immediate: true // Call the handler immediately to initialize the levels
+      immediate: true // Call the handler immediately to initialize the chart_levels
     }
   },
 }

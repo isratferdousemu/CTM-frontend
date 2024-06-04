@@ -33,8 +33,8 @@
           <h1 align="center">
             {{
               language === "bn"
-                ? $helpers.englishToBangla(this.totalRecivedGrievance)
-                : this.totalRecivedGrievance
+                ? $helpers.englishToBangla(this.total_approved_payroll)
+                : this.total_approved_payroll
             }}
           </h1>
         </v-card>
@@ -43,7 +43,9 @@
       <v-col cols="12" md="3">
         <v-card class="mx-auto" color="grey lighten-4" max-width="600">
           <v-card-title>
-            <v-icon color="indigo" class="mr-8 mb-2" size="64"> mdi-cancel </v-icon>
+            <v-icon color="indigo" class="mr-8 mb-2" size="64">
+              mdi-cancel
+            </v-icon>
             <v-row align="start">
               <div class="text-caption black--text text-uppercase">
                 {{
@@ -55,8 +57,8 @@
           <h1 align="center">
             {{
               language === "bn"
-                ? $helpers.englishToBangla(this.totalSolvedGrievance)
-                : this.totalSolvedGrievance
+                ? $helpers.englishToBangla(this.total_rejected_payroll)
+                : this.total_rejected_payroll
             }}
           </h1>
         </v-card>
@@ -65,7 +67,9 @@
       <v-col cols="12" md="3">
         <v-card class="mx-auto" color="grey lighten-4" max-width="600">
           <v-card-title>
-            <v-icon color="indigo" class="mr-8 mb-2" size="64"> mdi-refresh </v-icon>
+            <v-icon color="indigo" class="mr-8 mb-2" size="64">
+              mdi-refresh
+            </v-icon>
             <v-row align="start">
               <div class="text-caption black--text text-uppercase">
                 {{
@@ -79,8 +83,8 @@
           <h1 align="center">
             {{
               language === "bn"
-                ? $helpers.englishToBangla(this.totalCanceledGrievance)
-                : this.totalCanceledGrievance
+                ? $helpers.englishToBangla(this.total_payment_cycle)
+                : this.total_payment_cycle
             }}
           </h1>
         </v-card>
@@ -89,7 +93,9 @@
       <v-col cols="12" md="3">
         <v-card class="mx-auto" color="grey lighten-4" max-width="600">
           <v-card-title>
-            <v-icon color="indigo" class="mr-8 mb-2" size="64"> mdi-check </v-icon>
+            <v-icon color="indigo" class="mr-8 mb-2" size="64">
+              mdi-check
+            </v-icon>
             <v-row align="start">
               <div class="text-caption black--text text-uppercase">
                 {{
@@ -103,8 +109,8 @@
           <h1 align="center">
             {{
               language === "bn"
-                ? $helpers.englishToBangla(this.totalPendingGrievance)
-                : this.totalPendingGrievance
+                ? $helpers.englishToBangla(this.total_payment_cycle_ibas)
+                : this.total_payment_cycle_ibas
             }}
           </h1>
         </v-card>
@@ -113,19 +119,19 @@
     <!-------End  header Card component ------->
     <v-row class="mt-3">
       <v-col cols="12" md="6" lg="6">
-        <v-card>
+        <v-card height="100%">
           <v-card-text>
             <V-row>
-              <TotalNumerReceivedDoughnutChart />
+              <ProgramWisePayrollChart />
             </V-row>
           </v-card-text>
         </v-card>
       </v-col>
       <v-col cols="12" md="6" lg="6">
-        <v-card height="100%">
+        <v-card>
           <v-card-text>
             <V-row>
-              <TotalNumerApprovePieChart />
+              <TotalApprovedPayrollBarChart />
             </V-row>
           </v-card-text>
         </v-card>
@@ -153,117 +159,14 @@
         </v-card>
       </v-col>
     </v-row>
-
-    <!-------Start  table  component ------->
-    <!-- <div style="margin-top: 10px">
-      <v-simple-table fixed-header class="table-responsive">
-        <template v-slot:default>
-          <caption>
-            <v-card-title class="custom-title">
-              <h6 class="text-center" style="font-size: 16.16px">
-                {{ $t("container.payroll_management.dashboard.header") }}
-              </h6>
-            </v-card-title>
-          </caption>
-          <thead class="primary lighten-1">
-            <tr>
-              <th class="text-left">
-                {{ $t("container.list.sl") }}
-              </th>
-              <th class="text-left">
-                {{ $t("container.grievance_management.dashboard.division") }}
-              </th>
-              <th class="text-left">
-                {{ $t("container.grievance_management.dashboard.total_new") }}
-              </th>
-              <th class="text-left">
-                {{
-                  $t("container.grievance_management.dashboard.total_resolved")
-                }}
-              </th>
-              <th class="text-left">
-                {{
-                  $t("container.grievance_management.dashboard.total_rejected")
-                }}
-              </th>
-              <th class="text-left">
-                {{
-                  $t(
-                    "container.grievance_management.dashboard.total_not_solved"
-                  )
-                }}
-              </th>
-              <th class="text-left">
-                {{ $t("container.grievance_management.dashboard.action") }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(item, index) in locationWisegrievacne"
-              :key="item.index"
-            >
-              <td>
-                {{
-                  language === "bn"
-                    ? $helpers.englishToBangla(index + 1)
-                    : index + 1
-                }}
-              </td>
-              <td>{{ language === "bn" ? item.name_bn : item.name_en }}</td>
-              <td>
-                {{
-                  language === "bn"
-                    ? $helpers.englishToBangla(item.total_grievance_new)
-                    : item.total_grievance_new
-                }}
-              </td>
-              <td>
-                {{
-                  language === "bn"
-                    ? $helpers.englishToBangla(item.total_grievance_approved)
-                    : item.total_grievance_approved
-                }}
-              </td>
-              <td>
-                {{
-                  language === "bn"
-                    ? $helpers.englishToBangla(item.total_grievance_canceled)
-                    : item.total_grievance_canceled
-                }}
-              </td>
-              <td>
-                {{
-                  language === "bn"
-                    ? $helpers.englishToBangla(item.total_grievance_pending)
-                    : item.total_grievance_pending
-                }}
-              </td>
-              <td>
-                <v-btn
-                  v-can="'division-edit'"
-                  fab
-                  x-small
-                  v-on="on"
-                  color="success"
-                  elevation="0"
-                >
-                  <v-icon>mdi-arrow-collapse-right </v-icon>
-                </v-btn>
-              </td>
-            </tr>
-          </tbody>
-        </template>
-      </v-simple-table>
-    </div> -->
-    <!-------End  table component ------->
   </v-container>
 </template>
 
 <script>
 import Chart from "chart.js/auto";
+import ProgramWisePayrollChart from "@/pages/PayrollManagement/Dashboard/ProgramWisePayrollChart.vue";
+import TotalApprovedPayrollBarChart from "@/pages/PayrollManagement/Dashboard/TotalApprovedPayrollBarChart.vue";
 import TotalNumerReceivedDoughnutChart from "@/pages/PayrollManagement/Dashboard/TotalNumerReceivedDoughnutChart.vue";
-import TotalNumerApprovePieChart from "@/pages/PayrollManagement/Dashboard/TotalNumerApprovePieChart.vue";
 import TotalNumerLocationWisePieChart from "@/pages/PayrollManagement/Dashboard/TotalNumerLocationWisePieChart.vue";
 import TotalNumerStatusWisePieChart from "@/pages/PayrollManagement/Dashboard/TotalNumerStatusWisePieChart.vue";
 import { GChart } from "vue-google-charts/legacy";
@@ -272,17 +175,17 @@ export default {
   title: "Payroll Dashboard",
   data() {
     return {
-      totalRecivedGrievance: null,
-      totalSolvedGrievance: null,
-      totalCanceledGrievance: null,
-      totalPendingGrievance: null,
-      locationWisegrievacne: null,
+      total_approved_payroll: null,
+      total_rejected_payroll: null,
+      total_payment_cycle: null,
+      total_payment_cycle_ibas: null,
     };
   },
   components: {
     GChart,
+    ProgramWisePayrollChart,
+    TotalApprovedPayrollBarChart,
     TotalNumerReceivedDoughnutChart,
-    TotalNumerApprovePieChart,
     TotalNumerLocationWisePieChart,
     TotalNumerStatusWisePieChart,
   },
@@ -302,84 +205,31 @@ export default {
     // },
   },
   methods: {
-    async getTotalRecivedNumberOfGrievance() {
+    async getStatusPayrollData() {
       this.$axios
-        .get("admin/grievance-dashboard/numberReceivedOfGrievance", {
+        .get("admin/payroll/payroll-status-data", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
           },
-          // params: queryParams,
         })
         .then((result) => {
-          console.log(result.data.data, "total");
-          this.totalRecivedGrievance = result?.data?.data;
+          this.total_approved_payroll = result?.data?.totalCompleted;
+          this.total_rejected_payroll = result?.data?.totalRejected;
         });
     },
-    async getTotalSolvedNumberOfGrievance() {
-      const queryParams = {
-        status: 2,
-      };
+
+    async getStatusPaymentCycleData() {
       this.$axios
-        .get("admin/grievance-dashboard/numberOfSolvedGrievance", {
+        .get("admin/payroll/payment-cycle-status-data", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
           },
-          params: queryParams,
         })
         .then((result) => {
-          console.log(result, "response");
-          this.totalSolvedGrievance = result?.data?.data;
-        });
-    },
-    async getTotalCanceledNumberOfGrievance() {
-      const queryParams = {
-        status: 3,
-      };
-      this.$axios
-        .get("admin/grievance-dashboard/numberOfCanceledGrievance", {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-          params: queryParams,
-        })
-        .then((result) => {
-          this.totalCanceledGrievance = result?.data?.data;
-        });
-    },
-    async getTotalPendingNumberOfGrievance() {
-      const queryParams = {
-        status: 0,
-      };
-      this.$axios
-        .get("admin/grievance-dashboard/numberOfPendingdGrievance", {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-          params: queryParams,
-        })
-        .then((result) => {
-          this.totalPendingGrievance = result?.data?.data;
-        });
-    },
-    async getLocationoWiseNumberOfGrievance() {
-      const queryParams = {
-        status: "location",
-      };
-      this.$axios
-        .get("/admin/grievance-dashboard/location-wise-grievance", {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-            "Content-Type": "multipart/form-data",
-          },
-          params: queryParams,
-        })
-        .then((result) => {
-          this.locationWisegrievacne = result?.data?.data;
-          console.log(this.locationWisegrievacne, "anwar");
+          this.total_payment_cycle = result?.data?.total_payment_cycle;
+          this.total_payment_cycle_ibas = result?.data?.total_processing;
         });
     },
   },
@@ -390,11 +240,8 @@ export default {
   watch: {},
 
   created() {
-    this.getTotalRecivedNumberOfGrievance();
-    this.getTotalSolvedNumberOfGrievance();
-    this.getTotalCanceledNumberOfGrievance();
-    this.getTotalPendingNumberOfGrievance();
-    this.getLocationoWiseNumberOfGrievance();
+    this.getStatusPayrollData();
+    this.getStatusPaymentCycleData();
   },
 };
 </script>

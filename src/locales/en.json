@@ -1052,7 +1052,9 @@
         "approved_payroll": "Total Approved Payroll",
         "rejected_payroll": "Total Rejected Payroll",
         "total_payment_cycle": "Total Payment Cycle",
-        "completed_payment_cycle": "Processing at IBAS ++"
+        "completed_payment_cycle": "Processing at IBAS ++",
+        "program_wise_payroll": "Program Wise Payroll",
+        "total_approve_payroll": "Total Approve Payroll"
       }
     },
     "training_management": {

@@ -1043,7 +1043,8 @@
         "approved_payroll": "মোট অনুমোদিত পেরোল",
         "rejected_payroll": "মোট প্রত্যাখ্যাত পেরোল",
         "total_payment_cycle": "মোট অর্থপ্রদান চক্র",
-        "completed_payment_cycle": "IBAS ++ এ প্রক্রিয়া করা হচ্ছে"
+        "completed_payment_cycle": "IBAS ++ এ প্রক্রিয়া করা হচ্ছে",
+        "program_wise_payroll": "প্রোগ্রাম অনুযায়ী পেরোল"
       }
     },
     "training_management": {
