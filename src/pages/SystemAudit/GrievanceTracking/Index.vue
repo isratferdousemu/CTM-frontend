@@ -17,7 +17,10 @@
     margin-bottom: 16px;
 }
 
-.status-cell, .timeline-cell, .state-cell, .time-date-cell {
+.status-cell,
+.timeline-cell,
+.state-cell,
+.time-date-cell {
     padding: 8px 0;
 }
 
@@ -31,10 +34,12 @@
         font-size: 14px;
         text-align: center;
     }
+
     .tracking-summary-item {
         font-size: 14px;
         margin-top: 8px;
     }
+
     .timeline-cell {
         text-align: center !important;
     }
@@ -45,17 +50,21 @@
         font-size: 14px;
         text-align: center;
     }
+
     .tracking-summary-item {
         font-size: 14px;
         margin-top: 8px;
     }
+
     .v-radio-group label {
         display: block;
         margin-bottom: 8px;
     }
+
     .v-btn.custom-btn-width {
         width: 100%;
     }
+
     .text-right {
         text-align: center;
     }
@@ -66,16 +75,19 @@
         font-size: 15px;
         text-align: center;
     }
+
     .tracking-summary-item {
         font-size: 15px;
         margin-top: 8px;
     }
+
     .v-radio-group label {
         margin-right: 0;
         display: block;
         text-align: center;
         margin-bottom: 8px;
     }
+
     .text-right {
         text-align: center;
     }
@@ -91,7 +103,7 @@
 
 <template>
     <div id="application_tracking">
-        <v-row class="ml-sm-5 mt-0">
+        <v-row class="ml-sm-0 mt-0">
             <v-col cols="12">
                 <v-row cols="12">
                     <v-col cols="12">
@@ -102,44 +114,53 @@
                                         <v-col cols="12" md="4" style="margin-top: -15px;">
                                             <v-radio-group required row v-model="data.tracking_type"
                                                 @change="handleRadioChange">
-                                                <label class="mr-5">{{ $t('container.grievance_management.grievanceList.grievance_tracking')
+                                                <label class="mr-5" style="margin-bottom:10px;">{{
+                                                    $t('container.grievance_management.grievanceList.grievance_tracking')
                                                 }}</label>
                                                 <v-radio :label="$t('container.system_audit.nbr')" :value="1"></v-radio>
-                                                <v-radio :label="$t('container.grievance_management.grievanceList.tracking_no')"
+                                                <v-radio
+                                                    :label="$t('container.grievance_management.grievanceList.tracking_no')"
                                                     :value="2"></v-radio>
                                             </v-radio-group>
                                         </v-col>
                                         <v-col cols="12" md="6">
                                             <div v-if="data.tracking_type == 2">
-                                                <label>{{ $t('container.grievance_management.grievanceList.tracking_no') }}</label>
-                                                <v-text-field v-model="data.tracking_no" outlined clearable></v-text-field>
+                                                <label>{{ $t('container.grievance_management.grievanceList.tracking_no')
+                                                }}</label>
+                                                <v-text-field style="margin-top:10px;" v-model="data.tracking_no" outlined
+                                                    clearable></v-text-field>
                                             </div>
                                             <div v-if="data.tracking_type == 1">
                                                 <v-row>
                                                     <v-col cols="12" sm="6">
                                                         <label>{{ $t('container.system_audit.nbr') }}</label>
-                                                        <v-text-field outlined clearable v-model="data.nid"></v-text-field>
+                                                        <v-text-field style="margin-top:10px;" outlined clearable
+                                                            v-model="data.nid"></v-text-field>
                                                     </v-col>
                                                     <v-col cols="12" sm="6">
                                                         <label>{{
                                                             $t('container.application_selection.application.date_of_birth')
                                                         }}</label>
-                                                        <v-text-field outlined clearable v-model="data.date_of_birth"
-                                                            type="date"></v-text-field>
+                                                        <v-text-field style="margin-top:10px;" outlined clearable
+                                                            v-model="data.date_of_birth" type="date"></v-text-field>
                                                     </v-col>
                                                 </v-row>
                                             </div>
                                         </v-col>
-                                        <v-col cols="12" md="2">
-                                            <div class="text-right">
+
+                                    </v-row>
+                                    <v-row>
+                                        <v-col cols="12">
+                                            <div class="text-right" style="margin-buttom:20px;">
                                                 <v-btn type="submit" flat color="success" @click="grievanceTracking()"
-                                                    class="custom-btn-width white--text py-2" style="margin-top:22px;">
+                                                    class="custom-btn-width white--text ">
                                                     <span class="mdi mdi-television mr-2"></span>
                                                     {{ $t("container.list.preview") }}
                                                 </v-btn>
                                             </div>
                                         </v-col>
                                     </v-row>
+
                                 </v-container>
                             </v-card-text>
                         </v-card>
@@ -149,9 +170,10 @@
                             <v-card-text>
                                 <v-row cols="12" dense style="background-color:rgb(28, 59, 104);color:white">
                                     <v-col md="6" sm="6" lg="6" cols="12">
-                                            <v-card-title class="custom-title">
-                                                <h6 class="text-center" style="font-size:16.16px;">{{ $t('container.grievance_management.grievanceList.grievance_details') }}</h6>
-                                          </v-card-title>
+                                        <v-card-title class="custom-title">
+                                            <h5 class="text-center" style="font-size:16.16px;">{{
+                                                $t('container.grievance_management.grievanceList.grievance_details') }}</h5>
+                                        </v-card-title>
                                     </v-col>
                                 </v-row>
                                 <v-row dense style="margin-left:9px;">
@@ -160,46 +182,62 @@
                                         <b>{{ data.name }}:</b> {{ data.value }}
                                     </v-col>
                                 </v-row>
-                       <v-row cols="12">
-        <v-col cols="12">
-          <v-card elevation="0">
-            <v-card-title class="custom-title">
-              <h5 class="text-center">{{ $t('container.grievance_management.grievanceList.grievance_status') }}</h5>
-            </v-card-title>
-            <v-card-text class="m-0">
-              <v-container fluid>
-                <v-row v-for="(item, index) in tracking" :key="index" v-show="item.status != '' && item.length != 0" :style="{ color: getFontColor(item.status) }" class="tracking-item mt-2">
-                  <v-col cols="12" sm="6" md="3" class="text-center status-cell">
-                    {{ getStatusName(item.status) }}
-                  </v-col>
-                  <v-col cols="12" sm="6" md="2" class="text-center timeline-cell" style="margin-top:-30px;">
-                    <v-timeline align-top truncate-line="both">
-                      <v-timeline-item :color="getTimelineColor(item.status)" :icon="getTimelineIcon(item.status)">
-                      </v-timeline-item>
-                    </v-timeline>
-                  </v-col>
-                  <v-col cols="12" md="5" class="text-center state-cell">
-                    {{ getStateName(item.status) }}
-                  </v-col>
-                  <v-col cols="12" md="2" class="time-date-cell" v-show="item.status != ''">
-                    {{ language == 'bn' ? "সময়:" : "Time:" }} {{ language == 'bn' ? $helpers.englishToBangla(item.time ?? '') : item.time ?? '' }}<br>
-                    {{ language == 'bn' ? "তারিখ :" : "Date:" }} {{ language == 'bn' ? $helpers.englishToBangla(item.date ?? '') : item.date ?? '' }}<br>
-                    <span v-if="item.daysToken > 0">
-                      {{ language == 'bn' ? "প্রাপ্ত কার্য সম্পাদনের গৃহীত সময়কাল:" : "Days Taken: " }} {{ language == 'bn' ? $helpers.englishToBangla(item.daysToken ?? '') : item.daysToken ?? '' }}
-                    </span>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-          </v-card>
-        </v-col>
-        <v-row class="justify-end mt-2">
-          <v-col v-for="legend in legends" :key="legend.status" cols="4" sm="3" md="1" lg="1" class="text-center">
-            <v-icon :color="legend.color">{{ legend.icon }}</v-icon><br>
-            <span>{{ legend.label }}</span>
-          </v-col>
-        </v-row>
-      </v-row>
+                                <v-row cols="12">
+                                    <v-col cols="12">
+                                        <v-card elevation="0">
+                                            <v-card-title class="custom-title">
+                                                <h5 class="text-center">{{
+                                                    $t('container.grievance_management.grievanceList.grievance_status') }}
+                                                </h5>
+                                            </v-card-title>
+                                            <v-card-text class="m-0">
+                                                <v-container fluid>
+                                                    <v-row v-for="(item, index) in tracking" :key="index"
+                                                        v-show="item.status != '' && item.length != 0"
+                                                        :style="{ color: getFontColor(item.status) }"
+                                                        class="tracking-item mt-2">
+                                                        <v-col cols="12" sm="6" md="3" class="text-center status-cell">
+                                                            {{ getStatusName(item.status) }}
+                                                        </v-col>
+                                                        <v-col cols="12" sm="6" md="2" class="text-center timeline-cell"
+                                                            style="margin-top:-30px;">
+                                                            <v-timeline align-top truncate-line="both">
+                                                                <v-timeline-item :color="getTimelineColor(item.status)"
+                                                                    :icon="getTimelineIcon(item.status)">
+                                                                </v-timeline-item>
+                                                            </v-timeline>
+                                                        </v-col>
+                                                        <v-col cols="12" md="5" class="text-center state-cell">
+                                                            {{ getStateName(item.status) }}
+                                                        </v-col>
+                                                        <v-col cols="12" md="2" class="time-date-cell"
+                                                            v-show="item.status != ''">
+                                                            {{ language == 'bn' ? "সময়:" : "Time:" }} {{ language == 'bn' ?
+                                                                $helpers.englishToBangla(item.time ?? '') : item.time ?? ''
+                                                            }}<br>
+                                                            {{ language == 'bn' ? "তারিখ :" : "Date:" }} {{ language == 'bn'
+                                                                ? $helpers.englishToBangla(item.date ?? '') : item.date ?? ''
+                                                            }}<br>
+                                                            <span v-if="item.daysToken > 0">
+                                                                {{ language == 'bn' ? "প্রাপ্ত কার্য সম্পাদনের গৃহীত
+                                                                                                                                সময়কাল: " : "Days Taken: " }} {{ language == 'bn' ?
+                                                                    $helpers.englishToBangla(item.daysToken ?? '') :
+                                                                    item.daysToken ?? '' }}
+                                                            </span>
+                                                        </v-col>
+                                                    </v-row>
+                                                </v-container>
+                                            </v-card-text>
+                                        </v-card>
+                                    </v-col>
+                                    <v-row class="justify-end mt-2">
+                                        <v-col v-for="legend in legends" :key="legend.status" cols="4" sm="3" md="1" lg="1"
+                                            class="text-center">
+                                            <v-icon :color="legend.color">{{ legend.icon }}</v-icon><br>
+                                            <span>{{ legend.label }}</span>
+                                        </v-col>
+                                    </v-row>
+                                </v-row>
 
 
                             </v-card-text>
@@ -362,8 +400,8 @@ export default {
 
                 const trackingAllData = response.data.data.grievacne_status_details;
 
-                var updatedTracking=[];
-                 updatedTracking = this.tracking.map((item, index) => {
+                var updatedTracking = [];
+                updatedTracking = this.tracking.map((item, index) => {
                     if (index < trackingAllData.length) {
                         // Format the date to local date and time
                         const dateTime1 = new Date(trackingAllData[index].created_at);
@@ -375,7 +413,7 @@ export default {
                         const differenceInMilliseconds = Math.abs(dateTime1 - previousDate);
                         const differenceInDays = Math.ceil(differenceInMilliseconds / (1000 * 60 * 60 * 24));
                         // Debugging: log the updated item values
-                
+
                         return {
                             ...item,
                             status: trackingAllData[index].status,
@@ -385,14 +423,14 @@ export default {
                         };
                     } else {
                         //  const updatedTracking=[];
-                        return  this.tracking = updatedTracking;
+                        return this.tracking = updatedTracking;
                     }
                 });
                 // Debugging: log the updated tracking array to ensure it's correct
                 console.log('Updated Tracking:', updatedTracking);
-               
+
                 this.tracking = updatedTracking;
-                 console.log('this.tracking:', this.tracking);
+                console.log('this.tracking:', this.tracking);
 
                 // Format the date to local date and time
                 const dateTime = new Date(response.data.data.created_at);
