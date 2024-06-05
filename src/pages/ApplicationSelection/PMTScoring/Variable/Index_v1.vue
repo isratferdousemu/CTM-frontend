@@ -11,20 +11,50 @@
                                 </h3>
                             </v-card-title>
                             <v-card-text>
-                                <v-row class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
-                                    justify="center" justify-lg="space-between">
-                                    <div class="d-flex justify-sm-end flex-wrap">
+
+                                <v-row class="mx-5">
+
+
+                                    <v-col sm="4" lg="4" md="4" cols="12">
                                         <v-text-field @keyup.native="GetVariable" outlined dense v-model="search"
                                             prepend-inner-icon="mdi-magnify"
                                             class="my-sm-0 my-3 mx-0v -input--horizontal" flat variant="outlined"
                                             :label="$t('container.application_selection.variable.search')
                                                 " hide-details color="primary">
                                         </v-text-field>
-                                    </div>
-                                    <v-btn @click="createDialog" flat color="primary"
-                                        prepend-icon="mdi-account-multiple-plus" v-can="'variable-create'">
-                                        {{ $t("container.list.add_new") }}
-                                    </v-btn>
+                                    </v-col>
+                                    <v-col sm="8" lg="8" md="8" cols="12" class="text-right">
+                                        <v-btn @click="createDialog" flat color="primary"
+                                            prepend-icon="mdi-account-multiple-plus" v-can="'variable-create'">
+                                            {{ $t("container.list.add_new") }}
+                                        </v-btn>
+
+                                    </v-col>
+                                </v-row>
+                                <v-row justify="space-between" align="center" class="mx-4">
+                                    <!-- Checkbox on the left -->
+                                    <v-col sm="6" lg="6" md="6" cols="12">
+                                        {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">
+                                            {{ language === 'bn' ? $helpers.englishToBangla(this.total) : this.total
+                                            }}
+                                        </span>
+                                    </v-col>
+                                    <!-- Dropdown on the right -->
+                                    <v-col sm="6" lg="6" md="6" cols="12" class="text-right">
+                                        <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4"
+                                            @click="GeneratePDF()">
+                                            <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                                            {{ $t("container.list.PDF") }}
+                                        </v-btn>
+                                        <v-btn elevation="2" class="btn mr-2 white--text" color="teal darken-2"
+                                            @click="GenerateExcel()">
+                                            <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
+                                            {{ $t("container.list.excel") }}
+                                        </v-btn>
+                                    </v-col>
+                                </v-row>
+                                <v-row class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
+                                    justify="center" justify-lg="space-between">
 
                                     <v-col cols="12">
                                         <v-data-table :headers="headers" :items="variables" :search="search"
@@ -100,23 +130,24 @@
                                     <v-text-field outlined type="text" v-model="data.name_en" :label="$t(
                                         'container.application_selection.variable.name_en'
                                     )
-                                        " required :error="errors[0] ? true : false"
-                                        :error-messages="errors[0]"></v-text-field>
+                                        " required :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য  ভেরিয়েবলের নাম ইংরেজিতে প্রদান করুন '
+                                        : 'Please enter  valid Variable Name in English') : ''"></v-text-field>
                                 </ValidationProvider>
-                                <ValidationProvider name="Name in Bangla" vid="name_bn" rules="required"
+                                <ValidationProvider name="Name in Bangla" vid="name_bn" rules="required||bangla"
                                     v-slot="{ errors }">
                                     <v-text-field outlined type="text" v-model="data.name_bn" :label="$t(
                                             'container.application_selection.variable.name_bn'
                                         )
-                                            " required :error="errors[0] ? true : false"
-                                        :error-messages="errors[0]"></v-text-field>
+                                            " required :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য  ভেরিয়েবলের নাম বাংলায় প্রদান করুন '
+                                        : 'Please enter  valid Variable Name in Bangla') : ''"></v-text-field>
                                 </ValidationProvider>
                                 <ValidationProvider name="Field Type" vid="field_type" rules="required"
                                     v-slot="{ errors }">
                                     <v-select outlined v-model="data.field_type" :items="field_types"
                                         :item-text="getItemText" item-value="id"
                                         :label="$t('container.application_selection.variable.field_type')" required
-                                        :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                        :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ফিল্ড টাইপ প্রদান করুন '
+                                        : 'Please enter  Field Type') : ''">
                                     </v-select>
                                 </ValidationProvider>
 
@@ -126,8 +157,8 @@
                                         :label="$t(
                                             'container.application_selection.poverty_cut_off.score'
                                         )
-                                            " :error="errors[0] ? true : false"
-                                        :error-messages="errors[0]"></v-text-field>
+                                            " :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক স্কোর প্রদান করুন '
+                                        : 'Please enter  Score') : ''"></v-text-field>
                                 </ValidationProvider>
 
                                 <!-- <v-data-table :headers="header_field_value" :items="data.field_value"
@@ -143,17 +174,19 @@
 
 
 
-                                        <ValidationProvider name="Subvariable Name in English" vid="value_en"
+                                        <ValidationProvider name="Subvariable Name in English" vid="Subvariable_en"
                                             rules="required" v-slot="{ errors }">
-                                            <v-text-field outlined dense hide-details
-                                                v-model="item.value_en"></v-text-field>
+                                            <v-text-field outlined dense hide-details v-model="item.value_en"
+                                                :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য  সাব ভেরিয়েবলের নাম ইংরেজীতে প্রদান করুন '
+                                        : 'Please enter  valid  sub variable Name in English') : ''"></v-text-field>
                                         </ValidationProvider>
                                     </template>
                                     <template v-slot:item.value_bn="{ item }">
-                                        <ValidationProvider name="Subvariable Name in Bangla" vid="value_bn"
+                                        <ValidationProvider name="Subvariable Name in Bangla" vid="Subvariable_bn"
                                             rules="required" v-slot="{ errors }">
-                                            <v-text-field outlined dense hide-details
-                                                v-model="item.value_bn"></v-text-field>
+                                            <v-text-field outlined dense hide-details v-model="item.value_bn"
+                                                :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য  সাব ভেরিয়েবলের নাম বাংলায় প্রদান করুন '
+                                        : 'Please enter  valid  sub variable Name in Bangla') : ''"></v-text-field>
                                         </ValidationProvider>
 
                                     </template>
@@ -278,8 +311,8 @@
                                     <template v-slot:item.value_bn="{ item }">
                                         <ValidationProvider name="Value" vid="value" rules="required"
                                             v-slot="{ errors }">
-                                            <v-text-field outlined dense hide-details v-model="item.value_bn"
-                                               ></v-text-field>
+                                            <v-text-field outlined dense hide-details
+                                                v-model="item.value_bn"></v-text-field>
                                         </ValidationProvider>
                                     </template>
                                     <template v-slot:item.score="{ item }">
@@ -331,6 +364,7 @@
             <v-dialog v-model="deleteDialog" width="350">
                 <v-card style="justify-content: center; text-align: center">
                     <v-card-title class="font-weight-bold justify-center">
+
                         {{
                         $t(
                         "container.application_selection.variable.delete"
@@ -380,6 +414,18 @@ extend('name', {
     },
     message: 'Please enter a valid Name in English without special character'
 });
+extend('bangla', {
+    validate: value => {
+        // Regular expression to match Bangla characters and spaces, excluding Bangla numbers
+        const banglaRegex = /^[\u0980-\u09FF\s]+$/;
+        // Regular expression to exclude Bangla numbers (০-৯)
+        const banglaNumbers = /[\u09E6-\u09EF]/;
+
+        // Check if value matches Bangla characters and spaces and does not include Bangla numbers
+        return banglaRegex.test(value) && !banglaNumbers.test(value);
+    },
+    message: 'Only Bangla characters and spaces are allowed in this field (Bangla numbers are not allowed)'
+});
 
 export default {
     name: "Index",
@@ -402,6 +448,7 @@ export default {
                         score: null
                     },
                 ],
+                total:null,
                 date: null,
                 number: null,
                 text: null,
@@ -415,6 +462,7 @@ export default {
 
 
             ],
+            reports:[],
           
           
 
@@ -525,6 +573,178 @@ export default {
        
     },
     methods: {
+        async GeneratePDF() {
+            this.isLoading = true;
+            let page;
+            if (!this.sortBy) {
+                page =1;
+            }
+            const queryParams = {
+
+                language: this.$i18n.locale,
+                itemsPerPage: this.search.trim() === '' ? this.total : this.total,
+                page: 1,
+                sortBy: this.sortBy,
+                orderBy: this.sortDesc,
+                search: this.search,
+             
+                
+            };
+
+            await this.$axios
+                .get("/admin/poverty/get/variable", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                    params: queryParams,
+                })
+                .then((result) => {
+                    this.reports = result?.data?.data;
+                    console.log(this.reports,"reports");
+                });
+
+            const HeaderInfo = [
+                this.$t("container.list.sl"),
+                this.$t("container.application_selection.variable.name_en"),
+                this.$t("container.application_selection.variable.name_bn"),
+                
+
+
+
+            ]
+
+
+
+            const CustomInfo = this.reports.map(((i, index) => {
+
+                return [
+                    this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+
+                    this.$i18n.locale == 'en' ? i.name_en : i.name_en,
+                    this.$i18n.locale == 'en' ? i.name_bn : i.name_bn,
+                ]
+            }));
+
+            const queryParam = {
+                language: this.$i18n.locale,
+                data: CustomInfo,
+                header: HeaderInfo,
+                fileName: this.$t("container.application_selection.variable.list"),
+            };
+            try {
+                const response = await this.$axios.post("/admin/generate-pdf", queryParam, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "application/json", // Set content type to JSON
+                    },
+                    responseType: 'arraybuffer',
+                });
+
+                const blob = new Blob([response.data], { type: 'application/pdf' });
+                const url = window.URL.createObjectURL(blob);
+                window.open(url, '_blank');
+                this.isLoading = false;
+            } catch (error) {
+                this.isLoading = false;
+                console.error('Error generating PDF:', error);
+            }
+        },
+        async GenerateExcel() {
+            this.isLoading = true;
+            let page;
+            if (!this.sortBy) {
+                page = 1;
+            }
+            const queryParams = {
+
+                language: this.$i18n.locale,
+                itemsPerPage: this.search.trim() === '' ? this.total : this.total,
+                page: 1,
+                sortBy: this.sortBy,
+                orderBy: this.sortDesc,
+                search: this.search,
+
+
+            };
+
+            await this.$axios
+                .get("/admin/poverty/get/variable", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                    params: queryParams,
+                })
+                .then((result) => {
+                    this.reports = result?.data?.data;
+                })
+                .catch(error => {
+                    this.isLoading = false;
+                });
+
+            try {
+                import('@/plugins/Export2Excel').then((excel) => {
+
+                    const HeaderInfo = [
+                        this.$t("container.list.sl"),
+                        this.$t("container.application_selection.variable.name_en"),
+                        this.$t("container.application_selection.variable.name_bn"),
+                 
+
+                    ]
+
+                    const CustomInfo = this.reports.map(((i, index) => {
+                        return {
+
+
+                            "sl": this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
+
+                            "name_en": this.$i18n.locale == 'en' ? i.name_en : i.name_en,
+                            "name_bn": this.$i18n.locale == 'en' ? i.name_bn : i.name_bn,
+        
+                        }
+
+                    }));
+
+
+                    const Field = ['sl', 'name_en', 'name_bn']
+
+                    const Data = this.FormatJson(Field, CustomInfo)
+                    const prefixHeader = [
+                        "Government of the People's Republic of Bangladesh",
+                        "Department of Social Services",
+                        "Cash Transfer Modernization(CTM) Project",
+                        "Social Service Building, E-8/B-1, Agargaon, Sherbangla Nagar, Dhaka-1207, Bangladesh."
+                    ];
+                    const currentDate = new Date().toISOString().slice(0, 10); //
+                    let dateinfo = queryParams.language == 'en' ? currentDate : this.$helpers.englishToBangla(currentDate)
+
+                    const filenameWithDate = `${dateinfo}_${this.$t("container.application_selection.variable.list")}`;
+
+                    excel.export_json_to_excel({
+                        header: HeaderInfo,
+                        data: Data,
+                        sheetName: filenameWithDate,
+                        filename: filenameWithDate,
+                        autoWidth: true,
+                        bookType: "xlsx",
+                        extraHeaders: prefixHeader,
+                    })
+                })
+            } catch (error) {
+                // Handle any errors here
+                this.isLoading = false;
+            } finally {
+                this.isLoading = false;
+            }
+        },
+        FormatJson(FilterData, JsonData) {
+            return JsonData.map((v) =>
+                FilterData.map((j => {
+                    return v[j];
+                })))
+        },
          getItemText(item) {
             return this.language === 'bn' ? item.value_bn : item.value_en;
         },
@@ -803,6 +1023,7 @@ console.log(this.data,"update_variable")
               
                    this.variables = result.data.data;
                     this.totalvariables = result.data.meta.total;
+                    this.total = result.data.meta.total;
                    this.currentPage= result.data.meta.current_page;
                     this.itemsPerPage = result.data.meta.per_page;
                     this.loading = false;

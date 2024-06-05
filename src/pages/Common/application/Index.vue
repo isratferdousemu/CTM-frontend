@@ -440,8 +440,8 @@
                                 rules="required">
                                 <label>{{ $t('container.application_selection.application.nationality') }}</label>
                                 <span style="margin-left: 4px; color: red">*</span>
-                                <v-text-field v-model="data.nationality" outlined :error="errors[0] ? true : false"
-                                  :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক জাতীয়তা প্রদান করুন '
+                                <v-text-field readonly v-model="data.nationality" outlined
+                                  :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক জাতীয়তা প্রদান করুন '
           : 'Please enter Nationality') : ''">
                                 </v-text-field>
                               </ValidationProvider>
@@ -533,7 +533,8 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-select :hide-details="errors[0] ? false : true" @input="onChangeDivision($event)"
                               v-model="data.division_id" outlined :items="divisions" :item-text="getItemText"
-                              item-value="id" :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
+                              item-value="id" :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক বিভাগ প্রদান করুন '
+          : 'Please enter Division') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col lg="6" md="6" cols="12">
@@ -544,7 +545,8 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-select :hide-details="errors[0] ? false : true" outlined v-model="data.district_id"
                               @input="onChangeDistrict($event)" :items="districts" :item-text="getItemText"
-                              item-value="id" :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
+                              item-value="id" :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক জেলা প্রদান করুন '
+          : 'Please enter District') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6">
@@ -556,7 +558,8 @@
                             <v-select @input="LocationType($event)" v-model="data.location_type"
                               :hide-details="errors[0] ? false : true" outlined :items="locationType"
                               :item-text="getItemValue" item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-select>
+                              :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক এলাকা প্রদান করুন '
+          : 'Please enter Location Type') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 2" lg="6" md="6" cols="6">
@@ -567,7 +570,8 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-select :hide-details="errors[0] ? false : true" v-model="data.thana_id" outlined
                               @change="onChangeUpazila($event)" :items="thanas" :item-text="getItemText" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক উপজেলা প্রদান করুন '
+          : 'Please enter Upazila') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 2" lg="6" md="6" cols="6">
@@ -579,8 +583,9 @@
                             rules="required">
                             <v-select @input="onChangeSubLocationType($event)" v-model="data.sub_location_type" outlined
                               :items="subLocationType" :item-text="getItemValue" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"
-                              :hide-details="errors[0] ? false : true" class="no-arrow-icon"></v-select>
+                              :error="errors[0] ? true : false" :hide-details="errors[0] ? false : true"
+                              class="no-arrow-icon" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সাব লোকেশন প্রদান করুন '
+          : 'Please enter Sub Location') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
 
@@ -593,7 +598,8 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-select :hide-details="errors[0] ? false : true" v-model="data.union_id" outlined
                               @input="onChangeUnion($event)" :items="unions" :item-text="getItemText" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ইউনিয়ন প্রদান করুন '
+          : 'Please enter Union') : ''"></v-select>
 
                           </ValidationProvider>
                         </v-col>
@@ -607,7 +613,8 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-select :hide-details="errors[0] ? false : true" v-model="data.pouro_id"
                               @input="onChangePouro($event)" outlined :items="pouros" :item-text="getItemText"
-                              item-value="id" :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
+                              item-value="id" :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক পৌরসভা প্রদান করুন '
+          : 'Please enter Pourashava') : ''"></v-select>
                           </ValidationProvider>
 
 
@@ -620,7 +627,8 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-select :hide-details="errors[0] ? false : true" v-model="data.city_id"
                               @change="onChangeCity($event)" outlined :items="cities" :item-text="getItemText"
-                              item-value="id" :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
+                              item-value="id" :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সিটি কর্পোরেশন প্রদান করুন '
+          : 'Please enter City Corporation') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 3" lg="6" md="6" cols="6">
@@ -632,7 +640,8 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-select :hide-details="errors[0] ? false : true" v-model="data.city_thana_id" outlined
                               @input="OnChangeCityThana($event)" :items="city_thanas" :item-text="getItemText"
-                              item-value="id" :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
+                              item-value="id" :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক থানা প্রদান করুন '
+          : 'Please enter Thana') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 1" lg="6" md="6" cols="6">
@@ -643,7 +652,8 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-select :hide-details="errors[0] ? false : true" v-model="data.district_pouro_id"
                               @input="onChangeDistrictPouro" outlined :items="district_poros" :item-text="getItemText"
-                              item-value="id" :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
+                              item-value="id" :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক জেলা পৌরসভা প্রদান করুন '
+          : 'Please enter District Pourashava') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 3" lg="6" md="6" cols="6">
@@ -654,7 +664,8 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-select :hide-details="errors[0] ? false : true" v-model="data.ward_id_city" outlined
                               :items="wards_city" :item-text="getItemText" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ওয়ার্ড প্রদান করুন '
+          : 'Please enter Ward') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 2 && data.sub_location_type == 2" lg="6" md="6" cols="6">
@@ -665,7 +676,8 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-select :hide-details="errors[0] ? false : true" v-model="data.ward_id_union" outlined
                               :items="wards_upazila_union" :item-text="getItemText" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ওয়ার্ড প্রদান করুন '
+          : 'Please enter Ward') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 2 && data.sub_location_type == 1" lg="6" md="6" cols="6">
@@ -675,7 +687,8 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-select :hide-details="errors[0] ? false : true" v-model="data.ward_id_pouro" outlined
                               :items="wards_upazila_pouro" :item-text="getItemText" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ওয়ার্ড প্রদান করুন '
+          : 'Please enter Ward') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.location_type == 1" lg="6" md="6" cols="6">
@@ -686,7 +699,9 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-select :hide-details="errors[0] ? false : true" v-model="data.ward_id_dist" outlined
                               :items="wards_dist" :item-text="getItemText" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ওয়ার্ড প্রদান করুন '
+          : 'Please enter Ward') : ''">
+                            </v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6" lg="6">
@@ -697,7 +712,8 @@
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-text-field v-model="data.post_code" type="number" outlined clearable
-                              :error="errors[0] ? true : false" :error-messages="errors[0]">
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য পোস্ট কোড প্রদান করুন'
+          : 'Please enter valid Post Code') : ''">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
@@ -714,7 +730,8 @@
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-text-field v-model="data.address" outlined clearable :error="errors[0] ? true : false"
-                              handleCheckboxChangsa :error-messages="errors[0]">
+                              handleCheckboxChangsa :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রাম/বাড়ি নং, রোড নং, ব্লক নং, সেকশন প্রদান করুন'
+          : 'Please enter Village/House No., Road No., Block No, Section') : ''">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
@@ -742,7 +759,8 @@
                             <v-select :hide-details="errors[0] ? false : true"
                               @input="permanent_onChangeDivision($event)" v-model="data.permanent_division_id" outlined
                               :items="permanent_divisions" :item-text="getItemText" item-value="id" required
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক বিভাগ প্রদান করুন '
+          : 'Please enter Division') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col lg="6" md="6" cols="12">
@@ -755,7 +773,8 @@
                             <v-select :hide-details="errors[0] ? false : true" outlined
                               v-model="data.permanent_district_id" @input="permanent_onChangeDistrict($event)"
                               :items="permanent_districts" :item-text="getItemText" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক জেলা প্রদান করুন '
+          : 'Please enter District') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6">
@@ -767,7 +786,8 @@
                             <v-select @input="permanent_LocationType($event)" v-model="data.permanent_location_type"
                               :hide-details="errors[0] ? false : true" outlined :items="locationType"
                               :item-text="getItemValue" item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-select>
+                              :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক এলাকা প্রদান করুন '
+          : 'Please enter Location Type') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type == 2" lg="6" md="6" cols="12">
@@ -780,7 +800,8 @@
                             <v-select :hide-details="errors[0] ? false : true" v-model="data.permanent_thana_id"
                               outlined @change="permanent_onChangeUpazila($event)" :items="permanent_thanas"
                               :item-text="getItemText" item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-select>
+                              :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক উপজেলা প্রদান করুন '
+          : 'Please enter Upazila') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type == 2" cols="6">
@@ -793,7 +814,8 @@
                             <v-select @input="onChangeSubLocationTypePermanent($event)"
                               v-model="data.permanent_sub_location_type" outlined :items="subLocationType"
                               :item-text="getItemValue" item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]" :hide-details="errors[0] ? false : true"
+                              :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সাব লোকেশন প্রদান করুন '
+          : 'Please enter Sub Location') : ''" :hide-details="errors[0] ? false : true"
                               class="no-arrow-icon"></v-select>
                           </ValidationProvider>
                         </v-col>
@@ -810,7 +832,8 @@
                             <v-select :hide-details="errors[0] ? false : true" v-model="data.permanent_union_id"
                               @input="permanent_onChangeUnion($event)" outlined :items="permanent_unions"
                               :item-text="getItemText" item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-select>
+                              :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ইউনিয়ন প্রদান করুন '
+          : 'Please enter Union') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type === 2 && data.permanent_sub_location_type === 1"
@@ -824,8 +847,8 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-select :hide-details="errors[0] ? false : true" v-model="data.permanent_pouro_id"
                               @input="Permanent_onChangePouro($event)" outlined :items="permanent_pouros"
-                              item-text="name_en" item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-select>
+                              item-text="name_en" item-value="id" :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক পৌরসভা প্রদান করুন '
+          : 'Please enter Pourashava') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type == 3" lg="6" md="6" cols="12">
@@ -836,7 +859,8 @@
                             <v-select :hide-details="errors[0] ? false : true" v-model="data.permanent_city_id"
                               @change="permanent_onChangeCity($event)" outlined :items="permanent_cities"
                               :item-text="getItemText" item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-select>
+                              :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সিটি কর্পোরেশন প্রদান করুন '
+          : 'Please enter City Corporation') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type == 3" lg="6" md="6" cols="12">
@@ -850,7 +874,8 @@
                             <v-select :hide-details="errors[0] ? false : true"
                               @input="Permanent_OnChangeCityThana($event)" v-model="data.permanent_city_thana_id"
                               outlined :items="permanent_city_thanas" :item-text="getItemText" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক থানা প্রদান করুন '
+          : 'Please enter Thana') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type == 1" lg="6" md="6" cols="12">
@@ -863,7 +888,8 @@
                             <v-select :hide-details="errors[0] ? false : true" @input="Permanent_onChangeDistrictPouro"
                               v-model="data.permanent_district_pouro_id" outlined :items="permanent_district_poros"
                               :item-text="getItemText" item-value="id" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"></v-select>
+                              :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক জেলা পৌরসভা প্রদান করুন '
+          : 'Please enter District Pourashava') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type == 3" lg="6" md="6" cols="12">
@@ -874,7 +900,8 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-select :hide-details="errors[0] ? false : true" v-model="data.permanent_ward_id_city"
                               outlined :items="permanent_wards_city" :item-text="getItemText" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ওয়ার্ড প্রদান করুন '
+          : 'Please enter Ward') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type == 1" lg="6" md="6" cols="12">
@@ -886,7 +913,8 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-select :hide-details="errors[0] ? false : true" v-model="data.permanent_ward_id_dist"
                               outlined :items="permanent_wards_dist" :item-text="getItemText" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ওয়ার্ড প্রদান করুন '
+          : 'Please enter Ward') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type === 2 && data.permanent_sub_location_type === 2"
@@ -899,7 +927,8 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-select :hide-details="errors[0] ? false : true" v-model="data.permanent_ward_id_union"
                               outlined :items="permanent_wards_upazila_union" :item-text="getItemText" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ওয়ার্ড প্রদান করুন '
+          : 'Please enter Ward') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col v-if="data.permanent_location_type === 2 && data.permanent_sub_location_type === 1"
@@ -912,7 +941,8 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-select :hide-details="errors[0] ? false : true" v-model="data.permanent_ward_id_pouro"
                               outlined :items="permanent_wards_upazila_pouro" :item-text="getItemText" item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-select>
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ওয়ার্ড প্রদান করুন '
+          : 'Please enter Ward') : ''"></v-select>
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6" lg="6">
@@ -923,7 +953,8 @@
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-text-field v-model="data.permanent_post_code" outlined clearable
-                              :error="errors[0] ? true : false" :error-messages="errors[0]">
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য পোস্ট কোড প্রদান করুন'
+          : 'Please enter valid Post Code') : ''">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
@@ -937,7 +968,8 @@
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-text-field v-model="data.permanent_address" outlined clearable
-                              :error="errors[0] ? true : false" :error-messages="errors[0]">
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রাম/বাড়ি নং, রোড নং, ব্লক নং, সেকশন প্রদান করুন'
+          : 'Please enter Village/House No., Road No., Block No, Section') : ''">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
@@ -947,7 +979,7 @@
                   <!-- Contact Information End -->
                   <!-- 4th Expansion panel -->
                   <!-- Information According to the Program -->
-                  <v-expansion-panel class="ma-4" v-if="status_code==200">
+                  <v-expansion-panel class="ma-4" v-if="status_code == 200">
                     <v-expansion-panel-header color="#1c3b68">
                       <template v-slot:actions>
                         <v-icon color="white">$expand</v-icon>
@@ -1014,7 +1046,6 @@
                             ) in programDetails.additional_field" :key="index" cols="6" lg="6">
 
 
-                            <!-- v-if="programDetails?.additional_field.length != 0 && keyGetByName('DIS No.') != index && keyGetByName('Disability Type') != index"> -->
                             <template v-if="fields.type == 'number'">
                               <v-row v-if="fields.verified === 1">
                                 <v-col cols="8" lg="8">
@@ -1029,14 +1060,14 @@
                                     <v-text-field v-model="data.application_allowance_values[index]
                                       .value
                                       " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
-                                      :error-messages="errors[0]" type="number" outlined>
+                                      :error-messages="errors[0] ? getErrorMessage(fields) : ''" type="number" outlined>
                                     </v-text-field>
                                   </ValidationProvider>
 
                                 </v-col>
                                 <v-col cols="4" lg="4" class="text-right">
                                   <v-btn class="btn mt-5" color="primary" style="height: 56px;" :disabled="data.application_allowance_values[index]
-                                    .value == null">{{ $t('container.list.verify') }}</v-btn>
+  .value == null">{{ $t('container.list.verify') }}</v-btn>
 
                                 </v-col>
                               </v-row>
@@ -1052,7 +1083,7 @@
                                   <v-text-field v-model="data.application_allowance_values[index]
                                     .value
                                     " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
-                                    :error-messages="errors[0]" type="number" outlined>
+                                    :error-messages="errors[0] ? getErrorMessage(fields) : ''" type="number" outlined>
                                   </v-text-field>
                                 </ValidationProvider>
 
@@ -1074,7 +1105,7 @@
                               <ValidationProvider :name="fields.name_en" :vid="'application_allowance_values' + index"
                                 rules="required" v-slot="{ errors }">
                                 <v-select :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
-                                  :error-messages="errors[0]" outlined v-model="data.application_allowance_values[index]
+                                  :error-messages="errors[0] ? getErrorMessage(fields) : ''" outlined v-model="data.application_allowance_values[index]
                                     .allowance_program_additional_field_values_id
                                     " :items="fields.name_en == 'Class'
     ? classes
@@ -1096,8 +1127,9 @@
                               <ValidationProvider :name="fields.name_en" :vid="'application_allowance_values' + index"
                                 rules="required" v-slot="{ errors }">
                                 <v-select multiple :hide-details="errors[0] ? false : true"
-                                  :error="errors[0] ? true : false" :error-messages="errors[0]" outlined v-model="data.application_allowance_values[index]
-                                    .allowance_program_additional_field_values_id
+                                  :error="errors[0] ? true : false"
+                                  :error-messages="errors[0] ? getErrorMessage(fields) : ''" outlined v-model="data.application_allowance_values[index]
+  .allowance_program_additional_field_values_id
                                     " :items="fields.additional_field_value" item-value="id" item-text="value">
                                 </v-select>
                               </ValidationProvider>
@@ -1117,7 +1149,7 @@
                                   " @change="addPreviewFile($event, index)" placeholder="Select your files"
                                   prepend-icon prepend-outer-icon="mdi-paperclip" outlined
                                   :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
-                                  :error-messages="errors[0]" :show-size="1000">
+                                  :error-messages="errors[0] ? getErrorMessage(fields) : ''" :show-size="1000">
                                 </v-file-input>
                               </ValidationProvider>
                             </template>
@@ -1134,7 +1166,7 @@
                                 <v-text-field v-model="data.application_allowance_values[index]
                                   .value
                                   " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
-                                  :error-messages="errors[0]" type="date" outlined>
+                                  :error-messages="errors[0] ? getErrorMessage(fields) : ''" type="date" outlined>
                                 </v-text-field>
                               </ValidationProvider>
                             </template>
@@ -1150,7 +1182,8 @@
                                 <v-text-field v-model="data.application_allowance_values[index]
                                   .value
                                   " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
-                                  :error-messages="errors[0]" disabled type="text" outlined>
+                                  :error-messages="errors[0] ? getErrorMessage(fields) : ''" disabled type="text"
+                                  outlined>
                                 </v-text-field>
                               </ValidationProvider>
                             </template>
@@ -1166,7 +1199,7 @@
                                 <v-text-field v-model="data.application_allowance_values[index]
                                   .value
                                   " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
-                                  :error-messages="errors[0]" type="text" outlined>
+                                  :error-messages="errors[0] ? getErrorMessage(fields) : ''" type="text" outlined>
                                 </v-text-field>
                               </ValidationProvider>
                             </template>
@@ -1224,7 +1257,8 @@
 
                             <v-select v-model="data.account_owner" outlined clearable :items="mobile_ownership"
                               :item-text="getItemText" item-value="name_en" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]">
+                              :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক মোবাইল নম্বরের মালিকানা প্রদান করুন '
+  : 'Please enter Mobile Number ownership') : ''">
                             </v-select>
                           </ValidationProvider>
                         </v-col>
@@ -1239,7 +1273,8 @@
 
                             <v-select v-model="data.account_owner" outlined clearable :items="mobile_ownership"
                               :item-text="getItemText" item-value="name_en" :error="errors[0] ? true : false"
-                              :error-messages="errors[0]">
+                              :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ব্যাংক অ্যাকাউন্টের মালিকানা প্রদান করুন '
+  : 'Please enter Bank Account ownership') : ''">
                             </v-select>
                           </ValidationProvider>
                         </v-col>
@@ -1264,7 +1299,8 @@
                               style="margin-left: 4px; color: red">*</span>
 
                             <v-text-field v-model="data.account_number" outlined type="number" clearable
-                              :error="errors[0] ? true : false" :error-messages="errors[0]">
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক মোবাইল নম্বর প্রদান করুন '
+          : 'Please enter Mobile Number') : ''">
                             </v-text-field>
                           </ValidationProvider>
 
@@ -1276,7 +1312,8 @@
                               style="margin-left: 4px; color: red">*</span>
 
                             <v-text-field v-model="data.bank_name" outlined clearable :error="errors[0] ? true : false"
-                              :error-messages="errors[0]">
+                              error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ব্যাংকের নাম প্রদান করুন'
+  : 'Please enter Bank Name') : ''">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
@@ -1288,7 +1325,8 @@
                               style="margin-left: 4px; color: red">*</span>
 
                             <v-text-field v-model="data.branch_name" outlined clearable
-                              :error="errors[0] ? true : false" :error-messages="errors[0]">
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক শাখার নাম প্রদান করুন '
+          : 'Please enter Branch Name') : ''">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
@@ -1300,18 +1338,20 @@
                               style="margin-left: 4px; color: red">*</span>
 
                             <v-text-field v-model="data.account_number" outlined clearable
-                              :error="errors[0] ? true : false" :error-messages="errors[0]" type="number">
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ব্যাংক অ্যাকাউন্ট নম্বর প্রদান করুন '
+          : 'Please enter Bank Account Number') : ''" type="number">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
                         <v-col cols="6" lg="6">
-                          <ValidationProvider name="Email" vid="Email" v-slot="{ errors }">
+                          <ValidationProvider name="Email" vid="Email" rules="email" v-slot="{ errors }">
                             <label style="display: inline-block">{{
                               $t('container.application_selection.application.email') }} </label>
 
 
                             <v-text-field v-model="data.email" outlined clearable type="email"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]">
+                              :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য ইমেইল প্রদান করুন '
+          : 'Please valid enter Email') : ''">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
@@ -1350,7 +1390,8 @@
                                       <span style="margin-left: 4px; color: red">*</span>
                                       <v-text-field v-model="data.nominee_verification_number" outlined
                                         @keyup="checkLengthAndVerify()" @change="checkNum()" clearable type="text"
-                                        :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                        :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক  ১০ বা ১৭ ডিজিটের সাথে যাচাইকরণ নম্বর লিখুন প্রদান করুন '
+          : 'Please enter verification number with either 10 or 17 digit') : ''">
                                       </v-text-field>
                                     </ValidationProvider>
                                   </v-col>
@@ -1445,7 +1486,8 @@
                               </label>
                               <span style="margin-left: 4px; color: red">*</span>
                               <v-text-field v-model="data.nominee_en" outlined clearable
-                                :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সম্পূর্ণ নাম (বাংলায়) প্রদান করুন '
+  : 'Please enter Full Name (Bangla)') : ''">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
@@ -1456,7 +1498,8 @@
                               <label>{{ $t('container.application_selection.application.nationality') }} </label>
                               <span style="margin-left: 4px; color: red">*</span>
                               <v-text-field v-model="data.nominee_nationality" outlined readonly
-                                :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সম্পূর্ণ নাম (ইংরেজীতে) প্রদান করুন '
+  : 'Please enter Full Name (English)') : ''">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
@@ -1468,7 +1511,8 @@
                                 <span style="margin-left: 4px; color: red">*</span>
                                 <v-select v-model="data.nominee_relation_with_beneficiary" outlined item-value="name_en"
                                   :items="relations_with_bef" :item-text="getItemText" :error="errors[0] ? true : false"
-                                  :error-messages="errors[0]">
+                                  :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক নমিনীর সাথে সম্পর্ক প্রদান করুন '
+  : 'Please enter Relationship with Nominee') : ''">
                                 </v-select>
                               </ValidationProvider>
                             </div>
@@ -1528,7 +1572,8 @@
                               rules="required">
                               <label>{{ $t('container.application_selection.application.nominee_address') }}</label>
                               <v-textarea v-model="data.nominee_address" outlined clearable
-                                :error="errors[0] ? true : false" :error-messages="errors[0]"></v-textarea>
+                                :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ঠিকানা প্রদান করুন '
+  : 'Please enter Address') : ''"></v-textarea>
                             </ValidationProvider>
                           </v-col>
                         </v-row>
@@ -1563,7 +1608,7 @@
                               <ValidationProvider :name="variables.name_en" :vid="'application_pmt_' + indexPMT"
                                 rules="required" v-slot="{ errors }">
                                 <v-select :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
-                                  :error-messages="errors[0]" outlined required
+                                  :error-messages="errors[0] ? getErrorMessage(variables) : ''" outlined required
                                   v-model="data.application_pmt[indexPMT].sub_variables" :items="[
                                     {
                                       id: variables.id,
@@ -1589,9 +1634,9 @@
                               <ValidationProvider :name="variables.name_en" :vid="'application_pmt_' + indexPMT"
                                 rules="required" v-slot="{ errors }">
                                 <v-select :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
-                                  :error-messages="errors[0]" outlined
+                                  :error-messages="errors[0] ? getErrorMessage(variables) : ''" outlined
                                   v-model="data.application_pmt[indexPMT].sub_variables" :items="variables.children"
-                                  item-value="id" :item-text="getItemText" @change="onChangeHouse($event,variables)">
+                                  item-value="id" :item-text="getItemText" @change="onChangeHouse($event, variables)">
                                 </v-select>
                               </ValidationProvider>
                             </template>
@@ -1606,7 +1651,8 @@
                               <ValidationProvider :name="variables.name_en" :vid="'application_pmt_' + indexPMT"
                                 rules="required" v-slot="{ errors }">
                                 <v-select multiple :hide-details="errors[0] ? false : true"
-                                  :error="errors[0] ? true : false" :error-messages="errors[0]" outlined
+                                  :error="errors[0] ? true : false"
+                                  :error-messages="errors[0] ? getErrorMessage(variables) : ''" outlined
                                   v-model="data.application_pmt[indexPMT].sub_variables" :items="variables.children"
                                   item-value="id" :item-text="getItemText">
                                 </v-select>
@@ -1625,8 +1671,9 @@
                               <ValidationProvider name="No of Room" vid="no_of_room" rules="required"
                                 v-slot="{ errors }">
                                 <v-select :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
-                                  :error-messages="errors[0]" outlined v-model="data.no_of_room" :items="no_of_rooms"
-                                  item-value="name_en" :item-text="getItemText" @change="onChange($event)">
+                                  :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ঘরের সংখ্যা প্রদান করুন '
+  : 'Please enter No of Room') : ''" outlined v-model="data.no_of_room" :items="no_of_rooms" item-value="name_en"
+                                  :item-text="getItemText" @change="onChange($event)">
                                 </v-select>
                               </ValidationProvider>
                             </template>
@@ -1749,13 +1796,25 @@ extend("numeric", {
   ...numeric,
   message: "This field must be a number"
 });
+extend('email', {
+    validate: value => {
+        // Regular expression for email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(value);
+    },
+    message: 'Please enter a valid email address'
+});
 extend('bangla', {
   validate: value => {
-    // Regular expression to match Bangla characters
+    // Regular expression to match Bangla characters and spaces, excluding Bangla numbers
     const banglaRegex = /^[\u0980-\u09FF\s]+$/;
-    return banglaRegex.test(value);
+    // Regular expression to exclude Bangla numbers (০-৯)
+    const banglaNumbers = /[\u09E6-\u09EF]/;
+
+    // Check if value matches Bangla characters and spaces and does not include Bangla numbers
+    return banglaRegex.test(value) && !banglaNumbers.test(value);
   },
-  message: 'Only Bangla characters will be allowed in this field'
+  message: 'Only Bangla characters and spaces are allowed in this field (Bangla numbers are not allowed)'
 });
 
 
@@ -2159,8 +2218,13 @@ export default {
 
   },
 
-  methods:
-   {
+  methods:{
+    getErrorMessage(fields) {
+      return this.language === 'bn'
+        ? `অনুগ্রহ পূর্বক ${fields.name_bn} প্রদান করুন`
+        : `Please enter ${fields.name_en}`;
+    },
+  
     onChange($event) {
        this.data.per_room_score = (this.data.house_size / $event)*-0.05;
        this.data.per_room_score = parseFloat(this.data.per_room_score.toFixed(3));
@@ -2594,7 +2658,7 @@ export default {
         })
         .catch((err) => {
            this.status_code= null;
-          this.status_code = 200;
+     
           
          
           //  this.data.age = null;
@@ -2687,31 +2751,32 @@ export default {
     // }
     async submitApplicationCheck() {
       if (this.status_code != 200) {
-        this.$toast.error('Verify First');
+      
+       this.language === 'en' ? this.$toast.error("Verify First") : this.$toast.error("প্রথমে  যাচাই সম্পূর্ণ করুন");
         return false;
       }
       if (this.data.image === null || this.data.image == '') {
-        this.$toast.error('Image is required');
+        this.language === 'en' ? this.$toast.error("Image is required") : this.$toast.error("ছবি আবশ্যক");
         this.scrollToImage();
         return false;
       }
       if (this.data.signature === null || this.data.signature == '') {
-        this.$toast.error('Signature is required');
+           this.language === 'en' ? this.$toast.error("Signature is required") : this.$toast.error("স্বাক্ষর আবশ্যক");
         this.scrollToSignature();
         return false;
       }
       if (this.status_code_nominee != 200 ) {
-        this.$toast.error('Verify Nominee First');
+       this.language === 'en' ? this.$toast.error("Nominee Verify First") : this.$toast.error("প্রথমে  নমিনি যাচাই সম্পূর্ণ করুন");
         this.scrollToVerifyButton();
         return false;
       }
       if (this.data.nominee_image === null || this.data.nominee_image == '') {
-        this.$toast.error('Nominee Image is required');
+        this.language === 'en' ? this.$toast.error(" Nominee Image is required") : this.$toast.error("নমিনীর ছবি আবশ্যক");
         this.scrollToNomineeImage();
         return false;
       }
       if (this.data.nominee_signature === null || this.data.nominee_signature == '') {
-        this.$toast.error('Nominee Signature is required');
+           this.language === 'en' ? this.$toast.error("Nominee Signature is required") : this.$toast.error("নমিনীর স্বাক্ষর আবশ্যক");
         this.scrollToNomineeSignature();
         return false;
       }
@@ -3355,14 +3420,20 @@ export default {
         if (this.data.image.size > maxFileSize){
           // alert("file size must be 200kb")
           // this.confirmDialog =true;
-        this.$toast.error("File size must be under 200 KB ");// Show the alert
+          if (this.language == 'en') {
+            this.$toast.error("File size must be under 200 KB");
+          }
+          else {
+            this.$toast.error("ফাইলের আকার ২০০ কে বি এর কম হতে হবে");
+
+          }// Show the alert
           this.data.image = '';
        
           return false;
         }
           const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg']; // Allowed file types
           if (!allowedTypes.includes(this.data.image.type)) {
-            this.$toast.error("Only PNG, JPEG, or JPG files are allowed");
+            this.language === 'en' ? this.$toast.error("Only PNG, JPEG, or JPG files are allowed") : this.$toast.error("শুধুমাত্র পিএনজি, জেপিইজি, অথবা জেপিজি ফাইলগুলি অনুমোদিত");
             this.data.image = '';
             return false;
           }
@@ -3395,7 +3466,13 @@ export default {
      const maxFileSize = 200 * 1024;
            if (this.data.signature.size > maxFileSize) {
          
-          this.$toast.error("File size must be unser 200 KB ");// Show the alert
+             if(this.language=='en'){
+                        this.$toast.error("File size must be under 200 KB");
+                    }
+                    else{
+                        this.$toast.error("ফাইলের আকার ২০০ কে বি এর কম হতে হবে");
+
+                    }// Show the alert
           this.data.signature = '';
 
           return false;
@@ -3403,7 +3480,7 @@ export default {
         }
         const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg']; // Allowed file types
         if (!allowedTypes.includes(this.data.signature.type)) {
-          this.$toast.error("Only PNG, JPEG, or JPG files are allowed");
+           this.language === 'en' ? this.$toast.error("Only PNG, JPEG, or JPG files are allowed") : this.$toast.error("শুধুমাত্র পিএনজি, জেপিইজি, অথবা জেপিজি ফাইলগুলি অনুমোদিত");
           this.data.signature = '';
           return false;
         }
@@ -3424,7 +3501,13 @@ export default {
         // Read the selected file and generate a preview URL
          if (this.data.nominee_image.size > maxFileSize) {
 
-          this.$toast.error("File size must be unser 200 KB ");// Show the alert
+             if(this.language=='en'){
+                        this.$toast.error("File size must be under 200 KB");
+                    }
+                    else{
+                        this.$toast.error("ফাইলের আকার ২০০ কে বি এর কম হতে হবে");
+
+                    }// Show the alert
           this.data.nominee_image = '';
 
           return false;
@@ -3432,7 +3515,7 @@ export default {
         }
         const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg']; // Allowed file types
         if (!allowedTypes.includes(this.data.nominee_image.type)) {
-          this.$toast.error("Only PNG, JPEG, or JPG files are allowed");
+          this.language === 'en' ? this.$toast.error("Only PNG, JPEG, or JPG files are allowed") : this.$toast.error("শুধুমাত্র পিএনজি, জেপিইজি, অথবা জেপিজি ফাইলগুলি অনুমোদিত");
           this.data.nominee_image = '';
           return false;
         }
@@ -3452,7 +3535,13 @@ export default {
         const maxFileSize = 200 * 1024; 
            if (this.data.nominee_signature.size > maxFileSize) {
 
-          this.$toast.error("File size must be unser 200 KB ");// Show the alert
+             if(this.language=='en'){
+                        this.$toast.error("File size must be under 200 KB");
+                    }
+                    else{
+                        this.$toast.error("ফাইলের আকার ২০০ কে বি এর কম হতে হবে");
+
+                    }// Show the alert
           this.data.nominee_signature = '';
 
           return false;
@@ -3460,7 +3549,7 @@ export default {
         }
         const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg']; // Allowed file types
         if (!allowedTypes.includes(this.data.nominee_signature.type)) {
-          this.$toast.error("Only PNG, JPEG, or JPG files are allowed");
+          this.language === 'en' ? this.$toast.error("Only PNG, JPEG, or JPG files are allowed") : this.$toast.error("শুধুমাত্র পিএনজি, জেপিইজি, অথবা জেপিজি ফাইলগুলি অনুমোদিত");
           this.data.nominee_signature = '';
           return false;
         }
