@@ -1376,7 +1376,7 @@
         "total_not_solved": "Total Not Solved",
         "header": "In The Last 30 Days",
         "program_wise_total_received": "Program Wise Total Grievance",
-        "program_wise_total_approved": "Program Wise Grievance Approved",
+        "program_wise_total_approved": "Program Wise Grievance Solved",
         "program_wise_total_canceled": "Program Wise Grievance Canceled",
         "location_wise_total_grievance": "Location Wise Grievance"
       }

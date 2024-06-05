@@ -134,6 +134,7 @@
                   :key="index"
                   :disabled="item.disabled"
                   @click.prevent="handleBreadcrumbClick(item.value)"
+                  style="cursor: pointer;font-weight: bold; color: blue;transition: color 0.3s ease; "
                 >
                   {{ language === 'bn' ? $helpers.englishToBangla(item.text) : item.text }}
                 </v-breadcrumbs-item>
@@ -175,8 +176,8 @@
               <td>{{ language==='bn' ? $helpers.englishToBangla(item.total_grievance_canceled) : item.total_grievance_canceled }}</td>
               <td>{{ language==='bn' ? $helpers.englishToBangla(item.total_grievance_pending) : item.total_grievance_pending }}</td>
               <td>
-                  <v-btn @click="fetchNextLevel(item.id,item.type)" fab x-small v-on="on" color="success" elevation="0">
-                     <v-icon>mdi-arrow-collapse-right </v-icon>
+                  <v-btn v-if="item.type === 'division' || item.type === 'district' " @click="fetchNextLevel(item.id,item.type)" fab x-small v-on="on" color="success" elevation="0">
+                     <v-icon >mdi-arrow-collapse-right </v-icon>
                    </v-btn>
               </td>
                
