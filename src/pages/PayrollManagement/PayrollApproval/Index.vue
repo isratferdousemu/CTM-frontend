@@ -1428,23 +1428,17 @@ export default {
 
                                 </v-data-table>
                             </v-row>
-
-                            <v-row class="mx-0 my-0 py-2" justify="center">
-                                <v-btn flat @click="dialogAdd = false" outlined class="custom-btn-width py-2 mr-10">
-                                    {{ $t("container.list.cancel") }}
-                                </v-btn>
-
-                                <div>
-                                    <v-btn v-if="data.id != null" type="submit" flat color="primary" :disabled="invalid"
-                                        :loading="loading" class="custom-btn-width success white--text py-2">
-                                        {{ $t("container.list.update") }}
+                            <v-row>
+                                <v-col lg="4" md="6" cols="12" class="text-right">
+                                    <v-btn flat @click="seeBeneficiaryDialog = false" outlined
+                                        class="custom-btn-width py-2 mr-10">
+                                        {{ $t("container.list.cancel") }}
                                     </v-btn>
-
-                                    <v-btn v-else type="submit" flat color="primary" :disabled="invalid"
-                                        :loading="loading" class="custom-btn-width success white--text py-2">
+                                    <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
+                                        class="custom-btn-width success white--text py-2">
                                         {{ $t("container.list.submit") }}
                                     </v-btn>
-                                </div>
+                                </v-col>
                             </v-row>
                         </form>
                     </ValidationObserver>
