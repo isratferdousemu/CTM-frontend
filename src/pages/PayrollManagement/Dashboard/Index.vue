@@ -128,10 +128,10 @@
         </v-card>
       </v-col>
       <v-col cols="12" md="6" lg="6">
-        <v-card>
+        <v-card height="100%">
           <v-card-text>
             <V-row>
-              <TotalApprovedPayrollBarChart />
+              <TotalPaymentProcessorPieChart />
             </V-row>
           </v-card-text>
         </v-card>
@@ -139,21 +139,20 @@
     </v-row>
 
     <v-row class="mt-3">
-      <v-col cols="12" md="6" lg="6">
+    <v-col cols="12" md="6" lg="6">
         <v-card height="100%">
           <v-card-text>
             <V-row>
-              <TotalNumerLocationWisePieChart />
+              <TotalApprovedPayrollBarChart />
             </V-row>
           </v-card-text>
         </v-card>
       </v-col>
-
       <v-col cols="12" md="6" lg="6">
         <v-card height="100%">
           <v-card-text>
             <V-row>
-              <TotalNumerStatusWisePieChart />
+              <ProgramWisePaymentCycleDoughnutChart />
             </V-row>
           </v-card-text>
         </v-card>
@@ -166,9 +165,8 @@
 import Chart from "chart.js/auto";
 import ProgramWisePayrollChart from "@/pages/PayrollManagement/Dashboard/ProgramWisePayrollChart.vue";
 import TotalApprovedPayrollBarChart from "@/pages/PayrollManagement/Dashboard/TotalApprovedPayrollBarChart.vue";
-import TotalNumerReceivedDoughnutChart from "@/pages/PayrollManagement/Dashboard/TotalNumerReceivedDoughnutChart.vue";
-import TotalNumerLocationWisePieChart from "@/pages/PayrollManagement/Dashboard/TotalNumerLocationWisePieChart.vue";
-import TotalNumerStatusWisePieChart from "@/pages/PayrollManagement/Dashboard/TotalNumerStatusWisePieChart.vue";
+import TotalPaymentProcessorPieChart from "@/pages/PayrollManagement/Dashboard/TotalPaymentProcessorPieChart.vue";
+import ProgramWisePaymentCycleDoughnutChart from "@/pages/PayrollManagement/Dashboard/ProgramWisePaymentCycleDoughnutChart.vue";
 import { GChart } from "vue-google-charts/legacy";
 export default {
   name: "Index",
@@ -185,9 +183,8 @@ export default {
     GChart,
     ProgramWisePayrollChart,
     TotalApprovedPayrollBarChart,
-    TotalNumerReceivedDoughnutChart,
-    TotalNumerLocationWisePieChart,
-    TotalNumerStatusWisePieChart,
+    TotalPaymentProcessorPieChart,
+    ProgramWisePaymentCycleDoughnutChart,
   },
   computed: {
     language: {

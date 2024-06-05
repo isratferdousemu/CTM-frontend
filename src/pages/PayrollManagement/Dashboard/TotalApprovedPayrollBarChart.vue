@@ -1,17 +1,20 @@
 <template>
   <v-col>
     <v-row>
-      <v-col cols="12">
-        <v-card style="text-align: center" :loading="isLoading">
-          <label style="color: #1976d2">
-            <span>
+      <v-col cols="12" style="padding: 0px">
+        <v-card
+          :loading="isLoading"
+          style="background-color: #1c3b68; color: white; font-size: 12px"
+        >
+          <v-card-title style="padding: 10px">
+            <h5 class="white--text">
               {{
                 $t(
                   "container.payroll_management.dashboard.total_approve_payroll"
                 )
               }}
-            </span>
-          </label>
+            </h5>
+          </v-card-title>
         </v-card>
       </v-col>
     </v-row>
@@ -25,7 +28,7 @@
         min-width="auto"
       >
         <template v-slot:activator="{ on, attrs }">
-          <v-text-field
+          <!-- <v-text-field
             v-model="dates"
             :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
             :label="
@@ -36,7 +39,25 @@
             readonly
             v-bind="attrs"
             v-on="on"
-          ></v-text-field>
+          ></v-text-field> -->
+
+          <v-col cols="12">
+            <v-row>
+              <v-select
+                :label="
+                  $t(
+                    'container.beneficiary_management.dashboard.select_program'
+                  )
+                "
+                :items="programs"
+                v-model="program_id"
+                :item-text="getItemText"
+                item-value="id"
+                @change="fetchTotalForwardedBarApplicationChartData()"
+                clearable
+              ></v-select>
+            </v-row>
+          </v-col>
         </template>
         <v-date-picker
           v-model="dates"
@@ -56,7 +77,7 @@
       </v-menu>
     </v-row>
     <v-row>
-      <canvas id="total_number_of_application_forwarded_bar_info"></canvas>
+      <canvas id="total_approve_payroll_bar_info"></canvas>
     </v-row>
   </v-col>
 </template>
@@ -68,9 +89,10 @@ export default {
     return {
       // Define data properties here
       dates: [],
+      programs: [],
       menu: false,
       total_number_of_application_forwarded_bar_chart: null,
-      total_number_of_application_forwarded_bar_info: [],
+      total_approve_payroll_bar_info: [],
       total_number_of_application_forwarded_bar_levels: [],
       total_number_of_application_forwarded_bar_datas: [],
       isLoading: false,
@@ -78,6 +100,33 @@ export default {
     };
   },
   methods: {
+    getItemText(item) {
+      return this.language === "bn" ? item.name_bn : item.name_en;
+    },
+    async GetAllProgram() {
+      try {
+        await this.$axios
+          .get("/global/program", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((result) => {
+            this.programs = result.data.data;
+          })
+          .catch((err) => {
+            console.log(err, "error");
+            if (err.response?.data?.errors) {
+              this.$refs.form.setErrors(err.response.data.errors);
+            }
+            console.log(err.response);
+            this.$toast.error(err?.response?.data?.message);
+          });
+      } catch (e) {
+        console.log(e);
+      }
+    },
     resetDateRange() {
       this.dates = [];
       this.menu = false;
@@ -87,17 +136,17 @@ export default {
       from_date = null,
       to_date = null
     ) {
-      await this.getTotalForwardedBarApplication(1, from_date, to_date);
+      await this.getTotalApprovedPayroll(null, from_date, to_date);
       this.createTotalForwardedBarApplicentChart();
     },
-    async getTotalForwardedBarApplication(
+    async getTotalApprovedPayroll(
       status,
       from_date = null,
       to_date = null
     ) {
       this.isLoading = true;
       const queryParams = {
-        // status: status,
+        program_id: this.program_id,
         start_date: from_date,
         end_date: to_date,
       };
@@ -112,17 +161,15 @@ export default {
             params: queryParams,
           }
         );
-        console.log("🚀 ~ result:", result)
-
-        this.total_number_of_application_forwarded_bar_info = result.data.data;
+        this.total_approve_payroll_bar_info = result.data.data;
         this.total_number_of_application_forwarded_bar_levels =
-          this.total_number_of_application_forwarded_bar_info.map((row) =>
+          this.total_approve_payroll_bar_info.map((row) =>
             this.language == "en"
               ? row.month_name.substring(0, 10)
               : row.month_name.substring(0, 10)
           );
         this.total_number_of_application_forwarded_bar_datas =
-          this.total_number_of_application_forwarded_bar_info.map(
+          this.total_approve_payroll_bar_info.map(
             (row) => row.count
           );
         this.isLoading = false;
@@ -143,7 +190,7 @@ export default {
       ) {
         this.total_number_of_application_forwarded_bar_chart = new Chart(
           document.getElementById(
-            "total_number_of_application_forwarded_bar_info"
+            "total_approve_payroll_bar_info"
           ),
           {
             type: "bar",
@@ -220,6 +267,7 @@ export default {
 
   mounted() {
     this.fetchTotalForwardedBarApplicationChartData();
+    this.GetAllProgram();
   },
   computed: {
     language: {
@@ -235,8 +283,10 @@ export default {
           this.fetchTotalForwardedBarApplicationChartData();
         }
       },
-      immediate: true, // Call the handler immediately to initialize the levels
+      immediate: true,
     },
   },
 };
 </script>
+
+

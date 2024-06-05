@@ -1,15 +1,15 @@
 <template>
   <v-col>
   <v-row>
-        <v-col cols="12" style="padding: 0px;">
-        <v-card :loading="isLoading" style="background-color:#1c3b68;color:white;font-size:12px;">
-           <v-card-title style=" padding: 10px;">
-               <h5 class="white--text">
-                 {{ $t("container.grievance_management.dashboard.program_wise_total_received") }}
-              </h5>
-          </v-card-title>
-        </v-card>
-       </v-col>
+    <v-col cols="12" style="padding: 0px;">
+      <v-card :loading="isLoading" style="background-color:#1c3b68;color:white;font-size:12px;">
+         <v-card-title style=" padding: 10px;">
+             <h5 class="white--text">
+               {{ $t("container.payroll_management.dashboard.total_payment_processor") }}
+            </h5>
+        </v-card-title>
+      </v-card>
+     </v-col>
   </v-row>
   <v-row class="ml-1 mr-1">
     <v-menu
@@ -24,7 +24,7 @@
         <v-text-field
             v-model="dates"
             :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
-            :label="$t('container.system_config_dashboard.enter_start_end_date')"
+            :label="$t('container.application_selection_dashboard.enter_start_end_date')"
             readonly
             v-bind="attrs"
             v-on="on"
@@ -35,7 +35,7 @@
           :range="[dates[0], dates[1]]"
           no-title
           scrollable
-          @input="OnChangeDateInfo($event,'total_received')"
+          @input="OnChangeDateInfo($event,'total_approve')"
       >
         <v-spacer></v-spacer>
         <v-btn text color="primary" @click="resetDateRange">
@@ -52,8 +52,8 @@
     </v-menu>
   </v-row>
   <v-row>
-     <img  v-if="allZeros == true" style="margin-left:80px;margin-top:10px;width: 300px;height: 300px" src="/assets/images/pie_chart_default.png" alt="default chart">
-    <canvas v-else id="total_number_received"></canvas>
+    <img  v-if="allZeros == true" style="margin-left:80px;margin-top:10px;width: 300px;height: 300px" src="/assets/images/pie_chart_default.png" alt="default chart">
+    <canvas v-else id="total_payment_processor"></canvas>
   </v-row>
   </v-col>
 
@@ -69,10 +69,10 @@ export default {
       // Define data properties here
       dates: [],
       menu: false,
-      total_number_of_application_received_chart: null,
-      total_number_received: [],
-      total_number_of_application_received_levels: [],
-      total_number_of_application_received_datas: [],
+      programwise_application_approve_chart: null,
+      programwise_application_approve_info: [],
+      chart_levels: [],
+      chart_datas: [],
       isLoading: false,
       dateRangeText: ""
     };
@@ -81,76 +81,69 @@ export default {
     resetDateRange() {
       this.dates = [];
       this.menu = false;
-      this.fetchTotalReceivedApplicationChartData()
+      this.fetchChartData()
     },
-    async fetchTotalReceivedApplicationChartData(from_date = null, to_date = null) {
-      await this.getTotalReceivedApplication(0, from_date, to_date);
-     if (this.allZeros != true) {
-        this.createTotalReceivedApplicentChart();
+    async fetchChartData(from_date = null, to_date = null) {
+      await this.getData(null, from_date, to_date);
+       if (this.allZeros != true) {
+        this.createChart();
       }
-      // this.createTotalReceivedApplicentChart();
     },
-    async getTotalReceivedApplication(status, from_date = null, to_date = null) {
-      console.log(from_date, to_date,'date by anwar')
-      this.isLoading = true;
+    async getData(status, from_date = null, to_date = null) {
+       this.isLoading = true
       const queryParams = {
         status: status,
         start_date: from_date,
         end_date: to_date,
       };
       try {
-        const result = await this.$axios.get("admin/grievance-dashboard/total-numberof-grievance", {
+        const result = await this.$axios.get("/admin/payroll/total-payment-processor", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
           },
           params: queryParams,
         });
-         this.total_number_received = result.data.data;
-         console.log(this.total_number_received,'fsfdsd');
-
-        this.total_number_of_application_received_levels = this.total_number_received.map((row) => {
-          return this.$i18n.locale == 'en' ? row?.name_en : row?.name_bn;
-        });
-
-        this.total_number_of_application_received_datas = this.total_number_received.map((row) => {
-          return row.grievances_count !== 0 ? row?.grievances_count : 0;
-        });
-
+        this.programwise_application_approve_info = result.data.data;
+        this.chart_levels = result?.data?.data?.map((row) => this.$i18n.locale == 'en' ? row?.name_en : row?.name_bn);
+        this.chart_datas = result?.data?.data?.map((row) => row?.count);
         this.isLoading = false;
 
       } catch (error) {
-          this.isLoading = false;
+         this.isLoading = false;
+        console.error("Error fetching data:", error);
         // Handle error if necessary
       }
     },
-    createTotalReceivedApplicentChart() {
-      if (this.total_number_of_application_received_chart) {
-        this.total_number_of_application_received_chart.destroy();
+    createChart() {
+      if (this.programwise_application_approve_chart) {
+        this.programwise_application_approve_chart.destroy();
       }
+      if (this.chart_levels && this.chart_datas) {
+        const total = this.chart_datas.reduce((acc, value) => acc + value, 0);
+        // const percentages = this.chart_datas.map(value => ((value / total) * 100).toFixed(2) + '%');
 
-      if (this.total_number_of_application_received_levels && this.total_number_of_application_received_datas) {
-        const total = this.total_number_of_application_received_datas.reduce((acc, value) => acc + value, 0);
-        // const percentages = this.total_number_of_application_received_datas.map(value => ((value / total) * 100).toFixed(2) + '%');
-        const percentages = this.total_number_of_application_received_datas.map(value => {
+        const percentages = this.chart_datas.map(value => {
           const percentage = ((value / total) * 100).toFixed(2);
           return isNaN(percentage) ? '0.00%' : percentage + '%';
         });
 
-        this.total_number_of_application_received_chart = new Chart(document.getElementById("total_number_received"), {
-          type: "doughnut",
+        this.programwise_application_approve_chart = new Chart(document.getElementById("total_payment_processor"), {
+          type: "pie",
           data: {
-            // labels: this.total_number_of_application_received_levels,
-            // labels: this.total_number_of_application_received_levels.map((label, index) => `${label} (${percentages[index]})`),
-            labels: this.total_number_of_application_received_levels.map((label, index) => `${label} (${this.$i18n.locale == 'en' ? this.total_number_of_application_received_datas[index] : this.$helpers.englishToBangla(this.total_number_of_application_received_datas[index])} - ${this.$i18n.locale == 'en' ? percentages[index]  : this.$helpers.englishToBangla(percentages[index])})`),
+            // labels: this.chart_levels,
+            // labels: this.chart_levels.map((label, index) => `${label} (${percentages[index]})`),
+            labels: this.chart_levels.map((label, index) => `${label} (${this.$i18n.locale == 'en' ? this.chart_datas[index] : this.$helpers.englishToBangla(this.chart_datas[index])} - ${this.$i18n.locale == 'en' ? percentages[index]  : this.$helpers.englishToBangla(percentages[index])})`),
             percentages:percentages,
-            datasets: [{
-              label: "Count",
-              backgroundColor: this.total_number_of_application_received_datas.map(() => this.generateRandomColor()),
-              data: this.total_number_of_application_received_datas,
-              fill: false,
-              tension: 0.1,
-            }],
+            datasets: [
+              {
+                label: "Values",
+                data: this.chart_datas,
+                backgroundColor: this.chart_datas.map(() => this.generateRandomColor()),
+                // backgroundColor: ["Green", "Red", "blue", "Purple", "Yellow"],
+                hoverOffset: 4,
+              },
+            ],
           },
           options: {
             plugins: {
@@ -188,8 +181,8 @@ export default {
             aspectRatio: 1, // Aspect ratio of 1 w
           },
         });
-        document.getElementById("total_number_received").style.width = '400px';
-        document.getElementById("total_number_received").style.height = '435px';
+        document.getElementById("total_payment_processor").style.width = '400px';
+        document.getElementById("total_payment_processor").style.height = '435px';
       } else {
         console.error("Data is not available to create chart.");
       }
@@ -197,7 +190,8 @@ export default {
     generateRandomColor() {
       return '#' + Math.floor(Math.random() * 16777215).toString(16);
     },
-    OnChangeDateInfo(event, type) {
+
+     OnChangeDateInfo(event, type) {
       if (this.dates.length < 2) {
         return;
       }
@@ -214,32 +208,31 @@ export default {
         from_date = event[0];
         to_date = event[1];
       }
-      this.fetchTotalReceivedApplicationChartData(from_date, to_date);
+      this.fetchChartData(from_date, to_date);
     },
-
   },
 
   mounted() {
-    this.fetchTotalReceivedApplicationChartData();
+    this.fetchChartData();
   },
-   computed: {
+ computed: {
     language: {
       get() {
         return this.$store.getters.getAppLanguage;
       }
     },
     allZeros() {
-      return this.total_number_of_application_received_datas.every(value => value === 0);
+      return this.chart_datas.every(value => value === 0);
     }
   },
   watch: {
     '$i18n.locale': {
       handler(newLocale, oldLocale) {
         if (newLocale != oldLocale) {
-          this.fetchTotalReceivedApplicationChartData();
+          this.fetchChartData();
         }
       },
-      immediate: true // Call the handler immediately to initialize the levels
+      immediate: true // Call the handler immediately to initialize the chart_levels
     }
   },
 }

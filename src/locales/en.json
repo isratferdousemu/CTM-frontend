@@ -1054,7 +1054,10 @@
         "total_payment_cycle": "Total Payment Cycle",
         "completed_payment_cycle": "Processing at IBAS ++",
         "program_wise_payroll": "Program Wise Payroll",
-        "total_approve_payroll": "Total Approve Payroll"
+        "total_payment_processor": "Total Payment Processor",
+        "total_approve_payroll": "Total Approve Payroll",
+        "available_balance": "Available Balance",
+        "program_wise_payment_cycle": "Program Wise Payment Cycle"
       }
     },
     "training_management": {
