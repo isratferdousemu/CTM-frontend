@@ -1421,7 +1421,7 @@
         "total_not_solved": "সমাধান হয়নি",
         "header": "শেষ 30 দিনে",
         "program_wise_total_received": "প্রোগ্রাম অনুসারে প্রাপ্ত মোট অভিযোগ",
-        "program_wise_total_approved": "প্রোগ্রাম অনুসারে মোট অভিযোগ অনুমোদিত",
+        "program_wise_total_approved": "প্রোগ্রাম অনুসারে মোট অভিযোগ সমাধান",
         "program_wise_total_canceled": "প্রোগ্রাম অনুসারে মোট অভিযোগ বাতিল",
         "location_wise_total_grievance": "অবস্থান অনুসারে মোট অভিযোগ"
       }
