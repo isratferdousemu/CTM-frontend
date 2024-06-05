@@ -122,7 +122,13 @@ export default {
     },
 
    
-
+    computed: {
+        language: {
+            get() {
+                return this.$store.getters.getAppLanguage;
+            }
+        },
+    },
     mounted() {
         this.GetAPI();
       
@@ -206,9 +212,8 @@ export default {
                                                     rules="required" v-slot="{ errors }">
                                                     <v-text-field dense type="text" v-model="data.organization_name"
                                                         :label="$t('container.api_manager.data_receiver.organization')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]"
-                                                        class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal"></v-text-field>
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক প্রতিষ্ঠানের নাম প্রদান করুন '
+    : 'Please enter Organization Name') : ''" class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols="12" sm="6" lg="6">
@@ -216,8 +221,8 @@ export default {
                                                     rules="required||phone" v-slot="{ errors }">
                                                     <v-text-field dense type="text" v-model="data.organization_phone"
                                                         :label="$t('container.api_manager.data_receiver.phone')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]"></v-text-field>
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য প্রতিষ্ঠানের ফোন প্রদান করুন '
+                                        : 'Please enter valid Organization Phone') : ''"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols="12" sm="6" lg="6">
@@ -225,8 +230,8 @@ export default {
                                                     rules="required||email||bangla" v-slot="{ errors }">
                                                     <v-text-field dense type="email" placeholder="xxx@gmail.com"
                                                         v-model="data.organization_email" :label="$t('container.api_manager.data_receiver.email')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]"></v-text-field>
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য প্রতিষ্ঠানের ইমেইল প্রদান করুন'
+                                        : 'Please enter valid Organization Email') : ''"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols="12" sm="6" lg="6">
@@ -235,8 +240,8 @@ export default {
                                                     v-slot="{ errors }">
                                                     <v-text-field placeholder="xxx@gmail.com" dense type="email"
                                                         v-model="data.responsible_person_email" :label="$t('container.api_manager.data_receiver.responsible_person_email')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]"></v-text-field>
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য দায়িত্বশীল ব্যক্তির ইমেইল প্রদান করুন'
+                                        : 'Please enter valid Responsible Person Email') : ''"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols="12" sm="6" lg="6">
@@ -244,8 +249,8 @@ export default {
                                                     vid="responsible_person_nid" rules="required||checkNumber"
                                                     v-slot="{ errors }">
                                                     <v-text-field dense v-model="data.responsible_person_nid" :label="$t('container.api_manager.data_receiver.responsible_person_nid')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]"></v-text-field>
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য দায়িত্বশীল ব্যক্তির এনআইডি প্রদান করুন'
+                                        : 'Please enter valid Responsible Person NID') : ''"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols="12" sm="6" lg="6">
@@ -254,11 +259,12 @@ export default {
                                                     <v-autocomplete dense multiple type="text" v-model="data.api_list"
                                                         :label="$t('container.api_manager.data_receiver.select_api')"
                                                         persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :items="apis" item-text="name" item-value="id"
-                                                        :error-messages="errors[0]" class="select-with-chips">
+                                                        :items="apis" item-text="name" item-value="id" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ করে এপিআই নির্বাচন করুন'
+                                        : 'Please Selct API') : ''" class="select-with-chips">
                                                         <!-- Slot for chips -->
                                                         <template v-slot:selection="{ item }">
-                                                            <v-chip color="#169BD5" class="white--text ma-1">{{ item.name
+                                                            <v-chip color="#169BD5" class="white--text ma-1">{{
+                                                                item.name
                                                                 }}</v-chip>
                                                         </template>
                                                     </v-autocomplete>
@@ -271,18 +277,17 @@ export default {
                                                     rules="required||ip_address" v-slot="{ errors }">
                                                     <v-text-field placeholder="x.x.x.x" dense
                                                         v-model="data.whitelist_ip" :label="$t('container.api_manager.data_receiver.ip')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]"></v-text-field>
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ করে সার্ভারের আইপি এড্রেস প্রদান করুন'
+                                        : 'Please enter Server IP Address') : ''"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols="12" sm="6" lg="6">
                                                 <ValidationProvider name="Auth 
                                                 
-                                                key" vid="username"
-                                                    rules="required||bangla" v-slot="{ errors }">
+                                                key" vid="username" rules="required||bangla" v-slot="{ errors }">
                                                     <v-text-field dense v-model="data.username" :label="$t('container.api_manager.data_receiver.user_name')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]"></v-text-field>
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ করে প্রমাণীকরণ কী প্রদান করুন'
+                                        : 'Please enter Server Auth Key') : ''"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols="12" sm="6" lg="6">
@@ -290,10 +295,8 @@ export default {
                                                     :rules="{ required, start_date: data.end_date }"
                                                     v-slot="{ errors }">
                                                     <v-text-field dense type="date" v-model="data.start_date" :label="$t('container.api_manager.data_receiver.start_date')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]"
-                                                        
-                                                        ></v-text-field>
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ করে গ্রহণযোগ্য শুরুর তারিখ প্রদান করুন'
+                                        : 'Please enter valid Start Date') : ''"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols="12" sm="6" lg="6">
@@ -301,8 +304,8 @@ export default {
                                                     :rules="{ required, end_date: data.start_date }"
                                                     v-slot="{ errors }">
                                                     <v-text-field dense type="date" v-model="data.end_date" :label="$t('container.api_manager.data_receiver.end_date')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]"></v-text-field>
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ করে গ্রহণযোগ্য শেষ তারিখ প্রদান করুন'
+                                        : 'Please enter valid End Date') : ''"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
 
