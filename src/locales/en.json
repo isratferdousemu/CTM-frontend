@@ -1172,6 +1172,7 @@
             "view": "API Receiver Details",
             "add": "Add New API Receiver",
             "edit": "Edit API Receiver",
+            "search":"Search Organization Phone or Email",
             "api": " API",
             "organization": "Organization Name",
             "phone": "Organization Phone",

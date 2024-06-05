@@ -114,8 +114,9 @@ export default {
                 <v-row>
                     <v-col cols="12">
                         <v-card>
-                            <v-card-title class="justify-center">
-                                <h4 class="mt-5">
+                            <v-card-title class="justify-center"
+                                style="background-color:#1c3b68;color:white;margin-bottom: 17px;">
+                                <h4>
                                     {{ $t("container.api_manager.api_generate.api_view") }}
                                 </h4>
                             </v-card-title>
@@ -161,8 +162,8 @@ export default {
                                             </v-col>
                                             <v-col cols="12" sm="10" lg="10">
                                                 <b>:</b>
-                                                <v-chip  v-for="(item, index) in data.selected_columns"
-                                                     :key="index" class="ml-2 mt-2">
+                                                <v-chip v-for="(item, index) in data.selected_columns" :key="index"
+                                                    class="ml-2 mt-2">
                                                     {{ item }}
                                                 </v-chip>
 
