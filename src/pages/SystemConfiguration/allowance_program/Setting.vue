@@ -9,27 +9,28 @@ import {
 import { http } from "@/hooks/httpService";
 
 extend("checkName", {
-  validate: (value) => {
-    if (!value && value !== 0) {
-      return false;
-    }
+    validate: (value) => {
+        if (!value && value !== 0) {
+            return false;
+        }
 
-    return /^[a-zA-Z\s]+$/.test(value);
-  },
-  message: "Please Enter English Letter's in this Field",
+        // Update the regular expression to accept English letters, spaces, and commas
+        return /^[a-zA-Z\s,]+$/.test(value);
+    },
+    message: "Please enter English letters, spaces, or commas in this field",
 });
-
 extend("checkNameBn", {
-  validate: (value) => {
-    if (!value && value !== 0) {
-      return false;
-    }
+    validate: (value) => {
+        if (!value && value !== 0) {
+            return false;
+        }
 
-    var banglaRegex = /^[\u0980-\u09E5\u09F0-\u09FF\s]+$/;
+        // Update the regular expression to accept Bangla letters, spaces, and commas
+        var banglaRegex = /^[\u0980-\u09E5\u09F0-\u09FF\s,]+$/;
 
-    return banglaRegex.test(value);
-  },
-  message: "Please Enter Bangla Letter's in this Field",
+        return banglaRegex.test(value);
+    },
+    message: "Please enter Bangla letters, spaces, or commas in this field",
 });
 
 export default {
