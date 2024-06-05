@@ -68,7 +68,7 @@
           <v-col cols="12">
             <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8">
              <v-card-title tag="div" style="background-color:#1c3b68;color:white;margin-bottom: 17px;font-size:17px;">
-                  <h3 class="white--text">
+                  <h3 class="white--text ml-2">
                     {{ $t("container.system_config.demo_graphic.city_corporation.customtitle") }}
                   </h3>
                 </v-card-title>
@@ -179,7 +179,7 @@
 
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn v-can="'city-delete'" fab x-small v-on="on" color="grey" class="ml-3 white--text"
+                            <v-btn v-can="'city-delete'"  v-if="item.children_count==0" fab x-small v-on="on" color="grey" class="ml-3 white--text"
                               elevation="0" @click="deleteAlert(item.id)">
                               <v-icon> mdi-delete </v-icon>
                             </v-btn>
@@ -196,7 +196,7 @@
                               right: 25px;
                               width: 149px;
                               transform: translate(0px, 0px);
-                            " :items="items" hide-details dense outlined @change="onPageChange"
+                            " :items="items" hide-details dense outlined @change="perPageChange"
                             v-model="pagination.perPage"></v-select>
                           <v-pagination circle primary v-model="pagination.current" :length="pagination.total"
                             @input="onPageChange" :total-visible="11" class="custom-pagination-item"></v-pagination>
@@ -1005,6 +1005,10 @@ export default {
     },
     onPageChange($event) {
       // this.pagination.current = $event;
+      this.GetCity();
+    },
+     perPageChange($event) {
+      this.pagination.current = 1;
       this.GetCity();
     },
     setInitialHeader() {
