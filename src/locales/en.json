@@ -84,7 +84,9 @@
       "pouroshava": "Pouroshava",
       "union": "Union",
       "no_data": "No gender was selected.",
-      "show": "Show"
+      "show": "Show",
+      "close": "Close",
+      "addToList": "Add to list"
     },
     "system_config": {
       "demo_graphic": {
@@ -1100,7 +1102,26 @@
       "payment_cycle": "Payment Cycle",
       "starting_period": "Started Period",
       "closing_period": "Closing Period",
-      "search": "Search Emergency Allotment"
+      "search": "Search Emergency Allotment",
+      "emergency_beneficiary": {
+        "slNo": "Sl No",
+        "list": "Emergency Beneficiary",
+        "add_new": "Create Emergency Beneficiary",
+        "entry": "Emergency Beneficiary Entry",
+        "payment_name": "Emergency Allotment",
+        "edit": "Edit Emergency Beneficiary",
+        "program_name": "Program Name",
+        "no_of_new_benificiary": "Beneficiary from new",
+        "no_of_existing_benificiary": "Beneficiary from existing",
+        "per_person_amount": "Per person amount",
+        "payment_cycle": "Payment Cycle",
+        "date": "Date",
+        "closing_period": "Closing Period",
+        "search": "Search Emergency Beneficiary",
+        "e_beneficiary": "From Existing Beneficiary",
+        "n_beneficiary": "From New Addition",
+        "searchBy": "Search By"
+      }
     },
     "training_management": {
       "trainer_info": {

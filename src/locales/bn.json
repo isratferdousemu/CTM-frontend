@@ -84,7 +84,9 @@
       "pouroshava": "পৌরসভা",
       "union": "ইউনিয়ন",
       "show": "দেখুন",
-      "no_data": "কোন লিঙ্গ নির্বাচন করা হয়নি."
+      "no_data": "কোন লিঙ্গ নির্বাচন করা হয়নি.",
+      "close": "বন্ধ করুন",
+      "addToList": "তালিকায় যুক্ত করুন"
     },
     "system_config": {
       "demo_graphic": {
@@ -1098,7 +1100,21 @@
       "payment_cycle": "পেমেন্ট চক্র",
       "starting_period": "প্রারম্ভিক সময়কাল",
       "closing_period": "সমাপনী সময়কাল",
-      "search": "জরুরী বরাদ্দ অনুসন্ধান করুন"
+      "search": "জরুরী বরাদ্দ অনুসন্ধান করুন",
+      "emergency_beneficiary": {
+        "slNo": "ক্রমিক নং",
+        "list": "জরুরী সুবিধাভোগী",
+        "add_new": "জরুরী সুবিধাভোগী তৈরি করুন",
+        "payment_name": "জরুরী বরাদ্দ",
+        "edit": "জরুরী সুবিধাভোগী সম্পাদনা করুন",
+        "no_of_new_benificiary": "নতুন থেকে সুবিধাভোগী",
+        "no_of_existing_benificiary": "বিদ্যমান থেকে সুবিধাভোগী",
+        "date": "তারিখ",
+        "search": "জরুরী সুবিধাভোগী অনুসন্ধান করুন",
+        "e_beneficiary": "বিদ্যমান থেকে সুবিধাভোগী",
+        "n_beneficiary": "নতুন সংযোজন থেকে",
+        "searchBy": "দ্বারা অনুসন্ধান করুন"
+      }
     },
     "training_management": {
       "trainer_info": {
