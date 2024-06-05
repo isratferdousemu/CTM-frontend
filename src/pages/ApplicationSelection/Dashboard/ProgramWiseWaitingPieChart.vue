@@ -2,11 +2,14 @@
   <v-col>
   <v-row>
     <v-col cols="12">
+      <v-card style="text-align: center" :loading="isLoading">
       <label style="color: #1976d2">
                       <span>
                         {{ $t("container.application_selection_dashboard.program_wise_number_of_waiting_application") }}
                       </span>
-      </label></v-col
+      </label>
+      </v-card>
+    </v-col
     >
   </v-row>
   <v-row class="ml-1 mr-1">
@@ -37,20 +40,21 @@
       >
         <v-spacer></v-spacer>
         <v-btn text color="primary" @click="resetDateRange">
-          Cancel
+          {{ $t('container.list.reset')}}
         </v-btn>
         <v-btn
             text
             color="primary"
             @click="$refs.menu.save(dates)"
         >
-          OK
+          {{ $t('container.list.ok')}}
         </v-btn>
       </v-date-picker>
     </v-menu>
   </v-row>
   <v-row>
-    <canvas id="programwise_application_waiting"></canvas>
+    <img  v-if="allZeros == true" style="margin-left:80px;margin-top:10px;width: 300px;height: 300px" src="/assets/images/pie_chart_default.png" alt="ddd">
+    <canvas v-else id="programwise_application_waiting"></canvas>
   </v-row>
   </v-col>
 
@@ -82,9 +86,12 @@ export default {
     },
     async fetchProgramwiseWaitingApplicationChartData(from_date = null, to_date = null) {
       await this.getProgramwiseWaitingApplication(3, from_date, to_date);
-      this.createProgramwiseWaitingApplicentChart();
+      if(this.allZeros != true){
+        this.createProgramwiseWaitingApplicentChart();
+      }
     },
     async getProgramwiseWaitingApplication(status, from_date = null, to_date = null) {
+     this.isLoading = true;
       const queryParams = {
         status: status,
         start_date: from_date,
@@ -104,6 +111,7 @@ export default {
         this.isLoading = false;
 
       } catch (error) {
+        this.isLoading = false;
         console.error("Error fetching data:", error);
         // Handle error if necessary
       }
@@ -189,6 +197,10 @@ export default {
       if (this.dates.length < 2) {
         return;
       }
+      if (this.dates[1] && this.dates[1] < this.dates[0]) {
+        this.$toast.error(this.language == 'en' ? 'End date cannot be before start date' : 'শেষ তারিখ শুরুর তারিখের আগে হতে পারে না')
+        this.resetDateRange();
+      }
       let from_date = null;
       let to_date = null;
 
@@ -202,6 +214,16 @@ export default {
 
   mounted() {
     this.fetchProgramwiseWaitingApplicationChartData();
+  },
+  computed:{
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      }
+    },
+    allZeros() {
+      return this.programwise_application_waiting_datas.every(value => value === 0);
+    }
   },
   watch: {
     '$i18n.locale': {

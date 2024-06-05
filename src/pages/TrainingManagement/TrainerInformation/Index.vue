@@ -1,5 +1,5 @@
 <script>
-import {ValidationObserver } from "vee-validate";
+import { ValidationObserver } from "vee-validate";
 export default {
     name: "Index",
     title: "CTM - Trainer Information",
@@ -13,9 +13,9 @@ export default {
             },
             showPassword: false,
             total: null,
-            org_name:null,
-            module_id:null,
-            organization_names:[],
+            org_name: null,
+            module_id: null,
+            organization_names: [],
             trainers: [],
 
             dialogAdd: false,
@@ -26,8 +26,8 @@ export default {
             search: "",
             delete_id: "",
             email_id: "",
-           
-            apis:[],
+
+            apis: [],
 
             errors: {},
             error_status: {},
@@ -39,7 +39,7 @@ export default {
             sortBy: "name_en",
             sortDesc: false, //ASC
             items: [5, 10, 15, 20, 40, 50, 100],
-      
+
         };
     },
 
@@ -60,11 +60,11 @@ export default {
                 { text: this.$t('container.training_management.trainer_info.ID'), value: "id_no", align: "start", width: "10%", sortable: false, },
                 { text: this.$t('container.training_management.trainer_info.name'), value: "name", width: "15%" },
                 { text: this.$t('container.training_management.trainer_info.designation'), value: "designation", width: "15%", sortable: false, },
-            
+
                 { text: this.$t('container.training_management.trainer_info.email'), value: "email", width: "10%" },
                 { text: this.$t('container.list.status'), value: "status", width: "15%", sortable: false, },
 
-              
+
                 { text: this.$t('container.list.action'), value: "actions", align: "start", sortable: false, width: "25%" },
             ];
         },
@@ -74,9 +74,9 @@ export default {
 
     mounted() {
         this.GetData();
-       
-    
-   
+
+
+
 
     },
 
@@ -87,9 +87,9 @@ export default {
             this.GetData();
         },
         deviceActivate(id) {
-            console.log(id,"id");
+            console.log(id, "id");
 
-      
+
             this.$axios
                 .get(`admin/training/trainers/status/${id}`, {
                     headers: {
@@ -99,11 +99,11 @@ export default {
                 })
                 .then((result) => {
                     this.$toast.success(result?.data?.message);
-       
+
                     this.GetData();
-                   
-                
-              
+
+
+
 
 
                 })
@@ -115,10 +115,10 @@ export default {
                 });
 
         },
-       
-        resetSearch(){
-            this.module_id=null;
-            this.org_name=null;
+
+        resetSearch() {
+            this.module_id = null;
+            this.org_name = null;
             this.GetData();
         },
         async GeneratePDF() {
@@ -128,7 +128,7 @@ export default {
                 page = this.pagination.current;
             }
             const queryParams = {
-                
+
                 language: this.$i18n.locale,
                 searchText: this.search,
                 perPage: this.search.trim() === '' ? this.total : this.total,
@@ -163,25 +163,25 @@ export default {
                 this.$t('container.training_management.trainer_info.mobile'),
                 this.$t('container.training_management.trainer_info.email'),
                 this.$t('container.training_management.trainer_info.address'),
-                
+
                 this.$t('container.list.status'),
-               
-                
+
+
 
             ]
-           
 
-        
+
+
             const CustomInfo = this.apis.map(((i, index) => {
 
                 return [
                     this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
-                    
+
                     this.$i18n.locale == 'en' ? i.id : this.$helpers.englishToBangla(i.id),
                     this.$i18n.locale == 'en' ? i.name : i.name,
                     this.$i18n.locale == 'en' ? i?.designation?.value_en : i?.designation?.value_bn,
-                  
-               
+
+
                     this.$i18n.locale == 'en' ? i.mobile_no : this.$helpers.englishToBangla(i.mobile_no),
                     this.$i18n.locale == 'en' ? i?.email : i?.email,
                     this.$i18n.locale == 'en' ? i?.address : i?.address,
@@ -259,13 +259,13 @@ export default {
                         this.$t('container.training_management.trainer_info.mobile'),
                         this.$t('container.training_management.trainer_info.email'),
                         this.$t('container.training_management.trainer_info.address'),
-                       
+
                         this.$t('container.list.status'),
                     ]
 
                     const CustomInfo = this.apis.map(((i, index) => {
                         return {
-                           
+
 
                             "sl": this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
 
@@ -277,7 +277,7 @@ export default {
                             "mobile": this.$i18n.locale == 'en' ? i.mobile_no : this.$helpers.englishToBangla(i.mobile_no),
                             "email": this.$i18n.locale == 'en' ? i?.email : i?.email,
                             "address": this.$i18n.locale == 'en' ? i?.address : i?.address,
-                          
+
 
                             "status": this.$i18n.locale == 'en' ? (i.status == 0 ? 'Active' : 'Inactive') : (i.status == 0 ? 'সক্রিয়' : 'নিষ্ক্রিয়')
 
@@ -316,7 +316,7 @@ export default {
                 })))
         },
 
-    
+
         localizationPage(item) {
 
             return this.language === 'bn' ? item.name_bn : item.name_en;
@@ -328,13 +328,13 @@ export default {
             this.GetData();
 
         },
-       
+
         async GetData() {
-            
-            this.loading=true;
+
+            this.loading = true;
             const queryParams = {
                 module_id: this.module_id,
-            
+
                 search: this.search,
                 perPage: this.pagination.perPage,
                 page: this.pagination.current,
@@ -350,27 +350,27 @@ export default {
                     params: queryParams,
                 })
                 .then((result) => {
-                    console.log(result,"result")
+                    console.log(result, "result")
 
                     this.total = result?.data?.data?.total;
                     this.trainers = result?.data?.data?.data;
-                    console.log(this.trainers,"trainers")
+                    console.log(this.trainers, "trainers")
                     this.pagination.current = result?.data?.data?.current_page;
                     this.pagination.total = result?.data?.data?.last_page;
                     this.pagination.grand_total = result?.data?.data?.total;
-                    this.loading=false;
-                  
-                 
+                    this.loading = false;
+
+
                 });
         },
         onPageChange($event) {
             // this.pagination.current = $event;
             this.GetData();
         },
-       
 
 
-       
+
+
         deleteAlert(id) {
             this.deleteDialog = true;
             this.deleted_id = id;
@@ -456,8 +456,8 @@ export default {
                                     <v-col cols="12" md="4">
                                         <v-text-field @keyup.native="PageSetup" v-model="search"
                                             append-icon="mdi-magnify" :label="$t(
-                                    'container.list.search'
-                                )" hide-details class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal" flat outlined
+                                                'container.list.search'
+                                            )" hide-details class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal" flat outlined
                                             dense></v-text-field>
 
                                     </v-col>
@@ -472,7 +472,7 @@ export default {
                                             v-can="'trainerCircular-create'">
                                             <v-icon small>mdi-plus</v-icon>
                                             {{
-                                            $t('container.training_management.trainer_info.add') }}
+                                                $t('container.training_management.trainer_info.add') }}
                                         </v-btn>
                                     </v-col>
 
@@ -487,7 +487,7 @@ export default {
                                         <v-col sm="6" lg="6" md="6" cols="12">
                                             {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">
                                                 {{ language === 'bn' ? $helpers.englishToBangla(
-                                                this.total) : this.total }}
+                                                    this.total) : this.total }}
                                             </span>
                                         </v-col>
 
@@ -496,7 +496,7 @@ export default {
                                             <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4"
                                                 @click="GeneratePDF()">
                                                 <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon> {{
-                                                $t("container.list.PDF") }}
+                                                    $t("container.list.PDF") }}
                                             </v-btn>
                                             <v-btn elevation="2" class="btn mr-2 white--text" color="teal darken-2"
                                                 @click="GenerateExcel()">
@@ -516,18 +516,18 @@ export default {
                                             <template v-slot:item.sl="{ item, index }">
 
                                                 {{ language === 'bn' ? $helpers.englishToBangla(
-                                                (pagination.current - 1) * pagination.perPage +
-                                                index +
-                                                1) : (pagination.current - 1) * pagination.perPage +
-                                                index +
-                                                1 }}
+                                                    (pagination.current - 1) * pagination.perPage +
+                                                    index +
+                                                    1) : (pagination.current - 1) * pagination.perPage +
+                                                    index +
+                                                    1 }}
 
 
                                             </template>
                                             <template v-slot:[`item.id_no`]="{ item }">
                                                 <span>
                                                     {{ language == 'bn' ?
-                                                    $helpers.englishToBangla(item.id): item.id }}
+                                                        $helpers.englishToBangla(item.id) : item.id }}
                                                 </span>
 
                                             </template>
@@ -560,7 +560,7 @@ export default {
                                             <template v-slot:[`item.status`]="{ item }">
                                                 <!-- <span v-if="item.status == 0">
                                                     {{ language == 'bn' ?
-                                                    'নিষ্ক্রিয়' : 'Inactive' }}
+                                                        'নিষ্ক্রিয়' : 'Inactive' }}
                                                 </span>
                                                 <span v-else>
                                                     {{ language == 'bn' ?
@@ -570,21 +570,21 @@ export default {
 
                                                 <span>
                                                     <v-switch :input-value="item.status == 1 ? true : false"
-                                                        @change="deviceActivate( item.id)" hide-details
+                                                        @change="deviceActivate(item.id)" hide-details
                                                         color="orange darken-3"></v-switch>
                                                 </span>
                                             </template>
                                             <template v-slot:[`item.designation`]="{ item }">
                                                 <span>
                                                     {{ language == 'bn' ?
-                                                    item?.designation?.value_bn : item?.designation?.value_en }}
+                                                        item?.designation?.value_bn : item?.designation?.value_en }}
                                                 </span>
 
                                             </template>
                                             <template v-slot:[`item.mobile`]="{ item }">
                                                 <span>
                                                     {{ language == 'bn' ?
-                                                    $helpers.englishToBangla(item.mobile_no): item.mobile_no }}
+                                                        $helpers.englishToBangla(item.mobile_no) : item.mobile_no }}
                                                 </span>
 
                                             </template>
@@ -612,7 +612,7 @@ export default {
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
                                                         <v-btn v-can="'trainerInfo-edit'" class="mr-2  mt-1" fab x-small
-                                                            v-on=" on" color="success" elevation="0" router
+                                                            v-on="on" color="success" elevation="0" router
                                                             :to="`/training-management/trainer-information/edit/${item.id}`">
                                                             <v-icon> mdi-account-edit-outline </v-icon>
                                                         </v-btn>
@@ -757,6 +757,7 @@ export default {
     background-color: blue;
     color: white;
 }
+
 .gradient-background {
     background: linear-gradient(to right, #87CEEB, #ADD8E6, #F0F8FF);
     color: black;
@@ -780,8 +781,9 @@ export default {
         background-position: 100% 50%;
     }
 }
+
 .v-expansion-panel-header__icon {
-  color: #ff0000;
-  /* Your desired arrow color */
-  }
+    color: #ff0000;
+    /* Your desired arrow color */
+}
 </style>

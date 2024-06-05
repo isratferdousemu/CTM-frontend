@@ -83,6 +83,7 @@
       "download": "আবেদন ডাউনলোড করুন",
       "pouroshava": "পৌরসভা",
       "union": "ইউনিয়ন",
+      "show": "দেখুন",
         "no_data": "কোন লিঙ্গ নির্বাচন করা হয়নি."
     },
     "system_config": {
@@ -180,6 +181,7 @@
           "thana": "থানা",
           "list": "থানার তালিকা",
           "code": "থানা জিও কোড",
+          "error_code": "থানা জিও কোডে সর্বোচ্চ ৬ সংখ্যা থাকতে পারে",
           "name_en": "থানার নাম ইংরেজি",
           "name_bn": "থানার নাম বাংলা",
           "add_new": "নতুন থানা যোগ করুন",
@@ -194,6 +196,7 @@
           "pouroshava": "পৌরসভা",
           "list": "ইউনিয়ন তালিকা",
           "code": "ইউনিয়ন জিও কোড",
+          "error_code": "ইউনিয়ন জিও কোডে সর্বোচ্চ ৬ সংখ্যা থাকতে পারে",
           "name_en": "ইউনিয়নের নাম ইংরেজি ",
           "name_bn": "ইউনিয়নের নাম বাংলা",
           "add_new": "নতুন ইউনিয়ন/থানা/পৌরসভা যোগ করুন",
@@ -223,6 +226,7 @@
           "union": "পৌরসভা",
           "list": "পৌরসভার তালিকা",
           "code": "পৌরসভা জিও কোড",
+          "error_code": "পৌরসভা জিও কোডে সর্বোচ্চ ৬ সংখ্যা থাকতে পারে",
           "name_en": "পৌরসভা নাম ইংরেজি",
           "name_bn": "পৌরসভা নাম বাংলা",
           "add_new": "নতুন পৌরসভা যোগ করুন",
@@ -981,7 +985,7 @@
       "action": "অ্যাকশন",
 
       "budget_basic_info": "বাজেটের মৌলিক তথ্য",
-      "budget_details_info": "বাজেটের বিস্তারিত তথ্য",
+      "budget_details_info": "বাজেটের তথ্য",
       "budget_create": "বাজেট তৈরি",
 
       "budget_verification": "বাজেট যাচাইকরণ",
@@ -1030,7 +1034,24 @@
       "thana": "থানা",
       "city_corporation": "সিটি কর্পোরেশন",
       "district_pourashava": "জেলা পৌরসভা",
-      "verification_success_msg": "যাচাইকরণ সেটিং সফলভাবে জমা দেওয়া হয়েছে"
+      "verification_success_msg": "যাচাইকরণ সেটিং সফলভাবে জমা দেওয়া হয়েছে",
+      "payroll_create": "পেরোল তৈরি",
+      "allotment_distribution": "বরাদ্দ বিতরণ"
+    },
+    "emergency_payment": {
+      "slNo": "ক্রমিক নং",
+      "list": "জরুরী বরাদ্দ",
+      "add_new": "জরুরী বরাদ্দ তৈরি করুন",
+      "payment_name": "জরুরী অর্থ প্রদানের নাম",
+      "edit": "জরুরী বরাদ্দ সম্পাদনা করুন",
+      "program_name": "প্রোগ্রামের নাম",
+      "no_of_new_benificiary": "নতুন সুবিধাভোগীর সংখ্যা",
+      "no_of_existing_benificiary": "বিদ্যমান সুবিধাভোগীর সংখ্যা",
+      "per_person_amount": "জনপ্রতি পরিমাণ",
+      "payment_cycle": "পেমেন্ট চক্র",
+      "starting_period": "প্রারম্ভিক সময়কাল",
+      "closing_period": "সমাপনী সময়কাল",
+      "search": "জরুরী বরাদ্দ অনুসন্ধান করুন"
     },
       "training_management": {
         "trainer_info": {
@@ -1344,20 +1365,28 @@
       },
       "dashboard": {
         "grievance_dashboard": "অভিযোগ ড্যাশবোর্ড",
-        "total_grievance": "Total Grievance",
-        "total_resolved": "Total Resolved",
-        "total_pending": "Total Pending",
-        "total_rejected": "Total Rejected",
-        "total_forwarded": "Total Forwarded",
-        "total_received": "Total Received",
-        "total_unresolved": "Total Unresolved"
+        "total_grievance": "মোট অভিযোগ",
+        "total_new": "মোট নতুন",
+        "division": "বিভাগ",
+        "locationName": "বিভাগ/ জেলা/ থানা",
+        "action": "অ্যাকশন",
+        "total_resolved": "মোট অভিযোগ সমাধান",
+        "total_pending": "মোট অভিযোগ স্থগিত",
+        "total_rejected": "মোট অভিযোগ বাতিল",
+        "total_received": "প্রাপ্ত মোট অভিযোগ",
+        "total_not_solved": "সমাধান হয়নি",
+        "header": "শেষ 30 দিনে",
+        "program_wise_total_received": "প্রোগ্রাম অনুসারে প্রাপ্ত মোট অভিযোগ",
+        "program_wise_total_approved": "প্রোগ্রাম অনুসারে মোট অভিযোগ অনুমোদিত",
+        "program_wise_total_canceled": "প্রোগ্রাম অনুসারে মোট অভিযোগ বাতিল",
+        "location_wise_total_grievance": "অবস্থান অনুসারে মোট অভিযোগ"
       }
     },
 
     "profile": {
       "personal_info": "ব্যক্তিগত তথ্য",
       "upload": "আপলোড",
-      "upload_type": "একটি JPG বা JPEG ছবি বেছে নিন",
+      "upload_type": "একটি JPG, JPEG বা PNG ছবি সিলেক্ট করুন (সর্বোচ্চ 2MB)",
       "name_en": "সম্পূর্ণ নাম (বাংলায়)",
       "username": "ব্যবহারকারীর নাম",
       "brithday": "জন্মদিন",
@@ -1369,7 +1398,10 @@
       "new_pass": "নতুন পাসওয়ার্ড",
       "retype_pass": "পাসওয়ার্ড পুনরায় লিখুন",
       "update_pass": "পাসওয়ার্ড আপডেট করুন",
-      "contact_info": "যোগাযোগের তথ্য"
+      "contact_info": "যোগাযোগের তথ্য",
+      "image_reqired": "ছবি আবশ্যক",
+      "image_size": "ফাইল সাইজ সর্বোচ্চ 2MB",
+      "image_format": "ছবির বিন্যাস"
     }
   }
 }

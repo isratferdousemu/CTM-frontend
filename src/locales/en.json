@@ -83,8 +83,8 @@
       "download": "Download Application",
       "pouroshava": "Pouroshava",
       "union": "Union",
-      "no_data":"No gender was selected."
-    
+      "no_data":"No gender was selected.",
+      "show": "Show"
     },
     "system_config": {
       "demo_graphic": {
@@ -181,6 +181,7 @@
           "thana": "Thana",
           "list": "Thana List",
           "code": "Thana Geo Code",
+          "error_code": "Thana Geo Code Can have maximum 6 digit",
           "name_en": "Thana Name English",
           "name_bn": "Thana Name Bangla",
           "add_new": "Add New Thana",
@@ -195,6 +196,7 @@
           "pouroshava": "Pouroshava",
           "list": "Union List",
           "code": "Union Geo Code",
+          "error_code": "Union Geo Code Can have maximum 6 digit",
           "name_en": "Union Name English",
           "name_bn": "Union Name Bangla",
           "add_new": "Add New Union/Thana/Pouroshava",
@@ -210,6 +212,7 @@
           "union": "Pouroshava",
           "list": "Pouroshava List",
           "code": "Pourashava Geo Code",
+          "error_code": "Pourashava Geo Code Can have maximum 6 digit",
           "custom_code": "Thana/Union/Poorashava Geo Code",
           "name_en": "Pouroshava Name English",
           "name_bn": "Pouroshava Name Bangla",
@@ -977,7 +980,7 @@
     "budget_management": {
       "budget_info": "Budget Info",
       "budget_basic_info": "Budget Basic Information",
-      "budget_details_info": "Budget Details Information",
+      "budget_details_info": "Budget Information",
       "budget_info_list": "Budget Info List",
       "add_new": "Add New",
       "id": "ID",
@@ -1033,7 +1036,31 @@
       "thana": "Thana",
       "city_corporation": "City Corporation",
       "district_pourashava": "District Pourashava",
-      "verification_success_msg": "Verification Setting submitted successfully"
+      "verification_success_msg": "Verification Setting submitted successfully",
+      "payroll_create": "Payroll Create",
+      "allotment_distribution": "Allotment Distribution",
+      "area_wise_ben_list": {
+        "area_type": "Upazila/City Corporation/ District Pouroshava",
+        "allotment_area": "Union/Ward/Pouroshava",
+        "allocated_beneficiary": "Allocated Beneficiary",
+        "active_beneficiary": "Active Beneficiary",
+        "status": "Status"
+      }
+    },
+    "emergency_payment": {
+      "slNo": "Sl No",
+      "list": "Emergency Allotment",
+      "add_new": "Create Emergency Allotment",
+      "payment_name": "Emergency Payment Name",
+      "edit": "Edit Emergency Allotment",
+      "program_name": "Program Name",
+      "no_of_new_benificiary": "No of new benificiary",
+      "no_of_existing_benificiary": "No of existing benificiary",
+      "per_person_amount": "Per person amount",
+      "payment_cycle": "Payment Cycle",
+      "starting_period": "Started Period",
+      "closing_period": "Closing Period",
+      "search": "Search Emergency Allotment"
     },
       "training_management": {
         "trainer_info": {
@@ -1315,7 +1342,7 @@
       "3rdOfficer": "3rd Tire (3rd Resolver)",
       "grievance_setting_delete": "Delete Grievance Setting",
       "grievance_setting_delete_message": "Are you sure to delete this Grievance Setting?",
-      "grievanceEntry":{
+      "grievanceEntry": {
         "complaint_area": "Complainant's   Address",
         "is_existing_beneficiary": "Are you an existing beneficiary?",
         "complaint_details": "Provide Details of the Complaint",
@@ -1348,22 +1375,30 @@
         "status_update": "Grievance Status Update",
         "grievance_status": "Grievance Status"
       },
-      "dashboard":{
+      "dashboard": {
         "grievance_dashboard": "Grievacne Dashboard",
         "total_grievance": "Total Grievance",
-        "total_resolved": "Total Resolved",
-        "total_pending": "Total Pending",
-        "total_rejected": "Total Rejected",
-        "total_forwarded": "Total Forwarded",
-        "total_received": "Total Received",
-        "total_unresolved": "Total Unresolved"
+        "total_new": "Total New",
+        "division": "Division",
+        "locationName": "Division/ District/ thana",
+        "action": "Action",
+        "total_resolved": "Total Grievance Solved",
+        "total_pending": "Total Grievance Pending",
+        "total_rejected": "Total Grievance Canceled",
+        "total_received": "Total Grievanc Received",
+        "total_not_solved": "Total Not Solved",
+        "header": "In The Last 30 Days",
+        "program_wise_total_received": "Program Wise Total Grievance",
+        "program_wise_total_approved": "Program Wise Grievance Approved",
+        "program_wise_total_canceled": "Program Wise Grievance Canceled",
+        "location_wise_total_grievance": "Location Wise Grievance"
       }
     },
 
     "profile": {
       "personal_info": "Personal Information",
       "upload": "Upload",
-      "upload_type": "Choose a JPG or JPEG image",
+      "upload_type": "Choose a JPG, JPEG or PNG image (max 2MB)",
       "name_en": "Full Name (English)",
       "username": "Username",
       "brithday": "Brithday",
@@ -1375,7 +1410,10 @@
       "new_pass": "New Password",
       "retype_pass": "Retype Password",
       "update_pass": "Update Password",
-      "contact_info": "Contact Information"
+      "contact_info": "Contact Information",
+      "image_reqired": "Image Required",
+      "image_size": "File size maximum 2MB",
+      "image_format": "Image Format"
     }
   }
 }

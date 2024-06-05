@@ -52,7 +52,12 @@ export default {
 
     ...mapState({
       message: (state) => state.Role.success_message
-    })
+    }),
+     language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      },
+    },
   },
 
   mounted() {
@@ -199,6 +204,7 @@ export default {
     },
 
     getAllRoles(){
+      this.search = this.search.replace(/%/g, '');
       const { sortBy, sortDesc, page, itemsPerPage } = this.options
 
       http().get('/admin/role/get', {
@@ -314,9 +320,8 @@ export default {
                   >
 
                     <template v-slot:item.id="{ item, index }">
-                      {{
-                        (options.page - 1) * options.itemsPerPage + index + 1
-                      }}
+                         {{ language === 'bn' ? $helpers.englishToBangla((options.page - 1) * options.itemsPerPage + index + 1) : (options.page - 1) * options.itemsPerPage + index + 1 }}
+                   
                     </template>
 
                     <template v-slot:[`item.comment`]="{ item }">
