@@ -18,7 +18,7 @@
               <ValidationObserver ref="formsearch" v-slot="{ invalid }">
                 <form @submit.prevent="submitsearch()">
                   <v-row>
-                    <v-col lg="3" md="3" cols="12">
+                    <v-col lg="6" md="6" cols="12">
                       <ValidationProvider
                         name="emergency_payment_name"
                         vid="emergency_payment_name"
@@ -26,14 +26,13 @@
                       >
                         <v-autocomplete
                           v-model="data.emergency_payment_name"
-                          class="no-arrow-icon"
-                          :append-icon-cb="appendIconCallback"
-                          append-icon="mdi-plus"
                           :hide-details="errors[0] ? false : true"
                           outlined
                           clearable
                           :label="
-                            $t('container.emergency_payment.payment_name')
+                            $t(
+                              'container.emergency_payment.emergency_beneficiary.payment_name'
+                            )
                           "
                           :items="payment_names"
                           :item-text="'emergency_payment_name'"
@@ -49,7 +48,7 @@
                         ></v-autocomplete>
                       </ValidationProvider>
                     </v-col>
-                    <v-col lg="3" md="3" cols="12">
+                    <v-col lg="6" md="6" cols="12">
                       <v-menu
                         :close-on-content-click="false"
                         :nudge-right="40"
@@ -63,7 +62,9 @@
                             clearable
                             v-model="data.starting_period"
                             :label="
-                              $t('container.emergency_payment.starting_period')
+                              $t(
+                                'container.emergency_payment.emergency_beneficiary.date'
+                              )
                             "
                             append-icon="mdi-calendar"
                             readonly
@@ -73,35 +74,6 @@
                         </template>
                         <v-date-picker
                           v-model="data.starting_period"
-                          no-title
-                          scrollable
-                        ></v-date-picker>
-                      </v-menu>
-                    </v-col>
-                    <v-col lg="3" md="3" cols="12">
-                      <v-menu
-                        :close-on-content-click="false"
-                        :nudge-right="40"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="auto"
-                      >
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-text-field
-                            outlined
-                            clearable
-                            v-model="data.closing_period"
-                            :label="
-                              $t('container.emergency_payment.closing_period')
-                            "
-                            append-icon="mdi-calendar"
-                            readonly
-                            v-bind="attrs"
-                            v-on="on"
-                          ></v-text-field>
-                        </template>
-                        <v-date-picker
-                          v-model="data.closing_period"
                           no-title
                           scrollable
                         ></v-date-picker>
@@ -144,7 +116,9 @@
                 "
               >
                 <h3 class="white--text text-uppercase pt-3">
-                  {{ $t("container.emergency_payment.list") }}
+                  {{
+                    $t("container.emergency_payment.emergency_beneficiary.list")
+                  }}
                 </h3>
               </v-card-title>
               <!-- Data Table -->
@@ -194,7 +168,11 @@
                       prepend-inner-icon="mdi-magnify"
                       class="my-sm-0 my-3 mx-0v -input--horizontal"
                       variant="outlined"
-                      :label="$t('container.emergency_payment.search')"
+                      :label="
+                        $t(
+                          'container.emergency_payment.emergency_beneficiary.search'
+                        )
+                      "
                       hide-details
                       color="primary"
                     >
@@ -221,7 +199,7 @@
                     </v-btn>
                     <v-btn
                       router
-                      to="/emergency-payment/emergency-allotment/create"
+                      to="/emergency-payment/emergency-beneficiary/create"
                       color="primary"
                       prepend-icon="mdi-account-multiple-plus"
                     >
@@ -383,12 +361,7 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import ApiService from "@/services/ApiService";
-import {
-  extend,
-  ValidationProvider,
-  ValidationObserver,
-  Validator,
-} from "vee-validate";
+import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 import Spinner from "@/components/Common/Spinner.vue";
 extend("required", required);
@@ -402,7 +375,12 @@ extend("bangla", {
 });
 export default {
   name: "Index",
-  title: "CTM - Emergency Allotment",
+  title: "CTM - Emergency Benificiary",
+  components: {
+    ValidationProvider,
+    ValidationObserver,
+    Spinner,
+  },
   data() {
     return {
       data: {
@@ -429,17 +407,9 @@ export default {
         "program.name_bn",
         "no_of_new_benificiariy",
         "no_of_existing_benificiariy",
-        "amount_per_person",
-        "starting_period",
-        "closing_period",
       ], // Initially, first 6 columns are selected
-      fixedColumns: ["id", "sl", "actions"], // Two columns that will always remain visible
+      fixedColumns: ["id", "actions"], // Two columns that will always remain visible
     };
-  },
-  components: {
-    ValidationProvider,
-    ValidationObserver,
-    Spinner,
   },
   computed: {
     headers() {
@@ -450,42 +420,47 @@ export default {
           width: "20px",
         },
         {
-          text: this.$t("container.emergency_payment.payment_name"),
+          text: this.$t(
+            "container.emergency_payment.emergency_beneficiary.payment_name"
+          ),
           value: "emergency_payment_name",
-          width: "180px",
+          // value: "emergency_allotment",
+          width: "380px",
         },
+        // {
+        //   text: this.$t("container.emergency_payment.program_name"),
+        //   value: this.language === "bn" ? "program.name_bn" : "program.name_en",
+        //   class: "highlight-column",
+        //   width: "250px",
+        // },
         {
-          text: this.$t("container.emergency_payment.program_name"),
-          value: this.language === "bn" ? "program.name_bn" : "program.name_en",
-          class: "highlight-column",
-          width: "250px",
-        },
-        {
-          text: this.$t("container.emergency_payment.no_of_new_benificiary"),
+          text: this.$t(
+            "container.emergency_payment.emergency_beneficiary.no_of_new_benificiary"
+          ),
           value: "no_of_new_benificiariy",
         },
         {
           text: this.$t(
-            "container.emergency_payment.no_of_existing_benificiary"
+            "container.emergency_payment.emergency_beneficiary.no_of_existing_benificiary"
           ),
           value: "no_of_existing_benificiariy",
         },
-        {
-          text: this.$t("container.emergency_payment.per_person_amount"),
-          value: "amount_per_person",
-        },
+        // {
+        //   text: this.$t("container.emergency_payment.per_person_amount"),
+        //   value: "amount_per_person",
+        // },
         // {
         //   text: this.$t("container.emergency_payment.payment_cycle"),
         //   value: "payment_cycle",
         // },
-        {
-          text: this.$t("container.emergency_payment.starting_period"),
-          value: "starting_period",
-        },
-        {
-          text: this.$t("container.emergency_payment.closing_period"),
-          value: "closing_period",
-        },
+        // {
+        //   text: this.$t("container.emergency_payment.starting_period"),
+        //   value: "starting_period",
+        // },
+        // {
+        //   text: this.$t("container.emergency_payment.closing_period"),
+        //   value: "closing_period",
+        // },
         {
           text: this.$t("container.list.action"),
           value: "actions",
@@ -514,6 +489,9 @@ export default {
     },
   },
   created() {},
+  beforeMount() {
+    this.updateHeaderTitle();
+  },
   mounted() {
     this.getListData();
     this.getPaymentName();
@@ -601,7 +579,6 @@ export default {
         console.error("Error generating PDF:", error);
       }
     },
-
     async generateExcel() {
       this.isLoading = true;
       let page;
@@ -835,6 +812,10 @@ export default {
       this.emergencyAllotments = [];
       this.getListData();
       this.getPaymentName();
+    },
+    updateHeaderTitle() {
+      const title = this.$t("container.emergency_payment.list");
+      this.$store.commit("setHeaderTitle", title);
     },
   },
 

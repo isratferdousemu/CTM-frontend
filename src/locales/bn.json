@@ -84,7 +84,9 @@
       "pouroshava": "পৌরসভা",
       "union": "ইউনিয়ন",
       "show": "দেখুন",
-        "no_data": "কোন লিঙ্গ নির্বাচন করা হয়নি."
+      "no_data": "কোন লিঙ্গ নির্বাচন করা হয়নি.",
+      "close": "বন্ধ করুন",
+      "addToList": "তালিকায় যুক্ত করুন"
     },
     "system_config": {
       "demo_graphic": {
@@ -1051,7 +1053,21 @@
       "payment_cycle": "পেমেন্ট চক্র",
       "starting_period": "প্রারম্ভিক সময়কাল",
       "closing_period": "সমাপনী সময়কাল",
-      "search": "জরুরী বরাদ্দ অনুসন্ধান করুন"
+      "search": "জরুরী বরাদ্দ অনুসন্ধান করুন",
+      "emergency_beneficiary": {
+        "slNo": "ক্রমিক নং",
+        "list": "জরুরী সুবিধাভোগী",
+        "add_new": "জরুরী সুবিধাভোগী তৈরি করুন",
+        "payment_name": "জরুরী বরাদ্দ",
+        "edit": "জরুরী সুবিধাভোগী সম্পাদনা করুন",
+        "no_of_new_benificiary": "নতুন থেকে সুবিধাভোগী",
+        "no_of_existing_benificiary": "বিদ্যমান থেকে সুবিধাভোগী",
+        "date": "তারিখ",
+        "search": "জরুরী সুবিধাভোগী অনুসন্ধান করুন",
+        "e_beneficiary": "বিদ্যমান থেকে সুবিধাভোগী",
+        "n_beneficiary": "নতুন সংযোজন থেকে",
+        "searchBy": "দ্বারা অনুসন্ধান করুন"
+      }
     },
     "training_management": {
       "trainer_info": {
@@ -1119,12 +1135,12 @@
         "program": "প্রোগ্রাম",
         "trainer": "প্রশিক্ষক",
         "circular": "সার্কুলার",
-          "exam_link": "পরীক্ষার লিঙ্ক",
-          "rating_link": "রেটিং লিঙ্ক",
-          "exam": "পরীক্ষা",
-          "rating": "রেটিং",
-          "trainer_rating_status": "প্রশিক্ষক রেটিং ",
-          "exam_status": "পরীক্ষা",
+        "exam_link": "পরীক্ষার লিঙ্ক",
+        "rating_link": "রেটিং লিঙ্ক",
+        "exam": "পরীক্ষা",
+        "rating": "রেটিং",
+        "trainer_rating_status": "প্রশিক্ষক রেটিং ",
+        "exam_status": "পরীক্ষা",
         "search": "প্রোগ্রাম অনুসন্ধান",
         "select_time_slot": "টাইম স্লট নির্বাচন করুন",
         "training_circular": "প্রশিক্ষণ সার্কুলার",

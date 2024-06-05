@@ -30,6 +30,7 @@
                       <v-text-field
                         :hide-details="errors[0] ? false : true"
                         outlined
+                        clearable
                         type="text"
                         v-model="data.payment_name"
                         :label="$t('container.emergency_payment.payment_name')"
@@ -56,6 +57,7 @@
                         :hide-details="errors[0] ? false : true"
                         v-model="data.program_id"
                         outlined
+                        clearable
                         :label="$t('container.emergency_payment.program_name')"
                         :items="allowanceProgrames"
                         item-text="name_en"
@@ -141,6 +143,7 @@
                         :hide-details="errors[0] ? false : true"
                         outlined
                         type="number"
+                        clearable
                         v-model="data.per_person_amount"
                         :label="
                           $t('container.emergency_payment.per_person_amount')
@@ -168,6 +171,7 @@
                         :hide-details="errors[0] ? false : true"
                         v-model="data.payment_cycle"
                         outlined
+                        clearable
                         :label="$t('container.emergency_payment.payment_cycle')"
                         :items="payment_cycles"
                         item-text="name"
@@ -203,6 +207,7 @@
                           )
                         "
                         :items="divisions"
+                        clearable
                         item-text="name_en"
                         item-value="id"
                         required
@@ -227,6 +232,7 @@
                       <v-autocomplete
                         :hide-details="errors[0] ? false : true"
                         outlined
+                        clearable
                         v-model="data.district_id"
                         @input="onChangeDistrict($event)"
                         :label="
@@ -266,6 +272,7 @@
                         item-text="value_en"
                         item-value="id"
                         required
+                        clearable
                         :error="errors[0] ? true : false"
                         :error-messages="
                           errors[0]
@@ -295,6 +302,7 @@
                         :items="thanas"
                         item-text="name_en"
                         item-value="id"
+                        clearable
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="
@@ -325,6 +333,7 @@
                         item-text="name_en"
                         item-value="id"
                         required
+                        clearable
                         :error="errors[0] ? true : false"
                         :error-messages="
                           errors[0]
@@ -355,6 +364,7 @@
                         item-text="name_en"
                         item-value="id"
                         required
+                        clearable
                         :error="errors[0] ? true : false"
                         :error-messages="
                           errors[0]
@@ -383,6 +393,7 @@
                         :items="city_thanas"
                         item-text="name_en"
                         item-value="id"
+                        clearable
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="
@@ -412,6 +423,7 @@
                         :items="district_poros"
                         item-text="name_en"
                         item-value="id"
+                        clearable
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="
@@ -443,6 +455,7 @@
                           )
                         "
                         required
+                        clearable
                         :error="errors[0] ? true : false"
                         :error-messages="
                           errors[0]
@@ -472,6 +485,7 @@
                           )
                         "
                         required
+                        clearable
                         :error="errors[0] ? true : false"
                         :error-messages="
                           errors[0]

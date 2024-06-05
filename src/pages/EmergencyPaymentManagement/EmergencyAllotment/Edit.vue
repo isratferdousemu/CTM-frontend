@@ -27,6 +27,7 @@
                         :hide-details="errors[0] ? false : true"
                         outlined
                         type="text"
+                        clearable
                         v-model="data.payment_name"
                         :label="$t('container.emergency_payment.payment_name')"
                         required
@@ -52,6 +53,7 @@
                         :hide-details="errors[0] ? false : true"
                         v-model="data.program_id"
                         outlined
+                        clearable
                         :label="$t('container.emergency_payment.program_name')"
                         :items="allowanceProgrames"
                         item-text="name_en"
@@ -141,6 +143,7 @@
                           $t('container.emergency_payment.per_person_amount')
                         "
                         required
+                        clearable
                         type="number"
                         :error="errors[0] ? true : false"
                         :error-messages="
@@ -163,6 +166,7 @@
                       <v-autocomplete
                         :hide-details="errors[0] ? false : true"
                         v-model="data.payment_cycle"
+                        clearable
                         outlined
                         :label="$t('container.emergency_payment.payment_cycle')"
                         :items="payment_cycles"
@@ -192,6 +196,7 @@
                         :hide-details="errors[0] ? false : true"
                         @change="getDistrictList"
                         v-model="data.division_id"
+                        clearable
                         outlined
                         :label="
                           $t(
@@ -224,6 +229,7 @@
                         :hide-details="errors[0] ? false : true"
                         outlined
                         v-model="data.district_id"
+                        clearable
                         @input="getThanaList"
                         :label="
                           $t(
@@ -261,6 +267,7 @@
                         :items="locationType"
                         item-text="value_en"
                         item-value="id"
+                        clearable
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="
@@ -289,6 +296,7 @@
                         "
                         @change="getUnionList"
                         :items="thanas"
+                        clearable
                         item-text="name_en"
                         item-value="id"
                         required
@@ -314,6 +322,7 @@
                         :hide-details="errors[0] ? false : true"
                         v-model="data.union_id"
                         outlined
+                        clearable
                         :label="
                           $t('container.system_config.demo_graphic.ward.union')
                         "
@@ -344,6 +353,7 @@
                         v-model="data.city_id"
                         @change="getCityThanaList"
                         outlined
+                        clearable
                         :label="
                           $t('container.system_config.demo_graphic.ward.city')
                         "
@@ -378,6 +388,7 @@
                         "
                         :items="city_thanas"
                         item-text="name_en"
+                        clearable
                         item-value="id"
                         required
                         :error="errors[0] ? true : false"
@@ -402,6 +413,7 @@
                         :hide-details="errors[0] ? false : true"
                         v-model="data.district_pouro_id"
                         outlined
+                        clearable
                         :label="
                           $t('container.system_config.demo_graphic.ward.pouro')
                         "
@@ -420,7 +432,6 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
                       name="No of new Beneficiary"
@@ -432,6 +443,7 @@
                         :hide-details="errors[0] ? false : true"
                         outlined
                         type="number"
+                        clearable
                         v-model="data.no_of_new_benificiary"
                         :label="
                           $t(
@@ -459,6 +471,7 @@
                     >
                       <v-text-field
                         outlined
+                        clearable
                         type="number"
                         :hide-details="errors[0] ? false : true"
                         v-model="data.no_of_existing_benificiary"
@@ -725,7 +738,7 @@ export default {
         }
       }
     },
-    async getDistrictList(division_id = null) {
+    getDistrictList(division_id = null) {
       let divisionId = division_id ? division_id : this.data.division_id;
       var queryData = {
         table_name: "locations",
@@ -738,7 +751,7 @@ export default {
         })
         .catch((error) => console.log(error));
     },
-    async getThanaList(district_id = null) {
+    getThanaList(district_id = null) {
       let districtId = district_id ? district_id : this.data.district_id;
       var queryData = {
         table_name: "locations",
@@ -751,7 +764,7 @@ export default {
         })
         .catch((error) => console.log(error));
     },
-    async getUnionList(thana_id = null) {
+    getUnionList(thana_id = null) {
       let thanaId = thana_id ? thana_id : this.data.thana_id;
       var queryData = {
         table_name: "locations",
@@ -764,7 +777,7 @@ export default {
         })
         .catch((error) => console.log(error));
     },
-    async getCityThanaList(city_id = null) {
+    getCityThanaList(city_id = null) {
       let cityId = city_id ? city_id : this.data.city_id;
       var queryData = {
         table_name: "locations",

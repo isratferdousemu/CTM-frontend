@@ -33,6 +33,43 @@ const EmergencyPaymentManagementRoutes = [
     component: () =>
       import("../pages/EmergencyPaymentManagement/EmergencyAllotment/Edit.vue"),
   },
+  // Emergency Beneficiary routes
+  {
+    path: "/emergency-payment/emergency-beneficiary",
+    name: "Emergency Beneficiary",
+    meta: {
+      requiresAuth: true,
+      permission: "emergency-beneficiary-view",
+    },
+    component: () =>
+      import(
+        "../pages/EmergencyPaymentManagement/EmergencyBeneficiary/Index.vue"
+      ),
+  },
+  {
+    path: "/emergency-payment/emergency-beneficiary/create",
+    name: "Emergency Beneficiary Create",
+    meta: {
+      requiresAuth: true,
+      permission: "emergency-beneficiary-create",
+    },
+    component: () =>
+      import(
+        "../pages/EmergencyPaymentManagement/EmergencyBeneficiary/Create.vue"
+      ),
+  },
+  {
+    path: "/emergency-payment/emergency-beneficiary/edit/:id",
+    name: "Emergency Beneficiary Edit",
+    meta: {
+      requiresAuth: true,
+      permission: "emergency-beneficiary-edit",
+    },
+    component: () =>
+      import(
+        "../pages/EmergencyPaymentManagement/EmergencyBeneficiary/Edit.vue"
+      ),
+  },
 ];
 
 export default EmergencyPaymentManagementRoutes;
