@@ -83,7 +83,7 @@
       "download": "Download Application",
       "pouroshava": "Pouroshava",
       "union": "Union",
-      "no_data":"No gender was selected.",
+      "no_data": "No gender was selected.",
       "show": "Show"
     },
     "system_config": {
@@ -477,8 +477,8 @@
         "setting": "Allowance Program Setting",
         "system_status": "System Status",
         "is_pmt_toggle": "Is PMT Active",
-          "delete_header": "Delete Allowance Program",
-          "delete_alert": "Are you sure to delete this Allowance Program? Allowance Program's all information will be deleted."
+        "delete_header": "Delete Allowance Program",
+        "delete_alert": "Are you sure to delete this Allowance Program? Allowance Program's all information will be deleted."
       },
       "allowance_program_additiona_field": {
         "variable": "Allowance Program Additional Field",
@@ -1040,10 +1040,50 @@
       "payroll_create": "Payroll Create",
       "allotment_distribution": "Allotment Distribution",
       "area_wise_ben_list": {
+        "remaining_installment": "Remaining Installment",
         "area_type": "Upazila/City Corporation/ District Pouroshava",
         "allotment_area": "Union/Ward/Pouroshava",
         "allocated_beneficiary": "Allocated Beneficiary",
         "active_beneficiary": "Active Beneficiary",
+        "status": "Status"
+      },
+      "allotment_area_wise_ben_setup": {
+        "title": "Allotment area-wise beneficiary setup",
+        "title_send_preview": "Beneficiary Payroll Preview",
+        "allotment_area": "Allotment Area:",
+        "selected_beneficiaries": "Selected Beneficiaries:",
+        "total_beneficiaries": "Total Beneficiaries:",
+        "payment_cycle_start_date": "Payment Cycle Start Date:",
+        "allocated_beneficiaries": "Allocated Beneficiaries:",
+        "payment_cycle_end_date": "Payment Cycle End Date:",
+        "payroll_eligible_amount": "Payroll Eligible Amount:",
+        "current_amount": "Current Amount:",
+        "amount_of_money": "Amount of money allocated annually:",
+        "amount_remain_ralance": "Amount of Remain Balance in Payroll:",
+        "total_amount_installments": "Total Amount of All Installments Sent Earlier:",
+
+        "ben_name": "Name of the Beneficiaries",
+        "father_name": "Father Name",
+        "mother_name": "Mother Name",
+        "bank": "Bank",
+        "ward": "Ward",
+        "mobile_number": "Mobile Number",
+        "account_no": "Account No",
+        "allowance_amount": "Allowance Amount"
+      },
+      "allotment_area_wise_ben_send_preview": {
+        "beneficiary_id": "Beneficiary ID",
+        "name_en": "Name (English)",
+        "father_name_en": "Father Name (English)",
+        "union_pourashava": "Union/Pourashava",
+        "ward": "Ward",
+        "program_name": "Program Name",
+        "bank_account": "Bank Account",
+        "mobile": "Mobile",
+        "account": "Account",
+        "cash_out_charge": "Cash Out Charge",
+        "total_amount": "Total Amount",
+        "financial_account_status": "Financial Account Status",
         "status": "Status"
       }
     },
@@ -1129,11 +1169,11 @@
         "program": "Program",
         "trainer": "Trainer",
         "circular": "Circular",
-          "exam_link": "Exam Link",
-          "rating_link": "Rating Link",
-          "exam": "Exam",
-          "trainer_rating_status": "Trainer Rating ",
-          "exam_status": "Exam ",
+        "exam_link": "Exam Link",
+        "rating_link": "Rating Link",
+        "exam": "Exam",
+        "trainer_rating_status": "Trainer Rating ",
+        "exam_status": "Exam ",
         "class_schedule": "Training Schedule",
         "search": "Search Program",
         "select_time_slot": "Select Time Slot",
