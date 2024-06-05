@@ -1199,8 +1199,8 @@
         "user_name": "Username",
         "user_type": "Participant Type",
         "alert": "Go to this link for external registration",
-        "delete_header": "Remove Participant",
-        "delete_alert": "Are you sure to remove this Participant? Participant's all details will be removed from this traning."
+        "delete_header": "Delete Participant",
+        "delete_alert": "Are you sure to delete this Participant? Participant's all details will be deleted from this traning."
       }
     },
     "api_manager": {

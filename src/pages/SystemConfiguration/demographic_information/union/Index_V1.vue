@@ -8,11 +8,11 @@
             <v-expansion-panels>
               <v-expansion-panel>
                 <v-expansion-panel-header color="#1c3b68">
-                   <template v-slot:actions>
-                      <v-icon color="white">
-                        $expand
-                      </v-icon>
-                    </template>
+                  <template v-slot:actions>
+                    <v-icon color="white">
+                      $expand
+                    </v-icon>
+                  </template>
                   <h3 class="white--text" style="font-size:19.89px;">
                     {{ $t("container.list.filter") }}
                   </h3>
@@ -24,8 +24,8 @@
                         <v-col lg="4" md="4" cols="12">
                           <v-autocomplete :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
                             class="no-arrow-icon" outlined @input="onChangeLocationSearch()"
-                            v-model="location_type_search" :items="locationType" :item-text="getItemText" item-value="id"
-                            :label="$t('container.list.location_type')">
+                            v-model="location_type_search" :items="locationType" :item-text="getItemText"
+                            item-value="id" :label="$t('container.list.location_type')">
                           </v-autocomplete>
                         </v-col>
 
@@ -36,10 +36,9 @@
                                 $t(
                                   'container.system_config.demo_graphic.division.division'
                                 )
-                              " :items="divisions"
-                                            :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
-                                            item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                              " :items="divisions" :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
+                              item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
                         <v-col lg="4" md="4" cols="12">
@@ -49,10 +48,8 @@
                                 $t(
                                   'container.system_config.demo_graphic.district.district'
                                 )
-                              " :items="districts_search"
-                                            :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
-                                            item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"
+                              " :items="districts_search" :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
+                              item-value="id" :error="errors[0] ? true : false" :error-messages="errors[0]"
                               :readonly="false"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
@@ -65,10 +62,9 @@
                                 $t(
                                   'container.system_config.demo_graphic.office.pouro'
                                 )
-                              " :items="district_pouros_search"
-                                            :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
-                                            item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                              " :items="district_pouros_search" :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
+                              item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
                         <v-col md="4" lg="4" cols="12" v-if="location_type_search == 2">
@@ -79,10 +75,9 @@
                                 $t(
                                   'container.system_config.demo_graphic.ward.city'
                                 )
-                              " :items="cities_search"
-                                            :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
-                                            item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                              " :items="cities_search" :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
+                              item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
                         <v-col md="4" lg="4" cols="12" v-if="
@@ -96,10 +91,9 @@
                                 $t(
                                   'container.system_config.demo_graphic.ward.upazila'
                                 )
-                              " :items="upazilas_search"
-                                            :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
-                                            item-value="id"
-                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
+                              " :items="upazilas_search" :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
+                              item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
                       </v-row>
@@ -119,11 +113,11 @@
           </v-col>
           <v-col cols="12">
             <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8">
-               <v-card-title tag="div" style="background-color:#1c3b68;color:white;margin-bottom: 17px;font-size:17px;">
-                    <h3 class="white--text">
-                      {{ $t("container.system_config.demo_graphic.union1.customtitle") }}
-                    </h3>
-                  </v-card-title>
+              <v-card-title tag="div" style="background-color:#1c3b68;color:white;margin-bottom: 17px;font-size:17px;">
+                <h3 class="white--text ml-2">
+                  {{ $t("container.system_config.demo_graphic.union1.customtitle") }}
+                </h3>
+              </v-card-title>
               <v-card-text>
                 <v-row justify="space-between" align="center" class="mx-5">
                   <!-- Checkbox on the left -->
@@ -146,8 +140,8 @@
                   <!-- Checkbox on the left -->
                   <v-col lg="3" md="3" cols="12">
                     {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">
-                        {{ language === 'bn' ? $helpers.englishToBangla(
-                          this.total) : this.total }}
+                      {{ language === 'bn' ? $helpers.englishToBangla(
+                      this.total) : this.total }}
                     </span>
                   </v-col>
 
@@ -201,18 +195,19 @@
                       class="elevation-0 transparent row-pointer">
                       <template v-slot:item.id="{ item, index }">
                         {{ language === 'bn' ? $helpers.englishToBangla(
-                          (pagination.current - 1) * pagination.perPage +
-                          index +
-                          1) : (pagination.current - 1) * pagination.perPage +
-                          index +
-                          1 }}
+                        (pagination.current - 1) * pagination.perPage +
+                        index +
+                        1) : (pagination.current - 1) * pagination.perPage +
+                        index +
+                        1 }}
                       </template>
-                        <template v-slot:item.code="{ item }">
-                           {{ language === 'bn' ? $helpers.englishToBangla(
-                            item.code) : item.code }}
+                      <template v-slot:item.code="{ item }">
+                        {{ language === 'bn' ? $helpers.englishToBangla(
+                        item.code) : item.code }}
                       </template>
                       <template v-slot:item.division="{ item }">
-                         {{ language === 'bn' ? item.thana.district.division.name_bn : item.thana.district.division.name_en }}
+                        {{ language === 'bn' ? item.thana.district.division.name_bn :
+                        item.thana.district.division.name_en }}
                       </template>
                       <template v-slot:item.district="{ item }">
                         {{ item.thana?.district.name_en }}
@@ -229,27 +224,29 @@
 
                       <!-- Action Button -->
                       <template v-slot:item.actions="{ item }">
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn v-can="'union-edit'" fab x-small v-on="on" color="success" elevation="0"
-                              @click="editUnion(item)">
-                              <v-icon> mdi-account-edit-outline </v-icon>
-                            </v-btn>
-                          </template>
-                          <span>
-                            {{ $t("container.list.edit") }}
-                          </span>
-                        </v-tooltip>
+                        <div style="width: 80px;">
+                          <v-tooltip top>
+                            <template v-slot:activator="{ on }">
+                              <v-btn v-can="'union-edit'" fab x-small v-on="on" color="success" elevation="0"
+                                @click="editUnion(item)">
+                                <v-icon> mdi-account-edit-outline </v-icon>
+                              </v-btn>
+                            </template>
+                            <span>
+                              {{ $t("container.list.edit") }}
+                            </span>
+                          </v-tooltip>
 
-                        <v-tooltip top>
-                          <template v-slot:activator="{ on }">
-                            <v-btn v-can="'union-delete'" fab x-small v-on="on" color="grey" class="ml-3 white--text"
-                              elevation="0" @click="deleteAlert(item.id)">
-                              <v-icon> mdi-delete </v-icon>
-                            </v-btn>
-                          </template>
-                          <span> {{ $t("container.list.delete") }}</span>
-                        </v-tooltip>
+                          <v-tooltip top>
+                            <template v-slot:activator="{ on }">
+                              <v-btn v-can="'union-delete'" fab x-small v-on="on" color="grey" class="ml-3 white--text"
+                                elevation="0" @click="deleteAlert(item.id)">
+                                <v-icon> mdi-delete </v-icon>
+                              </v-btn>
+                            </template>
+                            <span> {{ $t("container.list.delete") }}</span>
+                          </v-tooltip>
+                        </div>
                       </template>
                       <!-- End Action Button -->
 
@@ -260,7 +257,7 @@
                               right: 25px;
                               width: 149px;
                               transform: translate(0px, 0px);
-                            " :items="items" hide-details dense outlined @change="onPageChange"
+                            " :items="items" hide-details dense outlined @change="perPageChange"
                             v-model="pagination.perPage"></v-select>
                           <v-pagination circle primary v-model="pagination.current" :length="pagination.total"
                             @input="onPageChange" :total-visible="11" class="custom-pagination-item"></v-pagination>
@@ -294,10 +291,9 @@
                           $t(
                             'container.system_config.demo_graphic.division.division'
                           )
-                        " :items="divisions"
-                                      :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
-                                      item-value="id" required
-                        :error="errors[0] ? true : false"  :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে বিভাগ নির্বাচন করুন' : 'Please Select Division.') : ''"
+                        " :items="divisions" :item-text="language == 'bn' ? 'name_bn' : 'name_en'" item-value="id"
+                        required :error="errors[0] ? true : false"
+                        :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে বিভাগ নির্বাচন করুন' : 'Please Select Division.') : ''"
                         :hide-details="errors[0] ? false : true"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
@@ -307,10 +303,9 @@
                           $t(
                             'container.system_config.demo_graphic.district.district'
                           )
-                        " :items="districts"
-                                      :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
-                                      item-value="id" required
-                        :error="errors[0] ? true : false" :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে জেলা নির্বাচন করুন' : 'Please Select Distrcit.') : ''"
+                        " :items="districts" :item-text="language == 'bn' ? 'name_bn' : 'name_en'" item-value="id"
+                        required :error="errors[0] ? true : false"
+                        :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে জেলা নির্বাচন করুন' : 'Please Select Distrcit.') : ''"
                         :hide-details="errors[0] ? false : true"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
@@ -319,7 +314,8 @@
                     <ValidationProvider name="LocationType" vid="locationType" rules="required" v-slot="{ errors }">
                       <v-autocomplete @input="onChangeLocationType($event)" v-model="data.location_type" outlined
                         :label="$t('container.list.location_type')" :items="locationType" :item-text="getItemText"
-                        item-value="id" required :error="errors[0] ? true : false" :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে লোকেশন টাইপ নির্বাচন করুন' : 'Please Select Loction Type.') : ''"
+                        item-value="id" required :error="errors[0] ? true : false"
+                        :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে লোকেশন টাইপ নির্বাচন করুন' : 'Please Select Loction Type.') : ''"
                         :hide-details="errors[0] ? false : true" :readonly="false"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
@@ -328,10 +324,9 @@
                     <ValidationProvider name="city" vid="city" rules="required" v-slot="{ errors }">
                       <v-autocomplete v-model="data.thana_id" outlined :label="
                           $t('container.system_config.demo_graphic.city.city')
-                        " :items="city"
-                                      :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
-                                      item-value="id" required :error="errors[0] ? true : false"
-                        :error-messages="errors[0]" :hide-details="errors[0] ? false : true"></v-autocomplete>
+                        " :items="city" :item-text="language == 'bn' ? 'name_bn' : 'name_en'" item-value="id" required
+                        :error="errors[0] ? true : false" :error-messages="errors[0]"
+                        :hide-details="errors[0] ? false : true"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
 
@@ -341,10 +336,9 @@
                           $t(
                             'container.system_config.demo_graphic.ward.upazila'
                           )
-                        " :items="thanas"
-                                      :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
-                                      item-value="id" required
-                        :error="errors[0] ? true : false"  :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে উপজেলা নির্বাচন করুন' : 'Please Select Upazila.') : ''"
+                        " :items="thanas" :item-text="language == 'bn' ? 'name_bn' : 'name_en'" item-value="id"
+                        required :error="errors[0] ? true : false"
+                        :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে উপজেলা নির্বাচন করুন' : 'Please Select Upazila.') : ''"
                         :hide-details="errors[0] ? false : true"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
@@ -352,21 +346,26 @@
                   <v-col lg="12" md="12" cols="12" v-if="data.location_type != null">
                     <ValidationProvider name="Code" vid="code" rules="required|codeRules" v-slot="{ errors }">
                       <v-text-field outlined type="number" v-model="data.code" :label="codeLabel" required
-                        :error="errors[0] ? true : false"  :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে সঠিক কোড লিখুন' : 'Please Enter Valid Geo Code.') : ''"
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে সঠিক কোড লিখুন' : 'Please Enter Valid Geo Code.') : ''"
                         :hide-details="errors[0] ? false : true"></v-text-field>
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="12" md="12" cols="12" v-if="data.location_type != null">
-                    <ValidationProvider name="Name English" vid="name_en" rules="required|checkName" v-slot="{ errors }">
+                    <ValidationProvider name="Name English" vid="name_en" rules="required|checkName"
+                      v-slot="{ errors }">
                       <v-text-field outlined type="text" v-model="data.name_en" :label="nameEnLabel" required
-                        :error="errors[0] ? true : false"  :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে ইংরেজি নাম লিখুন' : 'Please Enter English Name.') : ''"
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে ইংরেজি নাম লিখুন' : 'Please Enter English Name.') : ''"
                         :hide-details="errors[0] ? false : true"></v-text-field>
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="12" md="12" cols="12" v-if="data.location_type != null">
-                    <ValidationProvider name="Name Bangla" vid="name_bn" rules="required|checkNameBn" v-slot="{ errors }">
+                    <ValidationProvider name="Name Bangla" vid="name_bn" rules="required|checkNameBn"
+                      v-slot="{ errors }">
                       <v-text-field outlined type="text" v-model="data.name_bn" :label="nameBnLabel" required
-                        :error="errors[0] ? true : false" :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে বাংলা নাম লিখুন' : 'Please Enter Bangla Name.') : ''"
+                        :error="errors[0] ? true : false"
+                        :error-messages="errors[0] ? (language === 'bn' ? 'অনুগ্রহ করে বাংলা নাম লিখুন' : 'Please Enter Bangla Name.') : ''"
                         :hide-details="errors[0] ? false : true"></v-text-field>
                     </ValidationProvider>
                   </v-col>
@@ -407,10 +406,8 @@
                           $t(
                             'container.system_config.demo_graphic.division.division'
                           )
-                        " :items="divisions"
-                                      :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
-                                      item-value="id" required
-                        :error="errors[0] ? true : false" :error-messages="errors[0]"
+                        " :items="divisions" :item-text="language == 'bn' ? 'name_bn' : 'name_en'" item-value="id"
+                        required :error="errors[0] ? true : false" :error-messages="errors[0]"
                         :hide-details="errors[0] ? false : true"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
@@ -420,10 +417,8 @@
                           $t(
                             'container.system_config.demo_graphic.district.district'
                           )
-                        " :items="districts"
-                                      :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
-                                      item-value="id" required
-                        :error="errors[0] ? true : false" :error-messages="errors[0]"
+                        " :items="districts" :item-text="language == 'bn' ? 'name_bn' : 'name_en'" item-value="id"
+                        required :error="errors[0] ? true : false" :error-messages="errors[0]"
                         :hide-details="errors[0] ? false : true"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
@@ -431,8 +426,7 @@
                   <v-col lg="12" md="12" cols="12">
                     <ValidationProvider name="LocationType" vid="locationType" rules="required" v-slot="{ errors }">
                       <v-autocomplete @input="onChangeLocationType($event)" v-model="data.location_type" outlined
-                        :label="$t('container.list.location_type')" :items="locationType"
-                                      :item-text="getItemText"
+                        :label="$t('container.list.location_type')" :items="locationType" :item-text="getItemText"
                         item-value="id" required :error="errors[0] ? true : false" :error-messages="errors[0]"
                         :hide-details="errors[0] ? false : true" :readonly="false"></v-autocomplete>
                     </ValidationProvider>
@@ -442,10 +436,9 @@
                     <ValidationProvider name="city" vid="city" rules="required" v-slot="{ errors }">
                       <v-autocomplete v-model="data.thana_id" outlined :label="
                           $t('container.system_config.demo_graphic.city.city')
-                        " :items="city"
-                                      :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
-                                      item-value="id" required :error="errors[0] ? true : false"
-                        :error-messages="errors[0]" :hide-details="errors[0] ? false : true"></v-autocomplete>
+                        " :items="city" :item-text="language == 'bn' ? 'name_bn' : 'name_en'" item-value="id" required
+                        :error="errors[0] ? true : false" :error-messages="errors[0]"
+                        :hide-details="errors[0] ? false : true"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
 
@@ -455,10 +448,8 @@
                           $t(
                             'container.system_config.demo_graphic.ward.upazila'
                           )
-                        " :items="thanas"
-                                      :item-text="language == 'bn' ? 'name_bn' : 'name_en'"
-                                      item-value="id" required
-                        :error="errors[0] ? true : false" :error-messages="errors[0]"
+                        " :items="thanas" :item-text="language == 'bn' ? 'name_bn' : 'name_en'" item-value="id"
+                        required :error="errors[0] ? true : false" :error-messages="errors[0]"
                         :hide-details="errors[0] ? false : true"></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
@@ -471,14 +462,16 @@
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="12" md="12" cols="12" v-if="data.location_type != null">
-                    <ValidationProvider name="Name English" vid="name_en" rules="required|checkName" v-slot="{ errors }">
+                    <ValidationProvider name="Name English" vid="name_en" rules="required|checkName"
+                      v-slot="{ errors }">
                       <v-text-field outlined type="text" v-model="data.name_en" :label="nameEnLabel" required
                         :error="errors[0] ? true : false" :error-messages="errors[0]"
                         :hide-details="errors[0] ? false : true"></v-text-field>
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="12" md="12" cols="12" v-if="data.location_type != null">
-                    <ValidationProvider name="Name Bangla" vid="name_bn" rules="required|checkNameBn" v-slot="{ errors }">
+                    <ValidationProvider name="Name Bangla" vid="name_bn" rules="required|checkNameBn"
+                      v-slot="{ errors }">
                       <v-text-field outlined type="text" v-model="data.name_bn" :label="nameBnLabel" required
                         :error="errors[0] ? true : false" :error-messages="errors[0]"
                         :hide-details="errors[0] ? false : true"></v-text-field>
@@ -1161,6 +1154,10 @@ export default {
     },
     onPageChange($event) {
       // this.pagination.current = $event;
+      this.GetUnion();
+    },
+     perPageChange($event) {
+      this.pagination.current = 1;
       this.GetUnion();
     },
     setInitialHeader() {
