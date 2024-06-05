@@ -29,23 +29,7 @@ export default {
     }
   },
 
-  watch: {
-    '$i18n.locale': 'updateHeaderTitle',
-
-    options: {
-      handler () {
-        this.getAllowance()
-      },
-      deep: true,
-    },
-
-    search: {
-      handler () {
-        this.page = this.options.page;
-        this.getAllowance()
-      },
-    },
-  },
+ 
 
   computed: {
     language: {
@@ -87,6 +71,10 @@ export default {
     perPageChange($event) {
 
       this.pagination.current = 1;
+      this.getAllowance();
+    },
+    onPageChange($event) {
+
       this.getAllowance();
     },
 
