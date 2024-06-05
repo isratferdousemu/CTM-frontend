@@ -1114,6 +1114,17 @@
         "e_beneficiary": "বিদ্যমান থেকে সুবিধাভোগী",
         "n_beneficiary": "নতুন সংযোজন থেকে",
         "searchBy": "দ্বারা অনুসন্ধান করুন"
+      },
+      "emergency_payment_cycle": {
+        "filter_title": "জরুরী পেমেন্ট চক্র",
+        "payment_cycle_list": "পেমেন্ট চক্র তালিকা",
+        "installment_no": "কিস্তি নং",
+        "cycle_id": "সাইকেল আইডি",
+        "financial_year": "আর্থিক বছর",
+        "total_beneficiary": "মোট সুবিধাভোগী",
+        "amount_of_money": "টাকার পরিমান",
+        "charge": "চার্জ",
+        "total_amount": "সর্বমোট পরিমাণ"
       }
     },
     "training_management": {

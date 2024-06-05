@@ -70,6 +70,17 @@ const EmergencyPaymentManagementRoutes = [
         "../pages/EmergencyPaymentManagement/EmergencyBeneficiary/Edit.vue"
       ),
   },
+  // Payment cycle routers:
+  {
+    path: "/emergency-payment/payment-cycle",
+    name: "Emergency Payment Cycle",
+    meta: {
+      requiresAuth: true,
+      permission: "emergency-payment-cycle-create",
+    },
+    component: () =>
+      import("../pages/EmergencyPaymentManagement/PaymentCycle/Index.vue"),
+  },
 ];
 
 export default EmergencyPaymentManagementRoutes;

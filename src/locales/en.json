@@ -1121,7 +1121,20 @@
         "e_beneficiary": "From Existing Beneficiary",
         "n_beneficiary": "From New Addition",
         "searchBy": "Search By"
+      },
+      "emergency_payment_cycle":{
+        "filter_title": "Emergency Payment Cycle",
+        "payment_cycle_list": "Payment Cycle List",
+        "installment_no": "Installment No",
+        "cycle_id": "Cycle ID",
+        "financial_year": "Financial Year",
+        "total_beneficiary": "Total Beneficiary",
+        "amount_of_money": "Amount of Money",
+        "charge": "Charge",
+        "total_amount": "Total Amount"
       }
+
+
     },
     "training_management": {
       "trainer_info": {
