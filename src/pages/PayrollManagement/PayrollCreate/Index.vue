@@ -11,7 +11,7 @@
                                         style="background-color: #1C3B68; color: white;font-size: 17px;">
                                         <h4 class=" white--text">{{
                                             $t('container.payroll_management.payroll_create')
-                                        }}</h4>
+                                            }}</h4>
                                     </v-card-title>
 
                                     <v-divider></v-divider>
@@ -245,7 +245,7 @@
                                                         :disabled="invalid">{{ $t("container.list.search") }}</v-btn>
                                                     <v-btn elevation="2" class="btn" @click="resetSearch">{{
                                                         $t("container.list.reset")
-                                                        }}</v-btn>
+                                                    }}</v-btn>
                                                 </div>
                                             </v-card-text>
                                         </form>
@@ -451,14 +451,14 @@
                                         <div style="margin-left: -100px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.allotment_area")
-                                                }}:</strong>
+                                            }}:</strong>
                                             {{ data.processor_type ?? "--" }}
                                         </div>
 
                                         <div style="padding-bottom: 8px; margin-left: -70px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.selected_beneficiaries")
-                                            }}:</strong>
+                                                }}:</strong>
                                             {{ data.name_en ?? "--" }}
                                         </div>
 
@@ -469,14 +469,14 @@
                                         <div style="padding-bottom: 8px; margin-left: -100px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.total_beneficiaries")
-                                                }}:</strong>
+                                            }}:</strong>
                                             {{ data.processor_type ?? "--" }}
                                         </div>
 
                                         <div style="padding-bottom: 8px; margin-left: -50px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.payment_cycle_start_date")
-                                            }}:</strong>
+                                                }}:</strong>
                                             {{ data.name_en ?? "--" }}
                                         </div>
 
@@ -487,14 +487,14 @@
                                         <div style="padding-bottom: 8px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.allocated_beneficiaries")
-                                                }}:</strong>
+                                            }}:</strong>
                                             {{ data.processor_type ?? "--" }}
                                         </div>
 
                                         <div style="padding-bottom: 8px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.payment_cycle_end_date")
-                                            }}:</strong>
+                                                }}:</strong>
                                             {{ data.name_en ?? "--" }}
                                         </div>
 
@@ -507,20 +507,20 @@
                                         <div style="margin-left: -100px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.payroll_eligible_amount")
-                                                }}:</strong>
+                                            }}:</strong>
                                             {{ data.processor_type ?? "--" }}
                                         </div>
 
                                         <div style="padding-bottom: 8px;margin-left: -120px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.current_amount")
-                                            }}:</strong>
+                                                }}:</strong>
                                             {{ data.name_en ?? "--" }}
                                         </div>
                                         <div style="padding-bottom: 8px;margin-left: -40px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.amount_of_money")
-                                            }}:</strong>
+                                                }}:</strong>
                                             {{ data.name_en ?? "--" }}
                                         </div>
                                     </div>
@@ -530,14 +530,14 @@
                                         <div style="padding-bottom: 8px;margin-left: -30px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.amount_remain_ralance")
-                                                }}:</strong>
+                                            }}:</strong>
                                             {{ data.processor_type ?? "--" }}
                                         </div>
 
                                         <div style="padding-bottom: 8px; margin-left: -20px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.total_amount_installments")
-                                            }}:</strong>
+                                                }}:</strong>
                                             {{ data.name_en ?? "--" }}
                                         </div>
                                     </div>
