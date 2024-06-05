@@ -197,7 +197,7 @@
                             hide-details
                             dense
                             outlined
-                            @change="onPageChange"
+                            @change="perPageChange"
                             v-model="pagination.perPage"
                           ></v-select>
                           <v-pagination
@@ -906,6 +906,10 @@ export default {
     },
     onPageChange($event) {
       // this.pagination.current = $event;
+      this.GetDistrict();
+    },
+    perPageChange($event) {
+      this.pagination.current = 1;
       this.GetDistrict();
     },
     setInitialHeader() {

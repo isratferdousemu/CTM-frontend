@@ -173,63 +173,64 @@ export default {
             <v-row>
                 <v-col cols="12">
                     <v-card class="mx-3">
-                        <v-card-title class="justify-center black--text">
-                            <h5 class="mt-5">{{ $t("container.api_manager.data_receiver.view") }}</h5>
+                        <v-card-title class="justify-center black--text"
+                            style="background-color:#1c3b68;color:white;margin-bottom: 17px;">
+                            <h5 class="white--text">{{ $t("container.api_manager.data_receiver.view") }}</h5>
                         </v-card-title>
 
                         <v-row class="my-custom-row ma-5">
-                            <v-col cols="12" sm="6" md="3" style="font-size:15px;">
+                            <v-col cols="12" sm="6" md="3" style="font-size:13px;">
                                 <b>{{ $t('container.api_manager.data_receiver.organization') }}</b>:
                             </v-col>
-                            <v-col cols="12" sm="6" md="9" style="font-size:15px;">
+                            <v-col cols="12" sm="6" md="9" style="font-size:13px;">
                                 <b>:</b> <span class="ml-2">{{ data.organization_name }}</span>
                             </v-col>
-                            <v-col cols="12" sm="6" md="3" style="font-size:15px;">
-                                <b>{{ $t('container.api_manager.data_receiver.phone') }} }}</b>:
+                            <v-col cols="12" sm="6" md="3" style="font-size:13px;">
+                                <b>{{ $t('container.api_manager.data_receiver.phone') }} </b>:
                             </v-col>
-                            <v-col cols="12" sm="6" md="9" style="font-size:15px;">
+                            <v-col cols="12" sm="6" md="9" style="font-size:13px;">
                                 <b>:</b> <span class="ml-2">{{ data.organization_phone}}</span>
                             </v-col>
-                            <v-col cols="12" sm="6" md="3" style="font-size:15px;">
+                            <v-col cols="12" sm="6" md="3" style="font-size:13px;">
                                 <b>{{ $t('container.api_manager.data_receiver.email') }}</b>:
                             </v-col>
-                            <v-col cols="12" sm="6" md="9" style="font-size:15px;">
+                            <v-col cols="12" sm="6" md="9" style="font-size:13px;">
                                 <b>:</b> <span class="ml-2">{{ data?.organization_email }}</span>
                             </v-col>
-                            <v-col cols="12" sm="6" md="3" style="font-size:15px;">
+                            <v-col cols="12" sm="6" md="3" style="font-size:13px;">
                                 <b>{{ $t('container.api_manager.data_receiver.responsible_person_nid') }}</b>:
                             </v-col>
-                            <v-col cols="12" sm="6" md="9" style="font-size:15px;">
+                            <v-col cols="12" sm="6" md="9" style="font-size:13px;">
                                 <b>:</b> <span class="ml-2">{{ data?.responsible_person_nid }}</span>
                             </v-col>
-                            <v-col cols="12" sm="6" md="3" style="font-size:15px;">
+                            <v-col cols="12" sm="6" md="3" style="font-size:13px;">
                                 <b>{{ $t('container.api_manager.data_receiver.user_name') }}</b>:
                             </v-col>
-                            <v-col cols="12" sm="6" md="9" style="font-size:15px;">
+                            <v-col cols="12" sm="6" md="9" style="font-size:13px;">
                                 <b>:</b> <span class="ml-2">{{ data?.username}}</span>
                             </v-col>
-                            <v-col cols="12" sm="6" md="3" style="font-size:15px;">
+                            <v-col cols="12" sm="6" md="3" style="font-size:13px;">
                                 <b>{{ $t('container.api_manager.data_receiver.api_key') }}</b>:
                             </v-col>
-                            <v-col cols="12" sm="6" md="9" style="font-size:15px;">
+                            <v-col cols="12" sm="6" md="9" style="font-size:13px;">
                                 <b>:</b> <span class="ml-2">{{ data?.api_key }}</span>
                             </v-col>
-                            <v-col cols="12" sm="6" md="3" style="font-size:15px;">
+                            <v-col cols="12" sm="6" md="3" style="font-size:13px;">
                                 <b>{{ $t('container.api_manager.data_receiver.ip') }}</b>:
                             </v-col>
-                            <v-col cols="12" sm="6" md="9" style="font-size:15px;">
+                            <v-col cols="12" sm="6" md="9" style="font-size:13px;">
                                 <b>:</b> <span class="ml-2">{{ data?.whitelist_ip }}</span>
                             </v-col>
-                            <v-col cols="12" sm="6" md="3" style="font-size:15px;">
+                            <v-col cols="12" sm="6" md="3" style="font-size:13px;">
                                 <b>{{ $t('container.api_manager.data_receiver.start_date') }}</b>:
                             </v-col>
-                            <v-col cols="12" sm="6" md="9" style="font-size:15px;">
+                            <v-col cols="12" sm="6" md="9" style="font-size:13px;">
                                 <b>:</b> <span class="ml-2">{{ data?.start_date }}</span>
                             </v-col>
-                            <v-col cols="12" sm="6" md="3" style="font-size:15px;">
+                            <v-col cols="12" sm="6" md="3" style="font-size:13px;">
                                 <b>{{ $t('container.api_manager.data_receiver.end_date') }}</b>:
                             </v-col>
-                            <v-col cols="12" sm="6" md="9" style="font-size:15px;">
+                            <v-col cols="12" sm="6" md="9" style="font-size:13px;">
                                 <b>:</b> <span class="ml-2">{{ data?.end_date }}</span>
                             </v-col>
 
@@ -237,6 +238,26 @@ export default {
 
                         </v-row>
 
+
+
+
+                        <v-row>
+                            <v-col cols="12">
+
+                                <v-card-title v-if="data.api_list" class="justify-center black--text"
+                                    style="background-color:#1c3b68;color:white;margin-bottom: 17px;">
+                                    <h5 class="white--text">{{ $t("container.api_manager.api_generate.api_view") }}
+                                    </h5>
+                                </v-card-title>
+
+                                <v-data-table :loading="loading" item-key="id" :headers="headers" v-if="data.api_list"
+                                    :items="data?.api_list" hide-default-footer
+                                    class="elevation-0 transparent row-pointer mt-5 mx-5">
+                                    <!-- Your data table content here -->
+                                </v-data-table>
+
+                            </v-col>
+                        </v-row>
                         <v-row class="justify-end ma-5">
                             <v-btn flat color="primary" class="custom-btn mr-2 mb-5" router
                                 to="/api-manager/data-receiver">
@@ -247,22 +268,6 @@ export default {
                                 {{ $t("container.list.email") }}
                             </v-btn>
                         </v-row>
-                    </v-card>
-                </v-col>
-            </v-row>
-
-            <v-row>
-                <v-col cols="12">
-                    <v-card>
-                        <v-card-title v-if="data.api_list" class="justify-center black--text">
-                            <h5 class="mt-5">{{ $t("container.api_manager.api_generate.api_view") }}</h5>
-                        </v-card-title>
-
-                        <v-data-table :loading="loading" item-key="id" :headers="headers" v-if="data.api_list"
-                            :items="data?.api_list" hide-default-footer
-                            class="elevation-0 transparent row-pointer mt-5 mx-5">
-                            <!-- Your data table content here -->
-                        </v-data-table>
                     </v-card>
                 </v-col>
             </v-row>

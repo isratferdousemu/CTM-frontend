@@ -17,6 +17,7 @@ export default {
             module_id:null,
             organization_names:[],
             modules: [],
+            apis:[],
 
             dialogAdd: false,
             deleteDialog: false,
@@ -431,6 +432,10 @@ export default {
             // this.pagination.current = $event;
             this.GetDataReceiver();
         },
+        perPageChange($event) {
+            this.pagination.current =1;
+            this.GetDataReceiver();
+        },
         submitUrl() {
             this.$axios
                 .post("admin/url/insert", this.data, {
@@ -517,7 +522,10 @@ export default {
                         <v-expansion-panels>
                             <v-expansion-panel>
 
-                                <v-expansion-panel-header color="#8C9EFF">
+                                <v-expansion-panel-header color="#1c3b68">
+                                    <template v-slot:actions>
+                                        <v-icon color="white">$expand</v-icon>
+                                    </template>
                                     <h3 class="white--text">
                                         {{ $t("container.list.filter") }}
                                     </h3>
@@ -539,7 +547,7 @@ export default {
                                                 <v-autocomplete outlined clearable dense
                                                     :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
                                                     v-model="org_name" :items="organization_names"
-                                                    item-text="organization_name" 
+                                                    item-text="organization_name"
                                                     :label="$t('container.api_manager.data_receiver.organization') ">
                                                 </v-autocomplete>
                                             </v-col>
@@ -567,8 +575,8 @@ export default {
                     <v-col cols="12">
                         <v-card>
 
-                            <v-card-title class="justify-center ">
-                                <h4 class="mt-5">{{ $t('container.api_manager.data_receiver.list') }}</h4>
+                            <v-card-title style="background-color:#1c3b68;color:white;margin-bottom: 17px;">
+                                <h5 class="ml-2">{{ $t('container.api_manager.data_receiver.list') }}</h5>
                             </v-card-title>
 
 
@@ -579,7 +587,7 @@ export default {
                                     <div class="d-flex justify-sm-end flex-wrap">
                                         <v-text-field @keyup.native="PageSetup" v-model="search"
                                             append-icon="mdi-magnify" :label="$t(
-                                    'container.list.search'
+                                    'container.api_manager.data_receiver.search'
                                 )" hide-details class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal" flat outlined
                                             dense></v-text-field>
                                     </div>
@@ -726,21 +734,17 @@ export default {
                                     <!-- End Action Button -->
 
                                     <template v-slot:footer="item">
-                                        <div class="text-center pt-2 v-data-footer justify-center pb-2">
-                                            <v-select style="
-                              position: absolute;
-                              right: 25px;
-                              width: 149px;
-                              transform: translate(0px, 0px);
-                            
-                                    
-                                                " :items="items" hide-details dense outlined @change="onPageChange"
-                                                v-model="pagination.perPage"></v-select>
-                                            <!-- :item-text="localizationPage" item-value="name_en"  -->
-                                            <v-pagination circle primary v-model="pagination.current"
-                                                :length="pagination.total" @input="onPageChange" :total-visible="11"
-                                                class="custom-pagination-item"></v-pagination>
-                                        </div>
+                                        <v-row class="text-right pt-2 v-data-footer justify-end pb-2">
+                                            <v-col cols="12" lg="4" md="4" sm="12" xs="12" class="text-right">
+                                                <v-pagination circle primary v-model="pagination.current"
+                                                    :length="pagination.total" @input="onPageChange" :total-visible="11"
+                                                    class="custom-pagination-item"></v-pagination>
+                                            </v-col>
+                                            <v-col cols="12" lg="4" md="4" sm="12" xs="12" class="text-right">
+                                                <v-select :items="items" hide-details dense outlined
+                                                    @change="perPageChange" v-model="pagination.perPage"></v-select>
+                                            </v-col>
+                                        </v-row>
                                     </template>
                                 </v-data-table>
 
@@ -753,7 +757,8 @@ export default {
             <!-- delete modal  -->
             <v-dialog v-model="deleteDialog" width="350">
                 <v-card style="justify-content: center; text-align: center">
-                    <v-card-title class="font-weight-bold justify-center">
+                    <v-card-title class="font-weight-bold justify-center"
+                        style="background-color:#1c3b68;color:white;margin-bottom: 17px;">
                         {{ $t('container.api_manager.data_receiver.delete_header') }}
                     </v-card-title>
                     <v-divider></v-divider>

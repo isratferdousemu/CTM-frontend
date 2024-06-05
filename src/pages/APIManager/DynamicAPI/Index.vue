@@ -288,6 +288,10 @@ export default {
             // this.pagination.current = $event;
             this.GetAPI();
         },
+        perPageChange($event) {
+            this.pagination.current = 1;
+            this.GetAPI();
+        },
         submitUrl() {
             this.$axios
                 .post("admin/url/insert", this.data, {
@@ -370,7 +374,8 @@ export default {
                     <v-col cols="12" lg="12" md="12" sm="12" xs="12">
                         <v-card>
 
-                            <v-card-title class="justify-center">
+                            <v-card-title class="justify-center"
+                                style="background-color:#1c3b68;color:white;margin-bottom: 17px;">
                                 <h4>{{ $t('container.api_manager.api_generate.list') }}</h4>
                             </v-card-title>
 
@@ -509,21 +514,18 @@ export default {
                                     <!-- End Action Button -->
 
                                     <template v-slot:footer="item">
-                                        <div class="text-center pt-2 v-data-footer justify-center pb-2">
-                                            <v-select style="
-                              position: absolute;
-                              right: 25px;
-                              width: 149px;
-                              transform: translate(0px, 0px);
-                            
-                                    
-                                                " :items="items" hide-details dense outlined @change="onPageChange"
-                                                v-model="pagination.perPage"></v-select>
-                                            <!-- :item-text="localizationPage" item-value="name_en"  -->
-                                            <v-pagination circle primary v-model="pagination.current"
-                                                :length="pagination.total" @input="onPageChange" :total-visible="11"
-                                                class="custom-pagination-item"></v-pagination>
-                                        </div>
+
+                                        <v-row class="text-right pt-2 v-data-footer justify-end pb-2">
+                                            <v-col cols="12" lg="4" md="4" sm="12" xs="12" class="text-right">
+                                                <v-pagination circle primary v-model="pagination.current"
+                                                    :length="pagination.total" @input="onPageChange" :total-visible="11"
+                                                    class="custom-pagination-item"></v-pagination>
+                                            </v-col>
+                                            <v-col cols="12" lg="4" md="4" sm="12" xs="12" class="text-right">
+                                                <v-select :items="items" hide-details dense outlined
+                                                    @change="perPageChange" v-model="pagination.perPage"></v-select>
+                                            </v-col>
+                                        </v-row>
                                     </template>
                                 </v-data-table>
 
@@ -531,37 +533,38 @@ export default {
                         </v-card>
                     </v-col>
                 </v-row>
-                </v-col>
+            </v-col>
 
-                <!-- delete modal  -->
-                <v-dialog v-model="deleteDialog" width="350">
-                    <v-card style="justify-content: center; text-align: center">
-                        <v-card-title class="font-weight-bold justify-center">
-                            {{ $t('container.api_manager.api_generate.delete_header') }}
-                        </v-card-title>
-                        <v-divider></v-divider>
-                        <v-card-text>
-                            <div class="subtitle-1 font-weight-medium mt-5">
-                                {{ $t('container.api_manager.api_generate.delete_alert') }}
+            <!-- delete modal  -->
+            <v-dialog v-model="deleteDialog" width="350">
+                <v-card style="justify-content: center; text-align: center">
+                    <v-card-title class="font-weight-bold justify-center"
+                        style="background-color:#1c3b68;color:white;margin-bottom: 17px;">
+                        {{ $t('container.api_manager.api_generate.delete_header') }}
+                    </v-card-title>
+                    <v-divider></v-divider>
+                    <v-card-text>
+                        <div class="subtitle-1 font-weight-medium mt-5">
+                            {{ $t('container.api_manager.api_generate.delete_alert') }}
 
 
-                            </div>
-                        </v-card-text>
-                        <v-card-actions style="display: block">
-                            <v-row class="mx-0 my-0 py-2" justify="center">
-                                <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
-                                    {{ $t('container.list.cancel') }}
-                                </v-btn>
+                        </div>
+                    </v-card-text>
+                    <v-card-actions style="display: block">
+                        <v-row class="mx-0 my-0 py-2" justify="center">
+                            <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
+                                {{ $t('container.list.cancel') }}
+                            </v-btn>
 
-                                <v-btn text @click="deleteURL" color="white" :loading="delete_loading"
-                                    class="custom-btn-width warning white--text py-2">
-                                    {{ $t('container.list.delete') }}
-                                </v-btn>
-                            </v-row>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
-                <!-- delete modal  -->
+                            <v-btn text @click="deleteURL" color="white" :loading="delete_loading"
+                                class="custom-btn-width warning white--text py-2">
+                                {{ $t('container.list.delete') }}
+                            </v-btn>
+                        </v-row>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+            <!-- delete modal  -->
         </v-row>
     </div>
 </template>

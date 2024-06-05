@@ -84,7 +84,7 @@
       "pouroshava": "পৌরসভা",
       "union": "ইউনিয়ন",
       "show": "দেখুন",
-        "no_data": "কোন লিঙ্গ নির্বাচন করা হয়নি."
+      "no_data": "কোন লিঙ্গ নির্বাচন করা হয়নি."
     },
     "system_config": {
       "demo_graphic": {
@@ -1036,7 +1036,54 @@
       "district_pourashava": "জেলা পৌরসভা",
       "verification_success_msg": "যাচাইকরণ সেটিং সফলভাবে জমা দেওয়া হয়েছে",
       "payroll_create": "পেরোল তৈরি",
-      "allotment_distribution": "বরাদ্দ বিতরণ"
+      "allotment_distribution": "বরাদ্দ বিতরণ",
+      "area_wise_ben_list": {
+        "remaining_installment": "Remaining Installment",
+        "area_type": "Upazila/City Corporation/ District Pouroshava",
+        "allotment_area": "Union/Ward/Pouroshava",
+        "allocated_beneficiary": "Allocated Beneficiary",
+        "active_beneficiary": "Active Beneficiary",
+        "status": "Status"
+      },
+      "allotment_area_wise_ben_setup": {
+        "title": "Allotment area-wise beneficiary setup",
+        "title_send_preview": "Beneficiary Payroll Preview",
+        "allotment_area": "Allotment Area:",
+        "selected_beneficiaries": "Selected Beneficiaries:",
+        "total_beneficiaries": "Total Beneficiaries:",
+        "payment_cycle_start_date": "Payment Cycle Start Date:",
+        "allocated_beneficiaries": "Allocated Beneficiaries:",
+        "payment_cycle_end_date": "Payment Cycle End Date:",
+        "payroll_eligible_amount": "Payroll Eligible Amount:",
+        "current_amount": "Current Amount:",
+        "amount_of_money": "Amount of money allocated annually:",
+        "amount_remain_ralance": "Amount of Remain Balance in Payroll:",
+        "total_amount_installments": "Total Amount of All Installments Sent Earlier:",
+
+        "ben_name": "Name of the Beneficiaries",
+        "father_name": "Father Name",
+        "mother_name": "Mother Name",
+        "bank": "Bank",
+        "ward": "Ward",
+        "mobile_number": "Mobile Number",
+        "account_no": "Account No",
+        "allowance_amount": "Allowance Amount"
+      },
+      "allotment_area_wise_ben_send_preview": {
+        "beneficiary_id": "Beneficiary ID",
+        "name_en": "Name (English)",
+        "father_name_en": "Father Name (English)",
+        "union_pourashava": "Union/Pourashava",
+        "ward": "Ward",
+        "program_name": "Program Name",
+        "bank_account": "Bank Account",
+        "mobile": "Mobile",
+        "account": "Account",
+        "cash_out_charge": "Cash Out Charge",
+        "total_amount": "Total Amount",
+        "financial_account_status": "Financial Account Status",
+        "status": "Status"
+      }
     },
     "emergency_payment": {
       "slNo": "ক্রমিক নং",
@@ -1056,6 +1103,7 @@
     "training_management": {
       "trainer_info": {
         "ID": "আইডি",
+        "trainer_type": "প্রশিক্ষকের ধরন",
         "list_1": "প্রশিক্ষক তালিকা",
         "list": "প্রশিক্ষকের  তথ্য তালিকা",
         "view": "প্রশিক্ষকের তথ্য বিবরণ",
@@ -1073,7 +1121,7 @@
         "contact": "যোগাযোগের ঠিকানা",
         "upcoming": "আসন্ন ব্যাচসমূহ",
         "about": "সম্পর্কিত",
-        "program": "কার্যক্রম",
+        "program": "প্রোগ্রাম",
         "module": "মডিউল",
         "image_alert": "ফাইলের আকার ২০০ কে বি এর কম হতে হবে",
         "delete_header": "প্রশিক্ষক তথ্য ডিলিট করুন ",
@@ -1116,6 +1164,12 @@
         "add": "নতুন প্রোগ্রাম যোগ করুন",
         "edit": "প্রোগ্রাম এডিট করুন",
         "program_name": "প্রোগ্রামের নাম",
+        "exam_link": "পরীক্ষার লিঙ্ক",
+        "rating_link": "রেটিং লিঙ্ক",
+        "exam": "পরীক্ষা",
+        "rating": "রেটিং",
+        "trainer_rating_status": "প্রশিক্ষক রেটিং ",
+        "exam_status": "পরীক্ষা",
         "program": "প্রোগ্রাম",
         "trainer": "প্রশিক্ষক",
         "circular": "সার্কুলার",
@@ -1134,7 +1188,7 @@
         "view": "অংশগ্রহণকারীর বিবরণ",
         "add_1": "অংশগ্রহণকারী যোগ করুন",
         "add_2": "বহিরাগত নিবন্ধন",
-        "add_3": "অভ্যন্তরীণ নিবন্ধন",
+        "add_3": "প্রশিক্ষণ নিবন্ধন",
         "registration": "বহিরাগত নিবন্ধন",
         "participant": "অংশগ্রহণকারী",
         "full_name": "সম্পূর্ণ নাম",
@@ -1143,8 +1197,8 @@
         "training_circular": "Training Circular",
         "alert": "বহিরাগত অংশগ্রহণকারী নিবন্ধনের জন্য এই লিঙ্কে যান",
         "user_name": "ব্যবহারকারীর নাম",
-        "delete_header": "অংশগ্রহণকারীকে সরান",
-        "delete_alert": "আপনি কি এই অংশগ্রহণকারীকে সরানোর বিষয়ে নিশ্চিত? অংশগ্রহণকারীর সমস্ত বিবরণ মুছে ফেলা হবে।"
+        "delete_header": "অংশগ্রহণকারীকে মুছুন",
+        "delete_alert": "আপনি কি এই অংশগ্রহণকারীকে মুছে ফেলার বিষয়ে নিশ্চিত? অংশগ্রহণকারীর সমস্ত বিবরণ মুছে ফেলা হবে।"
       }
     },
     "api_manager": {
@@ -1181,6 +1235,7 @@
         "add": "নতুন এপিআই গ্রাহক যুক্ত করুন",
         "edit": "এপিআই গ্রাহক এডিট করুন",
         "api": " এপিআই",
+        "search": "অনুসন্ধান প্রতিষ্ঠানের ফোন অথবা ইমেল",
         "organization": "প্রতিষ্ঠানের নাম",
         "phone": "প্রতিষ্ঠানের ফোন",
         "email": "প্রতিষ্ঠানের ইমেইল",
