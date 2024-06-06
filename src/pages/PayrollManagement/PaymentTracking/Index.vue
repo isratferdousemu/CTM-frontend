@@ -173,7 +173,7 @@ import moment from "moment";
 import "moment/locale/bn";
 
 export default {
-  name: "FrontendIndex",
+  title: "Payment Tracking",
   data() {
     return {
       data: {
@@ -317,9 +317,7 @@ export default {
           },
         })
         .then((res) => {
-          console.log("🚀 ~ .then ~ res:", res);
           this.items = res?.data?.data;
-          console.log("🚀 ~ .then ~ this.items:", this.items);
           this.showDetails = true;
           if (this.items?.payroll != null) {
             const formatted = this.formatDateTime(

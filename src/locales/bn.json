@@ -1018,6 +1018,8 @@
       "approval_status": "স্ট্যাটাস"
     },
     "payroll_management": {
+      "view": "দেখুন",
+      "add_new_processor": "নতুন প্রসেসর যোগ করুন",
       "list": "পেমেন্ট প্রসেসর",
       "add_new": "নতুন পেমেন্ট প্রসেসর যোগ করুন",
       "edit": "পেমেন্ট প্রসেসর সম্পাদন",
@@ -1042,6 +1044,20 @@
       "verification_success_msg": "যাচাইকরণ সেটিং সফলভাবে জমা দেওয়া হয়েছে",
       "payroll_create": "পেরোল তৈরি",
       "allotment_distribution": "বরাদ্দ বিতরণ",
+      "dashboard": {
+        "header": "পেরোল ড্যাশবোর্ড",
+        "approved_payroll": "মোট অনুমোদিত পেরোল",
+        "rejected_payroll": "মোট প্রত্যাখ্যাত পেরোল",
+        "total_payment_cycle": "মোট অর্থপ্রদান চক্র",
+        "completed_payment_cycle": "IBAS ++ এ প্রক্রিয়া করা হচ্ছে",
+        "program_wise_payroll": "প্রোগ্রাম অনুযায়ী পেরোল",
+        "total_approve_payroll": "মোট অনুমোদিত পেরোল",
+        "total_payment_processor": "মোট পেমেন্ট প্রসেসর",
+        "available_balance": "পর্যাপ্ত টাকা",
+        "program_wise_payment_cycle": "প্রোগ্রাম ওয়াইজ পেমেন্ট সাইকেল",
+        "total_amount_disbursed": "মোট বিতরণ করা পরিমাণ"
+      }
+    },
       "area_wise_ben_list": {
         "remaining_installment": "Remaining Installment",
         "area_type": "Upazila/City Corporation/ District Pouroshava",
@@ -1501,4 +1517,4 @@
       "image_format": "ছবির বিন্যাস"
     }
   }
-}
+ 

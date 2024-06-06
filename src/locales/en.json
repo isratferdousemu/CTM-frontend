@@ -1020,6 +1020,8 @@
       "approval_status": "Status"
     },
     "payroll_management": {
+      "view": "View",
+      "add_new_processor": "Add New Processor",
       "list": "Payment Processor",
       "add_new": "Add New Payment Processor",
       "edit": "Edit Payment Processor",
@@ -1052,6 +1054,20 @@
         "active_beneficiary": "Active Beneficiary",
         "status": "Status"
       },
+      "dashboard": {
+        "header": "Payroll Dashboard",
+        "approved_payroll": "Total Approved Payroll",
+        "rejected_payroll": "Total Rejected Payroll",
+        "total_payment_cycle": "Total Payment Cycle",
+        "completed_payment_cycle": "Processing at IBAS ++",
+        "program_wise_payroll": "Program Wise Payroll",
+        "total_payment_processor": "Total Payment Processor",
+        "total_approve_payroll": "Total Approve Payroll",
+        "available_balance": "Available Balance",
+        "program_wise_payment_cycle": "Program Wise Payment Cycle",
+        "total_amount_disbursed": "Total Amount Disbursed"
+      }
+    },
       "allotment_area_wise_ben_setup": {
         "title": "Allotment area-wise beneficiary setup",
         "title_send_preview": "Beneficiary Payroll Preview",
@@ -1509,4 +1525,4 @@
       "image_format": "Image Format"
     }
   }
-}
+

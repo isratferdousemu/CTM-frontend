@@ -25,6 +25,7 @@
 
 <script>
 export default {
+  title: "Payroll Verification Setting",
   data() {
     return {
       verificationType: "",
