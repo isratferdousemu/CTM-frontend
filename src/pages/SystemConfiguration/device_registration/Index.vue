@@ -63,7 +63,7 @@ export default {
         // { text: this.$t('container.system_config.device.ip_address'), value: "ip_address" },
         { text: this.$t('container.system_config.device.pupose_of_use'), value: "purpose_use" },
         { text: this.$t('container.list.status'), value: "status" },
-        { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false },
+        { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false, width: "20%" },
       ];
     },
 
@@ -294,7 +294,7 @@ export default {
             <v-card>
               <v-row>
                 <v-col col="6">
-                  <v-card-title><h3>{{ $t('container.system_config.device.list') }}</h3></v-card-title>
+                  <v-card-title class="justify-center"><h3>{{ $t('container.system_config.device.list') }}</h3></v-card-title>
                 </v-col>
               </v-row>
 
@@ -385,6 +385,19 @@ export default {
                     </template>
 
                     <template v-slot:[`item.actions`]="{ item }" style="padding: 10px;">
+                      <v-tooltip top>
+                        <template v-slot:activator="{ on }">
+                          <v-btn v-can="'url-view'" fab x-small v-on="on" color="#AFB42B"
+                                 elevation="0" router class="mr-3 white--text"
+                                 :to="`/system-configuration/device_registration/view/${item.id}`">
+                            <v-icon> mdi-eye </v-icon>
+                          </v-btn>
+                        </template>
+                        <span>
+                                                {{ $t("container.list.view") }}
+                                            </span>
+                      </v-tooltip>
+
                       <v-tooltip top>
                         <template v-slot:activator="{ on }">
                           <v-btn

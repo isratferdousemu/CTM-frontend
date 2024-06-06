@@ -149,6 +149,15 @@ const SystemConfigurationRoutes = [
     },
     component: () => import("../pages/SystemConfiguration/device_registration/Edit.vue")
   },
+  {
+    path: "/system-configuration/device_registration/view/:id",
+    name: "DeviceRegistrationView",
+    meta: {
+      requiresAuth: true,
+      permission: "device-registration-view",
+    },
+    component: () => import("../pages/SystemConfiguration/device_registration/View.vue")
+  },
     /*Device Registration route end*/
 
     /*Office information route start*/

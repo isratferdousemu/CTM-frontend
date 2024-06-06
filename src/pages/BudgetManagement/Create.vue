@@ -148,12 +148,12 @@
 
                   <v-col cols="12">
                     <v-row class="justify-end mb-5 mr-2">
-                      <v-btn flat color="primary" class="custom-btn mr-2" router
-                        to="/budget">{{ $t("container.list.back") }}
+                      <v-btn flat color="primary" class="custom-btn mr-2" router to="/budget">{{
+                        $t("container.list.back") }}
                       </v-btn>
 
-                      <v-btn flat color="success" type="submit" class="custom-btn mr-2"
-                        :disabled="invalid">{{ $t("container.list.submit") }}
+                      <v-btn flat color="success" type="submit" class="custom-btn mr-2" :disabled="invalid">{{
+                        $t("container.list.submit") }}
                       </v-btn>
                     </v-row>
                   </v-col>

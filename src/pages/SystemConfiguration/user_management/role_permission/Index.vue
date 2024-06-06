@@ -70,6 +70,7 @@ export default {
   },
 
   mounted() {
+   
     this.GetAllRole();
     this.GetAllPermission();
   },
@@ -439,7 +440,7 @@ export default {
               <v-col cols="12" v-else>
                 <v-card style="margin-bottom: 50px">
                   <v-card-text>
-                    <v-simple-table height="500px">
+                    <v-simple-table >
                       <template v-slot:default>
                         <thead>
                           <tr>
@@ -448,18 +449,18 @@ export default {
   'container.system_config.demo_graphic.role.select_all'
 )"></v-checkbox></th>
                             <th class="text-left">{{ $t(
-  'container.list.create'
-) }}</th>
+                              'container.list.create'
+                              ) }}</th>
                             <th class="text-left">{{ $t(
-          'container.list.view'
-        ) }}</th>
+                              'container.list.view'
+                              ) }}</th>
                             <th class="text-left">{{ $t(
-          'container.list.edit'
-        ) }}</th>
+                              'container.list.edit'
+                              ) }}</th>
                             <th class="text-left">
                             <th class="text-left">{{ $t(
-          'container.list.delete'
-        ) }}</th>
+                              'container.list.delete'
+                              ) }}</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -467,7 +468,7 @@ export default {
                             <td style="width: 30%">
                               <h4>{{ key }}</h4>
                             </td>
-                            <td v-for="mm in m" :key="mm.id">
+                            <td v-for="mm in m" :key="mm.id" class="text-left">
                               <span>
                                 <v-checkbox v-model="rolePermissions" color="primary" :value="mm.id"
                                   @click="select"></v-checkbox>
@@ -483,13 +484,14 @@ export default {
 
               <v-col cols="12">
                 <v-row class="justify-end mb-5" style="margin-top: -50px">
-                  <v-btn color="primary" class="custom-btn mr-2" router to="/system-configuration/role">Back
-                  </v-btn>
+                  <!-- <v-btn color="primary" class="custom-btn mr-2" router to="/system-configuration/role">{{
+                    $t('container.list.back') }}
+                  </v-btn> -->
 
-                  <v-btn color="orange" class="custom-btn mr-2" @click="forceUpdate()">Reset
+                  <v-btn color="orange" class="custom-btn mr-2" @click="forceUpdate()">{{ $t('container.list.reset') }}
                   </v-btn>
                   <v-btn color="success" type="submit" class="custom-btn mr-2" :disabled="invalid"
-                    v-can="'rolePermission-edit'">Submit
+                    v-can="'rolePermission-edit'">{{ $t('container.list.submit') }}
                   </v-btn>
                 </v-row>
               </v-col>

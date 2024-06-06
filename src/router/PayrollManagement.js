@@ -73,7 +73,7 @@ const PayrollManagementRoutes = [
     name: 'payment-tracking',
     meta: {
       requiresAuth: true,
-      permission: "payroll-payment-tracking",
+      permission: 'payroll-payment-tracking',
     },
     component: () =>
       import('../pages/PayrollManagement/PaymentTracking/Index.vue'),
@@ -109,6 +109,16 @@ const PayrollManagementRoutes = [
     },
     component: () =>
       import('../pages/PayrollManagement/PayrollCreate/Index.vue'),
+  },
+  {
+    path: '/payroll-management/payroll-approval',
+    name: 'payroll-approval',
+    meta: {
+      requiresAuth: true,
+      permission: 'payroll-approval',
+    },
+    component: () =>
+      import('../pages/PayrollManagement/PayrollApproval/Index.vue'),
   },
 ];
 
