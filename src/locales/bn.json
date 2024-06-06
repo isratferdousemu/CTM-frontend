@@ -1045,9 +1045,11 @@
         "total_payment_cycle": "মোট অর্থপ্রদান চক্র",
         "completed_payment_cycle": "IBAS ++ এ প্রক্রিয়া করা হচ্ছে",
         "program_wise_payroll": "প্রোগ্রাম অনুযায়ী পেরোল",
+        "total_approve_payroll": "মোট অনুমোদিত পেরোল",
         "total_payment_processor": "মোট পেমেন্ট প্রসেসর",
         "available_balance": "পর্যাপ্ত টাকা",
-        "program_wise_payment_cycle": "প্রোগ্রাম ওয়াইজ পেমেন্ট সাইকেল"
+        "program_wise_payment_cycle": "প্রোগ্রাম ওয়াইজ পেমেন্ট সাইকেল",
+        "total_amount_disbursed": "মোট বিতরণ করা পরিমাণ"
       }
     },
     "training_management": {

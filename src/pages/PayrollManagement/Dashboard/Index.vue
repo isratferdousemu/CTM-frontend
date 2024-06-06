@@ -152,7 +152,28 @@
         <v-card height="100%">
           <v-card-text>
             <V-row>
+              <TotalAmountDisbursedBarChart />
+            </V-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <v-row class="mt-3">
+    <v-col cols="12" md="6" lg="6">
+        <v-card height="100%">
+          <v-card-text>
+            <V-row>
               <ProgramWisePaymentCycleDoughnutChart />
+            </V-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
+      <v-col cols="12" md="6" lg="6">
+        <v-card height="100%">
+          <v-card-text>
+            <V-row>
+              <ProgramBalanceDoughnutChart />
             </V-row>
           </v-card-text>
         </v-card>
@@ -165,8 +186,10 @@
 import Chart from "chart.js/auto";
 import ProgramWisePayrollChart from "@/pages/PayrollManagement/Dashboard/ProgramWisePayrollChart.vue";
 import TotalApprovedPayrollBarChart from "@/pages/PayrollManagement/Dashboard/TotalApprovedPayrollBarChart.vue";
+import TotalAmountDisbursedBarChart from "@/pages/PayrollManagement/Dashboard/TotalAmountDisbursedBarChart.vue";
 import TotalPaymentProcessorPieChart from "@/pages/PayrollManagement/Dashboard/TotalPaymentProcessorPieChart.vue";
 import ProgramWisePaymentCycleDoughnutChart from "@/pages/PayrollManagement/Dashboard/ProgramWisePaymentCycleDoughnutChart.vue";
+import ProgramBalanceDoughnutChart from "@/pages/PayrollManagement/Dashboard/ProgramBalanceDoughnutChart.vue";
 import { GChart } from "vue-google-charts/legacy";
 export default {
   name: "Index",
@@ -183,8 +206,10 @@ export default {
     GChart,
     ProgramWisePayrollChart,
     TotalApprovedPayrollBarChart,
+    TotalAmountDisbursedBarChart,
     TotalPaymentProcessorPieChart,
     ProgramWisePaymentCycleDoughnutChart,
+    ProgramBalanceDoughnutChart,
   },
   computed: {
     language: {

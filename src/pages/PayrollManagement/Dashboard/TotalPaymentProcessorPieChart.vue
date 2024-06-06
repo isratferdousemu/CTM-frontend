@@ -21,14 +21,14 @@
         min-width="auto"
     >
       <template v-slot:activator="{ on, attrs }">
-        <v-text-field
+        <!-- <v-text-field
             v-model="dates"
             :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
             :label="$t('container.application_selection_dashboard.enter_start_end_date')"
             readonly
             v-bind="attrs"
             v-on="on"
-        ></v-text-field>
+        ></v-text-field> -->
       </template>
       <v-date-picker
           v-model="dates"
@@ -51,9 +51,9 @@
       </v-date-picker>
     </v-menu>
   </v-row>
-  <v-row>
+  <v-row class="mt-6">
     <img  v-if="allZeros == true" style="margin-left:80px;margin-top:10px;width: 300px;height: 300px" src="/assets/images/pie_chart_default.png" alt="default chart">
-    <canvas v-else id="total_payment_processor"></canvas>
+    <canvas v-else id="total_payment_processor" style="margin-top:20px;"></canvas>
   </v-row>
   </v-col>
 
@@ -131,8 +131,6 @@ export default {
         this.programwise_application_approve_chart = new Chart(document.getElementById("total_payment_processor"), {
           type: "pie",
           data: {
-            // labels: this.chart_levels,
-            // labels: this.chart_levels.map((label, index) => `${label} (${percentages[index]})`),
             labels: this.chart_levels.map((label, index) => `${label} (${this.$i18n.locale == 'en' ? this.chart_datas[index] : this.$helpers.englishToBangla(this.chart_datas[index])} - ${this.$i18n.locale == 'en' ? percentages[index]  : this.$helpers.englishToBangla(percentages[index])})`),
             percentages:percentages,
             datasets: [
@@ -140,7 +138,6 @@ export default {
                 label: "Values",
                 data: this.chart_datas,
                 backgroundColor: this.chart_datas.map(() => this.generateRandomColor()),
-                // backgroundColor: ["Green", "Red", "blue", "Purple", "Yellow"],
                 hoverOffset: 4,
               },
             ],

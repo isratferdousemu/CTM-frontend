@@ -417,7 +417,7 @@
               <v-card-title
                 class="justify-center"
                 tag="div"
-                style="background-color: #2b4978; color: white"
+                style="background-color: #1c3b68; color: white"
               >
                 <h3>
                   {{ $t("container.payroll_management.list") }}

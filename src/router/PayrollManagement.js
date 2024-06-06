@@ -84,7 +84,7 @@ const PayrollManagementRoutes = [
     name: 'payroll-management-dashboard',
     meta: {
       requiresAuth: true,
-      permission: "payroll-management-dashboard",
+      permission: "payroll-dashboard-show",
     },
     component: () =>
       import('../pages/PayrollManagement/Dashboard/Index.vue'),

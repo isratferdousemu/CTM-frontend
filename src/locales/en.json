@@ -1057,7 +1057,8 @@
         "total_payment_processor": "Total Payment Processor",
         "total_approve_payroll": "Total Approve Payroll",
         "available_balance": "Available Balance",
-        "program_wise_payment_cycle": "Program Wise Payment Cycle"
+        "program_wise_payment_cycle": "Program Wise Payment Cycle",
+        "total_amount_disbursed": "Total Amount Disbursed"
       }
     },
     "training_management": {

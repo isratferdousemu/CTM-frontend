@@ -10,7 +10,7 @@
             <h5 class="white--text">
               {{
                 $t(
-                  "container.payroll_management.dashboard.total_approve_payroll"
+                  "container.payroll_management.dashboard.total_amount_disbursed"
                 )
               }}
             </h5>
@@ -77,7 +77,7 @@
       </v-menu>
     </v-row>
     <v-row>
-      <canvas id="total_approve_payroll_bar_info"></canvas>
+      <canvas id="total_amount_disbursed_info"></canvas>
     </v-row>
   </v-col>
 </template>
@@ -88,12 +88,12 @@ export default {
   data() {
     return {
       // Define data properties here
-      program_id: null,
       dates: [],
+      program_id: null,
       programs: [],
       menu: false,
       total_number_of_application_forwarded_bar_chart: null,
-      total_approve_payroll_bar_info: [],
+      total_amount_disbursed_info: [],
       levels: [],
       datas: [],
       isLoading: false,
@@ -153,7 +153,7 @@ export default {
       };
       try {
         const result = await this.$axios.get(
-          "/admin/payroll/monthly-approved-payroll",
+          "/admin/payroll/total-amount-disbursed",
           {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
@@ -162,16 +162,16 @@ export default {
             params: queryParams,
           }
         );
-        this.total_approve_payroll_bar_info = result.data.data;
+        this.total_amount_disbursed_info = result.data.data;
         this.levels =
-          this.total_approve_payroll_bar_info.map((row) =>
+          this.total_amount_disbursed_info.map((row) =>
             this.language == "en"
-              ? row.month_name.substring(0, 10)
-              : row.month_name.substring(0, 10)
+              ? row.year
+              : row.year
           );
         this.datas =
-          this.total_approve_payroll_bar_info.map(
-            (row) => row.count
+          this.total_amount_disbursed_info.map(
+            (row) => row.total_amount
           );
         this.isLoading = false;
       } catch (error) {
@@ -191,7 +191,7 @@ export default {
       ) {
         this.total_number_of_application_forwarded_bar_chart = new Chart(
           document.getElementById(
-            "total_approve_payroll_bar_info"
+            "total_amount_disbursed_info"
           ),
           {
             type: "bar",
