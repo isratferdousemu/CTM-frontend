@@ -85,6 +85,7 @@
       "union": "ইউনিয়ন",
       "show": "দেখুন",
       "no_data": "কোন লিঙ্গ নির্বাচন করা হয়নি.",
+      "sync": "সিঙ্ক",
       "close": "বন্ধ করুন",
       "addToList": "তালিকায় যুক্ত করুন"
     },
@@ -452,6 +453,7 @@
         "unique_id": "ইউনিক আইডি",
         "add": "ডিভাইস যোগ করুন",
         "edit": "ডিভাইস সম্পাদনা করুন",
+        "details": "ডিভাইস নিবন্ধন বিবরণ",
         "delete_title": "ডিভাইস নিবন্ধন মুছে ফেলুন",
         "delete_alert": "আপনি কি এই ডিভাইস নিবন্ধন মুছে ফেলার বিষয়ে নিশ্চিত?"
       },
@@ -1085,6 +1087,25 @@
         "total_amount": "Total Amount",
         "financial_account_status": "Financial Account Status",
         "status": "Status"
+      },
+      "payroll_approval": {
+        "title": "Payroll Approval",
+        "office": "Office",
+        "office_type": "Office Type",
+        "installment": "Installment",
+        "status": "Status",
+        "approval_list": {
+          "district": "District",
+          "upazila": "Upazila",
+          "office": "Office",
+          "program": "Program",
+          "installment": "Installment",
+          "total_beneficiary": "Total Beneficiary",
+          "allowance_amount": "Allowance Amount",
+          "charge": "Charge",
+          "total_money": "Total Money",
+          "status": "Status"
+        }
       }
     },
     "emergency_payment": {
@@ -1114,6 +1135,17 @@
         "e_beneficiary": "বিদ্যমান থেকে সুবিধাভোগী",
         "n_beneficiary": "নতুন সংযোজন থেকে",
         "searchBy": "দ্বারা অনুসন্ধান করুন"
+      },
+      "emergency_payment_cycle": {
+        "filter_title": "জরুরী পেমেন্ট চক্র",
+        "payment_cycle_list": "পেমেন্ট চক্র তালিকা",
+        "installment_no": "কিস্তি নং",
+        "cycle_id": "সাইকেল আইডি",
+        "financial_year": "আর্থিক বছর",
+        "total_beneficiary": "মোট সুবিধাভোগী",
+        "amount_of_money": "টাকার পরিমান",
+        "charge": "চার্জ",
+        "total_amount": "সর্বমোট পরিমাণ"
       }
     },
     "training_management": {
@@ -1189,6 +1221,10 @@
         "program": "প্রোগ্রাম",
         "trainer": "প্রশিক্ষক",
         "circular": "সার্কুলার",
+        "form_id": "পরীক্ষার ফর্ম আইডি",
+        "training_form_id": "প্রশিক্ষণ ফর্ম আইডি",
+        "employee_id": "এমপ্লয়ী আইডি",
+        "passcode": "পাসকোড",
         "search": "প্রোগ্রাম অনুসন্ধান",
         "select_time_slot": "টাইম স্লট নির্বাচন করুন",
         "training_circular": "প্রশিক্ষণ সার্কুলার",

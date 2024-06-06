@@ -40,6 +40,8 @@ export default {
             allowances: [],
             financial_years: [],
             active_installments: [],
+            active_beneficiaries: [],
+            isSeeLoading: false,
             allotmentAreaList: [],
             seeBeneficiaryDialog: false,
             previewAndSendDialog: false,
@@ -149,66 +151,66 @@ export default {
         },
         seeBeneficiaryheaders() {
             return [
-                {
-                    text: this.$t("container.list.sl"),
-                    value: "id",
-                    align: "start",
-                    sortable: false,
-                },
+                // {
+                //     text: this.$t("container.list.sl"),
+                //     value: "sl",
+                //     align: "start",
+                //     sortable: false,
+                // },
                 {
                     text: this.$t(
                         "container.payroll_management.allotment_area_wise_ben_setup.ben_name"
                     ),
-                    value: "area_type",
+                    value: "name_en",
                     align: "center",
                 },
                 {
                     text: this.$t(
                         "container.payroll_management.allotment_area_wise_ben_setup.father_name"
                     ),
-                    value: "allotment_area",
+                    value: "father_name_en",
                     align: "center",
                 },
                 {
                     text: this.$t(
                         "container.payroll_management.allotment_area_wise_ben_setup.mother_name"
                     ),
-                    value: "allocated_beneficiary",
+                    value: "mother_name_en",
                     align: "center",
                 },
                 {
                     text: this.$t(
                         "container.payroll_management.allotment_area_wise_ben_setup.bank"
                     ),
-                    value: "active_beneficiary",
+                    value: "bank_name",
                     align: "center",
                 },
                 {
                     text: this.$t(
                         "container.payroll_management.allotment_area_wise_ben_setup.ward"
                     ),
-                    value: "active_beneficiary",
+                    value: "unionWardPourosova.name_en",
                     align: "center",
                 },
                 {
                     text: this.$t(
                         "container.payroll_management.allotment_area_wise_ben_setup.mobile_number"
                     ),
-                    value: "active_beneficiary",
+                    value: "mobile",
                     align: "center",
                 },
                 {
                     text: this.$t(
                         "container.payroll_management.allotment_area_wise_ben_setup.account_no"
                     ),
-                    value: "active_beneficiary",
+                    value: "account_number",
                     align: "center",
                 },
                 {
                     text: this.$t(
                         "container.payroll_management.allotment_area_wise_ben_setup.allowance_amount"
                     ),
-                    value: "active_beneficiary",
+                    value: "monthly_allowance",
                     align: "center",
                 },
 
@@ -748,8 +750,23 @@ export default {
                     this.active_installments = result.data.data;
                 });
         },
-        seeBeneficiary() {
+        async seeBeneficiary(event) {
+            this.isSeeLoading = true;
+            this.active_beneficiaries = [];
+
             this.seeBeneficiaryDialog = true
+            await this.$axios
+                .get(`/admin/payroll/get-active-beneficiaries/${event}`, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((result) => {
+                    this.active_beneficiaries = result.data.data;
+                    this.isSeeLoading = false;
+                });
+
         },
         PreviewAndSend() {
             this.previewAndSendDialog = true
@@ -835,7 +852,7 @@ export default {
                                         style="background-color: #1C3B68; color: white;font-size: 17px;">
                                         <h4 class=" white--text">{{
                                             $t('container.payroll_management.payroll_create')
-                                            }}</h4>
+                                        }}</h4>
                                     </v-card-title>
 
                                     <v-divider></v-divider>
@@ -1069,7 +1086,7 @@ export default {
                                                         :disabled="invalid">{{ $t("container.list.search") }}</v-btn>
                                                     <v-btn elevation="2" class="btn" @click="resetSearch">{{
                                                         $t("container.list.reset")
-                                                    }}</v-btn>
+                                                        }}</v-btn>
                                                 </div>
                                             </v-card-text>
                                         </form>
@@ -1262,14 +1279,14 @@ export default {
                                         <div style="margin-left: -100px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.allotment_area")
-                                            }}:</strong>
+                                                }}:</strong>
                                             {{ data.processor_type ?? "--" }}
                                         </div>
 
                                         <div style="padding-bottom: 8px; margin-left: -70px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.selected_beneficiaries")
-                                                }}:</strong>
+                                            }}:</strong>
                                             {{ data.name_en ?? "--" }}
                                         </div>
 
@@ -1280,14 +1297,14 @@ export default {
                                         <div style="padding-bottom: 8px; margin-left: -100px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.total_beneficiaries")
-                                            }}:</strong>
+                                                }}:</strong>
                                             {{ data.processor_type ?? "--" }}
                                         </div>
 
                                         <div style="padding-bottom: 8px; margin-left: -50px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.payment_cycle_start_date")
-                                                }}:</strong>
+                                            }}:</strong>
                                             {{ data.name_en ?? "--" }}
                                         </div>
 
@@ -1298,14 +1315,14 @@ export default {
                                         <div style="padding-bottom: 8px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.allocated_beneficiaries")
-                                            }}:</strong>
+                                                }}:</strong>
                                             {{ data.processor_type ?? "--" }}
                                         </div>
 
                                         <div style="padding-bottom: 8px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.payment_cycle_end_date")
-                                                }}:</strong>
+                                            }}:</strong>
                                             {{ data.name_en ?? "--" }}
                                         </div>
 
@@ -1318,20 +1335,20 @@ export default {
                                         <div style="margin-left: -100px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.payroll_eligible_amount")
-                                            }}:</strong>
+                                                }}:</strong>
                                             {{ data.processor_type ?? "--" }}
                                         </div>
 
                                         <div style="padding-bottom: 8px;margin-left: -120px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.current_amount")
-                                                }}:</strong>
+                                            }}:</strong>
                                             {{ data.name_en ?? "--" }}
                                         </div>
                                         <div style="padding-bottom: 8px;margin-left: -40px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.amount_of_money")
-                                                }}:</strong>
+                                            }}:</strong>
                                             {{ data.name_en ?? "--" }}
                                         </div>
                                     </div>
@@ -1341,24 +1358,24 @@ export default {
                                         <div style="padding-bottom: 8px;margin-left: -30px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.amount_remain_ralance")
-                                            }}:</strong>
+                                                }}:</strong>
                                             {{ data.processor_type ?? "--" }}
                                         </div>
 
                                         <div style="padding-bottom: 8px; margin-left: -20px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.total_amount_installments")
-                                                }}:</strong>
+                                            }}:</strong>
                                             {{ data.name_en ?? "--" }}
                                         </div>
                                     </div>
                                 </v-col>
                             </v-row>
                             <v-row>
-                                <v-data-table :loading="loading" item-key="id" :headers="seeBeneficiaryheaders"
-                                    :items="payrollList" :items-per-page="pagination.perPage" hide-default-footer
-                                    class="elevation-0 transparent row-pointer mt-5 mx-5" show-select
-                                    v-model="selectedBeneficiaries">
+                                <v-data-table :loading="isSeeLoading" item-key="id" :headers="seeBeneficiaryheaders"
+                                    :items="active_beneficiaries" :items-per-page="pagination.perPage"
+                                    hide-default-footer class="elevation-0 transparent row-pointer mt-5 mx-5"
+                                    show-select v-model="selectedBeneficiaries">
 
                                     <template v-slot:[`item.id`]="{ item }">
                                         <span>
@@ -1396,7 +1413,7 @@ export default {
                                                 item.active_beneficiary }}
                                         </span>
                                     </template>
-                                    <template v-slot:footer="item">
+                                    <!-- <template v-slot:footer="item">
                                         <div class="text-center pt-2 v-data-footer justify-center pb-2">
                                             <v-select
                                                 style=" position: absolute;right: 25px;width: 149px;transform: translate(0px, 0px);"
@@ -1406,24 +1423,19 @@ export default {
                                                 :length="pagination.total" @input="onPageChange" :total-visible="11"
                                                 class="custom-pagination-item"></v-pagination>
                                         </div>
-                                    </template>
+                                    </template> -->
 
                                 </v-data-table>
                             </v-row>
 
-                            <v-row class="mx-0 my-0 py-2" justify="center">
+                            <v-row class="mx-0 my-0 py-2 mt-5" justify="end">
                                 <v-btn flat @click="dialogAdd = false" outlined class="custom-btn-width py-2 mr-10">
                                     {{ $t("container.list.cancel") }}
                                 </v-btn>
 
                                 <div>
-                                    <v-btn v-if="data.id != null" type="submit" flat color="primary" :disabled="invalid"
-                                        :loading="loading" class="custom-btn-width success white--text py-2">
-                                        {{ $t("container.list.update") }}
-                                    </v-btn>
-
-                                    <v-btn v-else type="submit" flat color="primary" :disabled="invalid"
-                                        :loading="loading" class="custom-btn-width success white--text py-2">
+                                    <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
+                                        class="custom-btn-width success white--text py-2">
                                         {{ $t("container.list.submit") }}
                                     </v-btn>
                                 </div>

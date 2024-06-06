@@ -100,7 +100,7 @@ export default {
             datasets: [
               {
                 type: "line",
-                label: "Line Dataset",
+                label: "",
                 data: this.total_number_of_application_received_line_bar_datas,
                 fill: false,
                 tension: 0.4,

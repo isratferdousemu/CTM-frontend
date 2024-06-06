@@ -83,8 +83,9 @@
       "download": "Download Application",
       "pouroshava": "Pouroshava",
       "union": "Union",
-      "no_data": "No gender was selected.",
+      "no_data":"No gender was selected.",
       "show": "Show",
+      "sync": "Sync",
       "close": "Close",
       "addToList": "Add to list"
     },
@@ -451,6 +452,7 @@
         "ip_address": "IP Address",
         "pupose_of_use": "Purpose of Use",
         "unique_id": "Unique ID",
+        "details": "Device Registration Details",
         "add": "Add Device",
         "edit": "Edit device",
         "delete_title": "Delete Device Registration",
@@ -1087,6 +1089,25 @@
         "total_amount": "Total Amount",
         "financial_account_status": "Financial Account Status",
         "status": "Status"
+      },
+      "payroll_approval": {
+        "title": "Payroll Approval",
+        "office": "Office",
+        "office_type": "Office Type",
+        "installment": "Installment",
+        "status": "Status",
+        "approval_list": {
+          "district": "District",
+          "upazila": "Upazila",
+          "office": "Office",
+          "program": "Program",
+          "installment": "Installment",
+          "total_beneficiary": "Total Beneficiary",
+          "allowance_amount": "Allowance Amount",
+          "charge": "Charge",
+          "total_money": "Total Money",
+          "status": "Status"
+        }
       }
     },
     "emergency_payment": {
@@ -1121,6 +1142,17 @@
         "e_beneficiary": "From Existing Beneficiary",
         "n_beneficiary": "From New Addition",
         "searchBy": "Search By"
+      },
+      "emergency_payment_cycle": {
+        "filter_title": "Emergency Payment Cycle",
+        "payment_cycle_list": "Payment Cycle List",
+        "installment_no": "Installment No",
+        "cycle_id": "Cycle ID",
+        "financial_year": "Financial Year",
+        "total_beneficiary": "Total Beneficiary",
+        "amount_of_money": "Amount of Money",
+        "charge": "Charge",
+        "total_amount": "Total Amount"
       }
     },
     "training_management": {
@@ -1196,6 +1228,10 @@
         "rating": "Rating",
         "program": "Program",
         "trainer": "Trainer",
+        "form_id": "Exam Form ID",
+        "training_form_id": "Training Form ID",
+        "employee_id": "Employee ID",
+        "passcode": "Passcode",
         "circular": "Circular",
         "class_schedule": "Training Schedule",
         "search": "Search Program",
