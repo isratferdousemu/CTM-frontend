@@ -84,7 +84,8 @@
       "pouroshava": "Pouroshava",
       "union": "Union",
       "no_data":"No gender was selected.",
-      "show": "Show"
+      "show": "Show",
+      "sync": "Sync"
     },
     "system_config": {
       "demo_graphic": {
@@ -1129,12 +1130,16 @@
         "program_name": "Program Name",
         "program": "Program",
         "trainer": "Trainer",
+        "form_id": "Exam Form ID",
+        "training_form_id": "Training Form ID",
+        "employee_id": "Employee ID",
+        "passcode": "Passcode",
         "circular": "Circular",
-          "exam_link": "Exam Link",
-          "rating_link": "Rating Link",
-          "exam": "Exam",
-          "trainer_rating_status": "Trainer Rating ",
-          "exam_status": "Exam ",
+        "exam_link": "Exam Link",
+        "rating_link": "Rating Link",
+        "exam": "Exam",
+        "trainer_rating_status": "Trainer Rating ",
+        "exam_status": "Exam ",
         "class_schedule": "Training Schedule",
         "search": "Search Program",
         "select_time_slot": "Select Time Slot",

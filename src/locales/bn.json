@@ -84,7 +84,8 @@
       "pouroshava": "পৌরসভা",
       "union": "ইউনিয়ন",
       "show": "দেখুন",
-        "no_data": "কোন লিঙ্গ নির্বাচন করা হয়নি."
+      "no_data": "কোন লিঙ্গ নির্বাচন করা হয়নি.",
+      "sync": "সিঙ্ক"
     },
     "system_config": {
       "demo_graphic": {
@@ -1120,12 +1121,16 @@
         "program": "প্রোগ্রাম",
         "trainer": "প্রশিক্ষক",
         "circular": "সার্কুলার",
-          "exam_link": "পরীক্ষার লিঙ্ক",
-          "rating_link": "রেটিং লিঙ্ক",
-          "exam": "পরীক্ষা",
-          "rating": "রেটিং",
-          "trainer_rating_status": "প্রশিক্ষক রেটিং ",
-          "exam_status": "পরীক্ষা",
+        "form_id": "পরীক্ষার ফর্ম আইডি",
+        "training_form_id": "প্রশিক্ষণ ফর্ম আইডি",
+        "employee_id": "এমপ্লয়ী আইডি",
+        "passcode": "পাসকোড",
+        "exam_link": "পরীক্ষার লিঙ্ক",
+        "rating_link": "রেটিং লিঙ্ক",
+        "exam": "পরীক্ষা",
+        "rating": "রেটিং",
+        "trainer_rating_status": "প্রশিক্ষক রেটিং ",
+        "exam_status": "পরীক্ষা",
         "search": "প্রোগ্রাম অনুসন্ধান",
         "select_time_slot": "টাইম স্লট নির্বাচন করুন",
         "training_circular": "প্রশিক্ষণ সার্কুলার",
