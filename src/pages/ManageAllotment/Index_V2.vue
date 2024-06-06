@@ -248,7 +248,7 @@
                                                     ">{{ $t("container.list.search") }}</v-btn>
                                             <v-btn elevation="2" class="btn" @click="resetSearch">{{
                                                 $t("container.list.reset")
-                                                }}</v-btn>
+                                            }}</v-btn>
                                         </div>
                                     </form>
                                 </ValidationObserver>

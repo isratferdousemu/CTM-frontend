@@ -127,14 +127,28 @@
                    <v-card-title class="custom-title">
                               <h6 class="text-center" style="font-size:16.16px;">  {{ $t("container.grievance_management.dashboard.header") }}</h6>
                     </v-card-title>
+
+            <v-breadcrumbs :items="breadcrumbItems" divider="/">
+              <template v-slot:item="{ item, index }">
+                <v-breadcrumbs-item
+                  :key="index"
+                  :disabled="item.disabled"
+                  @click.prevent="handleBreadcrumbClick(item.value)"
+                  style="cursor: pointer;font-weight: bold; color: blue;transition: color 0.3s ease; "
+                >
+                  {{ language === 'bn' ? $helpers.englishToBangla(item.text) : item.text }}
+                </v-breadcrumbs-item>
+              </template>
+            </v-breadcrumbs>
             </caption>
+  
           <thead class="primary lighten-1">
             <tr>
               <th class="text-left">
                  {{ $t("container.list.sl") }}
               </th>
               <th class="text-left">
-                {{ $t("container.grievance_management.dashboard.division") }}
+                {{ $t("container.grievance_management.dashboard.locationName") }}
               </th>
               <th class="text-left">
                 {{ $t("container.grievance_management.dashboard.total_new") }}
@@ -162,8 +176,8 @@
               <td>{{ language==='bn' ? $helpers.englishToBangla(item.total_grievance_canceled) : item.total_grievance_canceled }}</td>
               <td>{{ language==='bn' ? $helpers.englishToBangla(item.total_grievance_pending) : item.total_grievance_pending }}</td>
               <td>
-                  <v-btn @click="getLocationoWiseNumberOfGrievance(item.id)" fab x-small v-on="on" color="success" elevation="0">
-                     <v-icon>mdi-arrow-collapse-right </v-icon>
+                  <v-btn v-if="item.type === 'division' || item.type === 'district' " @click="fetchNextLevel(item.id,item.type)" fab x-small v-on="on" color="success" elevation="0">
+                     <v-icon >mdi-arrow-collapse-right </v-icon>
                    </v-btn>
               </td>
                
@@ -171,6 +185,7 @@
             </tr>
           </tbody>
         </template>
+        
       </v-simple-table>
     </div>
       <!-------End  table component ------->
@@ -195,6 +210,11 @@ export default {
       totalCanceledGrievance: null,
       totalPendingGrievance:null,
       locationWisegrievacne:null,
+      breadcrumbItems: [
+        { text: this.$i18n.locale == 'en' ? 'Division' : 'বিভাগ', value: 'division' },
+        { text: this.$i18n.locale == 'en' ? 'District' : 'জেলা', value: 'district' },
+        { text: this.$i18n.locale == 'en' ? 'Thana' : 'থানা', value: 'thana' },
+      ],
     };
   },
   components: {
@@ -220,6 +240,12 @@ export default {
     // },
   },
   methods: {
+    handleBreadcrumbClick(type) {
+           let item='breadcrumb';
+           this.getLocationoWiseNumberOfGrievance(item, type);
+
+    },
+    
    async getTotalRecivedNumberOfGrievance(){
 
       this.$axios.get("admin/grievance-dashboard/numberReceivedOfGrievance",{
@@ -229,7 +255,6 @@ export default {
         },
         // params: queryParams,
       }).then((result) => {
-         console.log(result.data.data,'total');
         this.totalRecivedGrievance = result?.data?.data;
       });
     },
@@ -244,7 +269,6 @@ export default {
         },
         params: queryParams,
       }).then((result) => {
-        console.log(result,'response');
         this.totalSolvedGrievance = result?.data?.data;
       });
     },
@@ -276,10 +300,26 @@ export default {
         this.totalPendingGrievance = result?.data?.data;
       });
     },
-    async getLocationoWiseNumberOfGrievance(type=null, parentId = null) {
+    fetchNextLevel(parentId, currentType) {
+      let nextType;
+      if (currentType === 'division') {
+        nextType = 'district';
+      } else if (currentType === 'district') {
+        nextType = 'thana';
+      } else {
+        return; // No further levels
+      }
+      this.getLocationoWiseNumberOfGrievance(parentId, nextType);
+    },
+
+    async getLocationoWiseNumberOfGrievance(parentId =null, type = null) {
       const queryParams = {
         status: 'location',
+        parent_id: parentId,
+        type: type,
+        breadcrumb: parentId,
       };
+      console.log(queryParams,'queryParamsqueryParams');
       this.$axios.get("/admin/grievance-dashboard/location-wise-grievance", {
         headers: {
           Authorization: "Bearer " + this.$store.state.token,
@@ -288,7 +328,6 @@ export default {
         params: queryParams,
       }).then((result) => {
         this.locationWisegrievacne = result?.data?.data;
-        console.log(this.locationWisegrievacne,'anwar');
       });
     }
 

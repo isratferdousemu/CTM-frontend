@@ -37,7 +37,13 @@ export default {
         "$i18n.locale": "updateHeaderTitle",
     },
 
-   
+    computed: {
+        language: {
+            get() {
+                return this.$store.getters.getAppLanguage;
+            }
+        },
+    },
 
     mounted() {
         this.GetModules();
@@ -142,8 +148,9 @@ export default {
                 <v-row>
                     <v-col cols="12">
                         <v-card>
-                            <v-card-title class="justify-center">
-                                <h4 class="mt-5">
+                            <v-card-title class="justify-center"
+                                style="background-color:#1c3b68;color:white;margin-bottom: 17px;">
+                                <h4>
                                     {{ $t("container.api_manager.api_generate.add") }}
                                 </h4>
                             </v-card-title>
@@ -154,13 +161,13 @@ export default {
                                 <ValidationObserver ref="form" v-slot="{ invalid }">
                                     <v-form v-on:submit.prevent="submitAPI()">
 
-                                        <v-row>
+                                        <v-row class="mt-10">
                                             <v-col cols="12" sm="3" lg="3" xs="3" xl="3">
                                                 <ValidationProvider name=" API Name" vid="api_name" rules="required"
                                                     v-slot="{ errors }">
                                                     <v-text-field type="text" v-model="data.name" :label="$t('container.api_manager.api_generate.api_name')
-                                        " persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :error-messages="errors[0]"></v-text-field>
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক এপিআই নাম প্রদান করুন '
+                                        : 'Please enter API Name') : ''"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols="12" sm="3" lg="3" xs="3" xl="3">
@@ -168,8 +175,8 @@ export default {
                                                     v-slot="{ errors }">
                                                     <v-select v-model="data.module" :label="$t('container.api_manager.api_generate.module')
                                         " persistent-hint outlined :error="errors[0] ? true : false" :items="modules"
-                                                        item-text="name" item-value="id" :error-messages="errors[0]"
-                                                        @change="handleChange"></v-select>
+                                                        item-text="name" item-value="id" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক মডিউল প্রদান করুন '
+                                        : 'Please enter Module') : ''" @change="handleChange"></v-select>
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols="12" sm="3" lg="3" xs="3" xl="3">
@@ -178,8 +185,8 @@ export default {
 
                                                     <v-select type="text" v-model="data.api_purpose_id" :label="$t('container.api_manager.api_generate.purpose')
                                         " persistent-hint outlined :error="errors[0] ? true : false" :items="purposes"
-                                                        item-text="purpose" item-value="id" :error-messages="errors[0]"
-                                                        @change="Change"></v-select>
+                                                        item-text="purpose" item-value="id" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক উদ্দেশ্য প্রদান করুন '
+                                        : 'Please enter Purpose') : ''" @change="Change"></v-select>
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols="12" sm="3" lg="3" xs="3" xl="3">
