@@ -8,23 +8,25 @@ extend("checkName", {
       return false;
     }
 
-    return /^[a-zA-Z\s]+$/.test(value);
+    // Update the regular expression to accept English letters, spaces, and commas
+    return /^[a-zA-Z\s,]+$/.test(value);
   },
-  message: "Please Enter English Letter's in this Field",
+  message: "Please enter English letters, spaces, or commas in this field",
 });
-
 extend("checkNameBn", {
   validate: (value) => {
     if (!value && value !== 0) {
       return false;
     }
 
-    var banglaRegex = /^[\u0980-\u09E5\u09F0-\u09FF\s]+$/;
+    // Update the regular expression to accept Bangla letters, spaces, and commas
+    var banglaRegex = /^[\u0980-\u09E5\u09F0-\u09FF\s,]+$/;
 
     return banglaRegex.test(value);
   },
-  message: "Please Enter Bangla Letter's in this Field",
+  message: "Please enter Bangla letters, spaces, or commas in this field",
 });
+
 
 export default {
   name: "Create",
@@ -92,6 +94,11 @@ export default {
       errors: (state) => state.Allowance.errors,
       error_status: (state) => state.Allowance.error_status,
     }),
+    language: {
+      get() {
+        return this.$store.getters.getAppLanguage;
+      },
+    },
 
     minValueRules() {
       return [
@@ -385,13 +392,13 @@ export default {
                 <v-card>
                   <v-row>
                     <v-col col="6">
-                      <v-card-title
-                        ><h3>
-                          {{
-                            $t("container.system_config.allowance_program.add")
-                          }}
-                        </h3></v-card-title
-                      >
+                      <v-card-title></v-card-title>
+                      <h3>
+                        {{
+                        $t("container.system_config.allowance_program.add")
+                        }}
+                      </h3>
+                      </v-card-title>
                     </v-col>
                   </v-row>
 
@@ -401,50 +408,28 @@ export default {
                     <v-col cols="12" class="d-flex">
                       <v-row wrap>
                         <v-col cols="12" sm="6" lg="6">
-                          <ValidationProvider
-                            name="name english"
-                            vid="name_en"
-                            rules="required|checkName"
-                            v-slot="{ errors }"
-                          >
-                            <v-text-field
-                              v-model="add_allowance_program.name_en"
-                              :label="
+                          <ValidationProvider name="name english" vid="name_en" rules="required|checkName"
+                            v-slot="{ errors }">
+                            <v-text-field v-model="add_allowance_program.name_en" :label="
                                 $t(
                                   'container.system_config.allowance_program.name_en'
                                 )
-                              "
-                              menu-props="auto"
-                              persistent-hint
-                              outlined
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                              required
-                            ></v-text-field>
+                              " menu-props="auto" persistent-hint outlined :error="errors[0] ? true : false"
+                              :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য ভাতা কার্যক্রমের নাম  ইংরেজিতে প্রদান করুন '
+          : 'Please enter  valid Program Name in English') : ''" required></v-text-field>
                           </ValidationProvider>
                         </v-col>
 
-                        <v-col cols="12" sm="6" lg="6">
-                          <ValidationProvider
-                            name="name bangla"
-                            vid="name_bn"
-                            rules="required|checkNameBn"
-                            v-slot="{ errors }"
-                          >
-                            <v-text-field
-                              v-model="add_allowance_program.name_bn"
-                              :label="
+                        <v-col cols=" 12" sm="6" lg="6">
+                          <ValidationProvider name="name bangla" vid="name_bn" rules="required|checkNameBn"
+                            v-slot="{ errors }">
+                            <v-text-field v-model="add_allowance_program.name_bn" :label="
                                 $t(
                                   'container.system_config.allowance_program.name_bn'
                                 )
-                              "
-                              menu-props="auto"
-                              persistent-hint
-                              outlined
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                              required
-                            ></v-text-field>
+                              " menu-props="auto" persistent-hint outlined :error="errors[0] ? true : false"
+                              :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য ভাতা কার্যক্রমের নাম  বাংলায় প্রদান করুন '
+          : 'Please enter  valid Program Name in Bangla') : ''" required></v-text-field>
                           </ValidationProvider>
                         </v-col>
                       </v-row>
@@ -566,10 +551,10 @@ export default {
                         <v-col cols="12" sm="6" lg="6"> </v-col>
                       </v-row>
                     </v-col> -->
-                    
 
-<!-- emu 2 -->
-                   <!-- <v-col cols="12" class="d-flex">
+
+                    <!-- emu 2 -->
+                    <!-- <v-col cols="12" class="d-flex">
 
                       <v-row wrap>
                         <v-col cols="12" sm="6" lg="6">
@@ -586,7 +571,7 @@ export default {
                           ></v-checkbox>
                                <!-- @click="ageLimit" -->
 
-                          <!-- <table v-if="selectedSection === 'age_limit' && is_age_limit === true">
+                    <!-- <table v-if="selectedSection === 'age_limit' && is_age_limit === true">
                             <thead>
                               <tr v-show="add_allowance_program.gender.length">
                                 <td>Gender</td>
@@ -722,9 +707,9 @@ export default {
                               :disabled="activeSection === 'age_limit'"
                         
                           ></v-checkbox> -->
-                              <!-- @click="allowanceAmount" -->
+                    <!-- @click="allowanceAmount" -->
 
-                          <!-- <table v-if="selectedSection === 'disable_class' && is_disable_class === true">
+                    <!-- <table v-if="selectedSection === 'disable_class' && is_disable_class === true">
                             <thead>
                               <tr>
                                 <td>Type</td>
@@ -797,34 +782,24 @@ export default {
                       <div v-if="amount_error_note" v-html="amount_error_note" style="color: red;"/>
 
                     </v-col>  -->
-            
-              
-            <!-- emu end -->
 
-              <v-col cols="12">
-                <v-row class="justify-end mb-5 mt-2" style="margin-top: -50px">
-                  <v-btn
-                    flat
-                    color="primary"
-                    class="custom-btn mr-2"
-                    router
-                    to="/system-configuration/allowance-program"
-                    >{{ $t("container.list.back") }}
-                  </v-btn>
-                  <v-btn
-                    flat
-                    color="success"
-                    type="submit"
-                    class="custom-btn mr-2"
-                    :disabled="invalid"
-                    >{{ $t("container.list.submit") }}
-                  </v-btn>
-                </v-row>
+
+                    <!-- emu end -->
+
+                    <v-col cols="12">
+                      <v-row class="justify-end mb-5 mt-2" style="margin-top: -50px">
+                        <v-btn flat color="primary" class="custom-btn mr-2" router
+                          to="/system-configuration/allowance-program">{{ $t("container.list.back") }}
+                        </v-btn>
+                        <v-btn flat color="success" type="submit" class="custom-btn mr-2" :disabled="invalid">{{
+                          $t("container.list.submit") }}
+                        </v-btn>
+                      </v-row>
+                    </v-col>
+
+                  </v-card-text>
+                </v-card>
               </v-col>
-
-                    </v-card-text>
-                  </v-card>
-                </v-col>
 
             </v-row>
           </v-form>

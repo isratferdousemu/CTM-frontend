@@ -85,7 +85,9 @@
       "union": "ইউনিয়ন",
       "show": "দেখুন",
       "no_data": "কোন লিঙ্গ নির্বাচন করা হয়নি.",
-      "sync": "সিঙ্ক"
+      "sync": "সিঙ্ক",
+      "close": "বন্ধ করুন",
+      "addToList": "তালিকায় যুক্ত করুন"
     },
     "system_config": {
       "demo_graphic": {
@@ -1038,7 +1040,73 @@
       "district_pourashava": "জেলা পৌরসভা",
       "verification_success_msg": "যাচাইকরণ সেটিং সফলভাবে জমা দেওয়া হয়েছে",
       "payroll_create": "পেরোল তৈরি",
-      "allotment_distribution": "বরাদ্দ বিতরণ"
+      "allotment_distribution": "বরাদ্দ বিতরণ",
+      "area_wise_ben_list": {
+        "remaining_installment": "Remaining Installment",
+        "area_type": "Upazila/City Corporation/ District Pouroshava",
+        "allotment_area": "Union/Ward/Pouroshava",
+        "allocated_beneficiary": "Allocated Beneficiary",
+        "active_beneficiary": "Active Beneficiary",
+        "status": "Status"
+      },
+      "allotment_area_wise_ben_setup": {
+        "title": "Allotment area-wise beneficiary setup",
+        "title_send_preview": "Beneficiary Payroll Preview",
+        "allotment_area": "Allotment Area:",
+        "selected_beneficiaries": "Selected Beneficiaries:",
+        "total_beneficiaries": "Total Beneficiaries:",
+        "payment_cycle_start_date": "Payment Cycle Start Date:",
+        "allocated_beneficiaries": "Allocated Beneficiaries:",
+        "payment_cycle_end_date": "Payment Cycle End Date:",
+        "payroll_eligible_amount": "Payroll Eligible Amount:",
+        "current_amount": "Current Amount:",
+        "amount_of_money": "Amount of money allocated annually:",
+        "amount_remain_ralance": "Amount of Remain Balance in Payroll:",
+        "total_amount_installments": "Total Amount of All Installments Sent Earlier:",
+
+        "ben_name": "Name of the Beneficiaries",
+        "father_name": "Father Name",
+        "mother_name": "Mother Name",
+        "bank": "Bank",
+        "ward": "Ward",
+        "mobile_number": "Mobile Number",
+        "account_no": "Account No",
+        "allowance_amount": "Allowance Amount"
+      },
+      "allotment_area_wise_ben_send_preview": {
+        "beneficiary_id": "Beneficiary ID",
+        "name_en": "Name (English)",
+        "father_name_en": "Father Name (English)",
+        "union_pourashava": "Union/Pourashava",
+        "ward": "Ward",
+        "program_name": "Program Name",
+        "bank_account": "Bank Account",
+        "mobile": "Mobile",
+        "account": "Account",
+        "cash_out_charge": "Cash Out Charge",
+        "total_amount": "Total Amount",
+        "financial_account_status": "Financial Account Status",
+        "status": "Status"
+      },
+      "payroll_approval": {
+        "title": "Payroll Approval",
+        "office": "Office",
+        "office_type": "Office Type",
+        "installment": "Installment",
+        "status": "Status",
+        "approval_list": {
+          "district": "District",
+          "upazila": "Upazila",
+          "office": "Office",
+          "program": "Program",
+          "installment": "Installment",
+          "total_beneficiary": "Total Beneficiary",
+          "allowance_amount": "Allowance Amount",
+          "charge": "Charge",
+          "total_money": "Total Money",
+          "status": "Status"
+        }
+      }
     },
     "emergency_payment": {
       "slNo": "ক্রমিক নং",
@@ -1053,11 +1121,37 @@
       "payment_cycle": "পেমেন্ট চক্র",
       "starting_period": "প্রারম্ভিক সময়কাল",
       "closing_period": "সমাপনী সময়কাল",
-      "search": "জরুরী বরাদ্দ অনুসন্ধান করুন"
+      "search": "জরুরী বরাদ্দ অনুসন্ধান করুন",
+      "emergency_beneficiary": {
+        "slNo": "ক্রমিক নং",
+        "list": "জরুরী সুবিধাভোগী",
+        "add_new": "জরুরী সুবিধাভোগী তৈরি করুন",
+        "payment_name": "জরুরী বরাদ্দ",
+        "edit": "জরুরী সুবিধাভোগী সম্পাদনা করুন",
+        "no_of_new_benificiary": "নতুন থেকে সুবিধাভোগী",
+        "no_of_existing_benificiary": "বিদ্যমান থেকে সুবিধাভোগী",
+        "date": "তারিখ",
+        "search": "জরুরী সুবিধাভোগী অনুসন্ধান করুন",
+        "e_beneficiary": "বিদ্যমান থেকে সুবিধাভোগী",
+        "n_beneficiary": "নতুন সংযোজন থেকে",
+        "searchBy": "দ্বারা অনুসন্ধান করুন"
+      },
+      "emergency_payment_cycle": {
+        "filter_title": "জরুরী পেমেন্ট চক্র",
+        "payment_cycle_list": "পেমেন্ট চক্র তালিকা",
+        "installment_no": "কিস্তি নং",
+        "cycle_id": "সাইকেল আইডি",
+        "financial_year": "আর্থিক বছর",
+        "total_beneficiary": "মোট সুবিধাভোগী",
+        "amount_of_money": "টাকার পরিমান",
+        "charge": "চার্জ",
+        "total_amount": "সর্বমোট পরিমাণ"
+      }
     },
     "training_management": {
       "trainer_info": {
         "ID": "আইডি",
+        "trainer_type": "প্রশিক্ষকের ধরন",
         "list_1": "প্রশিক্ষক তালিকা",
         "list": "প্রশিক্ষকের  তথ্য তালিকা",
         "view": "প্রশিক্ষকের তথ্য বিবরণ",
@@ -1075,7 +1169,7 @@
         "contact": "যোগাযোগের ঠিকানা",
         "upcoming": "আসন্ন ব্যাচসমূহ",
         "about": "সম্পর্কিত",
-        "program": "কার্যক্রম",
+        "program": "প্রোগ্রাম",
         "module": "মডিউল",
         "image_alert": "ফাইলের আকার ২০০ কে বি এর কম হতে হবে",
         "delete_header": "প্রশিক্ষক তথ্য ডিলিট করুন ",
@@ -1118,6 +1212,12 @@
         "add": "নতুন প্রোগ্রাম যোগ করুন",
         "edit": "প্রোগ্রাম এডিট করুন",
         "program_name": "প্রোগ্রামের নাম",
+        "exam_link": "পরীক্ষার লিঙ্ক",
+        "rating_link": "রেটিং লিঙ্ক",
+        "exam": "পরীক্ষা",
+        "rating": "রেটিং",
+        "trainer_rating_status": "প্রশিক্ষক রেটিং ",
+        "exam_status": "পরীক্ষা",
         "program": "প্রোগ্রাম",
         "trainer": "প্রশিক্ষক",
         "circular": "সার্কুলার",
@@ -1125,12 +1225,6 @@
         "training_form_id": "প্রশিক্ষণ ফর্ম আইডি",
         "employee_id": "এমপ্লয়ী আইডি",
         "passcode": "পাসকোড",
-        "exam_link": "পরীক্ষার লিঙ্ক",
-        "rating_link": "রেটিং লিঙ্ক",
-        "exam": "পরীক্ষা",
-        "rating": "রেটিং",
-        "trainer_rating_status": "প্রশিক্ষক রেটিং ",
-        "exam_status": "পরীক্ষা",
         "search": "প্রোগ্রাম অনুসন্ধান",
         "select_time_slot": "টাইম স্লট নির্বাচন করুন",
         "training_circular": "প্রশিক্ষণ সার্কুলার",
@@ -1146,7 +1240,7 @@
         "view": "অংশগ্রহণকারীর বিবরণ",
         "add_1": "অংশগ্রহণকারী যোগ করুন",
         "add_2": "বহিরাগত নিবন্ধন",
-        "add_3": "অভ্যন্তরীণ নিবন্ধন",
+        "add_3": "প্রশিক্ষণ নিবন্ধন",
         "registration": "বহিরাগত নিবন্ধন",
         "participant": "অংশগ্রহণকারী",
         "full_name": "সম্পূর্ণ নাম",
@@ -1155,8 +1249,8 @@
         "training_circular": "Training Circular",
         "alert": "বহিরাগত অংশগ্রহণকারী নিবন্ধনের জন্য এই লিঙ্কে যান",
         "user_name": "ব্যবহারকারীর নাম",
-        "delete_header": "অংশগ্রহণকারীকে সরান",
-        "delete_alert": "আপনি কি এই অংশগ্রহণকারীকে সরানোর বিষয়ে নিশ্চিত? অংশগ্রহণকারীর সমস্ত বিবরণ মুছে ফেলা হবে।"
+        "delete_header": "অংশগ্রহণকারীকে মুছুন",
+        "delete_alert": "আপনি কি এই অংশগ্রহণকারীকে মুছে ফেলার বিষয়ে নিশ্চিত? অংশগ্রহণকারীর সমস্ত বিবরণ মুছে ফেলা হবে।"
       }
     },
     "api_manager": {
@@ -1193,6 +1287,7 @@
         "add": "নতুন এপিআই গ্রাহক যুক্ত করুন",
         "edit": "এপিআই গ্রাহক এডিট করুন",
         "api": " এপিআই",
+        "search": "অনুসন্ধান প্রতিষ্ঠানের ফোন অথবা ইমেল",
         "organization": "প্রতিষ্ঠানের নাম",
         "phone": "প্রতিষ্ঠানের ফোন",
         "email": "প্রতিষ্ঠানের ইমেইল",
@@ -1378,7 +1473,7 @@
         "total_not_solved": "সমাধান হয়নি",
         "header": "শেষ 30 দিনে",
         "program_wise_total_received": "প্রোগ্রাম অনুসারে প্রাপ্ত মোট অভিযোগ",
-        "program_wise_total_approved": "প্রোগ্রাম অনুসারে মোট অভিযোগ অনুমোদিত",
+        "program_wise_total_approved": "প্রোগ্রাম অনুসারে মোট অভিযোগ সমাধান",
         "program_wise_total_canceled": "প্রোগ্রাম অনুসারে মোট অভিযোগ বাতিল",
         "location_wise_total_grievance": "অবস্থান অনুসারে মোট অভিযোগ"
       }

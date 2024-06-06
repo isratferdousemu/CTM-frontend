@@ -9,27 +9,28 @@ import {
 import { http } from "@/hooks/httpService";
 
 extend("checkName", {
-  validate: (value) => {
-    if (!value && value !== 0) {
-      return false;
-    }
+    validate: (value) => {
+        if (!value && value !== 0) {
+            return false;
+        }
 
-    return /^[a-zA-Z\s]+$/.test(value);
-  },
-  message: "Please Enter English Letter's in this Field",
+        // Update the regular expression to accept English letters, spaces, and commas
+        return /^[a-zA-Z\s,]+$/.test(value);
+    },
+    message: "Please enter English letters, spaces, or commas in this field",
 });
-
 extend("checkNameBn", {
-  validate: (value) => {
-    if (!value && value !== 0) {
-      return false;
-    }
+    validate: (value) => {
+        if (!value && value !== 0) {
+            return false;
+        }
 
-    var banglaRegex = /^[\u0980-\u09E5\u09F0-\u09FF\s]+$/;
+        // Update the regular expression to accept Bangla letters, spaces, and commas
+        var banglaRegex = /^[\u0980-\u09E5\u09F0-\u09FF\s,]+$/;
 
-    return banglaRegex.test(value);
-  },
-  message: "Please Enter Bangla Letter's in this Field",
+        return banglaRegex.test(value);
+    },
+    message: "Please enter Bangla letters, spaces, or commas in this field",
 });
 
 export default {
@@ -459,8 +460,8 @@ export default {
                                                         <v-text-field v-model="editAllowanceProgram.name_en"
                                                             :label="$t('container.system_config.allowance_program.name_en')"
                                                             menu-props="auto" persistent-hint outlined
-                                                            :error="errors[0] ? true : false"
-                                                            :error-messages="errors[0]" required></v-text-field>
+                                                            :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য ভাতা কার্যক্রমের নাম  ইংরেজিতে প্রদান করুন '
+                    : 'Please enter  valid Program Name in English') : ''" required></v-text-field>
                                                     </ValidationProvider>
                                                 </v-col>
 
@@ -470,8 +471,8 @@ export default {
                                                         <v-text-field v-model="editAllowanceProgram.name_bn"
                                                             :label="$t('container.system_config.allowance_program.name_bn')"
                                                             menu-props="auto" persistent-hint outlined
-                                                            :error="errors[0] ? true : false"
-                                                            :error-messages="errors[0]" required></v-text-field>
+                                                            :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য ভাতা কার্যক্রমের নাম  বাংলায় প্রদান করুন '
+                    : 'Please enter  valid Program Name in Bangla') : ''" required></v-text-field>
                                                     </ValidationProvider>
                                                 </v-col>
                                             </v-row>
@@ -498,8 +499,8 @@ export default {
                                                             :items="payment_cycle_items" item-value="name_en"
                                                             :item-text="getItemText" chips
                                                             :label="$t('container.system_config.allowance_program.payment_cycle')"
-                                                            outlined :error="errors[0] ? true : false"
-                                                            :error-messages="errors[0]" required></v-select>
+                                                            outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক পেমেন্ট চক্র প্রদান করুন '
+                    : 'Please enter payment cycle') : ''" required></v-select>
                                                     </ValidationProvider>
                                                 </v-col>
                                             </v-row>
@@ -515,8 +516,8 @@ export default {
                                                                 <v-checkbox v-model="editAllowanceProgram.is_marital"
                                                                     :label="$t('container.system_config.allowance_program.is_marital_toggle')"
                                                                     @click="maritalStatus(editAllowanceProgram.is_marital)"
-                                                                    :error="errors[0] ? true : false"
-                                                                    :error-messages="errors[0]" required
+                                                                    :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক বৈবাহিক অবস্থা প্রদান করুন '
+                    : 'Please enter Marital Status') : ''" required
                                                                     :disabled="editAllowanceProgram.is_marital === 1 ? true : false"></v-checkbox>
                                                             </ValidationProvider>
                                                         </v-col>
@@ -530,7 +531,8 @@ export default {
                                                                     :item-text="getItemText"
                                                                     :label="$t('container.system_config.allowance_program.marital_status')"
                                                                     outlined :error="errors[0] ? true : false"
-                                                                    :error-messages="errors[0]" required></v-select>
+                                                                    :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক বৈবাহিক অবস্থা প্রদান করুন '
+                    : 'Please enter Marital Status') : ''" required></v-select>
                                                             </ValidationProvider>
                                                         </v-col>
                                                     </v-row>
@@ -581,8 +583,8 @@ export default {
                                                                             :item-text="getItemValue" item-value="id"
                                                                             dense outlined
                                                                             :error="errors[0] ? true : false"
-                                                                            :error-messages="errors[0]" required
-                                                                            readonly></v-select>
+                                                                            :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক লিঙ্গ প্রদান করুন '
+                    : 'Please enter Gender') : ''" required readonly></v-select>
                                                                     </ValidationProvider>
                                                                 </td>
                                                                 <td>
