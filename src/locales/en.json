@@ -1087,6 +1087,25 @@
         "total_amount": "Total Amount",
         "financial_account_status": "Financial Account Status",
         "status": "Status"
+      },
+      "payroll_approval": {
+        "title": "Payroll Approval",
+        "office": "Office",
+        "office_type": "Office Type",
+        "installment": "Installment",
+        "status": "Status",
+        "approval_list": {
+          "district": "District",
+          "upazila": "Upazila",
+          "office": "Office",
+          "program": "Program",
+          "installment": "Installment",
+          "total_beneficiary": "Total Beneficiary",
+          "allowance_amount": "Allowance Amount",
+          "charge": "Charge",
+          "total_money": "Total Money",
+          "status": "Status"
+        }
       }
     },
     "emergency_payment": {
@@ -1122,7 +1141,7 @@
         "n_beneficiary": "From New Addition",
         "searchBy": "Search By"
       },
-      "emergency_payment_cycle":{
+      "emergency_payment_cycle": {
         "filter_title": "Emergency Payment Cycle",
         "payment_cycle_list": "Payment Cycle List",
         "installment_no": "Installment No",
@@ -1133,8 +1152,6 @@
         "charge": "Charge",
         "total_amount": "Total Amount"
       }
-
-
     },
     "training_management": {
       "trainer_info": {

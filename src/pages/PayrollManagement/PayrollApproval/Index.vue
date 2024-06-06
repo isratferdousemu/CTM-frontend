@@ -110,35 +110,70 @@ export default {
                 },
                 {
                     text: this.$t(
-                        "container.payroll_management.area_wise_ben_list.area_type"
+                        "container.payroll_management.payroll_approval.approval_list.district"
                     ),
                     value: "office_area",
                     align: "center",
                 },
                 {
                     text: this.$t(
-                        "container.payroll_management.area_wise_ben_list.allotment_area"
+                        "container.payroll_management.payroll_approval.approval_list.upazila"
                     ),
                     value: "allotment_area",
                     align: "center",
                 },
                 {
                     text: this.$t(
-                        "container.payroll_management.area_wise_ben_list.allocated_beneficiary"
+                        "container.payroll_management.payroll_approval.approval_list.office"
                     ),
                     value: "allotted_beneficiaries",
                     align: "center",
                 },
                 {
                     text: this.$t(
-                        "container.payroll_management.area_wise_ben_list.active_beneficiary"
+                        "container.payroll_management.payroll_approval.approval_list.program"
                     ),
                     value: "active_beneficiaries",
                     align: "center",
                 },
                 {
                     text: this.$t(
-                        "container.payroll_management.area_wise_ben_list.status"
+                        "container.payroll_management.payroll_approval.approval_list.installment"
+                    ),
+                    value: "active_beneficiaries",
+                    align: "center",
+                },
+                {
+                    text: this.$t(
+                        "container.payroll_management.payroll_approval.approval_list.total_beneficiary"
+                    ),
+                    value: "active_beneficiaries",
+                    align: "center",
+                },
+                {
+                    text: this.$t(
+                        "container.payroll_management.payroll_approval.approval_list.allowance_amount"
+                    ),
+                    value: "active_beneficiaries",
+                    align: "center",
+                },
+                {
+                    text: this.$t(
+                        "container.payroll_management.payroll_approval.approval_list.charge"
+                    ),
+                    value: "active_beneficiaries",
+                    align: "center",
+                },
+                {
+                    text: this.$t(
+                        "container.payroll_management.payroll_approval.approval_list.total_money"
+                    ),
+                    value: "active_beneficiaries",
+                    align: "center",
+                },
+                {
+                    text: this.$t(
+                        "container.payroll_management.payroll_approval.approval_list.status"
                     ),
                     value: "status",
                     align: "center",
@@ -834,8 +869,8 @@ export default {
                                     <v-card-title class="justify-center"
                                         style="background-color: #1C3B68; color: white;font-size: 17px;">
                                         <h4 class=" white--text">{{
-                                            $t('container.payroll_management.payroll_create')
-                                            }}</h4>
+                                            $t('container.payroll_management.payroll_approval.title')
+                                        }}</h4>
                                     </v-card-title>
 
                                     <v-divider></v-divider>
@@ -1071,7 +1106,6 @@ export default {
                                                                 :error-messages="errors[0]" clearable></v-select>
                                                         </ValidationProvider>
                                                     </v-col>
-
                                                     <v-col v-if="
                                                         data.location_type == 1 ||
                                                         data.location_type == 2 ||
@@ -1089,6 +1123,58 @@ export default {
                                                                 :error-messages="errors[0]" clearable></v-select>
                                                         </ValidationProvider>
                                                     </v-col>
+                                                    <v-col lg="3" md="3" cols="12">
+                                                        <ValidationProvider name="Office Type" vid="office_type"
+                                                            v-slot="{ errors }">
+                                                            <v-select v-model="data.office_type" outlined :label="$t(
+                                                                'container.payroll_management.payroll_approval.office_type'
+                                                            )
+                                                                " :items="officeTypes" :item-text="getItemText"
+                                                                item-value="id" class="no-arrow-icon"
+                                                                :append-icon-cb="appendIconCallback"
+                                                                append-icon="mdi-plus" :error="errors[0] ? true : false"
+                                                                :error-messages="errors[0]" clearable></v-select>
+                                                        </ValidationProvider>
+                                                    </v-col>
+                                                    <v-col lg="3" md="3" cols="12">
+                                                        <ValidationProvider name="Office" vid="office"
+                                                            v-slot="{ errors }">
+                                                            <v-select v-model="data.office" outlined :label="$t(
+                                                                'container.payroll_management.payroll_approval.office'
+                                                            )
+                                                                " :items="offices" :item-text="getItemText"
+                                                                item-value="id" class="no-arrow-icon"
+                                                                :append-icon-cb="appendIconCallback"
+                                                                append-icon="mdi-plus" :error="errors[0] ? true : false"
+                                                                :error-messages="errors[0]" clearable></v-select>
+                                                        </ValidationProvider>
+                                                    </v-col>
+                                                    <v-col lg="3" md="3" cols="12">
+                                                        <ValidationProvider name="Installment" vid="installment"
+                                                            v-slot="{ errors }">
+                                                            <v-select v-model="data.office" outlined :label="$t(
+                                                                'container.payroll_management.payroll_approval.installment'
+                                                            )
+                                                                " :items="installments" :item-text="getItemText"
+                                                                item-value="id" class="no-arrow-icon"
+                                                                :append-icon-cb="appendIconCallback"
+                                                                append-icon="mdi-plus" :error="errors[0] ? true : false"
+                                                                :error-messages="errors[0]" clearable></v-select>
+                                                        </ValidationProvider>
+                                                    </v-col>
+                                                    <v-col lg="3" md="3" cols="12">
+                                                        <ValidationProvider name="status" vid="status"
+                                                            v-slot="{ errors }">
+                                                            <v-select v-model="data.office" outlined :label="$t(
+                                                                'container.payroll_management.payroll_approval.status'
+                                                            )
+                                                                " :items="statusList" :item-text="getItemText"
+                                                                item-value="id" class="no-arrow-icon"
+                                                                :append-icon-cb="appendIconCallback"
+                                                                append-icon="mdi-plus" :error="errors[0] ? true : false"
+                                                                :error-messages="errors[0]" clearable></v-select>
+                                                        </ValidationProvider>
+                                                    </v-col>
                                                 </v-row>
                                                 <div class="d-inline d-flex justify-end">
                                                     <v-btn elevation="2" class="btn mr-2" color="success" type="submit"
@@ -1097,7 +1183,7 @@ export default {
                                                             ">{{ $t("container.list.search") }}</v-btn>
                                                     <v-btn elevation="2" class="btn" @click="resetSearch">{{
                                                         $t("container.list.reset")
-                                                        }}</v-btn>
+                                                    }}</v-btn>
                                                 </div>
                                             </v-card-text>
                                         </form>
@@ -1106,28 +1192,9 @@ export default {
                             </v-col>
 
                             <v-col cols="12">
-                                <v-card style="margin-bottom: 50px">
-                                    <v-row>
-                                        <v-col col="6">
-                                            <v-card-title>
-                                                <h3>Allotment Area-Wise Beneficiaries</h3>
-                                            </v-card-title>
-                                        </v-col>
-                                    </v-row>
-                                    <v-divider></v-divider>
+                                <v-card style="margin-bottom: 5px">
 
                                     <v-card-text class="mt-1">
-                                        <!-- <v-row class="mx-5 mt-1">
-                                            <v-col cols="12" md="4">
-                                                <v-text-field @keyup.native="PageSetup" v-model="search"
-                                                    append-icon="mdi-magnify" :label="$t(
-                                                        'container.list.search_circular'
-                                                    )" hide-details class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal"
-                                                    flat outlined dense></v-text-field>
-
-                                            </v-col>
-                                        </v-row> -->
-
                                         <template>
                                             <v-row justify="space-between" align="center" class="mx-4">
                                                 <!-- Checkbox on the left -->
@@ -1280,14 +1347,14 @@ export default {
                                         <div style="margin-left: -100px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.allotment_area")
-                                            }}:</strong>
+                                                }}:</strong>
                                             {{ data.processor_type ?? "--" }}
                                         </div>
 
                                         <div style="padding-bottom: 8px; margin-left: -70px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.selected_beneficiaries")
-                                                }}:</strong>
+                                            }}:</strong>
                                             {{ data.name_en ?? "--" }}
                                         </div>
 
@@ -1298,14 +1365,14 @@ export default {
                                         <div style="padding-bottom: 8px; margin-left: -100px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.total_beneficiaries")
-                                            }}:</strong>
+                                                }}:</strong>
                                             {{ data.processor_type ?? "--" }}
                                         </div>
 
                                         <div style="padding-bottom: 8px; margin-left: -50px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.payment_cycle_start_date")
-                                                }}:</strong>
+                                            }}:</strong>
                                             {{ data.name_en ?? "--" }}
                                         </div>
 
@@ -1316,14 +1383,14 @@ export default {
                                         <div style="padding-bottom: 8px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.allocated_beneficiaries")
-                                            }}:</strong>
+                                                }}:</strong>
                                             {{ data.processor_type ?? "--" }}
                                         </div>
 
                                         <div style="padding-bottom: 8px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.payment_cycle_end_date")
-                                                }}:</strong>
+                                            }}:</strong>
                                             {{ data.name_en ?? "--" }}
                                         </div>
 
@@ -1336,20 +1403,20 @@ export default {
                                         <div style="margin-left: -100px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.payroll_eligible_amount")
-                                            }}:</strong>
+                                                }}:</strong>
                                             {{ data.processor_type ?? "--" }}
                                         </div>
 
                                         <div style="padding-bottom: 8px;margin-left: -120px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.current_amount")
-                                                }}:</strong>
+                                            }}:</strong>
                                             {{ data.name_en ?? "--" }}
                                         </div>
                                         <div style="padding-bottom: 8px;margin-left: -40px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.amount_of_money")
-                                                }}:</strong>
+                                            }}:</strong>
                                             {{ data.name_en ?? "--" }}
                                         </div>
                                     </div>
@@ -1359,14 +1426,14 @@ export default {
                                         <div style="padding-bottom: 8px;margin-left: -30px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.amount_remain_ralance")
-                                            }}:</strong>
+                                                }}:</strong>
                                             {{ data.processor_type ?? "--" }}
                                         </div>
 
                                         <div style="padding-bottom: 8px; margin-left: -20px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.total_amount_installments")
-                                                }}:</strong>
+                                            }}:</strong>
                                             {{ data.name_en ?? "--" }}
                                         </div>
                                     </div>
