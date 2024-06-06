@@ -7,7 +7,7 @@ networks:
     external: true
 
 services:
-  frontend-prod:
+  frontend-stage:
     container_name: ctm-frontend-stage
     image: 'ctm-app-frontend-stage'
     environment:
