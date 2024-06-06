@@ -178,7 +178,7 @@ export default {
                     value: "status",
                     align: "center",
                 },
-                { text: this.$t('container.list.action'), value: "actions", align: "center", sortable: false, width: "28%" },
+                { text: this.$t('container.list.action'), value: "actions", align: "start", sortable: false, width: "40%" },
 
             ];
         },
@@ -1282,16 +1282,47 @@ export default {
                                                     </template>
 
                                                     <!-- Action Button -->
-                                                    <template v-slot:item.actions="{ item }">
+                                                    <template v-slot:item.status="{ item }">
                                                         <v-btn v-on="on" color="primary" elevation="0"
                                                             class="btn mr-2 white--text"
                                                             @click="seeBeneficiary(item.id)">
                                                             {{
-                                                                $t(
-                                                                    "See Beneficiary"
-                                                                )
+                                                                item.status
+
                                                             }}
                                                         </v-btn>
+
+                                                    </template>
+                                                    <!-- End Action Button -->
+
+                                                    <!-- Action Button -->
+                                                    <template v-slot:item.actions="{ item }">
+
+                                                        <v-tooltip>
+                                                            <template v-slot:activator="{ on }">
+                                                                <v-btn :disabled="item.process_flag === 0"
+                                                                    v-can="'update-post'" fab x-small v-on="on"
+                                                                    color="#F40F02" elevation="0"
+                                                                    class="white--text ml-2"
+                                                                    @click="GeneratePDF(item.id)">
+                                                                    <v-icon>mdi-file-pdf-box</v-icon>
+                                                                </v-btn>
+                                                            </template>
+                                                            <span>{{ $t("Pdf") }}</span>
+                                                        </v-tooltip>
+
+                                                        <v-tooltip>
+                                                            <template v-slot:activator="{ on }">
+                                                                <v-btn :disabled="item.process_flag === 0"
+                                                                    v-can="'update-post'" fab x-small v-on="on"
+                                                                    color="#1D6F42" elevation="0"
+                                                                    class="white--text ml-2"
+                                                                    @click="GenerateExcel(item.id)">
+                                                                    <v-icon>mdi-file-excel</v-icon>
+                                                                </v-btn>
+                                                            </template>
+                                                            <span>{{ $t("Excel") }}</span>
+                                                        </v-tooltip>
                                                         <v-btn v-on="on" color="red darken-4" elevation="0"
                                                             class="btn mr-2 white--text"
                                                             @click="rollBackBeneficiary(item.id)">
@@ -1301,6 +1332,16 @@ export default {
                                                                 )
                                                             }}
                                                         </v-btn>
+                                                        <v-btn v-on="on" color="primary" elevation="0"
+                                                            class="btn mr-2 white--text"
+                                                            @click="seeBeneficiary(item.id)">
+                                                            {{
+                                                                $t(
+                                                                    "See Beneficiary"
+                                                                )
+                                                            }}
+                                                        </v-btn>
+
                                                     </template>
                                                     <!-- End Action Button -->
                                                     <template v-slot:footer="item">

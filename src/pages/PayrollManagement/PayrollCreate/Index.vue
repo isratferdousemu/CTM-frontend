@@ -28,6 +28,7 @@ export default {
                 union_id: null,
                 ward_id: null,
                 remaining_installment_id: null,
+                allotment_id: null,
 
             },
 
@@ -463,7 +464,7 @@ export default {
                                     : item?.city_corp?.name_bn;
                         }
                         //this.isLoading = false;
-                        // this.GetAllotmentArea();
+                        this.GetAllotmentArea();
                     })
                     .catch((err) => {
                         console.log(err, "error");
@@ -475,6 +476,12 @@ export default {
                     });
             } catch (e) {
                 console.log(e);
+            }
+        },
+        onChangeProgramName(event) {
+            this.active_installments = [];
+            if (this.data.financial_year_id) {
+                this.GetActiveInstallment();
             }
         },
         async onChangeDivision(event) {
@@ -739,20 +746,26 @@ export default {
                 });
         },
         async GetActiveInstallment(event) {
-            await this.$axios
-                .get(`/admin/payroll/get-active-installments/${this.data.program_id}/${this.data.financial_year_id}`, {
-                    headers: {
-                        Authorization: "Bearer " + this.$store.state.token,
-                        "Content-Type": "multipart/form-data",
-                    },
-                })
-                .then((result) => {
-                    this.active_installments = result.data.data;
-                });
+            this.active_installments = [];
+
+            if (this.data.program_id && this.data.financial_year_id) {
+                await this.$axios
+                    .get(`/admin/payroll/get-active-installments/${this.data.program_id}/${this.data.financial_year_id}`, {
+                        headers: {
+                            Authorization: "Bearer " + this.$store.state.token,
+                            "Content-Type": "multipart/form-data",
+                        },
+                    })
+                    .then((result) => {
+                        this.active_installments = result.data.data;
+                    });
+            }
+
         },
         async seeBeneficiary(event) {
             this.isSeeLoading = true;
             this.active_beneficiaries = [];
+            this.data.allotment_id = event;
 
             this.seeBeneficiaryDialog = true
             await this.$axios
@@ -778,9 +791,10 @@ export default {
             }
             let fd = new FormData();
 
-            // fd.append("to_program_id", this.submit_data.to_program_id);
-            // fd.append("shifting_cause", this.submit_data.shifting_cause);
-            // fd.append("activation_date", this.submit_data.activation_date);
+            fd.append("program_id", this.data.program_id);
+            fd.append("financial_year_id", this.data.financial_year_id);
+            fd.append("allotment_id", this.data.allotment_id);
+            fd.append("installment_schedule_id", this.data.remaining_installment_id);
 
             // console.log("to_program_id", this.submit_data.to_program_id);
 
@@ -788,26 +802,26 @@ export default {
 
             // Convert each object in the beneficiaries array to a JSON string
             this.selectedBeneficiaries.forEach((beneficiary, index) => {
-                fd.append(`beneficiaries[${index}][beneficiary_id]`, beneficiary?.id);
-                fd.append(
-                    `beneficiaries[${index}][from_program_id]`,
-                    beneficiary?.program?.id
-                );
+                fd.append(`payroll_details[${index}][beneficiary_id]`, beneficiary?.id);
+                fd.append(`payroll_details[${index}][amount]`, beneficiary?.monthly_allowance ?? 0);
             });
 
             try {
                 this.$store
-                    .dispatch("BeneficiaryManagement/BeneficiaryShifting", fd)
+                    .dispatch("PayrollManagement/SetBeneficiaries", fd)
                     .then((res) => {
                         console.log(res, "submit__");
                         if (res.data?.success) {
                             console.log(res.data?.success, "submit__");
-                            this.$toast.success("Beneficiary Shifting Successfully");
-                            this.$router.push({ name: "beneficiary_shifting_list" });
+                            this.$toast.success("Beneficiary Set Successfully");
+                            this.seeBeneficiaryDialog = false;
+                            this.selectedBeneficiaries = [];
+                            this.GetAllotmentArea();
+                            // this.$router.push({ name: "beneficiary_shifting_list" });
                         } else if (res.response?.data?.errors) {
                             this.$refs.form.setErrors(res.response.data.errors);
                             this.errors = res.response.data.errors;
-                            //   this.$toast.error(res.response.data.message);
+                            this.$toast.error(res.response.data.message);
                         }
                         console.log(this.$refs);
                         console.log(this.errors, "this.errors");
@@ -874,9 +888,11 @@ export default {
                                                                     </v-col>
 
                                                                     <ValidationProvider name="ProgramName"
-                                                                        vid="program_id" v-slot="{ errors }">
+                                                                        vid="program_id" v-slot="{ errors }"
+                                                                        rules=required>
                                                                         <v-select
                                                                             :hide-details="errors[0] ? false : true"
+                                                                            required
                                                                             @input="onChangeProgramName($event)"
                                                                             v-model="data.program_id" outlined :label="$t(
                                                                                 'container.system_config.demo_graphic.committee.program_name'
@@ -890,8 +906,9 @@ export default {
                                                                     </ValidationProvider>
 
                                                                     <ValidationProvider name="Financial Year"
-                                                                        vid="financial_year" v-slot="{ errors }">
-                                                                        <v-select outlined clearable
+                                                                        vid="financial_year" v-slot="{ errors }"
+                                                                        rules=required>
+                                                                        <v-select outlined clearable required
                                                                             :items="financial_years"
                                                                             v-model="data.financial_year_id"
                                                                             @input="GetActiveInstallment($event)"
@@ -907,7 +924,7 @@ export default {
                                                                     </ValidationProvider>
 
                                                                     <ValidationProvider name="Division" vid="division"
-                                                                        rules="required" v-slot="{ errors }">
+                                                                        v-slot="{ errors }">
                                                                         <v-text-field outlined readonly
                                                                             v-model="user_permission.division_name"
                                                                             :label="$t(
@@ -916,8 +933,7 @@ export default {
                                                                                 " v-if="user_permission.division">
                                                                         </v-text-field>
                                                                         <v-select v-if="!user_permission.division"
-                                                                            outlined required
-                                                                            @input="onChangeDivision($event)"
+                                                                            outlined @input="onChangeDivision($event)"
                                                                             v-model="data.division_id" :label="$t(
                                                                                 'container.system_config.demo_graphic.division.division'
                                                                             )
@@ -930,7 +946,7 @@ export default {
                                                                     </ValidationProvider>
 
                                                                     <ValidationProvider name="District" vid="district"
-                                                                        rules="required" v-slot="{ errors }">
+                                                                        v-slot="{ errors }">
                                                                         <v-text-field outlined readonly
                                                                             v-model="user_permission.district_name"
                                                                             :label="$t(
@@ -939,7 +955,7 @@ export default {
                                                                                 " v-if="user_permission.district">
                                                                         </v-text-field>
                                                                         <v-select v-if="!user_permission.district"
-                                                                            outlined required v-model="data.district_id"
+                                                                            outlined v-model="data.district_id"
                                                                             @input="onChangeDistrict($event)" :label="$t(
                                                                                 'container.system_config.demo_graphic.district.district'
                                                                             )
@@ -1044,11 +1060,12 @@ export default {
                                                                             clearable></v-select>
                                                                     </ValidationProvider>
 
-                                                                    <ValidationProvider name="city" vid="city_id"
-                                                                        v-slot="{ errors }">
+                                                                    <ValidationProvider name="Remaining Installment"
+                                                                        vid="city_id" v-slot="{ errors }"
+                                                                        rules="required">
                                                                         <v-select
                                                                             v-model="data.remaining_installment_id"
-                                                                            outlined :label="$t(
+                                                                            outlined required :label="$t(
                                                                                 'container.payroll_management.area_wise_ben_list.remaining_installment'
                                                                             )
                                                                                 " :items="active_installments"
@@ -1276,14 +1293,14 @@ export default {
                             <v-row>
                                 <v-col lg="4" md="4" cols="12">
                                     <div>
-                                        <div style="margin-left: -100px">
+                                        <div style="margin-left: -150px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.allotment_area")
                                                 }}:</strong>
                                             {{ data.processor_type ?? "--" }}
                                         </div>
 
-                                        <div style="padding-bottom: 8px; margin-left: -70px">
+                                        <div style="padding-bottom: 8px; margin-left: -110px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.selected_beneficiaries")
                                             }}:</strong>
@@ -1294,14 +1311,14 @@ export default {
                                 </v-col>
                                 <v-col lg="4" md="4" cols="12">
                                     <div>
-                                        <div style="padding-bottom: 8px; margin-left: -100px">
+                                        <div style="padding-bottom: 8px; margin-left: -150px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.total_beneficiaries")
                                                 }}:</strong>
                                             {{ data.processor_type ?? "--" }}
                                         </div>
 
-                                        <div style="padding-bottom: 8px; margin-left: -50px">
+                                        <div style="padding-bottom: 8px; margin-left: -100px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.payment_cycle_start_date")
                                             }}:</strong>
@@ -1332,20 +1349,20 @@ export default {
                             <v-row>
                                 <v-col lg="4" md="4" cols="12">
                                     <div>
-                                        <div style="margin-left: -100px">
+                                        <div style="padding-bottom: 8px; margin-left: -100px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.payroll_eligible_amount")
                                                 }}:</strong>
                                             {{ data.processor_type ?? "--" }}
                                         </div>
 
-                                        <div style="padding-bottom: 8px;margin-left: -120px">
+                                        <div style="padding-bottom: 8px;margin-left: -150px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.current_amount")
                                             }}:</strong>
                                             {{ data.name_en ?? "--" }}
                                         </div>
-                                        <div style="padding-bottom: 8px;margin-left: -40px">
+                                        <div style="padding-bottom: 8px;margin-left: -25px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.amount_of_money")
                                             }}:</strong>
@@ -1355,14 +1372,14 @@ export default {
                                 </v-col>
                                 <v-col lg="4" md="4" cols="12">
                                     <div>
-                                        <div style="padding-bottom: 8px;margin-left: -30px">
+                                        <div style="padding-bottom: 8px;margin-left: -35px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.amount_remain_ralance")
                                                 }}:</strong>
                                             {{ data.processor_type ?? "--" }}
                                         </div>
 
-                                        <div style="padding-bottom: 8px; margin-left: -20px">
+                                        <div style="padding-bottom: 8px; margin-left: 0px">
                                             <strong>{{
                                                 $t("container.payroll_management.allotment_area_wise_ben_setup.total_amount_installments")
                                             }}:</strong>
@@ -1429,13 +1446,16 @@ export default {
                             </v-row>
 
                             <v-row class="mx-0 my-0 py-2 mt-5" justify="end">
-                                <v-btn flat @click="dialogAdd = false" outlined class="custom-btn-width py-2 mr-10">
+                                <v-btn flat @click="seeBeneficiaryDialog = false" outlined
+                                    class="custom-btn-width py-2 mr-10">
                                     {{ $t("container.list.cancel") }}
                                 </v-btn>
 
                                 <div>
-                                    <v-btn type="submit" flat color="primary" :disabled="invalid" :loading="loading"
-                                        class="custom-btn-width success white--text py-2">
+                                    <v-btn type="submit" flat color="primary" :disabled="!data.program_id ||
+                                        !data.financial_year_id ||
+                                        !data.remaining_installment_id || selectedBeneficiaries.length === 0"
+                                        :loading="loading" class="custom-btn-width success white--text py-2">
                                         {{ $t("container.list.submit") }}
                                     </v-btn>
                                 </div>
