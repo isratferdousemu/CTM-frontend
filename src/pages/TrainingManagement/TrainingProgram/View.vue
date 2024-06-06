@@ -233,18 +233,35 @@ export default {
                                 <b>:</b> <span class="ml-2">{{ language == 'bn' ?
                                     $helpers.englishToBangla(data?.end_date) : data?.end_date }}</span>
                             </v-col>
+
+                          <template v-if="!data.participant">
                             <v-col cols="5" style="font-size:13px;">
-                                <b>{{ $t('container.training_management.training_program.exam_link') }}</b>:
+                              <b>{{ $t('container.training_management.training_program.form_id') }}</b>:
                             </v-col>
                             <v-col cols="7" style="font-size:13px;">
-                                <b>:</b> <span class="ml-2">{{ data?.question_link }}</span>
+                              <b>:</b> <span class="ml-2">{{ data?.form_id }}</span>
                             </v-col>
                             <v-col cols="5" style="font-size:13px;">
-                                <b>{{ $t('container.training_management.training_program.rating_link') }}</b>:
+                              <b>{{ $t('container.training_management.training_program.training_form_id') }}</b>:
                             </v-col>
                             <v-col cols="7" style="font-size:13px;">
-                                <b>:</b> <span class="ml-2">{{ data?.trainer_ratings_link }}</span>
+                              <b>:</b> <span class="ml-2">{{ data?.training_form_id }}</span>
                             </v-col>
+                            <v-col cols="5" style="font-size:13px;">
+                              <b>{{ $t('container.training_management.training_program.exam_link') }}</b>:
+                            </v-col>
+                            <v-col cols="7" style="font-size:13px;">
+                              <b>:</b> <span class="ml-2">{{ data?.question_link }}</span>
+                            </v-col>
+                            <v-col cols="5" style="font-size:13px;">
+                              <b>{{ $t('container.training_management.training_program.rating_link') }}</b>:
+                            </v-col>
+                            <v-col cols="7" style="font-size:13px;">
+                              <b>:</b> <span class="ml-2">{{ data?.trainer_ratings_link }}</span>
+                            </v-col>
+                          </template>
+
+
                             <v-col cols="5" style="font-size:13px;">
                                 <b>{{ $t('container.list.status') }}</b>:
                             </v-col>
@@ -284,6 +301,26 @@ export default {
                                     'সক্রিয়' : 'Active' }}
                                 </span>
                             </v-col>
+
+
+                          <template v-if="data.participant">
+                            <v-col cols="5" style="font-size:13px;">
+                              <b>{{ $t('container.training_management.training_program.employee_id') }}</b>:
+                            </v-col>
+                            <v-col cols="7" style="font-size:13px;">
+                              <b>:</b> <span class="ml-2">{{ language == 'bn' ?
+                                $helpers.englishToBangla(data?.participant?.user_id) : data?.participant?.user_id }}</span>
+                            </v-col>
+
+                            <v-col cols="5" style="font-size:13px;">
+                              <b>{{ $t('container.training_management.training_program.passcode') }}</b>:
+                            </v-col>
+                            <v-col cols="7" style="font-size:13px;">
+                              <b>:</b> <span class="ml-2">{{ language == 'bn' ?
+                                $helpers.englishToBangla(data?.participant?.passcode) : data?.participant?.passcode }}</span>
+                            </v-col>
+                          </template>
+
 
                             <!-- Other fields -->
 

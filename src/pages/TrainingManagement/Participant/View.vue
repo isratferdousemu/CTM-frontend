@@ -173,6 +173,14 @@ export default {
                                     language == 'en' ? data?.user?.mobile : $helpers.englishToBangla(data?.user?.mobile)
                                     }}</span>
                             </v-col>
+                          <v-col cols="5" style="font-size:13px;">
+                                <b>{{ $t('container.training_management.training_program.employee_id') }}</b>
+                            </v-col>
+                            <v-col cols="7" style="font-size:13px;">
+                                <b>:</b> <span class="ml-2">{{
+                                    language == 'en' ? data?.user_id : $helpers.englishToBangla(data?.user_id)
+                                    }}</span>
+                            </v-col>
                             <v-col cols="5" style="font-size:13px;">
                                 <b>{{ $t('container.list.status') }}</b>
                             </v-col>

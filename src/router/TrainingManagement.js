@@ -176,6 +176,15 @@ const TrainingManagementRoutes = [
     component: () => import("../pages/TrainingManagement/Participant/View.vue")
   },
   {
+    path: "/training-management/participant/grade-exam/:id",
+    name: "ParticipantExam",
+    meta: {
+      requiresAuth: true,
+      permission: "participant-edit",
+    },
+    component: () => import("../pages/TrainingManagement/Participant/GradeExam.vue")
+  },
+  {
     path: "/training-management/participant/:id/:training_circular_id",
     name: "Participant",
     meta: {

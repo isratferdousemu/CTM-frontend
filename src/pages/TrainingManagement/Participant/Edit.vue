@@ -92,7 +92,7 @@ export default {
                     value_bn: "কমিটির ব্যবহারকারী",
                 },
             ],
-            status_types: [{ "id": 0, "value_en": "Exam Pending", "value_bn": "পেন্ডিং" }, { "id": 1, "value_en": "Pass", "value_bn": "উত্তীর্ণ" }, { "id": 2, "value_en": "Fail", "value_bn": "অনুত্তীর্ণ" }],
+            status_types: [{ "id": 0, "value_en": "Pending", "value_bn": "পেন্ডিং" }, { "id": 1, "value_en": "Pass", "value_bn": "উত্তীর্ণ" }, { "id": 2, "value_en": "Fail", "value_bn": "অনুত্তীর্ণ" }],
 
 
             data: {

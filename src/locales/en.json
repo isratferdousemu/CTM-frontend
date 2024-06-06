@@ -87,7 +87,8 @@
       "show": "Show",
       "sync": "Sync",
       "close": "Close",
-      "addToList": "Add to list"
+      "addToList": "Add to list",
+      "gradeExam": "Grade Exam"
     },
     "system_config": {
       "demo_graphic": {
@@ -1257,7 +1258,8 @@
         "user_type": "Participant Type",
         "alert": "Go to this link for external registration",
         "delete_header": "Delete Participant",
-        "delete_alert": "Are you sure to delete this Participant? Participant's all details will be deleted from this traning."
+        "delete_alert": "Are you sure to delete this Participant? Participant's all details will be deleted from this traning.",
+        "result": "Result"
       }
     },
     "api_manager": {

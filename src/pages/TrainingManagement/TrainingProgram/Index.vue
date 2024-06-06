@@ -1,8 +1,15 @@
 <script>
-import {ValidationObserver } from "vee-validate";
+import {ValidationObserver, ValidationProvider} from "vee-validate";
+import ApiService from "@/services/ApiService";
+import Spinner from "@/components/Common/Spinner.vue";
+import PermissionBadge from "../../../components/BeneficiaryManagement/Committee/PermissionBadge.vue";
+
 export default {
     name: "Index",
     title: "CTM - Training Program",
+    components: {
+      Spinner,
+    },
     data() {
         return {
             data: {
@@ -45,6 +52,7 @@ export default {
             sortBy: "name_en",
             sortDesc: false, //ASC
             items: [5, 10, 15, 20, 40, 50, 100],
+            is_loading: false,
       
         };
     },
@@ -269,9 +277,23 @@ export default {
                 this.$toast.success("লিঙ্ক কপি করা হয়েছে");
             }
             },
-         
 
-            // Optionally, you can show a message to the user indicating that the link has been copied
+
+      syncData(id) {
+          this.is_loading = true
+        ApiService.get(`/admin/training/programs/sync-data/${id}`)
+            .then(res => {
+              this.is_loading = false
+              console.log(res.data)
+            }).catch(err => {
+              this.is_loading = false
+              console.log(err.response.data)
+            })
+
+      },
+
+
+        // Optionally, you can show a message to the user indicating that the link has been copied
          
         
 
@@ -638,6 +660,7 @@ export default {
         <v-row class="ml-sm-5 mt-0">
             <v-col cols="12">
                 <v-row>
+                  <Spinner :loading="is_loading" />
                     <v-col cols="12">
                         <v-expansion-panels>
                             <v-expansion-panel class="ma-2">
@@ -862,6 +885,19 @@ export default {
                                                                 </template>
                                                                 <span>{{ $t("container.list.copy") }}</span>
                                                             </v-tooltip>
+
+                                                          <v-tooltip top>
+                                                            <template v-slot:activator="{ on }">
+                                                              <v-btn v-can="'trainingProgram-edit'"
+                                                                     class=" mr-2 mb-1" fab x-small v-on="on"
+                                                                     color="brown" elevation="0"
+                                                                     @click="syncData(item.id)">
+                                                                <v-icon color="white"> mdi-sync-circle </v-icon>
+                                                              </v-btn>
+                                                            </template>
+                                                            <span>{{ $t("container.list.sync") }}</span>
+                                                          </v-tooltip>
+
                                                             <v-tooltip top>
                                                                 <template v-slot:activator="{ on }">
                                                                     <v-btn v-can="'trainingProgram-view'" fab x-small
@@ -884,6 +920,7 @@ export default {
                                                                 </template>
                                                                 <span>{{ $t("container.list.edit") }}</span>
                                                             </v-tooltip>
+
                                                             <v-tooltip top>
                                                                 <template v-slot:activator="{ on }">
                                                                     <v-btn v-can="'participant-view'"
