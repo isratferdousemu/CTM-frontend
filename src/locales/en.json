@@ -1056,13 +1056,14 @@
       },
       "dashboard": {
         "header": "Payroll Dashboard",
+        "enter_start_end_date": "Enter Start End Date",
         "approved_payroll": "Total Approved Payroll",
         "rejected_payroll": "Total Rejected Payroll",
         "total_payment_cycle": "Total Payment Cycle",
         "completed_payment_cycle": "Processing at IBAS ++",
-        "program_wise_payroll": "Program Wise Payroll",
+        "program_wise_payroll": "Program Wise Payroll Beneficiaries",
         "total_payment_processor": "Total Payment Processor",
-        "total_approve_payroll": "Total Approve Payroll",
+        "total_approve_payroll": "Total Approved Payroll Beneficiaries",
         "available_balance": "Available Balance",
         "program_wise_payment_cycle": "Program Wise Payment Cycle",
         "total_amount_disbursed": "Total Amount Disbursed"

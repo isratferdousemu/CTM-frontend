@@ -17,9 +17,7 @@
                   <template v-slot:actions>
                     <v-icon color="white"> $expand </v-icon>
                   </template>
-                  <h3 class="white--text">
-                    {{ $t("container.list.filter") }}
-                  </h3>
+                  <h3 class="white--text">{{ $t("container.list.filter") }}</h3>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content
                   class="elevation-0 transparent mt-10"
@@ -27,7 +25,7 @@
                   <ValidationObserver ref="formsearch" v-slot="{ invalid }">
                     <form @submit.prevent="filterOn()">
                       <v-row>
-                        <v-col lg="6" md="6" cols="12">
+                        <v-col lg="4" md="4" cols="12">
                           <ValidationProvider
                             v-slot="{ errors }"
                             name="Division"
@@ -36,7 +34,7 @@
                           >
                             <v-autocomplete
                               outlined
-                              :clearable="clearDivision"
+                              clearable
                               v-model="data.division"
                               :items="divisions"
                               :item-text="
@@ -46,20 +44,12 @@
                               :label="
                                 $t('container.payroll_management.division')
                               "
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language === 'bn'
-                                    ? 'একটি বিভাগ নির্বাচন করুন'
-                                    : 'Select a division'
-                                  : ''
-                              "
                               @change="getDistricts(data.division)"
                             >
                             </v-autocomplete>
                           </ValidationProvider>
                         </v-col>
-                        <v-col lg="6" md="6" cols="12">
+                        <v-col lg="4" md="4" cols="12">
                           <ValidationProvider
                             v-slot="{ errors }"
                             name="District"
@@ -68,7 +58,7 @@
                           >
                             <v-autocomplete
                               outlined
-                              :clearable="clearDistrict"
+                              clearable
                               v-model="data.district"
                               :items="districts"
                               :item-text="
@@ -78,20 +68,12 @@
                               :label="
                                 $t('container.payroll_management.district')
                               "
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language === 'bn'
-                                    ? 'একটি জেলা নির্বাচন করুন'
-                                    : 'Select a district'
-                                  : ''
-                              "
-                              @change="clearField()"
+                              @change="onchangeDistrict()"
                             >
                             </v-autocomplete>
                           </ValidationProvider>
                         </v-col>
-                        <v-col lg="6" md="6" cols="12">
+                        <v-col lg="4" md="4" cols="12">
                           <ValidationProvider
                             v-slot="{ errors }"
                             name="Location Type"
@@ -100,7 +82,7 @@
                           >
                             <v-autocomplete
                               outlined
-                              :clearable="clearLocation"
+                              clearable
                               v-model="data.location_type"
                               :items="location_types"
                               :item-text="
@@ -109,14 +91,6 @@
                               item-value="id"
                               :label="
                                 $t('container.payroll_management.location_type')
-                              "
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language === 'bn'
-                                    ? 'একটি অবস্থানের ধরন নির্বাচন করুন'
-                                    : 'Select a location type'
-                                  : ''
                               "
                               @change="
                                 getArea(data.district, data.location_type)
@@ -127,8 +101,8 @@
                           </ValidationProvider>
                         </v-col>
                         <v-col
-                          lg="6"
-                          md="6"
+                          lg="4"
+                          md="4"
                           cols="12"
                           v-if="
                             data.location_type != null &&
@@ -144,7 +118,7 @@
                           >
                             <v-autocomplete
                               outlined
-                              :clearable="clearUpazila"
+                              clearable
                               v-model="data.upazila"
                               :items="upazilas"
                               :item-text="
@@ -153,14 +127,6 @@
                               item-value="id"
                               :label="
                                 $t('container.payroll_management.upazila')
-                              "
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language === 'bn'
-                                    ? 'একটি উপজেলা নির্বাচন করুন'
-                                    : 'Select a upazila'
-                                  : ''
                               "
                               @change="
                                 getUnionOrThana(
@@ -173,8 +139,8 @@
                           </ValidationProvider>
                         </v-col>
                         <v-col
-                          lg="6"
-                          md="6"
+                          lg="4"
+                          md="4"
                           cols="12"
                           v-if="
                             data.location_type != null &&
@@ -191,7 +157,7 @@
                           >
                             <v-autocomplete
                               outlined
-                              :clearable="clearUnion"
+                              clearable
                               v-model="data.union"
                               :items="unions"
                               :item-text="
@@ -199,21 +165,13 @@
                               "
                               item-value="id"
                               :label="$t('container.payroll_management.union')"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language === 'bn'
-                                    ? 'একটি ইউনিয়ন নির্বাচন করুন'
-                                    : 'Select a union'
-                                  : ''
-                              "
                             >
                             </v-autocomplete>
                           </ValidationProvider>
                         </v-col>
                         <v-col
-                          lg="6"
-                          md="6"
+                          lg="4"
+                          md="4"
                           cols="12"
                           v-if="
                             data.location_type != null &&
@@ -229,7 +187,7 @@
                           >
                             <v-autocomplete
                               outlined
-                              :clearable="clearCityCorporation"
+                              clearable
                               v-model="data.city_corporation"
                               :items="city_corporations"
                               :item-text="
@@ -240,14 +198,6 @@
                                 $t(
                                   'container.payroll_management.city_corporation'
                                 )
-                              "
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language === 'bn'
-                                    ? 'একটি সিটি কর্পোরেশন নির্বাচন করুন'
-                                    : 'Select a city corporation'
-                                  : ''
                               "
                               @change="
                                 getUnionOrThana(
@@ -260,8 +210,8 @@
                           </ValidationProvider>
                         </v-col>
                         <v-col
-                          lg="6"
-                          md="6"
+                          lg="4"
+                          md="4"
                           cols="12"
                           v-if="
                             data.location_type != null &&
@@ -278,7 +228,7 @@
                           >
                             <v-autocomplete
                               outlined
-                              :clearable="clearThana"
+                              clearable
                               v-model="data.thana"
                               :items="thanas"
                               :item-text="
@@ -286,21 +236,13 @@
                               "
                               item-value="id"
                               :label="$t('container.payroll_management.thana')"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language === 'bn'
-                                    ? 'একটি থানা নির্বাচন করুন'
-                                    : 'Select a thana'
-                                  : ''
-                              "
                             >
                             </v-autocomplete>
                           </ValidationProvider>
                         </v-col>
                         <v-col
-                          lg="6"
-                          md="6"
+                          lg="4"
+                          md="4"
                           cols="12"
                           v-if="
                             data.location_type === 1 && data.district != null
@@ -314,7 +256,7 @@
                           >
                             <v-autocomplete
                               outlined
-                              :clearable="clearDistrictPourashava"
+                              clearable
                               v-model="data.district_pourashava"
                               :item-text="
                                 language === 'bn' ? 'name_bn' : 'name_en'
@@ -325,14 +267,6 @@
                                 $t(
                                   'container.payroll_management.district_pourashava'
                                 )
-                              "
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language === 'bn'
-                                    ? 'একটি জেলা পৌরসভা নির্বাচন করুন'
-                                    : 'Select a district pourashava'
-                                  : ''
                               "
                               @change="
                                 getUnionOrThana(
@@ -345,8 +279,8 @@
                           </ValidationProvider>
                         </v-col>
                         <v-col
-                          lg="6"
-                          md="6"
+                          lg="4"
+                          md="4"
                           cols="12"
                           v-if="
                             data.location_type === 1 &&
@@ -362,7 +296,7 @@
                           >
                             <v-autocomplete
                               outlined
-                              :clearable="clearThana"
+                              clearable
                               v-model="data.thana"
                               :items="thanas"
                               :item-text="
@@ -370,35 +304,24 @@
                               "
                               item-value="id"
                               :label="$t('container.payroll_management.thana')"
-                              :error="errors[0] ? true : false"
-                              :error-messages="
-                                errors[0]
-                                  ? language === 'bn'
-                                    ? 'একটি থানা নির্বাচন করুন'
-                                    : 'Select a thana'
-                                  : ''
-                              "
                             >
                             </v-autocomplete>
                           </ValidationProvider>
-                        </v-col>                        
+                        </v-col>
                       </v-row>
                       <div class="d-inline d-flex justify-end mt-2">
-                          <v-btn
-                            elevation="2"
-                            class="btn"
-                            @click="resetSearch"
-                            >{{ $t("container.list.reset") }}</v-btn
-                          >
-                          <v-btn
-                            elevation="2"
-                            type="submit"
-                            :disabled="invalid"
-                            class="btn ml-2"
-                            color="success"
-                            >{{ $t("container.list.filter") }}</v-btn
-                          >
-                        </div>
+                        <v-btn elevation="2" class="btn" @click="resetFilter">
+                          {{ $t("container.list.reset") }}
+                        </v-btn>
+                        <v-btn
+                          elevation="2"
+                          type="submit"
+                          class="btn ml-2"
+                          color="success"
+                        >
+                          {{ $t("container.list.filter") }}
+                        </v-btn>
+                      </div>
                     </form>
                   </ValidationObserver>
                 </v-expansion-panel-content>
@@ -460,11 +383,10 @@
                       @click="createDialog"
                       flat
                       color="primary"
+                      class="mb-5 mt-4"
                       prepend-icon="mdi-account-multiple-plus"
-                      class="mb-6 text-right ml-auto"
-                      style="width: 120px"
                     >
-                      {{ $t("container.list.add_new") }}
+                      {{ $t("container.payroll_management.add_new_processor") }}
                     </v-btn>
 
                     <div class="d-flex ml-auto">
@@ -941,7 +863,7 @@
                     >
                       <v-autocomplete
                         outlined
-                        :clearable="clearDivision"
+                        clearable
                         v-model="data.division"
                         :items="divisions"
                         :item-text="language === 'bn' ? 'name_bn' : 'name_en'"
@@ -969,7 +891,7 @@
                     >
                       <v-autocomplete
                         outlined
-                        :clearable="clearDistrict"
+                        clearable
                         v-model="data.district"
                         :items="districts"
                         :item-text="language === 'bn' ? 'name_bn' : 'name_en'"
@@ -983,7 +905,7 @@
                               : 'Select a district'
                             : ''
                         "
-                        @change="clearField()"
+                        @change="onchangeDistrict()"
                       >
                       </v-autocomplete>
                     </ValidationProvider>
@@ -997,7 +919,7 @@
                     >
                       <v-autocomplete
                         outlined
-                        :clearable="clearLocation"
+                        clearable
                         v-model="data.location_type"
                         :items="location_types"
                         :item-text="language === 'bn' ? 'value_bn' : 'value_en'"
@@ -1039,7 +961,7 @@
                     >
                       <v-autocomplete
                         outlined
-                        :clearable="clearUpazila"
+                        clearable
                         v-model="data.upazila"
                         :items="upazilas"
                         :item-text="language === 'bn' ? 'name_bn' : 'name_en'"
@@ -1082,7 +1004,7 @@
                     >
                       <v-autocomplete
                         outlined
-                        :clearable="clearUnion"
+                        clearable
                         v-model="data.union"
                         :items="unions"
                         :item-text="language === 'bn' ? 'name_bn' : 'name_en'"
@@ -1122,7 +1044,7 @@
                     >
                       <v-autocomplete
                         outlined
-                        :clearable="clearCityCorporation"
+                        clearable
                         v-model="data.city_corporation"
                         :items="city_corporations"
                         :item-text="language === 'bn' ? 'name_bn' : 'name_en'"
@@ -1167,7 +1089,7 @@
                     >
                       <v-autocomplete
                         outlined
-                        :clearable="clearThana"
+                        clearable
                         v-model="data.thana"
                         :items="thanas"
                         :item-text="language === 'bn' ? 'name_bn' : 'name_en'"
@@ -1202,7 +1124,7 @@
                     >
                       <v-autocomplete
                         outlined
-                        :clearable="clearDistrictPourashava"
+                        clearable
                         v-model="data.district_pourashava"
                         :item-text="language === 'bn' ? 'name_bn' : 'name_en'"
                         :items="district_pourashavas"
@@ -1528,7 +1450,6 @@ export default {
   },
 
   methods: {
-    
     convertCase(input) {
       // first latter uppar case
       let formattedInput = input.replace(/[-_]/g, " ");
@@ -1550,6 +1471,16 @@ export default {
     async GeneratePDF() {
       // this.isLoading = true;
       const queryParams = {
+        // filter: this.filter,
+        location_type: this.data?.location_type,
+        division_id: this.data?.division,
+        district_id: this.data?.district,
+        upazila_id: this.data?.upazila,
+        union_id: this.data?.union,
+        city_corp_id: this.data?.city_corporation,
+        thana_id: this.data?.thana,
+        district_pouro_id: this.data?.district_pourashava,
+
         search: this.search,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
@@ -1623,6 +1554,14 @@ export default {
     //generate excel
     async GenerateExcel() {
       const queryParams = {
+        location_type: this.data?.location_type,
+        division_id: this.data?.division,
+        district_id: this.data?.district,
+        upazila_id: this.data?.upazila,
+        union_id: this.data?.union,
+        city_corp_id: this.data?.city_corporation,
+        thana_id: this.data?.thana,
+        district_pouro_id: this.data?.district_pourashava,
         search: this.search,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
@@ -1728,22 +1667,36 @@ export default {
       return fd;
     },
 
-    resetSearch() {
-      this.clear();
+    resetFilter() {
+      this.divisions = [];
+      this.districts = [];
+      this.upazilas = [];
+      this.unions = [];
+      this.thanas = [];
+      this.city_corporations = [];
+      this.district_pourashavas = [];
+      this.location_types = [];
+      this.data.location_type = null;
+      this.data.division = null;
+      this.data.district = null;
+      this.data.upazila = null;
+      this.data.union = null;
+      this.data.thana = null;
+      this.data.city_corporation = null;
+      this.data.district_pourashava = null;
+      this.getDivisions();
       this.getPaymentProcessor();
     },
 
     clear() {
-      this.clearDivision = true;
-      this.clearDistrict = true;
-      this.clearLocation = true;
-      this.clearUpazila = true;
-      this.clearUnion = true;
-      this.clearThana = true;
-      this.clearCityCorporation = true;
-      this.clearDistrictPourashava = true;
-      // Reset other properties
+      this.districts = [];
+      this.upazilas = [];
+      this.unions = [];
+      this.thanas = [];
+      this.city_corporations = [];
+      this.district_pourashavas = [];
       this.data.location_type = null;
+      this.data.district = null;
       this.data.upazila = null;
       this.data.union = null;
       this.data.thana = null;
@@ -1751,17 +1704,18 @@ export default {
       this.data.district_pourashava = null;
     },
 
-    clearableFalse() {
-      this.clearLocation = false;
-      this.clearUpazila = false;
-      this.clearUnion = false;
-      this.clearThana = false;
-      this.clearCityCorporation = false;
-      this.clearDistrictPourashava = false;
-    },
-    clearField() {
-      this.clear();
-      this.clearableFalse();
+    onchangeDistrict() {
+      this.upazilas = [];
+      this.unions = [];
+      this.thanas = [];
+      this.city_corporations = [];
+      this.district_pourashavas = [];
+      this.data.location_type = null;
+      this.data.upazila = null;
+      this.data.union = null;
+      this.data.thana = null;
+      this.data.city_corporation = null;
+      this.data.district_pourashava = null;
     },
 
     resetForm() {
@@ -1784,7 +1738,7 @@ export default {
         thana: null,
         district_pourashava: null,
       };
-      this.clearField();
+      this.clear();
     },
 
     deleteAlert(id) {
@@ -1922,7 +1876,7 @@ export default {
       return translations[message] || message;
     },
 
-    filterOn(){
+    filterOn() {
       this.filter = true;
       this.getPaymentProcessor();
     },
@@ -1995,6 +1949,22 @@ export default {
     },
 
     async getDivisions() {
+      this.divisions = [];
+      this.districts = [];
+      this.upazilas = [];
+      this.unions = [];
+      this.thanas = [];
+      this.city_corporations = [];
+      this.district_pourashavas = [];
+      // this.location_types = [];
+      this.data.location_type = null;
+      this.data.division = null;
+      this.data.district = null;
+      this.data.upazila = null;
+      this.data.union = null;
+      this.data.thana = null;
+      this.data.city_corporation = null;
+      this.data.district_pourashava = null;
       try {
         const response = await this.$axios.get("/admin/division/get", {
           headers: {
@@ -2024,7 +1994,7 @@ export default {
         })
         .then((response) => {
           if (response.status === 200) {
-            this.clearableFalse();
+            // this.clearableFalse();
             this.districts = response.data.data;
           } else {
             this.$toast.error("Something went wrong");
