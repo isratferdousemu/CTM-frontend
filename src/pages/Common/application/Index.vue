@@ -314,7 +314,7 @@
                           </v-col>
                           <v-col cols="6" lg="6">
                             <ValidationProvider name="Father Name in Bangla" vid="father_name_bn"
-                              rules="required|bangla" v-slot="{ errors }">
+                              rules="required||bangla" v-slot="{ errors }">
                               <label>{{ $t('container.application_selection.application.father_name_bn') }}</label>
                               <span style="margin-left: 4px; color: red">*</span>
                               <v-text-field v-model="data.father_name_bn" outlined clearable
@@ -325,7 +325,7 @@
                           </v-col>
                           <v-col cols="6" lg="6">
                             <ValidationProvider name="Father Name in English" vid="father_name_en"
-                              rules="required|english" v-slot="{ errors }">
+                              rules="required||english" v-slot="{ errors }">
                               <label>{{ $t('container.application_selection.application.father_name_en') }}</label>
                               <span style="margin-left: 4px; color: red">*</span>
                               <v-text-field v-model="data.father_name_en" outlined clearable
@@ -337,7 +337,7 @@
                           <v-col cols="6" lg="6">
                             <div class="validation-error-mobile">
                               <ValidationProvider name="Mother Name in Bangla" vid="mother_name_bn" v-slot="{ errors }"
-                                rules="required|bangla">
+                                rules="required||bangla">
                                 <label>{{ $t('container.application_selection.application.mother_name_bn') }}</label>
                                 <span style="margin-left: 4px; color: red">*</span>
                                 <v-text-field v-model="data.mother_name_bn" outlined clearable
@@ -352,7 +352,7 @@
                             <div class="validation-error_marital">
 
                               <ValidationProvider name="Mother Name in English" vid="mother_name_en" v-slot="{ errors }"
-                                rules="required|english">
+                                rules="required||english">
                                 <label>{{ $t('container.application_selection.application.mother_name_en') }}</label>
                                 <span style="margin-left: 4px; color: red">*</span>
                                 <v-text-field v-model="data.mother_name_en" outlined clearable
@@ -1816,16 +1816,12 @@ extend('english', {
 });
 extend('bangla', {
   validate: (value) => {
-    if (!value && value !== 0) {
-      return false;
-    }
-
-    // Update the regular expression to accept Bangla letters, spaces, and specified additional characters
-    var banglaRegex = /^[\u0980-\u09E5\u09F0-\u09FF\s.,():\-]+$/;
+    // Update the regular expression to accept Bangla letters, English letters, spaces, and specified additional characters, but not Bangla numbers
+    const banglaRegex = /^[\u0980-\u09DF\u09E0-\u09E5\u09F0-\u09FFa-zA-Z\s\.\:\(\)\-]+$/;
 
     return banglaRegex.test(value);
   },
-  message: "Please enter Bangla letters, spaces, commas, dots, colons, hyphens, or parentheses in this field",
+  message: "Please enter Bangla letters, spaces, commas, dots, colons, hyphens, or parentheses in this field. Bangla numbers are not allowed.",
 });
 extend("checkNumber", {
   validate: (value) => {
