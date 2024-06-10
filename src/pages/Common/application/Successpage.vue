@@ -2,8 +2,10 @@
   <div id="success">
     <v-app-bar color="#405c61" fixed height="80" class="px-4" dense dark>
       <v-row align="center" no-gutters>
-        <v-img class="p-3 mr-4" max-height="100%" max-width="60px" position="center center" src="/assets/images/logo.png"></v-img>
-        <v-toolbar-title>{{ $t('container.application_selection.application.title_online_1') }}<br>{{ $t('container.application_selection.application.title_online_2') }}
+        <v-img class="p-3 mr-4" max-height="100%" max-width="60px" position="center center"
+          src="/assets/images/logo.png"></v-img>
+        <v-toolbar-title>{{ $t('container.application_selection.application.title_online_1') }}<br>{{
+          $t('container.application_selection.application.title_online_2') }}
         </v-toolbar-title>
 
 
@@ -41,22 +43,27 @@
       <v-col cols="6" class="mx-auto mt-10">
         <v-card>
           <v-card-text class="mt-10 text-center">
-            <p style="font-size: 15px" class="mt-5">
-              {{ $t('container.application_selection.application.successfull') }} {{ successId }}
+            <p style="font-size: 15px; font-weight: bold;" class="mt-5">
+              <b> {{ $t('container.application_selection.application.successfull') }} {{ successId }}</b>
 
             </p>
-            <p style="font-size: 15px" class="mt-5"> {{ $t('container.application_selection.application.tracking') }} </p>
 
-                       
-                        <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="generatePDF">
-                            
-                            {{ $t("container.list.download") }}
-                        </v-btn>
-                    </v-card-text>
-                </v-card>
-            </v-col>
-        </v-row>
-    </div>
+            <p style="font-size: 15px; font-weight: bold;" class="mt-5"> <b> {{
+                $t('container.application_selection.application.tracking')
+                }} </b>
+            </p>
+
+
+
+            <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="generatePDF">
+
+              {{ $t("container.list.download") }}
+            </v-btn>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script>
@@ -114,6 +121,7 @@ export default {
                   account_ownership: this.$t('container.application_selection.application.account_ownership'),
                   account_no: this.$t('container.beneficiary_management.beneficiary_list.account_no'),
                   bank_name: this.$t('container.application_selection.application.bank_name'),
+                  mfs_name: this.$t('container.application_selection.application.mfs_name'),
                   branch_name: this.$t('container.application_selection.application.branch_name'),
                 
                  

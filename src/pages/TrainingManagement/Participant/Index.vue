@@ -58,18 +58,13 @@ export default {
         },
         headers() {
             return [
-                { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, width: "5%" },
-               
-                { text: this.$t('container.training_management.training_program.circular'), value: "circular", align: "start", width: "15%", sortable: false, },
-                { text: this.$t('container.training_management.training_program.program'), value: "program", align: "start", width: "15%" },
-             
-                { text: this.$t('container.training_management.training_registration.participant'), value: "participant", width: "15%", sortable: false, },
-               
-             
-             
-                   { text: this.$t('container.list.status'), value: "status", width: "15%" },
-              
-                { text: this.$t('container.list.action'), value: "actions", align: "start", sortable: false, width: "20%" },
+              { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, width: "5%" },
+              { text: this.$t('container.training_management.training_program.circular'), value: "circular", align: "start", width: "15%", sortable: false, },
+              { text: this.$t('container.training_management.training_program.program'), value: "program", align: "start", width: "15%" },
+              { text: this.$t('container.training_management.training_registration.participant'), value: "participant", width: "15%", sortable: false, },
+              { text: this.$t('container.training_management.training_program.employee_id'), value: "user_id", align: "start", width: "15%", sortable: false, },
+              { text: this.$t('container.list.status'), value: "status", width: "15%" },
+              { text: this.$t('container.list.action'), value: "actions", align: "start", sortable: false, width: "20%" },
             ];
         },
 
@@ -722,6 +717,10 @@ export default {
                                                 * pagination.perPage + index + 1) : (pagination.current - 1) *
                                                 pagination.perPage + index + 1 }}
                                             </template>
+
+                                          <template v-slot:item.user_id="{ item }">
+                                                {{ language === 'bn' ? $helpers.englishToBangla(item.user_id) : item.user_id }}
+                                            </template>
                                             <template v-slot:item.circular="{ item }">
                                                 <span>{{ item.training_circular?.circular_name }}</span>
                                             </template>
@@ -741,9 +740,6 @@ export default {
                                             </template>
 
                                             <template v-slot:[`item.status`]="{ item }">
-
-
-
 
 
                                                 <span v-if="item.status==0">
@@ -784,6 +780,29 @@ export default {
                                                     </template>
                                                     <span>{{ $t("container.list.edit") }}</span>
                                                 </v-tooltip>
+
+                                              <v-tooltip top v-if="item.exam_response">
+                                                    <template v-slot:activator="{ on }">
+                                                        <v-btn v-can="'Participant-edit'" class=" mr-2 mb-1" fab x-small
+                                                            v-on="on" color="primary" elevation="0" router
+                                                            :to="`/training-management/participant/grade-exam/${item.id}`">
+                                                            <v-icon> mdi-newspaper-variant-outline </v-icon>
+                                                        </v-btn>
+                                                    </template>
+                                                    <span>{{ $t("container.list.exam") }}</span>
+                                                </v-tooltip>
+
+                                              <v-tooltip top v-if="item.trainer_rating_response">
+                                                    <template v-slot:activator="{ on }">
+                                                        <v-btn v-can="'Participant-edit'" class=" mr-2 mb-1" fab x-small
+                                                            v-on="on" color="red" elevation="0" router
+                                                            :to="`/training-management/participant/trainer-rating/${item.id}`">
+                                                            <v-icon color="white"> mdi-card-account-details-star-outline </v-icon>
+                                                        </v-btn>
+                                                    </template>
+                                                    <span>{{ $t("container.list.trainerAssessment") }}</span>
+                                                </v-tooltip>
+
                                                 <v-tooltip top>
                                                     <template v-slot:activator="{ on }">
                                                         <v-btn v-can="'Participant-delete'" fab x-small v-on="on"

@@ -85,8 +85,14 @@
       "union": "Union",
       "no_data": "No gender was selected.",
       "show": "Show",
+      "sync": "Sync",
       "close": "Close",
-      "addToList": "Add to list"
+      "addToList": "Add to list",
+      "gradeExam": "Grade Exam",
+      "trainerRating": "Trainer Rating",
+      "exam": "Exam",
+      "trainerAssessment": "Trainer Assessment",
+      "certificate": "Certificate"
     },
     "system_config": {
       "demo_graphic": {
@@ -451,6 +457,7 @@
         "ip_address": "IP Address",
         "pupose_of_use": "Purpose of Use",
         "unique_id": "Unique ID",
+        "details": "Device Registration Details",
         "add": "Add Device",
         "edit": "Edit device",
         "delete_title": "Delete Device Registration",
@@ -563,6 +570,7 @@
     "application_selection": {
       "application": {
         "select": "Select",
+        "mfs_name":"MFS Name",
         "select_all": "Select All",
         "application": "Application",
         "list": "Application List",
@@ -610,7 +618,6 @@
         "bank_name": "Bank Name",
         "branch_name": "Branch Name",
         "bank_account_number": "Bank Account Number",
-
         "email": "Email",
         "mobile_account": "MFS (Mobile Financial Service)",
         "bank_account": "Bank Account",
@@ -633,8 +640,9 @@
         "image_alert": "Image  file size should be under 200 KB",
         "signature_alert": "Signature  file size should be under 200 KB",
         "mobile_operator": "Mobile Operator",
-        "bank_alert": "Must have active Nagad / Bkash account where applicable",
-        "same_address": "Same as Present",
+        "mobile_alert": "Must have active Nagad / Bkash account",
+        "bank_alert": "Must have active Bank account",
+        "same_address": "Same as Present Address",
         "form_submission": "Form Submission Confirmation",
         "question": "Are you sure to submit the application? After submission editing will not be applicable.",
         "successfull": "Your application successfully submitted. Your application tracking ID",
@@ -644,10 +652,7 @@
         "exit_date": "Exit Date",
         "replace_with_application_id": "Replaced with Beneficiary ID",
         "replace_with_name_en": "Replaced with Beneficiary Name",
-
-        "gender": "Gender",
-        "account_type": "Account Type",
-        "age": "Age"
+        "gender": "Gender"
       },
       "mobile_operator": {
         "list": "Mobile Operator List",
@@ -1017,6 +1022,8 @@
       "approval_status": "Status"
     },
     "payroll_management": {
+      "view": "View",
+      "add_new_processor": "Add New Processor",
       "list": "Payment Processor",
       "add_new": "Add New Payment Processor",
       "edit": "Edit Payment Processor",
@@ -1041,13 +1048,37 @@
       "verification_success_msg": "Verification Setting submitted successfully",
       "payroll_create": "Payroll Create",
       "allotment_distribution": "Allotment Distribution",
+      "dashboard": {
+        "header": "Payroll Dashboard",
+        "approved_payroll": "Total Approved Payroll",
+        "rejected_payroll": "Total Rejected Payroll",
+        "total_payment_cycle": "Total Payment Cycle",
+        "completed_payment_cycle": "Processing at IBAS ++",
+        "program_wise_payroll": "Program Wise Payroll",
+        "total_payment_processor": "Total Payment Processor",
+        "total_approve_payroll": "Total Approve Payroll",
+        "available_balance": "Available Balance",
+        "program_wise_payment_cycle": "Program Wise Payment Cycle",
+        "total_amount_disbursed": "Total Amount Disbursed"
+      }
+    },
+    "payroll_management_v2": {
+      "payroll_create": "Payroll Create",
+      "allotment_distribution": "Correction of Allotment Distribution",
+      "allotment_area_wise_ben": "Allotment Area-Wise Beneficiaries",
+      "monthly_allowance_amount": "Amount of Monthly Allowance per Beneficiary",
+      "distribution_medium": "Distribution Medium",
+      "bank_account": "Bank Account",
+      "program": "Program",
       "area_wise_ben_list": {
         "remaining_installment": "Remaining Installment",
         "area_type": "Upazila/City Corporation/ District Pouroshava",
         "allotment_area": "Union/Ward/Pouroshava",
         "allocated_beneficiary": "Allocated Beneficiary",
         "active_beneficiary": "Active Beneficiary",
-        "status": "Status"
+        "status": "Status",
+        "see_beneficiary": "See Beneficiary",
+        "reject": "Reject"
       },
       "allotment_area_wise_ben_setup": {
         "title": "Allotment area-wise beneficiary setup",
@@ -1087,6 +1118,25 @@
         "total_amount": "Total Amount",
         "financial_account_status": "Financial Account Status",
         "status": "Status"
+      },
+      "payroll_approval": {
+        "title": "Payroll Approval",
+        "office": "Office",
+        "office_type": "Office Type",
+        "installment": "Installment",
+        "status": "Status",
+        "approval_list": {
+          "district": "District",
+          "upazila": "Upazila",
+          "office": "Office",
+          "program": "Program",
+          "installment": "Installment",
+          "total_beneficiary": "Total Beneficiary",
+          "allowance_amount": "Allowance Amount",
+          "charge": "Charge",
+          "total_money": "Total Money",
+          "status": "Status"
+        }
       }
     },
     "emergency_payment": {
@@ -1120,9 +1170,10 @@
         "search": "Search Emergency Beneficiary",
         "e_beneficiary": "From Existing Beneficiary",
         "n_beneficiary": "From New Addition",
-        "searchBy": "Search By"
+        "searchBy": "Search By",
+        "summary": "Summary"
       },
-      "emergency_payment_cycle":{
+      "emergency_payment_cycle": {
         "filter_title": "Emergency Payment Cycle",
         "payment_cycle_list": "Payment Cycle List",
         "installment_no": "Installment No",
@@ -1133,8 +1184,6 @@
         "charge": "Charge",
         "total_amount": "Total Amount"
       }
-
-
     },
     "training_management": {
       "trainer_info": {
@@ -1209,6 +1258,10 @@
         "rating": "Rating",
         "program": "Program",
         "trainer": "Trainer",
+        "form_id": "Exam Form ID",
+        "training_form_id": "Training Form ID",
+        "employee_id": "Employee ID",
+        "passcode": "Passcode",
         "circular": "Circular",
         "class_schedule": "Training Schedule",
         "search": "Search Program",
@@ -1234,7 +1287,12 @@
         "user_type": "Participant Type",
         "alert": "Go to this link for external registration",
         "delete_header": "Delete Participant",
-        "delete_alert": "Are you sure to delete this Participant? Participant's all details will be deleted from this traning."
+        "delete_alert": "Are you sure to delete this Participant? Participant's all details will be deleted from this traning.",
+        "result": "Result"
+      },
+      "kobo": {
+        "edit": "Edit Token",
+        "token": "Token"
       }
     },
     "api_manager": {

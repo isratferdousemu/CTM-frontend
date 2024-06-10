@@ -1,3 +1,5 @@
+import { http } from '@/hooks/httpService';
+
 /* -------------------------------------------------------------------------- */
 /*                                states Define                               */
 /* -------------------------------------------------------------------------- */
@@ -25,10 +27,20 @@ const actions = {
     try {
       // Simulate an async operation
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      commit("incrementValue");
+      commit('incrementValue');
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error('Error fetching data:', error);
     }
+  },
+  SetBeneficiaries: ({ commit }, data) => {
+    return http()
+      .post('/admin/payroll/set-beneficiaries', data)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        return err;
+      });
   },
 };
 /* -------------------------------------------------------------------------- */

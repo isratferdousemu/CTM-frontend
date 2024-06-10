@@ -35,7 +35,8 @@
     </v-row>
 
     <v-row>
-      <canvas id="office_typewise_total_user"></canvas>
+      <img  v-if="allZeros == true" style="margin-left:130px;margin-top:10px;width: 260px;height: 260px" src="/assets/images/pie_chart_default.png" alt="default chart">
+      <canvas v-else id="office_typewise_total_user"></canvas>
     </v-row>
   </v-col>
 
@@ -69,7 +70,9 @@ export default {
     },
     async fetchOrganizationWiseChartData(from_date = null, to_date = null) {
       await this.getOrganizationWiseData(2, from_date, to_date);
-      this.createOrganizationChart();
+      if (!this.allZeros) {
+        this.createOrganizationChart();
+      }
     },
     async getOrganizationWiseData(status, from_date = null, to_date = null, office_type = null) {
       const queryParams = {
@@ -88,6 +91,7 @@ export default {
         this.organizationData = result.data.data;
         this.organizationLabels = this.organizationData.map((row) => row.organization_name);
         this.organizationCount = this.organizationData.map((row) => row.api_logs_count);
+
         this.isLoading = false;
 
       } catch (error) {
@@ -200,6 +204,9 @@ export default {
       get() {
         return this.$store.getters.getAppLanguage;
       }
+    },
+    allZeros() {
+      return this.organizationCount.every(value => value === 0);
     },
   },
 
