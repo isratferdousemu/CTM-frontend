@@ -79,6 +79,17 @@ const PayrollManagementRoutes = [
       import('../pages/PayrollManagement/PaymentTracking/Index.vue'),
   },
 
+  {
+    path: '/payroll-management/dashboard',
+    name: 'payroll-management-dashboard',
+    meta: {
+      requiresAuth: true,
+      permission: "payroll-dashboard-show",
+    },
+    component: () =>
+      import('../pages/PayrollManagement/Dashboard/Index.vue'),
+  },
+
   // {
   //   path: "/payroll-management/application-selection",
   //   name: "payment-payment",

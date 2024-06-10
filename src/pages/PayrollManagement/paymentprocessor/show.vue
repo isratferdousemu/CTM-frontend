@@ -193,8 +193,8 @@
               </v-col>
               <v-col cols="12" class="text-right">
                 <router-link to="/payroll-management/payment-processor">
-                  <v-btn outlined color="primary">
-                    {{ language === "bn" ? "পিছনে যান" : "Go Back" }}
+                  <v-btn color="primary" class="white--text">
+                    {{ language === "bn" ? "পূর্ববর্তী পেজ" : "Back" }}
                   </v-btn>
                 </router-link>
               </v-col>

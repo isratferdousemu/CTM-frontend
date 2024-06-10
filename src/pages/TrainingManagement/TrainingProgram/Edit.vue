@@ -132,7 +132,9 @@ export default {
                 _method:"PUT",
                 program_name: null,
                 training_circular_id: null,
-                trainer_ratings_link:null,
+                form_id:null,
+                training_form_id:null,
+                question_link:null,
                 trainer_ratings_link:null,
                 circular_modules: [],
                 status:null,
@@ -581,7 +583,23 @@ export default {
                                         : 'Please enter a valid End Date') : ''"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
-                                            <v-col cols="12" sm="6" lg="6">
+                                          <v-col cols="12" sm="6" lg="6">
+                                            <ValidationProvider name="form_id" vid="form_id" rules=""
+                                                                v-slot="{ errors }">
+                                              <v-text-field dense type="text" v-model="data.form_id" :label="$t('container.training_management.training_program.form_id')
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ফর্ম আইডি প্রদান করুন '
+                                        : 'Please enter valid Exam Link') : ''"></v-text-field>
+                                            </ValidationProvider>
+                                          </v-col>
+                                          <v-col cols="12" sm="6" lg="6">
+                                            <ValidationProvider name="training_form_id" vid="training_form_id" rules=""
+                                                                v-slot="{ errors }">
+                                              <v-text-field dense type="text" v-model="data.training_form_id" :label="$t('container.training_management.training_program.training_form_id')
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ফর্ম আইডি প্রদান করুন '
+                                        : 'Please enter valid Exam Link') : ''"></v-text-field>
+                                            </ValidationProvider>
+                                          </v-col>
+                                          <v-col cols="12" sm="6" lg="6">
                                                 <ValidationProvider name="exam_link" vid="question_link" rules="url"
                                                     v-slot="{ errors }">
                                                     <v-text-field dense type="text" v-model="data.question_link" :label="$t('container.training_management.training_program.exam_link')
