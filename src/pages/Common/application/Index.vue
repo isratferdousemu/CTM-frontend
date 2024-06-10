@@ -3362,6 +3362,7 @@ export default {
             // Clear the arrays if necessary to avoid duplicates
             this.processors_name = [];
             this.bank_names = [];
+                 this.data.bank_name=null;
 
             // Iterate over the processors array
             this.processors.forEach(item => {
@@ -3386,6 +3387,8 @@ export default {
           if (this.coverage_area?.payment_processor?.processor_type == "mfs") {
             // alert(this.coverage_area?.payment_processor?.processor_type)
             this.data.account_type = 2;
+             this.mfs_names = [];
+                  this.data.mfs_name=null;
             this.processors.forEach(item => {
               if (item.payment_processor) {
                 this.mfs_names.push(item.payment_processor);
@@ -3422,6 +3425,7 @@ export default {
             // Clear the arrays if necessary to avoid duplicates
             this.processors_name = [];
             this.bank_names = [];
+            this.data.bank_name=null;
 
             // Iterate over the processors array
             this.processors.forEach(item => {
@@ -3446,6 +3450,8 @@ export default {
           if (this.coverage_area?.payment_processor?.processor_type == "mfs") {
             // alert(this.coverage_area?.payment_processor?.processor_type)
             this.data.account_type = 2;
+            this.mfs_names = [];
+                 this.data.mfs_name=null;
             this.processors.forEach(item => {
               if (item.payment_processor) {
                 this.mfs_names.push(item.payment_processor);
@@ -3481,6 +3487,7 @@ export default {
             // Clear the arrays if necessary to avoid duplicates
             this.processors_name = [];
             this.bank_names = [];
+            this.data.bank_name = null;
 
             // Iterate over the processors array
             this.processors.forEach(item => {
@@ -3505,6 +3512,8 @@ export default {
           if (this.coverage_area?.payment_processor?.processor_type == "mfs") {
             // alert(this.coverage_area?.payment_processor?.processor_type)
             this.data.account_type = 2;
+              this.mfs_names = [];
+                   this.data.mfs_name=null;
             this.processors.forEach(item => {
               if (item.payment_processor) {
                 this.mfs_names.push(item.payment_processor);
@@ -3540,6 +3549,7 @@ export default {
             // Clear the arrays if necessary to avoid duplicates
             this.processors_name = [];
             this.bank_names = [];
+                 this.data.bank_name=null;
 
             // Iterate over the processors array
             this.processors.forEach(item => {
@@ -3564,6 +3574,8 @@ export default {
           if (this.coverage_area?.payment_processor?.processor_type == "mfs") {
             // alert(this.coverage_area?.payment_processor?.processor_type)
             this.data.account_type = 2;
+              this.mfs_names = [];
+              this.data.mfs_name=null;
             this.processors.forEach(item => {
               if (item.payment_processor) {
                 this.mfs_names.push(item.payment_processor);
@@ -3962,8 +3974,8 @@ export default {
     this.$store
       .dispatch("getGlobalLookupByType", 1)
       .then((res) => (this.locationType = res));
-    this.getAllMobileOperator();
-    console.log(this.$el, "el");
+    // this.getAllMobileOperator();
+    // console.log(this.$el, "el");
   },
 
 };
