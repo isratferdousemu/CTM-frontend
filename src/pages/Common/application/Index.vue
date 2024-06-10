@@ -212,8 +212,6 @@
                           </ValidationProvider>
                         </v-col>
 
-
-
                         <!-- <v-col cols="2">
 
 
@@ -221,76 +219,56 @@
                           <label>{{ $t('container.application_selection.application.day') }} </label>
                           <span style="margin-left: 4px; color: red">*</span>
 
-                          <v-select
-                            v-model="selectedDay"
-                            :items="twoDigitDays"
-                            clearable
-                            outlined
-                            @change="updateDate"
-                          ></v-select>
+                          <v-select v-model="selectedDay" :items="twoDigitDays" clearable outlined
+                            @change="updateDate"></v-select>
+
                         </v-col>
                      
                         <v-col cols="2">
-                          <label
-                            >{{
-                              $t(
-                                "container.application_selection.application.month"
-                              )
-                            }}
-                          </label>
+                          <label>{{ $t('container.application_selection.application.month') }} </label>
                           <span style="margin-left: 4px; color: red">*</span>
-                          <ValidationProvider
-                            name="Year"
-                            vid="selectedMonth"
-                            v-slot="{ errors }"
-                            rules="required"
-                          >
-                            <v-select
-                              clearable
-                              v-model="selectedMonth"
-                              :items="months"
-                              outlined
-                              @change="updateDate"
-                            ></v-select>
+                          <ValidationProvider name="Year" vid="selectedMonth" v-slot="{ errors }" rules="required">
+
+                            <v-select clearable v-model="selectedMonth" :items="months" outlined
+                              @change="updateDate"></v-select>
                           </ValidationProvider>
                         </v-col>
 
 
 
                         <v-col cols="2">
-                          <label
-                            >{{
-                              $t(
-                                "container.application_selection.application.year"
-                              )
-                          <ValidationProvider
-                            name="Year"
-                            v-slot="{ errors }"
-                            rules="required"
-                          >
-                            <v-select
-                              clearable
-                              v-model="selectedYear"
-                              :items="years"
-                              outlined
-                              @change="updateDate"
-                            ></v-select>
+                          <label>{{ $t('container.application_selection.application.year') }} </label>
+                          <span style="margin-left: 4px; color: red">*</span>
+                          <ValidationProvider name="Year" vid="selectedYear" v-slot="{ errors }" rules="required">
+                            <v-select clearable v-model="selectedYear" :items="years" outlined
+                              @change="updateDate"></v-select>
                           </ValidationProvider>
 
                         </v-col> -->
 
                         <!-- Read-only field to display calculated date of birth -->
 
-
                         <v-col cols="4">
-
-                          <label>{{ $t('container.application_selection.application.date_of_birth') }} </label>
+                          <label
+                            >{{
+                              $t(
+                                "container.application_selection.application.date_of_birth"
+                              )
+                            }}
+                          </label>
                           <span style="margin-left: 4px; color: red">*</span>
-                          <ValidationProvider name="Date of Birth" vid="date_of_birth" v-slot="{ errors }"
-                            rules="required">
-
-                            <v-text-field v-model="data.date_of_birth" type="date" :value="formattedDate"
-                              outlined></v-text-field>
+                          <ValidationProvider
+                            name="Date of Birth"
+                            vid="date_of_birth"
+                            v-slot="{ errors }"
+                            rules="required"
+                          >
+                            <v-text-field
+                              v-model="data.date_of_birth"
+                              type="date"
+                              :value="formattedDate"
+                              outlined
+                            ></v-text-field>
                           </ValidationProvider>
                         </v-col>
 
@@ -318,14 +296,25 @@
                           </ValidationProvider> -->
                         <!-- </v-col> -->
 
-
-
                         <v-col cols="4" class="d-flex justify-end">
-                          <v-btn @click="verifyCard()" elevation="2"
-                            :disabled="data.date_of_birth == null || data.verification_number == null || data.verification_type == null || data.verification_type == 2 || data.date_of_birth == '' || data.verification_number == '' || data.verification_type == ''"
-                            class="btn mt-10 " color="primary">{{ $t('container.list.verify') }}</v-btn>
+                          <v-btn
+                            @click="verifyCard()"
+                            elevation="2"
+                            :disabled="
+                              data.date_of_birth == null ||
+                              data.verification_number == null ||
+                              data.verification_type == null ||
+                              data.verification_type == 2 ||
+                              data.date_of_birth == '' ||
+                              data.verification_number == '' ||
+                              data.verification_type == ''
+                            "
+                            class="btn mt-10"
+                            color="primary"
+                            >{{ $t("container.list.verify") }}</v-btn
+                          >
                         </v-col>
-                      </v-row>
+                      </V-row>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
                   <!-- Applicant Verification end -->
@@ -510,13 +499,33 @@
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider name="Name in English" vid="name_en" rules="required||english"
-                              v-slot="{ errors }">
-                              <label>{{ $t('container.application_selection.application.name_en') }}</label>
-                              <span style="margin-left: 4px; color: red">*</span>
-                              <v-text-field v-model="data.name_en" outlined clearable :error="errors[0] ? true : false"
-                                :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সম্পূর্ণ নাম (ইংরেজীতে) প্রদান করুন '
-  : 'Please enter Full Name (English)') : ''">
+                            <ValidationProvider
+                              name="Name in English"
+                              vid="name_en"
+                              rules="required||english"
+                              v-slot="{ errors }"
+                            >
+                              <label>{{
+                                $t(
+                                  "container.application_selection.application.name_en"
+                                )
+                              }}</label>
+                              <span style="margin-left: 4px; color: red"
+                                >*</span
+                              >
+                              <v-text-field
+                                v-model="data.name_en"
+                                outlined
+                                clearable
+                                :error="errors[0] ? true : false"
+                                :error-messages="
+                                  errors[0]
+                                    ? language == 'bn'
+                                      ? 'অনুগ্রহ পূর্বক সম্পূর্ণ নাম (ইংরেজীতে) প্রদান করুন '
+                                      : 'Please enter Full Name (English)'
+                                    : ''
+                                "
+                              >
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
@@ -537,6 +546,37 @@
                               >
                               <v-text-field
                                 v-model="data.father_name_bn"
+                                outlined
+                                clearable
+                                :error="errors[0] ? true : false"
+                                :error-messages="
+                                  errors[0]
+                                    ? language == 'bn'
+                                      ? 'অনুগ্রহ পূর্বক সম্পূর্ণ বাবার নাম (বাংলায়) প্রদান করুন '
+                                      : 'Please enter Father Name (Bangla)'
+                                    : ''
+                                "
+                              >
+                              </v-text-field>
+                            </ValidationProvider>
+                          </v-col>
+                          <v-col cols="6" lg="6">
+                            <ValidationProvider
+                              name="Father Name in English"
+                              vid="father_name_en"
+                              rules="required||english"
+                              v-slot="{ errors }"
+                            >
+                              <label>{{
+                                $t(
+                                  "container.application_selection.application.father_name_en"
+                                )
+                              }}</label>
+                              <span style="margin-left: 4px; color: red"
+                                >*</span
+                              >
+                              <v-text-field
+                                v-model="data.father_name_en"
                                 outlined
                                 clearable
                                 :error="errors[0] ? true : false"
@@ -591,7 +631,7 @@
                                 name="Mother Name in English"
                                 vid="mother_name_en"
                                 v-slot="{ errors }"
-                                rules="required"
+                                rules="required||english"
                               >
                                 <label>{{
                                   $t(
@@ -2683,7 +2723,6 @@
                               outlined
                               clearable
                               :error="errors[0] ? true : false"
-                              readonly
                               :error-messages="errors[0]"
                             >
                             </v-text-field>
@@ -2691,17 +2730,36 @@
                         </v-col>
                         <v-col cols="6" lg="6">
                           <v-radio-group v-model="data.account_type" row>
-                            {{ $t('container.application_selection.application.account_type') }}
+                            {{
+                              $t(
+                                "container.application_selection.application.account_type"
+                              )
+                            }}
 
-                            <span style="
-                              margin-left: 4px;
-                              margin-right: 4px;
-                              color: red;
-                            ">*</span>
-                            <v-radio :label="$t('container.application_selection.application.bank_account')"
-                              :value="1"></v-radio>
-                            <v-radio :label="$t('container.application_selection.application.mobile_account')"
-                              :value="2"></v-radio>
+                            <span
+                              style="
+                                margin-left: 4px;
+                                margin-right: 4px;
+                                color: red;
+                              "
+                              >*</span
+                            >
+                            <v-radio
+                              :label="
+                                $t(
+                                  'container.application_selection.application.bank_account'
+                                )
+                              "
+                              :value="1"
+                            ></v-radio>
+                            <v-radio
+                              :label="
+                                $t(
+                                  'container.application_selection.application.mobile_account'
+                                )
+                              "
+                              :value="2"
+                            ></v-radio>
                           </v-radio-group>
                         </v-col>
                         <v-col cols="6" lg="6" v-if="data.account_type === 2">
@@ -2834,9 +2892,19 @@
                               }} </label
                             ><span style="margin-left: 4px; color: red">*</span>
 
-                            <v-text-field v-model="data.bank_name" outlined clearable :error="errors[0] ? true : false"
-                              :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ব্যাংকের নাম প্রদান করুন'
-  : 'Please enter Bank Name') : ''">
+                            <v-text-field
+                              v-model="data.bank_name"
+                              outlined
+                              clearable
+                              :error="errors[0] ? true : false"
+                              :error-messages="
+                                errors[0]
+                                  ? language == 'bn'
+                                    ? 'অনুগ্রহ পূর্বক ব্যাংকের নাম প্রদান করুন'
+                                    : 'Please enter Bank Name'
+                                  : ''
+                              "
+                            >
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
@@ -2936,13 +3004,19 @@
                           </ValidationProvider>
                         </v-col>
                       </v-row>
-                      <p class="red--text mt-2" v-if="data.account_type==2">
-                        {{ $t('container.application_selection.application.mobile_alert') }}
-
+                      <p class="red--text mt-2" v-if="data.account_type == 2">
+                        {{
+                          $t(
+                            "container.application_selection.application.mobile_alert"
+                          )
+                        }}
                       </p>
-                      <p class="red--text mt-2" v-if="data.account_type==1">
-                        {{ $t('container.application_selection.application.bank_alert') }}
-
+                      <p class="red--text mt-2" v-if="data.account_type == 1">
+                        {{
+                          $t(
+                            "container.application_selection.application.bank_alert"
+                          )
+                        }}
                       </p>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
@@ -3006,7 +3080,6 @@
                                     </ValidationProvider>
                                   </v-col>
 
-
                                   <!-- 
                                   <v-col cols="2">
 
@@ -3022,23 +3095,10 @@
                                 
 
                                   <v-col cols="2">
-                                    <label
-                                      >{{
-                                        $t(
-                                          "container.application_selection.application.month"
-                                        )
-                                      }}
-                                    </label>
-                                    <span style="margin-left: 4px; color: red"
-                                      >*</span
-                                    >
-                                    <v-select
-                                      clearable
-                                      v-model="selectedMonthNominee"
-                                      :items="months"
-                                      outlined
-                                      @change="updateDateNominee"
-                                    ></v-select>
+                                    <label>{{ $t('container.application_selection.application.month') }} </label>
+                                    <span style="margin-left: 4px; color: red">*</span>
+                                    <v-select clearable v-model="selectedMonthNominee" :items="months" outlined
+                                      @change="updateDateNominee"></v-select>
                                   </v-col>
 
 
@@ -3047,10 +3107,19 @@
 
                             
                                   <v-col cols="2">
+                                    <label>{{ $t('container.application_selection.application.year') }} </label>
+                                    <span style="margin-left: 4px; color: red">*</span>
+                                    <ValidationProvider name="Age" vid="age" v-slot="{ errors }" rules="required">
+                                      <v-select clearable v-model="selectedYearNominee" :items="years" outlined
+                                        @change="updateDateNominee"></v-select>
+                                    </ValidationProvider>
+
+                                  </v-col> -->
+                                  <v-col cols="4">
                                     <label
                                       >{{
                                         $t(
-                                          "container.application_selection.application.year"
+                                          "container.application_selection.application.date_of_birth"
                                         )
                                       }}
                                     </label>
@@ -3058,47 +3127,36 @@
                                       >*</span
                                     >
                                     <ValidationProvider
-                                      name="Age"
-                                      vid="age"
+                                      name=" Nominee Date of Birth"
+                                      vid="nominee_date_of_birth"
                                       v-slot="{ errors }"
                                       rules="required"
                                     >
-                                      <v-select
-                                        clearable
-                                        v-model="selectedYearNominee"
-                                        :items="years"
+                                      <v-text-field
+                                        v-model="data.nominee_date_of_birth"
+                                        type="date"
+                                        :value="formattedDateNominee"
                                         outlined
-                                        @change="updateDateNominee"
-                                      ></v-select>
-                                    </ValidationProvider>
-
-                                  </v-col> -->
-                                  <v-col cols="4">
-
-                                    <label>{{ $t('container.application_selection.application.date_of_birth') }}
-                                    </label>
-                                    <span style="margin-left: 4px; color: red">*</span>
-                                    <ValidationProvider name=" Nominee Date of Birth" vid="nominee_date_of_birth"
-                                      v-slot="{ errors }" rules="required">
-
-                                      <v-text-field v-model="data.nominee_date_of_birth" type="date"
-                                        :value="formattedDateNominee" outlined></v-text-field>
+                                      ></v-text-field>
                                     </ValidationProvider>
                                   </v-col>
-
-
-
 
                                   <v-col cols="4" class="d-flex justify-end">
-
-                                    <v-btn @click="verifyNomineeCard()" elevation="2" id="verify-button"
-                                      :disabled="data.nominee_verification_number == null || data.nominee_date_of_birth == ''"
-                                      class="btn mt-10 text-right" color="primary">{{ $t('container.list.verify')
-                                      }}</v-btn>
-
+                                    <v-btn
+                                      @click="verifyNomineeCard()"
+                                      elevation="2"
+                                      id="verify-button"
+                                      :disabled="
+                                        data.nominee_verification_number ==
+                                          null ||
+                                        data.nominee_date_of_birth == ''
+                                      "
+                                      class="btn mt-10 text-right"
+                                      color="primary"
+                                      >{{ $t("container.list.verify") }}</v-btn
+                                    >
                                   </v-col>
                                 </v-row>
-
                               </v-card-text>
                             </v-card>
                           </v-col>
@@ -3743,21 +3801,28 @@ extend("email", {
   },
   message: "Please enter a valid email address",
 });
-extend('english', {
-  validate: value => {
+extend("english", {
+  validate: (value) => {
     // Regular expression to match English characters, spaces, and specific additional characters
     const englishRegex = /^[a-zA-Z\s\.\:\(\)\-]+$/;
 
     // Check if value matches English characters, spaces, and specific additional characters
     return englishRegex.test(value);
   },
-  message: 'Only English characters, spaces, and ( . : () - ) are allowed in this field'
+  message:
+    "Only English characters, spaces, and ( . : () - ) are allowed in this field",
 });
-extend('bangla', {
+extend("bangla", {
   validate: (value) => {
     // Update the regular expression to accept Bangla letters, English letters, spaces, and specified additional characters, but not Bangla numbers
-    const banglaRegex = /^[\u0980-\u09DF\u09E0-\u09E5\u09F0-\u09FFa-zA-Z\s\.\:\(\)\-]+$/;
+    const banglaRegex =
+      /^[\u0980-\u09DF\u09E0-\u09E5\u09F0-\u09FFa-zA-Z\s\.\:\(\)\-]+$/;
 
+    return banglaRegex.test(value);
+  },
+  message:
+    "Please enter Bangla letters, spaces, commas, dots, colons, hyphens, or parentheses in this field. Bangla numbers are not allowed.",
+});
 extend("checkNumber", {
   validate: (value) => {
     if (!value && value !== 0) {
@@ -4321,11 +4386,12 @@ export default {
     //   getItemText(item) {
     //   return this.language === 'bn' ? item.name_bn : item.name_en;
     // },
-    mobile() {
-      if (this.data.mobile) {
-        this.data.account_number = this.data.mobile;
-      }
-    },
+    // mobile(){
+    //   if(this.data.mobile){
+    //     this.data.account_number = this.data.mobile
+    //   }
+
+    // },
     gotocheck() {
       this.$axios
         .get("/global/online-application/check", {
