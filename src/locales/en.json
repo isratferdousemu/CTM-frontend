@@ -1021,6 +1021,8 @@
     },
     "payroll_management": {
       "view": "View",
+      "mfs_name_en": "MFS Name (English)",
+      "mfs_name_bn": "MFS Name (Bangla)",
       "add_new_processor": "Add New Processor",
       "list": "Payment Processor",
       "add_new": "Add New Payment Processor",
@@ -1063,7 +1065,7 @@
         "completed_payment_cycle": "Processing at IBAS ++",
         "program_wise_payroll": "Program Wise Payroll Beneficiaries",
         "total_payment_processor": "Total Payment Processor",
-        "total_approve_payroll": "Total Approved Payroll Beneficiaries",
+        "total_approve_payroll": "Total Approved Payroll",
         "available_balance": "Available Balance",
         "program_wise_payment_cycle": "Program Wise Payment Cycle",
         "total_amount_disbursed": "Total Amount Disbursed"

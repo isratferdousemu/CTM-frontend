@@ -3,7 +3,7 @@
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
         <v-row>
-          <!-- <v-col cols="12">
+          <v-col cols="12">
             <v-expansion-panels>
               <v-expansion-panel class="ma-2">
                 <v-expansion-panel-header
@@ -327,7 +327,7 @@
                 </v-expansion-panel-content>
               </v-expansion-panel>
             </v-expansion-panels>
-          </v-col> -->
+          </v-col>
 
           <v-col cols="12">
             <v-card
@@ -369,16 +369,16 @@
                     </v-text-field>
                   </div>
 
-                  <v-btn
+                  <!-- <v-btn
                     @click="createDialog"
                     flat
                     color="primary"
                     prepend-icon="mdi-account-multiple-plus"
                   >
                     {{ $t("container.payroll_management.add_new_processor") }}
-                  </v-btn>
+                  </v-btn> -->
 
-                  <!-- <div class="d-flex flex-column align-items-end ml-auto mb-4">
+                  <div class="d-flex flex-column align-items-end ml-auto mb-4">
                     <v-btn
                       @click="createDialog"
                       flat
@@ -409,7 +409,7 @@
                         {{ $t("container.list.excel") }}
                       </v-btn>
                     </div>
-                  </div> -->
+                  </div>
 
                   <v-col cols="12" class="mt-6">
                     <v-data-table
@@ -717,7 +717,7 @@
                     </ValidationProvider>
                   </v-col>
 
-                  <v-col lg="6" md="6" cols="12">
+                  <v-col lg="6" md="6" cols="12" v-if="data.processor_type != 'bank'">
                     <ValidationProvider
                       v-slot="{ errors }"
                       name="Name English"
@@ -728,7 +728,7 @@
                         outlined
                         type="text"
                         v-model="data.name_en"
-                        :label="$t('container.list.name_en')"
+                        :label="$t('container.payroll_management.mfs_name_en')"
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="
@@ -742,18 +742,18 @@
                       >
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12">
+                  <v-col lg="6" md="6" cols="12" v-if="data.processor_type != 'bank'">
                     <ValidationProvider
                       v-slot="{ errors }"
                       name="Name in Bangla"
                       vid="name_bn"
-                      rules="required|checkNameBn"
+                      rules="required|checkNameBn" 
                     >
                       <v-text-field
                         outlined
                         type="text"
                         v-model="data.name_bn"
-                        :label="$t('container.list.name_bn')"
+                        :label="$t('container.payroll_management.mfs_name_bn')"
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="
@@ -1382,49 +1382,40 @@ export default {
           value: "id",
           align: "start",
           sortable: false,
-          class: "table-header",
         },
         {
           text: this.$t("container.payroll_management.processor_type"),
           value: "processor_type",
           align: "center",
-          class: "table-header",
         },
         {
           text: this.$t("container.list.name_en"),
           value: "name_en",
-          class: "table-header",
         },
         {
           text: this.$t("container.list.name_bn"),
           value: "name_bn",
-          class: "table-header",
         },
         {
           text: this.$t("container.payroll_management.coverage_area"),
           value: "processor_area.district.name_en",
-          class: "table-header",
         },
         {
           text: this.$t("container.payroll_management.focal_phone"),
           value: "focal_phone_no",
-          class: "table-header",
         },
         {
           text: this.$t("container.payroll_management.email"),
           value: "focal_email_address",
-          class: "table-header",
         },
         {
           text: this.$t("container.payroll_management.charge"),
           value: "charge",
-          class: "table-header",
         },
         {
           text: this.$t("container.list.action"),
           value: "actions",
           sortable: false,
-          class: "table-header",
         },
       ];
     },
