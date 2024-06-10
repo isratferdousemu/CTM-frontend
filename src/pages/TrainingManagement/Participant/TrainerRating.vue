@@ -7,7 +7,7 @@ export default {
     data() {
         return {
             data: [],
-            questionPaper: [],
+            ratingPaper: [],
             answers: [],
             edited_on_days:[],
             showPassword: false,
@@ -80,8 +80,8 @@ export default {
           await ApiService.get(`admin/training/participants/${this.$route.params.id}`)
               .then(res => {
                 this.data = res?.data?.data;
-                this.answers = this.data.exam_response
-                this.questionPaper = this.data.training_program?.question_paper
+                this.answers = this.data.trainer_rating_response
+                this.ratingPaper = this.data.training_program?.trainer_ratings_paper
               })
         },
 
@@ -119,7 +119,7 @@ export default {
 
                         <v-row class="my-custom-row ma-5">
 
-                          <template v-for="(item, index) in questionPaper">
+                          <template v-for="(item, index) in ratingPaper">
                             <v-col cols="5" style="font-size:13px;">
                               {{ item.label }}
                             </v-col>
@@ -131,24 +131,6 @@ export default {
                             </v-col>
 
                           </template>
-
-
-                          <v-col cols="5" style="font-size:13px;margin-top: 15px;">
-                            <b>{{ $t("container.training_management.training_registration.result") }}</b>
-                          </v-col>
-
-                          <v-col cols="3" style="font-size:13px;margin-top: 15px;">
-                            <v-select dense type="text"
-                                      v-model="data.status"
-                                      :items="status_types"
-                                      :item-text="getItemText"
-                                      item-value="id"
-                                      @change="changeStatus"
-                                      persistent-hint outlined
-                            ></v-select>
-
-                          </v-col>
-
 
 
                             <!-- Other fields -->

@@ -88,7 +88,11 @@
       "sync": "Sync",
       "close": "Close",
       "addToList": "Add to list",
-      "gradeExam": "Grade Exam"
+      "gradeExam": "Grade Exam",
+      "trainerRating": "Trainer Rating",
+      "exam": "Exam",
+      "trainerAssessment": "Trainer Assessment",
+      "certificate": "Certificate"
     },
     "system_config": {
       "demo_graphic": {

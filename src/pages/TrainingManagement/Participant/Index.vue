@@ -789,7 +789,18 @@ export default {
                                                             <v-icon> mdi-newspaper-variant-outline </v-icon>
                                                         </v-btn>
                                                     </template>
-                                                    <span>{{ $t("container.list.gradeExam") }}</span>
+                                                    <span>{{ $t("container.list.exam") }}</span>
+                                                </v-tooltip>
+
+                                              <v-tooltip top v-if="item.trainer_rating_response">
+                                                    <template v-slot:activator="{ on }">
+                                                        <v-btn v-can="'Participant-edit'" class=" mr-2 mb-1" fab x-small
+                                                            v-on="on" color="red" elevation="0" router
+                                                            :to="`/training-management/participant/trainer-rating/${item.id}`">
+                                                            <v-icon color="white"> mdi-card-account-details-star-outline </v-icon>
+                                                        </v-btn>
+                                                    </template>
+                                                    <span>{{ $t("container.list.trainerAssessment") }}</span>
                                                 </v-tooltip>
 
                                                 <v-tooltip top>

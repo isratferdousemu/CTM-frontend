@@ -250,6 +250,13 @@ export default {
                 });
 
         },
+
+      openLink(link){
+          if (link) {
+            window.open(link, '_blank')
+          }
+      },
+
         copyToClipboard(id) {
             const baseUrl = window.location.origin;
             console.log(baseUrl,"baseUrl");
@@ -285,9 +292,10 @@ export default {
             .then(res => {
               this.is_loading = false
               console.log(res.data)
+              this.$toast.success(res.data?.message)
             }).catch(err => {
               this.is_loading = false
-              console.log(err.response.data)
+              this.$toast.error(err.response.data.message)
             })
 
       },
@@ -948,6 +956,43 @@ export default {
                                                                     </v-btn>
                                                                 </template>
                                                                 <span>{{ $t("container.list.delete") }}</span>
+                                                            </v-tooltip>
+
+
+                                                          <v-tooltip top v-if="item.is_participant && item.exam_status && item.question_link">
+                                                                <template v-slot:activator="{ on }">
+                                                                    <v-btn fab x-small
+                                                                        v-on="on" color="green"
+                                                                        class=" mr-2 white--text mb-1" elevation="0"
+                                                                        @click="openLink(item.question_link)">
+                                                                        <v-icon> mdi-newspaper-variant-outline </v-icon>
+                                                                    </v-btn>
+                                                                </template>
+                                                                <span>{{ $t("container.list.exam") }}</span>
+                                                            </v-tooltip>
+
+                                                          <v-tooltip top v-if="item.is_participant && item.rating_status && item.trainer_ratings_link">
+                                                                <template v-slot:activator="{ on }">
+                                                                    <v-btn fab x-small
+                                                                        v-on="on" color="red"
+                                                                        class=" mr-2 white--text mb-1" elevation="0"
+                                                                        @click="openLink(item.trainer_ratings_link)">
+                                                                        <v-icon> mdi-card-account-details-star-outline </v-icon>
+                                                                    </v-btn>
+                                                                </template>
+                                                                <span>{{ $t("container.list.trainerAssessment") }}</span>
+                                                            </v-tooltip>
+
+                                                          <v-tooltip top v-if="item.certificate==1">
+                                                                <template v-slot:activator="{ on }">
+                                                                    <v-btn fab x-small
+                                                                        v-on="on" color="grey"
+                                                                        class=" mr-2 white--text mb-1" elevation="0"
+                                                                        @click="deleteAlert(item.id)">
+                                                                        <v-icon> mdi-file-download-outline </v-icon>
+                                                                    </v-btn>
+                                                                </template>
+                                                                <span>{{ $t("container.list.certificate") }}</span>
                                                             </v-tooltip>
 
 
