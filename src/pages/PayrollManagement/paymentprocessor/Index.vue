@@ -3,6 +3,409 @@
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
         <v-row>
+          <!-- <v-col cols="12">
+            <v-expansion-panels>
+              <v-expansion-panel class="ma-2">
+                <v-expansion-panel-header
+                  color="#8C9EFF"
+                  style="
+                    background-color: #1c3b68;
+                    color: white;
+                    font-size: 17px;
+                  "
+                >
+                  <template v-slot:actions>
+                    <v-icon color="white"> $expand </v-icon>
+                  </template>
+                  <h3 class="white--text">
+                    {{ $t("container.list.filter") }}
+                  </h3>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content
+                  class="elevation-0 transparent mt-10"
+                >
+                  <ValidationObserver ref="formsearch" v-slot="{ invalid }">
+                    <form @submit.prevent="filterOn()">
+                      <v-row>
+                        <v-col lg="6" md="6" cols="12">
+                          <ValidationProvider
+                            v-slot="{ errors }"
+                            name="Division"
+                            vid="division"
+                            rules="required"
+                          >
+                            <v-autocomplete
+                              outlined
+                              :clearable="clearDivision"
+                              v-model="data.division"
+                              :items="divisions"
+                              :item-text="
+                                language === 'bn' ? 'name_bn' : 'name_en'
+                              "
+                              item-value="id"
+                              :label="
+                                $t('container.payroll_management.division')
+                              "
+                              :error="errors[0] ? true : false"
+                              :error-messages="
+                                errors[0]
+                                  ? language === 'bn'
+                                    ? 'একটি বিভাগ নির্বাচন করুন'
+                                    : 'Select a division'
+                                  : ''
+                              "
+                              @change="getDistricts(data.division)"
+                            >
+                            </v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col lg="6" md="6" cols="12">
+                          <ValidationProvider
+                            v-slot="{ errors }"
+                            name="District"
+                            vid="district"
+                            rules="required"
+                          >
+                            <v-autocomplete
+                              outlined
+                              :clearable="clearDistrict"
+                              v-model="data.district"
+                              :items="districts"
+                              :item-text="
+                                language === 'bn' ? 'name_bn' : 'name_en'
+                              "
+                              item-value="id"
+                              :label="
+                                $t('container.payroll_management.district')
+                              "
+                              :error="errors[0] ? true : false"
+                              :error-messages="
+                                errors[0]
+                                  ? language === 'bn'
+                                    ? 'একটি জেলা নির্বাচন করুন'
+                                    : 'Select a district'
+                                  : ''
+                              "
+                              @change="clearField()"
+                            >
+                            </v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col lg="6" md="6" cols="12">
+                          <ValidationProvider
+                            v-slot="{ errors }"
+                            name="Location Type"
+                            vid="location_type"
+                            rules="required"
+                          >
+                            <v-autocomplete
+                              outlined
+                              :clearable="clearLocation"
+                              v-model="data.location_type"
+                              :items="location_types"
+                              :item-text="
+                                language === 'bn' ? 'value_bn' : 'value_en'
+                              "
+                              item-value="id"
+                              :label="
+                                $t('container.payroll_management.location_type')
+                              "
+                              :error="errors[0] ? true : false"
+                              :error-messages="
+                                errors[0]
+                                  ? language === 'bn'
+                                    ? 'একটি অবস্থানের ধরন নির্বাচন করুন'
+                                    : 'Select a location type'
+                                  : ''
+                              "
+                              @change="
+                                getArea(data.district, data.location_type)
+                              "
+                              v-if="data.district != null"
+                            >
+                            </v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="
+                            data.location_type != null &&
+                            data.location_type === 2 &&
+                            data.district != null
+                          "
+                        >
+                          <ValidationProvider
+                            v-slot="{ errors }"
+                            name="Upazila"
+                            vid="upazila"
+                            rules="required"
+                          >
+                            <v-autocomplete
+                              outlined
+                              :clearable="clearUpazila"
+                              v-model="data.upazila"
+                              :items="upazilas"
+                              :item-text="
+                                language === 'bn' ? 'name_bn' : 'name_en'
+                              "
+                              item-value="id"
+                              :label="
+                                $t('container.payroll_management.upazila')
+                              "
+                              :error="errors[0] ? true : false"
+                              :error-messages="
+                                errors[0]
+                                  ? language === 'bn'
+                                    ? 'একটি উপজেলা নির্বাচন করুন'
+                                    : 'Select a upazila'
+                                  : ''
+                              "
+                              @change="
+                                getUnionOrThana(
+                                  data.upazila,
+                                  data.location_type
+                                )
+                              "
+                            >
+                            </v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="
+                            data.location_type != null &&
+                            data.location_type == 2 &&
+                            data.upazila != null &&
+                            data.district != null
+                          "
+                        >
+                          <ValidationProvider
+                            v-slot="{ errors }"
+                            name="Union"
+                            vid="union"
+                            rules="required"
+                          >
+                            <v-autocomplete
+                              outlined
+                              :clearable="clearUnion"
+                              v-model="data.union"
+                              :items="unions"
+                              :item-text="
+                                language === 'bn' ? 'name_bn' : 'name_en'
+                              "
+                              item-value="id"
+                              :label="$t('container.payroll_management.union')"
+                              :error="errors[0] ? true : false"
+                              :error-messages="
+                                errors[0]
+                                  ? language === 'bn'
+                                    ? 'একটি ইউনিয়ন নির্বাচন করুন'
+                                    : 'Select a union'
+                                  : ''
+                              "
+                            >
+                            </v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="
+                            data.location_type != null &&
+                            data.location_type === 3 &&
+                            data.district != null
+                          "
+                        >
+                          <ValidationProvider
+                            v-slot="{ errors }"
+                            name="City Corporation"
+                            vid="city_corporation"
+                            rules="required"
+                          >
+                            <v-autocomplete
+                              outlined
+                              :clearable="clearCityCorporation"
+                              v-model="data.city_corporation"
+                              :items="city_corporations"
+                              :item-text="
+                                language === 'bn' ? 'name_bn' : 'name_en'
+                              "
+                              item-value="id"
+                              :label="
+                                $t(
+                                  'container.payroll_management.city_corporation'
+                                )
+                              "
+                              :error="errors[0] ? true : false"
+                              :error-messages="
+                                errors[0]
+                                  ? language === 'bn'
+                                    ? 'একটি সিটি কর্পোরেশন নির্বাচন করুন'
+                                    : 'Select a city corporation'
+                                  : ''
+                              "
+                              @change="
+                                getUnionOrThana(
+                                  data.city_corporation,
+                                  data.location_type
+                                )
+                              "
+                            >
+                            </v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="
+                            data.location_type != null &&
+                            data.location_type == 3 &&
+                            data.city_corporation != null &&
+                            data.district != null
+                          "
+                        >
+                          <ValidationProvider
+                            v-slot="{ errors }"
+                            name="Thana"
+                            vid="thana"
+                            rules="required"
+                          >
+                            <v-autocomplete
+                              outlined
+                              :clearable="clearThana"
+                              v-model="data.thana"
+                              :items="thanas"
+                              :item-text="
+                                language === 'bn' ? 'name_bn' : 'name_en'
+                              "
+                              item-value="id"
+                              :label="$t('container.payroll_management.thana')"
+                              :error="errors[0] ? true : false"
+                              :error-messages="
+                                errors[0]
+                                  ? language === 'bn'
+                                    ? 'একটি থানা নির্বাচন করুন'
+                                    : 'Select a thana'
+                                  : ''
+                              "
+                            >
+                            </v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="
+                            data.location_type === 1 && data.district != null
+                          "
+                        >
+                          <ValidationProvider
+                            v-slot="{ errors }"
+                            name="District Pourashava"
+                            vid="district_pourashava"
+                            rules="required"
+                          >
+                            <v-autocomplete
+                              outlined
+                              :clearable="clearDistrictPourashava"
+                              v-model="data.district_pourashava"
+                              :item-text="
+                                language === 'bn' ? 'name_bn' : 'name_en'
+                              "
+                              :items="district_pourashavas"
+                              item-value="id"
+                              :label="
+                                $t(
+                                  'container.payroll_management.district_pourashava'
+                                )
+                              "
+                              :error="errors[0] ? true : false"
+                              :error-messages="
+                                errors[0]
+                                  ? language === 'bn'
+                                    ? 'একটি জেলা পৌরসভা নির্বাচন করুন'
+                                    : 'Select a district pourashava'
+                                  : ''
+                              "
+                              @change="
+                                getUnionOrThana(
+                                  data.district_pourashava,
+                                  data.location_type
+                                )
+                              "
+                            >
+                            </v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col
+                          lg="6"
+                          md="6"
+                          cols="12"
+                          v-if="
+                            data.location_type === 1 &&
+                            data.district_pourashava != null &&
+                            data.district != null
+                          "
+                        >
+                          <ValidationProvider
+                            v-slot="{ errors }"
+                            name="Thana"
+                            vid="thana"
+                            rules="required"
+                          >
+                            <v-autocomplete
+                              outlined
+                              :clearable="clearThana"
+                              v-model="data.thana"
+                              :items="thanas"
+                              :item-text="
+                                language === 'bn' ? 'name_bn' : 'name_en'
+                              "
+                              item-value="id"
+                              :label="$t('container.payroll_management.thana')"
+                              :error="errors[0] ? true : false"
+                              :error-messages="
+                                errors[0]
+                                  ? language === 'bn'
+                                    ? 'একটি থানা নির্বাচন করুন'
+                                    : 'Select a thana'
+                                  : ''
+                              "
+                            >
+                            </v-autocomplete>
+                          </ValidationProvider>
+                        </v-col>                        
+                      </v-row>
+                      <div class="d-inline d-flex justify-end mt-2">
+                          <v-btn
+                            elevation="2"
+                            class="btn"
+                            @click="resetSearch"
+                            >{{ $t("container.list.reset") }}</v-btn
+                          >
+                          <v-btn
+                            elevation="2"
+                            type="submit"
+                            :disabled="invalid"
+                            class="btn ml-2"
+                            color="success"
+                            >{{ $t("container.list.filter") }}</v-btn
+                          >
+                        </div>
+                    </form>
+                  </ValidationObserver>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-expansion-panels>
+          </v-col> -->
+
           <v-col cols="12">
             <v-card
               elevation="10"
@@ -14,7 +417,7 @@
               <v-card-title
                 class="justify-center"
                 tag="div"
-                style="background-color: #2b4978; color: white"
+                style="background-color: #1c3b68; color: white"
               >
                 <h3>
                   {{ $t("container.payroll_management.list") }}
@@ -42,15 +445,51 @@
                     >
                     </v-text-field>
                   </div>
+
                   <v-btn
                     @click="createDialog"
                     flat
                     color="primary"
                     prepend-icon="mdi-account-multiple-plus"
                   >
-                    {{ $t("container.list.add_new") }}
+                    {{ $t("container.payroll_management.add_new_processor") }}
                   </v-btn>
-                  <v-col cols="12">
+
+                  <!-- <div class="d-flex flex-column align-items-end ml-auto mb-4">
+                    <v-btn
+                      @click="createDialog"
+                      flat
+                      color="primary"
+                      prepend-icon="mdi-account-multiple-plus"
+                      class="mb-6 text-right ml-auto"
+                      style="width: 120px"
+                    >
+                      {{ $t("container.list.add_new") }}
+                    </v-btn>
+
+                    <div class="d-flex ml-auto">
+                      <v-btn
+                        elevation="2"
+                        class="btn mr-2 white--text"
+                        color="red darken-4"
+                        @click="GeneratePDF()"
+                      >
+                        <v-icon class="pr-1">mdi-tray-arrow-down</v-icon>
+                        {{ $t("container.list.PDF") }}
+                      </v-btn>
+                      <v-btn
+                        elevation="2"
+                        class="btn mr-2 white--text"
+                        color="teal darken-2"
+                        @click="GenerateExcel()"
+                      >
+                        <v-icon class="pr-1">mdi-tray-arrow-down</v-icon>
+                        {{ $t("container.list.excel") }}
+                      </v-btn>
+                    </div>
+                  </div> -->
+
+                  <v-col cols="12" class="mt-6">
                     <v-data-table
                       :loading="loading"
                       item-key="id"
@@ -116,7 +555,9 @@
                                 </v-btn>
                               </router-link>
                             </template>
-                            <span>{{ $t("container.list.show") }}</span>
+                            <span>{{
+                              $t("container.payroll_management.view")
+                            }}</span>
                           </v-tooltip>
 
                           <v-tooltip top>
@@ -141,7 +582,7 @@
                       <!-- End Action Button -->
 
                       <template v-slot:footer="item">
-                        <div
+                        <!-- <div
                           class="text-center pt-2 v-data-footer justify-center pb-2"
                         >
                           <v-select
@@ -167,9 +608,9 @@
                             :total-visible="11"
                             class="custom-pagination-item"
                           ></v-pagination>
-                        </div>
+                        </div> -->
 
-                        <!-- <v-container class="pa-0" fluid>
+                        <v-container class="pa-0 mt-4" fluid>
                           <v-row class="align-center" cols="12">
                             <v-col
                               cols="12"
@@ -194,12 +635,12 @@
                                 hide-details
                                 dense
                                 outlined
-                                @change="onPageChange"
+                                @change="onPageSetup"
                                 v-model="pagination.perPage"
                               ></v-select>
                             </v-col>
                           </v-row>
-                        </v-container> -->
+                        </v-container>
                       </template>
                     </v-data-table>
                   </v-col>
@@ -500,7 +941,7 @@
                     >
                       <v-autocomplete
                         outlined
-                        clearable
+                        :clearable="clearDivision"
                         v-model="data.division"
                         :items="divisions"
                         :item-text="language === 'bn' ? 'name_bn' : 'name_en'"
@@ -528,7 +969,7 @@
                     >
                       <v-autocomplete
                         outlined
-                        clearable
+                        :clearable="clearDistrict"
                         v-model="data.district"
                         :items="districts"
                         :item-text="language === 'bn' ? 'name_bn' : 'name_en'"
@@ -814,6 +1255,7 @@
                       color="primary"
                       :disabled="invalid"
                       :loading="loading"
+                      @change="filterOn"
                       class="custom-btn-width success white--text py-2"
                     >
                       {{ $t("container.list.submit") }}
@@ -917,7 +1359,7 @@ extend("checkNameBn", {
 });
 export default {
   name: "Index",
-  title: "CTM - Payment Processor",
+  title: "Payment Processor",
   data() {
     return {
       data: {
@@ -941,8 +1383,15 @@ export default {
         location_type: null,
         office: null,
       },
+      filter: false,
       clearLocation: false,
+      clearDivision: false,
+      clearDistrict: false,
       clearUpazila: false,
+      clearUnion: false,
+      clearThana: false,
+      clearCityCorporation: false,
+      clearDistrictPourashava: false,
       dialogAdd: false,
       onEdit: false,
       deleteDialog: false,
@@ -1005,58 +1454,58 @@ export default {
   },
   computed: {
     headers() {
-    return [
-      {
-        text: this.$t("container.list.sl"),
-        value: "id",
-        align: "start",
-        sortable: false,
-        class: 'table-header',
-      },
-      {
-        text: this.$t("container.payroll_management.processor_type"),
-        value: "processor_type",
-        align: "center",
-        class: 'table-header',
-      },
-      {
-        text: this.$t("container.list.name_en"),
-        value: "name_en",
-        class: 'table-header',
-      },
-      {
-        text: this.$t("container.list.name_bn"),
-        value: "name_bn",
-        class: 'table-header',
-      },
-      {
-        text: this.$t("container.payroll_management.coverage_area"),
-        value: "processor_area.district.name_en",
-        class: 'table-header',
-      },
-      {
-        text: this.$t("container.payroll_management.focal_phone"),
-        value: "focal_phone_no",
-        class: 'table-header',
-      },
-      {
-        text: this.$t("container.payroll_management.email"),
-        value: "focal_email_address",
-        class: 'table-header',
-      },
-      {
-        text: this.$t("container.payroll_management.charge"),
-        value: "charge",
-        class: 'table-header',
-      },
-      {
-        text: this.$t("container.list.action"),
-        value: "actions",
-        sortable: false,
-        class: 'table-header',
-      },
-    ];
-  },
+      return [
+        {
+          text: this.$t("container.list.sl"),
+          value: "id",
+          align: "start",
+          sortable: false,
+          class: "table-header",
+        },
+        {
+          text: this.$t("container.payroll_management.processor_type"),
+          value: "processor_type",
+          align: "center",
+          class: "table-header",
+        },
+        {
+          text: this.$t("container.list.name_en"),
+          value: "name_en",
+          class: "table-header",
+        },
+        {
+          text: this.$t("container.list.name_bn"),
+          value: "name_bn",
+          class: "table-header",
+        },
+        {
+          text: this.$t("container.payroll_management.coverage_area"),
+          value: "processor_area.district.name_en",
+          class: "table-header",
+        },
+        {
+          text: this.$t("container.payroll_management.focal_phone"),
+          value: "focal_phone_no",
+          class: "table-header",
+        },
+        {
+          text: this.$t("container.payroll_management.email"),
+          value: "focal_email_address",
+          class: "table-header",
+        },
+        {
+          text: this.$t("container.payroll_management.charge"),
+          value: "charge",
+          class: "table-header",
+        },
+        {
+          text: this.$t("container.list.action"),
+          value: "actions",
+          sortable: false,
+          class: "table-header",
+        },
+      ];
+    },
     language: {
       get() {
         return this.$store.getters.getAppLanguage;
@@ -1079,6 +1528,183 @@ export default {
   },
 
   methods: {
+    
+    convertCase(input) {
+      // first latter uppar case
+      let formattedInput = input.replace(/[-_]/g, " ");
+      let words = formattedInput.split(" ");
+      let titleCasedWords = words.map((word) => {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      });
+      return titleCasedWords.join(" ");
+    },
+
+    convertToUpper(input) {
+      // all latter upper case
+      let formattedInput = input.replace(/[-_]/g, " ");
+      let upperCaseInput = formattedInput.toUpperCase();
+
+      return upperCaseInput;
+    },
+
+    async GeneratePDF() {
+      // this.isLoading = true;
+      const queryParams = {
+        search: this.search,
+        perPage: this.pagination.perPage,
+        page: this.pagination.current,
+        sortBy: this.sortBy,
+        sortDesc: this.sortDesc,
+      };
+
+      await this.$axios
+        .get("/admin/payroll/payment-processor", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          this.values = result.data?.data?.data;
+        });
+
+      const HeaderInfo = [
+        this.$t("container.list.sl"),
+        this.$t("container.payroll_management.processor_type"),
+        this.$t("container.list.name_en"),
+        this.$t("container.payroll_management.coverage_area"),
+        this.$t("container.payroll_management.focal_phone"),
+        this.$t("container.payroll_management.charge"),
+      ];
+
+      const CustomInfo = this.values.map((i, index) => {
+        return [
+          this.language == "en"
+            ? index + 1
+            : this.$helpers.englishToBangla(index + 1),
+          this.convertToUpper(i.processor_type),
+          i.name_en,
+          i.processor_area.district.name_en,
+          i.focal_phone_no,
+          i.charge,
+        ];
+      });
+
+      const queryParam = {
+        language: this.$i18n.locale,
+        data: CustomInfo,
+        header: HeaderInfo,
+        fileName: this.$t("container.payroll_management.list"),
+      };
+      try {
+        const response = await this.$axios.post(
+          "/admin/generate-pdf",
+          queryParam,
+          {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "application/json", // Set content type to JSON
+            },
+            responseType: "arraybuffer",
+          }
+        );
+
+        const blob = new Blob([response.data], { type: "application/pdf" });
+        const url = window.URL.createObjectURL(blob);
+        window.open(url, "_blank");
+        this.isLoading = false;
+      } catch (error) {
+        this.isLoading = false;
+        console.error("Error generating PDF:", error);
+      }
+    },
+
+    //generate excel
+    async GenerateExcel() {
+      const queryParams = {
+        search: this.search,
+        perPage: this.pagination.perPage,
+        page: this.pagination.current,
+        sortBy: this.sortBy,
+        sortDesc: this.sortDesc,
+      };
+
+      await this.$axios
+        .get("/admin/payroll/payment-processor", {
+          headers: {
+            Authorization: "Bearer " + this.$store.state.token,
+            "Content-Type": "multipart/form-data",
+          },
+          params: queryParams,
+        })
+        .then((result) => {
+          this.values = result?.data?.data?.data;
+
+          import("@/plugins/Export2Excel").then((excel) => {
+            const HeaderInfo = [
+              this.$t("container.list.sl"),
+              this.$t("container.payroll_management.processor_type"),
+              this.$t("container.list.name_en"),
+              this.$t("container.payroll_management.coverage_area"),
+              this.$t("container.payroll_management.focal_phone"),
+              this.$t("container.payroll_management.charge"),
+            ];
+
+            const CustomInfo = this.values.map((i, index) => {
+              return {
+                SL:
+                  this.language == "en"
+                    ? index + 1
+                    : this.$helpers.englishToBangla(index + 1),
+                "Processor Type": this.convertToUpper(i.processor_type),
+                "Name (English)": i.name_en,
+                "Coverage Area": i.processor_area.district.name_en,
+                Phone: i.focal_phone_no,
+                Charge: i.charge,
+              };
+            });
+
+            const Field = [
+              "SL",
+              "Processor Type",
+              "Name (English)",
+              "Coverage Area",
+              "Phone",
+              "Charge",
+            ];
+
+            const Item = this.FormatJson(Field, CustomInfo);
+            const currentDate = new Date().toISOString().slice(0, 10); //
+            let dateinfo =
+              queryParams.language == "en"
+                ? currentDate
+                : this.$helpers.englishToBangla(currentDate);
+
+            const filenameWithDate = `${dateinfo}_${this.$t(
+              "container.payroll_management.list"
+            )}`;
+
+            excel.export_json_to_excel({
+              header: HeaderInfo,
+              data: Item,
+              sheetName: "",
+              filename: filenameWithDate,
+              autoWidth: true,
+              bookType: "xlsx",
+            });
+          });
+        });
+    },
+
+    FormatJson(FilterData, JsonData) {
+      return JsonData.map((v) =>
+        FilterData.map((j) => {
+          return v[j];
+        })
+      );
+    },
+
     englishToBanglaNumber(number) {
       const banglaNumbers = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
       return number.toString().replace(/\d/g, (digit) => banglaNumbers[digit]);
@@ -1102,7 +1728,14 @@ export default {
       return fd;
     },
 
+    resetSearch() {
+      this.clear();
+      this.getPaymentProcessor();
+    },
+
     clear() {
+      this.clearDivision = true;
+      this.clearDistrict = true;
       this.clearLocation = true;
       this.clearUpazila = true;
       this.clearUnion = true;
@@ -1289,9 +1922,25 @@ export default {
       return translations[message] || message;
     },
 
+    filterOn(){
+      this.filter = true;
+      this.getPaymentProcessor();
+    },
+
     async getPaymentProcessor() {
       const queryParams = {
         search: this.search,
+        //dropdown filter
+        filter: this.filter,
+        location_type: this.data?.location_type,
+        division_id: this.data?.division,
+        district_id: this.data?.district,
+        upazila_id: this.data?.upazila,
+        union_id: this.data?.union,
+        city_corp_id: this.data?.city_corporation,
+        thana_id: this.data?.thana,
+        district_pouro_id: this.data?.district_pourashava,
+        //dropdown filter end
         perPage: this.pagination.perPage,
         page: this.pagination.current,
         sortBy: this.sortBy,
@@ -1314,11 +1963,14 @@ export default {
           this.pagination.total = response?.data?.data?.last_page;
           this.pagination.grand_total = response?.data?.data?.total;
           this.loading = false;
+          this.filter = false;
         } else {
           this.$toast.error("Something went wrong");
+          this.filter = false;
         }
       } catch (error) {
         console.error("Error fetching divisions:", error);
+        this.filter = false;
       }
     },
 

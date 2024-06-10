@@ -15,7 +15,6 @@
             $t("container.application_selection.application.title_online_2")
           }}
         </v-toolbar-title>
-
         <v-col>
           <!-- Empty column to create space between title and LocaleSwitcher -->
         </v-col>
@@ -213,15 +212,13 @@
                           </ValidationProvider>
                         </v-col>
 
-                        <v-col cols="2">
-                          <!-- Day Dropdown -->
-                          <label
-                            >{{
-                              $t(
-                                "container.application_selection.application.day"
-                              )
-                            }}
-                          </label>
+
+
+                        <!-- <v-col cols="2">
+
+
+                    
+                          <label>{{ $t('container.application_selection.application.day') }} </label>
                           <span style="margin-left: 4px; color: red">*</span>
 
                           <v-select
@@ -232,8 +229,7 @@
                             @change="updateDate"
                           ></v-select>
                         </v-col>
-                        <!-- Month Dropdown -->
-
+                     
                         <v-col cols="2">
                           <label
                             >{{
@@ -259,19 +255,16 @@
                           </ValidationProvider>
                         </v-col>
 
-                        <!-- Year Dropdown -->
+
+
                         <v-col cols="2">
                           <label
                             >{{
                               $t(
                                 "container.application_selection.application.year"
                               )
-                            }}
-                          </label>
-                          <span style="margin-left: 4px; color: red">*</span>
                           <ValidationProvider
                             name="Year"
-                            vid="selectedYear"
                             v-slot="{ errors }"
                             rules="required"
                           >
@@ -283,31 +276,21 @@
                               @change="updateDate"
                             ></v-select>
                           </ValidationProvider>
-                        </v-col>
+
+                        </v-col> -->
 
                         <!-- Read-only field to display calculated date of birth -->
 
-                        <v-col cols="2">
-                          <label
-                            >{{
-                              $t(
-                                "container.application_selection.application.date_of_birth"
-                              )
-                            }}
-                          </label>
+
+                        <v-col cols="4">
+
+                          <label>{{ $t('container.application_selection.application.date_of_birth') }} </label>
                           <span style="margin-left: 4px; color: red">*</span>
-                          <ValidationProvider
-                            name="Date of Birth"
-                            vid="date_of_birth"
-                            v-slot="{ errors }"
-                            rules="required"
-                          >
-                            <v-text-field
-                              v-model="data.date_of_birth"
-                              readonly
-                              :value="formattedDate"
-                              outlined
-                            ></v-text-field>
+                          <ValidationProvider name="Date of Birth" vid="date_of_birth" v-slot="{ errors }"
+                            rules="required">
+
+                            <v-text-field v-model="data.date_of_birth" type="date" :value="formattedDate"
+                              outlined></v-text-field>
                           </ValidationProvider>
                         </v-col>
 
@@ -334,26 +317,15 @@
                             </v-text-field>
                           </ValidationProvider> -->
                         <!-- </v-col> -->
-                      </V-row>
-                      <div></div>
-                      <div class="d-inline d-flex justify-end">
-                        <v-btn
-                          @click="verifyCard()"
-                          elevation="2"
-                          :disabled="
-                            data.date_of_birth == null ||
-                            data.verification_number == null ||
-                            data.verification_type == null ||
-                            data.verification_type == 2 ||
-                            data.date_of_birth == '' ||
-                            data.verification_number == '' ||
-                            data.verification_type == ''
-                          "
-                          class="btn"
-                          color="primary"
-                          >{{ $t("container.list.verify") }}</v-btn
-                        >
-                      </div>
+
+
+
+                        <v-col cols="4" class="d-flex justify-end">
+                          <v-btn @click="verifyCard()" elevation="2"
+                            :disabled="data.date_of_birth == null || data.verification_number == null || data.verification_type == null || data.verification_type == 2 || data.date_of_birth == '' || data.verification_number == '' || data.verification_type == ''"
+                            class="btn mt-10 " color="primary">{{ $t('container.list.verify') }}</v-btn>
+                        </v-col>
+                      </v-row>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
                   <!-- Applicant Verification end -->
@@ -538,33 +510,13 @@
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Name in English"
-                              vid="name_en"
-                              rules="required"
-                              v-slot="{ errors }"
-                            >
-                              <label>{{
-                                $t(
-                                  "container.application_selection.application.name_en"
-                                )
-                              }}</label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-text-field
-                                v-model="data.name_en"
-                                outlined
-                                clearable
-                                :error="errors[0] ? true : false"
-                                :error-messages="
-                                  errors[0]
-                                    ? language == 'bn'
-                                      ? 'অনুগ্রহ পূর্বক সম্পূর্ণ নাম (ইংরেজীতে) প্রদান করুন '
-                                      : 'Please enter Full Name (English)'
-                                    : ''
-                                "
-                              >
+                            <ValidationProvider name="Name in English" vid="name_en" rules="required||english"
+                              v-slot="{ errors }">
+                              <label>{{ $t('container.application_selection.application.name_en') }}</label>
+                              <span style="margin-left: 4px; color: red">*</span>
+                              <v-text-field v-model="data.name_en" outlined clearable :error="errors[0] ? true : false"
+                                :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সম্পূর্ণ নাম (ইংরেজীতে) প্রদান করুন '
+  : 'Please enter Full Name (English)') : ''">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
@@ -585,37 +537,6 @@
                               >
                               <v-text-field
                                 v-model="data.father_name_bn"
-                                outlined
-                                clearable
-                                :error="errors[0] ? true : false"
-                                :error-messages="
-                                  errors[0]
-                                    ? language == 'bn'
-                                      ? 'অনুগ্রহ পূর্বক সম্পূর্ণ বাবার নাম (ইংরেজীতে) প্রদান করুন '
-                                      : 'Please enter Father Name (English)'
-                                    : ''
-                                "
-                              >
-                              </v-text-field>
-                            </ValidationProvider>
-                          </v-col>
-                          <v-col cols="6" lg="6">
-                            <ValidationProvider
-                              name="Father Name in English"
-                              vid="father_name_en"
-                              rules="required||bangla"
-                              v-slot="{ errors }"
-                            >
-                              <label>{{
-                                $t(
-                                  "container.application_selection.application.father_name_en"
-                                )
-                              }}</label>
-                              <span style="margin-left: 4px; color: red"
-                                >*</span
-                              >
-                              <v-text-field
-                                v-model="data.father_name_en"
                                 outlined
                                 clearable
                                 :error="errors[0] ? true : false"
@@ -2770,37 +2691,17 @@
                         </v-col>
                         <v-col cols="6" lg="6">
                           <v-radio-group v-model="data.account_type" row>
-                            {{
-                              $t(
-                                "container.application_selection.application.account_type"
-                              )
-                            }}
+                            {{ $t('container.application_selection.application.account_type') }}
 
-                            <span
-                              style="
-                                margin-left: 4px;
-                                margin-right: 4px;
-                                color: red;
-                              "
-                              >*</span
-                            >
-                            <v-radio
-                              :label="
-                                $t(
-                                  'container.application_selection.application.bank_account'
-                                )
-                              "
-                              :value="1"
-                            ></v-radio>
-                            <v-radio
-                              :label="
-                                $t(
-                                  'container.application_selection.application.mobile_account'
-                                )
-                              "
-                              :value="2"
-                              @click="mobile()"
-                            ></v-radio>
+                            <span style="
+                              margin-left: 4px;
+                              margin-right: 4px;
+                              color: red;
+                            ">*</span>
+                            <v-radio :label="$t('container.application_selection.application.bank_account')"
+                              :value="1"></v-radio>
+                            <v-radio :label="$t('container.application_selection.application.mobile_account')"
+                              :value="2"></v-radio>
                           </v-radio-group>
                         </v-col>
                         <v-col cols="6" lg="6" v-if="data.account_type === 2">
@@ -2933,14 +2834,9 @@
                               }} </label
                             ><span style="margin-left: 4px; color: red">*</span>
 
-                            <v-text-field
-                              v-model="data.bank_name"
-                              outlined
-                              clearable
-                              :error="errors[0] ? true : false"
-                              error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ব্যাংকের নাম প্রদান করুন'
-  : 'Please enter Bank Name') : ''"
-                            >
+                            <v-text-field v-model="data.bank_name" outlined clearable :error="errors[0] ? true : false"
+                              :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ব্যাংকের নাম প্রদান করুন'
+  : 'Please enter Bank Name') : ''">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
@@ -3040,12 +2936,13 @@
                           </ValidationProvider>
                         </v-col>
                       </v-row>
-                      <p class="red--text mt-2">
-                        {{
-                          $t(
-                            "container.application_selection.application.bank_alert"
-                          )
-                        }}
+                      <p class="red--text mt-2" v-if="data.account_type==2">
+                        {{ $t('container.application_selection.application.mobile_alert') }}
+
+                      </p>
+                      <p class="red--text mt-2" v-if="data.account_type==1">
+                        {{ $t('container.application_selection.application.bank_alert') }}
+
                       </p>
                     </v-expansion-panel-content>
                   </v-expansion-panel>
@@ -3109,33 +3006,20 @@
                                     </ValidationProvider>
                                   </v-col>
 
-                                  <!-- <v-col cols="2" lg="2">
-                                    <v-btn class="btn mt-5" color="primary" style="height: 56px;"
-                                      :disabled="data.nominee_verification_number == null">{{ $t('container.list.verify') }}</v-btn>
-                                  </v-col> -->
 
+                                  <!-- 
                                   <v-col cols="2">
-                                    <!-- Day Dropdown -->
-                                    <label
-                                      >{{
-                                        $t(
-                                          "container.application_selection.application.day"
-                                        )
-                                      }}
-                                    </label>
-                                    <span style="margin-left: 4px; color: red"
-                                      >*</span
-                                    >
 
-                                    <v-select
-                                      v-model="selectedDayNominee"
-                                      :items="twoDigitDays"
-                                      clearable
-                                      outlined
-                                      @change="updateDateNominee"
-                                    ></v-select>
+
+                                  
+                                    <label>{{ $t('container.application_selection.application.day') }} </label>
+                                    <span style="margin-left: 4px; color: red">*</span>
+
+                                    <v-select v-model="selectedDayNominee" :items="twoDigitDays" clearable outlined
+                                      @change="updateDateNominee"></v-select>
+
                                   </v-col>
-                                  <!-- Month Dropdown -->
+                                
 
                                   <v-col cols="2">
                                     <label
@@ -3157,7 +3041,11 @@
                                     ></v-select>
                                   </v-col>
 
-                                  <!-- Year Dropdown -->
+
+
+
+
+                            
                                   <v-col cols="2">
                                     <label
                                       >{{
@@ -3183,49 +3071,34 @@
                                         @change="updateDateNominee"
                                       ></v-select>
                                     </ValidationProvider>
-                                  </v-col>
-                                  <v-col cols="2">
-                                    <label
-                                      >{{
-                                        $t(
-                                          "container.application_selection.application.date_of_birth"
-                                        )
-                                      }}
+
+                                  </v-col> -->
+                                  <v-col cols="4">
+
+                                    <label>{{ $t('container.application_selection.application.date_of_birth') }}
                                     </label>
-                                    <span style="margin-left: 4px; color: red"
-                                      >*</span
-                                    >
-                                    <ValidationProvider
-                                      name=" Nominee Date of Birth"
-                                      vid="nominee_date_of_birth"
-                                      v-slot="{ errors }"
-                                      rules="required"
-                                    >
-                                      <v-text-field
-                                        v-model="data.nominee_date_of_birth"
-                                        readonly
-                                        :value="formattedDateNominee"
-                                        outlined
-                                      ></v-text-field>
+                                    <span style="margin-left: 4px; color: red">*</span>
+                                    <ValidationProvider name=" Nominee Date of Birth" vid="nominee_date_of_birth"
+                                      v-slot="{ errors }" rules="required">
+
+                                      <v-text-field v-model="data.nominee_date_of_birth" type="date"
+                                        :value="formattedDateNominee" outlined></v-text-field>
                                     </ValidationProvider>
+                                  </v-col>
+
+
+
+
+                                  <v-col cols="4" class="d-flex justify-end">
+
+                                    <v-btn @click="verifyNomineeCard()" elevation="2" id="verify-button"
+                                      :disabled="data.nominee_verification_number == null || data.nominee_date_of_birth == ''"
+                                      class="btn mt-10 text-right" color="primary">{{ $t('container.list.verify')
+                                      }}</v-btn>
+
                                   </v-col>
                                 </v-row>
 
-                                <div></div>
-                                <div class="d-inline d-flex justify-end">
-                                  <v-btn
-                                    @click="verifyNomineeCard()"
-                                    elevation="2"
-                                    id="verify-button"
-                                    :disabled="
-                                      data.nominee_verification_number ==
-                                        null || data.nominee_date_of_birth == ''
-                                    "
-                                    class="btn"
-                                    color="primary"
-                                    >{{ $t("container.list.verify") }}</v-btn
-                                  >
-                                </div>
                               </v-card-text>
                             </v-card>
                           </v-col>
@@ -3870,19 +3743,20 @@ extend("email", {
   },
   message: "Please enter a valid email address",
 });
-extend("bangla", {
-  validate: (value) => {
-    // Regular expression to match Bangla characters and spaces, excluding Bangla numbers
-    const banglaRegex = /^[\u0980-\u09FF\s]+$/;
-    // Regular expression to exclude Bangla numbers (০-৯)
-    const banglaNumbers = /[\u09E6-\u09EF]/;
+extend('english', {
+  validate: value => {
+    // Regular expression to match English characters, spaces, and specific additional characters
+    const englishRegex = /^[a-zA-Z\s\.\:\(\)\-]+$/;
 
-    // Check if value matches Bangla characters and spaces and does not include Bangla numbers
-    return banglaRegex.test(value) && !banglaNumbers.test(value);
+    // Check if value matches English characters, spaces, and specific additional characters
+    return englishRegex.test(value);
   },
-  message:
-    "Only Bangla characters and spaces are allowed in this field (Bangla numbers are not allowed)",
+  message: 'Only English characters, spaces, and ( . : () - ) are allowed in this field'
 });
+extend('bangla', {
+  validate: (value) => {
+    // Update the regular expression to accept Bangla letters, English letters, spaces, and specified additional characters, but not Bangla numbers
+    const banglaRegex = /^[\u0980-\u09DF\u09E0-\u09E5\u09F0-\u09FFa-zA-Z\s\.\:\(\)\-]+$/;
 
 extend("checkNumber", {
   validate: (value) => {
