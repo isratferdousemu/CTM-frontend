@@ -121,6 +121,7 @@ export default {
                   account_ownership: this.$t('container.application_selection.application.account_ownership'),
                   account_no: this.$t('container.beneficiary_management.beneficiary_list.account_no'),
                   bank_name: this.$t('container.application_selection.application.bank_name'),
+                  mfs_name: this.$t('container.application_selection.application.mfs_name'),
                   branch_name: this.$t('container.application_selection.application.branch_name'),
                 
                  
