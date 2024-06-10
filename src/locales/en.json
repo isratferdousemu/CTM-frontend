@@ -565,6 +565,7 @@
     "application_selection": {
       "application": {
         "select": "Select",
+        "mfs_name":"MFS Name",
         "select_all": "Select All",
         "application": "Application",
         "list": "Application List",

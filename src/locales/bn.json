@@ -565,6 +565,7 @@
     "application_selection": {
       "application": {
         "select": "সিলেক্ট",
+        "mfs_name": "এমএফএস নাম",
         "select_all": "সব সিলেক্ট করুন",
         "application": "আবেদন",
         "list": "আবেদনের তালিকা ",
