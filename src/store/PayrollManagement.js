@@ -42,6 +42,16 @@ const actions = {
         return err;
       });
   },
+  SubmitPreviewSendBeneficiaries: ({ commit }, data) => {
+    return http()
+      .post('/admin/payroll/submit-payroll', data)
+      .then((result) => {
+        return result;
+      })
+      .catch((err) => {
+        return err;
+      });
+  },
 };
 /* -------------------------------------------------------------------------- */
 /*                               Getters Define                               */
