@@ -81,6 +81,18 @@ const EmergencyPaymentManagementRoutes = [
     component: () =>
       import("../pages/EmergencyPaymentManagement/PaymentCycle/Index.vue"),
   },
+
+  //dashboard
+  {
+    path: '/emergency-payment-management/dashboard',
+    name: 'emergency-payment-management-dashboard',
+    meta: {
+      requiresAuth: true,
+      permission: "emergency-payment-dashboard-show",
+    },
+    component: () =>
+      import('../pages/EmergencyPaymentManagement/Dashboard/Index.vue'),
+  },
 ];
 
 export default EmergencyPaymentManagementRoutes;

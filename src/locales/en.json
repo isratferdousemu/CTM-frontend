@@ -1056,6 +1056,21 @@
         "active_beneficiary": "Active Beneficiary",
         "status": "Status"
       },
+      "emergency_dashboard": {
+        "program_wise_payroll": "No of Eligible Beneficiary",
+        "program_wise_payment_cycle": "Beneficiary Disbursed",
+        "payment_cycle_disbursment_status": "Payment Cycle Disbursement Status",
+        "header": "Emergency Payment Dashboard",
+        "enter_start_end_date": "Enter Start End Date",
+        "approved_payroll": "Total Approved Payroll",
+        "rejected_payroll": "Total Rejected Payroll",
+        "total_payment_cycle": "Total Payment Cycle",
+        "completed_payment_cycle": "Processing at IBAS ++", 
+        "total_payment_processor": "Total Payment Processor",
+        "total_approve_payroll": "Total Approved Payroll",
+        "available_balance": "Available Balance",   
+        "total_amount_disbursed": "Total Amount Disbursed"
+      },
       "dashboard": {
         "header": "Payroll Dashboard",
         "enter_start_end_date": "Enter Start End Date",
