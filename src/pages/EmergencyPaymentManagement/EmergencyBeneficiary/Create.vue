@@ -81,7 +81,13 @@
                               justify="space-between"
                             >
                               <v-col class="text-center">
-                                <p style="color: #2d3c95">Summary</p>
+                                <p style="color: #2d3c95">
+                                  {{
+                                    $t(
+                                      "container.emergency_payment.emergency_beneficiary.summary"
+                                    )
+                                  }}
+                                </p>
                                 <v-divider
                                   class="mx-14 black lighten-2"
                                 ></v-divider>
@@ -154,7 +160,7 @@
                       class="btn mr-2 button-color-linear-gradient white--text"
                       color="#26BEFB"
                       width="100px"
-                      @click="openDialog = true"
+                      @click="openDialog"
                       >{{ $t("container.list.add") }}</v-btn
                     >
                   </div>
@@ -705,9 +711,9 @@
         </v-row>
         <!-- Dialog Ends -->
         <emergency-component
-          v-if="openDialog"
+          :dialogVisible="isDialogVisible"
+          @update:dialogVisible="isDialogVisible = $event"
           :componentData="componentData"
-          :openDialog="openDialog"
         ></emergency-component>
       </v-col>
     </v-row>
@@ -755,7 +761,8 @@ export default {
         searchBy: null,
         status: null,
       },
-      openDialog: false,
+      isDialogVisible: false,
+
       componentData: [],
       styleObject: { border: "2px solid  rgba(9, 9, 121, 100)" },
       districts: [],
@@ -926,11 +933,11 @@ export default {
           value: "union",
           width: "80px",
         },
-        {
-          text: this.$t("container.system_config.demo_graphic.ward.ward"),
-          value: "ward",
-          width: "100px",
-        },
+        // {
+        //   text: this.$t("container.system_config.demo_graphic.ward.ward"),
+        //   value: "ward",
+        //   width: "100px",
+        // },
         {
           text: this.$t("container.emergency_payment.program_name"),
           value: this.language === "bn" ? "program.name_bn" : "program.name_en",
@@ -1002,11 +1009,11 @@ export default {
           value: "union",
           width: "80px",
         },
-        {
-          text: this.$t("container.system_config.demo_graphic.ward.ward"),
-          value: "ward",
-          width: "80px",
-        },
+        // {
+        //   text: this.$t("container.system_config.demo_graphic.ward.ward"),
+        //   value: "ward",
+        //   width: "80px",
+        // },
         {
           text: this.$t("container.emergency_payment.program_name"),
           value: this.language === "bn" ? "program.name_bn" : "program.name_en",
@@ -1050,6 +1057,9 @@ export default {
     this.getPaymentName();
   },
   methods: {
+    openDialog() {
+      this.isDialogVisible = true;
+    },
     getLocationType() {
       this.$store
         .dispatch("getLookupByType", 1)
@@ -1299,13 +1309,5 @@ export default {
     rgb(28, 59, 104) 0%,
     rgba(9, 9, 121, 1) 35%
   );
-
-  /* background: rgb(49, 232, 232);
-  background: linear-gradient(
-    90deg,
-    rgba(49, 232, 232, 1) 0%,
-    rgba(41, 110, 110, 1) 0%,
-    rgba(16, 30, 61, 1) 64%
-  ); */
 }
 </style>

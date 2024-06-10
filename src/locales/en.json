@@ -83,7 +83,7 @@
       "download": "Download Application",
       "pouroshava": "Pouroshava",
       "union": "Union",
-      "no_data":"No gender was selected.",
+      "no_data": "No gender was selected.",
       "show": "Show",
       "sync": "Sync",
       "close": "Close",
@@ -612,7 +612,6 @@
         "bank_name": "Bank Name",
         "branch_name": "Branch Name",
         "bank_account_number": "Bank Account Number",
-
         "email": "Email",
         "mobile_account": "MFS (Mobile Financial Service)",
         "bank_account": "Bank Account",
@@ -646,10 +645,7 @@
         "exit_date": "Exit Date",
         "replace_with_application_id": "Replaced with Beneficiary ID",
         "replace_with_name_en": "Replaced with Beneficiary Name",
-
-        "gender": "Gender",
-        "account_type": "Account Type",
-        "age": "Age"
+        "gender": "Gender"
       },
       "mobile_operator": {
         "list": "Mobile Operator List",
@@ -1141,7 +1137,8 @@
         "search": "Search Emergency Beneficiary",
         "e_beneficiary": "From Existing Beneficiary",
         "n_beneficiary": "From New Addition",
-        "searchBy": "Search By"
+        "searchBy": "Search By",
+        "summary": "Summary"
       },
       "emergency_payment_cycle": {
         "filter_title": "Emergency Payment Cycle",
