@@ -1328,6 +1328,7 @@ export default {
               const Field = ['SL','division', 'district','upazila','thana','ward']
 
               const Data = this.FormatJson(Field, CustomInfo)
+              console.log("🚀 ~ import ~ Data:", Data)
               const currentDate = new Date().toISOString().slice(0, 10); //
               let dateinfo = queryParams.language == 'en' ? currentDate : this.$helpers.englishToBangla(currentDate)
 
@@ -1348,6 +1349,8 @@ export default {
     },
 
     FormatJson(FilterData,JsonData){
+      console.log("🚀 ~ FormatJson ~ JsonData:", JsonData)
+      console.log("🚀 ~ FormatJson ~ FilterData:", FilterData)
       return JsonData.map((v) =>
           FilterData.map((j => {
             return v[j];

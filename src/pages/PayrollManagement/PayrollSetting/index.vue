@@ -52,6 +52,7 @@
 
 <script>
 export default {
+  title: "Payroll Setting",
   data() {
     return {
       data: null,

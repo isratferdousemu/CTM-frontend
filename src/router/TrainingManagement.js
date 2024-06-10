@@ -204,6 +204,17 @@ const TrainingManagementRoutes = [
   },
 
   /*participant Management route end*/
+  /*Kobo update route start*/
+  {
+    path: "/training-management/kobo-token-update",
+    name: "trainerInfo-edit",
+    meta: {
+      requiresAuth: true,
+      permission: "kobo-edit",
+    },
+    component: () => import("../pages/TrainingManagement/Kobo/Edit.vue")
+  },
+  /*Kobo update route start*/
 ];
 
 
