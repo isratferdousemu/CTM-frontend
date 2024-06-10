@@ -812,8 +812,6 @@ export default {
           value_en: "Union",
         },
       ],
-      allowances: [],
-
 
       pagination: {
         current: 1,
