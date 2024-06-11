@@ -6,7 +6,7 @@
           <Spinner :loading="isLoading" />
           <v-col cols="12">
             <div class="d-block text-right">
-              <v-btn v-can="'beneficiaryExit-create'" elevation="2" class="btn my-2" color="primary" router
+              <v-btn v-can="'beneficiaryExit-create'" elevation="2" class="btn" color="primary" router
                 to="/beneficiary-management/beneficiary-exit">
                 {{ $t("container.list.add") }}
               </v-btn>

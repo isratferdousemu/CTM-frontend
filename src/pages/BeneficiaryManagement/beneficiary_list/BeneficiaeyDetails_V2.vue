@@ -2,6 +2,12 @@
   <div id="application_view">
     <v-row class="mx-5 my-5 mt-5">
       <v-col class="mt-5" cols="12">
+        <div class="d-block text-right">
+              <v-btn v-can="'beneficiary-view'" elevation="2" class="btn mb-2" color="primary" router
+                to="/beneficiary-management/beneficiary">
+                {{ $t("container.list.view-list") }}
+              </v-btn>
+            </div>
         <ValidationObserver ref="form" v-slot="{ invalid }">
           <form @submit.prevent="submitApplication()">
             <v-card class="pa-5 px-10 mb-4">
@@ -1787,22 +1793,6 @@
                 </v-card> -->
 
                 <!-- Other Information of Eligibility end-->
-              </div>
-              <div
-                style="display: flex; justify-content: flex-end"
-                class="mt-5"
-              >
-                <!-- Other content on the left -->
-
-                <v-btn
-                  flat
-                  color="gray"
-                  type="submit"
-                  @click="navigateTolist"
-                  class="custom-btn"
-                >
-                  {{ $t("container.list.back") }}
-                </v-btn>
               </div>
             </v-card>
           </form>
