@@ -16,106 +16,79 @@
 
     <!-------start  header Card component ---->
     <v-row align="center" justify="center" dense>
-      <v-col cols="12" md="3">
+      <v-col cols="12" md="4">
         <v-card class="mx-auto" color="grey lighten-4" max-width="600">
-          <v-card-title>
-            <v-icon color="indigo" class="mr-8 mb-2" size="64">
-              mdi-check-circle
-            </v-icon>
-            <v-row align="start">
-              <div class="text-caption black--text text-uppercase">
-                {{
-                  $t("container.payroll_management.emergency_dashboard.approved_payroll")
-                }}
-              </div>
-            </v-row>
+          <v-card-title class="d-flex flex-column align-center">
+            <v-icon color="indigo" size="32"> mdi-account </v-icon>
+            <div class="text-caption black--text text-uppercase mt-2">
+              {{
+                $t(
+                  "container.payroll_management.emergency_dashboard.emergency_allotment"
+                )
+              }}
+            </div>
           </v-card-title>
-          <h1 align="center">
-            {{
-              language === "bn"
-                ? $helpers.englishToBangla(this.total_approved_payroll)
-                : this.total_approved_payroll
-            }}
-          </h1>
+          <v-card-subtitle align="center" class="mt-1">
+            <h1>
+              {{
+                language === "bn"
+                  ? $helpers.englishToBangla(this.emergency_allotments)
+                  : this.emergency_allotments
+              }}
+            </h1>
+          </v-card-subtitle>
         </v-card>
       </v-col>
 
-      <v-col cols="12" md="3">
+      <v-col cols="12" md="4">
         <v-card class="mx-auto" color="grey lighten-4" max-width="600">
-          <v-card-title>
-            <v-icon color="indigo" class="mr-8 mb-2" size="64">
-              mdi-cancel
-            </v-icon>
-            <v-row align="start">
-              <div class="text-caption black--text text-uppercase">
-                {{
-                  $t("container.payroll_management.emergency_dashboard.rejected_payroll")
-                }}
-              </div>
-            </v-row>
+          <v-card-title class="d-flex flex-column align-center">
+            <v-icon color="indigo" size="32"> mdi-account </v-icon>
+            <div class="text-caption black--text text-uppercase mt-2">
+              {{
+                $t(
+                  "container.payroll_management.emergency_dashboard.existing_beneficiary"
+                )
+              }}
+            </div>
           </v-card-title>
-          <h1 align="center">
-            {{
-              language === "bn"
-                ? $helpers.englishToBangla(this.total_rejected_payroll)
-                : this.total_rejected_payroll
-            }}
-          </h1>
+          <v-card-subtitle align="center" class="mt-1">
+            <h1>
+              {{
+                language === "bn"
+                  ? $helpers.englishToBangla(this.existing_beneficiary)
+                  : this.existing_beneficiary
+              }}
+            </h1>
+          </v-card-subtitle>
         </v-card>
       </v-col>
 
-      <v-col cols="12" md="3">
+      <v-col cols="12" md="4">
         <v-card class="mx-auto" color="grey lighten-4" max-width="600">
-          <v-card-title>
-            <v-icon color="indigo" class="mr-8 mb-2" size="64">
-              mdi-refresh
-            </v-icon>
-            <v-row align="start">
-              <div class="text-caption black--text text-uppercase">
-                {{
-                  $t(
-                    "container.payroll_management.emergency_dashboard.total_payment_cycle"
-                  )
-                }}
-              </div>
-            </v-row>
+          <v-card-title class="d-flex flex-column align-center">
+            <v-icon color="indigo" size="32"> mdi-account-multiple </v-icon>
+            <div class="text-caption black--text text-uppercase mt-2">
+              {{
+                $t(
+                  "container.payroll_management.emergency_dashboard.emergency_beneficiary"
+                )
+              }}
+            </div>
           </v-card-title>
-          <h1 align="center">
-            {{
-              language === "bn"
-                ? $helpers.englishToBangla(this.total_payment_cycle)
-                : this.total_payment_cycle
-            }}
-          </h1>
-        </v-card>
-      </v-col>
-
-      <v-col cols="12" md="3">
-        <v-card class="mx-auto" color="grey lighten-4" max-width="600">
-          <v-card-title>
-            <v-icon color="indigo" class="mr-8 mb-2" size="64">
-              mdi-check
-            </v-icon>
-            <v-row align="start">
-              <div class="text-caption black--text text-uppercase">
-                {{
-                  $t(
-                    "container.payroll_management.emergency_dashboard.completed_payment_cycle"
-                  )
-                }}
-              </div>
-            </v-row>
-          </v-card-title>
-          <h1 align="center">
-            {{
-              language === "bn"
-                ? $helpers.englishToBangla(this.total_payment_cycle_ibas)
-                : this.total_payment_cycle_ibas
-            }}
-          </h1>
+          <v-card-subtitle align="center" class="mt-1">
+            <h1>
+              {{
+                language === "bn"
+                  ? $helpers.englishToBangla(this.emergency_beneficiaries)
+                  : this.emergency_beneficiaries
+              }}
+            </h1>
+          </v-card-subtitle>
         </v-card>
       </v-col>
     </v-row>
+
     <!-------End  header Card component ------->
     <v-row class="mt-3">
       <v-col cols="12" md="6" lg="6">
@@ -160,7 +133,7 @@
     </v-row> -->
 
     <v-row class="mt-3">
-    <v-col cols="12" md="6" lg="6">
+      <v-col cols="12" md="6" lg="6">
         <v-card height="100%">
           <v-card-text>
             <V-row>
@@ -169,7 +142,7 @@
           </v-card-text>
         </v-card>
       </v-col>
-    
+
       <v-col cols="12" md="6" lg="6">
         <v-card height="100%">
           <v-card-text>
@@ -198,10 +171,9 @@ export default {
   title: "Payroll Dashboard",
   data() {
     return {
-      total_approved_payroll: null,
-      total_rejected_payroll: null,
-      total_payment_cycle: null,
-      total_payment_cycle_ibas: null,
+      existing_beneficiary: null,
+      emergency_allotments: null,
+      emergency_beneficiaries: null,
     };
   },
   components: {
@@ -232,15 +204,16 @@ export default {
   methods: {
     async getStatusPayrollData() {
       this.$axios
-        .get("admin/payroll/payroll-status-data", {
+        .get("admin/payroll/emergency-dashboard-data", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
           },
         })
         .then((result) => {
-          this.total_approved_payroll = result?.data?.totalCompleted;
-          this.total_rejected_payroll = result?.data?.totalRejected;
+          this.existing_beneficiary = result?.data?.beneficiary;
+          this.emergency_allotments = result?.data?.emergency_allotments;
+          this.emergency_beneficiaries = result?.data?.emergency_beneficiaries;
         });
     },
 

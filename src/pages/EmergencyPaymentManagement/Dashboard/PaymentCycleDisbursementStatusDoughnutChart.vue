@@ -165,10 +165,11 @@ export default {
             params: queryParams,
           }
         );
+        console.log("🚀 ~ getData ~ result:", result)
         this.payment_cycle_disbursement_status = result.data;
 
         this.levels = result.data.map((row) => {
-          return this.$i18n.locale == "en" ? row?.name : row?.name;
+          return this.$i18n.locale == "en" ? row?.name_en : row?.name_bn;
         });
         this.datas = result.data.map((row) => {
           return row.count > 0 ? row?.count : 0;

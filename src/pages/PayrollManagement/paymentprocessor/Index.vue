@@ -717,7 +717,12 @@
                     </ValidationProvider>
                   </v-col>
 
-                  <v-col lg="6" md="6" cols="12" v-if="data.processor_type != 'bank'">
+                  <v-col
+                    lg="6"
+                    md="6"
+                    cols="12"
+                    v-if="data.processor_type != 'bank'"
+                  >
                     <ValidationProvider
                       v-slot="{ errors }"
                       name="Name English"
@@ -742,12 +747,17 @@
                       >
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12" v-if="data.processor_type != 'bank'">
+                  <v-col
+                    lg="6"
+                    md="6"
+                    cols="12"
+                    v-if="data.processor_type != 'bank'"
+                  >
                     <ValidationProvider
                       v-slot="{ errors }"
                       name="Name in Bangla"
                       vid="name_bn"
-                      rules="required|checkNameBn" 
+                      rules="required|checkNameBn"
                     >
                       <v-text-field
                         outlined
@@ -1175,9 +1185,7 @@
                       type="submit"
                       flat
                       color="primary"
-                      :disabled="invalid"
                       :loading="loading"
-                      @change="filterOn"
                       class="custom-btn-width success white--text py-2"
                     >
                       {{ $t("container.list.submit") }}
@@ -1666,7 +1674,7 @@ export default {
       this.thanas = [];
       this.city_corporations = [];
       this.district_pourashavas = [];
-      this.location_types = [];
+      // this.location_types = [];
       this.data.location_type = null;
       this.data.division = null;
       this.data.district = null;
@@ -1796,26 +1804,37 @@ export default {
             }
           );
         }
+          console.log("🚀 ~ submitPaymentProcessor ~ response:", response)
         if (response.status === 200) {
           // this.$refs.formAdd.reset();
-
-          if (this.data.id != null) {
-            this.$toast.success(
-              this.language === "bn"
-                ? "পেমেন্ট প্রসেসর সফলভাবে আপডেট হয়েছে"
-                : "Payment Processor updated successfully"
-            );
-            this.onEdit = false;
+          if (response.data.success == true) {
+            if (this.data.id != null) {
+              this.$toast.success(
+                this.language === "bn"
+                  ? "পেমেন্ট প্রসেসর সফলভাবে আপডেট হয়েছে"
+                  : "Payment Processor updated successfully"
+              );
+              this.onEdit = false;
+              this.resetForm();
+              this.getPaymentProcessor();
+              this.dialogAdd = false;
+            } else {
+              this.$toast.success(
+                this.language === "bn"
+                  ? "পেমেন্ট প্রসেসর সফলভাবে সংরক্ষিত হয়েছে"
+                  : "Payment Processor submitted successfully"
+              );
+              this.resetForm();
+              this.getPaymentProcessor();
+              this.dialogAdd = false;
+            }
           } else {
-            this.$toast.success(
+            this.$toast.error(
               this.language === "bn"
-                ? "পেমেন্ট প্রসেসর সফলভাবে সংরক্ষিত হয়েছে"
-                : "Payment Processor submitted successfully"
+                ? "প্রসেসরের ধরন, নাম এবং অবস্থানের সমন্বয় ইতিমধ্যেই বিদ্যমান।"
+                : "The combination of processor type, names, and location already exists."
             );
           }
-          this.resetForm();
-          this.getPaymentProcessor();
-          this.dialogAdd = false;
         } else {
           this.$toast.error("Form submission failed");
         }
