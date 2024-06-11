@@ -6,7 +6,12 @@ export default {
     title: "CTM - Training Program",
     data() {
         return {
-            data: [],
+            data: {
+               status:null,
+            rating: null,
+            },
+             
+            
             rating:null,
             questionPaper: [],
             answers: [],
@@ -95,9 +100,10 @@ export default {
                 status: this.data.status, // Replace 1 with the actual program_id value
                 rating: this.data.rating
             };
-          ApiService.update(`admin/training/participants/update-status/${this.$route.params.id}`, {
-            postData
-          }).then(res => {
+        ApiService.update(`admin/training/participants/update-status/${this.$route.params.id}`, {
+          status: this.data.status, // Replace 1 with the actual program_id value
+          rating: this.data.rating
+        }).then(res => {
             this.$toast.success(res.data?.message ?? 'Operation Successful');
           }).catch(err => {
             this.$toast.error(err.response?.data?.message ?? 'Something went wrong');
