@@ -128,6 +128,9 @@ export default {
                 [{ 'color': [] }, { 'background': [] }]// removed 'image' from the default toolbar
             ],
             status_types:[],
+            general_status: [{ "id": 1, "value_en": "Active", "value_bn": "সক্রিয়" },
+            { "id": 0, "value_en": "Inactive", "value_bn": "নিষ্ক্রিয়" }
+            ],
 
             data: {
                 _method:"PUT",
@@ -139,11 +142,14 @@ export default {
                 trainer_ratings_link:null,
                 circular_modules: [],
                 status:null,
+                exam_status:null,
+                rating_status:null,
                 
                 trainers: [
                   
 
                 ],
+            
                 users: [],
                 description: null,
                 start_date: null,
@@ -662,6 +668,24 @@ export default {
                                                         :label="$t('container.training_management.training_program.rating_link')
                                         " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক রেটিং লিংক প্রদান করুন '
                                         : 'Please enter valid Rating Link') : ''"></v-text-field>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" lg="6">
+                                                <ValidationProvider name="exam_status" vid="exam_status"
+                                                    v-slot="{ errors }">
+                                                    <v-select dense type="text" v-model="data.exam_status" :label="$t('container.training_management.training_program.exam_status')
+                                        " persistent-hint outlined :items="general_status" item-value="id"
+                                                        :item-text="getItemText" :error="errors[0] ? true : false"
+                                                        :error-messages="errors[0]"></v-select>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" lg="6">
+                                                <ValidationProvider name="rating_status" vid="rating_status"
+                                                    v-slot="{ errors }">
+                                                    <v-select dense type="text" v-model="data.rating_status" :label="$t('container.training_management.training_program.trainer_rating_status')
+                                        " persistent-hint outlined :items="general_status" item-value="id"
+                                                        :item-text="getItemText" :error="errors[0] ? true : false"
+                                                        :error-messages="errors[0]"></v-select>
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols=" 12" sm="6" lg="6">
