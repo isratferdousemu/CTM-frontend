@@ -3,6 +3,8 @@ import {ValidationObserver, ValidationProvider} from "vee-validate";
 import ApiService from "@/services/ApiService";
 import Spinner from "@/components/Common/Spinner.vue";
 import PermissionBadge from "../../../components/BeneficiaryManagement/Committee/PermissionBadge.vue";
+import html2pdf from "html2pdf.js"
+
 
 export default {
     name: "Index",
@@ -18,7 +20,8 @@ export default {
                 name_en: null,
                 name_bn: null,
             },
-            ratings:[],
+          showCertificate:false,
+          ratings:[],
             program_id:null,
             rating_dialog:false,
             status_types:[],
@@ -1209,13 +1212,63 @@ export default {
                 </v-card-actions>
             </v-card>
         </v-dialog>
+
+
+      <v-row class="mt-5" justify="center" v-show="showCertificate">
+        <v-col cols="12" md="8">
+          <div class="certificate" ref="certificate">
+            <v-card class="card pa-5">
+              <h2 class="text-center mb-4">CERTIFICATE OF APPRECIATION</h2>
+              <p class="text-center mb-4">This certificate is proudly presented to:</p>
+              <h3 class="text-center mb-4">{{ user_name }}</h3>
+              <p class="text-center mb-4">in recognition of the successful completion of</p>
+              <h4 class="text-center mb-4">{{ program_name }}</h4>
+              <v-row justify="space-between" class="mt-5">
+                <v-col class="text-center">
+                  <hr />
+                  <p>DATE</p>
+                </v-col>
+                <v-col class="text-center">
+                  <hr />
+                  <p>SIGNATURE</p>
+                </v-col>
+              </v-row>
+            </v-card>
+          </div>
+        </v-col>
+      </v-row>
     </div>
+
+
+
+
 </template>
 
 <style scoped>
 .align-middle {
     display: flex;
     align-items: center;
+}
+
+
+.certificate {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: transparent;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.shadow {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.card {
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border: none;
+  background: transparent;
 }
 
 </style>

@@ -5,46 +5,31 @@
         <Spinner :loading="isLoading" />
         <v-row>
           <v-col cols="12">
-            <v-card
-              elevation="10"
-              color="white"
-              rounded="md"
-              theme="light"
-              class="mb-8"
-            >
-              <v-card-title class="justify-center" tag="div">
-                <h3 class="text-uppercase pt-3">
-                  {{
-                    $t("container.system_config.demo_graphic.committee.list")
-                  }}
+            <v-card elevation="10" color="white" rounded="md" theme="light">
+              <v-card-title tag="div" style="
+                  background-color: #1c3b68;
+                  color: white;
+                  margin-bottom: 17px;
+                  font-size: 17px;
+                ">
+                <h3 class="white--text text-uppercase pt-3">
+                  {{ $t("container.system_config.demo_graphic.committee.list") }}
                 </h3>
               </v-card-title>
+
               <v-card-text>
                 <v-row justify="space-between" align="center" class="mx-5">
                   <!-- Checkbox on the left -->
                   <v-col lg="3" md="3" cols="12">
-                    <v-text-field
-                      @keyup.native="GetCommittee"
-                      outlined
-                      dense
-                      v-model="search"
-                      prepend-inner-icon="mdi-magnify"
-                      class="my-sm-0 my-3 mx-0v -input--horizontal"
-                      variant="outlined"
-                      :label="$t('container.list.search')"
-                      hide-details
-                      color="primary"
-                    ></v-text-field>
+                    <v-text-field @keyup.native="GetCommittee" outlined dense v-model="search"
+                      prepend-inner-icon="mdi-magnify" class="my-sm-0 my-3 mx-0v -input--horizontal" variant="outlined"
+                      :label="$t('container.list.search')" hide-details color="primary"></v-text-field>
                   </v-col>
 
                   <!-- Dropdown on the right -->
                   <v-col lg="3" md="3" cols="12" class="text-right">
-                    <v-btn
-                      v-can="'committee-create'"
-                      to="/beneficiary-management/committee/create"
-                      color="primary"
-                      prepend-icon="mdi-account-multiple-plus"
-                    >
+                    <v-btn v-can="'committee-create'" to="/beneficiary-management/committee/create" color="primary"
+                      prepend-icon="mdi-account-multiple-plus">
                       {{ $t("container.list.add_new") }}
                     </v-btn>
                   </v-col>
@@ -59,32 +44,19 @@
 
                   <!-- Dropdown on the right -->
                   <v-col lg="4" md="6" cols="12" class="text-right">
-                    <v-btn
-                      elevation="2"
-                      class="btn mr-2 white--text"
-                      color="red darken-4"
-                      @click="GeneratePDF()"
-                    >
+                    <v-btn elevation="2" class="btn mr-2 white--text" color="red darken-4" @click="GeneratePDF()">
                       <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
                       {{ $t("container.list.PDF") }}
                     </v-btn>
-                    <v-btn
-                      elevation="2"
-                      class="btn mr-2 white--text"
-                      color="teal darken-2"
-                      @click="GenerateExcel()"
-                    >
+                    <v-btn elevation="2" class="btn mr-2 white--text" color="teal darken-2" @click="GenerateExcel()">
                       <v-icon class="pr-1"> mdi-tray-arrow-down </v-icon>
                       {{ $t("container.list.excel") }}
                     </v-btn>
                   </v-col>
                 </v-row>
 
-                <v-row
-                  class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
-                  justify="center"
-                  justify-lg="space-between"
-                >
+                <v-row class="ma-0 pa-3 white round-border d-flex justify-space-between align-center" justify="center"
+                  justify-lg="space-between">
                   <!-- <div class="d-flex justify-sm-end flex-wrap">
                     <v-text-field @keyup.native="GetCommittee" outlined dense v-model="search"
                       prepend-inner-icon="mdi-magnify" class="my-sm-0 my-3 mx-0v -input--horizontal" flat
@@ -103,21 +75,15 @@
                     {{ $t("container.list.add_new") }}
                   </v-btn> -->
                   <v-col cols="12">
-                    <v-data-table
-                      :loading="loading"
-                      item-key="id"
-                      :headers="headers"
-                      :items="commitees"
-                      :items-per-page="pagination.perPage"
-                      hide-default-footer
-                      class="elevation-0 transparent row-pointer"
-                    >
+                    <v-data-table :loading="loading" item-key="id" :headers="headers" :items="commitees"
+                      :items-per-page="pagination.perPage" hide-default-footer
+                      class="elevation-0 transparent row-pointer">
                       <template v-slot:item.id="{ item, index }">
                         {{
-                          (pagination.current - 1) * pagination.perPage +
-                          index +
-                          1
-                        }}
+          (pagination.current - 1) * pagination.perPage +
+          index +
+          1
+        }}
                       </template>
                       <template v-slot:item.name_en="{ item }">
                         {{ item.name_en }}
@@ -130,15 +96,8 @@
                       <template v-slot:item.actions="{ item }">
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'committee-view'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="success mr-3"
-                              elevation="0"
-                              @click="GetCommitteeById(item.id)"
-                            >
+                            <v-btn v-can="'committee-view'" fab x-small v-on="on" color="success mr-3" elevation="0"
+                              @click="GetCommitteeById(item.id)">
                               <v-icon> mdi-eye-circle-outline </v-icon>
                             </v-btn>
                           </template>
@@ -148,15 +107,8 @@
                         </v-tooltip>
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'committee-edit'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="success"
-                              elevation="0"
-                              :to="`/beneficiary-management/committee/edit/${item.id}`"
-                            >
+                            <v-btn v-can="'committee-edit'" fab x-small v-on="on" color="success" elevation="0"
+                              :to="`/beneficiary-management/committee/edit/${item.id}`">
                               <v-icon> mdi-account-edit-outline </v-icon>
                             </v-btn>
                           </template>
@@ -167,16 +119,8 @@
 
                         <v-tooltip top>
                           <template v-slot:activator="{ on }">
-                            <v-btn
-                              v-can="'committee-delete'"
-                              fab
-                              x-small
-                              v-on="on"
-                              color="grey"
-                              class="ml-3 white--text"
-                              elevation="0"
-                              @click="deleteAlert(item.id)"
-                            >
+                            <v-btn v-can="'committee-delete'" fab x-small v-on="on" color="grey"
+                              class="ml-3 white--text" elevation="0" @click="deleteAlert(item.id)">
                               <v-icon> mdi-delete </v-icon>
                             </v-btn>
                           </template>
@@ -186,32 +130,16 @@
                       <!-- End Action Button -->
 
                       <template v-slot:footer="item">
-                        <div
-                          class="text-center pt-2 v-data-footer justify-center pb-2"
-                        >
-                          <v-select
-                            style="
+                        <div class="text-center pt-2 v-data-footer justify-center pb-2">
+                          <v-select style="
                               position: absolute;
                               right: 25px;
                               width: 149px;
                               transform: translate(0px, 0px);
-                            "
-                            :items="items"
-                            hide-details
-                            dense
-                            outlined
-                            @change="onPageChange"
-                            v-model="pagination.perPage"
-                          ></v-select>
-                          <v-pagination
-                            circle
-                            primary
-                            v-model="pagination.current"
-                            :length="pagination.total"
-                            @input="onPageChange"
-                            :total-visible="11"
-                            class="custom-pagination-item"
-                          ></v-pagination>
+                            " :items="items" hide-details dense outlined @change="onPageChange"
+                            v-model="pagination.perPage"></v-select>
+                          <v-pagination circle primary v-model="pagination.current" :length="pagination.total"
+                            @input="onPageChange" :total-visible="11" class="custom-pagination-item"></v-pagination>
                         </div>
                       </template>
                     </v-data-table>
@@ -264,34 +192,25 @@
                         <td colspan="3">{{ data.committee_type_name }}</td>
                       </tr>
                       <!-- ////////////////////////// -->
-                      <tr
-                        v-if="
-                          data.committee_type == 12 ||
-                          data.committee_type == 13 ||
-                          data.committee_type == 14 ||
-                          data.committee_type == 15 ||
-                          data.committee_type == 16 ||
-                          data.committee_type == 17
-                        "
-                      >
-                        <td
-                          colspan="4"
-                          style="justify-content: center; text-align: center"
-                        >
+                      <tr v-if="data.committee_type == 12 ||
+          data.committee_type == 13 ||
+          data.committee_type == 14 ||
+          data.committee_type == 15 ||
+          data.committee_type == 16 ||
+          data.committee_type == 17
+          ">
+                        <td colspan="4" style="justify-content: center; text-align: center">
                           <h3>DSS Center</h3>
                         </td>
                       </tr>
                       <!-- ////////////////////////// -->
-                      <tr
-                        v-if="
-                          data.committee_type == 12 ||
-                          data.committee_type == 13 ||
-                          data.committee_type == 14 ||
-                          data.committee_type == 15 ||
-                          data.committee_type == 16 ||
-                          data.committee_type == 17
-                        "
-                      >
+                      <tr v-if="data.committee_type == 12 ||
+          data.committee_type == 13 ||
+          data.committee_type == 14 ||
+          data.committee_type == 15 ||
+          data.committee_type == 16 ||
+          data.committee_type == 17
+          ">
                         <td>
                           <h4>Division</h4>
                         </td>
@@ -367,10 +286,7 @@
 
                       <!-- ////////////////////////// -->
                       <tr>
-                        <td
-                          colspan="4"
-                          style="justify-content: center; text-align: center"
-                        >
+                        <td colspan="4" style="justify-content: center; text-align: center">
                           <h3>Members Information</h3>
                         </td>
                       </tr>
@@ -395,19 +311,12 @@
                     </tbody>
                   </template>
                 </v-simple-table>
-                <v-data-table
-                  :loading="loading"
-                  item-key="id"
-                  :headers="headers_member"
-                  :items="data.members"
-                  hide-default-footer
-                  :search="true"
-                  class="elevation-0 transparent row-pointer"
-                >
+                <v-data-table :loading="loading" item-key="id" :headers="headers_member" :items="data.members"
+                  hide-default-footer :search="true" class="elevation-0 transparent row-pointer">
                   <template v-slot:item.id="{ item, index }">
                     {{
-                      (pagination.current - 1) * pagination.perPage + index + 1
-                    }}
+          (pagination.current - 1) * pagination.perPage + index + 1
+        }}
                   </template>
                 </v-data-table>
               </form>
@@ -427,29 +336,19 @@
           <v-card-text>
             <div class="subtitle-1 font-weight-medium mt-5">
               {{
-                $t(
-                  "container.system_config.demo_graphic.committee.delete_alert"
-                )
-              }}
+          $t(
+            "container.system_config.demo_graphic.committee.delete_alert"
+          )
+        }}
             </div>
           </v-card-text>
           <v-card-actions style="display: block">
             <v-row class="mx-0 my-0 py-2" justify="center">
-              <v-btn
-                text
-                @click="deleteDialog = false"
-                outlined
-                class="custom-btn-width py-2 mr-10"
-              >
+              <v-btn text @click="deleteDialog = false" outlined class="custom-btn-width py-2 mr-10">
                 {{ $t("container.list.cancel") }}
               </v-btn>
-              <v-btn
-                text
-                @click="deleteCommittee()"
-                color="white"
-                :loading="delete_loading"
-                class="custom-btn-width warning white--text py-2"
-              >
+              <v-btn text @click="deleteCommittee()" color="white" :loading="delete_loading"
+                class="custom-btn-width warning white--text py-2">
                 {{ $t("container.list.delete") }}
               </v-btn>
             </v-row>
@@ -460,7 +359,7 @@
     </v-row>
   </div>
 </template>
-  
+
 <script>
 import { mapState } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
@@ -618,6 +517,7 @@ export default {
           value: "actions",
           align: "center",
           sortable: false,
+          width: '200px'
         },
       ];
     },
