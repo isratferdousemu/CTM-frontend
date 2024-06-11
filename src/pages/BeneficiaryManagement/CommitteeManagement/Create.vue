@@ -5,13 +5,19 @@
       <v-col cols="12">
         <v-row>
           <v-col cols="12">
-            <v-card>
-              <v-card-title
-                ><h3>
+            <v-card elevation="10" color="white" rounded="md" theme="light">
+              <v-card-title tag="div" style="
+                  background-color: #1c3b68;
+                  color: white;
+                  margin-bottom: 17px;
+                  font-size: 17px;
+                ">
+                <h3 class="white--text text-uppercase pt-3">
                   {{ $t("container.system_config.demo_graphic.committee.add") }}
-                </h3></v-card-title
-              >
-
+                </h3>
+              </v-card-title>
+            
+            
               <v-divider></v-divider>
 
               <v-card-text>
