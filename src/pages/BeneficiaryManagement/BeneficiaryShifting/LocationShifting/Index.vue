@@ -3,29 +3,17 @@
     <v-row class="mx-5 mt-2">
       <v-col cols="12">
         <div class="d-block text-right mb-2">
-          <v-btn
-            v-can="'beneficiaryShifting-create'"
-            elevation="2"
-            class="mr-2 btn"
-            color="primary"
-            router
-            to="/beneficiary-management/beneficiary-shifting"
-          >
+          <v-btn v-can="'beneficiaryShifting-create'" elevation="2" class="mr-2 btn" color="primary" router
+            to="/beneficiary-management/beneficiary-shifting">
             {{
-              $t(
-                "container.beneficiary_management.beneficiary_shifting.title_program_shifting"
-              )
-            }}
+            $t(
+              "container.beneficiary_management.beneficiary_shifting.title_program_shifting"
+            )
+          }}
           </v-btn>
 
-          <v-btn
-            v-can="'beneficiaryShifting-view'"
-            elevation="2"
-            class="btn"
-            color="primary"
-            router
-            to="/beneficiary-management/beneficiary-location-shifting-list"
-          >
+          <v-btn v-can="'beneficiaryShifting-view'" elevation="2" class="btn" color="primary" router
+            to="/beneficiary-management/beneficiary-location-shifting-list">
             {{ $t("container.list.view-list") }}
           </v-btn>
         </div>
@@ -33,438 +21,181 @@
           <form @submit.prevent="addByBeneficiaryInTable">
             <v-row>
               <v-col cols="12">
-                <v-card outlined>
-                  <v-row>
-                    <v-col col="6">
-                      <v-card-title class="page-header"
-                        ><h5 class="white--text">
-                          {{
-                            $t(
-                              "container.beneficiary_management.beneficiary_shifting.title"
-                            )
-                          }}
-                        </h5></v-card-title
-                      >
-                    </v-col>
-                  </v-row>
-                  <v-divider></v-divider>
+                <v-card elevation="10" color="white" rounded="md" theme="light">
+
+                  <v-card-title tag="div" style="
+                  background-color: #1c3b68;
+                  color: white;
+                  margin-bottom: 17px;
+                  font-size: 17px;
+                ">
+                    <h3 class="white--text text-uppercase pt-3">
+                      {{ $t("container.beneficiary_management.beneficiary_shifting.title") }}
+                    </h3>
+                  </v-card-title>
+
+
+
+
                   <v-card-text>
                     <div>
                       <v-row>
                         <v-col lg="6" md="6" cols="12">
-                          <ValidationProvider
-                            name="Division"
-                            vid="division"
-                            v-slot="{ errors }"
-                          >
-                            <v-text-field
-                              outlined
-                              readonly
-                              v-model="user_permission.division.name_en"
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.division.division'
-                                )
-                              "
-                              v-if="user_permission.division"
-                            >
+                          <ValidationProvider name="Division" vid="division" v-slot="{ errors }">
+                            <v-text-field outlined readonly v-model="user_permission.division.name_en" :label="$t(
+            'container.system_config.demo_graphic.division.division'
+          )
+            " v-if="user_permission.division">
                             </v-text-field>
-                            <v-autocomplete
-                              v-if="!user_permission.division"
-                              outlined
-                              @input="onChangeDivision($event)"
-                              v-model="data.division_id"
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.division.division'
-                                )
-                              "
-                              :items="divisions"
-                              item-text="name_en"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                              class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                            >
+                            <v-autocomplete v-if="!user_permission.division" outlined @input="onChangeDivision($event)"
+                              v-model="data.division_id" :label="$t(
+            'container.system_config.demo_graphic.division.division'
+          )
+            " :items="divisions" item-text="name_en" item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]" class="no-arrow-icon" :append-icon-cb="appendIconCallback"
+                              append-icon="mdi-plus">
                             </v-autocomplete>
                           </ValidationProvider>
                         </v-col>
                         <v-col lg="6" md="6" cols="12">
-                          <ValidationProvider
-                            name="District"
-                            vid="district"
-                            v-slot="{ errors }"
-                          >
-                            <v-text-field
-                              outlined
-                              readonly
-                              v-model="user_permission.division.name_en"
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.district.district'
-                                )
-                              "
-                              v-if="user_permission.district"
-                            >
+                          <ValidationProvider name="District" vid="district" v-slot="{ errors }">
+                            <v-text-field outlined readonly v-model="user_permission.division.name_en" :label="$t(
+            'container.system_config.demo_graphic.district.district'
+          )
+            " v-if="user_permission.district">
                             </v-text-field>
-                            <v-autocomplete
-                              v-if="!user_permission.district"
-                              outlined
-                              v-model="data.district_id"
-                              @input="onChangeDistrict($event)"
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.district.district'
-                                )
-                              "
-                              :items="districts"
-                              item-text="name_en"
-                              item-value="id"
-                              class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            ></v-autocomplete>
+                            <v-autocomplete v-if="!user_permission.district" outlined v-model="data.district_id"
+                              @input="onChangeDistrict($event)" :label="$t(
+            'container.system_config.demo_graphic.district.district'
+          )
+            " :items="districts" item-text="name_en" item-value="id" class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
 
                         <v-col lg="6" md="6" cols="12">
-                          <ValidationProvider
-                            name="Location Type"
-                            vid="location_type"
-                            v-slot="{ errors }"
-                          >
-                            <v-text-field
-                              outlined
-                              readonly
-                              v-model="user_permission.location_type.value_en"
-                              :label="$t('container.list.location_type')"
-                              v-if="user_permission.location_type"
-                            >
+                          <ValidationProvider name="Location Type" vid="location_type" v-slot="{ errors }">
+                            <v-text-field outlined readonly v-model="user_permission.location_type.value_en"
+                              :label="$t('container.list.location_type')" v-if="user_permission.location_type">
                             </v-text-field>
-                            <v-autocomplete
-                              v-if="!user_permission.location_type"
-                              @input="LocationType($event)"
-                              v-model="data.location_type"
-                              outlined
-                              :label="$t('container.list.location_type')"
-                              :items="locationType"
-                              item-text="value_en"
-                              item-value="id"
-                              class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            ></v-autocomplete>
+                            <v-autocomplete v-if="!user_permission.location_type" @input="LocationType($event)"
+                              v-model="data.location_type" outlined :label="$t('container.list.location_type')"
+                              :items="locationType" item-text="value_en" item-value="id" class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
-                        <v-col
-                          v-if="data.location_type == 1"
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <ValidationProvider
-                            name="thana"
-                            vid="district_pourashava_id"
-                            v-slot="{ errors }"
-                          >
-                            <v-text-field
-                              outlined
-                              readonly
-                              v-model="
-                                user_permission.district_pourashava.name_en
-                              "
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.ward.pouro'
-                                )
-                              "
-                              v-if="user_permission.location_type"
-                            >
+                        <v-col v-if="data.location_type == 1" lg="6" md="6" cols="12">
+                          <ValidationProvider name="thana" vid="district_pourashava_id" v-slot="{ errors }">
+                            <v-text-field outlined readonly v-model="user_permission.district_pourashava.name_en
+            " :label="$t(
+            'container.system_config.demo_graphic.ward.pouro'
+          )
+            " v-if="user_permission.location_type">
                             </v-text-field>
-                            <v-autocomplete
-                              v-if="!user_permission.district_pourashava"
-                              v-model="data.district_pourashava_id"
-                              outlined
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.ward.pouro'
-                                )
-                              "
-                              @change="onChangeDistrictPouro($event)"
-                              :items="district_pouros"
-                              item-text="name_en"
-                              item-value="id"
-                              class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            ></v-autocomplete>
+                            <v-autocomplete v-if="!user_permission.district_pourashava"
+                              v-model="data.district_pourashava_id" outlined :label="$t(
+            'container.system_config.demo_graphic.ward.pouro'
+          )
+            " @change="onChangeDistrictPouro($event)" :items="district_pouros" item-text="name_en" item-value="id"
+                              class="no-arrow-icon" :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
-                        <v-col
-                          v-if="data.location_type == 2"
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <ValidationProvider
-                            name="Upazila"
-                            vid="thana_id"
-                            v-slot="{ errors }"
-                          >
-                            <v-text-field
-                              outlined
-                              readonly
-                              v-model="user_permission.upazila.name_en"
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.thana.thana'
-                                )
-                              "
-                              v-if="user_permission.upazila"
-                            >
+                        <v-col v-if="data.location_type == 2" lg="6" md="6" cols="12">
+                          <ValidationProvider name="Upazila" vid="thana_id" v-slot="{ errors }">
+                            <v-text-field outlined readonly v-model="user_permission.upazila.name_en" :label="$t(
+            'container.system_config.demo_graphic.thana.thana'
+          )
+            " v-if="user_permission.upazila">
                             </v-text-field>
-                            <v-autocomplete
-                              v-if="!user_permission.upazila"
-                              v-model="data.thana_id"
-                              outlined
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.thana.thana'
-                                )
-                              "
-                              @change="onChangeUpazila($event)"
-                              :items="thanas"
-                              item-text="name_en"
-                              item-value="id"
-                              class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            ></v-autocomplete>
+                            <v-autocomplete v-if="!user_permission.upazila" v-model="data.thana_id" outlined :label="$t(
+            'container.system_config.demo_graphic.thana.thana'
+          )
+            " @change="onChangeUpazila($event)" :items="thanas" item-text="name_en" item-value="id"
+                              class="no-arrow-icon" :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
 
-                        <v-col
-                          v-if="data.location_type == 2"
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <ValidationProvider
-                            name="subLocationType"
-                            vid="subLocationType"
-                            v-slot="{ errors }"
-                          >
-                            <v-autocomplete
-                              @input="onChangeSubLocationType($event)"
-                              v-model="data.sub_location_type"
-                              outlined
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.ward.subLocation_type'
-                                )
-                              "
-                              :items="subLocationType"
-                              item-text="value_en"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                              :hide-details="errors[0] ? false : true"
-                              class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                            ></v-autocomplete>
+                        <v-col v-if="data.location_type == 2" lg="6" md="6" cols="12">
+                          <ValidationProvider name="subLocationType" vid="subLocationType" v-slot="{ errors }">
+                            <v-autocomplete @input="onChangeSubLocationType($event)" v-model="data.sub_location_type"
+                              outlined :label="$t(
+            'container.system_config.demo_graphic.ward.subLocation_type'
+          )
+            " :items="subLocationType" item-text="value_en" item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]" :hide-details="errors[0] ? false : true" class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
-                        <v-col
-                          v-if="
-                            data.location_type == 2 &&
-                            data.sub_location_type == 1
-                          "
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <ValidationProvider
-                            name="pouros"
-                            vid="pouros"
-                            v-slot="{ errors }"
-                          >
-                            <v-autocomplete
-                              v-model="data.pouro_id"
-                              outlined
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.ward.pouro'
-                                )
-                              "
-                              :items="pouros"
-                              item-text="name_en"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                              :hide-details="errors[0] ? false : true"
-                              class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                            ></v-autocomplete>
+                        <v-col v-if="data.location_type == 2 &&
+            data.sub_location_type == 1
+            " lg="6" md="6" cols="12">
+                          <ValidationProvider name="pouros" vid="pouros" v-slot="{ errors }">
+                            <v-autocomplete v-model="data.pouro_id" outlined :label="$t(
+            'container.system_config.demo_graphic.ward.pouro'
+          )
+            " :items="pouros" item-text="name_en" item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]" :hide-details="errors[0] ? false : true" class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
 
-                        <v-col
-                          v-if="
-                            data.sub_location_type == 2 &&
-                            data.location_type == 2
-                          "
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <ValidationProvider
-                            name="unions"
-                            vid="unions"
-                            v-slot="{ errors }"
-                          >
-                            <v-autocomplete
-                              @input="onChangeUnionGetWard($event)"
-                              v-model="data.union_id"
-                              outlined
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.ward.union'
-                                )
-                              "
-                              :items="unions"
-                              item-text="name_en"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                              :hide-details="errors[0] ? false : true"
-                              class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                            ></v-autocomplete>
+                        <v-col v-if="data.sub_location_type == 2 &&
+            data.location_type == 2
+            " lg="6" md="6" cols="12">
+                          <ValidationProvider name="unions" vid="unions" v-slot="{ errors }">
+                            <v-autocomplete @input="onChangeUnionGetWard($event)" v-model="data.union_id" outlined
+                              :label="$t(
+            'container.system_config.demo_graphic.ward.union'
+          )
+            " :items="unions" item-text="name_en" item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]" :hide-details="errors[0] ? false : true" class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
 
-                        <v-col
-                          v-if="data.location_type == 3"
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <ValidationProvider
-                            name="city"
-                            vid="city_id"
-                            v-slot="{ errors }"
-                          >
-                            <v-text-field
-                              outlined
-                              readonly
-                              v-model="user_permission.city_corp.name_en"
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.ward.city'
-                                )
-                              "
-                              v-if="user_permission.city_corp"
-                            >
+                        <v-col v-if="data.location_type == 3" lg="6" md="6" cols="12">
+                          <ValidationProvider name="city" vid="city_id" v-slot="{ errors }">
+                            <v-text-field outlined readonly v-model="user_permission.city_corp.name_en" :label="$t(
+            'container.system_config.demo_graphic.ward.city'
+          )
+            " v-if="user_permission.city_corp">
                             </v-text-field>
-                            <v-autocomplete
-                              v-if="!user_permission.city_corp"
-                              v-model="data.city_id"
-                              @change="onChangeCity($event)"
-                              outlined
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.ward.city'
-                                )
-                              "
-                              :items="cities"
-                              item-text="name_en"
-                              item-value="id"
-                              class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            ></v-autocomplete>
+                            <v-autocomplete v-if="!user_permission.city_corp" v-model="data.city_id"
+                              @change="onChangeCity($event)" outlined :label="$t(
+            'container.system_config.demo_graphic.ward.city'
+          )
+            " :items="cities" item-text="name_en" item-value="id" class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
 
-                        <v-col
-                          v-if="data.location_type == 3"
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <ValidationProvider
-                            name="thana"
-                            vid="thana_id"
-                            v-slot="{ errors }"
-                          >
-                            <v-autocomplete
-                              v-model="data.thana_id"
-                              outlined
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.ward.thana'
-                                )
-                              "
-                              @change="onChangeThana($event)"
-                              :items="thanas"
-                              item-text="name_en"
-                              item-value="id"
-                              class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            ></v-autocomplete>
+                        <v-col v-if="data.location_type == 3" lg="6" md="6" cols="12">
+                          <ValidationProvider name="thana" vid="thana_id" v-slot="{ errors }">
+                            <v-autocomplete v-model="data.thana_id" outlined :label="$t(
+            'container.system_config.demo_graphic.ward.thana'
+          )
+            " @change="onChangeThana($event)" :items="thanas" item-text="name_en" item-value="id" class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
 
-                        <v-col
-                          v-if="
-                            data.location_type == 1 ||
-                            data.location_type == 2 ||
-                            data.location_type == 3
-                          "
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <ValidationProvider
-                            name="ward"
-                            vid="ward_id"
-                            v-slot="{ errors }"
-                          >
-                            <v-autocomplete
-                              v-model="data.ward_id"
-                              outlined
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.ward.ward'
-                                )
-                              "
-                              :items="wards"
-                              item-text="name_en"
-                              item-value="id"
-                              class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            ></v-autocomplete>
+                        <v-col v-if="data.location_type == 1 ||
+            data.location_type == 2 ||
+            data.location_type == 3
+            " lg="6" md="6" cols="12">
+                          <ValidationProvider name="ward" vid="ward_id" v-slot="{ errors }">
+                            <v-autocomplete v-model="data.ward_id" outlined :label="$t(
+            'container.system_config.demo_graphic.ward.ward'
+          )
+            " :items="wards" item-text="name_en" item-value="id" class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
                         <!-- <v-col lg="6" md="6" cols="12">
@@ -494,63 +225,27 @@
                           </ValidationProvider>
                         </v-col> -->
                         <v-col lg="6" md="6" cols="12">
-                          <ValidationProvider
-                            name="ProgramName"
-                            vid="program_id"
-                            v-slot="{ errors }"
-                          >
-                            <v-autocomplete
-                              :hide-details="errors[0] ? false : true"
-                              @input="onChangeProgramName($event)"
-                              v-model="data.program_id"
-                              outlined
-                              :label="
-                                $t(
-                                  'container.application_selection.application.program'
-                                )
-                              "
-                              :items="programs"
-                              item-text="name_en"
-                              item-value="id"
-                              class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            ></v-autocomplete>
+                          <ValidationProvider name="ProgramName" vid="program_id" v-slot="{ errors }">
+                            <v-autocomplete :hide-details="errors[0] ? false : true"
+                              @input="onChangeProgramName($event)" v-model="data.program_id" outlined :label="$t(
+            'container.application_selection.application.program'
+          )
+            " :items="programs" item-text="name_en" item-value="id" class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
                         <v-col lg="6" md="6" cols="12">
-                          <ValidationProvider
-                            name="Beneficiary ID"
-                            vid="beneficiary_id"
-                            v-slot="{ errors }"
-                          >
-                            <v-autocomplete
-                              :hide-details="errors[0] ? false : true"
-                              v-model="selected_ben_ids"
-                              clearable
-                              outlined
-                              :label="
-                                $t(
-                                  'container.beneficiary_management.beneficiary_list.beneficiary_id'
-                                )
-                              "
-                              :items="beneficiary_ids"
-                              item-text="application_id"
-                              item-value="id"
-                              required
-                              multiple
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            >
+                          <ValidationProvider name="Beneficiary ID" vid="beneficiary_id" v-slot="{ errors }">
+                            <v-autocomplete :hide-details="errors[0] ? false : true" v-model="selected_ben_ids"
+                              clearable outlined :label="$t(
+            'container.beneficiary_management.beneficiary_list.beneficiary_id'
+          )
+            " :items="beneficiary_ids" item-text="application_id" item-value="id" required multiple
+                              :error="errors[0] ? true : false" :error-messages="errors[0]">
                               <template v-slot:selection="data">
-                                <v-chip
-                                  :selected="data.selected"
-                                  close
-                                  class="chip--select-multi"
-                                  @click:close="remove(data.item.id)"
-                                >
+                                <v-chip :selected="data.selected" close class="chip--select-multi"
+                                  @click:close="remove(data.item.id)">
                                   {{ data.item.application_id }}
                                 </v-chip>
                               </template>
@@ -558,61 +253,26 @@
                           </ValidationProvider>
                         </v-col>
                         <v-col lg="6" md="6" cols="12">
-                          <ValidationProvider
-                            name="Effective date"
-                            vid="effective_date"
-                            v-slot="{ errors }"
-                          >
-                            <v-menu
-                              v-model="menu2"
-                              :close-on-content-click="false"
-                              :nudge-right="40"
-                              transition="scale-transition"
-                              offset-y
-                              min-width="auto"
-                            >
+                          <ValidationProvider name="Effective date" vid="effective_date" v-slot="{ errors }">
+                            <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40"
+                              transition="scale-transition" offset-y min-width="auto">
                               <template v-slot:activator="{ on, attrs }">
-                                <v-text-field
-                                  outlined
-                                  clearable
-                                  v-model="data.effective_date"
-                                  :label="
-                                    $t(
-                                      'container.beneficiary_management.beneficiary_shifting.effective_date'
-                                    )
-                                  "
-                                  prepend-inner-icon="mdi-calendar"
-                                  readonly
-                                  v-bind="attrs"
-                                  v-on="on"
-                                  :error="errors[0] ? true : false"
-                                  :error-messages="errors[0]"
-                                ></v-text-field>
+                                <v-text-field outlined clearable v-model="data.effective_date" :label="$t(
+            'container.beneficiary_management.beneficiary_shifting.effective_date'
+          )
+            " prepend-inner-icon="mdi-calendar" readonly v-bind="attrs" v-on="on" :error="errors[0] ? true : false"
+                                  :error-messages="errors[0]"></v-text-field>
                               </template>
-                              <v-date-picker
-                                v-model="data.effective_date"
-                                @input="menu2 = false"
-                              ></v-date-picker>
+                              <v-date-picker v-model="data.effective_date" @input="menu2 = false"></v-date-picker>
                             </v-menu>
                           </ValidationProvider>
                         </v-col>
                         <v-col lg="6" md="6" cols="12">
-                          <ValidationProvider
-                            name="Shifting cause"
-                            vid="shifting_cause"
-                            v-slot="{ errors }"
-                          >
-                            <v-textarea
-                              :label="
-                                $t(
-                                  'container.beneficiary_management.beneficiary_shifting.cause'
-                                )
-                              "
-                              outlined
-                              v-model="data.cause"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            >
+                          <ValidationProvider name="Shifting cause" vid="shifting_cause" v-slot="{ errors }">
+                            <v-textarea :label="$t(
+            'container.beneficiary_management.beneficiary_shifting.cause'
+          )
+            " outlined v-model="data.cause" :error="errors[0] ? true : false" :error-messages="errors[0]">
                             </v-textarea>
                           </ValidationProvider>
                         </v-col>
@@ -625,7 +285,6 @@
           </form>
         </ValidationObserver>
       </v-col>
-
       <v-col cols="12">
         <v-card elevation="1" outlined>
           <v-card-text>
@@ -634,15 +293,15 @@
                 <v-card outlined>
                   <v-row>
                     <v-col col="6">
-                      <v-card-title
-                        ><h5>
+                      <v-card-title>
+                        <h5>
                           {{
-                            $t(
-                              "container.beneficiary_management.beneficiary_shifting.new_location"
-                            )
-                          }}
-                        </h5></v-card-title
-                      >
+            $t(
+              "container.beneficiary_management.beneficiary_shifting.new_location"
+            )
+          }}
+                        </h5>
+                      </v-card-title>
                     </v-col>
                   </v-row>
                   <v-divider></v-divider>
@@ -650,421 +309,167 @@
                     <div>
                       <v-row>
                         <v-col lg="6" md="6" cols="12">
-                          <ValidationProvider
-                            name="Division"
-                            vid="division"
-                            v-slot="{ errors }"
-                          >
-                            <v-text-field
-                              outlined
-                              readonly
-                              v-model="user_permission.division.name_en"
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.division.division'
-                                )
-                              "
-                              v-if="user_permission.division"
-                            >
+                          <ValidationProvider name="Division" vid="division" v-slot="{ errors }">
+                            <v-text-field outlined readonly v-model="user_permission.division.name_en" :label="$t(
+            'container.system_config.demo_graphic.division.division'
+          )
+            " v-if="user_permission.division">
                             </v-text-field>
-                            <v-autocomplete
-                              v-if="!user_permission.division"
-                              outlined
-                              @input="onChangeDivisionNewLocation($event)"
-                              v-model="new_location_data.division_id"
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.division.division'
-                                )
-                              "
-                              :items="divisions"
-                              item-text="name_en"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                              class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                            >
+                            <v-autocomplete v-if="!user_permission.division" outlined
+                              @input="onChangeDivisionNewLocation($event)" v-model="new_location_data.division_id"
+                              :label="$t(
+            'container.system_config.demo_graphic.division.division'
+          )
+            " :items="divisions" item-text="name_en" item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]" class="no-arrow-icon" :append-icon-cb="appendIconCallback"
+                              append-icon="mdi-plus">
                             </v-autocomplete>
                           </ValidationProvider>
                         </v-col>
                         <v-col lg="6" md="6" cols="12">
-                          <ValidationProvider
-                            name="District"
-                            vid="district"
-                            v-slot="{ errors }"
-                          >
-                            <v-text-field
-                              outlined
-                              readonly
-                              v-model="user_permission.division.name_en"
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.district.district'
-                                )
-                              "
-                              v-if="user_permission.district"
-                            >
+                          <ValidationProvider name="District" vid="district" v-slot="{ errors }">
+                            <v-text-field outlined readonly v-model="user_permission.division.name_en" :label="$t(
+            'container.system_config.demo_graphic.district.district'
+          )
+            " v-if="user_permission.district">
                             </v-text-field>
-                            <v-autocomplete
-                              v-if="!user_permission.district"
-                              outlined
-                              v-model="new_location_data.district_id"
-                              @input="onChangeDistrictNewLocation($event)"
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.district.district'
-                                )
-                              "
-                              :items="districts_new_loc"
-                              item-text="name_en"
-                              item-value="id"
-                              class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            ></v-autocomplete>
+                            <v-autocomplete v-if="!user_permission.district" outlined
+                              v-model="new_location_data.district_id" @input="onChangeDistrictNewLocation($event)"
+                              :label="$t(
+            'container.system_config.demo_graphic.district.district'
+          )
+            " :items="districts_new_loc" item-text="name_en" item-value="id" class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
 
                         <v-col lg="6" md="6" cols="12">
-                          <ValidationProvider
-                            name="Location Type"
-                            vid="location_type"
-                            v-slot="{ errors }"
-                          >
-                            <v-text-field
-                              outlined
-                              readonly
-                              v-model="user_permission.location_type.value_en"
-                              :label="$t('container.list.location_type')"
-                              v-if="user_permission.location_type"
-                            >
+                          <ValidationProvider name="Location Type" vid="location_type" v-slot="{ errors }">
+                            <v-text-field outlined readonly v-model="user_permission.location_type.value_en"
+                              :label="$t('container.list.location_type')" v-if="user_permission.location_type">
                             </v-text-field>
-                            <v-autocomplete
-                              v-if="!user_permission.location_type"
-                              @input="LocationTypeNewLocation($event)"
-                              v-model="new_location_data.location_type"
-                              outlined
-                              :label="$t('container.list.location_type')"
-                              :items="locationType"
-                              item-text="value_en"
-                              item-value="id"
-                              class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            ></v-autocomplete>
+                            <v-autocomplete v-if="!user_permission.location_type"
+                              @input="LocationTypeNewLocation($event)" v-model="new_location_data.location_type"
+                              outlined :label="$t('container.list.location_type')" :items="locationType"
+                              item-text="value_en" item-value="id" class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
-                        <v-col
-                          v-if="new_location_data.location_type == 1"
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <ValidationProvider
-                            name="thana"
-                            vid="district_pourashava_id"
-                            v-slot="{ errors }"
-                          >
-                            <v-text-field
-                              outlined
-                              readonly
-                              v-model="
-                                user_permission.district_pourashava.name_en
-                              "
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.ward.pouro'
-                                )
-                              "
-                              v-if="user_permission.location_type"
-                            >
+                        <v-col v-if="new_location_data.location_type == 1" lg="6" md="6" cols="12">
+                          <ValidationProvider name="thana" vid="district_pourashava_id" v-slot="{ errors }">
+                            <v-text-field outlined readonly v-model="user_permission.district_pourashava.name_en
+            " :label="$t(
+            'container.system_config.demo_graphic.ward.pouro'
+          )
+            " v-if="user_permission.location_type">
                             </v-text-field>
-                            <v-autocomplete
-                              v-if="!user_permission.district_pourashava"
-                              v-model="new_location_data.district_pourashava_id"
-                              outlined
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.ward.pouro'
-                                )
-                              "
-                              @change="onChangeDistrictPouroNewLocation($event)"
-                              :items="district_pouros_new_loc"
-                              item-text="name_en"
-                              item-value="id"
-                              class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            ></v-autocomplete>
+                            <v-autocomplete v-if="!user_permission.district_pourashava"
+                              v-model="new_location_data.district_pourashava_id" outlined :label="$t(
+            'container.system_config.demo_graphic.ward.pouro'
+          )
+            " @change="onChangeDistrictPouroNewLocation($event)" :items="district_pouros_new_loc" item-text="name_en"
+                              item-value="id" class="no-arrow-icon" :append-icon-cb="appendIconCallback"
+                              append-icon="mdi-plus" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
-                        <v-col
-                          v-if="new_location_data.location_type == 2"
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <ValidationProvider
-                            name="Upazila"
-                            vid="thana_id"
-                            v-slot="{ errors }"
-                          >
-                            <v-text-field
-                              outlined
-                              readonly
-                              v-model="user_permission.upazila.name_en"
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.thana.thana'
-                                )
-                              "
-                              v-if="user_permission.upazila"
-                            >
+                        <v-col v-if="new_location_data.location_type == 2" lg="6" md="6" cols="12">
+                          <ValidationProvider name="Upazila" vid="thana_id" v-slot="{ errors }">
+                            <v-text-field outlined readonly v-model="user_permission.upazila.name_en" :label="$t(
+            'container.system_config.demo_graphic.thana.thana'
+          )
+            " v-if="user_permission.upazila">
                             </v-text-field>
-                            <v-autocomplete
-                              v-if="!user_permission.upazila"
-                              v-model="new_location_data.thana_id"
-                              outlined
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.thana.thana'
-                                )
-                              "
-                              @change="onChangeUpazilaNewLocation($event)"
-                              :items="thanas_new_loc"
-                              item-text="name_en"
-                              item-value="id"
-                              class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            ></v-autocomplete>
+                            <v-autocomplete v-if="!user_permission.upazila" v-model="new_location_data.thana_id"
+                              outlined :label="$t(
+            'container.system_config.demo_graphic.thana.thana'
+          )
+            " @change="onChangeUpazilaNewLocation($event)" :items="thanas_new_loc" item-text="name_en" item-value="id"
+                              class="no-arrow-icon" :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
 
-                        <v-col
-                          v-if="new_location_data.location_type == 2"
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <ValidationProvider
-                            name="subLocationType"
-                            vid="subLocationType"
-                            v-slot="{ errors }"
-                          >
-                            <v-autocomplete
-                              @input="
-                                onChangeSubLocationTypeNewLocation($event)
-                              "
-                              v-model="new_location_data.sub_location_type"
-                              outlined
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.ward.subLocation_type'
-                                )
-                              "
-                              :items="subLocationType"
-                              item-text="value_en"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                              :hide-details="errors[0] ? false : true"
-                              class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                            ></v-autocomplete>
+                        <v-col v-if="new_location_data.location_type == 2" lg="6" md="6" cols="12">
+                          <ValidationProvider name="subLocationType" vid="subLocationType" v-slot="{ errors }">
+                            <v-autocomplete @input="
+            onChangeSubLocationTypeNewLocation($event)
+            " v-model="new_location_data.sub_location_type" outlined :label="$t(
+            'container.system_config.demo_graphic.ward.subLocation_type'
+          )
+            " :items="subLocationType" item-text="value_en" item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]" :hide-details="errors[0] ? false : true" class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
-                        <v-col
-                          v-if="
-                            new_location_data.location_type == 2 &&
-                            new_location_data.sub_location_type == 1
-                          "
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <ValidationProvider
-                            name="pouros"
-                            vid="pouros"
-                            v-slot="{ errors }"
-                          >
-                            <v-autocomplete
-                              v-model="new_location_data.pouro_id"
-                              outlined
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.ward.pouro'
-                                )
-                              "
-                              :items="pouros_new_loc"
-                              item-text="name_en"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                              :hide-details="errors[0] ? false : true"
-                              class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                            ></v-autocomplete>
+                        <v-col v-if="new_location_data.location_type == 2 &&
+            new_location_data.sub_location_type == 1
+            " lg="6" md="6" cols="12">
+                          <ValidationProvider name="pouros" vid="pouros" v-slot="{ errors }">
+                            <v-autocomplete v-model="new_location_data.pouro_id" outlined :label="$t(
+            'container.system_config.demo_graphic.ward.pouro'
+          )
+            " :items="pouros_new_loc" item-text="name_en" item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]" :hide-details="errors[0] ? false : true" class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
 
-                        <v-col
-                          v-if="
-                            new_location_data.sub_location_type == 2 &&
-                            new_location_data.location_type == 2
-                          "
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <ValidationProvider
-                            name="unions"
-                            vid="unions"
-                            v-slot="{ errors }"
-                          >
-                            <v-autocomplete
-                              @input="onChangeUnionGetWardNewLocation($event)"
-                              v-model="new_location_data.union_id"
-                              outlined
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.ward.union'
-                                )
-                              "
-                              :items="unions_new_loc"
-                              item-text="name_en"
-                              item-value="id"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                              :hide-details="errors[0] ? false : true"
-                              class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                            ></v-autocomplete>
+                        <v-col v-if="new_location_data.sub_location_type == 2 &&
+            new_location_data.location_type == 2
+            " lg="6" md="6" cols="12">
+                          <ValidationProvider name="unions" vid="unions" v-slot="{ errors }">
+                            <v-autocomplete @input="onChangeUnionGetWardNewLocation($event)"
+                              v-model="new_location_data.union_id" outlined :label="$t(
+            'container.system_config.demo_graphic.ward.union'
+          )
+            " :items="unions_new_loc" item-text="name_en" item-value="id" :error="errors[0] ? true : false"
+                              :error-messages="errors[0]" :hide-details="errors[0] ? false : true" class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
 
-                        <v-col
-                          v-if="new_location_data.location_type == 3"
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <ValidationProvider
-                            name="city"
-                            vid="city_id"
-                            v-slot="{ errors }"
-                          >
-                            <v-text-field
-                              outlined
-                              readonly
-                              v-model="user_permission.city_corp.name_en"
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.ward.city'
-                                )
-                              "
-                              v-if="user_permission.city_corp"
-                            >
+                        <v-col v-if="new_location_data.location_type == 3" lg="6" md="6" cols="12">
+                          <ValidationProvider name="city" vid="city_id" v-slot="{ errors }">
+                            <v-text-field outlined readonly v-model="user_permission.city_corp.name_en" :label="$t(
+            'container.system_config.demo_graphic.ward.city'
+          )
+            " v-if="user_permission.city_corp">
                             </v-text-field>
-                            <v-autocomplete
-                              v-if="!user_permission.city_corp"
-                              v-model="new_location_data.city_id"
-                              @change="onChangeCityNewLocation($event)"
-                              outlined
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.ward.city'
-                                )
-                              "
-                              :items="cities_new_loc"
-                              item-text="name_en"
-                              item-value="id"
-                              class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            ></v-autocomplete>
+                            <v-autocomplete v-if="!user_permission.city_corp" v-model="new_location_data.city_id"
+                              @change="onChangeCityNewLocation($event)" outlined :label="$t(
+            'container.system_config.demo_graphic.ward.city'
+          )
+            " :items="cities_new_loc" item-text="name_en" item-value="id" class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
 
-                        <v-col
-                          v-if="new_location_data.location_type == 3"
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <ValidationProvider
-                            name="thana"
-                            vid="thana_id"
-                            v-slot="{ errors }"
-                          >
-                            <v-autocomplete
-                              v-model="new_location_data.thana_id"
-                              outlined
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.ward.thana'
-                                )
-                              "
-                              @change="onChangeThanaNewLocation($event)"
-                              :items="thanas_new_loc"
-                              item-text="name_en"
-                              item-value="id"
-                              class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            ></v-autocomplete>
+                        <v-col v-if="new_location_data.location_type == 3" lg="6" md="6" cols="12">
+                          <ValidationProvider name="thana" vid="thana_id" v-slot="{ errors }">
+                            <v-autocomplete v-model="new_location_data.thana_id" outlined :label="$t(
+            'container.system_config.demo_graphic.ward.thana'
+          )
+            " @change="onChangeThanaNewLocation($event)" :items="thanas_new_loc" item-text="name_en" item-value="id"
+                              class="no-arrow-icon" :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
 
-                        <v-col
-                          v-if="
-                            new_location_data.location_type == 1 ||
-                            new_location_data.location_type == 2 ||
-                            new_location_data.location_type == 3
-                          "
-                          lg="6"
-                          md="6"
-                          cols="12"
-                        >
-                          <ValidationProvider
-                            name="ward"
-                            vid="ward_id"
-                            v-slot="{ errors }"
-                          >
-                            <v-autocomplete
-                              v-model="new_location_data.ward_id"
-                              outlined
-                              :label="
-                                $t(
-                                  'container.system_config.demo_graphic.ward.ward'
-                                )
-                              "
-                              :items="wards_new_loc"
-                              item-text="name_en"
-                              item-value="id"
-                              class="no-arrow-icon"
-                              :append-icon-cb="appendIconCallback"
-                              append-icon="mdi-plus"
-                              :error="errors[0] ? true : false"
-                              :error-messages="errors[0]"
-                            ></v-autocomplete>
+                        <v-col v-if="new_location_data.location_type == 1 ||
+            new_location_data.location_type == 2 ||
+            new_location_data.location_type == 3
+            " lg="6" md="6" cols="12">
+                          <ValidationProvider name="ward" vid="ward_id" v-slot="{ errors }">
+                            <v-autocomplete v-model="new_location_data.ward_id" outlined :label="$t(
+            'container.system_config.demo_graphic.ward.ward'
+          )
+            " :items="wards_new_loc" item-text="name_en" item-value="id" class="no-arrow-icon"
+                              :append-icon-cb="appendIconCallback" append-icon="mdi-plus"
+                              :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                           </ValidationProvider>
                         </v-col>
                         <!-- <v-col lg="6" md="6" cols="12">
@@ -1099,27 +504,19 @@
                 </v-card>
                 <div class="d-inline d-flex justify-end mt-5">
                   <v-btn elevation="2" class="btn mr-2" @click="resetForm">{{
-                    $t("container.list.reset")
-                  }}</v-btn>
-                  <v-btn
-                    elevation="2"
-                    class="btn mr-2"
-                    color="success"
-                    type="submit"
-                    :disabled="
-                      selected_ben_ids.length > 0 &&
-                      new_location_data.division_id != '' &&
-                      new_location_data.district_id != '' &&
-                      locationCheck()
-                        ? false
-                        : true
-                    "
-                    >{{
-                      $t(
-                        "container.beneficiary_management.beneficiary_shifting.shift_location"
-                      )
-                    }}</v-btn
-                  >
+            $t("container.list.reset")
+          }}</v-btn>
+                  <v-btn elevation="2" class="btn mr-2" color="success" type="submit" :disabled="selected_ben_ids.length > 0 &&
+              new_location_data.division_id != '' &&
+              new_location_data.district_id != '' &&
+              locationCheck()
+              ? false
+              : true
+            ">{{
+            $t(
+              "container.beneficiary_management.beneficiary_shifting.shift_location"
+            )
+          }}</v-btn>
                 </div>
               </form>
             </ValidationObserver>
@@ -1545,9 +942,9 @@ export default {
           await this.$axios
             .get(
               "/admin/city/get/" +
-                this.new_location_data.district_id +
-                "/" +
-                $event,
+              this.new_location_data.district_id +
+              "/" +
+              $event,
               {
                 headers: {
                   Authorization: "Bearer " + this.$store.state.token,
@@ -1573,9 +970,9 @@ export default {
           await this.$axios
             .get(
               "/admin/city/get/" +
-                this.new_location_data.district_id +
-                "/" +
-                $event,
+              this.new_location_data.district_id +
+              "/" +
+              $event,
               {
                 headers: {
                   Authorization: "Bearer " + this.$store.state.token,
@@ -1776,7 +1173,10 @@ export default {
       }
     },
     resetForm() {
+      this.data = {};
+      this.selected_ben_ids = {};
       this.submit_data = {};
+      this.new_location_data = {};
     },
     async GetAllProgram() {
       try {
@@ -1819,7 +1219,7 @@ export default {
   },
   watch: {
     "$i18n.locale": "updateHeaderTitle",
-    value(val) {},
+    value(val) { },
   },
 
   beforeMount() {
