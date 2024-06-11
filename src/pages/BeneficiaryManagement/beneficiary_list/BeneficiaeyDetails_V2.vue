@@ -9,7 +9,7 @@
                 <v-col cols="6" lg="6">
                   <v-row class="mx-4">
                     <v-col cols="4" lg="4">
-                      <label
+                      <label class="text-subtitle-1 font-weight-bold"
                         >{{
                           $t(
                             "container.application_selection.application.program"
@@ -19,7 +19,7 @@
                     >
                     <v-col cols="8" lg="8">
                       :<template>
-                        <span style="20px">
+                        <span class="text-subtitle-1">
                           {{
                             language === "bn"
                               ? beneficiary?.program?.name_bn
@@ -36,7 +36,7 @@
               <div>
                 <!-- Applicant Verification -->
                 <v-card class="mt-5">
-                  <v-card-title style="background-color: #1976d2; color: white">
+                  <v-card-title style="background-color: #1c3b68; color: white">
                     {{
                       $t(
                         "container.application_selection.application.applicant_verification"
@@ -83,7 +83,7 @@
                       <v-col>
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label>
+                            <label class="font-weight-bold">
                               <span v-if="beneficiary.verification_type == 1">
                                 {{
                                   $t(
@@ -111,7 +111,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{ beneficiary.verification_number }}
                               </span>
                             </template>
@@ -122,7 +122,7 @@
                       <v-col>
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label
+                            <label class="font-weight-bold"
                               >{{
                                 $t(
                                   "container.application_selection.application.date_of_birth"
@@ -132,7 +132,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{ beneficiary.date_of_birth }}
                               </span>
                             </template>
@@ -143,7 +143,7 @@
                   </v-card-text>
                 </v-card>
                 <v-card class="mt-5">
-                  <v-card-title style="background-color: #1976d2; color: white">
+                  <v-card-title style="background-color: #1c3b68; color: white">
                     {{
                       $t(
                         "container.application_selection.application.personal_info"
@@ -181,7 +181,7 @@
                         <v-col cols="6" lg="6">
                           <v-row>
                             <v-col cols="4" lg="4">
-                              <label
+                              <label class="font-weight-bold"
                                 >{{
                                   $t(
                                     "container.application_selection.application.name_bn"
@@ -191,7 +191,7 @@
                             >
                             <v-col cols="8" lg="8">
                               :<template>
-                                <span style="20px">
+                                <span class="text-body-2">
                                   {{ beneficiary.name_bn }}
                                 </span>
                               </template>
@@ -202,7 +202,7 @@
                         <v-col cols="6" lg="6">
                           <v-row>
                             <v-col cols="4" lg="4">
-                              <label
+                              <label class="font-weight-bold"
                                 >{{
                                   $t(
                                     "container.application_selection.application.name_en"
@@ -212,7 +212,7 @@
                             >
                             <v-col cols="8" lg="8">
                               :<template>
-                                <span style="20px">
+                                <span class="text-body-2">
                                   {{ beneficiary?.name_en }}
                                 </span>
                               </template>
@@ -222,7 +222,7 @@
                         <v-col cols="6" lg="6">
                           <v-row>
                             <v-col cols="4" lg="4">
-                              <label>{{
+                              <label class="font-weight-bold">{{
                                 $t(
                                   "container.application_selection.application.father_name_bn"
                                 )
@@ -230,7 +230,7 @@
                             >
                             <v-col cols="8" lg="8">
                               :<template>
-                                <span style="20px">
+                                <span class="text-body-2">
                                   {{ beneficiary.father_name_bn }}
                                 </span>
                               </template>
@@ -240,7 +240,7 @@
                         <v-col cols="6" lg="6">
                           <v-row>
                             <v-col cols="4" lg="4">
-                              <label
+                              <label class="font-weight-bold"
                                 >{{
                                   $t(
                                     "container.application_selection.application.father_name_en"
@@ -250,7 +250,7 @@
                             >
                             <v-col cols="8" lg="8">
                               :<template>
-                                <span style="20px">
+                                <span class="text-body-2">
                                   {{ beneficiary?.father_name_en }}
                                 </span>
                               </template>
@@ -260,7 +260,7 @@
                         <v-col cols="6" lg="6">
                           <v-row>
                             <v-col cols="4" lg="4">
-                              <label
+                              <label class="font-weight-bold"
                                 >{{
                                   $t(
                                     "container.application_selection.application.mother_name_bn"
@@ -270,7 +270,7 @@
                             >
                             <v-col cols="8" lg="8">
                               :<template>
-                                <span style="20px">
+                                <span class="text-body-2">
                                   {{ beneficiary.mother_name_bn }}
                                 </span>
                               </template>
@@ -280,7 +280,7 @@
                         <v-col cols="6" lg="6">
                           <v-row>
                             <v-col cols="4" lg="4">
-                              <label
+                              <label class="font-weight-bold"
                                 >{{
                                   $t(
                                     "container.application_selection.application.mother_name_en"
@@ -290,7 +290,7 @@
                             >
                             <v-col cols="8" lg="8">
                               :<template>
-                                <span style="20px">
+                                <span class="text-body-2">
                                   {{ beneficiary?.mother_name_en }}
                                 </span>
                               </template>
@@ -300,7 +300,7 @@
                         <v-col cols="6" lg="6">
                           <v-row>
                             <v-col cols="4" lg="4">
-                              <label
+                              <label class="font-weight-bold"
                                 >{{
                                   $t(
                                     "container.system_config.allowance_program.marital_status"
@@ -310,7 +310,7 @@
                             >
                             <v-col cols="8" lg="8">
                               :<template>
-                                <span style="20px">
+                                <span class="text-body-2">
                                   {{ beneficiary.marital_status }}
                                 </span>
                               </template>
@@ -320,7 +320,7 @@
                         <v-col cols="6" lg="6">
                           <v-row>
                             <v-col cols="4" lg="4">
-                              <label
+                              <label class="font-weight-bold"
                                 >{{
                                   $t(
                                     "container.application_selection.application.spouse_name_bn"
@@ -330,7 +330,7 @@
                             >
                             <v-col cols="8" lg="8">
                               :<template>
-                                <span style="20px">
+                                <span class="text-body-2">
                                   {{ beneficiary.spouse_name_bn }}
                                 </span>
                               </template>
@@ -341,7 +341,7 @@
                         <v-col cols="6" lg="6">
                           <v-row>
                             <v-col cols="4" lg="4">
-                              <label
+                              <label class="font-weight-bold"
                                 >{{
                                   $t(
                                     "container.application_selection.application.spouse_name_en"
@@ -351,7 +351,7 @@
                             >
                             <v-col cols="8" lg="8">
                               :<template>
-                                <span style="20px">
+                                <span class="text-body-2">
                                   {{ beneficiary?.spouse_name_en }}
                                 </span>
                               </template>
@@ -361,7 +361,7 @@
                         <v-col cols="6" lg="6">
                           <v-row>
                             <v-col cols="4" lg="4">
-                              <label
+                              <label class="font-weight-bold"
                                 >{{
                                   $t(
                                     "container.application_selection.application.religion"
@@ -371,7 +371,7 @@
                             >
                             <v-col cols="8" lg="8">
                               :<template>
-                                <span style="20px">
+                                <span class="text-body-2">
                                   {{ beneficiary.religion }}
                                 </span>
                               </template>
@@ -381,7 +381,7 @@
                         <v-col cols="6" lg="6">
                           <v-row>
                             <v-col cols="4" lg="4">
-                              <label
+                              <label class="font-weight-bold"
                                 >{{
                                   $t(
                                     "container.application_selection.application.mobile"
@@ -391,7 +391,7 @@
                             >
                             <v-col cols="8" lg="8">
                               :<template>
-                                <span style="20px">
+                                <span class="text-body-2">
                                   {{ beneficiary.mobile }}
                                 </span>
                               </template>
@@ -402,7 +402,7 @@
                         <v-col cols="6" lg="6">
                           <v-row>
                             <v-col cols="4" lg="4">
-                              <label
+                              <label class="font-weight-bold"
                                 >{{
                                   $t(
                                     "container.application_selection.application.nationality"
@@ -412,7 +412,7 @@
                             >
                             <v-col cols="8" lg="8">
                               :<template>
-                                <span style="20px">
+                                <span class="text-body-2">
                                   {{ beneficiary.nationality }}
                                 </span>
                               </template>
@@ -422,7 +422,7 @@
                         <v-col cols="6" lg="6">
                           <v-row>
                             <v-col cols="4" lg="4">
-                              <label
+                              <label class="font-weight-bold"
                                 >{{
                                   $t(
                                     "container.application_selection.application.age"
@@ -432,7 +432,7 @@
                             >
                             <v-col cols="8" lg="8">
                               :<template>
-                                <span style="20px">
+                                <span class="text-body-2">
                                   {{ beneficiary.age }}
                                 </span>
                               </template>
@@ -442,7 +442,7 @@
                         <v-col cols="6" lg="6">
                           <v-row>
                             <v-col cols="4" lg="4">
-                              <label
+                              <label class="font-weight-bold"
                                 >{{
                                   $t(
                                     "container.system_config.allowance_program.gender"
@@ -452,7 +452,7 @@
                             >
                             <v-col cols="8" lg="8">
                               :<template>
-                                <span style="20px">
+                                <span class="text-body-2">
                                   {{
                                     language === "bn"
                                       ? beneficiary.gender.value_bn
@@ -466,7 +466,7 @@
                         <v-col cols="6" lg="6">
                           <v-row>
                             <v-col cols="4" lg="4">
-                              <label
+                              <label class="font-weight-bold"
                                 >{{
                                   $t(
                                     "container.application_selection.application.education_status"
@@ -476,7 +476,7 @@
                             >
                             <v-col cols="8" lg="8">
                               :<template>
-                                <span style="20px">
+                                <span class="text-body-2">
                                   {{ beneficiary.education_status }}
                                 </span>
                               </template>
@@ -486,7 +486,7 @@
                         <v-col cols="6" lg="6">
                           <v-row>
                             <v-col cols="4" lg="4">
-                              <label
+                              <label class="font-weight-bold"
                                 >{{
                                   $t(
                                     "container.application_selection.application.profession"
@@ -496,7 +496,7 @@
                             >
                             <v-col cols="8" lg="8">
                               :<template>
-                                <span style="20px">
+                                <span class="text-body-2">
                                   {{ beneficiary.profession }}
                                 </span>
                               </template>
@@ -506,7 +506,7 @@
                         <v-col cols="6" lg="6">
                           <v-row>
                             <v-col cols="4" lg="4">
-                              <label
+                              <label class="font-weight-bold"
                                 >{{
                                   $t(
                                     "container.application_selection.application.identification_mark"
@@ -516,7 +516,7 @@
                             >
                             <v-col cols="8" lg="8">
                               :<template>
-                                <span style="20px">
+                                <span class="text-body-2">
                                   {{ beneficiary.identification_mark }}
                                 </span>
                               </template>
@@ -533,7 +533,7 @@
                 <!-- Contact Information -->
 
                 <v-card class="mt-5">
-                  <v-card-title style="background-color: #1976d2; color: white">
+                  <v-card-title style="background-color: #1c3b68; color: white">
                     {{
                       $t(
                         "container.application_selection.application.contact_info"
@@ -554,7 +554,7 @@
                       <v-col lg="6" md="6" cols="12">
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label
+                            <label class="font-weight-bold"
                               >{{
                                 $t(
                                   "container.system_config.demo_graphic.division.division"
@@ -564,7 +564,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{
                                   language == "bn"
                                     ? beneficiary?.currentDivision?.name_bn
@@ -578,7 +578,7 @@
                       <v-col lg="6" md="6" cols="12">
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label
+                            <label class="font-weight-bold"
                               >{{
                                 $t(
                                   "container.system_config.demo_graphic.district.district"
@@ -588,7 +588,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{
                                   language == "bn"
                                     ? beneficiary?.currentDistrict?.name_bn
@@ -602,13 +602,13 @@
                       <v-col lg="6" md="6" cols="12">
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label
+                            <label class="font-weight-bold"
                               >{{ $t("container.list.location_type") }}
                             </label></v-col
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{
                                   language == "bn"
                                     ? location_type
@@ -627,7 +627,7 @@
                       >
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label
+                            <label class="font-weight-bold"
                               >{{
                                 $t(
                                   "container.system_config.demo_graphic.ward.city"
@@ -637,7 +637,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{
                                   language == "bn"
                                     ? beneficiary?.currentCityCorporation
@@ -658,7 +658,7 @@
                       >
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label
+                            <label class="font-weight-bold"
                               >{{
                                 $t(
                                   "container.system_config.demo_graphic.ward.upazila"
@@ -668,7 +668,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{
                                   language == "bn"
                                     ? beneficiary?.currentUpazila?.name_bn
@@ -687,7 +687,7 @@
                       >
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label
+                            <label class="font-weight-bold"
                               >{{
                                 $t(
                                   "container.system_config.demo_graphic.ward.dist_pouro"
@@ -697,7 +697,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{
                                   language == "bn"
                                     ? beneficiary?.currentDistrictPourashava
@@ -718,7 +718,7 @@
                       >
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label
+                            <label class="font-weight-bold"
                               >{{
                                 $t(
                                   "container.system_config.demo_graphic.ward.thana"
@@ -728,7 +728,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{
                                   language == "bn"
                                     ? beneficiary?.currentThana?.name_bn
@@ -748,7 +748,7 @@
                       >
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label
+                            <label class="font-weight-bold"
                               >{{
                                 $t(
                                   "container.system_config.demo_graphic.ward.union_pouro"
@@ -758,7 +758,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{
                                   language == "bn"
                                     ? beneficiary?.currentUnion?.name_bn
@@ -777,7 +777,7 @@
                       >
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label
+                            <label class="font-weight-bold"
                               >{{
                                 $t(
                                   "container.system_config.demo_graphic.ward.union_pouro"
@@ -787,7 +787,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{
                                   language == "bn"
                                     ? beneficiary?.currentPourashava?.name_bn
@@ -802,7 +802,7 @@
                       <v-col lg="6" md="6" cols="6">
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label
+                            <label class="font-weight-bold"
                               >{{
                                 $t(
                                   "container.system_config.demo_graphic.ward.ward"
@@ -812,7 +812,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{
                                   language == "bn"
                                     ? beneficiary?.currentWard?.name_bn
@@ -826,7 +826,7 @@
                       <v-col cols="6" lg="6">
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label
+                            <label class="font-weight-bold"
                               >{{
                                 $t(
                                   "container.system_config.demo_graphic.ward.post_code"
@@ -836,7 +836,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{ beneficiary.current_post_code }}
                               </span>
                             </template>
@@ -847,7 +847,7 @@
                       <v-col cols="6" lg="6">
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label
+                            <label class="font-weight-bold"
                               >{{
                                 $t(
                                   "container.system_config.demo_graphic.ward.address"
@@ -857,7 +857,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{ beneficiary.current_address }}
                               </span>
                             </template>
@@ -880,7 +880,7 @@
                       <v-col lg="6" md="6" cols="12">
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label
+                            <label class="font-weight-bold"
                               >{{
                                 $t(
                                   "container.system_config.demo_graphic.division.division"
@@ -890,7 +890,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{
                                   language == "bn"
                                     ? beneficiary?.permanentDivision?.name_bn
@@ -904,7 +904,7 @@
                       <v-col lg="6" md="6" cols="12">
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label
+                            <label class="font-weight-bold"
                               >{{
                                 $t(
                                   "container.system_config.demo_graphic.district.district"
@@ -914,7 +914,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{
                                   language == "bn"
                                     ? beneficiary?.permanentDistrict?.name_bn
@@ -928,13 +928,13 @@
                       <v-col lg="6" md="6" cols="12">
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label
+                            <label class="font-weight-bold"
                               >{{ $t("container.list.location_type") }}
                             </label></v-col
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{
                                   language == "bn"
                                     ? location_type
@@ -953,7 +953,7 @@
                       >
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label
+                            <label class="font-weight-bold"
                               >{{
                                 $t(
                                   "container.system_config.demo_graphic.ward.city"
@@ -963,7 +963,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{
                                   language == "bn"
                                     ? beneficiary?.permanentCityCorporation
@@ -984,7 +984,7 @@
                       >
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label
+                            <label class="font-weight-bold"
                               >{{
                                 $t(
                                   "container.system_config.demo_graphic.ward.upazila"
@@ -994,7 +994,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{
                                   language == "bn"
                                     ? beneficiary?.permanentUpazila?.name_bn
@@ -1013,7 +1013,7 @@
                       >
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label
+                            <label class="font-weight-bold"
                               >{{
                                 $t(
                                   "container.system_config.demo_graphic.ward.dist_pouro"
@@ -1023,7 +1023,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{
                                   language == "bn"
                                     ? beneficiary?.permanentDistrictPourashava
@@ -1044,7 +1044,7 @@
                       >
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label
+                            <label class="font-weight-bold"
                               >{{
                                 $t(
                                   "container.system_config.demo_graphic.ward.thana"
@@ -1054,7 +1054,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{
                                   language == "bn"
                                     ? beneficiary?.permanentThana?.name_bn
@@ -1074,7 +1074,7 @@
                       >
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label
+                            <label class="font-weight-bold"
                               >{{
                                 $t(
                                   "container.system_config.demo_graphic.ward.union_pouro"
@@ -1084,7 +1084,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{
                                   language == "bn"
                                     ? beneficiary?.permanentUnion?.name_bn
@@ -1103,7 +1103,7 @@
                       >
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label
+                            <label class="font-weight-bold"
                               >{{
                                 $t(
                                   "container.system_config.demo_graphic.ward.union_pouro"
@@ -1113,7 +1113,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{
                                   language == "bn"
                                     ? beneficiary?.permanentPourashava?.name_bn
@@ -1128,7 +1128,7 @@
                       <v-col lg="6" md="6" cols="6">
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label
+                            <label class="font-weight-bold"
                               >{{
                                 $t(
                                   "container.system_config.demo_graphic.ward.ward"
@@ -1138,7 +1138,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{
                                   language == "bn"
                                     ? beneficiary?.permanentWard?.name_bn
@@ -1152,7 +1152,7 @@
                       <v-col cols="6" lg="6">
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label
+                            <label class="font-weight-bold"
                               >{{
                                 $t(
                                   "container.system_config.demo_graphic.ward.post_code"
@@ -1162,7 +1162,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{ beneficiary.permanent_post_code }}
                               </span>
                             </template>
@@ -1173,7 +1173,7 @@
                       <v-col cols="6" lg="6">
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label
+                            <label class="font-weight-bold"
                               >{{
                                 $t(
                                   "container.system_config.demo_graphic.ward.address"
@@ -1183,7 +1183,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{ beneficiary.permanent_address }}
                               </span>
                             </template>
@@ -1199,7 +1199,7 @@
 
                 <!-- <v-card class="mt-5">
 
-                                    <v-card-title style="background-color: #1976D2; color: white;">
+                                    <v-card-title style="background-color: #1c3b68; color: white;">
                                         {{ language == 'bn' ? whole_program.name_bn : whole_program.name_en }} {{
                                             $t('container.application_selection.application.info') }}
                                     </v-card-title>
@@ -1208,13 +1208,13 @@
                                             <v-col v-for="(field, index) in formattedAllowanceValues" :key="index" cols="6"
                                                 lg="6">
                                                 <v-row>
-                                                    <v-col cols="4" lg="4"> <label>{{ language == 'bn' ? field.label
+                                                    <v-col cols="4" lg="4"> <label class="font-weight-bold">{{ language == 'bn' ? field.label
                                                         .name_bn : field.label
                                                             .name_en }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
                                                         :<template>
-                                                            <span style="20px">
+                                                            <span class="text-body-2">
                                                                 {{
 
                                                                     field.value }}
@@ -1227,12 +1227,12 @@
                                             <v-col v-for="(field, index) in allowance_filed" :key="index" cols="6" lg="6"
                                                 v-if="field.type == 'text'">
                                                 <v-row>
-                                                    <v-col cols="4" lg="4"> <label>{{ language == 'bn' ? field
+                                                    <v-col cols="4" lg="4"> <label class="font-weight-bold">{{ language == 'bn' ? field
                                                         .name_bn : field.name_en }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
                                                         :<template>
-                                                            <span style="20px">
+                                                            <span class="text-body-2">
                                                                 {{
 
                                                                     field.pivot.value }}
@@ -1245,12 +1245,12 @@
                                             <v-col v-for="(field, index) in allowance_filed" :key="index" cols="6" lg="6"
                                                 v-if="field.type == 'number'">
                                                 <v-row>
-                                                    <v-col cols="4" lg="4"> <label> {{ language == 'bn' ? field
+                                                    <v-col cols="4" lg="4"> <label class="font-weight-bold"> {{ language == 'bn' ? field
                                                         .name_bn : field.name_en }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
                                                         :<template>
-                                                            <span style="20px">
+                                                            <span class="text-body-2">
                                                                 {{
 
                                                                     field.pivot.value }}
@@ -1264,12 +1264,12 @@
                                                 v-if="field.type == 'date'">
 
                                                 <v-row>
-                                                    <v-col cols="4" lg="4"> <label> {{ language == 'bn' ? field
+                                                    <v-col cols="4" lg="4"> <label class="font-weight-bold"> {{ language == 'bn' ? field
                                                         .name_bn : field.name_en }}
                                                         </label></v-col>
                                                     <v-col cols="8" lg="8">
                                                         :<template>
-                                                            <span style="20px">
+                                                            <span class="text-body-2">
                                                                 {{
 
                                                                     field.pivot.value }}
@@ -1287,7 +1287,7 @@
                 <!-- Bank/MFS Information -->
 
                 <v-card class="mt-5">
-                  <v-card-title style="background-color: #1976d2; color: white">
+                  <v-card-title style="background-color: #1c3b68; color: white">
                     {{ $t("container.application_selection.application.bank") }}
                   </v-card-title>
 
@@ -1296,7 +1296,7 @@
                       <v-col cols="6" lg="6">
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label>
+                            <label class="font-weight-bold">
                               {{
                                 $t(
                                   "container.application_selection.application.account_name"
@@ -1306,7 +1306,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{ beneficiary.account_name }}
                               </span>
                             </template>
@@ -1316,7 +1316,7 @@
                       <v-col cols="6" lg="6">
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label>
+                            <label class="font-weight-bold">
                               {{
                                 $t(
                                   "container.application_selection.application.account_type"
@@ -1327,7 +1327,7 @@
                           <v-col cols="8" lg="8">
                             :<template>
                               <span
-                                style="20px"
+                                class="text-body-2"
                                 v-if="beneficiary.account_type === 1"
                               >
                                 {{
@@ -1336,7 +1336,7 @@
                                   )
                                 }}
                               </span>
-                              <span style="20px" v-else>
+                              <span class="text-body-2" v-else>
                                 {{
                                   $t(
                                     "container.application_selection.application.bank_account"
@@ -1354,7 +1354,7 @@
                       >
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label>
+                            <label class="font-weight-bold">
                               {{
                                 $t(
                                   "container.application_selection.application.mobile_ownership"
@@ -1364,7 +1364,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{ beneficiary.account_owner }}
                               </span>
                             </template>
@@ -1375,7 +1375,7 @@
                       <v-col cols="6" lg="6">
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label>
+                            <label class="font-weight-bold">
                               {{
                                 $t(
                                   "container.application_selection.application.account_ownership"
@@ -1385,7 +1385,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{ beneficiary.account_owner }}
                               </span>
                             </template>
@@ -1396,7 +1396,7 @@
                       <v-col cols="6" lg="6" v-if="beneficiary.bank_name">
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label>
+                            <label class="font-weight-bold">
                               {{
                                 $t(
                                   "container.application_selection.application.bank_name"
@@ -1406,7 +1406,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{ beneficiary.bank_name }}
                               </span>
                             </template>
@@ -1417,7 +1417,7 @@
                       <v-col cols="6" lg="6" v-if="beneficiary.branch_name">
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label>
+                            <label class="font-weight-bold">
                               {{
                                 $t(
                                   "container.application_selection.application.branch_name"
@@ -1427,7 +1427,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{ beneficiary.branch_name }}
                               </span>
                             </template>
@@ -1437,7 +1437,7 @@
                       <v-col cols="6" lg="6">
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label>
+                            <label class="font-weight-bold">
                               {{
                                 $t(
                                   "container.application_selection.application.bank_account_number"
@@ -1447,7 +1447,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{ beneficiary.account_number }}
                               </span>
                             </template>
@@ -1457,7 +1457,7 @@
                       <v-col cols="6" lg="6">
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label>
+                            <label class="font-weight-bold">
                               {{
                                 $t(
                                   "container.beneficiary_management.beneficiary_list.monthly_honorarium_amount"
@@ -1467,7 +1467,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{ beneficiary.monthly_allowance }}
                               </span>
                             </template>
@@ -1477,7 +1477,7 @@
                       <v-col cols="6" lg="6">
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label>
+                            <label class="font-weight-bold">
                               {{
                                 $t(
                                   "container.beneficiary_management.beneficiary_list.financial_year"
@@ -1487,7 +1487,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{ beneficiary?.financialYear?.financial_year }}
                               </span>
                             </template>
@@ -1497,7 +1497,7 @@
                       <!-- <v-col cols="6" lg="6">
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label>
+                            <label class="font-weight-bold">
                               {{
                                 $t(
                                   "container.application_selection.application.email"
@@ -1507,7 +1507,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{ beneficiary.email }}
                               </span>
                             </template>
@@ -1522,7 +1522,7 @@
                 <!-- Nominee Information -->
 
                 <v-card class="mt-5">
-                  <v-card-title style="background-color: #1976d2; color: white">
+                  <v-card-title style="background-color: #1c3b68; color: white">
                     {{
                       $t(
                         "container.application_selection.application.nominee_info"
@@ -1559,7 +1559,7 @@
                         <v-col cols="6" lg="6">
                           <v-row>
                             <v-col cols="4" lg="4">
-                              <label>
+                              <label class="font-weight-bold">
                                 {{
                                   $t(
                                     "container.application_selection.application.name_bn"
@@ -1569,7 +1569,7 @@
                             >
                             <v-col cols="8" lg="8">
                               :<template>
-                                <span style="20px">
+                                <span class="text-body-2">
                                   {{ beneficiary.nominee_bn }}
                                 </span>
                               </template>
@@ -1579,7 +1579,7 @@
                         <v-col cols="6" lg="6">
                           <v-row>
                             <v-col cols="4" lg="4">
-                              <label>
+                              <label class="font-weight-bold">
                                 {{
                                   $t(
                                     "container.application_selection.application.name_en"
@@ -1589,7 +1589,7 @@
                             >
                             <v-col cols="8" lg="8">
                               :<template>
-                                <span style="20px">
+                                <span class="text-body-2">
                                   {{ beneficiary?.nominee_en }}
                                 </span>
                               </template>
@@ -1599,7 +1599,7 @@
                         <v-col cols="6" lg="6">
                           <v-row>
                             <v-col cols="4" lg="4">
-                              <label>
+                              <label class="font-weight-bold">
                                 {{
                                   $t(
                                     "container.application_selection.application.nid_brn"
@@ -1609,7 +1609,7 @@
                             >
                             <v-col cols="8" lg="8">
                               :<template>
-                                <span style="20px">
+                                <span class="text-body-2">
                                   {{ beneficiary.nominee_verification_number }}
                                 </span>
                               </template>
@@ -1623,7 +1623,7 @@
                         >
                           <v-row>
                             <v-col cols="4" lg="4">
-                              <label>
+                              <label class="font-weight-bold">
                                 {{
                                   $t(
                                     "container.application_selection.application.date_of_birth"
@@ -1633,7 +1633,7 @@
                             >
                             <v-col cols="8" lg="8">
                               :<template>
-                                <span style="20px">
+                                <span class="text-body-2">
                                   {{ beneficiary.nominee_date_of_birth }}
                                 </span>
                               </template>
@@ -1643,7 +1643,7 @@
                         <v-col cols="6" lg="6">
                           <v-row>
                             <v-col cols="4" lg="4">
-                              <label>
+                              <label class="font-weight-bold">
                                 {{
                                   $t(
                                     "container.application_selection.application.nationality"
@@ -1653,7 +1653,7 @@
                             >
                             <v-col cols="8" lg="8">
                               :<template>
-                                <span style="20px">
+                                <span class="text-body-2">
                                   {{ beneficiary.nominee_nationality }}
                                 </span>
                               </template>
@@ -1663,7 +1663,7 @@
                         <v-col cols="6" lg="6">
                           <v-row>
                             <v-col cols="4" lg="4">
-                              <label>
+                              <label class="font-weight-bold">
                                 {{
                                   $t(
                                     "container.application_selection.application.relationship"
@@ -1673,7 +1673,7 @@
                             >
                             <v-col cols="8" lg="8">
                               :<template>
-                                <span style="20px">
+                                <span class="text-body-2">
                                   {{
                                     beneficiary.nominee_relation_with_beneficiary
                                   }}
@@ -1686,7 +1686,7 @@
                         <v-col cols="6" lg="6">
                           <v-row>
                             <v-col cols="4" lg="4">
-                              <label>
+                              <label class="font-weight-bold">
                                 {{
                                   $t(
                                     "container.application_selection.application.nominee_address"
@@ -1696,7 +1696,7 @@
                             >
                             <v-col cols="8" lg="8">
                               :<template>
-                                <span style="20px">
+                                <span class="text-body-2">
                                   {{ beneficiary.nominee_address }}
                                 </span>
                               </template>
@@ -1713,7 +1713,7 @@
                 <!-- Other Information of Eligibility -->
 
                 <!-- <v-card class="mt-5" v-if="variable && variable.length > 0">
-                  <v-card-title style="background-color: #1976d2; color: white">
+                  <v-card-title style="background-color: #1c3b68; color: white">
                     {{
                       $t(
                         "container.application_selection.application.eligiblity_info"
@@ -1731,7 +1731,7 @@
                       >
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label>
+                            <label class="font-weight-bold">
                               {{
                                 language === "bn"
                                   ? field.parent
@@ -1745,7 +1745,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{
                                   language === "bn"
                                     ? field.name_bn
@@ -1765,7 +1765,7 @@
                       >
                         <v-row>
                           <v-col cols="4" lg="4">
-                            <label>
+                            <label class="font-weight-bold">
                               {{
                                 language === "bn"
                                   ? field.name_bn
@@ -1775,7 +1775,7 @@
                           >
                           <v-col cols="8" lg="8">
                             :<template>
-                              <span style="20px">
+                              <span class="text-body-2">
                                 {{ language === "bn" ? "হ্যাঁ" : "Yes" }}
                               </span>
                             </template>
