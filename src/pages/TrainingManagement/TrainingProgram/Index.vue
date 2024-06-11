@@ -57,6 +57,8 @@ export default {
             sortDesc: false, //ASC
             items: [5, 10, 15, 20, 40, 50, 100],
             is_loading: false,
+            user_name: null,
+            program_name: null
       
         };
     },
@@ -118,6 +120,26 @@ export default {
     },
 
     methods: {
+      downloadCertificate(certificate) {
+        this.user_name = certificate.user_name
+        this.program_name = certificate.program_name
+
+        const element = this.$refs.certificate;
+        const options = {
+          margin: 10,
+          filename: this.user_name +'.pdf',
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: {
+            scale: 2,
+            useCORS: true,
+            logging: true, // Enable logging to see more info in the console
+            allowTaint: true, // Allow images from different origins
+          },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().from(element).set(options).save();
+      },
         SaveRating(){
             const postData = {
                 program_id: this.program_id, // Replace 1 with the actual program_id value
@@ -1070,11 +1092,11 @@ export default {
                                                                     }}</span>
                                                             </v-tooltip>
 
-                                                            <v-tooltip top v-if="item.certificate==1">
+                                                            <v-tooltip top v-if="item.certificate">
                                                                 <template v-slot:activator="{ on }">
                                                                     <v-btn fab x-small v-on="on" color="grey"
                                                                         class=" mr-2 white--text mb-1" elevation="0"
-                                                                        @click="deleteAlert(item.id)">
+                                                                        @click="downloadCertificate(item.certificate)">
                                                                         <v-icon> mdi-file-download-outline </v-icon>
                                                                     </v-btn>
                                                                 </template>
