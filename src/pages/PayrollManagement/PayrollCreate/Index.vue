@@ -44,11 +44,17 @@ export default {
             active_beneficiaries: [],
             isSeeLoading: false,
             allotmentAreaList: [],
+            previewSendList: [],
+            previewSendTotal: null,
+            total_allocated_ben: null,
+            total_amount: null,
             seeBeneficiaryDialog: false,
             previewAndSendDialog: false,
+            previewloading: false,
             selectedBeneficiaries: [],
             total: null,
             totalItem: null,
+            programInfo: null,
             pagination: {
                 current: 1,
                 total: 0,
@@ -221,7 +227,7 @@ export default {
             return [
                 {
                     text: this.$t("container.list.sl"),
-                    value: "id",
+                    value: "sl",
                     align: "start",
                     sortable: false,
                 },
@@ -229,70 +235,70 @@ export default {
                     text: this.$t(
                         "container.payroll_management_v2.allotment_area_wise_ben_send_preview.beneficiary_id"
                     ),
-                    value: "area_type",
+                    value: "beneficiary_id",
                     align: "center",
                 },
                 {
                     text: this.$t(
                         "container.payroll_management_v2.allotment_area_wise_ben_send_preview.name_en"
                     ),
-                    value: "allotment_area",
+                    value: "name_en",
                     align: "center",
                 },
                 {
                     text: this.$t(
                         "container.payroll_management_v2.allotment_area_wise_ben_send_preview.father_name_en"
                     ),
-                    value: "allocated_beneficiary",
+                    value: "father_name_en",
                     align: "center",
                 },
                 {
                     text: this.$t(
                         "container.payroll_management_v2.allotment_area_wise_ben_send_preview.union_pourashava"
                     ),
-                    value: "active_beneficiary",
+                    value: "upazilaCityDistPourosova.name_en",
                     align: "center",
                 },
                 {
                     text: this.$t(
                         "container.payroll_management_v2.allotment_area_wise_ben_send_preview.ward"
                     ),
-                    value: "active_beneficiary",
+                    value: "unionWardPourosova.name_en",
                     align: "center",
                 },
-                {
-                    text: this.$t(
-                        "container.payroll_management_v2.allotment_area_wise_ben_send_preview.program_name"
-                    ),
-                    value: "active_beneficiary",
-                    align: "center",
-                },
+                // {
+                //     text: this.$t(
+                //         "container.payroll_management_v2.allotment_area_wise_ben_send_preview.program_name"
+                //     ),
+                //     value: "account_name",
+                //     align: "center",
+                // },
                 {
                     text: this.$t(
                         "container.payroll_management_v2.allotment_area_wise_ben_send_preview.bank_account"
                     ),
-                    value: "active_beneficiary",
+                    value: "bank_name",
                     align: "center",
                 },
                 {
                     text: this.$t(
                         "container.payroll_management_v2.allotment_area_wise_ben_send_preview.mobile"
                     ),
-                    value: "active_beneficiary",
+                    value: "mobile",
                     align: "center",
                 },
                 {
                     text: this.$t(
-                        "container.payroll_management_v2.allotment_area_wise_ben_send_preview.account"
+                        "container.payroll_management_v2.allotment_area_wise_ben_send_preview.amount"
                     ),
-                    value: "active_beneficiary",
+                    value: "amount",
                     align: "center",
                 },
                 {
                     text: this.$t(
                         "container.payroll_management_v2.allotment_area_wise_ben_send_preview.cash_out_charge"
                     ),
-                    value: "active_beneficiary",
+                    value: "charge",
                     align: "center",
                 },
 
@@ -300,22 +306,22 @@ export default {
                     text: this.$t(
                         "container.payroll_management_v2.allotment_area_wise_ben_send_preview.total_amount"
                     ),
-                    value: "active_beneficiary",
+                    value: "total_amount",
                     align: "center",
                 },
-                {
-                    text: this.$t(
-                        "container.payroll_management_v2.allotment_area_wise_ben_send_preview.financial_account_status"
-                    ),
-                    value: "active_beneficiary",
-                    align: "center",
-                },
+                // {
+                //     text: this.$t(
+                //         "container.payroll_management_v2.allotment_area_wise_ben_send_preview.financial_account_status"
+                //     ),
+                //     value: "status",
+                //     align: "center",
+                // },
 
                 {
                     text: this.$t(
                         "container.payroll_management_v2.allotment_area_wise_ben_send_preview.status"
                     ),
-                    value: "active_beneficiary",
+                    value: "status_name",
                     align: "center",
                 },
             ];
@@ -483,6 +489,25 @@ export default {
             if (this.data.financial_year_id) {
                 this.GetActiveInstallment();
             }
+            if (event) {
+                this.onChangeProgram(event)
+            } else {
+                this.programInfo = null
+            }
+
+        },
+        async onChangeProgram(event) {
+            await this.$axios
+                .get(`/admin/payroll/get-program-info/${event}`, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((result) => {
+                    this.programInfo = result?.data?.data?.allowance_program;
+                    console.log('program_info__', this.programInfo)
+                });
         },
         async onChangeDivision(event) {
             await this.$axios
@@ -722,6 +747,55 @@ export default {
                     this.loading = false;
                 });
         },
+        async GetPreviewSendData() {
+            this.previewloading = true;
+            const queryParams = {
+                program_id: this.data.program_id,
+                financial_year_id: this.data.financial_year_id,
+                division_id: this.data.division_id,
+                district_id: this.data.district_id,
+                location_type_id: this.data.location_type,
+                city_corp_id: this.data.city_id,
+                district_pourashava_id: this.data.district_pouro_id,
+                union_id: this.data.union_id,
+                thana_id: this.data.thana_id,
+                upazila_id: this.data.upazila_id,
+                ward_id: this.data.ward_id,
+                installment_schedule_id: this.data.remaining_installment_id,
+
+                perPage: 500, // this.pagination.perPage
+                page: this.pagination.current,
+                sortBy: this.sortBy,
+                orderBy: this.sortDesc,
+            };
+
+            await this.$axios
+                .get("/admin/payroll/preview-beneficiaries", {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data"
+                    },
+                    params: queryParams
+                })
+                .then(result => {
+                    this.previewSendList = result.data.data;
+                    // this.total = result?.data?.meta?.total;
+                    this.previewSendTotal = result?.data?.meta?.total;
+                    console.log("results_total__", this.total);
+
+                    var res = result?.data?.data?.reduce((n, { total_amount }) => n + total_amount, 0)
+
+                    this.total_allocated_ben = res;
+                    this.total_amount = res;
+
+                    console.log('total_amount_', res);
+
+                    // this.pagination.current = result?.data?.meta?.current_page;
+                    //this.pagination.total = result?.data?.meta?.last_page;
+                    // this.pagination.grand_total = result.data.meta.total;
+                    this.previewloading = false;
+                });
+        },
         GetAllowance() {
             this.$axios
                 .get("/global/program", {
@@ -784,6 +858,41 @@ export default {
         },
         PreviewAndSend() {
             this.previewAndSendDialog = true
+            this.previewSendList = []
+            this.GetPreviewSendData()
+        },
+        submitPreviewSendBeneficiary() {
+            let fd = new FormData();
+
+            // Convert each object in the beneficiaries array to a JSON string
+            this.previewSendList.forEach((beneficiary, index) => {
+                fd.append(`payroll_details[${index}][id]`, parseInt(beneficiary?.id));
+                fd.append(`payroll_details[${index}][payroll_id]`, parseInt(beneficiary?.payroll_id));
+            });
+
+            try {
+                this.$store
+                    .dispatch("PayrollManagement/SubmitPreviewSendBeneficiaries", fd)
+                    .then((res) => {
+                        console.log(res, "submit__");
+                        if (res.data?.success) {
+                            console.log(res.data?.success, "submit__");
+                            this.$toast.success("Beneficiary submit Successfully");
+
+                            this.previewAndSendDialog = true
+                            this.previewSendList = []
+                            // this.GetAllotmentArea();
+                        } else if (res.response?.data?.errors) {
+                            this.$refs.form.setErrors(res.response.data.errors);
+                            this.errors = res.response.data.errors;
+                            this.$toast.error(res.response.data.message);
+                        }
+                        console.log(this.$refs);
+                        console.log(this.errors, "this.errors");
+                    });
+            } catch (e) {
+                console.log(e);
+            }
         },
         submitAllotmentWiseBeneficiary() {
             if (this.selectedBeneficiaries.length === 0) {
@@ -1082,15 +1191,29 @@ export default {
 
                                                                 <v-col cols="12" sm="6" lg="6" class="mt-12">
                                                                     <v-card elevation="2" shaped outlined>
-                                                                        <v-card-title class="justify-center">{{
-                                                                            $t("container.payroll_management_v2.program")
-                                                                        }}</v-card-title>
+                                                                        <v-card-title class="justify-center">
+                                                                            {{
+                                                                                programInfo === null ?
+                                                                                    $t("container.payroll_management_v2.program")
+                                                                                    : ''
+                                                                            }}
+                                                                            {{
+
+                                                                                programInfo ? language === "bn" ?
+                                                                                    programInfo.name_bn : programInfo.name_en :
+                                                                                    ''
+                                                                            }}</v-card-title>
                                                                         <hr
                                                                             style="width: 50%; margin-left: 25% !important; margin-right: 25% !important;" />
                                                                         <v-card-text>
                                                                             <h4>{{
                                                                                 $t("container.payroll_management_v2.monthly_allowance_amount")
                                                                             }}
+
+                                                                                {{
+                                                                                    programInfo ?
+                                                                                        programInfo.payment_cycle : ''
+                                                                                }}
                                                                             </h4>
                                                                             <h4>{{
                                                                                 $t("container.payroll_management_v2.distribution_medium")
@@ -1478,7 +1601,7 @@ export default {
         <!--  See Beneficiaries modal  -->
 
         <!-- Preview and Send modal  -->
-        <v-dialog v-model="previewAndSendDialog" width="1300">
+        <v-dialog v-model="previewAndSendDialog" width="1400">
             <v-card style="justify-content: center; text-align: center">
                 <v-card-title class="font-weight-bold justify-center" style="background-color: #2b4978; color: white">
                     {{
@@ -1488,32 +1611,22 @@ export default {
                 <v-divider></v-divider>
                 <v-card-text class="mt-4">
                     <ValidationObserver ref="formAdd" v-slot="{ invalid }">
-                        <form @submit.prevent="submitAllotmentWiseBeneficiary()">
+                        <form @submit.prevent="submitPreviewSendBeneficiary()">
                             <template>
                                 <v-row justify="space-between" class="mx-4">
                                     <!-- Checkbox on the left -->
                                     <v-col sm="2" lg="2" md="2" cols="12" class="text-left">
                                         {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">
 
-                                            <!-- {{ language === 'bn' ? $helpers.englishToBangla(
-                                                this.total) : this.total }} -->
+                                            {{ language === 'bn' ? $helpers.englishToBangla(
+                                                previewSendTotal) : previewSendTotal }}
                                         </span>
                                     </v-col>
-
-                                    <!-- <v-col sm="3" lg="3" md="3" cols="12" class="text-right">
-                                        <v-text-field @keyup.native="PageSetup" v-model="search"
-                                            append-icon="mdi-magnify" :label="$t(
-                                                'container.list.search_circular'
-                                            )" hide-details class="mb-5 my-sm-0 my-3 mx-0v -input--horizontal" flat
-                                            outlined dense></v-text-field>
-
-                                    </v-col> -->
-
                                 </v-row>
                             </template>
                             <v-row>
-                                <v-data-table :loading="loading" item-key="id" :headers="sendBeneficiaryheaders"
-                                    :items="payrollList" :items-per-page="pagination.perPage" hide-default-footer
+                                <v-data-table :loading="previewloading" item-key="id" :headers="sendBeneficiaryheaders"
+                                    :items="previewSendList" :items-per-page="pagination.perPage" hide-default-footer
                                     class="elevation-0 transparent row-pointer mt-1 mx-5">
 
                                     <template v-slot:[`item.id`]="{ item }">
@@ -1552,25 +1665,48 @@ export default {
                                                 item.active_beneficiary }}
                                         </span>
                                     </template>
+                                    <template v-slot:item.status_name="{ item }">
+                                        <span v-if="item.status == 1">
+                                            {{ language === "bn" ? "সক্রিয়" : "Active" }}
+                                        </span>
+                                        <span v-if="item.status == 2">
+                                            {{ language === "bn" ? "নিষ্ক্রিয়" : "Inactive" }}
+                                        </span>
+                                        <span v-if="item.status == 3">
+                                            {{ language === "bn" ? "অপেক্ষেয়মান" : "Waiting" }}
+                                        </span>
+                                    </template>
                                 </v-data-table>
                             </v-row>
 
-                            <v-row class="mx-0 my-0 py-2" justify="center">
-                                <v-btn flat @click="dialogAdd = false" outlined class="custom-btn-width py-2 mr-10">
+                            <v-row justify="end" align="center" class="mx-4">
+                                <!-- Dropdown on the right -->
+                                <v-col lg="4" md="4" cols="12" class="text-right">
+                                    <div>
+                                        <strong>{{
+                                            $t("container.payroll_management_v2.allotment_area_wise_ben_send_preview.total_allocated_ben")
+                                        }}:</strong>
+                                        {{ previewSendList.length }}
+                                    </div>
+                                    <div>
+                                        <strong>{{
+                                            $t("container.payroll_management_v2.allotment_area_wise_ben_send_preview.total_amount")
+                                        }}:</strong>
+                                        {{ total_amount }}
+                                    </div>
+                                </v-col>
+                            </v-row>
+
+                            <v-row class="mx-0 my-0 py-2  mt-10" justify="center">
+                                <v-btn flat @click="previewAndSendDialog = false" outlined
+                                    class="custom-btn-width py-2 mr-10">
                                     {{ $t("container.list.cancel") }}
                                 </v-btn>
 
-                                <div>
-                                    <v-btn v-if="data.id != null" type="submit" flat color="primary" :disabled="invalid"
-                                        :loading="loading" class="custom-btn-width success white--text py-2">
-                                        {{ $t("container.list.update") }}
-                                    </v-btn>
-
-                                    <v-btn v-else type="submit" flat color="primary" :disabled="invalid"
-                                        :loading="loading" class="custom-btn-width success white--text py-2">
-                                        {{ $t("container.list.submit") }}
-                                    </v-btn>
-                                </div>
+                                <v-btn type="submit" flat color="primary" :disabled="previewSendList.length === 0"
+                                    :loading="loading" class="custom-btn-width success white--text py-2">
+                                    {{ $t("container.list.submit") }}
+                                </v-btn>
                             </v-row>
                         </form>
                     </ValidationObserver>

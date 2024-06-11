@@ -1216,19 +1216,8 @@
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
                       <v-row>
-                        <v-col cols="6" lg="6">
-                          <ValidationProvider name="Account Name" :vid="'application_allowance_values' + index"
-                            rules="required" v-slot="{ errors }">
-                            <label style="display: inline-block"> {{
-                              $t('container.application_selection.application.account_name') }}
-                            </label>
-                            <span style="margin-left: 4px; color: red">*</span>
-                            <v-text-field v-model="data.account_name" outlined clearable
-                              :error="errors[0] ? true : false" :error-messages="errors[0]">
-                            </v-text-field>
-                          </ValidationProvider>
-                        </v-col>
-                        <v-col cols="6" lg="6">
+
+                        <v-col cols="6" lg="6" >
                           <v-radio-group v-model="data.account_type" row>
                             {{ $t('container.application_selection.application.account_type') }}
 
@@ -1237,9 +1226,11 @@
                               margin-right: 4px;
                               color: red;
                             ">*</span>
-                            <v-radio :label="$t('container.application_selection.application.bank_account')"
+                            <v-radio 
+                              :label="$t('container.application_selection.application.bank_account')"
                               :value="1"></v-radio>
-                            <v-radio :label="$t('container.application_selection.application.mobile_account')"
+                            <v-radio 
+                              :label="$t('container.application_selection.application.mobile_account')"
                               :value="2"></v-radio>
                           </v-radio-group>
                         </v-col>
@@ -1291,8 +1282,9 @@
                               $t('container.application_selection.application.mfs_name') }} </label><span
                               style="margin-left: 4px; color: red">*</span>
 
-                            <v-select v-model="data.mfs_name" @change="changeMfs"  outlined clearable :error="errors[0] ? true : false"
-                              :items="mfs_names" :item-text="getItemText" item-value="name_en" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক এমএফএস নাম প্রদান করুন'
+                            <v-select v-model="data.mfs_name" @change="changeMfs" outlined clearable
+                              :error="errors[0] ? true : false" :items="mfs_names" :item-text="getItemText"
+                              item-value="name_en" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক এমএফএস নাম প্রদান করুন'
           : 'Please enter MFS Name') : ''">
                             </v-select>
                           </ValidationProvider>
@@ -1349,6 +1341,18 @@
                             <v-text-field v-model="data.account_number" outlined clearable
                               :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ব্যাংক অ্যাকাউন্ট নম্বর প্রদান করুন '
           : 'Please enter Bank Account Number') : ''" type="number">
+                            </v-text-field>
+                          </ValidationProvider>
+                        </v-col>
+                        <v-col cols="6" lg="6" v-if="data.account_type === 1">
+                          <ValidationProvider name="Account Name" :vid="'application_allowance_values' + index"
+                            rules="required" v-slot="{ errors }">
+                            <label style="display: inline-block"> {{
+  $t('container.application_selection.application.account_name') }}
+                            </label>
+                            <span style="margin-left: 4px; color: red">*</span>
+                            <v-text-field v-model="data.account_name" outlined clearable
+                              :error="errors[0] ? true : false" :error-messages="errors[0]">
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
@@ -2058,6 +2062,9 @@ export default {
       { name_en: 18, name_bn: '১৮' },
       { name_en: 19, name_bn: '১৯' },
       { name_en: 20, name_bn: '২০' }],
+      bank_status:null,
+      mfs_status:null,
+      mfs_names_processor:[],
 
       data: {
         house_size: null,
@@ -2068,7 +2075,7 @@ export default {
         program_id: null,
         verification_type: 1,
         verification_number: null,
-        account_type: 1,
+        account_type: null,
         age: null,
         date_of_birth: null,
         name_en: null,
@@ -3351,26 +3358,44 @@ export default {
           },
         })
         .then((result) => {
-          this.processors = result?.data;
+          this.processors = result?.data.bank;
+          this.mfs_names_processor = result?.data.mfs;
+          if (this.mfs_names_processor && this.mfs_names_processor.length > 0){
+          this.mfs_status=1;
+     
 
-          this.coverage_area = result?.data[0];
-          console.log(this.coverage_area, "coverage_area")
-          if (this.coverage_area?.payment_processor?.processor_type == "bank") {
-           
-            this.data.account_type = 1;
+         }
+         else{
+           this.mfs_status=0;
+         }
+          this.data.mfs_name = null;
+          this.mfs_names=[];
+          this.mfs_names_processor?.forEach(item => {
+            if (item.payment_processor) {
+              this.mfs_names.push(item.payment_processor);
 
-            // Clear the arrays if necessary to avoid duplicates
+            }
+          });
+
+         if( this.processors && this.processors.length > 0){
+          this.bank_status=1;
+     
+
+         }
+         else{
+           this.bank_status=0;
+         }
             this.processors_name = [];
             this.bank_names = [];
-                 this.data.bank_name=null;
+            this.data.bank_name=null;
 
             // Iterate over the processors array
-            this.processors.forEach(item => {
+            this.processors?.forEach(item => {
               if (item.payment_processor) {
-                this.processors_name.push(item.payment_processor);
+                this.processors_name?.push(item.payment_processor);
 
                 // Iterate over the processors_name array to find bank information
-                this.processors_name.forEach(paymentProcessor => {
+                this.processors_name?.forEach(paymentProcessor => {
                   if (paymentProcessor.bank) {
                     // Add bank_branch_name property to the bank object
                     paymentProcessor.bank.bank_branch_name = paymentProcessor.bank_branch_name;
@@ -3382,21 +3407,7 @@ export default {
               }
             });
 
-            console.log(this.bank_names); // Check the result
-          }
-          if (this.coverage_area?.payment_processor?.processor_type == "mfs") {
-            // alert(this.coverage_area?.payment_processor?.processor_type)
-            this.data.account_type = 2;
-             this.mfs_names = [];
-                  this.data.mfs_name=null;
-            this.processors.forEach(item => {
-              if (item.payment_processor) {
-                this.mfs_names.push(item.payment_processor);
-
-              }
-            });
-          }
-         
+        
 
           console.log(this.bank_names, "bank_names")
           console.log(this.mfs_names, "mfs_names")
@@ -3413,27 +3424,45 @@ export default {
             "Content-Type": "multipart/form-data",
           },
         })
-        .then((result) => {
-          this.processors = result?.data;
+      .then((result) => {
+          this.processors = result?.data.bank;
+          this.mfs_names_processor = result?.data.mfs;
+          if (this.mfs_names_processor && this.mfs_names_processor.length > 0){
+          this.mfs_status=1;
+     
 
-          this.coverage_area = result?.data[0];
-          console.log(this.coverage_area, "coverage_area")
-          if (this.coverage_area?.payment_processor?.processor_type == "bank") {
-           
-            this.data.account_type = 1;
+         }
+         else{
+           this.mfs_status=0;
+         }
+          this.data.mfs_name = null;
+          this.mfs_names=[];
+          this.mfs_names_processor?.forEach(item => {
+            if (item.payment_processor) {
+              this.mfs_names.push(item.payment_processor);
 
-            // Clear the arrays if necessary to avoid duplicates
+            }
+          });
+
+         if( this.processors && this.processors.length > 0){
+          this.bank_status=1;
+     
+
+         }
+         else{
+           this.bank_status=0;
+         }
             this.processors_name = [];
             this.bank_names = [];
             this.data.bank_name=null;
 
             // Iterate over the processors array
-            this.processors.forEach(item => {
+            this.processors?.forEach(item => {
               if (item.payment_processor) {
-                this.processors_name.push(item.payment_processor);
+                this.processors_name?.push(item.payment_processor);
 
                 // Iterate over the processors_name array to find bank information
-                this.processors_name.forEach(paymentProcessor => {
+                this.processors_name?.forEach(paymentProcessor => {
                   if (paymentProcessor.bank) {
                     // Add bank_branch_name property to the bank object
                     paymentProcessor.bank.bank_branch_name = paymentProcessor.bank_branch_name;
@@ -3445,21 +3474,7 @@ export default {
               }
             });
 
-            console.log(this.bank_names); // Check the result
-          }
-          if (this.coverage_area?.payment_processor?.processor_type == "mfs") {
-            // alert(this.coverage_area?.payment_processor?.processor_type)
-            this.data.account_type = 2;
-            this.mfs_names = [];
-                 this.data.mfs_name=null;
-            this.processors.forEach(item => {
-              if (item.payment_processor) {
-                this.mfs_names.push(item.payment_processor);
-
-              }
-            });
-          }
-         
+        
 
           console.log(this.bank_names, "bank_names")
           console.log(this.mfs_names, "mfs_names")
@@ -3475,27 +3490,45 @@ export default {
             "Content-Type": "multipart/form-data",
           },
         })
-        .then((result) => {
-          this.processors = result?.data;
+       .then((result) => {
+          this.processors = result?.data.bank;
+          this.mfs_names_processor = result?.data.mfs;
+          if (this.mfs_names_processor && this.mfs_names_processor.length > 0){
+          this.mfs_status=1;
+     
 
-          this.coverage_area = result?.data[0];
-          console.log(this.coverage_area, "coverage_area")
-          if (this.coverage_area?.payment_processor?.processor_type == "bank") {
+         }
+          else{
+           this.mfs_status=0;
+         }
+          this.data.mfs_name = null;
+          this.mfs_names=[];
+          this.mfs_names_processor?.forEach(item => {
+            if (item.payment_processor) {
+              this.mfs_names.push(item.payment_processor);
 
-            this.data.account_type = 1;
+            }
+          });
 
-            // Clear the arrays if necessary to avoid duplicates
+         if( this.processors && this.processors.length > 0){
+          this.bank_status=1;
+     
+
+         }
+          else{
+           this.bank_status=0;
+         }
             this.processors_name = [];
             this.bank_names = [];
-            this.data.bank_name = null;
+            this.data.bank_name=null;
 
             // Iterate over the processors array
-            this.processors.forEach(item => {
+            this.processors?.forEach(item => {
               if (item.payment_processor) {
-                this.processors_name.push(item.payment_processor);
+                this.processors_name?.push(item.payment_processor);
 
                 // Iterate over the processors_name array to find bank information
-                this.processors_name.forEach(paymentProcessor => {
+                this.processors_name?.forEach(paymentProcessor => {
                   if (paymentProcessor.bank) {
                     // Add bank_branch_name property to the bank object
                     paymentProcessor.bank.bank_branch_name = paymentProcessor.bank_branch_name;
@@ -3507,21 +3540,7 @@ export default {
               }
             });
 
-            console.log(this.bank_names); // Check the result
-          }
-          if (this.coverage_area?.payment_processor?.processor_type == "mfs") {
-            // alert(this.coverage_area?.payment_processor?.processor_type)
-            this.data.account_type = 2;
-              this.mfs_names = [];
-                   this.data.mfs_name=null;
-            this.processors.forEach(item => {
-              if (item.payment_processor) {
-                this.mfs_names.push(item.payment_processor);
-
-              }
-            });
-          }
-
+        
 
           console.log(this.bank_names, "bank_names")
           console.log(this.mfs_names, "mfs_names")
@@ -3538,51 +3557,55 @@ export default {
           },
         })
         .then((result) => {
-          this.processors = result?.data;
+          this.processors = result?.data.bank;
+          this.mfs_names_processor = result?.data.mfs;
+          if (this.mfs_names_processor && this.mfs_names_processor.length > 0) {
+            this.mfs_status = 1;
 
-          this.coverage_area = result?.data[0];
-          console.log(this.coverage_area, "coverage_area")
-          if (this.coverage_area?.payment_processor?.processor_type == "bank") {
 
-            this.data.account_type = 1;
-
-            // Clear the arrays if necessary to avoid duplicates
-            this.processors_name = [];
-            this.bank_names = [];
-                 this.data.bank_name=null;
-
-            // Iterate over the processors array
-            this.processors.forEach(item => {
-              if (item.payment_processor) {
-                this.processors_name.push(item.payment_processor);
-
-                // Iterate over the processors_name array to find bank information
-                this.processors_name.forEach(paymentProcessor => {
-                  if (paymentProcessor.bank) {
-                    // Add bank_branch_name property to the bank object
-                    paymentProcessor.bank.bank_branch_name = paymentProcessor.bank_branch_name;
-
-                    // Push the modified bank object into bank_names array
-                    this.bank_names.push(paymentProcessor.bank);
-                  }
-                });
-              }
-            });
-
-            console.log(this.bank_names); // Check the result
           }
-          if (this.coverage_area?.payment_processor?.processor_type == "mfs") {
-            // alert(this.coverage_area?.payment_processor?.processor_type)
-            this.data.account_type = 2;
-              this.mfs_names = [];
-              this.data.mfs_name=null;
-            this.processors.forEach(item => {
-              if (item.payment_processor) {
-                this.mfs_names.push(item.payment_processor);
+           else{
+           this.mfs_status=0;
+         }
+          this.data.mfs_name = null;
+          this.mfs_names = [];
+          this.mfs_names_processor?.forEach(item => {
+            if (item.payment_processor) {
+              this.mfs_names.push(item.payment_processor);
 
-              }
-            });
+            }
+          });
+
+          if (this.processors && this.processors.length > 0) {
+            this.bank_status = 1;
+
+
           }
+          else {
+            this.bank_status = 0;
+          }
+          this.processors_name = [];
+          this.bank_names = [];
+          this.data.bank_name = null;
+
+          // Iterate over the processors array
+          this.processors?.forEach(item => {
+            if (item.payment_processor) {
+              this.processors_name?.push(item.payment_processor);
+
+              // Iterate over the processors_name array to find bank information
+              this.processors_name?.forEach(paymentProcessor => {
+                if (paymentProcessor.bank) {
+                  // Add bank_branch_name property to the bank object
+                  paymentProcessor.bank.bank_branch_name = paymentProcessor.bank_branch_name;
+
+                  // Push the modified bank object into bank_names array
+                  this.bank_names.push(paymentProcessor.bank);
+                }
+              });
+            }
+          });
+
 
 
           console.log(this.bank_names, "bank_names")

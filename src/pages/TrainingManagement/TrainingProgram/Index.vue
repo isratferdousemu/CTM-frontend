@@ -814,7 +814,7 @@ export default {
                                                             item.training_circular?.circular_name }}</span>
                                                     </template>
                                                     <template v-slot:item.modules="{ item }">
-                                                        <div style="width:130px;">
+                                                        <div style="width:200px;">
                                                             <span v-for="(value, key) in item.modules" :key="key">
                                                                 <v-chip small label color="#FACD91" class="ma-1">
                                                                     {{ language == 'bn' ? value.value_bn :

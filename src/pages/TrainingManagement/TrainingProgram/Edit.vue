@@ -103,6 +103,7 @@ export default {
             circular_types: [],
             edited_modules:[],
             edited_trainers: [],
+            edited_users:[],
             modules: [],
             program_trainers: [],
             timeSlotModal: false,
@@ -143,6 +144,7 @@ export default {
                   
 
                 ],
+                users: [],
                 description: null,
                 start_date: null,
                 end_date: null,
@@ -206,6 +208,7 @@ export default {
     mounted() {
         this.Programtrainers();
         this.GetCircular();
+        this.GetUser();
         this.GetTimeSlot();
         this.DataView();
         this.$store
@@ -248,6 +251,7 @@ export default {
                     this.data._method="PUT"
                     this.edited_modules = result?.data?.data.modules;
                     this.edited_trainers = result?.data?.data.trainers;
+                    this.edited_users = result?.data?.data.trainers;
                     this.change();
                     this.data.circular_modules = [];
                     this.edited_modules.forEach((item, index) => {
@@ -256,6 +260,10 @@ export default {
                     this.data.trainers = [];
                     this.edited_trainers.forEach((item, index) => {
                         this.data.trainers.push(item.id);
+                    });
+                    this.data.users = [];
+                    this.edited_users.forEach((item, index) => {
+                        this.data.users.push(item.id);
                     });
                     this.data.on_days.forEach(day => {
                         day.is_active = parseInt(day.is_active); // Convert string to number
@@ -403,7 +411,27 @@ export default {
 
                 });
         },
+        async GetUser() {
 
+            this.$axios
+                .get(`/admin/training/participants/users/3`, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+
+                })
+                .then((result) => {
+
+                    this.users = result?.data?.data;
+
+
+
+
+
+
+                });
+        },
 
 
 
@@ -565,6 +593,25 @@ export default {
                                                     </v-autocomplete>
                                                 </ValidationProvider>
                                             </v-col>
+                                            <v-col cols=" 12" sm="6" lg="6">
+                                                <ValidationProvider name="users" vid="users" rules="required"
+                                                    v-slot="{ errors }">
+                                                    <v-autocomplete multiple dense v-model="data.users"
+                                                        :label="$t('container.training_management.training_registration.participant')"
+                                                        persistent-hint outlined :error="errors[0] ? true : false"
+                                                        :items="users" item-text="full_name" item-value="id"
+                                                        :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক অংশগ্রহণকারী প্রদান করুন '
+                                        : 'Please enter Participant') : ''">
+                                                        <template v-slot:selection="{ item }">
+                                                            <v-chip class="ma-1 white--text" color="blue">{{
+                                                                item.full_name }}</v-chip>
+
+
+
+                                                        </template>
+                                                    </v-autocomplete>
+                                                </ValidationProvider>
+                                            </v-col>
                                             <v-col cols="12" sm="6" lg="6" xs="6" xl="6">
                                                 <ValidationProvider name="start_date" vid="start_date"
                                                     :rules="{ required, start_date: data.end_date }"
@@ -583,23 +630,24 @@ export default {
                                         : 'Please enter a valid End Date') : ''"></v-text-field>
                                                 </ValidationProvider>
                                             </v-col>
-                                          <v-col cols="12" sm="6" lg="6">
-                                            <ValidationProvider name="form_id" vid="form_id" rules=""
-                                                                v-slot="{ errors }">
-                                              <v-text-field dense type="text" v-model="data.form_id" :label="$t('container.training_management.training_program.form_id')
+                                            <v-col cols="12" sm="6" lg="6">
+                                                <ValidationProvider name="form_id" vid="form_id" rules=""
+                                                    v-slot="{ errors }">
+                                                    <v-text-field dense type="text" v-model="data.form_id" :label="$t('container.training_management.training_program.form_id')
                                         " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ফর্ম আইডি প্রদান করুন '
                                         : 'Please enter valid Exam Link') : ''"></v-text-field>
-                                            </ValidationProvider>
-                                          </v-col>
-                                          <v-col cols="12" sm="6" lg="6">
-                                            <ValidationProvider name="training_form_id" vid="training_form_id" rules=""
-                                                                v-slot="{ errors }">
-                                              <v-text-field dense type="text" v-model="data.training_form_id" :label="$t('container.training_management.training_program.training_form_id')
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" lg="6">
+                                                <ValidationProvider name="training_form_id" vid="training_form_id"
+                                                    rules="" v-slot="{ errors }">
+                                                    <v-text-field dense type="text" v-model="data.training_form_id"
+                                                        :label="$t('container.training_management.training_program.training_form_id')
                                         " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ফর্ম আইডি প্রদান করুন '
                                         : 'Please enter valid Exam Link') : ''"></v-text-field>
-                                            </ValidationProvider>
-                                          </v-col>
-                                          <v-col cols="12" sm="6" lg="6">
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" lg="6">
                                                 <ValidationProvider name="exam_link" vid="question_link" rules="url"
                                                     v-slot="{ errors }">
                                                     <v-text-field dense type="text" v-model="data.question_link" :label="$t('container.training_management.training_program.exam_link')
@@ -619,7 +667,7 @@ export default {
                                             <v-col cols=" 12" sm="6" lg="6">
                                                 <ValidationProvider name="Module" vid="module" rules="required"
                                                     v-slot="{ errors }">
-                                                    <v-select  dense type="text" v-model="data.status"
+                                                    <v-select dense type="text" v-model="data.status"
                                                         :label="$t('container.list.status')" persistent-hint outlined
                                                         :error="errors[0] ? true : false" :items="status_types"
                                                         :item-text="getItemText" item-value="id" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক স্ট্যাটাস প্রদান করুন '

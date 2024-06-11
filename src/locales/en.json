@@ -1066,7 +1066,7 @@
       "payroll_create": "Payroll Create",
       "allotment_distribution": "Correction of Allotment Distribution",
       "allotment_area_wise_ben": "Allotment Area-Wise Beneficiaries",
-      "monthly_allowance_amount": "Amount of Monthly Allowance per Beneficiary",
+      "monthly_allowance_amount": "Amount of Monthly Allowance per Beneficiary: ",
       "distribution_medium": "Distribution Medium",
       "bank_account": "Bank Account",
       "program": "Program",
@@ -1117,7 +1117,9 @@
         "cash_out_charge": "Cash Out Charge",
         "total_amount": "Total Amount",
         "financial_account_status": "Financial Account Status",
-        "status": "Status"
+        "status": "Status",
+        "total_allocated_ben": "Total Allotcated Beneficiaries",
+        "amount": "Amount"
       },
       "payroll_approval": {
         "title": "Payroll Approval",
