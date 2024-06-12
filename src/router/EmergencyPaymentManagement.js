@@ -95,10 +95,10 @@ const EmergencyPaymentManagementRoutes = [
   },
   {
     path: "/emergency-payment/payroll-reconciliation",
-    name: "Emergency Payment",
+    name: "Emergency Payment Reconciliation",
     meta: {
       requiresAuth: true,
-      permission: "emergency-payment-payroll-reconciliation-view",
+      permission: "emergency-payment-reconciliation-create",
     },
     component: () =>
       import(

@@ -3,6 +3,7 @@
     <v-row class="ml-sm-0 mt-0">
       <v-col cols="12">
         <v-row>
+            <Spinner :loading="isLoading" />
           <v-col cols="12">
 
             <!-- Expantion panels start -->
@@ -226,6 +227,7 @@ import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 import { http } from "@/hooks/httpService";
 import ApiService from "@/services/ApiService";
+import Spinner from "@/components/Common/Spinner.vue";
 
 extend("required", required);
 export default {
@@ -247,6 +249,7 @@ export default {
       value: ["3", "100", "11", "12"], // Default selection without 'name'
       selectedHeaders: [],
       loading: false,
+      isLoading:false,
       search: "",
       paymentCycleList: [],
       installments: [],
@@ -270,6 +273,7 @@ export default {
   components: {
     ValidationProvider,
     ValidationObserver,
+    Spinner
   },
   computed: {
 
@@ -585,6 +589,7 @@ export default {
     },
 
     async GetPaymentCycle() {
+      this.loading=true;
       this.search = this.search.replace(/%/g, '');
       const queryParams = {
         searchText: this.search,
@@ -614,7 +619,7 @@ export default {
     },
 
     async GeneratePDF() {
-      // this.isLoading = true;
+      this.isLoading = true;
       const queryParams = {
 
         searchText: this.search,
@@ -694,7 +699,7 @@ export default {
     },
 
     async GenerateExcel() {
-
+      this.isLoading = true;
       const queryParams = {
 
         searchText: this.search,

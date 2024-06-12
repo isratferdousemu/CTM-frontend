@@ -1180,6 +1180,16 @@
         "amount_of_money": "টাকার পরিমান",
         "charge": "চার্জ",
         "total_amount": "সর্বমোট পরিমাণ"
+      },
+      "emergency_payment_reconciliation": {
+        "title": "বেতন (সমন্বয়)",
+        "program": "কার্যক্রম",
+        "nid": "এনআইডি",
+        "account_no": "হিসাব নাম্বার",
+        "bank": "ব্যাংক",
+        "branch": "শাখা",
+        "routing_no": "রাউটিং নং",
+        "scheme_code": "স্কিম কোড"
       }
     },
     "training_management": {

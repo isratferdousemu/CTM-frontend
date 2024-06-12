@@ -1183,7 +1183,18 @@
         "amount_of_money": "Amount of Money",
         "charge": "Charge",
         "total_amount": "Total Amount"
+      },
+      "emergency_payment_reconciliation":{
+         "title":"Payroll Reconciliation (Coordination)",
+         "program":"Program",
+         "nid":"NID",
+         "account_no":"Account No",
+         "bank":"Bank",
+         "branch":"Branch",
+         "routing_no":"Routing No",
+         "scheme_code":"Scheme Code"
       }
+
     },
     "training_management": {
       "trainer_info": {

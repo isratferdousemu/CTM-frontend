@@ -38,16 +38,16 @@
           @input="OnChangeDateInfo($event,'total_received')"
       >
         <v-spacer></v-spacer>
-        <v-btn text color="primary" @click="resetDateRange">
-          Cancel
-        </v-btn>
+            <v-btn text color="primary" @click="resetDateRange">
+              {{ $t('container.list.reset') }}
+          </v-btn>
         <v-btn
-            text
-            color="primary"
-            @click="$refs.menu.save(dates)"
-        >
-          OK
-        </v-btn>
+              text
+              color="primary"
+              @click="$refs.menu.save(dates)"
+          >
+            {{ $t('container.list.ok') }}
+          </v-btn>
       </v-date-picker>
     </v-menu>
   </v-row>
