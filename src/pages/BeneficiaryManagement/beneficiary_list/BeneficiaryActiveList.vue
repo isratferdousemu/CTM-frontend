@@ -251,15 +251,12 @@
             <v-row>
               <v-col cols="12">
                 <v-card elevation="10" color="white" rounded="md" theme="light">
-                  <v-card-title tag="div" style="
+                  <v-card-title tag="div" class="mb-4" style="
                   background-color: #1c3b68;
-                  color: white;
-                  margin-bottom: 17px;
-                  font-size: 17px;
-                ">
-                    <h3 class="white--text text-uppercase pt-3">
+                  color: white;">
+                    <h4 class="white--text text-uppercase">
                       {{ $t("container.beneficiary_management.beneficiary_list.list_active") }}
-                    </h3>
+                    </h4>
                   </v-card-title>
 
 
@@ -278,7 +275,7 @@
                         <!-- Select column End -->
                       </v-col>
                     </v-row>
-                    <v-row justify="end" align="center" class="mx-4">
+                    <v-row justify="end" class="mx-4">
                       <!-- Dropdown on the right -->
                       <v-col lg="4" md="4" cols="12" class="text-right">
                         <v-btn elevation="2" class="btn mr-2 white--text" flat color="red darken-4"
