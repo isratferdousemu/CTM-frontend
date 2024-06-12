@@ -866,8 +866,8 @@ export default {
 
             // Convert each object in the beneficiaries array to a JSON string
             this.previewSendList.forEach((beneficiary, index) => {
-                fd.append(`payroll_details[${index}][id]`, parseInt(beneficiary?.id));
-                fd.append(`payroll_details[${index}][payroll_id]`, parseInt(beneficiary?.payroll_id));
+                fd.append(`payroll_details[${index}][id]`, beneficiary?.payroll_id);
+                fd.append(`payroll_details[${index}][payroll_id]`, beneficiary?.payroll_detail_id);
             });
 
             try {
@@ -976,7 +976,7 @@ export default {
                                         style="background-color: #1C3B68; color: white;font-size: 17px;">
                                         <h4 class=" white--text">{{
                                             $t('container.payroll_management_v2.payroll_create')
-                                            }}</h4>
+                                        }}</h4>
                                     </v-card-title>
 
                                     <v-divider></v-divider>
@@ -1208,7 +1208,7 @@ export default {
                                                                         <v-card-text>
                                                                             <h4>{{
                                                                                 $t("container.payroll_management_v2.monthly_allowance_amount")
-                                                                            }}
+                                                                                }}
 
                                                                                 {{
                                                                                     programInfo ?
@@ -1217,10 +1217,10 @@ export default {
                                                                             </h4>
                                                                             <h4>{{
                                                                                 $t("container.payroll_management_v2.distribution_medium")
-                                                                            }}</h4>
+                                                                                }}</h4>
                                                                             <h4>{{
                                                                                 $t("container.payroll_management_v2.bank_account")
-                                                                            }}</h4>
+                                                                                }}</h4>
                                                                         </v-card-text>
                                                                     </v-card>
                                                                 </v-col>
@@ -1233,7 +1233,7 @@ export default {
                                                         :disabled="invalid">{{ $t("container.list.search") }}</v-btn>
                                                     <v-btn elevation="2" class="btn" @click="resetSearch">{{
                                                         $t("container.list.reset")
-                                                    }}</v-btn>
+                                                        }}</v-btn>
                                                 </div>
                                             </v-card-text>
                                         </form>
@@ -1429,14 +1429,14 @@ export default {
                                         <div style="margin-left: -150px">
                                             <strong>{{
                                                 $t("container.payroll_management_v2.allotment_area_wise_ben_setup.allotment_area")
-                                            }}:</strong>
+                                                }}:</strong>
                                             {{ data.processor_type ?? "--" }}
                                         </div>
 
                                         <div style="padding-bottom: 8px; margin-left: -110px">
                                             <strong>{{
                                                 $t("container.payroll_management_v2.allotment_area_wise_ben_setup.selected_beneficiaries")
-                                                }}:</strong>
+                                            }}:</strong>
                                             {{ data.name_en ?? "--" }}
                                         </div>
 
@@ -1447,14 +1447,14 @@ export default {
                                         <div style="padding-bottom: 8px; margin-left: -150px">
                                             <strong>{{
                                                 $t("container.payroll_management_v2.allotment_area_wise_ben_setup.total_beneficiaries")
-                                            }}:</strong>
+                                                }}:</strong>
                                             {{ data.processor_type ?? "--" }}
                                         </div>
 
                                         <div style="padding-bottom: 8px; margin-left: -100px">
                                             <strong>{{
                                                 $t("container.payroll_management_v2.allotment_area_wise_ben_setup.payment_cycle_start_date")
-                                                }}:</strong>
+                                            }}:</strong>
                                             {{ data.name_en ?? "--" }}
                                         </div>
 
@@ -1465,14 +1465,14 @@ export default {
                                         <div style="padding-bottom: 8px">
                                             <strong>{{
                                                 $t("container.payroll_management_v2.allotment_area_wise_ben_setup.allocated_beneficiaries")
-                                            }}:</strong>
+                                                }}:</strong>
                                             {{ data.processor_type ?? "--" }}
                                         </div>
 
                                         <div style="padding-bottom: 8px">
                                             <strong>{{
                                                 $t("container.payroll_management_v2.allotment_area_wise_ben_setup.payment_cycle_end_date")
-                                                }}:</strong>
+                                            }}:</strong>
                                             {{ data.name_en ?? "--" }}
                                         </div>
 
@@ -1485,20 +1485,20 @@ export default {
                                         <div style="padding-bottom: 8px; margin-left: -100px">
                                             <strong>{{
                                                 $t("container.payroll_management_v2.allotment_area_wise_ben_setup.payroll_eligible_amount")
-                                            }}:</strong>
+                                                }}:</strong>
                                             {{ data.processor_type ?? "--" }}
                                         </div>
 
                                         <div style="padding-bottom: 8px;margin-left: -150px">
                                             <strong>{{
                                                 $t("container.payroll_management_v2.allotment_area_wise_ben_setup.current_amount")
-                                                }}:</strong>
+                                            }}:</strong>
                                             {{ data.name_en ?? "--" }}
                                         </div>
                                         <div style="padding-bottom: 8px;margin-left: -25px">
                                             <strong>{{
                                                 $t("container.payroll_management_v2.allotment_area_wise_ben_setup.amount_of_money")
-                                                }}:</strong>
+                                            }}:</strong>
                                             {{ data.name_en ?? "--" }}
                                         </div>
                                     </div>
@@ -1508,14 +1508,14 @@ export default {
                                         <div style="padding-bottom: 8px;margin-left: -35px">
                                             <strong>{{
                                                 $t("container.payroll_management_v2.allotment_area_wise_ben_setup.amount_remain_ralance")
-                                            }}:</strong>
+                                                }}:</strong>
                                             {{ data.processor_type ?? "--" }}
                                         </div>
 
                                         <div style="padding-bottom: 8px; margin-left: 0px">
                                             <strong>{{
                                                 $t("container.payroll_management_v2.allotment_area_wise_ben_setup.total_amount_installments")
-                                                }}:</strong>
+                                            }}:</strong>
                                             {{ data.name_en ?? "--" }}
                                         </div>
                                     </div>
@@ -1685,13 +1685,13 @@ export default {
                                     <div>
                                         <strong>{{
                                             $t("container.payroll_management_v2.allotment_area_wise_ben_send_preview.total_allocated_ben")
-                                        }}:</strong>
+                                            }}:</strong>
                                         {{ previewSendList.length }}
                                     </div>
                                     <div>
                                         <strong>{{
                                             $t("container.payroll_management_v2.allotment_area_wise_ben_send_preview.total_amount")
-                                        }}:</strong>
+                                            }}:</strong>
                                         {{ total_amount }}
                                     </div>
                                 </v-col>

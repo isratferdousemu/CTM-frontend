@@ -52,6 +52,10 @@ export default {
     },
 
     methods: {
+        getItemText(item) {
+            return this.language === 'bn' ? item.name_bn : item.name;
+        },
+
         handleChange() {
             // Find the selected module by its id
             this.data.url =null;
@@ -93,7 +97,18 @@ export default {
                 })
                 .then((result) => {
                
-                    this.modules = result?.data?.data;
+                    const modules = result?.data?.data || [];
+
+                    modules.forEach(module => {
+                        if (module.name === "Application & Selection") {
+                            module.name_bn = "আবেদন ও নির্বাচন";
+                        } else if (module.name === "Beneficiary Management") {
+                            module.name_bn = "উপকারভোগী ব্যবস্থাপনা";
+                        }
+                    });
+
+                    console.log(modules, "modules");
+                    this.modules = modules;
                    
                 });
         },
@@ -175,7 +190,7 @@ export default {
                                                     v-slot="{ errors }">
                                                     <v-select v-model="data.module" :label="$t('container.api_manager.api_generate.module')
                                         " persistent-hint outlined :error="errors[0] ? true : false" :items="modules"
-                                                        item-text="name" item-value="id" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক মডিউল প্রদান করুন '
+                                                        :item-text="getItemText" item-value="id" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক মডিউল প্রদান করুন '
                                         : 'Please enter Module') : ''" @change="handleChange"></v-select>
                                                 </ValidationProvider>
                                             </v-col>

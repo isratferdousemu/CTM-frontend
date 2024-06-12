@@ -3,6 +3,8 @@ import {ValidationObserver, ValidationProvider} from "vee-validate";
 import ApiService from "@/services/ApiService";
 import Spinner from "@/components/Common/Spinner.vue";
 import PermissionBadge from "../../../components/BeneficiaryManagement/Committee/PermissionBadge.vue";
+import html2pdf from "html2pdf.js"
+
 
 export default {
     name: "Index",
@@ -18,7 +20,8 @@ export default {
                 name_en: null,
                 name_bn: null,
             },
-            ratings:[],
+          showCertificate:false,
+          ratings:[],
             program_id:null,
             rating_dialog:false,
             status_types:[],
@@ -57,6 +60,8 @@ export default {
             sortDesc: false, //ASC
             items: [5, 10, 15, 20, 40, 50, 100],
             is_loading: false,
+            user_name: null,
+            program_name: null
       
         };
     },
@@ -118,6 +123,26 @@ export default {
     },
 
     methods: {
+      downloadCertificate(certificate) {
+        this.user_name = certificate.user_name
+        this.program_name = certificate.program_name
+
+        const element = this.$refs.certificate;
+        const options = {
+          margin: 10,
+          filename: this.user_name +'.pdf',
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: {
+            scale: 2,
+            useCORS: true,
+            logging: true, // Enable logging to see more info in the console
+            allowTaint: true, // Allow images from different origins
+          },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().from(element).set(options).save();
+      },
         SaveRating(){
             const postData = {
                 program_id: this.program_id, // Replace 1 with the actual program_id value
@@ -1070,11 +1095,11 @@ export default {
                                                                     }}</span>
                                                             </v-tooltip>
 
-                                                            <v-tooltip top v-if="item.certificate==1">
+                                                            <v-tooltip top v-if="item.certificate">
                                                                 <template v-slot:activator="{ on }">
                                                                     <v-btn fab x-small v-on="on" color="grey"
                                                                         class=" mr-2 white--text mb-1" elevation="0"
-                                                                        @click="deleteAlert(item.id)">
+                                                                        @click="downloadCertificate(item.certificate)">
                                                                         <v-icon> mdi-file-download-outline </v-icon>
                                                                     </v-btn>
                                                                 </template>
@@ -1187,13 +1212,63 @@ export default {
                 </v-card-actions>
             </v-card>
         </v-dialog>
+
+
+      <v-row class="mt-5" justify="center" v-show="showCertificate">
+        <v-col cols="12" md="8">
+          <div class="certificate" ref="certificate">
+            <v-card class="card pa-5">
+              <h2 class="text-center mb-4">CERTIFICATE OF APPRECIATION</h2>
+              <p class="text-center mb-4">This certificate is proudly presented to:</p>
+              <h3 class="text-center mb-4">{{ user_name }}</h3>
+              <p class="text-center mb-4">in recognition of the successful completion of</p>
+              <h4 class="text-center mb-4">{{ program_name }}</h4>
+              <v-row justify="space-between" class="mt-5">
+                <v-col class="text-center">
+                  <hr />
+                  <p>DATE</p>
+                </v-col>
+                <v-col class="text-center">
+                  <hr />
+                  <p>SIGNATURE</p>
+                </v-col>
+              </v-row>
+            </v-card>
+          </div>
+        </v-col>
+      </v-row>
     </div>
+
+
+
+
 </template>
 
 <style scoped>
 .align-middle {
     display: flex;
     align-items: center;
+}
+
+
+.certificate {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: transparent;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.shadow {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.card {
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border: none;
+  background: transparent;
 }
 
 </style>
