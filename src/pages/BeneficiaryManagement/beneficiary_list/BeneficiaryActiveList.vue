@@ -1100,7 +1100,9 @@ export default {
           responseType: "arraybuffer",
         })
         .then((result) => {
-          window.open(result.data.data.url, "_blank");
+          const blob = new Blob([result.data], { type: "application/pdf" });
+          const url = window.URL.createObjectURL(blob);
+          window.open(url, "_blank");
           this.isLoading = false;
         })
         .catch((error) => {
