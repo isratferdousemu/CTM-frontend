@@ -134,57 +134,57 @@ export default {
                         </v-card-title>
 
                         <v-row class="my-custom-row ma-5">
-                            <v-col cols="5" style="font-size:13px;">
+                            <v-col cols="2" style="font-size:13px;">
                                 <b>{{ $t('container.training_management.training_program.training_circular') }}</b>
                             </v-col>
-                            <v-col cols="7" style="font-size:13px;">
+                            <v-col cols="10" style="font-size:13px;">
                                 <b>:</b> <span class="ml-2"> {{data?.training_circular?.circular_name
                                     }}</span>
                             </v-col>
-                            <v-col cols="5" style="font-size:13px;">
+                            <v-col cols="2" style="font-size:13px;">
                                 <b>{{ $t('container.training_management.training_program.program_name') }}</b>
                             </v-col>
-                            <v-col cols="7" style="font-size:13px;">
+                            <v-col cols="10" style="font-size:13px;">
                                 <b>:</b> <span class="ml-2">{{ data?.training_program?.program_name }}</span>
                             </v-col>
-                            <v-col cols="5" style="font-size:13px;">
+                            <v-col cols="2" style="font-size:13px;">
                                 <b>{{ $t('container.training_management.training_registration.user_name') }}</b>
                             </v-col>
-                            <v-col cols="7" style="font-size:13px;">
+                            <v-col cols="10" style="font-size:13px;">
                                 <b>:</b> <span class="ml-2">{{ data?.user?.username }}</span>
                             </v-col>
-                            <v-col cols="5" style="font-size:13px;">
+                            <v-col cols="2" style="font-size:13px;">
                                 <b>{{ $t('container.training_management.training_registration.full_name') }}</b>
                             </v-col>
-                            <v-col cols="7" style="font-size:13px;">
+                            <v-col cols="10" style="font-size:13px;">
                                 <b>:</b> <span class="ml-2">{{ data?.user?.full_name }}</span>
                             </v-col>
-                            <v-col cols="5" style="font-size:13px;">
+                            <v-col cols="2" style="font-size:13px;">
                                 <b>{{ $t('container.training_management.trainer_info.email') }}</b>
                             </v-col>
-                            <v-col cols="7" style="font-size:13px;">
+                            <v-col cols="10" style="font-size:13px;">
                                 <b>:</b> <span class="ml-2">{{ data?.user?.email }}</span>
                             </v-col>
-                            <v-col cols="5" style="font-size:13px;">
+                            <v-col cols="2" style="font-size:13px;">
                                 <b>{{ $t('container.training_management.trainer_info.mobile') }}</b>
                             </v-col>
-                            <v-col cols="7" style="font-size:13px;">
+                            <v-col cols="10" style="font-size:13px;">
                                 <b>:</b> <span class="ml-2">{{
                                     language == 'en' ? data?.user?.mobile : $helpers.englishToBangla(data?.user?.mobile)
                                     }}</span>
                             </v-col>
-                          <v-col cols="5" style="font-size:13px;">
+                          <v-col cols="2" style="font-size:13px;">
                                 <b>{{ $t('container.training_management.training_program.employee_id') }}</b>
                             </v-col>
-                            <v-col cols="7" style="font-size:13px;">
+                            <v-col cols="10" style="font-size:13px;">
                                 <b>:</b> <span class="ml-2">{{
                                     language == 'en' ? data?.user_id : $helpers.englishToBangla(data?.user_id)
                                     }}</span>
                             </v-col>
-                            <v-col cols="5" style="font-size:13px;">
+                            <v-col cols="2" style="font-size:13px;">
                                 <b>{{ $t('container.list.status') }}</b>
                             </v-col>
-                            <v-col cols="7" style="font-size:13px;">
+                            <v-col cols="10" style="font-size:13px;">
                                 <b>:</b> <span v-if="data?.status == 0" class="ml-2">
 
                                     {{ language === 'en' ? 'Pending' : 'পেন্ডিং' }}
