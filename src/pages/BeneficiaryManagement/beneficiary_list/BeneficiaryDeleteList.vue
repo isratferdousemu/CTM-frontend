@@ -7,13 +7,12 @@
             <!-- Expantion panels start -->
             <v-expansion-panels>
               <v-expansion-panel class="ma-2">
-                <v-expansion-panel-header color="#8C9EFF">
-                  <h3 class="white--text">
-                    {{
-                      $t(
-                        "container.beneficiary_management.beneficiary_list.list_delete"
-                      )
-                    }}
+                <v-expansion-panel-header color="#1c3b68">
+                  <template v-slot:actions>
+                    <v-icon color="white"> $expand </v-icon>
+                  </template>
+                  <h3 class="white--text text-uppercase">
+                    {{ $t("container.list.search") }}
                   </h3>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content
@@ -555,22 +554,19 @@
             </v-expansion-panels>
             <!-- Expantion panels end -->
             <!-- Application list -->
-            <v-card
-              elevation="10"
-              color="white"
-              rounded="md"
-              theme="light"
-              class="mb-8 mt-5"
-            >
-              <v-card-title class="justify-center" tag="div">
-                <h3 class="text-uppercase pt-3">
-                  {{
-                    $t(
-                      "container.beneficiary_management.beneficiary_list.list_delete"
-                    )
-                  }}
-                </h3>
-              </v-card-title>
+            <v-card elevation="10" color="white" rounded="md" theme="light">
+                  <v-card-title tag="div" style="
+                  background-color: #1c3b68;
+                  color: white;
+                  margin-bottom: 17px;
+                  font-size: 17px;
+                ">
+                    <h3 class="white--text text-uppercase pt-3">
+                      {{ $t("container.beneficiary_management.beneficiary_list.list_delete") }}
+                    </h3>
+                  </v-card-title>
+
+            
               <v-card-text>
                 <v-row>
                   <v-col> </v-col>

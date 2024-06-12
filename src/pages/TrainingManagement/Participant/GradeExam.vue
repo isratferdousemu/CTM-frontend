@@ -6,7 +6,13 @@ export default {
     title: "CTM - Training Program",
     data() {
         return {
-            data: [],
+            data: {
+               status:null,
+            rating: null,
+            },
+             
+            
+            rating:null,
             questionPaper: [],
             answers: [],
             edited_on_days:[],
@@ -15,7 +21,7 @@ export default {
             org_name: null,
             module_id: null,
             modules: [],
-
+             status:null,
             dialogAdd: false,
             deleteDialog: false,
             dialogEmail: false,
@@ -28,8 +34,8 @@ export default {
 
             apis: [],
             status_types: [{ "id": 0, "value_en": "Pending", "value_bn": "পেন্ডিং" },
-              { "id": 1, "value_en": "Pass", "value_bn": "উত্তীর্ণ" },
-              { "id": 2, "value_en": "Fail", "value_bn": "অনুত্তীর্ণ" }],
+              { "id": 1, "value_en": "Completed", "value_bn": "সম্পন্ন" },
+              { "id": 2, "value_en": "Not completed", "value_bn": "সম্পন্ন নয় " }],
 
 
             errors: {},
@@ -90,9 +96,14 @@ export default {
       },
 
       changeStatus(status) {
-          ApiService.update(`admin/training/participants/update-status/${this.$route.params.id}`, {
-            status: status
-          }).then(res => {
+        const postData = {
+                status: this.data.status, // Replace 1 with the actual program_id value
+                rating: this.data.rating
+            };
+        ApiService.update(`admin/training/participants/update-status/${this.$route.params.id}`, {
+          status: this.data.status, // Replace 1 with the actual program_id value
+          rating: this.data.rating
+        }).then(res => {
             this.$toast.success(res.data?.message ?? 'Operation Successful');
           }).catch(err => {
             this.$toast.error(err.response?.data?.message ?? 'Something went wrong');
@@ -106,73 +117,78 @@ export default {
 </script>
 
 <template>
-    <div id="training-program">
-        <v-container>
-            <v-row>
-                <v-col cols="12">
-                    <v-card class="mx-3">
-                        <v-card-title class="justify-center black--text"
-                            style="background-color: #1C3C6A; color: white;">
-                            <h4 class="white--text">{{ $t("container.training_management.training_registration.view") }}
-                            </h4>
-                        </v-card-title>
+  <div id="training-program">
+    <v-container>
+      <v-row>
+        <v-col cols="12">
+          <v-card class="mx-3">
+            <v-card-title class="justify-center black--text" style="background-color: #1C3C6A; color: white;">
+              <h4 class="white--text">{{ $t("container.training_management.training_registration.view") }}
+              </h4>
+            </v-card-title>
 
-                        <v-row class="my-custom-row ma-5">
+            <v-row class="my-custom-row ma-5">
 
-                          <template v-for="(item, index) in questionPaper">
-                            <v-col cols="5" style="font-size:13px;">
-                              {{ item.label }}
-                            </v-col>
-
-                            <v-col cols="7" style="font-size:13px;">
-                              <b>:</b> <span class="ml-2">
-                              {{answers?.[item['$autoname']] }}
-                            </span>
-                            </v-col>
-
-                          </template>
-
-
-                          <v-col cols="5" style="font-size:13px;margin-top: 15px;">
-                            <b>{{ $t("container.training_management.training_registration.result") }}</b>
-                          </v-col>
-
-                          <v-col cols="3" style="font-size:13px;margin-top: 15px;">
-                            <v-select dense type="text"
-                                      v-model="data.status"
-                                      :items="status_types"
-                                      :item-text="getItemText"
-                                      item-value="id"
-                                      @change="changeStatus"
-                                      persistent-hint outlined
-                            ></v-select>
-
-                          </v-col>
-
-
-
-                            <!-- Other fields -->
-
-                        </v-row>
-
-
-
-                        <v-row class="justify-end ma-5">
-                            <v-btn flat color="primary" class="custom-btn mr-2 mb-5"
-                                   :to="`/training-management/participant/${data.training_program_id}/${data.training_circular_id}`">
-                                {{ $t("container.list.back") }}
-                            </v-btn>
-
-                        </v-row>
-                    </v-card>
+              <template v-for="(item, index) in questionPaper">
+                <v-col cols="5" style="font-size:13px;">
+                  {{ item.label }}
                 </v-col>
+
+                <v-col cols="7" style="font-size:13px;">
+                  <b>:</b> <span class="ml-2">
+                    {{answers?.[item['$autoname']] }}
+                  </span>
+                </v-col>
+
+              </template>
+
+
+              <v-col cols="5" style="font-size:13px;margin-top: 15px;">
+                <b>{{ $t("container.training_management.training_registration.result") }}</b>
+              </v-col>
+
+              <v-col cols="3" style="font-size:13px;margin-top: 15px;">
+                <v-select dense type="text" v-model="data.status" :items="status_types" :item-text="getItemText"
+                  item-value="id" 
+                   persistent-hint outlined></v-select>
+
+              </v-col>
+              <v-col cols="5" style="font-size:13px;margin-top: 15px;">
+                <b>{{ $t("container.list.rating") }}</b>
+              </v-col>
+
+              <v-col cols="3" style="font-size:13px;margin-top: 15px;">
+                <v-rating :value="rating" v-model="data.rating" length="5" half-increments clearable></v-rating>
+
+              </v-col>
+
+
+
+              <!-- Other fields -->
+
             </v-row>
 
 
 
+            <v-row class="justify-end ma-5">
+              <v-btn flat color="success" @click="changeStatus()" class="custom-btn mr-2 mb-5">
+                {{ $t("container.list.save") }}
+              </v-btn>
+              <v-btn flat color="primary" class="custom-btn mr-2 mb-5"
+                :to="`/training-management/participant/${data.training_program_id}/${data.training_circular_id}`">
+                {{ $t("container.list.back") }}
+              </v-btn>
 
-        </v-container>
-    </div>
+            </v-row>
+          </v-card>
+        </v-col>
+      </v-row>
+
+
+
+
+    </v-container>
+  </div>
 </template>
 
 <style scoped>
