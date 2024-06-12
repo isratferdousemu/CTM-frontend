@@ -3,159 +3,84 @@
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
         <div class="d-block text-right">
-          <v-btn
-            elevation="2"
-            class="btn my-2"
-            color="primary"
-            router
-            to="/beneficiary-management/beneficiary-replacement-list"
-          >
+          <v-btn elevation="2" class="btn mb-2" color="primary" router
+            to="/beneficiary-management/beneficiary-replacement-list">
             {{ $t("container.list.view-list") }}
           </v-btn>
         </div>
         <v-expansion-panels v-model="panel" multiple>
           <v-expansion-panel>
-            <v-expansion-panel-header color="#8C9EFF">
-              {{
-                $t(
-                  "container.beneficiary_management.beneficiary_list.beneficiary_replacement"
-                )
-              }}
+            <v-expansion-panel-header color="#1c3b68">
+              <template v-slot:actions>
+                <v-icon color="white"> $expand </v-icon>
+              </template>
+              <h3 class="white--text text-uppercase">
+                {{ $t("container.beneficiary_management.beneficiary_list.beneficiary_replacement") }}
+              </h3>
             </v-expansion-panel-header>
             <v-expansion-panel-content>
               <ValidationObserver ref="form" v-slot="{ invalid }">
                 <form @submit.prevent="submit()">
                   <v-row class="mt-10">
                     <v-col lg="6" md="6" cols="12">
-                      <v-text-field
-                        :label="
-                          $t(
-                            'container.beneficiary_management.beneficiary_list.replacement_with'
-                          )
-                        "
-                        outlined
-                        disabled
-                        v-model="ben_id_with_name"
-                      >
+                      <v-text-field :label="$t(
+              'container.beneficiary_management.beneficiary_list.replacement_with'
+            )
+              " outlined disabled v-model="ben_id_with_name">
                       </v-text-field>
                     </v-col>
                     <v-col lg="6" md="6" cols="12">
-                      <v-text-field
-                        :label="
-                          $t(
-                            'container.beneficiary_management.beneficiary_list.contract_number'
-                          )
-                        "
-                        outlined
-                        disabled
-                        v-model="beneficiary.mobile"
-                      >
+                      <v-text-field :label="$t(
+              'container.beneficiary_management.beneficiary_list.contract_number'
+            )
+              " outlined disabled v-model="beneficiary.mobile">
                       </v-text-field>
                     </v-col>
 
                     <v-col lg="6" md="6" cols="12">
-                      <v-textarea
-                        :label="
-                          $t(
-                            'container.beneficiary_management.beneficiary_list.replacement_cause_details'
-                          )
-                        "
-                        outlined
-                        v-model="data.cause_details"
-                      >
+                      <v-textarea :label="$t(
+              'container.beneficiary_management.beneficiary_list.replacement_cause_details'
+            )
+              " outlined v-model="data.cause_details">
                       </v-textarea>
                     </v-col>
 
                     <v-col lg="6" md="6" cols="12">
-                      <ValidationProvider
-                        name="Reason"
-                        vid="data.exit_reason_id"
-                        rules="required"
-                        v-slot="{ errors }"
-                      >
-                        <v-autocomplete
-                          :hide-details="errors[0] ? false : true"
-                          v-model="data.cause_type"
-                          outlined
-                          :label="
-                            $t(
-                              'container.beneficiary_management.beneficiary_list.replacement_cause'
-                            )
-                          "
-                          :items="cause_types"
-                          item-text="value_en"
-                          item-value="id"
-                          required
-                          clearable
-                          :error="errors[0] ? true : false"
-                          :error-messages="errors[0]"
-                        ></v-autocomplete>
+                      <ValidationProvider name="Reason" vid="data.exit_reason_id" rules="required" v-slot="{ errors }">
+                        <v-autocomplete :hide-details="errors[0] ? false : true" v-model="data.cause_type" outlined
+                          :label="$t(
+              'container.beneficiary_management.beneficiary_list.replacement_cause'
+            )
+              " :items="cause_types" item-text="value_en" item-value="id" required clearable
+                          :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                       </ValidationProvider>
                     </v-col>
 
                     <v-col lg="6" md="6" cols="12">
-                      <v-menu
-                        v-model="menu2"
-                        :close-on-content-click="false"
-                        :nudge-right="40"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="auto"
-                      >
+                      <v-menu v-model="menu2" :close-on-content-click="false" :nudge-right="40"
+                        transition="scale-transition" offset-y min-width="auto">
                         <template v-slot:activator="{ on, attrs }">
-                          <v-text-field
-                            outlined
-                            clearable
-                            v-model="data.date_of_impact"
-                            :label="
-                              $t(
-                                'container.beneficiary_management.beneficiary_list.cause_date'
-                              )
-                            "
-                            prepend-inner-icon="mdi-calendar"
-                            readonly
-                            v-bind="attrs"
-                            v-on="on"
-                          ></v-text-field>
+                          <v-text-field outlined clearable v-model="data.date_of_impact" :label="$t(
+              'container.beneficiary_management.beneficiary_list.cause_date'
+            )
+              " prepend-inner-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
                         </template>
-                        <v-date-picker
-                          v-model="data.date_of_impact"
-                          @input="menu2 = false"
-                        ></v-date-picker>
+                        <v-date-picker v-model="data.date_of_impact" @input="menu2 = false"></v-date-picker>
                       </v-menu>
                     </v-col>
                     <v-col lg="6" md="6" cols="12">
-                      <v-file-input
-                        outlined
-                        show-size
-                        counter
-                        prepend-inner-icon="mdi mdi-file-account-outline"
-                        :label="
-                          $t(
-                            'container.beneficiary_management.beneficiary_list.cause_provement'
-                          )
-                        "
-                        accept="image/*, application/pdf"
-                        prepend-icon=""
-                        v-model="data.file"
-                      ></v-file-input>
+                      <v-file-input outlined show-size counter prepend-inner-icon="mdi mdi-file-account-outline" :label="$t(
+              'container.beneficiary_management.beneficiary_list.cause_provement'
+            )
+              " accept="image/*, application/pdf" prepend-icon="" v-model="data.file"></v-file-input>
                     </v-col>
                   </v-row>
 
                   <v-row class="mx-0 my-0 py-2" justify="end">
-                    <v-btn
-                      @click="resetBeneficiary"
-                      flat
-                      class="custom-btn-width py-2 mr-2"
-                    >
+                    <v-btn @click="resetBeneficiary" flat class="custom-btn-width py-2 mr-2">
                       {{ $t("container.list.reset") }}
                     </v-btn>
-                    <v-btn
-                      type="submit"
-                      flat
-                      :disabled="invalid"
-                      class="custom-btn-width success white--text py-2"
-                    >
+                    <v-btn type="submit" flat :disabled="invalid" class="custom-btn-width success white--text py-2">
                       {{ $t("container.list.replace") }}
                     </v-btn>
                   </v-row>
@@ -167,36 +92,25 @@
       </v-col>
 
       <v-col cols="12">
-        <v-card>
-          <v-card-title class="justify-center" tag="div">
-            <h3 class="text-uppercase pt-3">
-              {{
-                $t(
-                  "container.beneficiary_management.beneficiary_list.beneficiary_waiting_list"
-                )
-              }}
-            </h3>
+        <v-card elevation="10" color="white" rounded="md" theme="light">
+          <v-card-title tag="div" class="mb-4" style="
+                  background-color: #1c3b68;
+                  color: white;">
+            <h4 class="white--text text-uppercase">
+              {{ $t("container.beneficiary_management.beneficiary_list.beneficiary_waiting_list") }}
+            </h4>
           </v-card-title>
+
           <v-card-text>
-            <v-row
-              class="ma-0 pa-3 white round-border d-flex justify-space-between align-center"
-              justify="center"
-              justify-lg="space-between"
-            >
+            <v-row class="ma-0 pa-3 white round-border d-flex justify-space-between align-center" justify="center"
+              justify-lg="space-between">
               <v-col cols="12">
-                <v-data-table
-                  :loading="loading"
-                  item-key="id"
-                  :headers="headers"
-                  :items="replaceList"
-                  :items-per-page="pagination.perPage"
-                  hide-default-footer
-                  class="elevation-0 transparent row-pointer"
-                >
+                <v-data-table :loading="loading" item-key="id" :headers="headers" :items="replaceList"
+                  :items-per-page="pagination.perPage" hide-default-footer class="elevation-0 transparent row-pointer">
                   <template v-slot:item.id="{ item, index }">
                     {{
-                      (pagination.current - 1) * pagination.perPage + index + 1
-                    }}
+              (pagination.current - 1) * pagination.perPage + index + 1
+            }}
                   </template>
                   <template v-slot:item.name_en="{ item }">
                     {{ item.name_en }}
@@ -207,10 +121,7 @@
 
                   <template v-slot:item.id="{ item }">
                     <td>
-                      <v-checkbox
-                        :value="item.id === selectedId"
-                        @change="onCheckboxChange(item.id)"
-                      />
+                      <v-checkbox :value="item.id === selectedId" @change="onCheckboxChange(item.id)" />
                     </td>
                   </template>
 
@@ -218,16 +129,9 @@
                   <template v-slot:item.actions="{ item }">
                     <v-tooltip top>
                       <template v-slot:activator="{ on }">
-                        <v-btn
-                          v-can="'beneficiaryReplacement-create'"
-                          fab
-                          x-small
-                          v-on="on"
-                          color="success"
-                          elevation="0"
-                          router
-                          :to="`/beneficiary-management/beneficiary-info/details/${item.id}`"
-                        >
+                        <v-btn v-can="'beneficiaryReplacement-create'" fab x-small v-on="on" color="primary"
+                          elevation="0" router :to="`/beneficiary-management/beneficiary-info/details/${item.id}`"
+                          target="_blank">
                           <v-icon> mdi-eye </v-icon>
                         </v-btn>
                       </template>
@@ -238,49 +142,27 @@
                   </template>
                   <!-- End Action Button -->
                   <template v-slot:footer="item">
-                    <div
-                      class="text-center pt-2 v-data-footer justify-center pb-2"
-                    >
-                      <v-select
-                        style="
+                    <div class="text-center pt-2 v-data-footer justify-center pb-2">
+                      <v-select style="
                           position: absolute;
                           right: 25px;
                           width: 149px;
                           transform: translate(0px, 0px);
-                        "
-                        :items="items"
-                        hide-details
-                        dense
-                        outlined
-                        @change="onPageChange"
-                        v-model="pagination.perPage"
-                      ></v-select>
-                      <v-pagination
-                        circle
-                        primary
-                        v-model="pagination.current"
-                        :length="pagination.total"
-                        @input="onPageChange"
-                        :total-visible="11"
-                        class="custom-pagination-item"
-                      ></v-pagination>
+                        " :items="items" hide-details dense outlined @change="onPageChange"
+                        v-model="pagination.perPage"></v-select>
+                      <v-pagination circle primary v-model="pagination.current" :length="pagination.total"
+                        @input="onPageChange" :total-visible="11" class="custom-pagination-item"></v-pagination>
                     </div>
                   </template>
                 </v-data-table>
               </v-col>
             </v-row>
-            <v-row class="mx-0 my-0 py-2" justify="end">
-              <v-btn
-                type="submit"
-                flat
-                router
-                to="/beneficiary-management/beneficiary-info"
-                :disabled="invalid"
-                class="custom-btn-width py-2 mr-2"
-              >
+            <!-- <v-row class="mx-0 my-0 py-2" justify="end">
+              <v-btn type="submit" flat router to="/beneficiary-management/beneficiary-info" :disabled="invalid"
+                class="custom-btn-width py-2 mr-2">
                 {{ $t("container.list.back") }}
               </v-btn>
-            </v-row>
+            </v-row> -->
           </v-card-text>
         </v-card>
       </v-col>
@@ -405,6 +287,10 @@ export default {
       try {
         let fd = new FormData();
         if (this.selectedId) {
+          if (this.data.file && this.data.file.size > 2 * 1024 * 1024) {//2MB
+            this.$toast.error("Max file size of 2MB exceeds!");
+            return;
+          }
           fd.append("replace_with_ben_id", this.selectedId);
           fd.append("cause_id", this.data.cause_type);
           fd.append("cause_detail", this.data.cause_details);
@@ -427,7 +313,7 @@ export default {
               }
             });
         } else {
-          this.$toast.success("Please select a Replacement Item");
+          this.$toast.error("Please select a beneficiary to replace");
         }
       } catch (e) {
         console.log("submit__", e);
@@ -513,13 +399,13 @@ export default {
       this.dateFormatted = this.formatDate(this.date);
     },
   },
-  created() {},
+  created() { },
   beforeMount() {
     this.updateHeaderTitle();
     this.GetBeneficiaryDetails(this.$route.params.id);
     this.GetReplaceList();
     this.GetAllCommitteeType();
   },
-  mounted() {},
+  mounted() { },
 };
 </script>

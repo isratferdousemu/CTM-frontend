@@ -23,6 +23,8 @@
       "copy": "লিংক কপি করুন",
       "banned": "নিষিদ্ধ",
       "action": "অ্যাকশন ",
+        "trainer_rating": "প্রশিক্ষক রেটিং",
+        "rating": "রেটিং",
       "submit": "সাবমিট করুন",
       "cancel": "বাতিল করুন",
       "edit": "এডিট করুন",
@@ -87,7 +89,12 @@
       "no_data": "কোন লিঙ্গ নির্বাচন করা হয়নি.",
       "sync": "সিঙ্ক",
       "close": "বন্ধ করুন",
-      "addToList": "তালিকায় যুক্ত করুন"
+      "addToList": "তালিকায় যুক্ত করুন",
+      "gradeExam": "গ্রেড পরীক্ষা",
+      "trainerRating": "প্রশিক্ষক রেটিং",
+      "exam": "পরীক্ষা",
+      "trainerAssessment": "প্রশিক্ষক মূল্যায়ন",
+      "certificate": "সনদপত্র"
     },
     "system_config": {
       "demo_graphic": {
@@ -565,6 +572,7 @@
     "application_selection": {
       "application": {
         "select": "সিলেক্ট",
+        "mfs_name": "এমএফএস নাম",
         "select_all": "সব সিলেক্ট করুন",
         "application": "আবেদন",
         "list": "আবেদনের তালিকা ",
@@ -1079,70 +1087,82 @@
         "total_amount_disbursed": "মোট বিতরণ করা পরিমাণ"
       }
     },
+    "payroll_management_v2": {
+      "payroll_create": "পেরোল তৈরি",
+      "allotment_distribution": "বরাদ্দ বিতরণের সংশোধন",
+      "allotment_area_wise_ben": "এলাকাভিত্তিক উপকারভোগী বরাদ্দ",
+      "monthly_allowance_amount": "প্রতি উপকারভোগী প্রতি মাসিক ভাতার পরিমাণ: ",
+      "distribution_medium": "বিতরণের মাধ্যম",
+      "bank_account": "ব্যাংক হিসাব",
+      "program": "প্রোগ্রাম",
       "area_wise_ben_list": {
-        "remaining_installment": "Remaining Installment",
-        "area_type": "Upazila/City Corporation/ District Pouroshava",
-        "allotment_area": "Union/Ward/Pouroshava",
-        "allocated_beneficiary": "Allocated Beneficiary",
-        "active_beneficiary": "Active Beneficiary",
-        "status": "Status"
+        "remaining_installment": "অবশিষ্ট কিস্তি",
+        "area_type": "উপজেলা/সিটি কর্পোরেশন/জেলা পৌরসভা",
+        "allotment_area": "ইউনিয়ন/ওয়ার্ড/পৌরসভা",
+        "allocated_beneficiary": "বরাদ্দকৃত উপকারভোগী",
+        "active_beneficiary": "সক্রিয় উপকারভোগী",
+        "status": "স্ট্যাটাস",
+        "see_beneficiary": "উপকারভোগী দেখুন",
+        "reject": "প্রত্যাখ্যান"
       },
       "allotment_area_wise_ben_setup": {
-        "title": "Allotment area-wise beneficiary setup",
-        "title_send_preview": "Beneficiary Payroll Preview",
-        "allotment_area": "Allotment Area:",
-        "selected_beneficiaries": "Selected Beneficiaries:",
-        "total_beneficiaries": "Total Beneficiaries:",
-        "payment_cycle_start_date": "Payment Cycle Start Date:",
-        "allocated_beneficiaries": "Allocated Beneficiaries:",
-        "payment_cycle_end_date": "Payment Cycle End Date:",
-        "payroll_eligible_amount": "Payroll Eligible Amount:",
-        "current_amount": "Current Amount:",
-        "amount_of_money": "Amount of money allocated annually:",
-        "amount_remain_ralance": "Amount of Remain Balance in Payroll:",
-        "total_amount_installments": "Total Amount of All Installments Sent Earlier:",
+        "title": "এলাকাভিত্তিক উপকারভোগী বরাদ্দ সেটআপ",
+        "title_send_preview": "উপকারভোগী বেতনের পূর্বরূপ",
+        "allotment_area": "বরাদ্দ এলাকা:",
+        "selected_beneficiaries": "নির্বাচিত উপকারভোগী:",
+        "total_beneficiaries": "মোট উপকারভোগী:",
+        "payment_cycle_start_date": "পেমেন্ট সাইকেল শুরুর তারিখ:",
+        "allocated_beneficiaries": "বরাদ্দকৃত উপকারভোগী:",
+        "payment_cycle_end_date": "পেমেন্ট সাইকেল শেষ তারিখ:",
+        "payroll_eligible_amount": "বেতনের যোগ্য পরিমাণ:",
+        "current_amount": "বর্তমান পরিমাণ:",
+        "amount_of_money": "বার্ষিক বরাদ্দকৃত অর্থের পরিমাণ:",
+        "amount_remain_ralance": "বেতনের মধ্যে অবশিষ্ট ব্যালেন্সের পরিমাণ:",
+        "total_amount_installments": "আগে পাঠানো সমস্ত কিস্তির মোট পরিমাণ:",
 
-        "ben_name": "Name of the Beneficiaries",
-        "father_name": "Father Name",
-        "mother_name": "Mother Name",
-        "bank": "Bank",
-        "ward": "Ward",
-        "mobile_number": "Mobile Number",
-        "account_no": "Account No",
-        "allowance_amount": "Allowance Amount"
+        "ben_name": "উপকারভোগীদের নাম",
+        "father_name": "পিতার নাম",
+        "mother_name": "মায়ের নাম",
+        "bank": "ব্যাংক",
+        "ward": "ওয়ার্ড",
+        "mobile_number": "মোবাইল নম্বর",
+        "account_no": "হিসাব নাম্বার",
+        "allowance_amount": "ভাতার পরিমাণ"
       },
       "allotment_area_wise_ben_send_preview": {
-        "beneficiary_id": "Beneficiary ID",
-        "name_en": "Name (English)",
-        "father_name_en": "Father Name (English)",
-        "union_pourashava": "Union/Pourashava",
-        "ward": "Ward",
-        "program_name": "Program Name",
-        "bank_account": "Bank Account",
-        "mobile": "Mobile",
-        "account": "Account",
-        "cash_out_charge": "Cash Out Charge",
-        "total_amount": "Total Amount",
-        "financial_account_status": "Financial Account Status",
-        "status": "Status"
+        "beneficiary_id": "উপকারভোগী আইডি",
+        "name_en": "নাম (ইংরেজিতে)",
+        "father_name_en": "বাবার নাম (ইংরেজিতে)",
+        "union_pourashava": "ইউনিয়ন/পৌরসভা",
+        "ward": "ওয়ার্ড",
+        "program_name": "প্রোগ্রামের নাম",
+        "bank_account": "ব্যাংক অ্যাকাউন্ট",
+        "mobile": "মোবাইল নম্বর",
+        "account": "হিসাব নাম্বার",
+        "cash_out_charge": "ক্যাশ আউট চার্জ",
+        "total_amount": "সর্বমোট পরিমাণ",
+        "financial_account_status": "আর্থিক অ্যাকাউন্টের অবস্থা",
+        "status": "অবস্থা",
+        "total_allocated_ben": "মোট বরাদ্দকৃত উপকারভোগী",
+        "amount": "পরিমাণ"
       },
       "payroll_approval": {
-        "title": "Payroll Approval",
-        "office": "Office",
-        "office_type": "Office Type",
-        "installment": "Installment",
-        "status": "Status",
+        "title": "বেতনের অনুমোদন",
+        "office": "অফিস",
+        "office_type": "অফিসের প্রকার",
+        "installment": "কিস্তি",
+        "status": "স্ট্যাটাস",
         "approval_list": {
-          "district": "District",
-          "upazila": "Upazila",
-          "office": "Office",
-          "program": "Program",
-          "installment": "Installment",
-          "total_beneficiary": "Total Beneficiary",
-          "allowance_amount": "Allowance Amount",
-          "charge": "Charge",
-          "total_money": "Total Money",
-          "status": "Status"
+          "district": "জেলা",
+          "upazila": "উপজেলা",
+          "office": "অফিস",
+          "program": "প্রোগ্রাম",
+          "installment": "কিস্তি",
+          "total_beneficiary": "মোট উপকারভোগী",
+          "allowance_amount": "ভাতার পরিমাণ",
+          "charge": "চার্জ",
+          "total_money": "মোট টাকা",
+          "status": "স্ট্যাটাস"
         }
       }
     },
@@ -1172,7 +1192,8 @@
         "search": "জরুরী সুবিধাভোগী অনুসন্ধান করুন",
         "e_beneficiary": "বিদ্যমান থেকে সুবিধাভোগী",
         "n_beneficiary": "নতুন সংযোজন থেকে",
-        "searchBy": "দ্বারা অনুসন্ধান করুন"
+        "searchBy": "দ্বারা অনুসন্ধান করুন",
+        "summary": "সংক্ষিপ্ত বিবরণ"
       },
       "emergency_payment_cycle": {
         "filter_title": "জরুরী পেমেন্ট চক্র",
@@ -1288,7 +1309,12 @@
         "alert": "বহিরাগত অংশগ্রহণকারী নিবন্ধনের জন্য এই লিঙ্কে যান",
         "user_name": "ব্যবহারকারীর নাম",
         "delete_header": "অংশগ্রহণকারীকে মুছুন",
-        "delete_alert": "আপনি কি এই অংশগ্রহণকারীকে মুছে ফেলার বিষয়ে নিশ্চিত? অংশগ্রহণকারীর সমস্ত বিবরণ মুছে ফেলা হবে।"
+        "delete_alert": "আপনি কি এই অংশগ্রহণকারীকে মুছে ফেলার বিষয়ে নিশ্চিত? অংশগ্রহণকারীর সমস্ত বিবরণ মুছে ফেলা হবে।",
+        "result": "ফলাফল"
+      },
+      "kobo": {
+        "edit": "টোকেন এডিট করুন",
+        "token": "টোকেন"
       }
     },
     "api_manager": {
@@ -1538,4 +1564,4 @@
       "image_format": "ছবির বিন্যাস"
     }
   }
- 
+}

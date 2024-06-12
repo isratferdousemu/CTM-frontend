@@ -1,8 +1,17 @@
 <script>
-import {ValidationObserver } from "vee-validate";
+import {ValidationObserver, ValidationProvider} from "vee-validate";
+import ApiService from "@/services/ApiService";
+import Spinner from "@/components/Common/Spinner.vue";
+import PermissionBadge from "../../../components/BeneficiaryManagement/Committee/PermissionBadge.vue";
+import html2pdf from "html2pdf.js"
+
+
 export default {
     name: "Index",
     title: "CTM - Training Program",
+    components: {
+      Spinner,
+    },
     data() {
         return {
             data: {
@@ -11,7 +20,12 @@ export default {
                 name_en: null,
                 name_bn: null,
             },
+          showCertificate:false,
+          ratings:[],
+            program_id:null,
+            rating_dialog:false,
             status_types:[],
+            rating_trainers:[],
             start_date:null,
             end_date: null,
             dates: [],
@@ -45,6 +59,9 @@ export default {
             sortBy: "name_en",
             sortDesc: false, //ASC
             items: [5, 10, 15, 20, 40, 50, 100],
+            is_loading: false,
+            user_name: null,
+            program_name: null
       
         };
     },
@@ -60,6 +77,13 @@ export default {
                 return this.$store.getters.getAppLanguage;
             }
         },
+        computedRating() {
+                console.log("Current ratings:", this.ratings); // Debugging statement
+            return trainerId => {
+                const trainerRating = this.ratings.find(item => item.trainer_id === trainerId);
+                return trainerRating ? trainerRating.rating : 0;
+            };
+        },
         headers() {
             return [
                 { text: this.$t('container.list.sl'), value: "sl", align: "start", sortable: false, class: "align-middle" },
@@ -69,8 +93,8 @@ export default {
                 { text: this.$t('container.training_management.training_circular.training_type'), value: "training_type", align: "start", sortable: false, class: "align-middle" },
                 { text: this.$t('container.training_management.training_program.trainer'), value: "trainer", width: "15%", align: "start", sortable: false, class: "align-middle" },
                 { text: this.$t('container.list.status'), value: "status", align: "start", class: "align-middle" },
-                { text: this.$t('container.training_management.training_program.exam_status'), value: "exam_status", align: "start", class: "align-middle" },
-                { text: this.$t('container.training_management.training_program.trainer_rating_status'), value: "rating_status", align: "start", class: "align-middle" },
+                // { text: this.$t('container.training_management.training_program.exam_status'), value: "exam_status", align: "start", class: "align-middle" },
+                // { text: this.$t('container.training_management.training_program.trainer_rating_status'), value: "rating_status", align: "start", class: "align-middle" },
                 { text: this.$t('container.list.action'), value: "actions", align: "start", sortable: false, style: "width:300px;", class: "align-middle" },
             ];
         },
@@ -99,6 +123,99 @@ export default {
     },
 
     methods: {
+      downloadCertificate(certificate) {
+        this.user_name = certificate.user_name
+        this.program_name = certificate.program_name
+
+        const element = this.$refs.certificate;
+        const options = {
+          margin: 10,
+          filename: this.user_name +'.pdf',
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: {
+            scale: 2,
+            useCORS: true,
+            logging: true, // Enable logging to see more info in the console
+            allowTaint: true, // Allow images from different origins
+          },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().from(element).set(options).save();
+      },
+        SaveRating(){
+            const postData = {
+                program_id: this.program_id, // Replace 1 with the actual program_id value
+                ratings: this.ratings
+            };
+            this.$axios
+                .post(`admin/training/trainer-rating`, postData, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((result) => {
+                    this.$toast.success(result?.data?.message);
+                    this.rating_dialog=false;
+                    this.GetData();
+                })
+                .catch((err) => {
+
+                });
+
+
+        },
+        rateTrainer(trainerId, rating) {
+            const index = this.ratings.findIndex(item => item.trainer_id === trainerId);
+            const newRating = { trainer_id: trainerId, rating: rating };
+            if (index !== -1) {
+                this.$set(this.ratings, index, newRating);
+            } else {
+                this.ratings.push(newRating);
+            }
+            console.log("Updated ratings:", this.ratings); // Debugging statement
+        },
+    
+        trainerrating($id){
+           
+            this.getShow($id);
+            this.program_id = $id;
+          
+            setTimeout(() => {
+               this.rating_dialog = true;
+            }, 2000); // 2-second delay
+        },
+
+        
+         getShow(id) {
+            this.$axios
+                .get(`admin/training/programs/${id}`, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((result) => {
+
+
+                  
+                  
+                    this.rating_trainers = result?.data?.data.trainers;
+                    console.log(this.rating_trainers,"rating_trainers")
+                    
+                   
+
+                  
+                   
+                })
+                .catch((err) => {
+                   
+
+                });
+
+        },
+        
         OnChangeDateInfo(event, type) {
             this.start_date=null;
             this.end_date = null;
@@ -242,6 +359,13 @@ export default {
                 });
 
         },
+
+      openLink(link){
+          if (link) {
+            window.open(link, '_blank')
+          }
+      },
+
         copyToClipboard(id) {
             const baseUrl = window.location.origin;
             console.log(baseUrl,"baseUrl");
@@ -269,9 +393,24 @@ export default {
                 this.$toast.success("লিঙ্ক কপি করা হয়েছে");
             }
             },
-         
 
-            // Optionally, you can show a message to the user indicating that the link has been copied
+
+      syncData(id) {
+          this.is_loading = true
+        ApiService.get(`/admin/training/programs/sync-data/${id}`)
+            .then(res => {
+              this.is_loading = false
+              console.log(res.data)
+              this.$toast.success(res.data?.message)
+            }).catch(err => {
+              this.is_loading = false
+              this.$toast.error(err.response.data.message)
+            })
+
+      },
+
+
+        // Optionally, you can show a message to the user indicating that the link has been copied
          
         
 
@@ -638,6 +777,7 @@ export default {
         <v-row class="ml-sm-5 mt-0">
             <v-col cols="12">
                 <v-row>
+                    <Spinner :loading="is_loading" />
                     <v-col cols="12">
                         <v-expansion-panels>
                             <v-expansion-panel class="ma-2">
@@ -783,7 +923,7 @@ export default {
                                                             item.training_circular?.circular_name }}</span>
                                                     </template>
                                                     <template v-slot:item.modules="{ item }">
-                                                        <div style="width:130px;">
+                                                        <div style="width:200px;">
                                                             <span v-for="(value, key) in item.modules" :key="key">
                                                                 <v-chip small label color="#FACD91" class="ma-1">
                                                                     {{ language == 'bn' ? value.value_bn :
@@ -862,6 +1002,20 @@ export default {
                                                                 </template>
                                                                 <span>{{ $t("container.list.copy") }}</span>
                                                             </v-tooltip>
+
+
+                                                            <v-tooltip top>
+                                                                <template v-slot:activator="{ on }">
+                                                                    <v-btn v-can="'trainingProgram-edit'"
+                                                                        class=" mr-2 mb-1" fab x-small v-on="on"
+                                                                        color="brown" elevation="0"
+                                                                        @click="syncData(item.id)">
+                                                                        <v-icon color="white"> mdi-sync-circle </v-icon>
+                                                                    </v-btn>
+                                                                </template>
+                                                                <span>{{ $t("container.list.sync") }}</span>
+                                                            </v-tooltip>
+
                                                             <v-tooltip top>
                                                                 <template v-slot:activator="{ on }">
                                                                     <v-btn v-can="'trainingProgram-view'" fab x-small
@@ -884,6 +1038,7 @@ export default {
                                                                 </template>
                                                                 <span>{{ $t("container.list.edit") }}</span>
                                                             </v-tooltip>
+
                                                             <v-tooltip top>
                                                                 <template v-slot:activator="{ on }">
                                                                     <v-btn v-can="'participant-view'"
@@ -899,8 +1054,8 @@ export default {
                                                                     $t("container.training_management.training_registration.list_1")
                                                                     }}</span>
                                                             </v-tooltip>
-                                                         
-                                                                
+
+
                                                             <v-tooltip top>
                                                                 <template v-slot:activator="{ on }">
                                                                     <v-btn v-can="'trainingProgram-delete'" fab x-small
@@ -911,6 +1066,55 @@ export default {
                                                                     </v-btn>
                                                                 </template>
                                                                 <span>{{ $t("container.list.delete") }}</span>
+                                                            </v-tooltip>
+
+
+                                                            <v-tooltip top
+                                                                v-if="item.is_participant && item.exam_status && item.question_link">
+                                                                <template v-slot:activator="{ on }">
+                                                                    <v-btn fab x-small v-on="on" color="green"
+                                                                        class=" mr-2 white--text mb-1" elevation="0"
+                                                                        @click="openLink(item.question_link)">
+                                                                        <v-icon> mdi-newspaper-variant-outline </v-icon>
+                                                                    </v-btn>
+                                                                </template>
+                                                                <span>{{ $t("container.list.exam") }}</span>
+                                                            </v-tooltip>
+
+                                                            <v-tooltip top
+                                                                v-if="item.is_participant && item.rating_status && item.trainer_ratings_link">
+                                                                <template v-slot:activator="{ on }">
+                                                                    <v-btn fab x-small v-on="on" color="red"
+                                                                        class=" mr-2 white--text mb-1" elevation="0"
+                                                                        @click="openLink(item.trainer_ratings_link)">
+                                                                        <v-icon> mdi-card-account-details-star-outline
+                                                                        </v-icon>
+                                                                    </v-btn>
+                                                                </template>
+                                                                <span>{{ $t("container.list.trainerAssessment")
+                                                                    }}</span>
+                                                            </v-tooltip>
+
+                                                            <v-tooltip top v-if="item.certificate">
+                                                                <template v-slot:activator="{ on }">
+                                                                    <v-btn fab x-small v-on="on" color="grey"
+                                                                        class=" mr-2 white--text mb-1" elevation="0"
+                                                                        @click="downloadCertificate(item.certificate)">
+                                                                        <v-icon> mdi-file-download-outline </v-icon>
+                                                                    </v-btn>
+                                                                </template>
+                                                                <span>{{ $t("container.list.certificate") }}</span>
+                                                            </v-tooltip>
+                                                            <v-tooltip top>
+                                                                <template v-slot:activator="{ on }">
+                                                                    <v-btn v-if="item.give_rating" fab x-small v-on="on"
+                                                                        color="success" elevation="0" router
+                                                                        class=" white--text  mr-2"
+                                                                        @click="trainerrating(item.id)">
+                                                                        <v-icon> mdi mdi-notebook-edit </v-icon>
+                                                                    </v-btn>
+                                                                </template>
+                                                                <span>{{ $t("container.list.trainer_rating") }}</span>
                                                             </v-tooltip>
 
 
@@ -970,13 +1174,101 @@ export default {
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <v-dialog v-model="rating_dialog" width="550">
+            <v-card style="justify-content: center;">
+                <v-card-title class="font-weight-bold justify-center"
+                    style="background-color: #1C3C6A; color: white;font-size: 17px;">
+                    {{ $t('container.list.trainer_rating') }}
+                </v-card-title>
+                <v-divider></v-divider>
+                <v-card-text>
+
+
+                    <v-row v-for="(trainer, index) in rating_trainers" :key="index" class="my-2">
+                        <v-col cols="6">
+                            <div class="d-flex align-items-center">
+                                <v-avatar class="mr-3" size="36">
+                                    <img :src="trainer.image" alt="Trainer Image">
+                                </v-avatar>
+                                <span>{{ trainer.name }}</span>
+                            </div>
+                        </v-col>
+                        <v-col cols="6">
+                            <v-rating :value="computedRating(trainer.id)" @input="rateTrainer(trainer.id, $event)"
+                                length="5" half-increments clearable></v-rating>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+                <v-card-actions style="display: block">
+                    <v-row class="mx-0 my-0 py-2" justify="center">
+                        <v-btn text @click="rating_dialog = false" outlined class="custom-btn-width py-2 mr-10">
+                            {{ $t('container.list.cancel') }}
+                        </v-btn>
+                        <v-btn text @click="SaveRating" color="white" :loading="delete_loading"
+                            class="custom-btn-width warning white--text py-2">
+                            {{ $t('container.list.save') }}
+                        </v-btn>
+                    </v-row>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+
+      <v-row class="mt-5" justify="center" v-show="showCertificate">
+        <v-col cols="12" md="8">
+          <div class="certificate" ref="certificate">
+            <v-card class="card pa-5">
+              <h2 class="text-center mb-4">CERTIFICATE OF APPRECIATION</h2>
+              <p class="text-center mb-4">This certificate is proudly presented to:</p>
+              <h3 class="text-center mb-4">{{ user_name }}</h3>
+              <p class="text-center mb-4">in recognition of the successful completion of</p>
+              <h4 class="text-center mb-4">{{ program_name }}</h4>
+              <v-row justify="space-between" class="mt-5">
+                <v-col class="text-center">
+                  <hr />
+                  <p>DATE</p>
+                </v-col>
+                <v-col class="text-center">
+                  <hr />
+                  <p>SIGNATURE</p>
+                </v-col>
+              </v-row>
+            </v-card>
+          </div>
+        </v-col>
+      </v-row>
     </div>
+
+
+
+
 </template>
 
 <style scoped>
 .align-middle {
     display: flex;
     align-items: center;
+}
+
+
+.certificate {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: transparent;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.shadow {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.card {
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border: none;
+  background: transparent;
 }
 
 </style>

@@ -200,8 +200,7 @@ export default {
                                                         $t("container.training_management.trainer_info.rating")
                                                         }}</span></b><br>
                                                 {{ language == 'bn' ?
-                                                $helpers.englishToBangla(
-                                                8.15) : '8.15' }}
+                                                $helpers.englishToBangla(this.data?.rating) : this.data?.rating }}
                                             </v-col>
                                         </v-row>
                                         <v-divider></v-divider>

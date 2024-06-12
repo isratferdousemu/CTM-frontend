@@ -62,7 +62,7 @@
                 <span style="margin-left: 4px; color: red">*</span>
                 <v-select @change="getProgramName()" outlined :items="programs" :item-text="getItemText" item-value="id"
                   v-model="data.program_id" :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক প্রোগ্রাম প্রদান করুন '
-                                        : 'Please enter Program'): ''">
+          : 'Please enter Program') : ''">
                 </v-select>
               </ValidationProvider>
               <div v-if="data.program_id">
@@ -119,7 +119,7 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-text-field @change="checkNum()" outlined clearable v-model="data.verification_number"
                               class="mr-2" type="text" required :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক  ১০ বা ১৭ ডিজিটের সাথে যাচাইকরণ নম্বর লিখুন প্রদান করুন '
-                                        : 'Please enter verification number with either 10 or 17 digit'): ''">
+          : 'Please enter verification number with either 10 or 17 digit') : ''">
                             </v-text-field>
 
 
@@ -228,7 +228,7 @@
                   <!-- 3rd Expansion panel -->
                   <!-- Personal Information  -->
 
-                  <v-expansion-panel v-if="status_code==200">
+                  <v-expansion-panel v-if="status_code == 200">
                     <v-expansion-panel-header color="#1c3b68">
                       <template v-slot:actions>
                         <v-icon color="white">$expand</v-icon>
@@ -255,7 +255,7 @@
                             <span style="margin-left: 4px; color: red">*</span>
                             <ValidationProvider v-slot="{ errors }" name="Image" rules="required" vid="image">
                               <v-file-input outlined show-size counter
-                                :placeholder="language == 'bn' ? 'ফাইল নির্বাচন করুন': 'Choose File'"
+                                :placeholder="language == 'bn' ? 'ফাইল নির্বাচন করুন' : 'Choose File'"
                                 prepend-outer-icon="mdi-camera" v-model="data.image" accept="image/*"
                                 @change="previewImage" prepend-icon="" id="image">
                               </v-file-input>
@@ -291,14 +291,13 @@
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider name="Name in Bangla" vid="name_bn" rules="required||bangla"
+                            <ValidationProvider name="Name in Bangla" vid="name_bn" rules="required||bangla_character"
                               v-slot="{ errors }">
-                              <label>{{ $t('container.application_selection.application.name_bn') }} </label>
+                              <label>{{ $t('container.application_selection.application.name_bn') }}</label>
                               <span style="margin-left: 4px; color: red">*</span>
                               <v-text-field v-model="data.name_bn" outlined :error="errors[0] ? true : false"
-                                :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সম্পূর্ণ নাম (বাংলায়) প্রদান করুন '
-  : 'Please enter Full Name (Bangla)') : ''">
-                              </v-text-field>
+                                :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সম্পূর্ণ নাম (বাংলায়) প্রদান করুন '
+          : 'Please enter Full Name (Bangla)') : ''"></v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
@@ -308,24 +307,24 @@
                               <span style="margin-left: 4px; color: red">*</span>
                               <v-text-field v-model="data.name_en" outlined clearable :error="errors[0] ? true : false"
                                 :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সম্পূর্ণ নাম (ইংরেজীতে) প্রদান করুন '
-  : 'Please enter Full Name (English)') : ''">
+          : 'Please enter Full Name (English)') : ''">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
                             <ValidationProvider name="Father Name in Bangla" vid="father_name_bn"
-                              rules="required|bangla" v-slot="{ errors }">
+                              rules="required||bangla_character" v-slot="{ errors }">
                               <label>{{ $t('container.application_selection.application.father_name_bn') }}</label>
                               <span style="margin-left: 4px; color: red">*</span>
                               <v-text-field v-model="data.father_name_bn" outlined clearable
-                                :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সম্পূর্ণ বাবার নাম (বাংলায়) প্রদান করুন '
-          : 'Please enter Father Name (Bangla)') : ''">
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0] ?  (language == 'bn' ? 'অনুগ্রহ পূর্বক সম্পূর্ণ বাবার নাম (বাংলায়) প্রদান করুন' : 'Please enter Father Name (Bangla)') : ''">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
                           <v-col cols="6" lg="6">
                             <ValidationProvider name="Father Name in English" vid="father_name_en"
-                              rules="required|english" v-slot="{ errors }">
+                              rules="required||english" v-slot="{ errors }">
                               <label>{{ $t('container.application_selection.application.father_name_en') }}</label>
                               <span style="margin-left: 4px; color: red">*</span>
                               <v-text-field v-model="data.father_name_en" outlined clearable
@@ -336,23 +335,24 @@
                           </v-col>
                           <v-col cols="6" lg="6">
                             <div class="validation-error-mobile">
-                              <ValidationProvider name="Mother Name in Bangla" vid="mother_name_bn" v-slot="{ errors }"
-                                rules="required|bangla">
+                              <ValidationProvider name="Mother Name in Bangla" vid="mother_name_bn"
+                                rules="required||bangla_character" v-slot="{ errors }">
                                 <label>{{ $t('container.application_selection.application.mother_name_bn') }}</label>
                                 <span style="margin-left: 4px; color: red">*</span>
                                 <v-text-field v-model="data.mother_name_bn" outlined clearable
-                                  :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সম্পূর্ণ মায়ের নাম (বাংলায়) প্রদান করুন '
-          : 'Please enter Mother Name (Bangla)') : ''">
+                                  :error="errors[0] ? true : false"
+                                  :error-messages="errors[0] ?  (language == 'bn' ? 'অনুগ্রহ পূর্বক সম্পূর্ণ মায়ের নাম (বাংলায়) প্রদান করুন' : 'Please enter Mother Name (Bangla)') : ''">
                                 </v-text-field>
                               </ValidationProvider>
                             </div>
                           </v-col>
 
+
                           <v-col cols="6" lg="6">
                             <div class="validation-error_marital">
 
                               <ValidationProvider name="Mother Name in English" vid="mother_name_en" v-slot="{ errors }"
-                                rules="required|english">
+                                rules="required||english">
                                 <label>{{ $t('container.application_selection.application.mother_name_en') }}</label>
                                 <span style="margin-left: 4px; color: red">*</span>
                                 <v-text-field v-model="data.mother_name_en" outlined clearable
@@ -398,12 +398,12 @@
                             <!-- </div> -->
                           </v-col>
                           <v-col cols="6" lg="6" v-if="data.marital_status == 'Married'">
-                            <ValidationProvider name="Spouse Name in Bangla" vid="spouse_name_bn" rules="required"
-                              v-slot="{ errors }">
+                            <ValidationProvider name="Spouse Name in Bangla" vid="spouse_name_bn"
+                              rules="required||bangla_character" v-slot="{ errors }">
                               <label>{{ $t('container.application_selection.application.spouse_name_bn') }}</label>
                               <v-text-field v-model="data.spouse_name_bn" outlined clearable
-                                :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সম্পূর্ণ স্বামী বা স্ত্রী(বাংলায়) প্রদান করুন '
-          : 'Please enter Spouse Name (Bangla)') : ''">
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সম্পূর্ণ স্বামী বা স্ত্রী(বাংলায়) প্রদান করুন' : 'Please enter Spouse Name (Bangla)') : ''">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
@@ -506,7 +506,7 @@
 
                   <!-- 3rd Expansion panel -->
                   <!-- Contact Information -->
-                  <v-expansion-panel class="mt-4" v-if="status_code==200">
+                  <v-expansion-panel class="mt-4" v-if="status_code == 200">
                     <v-expansion-panel-header color="#1c3b68">
                       <h3 class="white--text">{{ $t('container.application_selection.application.contact_info') }}</h3>
                       <template v-slot:actions>
@@ -1054,8 +1054,8 @@
                                   <ValidationProvider :name="fields.name_en"
                                     :vid="'application_allowance_values' + index" rules="required" v-slot="{ errors }">
                                     <v-text-field v-model="data.application_allowance_values[index]
-                                      .value
-                                      " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+          .value
+          " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
                                       :error-messages="errors[0] ? getErrorMessage(fields) : ''" type="number" outlined>
                                     </v-text-field>
                                   </ValidationProvider>
@@ -1063,7 +1063,7 @@
                                 </v-col>
                                 <v-col cols="4" lg="4" class="text-right">
                                   <v-btn class="btn mt-5" color="primary" style="height: 56px;" :disabled="data.application_allowance_values[index]
-  .value == null">{{ $t('container.list.verify') }}</v-btn>
+          .value == null">{{ $t('container.list.verify') }}</v-btn>
 
                                 </v-col>
                               </v-row>
@@ -1077,8 +1077,8 @@
                                 <ValidationProvider :name="fields.name_en" :vid="'application_allowance_values' + index"
                                   rules="required" v-slot="{ errors }">
                                   <v-text-field v-model="data.application_allowance_values[index]
-                                    .value
-                                    " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+          .value
+          " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
                                     :error-messages="errors[0] ? getErrorMessage(fields) : ''" type="number" outlined>
                                   </v-text-field>
                                 </ValidationProvider>
@@ -1102,14 +1102,14 @@
                                 rules="required" v-slot="{ errors }">
                                 <v-select :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
                                   :error-messages="errors[0] ? getErrorMessage(fields) : ''" outlined v-model="data.application_allowance_values[index]
-                                    .allowance_program_additional_field_values_id
-                                    " :items="fields.name_en == 'Class'
-    ? classes
-    : fields.additional_field_value
-    " item-value="id" :item-text="fields.name_en == 'Class'
-    ? 'value_en'
-    : 'value'
-    ">
+          .allowance_program_additional_field_values_id
+          " :items="fields.name_en == 'Class'
+          ? classes
+          : fields.additional_field_value
+          " item-value="id" :item-text="fields.name_en == 'Class'
+          ? 'value_en'
+          : 'value'
+          ">
                                 </v-select>
                               </ValidationProvider>
                             </template>
@@ -1125,8 +1125,8 @@
                                 <v-select multiple :hide-details="errors[0] ? false : true"
                                   :error="errors[0] ? true : false"
                                   :error-messages="errors[0] ? getErrorMessage(fields) : ''" outlined v-model="data.application_allowance_values[index]
-  .allowance_program_additional_field_values_id
-                                    " :items="fields.additional_field_value" item-value="id" item-text="value">
+          .allowance_program_additional_field_values_id
+          " :items="fields.additional_field_value" item-value="id" item-text="value">
                                 </v-select>
                               </ValidationProvider>
                             </template>
@@ -1141,10 +1141,10 @@
                                 v-slot="{ errors }">
                                 <v-file-input :placeholder="language == 'bn' ? 'ফাইল নির্বাচন করুন '
           : 'Choose File'" v-model="data.application_allowance_values[index]
-                                  .value
-                                  " @change="addPreviewFile($event, index)" placeholder="Select your files"
-                                  prepend-icon prepend-outer-icon="mdi-paperclip" outlined
-                                  :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+          .value
+          " @change="addPreviewFile($event, index)" placeholder="Select your files" prepend-icon
+                                  prepend-outer-icon="mdi-paperclip" outlined :hide-details="errors[0] ? false : true"
+                                  :error="errors[0] ? true : false"
                                   :error-messages="errors[0] ? getErrorMessage(fields) : ''" :show-size="1000">
                                 </v-file-input>
                               </ValidationProvider>
@@ -1160,8 +1160,8 @@
                               <ValidationProvider :name="fields.name_en" :vid="'application_allowance_values' + index"
                                 rules="required" v-slot="{ errors }">
                                 <v-text-field v-model="data.application_allowance_values[index]
-                                  .value
-                                  " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+          .value
+          " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
                                   :error-messages="errors[0] ? getErrorMessage(fields) : ''" type="date" outlined>
                                 </v-text-field>
                               </ValidationProvider>
@@ -1176,8 +1176,8 @@
                               <ValidationProvider :name="fields.name_en" :vid="'application_allowance_values' + index"
                                 rules="required" v-slot="{ errors }">
                                 <v-text-field v-model="data.application_allowance_values[index]
-                                  .value
-                                  " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+          .value
+          " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
                                   :error-messages="errors[0] ? getErrorMessage(fields) : ''" disabled type="text"
                                   outlined>
                                 </v-text-field>
@@ -1193,8 +1193,8 @@
                               <ValidationProvider :name="fields.name_en" :vid="'application_allowance_values' + index"
                                 rules="required" v-slot="{ errors }">
                                 <v-text-field v-model="data.application_allowance_values[index]
-                                  .value
-                                  " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
+          .value
+          " :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
                                   :error-messages="errors[0] ? getErrorMessage(fields) : ''" type="text" outlined>
                                 </v-text-field>
                               </ValidationProvider>
@@ -1207,7 +1207,7 @@
                   <!-- Information According to the Program End -->
                   <!-- Expansion panel 5 start-->
                   <!-- Bank/MFS Information -->
-                  <v-expansion-panel class="mb-4" v-if="status_code==200">
+                  <v-expansion-panel class="mb-4" v-if="status_code == 200">
                     <v-expansion-panel-header color="#1c3b68">
                       <template v-slot:actions>
                         <v-icon color="white">$expand</v-icon>
@@ -1216,19 +1216,8 @@
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mt-5">
                       <v-row>
-                        <v-col cols="6" lg="6">
-                          <ValidationProvider name="Account Name" :vid="'application_allowance_values' + index"
-                            rules="required" v-slot="{ errors }">
-                            <label style="display: inline-block"> {{
-                              $t('container.application_selection.application.account_name') }}
-                            </label>
-                            <span style="margin-left: 4px; color: red">*</span>
-                            <v-text-field v-model="data.account_name" outlined clearable
-                              :error="errors[0] ? true : false" :error-messages="errors[0]">
-                            </v-text-field>
-                          </ValidationProvider>
-                        </v-col>
-                        <v-col cols="6" lg="6">
+
+                        <v-col cols="6" lg="6" >
                           <v-radio-group v-model="data.account_type" row>
                             {{ $t('container.application_selection.application.account_type') }}
 
@@ -1237,9 +1226,11 @@
                               margin-right: 4px;
                               color: red;
                             ">*</span>
-                            <v-radio :label="$t('container.application_selection.application.bank_account')"
+                            <v-radio 
+                              :label="$t('container.application_selection.application.bank_account')"
                               :value="1"></v-radio>
-                            <v-radio :label="$t('container.application_selection.application.mobile_account')"
+                            <v-radio 
+                              :label="$t('container.application_selection.application.mobile_account')"
                               :value="2"></v-radio>
                           </v-radio-group>
                         </v-col>
@@ -1254,7 +1245,7 @@
                             <v-select v-model="data.account_owner" outlined clearable :items="mobile_ownership"
                               :item-text="getItemText" item-value="name_en" :error="errors[0] ? true : false"
                               :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক মোবাইল নম্বরের মালিকানা প্রদান করুন '
-  : 'Please enter Mobile Number ownership') : ''">
+          : 'Please enter Mobile Number ownership') : ''">
                             </v-select>
                           </ValidationProvider>
                         </v-col>
@@ -1270,7 +1261,7 @@
                             <v-select v-model="data.account_owner" outlined clearable :items="mobile_ownership"
                               :item-text="getItemText" item-value="name_en" :error="errors[0] ? true : false"
                               :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ব্যাংক অ্যাকাউন্টের মালিকানা প্রদান করুন '
-  : 'Please enter Bank Account ownership') : ''">
+          : 'Please enter Bank Account ownership') : ''">
                             </v-select>
                           </ValidationProvider>
                         </v-col>
@@ -1285,6 +1276,19 @@
 
                           </v-select>
                         </v-col> -->
+                        <v-col cols="6" lg="6" v-if="data.account_type === 2">
+                          <ValidationProvider rules="required" name="MFS name" vid="mfs_name" v-slot="{ errors }">
+                            <label style="display: inline-block">{{
+                              $t('container.application_selection.application.mfs_name') }} </label><span
+                              style="margin-left: 4px; color: red">*</span>
+
+                            <v-select v-model="data.mfs_name" @change="changeMfs" outlined clearable
+                              :error="errors[0] ? true : false" :items="mfs_names" :item-text="getItemText"
+                              item-value="name_en" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক এমএফএস নাম প্রদান করুন'
+          : 'Please enter MFS Name') : ''">
+                            </v-select>
+                          </ValidationProvider>
+                        </v-col>
 
 
                         <v-col cols="6" lg="6" v-if="data.account_type === 2">
@@ -1301,16 +1305,17 @@
                           </ValidationProvider>
 
                         </v-col>
+
                         <v-col cols="6" lg="6" v-if="data.account_type === 1">
                           <ValidationProvider rules="required" name="Bank name" vid="bank_name" v-slot="{ errors }">
                             <label style="display: inline-block">{{
                               $t('container.application_selection.application.bank_name') }} </label><span
                               style="margin-left: 4px; color: red">*</span>
 
-                            <v-text-field v-model="data.bank_name" outlined clearable :error="errors[0] ? true : false"
-                              :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ব্যাংকের নাম প্রদান করুন'
-  : 'Please enter Bank Name') : ''">
-                            </v-text-field>
+                            <v-select v-model="data.bank_name" outlined clearable :error="errors[0] ? true : false"
+                              :items="bank_names" @change="changeBank" :item-text="getItemText" item-value="name_en"
+                              :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ব্যাংকের নাম প্রদান করুন' : 'Please enter Bank Name') : ''">
+                            </v-select>
                           </ValidationProvider>
                         </v-col>
 
@@ -1339,6 +1344,18 @@
                             </v-text-field>
                           </ValidationProvider>
                         </v-col>
+                        <v-col cols="6" lg="6" v-if="data.account_type === 1">
+                          <ValidationProvider name="Account Name" :vid="'application_allowance_values' + index"
+                            rules="required" v-slot="{ errors }">
+                            <label style="display: inline-block"> {{
+  $t('container.application_selection.application.account_name') }}
+                            </label>
+                            <span style="margin-left: 4px; color: red">*</span>
+                            <v-text-field v-model="data.account_name" outlined clearable
+                              :error="errors[0] ? true : false" :error-messages="errors[0]">
+                            </v-text-field>
+                          </ValidationProvider>
+                        </v-col>
                         <v-col cols="6" lg="6">
                           <ValidationProvider name="Email" vid="Email" rules="email" v-slot="{ errors }">
                             <label style="display: inline-block">{{
@@ -1352,11 +1369,11 @@
                           </ValidationProvider>
                         </v-col>
                       </v-row>
-                      <p class="red--text mt-2" v-if="data.account_type==2">
+                      <p class="red--text mt-2" v-if="data.account_type == 2">
                         {{ $t('container.application_selection.application.mobile_alert') }}
 
                       </p>
-                      <p class="red--text mt-2" v-if="data.account_type==1">
+                      <p class="red--text mt-2" v-if="data.account_type == 1">
                         {{ $t('container.application_selection.application.bank_alert') }}
 
                       </p>
@@ -1365,7 +1382,7 @@
                   <!-- Bank/MFS Information End -->
                   <!-- Expansion panel 5 End -->
                   <!-- Nominee Information -->
-                  <v-expansion-panel class="mb-4" v-if="status_code==200">
+                  <v-expansion-panel class="mb-4" v-if="status_code == 200">
 
                     <v-expansion-panel-header color="#1c3b68">
                       <template v-slot:actions>
@@ -1467,14 +1484,14 @@
 
                           </v-col>
                           <v-col cols="6" lg="6">
-                            <ValidationProvider name="Nominee Name (BN)" vid="nominee_bn" rules="required||bangla"
-                              v-slot="{ errors }">
+                            <ValidationProvider name="Nominee Name (BN)" vid="nominee_bn"
+                              rules="required||bangla_character" v-slot="{ errors }">
                               <label style="display: inline-block">{{
-                                $t('container.application_selection.application.name_bn') }}
-                              </label>
+                                $t('container.application_selection.application.name_bn') }}</label>
                               <span style="margin-left: 4px; color: red">*</span>
                               <v-text-field v-model="data.nominee_bn" outlined clearable
-                                :error="errors[0] ? true : false" :error-messages="errors[0]">
+                                :error="errors[0] ? true : false"
+                                :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সম্পূর্ণ নাম (বাংলায়) প্রদান করুন' : 'Please enter Full Name (Bangla)') : ''">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
@@ -1487,7 +1504,7 @@
                               <span style="margin-left: 4px; color: red">*</span>
                               <v-text-field v-model="data.nominee_en" outlined clearable
                                 :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সম্পূর্ণ নাম (বাংলায়) প্রদান করুন '
-  : 'Please enter Full Name (Bangla)') : ''">
+          : 'Please enter Full Name (Bangla)') : ''">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
@@ -1499,7 +1516,7 @@
                               <span style="margin-left: 4px; color: red">*</span>
                               <v-text-field v-model="data.nominee_nationality" outlined readonly
                                 :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সম্পূর্ণ নাম (ইংরেজীতে) প্রদান করুন '
-  : 'Please enter Full Name (English)') : ''">
+          : 'Please enter Full Name (English)') : ''">
                               </v-text-field>
                             </ValidationProvider>
                           </v-col>
@@ -1512,7 +1529,7 @@
                                 <v-select v-model="data.nominee_relation_with_beneficiary" outlined item-value="name_en"
                                   :items="relations_with_bef" :item-text="getItemText" :error="errors[0] ? true : false"
                                   :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক নমিনীর সাথে সম্পর্ক প্রদান করুন '
-  : 'Please enter Relationship with Nominee') : ''">
+          : 'Please enter Relationship with Nominee') : ''">
                                 </v-select>
                               </ValidationProvider>
                             </div>
@@ -1559,7 +1576,7 @@
 
                               <v-file-input outlined show-size counter prepend-outer-icon="mdi-camera"
                                 v-model="data.nominee_signature" accept="image/*" @change="previewSignNominee"
-                                :placeholder="language == 'bn' ? 'ফাইল নির্বাচন করুন': 'Choose File'" prepend-icon=""
+                                :placeholder="language == 'bn' ? 'ফাইল নির্বাচন করুন' : 'Choose File'" prepend-icon=""
                                 id="nominee_signature"></v-file-input>
                             </ValidationProvider>
                           </v-col>
@@ -1573,7 +1590,7 @@
                               <label>{{ $t('container.application_selection.application.nominee_address') }}</label>
                               <v-textarea v-model="data.nominee_address" outlined clearable
                                 :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ঠিকানা প্রদান করুন '
-  : 'Please enter Address') : ''"></v-textarea>
+          : 'Please enter Address') : ''"></v-textarea>
                             </ValidationProvider>
                           </v-col>
                         </v-row>
@@ -1583,7 +1600,7 @@
                   <!-- Nominee Information End -->
                   <!-- 5th Expansion panel -->
                   <!-- Other Information of Eligibility -->
-                  <v-expansion-panel class="mb-4" v-if="pmt_status == 1 && status_code ==200">
+                  <v-expansion-panel class="mb-4" v-if="pmt_status == 1 && status_code == 200">
                     <v-expansion-panel-header color="#1c3b68">
                       <template v-slot:actions>
                         <v-icon color="white">$expand</v-icon>
@@ -1610,17 +1627,17 @@
                                 <v-select :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
                                   :error-messages="errors[0] ? getErrorMessage(variables) : ''" outlined required
                                   v-model="data.application_pmt[indexPMT].sub_variables" :items="[
-                                    {
-                                      id: variables.id,
-                                      name_en: 'Yes',
-                                      name_bn: 'হ্যাঁ',
-                                    },
-                                    {
-                                      id: 0,
-                                      name_en: 'No',
-                                      name_bn: 'না',
-                                    },
-                                  ]" item-value="id" :item-text="getItemText">
+          {
+            id: variables.id,
+            name_en: 'Yes',
+            name_bn: 'হ্যাঁ',
+          },
+          {
+            id: 0,
+            name_en: 'No',
+            name_bn: 'না',
+          },
+        ]" item-value="id" :item-text="getItemText">
                                 </v-select>
                               </ValidationProvider>
                             </template>
@@ -1662,7 +1679,7 @@
                           </v-col>
                           <v-col cols="6">
                             <template>
-                              <label> {{ language === 'bn' ? 'ঘরের সংখ্যা' :'No of Room' }}
+                              <label> {{ language === 'bn' ? 'ঘরের সংখ্যা' : 'No of Room' }}
                                 <span style="
                                   margin-left: 4px;
                                   margin-right: 4px;
@@ -1672,8 +1689,8 @@
                                 v-slot="{ errors }">
                                 <v-select :hide-details="errors[0] ? false : true" :error="errors[0] ? true : false"
                                   :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক ঘরের সংখ্যা প্রদান করুন '
-  : 'Please enter No of Room') : ''" outlined v-model="data.no_of_room" :items="no_of_rooms" item-value="name_en"
-                                  :item-text="getItemText" @change="onChange($event)">
+          : 'Please enter No of Room') : ''" outlined v-model="data.no_of_room" :items="no_of_rooms"
+                                  item-value="name_en" :item-text="getItemText" @change="onChange($event)">
                                 </v-select>
                               </ValidationProvider>
                             </template>
@@ -1797,12 +1814,12 @@ extend("numeric", {
   message: "This field must be a number"
 });
 extend('email', {
-    validate: value => {
-        // Regular expression for email validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(value);
-    },
-    message: 'Please enter a valid email address'
+  validate: value => {
+    // Regular expression for email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(value);
+  },
+  message: 'Please enter a valid email address'
 });
 extend('english', {
   validate: value => {
@@ -1814,18 +1831,14 @@ extend('english', {
   },
   message: 'Only English characters, spaces, and ( . : () - ) are allowed in this field'
 });
-extend('bangla', {
+
+extend('bangla_character', {
   validate: (value) => {
-    if (!value && value !== 0) {
-      return false;
-    }
-
-    // Update the regular expression to accept Bangla letters, spaces, and specified additional characters
-    var banglaRegex = /^[\u0980-\u09E5\u09F0-\u09FF\s.,():\-]+$/;
-
+    // Updated regex to allow only Bangla letters, spaces, dots, colons, hyphens, or parentheses
+    const banglaRegex = /^[\u0980-\u09FF\s\.\:\(\)\-]+$/;
     return banglaRegex.test(value);
   },
-  message: "Please enter Bangla letters, spaces, commas, dots, colons, hyphens, or parentheses in this field",
+  message: "Please enter Bangla letters, spaces, dots, colons, hyphens, or parentheses in this field. English letters and Bangla numbers are not allowed.",
 });
 extend("checkNumber", {
   validate: (value) => {
@@ -1853,10 +1866,10 @@ extend("checkNumberNominee", {
 
     // Check if the length is either 10 or 17 characters
     const isCorrectLength = value.length === 10 || value.length === 17;
-   
+
 
     // Return false if value is the same as data.verfication_number
-  
+
     // Return true if both conditions are met
     return isNumeric && isCorrectLength;
   },
@@ -1913,6 +1926,8 @@ export default {
       panel: [0, 1, 2, 3, 4, 5, 6],
       programs: [],
       mobile_operators: [],
+      processors: [],
+      processors_name: [],
       classes: [],
       loading: false,
       divisions: [],
@@ -1926,6 +1941,8 @@ export default {
       wards_upazila: [],
       wards_dist: [],
       locationType: [],
+      bank_names: [],
+      mfs_names: [],
       subLocationType: [
         {
           id: 1,
@@ -1955,7 +1972,7 @@ export default {
       permanent_wards_dist: [],
 
       education_status: [
-      { name_en: 'Illiterate', name_bn: 'অশিক্ষিত' },
+        { name_en: 'Illiterate', name_bn: 'অশিক্ষিত' },
         { name_en: 'JSC', name_bn: 'জেএসসি' },
         { name_en: 'SSC', name_bn: 'এসএসসি' },
         { name_en: 'HSC', name_bn: 'এইচএসসি' },
@@ -1998,64 +2015,67 @@ export default {
       ],
 
       mobile_ownership:
-       [  { name_en: 'Myself', name_bn: 'নিজ' },
-            { name_en: 'Family Member', name_bn: 'পরিবারের সদস্য' },
-            { name_en: 'Other', name_bn: 'অন্যান্য' }],
+        [{ name_en: 'Myself', name_bn: 'নিজ' },
+        { name_en: 'Family Member', name_bn: 'পরিবারের সদস্য' },
+        { name_en: 'Other', name_bn: 'অন্যান্য' }],
       religion: [{ name_en: 'Islam', name_bn: 'ইসলাম' },
       { name_en: 'Hindu', name_bn: 'হিন্দু' },
       { name_en: 'Buddhist', name_bn: 'বৌদ্ধ' },
       { name_en: 'Christian', name_bn: 'খ্রিষ্টান' },
       { name_en: 'Other', name_bn: 'অন্যান্য' }],
-   
+
 
       yes_no: ["Yes ", "No"],
 
       relations_with_bef: [
-       { name_en: 'Spouse', name_bn: 'স্বামী/স্ত্রী' },
+        { name_en: 'Spouse', name_bn: 'স্বামী/স্ত্রী' },
         { name_en: 'Family member', name_bn: 'পরিবারের সদস্য' },
         { name_en: 'Close relative', name_bn: 'নিকট আত্মীয়' },
         { name_en: 'Parent', name_bn: 'পিতা/মাতা' },
       ],
-      status_code:null,
-      status_code_nominee:null,
+      status_code: null,
+      status_code_nominee: null,
       activePicker: null,
       date: null,
       menu: false,
       isChecked: false,
       deleteDialog: false,
       confirmDialog: false,
-        showAlert: false,
+      showAlert: false,
       no_of_rooms: [{ name_en: 1, name_bn: '১' },
-        { name_en: 2, name_bn: '২' },
-        { name_en: 3, name_bn: '৩' },
-        { name_en: 4, name_bn: '৪' },
-        { name_en: 5, name_bn: '৫' },
-        { name_en: 6, name_bn: '৬' },
-        { name_en: 7, name_bn: '৭' },
-        { name_en: 8, name_bn: '৮' },
-        { name_en: 9, name_bn: '৯' },
-        { name_en: 10, name_bn: '১০' },
-        { name_en: 11, name_bn: '১১' },
-        { name_en: 12, name_bn: '১২' },
-        { name_en: 13, name_bn: '১৩' },
-        { name_en: 14, name_bn: '১৪' },
-        { name_en: 15, name_bn: '১৫' },
-        { name_en: 16, name_bn: '১৬' },
-        { name_en: 17, name_bn: '১৭' },
-        { name_en: 18, name_bn: '১৮' },
-        { name_en: 19, name_bn: '১৯' },
-        { name_en: 20, name_bn: '২০' }],
-       
+      { name_en: 2, name_bn: '২' },
+      { name_en: 3, name_bn: '৩' },
+      { name_en: 4, name_bn: '৪' },
+      { name_en: 5, name_bn: '৫' },
+      { name_en: 6, name_bn: '৬' },
+      { name_en: 7, name_bn: '৭' },
+      { name_en: 8, name_bn: '৮' },
+      { name_en: 9, name_bn: '৯' },
+      { name_en: 10, name_bn: '১০' },
+      { name_en: 11, name_bn: '১১' },
+      { name_en: 12, name_bn: '১২' },
+      { name_en: 13, name_bn: '১৩' },
+      { name_en: 14, name_bn: '১৪' },
+      { name_en: 15, name_bn: '১৫' },
+      { name_en: 16, name_bn: '১৬' },
+      { name_en: 17, name_bn: '১৭' },
+      { name_en: 18, name_bn: '১৮' },
+      { name_en: 19, name_bn: '১৯' },
+      { name_en: 20, name_bn: '২০' }],
+      bank_status:null,
+      mfs_status:null,
+      mfs_names_processor:[],
+
       data: {
-        house_size:null,
-        per_room_score:null,
-        no_of_people_score:null,
-        no_of_room:null,
-        
+        house_size: null,
+        per_room_score: null,
+        no_of_people_score: null,
+        no_of_room: null,
+
         program_id: null,
         verification_type: 1,
         verification_number: null,
-        account_type: 1,
+        account_type: null,
         age: null,
         date_of_birth: null,
         name_en: null,
@@ -2110,6 +2130,8 @@ export default {
         permanent_ward_id_pouro: null,
         permanent_ward_id_dist: null,
         permanent_mobile: null,
+          mfs_name: null,
+            bank_name: null,
         nominee_en: null,
         nominee_bn: null,
         nominee_verification_number: null,
@@ -2130,12 +2152,12 @@ export default {
         pmt_status: null
       },
       professionType: [
-    
+
         { name_en: 'Farmer', name_bn: 'কৃষক' },
         { name_en: 'Rickshaw Puller', name_bn: 'রিকশাচালক' },
         { name_en: 'Day Laborer', name_bn: 'দিন মজুর' },
         { name_en: 'Street Vendor', name_bn: 'রাস্তার দোকানদার' },
-        { name_en: 'Fisherman', name_bn:  'জেলে'},
+        { name_en: 'Fisherman', name_bn: 'জেলে' },
         { name_en: 'Construction Worker', name_bn: 'নির্মাণ কর্মী' },
         { name_en: 'Domestic Worker', name_bn: 'পরিবারিক কর্মচারী' },
         { name_en: 'Tea Garden Laborer', name_bn: 'চা বাগানের শ্রমিক' },
@@ -2165,10 +2187,10 @@ export default {
       selectedMonthNominee: null,
       selectedYearNominee: null,
       twoDigitDays: Array.from({ length: 32 }, (_, i) => String(i).padStart(2, '0')).slice(1),
-        
-      
+
+      coverage_area: [],
       months: [
-      
+
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
       ],
@@ -2206,7 +2228,7 @@ export default {
     //  localizedYears() {
     //   return this.years.map(year => this.localizeNumber(year.toString()));
     // },
- 
+
     formattedDate() {
       if (this.selectedDay && this.selectedMonth && this.selectedYear) {
         const monthIndex = this.months.indexOf(this.selectedMonth) + 1;
@@ -2220,28 +2242,46 @@ export default {
         const monthIndex = this.months.indexOf(this.selectedMonthNominee) + 1;
         const formattedMonth = monthIndex < 10 ? `0${monthIndex}` : `${monthIndex}`;
         return `${this.selectedYearNominee}-${formattedMonth}-${this.selectedDayNominee}`;
-        
+
       }
       return null;
     },
 
   },
 
-  methods:{
+  methods: {
     getErrorMessage(fields) {
       return this.language === 'bn'
         ? `অনুগ্রহ পূর্বক ${fields.name_bn} প্রদান করুন`
         : `Please enter ${fields.name_en}`;
     },
-  
+
     onChange($event) {
-       this.data.per_room_score = (this.data.house_size / $event)*-0.05;
-       this.data.per_room_score = parseFloat(this.data.per_room_score.toFixed(3));
-       this.data.no_of_people_score =  (this.data.house_size / $event) * this.data.per_room_score
-       this.data.no_of_people_score = parseFloat( this.data.no_of_people_score.toFixed(3));
-        // Do something with the input value
-     
-        
+      this.data.per_room_score = (this.data.house_size / $event) * -0.05;
+      this.data.per_room_score = parseFloat(this.data.per_room_score.toFixed(3));
+      this.data.no_of_people_score = (this.data.house_size / $event) * this.data.per_room_score
+      this.data.no_of_people_score = parseFloat(this.data.no_of_people_score.toFixed(3));
+      // Do something with the input value
+
+
+    },
+       changeBank(selectedBankName) {
+      // Find the selected bank object from the bank_names array
+      const selectedBank = this.bank_names.find(bank => bank.name_en === selectedBankName || bank.name_bn === selectedBankName);
+         console.log(selectedBank, "selectedBank")
+      
+      // Set the bank_branch_name to the corresponding bank_branch_name
+      if (selectedBank) {
+        this.data.branch_name = selectedBank.bank_branch_name;
+        console.log(selectedBank,"selectedBank")
+      } else {
+        this.data.branch_name = null; // Clear the field if no bank is selected
+      }
+      this.data.mfs_name=null;
+    },
+    changeMfs(){
+        this.data.bank_name=null;
+
     },
     onChangeHouse($event, selected_value) {
       console.log("selected_event", $event);
@@ -2256,40 +2296,40 @@ export default {
         console.log('Name (English):', name_en);
         this.data.house_size = name_en
       }
-      if (this.data.house_size){
+      if (this.data.house_size) {
         this.data.per_room_score = (this.data.house_size / this.data.no_of_room) * -0.05;
         this.data.per_room_score = parseFloat(this.data.per_room_score.toFixed(3));
         this.data.no_of_people_score = (this.data.house_size / this.data.no_of_room) * this.data.per_room_score
         this.data.no_of_people_score = parseFloat(this.data.no_of_people_score.toFixed(3));
-        
+
       }
       // Do something with the input value
     },
-  
-     //User Activity Log
-     async SendActivityLog() {
-       const queryParams = {
-         info: "Online Application",
-       };
-       this.$axios
-           .get("/activity-log/get-information", {
-             params: queryParams,
-           })
-           .then((result) => {
-             console.log(result, "ActivityLog");
 
-           });
-     },
+    //User Activity Log
+    async SendActivityLog() {
+      const queryParams = {
+        info: "Online Application",
+      };
+      this.$axios
+        .get("/activity-log/get-information", {
+          params: queryParams,
+        })
+        .then((result) => {
+          console.log(result, "ActivityLog");
+
+        });
+    },
 
     checkLengthAndVerify() {
       if (this.data.nominee_verification_number.length === 10 || this.data.nominee_verification_number.length === 17) {
         if (this.data.verification_number == this.data.nominee_verification_number) {
-          this.data.nominee_verification_number=null;
+          this.data.nominee_verification_number = null;
           this.$toast.error("Nominee cannot be the same as the applicant");
         }
       }
     },
-  
+
     scrollToVerifyButton() {
       const verifyButton = document.getElementById('verify-button');
       if (verifyButton) {
@@ -2302,7 +2342,7 @@ export default {
         verifyButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     },
-     scrollToSignature() {
+    scrollToSignature() {
       const verifyButton = document.getElementById('signature');
       if (verifyButton) {
         verifyButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -2320,25 +2360,25 @@ export default {
         verifyButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     },
-   getItemTextYear(item) {
+    getItemTextYear(item) {
       return this.language === 'bn' ? this.$helpers.englishToBangla(item.years) : item.years;
 
     },
-  
+
     getItemText(item) {
       return this.language === 'bn' ? item.name_bn : item.name_en;
     },
     getItemValue(item) {
       return this.language === 'bn' ? item.value_bn : item.value_en;
     },
-   
-        getItemDivision(item) {
+
+    getItemDivision(item) {
       return this.language === 'bn' ? item.name_bn : item.name_en;
     },
-      getItemDistrict(item) {
+    getItemDistrict(item) {
       return this.language === 'bn' ? item.name_bn : item.name_en;
     },
-     getItemLocation(item) {
+    getItemLocation(item) {
       return this.language === 'bn' ? item.value_bn : item.value_bn;
     },
     //   getItemText(item) {
@@ -2360,8 +2400,8 @@ export default {
     //   if(this.data.mobile){
     //     this.data.account_number = this.data.mobile
     //   }
-     
-    
+
+
     // },
     gotocheck() {
       this.$axios.get("/global/online-application/check", {
@@ -2630,7 +2670,7 @@ export default {
       }
     },
     verifyCard() {
-    
+
       // this.status_code= null;
       let data = {
         program_id: this.data.program_id,
@@ -2647,18 +2687,18 @@ export default {
         },
       })
         .then((res) => {
-          console.log(res,"responseVerify")
-         
-          
-          
-          this.status_code = res.status;
-           
-        
-         
+          console.log(res, "responseVerify")
 
-         
-          
-          
+
+
+          this.status_code = res.status;
+
+
+
+
+
+
+
           this.$toast.success(res.data.message);
           this.data.age = res.data.data.age
           this.data.name_en = res.data.data.nameEn
@@ -2666,10 +2706,10 @@ export default {
           this.data.account_name = res.data.data.nameEn
         })
         .catch((err) => {
-           this.status_code= null;
-     
-          
-         
+          this.status_code = null;
+
+
+
           //  this.data.age = null;
           // this.data.name_en =null;
           // this.data.name_bn = null;
@@ -2690,13 +2730,13 @@ export default {
           } else {
             this.$toast.error(err.response.data.message || err.response.data.error_code || 'Unknown error');
           }
-  
+
         })
-  
+
     },
 
     verifyNomineeCard() {
-       this.status_code_nominee= null;
+      this.status_code_nominee = null;
       let data = {
         verification_number: this.data.nominee_verification_number,
         date_of_birth: this.data.nominee_date_of_birth,
@@ -2708,18 +2748,18 @@ export default {
           Accept: "application/json",
         },
       })
-          .then((res) => {
-            console.log(res)
-            this.status_code_nominee = res.status;
-            this.$toast.success(res.data.message);
+        .then((res) => {
+          console.log(res)
+          this.status_code_nominee = res.status;
+          this.$toast.success(res.data.message);
 
-            this.data.nominee_en = res.data.data.nameEn
-            this.data.nominee_bn = res.data.data.name
-          })
-          .catch((err) => {
-            console.log(err)
-            this.$toast.error(err.response.data.message);
-          })
+          this.data.nominee_en = res.data.data.nameEn
+          this.data.nominee_bn = res.data.data.name
+        })
+        .catch((err) => {
+          console.log(err)
+          this.$toast.error(err.response.data.message);
+        })
     },
     verifyDISCard() {
       let data = {
@@ -2742,7 +2782,7 @@ export default {
         })
     },
     // async submitApplicationCheck() {
-     
+
     //   const isValid = await this.$refs.form.validate();
 
     //   if (!isValid) {
@@ -2752,16 +2792,16 @@ export default {
     //       firstErrorElement.scrollIntoView({ behavior: 'smooth' });
     //     }
     //   } else {
-    
+
     //     console.log("submit Application Successfully")
-       
+
     //     this.confirmDialog=true;
     //   }
     // }
     async submitApplicationCheck() {
       if (this.status_code != 200) {
-      
-       this.language === 'en' ? this.$toast.error("Verify First") : this.$toast.error("প্রথমে  যাচাই সম্পূর্ণ করুন");
+
+        this.language === 'en' ? this.$toast.error("Verify First") : this.$toast.error("প্রথমে  যাচাই সম্পূর্ণ করুন");
         return false;
       }
       if (this.data.image === null || this.data.image == '') {
@@ -2770,12 +2810,12 @@ export default {
         return false;
       }
       if (this.data.signature === null || this.data.signature == '') {
-           this.language === 'en' ? this.$toast.error("Signature is required") : this.$toast.error("স্বাক্ষর আবশ্যক");
+        this.language === 'en' ? this.$toast.error("Signature is required") : this.$toast.error("স্বাক্ষর আবশ্যক");
         this.scrollToSignature();
         return false;
       }
-      if (this.status_code_nominee != 200 ) {
-       this.language === 'en' ? this.$toast.error("Nominee Verify First") : this.$toast.error("প্রথমে  নমিনি যাচাই সম্পূর্ণ করুন");
+      if (this.status_code_nominee != 200) {
+        this.language === 'en' ? this.$toast.error("Nominee Verify First") : this.$toast.error("প্রথমে  নমিনি যাচাই সম্পূর্ণ করুন");
         this.scrollToVerifyButton();
         return false;
       }
@@ -2785,13 +2825,13 @@ export default {
         return false;
       }
       if (this.data.nominee_signature === null || this.data.nominee_signature == '') {
-           this.language === 'en' ? this.$toast.error("Nominee Signature is required") : this.$toast.error("নমিনীর স্বাক্ষর আবশ্যক");
+        this.language === 'en' ? this.$toast.error("Nominee Signature is required") : this.$toast.error("নমিনীর স্বাক্ষর আবশ্যক");
         this.scrollToNomineeSignature();
         return false;
       }
- 
-    
-     
+
+
+
       const isValid = await this.$refs.form.validate();
 
       if (!isValid) {
@@ -2808,18 +2848,18 @@ export default {
             behavior: 'smooth'
           });
         }
-      
-      
+
+
       } else {
         console.log("submit Application Successfully");
         this.confirmDialog = true;
       }
     }
     ,
-  
+
 
     submitApplication() {
-   
+
 
       if (this.data.mobile_operator !== null && this.data.mobile_operator !== undefined) {
         // Convert this.data.account_number to string before concatenation
@@ -2829,7 +2869,7 @@ export default {
       console.log(this.data, "All data")
 
 
-      
+
 
 
       let fd = new FormData();
@@ -2868,7 +2908,7 @@ export default {
         // console.log(res.data.id, "id")
         this.$store.commit('ApplicationSelection/setSuccessId', res.data.id);
         // console.log(res.data.id, " after store id")
-      
+
         this.$router.push("/submitted-application");
         // console.log(res.data.id, " after pushing id")
         // this.$router.push(`/online-application-preview/${res.data.application_id}`);
@@ -3284,6 +3324,7 @@ export default {
           this.wards_dist = [];
           this.ward_id_dist = null;
           this.ward_id_upazila = null;
+
         });
 
     },
@@ -3303,8 +3344,274 @@ export default {
           this.permanent_wards_dist = [];
           this.permanent_ward_id_dist = null;
           this.permanent_ward_id_upazila = null;
+          this.getArea();
         });
 
+    },
+    async getArea() {
+
+
+      await this.$axios
+        .get(`/global/coverage-area/${this.data.permanent_location_type}/${this.data.permanent_location_type}/${this.data.permanent_city_thana_id}`, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
+          this.processors = result?.data.bank;
+          this.mfs_names_processor = result?.data.mfs;
+          if (this.mfs_names_processor && this.mfs_names_processor.length > 0){
+          this.mfs_status=1;
+     
+
+         }
+         else{
+           this.mfs_status=0;
+         }
+          this.data.mfs_name = null;
+          this.mfs_names=[];
+          this.mfs_names_processor?.forEach(item => {
+            if (item.payment_processor) {
+              this.mfs_names.push(item.payment_processor);
+
+            }
+          });
+
+         if( this.processors && this.processors.length > 0){
+          this.bank_status=1;
+     
+
+         }
+         else{
+           this.bank_status=0;
+         }
+            this.processors_name = [];
+            this.bank_names = [];
+            this.data.bank_name=null;
+
+            // Iterate over the processors array
+            this.processors?.forEach(item => {
+              if (item.payment_processor) {
+                this.processors_name?.push(item.payment_processor);
+
+                // Iterate over the processors_name array to find bank information
+                this.processors_name?.forEach(paymentProcessor => {
+                  if (paymentProcessor.bank) {
+                    // Add bank_branch_name property to the bank object
+                    paymentProcessor.bank.bank_branch_name = paymentProcessor.bank_branch_name;
+
+                    // Push the modified bank object into bank_names array
+                    this.bank_names.push(paymentProcessor.bank);
+                  }
+                });
+              }
+            });
+
+        
+
+          console.log(this.bank_names, "bank_names")
+          console.log(this.mfs_names, "mfs_names")
+
+        });
+
+    },
+    async getArea_2() {
+
+
+     await this.$axios
+        .get(`/global/coverage-area/${this.data.permanent_location_type}/${this.data.permanent_location_type}/${this.data.permanent_district_pouro_id}`, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+      .then((result) => {
+          this.processors = result?.data.bank;
+          this.mfs_names_processor = result?.data.mfs;
+          if (this.mfs_names_processor && this.mfs_names_processor.length > 0){
+          this.mfs_status=1;
+     
+
+         }
+         else{
+           this.mfs_status=0;
+         }
+          this.data.mfs_name = null;
+          this.mfs_names=[];
+          this.mfs_names_processor?.forEach(item => {
+            if (item.payment_processor) {
+              this.mfs_names.push(item.payment_processor);
+
+            }
+          });
+
+         if( this.processors && this.processors.length > 0){
+          this.bank_status=1;
+     
+
+         }
+         else{
+           this.bank_status=0;
+         }
+            this.processors_name = [];
+            this.bank_names = [];
+            this.data.bank_name=null;
+
+            // Iterate over the processors array
+            this.processors?.forEach(item => {
+              if (item.payment_processor) {
+                this.processors_name?.push(item.payment_processor);
+
+                // Iterate over the processors_name array to find bank information
+                this.processors_name?.forEach(paymentProcessor => {
+                  if (paymentProcessor.bank) {
+                    // Add bank_branch_name property to the bank object
+                    paymentProcessor.bank.bank_branch_name = paymentProcessor.bank_branch_name;
+
+                    // Push the modified bank object into bank_names array
+                    this.bank_names.push(paymentProcessor.bank);
+                  }
+                });
+              }
+            });
+
+        
+
+          console.log(this.bank_names, "bank_names")
+          console.log(this.mfs_names, "mfs_names")
+
+        });
+    },
+    async getArea_3() {
+
+
+      await this.$axios
+        .get(`/global/coverage-area/${this.data.permanent_location_type}/${this.data.permanent_sub_location_type}/${this.data.permanent_pouro_id}`, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+       .then((result) => {
+          this.processors = result?.data.bank;
+          this.mfs_names_processor = result?.data.mfs;
+          if (this.mfs_names_processor && this.mfs_names_processor.length > 0){
+          this.mfs_status=1;
+     
+
+         }
+          else{
+           this.mfs_status=0;
+         }
+          this.data.mfs_name = null;
+          this.mfs_names=[];
+          this.mfs_names_processor?.forEach(item => {
+            if (item.payment_processor) {
+              this.mfs_names.push(item.payment_processor);
+
+            }
+          });
+
+         if( this.processors && this.processors.length > 0){
+          this.bank_status=1;
+     
+
+         }
+          else{
+           this.bank_status=0;
+         }
+            this.processors_name = [];
+            this.bank_names = [];
+            this.data.bank_name=null;
+
+            // Iterate over the processors array
+            this.processors?.forEach(item => {
+              if (item.payment_processor) {
+                this.processors_name?.push(item.payment_processor);
+
+                // Iterate over the processors_name array to find bank information
+                this.processors_name?.forEach(paymentProcessor => {
+                  if (paymentProcessor.bank) {
+                    // Add bank_branch_name property to the bank object
+                    paymentProcessor.bank.bank_branch_name = paymentProcessor.bank_branch_name;
+
+                    // Push the modified bank object into bank_names array
+                    this.bank_names.push(paymentProcessor.bank);
+                  }
+                });
+              }
+            });
+
+        
+
+          console.log(this.bank_names, "bank_names")
+          console.log(this.mfs_names, "mfs_names")
+
+        });
+    },
+     async getArea_4() {
+
+
+      await this.$axios
+        .get(`/global/coverage-area/${this.data.permanent_location_type}/${this.data.permanent_sub_location_type}/${this.data.permanent_union_id}`, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((result) => {
+          this.processors = result?.data.bank;
+          this.mfs_names_processor = result?.data.mfs;
+          if (this.mfs_names_processor && this.mfs_names_processor.length > 0) {
+            this.mfs_status = 1;
+
+
+          }
+           else{
+           this.mfs_status=0;
+         }
+          this.data.mfs_name = null;
+          this.mfs_names = [];
+          this.mfs_names_processor?.forEach(item => {
+            if (item.payment_processor) {
+              this.mfs_names.push(item.payment_processor);
+
+            }
+          });
+
+          if (this.processors && this.processors.length > 0) {
+            this.bank_status = 1;
+
+
+          }
+          else {
+            this.bank_status = 0;
+          }
+          this.processors_name = [];
+          this.bank_names = [];
+          this.data.bank_name = null;
+
+          // Iterate over the processors array
+          this.processors?.forEach(item => {
+            if (item.payment_processor) {
+              this.processors_name?.push(item.payment_processor);
+
+              // Iterate over the processors_name array to find bank information
+              this.processors_name?.forEach(paymentProcessor => {
+                if (paymentProcessor.bank) {
+                  // Add bank_branch_name property to the bank object
+                  paymentProcessor.bank.bank_branch_name = paymentProcessor.bank_branch_name;
+
+                  // Push the modified bank object into bank_names array
+                  this.bank_names.push(paymentProcessor.bank);
+                }
+              });
+            }
+          });
+
+
+
+          console.log(this.bank_names, "bank_names")
+          console.log(this.mfs_names, "mfs_names")
+
+        });
     },
     async onChangeDistrictPouro($event) {
       console.log("hi district pourashava called")
@@ -3338,6 +3645,7 @@ export default {
           this.permanent_wards_city = [];
           this.permanent_ward_id_city = null;
           this.permanent_ward_id_union = null;
+          this.getArea_2();
         });
 
     },
@@ -3426,7 +3734,7 @@ export default {
 
         const maxFileSize = 200 * 1024; // 200 KB in bytes
 
-        if (this.data.image.size > maxFileSize){
+        if (this.data.image.size > maxFileSize) {
           // alert("file size must be 200kb")
           // this.confirmDialog =true;
           if (this.language == 'en') {
@@ -3437,20 +3745,20 @@ export default {
 
           }// Show the alert
           this.data.image = '';
-       
+
           return false;
         }
-          const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg']; // Allowed file types
-          if (!allowedTypes.includes(this.data.image.type)) {
-            this.language === 'en' ? this.$toast.error("Only PNG, JPEG, or JPG files are allowed") : this.$toast.error("শুধুমাত্র পিএনজি, জেপিইজি, অথবা জেপিজি ফাইলগুলি অনুমোদিত");
-            this.data.image = '';
-            return false;
-          }
-          // return true;
-        
-        
-      
-       
+        const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg']; // Allowed file types
+        if (!allowedTypes.includes(this.data.image.type)) {
+          this.language === 'en' ? this.$toast.error("Only PNG, JPEG, or JPG files are allowed") : this.$toast.error("শুধুমাত্র পিএনজি, জেপিইজি, অথবা জেপিজি ফাইলগুলি অনুমোদিত");
+          this.data.image = '';
+          return false;
+        }
+        // return true;
+
+
+
+
         const reader = new FileReader();
         reader.onload = (e) => {
           this.imageUrl = e.target.result;
@@ -3460,7 +3768,7 @@ export default {
         // Clear the preview if no file is selected
         this.imageUrl = null;
       }
-    
+
     },
     addPreviewFile(event, index) {
       console.log(event, index)
@@ -3472,16 +3780,16 @@ export default {
     },
     previewSign() {
       if (this.data.signature) {
-     const maxFileSize = 200 * 1024;
-           if (this.data.signature.size > maxFileSize) {
-         
-             if(this.language=='en'){
-                        this.$toast.error("File size must be under 200 KB");
-                    }
-                    else{
-                        this.$toast.error("ফাইলের আকার ২০০ কে বি এর কম হতে হবে");
+        const maxFileSize = 200 * 1024;
+        if (this.data.signature.size > maxFileSize) {
 
-                    }// Show the alert
+          if (this.language == 'en') {
+            this.$toast.error("File size must be under 200 KB");
+          }
+          else {
+            this.$toast.error("ফাইলের আকার ২০০ কে বি এর কম হতে হবে");
+
+          }// Show the alert
           this.data.signature = '';
 
           return false;
@@ -3489,7 +3797,7 @@ export default {
         }
         const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg']; // Allowed file types
         if (!allowedTypes.includes(this.data.signature.type)) {
-           this.language === 'en' ? this.$toast.error("Only PNG, JPEG, or JPG files are allowed") : this.$toast.error("শুধুমাত্র পিএনজি, জেপিইজি, অথবা জেপিজি ফাইলগুলি অনুমোদিত");
+          this.language === 'en' ? this.$toast.error("Only PNG, JPEG, or JPG files are allowed") : this.$toast.error("শুধুমাত্র পিএনজি, জেপিইজি, অথবা জেপিজি ফাইলগুলি অনুমোদিত");
           this.data.signature = '';
           return false;
         }
@@ -3508,15 +3816,15 @@ export default {
       if (this.data.nominee_image) {
         const maxFileSize = 200 * 1024;
         // Read the selected file and generate a preview URL
-         if (this.data.nominee_image.size > maxFileSize) {
+        if (this.data.nominee_image.size > maxFileSize) {
 
-             if(this.language=='en'){
-                        this.$toast.error("File size must be under 200 KB");
-                    }
-                    else{
-                        this.$toast.error("ফাইলের আকার ২০০ কে বি এর কম হতে হবে");
+          if (this.language == 'en') {
+            this.$toast.error("File size must be under 200 KB");
+          }
+          else {
+            this.$toast.error("ফাইলের আকার ২০০ কে বি এর কম হতে হবে");
 
-                    }// Show the alert
+          }// Show the alert
           this.data.nominee_image = '';
 
           return false;
@@ -3541,16 +3849,16 @@ export default {
     previewSignNominee() {
       if (this.data.nominee_signature) {
         // Read the selected file and gener
-        const maxFileSize = 200 * 1024; 
-           if (this.data.nominee_signature.size > maxFileSize) {
+        const maxFileSize = 200 * 1024;
+        if (this.data.nominee_signature.size > maxFileSize) {
 
-             if(this.language=='en'){
-                        this.$toast.error("File size must be under 200 KB");
-                    }
-                    else{
-                        this.$toast.error("ফাইলের আকার ২০০ কে বি এর কম হতে হবে");
+          if (this.language == 'en') {
+            this.$toast.error("File size must be under 200 KB");
+          }
+          else {
+            this.$toast.error("ফাইলের আকার ২০০ কে বি এর কম হতে হবে");
 
-                    }// Show the alert
+          }// Show the alert
           this.data.nominee_signature = '';
 
           return false;
@@ -3593,6 +3901,7 @@ export default {
           this.data.ward_id_dist = null;
           this.data.ward_id_city = null;
           this.data.ward_id_pouro = null;
+          // this.getArea_4();
 
         });
 
@@ -3614,6 +3923,7 @@ export default {
           this.data.permanent_ward_id_city = null;
           this.data.permanent_ward_id_pouro = null;
           console.log(this.permanent_wards_upazila_union, "called union ward")
+            this.getArea_4();
 
         });
 
@@ -3637,6 +3947,7 @@ export default {
           this.data.ward_id_dist = null;
           this.data.ward_id_city = null;
           this.data.ward_id_union = null;
+          this.getArea_3();
 
         });
 
@@ -3686,8 +3997,8 @@ export default {
     this.$store
       .dispatch("getGlobalLookupByType", 1)
       .then((res) => (this.locationType = res));
-    this.getAllMobileOperator();
-    console.log(this.$el, "el");
+    // this.getAllMobileOperator();
+    // console.log(this.$el, "el");
   },
 
 };
@@ -3724,4 +4035,3 @@ body.my-app {
   cursor: not-allowed;
 }
 </style>
-
