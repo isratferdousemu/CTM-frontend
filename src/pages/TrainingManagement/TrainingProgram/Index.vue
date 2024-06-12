@@ -560,8 +560,8 @@ export default {
                         this.$t('container.training_management.training_program.trainer'),
                         this.$t('container.training_management.training_circular.module'),
                         this.$t('container.training_management.training_circular.training_type'),
-                        this.$t('container.training_management.training_circular.start_date'),
-                        this.$t('container.training_management.training_circular.end_date'),
+                        this.$t('container.training_management.training_program.start_date'),
+                        this.$t('container.training_management.training_program.end_date'),
                         this.$t('container.training_management.training_program.exam_status'),
                      
                         this.$t('container.training_management.training_program.trainer_rating_status'),
@@ -972,7 +972,7 @@ export default {
                                                         <div style="width:200px;">
                                                             <v-tooltip top>
                                                                 <template v-slot:activator="{ on }">
-                                                                    <v-btn v-can="'trainingProgram-view'" fab x-small
+                                                                    <v-btn v-can="'trainingProgram-edit'" fab x-small
                                                                         v-on="on" color="primary" elevation="0" router
                                                                         class=" white--text  mr-2"
                                                                         @click="copyToClipboard(item.id)">
