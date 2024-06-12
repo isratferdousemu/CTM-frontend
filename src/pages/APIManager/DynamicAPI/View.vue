@@ -30,7 +30,13 @@ export default {
         "$i18n.locale": "updateHeaderTitle",
     },
 
-
+    computed: {
+        language: {
+            get() {
+                return this.$store.getters.getAppLanguage;
+            }
+        },
+    },
 
     mounted() {
         this.APIView();
@@ -89,6 +95,12 @@ export default {
                     console.log(result,"result")
                     this.data=result?.data?.data
                     this.data.module = result?.data?.data?.purpose?.api_module_id;
+                    this.modules=result?.data?.data?.purpose?.module;
+                    console.log(this.modules,"before")
+                   
+                  
+                    console.log(this.modules, "after")
+
                    
                 })
                 .catch((err) => {
@@ -141,8 +153,21 @@ export default {
                                             </v-col>
                                             <v-col cols="12" sm="10" lg="10">
                                                 <b>:</b>
-                                                <span class="ml-2">{{ data.purpose?.module?.name
-                                                    }}</span>
+                                                <span class="ml-2" v-if="data.purpose?.module?.name == 'Application & Selection'">
+                                                    {{ language == 'bn' && data.purpose?.module?.name == 'Application &
+                                                    Selection'
+                                                    ? 'আবেদন ও নির্বাচন'
+                                                    : data.purpose?.module?.name
+                                                    }}
+                                                </span>
+                                                <span class="ml-2"
+                                                    v-if="data.purpose?.module?.name == 'Beneficiary Management'">
+                                                    {{ language == 'bn' && data.purpose?.module?.name == 'Beneficiary
+                                                    Management'
+                                                    ? 'উপকারভোগী ব্যবস্থাপনা'
+                                                    : data.purpose?.module?.name
+                                                    }}
+                                                </span>
 
                                             </v-col>
                                             <v-col cols="12" sm="2" lg="2">

@@ -23,6 +23,8 @@
       "copy": "লিংক কপি করুন",
       "banned": "নিষিদ্ধ",
       "action": "অ্যাকশন ",
+        "trainer_rating": "প্রশিক্ষক রেটিং",
+        "rating": "রেটিং",
       "submit": "সাবমিট করুন",
       "cancel": "বাতিল করুন",
       "edit": "এডিট করুন",
@@ -1068,7 +1070,7 @@
       "payroll_create": "পেরোল তৈরি",
       "allotment_distribution": "বরাদ্দ বিতরণের সংশোধন",
       "allotment_area_wise_ben": "এলাকাভিত্তিক উপকারভোগী বরাদ্দ",
-      "monthly_allowance_amount": "প্রতি উপকারভোগী প্রতি মাসিক ভাতার পরিমাণ",
+      "monthly_allowance_amount": "প্রতি উপকারভোগী প্রতি মাসিক ভাতার পরিমাণ: ",
       "distribution_medium": "বিতরণের মাধ্যম",
       "bank_account": "ব্যাংক হিসাব",
       "program": "প্রোগ্রাম",
@@ -1119,7 +1121,9 @@
         "cash_out_charge": "ক্যাশ আউট চার্জ",
         "total_amount": "সর্বমোট পরিমাণ",
         "financial_account_status": "আর্থিক অ্যাকাউন্টের অবস্থা",
-        "status": "অবস্থা"
+        "status": "অবস্থা",
+        "total_allocated_ben": "মোট বরাদ্দকৃত উপকারভোগী",
+        "amount": "পরিমাণ"
       },
       "payroll_approval": {
         "title": "বেতনের অনুমোদন",
