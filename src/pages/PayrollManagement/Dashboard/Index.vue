@@ -15,107 +15,107 @@
     </v-card-title>
 
     <!-------start  header Card component ---->
-    <v-row align="center" justify="center" dense>
-      <v-col cols="12" md="3">
-        <v-card class="mx-auto" color="grey lighten-4" max-width="600">
-          <v-card-title>
-            <v-icon color="indigo" class="mr-8 mb-2" size="64">
-              mdi-check-circle
-            </v-icon>
-            <v-row align="start">
-              <div class="text-caption black--text text-uppercase">
-                {{
-                  $t("container.payroll_management.dashboard.approved_payroll")
-                }}
-              </div>
-            </v-row>
-          </v-card-title>
-          <h1 align="center">
-            {{
-              language === "bn"
-                ? $helpers.englishToBangla(this.total_approved_payroll)
-                : this.total_approved_payroll
-            }}
-          </h1>
-        </v-card>
-      </v-col>
+      <v-row align="center" justify="center" dense>
+    <v-col cols="12" md="3">
+      <v-card class="mx-auto" color="grey lighten-4" max-width="600">
+        <v-card-title class="d-flex align-center">
+          <v-icon color="indigo" class="mr-3" size="40">
+            mdi-check-circle
+          </v-icon>
+          <v-row align="start">
+            <div class="text-caption black--text text-uppercase">
+              {{
+                $t("container.payroll_management.dashboard.approved_payroll")
+              }}
+            </div>
+          </v-row>
+        </v-card-title>
+        <h1 align="center">
+          {{
+            language === "bn"
+              ? $helpers.englishToBangla(this.total_approved_payroll)
+              : this.total_approved_payroll
+          }}
+        </h1>
+      </v-card>
+    </v-col>
 
-      <v-col cols="12" md="3">
-        <v-card class="mx-auto" color="grey lighten-4" max-width="600">
-          <v-card-title>
-            <v-icon color="indigo" class="mr-8 mb-2" size="64">
-              mdi-cancel
-            </v-icon>
-            <v-row align="start">
-              <div class="text-caption black--text text-uppercase">
-                {{
-                  $t("container.payroll_management.dashboard.rejected_payroll")
-                }}
-              </div>
-            </v-row>
-          </v-card-title>
-          <h1 align="center">
-            {{
-              language === "bn"
-                ? $helpers.englishToBangla(this.total_rejected_payroll)
-                : this.total_rejected_payroll
-            }}
-          </h1>
-        </v-card>
-      </v-col>
+    <v-col cols="12" md="3">
+      <v-card class="mx-auto" color="grey lighten-4" max-width="600">
+        <v-card-title class="d-flex align-center">
+          <v-icon color="indigo" class="mr-3" size="40">
+            mdi-cancel
+          </v-icon>
+          <v-row align="start">
+            <div class="text-caption black--text text-uppercase">
+              {{
+                $t("container.payroll_management.dashboard.rejected_payroll")
+              }}
+            </div>
+          </v-row>
+        </v-card-title>
+        <h1 align="center">
+          {{
+            language === "bn"
+              ? $helpers.englishToBangla(this.total_rejected_payroll)
+              : this.total_rejected_payroll
+          }}
+        </h1>
+      </v-card>
+    </v-col>
 
-      <v-col cols="12" md="3">
-        <v-card class="mx-auto" color="grey lighten-4" max-width="600">
-          <v-card-title>
-            <v-icon color="indigo" class="mr-8 mb-2" size="64">
-              mdi-refresh
-            </v-icon>
-            <v-row align="start">
-              <div class="text-caption black--text text-uppercase">
-                {{
-                  $t(
-                    "container.payroll_management.dashboard.total_payment_cycle"
-                  )
-                }}
-              </div>
-            </v-row>
-          </v-card-title>
-          <h1 align="center">
-            {{
-              language === "bn"
-                ? $helpers.englishToBangla(this.total_payment_cycle)
-                : this.total_payment_cycle
-            }}
-          </h1>
-        </v-card>
-      </v-col>
+    <v-col cols="12" md="3">
+      <v-card class="mx-auto" color="grey lighten-4" max-width="600">
+        <v-card-title class="d-flex align-center">
+          <v-icon color="indigo" class="mr-3" size="40">
+            mdi-refresh
+          </v-icon>
+          <v-row align="start">
+            <div class="text-caption black--text text-uppercase">
+              {{
+                $t(
+                  "container.payroll_management.dashboard.total_payment_cycle"
+                )
+              }}
+            </div>
+          </v-row>
+        </v-card-title>
+        <h1 align="center">
+          {{
+            language === "bn"
+              ? $helpers.englishToBangla(this.total_payment_cycle)
+              : this.total_payment_cycle
+          }}
+        </h1>
+      </v-card>
+    </v-col>
 
-      <v-col cols="12" md="3">
-        <v-card class="mx-auto" color="grey lighten-4" max-width="600">
-          <v-card-title>
-            <v-icon color="indigo" class="mr-8 mb-2" size="64">
-              mdi-check
-            </v-icon>
-            <v-row align="start">
-              <div class="text-caption black--text text-uppercase">
-                {{
-                  $t(
-                    "container.payroll_management.dashboard.completed_payment_cycle"
-                  )
-                }}
-              </div>
-            </v-row>
-          </v-card-title>
-          <h1 align="center">
-            {{
-              language === "bn"
-                ? $helpers.englishToBangla(this.total_payment_cycle_ibas)
-                : this.total_payment_cycle_ibas
-            }}
-          </h1>
-        </v-card>
-      </v-col>
-    </v-row>
+    <v-col cols="12" md="3">
+      <v-card class="mx-auto" color="grey lighten-4" max-width="600">
+        <v-card-title class="d-flex align-center">
+          <v-icon color="indigo" class="mr-3" size="40">
+            mdi-check
+          </v-icon>
+          <v-row align="start">
+            <div class="text-caption black--text text-uppercase">
+              {{
+                $t(
+                  "container.payroll_management.dashboard.completed_payment_cycle"
+                )
+              }}
+            </div>
+          </v-row>
+        </v-card-title>
+        <h1 align="center">
+          {{
+            language === "bn"
+              ? $helpers.englishToBangla(this.total_payment_cycle_ibas)
+              : this.total_payment_cycle_ibas
+          }}
+        </h1>
+      </v-card>
+    </v-col>
+  </v-row>
     <!-------End  header Card component ------->
     <v-row class="mt-3">
       <v-col cols="12" md="6" lg="6">

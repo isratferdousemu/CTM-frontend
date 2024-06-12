@@ -1186,6 +1186,12 @@
       "starting_period": "Started Period",
       "closing_period": "Closing Period",
       "search": "Search Emergency Allotment",
+      "emergency_supplementary_payroll": {
+        "header": "Emergency Supplementary Payroll",
+        "awaiting_correction":"Awaiting Correction",
+        "revised_beneficiary":"Revised Beneficiary",
+        "total":"Total"
+      },
       "emergency_beneficiary": {
         "slNo": "Sl No",
         "list": "Emergency Beneficiary",
