@@ -5,7 +5,7 @@
         <v-card :loading="isLoading" style="background-color:#1c3b68;color:white;font-size:12px;">
            <v-card-title style=" padding: 10px;">
                <h5 class="white--text">
-                 {{ $t("container.payroll_management.dashboard.program_wise_payment_cycle") }}
+                 {{ $t("container.payroll_management.emergency_dashboard.program_wise_payment_cycle") }}
               </h5>
           </v-card-title>
         </v-card>

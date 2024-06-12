@@ -5,7 +5,7 @@
         <v-card :loading="isLoading" style="background-color:#1c3b68;color:white;font-size:12px;">
            <v-card-title style=" padding: 10px;">
                <h5 class="white--text">
-                 {{ $t("container.payroll_management.dashboard.program_wise_payment_cycle") }}
+                 {{ $t("container.payroll_management.dashboard.available_balance") }}
               </h5>
           </v-card-title>
         </v-card>
@@ -21,16 +21,33 @@
         min-width="auto"
     >
       <template v-slot:activator="{ on, attrs }">
-        <v-text-field
+        <!-- <v-text-field
             v-model="dates"
             :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
-            :label="$t('container.payroll_management.dashboard.enter_start_end_date')"
+            :label="$t('container.system_config_dashboard.enter_start_end_date')"
             readonly
             v-bind="attrs"
             v-on="on"
-        ></v-text-field>
+        ></v-text-field> -->
+        <v-col cols="12">
+            <v-row>
+              <v-select
+                :label="
+                  $t(
+                    'container.beneficiary_management.dashboard.select_program'
+                  )
+                "
+                :items="programs"
+                v-model="program_id"
+                :item-text="getItemText"
+                item-value="id"
+                @change="fetchChartData()"
+                clearable
+              ></v-select>
+            </v-row>
+          </v-col>
       </template>
-      <v-date-picker
+      <!-- <v-date-picker
           v-model="dates"
           :range="[dates[0], dates[1]]"
           no-title
@@ -48,12 +65,12 @@
         >
           OK
         </v-btn>
-      </v-date-picker>
+      </v-date-picker> -->
     </v-menu>
   </v-row>
   <v-row>
      <img  v-if="allZeros == true" style="margin-left:80px;margin-top:10px;width: 300px;height: 300px" src="/assets/images/pie_chart_default.png" alt="default chart">
-    <canvas v-else id="program_wise_payment_cycle"></canvas>
+    <canvas v-else id="program_balance"></canvas>
   </v-row>
   </v-col>
 
@@ -70,14 +87,43 @@ export default {
       dates: [],
       menu: false,
       total_number_of_application_received_chart: null,
-      program_wise_payment_cycle: [],
+      program_balance: [],
       levels: [],
       datas: [],
+      programs: [],
+      program_id: null,
       isLoading: false,
       dateRangeText: ""
     };
   },
   methods: {
+    getItemText(item) {
+      return this.language === "bn" ? item.name_bn : item.name_en;
+    },
+    async GetAllProgram() {
+      try {
+        await this.$axios
+          .get("/global/program", {
+            headers: {
+              Authorization: "Bearer " + this.$store.state.token,
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((result) => {
+            this.programs = result.data.data;
+          })
+          .catch((err) => {
+            console.log(err, "error");
+            if (err.response?.data?.errors) {
+              this.$refs.form.setErrors(err.response.data.errors);
+            }
+            console.log(err.response);
+            this.$toast.error(err?.response?.data?.message);
+          });
+      } catch (e) {
+        console.log(e);
+      }
+    },
     resetDateRange() {
       this.dates = [];
       this.menu = false;
@@ -94,26 +140,25 @@ export default {
       console.log(from_date, to_date,'date by anwar')
       this.isLoading = true;
       const queryParams = {
-        status: status,
+        program_id: this.program_id,
         start_date: from_date,
         end_date: to_date,
       };
       try {
-        const result = await this.$axios.get("admin/payroll/program-wise-payment-cycle", {
+        const result = await this.$axios.get("admin/payroll/program-balance", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
           },
           params: queryParams,
         });
-         this.program_wise_payment_cycle = result.data.data;
+         this.program_balance = result.data.data;
 
-        this.levels = this.program_wise_payment_cycle.map((row) => {
+        this.levels = result.data.data.map((row) => {
           return this.$i18n.locale == 'en' ? row?.name_en : row?.name_bn;
         });
-
-        this.datas = this.program_wise_payment_cycle.map((row) => {
-          return row.count !== 0 ? row?.count : 0;
+        this.datas = result.data.data.map((row) => {
+          return row.count > 0 ? row?.count : 0;
         });
         this.isLoading = false;
 
@@ -135,7 +180,7 @@ export default {
           return isNaN(percentage) ? '0.00%' : percentage + '%';
         });
 
-        this.total_number_of_application_received_chart = new Chart(document.getElementById("program_wise_payment_cycle"), {
+        this.total_number_of_application_received_chart = new Chart(document.getElementById("program_balance"), {
           type: "doughnut",
           data: {
             // labels: this.levels,
@@ -186,8 +231,8 @@ export default {
             aspectRatio: 1, // Aspect ratio of 1 w
           },
         });
-        document.getElementById("program_wise_payment_cycle").style.width = '400px';
-        document.getElementById("program_wise_payment_cycle").style.height = '435px';
+        document.getElementById("program_balance").style.width = '400px';
+        document.getElementById("program_balance").style.height = '435px';
       } else {
         console.error("Data is not available to create chart.");
       }
@@ -219,6 +264,7 @@ export default {
 
   mounted() {
     this.fetchChartData();
+    this.GetAllProgram();
   },
    computed: {
     language: {
