@@ -115,33 +115,12 @@ export default {
         this.$store
             .dispatch("getLookupByType", 31)
             .then((res) => (this.status_types = res));
-       
-       
-    
-   
 
     },
 
     methods: {
       downloadCertificate(certificate) {
-        this.user_name = certificate.user_name
-        this.program_name = certificate.program_name
-
-        const element = this.$refs.certificate;
-        const options = {
-          margin: 10,
-          filename: this.user_name +'.pdf',
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: {
-            scale: 2,
-            useCORS: true,
-            logging: true, // Enable logging to see more info in the console
-            allowTaint: true, // Allow images from different origins
-          },
-          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-
-        html2pdf().from(element).set(options).save();
+        this.$router.push({ name: 'TrainingProgramCertificates', params: { certificate } });
       },
         SaveRating(){
             const postData = {
