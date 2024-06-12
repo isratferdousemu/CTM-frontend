@@ -24,7 +24,7 @@
         <v-text-field
             v-model="dates"
             :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
-            :label="$t('container.application_selection_dashboard.enter_start_end_date')"
+            :label="$t('container.payroll_management.dashboard.enter_start_end_date')"
             readonly
             v-bind="attrs"
             v-on="on"
