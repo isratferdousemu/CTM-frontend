@@ -3,7 +3,7 @@
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
         <div class="d-block text-right">
-          <v-btn elevation="2" class="btn my-2" color="primary" router
+          <v-btn elevation="2" class="btn mb-2" color="primary" router
             to="/beneficiary-management/beneficiary-replacement-list">
             {{ $t("container.list.view-list") }}
           </v-btn>
@@ -15,7 +15,7 @@
                 <v-icon color="white"> $expand </v-icon>
               </template>
               <h3 class="white--text text-uppercase">
-                {{ $t("container.list.search") }}
+                {{ $t("container.beneficiary_management.beneficiary_list.beneficiary_replacement") }}
               </h3>
             </v-expansion-panel-header>
             <v-expansion-panel-content>
@@ -92,19 +92,14 @@
       </v-col>
 
       <v-col cols="12">
-
         <v-card elevation="10" color="white" rounded="md" theme="light">
-          <v-card-title tag="div" style="
+          <v-card-title tag="div" class="mb-4" style="
                   background-color: #1c3b68;
-                  color: white;
-                  margin-bottom: 17px;
-                  font-size: 17px;
-                ">
-            <h3 class="white--text text-uppercase pt-3">
+                  color: white;">
+            <h4 class="white--text text-uppercase">
               {{ $t("container.beneficiary_management.beneficiary_list.beneficiary_waiting_list") }}
-            </h3>
+            </h4>
           </v-card-title>
-
 
           <v-card-text>
             <v-row class="ma-0 pa-3 white round-border d-flex justify-space-between align-center" justify="center"
@@ -134,8 +129,9 @@
                   <template v-slot:item.actions="{ item }">
                     <v-tooltip top>
                       <template v-slot:activator="{ on }">
-                        <v-btn v-can="'beneficiaryReplacement-create'" fab x-small v-on="on" color="success"
-                          elevation="0" router :to="`/beneficiary-management/beneficiary-info/details/${item.id}`">
+                        <v-btn v-can="'beneficiaryReplacement-create'" fab x-small v-on="on" color="primary"
+                          elevation="0" router :to="`/beneficiary-management/beneficiary-info/details/${item.id}`"
+                          target="_blank">
                           <v-icon> mdi-eye </v-icon>
                         </v-btn>
                       </template>
@@ -161,12 +157,12 @@
                 </v-data-table>
               </v-col>
             </v-row>
-            <v-row class="mx-0 my-0 py-2" justify="end">
+            <!-- <v-row class="mx-0 my-0 py-2" justify="end">
               <v-btn type="submit" flat router to="/beneficiary-management/beneficiary-info" :disabled="invalid"
                 class="custom-btn-width py-2 mr-2">
                 {{ $t("container.list.back") }}
               </v-btn>
-            </v-row>
+            </v-row> -->
           </v-card-text>
         </v-card>
       </v-col>
@@ -291,6 +287,10 @@ export default {
       try {
         let fd = new FormData();
         if (this.selectedId) {
+          if (this.data.file && this.data.file.size > 2 * 1024 * 1024) {//2MB
+            this.$toast.error("Max file size of 2MB exceeds!");
+            return;
+          }
           fd.append("replace_with_ben_id", this.selectedId);
           fd.append("cause_id", this.data.cause_type);
           fd.append("cause_detail", this.data.cause_details);
@@ -313,7 +313,7 @@ export default {
               }
             });
         } else {
-          this.$toast.success("Please select a Replacement Item");
+          this.$toast.error("Please select a beneficiary to replace");
         }
       } catch (e) {
         console.log("submit__", e);
