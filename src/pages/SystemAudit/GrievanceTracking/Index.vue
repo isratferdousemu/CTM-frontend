@@ -120,7 +120,7 @@
                                                 <v-radio :label="$t('container.system_audit.nbr')" :value="1"></v-radio>
                                                 <v-radio
                                                     :label="$t('container.grievance_management.grievanceList.tracking_no')"
-                                                    :value="2"></v-radio>
+                                                    :value="2" style="margin-top:13px;"></v-radio>
                                             </v-radio-group>
                                         </v-col>
                                         <v-col cols="12" md="6">
@@ -177,7 +177,7 @@
                                     </v-col>
                                 </v-row>
                                 <v-row dense style="margin-left:9px;">
-                                    <v-col v-for="data in tracking_summary" :key="data.name" cols="12" sm="6" md="4" lg="3"
+                                    <v-col v-for="data in tracking_summary" :key="data.name" cols="12" sm="6" md="4" lg="4"
                                         class="tracking-summary-item">
                                         <b>{{ data.name }}:</b> {{ data.value }}
                                     </v-col>
@@ -220,9 +220,9 @@
                                                             }}<br>
                                                             <span v-if="item.daysToken > 0">
                                                                 {{ language == 'bn' ? "প্রাপ্ত কার্য সম্পাদনের গৃহীত
-                                                                                                                                সময়কাল: " : "Days Taken: " }} {{ language == 'bn' ?
+                                                                         সময়কাল: " : "Days Taken: " }} {{ language == 'bn' ?
                                                                     $helpers.englishToBangla(item.daysToken ?? '') :
-                                                                    item.daysToken ?? '' }}
+                                                                    item.daysToken ?? '' }}{{   language == 'bn' ? " দিন" : " days"}}
                                                             </span>
                                                         </v-col>
                                                     </v-row>
@@ -231,7 +231,7 @@
                                         </v-card>
                                     </v-col>
                                     <v-row class="justify-end mt-2">
-                                        <v-col v-for="legend in legends" :key="legend.status" cols="4" sm="3" md="1" lg="1"
+                                        <v-col v-for="legend in legends" :key="legend.status" cols="12" sm="3" md="3" lg="3"
                                             class="text-center">
                                             <v-icon :color="legend.color">{{ legend.icon }}</v-icon><br>
                                             <span>{{ legend.label }}</span>
@@ -340,6 +340,16 @@ export default {
                         "container.grievance_management.grievanceEntry.name"
                     ), value: this.language === 'bn' ? this.$helpers.englishToBangla(this.tracking_details?.name) : this.tracking_details?.name
                 },
+                 {
+                    name: this.$t(
+                        "container.grievance_management.grievanceList.tracking_no"
+                    ), value: this.tracking_details?.tracking_no
+                },
+                 {
+                    name: this.$t(
+                        "container.system_audit.application_date"
+                    ), value: this.language === 'bn' ? this.formatDate(this.tracking_details.created_at) : this.formatDate(this.tracking_details.created_at)
+                },
                 {
                     name: this.$t(
                         "container.grievance_management.grievanceType"
@@ -350,18 +360,15 @@ export default {
                         "container.grievance_management.grievance_subject"
                     ), value: this.language === 'bn' ? this.$helpers.englishToBangla(this.tracking_details?.grievance_subject?.title_bn) : this.tracking_details?.grievance_subject?.title_en
                 },
-
-                {
+                  {
                     name: this.$t(
-                        "container.system_audit.application_date"
-                    ), value: this.language === 'bn' ? this.formatDate(this.tracking_details.created_at) : this.formatDate(this.tracking_details.created_at)
+                        "container.grievance_management.grievanceEntry.details"
+                    ), value: this.language === 'bn' ? this.$helpers.englishToBangla(this.tracking_details?.details) : this.tracking_details?.details
                 },
 
-                {
-                    name: this.$t(
-                        "container.grievance_management.grievanceList.tracking_no"
-                    ), value: this.tracking_details?.tracking_no
-                },
+               
+
+               
             ];
         }
 

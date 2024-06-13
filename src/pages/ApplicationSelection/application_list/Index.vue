@@ -1755,9 +1755,7 @@ export default {
         });
     },
     async onChangeThanaGetWard(event) {
-      //emu
-      // this.wards = [];
-      // this.data.ward_id = null;
+    
       await this.$axios
         .get(`/global/ward/get/thana/${event}`, {
           headers: {
