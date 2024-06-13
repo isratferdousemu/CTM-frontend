@@ -215,6 +215,17 @@ const TrainingManagementRoutes = [
     component: () => import("../pages/TrainingManagement/Kobo/Edit.vue")
   },
   /*Kobo update route start*/
+
+
+  {
+    path: "/training-management/training-program/certificates",
+    name: "TrainingProgramCertificates",
+    meta: {
+      requiresAuth: true,
+      permission: "trainingProgram-view",
+    },
+    component: () => import("../pages/TrainingManagement/TrainingProgram/Certificate.vue")
+  },
 ];
 
 

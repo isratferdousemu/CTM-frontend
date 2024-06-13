@@ -301,7 +301,7 @@ export default {
             ]
            
 
-        
+
             const CustomInfo = this.all_participants.map(((i, index) => {
                 let paymentCycle;
                 switch (i.status.toString()) {
@@ -309,13 +309,13 @@ export default {
                         paymentCycle = this.language == 'bn' ? "পেন্ডিং" : "Pending";
                         break;
                     case '1':
-                        paymentCycle = this.language == 'bn' ? "উত্তীর্ণ" : "Pass";
+                        paymentCycle = this.language == 'bn' ? "সম্পন্ন" : "Completed";
                         break;
                     case '2':
-                        paymentCycle = this.language == 'bn' ? "অনুত্তীর্ণ" : "Fail";
+                        paymentCycle = this.language == 'bn' ? "সম্পন্ন নয়" : "Not completed";
                        
                     default:
-                        paymentCycle = i?.status;
+                        paymentCycle = this.language == 'bn' ? "সম্পন্ন নয়" : "Not completed";
                 }
 
                 return [
@@ -413,13 +413,13 @@ export default {
                                 paymentCycle = this.language == 'bn' ? "পেন্ডিং" : "Pending";
                                 break;
                             case '1':
-                                paymentCycle = this.language == 'bn' ? "উত্তীর্ণ" : "Pass";
+                                paymentCycle = this.language == 'bn' ? "সম্পন্ন" : "Completed";
                                 break;
                             case '2':
-                                paymentCycle = this.language == 'bn' ? "অনুত্তীর্ণ" : "Fail";
+                                paymentCycle = this.language == 'bn' ? "সম্পন্ন নয়" : "Not completed";
 
                             default:
-                                paymentCycle = i?.status;
+                                paymentCycle = this.language == 'bn' ? "সম্পন্ন নয়" : "Not completed";
                         }
                         return {
                            
@@ -600,8 +600,9 @@ export default {
                                     <form @submit.prevent="PageSetup()">
                                         <v-row>
                                             <v-col lg="4" md="6" sm="12" cols="12">
-                                                <v-autocomplete dense type="text" v-model="training_circular_id"
-                                                    append-icon="mdi-plus" @input="change()"
+                                                <v-autocomplete dense type="text" clearable
+                                                    v-model="training_circular_id" append-icon="mdi-plus"
+                                                    @input="change()"
                                                     :label="$t('container.training_management.training_program.training_circular')"
                                                     persistent-hint outlined :error="errors[0] ? true : false"
                                                     :items="all_circulars" :item-text="itemText" item-value="id">
@@ -610,9 +611,9 @@ export default {
                                             </v-col>
                                             <v-col lg="4" md="6" sm="12" cols="12">
 
-                                                <v-autocomplete dense type="text" v-model="training_program_id"
-                                                    append-icon="mdi-plus" :items="programs" :item-text="getprogram"
-                                                    item-value="id" :label="$t('container.training_management.training_program.program')
+                                                <v-autocomplete dense clearable type="text"
+                                                    v-model="training_program_id" append-icon="mdi-plus"
+                                                    :items="programs" :item-text="getprogram" item-value="id" :label="$t('container.training_management.training_program.program')
                                         " persistent-hint outlined :error="errors[0] ? true : false"></v-autocomplete>
 
                                             </v-col>
@@ -620,7 +621,7 @@ export default {
 
                                             <v-col cols=" 12" sm="4" lg="4">
 
-                                                <v-select dense :hide-details="errors[0] ? false : true"
+                                                <v-select clearable dense :hide-details="errors[0] ? false : true"
                                                     append-icon="mdi-plus" v-model="office_type" outlined :label="$t(
                                         'container.system_config.demo_graphic.office.office_type'
                                     )
@@ -631,7 +632,7 @@ export default {
                                             </v-col>
                                             <v-col cols=" 12" sm="4" lg="4">
 
-                                                <v-select v-model="office_id" dense
+                                                <v-select clearable v-model="office_id" dense
                                                     :hide-details="errors[0] ? false : true" append-icon="mdi-plus"
                                                     outlined :label="$t(
                                         'container.system_config.demo_graphic.office.office'
@@ -718,8 +719,9 @@ export default {
                                                 pagination.perPage + index + 1 }}
                                             </template>
 
-                                          <template v-slot:item.user_id="{ item }">
-                                                {{ language === 'bn' ? $helpers.englishToBangla(item.user_id) : item.user_id }}
+                                            <template v-slot:item.user_id="{ item }">
+                                                {{ language === 'bn' ? $helpers.englishToBangla(item.user_id) :
+                                                item.user_id }}
                                             </template>
                                             <template v-slot:item.circular="{ item }">
                                                 <span>{{ item.training_circular?.circular_name }}</span>
@@ -749,11 +751,11 @@ export default {
 
                                                 <span v-if="item.status == 1">
 
-                                                    {{ language === 'en' ? 'Pass' : 'উত্তীর্ণ' }}
+                                                    {{ language === 'en' ? 'Completed' : 'সম্পন্ন' }}
                                                 </span>
                                                 <span v-if="item.status == 2">
 
-                                                    {{ language === 'en' ? 'Fail' : 'অনুত্তীর্ণ' }}
+                                                    {{ language === 'en' ? 'Not Completed' : 'সম্পন্ন নয়' }}
                                                 </span>
 
                                             </template>
@@ -781,7 +783,7 @@ export default {
                                                     <span>{{ $t("container.list.edit") }}</span>
                                                 </v-tooltip>
 
-                                              <v-tooltip top v-if="item.exam_response">
+                                                <v-tooltip top v-if="item.exam_response">
                                                     <template v-slot:activator="{ on }">
                                                         <v-btn v-can="'Participant-edit'" class=" mr-2 mb-1" fab x-small
                                                             v-on="on" color="primary" elevation="0" router
@@ -792,12 +794,13 @@ export default {
                                                     <span>{{ $t("container.list.exam") }}</span>
                                                 </v-tooltip>
 
-                                              <v-tooltip top v-if="item.trainer_rating_response">
+                                                <v-tooltip top v-if="item.trainer_rating_response">
                                                     <template v-slot:activator="{ on }">
                                                         <v-btn v-can="'Participant-edit'" class=" mr-2 mb-1" fab x-small
                                                             v-on="on" color="red" elevation="0" router
                                                             :to="`/training-management/participant/trainer-rating/${item.id}`">
-                                                            <v-icon color="white"> mdi-card-account-details-star-outline </v-icon>
+                                                            <v-icon color="white"> mdi-card-account-details-star-outline
+                                                            </v-icon>
                                                         </v-btn>
                                                     </template>
                                                     <span>{{ $t("container.list.trainerAssessment") }}</span>

@@ -1217,28 +1217,30 @@
                     <v-expansion-panel-content class="mt-5">
                       <v-row>
 
-                        <v-col cols="6" lg="6" >
-                          <v-radio-group v-model="data.account_type" row>
-                            {{ $t('container.application_selection.application.account_type') }}
+                        <v-col cols="6" lg="6">
+                          <!-- <ValidationProvider name="Account_type" vid="account_type" rules="required"
+                            v-slot="{ errors }"> -->
+                            <v-radio-group v-model="data.account_type" row  id="account_type">
+                              {{ $t('container.application_selection.application.account_type') }}
 
-                            <span style="
+                              <span style="
                               margin-left: 4px;
                               margin-right: 4px;
                               color: red;
                             ">*</span>
-                            <v-radio 
-                              :label="$t('container.application_selection.application.bank_account')"
-                              :value="1"></v-radio>
-                            <v-radio 
-                              :label="$t('container.application_selection.application.mobile_account')"
-                              :value="2"></v-radio>
-                          </v-radio-group>
+                              <v-radio :label="$t('container.application_selection.application.bank_account')"
+                                :value="1"></v-radio>
+                              <v-radio :label="$t('container.application_selection.application.mobile_account')"
+                                :value="2"></v-radio>
+                            </v-radio-group>
+                            <!-- <span v-if="errors[0]" style="color: red;">{{ errors[0] }}</span> -->
+                          <!-- </ValidationProvider> -->
                         </v-col>
                         <v-col cols="6" lg="6" v-if="data.account_type === 2">
                           <ValidationProvider name="Mobile Number Ownership" vid="account_owner" rules="required"
                             v-slot="{ errors }">
                             <label style="display: inline-block"> {{
-                              $t('container.application_selection.application.mobile_ownership') }}
+  $t('container.application_selection.application.mobile_ownership') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
 
@@ -1348,7 +1350,7 @@
                           <ValidationProvider name="Account Name" :vid="'application_allowance_values' + index"
                             rules="required" v-slot="{ errors }">
                             <label style="display: inline-block"> {{
-  $t('container.application_selection.application.account_name') }}
+                              $t('container.application_selection.application.account_name') }}
                             </label>
                             <span style="margin-left: 4px; color: red">*</span>
                             <v-text-field v-model="data.account_name" outlined clearable
@@ -2360,6 +2362,12 @@ export default {
         verifyButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     },
+      scrollToAccountType() {
+      const verifyButton = document.getElementById('account_type');
+      if (verifyButton) {
+        verifyButton.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    },
     getItemTextYear(item) {
       return this.language === 'bn' ? this.$helpers.englishToBangla(item.years) : item.years;
 
@@ -2847,6 +2855,11 @@ export default {
             top: offset,
             behavior: 'smooth'
           });
+          if (this.data.account_type === null) {
+          this.language === 'en' ? this.$toast.error("Select Account Type and Enter Related Data") : this.$toast.error("অ্যাকাউন্টের ধরন নির্বাচন করুন এবং সম্পর্কিত ডেটা প্রদান করুন");
+            this.scrollToAccountType();
+          return false;
+        }
         }
 
 
@@ -3350,7 +3363,7 @@ export default {
     },
     async getArea() {
 
-
+    this.data.account_type=null;
       await this.$axios
         .get(`/global/coverage-area/${this.data.permanent_location_type}/${this.data.permanent_location_type}/${this.data.permanent_city_thana_id}`, {
           headers: {
@@ -3417,7 +3430,7 @@ export default {
     },
     async getArea_2() {
 
-
+this.data.account_type=null;
      await this.$axios
         .get(`/global/coverage-area/${this.data.permanent_location_type}/${this.data.permanent_location_type}/${this.data.permanent_district_pouro_id}`, {
           headers: {
@@ -3483,7 +3496,7 @@ export default {
     },
     async getArea_3() {
 
-
+      this.data.account_type = null;
       await this.$axios
         .get(`/global/coverage-area/${this.data.permanent_location_type}/${this.data.permanent_sub_location_type}/${this.data.permanent_pouro_id}`, {
           headers: {
@@ -3548,6 +3561,7 @@ export default {
         });
     },
      async getArea_4() {
+      this.data.account_type=null;
 
 
       await this.$axios

@@ -220,14 +220,14 @@ export default {
                                 <div v-html="data?.description" class="ml-3"></div>
                             </v-col>
                             <v-col cols="5" style="font-size:13px;">
-                                <b>{{ $t('container.api_manager.data_receiver.start_date') }}</b>:
+                                <b>{{ $t('container.training_management.training_program.start_date') }}</b>:
                             </v-col>
                             <v-col cols="7" style="font-size:13px;">
                                 <b>:</b> <span class="ml-2">{{ language == 'bn' ?
                                     $helpers.englishToBangla(data?.start_date) : data?.start_date }}</span>
                             </v-col>
                             <v-col cols="5" style="font-size:13px;">
-                                <b>{{ $t('container.api_manager.data_receiver.end_date') }}</b>:
+                                <b>{{ $t('container.training_management.training_program.end_date') }}</b>:
                             </v-col>
                             <v-col cols="7" style="font-size:13px;">
                                 <b>:</b> <span class="ml-2">{{ language == 'bn' ?
