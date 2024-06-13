@@ -3,7 +3,6 @@
     <v-row class="mx-5 mt-4">
       <v-col cols="12">
         <v-row>
-
           <v-col cols="12">
             <v-card
               elevation="10"
@@ -18,7 +17,11 @@
                 style="background-color: #1c3b68; color: white"
               >
                 <h3>
-                  {{ $t("container.emergency_payment.emergency_supplementary_payroll.header") }}
+                  {{
+                    $t(
+                      "container.emergency_payment.emergency_supplementary_payroll.header"
+                    )
+                  }}
                 </h3>
               </v-card-title>
               <v-card-text>
@@ -29,7 +32,7 @@
                 >
                   <div class="d-flex justify-sm-end flex-wrap">
                     <v-text-field
-                      @keyup.native="getPaymentProcessor"
+                      @keyup.native="getData"
                       outlined
                       dense
                       v-model="search"
@@ -95,68 +98,26 @@
                       </template>
 
                       <!-- Action Button -->
-                      <template v-slot:item.actions="{ item }">
+                      <!-- <template v-slot:item.actions="{ item }">
                         <div class="action-buttons">
                           <v-tooltip top>
                             <template v-slot:activator="{ on }">
                               <v-btn
-                                v-can="'update-post'"
                                 fab
                                 x-small
                                 v-on="on"
-                                color="success"
-                                elevation="0"
-                                @click="editItem(item)"
-                              >
-                                <v-icon> mdi-account-edit-outline </v-icon>
-                              </v-btn>
-                            </template>
-                            <span>{{ $t("container.list.edit") }}</span>
-                          </v-tooltip>
-
-                          <v-tooltip top>
-                            <template v-slot:activator="{ on }">
-                              <router-link
-                                :to="`/payroll-management/payment-processor-show/${item.id}`"
-                                tag="span"
-                                v-on="on"
-                              >
-                                <v-btn
-                                  fab
-                                  x-small
-                                  v-on="on"
-                                  color="#AFB42B"
-                                  class="white--text"
-                                  elevation="0"
-                                >
-                                  <v-icon>mdi-eye-outline</v-icon>
-                                </v-btn>
-                              </router-link>
-                            </template>
-                            <span>{{
-                              $t("container.payroll_management.view")
-                            }}</span>
-                          </v-tooltip>
-
-                          <v-tooltip top>
-                            <template v-slot:activator="{ on }">
-                              <v-btn
-                                v-can="'delete-division'"
-                                fab
-                                x-small
-                                v-on="on"
-                                color="#b71c1c"
+                                color="blue"
                                 class="white--text"
                                 elevation="0"
-                                @click="deleteAlert(item.id)"
+                                @click="openModal(item)"
                               >
-                                <v-icon> mdi-delete </v-icon>
+                                <v-icon>mdi-send-outline</v-icon>
                               </v-btn>
                             </template>
-                            <span>{{ $t("container.list.delete") }}</span>
+                            <span>{{ $t("container.list.send") }}</span>
                           </v-tooltip>
                         </div>
-                      </template>
+                      </template> -->
                       <!-- End Action Button -->
 
                       <template v-slot:footer="item">
@@ -201,6 +162,38 @@
         </v-row>
       </v-col>
     </v-row>
+
+    <v-dialog v-model="showModal" max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">{{
+            $t("container.emergency_payment.select_items_to_send")
+          }}</span>
+        </v-card-title>
+        <v-card-text>
+          <v-data-table
+            :headers="modalHeaders"
+            :items="modalItems"
+            item-key="id"
+            :items-per-page="5"
+            class="elevation-1"
+          >
+            <template v-slot:item.checkbox="{ item }">
+              <v-checkbox v-model="selectedItems" :value="item.id"></v-checkbox>
+            </template>
+          </v-data-table>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="sendSelectedItems">{{
+            $t("container.list.send")
+          }}</v-btn>
+          <v-btn color="grey" text @click="showModal = false">{{
+            $t("container.list.cancel")
+          }}</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -210,39 +203,10 @@ import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required, email } from "vee-validate/dist/rules";
 export default {
   name: "Index",
-  title: "Payment Processor",
+  title: "Emergency Supplementary",
   data() {
     return {
-      data: {
-        id: null,
-        processor_type: null,
-        bank_id: null,
-        branch_name: null,
-        routing_number: null,
-        name_en: "",
-        name_bn: "",
-        focal_phone: "",
-        focal_email: "",
-        charge: null,
-        division: null,
-        district: null,
-        upazila: null,
-        union: null,
-        thana: null,
-        city_corporation: null,
-        district_pourashava: null,
-        location_type: null,
-        office: null,
-      },
       filter: false,
-      clearLocation: false,
-      clearDivision: false,
-      clearDistrict: false,
-      clearUpazila: false,
-      clearUnion: false,
-      clearThana: false,
-      clearCityCorporation: false,
-      clearDistrictPourashava: false,
       dialogAdd: false,
       onEdit: false,
       deleteDialog: false,
@@ -253,25 +217,6 @@ export default {
       delete_id: "",
 
       values: [],
-      divisions: [],
-      districts: [],
-      upazilas: [],
-      unions: [],
-      thanas: [],
-      city_corporations: [],
-      district_pourashavas: [],
-      banks: [],
-
-      processor_types: [
-        { id: 1, name_en: "Bank", name_bn: "ব্যাংক", value: "bank" },
-        { id: 2, name_en: "MFS", name_bn: "এমএফএস", value: "mfs" },
-        // {
-        //   id: 3,
-        //   name_en: "Agent Banking",
-        //   name_bn: "এজেন্ট ব্যাংকিং",
-        //   value: "agent_banking",
-        // },
-      ],
 
       errors: {},
       error_status: {},
@@ -281,6 +226,19 @@ export default {
         perPage: 10,
       },
       items: [5, 10, 15, 20, 40, 50, 100],
+      showModal: false,
+      modalItems: [],
+      selectedItems: [],
+      modalHeaders: [
+        {
+          text: this.$t("container.list.select"),
+          value: "checkbox",
+          align: "center",
+          sortable: false,
+        },
+        { text: this.$t("container.list.name"), value: "name" },
+        { text: this.$t("container.list.status"), value: "status" },
+      ],
     };
   },
   components: {
@@ -296,36 +254,42 @@ export default {
           align: "start",
           sortable: false,
         },
-        {
-          text: this.$t("container.payroll_management_v2.allotment_area_wise_ben_send_preview.program_name"),
-          value: "processor_type",
-          align: "center",
-        },
-        {
-          text: this.$t("container.system_config.demo_graphic.financial_year.financial_year"),
-          value: "name_en",
-        },
+        // {
+        //   text: this.$t("container.payroll_management_v2.allotment_area_wise_ben_send_preview.program_name"),
+        //   value: "processor_type",
+        //   align: "center",
+        // },
+        // {
+        //   text: this.$t("container.system_config.demo_graphic.financial_year.financial_year"),
+        //   value: "name_en",
+        // },
         {
           text: this.$t("container.emergency_payment.payment_cycle"),
-          value: "name_bn",
+          value: "cycle_id",
         },
         {
-          text: this.$t("container.emergency_payment.emergency_supplementary_payroll.awaiting_correction"),
-          value: "processor_area.district.name_en",
+          text: this.$t(
+            "container.emergency_payment.emergency_supplementary_payroll.awaiting_correction"
+          ),
+          value: "cycle_details.failed_count",
         },
         {
-          text: this.$t("container.emergency_payment.emergency_supplementary_payroll.revised_beneficiary"),
-          value: "focal_phone_no",
+          text: this.$t(
+            "container.emergency_payment.emergency_supplementary_payroll.revised_beneficiary"
+          ),
+          value: "cycle_details.resubmitted_count",
         },
         {
-          text: this.$t("container.emergency_payment.emergency_supplementary_payroll.total"),
-          value: "focal_email_address",
+          text: this.$t(
+            "container.emergency_payment.emergency_supplementary_payroll.total"
+          ),
+          value: "cycle_details.status_total",
         },
-        {
-          text: this.$t("container.list.action"),
-          value: "actions",
-          sortable: false,
-        },
+        // {
+        //   text: this.$t("container.list.action"),
+        //   value: "actions",
+        //   sortable: false,
+        // },
       ];
     },
     language: {
@@ -350,37 +314,18 @@ export default {
   },
 
   methods: {
-    convertCase(input) {
-      // first latter uppar case
-      let formattedInput = input.replace(/[-_]/g, " ");
-      let words = formattedInput.split(" ");
-      let titleCasedWords = words.map((word) => {
-        return word.charAt(0).toUpperCase() + word.slice(1);
-      });
-      return titleCasedWords.join(" ");
+    openModal(item) {
+      this.showModal = true;
+      // this.modalItems = item.details;
     },
-
-    convertToUpper(input) {
-      // all latter upper case
-      let formattedInput = input.replace(/[-_]/g, " ");
-      let upperCaseInput = formattedInput.toUpperCase();
-
-      return upperCaseInput;
+    sendSelectedItems() {
+      console.log(this.selectedItems);
+      this.showModal = false;
     },
 
     async GeneratePDF() {
       // this.isLoading = true;
       const queryParams = {
-        // filter: this.filter,
-        location_type: this.data?.location_type,
-        division_id: this.data?.division,
-        district_id: this.data?.district,
-        upazila_id: this.data?.upazila,
-        union_id: this.data?.union,
-        city_corp_id: this.data?.city_corporation,
-        thana_id: this.data?.thana,
-        district_pouro_id: this.data?.district_pourashava,
-
         search: this.search,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
@@ -389,7 +334,7 @@ export default {
       };
 
       await this.$axios
-        .get("/admin/payroll/payment-processor", {
+        .get("/admin/payroll/emergency-supplementary-payroll", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -397,16 +342,21 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          this.values = result.data?.data?.data;
+          this.values = result.data?.data;
         });
 
       const HeaderInfo = [
         this.$t("container.list.sl"),
-        this.$t("container.payroll_management.processor_type"),
-        this.$t("container.list.name_en"),
-        this.$t("container.payroll_management.coverage_area"),
-        this.$t("container.payroll_management.focal_phone"),
-        this.$t("container.payroll_management.charge"),
+        this.$t("container.emergency_payment.payment_cycle"),
+        this.$t(
+          "container.emergency_payment.emergency_supplementary_payroll.awaiting_correction"
+        ),
+        this.$t(
+          "container.emergency_payment.emergency_supplementary_payroll.revised_beneficiary"
+        ),
+        this.$t(
+          "container.emergency_payment.emergency_supplementary_payroll.total"
+        ),
       ];
 
       const CustomInfo = this.values.map((i, index) => {
@@ -414,11 +364,10 @@ export default {
           this.language == "en"
             ? index + 1
             : this.$helpers.englishToBangla(index + 1),
-          this.convertToUpper(i.processor_type),
-          i.name_en,
-          i.processor_area.district.name_en,
-          i.focal_phone_no,
-          i.charge,
+          i.cycle_id,
+          i.cycle_details.failed_count,
+          i.cycle_details.resubmitted_count,
+          i.cycle_details.status_total,
         ];
       });
 
@@ -426,7 +375,9 @@ export default {
         language: this.$i18n.locale,
         data: CustomInfo,
         header: HeaderInfo,
-        fileName: this.$t("container.payroll_management.list"),
+        fileName: this.$t(
+          "container.emergency_payment.emergency_supplementary_payroll.header"
+        ),
       };
       try {
         const response = await this.$axios.post(
@@ -454,14 +405,6 @@ export default {
     //generate excel
     async GenerateExcel() {
       const queryParams = {
-        location_type: this.data?.location_type,
-        division_id: this.data?.division,
-        district_id: this.data?.district,
-        upazila_id: this.data?.upazila,
-        union_id: this.data?.union,
-        city_corp_id: this.data?.city_corporation,
-        thana_id: this.data?.thana,
-        district_pouro_id: this.data?.district_pourashava,
         search: this.search,
         perPage: this.pagination.perPage,
         page: this.pagination.current,
@@ -470,7 +413,7 @@ export default {
       };
 
       await this.$axios
-        .get("/admin/payroll/payment-processor", {
+        .get("/admin/payroll/emergency-supplementary-payroll", {
           headers: {
             Authorization: "Bearer " + this.$store.state.token,
             "Content-Type": "multipart/form-data",
@@ -478,16 +421,20 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          this.values = result?.data?.data?.data;
-
+          this.values = result?.data?.data;
           import("@/plugins/Export2Excel").then((excel) => {
             const HeaderInfo = [
               this.$t("container.list.sl"),
-              this.$t("container.payroll_management.processor_type"),
-              this.$t("container.list.name_en"),
-              this.$t("container.payroll_management.coverage_area"),
-              this.$t("container.payroll_management.focal_phone"),
-              this.$t("container.payroll_management.charge"),
+              this.$t("container.emergency_payment.payment_cycle"),
+              this.$t(
+                "container.emergency_payment.emergency_supplementary_payroll.awaiting_correction"
+              ),
+              this.$t(
+                "container.emergency_payment.emergency_supplementary_payroll.revised_beneficiary"
+              ),
+              this.$t(
+                "container.emergency_payment.emergency_supplementary_payroll.total"
+              ),
             ];
 
             const CustomInfo = this.values.map((i, index) => {
@@ -496,21 +443,19 @@ export default {
                   this.language == "en"
                     ? index + 1
                     : this.$helpers.englishToBangla(index + 1),
-                "Processor Type": this.convertToUpper(i.processor_type),
-                "Name (English)": i.name_en,
-                "Coverage Area": i.processor_area.district.name_en,
-                Phone: i.focal_phone_no,
-                Charge: i.charge,
+                "Payment Cycle": i.cycle_id,
+                "Awaiting Correction": i.cycle_details.failed_count,
+                "Revised Beneficiary": i.cycle_details.resubmitted_count,
+                Total: i.cycle_details.status_total,
               };
             });
 
             const Field = [
               "SL",
-              "Processor Type",
-              "Name (English)",
-              "Coverage Area",
-              "Phone",
-              "Charge",
+              "Payment Cycle",
+              "Awaiting Correction",
+              "Revised Beneficiary",
+              "Total",
             ];
 
             const Item = this.FormatJson(Field, CustomInfo);
@@ -521,7 +466,7 @@ export default {
                 : this.$helpers.englishToBangla(currentDate);
 
             const filenameWithDate = `${dateinfo}_${this.$t(
-              "container.payroll_management.list"
+              "container.emergency_payment.emergency_supplementary_payroll.header"
             )}`;
 
             excel.export_json_to_excel({
@@ -567,20 +512,11 @@ export default {
       return fd;
     },
 
-    async getPaymentProcessor() {
+    async getData() {
       const queryParams = {
         search: this.search,
         //dropdown filter
         filter: this.filter,
-        location_type: this.data?.location_type,
-        division_id: this.data?.division,
-        district_id: this.data?.district,
-        upazila_id: this.data?.upazila,
-        union_id: this.data?.union,
-        city_corp_id: this.data?.city_corporation,
-        thana_id: this.data?.thana,
-        district_pouro_id: this.data?.district_pourashava,
-        //dropdown filter end
         perPage: this.pagination.perPage,
         page: this.pagination.current,
         sortBy: this.sortBy,
@@ -588,7 +524,7 @@ export default {
       };
       try {
         const response = await this.$axios.get(
-          "/admin/payroll/payment-processor",
+          "/admin/payroll/emergency-supplementary-payroll",
           {
             headers: {
               Authorization: "Bearer " + this.$store.state.token,
@@ -598,10 +534,10 @@ export default {
           }
         );
         if (response.status == "200") {
-          this.values = response.data.data.data;
-          this.pagination.current = response?.data?.data?.current_page;
-          this.pagination.total = response?.data?.data?.last_page;
-          this.pagination.grand_total = response?.data?.data?.total;
+          this.values = response.data.data;
+          this.pagination.current = response?.data?.current_page;
+          this.pagination.total = response?.data?.last_page;
+          this.pagination.grand_total = response?.data?.total;
           this.loading = false;
           this.filter = false;
         } else {
@@ -615,12 +551,12 @@ export default {
     },
 
     onPageChange($event) {
-      this.getPaymentProcessor();
+      this.getData();
     },
 
     onPageSetup($event) {
       this.pagination.current = 1;
-      this.getPaymentProcessor();
+      this.getData();
     },
 
     updateHeaderTitle() {
@@ -632,7 +568,7 @@ export default {
     "$i18n.locale": "updateHeaderTitle",
   },
   created() {
-    this.getPaymentProcessor();
+    this.getData();
   },
   beforeMount() {
     this.updateHeaderTitle();
