@@ -1469,7 +1469,7 @@
     "power_bi_report": {
       "index": {
         "title": "Power BI Report",
-        "add": "Add Power BI Report ",
+        "add": "+ Add New Report ",
         "update": "Update Power BI Report ",
         "title_en": "Title English",
         "title_bn": "Title Bangla",
