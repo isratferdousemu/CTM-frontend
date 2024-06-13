@@ -1090,7 +1090,8 @@ export default {
 
 
                                                             <v-tooltip top
-                                                                v-if="item.is_participant && item.exam_status && item.question_link">
+                                                                v-if="item.is_participant && item.exam_status && item.question_link
+                                                                && item.is_valid && item?.participant?.invitation_status == 1">
                                                                 <template v-slot:activator="{ on }">
                                                                     <v-btn fab x-small v-on="on" color="green"
                                                                         class=" mr-2 white--text mb-1" elevation="0"
@@ -1102,7 +1103,8 @@ export default {
                                                             </v-tooltip>
 
                                                             <v-tooltip top
-                                                                v-if="item.is_participant && item.rating_status && item.trainer_ratings_link">
+                                                                v-if="item.is_participant && item.rating_status && item.trainer_ratings_link
+                                                                && item.is_valid && item?.participant?.invitation_status == 1">
                                                                 <template v-slot:activator="{ on }">
                                                                     <v-btn fab x-small v-on="on" color="red"
                                                                         class=" mr-2 white--text mb-1" elevation="0"
