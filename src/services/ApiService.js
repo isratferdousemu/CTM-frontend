@@ -21,16 +21,17 @@ const ApiService = {
       .post(`${resource}`, params)
       .then((res) => {
         if (res.data.message) {
-          Toast.fire({
-            icon: "success",
-            title: res.data.message,
-          });
+          
+          // Toast.fire({
+          //   icon: "success",
+          //   title: res.data.message,
+          // });
         }
 
         return res;
       })
       .catch((errors) => {
-        this.ErrorResponse(errors);
+        // this.ErrorResponse(errors);
         return errors.response;
       });
   },
@@ -85,15 +86,17 @@ const ApiService = {
           message = message + msg + "<br>";
         });
       });
-      Toast.fire({
-        icon: "error",
-        title: message,
-      });
+      // Toast.fire({
+      //   icon: "error",
+      //   title: message,
+      // });
+      return message;
     } else {
-      Toast.fire({
-        icon: "error",
-        title: res,
-      });
+      // Toast.fire({
+      //   icon: "error",
+      //   title: res,
+      // });
+      return res
     }
   },
 };
