@@ -542,6 +542,10 @@ export default {
         },
 
 
+      downloadCertificate(certificate) {
+        this.$router.push({ name: 'TrainingProgramCertificates', params: { certificate } });
+      },
+
        
         deleteAlert(id) {
             this.deleteDialog = true;
@@ -816,6 +820,17 @@ export default {
                                                     </template>
                                                     <span>{{ $t("container.list.delete") }}</span>
                                                 </v-tooltip>
+
+                                              <v-tooltip top v-if="item.certificate">
+                                                <template v-slot:activator="{ on }">
+                                                  <v-btn fab x-small v-on="on" color="deep-purple"
+                                                         class=" mr-2 white--text mb-1" elevation="0"
+                                                         @click="downloadCertificate(item.certificate)">
+                                                    <v-icon> mdi-file-download-outline </v-icon>
+                                                  </v-btn>
+                                                </template>
+                                                <span>{{ $t("container.list.certificate") }}</span>
+                                              </v-tooltip>
                                             </template>
                                             <template v-slot:footer="item">
                                                 <v-row class="text-right pt-2 v-data-footer justify-end pb-2">
