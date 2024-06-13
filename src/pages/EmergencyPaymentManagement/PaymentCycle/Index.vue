@@ -161,20 +161,51 @@
                         </span>
                       </template>
 
+                      <template v-slot:item.status="{ item }">
+                          <span v-if="item.status == 'Initiated'" class="not-selected"
+                          style="background-color: lightgray;  width: 100px;">
+                          <!-- {{ language === 'bn' ? "সমাধান হয়নি" : "Not Solved" }} -->
+                          <v-badge color="secondary" :content="(language === 'bn' ? 'সূচনা করেছে' : 'Initiated')">
+                          </v-badge>
+                        </span>
+                        <span v-if="item.status == 'Pending'" class="forwarded"
+                          style="background-color: #bdc749; color: white;  width: 100px;">
+                          <!-- {{ language === 'bn' ? "ফরোয়ার্ড করা হয়েছে" : "Forwarded" }} -->
+                          <v-badge color="primary" :content="(language === 'bn' ? 'বিচারাধীন' : 'Pending')">
+                          </v-badge>
+
+                        </span>
+                        <span v-if="item.status == 'Completed'" class="approved"
+                          style="background-color: #008000; color: white; width: 100px;">
+                          <!-- {{ language === 'bn' ? "সমাধান করা হয়েছে" : "Solved" }} -->
+                          <v-badge color="success" :content="(language === 'bn' ? 'সম্পন্ন' : 'Completed')">
+                          </v-badge>
+
+                        </span>
+                      </template>
+
                       <template v-slot:item.actions="{ item }">
 
                         <v-tooltip top v-if="item.status == 'Pending'">
                           <template v-slot:activator="{ on }">
                             <v-btn size="x-small" color="teal darken-2" class="white--text text-none"
                               @click="sendToFinanceCycle(item)">
-                              Send to Finance Cycle
+                               {{ $t("container.emergency_payment.emergency_payment_cycle.send_finance_cycle") }}
                             </v-btn>
                           </template>
                         </v-tooltip>
+                          <v-tooltip top v-if="item.status == 'Pending'">
+                            <template v-slot:activator="{ on }">
+                              <v-btn size="x-small" color="red darken-2" class="white--text text-none"
+                                @click="RejectPaymentCycle(item)">
+                                 {{ $t("container.emergency_payment.emergency_payment_cycle.reject") }}
+                              </v-btn>
+                            </template>
+                          </v-tooltip>
                         <v-tooltip top v-if="item.status == 'Completed'">
                           <template v-slot:activator="{ on }">
                             <v-btn color="rgb(28, 59, 104)" elevation="0" class="white--text text-none">
-                              Already Send to Finance
+                              {{ $t("container.emergency_payment.emergency_payment_cycle.already_send") }}
                             </v-btn>
                           </template>
 
@@ -384,7 +415,7 @@ export default {
               this.$toast.success('Payment cycle and details updated successfully.');
               this.GetPaymentCycle();
             } else {
-              this.$toast.error('An error occurred while updating the payment cycle. Please try again.');
+              this.$toast.error('No records Found.');
             }
           } else if (result.dismiss === this.$swal.DismissReason.cancel) {
             this.$swal.fire(
@@ -394,6 +425,11 @@ export default {
             );
           }
         });
+    },
+    async RejectPaymentCycle(item) {
+     this.$router.push({
+        path: `/emergency-payment/cycle/reject/${item.id}`,
+      });
     },
     async GetFinancialYear() {
 
@@ -442,8 +478,6 @@ export default {
         console.log(this.programs, 'dfsf');
       });
     },
-
-
     OnChangeDateInfo(event, type) {
       console.log(event.length, 'length');
       if (this.dates.length < 2) {
@@ -532,8 +566,6 @@ export default {
       this.data.grievanceType = this.language === 'bn' ? item.grievance_type?.title_bn : item.grievance_type?.title_en
       this.data.created_at = item.created_at
     },
-
-
     getItemText(item) {
       return this.language === 'bn' ? item.name_bn : item.name_en;
     },

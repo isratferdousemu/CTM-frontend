@@ -522,14 +522,13 @@
                     <th style="font-size: 16px;"> {{ formatDate(data.created_at) }}</th>
                   </tr>
                   <tr>
-                    <th style="font-size: 16px;color:black">{{ $t("container.list.status") }} : </th>
+                   <th style="font-size: 16px;color:black">{{ $t("container.list.status") }} : </th>
                     <th style="font-size: 16px;">
                       <span v-if="data.status == 0" class="not-selected"
                         style="background-color: lightgray;  width: 100px;">
                         <!-- {{ language === 'bn' ? "সমাধান হয়নি" : "Not Solved" }} -->
                         <v-badge color="secondary" :content="(language === 'bn' ? 'সমাধান হয়নি' : 'Not Solved')">
                         </v-badge>
-
                       </span>
                       <span v-if="data.status == 1" class="forwarded"
                         style="background-color: #bdc749; color: white;  width: 100px;">

@@ -1183,7 +1183,10 @@
         "total_beneficiary": "মোট সুবিধাভোগী",
         "amount_of_money": "টাকার পরিমান",
         "charge": "চার্জ",
-        "total_amount": "সর্বমোট পরিমাণ"
+        "total_amount": "সর্বমোট পরিমাণ",
+        "send_finance_cycle": "ফাইন্যান্স সাইকেলে পাঠান",
+        "already_send": "অলরেডি পাঠানো হয়েছে",
+        "reject": "প্রত্যাখ্যান"
       },
       "emergency_payment_reconciliation": {
         "title": "বেতন (সমন্বয়)",
