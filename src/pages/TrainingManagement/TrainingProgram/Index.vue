@@ -77,6 +77,7 @@ export default {
                 return this.$store.getters.getAppLanguage;
             }
         },
+    
         computedRating() {
                 console.log("Current ratings:", this.ratings); // Debugging statement
             return trainerId => {
