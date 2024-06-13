@@ -94,7 +94,10 @@
       "trainerRating": "প্রশিক্ষক রেটিং",
       "exam": "প্রশিক্ষণ মূল্যায়ন",
       "trainerAssessment": "প্রশিক্ষক মূল্যায়ন",
-      "certificate": "সনদপত্র"
+      "certificate": "সনদপত্র",
+      "accept": "গ্রহণ করুন",
+      "decline": "প্রত্যাখ্যান করুন",
+        "accept_invitation": "পরীক্ষার আমন্ত্রণ"
     },
     "system_config": {
       "demo_graphic": {
@@ -1204,7 +1207,20 @@
         "total_beneficiary": "মোট সুবিধাভোগী",
         "amount_of_money": "টাকার পরিমান",
         "charge": "চার্জ",
-        "total_amount": "সর্বমোট পরিমাণ"
+        "total_amount": "সর্বমোট পরিমাণ",
+        "send_finance_cycle": "ফাইন্যান্স সাইকেলে পাঠান",
+        "already_send": "অলরেডি পাঠানো হয়েছে",
+        "reject": "প্রত্যাখ্যান"
+      },
+      "emergency_payment_reconciliation": {
+        "title": "বেতন (সমন্বয়)",
+        "program": "কার্যক্রম",
+        "nid": "এনআইডি",
+        "account_no": "হিসাব নাম্বার",
+        "bank": "ব্যাংক",
+        "branch": "শাখা",
+        "routing_no": "রাউটিং নং",
+        "scheme_code": "স্কিম কোড"
       }
     },
     "training_management": {
@@ -1289,7 +1305,10 @@
         "training_circular": "প্রশিক্ষণ সার্কুলার",
         "class_schedule": "প্রশিক্ষণের সময়সূচী",
         "delete_header": "প্রোগ্রাম মুছুন",
+          "accept_header": "পরীক্ষার আমন্ত্রণ",
         "delete_alert": "আপনি এই প্রোগ্রাম মুছে ফেলার বিষয়ে নিশ্চিত? প্রোগ্রামের সমস্ত তথ্য মুছে ফেলা হবে।",
+          "accept_alert": "",
+          "accept_program": "এই প্রোগ্রামের পরীক্ষায় অংশগ্রহণের জন্য আপনাকে আমন্ত্রণ জানানো হচ্ছে । ",
         "start_date": "প্রশিক্ষণ শুরুর তারিখ",
         "end_date": "প্রশিক্ষণ শেষের তারিখ"
       },
