@@ -92,9 +92,12 @@
       "addToList": "Add to list",
       "gradeExam": "Grade Exam",
       "trainerRating": "Trainer Rating",
-      "exam": "Exam",
+      "exam": "Training assessment",
       "trainerAssessment": "Trainer Assessment",
-      "certificate": "Certificate"
+      "certificate": "Certificate",
+      "accept": "Accept",
+      "decline": "Decline",
+      "accept_invitation":"Invitation of exam"
     },
     "system_config": {
       "demo_graphic": {
@@ -1221,8 +1224,22 @@
         "total_beneficiary": "Total Beneficiary",
         "amount_of_money": "Amount of Money",
         "charge": "Charge",
-        "total_amount": "Total Amount"
+        "total_amount": "Total Amount",
+        "send_finance_cycle": "Send to Finance Cycle",
+        "already_send": "Already Send to Finance",
+        "reject": "Reject"
+      },
+      "emergency_payment_reconciliation":{
+         "title":"Payroll Reconciliation (Coordination)",
+         "program":"Program",
+         "nid":"NID",
+         "account_no":"Account No",
+         "bank":"Bank",
+         "branch":"Branch",
+         "routing_no":"Routing No",
+         "scheme_code":"Scheme Code"
       }
+
     },
     "training_management": {
       "trainer_info": {
@@ -1261,11 +1278,11 @@
         "name": "Circular Name",
         "type": "Circular Type",
         "module": "Module",
-        "class_duration": "Class Duration Hour/Day",
+        "class_duration": "Class Duration Day",
         "training_type": "Training Type",
         "description": "Description",
-        "start_date": "Start Date",
-        "end_date": "End Date",
+        "start_date": "Circular Start Date",
+        "end_date": "Circular End Date",
         "no_of_participant_open": "No of Participant (Open)",
         "no_of_participant_selected": "No of Participant (Selected)",
         "no_of_participant": "No of Participant",
@@ -1307,17 +1324,23 @@
         "select_time_slot": "Select Time Slot",
         "training_circular": "Training Circular",
         "delete_header": "Delete Program",
-        "delete_alert": "Are you sure to delete this Program? Program's all information will be deleted."
+        "delete_alert": "Are you sure to delete this Program? Program's all information will be deleted.",
+        "accept_header": "Invitation of Exam",
+        "accept_alert": "You are invited to attend this",
+        "accept_program": "program exam.",
+        "start_date": "Training Start Date",
+        "end_date": "Training End Date"
       },
       "training_registration": {
         "list_1": "Participant List",
+        "exam_response": "Exam Response",
         "list_2": "Participants",
         "by_poll": "By Poll",
         "search": " Search Participant",
         "view": "Participant Details",
         "add_1": "Assign Participant",
         "add_2": "External Registration",
-        "add_3": "Training Registration",
+        "add_3": "Participant Registration",
         "participant": "Participant",
         "full_name": "Full Name",
         "organization": "Organization",

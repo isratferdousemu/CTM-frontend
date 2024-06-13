@@ -116,11 +116,23 @@ const EmergencyPaymentManagementRoutes = [
       ),
   },
   {
-    path: "/emergency-payment/payroll-reconciliation",
+    path: "/emergency-payment/cycle/reject/:id",
     name: "Emergency Payment",
     meta: {
       requiresAuth: true,
-      permission: "emergency-payment-payroll-reconciliation-view",
+      permission: "emergency-payment-cycle-view",
+    },
+    component: () =>
+      import(
+        "../pages/EmergencyPaymentManagement/PaymentCycle/RejectDetails.vue"
+      ),
+  },
+  {
+    path: "/emergency-payment/payroll-reconciliation",
+    name: "Emergency Payment Reconciliation",
+    meta: {
+      requiresAuth: true,
+      permission: "emergency-payment-reconciliation-create",
     },
     component: () =>
       import(
