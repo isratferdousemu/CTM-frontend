@@ -112,7 +112,7 @@
                                                 <ValidationProvider name="start_date" vid="start_date"
                                                     :rules="{ required, start_date: data.end_date }"
                                                     v-slot="{ errors }">
-                                                    <v-text-field dense type="date" v-model="data.start_date" :label="$t('container.training_management.training_circular.start_date')
+                                                    <v-text-field dense type="date" v-model="data.start_date" :label="$t('container.training_management.training_program.start_date')
                                         " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য শুরুর তারিখ প্রদান করুন '
                                         : 'Please enter a valid Start Date') : ''"></v-text-field>
                                                 </ValidationProvider>
@@ -121,7 +121,7 @@
                                                 <ValidationProvider name="end_date" vid="end_date"
                                                     :rules="{ required, end_date: data.start_date }"
                                                     v-slot="{ errors }">
-                                                    <v-text-field dense type="date" v-model="data.end_date" :label="$t('container.training_management.training_circular.end_date')
+                                                    <v-text-field dense type="date" v-model="data.end_date" :label="$t('container.training_management.training_program.end_date')
                                         " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক গ্রহণযোগ্য শেষ তারিখ  প্রদান করুন '
                                         : 'Please enter a valid End Date') : ''"></v-text-field>
                                                 </ValidationProvider>

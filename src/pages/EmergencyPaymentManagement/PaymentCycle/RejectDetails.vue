@@ -7,85 +7,100 @@
             <!-- payment Cycle list -->
             <v-card elevation="10" color="white" rounded="md" theme="light" class="mb-8 mt-5">
               <v-card-title class="font-weight-bold justify-center"
-              style="background-color:#1c3b68;color:white;font-size:17px;">
-              {{ $t("container.emergency_payment.emergency_payment_cycle.payment_cycle_list") }}
-            </v-card-title>
-               <!-- <v-row justify="space-between" align="center" style="margin-top:10px;">
+                style="background-color:#1c3b68;color:white;font-size:17px;">
+                {{ $t("container.emergency_payment.emergency_payment_cycle.payment_cycle_list") }}
+              </v-card-title>
+              <!-- <v-row justify="space-between" align="center" style="margin-top:10px;">
                     <v-col lg="3" md="3" cols="12">
                       <v-text-field @keyup.native="GetPaymentCycle" outlined dense v-model="search"
                         prepend-inner-icon="mdi-magnify" class="my-sm-0 my-3 mx-0v -input--horizontal" variant="outlined"
                         :label="$t('container.list.search')" hide-details color="primary"></v-text-field>
                     </v-col>
               </v-row> -->
-            <template>
-              <v-simple-table dense class="table-bordered table-responsive elevation-1" style="padding: 2% 0% 2% 0%;">
-                <template v-slot:default>
-                  <thead> 
-                    <tr>
-                      <!-- <th style="font-size: 16px;padding:4% 0% 2% 2%;color:black">{{
+              <template>
+                <v-simple-table dense class="table-bordered table-responsive elevation-1" style="padding: 2% 0% 2% 0%;">
+                  <template v-slot:default>
+                    <thead>
+                      <tr>
+                        <!-- <th style="font-size: 16px;padding:4% 0% 2% 2%;color:black">{{
                         $t("container.system_config.demo_graphic.district.district") }}
                       </th> -->
 
-                      <!-- <th style="font-size: 16px;padding:4% 0% 2% 2%;color:black">{{
+                        <!-- <th style="font-size: 16px;padding:4% 0% 2% 2%;color:black">{{
                         $t("container.system_config.demo_graphic.ward.upazila") }}
                       </th> -->
-                      <th style="font-size: 16px;padding:4% 0% 2% 2%;color:black">{{
-                        $t("container.system_audit.office") }}
-                      </th>
-                      <th style="font-size: 16px;padding:4% 0% 2% 2%;color:black">{{
-                        $t("container.application_selection.application.program") }}
-                      </th>
-                      <th style="font-size: 16px;padding:4% 0% 2% 2%;color:black">{{
-                        $t("container.emergency_payment.emergency_payment_cycle.cycle_id") }}
-                      </th>
-                      <th style="font-size: 16px;padding:4% 0% 2% 2%;color:black">{{
-                        $t("container.emergency_payment.emergency_payment_cycle.installment_no") }}
-                      </th>
-                      <th style="font-size: 16px;padding:4% 0% 2% 2%;color:black">{{
-                        $t("container.emergency_payment.payment_cycle") }}
-                      </th>
-                      <th style="font-size: 16px;padding:4% 0% 2% 2%;color:black">{{
-                        $t("container.emergency_payment.emergency_payment_cycle.total_beneficiary") }}
-                      </th>
-                      <th style="font-size: 16px;padding:4% 0% 2% 2%;color:black">{{
-                        $t("container.emergency_payment.emergency_payment_cycle.amount_of_money") }}
-                      </th>
-                      <th style="font-size: 16px;padding:4% 0% 2% 2%;color:black">{{
-                        $t("container.emergency_payment.emergency_payment_cycle.charge") }}
-                      </th>
-                      <th style="font-size: 16px;padding:4% 0% 2% 2%;color:black">{{
-                        $t("container.emergency_payment.emergency_payment_cycle.amount_of_money") }}
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
+                        <th style="font-size: 16px;padding:4% 0% 2% 2%;color:black">{{
+                          $t("container.system_audit.office") }}
+                        </th>
+                        <th style="font-size: 16px;padding:4% 0% 2% 2%;color:black">{{
+                          $t("container.application_selection.application.program") }}
+                        </th>
+                        <th style="font-size: 16px;padding:4% 0% 2% 2%;color:black">{{
+                          $t("container.emergency_payment.emergency_payment_cycle.cycle_id") }}
+                        </th>
+                        <th style="font-size: 16px;padding:4% 0% 2% 2%;color:black">{{
+                          $t("container.emergency_payment.emergency_payment_cycle.installment_no") }}
+                        </th>
+                        <th style="font-size: 16px;padding:4% 0% 2% 2%;color:black">{{
+                          $t("container.emergency_payment.payment_cycle") }}
+                        </th>
+                        <th style="font-size: 16px;padding:4% 0% 2% 2%;color:black">{{
+                          $t("container.emergency_payment.emergency_payment_cycle.total_beneficiary") }}
+                        </th>
+                        <th style="font-size: 16px;padding:4% 0% 2% 2%;color:black">{{
+                          $t("container.emergency_payment.emergency_payment_cycle.amount_of_money") }}
+                        </th>
+                        <th style="font-size: 16px;padding:4% 0% 2% 2%;color:black">{{
+                          $t("container.emergency_payment.emergency_payment_cycle.charge") }}
+                        </th>
+                        <th style="font-size: 16px;padding:4% 0% 2% 2%;color:black">{{
+                          $t("container.emergency_payment.emergency_payment_cycle.amount_of_money") }}
+                        </th>
+                         <th style="font-size: 16px;padding:4% 0% 2% 2%;color:black">{{
+                           $t("container.list.action") }}
+                          </th>
+                      </tr>
+                    </thead>
+                    <tbody>
                       <tr style="padding-buttom:2%" v-for="(item, index) in setViewData" :key="index">
                         <!-- <td>{{ setViewData?.payment_cycle_details?.beneficiary?.permanent_district_id}}</td> -->
                         <!-- <td>distrcit</td>
                         <td>upazila</td> -->
 
-                         <td> {{ language === 'bn' ? item.payroll.office.name_bn : item.payroll.office.name_en }}</td>
-                         <td> {{ language === 'bn' ? item.payroll.program.name_bn : item.payroll.program.name_en }}</td>
+                        <td> {{ language === 'bn' ? item.payroll.office.name_bn : item.payroll.office.name_en }}</td>
+                        <td> {{ language === 'bn' ? item.payroll.program.name_bn : item.payroll.program.name_en }}</td>
                         <td>{{ item.emergency_cycle_id }}</td>
-                        <td> {{ language === 'bn' ? item.payroll.installment.installment_name_bn : item.payroll.installment.installment_name }}</td>
+                        <td> {{ language === 'bn' ? item.payroll.installment.installment_name_bn :
+                          item.payroll.installment.installment_name }}</td>
                         <td>Payment Cycle</td>
                         <td>{{ item.payroll.total_beneficiaries }}</td>
                         <td>{{ item.payroll.sub_total_amount }}</td>
                         <td>{{ item.payroll.charge }}</td>
                         <td>{{ item.payroll.total_amount }}</td>
+                        <td>
+                         <v-tooltip top>
+                            <template v-slot:activator="{ on }">
+                              <v-btn v-can="'division-delete'" fab x-small v-on="on" color="grey" class="ml-3 white--text"
+                                elevation="0" @click="deleteEmergencyPayroll(item.payroll.id)">
+                                <v-icon> mdi-delete </v-icon>
+                              </v-btn>
+                            </template>
+                            <span> {{ $t("container.list.delete") }}</span>
+                          </v-tooltip>
+                        </td>
 
                       </tr>
-                  </tbody>
+                    </tbody>
 
-                </template>
-              </v-simple-table>
-              <div style="text-align:right">
-                <v-btn style="margin:5px 5px;" router to="/emergency-payment/payment-cycle" outlined
-                  class="custom-btn-width py-2 mr-10 text-right success">
-                  {{ $t("container.list.back") }}
-                </v-btn>
-              </div>
-            </template>
+                  </template>
+                </v-simple-table>
+                <div style="text-align:right">
+                  <v-btn style="margin:5px 5px;" router to="/emergency-payment/payment-cycle" outlined
+                    class="custom-btn-width py-2 mr-10 text-right success">
+                    {{ $t("container.list.back") }}
+                  </v-btn>
+                </div>
+              </template>
             </v-card>
           </v-col>
         </v-row>
@@ -216,13 +231,47 @@ export default {
   },
 
   methods: {
-     loadViewDetails() {
+    async deleteEmergencyPayroll(id) {
+      this.$swal
+        .fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, Delete it!",
+          cancelButtonText: "No, cancel!",
+          reverseButtons: true,
+          confirmButtonColor: "#1C3B68",
+          cancelButtonColor: "#d33",
+        })
+        .then(async (result) => {
+          if (result.isConfirmed) {
+            const res = await ApiService.delete(
+              "admin/emergency/payroll/" + id
+            );
+            console.log(res, 'resss');
+            if (res?.status === 200) {
+              this.$toast.success('Payroll Payment cycle Delete successfully.');
+              // this.GetPaymentCycle();
+            } else {
+              this.$toast.error('No records Found.');
+            }
+          } else if (result.dismiss === this.$swal.DismissReason.cancel) {
+            this.$swal.fire(
+              "Cancelled",
+              "Your imaginary file is safe :)",
+              "error"
+            );
+          }
+        });
+    },
+    loadViewDetails() {
       const view_id = this.$route.params.id;
       if (view_id) {
         ApiService.get(`admin/emergency/payment-cycle/view/${view_id}`)
           .then((res) => {
-             this.setViewData=res?.data?.payment_cycle_details;
-             console.log(this.setViewData, 'anwar');
+            this.setViewData = res?.data?.payment_cycle_details;
+            console.log(this.setViewData, 'anwar');
           })
           .catch((errors) => {
             this.$toast.error(errors.response);
@@ -399,7 +448,7 @@ export default {
       const title = this.$t("container.emergency_payment.emergency_payment_cycle.payment_cycle_list");
       this.$store.commit("setHeaderTitle", title);
     },
-  
+
   },
   watch: {
     "$i18n.locale": "updateHeaderTitle",
@@ -407,7 +456,7 @@ export default {
   created() {
     this.loadViewDetails();
   },
- 
+
   mounted() {
     this.$store
       .dispatch("getGlobalLookupByType", 1)

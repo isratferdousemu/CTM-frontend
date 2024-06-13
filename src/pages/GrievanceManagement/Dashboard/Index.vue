@@ -176,7 +176,7 @@
               <td>{{ language==='bn' ? $helpers.englishToBangla(item.total_grievance_canceled) : item.total_grievance_canceled }}</td>
               <td>{{ language==='bn' ? $helpers.englishToBangla(item.total_grievance_pending) : item.total_grievance_pending }}</td>
               <td>
-                  <v-btn v-if="item.type === 'division' || item.type === 'district' " @click="fetchNextLevel(item.id,item.type)" fab x-small v-on="on" color="success" elevation="0">
+                  <v-btn v-if="item.type === 'division'" @click="fetchNextLevel(item.id,item.type)" fab x-small v-on="on" color="success" elevation="0">
                      <v-icon >mdi-arrow-collapse-right </v-icon>
                    </v-btn>
               </td>
@@ -213,7 +213,7 @@ export default {
       breadcrumbItems: [
         { text: this.$i18n.locale == 'en' ? 'Division' : 'বিভাগ', value: 'division' },
         { text: this.$i18n.locale == 'en' ? 'District' : 'জেলা', value: 'district' },
-        { text: this.$i18n.locale == 'en' ? 'Thana' : 'থানা', value: 'thana' },
+        // { text: this.$i18n.locale == 'en' ? 'Thana' : 'থানা', value: 'thana' },
       ],
     };
   },

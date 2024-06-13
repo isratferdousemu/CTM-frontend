@@ -3,6 +3,7 @@
     <v-row class="ml-sm-5 mt-0">
       <v-col cols="12">
         <v-row>
+           <Spinner :loading="isLoading" />
           <v-col cols="12">
 
             <!-- Expantion panels start -->
@@ -217,69 +218,50 @@
                         </v-col>
 
                         <!-----------extra Filed added for search------------->
-                          <v-col lg="3" md="3" cols="12">
-                            <v-text-field v-model="data.name" outlined clearable append-icon="mdi-plus"
-                              :append-icon-cb="appendIconCallback" :label="$t(
-                                'container.grievance_management.grievanceEntry.name'
-                              )
-                                " :hide-details="true">
-                            </v-text-field>
-                          </v-col>
-                          <v-col lg="3" md="3" cols="12">
-                            <v-text-field v-model="data.mobile" outlined clearable append-icon="mdi-plus"
-                              :append-icon-cb="appendIconCallback" :label="$t(
-                                'container.application_selection.application.mobile'
-                              )
+                        <v-col lg="3" md="3" cols="12">
+                          <v-text-field v-model="data.name" outlined clearable append-icon="mdi-plus"
+                            :append-icon-cb="appendIconCallback" :label="$t(
+                              'container.grievance_management.grievanceEntry.name'
+                            )
+                              " :hide-details="true">
+                          </v-text-field>
+                        </v-col>
+                        <v-col lg="3" md="3" cols="12">
+                          <v-text-field v-model="data.mobile" outlined clearable append-icon="mdi-plus"
+                            :append-icon-cb="appendIconCallback" :label="$t(
+                              'container.application_selection.application.mobile'
+                            )
 
-                                " :hide-details="true">
-                            </v-text-field>
-                          </v-col>
+                              " :hide-details="true">
+                          </v-text-field>
+                        </v-col>
 
-                          <v-col lg="3" md="3" cols="12">
-                              <v-select outlined :label="$t('container.list.status')" v-model="data.status" :items="statusFilter">
+                        <v-col lg="3" md="3" cols="12">
+                          <v-select outlined :label="$t('container.list.status')" v-model="data.status"
+                            :items="statusFilter">
 
-                             </v-select>
-                          </v-col>
-                          <v-col lg="3" md="3" cols="12">
-                          <v-menu
-          ref="menu"
-          v-model="menu"
-          :close-on-content-click="false"
-          transition="scale-transition"
-          offset-y
-          min-width="auto"
-      >
-        <template v-slot:activator="{ on, attrs }">
-          <v-text-field
-              v-model="dates"
-              :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
-              :label="$t('container.application_selection_dashboard.enter_start_end_date')"
-              readonly
-              v-bind="attrs"
-              v-on="on"
-          ></v-text-field>
-        </template>
-        <v-date-picker
-            v-model="dates"
-            :range="[dates[0], dates[1]]"
-            no-title
-            scrollable
-            @input="OnChangeDateInfo($event, 'total_approve')"
-        >
-          <v-spacer></v-spacer>
-          <v-btn text color="primary" @click="resetDateRange">
-            Cancel
-          </v-btn>
-          <v-btn
-              text
-              color="primary"
-              @click="$refs.menu.save(dates)"
-          >
-            OK
-          </v-btn>
-        </v-date-picker>
-      </v-menu>
-                          </v-col>
+                          </v-select>
+                        </v-col>
+                        <v-col lg="3" md="3" cols="12">
+                          <v-menu ref="menu" v-model="menu" :close-on-content-click="false" transition="scale-transition"
+                            offset-y min-width="auto">
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-text-field v-model="dates" :append-icon="menu ? 'mdi-calendar' : 'mdi-calendar'"
+                                :label="$t('container.application_selection_dashboard.enter_start_end_date')" readonly
+                                v-bind="attrs" v-on="on"></v-text-field>
+                            </template>
+                            <v-date-picker v-model="dates" :range="[dates[0], dates[1]]" no-title scrollable
+                              @input="OnChangeDateInfo($event, 'total_approve')">
+                              <v-spacer></v-spacer>
+                              <v-btn text color="primary" @click="resetDateRange">
+                                Cancel
+                              </v-btn>
+                              <v-btn text color="primary" @click="$refs.menu.save(dates)">
+                                OK
+                              </v-btn>
+                            </v-date-picker>
+                          </v-menu>
+                        </v-col>
 
                       </v-row>
 
@@ -308,6 +290,11 @@
               </v-card-title>
               <v-card-text>
                 <v-row justify="space-between" align="center">
+                  <v-col lg="3" md="3" cols="12">
+                    <v-text-field @keyup.native="GetGrievance" outlined dense v-model="search"
+                      prepend-inner-icon="mdi-magnify" class="my-sm-0 my-3 mx-0v -input--horizontal" variant="outlined"
+                      :label="$t('container.list.search')" hide-details color="primary"></v-text-field>
+                  </v-col>
                   <v-col lg="3" md="3" cols="12"> </v-col>
                   <v-col lg="3" md="3" cols="12" class="text-right">
                     <v-select v-model="selectedColumns" :items="selectableColumns" :label="$t(
@@ -321,7 +308,7 @@
                 <!-- </div> -->
                 <template>
                   <v-row justify="space-between" align="center" class="mx-4">
-                    
+
                     <!-- Checkbox on the left -->
                     <v-col sm="6" lg="6" md="6" cols="12">
                       {{ $t('container.list.total') }}:&nbsp;<span style="font-weight: bold;">
@@ -412,46 +399,34 @@
                         <span v-if="item.status == 0" class="not-selected"
                           style="background-color: lightgray;  width: 100px;">
                           <!-- {{ language === 'bn' ? "সমাধান হয়নি" : "Not Solved" }} -->
-                              <v-badge
-                                  color="secondary"
-                                  :content="(language === 'bn' ? 'সমাধান হয়নি' : 'Not Solved') ">
-                              </v-badge>
+                          <v-badge color="secondary" :content="(language === 'bn' ? 'সমাধান হয়নি' : 'Not Solved')">
+                          </v-badge>
 
                         </span>
                         <span v-if="item.status == 1" class="forwarded"
                           style="background-color: #bdc749; color: white;  width: 100px;">
                           <!-- {{ language === 'bn' ? "ফরোয়ার্ড করা হয়েছে" : "Forwarded" }} -->
-                              <v-badge
-                                    color="primary"
-                                    :content="(language === 'bn' ? 'ফরোয়ার্ড হয়েছে' : 'Forwarded')">
-                            </v-badge>
+                          <v-badge color="primary" :content="(language === 'bn' ? 'ফরোয়ার্ড হয়েছে' : 'Forwarded')">
+                          </v-badge>
 
                         </span>
                         <span v-if="item.status == 2" class="approved"
                           style="background-color: #008000; color: white; width: 100px;">
                           <!-- {{ language === 'bn' ? "সমাধান করা হয়েছে" : "Solved" }} -->
-                               <v-badge
-                                      color="success"
-                                      :content="(language === 'bn' ? 'সমাধান হয়েছে' : 'Solved')">
-                              </v-badge>
+                          <v-badge color="success" :content="(language === 'bn' ? 'সমাধান হয়েছে' : 'Solved')">
+                          </v-badge>
 
                         </span>
-                        <span v-if="item.status == 3" class="waiting"
-                          style="background-color: #FFD700;  width: 100px;">
+                        <span v-if="item.status == 3" class="waiting" style="background-color: #FFD700;  width: 100px;">
                           <!-- {{ language === 'bn' ? "বাতিল" : "Canceled" }} -->
-                             <v-badge
-                                   color="warning"
-                                   :content="(language === 'bn' ? 'বাতিল হয়েছে' : 'Canceled')">
-                                </v-badge>
+                          <v-badge color="warning" :content="(language === 'bn' ? 'বাতিল হয়েছে' : 'Canceled')">
+                          </v-badge>
 
                         </span>
-                        <span v-if="item.status === 4" class="waiting"
-                          style="background-color: #FFD700;  width: 100px;">
-              
-                               <v-badge
-                                     color="#009688"
-                                     :content="(language === 'bn' ? 'চলমান' : 'In Progress')">
-                              </v-badge>
+                        <span v-if="item.status === 4" class="waiting" style="background-color: #FFD700;  width: 100px;">
+
+                          <v-badge color="#009688" :content="(language === 'bn' ? 'চলমান' : 'In Progress')">
+                          </v-badge>
 
                         </span>
                       </template>
@@ -530,72 +505,63 @@
                     <th style="font-size: 16px;">{{ data.grievanceType }}</th>
                   </tr>
                   <tr>
-                    <th style="font-size: 16px;color:black">{{ $t("container.grievance_management.grievance_subject") }} :</th>
+                    <th style="font-size: 16px;color:black">{{ $t("container.grievance_management.grievance_subject") }} :
+                    </th>
                     <th style="font-size: 16px;">{{ data.grievanceSubject }}</th>
                   </tr>
                   <tr>
-                    <th style="font-size: 16px;color:black">{{ $t("container.grievance_management.grievanceEntry.details") }} :</th>
+                    <th style="font-size: 16px;color:black">{{ $t("container.grievance_management.grievanceEntry.details")
+                    }} :</th>
                     <th style="font-size: 16px;">{{ data.details }}</th>
                   </tr>
                   <tr>
-                    <th style="font-size: 16px;color:black">{{ $t("container.grievance_management.grievanceList.grievance_date") }} :
+                    <th style="font-size: 16px;color:black">{{
+                      $t("container.grievance_management.grievanceList.grievance_date") }} :
                     </th>
                     <!-- <th>{{ data.created_at }}</th> -->
                     <th style="font-size: 16px;"> {{ formatDate(data.created_at) }}</th>
                   </tr>
                   <tr>
-                    <th style="font-size: 16px;color:black">{{ $t("container.list.status") }} : </th>
+                   <th style="font-size: 16px;color:black">{{ $t("container.list.status") }} : </th>
                     <th style="font-size: 16px;">
                       <span v-if="data.status == 0" class="not-selected"
-                            style="background-color: lightgray;  width: 100px;">
-                            <!-- {{ language === 'bn' ? "সমাধান হয়নি" : "Not Solved" }} -->
-                                <v-badge
-                                    color="secondary"
-                                    :content="(language === 'bn' ? 'সমাধান হয়নি' : 'Not Solved')">
-                                </v-badge>
+                        style="background-color: lightgray;  width: 100px;">
+                        <!-- {{ language === 'bn' ? "সমাধান হয়নি" : "Not Solved" }} -->
+                        <v-badge color="secondary" :content="(language === 'bn' ? 'সমাধান হয়নি' : 'Not Solved')">
+                        </v-badge>
+                      </span>
+                      <span v-if="data.status == 1" class="forwarded"
+                        style="background-color: #bdc749; color: white;  width: 100px;">
+                        <!-- {{ language === 'bn' ? "ফরোয়ার্ড করা হয়েছে" : "Forwarded" }} -->
+                        <v-badge color="primary" :content="(language === 'bn' ? 'ফরোয়ার্ড হয়েছে' : 'Forwarded')">
+                        </v-badge>
 
-                          </span>
-                          <span v-if="data.status == 1" class="forwarded"
-                            style="background-color: #bdc749; color: white;  width: 100px;">
-                            <!-- {{ language === 'bn' ? "ফরোয়ার্ড করা হয়েছে" : "Forwarded" }} -->
-                                <v-badge
-                                      color="primary"
-                                      :content="(language === 'bn' ? 'ফরোয়ার্ড হয়েছে' : 'Forwarded')">
-                              </v-badge>
+                      </span>
+                      <span v-if="data.status == 2" class="approved"
+                        style="background-color: #008000; color: white; width: 100px;">
+                        <!-- {{ language === 'bn' ? "সমাধান করা হয়েছে" : "Solved" }} -->
+                        <v-badge color="success" :content="(language === 'bn' ? 'সমাধান হয়েছে' : 'Solved')">
+                        </v-badge>
 
-                          </span>
-                          <span v-if="data.status == 2" class="approved"
-                            style="background-color: #008000; color: white; width: 100px;">
-                            <!-- {{ language === 'bn' ? "সমাধান করা হয়েছে" : "Solved" }} -->
-                                 <v-badge
-                                        color="success"
-                                        :content="(language === 'bn' ? 'সমাধান হয়েছে' : 'Solved')">
-                                </v-badge>
+                      </span>
+                      <span v-if="data.status == 3" class="waiting" style="background-color: #FFD700;  width: 100px;">
+                        <!-- {{ language === 'bn' ? "বাতিল" : "Canceled" }} -->
+                        <v-badge color="warning" :content="(language === 'bn' ? 'বাতিল হয়েছে' : 'Canceled')">
+                        </v-badge>
 
-                          </span>
-                          <span v-if="data.status == 3" class="waiting"
-                            style="background-color: #FFD700;  width: 100px;">
-                            <!-- {{ language === 'bn' ? "বাতিল" : "Canceled" }} -->
-                               <v-badge
-                                     color="warning"
-                                     :content="(language === 'bn' ? 'বাতিল হয়েছে' : 'Canceled')">
-                                  </v-badge>
+                      </span>
+                      <span v-if="data.status === 4" class="waiting" style="background-color: #FFD700;  width: 100px;">
 
-                          </span>
-                          <span v-if="data.status === 4" class="waiting"
-                            style="background-color: #FFD700;  width: 100px;">
-              
-                                 <v-badge
-                                       color="#009688"
-                                       :content="(language === 'bn' ? 'চলমান' : 'In Progress')">
-                                </v-badge>
+                        <v-badge color="#009688" :content="(language === 'bn' ? 'চলমান' : 'In Progress')">
+                        </v-badge>
 
-                          </span>
+                      </span>
 
                     </th>
                   </tr>
                   <tr style="padding-buttom:2%">
-                    <th style="font-size: 16px;color:black">{{ $t("container.grievance_management.grievanceList.resolved_officer") }}
+                    <th style="font-size: 16px;color:black">{{
+                      $t("container.grievance_management.grievanceList.resolved_officer") }}
                       :</th>
                     <th style="font-size: 16px;">
                       {{ data.resolved_officer }}
@@ -658,7 +624,8 @@
                   </v-col>
                   <v-col lg="6" md="6" cols="12" v-if="data.status != '1'">
                     <v-select outlined :label="$t('container.grievance_management.grievanceList.solution')"
-                      v-model="data.solution" :items="solutionType" :item-text="language === 'bn' ? 'value_bn' : 'value_en'">
+                      v-model="data.solution" :items="solutionType"
+                      :item-text="language === 'bn' ? 'value_bn' : 'value_en'">
                     </v-select>
                   </v-col>
                 </v-row>
@@ -704,6 +671,7 @@ import { mapState, mapActions } from "vuex";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
 import { http } from "@/hooks/httpService";
+import Spinner from "@/components/Common/Spinner.vue";
 
 extend("required", required);
 export default {
@@ -799,6 +767,7 @@ export default {
       setting: [],
       solutionType: [],
       forward_to: [],
+      isLoading:false,
       userRoleId: '',
       firstOfficerId: '',
       subLocationType: [
@@ -831,9 +800,10 @@ export default {
   components: {
     ValidationProvider,
     ValidationObserver,
+    Spinner,
   },
   computed: {
-      statusFilter() {
+    statusFilter() {
       // Define the default options
       let options = [
         { text: this.$i18n.locale == 'en' ? 'Solved' : 'সমাধান', value: 2 },
@@ -977,7 +947,7 @@ export default {
   },
 
   methods: {
-   resetDateRange() {
+    resetDateRange() {
       this.dates = [];
       this.menu = false;
       this.fetchProgramwiseApproveApplicationChartData()
@@ -986,7 +956,7 @@ export default {
       await this.GetGrievance(from_date, to_date);
     },
     OnChangeDateInfo(event, type) {
-      console.log(event.length,'length');
+      console.log(event.length, 'length');
       if (this.dates.length < 2) {
         return;
       }
@@ -1003,7 +973,7 @@ export default {
         from_date = event[0];
         to_date = event[1];
       }
-      console.log(from_date, to_date,'check date');
+      console.log(from_date, to_date, 'check date');
       this.fetchProgramwiseApproveApplicationChartData(from_date, to_date);
     },
     async GetGrievanceSolutionType() {
@@ -1726,6 +1696,7 @@ export default {
     },
 
     async GetGrievance(from_date = null, to_date = null) {
+       this.loading = true;
       const queryParams = {
         searchText: this.search,
         verification_number: this.data.verification_number,
@@ -1776,7 +1747,7 @@ export default {
     },
 
     async GeneratePDF() {
-      // this.isLoading = true;
+      this.isLoading = true;
       const queryParams = {
 
         searchText: this.search,

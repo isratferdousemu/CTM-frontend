@@ -81,6 +81,18 @@ const EmergencyPaymentManagementRoutes = [
     component: () =>
       import("../pages/EmergencyPaymentManagement/PaymentCycle/Index.vue"),
   },
+
+  //dashboard
+  {
+    path: "/emergency-payment-management/dashboard",
+    name: "emergency-payment-management-dashboard",
+    meta: {
+      requiresAuth: true,
+      permission: "emergency-payment-dashboard-show",
+    },
+    component: () =>
+      import("../pages/EmergencyPaymentManagement/Dashboard/Index.vue"),
+  },
   {
     path: "/emergency-payment/cycle/view/:id",
     name: "Emergency Payment",
@@ -94,11 +106,23 @@ const EmergencyPaymentManagementRoutes = [
       ),
   },
   {
-    path: "/emergency-payment/payroll-reconciliation",
+    path: "/emergency-payment/cycle/reject/:id",
     name: "Emergency Payment",
     meta: {
       requiresAuth: true,
-      permission: "emergency-payment-payroll-reconciliation-view",
+      permission: "emergency-payment-cycle-view",
+    },
+    component: () =>
+      import(
+        "../pages/EmergencyPaymentManagement/PaymentCycle/RejectDetails.vue"
+      ),
+  },
+  {
+    path: "/emergency-payment/payroll-reconciliation",
+    name: "Emergency Payment Reconciliation",
+    meta: {
+      requiresAuth: true,
+      permission: "emergency-payment-reconciliation-create",
     },
     component: () =>
       import(
