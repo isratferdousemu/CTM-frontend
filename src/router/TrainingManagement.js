@@ -226,6 +226,16 @@ const TrainingManagementRoutes = [
     },
     component: () => import("../pages/TrainingManagement/TrainingProgram/Certificate.vue")
   },
+
+  {
+    path: "/training-management/dashboard",
+    name: "TrainingManagementDashboard",
+    meta: {
+      requiresAuth: true,
+      permission: "trainingProgram-view",
+    },
+    component: () => import("../pages/TrainingManagement/Dashboard/Index.vue")
+  },
 ];
 
 
