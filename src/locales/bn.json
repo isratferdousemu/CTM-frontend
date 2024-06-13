@@ -1064,16 +1064,7 @@
         "header": "জরুরী পেমেন্ট ড্যাশবোর্ড",
         "emergency_allotment": "জরুরী বরাদ্দের সংখ্যা",
         "existing_beneficiary": "বিদ্যমান সুবিধাভোগীদের সংখ্যা",
-        "emergency_beneficiary": "জরুরী সুবিধাভোগীদের মোট সংখ্যা",
-        "enter_start_end_date": "Enter Start End Date",
-        "approved_payroll": "Total Approved Payroll",
-        "rejected_payroll": "Total Rejected Payroll",
-        "total_payment_cycle": "Total Payment Cycle",
-        "completed_payment_cycle": "Processing at IBAS ++", 
-        "total_payment_processor": "Total Payment Processor",
-        "total_approve_payroll": "Total Approved Payroll",
-        "available_balance": "Available Balance",   
-        "total_amount_disbursed": "Total Amount Disbursed"
+        "emergency_beneficiary": "জরুরী সুবিধাভোগীদের মোট সংখ্যা"
       },
       "dashboard": {
         "header": "পেরোল ড্যাশবোর্ড",
@@ -1183,6 +1174,12 @@
       "starting_period": "প্রারম্ভিক সময়কাল",
       "closing_period": "সমাপনী সময়কাল",
       "search": "জরুরী বরাদ্দ অনুসন্ধান করুন",
+      "emergency_supplementary_payroll": {
+        "header": "জরুরী পরিপূরক বেতন",
+        "awaiting_correction":"সংশোধনের অপেক্ষায়",
+        "revised_beneficiary":"সংশোধিত সুবিধাভোগী",
+        "total":"মোট"
+      },
       "emergency_beneficiary": {
         "slNo": "ক্রমিক নং",
         "list": "জরুরী সুবিধাভোগী",
