@@ -1,5 +1,5 @@
 <script>
-import {ValidationObserver, ValidationProvider} from "vee-validate";
+import { ValidationObserver, ValidationProvider } from "vee-validate";
 import ApiService from "@/services/ApiService";
 import Spinner from "@/components/Common/Spinner.vue";
 import PermissionBadge from "../../../components/BeneficiaryManagement/Committee/PermissionBadge.vue";
@@ -10,7 +10,7 @@ export default {
     name: "Index",
     title: "CTM - Training Program",
     components: {
-      Spinner,
+        Spinner,
     },
     data() {
         return {
@@ -20,18 +20,25 @@ export default {
                 name_en: null,
                 name_bn: null,
             },
-          showCertificate:false,
-          ratings:[],
-            program_id:null,
-            rating_dialog:false,
-            status_types:[],
-            rating_trainers:[],
-            start_date:null,
+            accept: {
+                _method: "PUT",
+                invitation_status: null
+            },
+            accept_loading: false,
+            program_name_accept: null,
+            program_id_accept: null,
+            showCertificate: false,
+            ratings: [],
+            program_id: null,
+            rating_dialog: false,
+            status_types: [],
+            rating_trainers: [],
+            start_date: null,
             end_date: null,
             dates: [],
             dateRangeText: "",
-            all_modules:[],
-            all_circulars:[],
+            all_modules: [],
+            all_circulars: [],
             total: null,
             Programs: [],
             program_trainers: [],
@@ -40,10 +47,11 @@ export default {
                 "id": 1, "value_en": "Active", "value_bn": "সক্রিয়"
             }, {
                 "id": 0, "value_en": "Inactive", "value_bn": "নিষ্ক্রিয়"
-                }],
-                status:null,
+            }],
+            status: null,
             dialogAdd: false,
             deleteDialog: false,
+            accept_dialog: false,
             dialogEmail: false,
             delete_loading: false,
             loading: false,
@@ -62,7 +70,7 @@ export default {
             is_loading: false,
             user_name: null,
             program_name: null
-      
+
         };
     },
 
@@ -77,9 +85,9 @@ export default {
                 return this.$store.getters.getAppLanguage;
             }
         },
-    
+
         computedRating() {
-                console.log("Current ratings:", this.ratings); // Debugging statement
+            console.log("Current ratings:", this.ratings); // Debugging statement
             return trainerId => {
                 const trainerRating = this.ratings.find(item => item.trainer_id === trainerId);
                 return trainerRating ? trainerRating.rating : 0;
@@ -120,10 +128,42 @@ export default {
     },
 
     methods: {
-      downloadCertificate(certificate) {
-        this.$router.push({ name: 'TrainingProgramCertificates', params: { certificate } });
-      },
-        SaveRating(){
+        accept_status(item) {
+            this.accept_dialog = true;
+            this.program_name_accept = item.program_name;
+            this.program_id_accept = item.participant?.id;
+
+        },
+        accept_invite(item) {
+            this.accept.invitation_status=item;
+         
+
+            this.$axios
+                .post(`admin/training/programs/accept-invite/${this.program_id_accept}`, this.accept, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((result) => {
+                    this.accept_dialog = false
+                    this.$toast.success(result.data.message);
+                    this.GetData();
+                    
+                   
+
+
+                })
+                .catch((err) => {
+
+                    this.$toast.error(err?.response?.data?.errors?.program_name[0]);
+                });
+
+        },
+        downloadCertificate(certificate) {
+            this.$router.push({ name: 'TrainingProgramCertificates', params: { certificate } });
+        },
+        SaveRating() {
             const postData = {
                 program_id: this.program_id, // Replace 1 with the actual program_id value
                 ratings: this.ratings
@@ -137,7 +177,7 @@ export default {
                 })
                 .then((result) => {
                     this.$toast.success(result?.data?.message);
-                    this.rating_dialog=false;
+                    this.rating_dialog = false;
                     this.GetData();
                 })
                 .catch((err) => {
@@ -156,19 +196,19 @@ export default {
             }
             console.log("Updated ratings:", this.ratings); // Debugging statement
         },
-    
-        trainerrating($id){
-           
+
+        trainerrating($id) {
+
             this.getShow($id);
             this.program_id = $id;
-          
+
             setTimeout(() => {
-               this.rating_dialog = true;
+                this.rating_dialog = true;
             }, 2000); // 2-second delay
         },
 
-        
-         getShow(id) {
+
+        getShow(id) {
             this.$axios
                 .get(`admin/training/programs/${id}`, {
                     headers: {
@@ -179,28 +219,28 @@ export default {
                 .then((result) => {
 
 
-                  
-                  
-                    this.rating_trainers = result?.data?.data.trainers;
-                    console.log(this.rating_trainers,"rating_trainers")
-                    
-                   
 
-                  
-                   
+
+                    this.rating_trainers = result?.data?.data.trainers;
+                    console.log(this.rating_trainers, "rating_trainers")
+
+
+
+
+
                 })
                 .catch((err) => {
-                   
+
 
                 });
 
         },
-        
+
         OnChangeDateInfo(event, type) {
-            this.start_date=null;
+            this.start_date = null;
             this.end_date = null;
             if (this.dates.length < 2) {
-              
+
                 const message = this.language === 'bn' ? 'অনুগ্রহ করে শুরুর তারিখ এবং শেষ তারিখ উভয়ই  প্রদান করুন ' : 'Please select both Start Date and End Date';
                 this.$toast.error(message);
                 return;
@@ -223,13 +263,13 @@ export default {
                     // this.end_date = null;
                 }
             }
-            
+
         },
-          resetDateRange() {
-      this.dates = [];
-      this.menu = false;
-   
-    },
+        resetDateRange() {
+            this.dates = [];
+            this.menu = false;
+
+        },
         getItemText(item) {
             return this.language === 'bn' ? item.value_bn : item.value_en;
         },
@@ -246,7 +286,7 @@ export default {
                 .then((result) => {
 
                     this.all_circulars = result?.data?.data;
-                    console.log(this.all_circulars,"all_ciculars")
+                    console.log(this.all_circulars, "all_ciculars")
 
 
 
@@ -276,9 +316,9 @@ export default {
                 });
         },
         deviceActivate_exam(id) {
-     
+
             const formData = new FormData();
-            
+
             formData.append('lang', this.language);
             formData.append('_method', "PUT");
 
@@ -302,7 +342,7 @@ export default {
                 .catch((err) => {
                     console.log(err, "err")
                     this.$toast.error(err.response.data.errors);
-             
+
 
                 });
 
@@ -340,15 +380,15 @@ export default {
 
         },
 
-      openLink(link){
-          if (link) {
-            window.open(link, '_blank')
-          }
-      },
+        openLink(link) {
+            if (link) {
+                window.open(link, '_blank')
+            }
+        },
 
         copyToClipboard(id) {
             const baseUrl = window.location.origin;
-            console.log(baseUrl,"baseUrl");
+            console.log(baseUrl, "baseUrl");
             // Construct your dynamic link here
             const dynamicLink = `${baseUrl}/program-details/${id}`;
 
@@ -366,47 +406,47 @@ export default {
 
             // Remove the temporary input element
             document.body.removeChild(tempInput);
-            if(this.language =='en'){
-                   this.$toast.success("Link Copied");
+            if (this.language == 'en') {
+                this.$toast.success("Link Copied");
             }
-            else{
+            else {
                 this.$toast.success("লিঙ্ক কপি করা হয়েছে");
             }
-            },
+        },
 
 
-      syncData(id) {
-          this.is_loading = true
-        ApiService.get(`/admin/training/programs/sync-data/${id}`)
-            .then(res => {
-              this.is_loading = false
-              console.log(res.data)
-              this.$toast.success(res.data?.message)
-            }).catch(err => {
-              this.is_loading = false
-              this.$toast.error(err.response.data.message)
-            })
+        syncData(id) {
+            this.is_loading = true
+            ApiService.get(`/admin/training/programs/sync-data/${id}`)
+                .then(res => {
+                    this.is_loading = false
+                    console.log(res.data)
+                    this.$toast.success(res.data?.message)
+                }).catch(err => {
+                    this.is_loading = false
+                    this.$toast.error(err.response.data.message)
+                })
 
-      },
+        },
 
 
         // Optionally, you can show a message to the user indicating that the link has been copied
-         
-        
 
-       
-        resetSearch(){
-            this.module_id=null;
-            this.org_name=null;
-           this.training_type_id=null;
-           this.training_circular_id = null;
-           this.module_id = null;
-           this.status = null;
-           this.trainer_id=null;
-           this.start_date =null;
-                this.end_date = null;
+
+
+
+        resetSearch() {
+            this.module_id = null;
+            this.org_name = null;
+            this.training_type_id = null;
+            this.training_circular_id = null;
+            this.module_id = null;
+            this.status = null;
+            this.trainer_id = null;
+            this.start_date = null;
+            this.end_date = null;
             this.dates = [];
-          
+
             this.GetData();
         },
         async GeneratePDF() {
@@ -416,7 +456,7 @@ export default {
                 page = this.pagination.current;
             }
             const queryParams = {
-                
+
                 language: this.$i18n.locale,
                 perPage: this.search.trim() === '' ? this.total : this.total,
                 page: 1,
@@ -442,8 +482,8 @@ export default {
                 })
                 .then((result) => {
                     this.programs = result?.data?.data?.data;
-                 
-                    
+
+
                     // const parts = this.apis.start_date.split(" ");
                     // const datePart = parts[0];
                     // this.apis.start_date = datePart;
@@ -464,24 +504,24 @@ export default {
                 this.$t('container.training_management.training_program.exam_status'),
                 this.$t('container.training_management.training_program.trainer_rating_status'),
                 this.$t('container.list.status'),
-           
-                
+
+
 
             ]
-           
 
-        
+
+
             const CustomInfo = this.programs.map(((i, index) => {
 
                 return [
                     this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
-                    
+
                     this.$i18n.locale == 'en' ? i.program_name : i.program_name,
                     this.$i18n.locale == 'en' ? i?.training_circular?.circular_name : i?.training_circular?.circular_name,
                     i?.trainers?.map(api => api.name).join(', '),
                     this.$i18n.locale == 'en' ? i?.modules?.map(api => api.value_en).join(', ') : i?.modules?.map(api => api.value_bn).join(', '),
-                    this.$i18n.locale == 'bn' ?i?.training_circular?.training_type?.value_bn:i?.training_circular?.training_type?.value_en ,
-               
+                    this.$i18n.locale == 'bn' ? i?.training_circular?.training_type?.value_bn : i?.training_circular?.training_type?.value_en,
+
 
                     this.$i18n.locale == 'en' ? i?.start_date : this.$helpers.englishToBangla(i?.start_date),
 
@@ -489,9 +529,9 @@ export default {
                     this.$i18n.locale == 'en' ? (i.exam_status == 1 ? 'Active' : 'Inactive') : (i.exam_status == 1 ? 'সক্রিয়' : 'নিষ্ক্রিয়'),
                     this.$i18n.locale == 'en' ? (i.rating_status
                         == 1 ? 'Active' : 'Inactive') : (i.rating_status == 1 ? 'সক্রিয়' : 'নিষ্ক্রিয়'),
-                    this.$i18n.locale == 'en' ? i.status_name.value_en: i.status_name.value_bn,
-                  
-                
+                    this.$i18n.locale == 'en' ? i.status_name.value_en : i.status_name.value_bn,
+
+
 
 
                 ]
@@ -564,7 +604,7 @@ export default {
                         this.$t('container.training_management.training_program.start_date'),
                         this.$t('container.training_management.training_program.end_date'),
                         this.$t('container.training_management.training_program.exam_status'),
-                     
+
                         this.$t('container.training_management.training_program.trainer_rating_status'),
                         this.$t('container.list.status'),
 
@@ -572,7 +612,7 @@ export default {
 
                     const CustomInfo = this.circulars.map(((i, index) => {
                         return {
-                           
+
 
                             "sl": this.$i18n.locale == 'en' ? index + 1 : this.$helpers.englishToBangla(index + 1),
 
@@ -581,35 +621,35 @@ export default {
                             "trainer": i?.trainers?.map(api => api.name).join(', '),
                             "modules": this.$i18n.locale == 'en' ? i?.modules?.map(api => api.value_en).join(', ') : i?.modules?.map(api => api.value_bn).join(', '),
                             "training_type": this.$i18n.locale == 'bn' ? i?.training_circular?.training_type?.value_bn : i?.training_circular?.training_type?.value_en,
-                    
+
                             "start_date": this.$i18n.locale == 'en' ? i?.start_date : this.$helpers.englishToBangla(i?.start_date),
 
 
                             "end_date": this.$i18n.locale == 'en' ? i?.end_date : this.$helpers.englishToBangla(i?.end_date),
-                               
-                            "exam_status":this.$i18n.locale == 'en' ? (i.exam_status == 1 ? 'Active' : 'Inactive') : (i.exam_status == 1 ? 'সক্রিয়' : 'নিষ্ক্রিয়'),
-                            "rating_status":this.$i18n.locale == 'en' ? (i.rating_status
+
+                            "exam_status": this.$i18n.locale == 'en' ? (i.exam_status == 1 ? 'Active' : 'Inactive') : (i.exam_status == 1 ? 'সক্রিয়' : 'নিষ্ক্রিয়'),
+                            "rating_status": this.$i18n.locale == 'en' ? (i.rating_status
                                 == 1 ? 'Active' : 'Inactive') : (i.rating_status == 1 ? 'সক্রিয়' : 'নিষ্ক্রিয়'),
-                            "status":  this.$i18n.locale == 'en' ? i.status_name.value_en: i.status_name.value_bn,
+                            "status": this.$i18n.locale == 'en' ? i.status_name.value_en : i.status_name.value_bn,
 
 
                         }
-                        
+
                     }));
-                
 
 
-                  
 
-                      
-                        
-                       
-                       
 
-                      
 
-                      
-                    const Field = ['sl', 'name', 'circular_name', 'trainer', 'modules',"training_type", 'start_date', 'end_date',"exam_status","rating_status","status"]
+
+
+
+
+
+
+
+
+                    const Field = ['sl', 'name', 'circular_name', 'trainer', 'modules', "training_type", 'start_date', 'end_date', "exam_status", "rating_status", "status"]
 
                     const Data = this.FormatJson(Field, CustomInfo)
                     const prefixHeader = [
@@ -647,7 +687,7 @@ export default {
                 })))
         },
 
-    
+
         localizationPage(item) {
 
             return this.language === 'bn' ? item.name_bn : item.name_en;
@@ -659,20 +699,20 @@ export default {
             this.GetData();
 
         },
-       
+
         async GetData() {
-            
-            this.loading=true;
+
+            this.loading = true;
             const queryParams = {
-             
-            
+
+
                 search: this.search,
                 perPage: this.pagination.perPage,
                 page: this.pagination.current,
                 sortBy: this.sortBy,
                 sortDesc: this.sortDesc,
                 training_type_id: this.training_type_id,
-                training_circular_id:this.training_circular_id,
+                training_circular_id: this.training_circular_id,
                 module_id: this.module_id,
                 status: this.status,
                 trainer_id: this.trainer_id,
@@ -688,17 +728,17 @@ export default {
                     params: queryParams,
                 })
                 .then((result) => {
-                    console.log(result,"result")
+                    console.log(result, "result")
 
                     this.total = result?.data?.data?.total;
                     this.circulars = result?.data?.data?.data;
-               
+
                     this.pagination.current = result?.data?.data?.current_page;
                     this.pagination.total = result?.data?.data?.last_page;
                     this.pagination.grand_total = result?.data?.data?.total;
-                    this.loading=false;
-                  
-                 
+                    this.loading = false;
+
+
                 });
         },
         onPageChange($event) {
@@ -712,7 +752,7 @@ export default {
         },
 
 
-       
+
         deleteAlert(id) {
             this.deleteDialog = true;
             this.deleted_id = id;
@@ -918,7 +958,7 @@ export default {
                                                         <span style="width:130px;">
                                                             {{ language == 'bn' ?
                                                             item.training_circular?.training_type.value_bn
-                                                            :item.training_circular?.training_type?.value_en }}
+                                                            : item.training_circular?.training_type?.value_en }}
 
                                                         </span>
                                                     </template>
@@ -970,7 +1010,7 @@ export default {
 
                                                     </template>
                                                     <template v-slot:item.actions="{ item }">
-                                                        <div style="width:200px;">
+                                                        <div style="width:230px;">
                                                             <v-tooltip top>
                                                                 <template v-slot:activator="{ on }">
                                                                     <v-btn v-can="'trainingProgram-edit'" fab x-small
@@ -1096,6 +1136,20 @@ export default {
                                                                 </template>
                                                                 <span>{{ $t("container.list.trainer_rating") }}</span>
                                                             </v-tooltip>
+                                                            <v-tooltip top>
+                                                                <template v-slot:activator="{ on }">
+                                                                    <v-btn
+                                                                        v-if="item?.participant?.invitation_status == 0"
+                                                                        fab x-small v-on="on" color="primary"
+                                                                        elevation="0" router class=" white--text  mr-2"
+                                                                        @click="accept_status(item)">
+                                                                        <v-icon> mdi mdi-checkbox-marked-circle
+                                                                        </v-icon>
+                                                                    </v-btn>
+                                                                </template>
+                                                                <span>{{ $t("container.list.accept_invitation") }}</span>
+                                                            </v-tooltip>
+
 
 
                                                         </div>
@@ -1154,6 +1208,34 @@ export default {
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <!-- accept dialogue -->
+        <v-dialog v-model="accept_dialog" width="350">
+            <v-card style="justify-content: center;">
+                <v-card-title class="font-weight-bold justify-center"
+                    style="background-color: #1C3C6A; color: white;font-size: 17px;">
+                    {{ $t('container.training_management.training_program.accept_header') }}
+                </v-card-title>
+                <v-divider></v-divider>
+                <v-card-text>
+                    <div class="subtitle-1 font-weight-medium mt-5">
+                        {{ $t('container.training_management.training_program.accept_alert') }}&nbsp;&nbsp;{{
+                        program_name_accept }}
+                        {{ $t('container.training_management.training_program.accept_program') }}
+                    </div>
+                </v-card-text>
+                <v-card-actions style="display: block">
+                    <v-row class="mx-0 my-0 py-2" justify="center">
+                        <v-btn text @click="accept_invite(2)" outlined class="custom-btn-width py-2 mr-10">
+                            {{ $t('container.list.decline') }}
+                        </v-btn>
+                        <v-btn text @click="accept_invite(1)" color="white" :loading="accept_loading"
+                            class="custom-btn-width success white--text py-2">
+                            {{ $t('container.list.accept') }}
+                        </v-btn>
+                    </v-row>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
         <v-dialog v-model="rating_dialog" width="550">
             <v-card style="justify-content: center;">
                 <v-card-title class="font-weight-bold justify-center"
@@ -1194,29 +1276,29 @@ export default {
         </v-dialog>
 
 
-      <v-row class="mt-5" justify="center" v-show="showCertificate">
-        <v-col cols="12" md="8">
-          <div class="certificate" ref="certificate">
-            <v-card class="card pa-5">
-              <h2 class="text-center mb-4">CERTIFICATE OF APPRECIATION</h2>
-              <p class="text-center mb-4">This certificate is proudly presented to:</p>
-              <h3 class="text-center mb-4">{{ user_name }}</h3>
-              <p class="text-center mb-4">in recognition of the successful completion of</p>
-              <h4 class="text-center mb-4">{{ program_name }}</h4>
-              <v-row justify="space-between" class="mt-5">
-                <v-col class="text-center">
-                  <hr />
-                  <p>DATE</p>
-                </v-col>
-                <v-col class="text-center">
-                  <hr />
-                  <p>SIGNATURE</p>
-                </v-col>
-              </v-row>
-            </v-card>
-          </div>
-        </v-col>
-      </v-row>
+        <v-row class="mt-5" justify="center" v-show="showCertificate">
+            <v-col cols="12" md="8">
+                <div class="certificate" ref="certificate">
+                    <v-card class="card pa-5">
+                        <h2 class="text-center mb-4">CERTIFICATE OF APPRECIATION</h2>
+                        <p class="text-center mb-4">This certificate is proudly presented to:</p>
+                        <h3 class="text-center mb-4">{{ user_name }}</h3>
+                        <p class="text-center mb-4">in recognition of the successful completion of</p>
+                        <h4 class="text-center mb-4">{{ program_name }}</h4>
+                        <v-row justify="space-between" class="mt-5">
+                            <v-col class="text-center">
+                                <hr />
+                                <p>DATE</p>
+                            </v-col>
+                            <v-col class="text-center">
+                                <hr />
+                                <p>SIGNATURE</p>
+                            </v-col>
+                        </v-row>
+                    </v-card>
+                </div>
+            </v-col>
+        </v-row>
     </div>
 
 
@@ -1232,23 +1314,23 @@ export default {
 
 
 .certificate {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: transparent;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: transparent;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .shadow {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-.card {
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  border: none;
-  background: transparent;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+.card {
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border: none;
+    background: transparent;
+}
 </style>
