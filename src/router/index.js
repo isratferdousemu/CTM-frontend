@@ -28,6 +28,7 @@ import store from "../store/index";
 import DefaultLayout from "../layouts/defaultLayout.vue";
 import ActivityLogRoutes from "@/router/ActivityLog";
 import BiReportManagerRoutes from "@/router/reports/BiReportManager";
+import MigrationRoutes from "@/router/Migration";
 
 
 const routes = [
@@ -68,7 +69,8 @@ const routes = [
       ...ActivityLogRoutes,
       ...APIManagerRoutes,
       ...ProfileRoutes,
-      ...BiReportManagerRoutes
+      ...BiReportManagerRoutes,
+      ...MigrationRoutes
     ],
   },
 ];
