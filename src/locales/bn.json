@@ -999,14 +999,13 @@
       "calculation_type": "গণনার ধরন",
       "financial_year": "আর্থিক বর্ষ",
       "action": "অ্যাকশন",
-
       "budget_basic_info": "বাজেটের মৌলিক তথ্য",
       "budget_details_info": "বাজেটের তথ্য",
       "budget_create": "বাজেট তৈরি",
-
-      "budget_verification": "বাজেট যাচাইকরণ",
+      "budget_verification": "বাজেট অনুমোদন",
       "approved_by": "অনুমোদনকারী",
       "approved_date": "অনুমোদিত তারিখ",
+      "attachment": "সংযুক্তি",
       "remark": "মন্তব্য",
       "delete_title": "বাজেট মুছুন!!!",
       "delete_message": "আপনি এই বাজেট মুছে ফেলার বিষয়ে নিশ্চিত?",
@@ -1026,7 +1025,10 @@
       "program": "প্রোগ্রাম",
       "no_of_previous_year": "আগের বছরের সংখ্যা",
       "calculation_value": "গণনার মান",
-      "approval_status": "স্ট্যাটাস"
+      "approval_status": "স্ট্যাটাস",
+      "Draft": "খসড়া",
+      "Approved": "অনুমোদিত",
+      "Failed": "অসফল"
     },
     "payroll_management": {
       "mfs_name_en": "MFS নাম (ইংরেজি)",

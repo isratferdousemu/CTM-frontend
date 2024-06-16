@@ -1001,10 +1001,10 @@
       "financial_year": "Financial Year",
       "action": "Action",
       "budget_create": "Budget Create",
-
-      "budget_verification": "Budget Verification",
+      "budget_verification": "Budget Approval",
       "approved_by": "Approved By",
       "approved_date": "Approved Date",
+      "attachment": "Attachment",
       "remark": "Remarks",
       "delete_title": "Delete Budget!!!",
       "delete_message": "Are you sure to delete this Budget?",
@@ -1024,7 +1024,10 @@
       "program": "Program",
       "no_of_previous_year": "No of Previous Year",
       "calculation_value": "Calculation Value",
-      "approval_status": "Status"
+      "approval_status": "Status",
+      "Draft": "Draft",
+      "Approved": "Approved",
+      "Failed": "Failed"
     },
     "payroll_management": {
       "view": "View",
