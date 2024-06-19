@@ -733,7 +733,7 @@ export default {
 
                                     </v-col>
 
-                                    <v-col v-if="data.location_type == 1 && data.is_external==0" lg="6" md="6" cols="12">
+                                    <v-col v-if="data.location_type == 1 && data.is_external == 0" lg="6" md="6" cols="12">
 
                                         <v-select dense  @input="onChangeDistrictPouroGetWard($event)"
                                             v-model="data.district_pouro_id" outlined :label="$t(
@@ -744,29 +744,16 @@ export default {
 
                                     </v-col>
 
-                                    <!-- <v-col v-if="data.location_type == 2" lg="6" md="6" cols="12">
-                                                    <ValidationProvider name="union" vid="union_id" rules="required"
-                                                        v-slot="{ errors }">
-                                                        <v-select dense :append-icon="appendIcon"
-                                                            :append-icon-cb="appendIconCallback"
-                                                            prepend-inner-icon="mdi-plus" v-model="data.union_id"
-                                                            outlined :label="$t('container.system_config.demo_graphic.ward.union')
-                                " :items="unions" :item-text="getItemText" item-value="id" required
-                                                            :error="errors[0] ? true : false"
-                                                            :error-messages="errors[0]"></v-select>
-                                                    </ValidationProvider>
-                                                </v-col> -->
+                                  
 
-                                    <v-col v-if="data.location_type == 3 && data.is_external == 0" lg="6" md="6"
-                                        cols="12">
-                                        <ValidationProvider name="city" vid="city_id" rules="required"
-                                            v-slot="{ errors }">
+                                    <v-col v-if="data.location_type == 3 && data.is_external == 0" lg="6" md="6" cols="12">
+                                      
                                             <v-select dense v-model="data.city_id" @change="onChangeCity($event)"
                                                 outlined :label="$t('container.system_config.demo_graphic.ward.city')
                                         " :items="cities" :item-text="getItemText" item-value="id" required
                                                 :error="errors[0] ? true : false"
                                                 :error-messages="errors[0]"></v-select>
-                                        </ValidationProvider>
+                                     
                                     </v-col>
                                     <v-col v-if="data.location_type == 2 && data.is_external == 0" lg="6" md="6"cols="12">
 
@@ -779,7 +766,7 @@ export default {
 
                                     </v-col>
 
-                                    <v-col v-if="data.location_type == 3 && data.is_external == 0" lg="6" md="6">
+                                    <v-col v-if="data.location_type == 3 && data.is_external == 0" lg="6" md="6" cols="12">
                                       
                                             <v-select  @input="onChangeThanaGetWard($event)" dense
                                                 v-model="data.city_thana_id" outlined :label="$t('container.system_config.demo_graphic.ward.thana')
@@ -806,7 +793,7 @@ export default {
                                              ></v-select>
 
                                     </v-col>
-                                    <!-- :readonly="permissions?.user?.committee_type_id == 12 && data.pouro_id != null" -->
+                                 
 
                                     <v-col v-if="data.sub_location_type == 2 &&
                                         data.location_type == 2" lg="6" md="6" cols="12">
@@ -820,7 +807,7 @@ export default {
 
                                     </v-col>
                                     <v-col lg="6" md="6" cols="12" v-if="data.is_external == 0">
-                                        <ValidationProvider name="Ward" vid="ward_id" v-slot="{ errors }">
+                                    
                                             <v-select  v-if="data.location_type" dense
                                                  v-model="data.ward_id" outlined
                                                 claerable :label="$t(
@@ -828,7 +815,7 @@ export default {
                                     )
                                         " :items="wards" :item-text="getItemText" item-value="id"
                                                 ></v-select>
-                                        </ValidationProvider>
+                                       
                                     </v-col>
 
 
