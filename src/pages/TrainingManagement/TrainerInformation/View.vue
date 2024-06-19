@@ -163,9 +163,9 @@ export default {
                                             <v-col cols="12" lg="4" md="4" sm="4" xs="4">
                                                 <v-img :src="data.image" class="rounded-image" height="100%" contain>
                                                     <!-- Circular chip with sign mark -->
-
+<!-- 
                                                     <v-icon v-if="data.image" class="icon" color="white"
-                                                        style="position: absolute; bottom: 40px; right: 40px;">mdi-check</v-icon>
+                                                        style="position: absolute; bottom: 40px; right: 40px;">mdi-check</v-icon> -->
 
                                                 </v-img>
 
@@ -305,23 +305,23 @@ export default {
                                             <v-col cols="12" lg="12" md="12" sm="12" xs="12">
                                                 <v-row v-if="selectedTab === 'about'" class="selected-tab-content">
 
-                                                    <v-col cols="5"> {{
+                                                    <v-col cols="2"> {{
                                                         $t("container.training_management.trainer_info.name") }}</v-col>
-                                                    <v-col cols="7">
+                                                    <v-col cols="10">
                                                         <b>:</b> <span class="ml-2"> {{
                                                             data?.name }}</span></v-col>
-                                                    <v-col cols="5"> {{
+                                                    <v-col cols="2"> {{
                                                         $t("container.training_management.trainer_info.designation")
                                                         }}</v-col>
-                                                    <v-col cols="7">
+                                                    <v-col cols="10">
                                                         <b>:</b> <span class="ml-2">{{ language == 'bn' ?
                                                             data?.designation?.value_bn : data?.designation?.value_en
                                                             }}
                                                         </span></v-col>
-                                                    <v-col cols="5"> {{
+                                                    <v-col cols="2"> {{
                                                         $t("container.training_management.trainer_info.trainer_type")
                                                         }}</v-col>
-                                                    <v-col cols="7">
+                                                    <v-col cols="10">
                                                         <b>:</b> <span class="ml-2">
                                                             {{ language === 'en'
                                                             ? (data?.is_external === 0
@@ -334,36 +334,36 @@ export default {
                                                             : '')
                                                             }}
                                                         </span></v-col>
-                                                    <v-col cols="5"> {{
+                                                    <v-col cols="2"> {{
                                                         $t("container.training_management.trainer_info.mobile")
                                                         }}</v-col>
-                                                    <v-col cols="7">
+                                                    <v-col cols="10">
                                                         <b>:</b> <span class="ml-2"></span>{{
                                                         }} {{ language == 'bn' ?
                                                         $helpers.englishToBangla(
                                                         this.data?.mobile_no) : data?.mobile_no }}</span></v-col>
-                                                    <v-col cols="5"> {{
+                                                    <v-col cols="2"> {{
                                                         $t("container.training_management.trainer_info.email")
                                                         }}</v-col>
-                                                    <v-col cols="7">
+                                                    <v-col cols="10">
                                                         <b>:</b> <span class="ml-2">{{
                                                             data?.email }}</span></v-col>
-                                                    <v-col cols="5"> {{
+                                                    <v-col cols="2"> {{
                                                         $t("container.training_management.trainer_info.address")
                                                         }}</v-col>
-                                                    <v-col cols="7">
+                                                    <v-col cols="10">
                                                         <b>:</b> <span class="ml-2">{{
                                                             data?.address }}</span></v-col>
-                                                    <v-col cols="5"> {{
+                                                    <v-col cols="2"> {{
                                                         $t("container.training_management.trainer_info.description")
                                                         }}</v-col>
-                                                    <v-col cols="7" class="d-flex align-items-start">
+                                                    <v-col cols="10" class="d-flex align-items-start">
                                                         <b>:</b>
 
                                                         <div v-html="data?.description" class="ml-3"></div>
                                                     </v-col>
 
-                                                    <!-- <v-col cols="7"  v-else>
+                                                    <!-- <v-col cols="10"  v-else>
                                                         <b>:</b> <span class="ml-2">{{ language == 'bn' ?
                                                             'প্রযোজ্য নয় ' : 'N/A'
                                                             }}</span></v-col> -->
