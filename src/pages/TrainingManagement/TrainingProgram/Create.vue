@@ -195,7 +195,7 @@
                                             </v-col>
                                             <v-col cols=" 12" sm="12" lg="12">
                                                 <label>{{
-                                                    $t('container.training_management.trainer_info.description')
+                                                    $t('container.training_management.training_circular.description')
                                                     }}</label>
 
                                                 <vue-editor v-model="data.description" :editor-toolbar="customToolbar">

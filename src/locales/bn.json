@@ -23,8 +23,8 @@
       "copy": "লিংক কপি করুন",
       "banned": "নিষিদ্ধ",
       "action": "অ্যাকশন ",
-        "trainer_rating": "প্রশিক্ষক রেটিং",
-        "rating": "রেটিং",
+      "trainer_rating": "প্রশিক্ষক রেটিং",
+      "rating": "রেটিং",
       "submit": "সাবমিট করুন",
       "cancel": "বাতিল করুন",
       "edit": "এডিট করুন",
@@ -97,7 +97,7 @@
       "certificate": "সনদপত্র",
       "accept": "গ্রহণ করুন",
       "decline": "প্রত্যাখ্যান করুন",
-        "accept_invitation": "পরীক্ষার আমন্ত্রণ"
+      "accept_invitation": "পরীক্ষার আমন্ত্রণ"
     },
     "system_config": {
       "demo_graphic": {
@@ -1000,14 +1000,13 @@
       "calculation_type": "গণনার ধরন",
       "financial_year": "আর্থিক বর্ষ",
       "action": "অ্যাকশন",
-
       "budget_basic_info": "বাজেটের মৌলিক তথ্য",
       "budget_details_info": "বাজেটের তথ্য",
       "budget_create": "বাজেট তৈরি",
-
-      "budget_verification": "বাজেট যাচাইকরণ",
+      "budget_verification": "বাজেট অনুমোদন",
       "approved_by": "অনুমোদনকারী",
       "approved_date": "অনুমোদিত তারিখ",
+      "attachment": "সংযুক্তি",
       "remark": "মন্তব্য",
       "delete_title": "বাজেট মুছুন!!!",
       "delete_message": "আপনি এই বাজেট মুছে ফেলার বিষয়ে নিশ্চিত?",
@@ -1027,7 +1026,10 @@
       "program": "প্রোগ্রাম",
       "no_of_previous_year": "আগের বছরের সংখ্যা",
       "calculation_value": "গণনার মান",
-      "approval_status": "স্ট্যাটাস"
+      "approval_status": "স্ট্যাটাস",
+      "Draft": "খসড়া",
+      "Approved": "অনুমোদিত",
+      "Failed": "অসফল"
     },
     "payroll_management": {
       "mfs_name_en": "MFS নাম (ইংরেজি)",
@@ -1065,16 +1067,7 @@
         "header": "জরুরী পেমেন্ট ড্যাশবোর্ড",
         "emergency_allotment": "জরুরী বরাদ্দের সংখ্যা",
         "existing_beneficiary": "বিদ্যমান সুবিধাভোগীদের সংখ্যা",
-        "emergency_beneficiary": "জরুরী সুবিধাভোগীদের মোট সংখ্যা",
-        "enter_start_end_date": "Enter Start End Date",
-        "approved_payroll": "Total Approved Payroll",
-        "rejected_payroll": "Total Rejected Payroll",
-        "total_payment_cycle": "Total Payment Cycle",
-        "completed_payment_cycle": "Processing at IBAS ++", 
-        "total_payment_processor": "Total Payment Processor",
-        "total_approve_payroll": "Total Approved Payroll",
-        "available_balance": "Available Balance",   
-        "total_amount_disbursed": "Total Amount Disbursed"
+        "emergency_beneficiary": "জরুরী সুবিধাভোগীদের মোট সংখ্যা"
       },
       "dashboard": {
         "header": "পেরোল ড্যাশবোর্ড",
@@ -1184,6 +1177,12 @@
       "starting_period": "প্রারম্ভিক সময়কাল",
       "closing_period": "সমাপনী সময়কাল",
       "search": "জরুরী বরাদ্দ অনুসন্ধান করুন",
+      "emergency_supplementary_payroll": {
+        "header": "জরুরী পরিপূরক বেতন",
+        "awaiting_correction": "সংশোধনের অপেক্ষায়",
+        "revised_beneficiary": "সংশোধিত সুবিধাভোগী",
+        "total": "মোট"
+      },
       "emergency_beneficiary": {
         "slNo": "ক্রমিক নং",
         "list": "জরুরী সুবিধাভোগী",
@@ -1306,10 +1305,10 @@
         "training_circular": "প্রশিক্ষণ সার্কুলার",
         "class_schedule": "প্রশিক্ষণের সময়সূচী",
         "delete_header": "প্রোগ্রাম মুছুন",
-          "accept_header": "পরীক্ষার আমন্ত্রণ",
+        "accept_header": "পরীক্ষার আমন্ত্রণ",
         "delete_alert": "আপনি এই প্রোগ্রাম মুছে ফেলার বিষয়ে নিশ্চিত? প্রোগ্রামের সমস্ত তথ্য মুছে ফেলা হবে।",
-          "accept_alert": "",
-          "accept_program": "এই প্রোগ্রামের পরীক্ষায় অংশগ্রহণের জন্য আপনাকে আমন্ত্রণ জানানো হচ্ছে । ",
+        "accept_alert": "",
+        "accept_program": "এই প্রোগ্রামের পরীক্ষায় অংশগ্রহণের জন্য আপনাকে আমন্ত্রণ জানানো হচ্ছে । ",
         "start_date": "প্রশিক্ষণ শুরুর তারিখ",
         "end_date": "প্রশিক্ষণ শেষের তারিখ",
         "certificate": "সনদপত্র"
