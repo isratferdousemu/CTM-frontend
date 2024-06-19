@@ -240,8 +240,8 @@
 
                           <v-tooltip top>
                             <template v-slot:activator="{ on }">
-                              <v-btn v-can="'union-delete'" fab x-small v-on="on" color="grey" class="ml-3 white--text"
-                                elevation="0" @click="deleteAlert(item.id)">
+                              <v-btn v-can="'union-delete'" v-if="item.children_count==0" fab x-small v-on="on"
+                                color="grey" class="ml-3 white--text" elevation="0" @click="deleteAlert(item.id)">
                                 <v-icon> mdi-delete </v-icon>
                               </v-btn>
                             </template>
@@ -622,7 +622,7 @@ export default {
       pagination: {
         current: 1,
         total: 0,
-        perPage: 10,
+        perPage: 40,
       },
       sortBy: "name_en",
       sortDesc: false, //ASC
