@@ -28,7 +28,7 @@
       "edit": "Edit",
       "print": "Print",
       "view": "View",
-      "trainer_rating":"Trainer Rating",
+      "trainer_rating": "Trainer Rating",
       "rating": "Rating",
       "search": "Search",
       "search_circular": "Circular Search",
@@ -97,7 +97,7 @@
       "certificate": "Certificate",
       "accept": "Accept",
       "decline": "Decline",
-      "accept_invitation":"Invitation of exam"
+      "accept_invitation": "Invitation of exam"
     },
     "system_config": {
       "demo_graphic": {
@@ -575,7 +575,7 @@
     "application_selection": {
       "application": {
         "select": "Select",
-        "mfs_name":"MFS Name",
+        "mfs_name": "MFS Name",
         "select_all": "Select All",
         "application": "Application",
         "list": "Application List",
@@ -901,7 +901,7 @@
         "monthly_honorarium_amount": "Monthly Honorarium Amount",
         "financial_year": "Financial Year",
         "other_info_of_eligibility": "Other Information of Eligibility",
-        "rollback_message": "Do you want to Rollback?",
+        "rollback_message": "Are you sure to Roll Back?",
         "application_date": "Application Date",
         "approval_date": "Approval Date",
         "replace_with_application_id": "Replaced with Beneficiary ID",
@@ -1001,10 +1001,10 @@
       "financial_year": "Financial Year",
       "action": "Action",
       "budget_create": "Budget Create",
-
-      "budget_verification": "Budget Verification",
+      "budget_verification": "Budget Approval",
       "approved_by": "Approved By",
       "approved_date": "Approved Date",
+      "attachment": "Attachment",
       "remark": "Remarks",
       "delete_title": "Delete Budget!!!",
       "delete_message": "Are you sure to delete this Budget?",
@@ -1024,7 +1024,10 @@
       "program": "Program",
       "no_of_previous_year": "No of Previous Year",
       "calculation_value": "Calculation Value",
-      "approval_status": "Status"
+      "approval_status": "Status",
+      "Draft": "Draft",
+      "Approved": "Approved",
+      "Failed": "Failed"
     },
     "payroll_management": {
       "view": "View",
@@ -1075,10 +1078,10 @@
         "approved_payroll": "Total Approved Payroll",
         "rejected_payroll": "Total Rejected Payroll",
         "total_payment_cycle": "Total Payment Cycle",
-        "completed_payment_cycle": "Processing at IBAS ++", 
+        "completed_payment_cycle": "Processing at IBAS ++",
         "total_payment_processor": "Total Payment Processor",
         "total_approve_payroll": "Total Approved Payroll",
-        "available_balance": "Available Balance",   
+        "available_balance": "Available Balance",
         "total_amount_disbursed": "Total Amount Disbursed"
       },
       "dashboard": {
@@ -1189,6 +1192,12 @@
       "starting_period": "Started Period",
       "closing_period": "Closing Period",
       "search": "Search Emergency Allotment",
+      "emergency_supplementary_payroll": {
+        "header": "Emergency Supplementary Payroll",
+        "awaiting_correction": "Awaiting Correction",
+        "revised_beneficiary": "Revised Beneficiary",
+        "total": "Total"
+      },
       "emergency_beneficiary": {
         "slNo": "Sl No",
         "list": "Emergency Beneficiary",
@@ -1223,17 +1232,16 @@
         "already_send": "Already Send to Finance",
         "reject": "Reject"
       },
-      "emergency_payment_reconciliation":{
-         "title":"Payroll Reconciliation (Coordination)",
-         "program":"Program",
-         "nid":"NID",
-         "account_no":"Account No",
-         "bank":"Bank",
-         "branch":"Branch",
-         "routing_no":"Routing No",
-         "scheme_code":"Scheme Code"
+      "emergency_payment_reconciliation": {
+        "title": "Payroll Reconciliation (Coordination)",
+        "program": "Program",
+        "nid": "NID",
+        "account_no": "Account No",
+        "bank": "Bank",
+        "branch": "Branch",
+        "routing_no": "Routing No",
+        "scheme_code": "Scheme Code"
       }
-
     },
     "training_management": {
       "trainer_info": {

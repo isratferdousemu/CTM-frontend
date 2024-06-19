@@ -69,7 +69,7 @@
                       </v-menu>
                     </v-col>
                     <v-col lg="6" md="6" cols="12">
-                      <v-file-input outlined show-size counter prepend-inner-icon="mdi mdi-file-account-outline" :label="$t(
+                      <v-file-input outlined show-size counter prepend-inner-icon="mdi mdi-file-outline" :label="$t(
               'container.beneficiary_management.beneficiary_list.cause_provement'
             )
               " accept="image/*, application/pdf" prepend-icon="" v-model="data.file"></v-file-input>

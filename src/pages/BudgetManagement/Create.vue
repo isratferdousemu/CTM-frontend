@@ -6,18 +6,19 @@
           <v-form v-on:submit.prevent="addBudget">
             <v-row wrap>
               <v-col cols="12">
-                <v-card>
-                  <v-row>
-                    <v-col col="6">
-                      <v-card-title>
-                        <h3>
-                          {{ $t("container.budget_management.budget_create") }}
-                        </h3>
-                      </v-card-title>
-                    </v-col>
-                  </v-row>
-
-                  <v-divider></v-divider>
+                <div class="d-block text-right">
+                  <v-btn elevation="2" class="btn mb-2" color="primary" router to="/budget">
+                    {{ $t("container.budget_management.budget_info_list") }}
+                  </v-btn>
+                </div>
+                <v-card elevation="10" color="white" rounded="md" theme="light">
+                  <v-card-title tag="div" class="mb-3" style="
+                  background-color: #1c3b68;
+                  color: white;">
+                    <h3 class="white--text text-uppercase pt-3">
+                      {{ $t("container.budget_management.budget_create") }}
+                    </h3>
+                  </v-card-title>
 
                   <v-card-text>
                     <v-col cols="12" class="d-flex">
@@ -37,10 +38,9 @@
                                 v-slot="{ errors }">
                                 <v-autocomplete outlined clearable :items="allowances" item-text="name_en"
                                   item-value="id" v-model="data.program_id" :label="$t(
-                                    'container.application_selection.application.program'
-                                  )
-                                    " required :error="errors[0] ? true : false"
-                                  :error-messages="errors[0]"></v-autocomplete>
+          'container.application_selection.application.program'
+        )
+          " required :error="errors[0] ? true : false" :error-messages="errors[0]"></v-autocomplete>
                               </ValidationProvider>
 
 
@@ -48,9 +48,9 @@
                                 v-slot="{ errors }">
 
                                 <v-text-field type="Number" outlined v-model="data.previous_year_value" :label="$t(
-                                  'container.budget_management.no_of_previous_year'
-                                )
-                                  " required :error="errors[0] ? true : false" :error-messages="errors[0]">
+          'container.budget_management.no_of_previous_year'
+        )
+          " required :error="errors[0] ? true : false" :error-messages="errors[0]">
                                 </v-text-field>
 
                               </ValidationProvider>
@@ -58,9 +58,9 @@
                               <ValidationProvider name="calculationValue" vid="calculation_value" rules="required"
                                 v-slot="{ errors }">
                                 <v-text-field type="Number" v-model="data.calculation_value" outlined :label="$t(
-                                  'container.budget_management.calculation_value'
-                                )
-                                  " required :error="errors[0] ? true : false" :error-messages="errors[0]">
+          'container.budget_management.calculation_value'
+        )
+          " required :error="errors[0] ? true : false" :error-messages="errors[0]">
                                 </v-text-field>
 
                               </ValidationProvider>
@@ -76,9 +76,9 @@
                               <ValidationProvider name="calculationType" vid="calculation_type" rules="required"
                                 v-slot="{ errors }">
                                 <v-select :items="calculationType" item-text="value_en" item-value="id" :label="$t(
-                                  'container.budget_management.calculation_type'
-                                )
-                                  " v-model="data.calculation_type" outlined required :error="errors[0] ? true : false"
+          'container.budget_management.calculation_type'
+        )
+          " v-model="data.calculation_type" outlined required :error="errors[0] ? true : false"
                                   :error-messages="errors[0]">
                                 </v-select>
                               </ValidationProvider>
@@ -148,12 +148,16 @@
 
                   <v-col cols="12">
                     <v-row class="justify-end mb-5 mr-2">
-                      <v-btn flat color="primary" class="custom-btn mr-2" router to="/budget">{{
-                        $t("container.list.back") }}
+                      <!-- <v-btn flat color="primary" class="custom-btn mr-2" router to="/budget">{{
+          $t("container.list.back") }}
+                      </v-btn> -->
+
+                      <v-btn elevation="2" class="btn mr-2" @click="resetSearch()">
+                        {{ $t("container.list.reset") }}
                       </v-btn>
 
-                      <v-btn flat color="success" type="submit" class="custom-btn mr-2" :disabled="invalid">{{
-                        $t("container.list.submit") }}
+                      <v-btn flat color="success" type="submit" class="custom-btn mr-2" :disabled="invalid">
+                        {{ $t("container.list.submit") }}
                       </v-btn>
                     </v-row>
                   </v-col>
@@ -280,12 +284,12 @@ export default {
 
     addBudget() {
       let fd = new FormData();
-      fd.append("program_id", this.data.program_id);
-      fd.append("financial_year_id", this.active_year.id);
-      fd.append("calculation_type", this.data.calculation_type);
-      fd.append("no_of_previous_year", this.data.previous_year_value);
-      fd.append("calculation_value", this.data.calculation_value);
-      fd.append("remarks", this.data.remarks);
+      fd.append("program_id", this.data.program_id ?? '');
+      fd.append("financial_year_id", this.active_year.id ?? '');
+      fd.append("calculation_type", this.data.calculation_type ?? '');
+      fd.append("no_of_previous_year", this.data.previous_year_value ?? '');
+      fd.append("calculation_value", this.data.calculation_value ?? '');
+      fd.append("remarks", this.data.remarks ?? '');
 
       try {
         this.$store
@@ -314,6 +318,14 @@ export default {
       } catch (e) {
         console.log(e);
       }
+    },
+    resetSearch() {
+        this.data.program_id = null;
+        this.data.financial_year_id = null;
+        this.data.calculation_type = null;
+        this.data.previous_year_value = null;
+        this.data.calculation_value = null;
+        this.data.remarks = null;
     },
     callback() {
       //   alert("hello");
