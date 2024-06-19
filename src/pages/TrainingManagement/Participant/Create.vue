@@ -1,5 +1,6 @@
 <script>
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
+import { mapActions, mapState } from "vuex";
 extend("checkUsername", {
     validate: (value) => {
         if (!value && value !== 0) {
@@ -116,6 +117,30 @@ export default {
              
 
             },
+            location_id: null,
+            subLocationType: [
+                {
+                    id: 1,
+                    name_en: "Pourashava",
+                    name_bn: "পৌরসভা",
+                },
+
+                {
+                    id: 2,
+                    name_en: "Union",
+                    name_bn: "ইউনিয়ন",
+                },
+            ],
+            districts: [],
+            locationType: [],
+
+            thanas: [],
+            cities: [],
+            city_thanas: [],
+            unions: [],
+            pouros: [],
+            wards: [],
+            district_poros: [],
           
         };
     },
@@ -125,6 +150,10 @@ export default {
                 return this.$store.getters.getAppLanguage;
             }
         },
+        ...mapState({
+            divisions: (state) => state.Division.divisions,
+
+        }),
         
 
 },
@@ -133,7 +162,12 @@ export default {
 
     mounted() {
         // this.Program();
-        this.onChangeUserType();
+        this.$store
+            .dispatch("getGlobalLookupByType", 1)
+            .then((res) => (this.locationType = res));
+
+        this.GetAllDivisions();
+        this.GetUser();
       
         this.GetCircular();
   
@@ -143,6 +177,328 @@ export default {
     
 
     methods: {
+        async GetUser() {
+            const queryParams = {
+
+                location_id: this.location_id,
+
+
+            };
+
+            this.$axios
+                .get(`/admin/training/participants/users/3`, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                    params: queryParams,
+
+                })
+                .then((result) => {
+
+                    this.users = result?.data?.data;
+
+
+
+                });
+        },
+
+        async GetUser_1() {
+            const queryParams = {
+
+
+
+            };
+
+            this.$axios
+                .get(`/admin/training/participants/users/3`, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                    params: queryParams,
+
+                })
+                .then((result) => {
+
+                    this.users = result?.data?.data;
+
+
+
+                });
+        },
+        ...mapActions({
+            GetAllDivisions: "Division/GetAllDivisions",
+        }),
+
+
+        getItemText(item) {
+            return this.language === 'bn' ? item.name_bn : item.name_en;
+        },
+        getItemValue(item) {
+            return this.language === 'bn' ? item.value_bn : item.value_en;
+        },
+        async LocationType($event) {
+            // this.location_id = $event;
+            // this.data.division_id = null;
+            // this.data.district_id = null;
+            this.data.thana_id = null;
+            this.data.union_id = null;
+            this.data.city_id = null;
+            this.data.city_thana_id = null;
+            this.data.district_pouro_id = null;
+            this.data.pouro_id = null;
+            this.data.ward_id = null;
+            this.data.username = null;
+            this.data.full_name = null;
+            this.GetUser_1();
+
+            // this.data.location_type = null;
+
+            this.wards = [];
+            if ($event === 1 || $event === 3) {
+                this.data.sub_location_type = null;
+            }
+
+            if (this.data.district_id != null && this.data.location_type != null) {
+                if ($event === 2) {
+                    await this.$axios
+                        .get(`/global/thana/get/${this.data.district_id}`, {
+                            headers: {
+                                Authorization: "Bearer " + this.$store.state.token,
+                                "Content-Type": "multipart/form-data",
+                            },
+                        })
+                        .then((result) => {
+                            this.thanas = result.data.data;
+                            //emu
+                            // this.wards = [];
+                            // this.data.ward_id = null;
+                            this.cities = [];
+                            this.district_poros = [];
+
+                            this.data.city_id = null;
+                            this.data.city_thana_id = null;
+                            this.data.district_pouro_id = null;
+                            //emu
+                            // this.wards = [];
+                            // this.ward_id = null;
+                        });
+                }
+                if ($event === 3) {
+                    await this.$axios
+                        .get("/global/city/get/" + this.data.district_id + "/" + $event, {
+                            headers: {
+                                Authorization: "Bearer " + this.$store.state.token,
+                                "Content-Type": "multipart/form-data",
+                            },
+                        })
+                        .then((result) => {
+                            this.cities = result.data.data;
+                            //emu
+                            // this.wards = [];
+                            // this.data.ward_id = null;
+                            this.thanas = [];
+                            this.district_poros = [];
+                            this.data.thana_id = null;
+                            this.data.union_id = null;
+                            this.data.district_pouro_id = null;
+                            this.data.pouro_id = null;
+                            //emu
+                            // this.wards = [];
+                            // this.ward_id = null;
+                        });
+                }
+                if ($event === 1) {
+                    await this.$axios
+                        .get("/global/city/get/" + this.data.district_id + "/" + this.data.location_type, {
+                            headers: {
+                                Authorization: "Bearer " + this.$store.state.token,
+                                "Content-Type": "multipart/form-data",
+                            },
+                        })
+                        .then((result) => {
+                            this.district_poros = result.data.data;
+                            console.log(this.district_poros, "district_poros")
+                            //emu
+                            // this.wards = [];
+                            this.data.ward_id = null;
+                            this.cities = [];
+                            this.thanas = [];
+                            this.thana_id = null;
+                            this.union_id = null;
+                            this.city_id = null;
+                            this.city_thana_id = null;
+                            this.pouro_id = null;
+                        });
+                }
+            }
+        },
+        async onChangeSubLocationType(event) {
+
+            // this.location_id = $event;
+            this.data.ward_id = null;
+
+            if (event == 1) {
+                await this.$axios
+                    .get(`/global/union/pouro/get/${this.data.thana_id}`, {
+                        headers: {
+                            Authorization: "Bearer " + this.$store.state.token,
+                            "Content-Type": "multipart/form-data",
+                        },
+                    })
+                    .then((result) => {
+                        this.pouros = result.data.data;
+                    });
+                this.data.union_id = null;
+            }
+            if (event == 2) {
+                this.onChangeUpazila(this.data.thana_id);
+                this.data.pouro_id = null;
+            }
+        },
+        async onChangeUpazila(event) {
+            this.location_id = event;
+            this.GetUser();
+            if (this.data.sub_location_type == 1) {
+                this.onChangeSubLocationType(1);
+            } else {
+                await this.$axios
+                    .get(`/global/union/get/${this.data.thana_id}`, {
+                        headers: {
+                            Authorization: "Bearer " + this.$store.state.token,
+                            "Content-Type": "multipart/form-data",
+                        },
+                    })
+                    .then((result) => {
+                        this.unions = result.data.data;
+                    });
+            }
+        },
+
+        async onChangeDivision(event) {
+            this.location_id = event;
+            this.GetUser();
+            await this.$axios
+                .get(`/global/district/get/${event}`, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((result) => {
+                    this.districts = result.data.data;
+                });
+        },
+        async onChangeDistrict(event) {
+            this.location_id = this.data.district_id;
+            this.GetUser();
+
+            this.LocationType(this.data.location_type);
+
+
+        },
+        async onChangeThana(event) {
+            this.location_id = event;
+            this.GetUser();
+
+            await this.$axios
+                .get(`/global/union/get/${event}`, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((result) => {
+                    this.unions = result.data.data;
+                });
+        },
+        async onChangeCity(event) {
+            this.location_id = event;
+            this.GetUser();
+            await this.$axios
+                .get(`/global/thana/get/city/${this.data.city_id}`, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((result) => {
+                    this.city_thanas = result.data.data;
+                });
+        },
+        async onChangeUnionGetWard(event) {
+            this.location_id = event;
+            this.GetUser();
+            //emu
+            // this.wards = [];
+            // this.data.ward_id = null;
+            await this.$axios
+                .get(`/global/ward/get/${event}`, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((result) => {
+                    this.wards = result.data.data;
+                });
+        },
+        async onChangePouroGetWard(event) {
+            this.location_id = event;
+            this.GetUser();
+            //emu
+            // this.wards = [];
+            // this.data.ward_id = null;
+            await this.$axios
+                .get(`/global/ward/get/pouro/${event}`, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((result) => {
+                    this.wards = result.data.data;
+                });
+        },
+
+        async onChangeDistrictPouroGetWard(event) {
+            this.location_id = event;
+            this.GetUser();
+            //emu
+            // this.wards = [];
+            // this.data.ward_id = null;
+            await this.$axios
+                .get(`/global/ward/get/pouro/${this.data.district_pouro_id}`, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((result) => {
+                    this.wards = result.data.data;
+                    console.log(this.wards, "wards in function dist");
+                    console.log(this.data.ward_id, "ward");
+                });
+        },
+        async onChangeThanaGetWard(event) {
+            this.location_id = event;
+            this.GetUser();
+            //emu
+            // this.wards = [];
+            // this.data.ward_id = null;
+            await this.$axios
+                .get(`/global/ward/get/thana/${event}`, {
+                    headers: {
+                        Authorization: "Bearer " + this.$store.state.token,
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((result) => {
+                    this.wards = result.data.data;
+                    console.log(this.wards, "thanawards");
+                });
+        },
         change(){
             this.data.training_circular_id=null;
             this.data.training_program_id = null;
@@ -183,9 +539,9 @@ export default {
 
         },
         
-        getItemText(item) {
-            return this.language === 'bn' ? item.value_bn : item.value_en;
-        },
+        // getItemText(item) {
+        //     return this.language === 'bn' ? item.value_bn : item.value_en;
+        // },
         
         itemText(item) {
             return `${item.circular_name} - ${item.id}`;
@@ -210,25 +566,7 @@ export default {
 
                 });
         },
-        async onChangeUserType() {
-
-            this.$axios
-                .get(`/admin/training/participants/users/3`, {
-                    headers: {
-                        Authorization: "Bearer " + this.$store.state.token,
-                        "Content-Type": "multipart/form-data",
-                    },
-
-                })
-                .then((result) => {
-
-                    this.users = result?.data?.data;
-                  
-
-                });
-        },
-       
-
+      
     
 
         async submitForm() {
@@ -331,15 +669,163 @@ export default {
                                     <v-form v-on:submit.prevent="submitForm()">
 
                                         <v-row class="mx-10 no-gap-row">
+                                            <v-col cols=" 12" sm="6" lg="6">
+                                                <ValidationProvider name="training_circular_id"
+                                                    vid="training_circular_id" rules="required" v-slot="{ errors }">
+                                                    <v-autocomplete dense type="text"
+                                                        v-model="data.training_circular_id" @input="change()"
+                                                        :label="$t('container.training_management.training_program.training_circular')"
+                                                        persistent-hint outlined :error="errors[0] ? true : false"
+                                                        :items="circulars" :item-text="itemText" item-value="id"
+                                                        :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সার্কুলার প্রদান করুন '
+                                        : 'Please enter Circular') : ''">
+
+                                                    </v-autocomplete>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col cols="12" sm="6" lg="6">
+                                                <ValidationProvider name="Program Name" vid="training_program_id"
+                                                    rules="required" v-slot="{ errors }">
+                                                    <v-autocomplete dense type="text" v-model="data.training_program_id"
+                                                        :items="programs" :item-text="getprogram" item-value="id"
+                                                        :label="$t('container.training_management.training_program.program')
+                                        " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক প্রোগ্রাম প্রদান করুন '
+                                        : 'Please enter a Program') : ''"></v-autocomplete>
+                                                </ValidationProvider>
+                                            </v-col>
                                             <v-col cols="12" sm="6" lg="6">
                                                 <ValidationProvider name="Trainer Type" vid="is_external"
                                                     rules="required" v-slot="{ errors }">
                                                     <v-select @input="change()" dense type="text"
                                                         v-model="data.is_external" :label="$t('container.training_management.trainer_info.trainer_type')
-                                        " :items="training_types" :item-text="getItemText" item-value="id"
+                                        " :items="training_types" :item-text="getItemValue" item-value="id"
                                                         persistent-hint outlined :error="errors[0] ? true : false"
                                                         :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক প্রশিক্ষকের ধরন প্রদান করুন '
                                         : 'Please enter  Trainer Type') : ''"></v-select>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col lg="6" md="6" cols="12" v-if="data.is_external == 0">
+
+                                                <v-select dense @input="LocationType($event)"
+                                                    v-model="data.location_type" outlined
+                                                    :label="$t('container.list.location_type')" :items="locationType"
+                                                    :item-text="getItemValue" item-value="id" required></v-select>
+
+                                            </v-col>
+
+                                            <v-col lg="6" md="6" cols="12" v-if="data.is_external == 0">
+                                                <v-select dense outlined @input="onChangeDivision($event)"
+                                                    v-model="data.division_id" :label="$t(
+                                        'container.system_config.demo_graphic.division.division'
+                                    )
+                                        " :items="divisions" :item-text="getItemText" item-value="id" required>
+                                                </v-select>
+
+                                            </v-col>
+                                            <v-col lg="6" md="6" cols="12" v-if="data.is_external == 0">
+
+                                                <v-select dense outlined v-model="data.district_id"
+                                                    @input="onChangeDistrict($event)" :label="$t(
+                                        'container.system_config.demo_graphic.district.district'
+                                    )
+                                        " :items="districts" :item-text="getItemText" item-value="id"
+                                                    required></v-select>
+
+                                            </v-col>
+
+                                            <v-col v-if="data.location_type == 1 && data.is_external == 0" lg="6" md="6"
+                                                cols="12">
+
+                                                <v-select dense @input="onChangeDistrictPouroGetWard($event)"
+                                                    v-model="data.district_pouro_id" outlined :label="$t(
+                                        'container.system_config.demo_graphic.ward.dist_pouro'
+                                    )
+                                        " :items="district_poros" :item-text="getItemText" item-value="id"></v-select>
+
+                                            </v-col>
+
+                                            <!-- <v-col v-if="data.location_type == 2" lg="6" md="6" cols="12">
+                                                    <ValidationProvider name="union" vid="union_id" rules="required"
+                                                        v-slot="{ errors }">
+                                                        <v-select dense :append-icon="appendIcon"
+                                                            :append-icon-cb="appendIconCallback"
+                                                            prepend-inner-icon="mdi-plus" v-model="data.union_id"
+                                                            outlined :label="$t('container.system_config.demo_graphic.ward.union')
+                                " :items="unions" :item-text="getItemText" item-value="id" required
+                                                            :error="errors[0] ? true : false"
+                                                            :error-messages="errors[0]"></v-select>
+                                                    </ValidationProvider>
+                                                </v-col> -->
+
+                                            <v-col v-if="data.location_type == 3 && data.is_external == 0" lg="6" md="6"
+                                                cols="12">
+                                                <ValidationProvider name="city" vid="city_id" rules="required"
+                                                    v-slot="{ errors }">
+                                                    <v-select dense v-model="data.city_id"
+                                                        @change="onChangeCity($event)" outlined :label="$t('container.system_config.demo_graphic.ward.city')
+                                        " :items="cities" :item-text="getItemText" item-value="id" required
+                                                        :error="errors[0] ? true : false"
+                                                        :error-messages="errors[0]"></v-select>
+                                                </ValidationProvider>
+                                            </v-col>
+                                            <v-col v-if="data.location_type == 2 && data.is_external == 0" lg="6" md="6"
+                                                cols="12">
+
+                                                <v-select dense v-model="data.thana_id" outlined :label="$t(
+                                        'container.system_config.demo_graphic.ward.upazila'
+                                    )
+                                        " @change="onChangeUpazila($event)" :items="thanas" :item-text="getItemText"
+                                                    item-value="id"></v-select>
+
+                                            </v-col>
+
+                                            <v-col v-if="data.location_type == 3 && data.is_external == 0" lg="6"
+                                                md="6">
+
+                                                <v-select @input="onChangeThanaGetWard($event)" dense
+                                                    v-model="data.city_thana_id" outlined :label="$t('container.system_config.demo_graphic.ward.thana')
+                                        " :items="city_thanas" :item-text="getItemText" item-value="id"
+                                                    required></v-select>
+
+                                            </v-col>
+                                            <v-col v-if="data.location_type == 2 && data.is_external == 0" lg="6" md="6"
+                                                cols="12">
+                                                <v-select dense @input="onChangeSubLocationType($event)"
+                                                    v-model="data.sub_location_type" outlined
+                                                    :label="$t('container.system_config.demo_graphic.ward.subLocation_type')"
+                                                    :items="subLocationType" :item-text="getItemText"
+                                                    item-value="id"></v-select>
+                                            </v-col>
+
+                                            <v-col v-if="data.location_type == 2 && data.sub_location_type == 1" lg="6"
+                                                md="6" cols="12">
+
+                                                <v-select dense v-model="data.pouro_id" outlined :label="$t(
+                                        'container.system_config.demo_graphic.ward.pouro'
+                                    )
+                                        " :items="pouros" :item-text="getItemText" item-value="id"
+                                                    @input="onChangePouroGetWard($event)"></v-select>
+
+                                            </v-col>
+                                            <!-- :readonly="permissions?.user?.committee_type_id == 12 && data.pouro_id != null" -->
+
+                                            <v-col v-if="data.sub_location_type == 2 &&
+                                        data.location_type == 2" lg="6" md="6" cols="12">
+
+                                                <v-select dense @input="onChangeUnionGetWard($event)"
+                                                    v-model="data.union_id" outlined :label="$t(
+                                        'container.system_config.demo_graphic.ward.union'
+                                    )
+                                        " :items="unions" item-text="name_en" item-value="id"></v-select>
+
+                                            </v-col>
+                                            <v-col lg="6" md="6" cols="12" v-if="data.is_external == 0">
+                                                <ValidationProvider name="Ward" vid="ward_id" v-slot="{ errors }">
+                                                    <v-select v-if="data.location_type" dense v-model="data.ward_id"
+                                                        outlined claerable :label="$t(
+                                        'container.system_config.demo_graphic.ward.ward'
+                                    )
+                                        " :items="wards" :item-text="getItemText" item-value="id"></v-select>
                                                 </ValidationProvider>
                                             </v-col>
                                             <v-col cols=" 12" smdata.="6" lg="6" v-if="data.is_external == 0">
@@ -356,30 +842,7 @@ export default {
                                                 </ValidationProvider>
                                             </v-col>
 
-                                            <v-col cols=" 12" sm="6" lg="6">
-                                                <ValidationProvider name="training_circular_id"
-                                                    vid="training_circular_id" rules="required" v-slot="{ errors }">
-                                                    <v-autocomplete dense type="text"
-                                                        v-model="data.training_circular_id " @input="change()"
-                                                        :label="$t('container.training_management.training_program.training_circular') "
-                                                        persistent-hint outlined :error="errors[0] ? true : false"
-                                                        :items="circulars" :item-text="itemText" item-value="id"
-                                                        :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক সার্কুলার প্রদান করুন '
-                                        : 'Please enter Circular') : ''">
 
-                                                    </v-autocomplete>
-                                                </ValidationProvider>
-                                            </v-col>
-                                            <v-col cols="12" sm="6" lg="6">
-                                                <ValidationProvider name="Program Name" vid="training_program_id"
-                                                    rules="required" v-slot="{ errors }">
-                                                    <v-autocomplete dense type="text" v-model="data.training_program_id"
-                                                        :items="programs" :item-text="getprogram" item-value="id"
-                                                        :label="$t('container.training_management.training_program.program')
-                                    " persistent-hint outlined :error="errors[0] ? true : false" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক প্রোগ্রাম প্রদান করুন '
-                                    : 'Please enter a Program') : ''"></v-autocomplete>
-                                                </ValidationProvider>
-                                            </v-col>
                                             <v-col cols="12" sm="6" lg="6" v-if="data.is_external == 1">
                                                 <ValidationProvider name="Username" rules="required||checkUsername"
                                                     vid="user_name" v-slot="{ errors }">
@@ -425,7 +888,7 @@ export default {
                                                 $t("container.list.back") }}
                                             </v-btn>
                                             <v-btn color="success" type="submit" class="custom-btn mr-2"
-                                                :disabled="invalid">
+                                                :disabled="invalid" >
                                                 {{ $t("container.list.submit") }}
                                             </v-btn>
                                         </v-row>

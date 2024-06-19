@@ -94,6 +94,16 @@ const EmergencyPaymentManagementRoutes = [
       import("../pages/EmergencyPaymentManagement/Dashboard/Index.vue"),
   },
   {
+    path: "/emergency-payment/supplementary-payroll",
+    name: "emergency-payment-supplementary-payroll",
+    meta: {
+      requiresAuth: true,
+      permission: "emergency-supplementary-payroll-show",
+    },
+    component: () =>
+      import("../pages/EmergencyPaymentManagement/SupplementaryPayroll/index.vue"),
+  },
+  {
     path: "/emergency-payment/cycle/view/:id",
     name: "Emergency Payment",
     meta: {

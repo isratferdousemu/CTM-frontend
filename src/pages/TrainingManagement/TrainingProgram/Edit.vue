@@ -706,7 +706,7 @@ export default {
                                         : 'Please enter  Description') : ''"></v-textarea>
                                                 </ValidationProvider> -->
                                                 <label>{{
-                                                    $t('container.training_management.trainer_info.description')
+                                                    $t('container.training_management.training_circular.description')
                                                     }}</label>
 
                                                 <vue-editor v-model="data.description" :editor-toolbar="customToolbar">
