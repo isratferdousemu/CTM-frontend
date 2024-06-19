@@ -714,7 +714,7 @@ export default {
                                     </v-col>
 
                                     <v-col lg="6" md="6" cols="12" v-if="data.is_external==0">
-                                        <v-select dense outlined  @input="onChangeDivision($event)"
+                                        <v-select dense outlined @input="onChangeDivision($event)"
                                             v-model="data.division_id" :label="$t(
                                         'container.system_config.demo_graphic.division.division'
                                     )
@@ -733,89 +733,87 @@ export default {
 
                                     </v-col>
 
-                                    <v-col v-if="data.location_type == 1 && data.is_external == 0" lg="6" md="6" cols="12">
+                                    <v-col v-if="data.location_type == 1 && data.is_external == 0" lg="6" md="6"
+                                        cols="12">
 
-                                        <v-select dense  @input="onChangeDistrictPouroGetWard($event)"
+                                        <v-select dense @input="onChangeDistrictPouroGetWard($event)"
                                             v-model="data.district_pouro_id" outlined :label="$t(
                                         'container.system_config.demo_graphic.ward.dist_pouro'
                                     )
-                                        " :items="district_poros" :item-text="getItemText" item-value="id"
-                                            ></v-select>
+                                        " :items="district_poros" :item-text="getItemText" item-value="id"></v-select>
 
                                     </v-col>
 
-                                  
 
-                                    <v-col v-if="data.location_type == 3 && data.is_external == 0" lg="6" md="6" cols="12">
-                                      
-                                            <v-select dense v-model="data.city_id" @change="onChangeCity($event)"
-                                                outlined :label="$t('container.system_config.demo_graphic.ward.city')
+
+                                    <v-col v-if="data.location_type == 3 && data.is_external == 0" lg="6" md="6"
+                                        cols="12">
+
+                                        <v-select dense v-model="data.city_id" @change="onChangeCity($event)" outlined
+                                            :label="$t('container.system_config.demo_graphic.ward.city')
                                         " :items="cities" :item-text="getItemText" item-value="id" required
-                                                :error="errors[0] ? true : false"
-                                                :error-messages="errors[0]"></v-select>
-                                     
-                                    </v-col>
-                                    <v-col v-if="data.location_type == 2 && data.is_external == 0" lg="6" md="6"cols="12">
+                                           ></v-select>
 
-                                        <v-select dense  
-                                            v-model="data.thana_id" outlined :label="$t(
+                                    </v-col>
+                                    <v-col v-if="data.location_type == 2 && data.is_external == 0" lg="6" md="6"
+                                        cols="12">
+
+                                        <v-select dense v-model="data.thana_id" outlined :label="$t(
                                         'container.system_config.demo_graphic.ward.upazila'
                                     )
                                         " @change="onChangeUpazila($event)" :items="thanas" :item-text="getItemText"
-                                            item-value="id" ></v-select>
+                                            item-value="id"></v-select>
 
                                     </v-col>
 
-                                    <v-col v-if="data.location_type == 3 && data.is_external == 0" lg="6" md="6" cols="12">
-                                      
-                                            <v-select  @input="onChangeThanaGetWard($event)" dense
-                                                v-model="data.city_thana_id" outlined :label="$t('container.system_config.demo_graphic.ward.thana')
-                                        " :items="city_thanas" :item-text="getItemText" item-value="id" required
-                                               ></v-select>
-                                     
+                                    <v-col v-if="data.location_type == 3 && data.is_external == 0" lg="6" md="6"
+                                        cols="12">
+
+                                        <v-select @input="onChangeThanaGetWard($event)" dense
+                                            v-model="data.city_thana_id" outlined :label="$t('container.system_config.demo_graphic.ward.thana')
+                                        " :items="city_thanas" :item-text="getItemText" item-value="id"
+                                            required></v-select>
+
                                     </v-col>
-                                    <v-col v-if="data.location_type == 2 && data.is_external == 0" lg="6" md="6" cols="12">
-                                        <v-select  dense @input="onChangeSubLocationType($event)"
+                                    <v-col v-if="data.location_type == 2 && data.is_external == 0" lg="6" md="6"
+                                        cols="12">
+                                        <v-select dense @input="onChangeSubLocationType($event)"
                                             v-model="data.sub_location_type" outlined
                                             :label="$t('container.system_config.demo_graphic.ward.subLocation_type')"
-                                            :items="subLocationType" :item-text="getItemText" item-value="id"
-                                            ></v-select>
+                                            :items="subLocationType" :item-text="getItemText"
+                                            item-value="id"></v-select>
                                     </v-col>
 
                                     <v-col v-if="data.location_type == 2 && data.sub_location_type == 1" lg="6" md="6"
                                         cols="12">
 
-                                        <v-select  dense v-model="data.pouro_id" outlined :label="$t(
+                                        <v-select dense v-model="data.pouro_id" outlined :label="$t(
                                         'container.system_config.demo_graphic.ward.pouro'
                                     )
                                         " :items="pouros" :item-text="getItemText" item-value="id"
-                                            @input="onChangePouroGetWard($event)"
-                                             ></v-select>
+                                            @input="onChangePouroGetWard($event)"></v-select>
 
                                     </v-col>
-                                 
+
 
                                     <v-col v-if="data.sub_location_type == 2 &&
                                         data.location_type == 2" lg="6" md="6" cols="12">
 
-                                        <v-select  dense @input="onChangeUnionGetWard($event)"
-                                            v-model="data.union_id" outlined :label="$t(
+                                        <v-select dense @input="onChangeUnionGetWard($event)" v-model="data.union_id"
+                                            outlined :label="$t(
                                         'container.system_config.demo_graphic.ward.union'
                                     )
-                                        " :items="unions" item-text="name_en" item-value="id"
-                                             ></v-select>
+                                        " :items="unions" item-text="name_en" item-value="id"></v-select>
 
                                     </v-col>
-                                    <v-col lg="6" md="6" cols="12" v-if="data.is_external == 0">
-                                    
-                                            <v-select  v-if="data.location_type" dense
-                                                 v-model="data.ward_id" outlined
-                                                claerable :label="$t(
+                                    <v-col lg="6" md="6" cols="12" v-if="data.is_external == 0 &&data.location_type">
+
+                                        <v-select dense v-model="data.ward_id" outlined
+                                            claerable :label="$t(
                                         'container.system_config.demo_graphic.ward.ward'
                                     )
-                                        " :items="wards" :item-text="getItemText" item-value="id"
-                                                ></v-select>
-                                       
+                                        " :items="wards" :item-text="getItemText" item-value="id"></v-select>
+
                                     </v-col>
 
 

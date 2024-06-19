@@ -190,6 +190,7 @@
                   </v-btn> -->
 
                   <v-col cols="12">
+
                     <v-data-table :loading="loading" item-key="id" :headers="headers" :items="unions"
                       :items-per-page="pagination.perPage" @update:options="handleOptionsUpdate" hide-default-footer
                       class="elevation-0 transparent row-pointer">
@@ -621,7 +622,7 @@ export default {
       pagination: {
         current: 1,
         total: 0,
-        perPage: 20,
+        perPage: 10,
       },
       sortBy: "name_en",
       sortDesc: false, //ASC
@@ -1253,12 +1254,14 @@ export default {
           params: queryParams,
         })
         .then((result) => {
-          console.log(queryParams, "params123");
+    
+      
           this.unions = result.data.data;
-          this.pagination.current = result.data.current_page;
-          this.pagination.total = result.data.last_page;
-          this.pagination.grand_total = result.data.total;
-          this.total = result.data.total;
+          console.log(result, "result")
+          this.pagination.current = result.data.meta.current_page;
+          this.pagination.total = result.data.meta.last_page;
+          this.pagination.grand_total = result.data.meta.total;
+          this.total = result.data.meta.total;
         });
     },
     async onChangeDivisionSearch(event) {
@@ -1481,7 +1484,7 @@ export default {
   mounted() {
     this.$store.dispatch("getLookupByType", 1).then((res) => {
       this.locationTypes = res;
-      console.log(this.locationTypes, " here");
+    
     });
 
     this.setInitialHeader();
