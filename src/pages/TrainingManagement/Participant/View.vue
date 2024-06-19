@@ -173,7 +173,7 @@ export default {
                                     language == 'en' ? data?.user?.mobile : $helpers.englishToBangla(data?.user?.mobile)
                                     }}</span>
                             </v-col>
-                          <v-col cols="2" style="font-size:13px;">
+                            <v-col cols="2" style="font-size:13px;">
                                 <b>{{ $t('container.training_management.training_program.employee_id') }}</b>
                             </v-col>
                             <v-col cols="10" style="font-size:13px;">
@@ -192,11 +192,11 @@ export default {
 
                                 <span v-if="data?.status == 1" class="ml-2">
 
-                                    {{ language === 'en' ? 'Pass' : 'উত্তীর্ণ' }}
+                                    {{ language === 'en' ? 'Completed' : 'সম্পন্ন' }}
                                 </span>
                                 <span v-if="data?.status == 2" class="ml-2">
 
-                                    {{ language === 'en' ? 'Fail' : 'অনুত্তীর্ণ' }}
+                                    {{ language === 'en' ? 'Not Completed' : 'সম্পন্ন নয়' }}
                                 </span>
 
                             </v-col>
