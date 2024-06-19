@@ -440,7 +440,8 @@
           "unapproved": "অননুমোদিত",
           "active": "সক্রিয়",
           "inactive": "নিষ্ক্রিয়",
-          "banned": "নিষিদ্ধ"
+          "banned": "নিষিদ্ধ",
+          "program": "কার্যক্রম"
         },
         "financial_year": {
           "financial_year": "আর্থিক বর্ষ",

@@ -441,7 +441,8 @@
           "unapproved": "Unapproved",
           "active": "Active",
           "inactive": "Inactive",
-          "banned": "Banned"
+          "banned": "Banned",
+          "program": "Program"
         },
         "financial_year": {
           "financial_year": "Financial Year",
