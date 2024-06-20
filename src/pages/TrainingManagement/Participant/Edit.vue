@@ -433,7 +433,7 @@ export default {
                                                 <ValidationProvider name="Trainer Type" vid="is_external"
                                                     rules="required" v-slot="{ errors }">
                                                     <v-select dense type="text"
-                                                        v-model="data.status" :label="$t('container.list.status')
+                                                        v-model="data.status" :label="$t('container.training_management.training_registration.result')
                                         " :items="status_types" :item-text="getItemText" item-value="id"
                                                         persistent-hint outlined :error="errors[0] ? true : false"
                                                         :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক প্রশিক্ষকের ধরন প্রদান করুন '

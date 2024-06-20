@@ -257,7 +257,7 @@ export default {
                     this.data._method="PUT"
                     this.edited_modules = result?.data?.data.modules;
                     this.edited_trainers = result?.data?.data.trainers;
-                    this.edited_users = result?.data?.data.trainers;
+                    this.edited_users = result?.data?.data.users;
                     this.change();
                     this.data.circular_modules = [];
                     this.edited_modules.forEach((item, index) => {
@@ -692,7 +692,7 @@ export default {
                                                 <ValidationProvider name="Module" vid="module" rules="required"
                                                     v-slot="{ errors }">
                                                     <v-select dense type="text" v-model="data.status"
-                                                        :label="$t('container.list.status')" persistent-hint outlined
+                                                        :label="$t('container.training_management.training_program.status')" persistent-hint outlined
                                                         :error="errors[0] ? true : false" :items="status_types"
                                                         :item-text="getItemText" item-value="id" :error-messages="errors[0] ? (language == 'bn' ? 'অনুগ্রহ পূর্বক স্ট্যাটাস প্রদান করুন '
                                         : 'Please enter status') : ''">

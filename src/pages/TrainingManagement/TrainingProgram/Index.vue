@@ -101,7 +101,7 @@ export default {
                 { text: this.$t('container.training_management.training_circular.module'), value: "modules", align: "start", sortable: false, class: "align-middle" },
                 { text: this.$t('container.training_management.training_circular.training_type'), value: "training_type", align: "start", sortable: false, class: "align-middle" },
                 { text: this.$t('container.training_management.training_program.trainer'), value: "trainer", width: "15%", align: "start", sortable: false, class: "align-middle" },
-                { text: this.$t('container.list.status'), value: "status", align: "start", class: "align-middle" },
+                { text: this.$t('container.training_management.training_program.status'), value: "status", align: "start", class: "align-middle" },
                 // { text: this.$t('container.training_management.training_program.exam_status'), value: "exam_status", align: "start", class: "align-middle" },
                 // { text: this.$t('container.training_management.training_program.trainer_rating_status'), value: "rating_status", align: "start", class: "align-middle" },
                 { text: this.$t('container.list.action'), value: "actions", align: "start", sortable: false, style: "width:300px;", class: "align-middle" },
@@ -503,7 +503,7 @@ export default {
                 this.$t('container.training_management.training_circular.end_date'),
                 this.$t('container.training_management.training_program.exam_status'),
                 this.$t('container.training_management.training_program.trainer_rating_status'),
-                this.$t('container.list.status'),
+                this.$t('container.training_management.training_program.status'),
 
 
 
@@ -606,8 +606,7 @@ export default {
                         this.$t('container.training_management.training_program.exam_status'),
 
                         this.$t('container.training_management.training_program.trainer_rating_status'),
-                        this.$t('container.list.status'),
-
+                        this.$t('container.training_management.training_program.status'),
                     ]
 
                     const CustomInfo = this.circulars.map(((i, index) => {
@@ -1220,9 +1219,7 @@ export default {
                 <v-divider></v-divider>
                 <v-card-text>
                     <div class="subtitle-1 font-weight-medium mt-5">
-                        {{ $t('container.training_management.training_program.accept_alert') }}&nbsp;&nbsp;{{
-                        program_name_accept }}
-                        {{ $t('container.training_management.training_program.accept_program') }}
+                        {{ $t('container.training_management.training_program.accept_alert') }}
                     </div>
                 </v-card-text>
                 <v-card-actions style="display: block">
