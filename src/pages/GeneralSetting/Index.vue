@@ -76,7 +76,7 @@
                         }}
                       </template>
                       <template v-slot:item.type="{ item }">
-                        {{ lookupTypes[item.type - 1].name }}
+                        {{ getName(item.type) }}
                       </template>
                       <template v-slot:item.value_en="{ item }">
                         {{ item.value_en }}
@@ -511,6 +511,10 @@ export default {
   },
 
   methods: {
+
+    getName(type) {
+      return this.lookupTypes.find(i => i.id == type).name
+    },
     createDialog() {
       if (this.$refs.formAdd) {
         this.$refs.formAdd.reset();

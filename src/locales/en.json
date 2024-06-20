@@ -97,10 +97,10 @@
       "certificate": "Certificate",
       "accept": "Accept",
       "decline": "Decline",
-      "accept_invitation": "Invitation of exam",
       "manage_beneficary": "Manage Beneficiary",
       "existing": "Existing Beneficiary",
-      "add_beneficiary": "New Beneficiary"
+      "add_beneficiary": "New Beneficiary",
+      "accept_invitation": "Training Invitation"
     },
     "system_config": {
       "demo_graphic": {
@@ -1332,12 +1332,13 @@
         "training_circular": "Training Circular",
         "delete_header": "Delete Program",
         "delete_alert": "Are you sure to delete this Program? Program's all information will be deleted.",
-        "accept_header": "Invitation of Exam",
-        "accept_alert": "You are invited to attend this",
+        "accept_header": "Training Assessment Invitation",
+        "accept_alert": "You are invited to attend this training assessment",
         "accept_program": "program exam.",
         "start_date": "Training Start Date",
         "end_date": "Training End Date",
-        "certificate": "Certificate"
+        "certificate": "Certificate",
+        "status": "Program Status"
       },
       "training_registration": {
         "list_1": "Participant List",
