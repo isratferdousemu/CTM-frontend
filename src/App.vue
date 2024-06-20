@@ -7,6 +7,10 @@
 <script></script>
 
 <style>
+.component-title{
+  background-color: #1C3B68;
+  color: white;
+}
 .left-sidebar .v-list-item__action,
 .left-sidebar .v-list-item__icon {
   margin-right: 15px !important;

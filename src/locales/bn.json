@@ -1090,7 +1090,6 @@
         "amount_of_money": "বার্ষিক বরাদ্দকৃত অর্থের পরিমাণ:",
         "amount_remain_ralance": "বেতনের মধ্যে অবশিষ্ট ব্যালেন্সের পরিমাণ:",
         "total_amount_installments": "আগে পাঠানো সমস্ত কিস্তির মোট পরিমাণ:",
-
         "ben_name": "উপকারভোগীদের নাম",
         "father_name": "পিতার নাম",
         "mother_name": "মায়ের নাম",
@@ -1162,7 +1161,8 @@
         "e_beneficiary": "বিদ্যমান থেকে সুবিধাভোগী",
         "n_beneficiary": "নতুন সংযোজন থেকে",
         "searchBy": "দ্বারা অনুসন্ধান করুন",
-        "summary": "সংক্ষিপ্ত বিবরণ"
+        "summary": "সংক্ষিপ্ত বিবরণ",
+        "emergency_applicant": "জরুরী সুবিধাভোগী তৈরি করুন"
       },
       "emergency_payment_cycle": {
         "filter_title": "জরুরী পেমেন্ট চক্র",

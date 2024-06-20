@@ -1088,7 +1088,6 @@
         "amount_of_money": "Amount of money allocated annually:",
         "amount_remain_ralance": "Amount of Remain Balance in Payroll:",
         "total_amount_installments": "Total Amount of All Installments Sent Earlier:",
-
         "ben_name": "Name of the Beneficiaries",
         "father_name": "Father Name",
         "mother_name": "Mother Name",
@@ -1134,15 +1133,15 @@
       }
     },
     "emergency_payment": {
-      "slNo": "Sl No",
+      "slNo": "SL",
       "list": "Emergency Allotment",
       "add_new": "Create Emergency Allotment",
       "payment_name": "Emergency Payment Name",
       "edit": "Edit Emergency Allotment",
       "program_name": "Program Name",
-      "no_of_new_benificiary": "No of new benificiary",
-      "no_of_existing_benificiary": "No of existing benificiary",
-      "per_person_amount": "Per person amount",
+      "no_of_new_benificiary": "No Of New Beneficiary",
+      "no_of_existing_benificiary": "No Of Existing Beneficiary",
+      "per_person_amount": "Per Person Amount",
       "payment_cycle": "Payment Cycle",
       "starting_period": "Started Period",
       "closing_period": "Closing Period",
@@ -1155,9 +1154,9 @@
         "payment_name": "Emergency Allotment",
         "edit": "Edit Emergency Beneficiary",
         "program_name": "Program Name",
-        "no_of_new_benificiary": "Beneficiary from new",
-        "no_of_existing_benificiary": "Beneficiary from existing",
-        "per_person_amount": "Per person amount",
+        "no_of_new_benificiary": "Beneficiary From New",
+        "no_of_existing_benificiary": "Beneficiary From Existing",
+        "per_person_amount": "Per Person Amount",
         "payment_cycle": "Payment Cycle",
         "date": "Date",
         "closing_period": "Closing Period",
@@ -1165,7 +1164,8 @@
         "e_beneficiary": "From Existing Beneficiary",
         "n_beneficiary": "From New Addition",
         "searchBy": "Search By",
-        "summary": "Summary"
+        "summary": "Summary",
+        "emergency_applicant": "Create Emergency Beneficiary"
       },
       "emergency_payment_cycle": {
         "filter_title": "Emergency Payment Cycle",

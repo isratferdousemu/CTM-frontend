@@ -1,48 +1,17 @@
 <template>
-  <v-container fluid>
-    <v-card outlined justify="center" class="ma-0 pa-0">
-      <v-card-title class="component-title">
-        <div class="clearfix">
-          <div class="title-left">
-            <h4 class="title-text">
-              {{ $t("container.emergency_payment.edit") }}
-            </h4>
-          </div>
-        </div>
-      </v-card-title>
-      <v-card-text>
-        <v-col cols="12" lg="12" md="6">
+  <v-row justify="center">
+    <v-dialog v-model="isExistingDialogVisible" persistent max-width="80%">
+      <v-card>
+        <v-card-title>
+          <span class="text-h5">Search</span>
+        </v-card-title>
+        <!-- Form -->
+        <v-card-text>
           <ValidationObserver ref="form">
-            <v-form @submit.prevent="updateEmergencyAllotment()">
-              <v-container class="px-0 py-0">
+            <v-form>
+              <v-container>
                 <v-row>
-                  <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="Emergency Payment Name"
-                      vid="payment_name"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-text-field
-                        :hide-details="errors[0] ? false : true"
-                        outlined
-                        type="text"
-                        clearable
-                        v-model="data.payment_name"
-                        :label="$t('container.emergency_payment.payment_name')"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="
-                          errors[0]
-                            ? language === 'bn'
-                              ? 'অনুগ্রহ করে জরুরি অর্থপ্রদানের নাম লিখুন'
-                              : 'Please enter the emergency payment name'
-                            : ''
-                        "
-                      ></v-text-field>
-                    </ValidationProvider>
-                  </v-col>
-                  <v-col lg="6" md="6" cols="12">
+                  <v-col lg="6" md="4" sm="6" cols="12">
                     <ValidationProvider
                       name="Program Name"
                       vid="program_name"
@@ -70,122 +39,8 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12">
-                    <v-menu
-                      :close-on-content-click="false"
-                      :nudge-right="40"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="auto"
-                    >
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                          outlined
-                          clearable
-                          v-model="data.starting_period"
-                          :label="
-                            $t('container.emergency_payment.starting_period')
-                          "
-                          append-icon="mdi-calendar"
-                          readonly
-                          v-bind="attrs"
-                          v-on="on"
-                        ></v-text-field>
-                      </template>
-                      <v-date-picker
-                        v-model="data.starting_period"
-                        no-title
-                        scrollable
-                      ></v-date-picker>
-                    </v-menu>
-                  </v-col>
-                  <v-col lg="6" md="6" cols="12">
-                    <v-menu
-                      :close-on-content-click="false"
-                      :nudge-right="40"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="auto"
-                    >
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                          outlined
-                          clearable
-                          v-model="data.closing_period"
-                          :label="
-                            $t('container.emergency_payment.closing_period')
-                          "
-                          append-icon="mdi-calendar"
-                          readonly
-                          v-bind="attrs"
-                          v-on="on"
-                        ></v-text-field>
-                      </template>
-                      <v-date-picker
-                        v-model="data.closing_period"
-                        no-title
-                        scrollable
-                      ></v-date-picker>
-                    </v-menu>
-                  </v-col>
-                  <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="Per person amount"
-                      vid="per_person_amount"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-text-field
-                        :hide-details="errors[0] ? false : true"
-                        outlined
-                        v-model="data.per_person_amount"
-                        :label="
-                          $t('container.emergency_payment.per_person_amount')
-                        "
-                        required
-                        clearable
-                        type="number"
-                        :error="errors[0] ? true : false"
-                        :error-messages="
-                          errors[0]
-                            ? language === 'bn'
-                              ? 'অনুগ্রহ করে প্রতি ব্যক্তি পরিমাণ লিখুন'
-                              : 'Please enter per person amount'
-                            : ''
-                        "
-                      ></v-text-field>
-                    </ValidationProvider>
-                  </v-col>
-                  <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="Payment Cycle"
-                      vid="payment_cycle"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-autocomplete
-                        :hide-details="errors[0] ? false : true"
-                        v-model="data.payment_cycle"
-                        clearable
-                        outlined
-                        :label="$t('container.emergency_payment.payment_cycle')"
-                        :items="payment_cycles"
-                        item-text="name"
-                        item-value="name"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="
-                          errors[0]
-                            ? language === 'bn'
-                              ? 'অনুগ্রহ করে পেমেন্ট সাইকেল নির্বাচন করুন'
-                              : 'Please select the payment cycle'
-                            : ''
-                        "
-                      ></v-autocomplete>
-                    </ValidationProvider>
-                  </v-col>
                   <!-- location panel -->
-                  <v-col lg="6" md="6" cols="12">
+                  <v-col lg="6" md="4" sm="6" cols="12">
                     <ValidationProvider
                       name="Division"
                       vid="division"
@@ -196,8 +51,8 @@
                         :hide-details="errors[0] ? false : true"
                         @change="getDistrictList"
                         v-model="data.division_id"
-                        clearable
                         outlined
+                        clearable
                         :label="
                           $t(
                             'container.system_config.demo_graphic.division.division'
@@ -218,7 +73,7 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col lg="6" md="6" cols="12">
+                  <v-col lg="6" md="4" sm="6" cols="12">
                     <ValidationProvider
                       name="District"
                       vid="district"
@@ -229,8 +84,8 @@
                         :hide-details="errors[0] ? false : true"
                         outlined
                         v-model="data.district_id"
-                        clearable
                         @input="getThanaList"
+                        clearable
                         :label="
                           $t(
                             'container.system_config.demo_graphic.district.district'
@@ -251,7 +106,7 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col cols="12" lg="6" md="6">
+                  <v-col cols="12" lg="6" md="4" sm="6">
                     <ValidationProvider
                       name="Location Type"
                       vid="location_type"
@@ -266,8 +121,8 @@
                         :label="$t('container.list.location_type')"
                         :items="locationType"
                         item-text="value_en"
-                        item-value="id"
                         clearable
+                        item-value="id"
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="
@@ -280,7 +135,13 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col v-if="data.location_type == 2" lg="6" md="6" cols="12">
+                  <v-col
+                    v-if="data.location_type == 2"
+                    lg="6"
+                    md="4"
+                    sm="6"
+                    cols="12"
+                  >
                     <ValidationProvider
                       name="Upazila"
                       vid="thana_id"
@@ -295,8 +156,8 @@
                           $t('container.system_config.demo_graphic.thana.thana')
                         "
                         @change="getUnionList"
-                        :items="thanas"
                         clearable
+                        :items="thanas"
                         item-text="name_en"
                         item-value="id"
                         required
@@ -311,7 +172,13 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col v-if="data.location_type == 2" lg="6" md="6" cols="12">
+                  <v-col
+                    v-if="data.location_type == 2"
+                    lg="6"
+                    md="4"
+                    sm="6"
+                    cols="12"
+                  >
                     <ValidationProvider
                       name="union"
                       vid="union_id"
@@ -322,12 +189,12 @@
                         :hide-details="errors[0] ? false : true"
                         v-model="data.union_id"
                         outlined
-                        clearable
                         :label="
                           $t('container.system_config.demo_graphic.ward.union')
                         "
                         :items="unions"
                         item-text="name_en"
+                        clearable
                         item-value="id"
                         required
                         :error="errors[0] ? true : false"
@@ -341,7 +208,13 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col v-if="data.location_type == 3" lg="6" md="6" cols="12">
+                  <v-col
+                    v-if="data.location_type == 3"
+                    lg="6"
+                    md="4"
+                    sm="6"
+                    cols="12"
+                  >
                     <ValidationProvider
                       name="city corporation"
                       vid="city_id"
@@ -372,7 +245,13 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col v-if="data.location_type == 3" lg="6" md="6" cols="12">
+                  <v-col
+                    v-if="data.location_type == 3"
+                    lg="6"
+                    md="4"
+                    sm="6"
+                    cols="12"
+                  >
                     <ValidationProvider
                       name="thana"
                       vid="city_thana_id"
@@ -388,8 +267,8 @@
                         "
                         :items="city_thanas"
                         item-text="name_en"
-                        clearable
                         item-value="id"
+                        clearable
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="
@@ -402,7 +281,13 @@
                       ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <v-col v-if="data.location_type == 1" lg="6" md="6" cols="12">
+                  <v-col
+                    v-if="data.location_type == 1"
+                    lg="6"
+                    md="4"
+                    sm="6"
+                    cols="12"
+                  >
                     <ValidationProvider
                       name="District Pourashava"
                       vid="district_pouro_id"
@@ -413,13 +298,13 @@
                         :hide-details="errors[0] ? false : true"
                         v-model="data.district_pouro_id"
                         outlined
-                        clearable
                         :label="
                           $t('container.system_config.demo_graphic.ward.pouro')
                         "
                         :items="district_poros"
                         item-text="name_en"
                         item-value="id"
+                        clearable
                         required
                         :error="errors[0] ? true : false"
                         :error-messages="
@@ -434,130 +319,185 @@
                   </v-col>
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
-                      name="No of new Beneficiary"
-                      vid="no_of_new_benificiary"
+                      name="Search By"
+                      vid="searchBy"
                       rules="required"
                       v-slot="{ errors }"
                     >
-                      <v-text-field
+                      <v-autocomplete
                         :hide-details="errors[0] ? false : true"
+                        v-model="data.searchBy"
                         outlined
-                        type="number"
-                        clearable
-                        v-model="data.no_of_new_benificiary"
                         :label="
                           $t(
-                            'container.emergency_payment.no_of_new_benificiary'
+                            'container.emergency_payment.emergency_beneficiary.searchBy'
                           )
                         "
+                        district_pouro_id
+                        :items="searchFilters"
+                        item-text="name"
+                        item-value="name"
                         required
+                        clearable
                         :error="errors[0] ? true : false"
                         :error-messages="
                           errors[0]
                             ? language === 'bn'
-                              ? 'অনুগ্রহ করে নতুন সুবিধাভোগীর সংখ্যা লিখুন'
-                              : 'Please enter the no of new beneficiary'
+                              ? 'দ্বারা অনুসন্ধান নির্বাচন করুন'
+                              : 'Please select Search By'
                             : ''
                         "
-                      ></v-text-field>
+                      ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
                   <v-col lg="6" md="6" cols="12">
                     <ValidationProvider
-                      name="No of existing beneficiary"
-                      vid="no_of_existing_benificiary"
+                      name="Status"
+                      vid="status"
                       rules="required"
                       v-slot="{ errors }"
                     >
-                      <v-text-field
+                      <v-autocomplete
+                        :hide-details="errors[0] ? false : true"
+                        v-model="data.status"
                         outlined
                         clearable
-                        type="number"
-                        :hide-details="errors[0] ? false : true"
-                        v-model="data.no_of_existing_benificiary"
-                        :label="
-                          $t(
-                            'container.emergency_payment.no_of_existing_benificiary'
-                          )
-                        "
-                        required
+                        :label="$t('container.list.status')"
+                        :items="statusFilters"
+                        item-text="name"
+                        item-value="name"
+                        requireddistrict_pouro_id
                         :error="errors[0] ? true : false"
                         :error-messages="
                           errors[0]
                             ? language === 'bn'
-                              ? 'অনুগ্রহ করে বিদ্যমান সুবিধাভোগীর সংখ্যা লিখুন'
-                              : 'Please enter the no of existing beneficiary'
+                              ? 'অনুগ্রহ করে স্ট্যাটাস সিলেক্ট করুন'
+                              : 'Please select the status'
                             : ''
                         "
-                      ></v-text-field>
+                        @change="getBeneficiariesInfo"
+                      ></v-autocomplete>
                     </ValidationProvider>
                   </v-col>
-                  <!-- <v-col lg="6" md="6" cols="12">
-                    <ValidationProvider
-                      name="Ward Name Bangla"
-                      vid="name_bn"
-                      rules="required"
-                      v-slot="{ errors }"
-                    >
-                      <v-text-field
-                        :hide-details="errors[0] ? false : true"
-                        outlined
-                        type="text"
-                        v-model="data.name_bn"
-                        :label="$t('container.list.name_bn')"
-                        required
-                        :error="errors[0] ? true : false"
-                        :error-messages="errors[0]"
-                      ></v-text-field>
-                    </ValidationProvider>
-                  </v-col> -->
-                  <!-- Button Part -->
-                  <v-col cols="12" class="text-right">
-                    <v-btn
-                      color="primary"
-                      class="custom-btn mr-2"
-                      router
-                      to="/emergency-payment/emergency-allotment"
-                      >{{ $t("container.list.back") }}
-                    </v-btn>
-
-                    <v-btn
-                      color="success"
-                      type="submit"
-                      class="custom-btn mr-2"
+                  <!-- v-data table -->
+                  <v-col cols="12">
+                    <v-data-table
                       :loading="loading"
-                      >{{ $t("container.list.update") }}
-                    </v-btn>
-                    <!-- :disabled="invalid" -->
+                      item-key="id"
+                      :headers="headers"
+                      :items="beneficiaries"
+                      :items-per-page="pagination.perPage"
+                      v-model="selectedBeneficiaries"
+                      hide-default-footer
+                      class="elevation-0 transparent row-pointer table-responsive"
+                    >
+                      <template v-slot:item.id="{ item, index }">
+                        {{
+                          language === "bn"
+                            ? $helpers.englishToBangla(
+                                (pagination.current - 1) * pagination.perPage +
+                                  index +
+                                  1
+                              )
+                            : (pagination.current - 1) * pagination.perPage +
+                              index +
+                              1
+                        }}
+                      </template>
+                      <template v-slot:item.select="{ item }">
+                        <v-simple-checkbox
+                          v-model="item.isSelected"
+                          @change="selectBeneficiary(item)"
+                        ></v-simple-checkbox>
+                      </template>
+                      <template v-slot:footer="item">
+                        <v-container class="pa-0 py-0" fluid>
+                          <v-row class="align-center" cols="12">
+                            <v-col
+                              cols="12"
+                              lg="10"
+                              md="10"
+                              sm="4"
+                              class="d-flex justify-center mb-2 mb-sm-0"
+                            >
+                              <v-pagination
+                                circle
+                                primary
+                                v-model="pagination.current"
+                                :length="pagination.total"
+                                @input="onPageChange"
+                                :total-visible="11"
+                                class="custom-pagination-item"
+                              ></v-pagination>
+                            </v-col>
+                            <v-col cols="12" lg="2" md="2" sm="4" class="">
+                              <v-select
+                                :items="items"
+                                hide-details
+                                dense
+                                outlined
+                                @change="onPageSetup"
+                                v-model="pagination.perPage"
+                              ></v-select>
+                            </v-col>
+                          </v-row>
+                        </v-container>
+                      </template>
+                    </v-data-table>
                   </v-col>
                 </v-row>
               </v-container>
             </v-form>
           </ValidationObserver>
-        </v-col>
-      </v-card-text>
-    </v-card>
-  </v-container>
+        </v-card-text>
+        <!-- Action buttons -->
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="closeDialog">
+            {{ $t("container.list.close") }}
+          </v-btn>
+          <v-btn color="blue darken-1" text @click="submitSelection">
+            {{ $t("container.list.addToList") }}
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-row>
 </template>
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
+import ApiService from "@/services/ApiService";
 import { extend, ValidationProvider, ValidationObserver } from "vee-validate";
 import { required } from "vee-validate/dist/rules";
-import ApiService from "@/services/ApiService";
+import Spinner from "@/components/Common/Spinner.vue";
 extend("required", required);
+extend("bangla", {
+  validate: (value) => {
+    // Regular expression to match Bangla characters
+    const banglaRegex = /^[\u0980-\u09FF\s]+$/;
+    return banglaRegex.test(value);
+  },
+  message: "Only Bangla characters will be allowed in this field",
+});
 export default {
-  name: "Index",
-  title: "CTM - Emergency Allotment",
+  name: "ExistingEmergency",
+  title: "CTM - Emergency Beneficiary Create",
   components: {
     ValidationProvider,
     ValidationObserver,
+    Spinner,
+  },
+  props: {
+    existingDialogVisible: {
+      type: Boolean,
+      required: true,
+    },
   },
   data() {
     return {
       data: {
-        id: null,
         program_id: null,
-        payment_name: null,
+        emergency_payment_name: null,
         division_id: null,
         district_id: null,
         location_type: null,
@@ -566,137 +506,211 @@ export default {
         city_id: null,
         city_thana_id: null,
         district_pouro_id: null,
-        no_of_new_benificiary: null,
-        no_of_existing_benificiary: null,
-        per_person_amount: null,
-        payment_cycle: null,
-        starting_period: null,
-        closing_period: null,
+        searchBy: null,
+        status: null,
       },
-
+      styleObject: { border: "2px solid  rgba(9, 9, 121, 100)" },
       districts: [],
       district_poros: [],
       cities: [],
       thanas: [],
       city_thanas: [],
       unions: [],
-      locationType: [],
-      delete_loading: false,
-      loading: false,
-      search: "",
       wards: [],
+      locationType: [],
+      loading: false,
+      payment_names: [],
+      total: null,
       pagination: {
         current: 1,
         total: 0,
-        perPage: 5,
+        perPage: 10,
       },
       items: [5, 10, 15, 20, 40, 50, 100],
-      isEdit: false,
-      payment_cycles: [
+      isExistingDialogVisible: false,
+      statusFilters: [
         {
           id: 1,
-          name: "Monthly",
+          name: "Active",
         },
         {
           id: 2,
-          name: "Yearly",
+          name: "Inactive",
         },
         {
           id: 3,
-          name: "Half Yearly",
+          name: "Waiting",
         },
       ],
-      editedItem: {},
+      searchFilters: [
+        {
+          id: 1,
+          name: "By Name",
+        },
+        {
+          id: 2,
+          name: "By Division",
+        },
+        {
+          id: 3,
+          name: "By Date",
+        },
+        {
+          id: 3,
+          name: "By Month",
+        },
+      ],
+      selectedBeneficiaries: [],
+      beneficiaries: [],
     };
   },
   computed: {
+    ...mapState({
+      divisions: (state) => state.Division.divisions,
+      allowanceProgrames: (state) => state.Allowance.allowanceProgrames,
+    }),
+
     language: {
       get() {
         return this.$store.getters.getAppLanguage;
       },
     },
-    ...mapState({
-      divisions: (state) => state.Division.divisions,
-      allowanceProgrames: (state) => state.Allowance.allowanceProgrames,
-    }),
-  },
-  watch: {
-    "$i18n.locale": "updateHeaderTitle",
+    headers() {
+      return [
+        {
+          text: this.$t("container.emergency_payment.slNo"),
+          value: "id",
+          width: "20px",
+        },
+        // {
+        //   text: this.$t(
+        //     "container.beneficiary_management.beneficiary_list.beneficiary_id"
+        //   ),
+        //   value: "beneficiary_id",
+        //   width: "80px",
+        // },
+        {
+          text: this.$t(
+            "container.beneficiary_management.beneficiary_list.beneficiary_name"
+          ),
+          value: this.language === "bn" ? "name_bn" : "name_en",
+          width: "180px",
+        },
+        {
+          text: this.$t(
+            "container.beneficiary_management.beneficiary_list.beneficiary_father_name"
+          ),
+          value: this.language === "bn" ? "father_name_bn" : "father_name_en",
+          width: "180px",
+        },
+
+        {
+          text: this.$t(
+            "container.beneficiary_management.beneficiary_list.beneficiary_mother_name"
+          ),
+          value: this.language === "bn" ? "mother_name_bn" : "mother_name_en",
+          width: "180px",
+        },
+        {
+          text: this.$t("container.system_config.demo_graphic.union.union"),
+          value:
+            this.language === "bn"
+              ? "permanent_union.name_bn"
+              : "permanent_union.name_en",
+          width: "80px",
+        },
+        // {
+        //   text: this.$t("container.system_config.demo_graphic.ward.ward"),
+        //   value: "ward",
+        //   width: "80px",
+        // },
+        {
+          text: this.$t("container.emergency_payment.program_name"),
+          value: this.language === "bn" ? "program.name_bn" : "program.name_en",
+          class: "highlight-column",
+          width: "180px",
+        },
+        {
+          text: this.$t("container.payroll_management.bank_name"),
+          value: "bank_name",
+          width: "70px",
+        },
+        {
+          text: this.$t("container.training_management.trainer_info.mobile"),
+          value: "mobile",
+          width: "130px",
+        },
+        {
+          text: this.$t("container.list.status"),
+          value: "status",
+          width: "80px",
+        },
+
+        {
+          text: this.$t("container.list.select"),
+          value: "select",
+          sortable: false,
+          width: "80px",
+        },
+      ];
+    },
   },
   created() {},
+
   mounted() {
-    this.updateHeaderTitle();
+    this.getLocationType();
     this.GetAllDivisions();
     this.GetAllAllownceProgram();
-    this.getLocationType();
-    this.loadEditableForm();
   },
   methods: {
-    loadEditableForm() {
-      const edit_id = this.$route.params.id;
-      if (edit_id) {
-        ApiService.get(`admin/emergency/allotments/edit/${edit_id}`)
-          .then((res) => {
-            console.log(res);
-            this.setEditData(res.data.data);
-          })
-          .catch((errors) => {
-            this.$toast.error(errors.response);
+    onPageSetup($event) {
+      this.pagination.current = 1;
+      this.getBeneficiariesInfo();
+    },
+    onPageChange($event) {
+      this.getBeneficiariesInfo();
+    },
+    getBeneficiariesInfo() {
+      this.loading = true;
+      const queryParams = {
+        program_id: this.data.program_id,
+        division_id: this.data.division_id,
+        district_id: this.data.district_id,
+        location_type: this.data.location_type,
+        thana_id: this.data.thana_id,
+        union_id: this.data.union_id,
+        city_id: this.data.city_id,
+        city_thana_id: this.data.city_thana_id,
+        district_pouro_id: this.data.district_pouro_id,
+        searchBy: this.data.searchBy,
+        status: this.data.location_type,
+        perPage: this.pagination.perPage,
+        page: this.pagination.current,
+      };
+      ApiService.get("/admin/emergency/get-existing-beneficiaries-info", {
+        params: queryParams,
+      })
+        .then((res) => {
+          console.log(res);
+          this.beneficiaries = res.data.data.data;
+          this.beneficiaries.forEach((beneficiary) => {
+            this.$set(beneficiary, "isSelected", false);
           });
-      }
+          console.log(this.beneficiaries);
+          this.total = res?.data?.total;
+          this.pagination.current = res.data.data.current_page;
+          this.pagination.total = res.data.data.last_page;
+          this.loading = false;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
-    setEditData(item) {
-      console.log(item);
-      this.editedItem = item;
-      this.data.payment_name = item.emergency_payment_name;
-      this.data.program_id = item.program_id;
-      this.data.starting_period = item.starting_period;
-      this.data.closing_period = item.closing_period;
-      this.data.per_person_amount = item.amount_per_person;
-      this.data.payment_cycle = item.payment_cycle;
-      this.data.division_id = item.division_id;
-      this.data.district_id = item.district_id;
-      this.data.location_type = item.location_type;
-      this.data.thana_id = item.upazila_id;
-      this.data.union_id = item.union_id;
-      this.data.city_id = item.city_corp_id;
-      this.data.district_pouro_id = item.district_pourashava_id;
-      this.data.city_thana_id = item.thana_id;
-      this.data.no_of_new_benificiary = item.no_of_new_benificiariy;
-      this.data.no_of_existing_benificiary = item.no_of_existing_benificiariy;
-      this.getDistrictList(item.division_id);
-      this.LocationType(item.location_type);
-      this.getThanaList(item.district_id);
-      this.getUnionList(item.thana_id);
-      this.getCityThanaList(item.city_corp_id);
-    },
+
     getLocationType() {
       this.$store
         .dispatch("getLookupByType", 1)
         .then((res) => (this.locationType = res));
-    },
-    updateEmergencyAllotment() {
-      ApiService.update(
-        "admin/emergency/allotments/update/" + this.editedItem.id,
-        this.data
-      )
-        .then((res) => {
-          if (res?.data?.success) {
-            this.$toast.success(
-              this.language === "bn"
-                ? "ডেটা সফলভাবে আপডেট করা হয়েছে"
-                : "Data Updated successfully"
-            );
-            this.resetData();
-            this.$router.push("/emergency-payment/emergency-allotment");
-          } else if (res?.data?.errors) {
-            this.$refs.form.setErrors(res.data.errors);
-            this.$toast.error(res.data.message);
-          }
-        })
-        .catch((errors) => {
-          console.log(errors);
-        });
     },
     async LocationType($event) {
       if (this.data.district_id != null && this.data.location_type != null) {
@@ -790,46 +804,60 @@ export default {
         })
         .catch((error) => console.log(error));
     },
+
+    updateSelectedBeneficiaries() {
+      this.selectedBeneficiaries = this.beneficiaries.filter(
+        (b) => b.isSelected
+      );
+      console.log({ update: this.selectedBeneficiaries });
+    },
+    submitSelection() {
+      this.updateSelectedBeneficiaries();
+      this.$emit("selectedBeneficiaries", this.selectedBeneficiaries);
+      console.log({ selected: this.selectedBeneficiaries });
+      this.isExistingDialogVisible = false;
+    },
     ...mapActions({
       GetAllDivisions: "Division/GetAllDivisions",
       GetAllAllownceProgram: "Allowance/GetAllAllownceProgram",
     }),
-    updateHeaderTitle() {
-      const title = this.$t("container.emergency_payment.list");
-      this.$store.commit("setHeaderTitle", title);
-    },
-    resetData() {
-      this.data = {};
-    },
-    submitFormResponse(res) {
-      let message = "";
-      if (res.data.code == 2003) {
-        Object.values(res.data.errors).map((ele) => {
-          ele.map((msg) => {
-            message = message + msg + "<br>";
-          });
-        });
-        // Toast.fire({
-        //   icon: "error",
-        //   title: message,
-        // });
-        this.$toast.error(message);
-      } else if (res.data.success) {
-        // Toast.fire({
-        //   icon: "success",
-        //   title: res.data.message,
-        // });
 
-        this.$toast.success(
-          this.language === "bn"
-            ? "ডেটা সফলভাবে আপডেট করা হয়েছে"
-            : "Data updated successfully"
-        );
-        this.$router.push("/emergency-payment/emergency-allotment");
-        this.resetData();
-      }
+    closeDialog() {
+      this.isExistingDialogVisible = false;
+    },
+  },
+  watch: {
+    "$i18n.locale": "updateHeaderTitle",
+    existingDialogVisible(newValue) {
+      this.isExistingDialogVisible = newValue;
+    },
+    isExistingDialogVisible(newValue) {
+      this.$emit("update:existingDialogVisible", newValue);
     },
   },
 };
 </script>
-<style scoped></style>
+<style scoped>
+.highlight-column {
+  background-color: #e0eaf1;
+}
+.custom-margin-left {
+  margin-left: 4px;
+}
+.button-color-linear-gradient {
+  background: rgb(2, 0, 36);
+  background: linear-gradient(
+    90deg,
+    rgb(28, 59, 104) 0%,
+    rgba(9, 9, 121, 1) 35%
+  );
+
+  /* background: rgb(49, 232, 232);
+  background: linear-gradient(
+    90deg,
+    rgba(49, 232, 232, 1) 0%,
+    rgba(41, 110, 110, 1) 0%,
+    rgba(16, 30, 61, 1) 64%
+  ); */
+}
+</style>
